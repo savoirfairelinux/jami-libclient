@@ -15,11 +15,11 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "InstantMessagingModel.h"
+#include "instantmessagingmodel.h"
 
-#include "CallModel.h"
+#include "callmodel.h"
 #include "callmanager_interface_singleton.h"
-#include "Call.h"
+#include "call.h"
 
 InstantMessagingModelManager* InstantMessagingModelManager::m_spInstance  = nullptr;
 CallModelBase*                InstantMessagingModelManager::m_spCallModel = nullptr;

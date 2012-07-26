@@ -18,8 +18,8 @@
  ***************************************************************************/
 
 //Parent
-#include "AccountList.h"
-
+#include "accountlist.h"
+ 
 //SFLPhone
 #include "sflphone_const.h"
 

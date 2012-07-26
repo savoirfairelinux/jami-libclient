@@ -25,7 +25,7 @@
 #include <QtCore/QHash>
 
 //SFLPhone
-#include "VideoDevice.h"
+#include "videodevice.h"
 class VideoRenderer;
 class Call;
 struct SHMHeader;

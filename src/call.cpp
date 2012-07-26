@@ -18,17 +18,17 @@
  ***************************************************************************/
 
 //Parent
-#include "Call.h"
+#include "call.h"
 
 //SFLPhone library
 #include "callmanager_interface_singleton.h"
 #include "configurationmanager_interface_singleton.h"
-#include "ContactBackend.h"
-#include "Contact.h"
-#include "Account.h"
-#include "AccountList.h"
-#include "VideoModel.h"
-#include "InstantMessagingModel.h"
+#include "contactbackend.h"
+#include "contact.h"
+#include "account.h"
+#include "accountlist.h"
+#include "videomodel.h"
+#include "instantmessagingmodel.h"
 
 
 const call_state Call::actionPerformedStateMap [13][5] =

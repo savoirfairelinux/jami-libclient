@@ -26,7 +26,7 @@
 #include <QVariant>
 
 #include "typedefs.h"
-#include "Contact.h"
+#include "contact.h"
 
 //SFLPhone
 class Contact;

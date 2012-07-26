@@ -15,9 +15,9 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "VideoCodecModel.h"
-#include "Call.h"
-#include "Account.h"
+#include "videocodecmodel.h"
+#include "call.h"
+#include "account.h"
 #include "video_interface_singleton.h"
 
 ///Get data from the model

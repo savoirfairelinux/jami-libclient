@@ -24,7 +24,7 @@
 #include <QtCore/QVector>
 #include <QtCore/QAbstractListModel>
 
-#include "Account.h"
+#include "account.h"
 #include "typedefs.h"
 #include "dbus/metatypes.h"
 

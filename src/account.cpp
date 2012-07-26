@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 //Parent
-#include "Account.h"
+#include "account.h"
 
 //Qt
 #include <QtCore/QDebug>
@@ -31,10 +31,10 @@
 #include "configurationmanager_interface_singleton.h"
 #include "callmanager_interface_singleton.h"
 #include "video_interface_singleton.h"
-#include "AccountList.h"
-#include "CredentialModel.h"
-#include "AudioCodecModel.h"
-#include "VideoCodecModel.h"
+#include "accountlist.h"
+#include "credentialmodel.h"
+#include "audiocodecmodel.h"
+#include "videocodecmodel.h"
 
 const account_function Account::stateMachineActionsOnState[6][7] = {
 /*                 NOTHING              EDIT              RELOAD              SAVE               REMOVE             MODIFY             CANCEL            */

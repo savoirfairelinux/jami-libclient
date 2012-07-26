@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "VideoDevice.h"
+#include "videodevice.h"
 #include "video_interface_singleton.h"
 
 QHash<QString,VideoDevice*> VideoDevice::m_slDevices;

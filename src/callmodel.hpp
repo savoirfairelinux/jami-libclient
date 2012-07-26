@@ -23,15 +23,15 @@
 #include <QtGui/QDragEnterEvent>
 
 //SFLPhone library
-#include "Call.h"
-#include "AccountList.h"
+#include "call.h"
+#include "accountlist.h"
 #include "dbus/metatypes.h"
 #include "callmanager_interface_singleton.h"
 #include "configurationmanager_interface_singleton.h"
 #include "instance_interface_singleton.h"
 #include "sflphone_const.h"
 #include "typedefs.h"
-#include "ContactBackend.h"
+#include "contactbackend.h"
 
 //System
 #include "unistd.h"

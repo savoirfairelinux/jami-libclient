@@ -15,14 +15,14 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "VideoModel.h"
+#include "videomodel.h"
 
 //SFLPhone
 #include "video_interface_singleton.h"
-#include "VideoDevice.h"
-#include "Call.h"
-#include "CallModel.h"
-#include "VideoRenderer.h"
+#include "videodevice.h"
+#include "call.h"
+#include "callmodel.h"
+#include "videorenderer.h"
 
 //Static member
 VideoModel* VideoModel::m_spInstance = nullptr;

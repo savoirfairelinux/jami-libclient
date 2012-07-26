@@ -26,7 +26,7 @@
 class QTimer;
 
 //SFLPhone
-#include "VideoDevice.h"
+#include "videodevice.h"
 struct SHMHeader;
 
 ///Manage shared memory and convert it to QByteArray

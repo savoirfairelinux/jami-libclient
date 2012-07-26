@@ -19,10 +19,10 @@
  ***********************************************************************************/
 
 //Parent
-#include "ContactBackend.h"
+#include "contactbackend.h"
 
 //SFLPhone library
-#include "Contact.h"
+#include "contact.h"
 
 //Qt
 #include <QtCore/QHash>

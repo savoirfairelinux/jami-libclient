@@ -18,9 +18,9 @@
  ***************************************************************************/
 
 //Parent
-#include <CallModel.h>
+#include <callmodel.h>
 #include "video_interface_singleton.h"
-#include "HistoryModel.h"
+#include "historymodel.h"
 
 bool CallModelBase::dbusInit = false;
 CallMap CallModelBase::m_sActiveCalls;

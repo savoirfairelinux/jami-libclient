@@ -217,6 +217,6 @@ class LIB_EXPORT CallModel : public CallModelBase {
       Call* addCallCommon(Call* call);
       bool  updateCommon (Call* call);
 };
-#include "CallModel.hpp"
+#include "callmodel.hpp"
 
 #endif

@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 //Parent
-#include "Contact.h"
+#include "contact.h"
 
 //Qt
 #include <QtGui/QPixmap>
