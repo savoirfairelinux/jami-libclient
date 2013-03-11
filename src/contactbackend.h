@@ -80,12 +80,12 @@ protected:
    QHash<QString,Contact*>        m_ContactByUid   ;
 public Q_SLOTS:
    ContactList update();
-   
+
 private Q_SLOTS:
-   
+   void slotReloadModel();
+
 Q_SIGNALS:
    void collectionChanged();
-   
 };
 
 #endif
