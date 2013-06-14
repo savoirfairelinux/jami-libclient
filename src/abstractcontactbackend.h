@@ -17,13 +17,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-#ifndef CONTACT_BACKEND_H
-#define CONTACT_BACKEND_H
+#ifndef ABSTRACTION_CONTACT_BACKEND_H
+#define ABSTRACTION_CONTACT_BACKEND_H
 
 #include <QObject>
 #include <QHash>
 #include <QStringList>
 #include <QVariant>
+#include <QtCore/QAbstractItemModel>
 
 #include "typedefs.h"
 #include "contact.h"
@@ -35,12 +36,24 @@ class Account;
 //Typedef
 typedef QList<Contact*> ContactList;
 
-///ContactBackend: Allow different way to handle contact without poluting the library
-class LIB_EXPORT ContactBackend : public QObject {
+///AbstractContactBackend: Allow different way to handle contact without poluting the library
+class LIB_EXPORT AbstractContactBackend : public QAbstractItemModel {
    Q_OBJECT
 public:
-   explicit ContactBackend(QObject* parent);
-   virtual ~ContactBackend();
+   enum Role {
+      Organization      = 100,
+      Group             = 101,
+      Department        = 102,
+      PreferredEmail    = 103,
+      FormattedLastUsed = 104,
+      IndexedLastUsed   = 105,
+      DatedLastUsed     = 106,
+      Filter            = 200, //All roles, all at once
+      DropState         = 300, //State for drag and drop
+   };
+   
+   explicit AbstractContactBackend(QObject* parent = nullptr);
+   virtual ~AbstractContactBackend();
 
    ///Get a contact using a phone number
    ///@param resolveDNS interpret the number as is (false) or parse it to extract the domain and number (true)
@@ -52,11 +65,26 @@ public:
    virtual void        editContact       ( Contact*       contact     ) = 0;
    ///Add a new contact to the backend
    virtual void        addNewContact     ( Contact*       contact     ) = 0;
+   
+   virtual const ContactList& getContactList() const = 0;
 
    ///Add a new phone number to an existing contact
    virtual void addPhoneNumber( Contact*       contact , QString  number, QString type )=0;
+
+   //Model implementation
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   );
+   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const;
+   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const;
+   virtual QModelIndex   parent      ( const QModelIndex& index                                    ) const;
+   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const;
+   virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+
+   int getUpdateCount();
+
 protected:
-   virtual ContactList update_slot       (                            ) = 0;
+   virtual ContactList update_slot() = 0;
 
    //Helper
    QString getUserFromPhone    (QString phoneNumber);
@@ -65,14 +93,15 @@ protected:
    //Attributes
    QHash<QString,Contact*>        m_ContactByPhone ;
    QHash<QString,Contact*>        m_ContactByUid   ;
+   int m_UpdatesCounter;
 public Q_SLOTS:
    ContactList update();
-   
+
 private Q_SLOTS:
-   
+   void slotReloadModel();
+
 Q_SIGNALS:
    void collectionChanged();
-   
 };
 
 #endif
