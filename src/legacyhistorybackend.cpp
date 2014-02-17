@@ -43,8 +43,6 @@ bool LegacyHistoryBackend::load()
          pastCall->setPeerName(tr("Unknown"));
       }
       pastCall->setRecordingPath(hc[ Call::HistoryMapFields::RECORDING_PATH ]);
-//       add(pastCall);
-      qDebug() << "\n\n\nHERE" << pastCall;
       emit newHistoryCallAdded(pastCall);
    }
    return true;
