@@ -15,28 +15,51 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOMANAGER_H
-#define VIDEOMANAGER_H
+#ifndef VIDEOCODECMODEL_H
+#define VIDEOCODECMODEL_H
 
-#include "video_dbus_interface.h"
 #include "../typedefs.h"
+#include <QtCore/QAbstractListModel>
 
-namespace DBus {
+//Qt
 
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT VideoManager
-   {
+//SFLPhone
+class Account;
 
-   private:
-      static VideoManagerInterface* interface;
+//Typedef
+class VideoCodec;
+typedef QHash<QString,VideoCodec*> CodecHash;
 
-   public:
-      static VideoManagerInterface& instance();
+///Abstract model for managing account video codec list
+class LIB_EXPORT VideoCodecModel : public QAbstractListModel {
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+   Q_OBJECT
+   #pragma GCC diagnostic pop
 
-   };
+public:
+   //Private constructor, can only be called by 'Account'
+   explicit VideoCodecModel(Account* account = nullptr);
+   ~VideoCodecModel();
 
-}
+   //Roles
+   static const int BITRATE_ROLE = 101;
 
+   //Model functions
+   QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const;
+   int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const;
+   Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const;
+   virtual bool  setData  ( const QModelIndex& index, const QVariant &value, int role)      ;
+
+   void reload();
+   void save();
+   bool moveUp  (QModelIndex idx);
+   bool moveDown(QModelIndex idx);
+
+private:
+   //Attrbutes
+   QList<VideoCodec*> m_lCodecs;
+   Account*           m_pAccount;
+};
+Q_DECLARE_METATYPE(VideoCodecModel*)
 #endif

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,28 +15,9 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOMANAGER_H
-#define VIDEOMANAGER_H
+#include "commonbackendmanagerinterface.h"
 
-#include "video_dbus_interface.h"
-#include "../typedefs.h"
-
-namespace DBus {
-
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT VideoManager
-   {
-
-   private:
-      static VideoManagerInterface* interface;
-
-   public:
-      static VideoManagerInterface& instance();
-
-   };
-
-}
-
-#endif
+// template <class T> CommonBackendManagerInterface<T>::~CommonBackendManagerInterface()
+// {
+//    
+// }

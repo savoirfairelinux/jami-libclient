@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,28 +15,31 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOMANAGER_H
-#define VIDEOMANAGER_H
+#ifndef VIDEORATE_H
+#define VIDEORATE_H
 
-#include "video_dbus_interface.h"
 #include "../typedefs.h"
 
-namespace DBus {
+class VideoResolution;
 
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT VideoManager
-   {
+///@typedef VideoRate The rate for a device
+class LIB_EXPORT VideoRate
+{
+   //Can only be created by VideoDevice
+   friend class VideoDevice;
 
-   private:
-      static VideoManagerInterface* interface;
+public:
+   virtual ~VideoRate() {}
+   QString name() const {
+      return m_Name;
+   }
+   int relativeIndex();
 
-   public:
-      static VideoManagerInterface& instance();
-
-   };
-
-}
+private:
+   VideoRate(const VideoResolution* res,const QString& name) :
+      m_Name(name),m_pResolution(res) {}
+   QString m_Name;
+   const VideoResolution* m_pResolution;
+};
 
 #endif
