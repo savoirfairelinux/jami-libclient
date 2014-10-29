@@ -356,6 +356,129 @@ Qt::ItemFlags ProfileModel::flags(const QModelIndex& index ) const
    return Qt::ItemIsEnabled;
 }
 
+QStringList ProfileModel::mimeType() const
+{
+   return m_lMimes;
+}
+
+QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
+{
+   QMimeData *mMimeData = new QMimeData();
+
+   for (const QModelIndex &index : indexes) {
+      Node* current = static_cast<Node*>(index.internalPointer());
+
+      if (index.isValid() && index.parent().isValid() && current) {
+         mMimeData->setData(MIME_ACCOUNT , current->account->id().toUtf8());
+      }
+      else if (index.isValid() && current) {
+        mMimeData->setData(MIME_PROFILE , current->contact->uid());
+      }
+      else
+         return nullptr;
+   }
+   return mMimeData;
+}
+
+///Return valid payload types
+int ProfileModel::acceptedPayloadTypes() const
+{
+   return CallModel::DropPayloadType::PROFILE_ACCOUNT;
+}
+
+void ProfileModel::updateIndexes()
+{
+   for (int i = 0; i < m_pProfileBackend->m_lProfiles.size(); ++i) {
+      m_pProfileBackend->m_lProfiles[i]->m_Index = i;
+      for (int j = 0; j < m_pProfileBackend->m_lProfiles[i]->children.size(); ++j) {
+         m_pProfileBackend->m_lProfiles[i]->children[j]->m_Index = j;
+      }
+   }
+}
+
+bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+   Q_UNUSED(action)
+   if((parent.isValid() && row < 0) || column > 0) {
+      qDebug() << "row or column invalid";
+      return false;
+   }
+
+   if (data->hasFormat(MIME_ACCOUNT)) {
+      qDebug() << "dropping account";
+
+      QString accountId = data->data(MIME_ACCOUNT);
+      Node* newProfile = nullptr;
+      int destIdx, indexOfAccountToMove = -1; // Where to insert in account list of profile
+
+      if(!parent.isValid() && row < m_pProfileBackend->m_lProfiles.size()) {
+         qDebug() << "Dropping on profile title";
+         qDebug() << "row:" << row;
+         newProfile = m_pProfileBackend->m_lProfiles[row];
+         destIdx = 0;
+      }
+      else if (parent.isValid()) {
+         newProfile = static_cast<Node*>(parent.internalPointer());
+         destIdx = row;
+      }
+
+      Node* accountProfile = m_pProfileBackend->m_hProfileByAccountId[accountId];
+      for (Node* acc : accountProfile->children) {
+         if(acc->account->id() == accountId) {
+            indexOfAccountToMove = acc->m_Index;
+            break;
+         }
+      }
+
+      if(indexOfAccountToMove == -1) {
+         qDebug() << "indexOfAccountToMove:" << indexOfAccountToMove;
+         return false;
+      }
+
+      if(!beginMoveRows(index(accountProfile->m_Index, 0), indexOfAccountToMove, indexOfAccountToMove, parent, destIdx)) {
+         return false;
+      }
+
+      Node* accountToMove = accountProfile->children.at(indexOfAccountToMove);
+      qDebug() << "Moving:" << accountToMove->account->alias();
+      accountProfile->children.remove(indexOfAccountToMove);
+      accountToMove->parent = newProfile;
+      m_pProfileBackend->m_hProfileByAccountId[accountId] = newProfile;
+      newProfile->children.insert(destIdx, accountToMove);
+      updateIndexes();
+
+      endMoveRows();
+
+   }
+   else if (data->hasFormat(MIME_PROFILE)) {
+      qDebug() << "dropping profile";
+      qDebug() << "row:" << row;
+
+      int destinationRow = -1;
+      if(row < 0) {
+         // drop on bottom of the list
+         destinationRow = m_pProfileBackend->m_lProfiles.size();
+      }
+      else {
+         destinationRow = row;
+      }
+
+      Node* moving = m_pProfileBackend->getProfileById(data->data(MIME_PROFILE));
+
+      if(!beginMoveRows(QModelIndex(), moving->m_Index, moving->m_Index, QModelIndex(), destinationRow)) {
+         return false;
+      }
+
+      m_pProfileBackend->m_lProfiles.removeAt(moving->m_Index);
+      m_pProfileBackend->m_lProfiles.insert(destinationRow, moving);
+      updateIndexes();
+      endMoveRows();
+
+      return true;
+   }
+   return false;
+}
+
 bool ProfileModel::setData(const QModelIndex& index, const QVariant &value, int role )
 {
    if (!index.isValid())
