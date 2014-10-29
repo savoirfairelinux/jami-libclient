@@ -21,6 +21,7 @@
 #include "typedefs.h"
 #include "contact.h"
 #include "account.h"
+#include <QStringList>
 #include <QtCore/QAbstractItemModel>
 
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
@@ -35,21 +36,29 @@ public:
    virtual int rowCount         (const QModelIndex& parent = QModelIndex()                    ) const;
    virtual int columnCount      (const QModelIndex& parent = QModelIndex()                    ) const;
    virtual Qt::ItemFlags flags  (const QModelIndex& index                                     ) const;
-   virtual bool setData         (const QModelIndex& index, const QVariant &value, int role    )      ;
-   virtual QModelIndex   index  (int row, int column, const QModelIndex& parent=QModelIndex() ) const;
+   virtual bool        setData         (const QModelIndex& index, const QVariant &value, int role    )      ;
+   virtual QModelIndex index    (int row, int column, const QModelIndex& parent=QModelIndex() ) const;
    virtual QModelIndex parent   (const QModelIndex& index                                     ) const;
-   virtual QVariant headerData  (int section, Qt::Orientation orientation, int role           ) const;
+   virtual QVariant    headerData  (int section, Qt::Orientation orientation, int role           ) const;
+   virtual QStringList mimeType () const;
+   virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
    //Getter
    QModelIndex mapToSource  (const QModelIndex& idx) const;
    QModelIndex mapFromSource(const QModelIndex& idx) const;
+   int acceptedPayloadTypes() const;
 
-   Contact* forAccount(Account* account) const;
+   //Attributes
+   QStringList m_lMimes;
 
 private:
 
    //Singleton
    static ProfileModel* m_spInstance;
+
+   //Helpers
+   void updateIndexes();
 
 private Q_SLOTS:
    void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);
