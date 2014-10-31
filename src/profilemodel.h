@@ -23,6 +23,7 @@
 #include "account.h"
 #include <QStringList>
 #include <QtCore/QAbstractItemModel>
+class ProfileContentBackend;
 
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
@@ -56,6 +57,7 @@ private:
 
    //Singleton
    static ProfileModel* m_spInstance;
+   ProfileContentBackend* m_pProfileBackend;
 
    //Helpers
    void updateIndexes();

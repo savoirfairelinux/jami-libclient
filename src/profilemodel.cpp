@@ -64,9 +64,15 @@ public:
    //Attributes
    QList<Node*> m_lProfiles;
    QHash<QString,Node*> m_hProfileByAccountId;
+   bool m_needSaving;
+
 
    //Helper
    Node* getProfileById(const QString& id);
+
+public Q_SLOTS:
+   void contactChanged();
+   void save();
 };
 
 
@@ -86,38 +92,12 @@ struct Node {
    int             m_Index;
 };
 
-ProfileContentBackend* m_pProfileBackend = nullptr; //FIXME global
+
 ProfileModel* ProfileModel::m_spInstance = nullptr;
 
 ProfileContentBackend::ProfileContentBackend(QObject* parent) : AbstractContactBackend(this, parent)
 {
-   int const PROFILES_COUNT = 2;
 
-   // this will be replaced by a Visitor which will properly load the Profiles (=Contacts object)
-   // and map them to corresponding accounts
-   for (int var = 0; var < PROFILES_COUNT; ++var) {
-     Contact *c = new Contact(m_pProfileBackend);
-     c->setUid(QString("1234567890" + QString::number(var)).toUtf8());
-     c->setFormattedName("PROFILE " + QString::number(var));
-     ContactModel::instance()->addContact(c);
-
-     Node* pro = new Node;
-     pro->type = Node::Type::PROFILE;
-     pro->contact = c;
-     pro->m_Index = m_lProfiles.size();
-     m_lProfiles << pro;
-   }
-
-   for (int var = 0; var < AccountListModel::instance()->getAccounts().size(); ++var) {
-     Node* account_pro = new Node;
-     account_pro->type = Node::Type::ACCOUNT;
-     account_pro->contact = m_lProfiles[var % PROFILES_COUNT]->contact;
-     account_pro->parent = m_lProfiles[var % PROFILES_COUNT];
-     account_pro->account = AccountListModel::instance()->getAccounts()[var];
-     account_pro->m_Index = m_lProfiles[var % PROFILES_COUNT]->children.size();
-     m_lProfiles[var % PROFILES_COUNT]->children << account_pro;
-     m_hProfileByAccountId[AccountListModel::instance()->getAccounts()[var]->id()] = m_lProfiles[var % PROFILES_COUNT];
-   }
 }
 
 QString ProfileContentBackend::name () const
@@ -186,12 +166,35 @@ ProfileContentBackend::~ProfileContentBackend( )
 
 bool ProfileContentBackend::load()
 {
-   qDebug() << "\n\nCreating the fake contacts";
-   Contact* myFakeOne = new Contact(this);
-   myFakeOne->setUid("Account:1234567890");
-   myFakeOne->setFormattedName("My Awesome name");
-   addNew(myFakeOne);
+   int const PROFILES_COUNT = 2;
 
+   // this will be replaced by a Visitor which will properly load the Profiles (=Contacts object)
+   // and map them to corresponding accounts
+   for (int var = 0; var < PROFILES_COUNT; ++var) {
+     Contact *c = new Contact(this);
+     c->setUid(QString("1234567890" + QString::number(var)).toUtf8());
+     c->setFormattedName("PROFILE " + QString::number(var));
+     ContactModel::instance()->addContact(c);
+
+     Node* pro = new Node;
+     pro->type = Node::Type::PROFILE;
+     pro->contact = c;
+     pro->m_Index = m_lProfiles.size();
+     m_lProfiles << pro;
+
+     connect(c, SIGNAL(changed()), this, SLOT(contactChanged()));
+   }
+
+   for (int var = 0; var < AccountListModel::instance()->getAccounts().size(); ++var) {
+     Node* account_pro = new Node;
+     account_pro->type = Node::Type::ACCOUNT;
+     account_pro->contact = m_lProfiles[var % PROFILES_COUNT]->contact;
+     account_pro->parent = m_lProfiles[var % PROFILES_COUNT];
+     account_pro->account = AccountListModel::instance()->getAccounts()[var];
+     account_pro->m_Index = m_lProfiles[var % PROFILES_COUNT]->children.size();
+     m_lProfiles[var % PROFILES_COUNT]->children << account_pro;
+     m_hProfileByAccountId[AccountListModel::instance()->getAccounts()[var]->id()] = m_lProfiles[var % PROFILES_COUNT];
+   }
    return true;
 }
 
@@ -242,6 +245,23 @@ Node* ProfileContentBackend::getProfileById(const QString& id)
          return p;
    }
    return nullptr;
+}
+
+void ProfileContentBackend::contactChanged()
+{
+   Contact* c = qobject_cast<Contact*>(QObject::sender());
+   qDebug() << c->formattedName();
+   qDebug() << "contactChanged!";
+
+   if(m_needSaving)
+      QTimer::singleShot(0,this,SLOT(save()));
+   else
+      m_needSaving = true;
+}
+
+void ProfileContentBackend::save()
+{
+   qDebug() << "saving!";
 }
 
 ProfileModel* ProfileModel::instance()
