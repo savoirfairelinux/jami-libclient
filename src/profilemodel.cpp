@@ -22,6 +22,8 @@
 #include "contactmodel.h"
 #include "callmodel.h"
 #include "abstractitembackend.h"
+#include "visitors/profilepersistervisitor.h"
+
 
 //Qt
 #include <QtCore/QTimer>
@@ -66,6 +68,7 @@ public:
    QHash<QString,Node*> m_hProfileByAccountId;
    bool m_needSaving;
 
+   QList<Contact*> m_bSaveBuffer;
 
    //Helper
    Node* getProfileById(const QString& id);
@@ -133,13 +136,13 @@ QByteArray  ProfileContentBackend::id() const
 
 bool ProfileContentBackend::edit( Contact* contact )
 {
-   qDebug() << "\n\n\nAttempt to edit a profile contact" << contact->uid();
+   qDebug() << "Attempt to edit a profile contact" << contact->uid();
    return false;
 }
 
 bool ProfileContentBackend::addNew( Contact* contact )
 {
-   qDebug() << "\n\n\nCreating new profile" << contact->uid();
+   qDebug() << "Creating new profile" << contact->uid();
    return true;
 }
 
@@ -166,10 +169,10 @@ ProfileContentBackend::~ProfileContentBackend( )
 
 bool ProfileContentBackend::load()
 {
+   //ProfilePersisterVisitor::instance()->load();
+
    int const PROFILES_COUNT = 2;
 
-   // this will be replaced by a Visitor which will properly load the Profiles (=Contacts object)
-   // and map them to corresponding accounts
    for (int var = 0; var < PROFILES_COUNT; ++var) {
      Contact *c = new Contact(this);
      c->setUid(QString("1234567890" + QString::number(var)).toUtf8());
@@ -205,7 +208,8 @@ bool ProfileContentBackend::reload()
 
 bool ProfileContentBackend::save(const Contact* contact)
 {
-   qDebug() << "\n\n\nSaving" << contact->uid();
+   qDebug() << "Saving" << contact->uid();
+   ProfilePersisterVisitor::instance()->save(contact);
    return false;
 }
 
@@ -240,7 +244,7 @@ QList<Contact*> ProfileContentBackend::items() const
 
 Node* ProfileContentBackend::getProfileById(const QString& id)
 {
-   foreach (Node* p, m_lProfiles) {
+   for (Node* p : m_lProfiles) {
       if(p->contact->uid() == id)
          return p;
    }
@@ -253,15 +257,23 @@ void ProfileContentBackend::contactChanged()
    qDebug() << c->formattedName();
    qDebug() << "contactChanged!";
 
-   if(m_needSaving)
+   if(m_needSaving) {
+      m_bSaveBuffer << c;
       QTimer::singleShot(0,this,SLOT(save()));
+   }
    else
       m_needSaving = true;
 }
 
 void ProfileContentBackend::save()
 {
-   qDebug() << "saving!";
+   for (Contact* item : m_bSaveBuffer) {
+      qDebug() << "saving:" << item->formattedName();
+      save(item);
+   }
+
+   m_bSaveBuffer.clear();
+   m_needSaving = false;
 }
 
 ProfileModel* ProfileModel::instance()
