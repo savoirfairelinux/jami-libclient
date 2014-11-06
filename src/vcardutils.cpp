@@ -64,9 +64,9 @@ void VCardUtils::addPhoneNumber(QString type, QString num)
 //   strcat(prop, ",VOICE");
 }
 
-void VCardUtils::addPhoto(const QPixmap* pixmap)
+void VCardUtils::addPhoto(const QByteArray img)
 {
-   Q_UNUSED(pixmap)
+   Q_UNUSED(img)
    //Preparation of our QPixmap
 //   QByteArray bArray;
 //   QBuffer buffer(&bArray);

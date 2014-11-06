@@ -72,7 +72,7 @@ public:
    void startVCard(const QString& version);
    void addProperty(const char* prop, const QString& value);
    void addPhoneNumber(QString type, QString num);
-   void addPhoto(const QPixmap* p);
+   void addPhoto(const QByteArray img);
    const QByteArray endVCard();
 
 private:
