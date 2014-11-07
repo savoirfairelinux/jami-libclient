@@ -43,8 +43,8 @@ VCardUtils::VCardUtils()
 
 void VCardUtils::startVCard(const QString& version)
 {
-   m_vCard << VCDelimiter::VC_BEGIN_TOKEN;
-   addProperty(VCProperty::VC_VERSION, version);
+   m_vCard << Delimiter::VC_BEGIN_TOKEN;
+   addProperty(Property::VERSION, version);
 }
 
 void VCardUtils::addProperty(const char* prop, const QString& value)
@@ -57,7 +57,7 @@ void VCardUtils::addProperty(const char* prop, const QString& value)
 void VCardUtils::addPhoneNumber(QString type, QString num)
 {
    // This will need some formatting
-   addProperty(VCProperty::VC_TELEPHONE, type + num);
+   addProperty(Property::TELEPHONE, type + num);
 //   char* prop = VCProperty::VC_TELEPHONE;
 //   strcat(prop, VCDelimiter::VC_SEPARATOR_TOKEN);
 //   strcat(prop, "TYPE=" + type);
@@ -83,7 +83,7 @@ void VCardUtils::addPhoto(const QByteArray img)
 
 const QByteArray VCardUtils::endVCard()
 {
-   m_vCard << VCDelimiter::VC_END_TOKEN;
-   const QString result = m_vCard.join(QString::fromUtf8(VCDelimiter::VC_END_LINE_TOKEN));
+   m_vCard << Delimiter::VC_END_TOKEN;
+   const QString result = m_vCard.join(QString::fromUtf8(Delimiter::VC_END_LINE_TOKEN));
    return result.toUtf8();
 }

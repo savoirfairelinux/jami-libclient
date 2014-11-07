@@ -26,6 +26,9 @@
 
 class ProfileContentBackend;
 class ProfilePersisterVisitor;
+class VCardMapper;
+
+typedef void (VCardMapper:: *mapToProperty)(Contact*, const QByteArray&);
 
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
@@ -55,6 +58,8 @@ public:
    //Attributes
    QStringList m_lMimes;
 
+   AbstractContactBackend* getBackEnd();
+
 private:
 
    //Singleton
@@ -64,6 +69,9 @@ private:
 
    //Helpers
    void updateIndexes();
+
+public Q_SLOTS:
+   bool addNewProfile(Contact* c, AbstractContactBackend* backend = nullptr);
 
 private Q_SLOTS:
    void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);

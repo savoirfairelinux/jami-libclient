@@ -41,3 +41,8 @@ bool ProfilePersisterVisitor::save(const Contact* c)
    Q_UNUSED(c)
    return false;
 }
+
+QDir ProfilePersisterVisitor::getProfilesDir()
+{
+   return *(new QDir());
+}

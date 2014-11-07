@@ -24,6 +24,7 @@
 //Qt
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
+#include <QDir>
 
 //SFLPhone
 class Contact;
@@ -33,6 +34,7 @@ public:
    virtual ~ProfilePersisterVisitor() {}
    virtual bool load();
    virtual bool save(const Contact* c);
+   virtual QDir getProfilesDir();
 
    //Singleton
    static ProfilePersisterVisitor* instance();
