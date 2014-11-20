@@ -35,6 +35,7 @@
 //EMAIL;TYPE=PREF,INTERNET:forrestgump@example.com
 //REV:20080424T195243Z
 //END:VCARD
+
 VCardUtils::VCardUtils()
 {
 
@@ -42,7 +43,7 @@ VCardUtils::VCardUtils()
 
 void VCardUtils::startVCard(const QString& version)
 {
-   m_vCard << Delimiter::VC_BEGIN_TOKEN;
+   m_vCard << Delimiter::BEGIN_TOKEN;
    addProperty(Property::VERSION, version);
 }
 
@@ -53,7 +54,42 @@ void VCardUtils::addProperty(const char* prop, const QString& value)
    m_vCard << QString(QString::fromUtf8(prop) + ":" + value);
 }
 
-void VCardUtils::addPhoneNumber(QString type, QString num)
+void VCardUtils::addProperty(const QString& prop, const QString& value)
+{
+   if(value.isEmpty() || value == ";")
+      return;
+   m_vCard << QString(prop + ":" + value);
+}
+
+void VCardUtils::addEmail(const QString& type, const QString& email)
+{
+   addProperty(QString("%1%2%3%4").arg(Property::EMAIL).arg(Delimiter::SEPARATOR_TOKEN).arg("TYPE=").arg(type), email);
+}
+
+void VCardUtils::addAddress(const Contact::Address* addr)
+{
+   QString prop = QString("%1%2%3").arg(Property::ADDRESS)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->type);
+
+   //First two fiels are left empty for now, they are for Postal box and Extended Address
+   QString value = QString("%1%2%3%4%5%6%7%8%9%10%11")
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->addressLine)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->city)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->state)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->postalCode)
+         .arg(Delimiter::SEPARATOR_TOKEN)
+         .arg(addr->country);
+
+   addProperty(prop, value);
+}
+
+void VCardUtils::addPhoneNumber(const QString& type, const QString& num)
 {
    // This will need some formatting
    addProperty(Property::TELEPHONE, type + num);
@@ -65,24 +101,17 @@ void VCardUtils::addPhoneNumber(QString type, QString num)
 
 void VCardUtils::addPhoto(const QByteArray img)
 {
-   Q_UNUSED(img)
-   //Preparation of our QPixmap
-//   QByteArray bArray;
-//   QBuffer buffer(&bArray);
-//   buffer.open(QIODevice::WriteOnly);
-
-//   //PNG ?
-//   pixmap->save(&buffer, "PNG");
-//   m_vCard << QString(QString::fromUtf8(VCProperty::VC_PHOTO) +
-//                      QString::fromUtf8(VCDelimiter::VC_SEPARATOR_TOKEN) +
-//                      "ENCODING=BASE64" +
-//                      "TYPE=PNG:" +
-//                      bArray);
+   m_vCard << QString(QString::fromUtf8(Property::PHOTO) +
+                      QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+                      "ENCODING=BASE64" +
+                      QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+                      "TYPE=PNG:" +
+                      img.toBase64());
 }
 
 const QByteArray VCardUtils::endVCard()
 {
-   m_vCard << Delimiter::VC_END_TOKEN;
-   const QString result = m_vCard.join(QString::fromUtf8(Delimiter::VC_END_LINE_TOKEN));
+   m_vCard << Delimiter::END_TOKEN;
+   const QString result = m_vCard.join(QString::fromUtf8(Delimiter::END_LINE_TOKEN));
    return result.toUtf8();
 }

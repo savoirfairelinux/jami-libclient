@@ -41,10 +41,14 @@ class Account;
 struct Node;
 
 struct VCardMapper {
+
+   QHash<QByteArray, mapToProperty> m_hHash;
+
    VCardMapper() {
       m_hHash[VCardUtils::Property::UID] = &VCardMapper::setUid;
       m_hHash[VCardUtils::Property::NAME] = &VCardMapper::setNames;
       m_hHash[VCardUtils::Property::FORMATTED_NAME] = &VCardMapper::setFormattedName;
+      m_hHash[VCardUtils::Property::EMAIL] = &VCardMapper::setEmail;
       m_hHash[VCardUtils::Property::ORGANIZATION] = &VCardMapper::setOrganization;
    }
 
@@ -53,8 +57,6 @@ struct VCardMapper {
    }
 
    void setNames(Contact* c, const QByteArray& fn) {
-      Q_UNUSED(c)
-      Q_UNUSED(fn)
       QList<QByteArray> splitted = fn.split(';');
       c->setFamilyName(splitted[0].trimmed());
       c->setFirstName(splitted[1].trimmed());
@@ -65,24 +67,62 @@ struct VCardMapper {
    }
 
    void setEmail(Contact* c, const QByteArray& fn) {
-      //c->set(fn);
-      Q_UNUSED(c)
-      Q_UNUSED(fn)
+      c->setPreferredEmail(fn);
    }
 
    void setOrganization(Contact* c, const QByteArray& fn) {
       c->setOrganization(QString::fromUtf8(fn));
    }
 
-   QHash<QByteArray, mapToProperty> m_hHash;
+   void setPhoto(Contact* c, const QByteArray& fn) {
+      qDebug() << fn;
+      QVariant photo = PixmapManipulationVisitor::instance()->profilePhoto(fn);
+      c->setPhoto(photo);
+   }
+
+   void addPhoneNumber(Contact* c, const QString& key, const QByteArray& fn) {
+      Q_UNUSED(c)
+      Q_UNUSED(key)
+      qDebug() << fn;
+   }
+
+   void addAddress(Contact* c, const QString& key, const QByteArray& fn) {
+      Contact::Address* addr = new Contact::Address();
+      addr->type = key.split(VCardUtils::Delimiter::SEPARATOR_TOKEN)[1];
+      QList<QByteArray> fields = fn.split(VCardUtils::Delimiter::SEPARATOR_TOKEN[0]);
+      addr->addressLine = QString::fromUtf8(fields[2]);
+      addr->city = QString::fromUtf8(fields[3]);
+      addr->state = QString::fromUtf8(fields[4]);
+      addr->postalCode = QString::fromUtf8(fields[5]);
+      addr->country = QString::fromUtf8(fields[6]);
+      c->addAddress(addr);
+   }
+
    bool metacall(Contact* c, const QByteArray& key, const QByteArray& value) {
-      if (!m_hHash[key])
+      if (!m_hHash[key]) {
+         if(key.contains(VCardUtils::Property::PHOTO)) {
+            //key must contain additionnal attributes, we don't need them right now (ENCODING, TYPE...)
+            setPhoto(c, value);
+            return true;
+         }
+
+         if(key.contains(VCardUtils::Property::ADDRESS)) {
+            addAddress(c, key, value);
+            return true;
+         }
+
+         if(key.contains(VCardUtils::Property::TELEPHONE)) {
+            addPhoneNumber(c, key, value);
+            return true;
+         }
+
          return false;
+      }
       (this->*(m_hHash[key]))(c,value);
       return true;
    }
 };
-static VCardMapper* coucou = new VCardMapper;
+static VCardMapper* vc_mapper = new VCardMapper;
 
 ///ProfileContentBackend: Implement a backend for Profiles
 class ProfileContentBackend : public AbstractContactBackend {
@@ -231,6 +271,7 @@ bool ProfileContentBackend::load()
       QStringList entries = profilesDir.entryList(extensions, QDir::Files);
 
       for (QString item : entries) {
+         qDebug() << "Loading profile: " << item;
          QFile file(profilesDir.absolutePath()+"/"+item);
          if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Error opening vcard: " << item;
@@ -243,12 +284,19 @@ bool ProfileContentBackend::load()
          pro->contact = profile;
          pro->m_Index = m_lProfiles.size();
 
-         qDebug() << "Loading profile: " << item;
-         //FIXME this should be changed to a contact constructor taking a ByteArray parameter
-         while (!file.atEnd()) {
-            QByteArray line = file.readLine();
-            QList<QByteArray> splitted = line.split(':');
-            coucou->metacall(profile,splitted[0],splitted[1].trimmed());
+         QByteArray all = file.readAll();
+         QList<QByteArray> splittedProperties = all.split('\n');
+         bool propertyInserted;
+         for (QByteArray property : splittedProperties){
+            qDebug() << "property: " << property;
+            QList<QByteArray> splitted = property.split(':');
+            if(splitted.size() < 2){
+               qDebug() << "Property malformed!";
+               continue;
+            }
+            propertyInserted = vc_mapper->metacall(profile,splitted[0],splitted[1].trimmed());
+            if(!propertyInserted)
+               qDebug() << "Could not extract: " << splitted[0];
 
             //Link with accounts
             if(splitted.at(0) == VCardUtils::Property::X_RINGACCOUNT) {

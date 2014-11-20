@@ -21,26 +21,23 @@
 
 #include "typedefs.h"
 #include <QStringList>
-
-
+#include "contact.h"
 
 class VCardUtils
 {
 public:
 
    struct Delimiter {
-      constexpr static const char* VC_SEPARATOR_TOKEN    =  ";";
-      constexpr static const char* VC_END_LINE_TOKEN     =  "\n";
-      constexpr static const char* VC_BEGIN_TOKEN        =  "BEGIN:VCARD";
-      constexpr static const char* VC_END_TOKEN          =  "END:VCARD";
+      constexpr static const char* SEPARATOR_TOKEN    =  ";";
+      constexpr static const char* END_LINE_TOKEN     =  "\n";
+      constexpr static const char* BEGIN_TOKEN        =  "BEGIN:VCARD";
+      constexpr static const char* END_TOKEN          =  "END:VCARD";
    };
 
-
-   // struc
    struct Property {
       constexpr static const char* UID                 = "UID";
       constexpr static const char* VERSION             = "VERSION";
-      constexpr static const char* ADDRESS             = "TOP";
+      constexpr static const char* ADDRESS             = "ADR";
       constexpr static const char* AGENT               = "AGENT";
       constexpr static const char* BIRTHDAY            = "BDAY";
       constexpr static const char* CATEGORIES          = "CATEGORIES";
@@ -74,7 +71,10 @@ public:
 
    void startVCard(const QString& version);
    void addProperty(const char* prop, const QString& value);
-   void addPhoneNumber(QString type, QString num);
+   void addProperty(const QString& prop, const QString& value);
+   void addEmail(const QString& type, const QString& num);
+   void addAddress(const Contact::Address* addr);
+   void addPhoneNumber(const QString& type, const QString& num);
    void addPhoto(const QByteArray img);
    const QByteArray endVCard();
 
