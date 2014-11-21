@@ -18,7 +18,6 @@
 
 #include "vcardutils.h"
 #include <QBuffer>
-#include <QPixmap>
 
 //BEGIN:VCARD
 //VERSION:3.0

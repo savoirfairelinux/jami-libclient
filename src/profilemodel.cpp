@@ -23,6 +23,7 @@
 #include "callmodel.h"
 #include "abstractitembackend.h"
 #include "visitors/profilepersistervisitor.h"
+#include "visitors/pixmapmanipulationvisitor.h"
 #include "vcardutils.h"
 
 //Qt
