@@ -188,6 +188,12 @@ Account::~Account()
 }
 
 
+void Account::poll_events()
+{
+    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+    configurationManager.poll_events();
+}
+
 /*****************************************************************************
  *                                                                           *
  *                                   Slots                                   *
@@ -633,7 +639,7 @@ bool Account::isTlsRequireClientCertificate() const
 
 ///Return the account TLS security is enabled
 bool Account::isTlsEnabled() const
-{ 
+{
    return (d_ptr->accountDetail(Account::MapField::TLS::ENABLED) IS_TRUE);
 }
 

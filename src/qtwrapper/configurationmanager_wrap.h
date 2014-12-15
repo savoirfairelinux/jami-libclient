@@ -59,14 +59,13 @@ public:
             //TODO: .on_volatile_details_change = [this] (const QString &message.c_str()) { emit this->volatileAccountDetailsChanged(); },
             .on_error = [this] (int code) { emit this->errorAlert(code); }
         };
-
-
-
-        connect(&pollTimer_, SIGNAL(timeout()), this, SLOT(pollEvents()));
-        pollTimer_.start(1000);
     }
 
     ~ConfigurationManagerInterface() {}
+
+    void poll_events() {
+        sflph_poll_events();
+    }
 
     sflph_config_ev_handlers config_ev_handlers;
     sflph_ev_handlers evHandlers;
@@ -485,14 +484,6 @@ Q_SIGNALS: // SIGNALS
     void stunStatusSuccess(const QString &message);
     void errorAlert(int code);
 
-private slots:
-    void pollEvents() {
-        printf("POLL EVENT\n");
-        sflph_poll_events();
-    }
-
-private:
-    QTimer pollTimer_;
 };
 
 namespace org {
