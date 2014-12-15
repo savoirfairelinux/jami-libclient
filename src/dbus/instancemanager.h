@@ -19,7 +19,11 @@
 #ifndef INSTANCEMANAGER_H
 #define INSTANCEMANAGER_H
 
+#ifdef ENABLE_LIBWRAP
+ #include "../qtwrapper/instancemanager_wrap.h"
+#else
 #include "instance_dbus_interface.h"
+#endif
 #include "../typedefs.h"
 
 namespace DBus {

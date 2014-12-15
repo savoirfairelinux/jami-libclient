@@ -1405,7 +1405,7 @@ bool Account::updateState()
 {
    if(! isNew()) {
       ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
-      const MapStringString details       = configurationManager.getAccountDetails(id()).value();
+      const MapStringString details       = configurationManager.getAccountDetails(id());
       const QString         status        = details[Account::MapField::Registration::STATUS];
       const QString         currentStatus = registrationStatus();
       d_ptr->setAccountDetail(Account::MapField::Registration::STATUS, status); //Update -internal- object state

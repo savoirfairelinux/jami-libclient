@@ -16,18 +16,23 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
- 
+
 #include "instancemanager.h"
 
 InstanceInterface* DBus::InstanceManager::interface = nullptr;
 
 InstanceInterface& DBus::InstanceManager::instance()
 {
+#ifdef ENABLE_LIBWRAP
+    if (!interface)
+        interface = new InstanceInterface();
+#else
    if (!dbus_metaTypeInit) registerCommTypes();
    if (!interface)
       interface = new InstanceInterface("cx.ring.Ring", "/cx/ring/Ring/Instance", QDBusConnection::sessionBus());
    if(!interface->connection().isConnected()) {
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
    }
+#endif
    return *interface;
 }

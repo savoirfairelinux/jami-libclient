@@ -20,7 +20,12 @@
 #ifndef CALL_MANAGER_INTERFACE_SINGLETON_H
 #define CALL_MANAGER_INTERFACE_SINGLETON_H
 
-#include "callmanager_dbus_interface.h"
+#ifdef ENABLE_LIBWRAP
+ #include "../qtwrapper/callmanager_wrap.h"
+#else
+ #include "callmanager_dbus_interface.h"
+#endif
+
 #include "../typedefs.h"
 
 namespace DBus {

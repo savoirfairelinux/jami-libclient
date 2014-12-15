@@ -16,12 +16,16 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
 #include "callmanager.h"
 
 CallManagerInterface * DBus::CallManager::interface = nullptr;
 
 CallManagerInterface & DBus::CallManager::instance(){
+
+#ifdef ENABLE_LIBWRAP
+   if (!interface)
+        interface = new CallManagerInterface();
+#else
    if (!dbus_metaTypeInit) registerCommTypes();
    if (!interface)
       interface = new CallManagerInterface( "cx.ring.Ring", "/cx/ring/Ring/CallManager", QDBusConnection::sessionBus());
@@ -29,5 +33,6 @@ CallManagerInterface & DBus::CallManager::instance(){
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From call manager interface.";
    if (!interface->isValid())
       throw "Dring daemon not available, be sure it running";
+#endif
    return *interface;
 }

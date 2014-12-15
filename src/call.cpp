@@ -30,7 +30,7 @@
 
 //Ring library
 #include "dbus/callmanager.h"
-#include "dbus/configurationmanager.h"
+
 #include "abstractitembackend.h"
 #include "contact.h"
 #include "uri.h"
@@ -289,7 +289,7 @@ Call::~Call()
 Call* CallPrivate::buildExistingCall(const QString& callId)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString       details     = callManager.getCallDetails(callId).value();
+   MapStringString       details     = callManager.getCallDetails(callId);
 
    //Too noisy
    //qDebug() << "Constructing existing call with details : " << details;
@@ -338,7 +338,7 @@ Call* CallPrivate::buildDialingCall(const QString& callId, const QString & peerN
 Call* CallPrivate::buildIncomingCall(const QString& callId)
 {
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   MapStringString details = callManager.getCallDetails(callId).value();
+   MapStringString details = callManager.getCallDetails(callId);
 
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
@@ -358,7 +358,7 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
 Call* CallPrivate::buildRingingCall(const QString & callId)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString details = callManager.getCallDetails(callId).value();
+   MapStringString details = callManager.getCallDetails(callId);
 
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
@@ -918,7 +918,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       }
 
       CallManagerInterface & callManager = DBus::CallManager::instance();
-      MapStringString details = callManager.getCallDetails(m_CallId).value();
+      MapStringString details = callManager.getCallDetails(m_CallId);
       if (details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName)
          m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
 
