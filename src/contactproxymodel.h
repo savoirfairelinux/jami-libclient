@@ -23,8 +23,8 @@
 #include <QtCore/QAbstractItemModel>
 
 //Ring
-#include "../lib/typedefs.h"
-#include "../lib/contact.h"
+#include "typedefs.h"
+#include "contact.h"
 class ContactModel;
 class ContactTreeNode;
 class TopLevelItem;

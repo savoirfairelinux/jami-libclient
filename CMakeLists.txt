@@ -1,8 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-if(POLICY CMP0022)
-   cmake_policy(SET CMP0022 NEW)
-endif(POLICY CMP0022)
+IF(POLICY CMP0022)
+   CMAKE_POLICY(SET CMP0022 NEW)
+ENDIF(POLICY CMP0022)
 
 INCLUDE(GNUInstallDirs)
 
@@ -23,7 +23,7 @@ SET(CMAKE_MODULE_PATH "${LOCAL_CMAKE_MODULE_PATH}")
 IF(NOT ${ENABLE_VIDEO} MATCHES false)
    MESSAGE("VIDEO enabled")
    SET(ENABLE_VIDEO 1 CACHE BOOLEAN "Enable video")
-   add_definitions( -DENABLE_VIDEO=true )
+   ADD_DEFINITIONS( -DENABLE_VIDEO=true )
 ENDIF(NOT ${ENABLE_VIDEO} MATCHES false)
 
 IF(${ENABLE_QT5} MATCHES true)
@@ -34,171 +34,174 @@ ELSE()
    FIND_PACKAGE ( Qt4  REQUIRED )
 ENDIF(${ENABLE_QT5} MATCHES true)
 
-set(GENERIC_LIB_VERSION "1.4.1")
+SET(GENERIC_LIB_VERSION "1.4.1")
 
-include_directories(SYSTEM ${QT_INCLUDES} )
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(SYSTEM ${QT_INCLUDES} )
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
 # Build dbus interfaces
-SET ( dbus_xml_introspecs_path ${CMAKE_CURRENT_SOURCE_DIR}/dbus/)
+SET ( dbus_xml_introspecs_path ${CMAKE_CURRENT_SOURCE_DIR}/xml/)
 
 #File to compile
-set( libringclient_LIB_SRCS
+SET( libringclient_LIB_SRCS
   #Data objects
-  call.cpp
-  uri.cpp
-  account.cpp
-  contact.cpp
-  phonenumber.cpp
-  numbercategory.cpp
-  abstractitembackendmodelextension.cpp
-  video/device.cpp
-  video/renderer.cpp
-  video/codec.cpp
+  src/call.cpp
+  src/uri.cpp
+  src/account.cpp
+  src/contact.cpp
+  src/phonenumber.cpp
+  src/numbercategory.cpp
+  src/abstractitembackendmodelextension.cpp
+  src/video/device.cpp
+  src/video/renderer.cpp
+  src/video/codec.cpp
 
   #Models
-  accountmodel.cpp
-  callmodel.cpp
-  historymodel.cpp
-  abstractbookmarkmodel.cpp
-  credentialmodel.cpp
-  instantmessagingmodel.cpp
-  imconversationmanager.cpp
-  contactproxymodel.cpp
-  useractionmodel.cpp
-  presencestatusmodel.cpp
-  phonedirectorymodel.cpp
-  historytimecategorymodel.cpp
-  numbercategorymodel.cpp
-  keyexchangemodel.cpp
-  tlsmethodmodel.cpp
-  numbercompletionmodel.cpp
-  categorizedaccountmodel.cpp
-  ringtonemodel.cpp
-  lastusednumbermodel.cpp
-  securityvalidationmodel.cpp
-  certificate.cpp
-  contactmodel.cpp
-  itembackendmodel.cpp
-  video/devicemodel.cpp
-  video/sourcesmodel.cpp
-  video/codecmodel2.cpp
-  video/channel.cpp
-  video/resolution.cpp
-  video/rate.cpp
-  video/manager.cpp
-  audio/alsapluginmodel.cpp
-  audio/codecmodel.cpp
-  audio/inputdevicemodel.cpp
-  audio/managermodel.cpp
-  audio/outputdevicemodel.cpp
-  audio/ringtonedevicemodel.cpp
-  audio/settings.cpp
+  src/accountmodel.cpp
+  src/callmodel.cpp
+  src/historymodel.cpp
+  src/abstractbookmarkmodel.cpp
+  src/credentialmodel.cpp
+  src/instantmessagingmodel.cpp
+  src/imconversationmanager.cpp
+  src/contactproxymodel.cpp
+  src/useractionmodel.cpp
+  src/presencestatusmodel.cpp
+  src/phonedirectorymodel.cpp
+  src/historytimecategorymodel.cpp
+  src/numbercategorymodel.cpp
+  src/keyexchangemodel.cpp
+  src/tlsmethodmodel.cpp
+  src/numbercompletionmodel.cpp
+  src/categorizedaccountmodel.cpp
+  src/ringtonemodel.cpp
+  src/lastusednumbermodel.cpp
+  src/securityvalidationmodel.cpp
+  src/certificate.cpp
+  src/contactmodel.cpp
+  src/itembackendmodel.cpp
+  src/video/devicemodel.cpp
+  src/video/sourcesmodel.cpp
+  src/video/codecmodel2.cpp
+  src/video/channel.cpp
+  src/video/resolution.cpp
+  src/video/rate.cpp
+  src/video/manager.cpp
+  src/audio/alsapluginmodel.cpp
+  src/audio/codecmodel.cpp
+  src/audio/inputdevicemodel.cpp
+  src/audio/managermodel.cpp
+  src/audio/outputdevicemodel.cpp
+  src/audio/ringtonedevicemodel.cpp
+  src/audio/settings.cpp
 
 
   #Data backends
-  transitionalcontactbackend.cpp
-  legacyhistorybackend.cpp
-  abstractitembackend.cpp
+  src/transitionalcontactbackend.cpp
+  src/legacyhistorybackend.cpp
+  src/abstractitembackend.cpp
 
   #Communication
-  dbus/configurationmanager.cpp
-  dbus/callmanager.cpp
-  dbus/instancemanager.cpp
-  dbus/videomanager.cpp
-  dbus/presencemanager.cpp
+  src/dbus/configurationmanager.cpp
+  src/dbus/callmanager.cpp
+  src/dbus/instancemanager.cpp
+  src/dbus/videomanager.cpp
+  src/dbus/presencemanager.cpp
 
   #Visitors
-  visitors/accountlistcolorvisitor.cpp
-  visitors/phonenumberselector.cpp
-  visitors/numbercategoryvisitor.cpp
-  visitors/pixmapmanipulationvisitor.cpp
-  visitors/presenceserializationvisitor.cpp
-  visitors/itemmodelstateserializationvisitor.cpp
+  src/visitors/accountlistcolorvisitor.cpp
+  src/visitors/phonenumberselector.cpp
+  src/visitors/numbercategoryvisitor.cpp
+  src/visitors/pixmapmanipulationvisitor.cpp
+  src/visitors/presenceserializationvisitor.cpp
+  src/visitors/itemmodelstateserializationvisitor.cpp
 
   #Other
-  categorizedcompositenode.cpp
-  hookmanager.cpp
+  src/categorizedcompositenode.cpp
+  src/hookmanager.cpp
 
   #Extension
-  extensions/presenceitembackendmodelextension.cpp
+  src/extensions/presenceitembackendmodelextension.cpp
 )
 
-set( libringclient_LIB_HDRS
-  account.h
-  accountmodel.h
-  call.h
-  callmodel.h
-  historymodel.h
-  contact.h
-  abstractitembackend.h
-  abstractbookmarkmodel.h
-  credentialmodel.h
-  instantmessagingmodel.h
-  imconversationmanager.h
-  contactproxymodel.h
-  useractionmodel.h
-  presencestatusmodel.h
-  phonenumber.h
-  phonedirectorymodel.h
-  historytimecategorymodel.h
-  numbercategorymodel.h
-  keyexchangemodel.h
-  tlsmethodmodel.h
-  numbercompletionmodel.h
-  categorizedaccountmodel.h
-  numbercategory.h
-  ringtonemodel.h
-  lastusednumbermodel.h
-  securityvalidationmodel.h
-  certificate.h
-  contactmodel.h
-  transitionalcontactbackend.h
-  abstractitembackend.h
-  itembackendmodel.h
-  hookmanager.h
-  uri.h
-  mime.h
-  abstractitembackendmodelextension.h
-  video/device.h
-  video/devicemodel.h
-  video/sourcesmodel.h
-  video/codec.h
-  video/codecmodel2.h
-  video/manager.h
-  video/renderer.h
-  video/resolution.h
-  video/channel.h
-  video/rate.h
-  audio/alsapluginmodel.h
-  audio/codecmodel.h
-  audio/inputdevicemodel.h
-  audio/managermodel.h
-  audio/outputdevicemodel.h
-  audio/ringtonedevicemodel.h
-  audio/settings.h
+SET( libringclient_LIB_HDRS
+  src/account.h
+  src/accountmodel.h
+  src/call.h
+  src/callmodel.h
+  src/historymodel.h
+  src/contact.h
+  src/abstractitembackend.h
+  src/abstractbookmarkmodel.h
+  src/credentialmodel.h
+  src/instantmessagingmodel.h
+  src/imconversationmanager.h
+  src/contactproxymodel.h
+  src/useractionmodel.h
+  src/presencestatusmodel.h
+  src/phonenumber.h
+  src/phonedirectorymodel.h
+  src/historytimecategorymodel.h
+  src/numbercategorymodel.h
+  src/keyexchangemodel.h
+  src/tlsmethodmodel.h
+  src/numbercompletionmodel.h
+  src/categorizedaccountmodel.h
+  src/numbercategory.h
+  src/ringtonemodel.h
+  src/lastusednumbermodel.h
+  src/securityvalidationmodel.h
+  src/certificate.h
+  src/contactmodel.h
+  src/transitionalcontactbackend.h
+  src/abstractitembackend.h
+  src/itembackendmodel.h
+  src/hookmanager.h
+  src/uri.h
+  src/mime.h
+  src/abstractitembackendmodelextension.h
+  src/video/device.h
+  src/video/devicemodel.h
+  src/video/sourcesmodel.h
+  src/video/codec.h
+  src/video/codecmodel2.h
+  src/video/manager.h
+  src/video/renderer.h
+  src/video/resolution.h
+  src/video/channel.h
+  src/video/rate.h
+  src/audio/alsapluginmodel.h
+  src/audio/codecmodel.h
+  src/audio/inputdevicemodel.h
+  src/audio/managermodel.h
+  src/audio/outputdevicemodel.h
+  src/audio/ringtonedevicemodel.h
+  src/audio/settings.h
 
   extensions/presenceitembackendmodelextension.h
   #commonbackendmanagerinterface.h
 )
 
-set( libringclient_extra_LIB_HDRS
-  typedefs.h
-  visitors/accountlistcolorvisitor.h
-  visitors/phonenumberselector.h
-  visitors/presenceserializationvisitor.h
-  visitors/itemmodelstateserializationvisitor.h
+SET( libringclient_extra_LIB_HDRS
+  src/typedefs.h
+  src/visitors/accountlistcolorvisitor.h
+  src/visitors/phonenumberselector.h
+  src/visitors/presenceserializationvisitor.h
+  src/visitors/itemmodelstateserializationvisitor.h
 )
 
 # presence manager interface
 SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
 
+SET( dbus_metatype_path "${CMAKE_CURRENT_SOURCE_DIR}/src/dbus/metatypes.h")
+
 SET_SOURCE_FILES_PROPERTIES(
    ${presencemanager_xml}
    PROPERTIES
    CLASSNAME PresenceManagerInterface
-   INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/dbus/metatypes.h")
+   INCLUDE ${dbus_metatype_path})
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_ADD_DBUS_INTERFACE(
@@ -222,7 +225,7 @@ SET_SOURCE_FILES_PROPERTIES(
    ${configurationmanager_xml}
    PROPERTIES
    CLASSNAME ConfigurationManagerInterface
-   INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/dbus/metatypes.h")
+   INCLUDE ${dbus_metatype_path})
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_ADD_DBUS_INTERFACE(
@@ -246,7 +249,7 @@ SET_SOURCE_FILES_PROPERTIES(
    ${callmanager_xml}
    PROPERTIES
    CLASSNAME CallManagerInterface
-   INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/dbus/metatypes.h")
+   INCLUDE ${dbus_metatype_path})
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_ADD_DBUS_INTERFACE(
@@ -270,7 +273,7 @@ SET_SOURCE_FILES_PROPERTIES(
    ${video_xml}
    PROPERTIES
    CLASSNAME VideoManagerInterface
-   INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/dbus/metatypes.h")
+   INCLUDE ${dbus_metatype_path})
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_ADD_DBUS_INTERFACE(
@@ -294,7 +297,7 @@ SET_SOURCE_FILES_PROPERTIES(
    ${instance_xml}
    PROPERTIES
    CLASSNAME InstanceInterface
-   INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/dbus/metatypes.h")
+   INCLUDE ${dbus_metatype_path})
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_ADD_DBUS_INTERFACE(
@@ -312,9 +315,9 @@ ENDIF(${ENABLE_QT5} MATCHES true)
 
 # Manually wrap private files
 SET(libringclient_PRIVATE_HDRS
-   private/call_p.h
-   private/phonedirectorymodel_p.h
-   private/instantmessagingmodel_p.h
+   src/private/call_p.h
+   src/private/phonedirectorymodel_p.h
+   src/private/instantmessagingmodel_p.h
 )
 
 IF(${ENABLE_QT5} MATCHES true)
@@ -324,8 +327,8 @@ ELSE()
 ENDIF(${ENABLE_QT5} MATCHES true)
 
 
-add_library( ringclient  SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ADD_LIBRARY( ringclient  SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 # REMOVE_DEFINITIONS("-w")
 
 IF(${ENABLE_QT5} MATCHES true)
@@ -336,20 +339,20 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    SET(LINK_LIBRT "-lrt")
 ENDIF()
 
-target_link_libraries( ringclient
+TARGET_LINK_LIBRARIES( ringclient
   ${LINK_LIBRT}
   -lpthread
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTCORE_LIBRARY}
 )
 
-set_target_properties( ringclient
+SET_TARGET_PROPERTIES( ringclient
   PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}
 )
 
 SET(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
-install( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
+INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient
   COMPONENT Devel
 )
@@ -359,7 +362,7 @@ install( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
 #higher priority than the prefixed one.
 STRING(REPLACE "${CMAKE_LIBRARY_ARCHITECTURE}" "" SANE_LIBRARY_PATH "${CMAKE_INSTALL_FULL_LIBDIR}" )
 
-install( TARGETS ringclient
+INSTALL( TARGETS ringclient
   ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
   LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
   DESTINATION ${SANE_LIBRARY_PATH}

@@ -24,9 +24,9 @@
 #include <QtCore/QDateTime>
 
 //Ring
-#include "../lib/typedefs.h"
-#include "../lib/contact.h"
-#include "../lib/call.h"
+#include "typedefs.h"
+#include "contact.h"
+#include "call.h"
 class ContactBackend;
 class NumberTreeBackend;
 
