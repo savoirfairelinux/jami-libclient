@@ -16,15 +16,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "device.h"
+
+//Ring
 #include "../dbus/videomanager.h"
-#include "../private/videochannel_p.h"
-#include "../private/videodevice_p.h"
 #include "devicemodel.h"
 #include "resolution.h"
 #include "rate.h"
 #include "channel.h"
 
-
+//Ring private
+#include "../private/videochannel_p.h"
+#include "../private/videodevice_p.h"
+#include "../private/videorate_p.h"
+#include "../private/videoresolution_p.h"
 
 VideoDevicePrivate::VideoDevicePrivate() : m_pCurrentChannel(nullptr)
 {
@@ -53,7 +57,7 @@ d_ptr(new VideoDevicePrivate())
 
          foreach(const QString& rate, resolutions.value()) {
             Video::Rate* r = new Video::Rate(res,rate);
-            res->m_lValidRates << r;
+            res->d_ptr->m_lValidRates << r;
          }
       }
    }

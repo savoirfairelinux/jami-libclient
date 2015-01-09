@@ -46,7 +46,7 @@ private:
    NumberCategory(QObject* parent, const QString& name);
    virtual ~NumberCategory();
 
-   NumberCategoryPrivate* d_ptr;
+   const QScopedPointer<NumberCategoryPrivate> d_ptr;
    Q_DECLARE_PRIVATE(NumberCategory)
 
 };

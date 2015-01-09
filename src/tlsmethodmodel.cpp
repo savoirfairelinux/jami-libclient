@@ -21,7 +21,16 @@
 
 TlsMethodModel* TlsMethodModel::m_spInstance = nullptr;
 
-TlsMethodModel::TlsMethodModel() : QAbstractListModel(QCoreApplication::instance()) {}
+class TlsMethodModelPrivate : public QObject {
+   Q_OBJECT
+public:
+};
+
+TlsMethodModel::TlsMethodModel() : QAbstractListModel(QCoreApplication::instance()),
+d_ptr(new TlsMethodModelPrivate())
+{
+
+}
 
 //Model functions
 QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
@@ -103,3 +112,5 @@ TlsMethodModel::Type TlsMethodModel::fromDaemonName(const QString& name)
    qDebug() << "Unknown TLS method" << name;
    return TlsMethodModel::Type::DEFAULT;
 }
+
+#include <tlsmethodmodel.moc>

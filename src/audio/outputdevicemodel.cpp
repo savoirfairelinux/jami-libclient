@@ -19,6 +19,7 @@
 
 //Ring
 #include "dbus/configurationmanager.h"
+#include "dbus/callmanager.h"
 #include "settings.h"
 
 class OutputDeviceModelPrivate : public QObject
@@ -123,5 +124,11 @@ void Audio::OutputDeviceModel::reload()
    emit layoutChanged();
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
 }
+
+void Audio::OutputDeviceModel::playDTMF(const QString& str)
+{
+   Q_NOREPLY DBus::CallManager::instance().playDTMF(str);
+}
+
 
 #include <outputdevicemodel.moc>

@@ -20,15 +20,13 @@
 
 #include "../typedefs.h"
 
+//Ring
 namespace Video {
    class Resolution;
    class Device;
 }
-// class VideoRatePrivate
-// {
-// public:
-//    
-// };
+
+class RatePrivate;
 
 namespace Video {
 
@@ -39,15 +37,15 @@ class LIB_EXPORT Rate
    friend class Video::Device;
 
 public:
-   virtual ~Rate() {}
    QString name() const;
    int relativeIndex();
 
 private:
-   Rate(const Video::Resolution* res,const QString& name) :
-      m_Name(name),m_pResolution(res) {}
-   QString m_Name;
-   const Video::Resolution* m_pResolution;
+   Rate(const Video::Resolution* res,const QString& name);
+   virtual ~Rate();
+
+   RatePrivate* d_ptr;
+   Q_DECLARE_PRIVATE(Rate)
 };
 
 }

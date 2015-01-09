@@ -443,19 +443,9 @@ void Contact::replaceDPointer(Contact* c)
    emit rebased(c);
 }
 
-bool Contact::operator==(Contact* other)
-{
-   return other && this->d == other->d;
-}
-
 bool Contact::operator==(const Contact* other) const
 {
    return other && this->d == other->d;
-}
-
-bool Contact::operator==(Contact& other)
-{
-   return &other && this->d == other.d;
 }
 
 bool Contact::operator==(const Contact& other) const

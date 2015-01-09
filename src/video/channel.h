@@ -19,13 +19,15 @@
 #define VIDEOCHANNEL_H
 
 #include "../typedefs.h"
+
+//Qt
 #include <QtCore/QAbstractListModel>
 
+//Ring
 namespace Video {
    class Resolution;
    class Device;
 }
-
 class VideoChannelPrivate;
 
 namespace Video {

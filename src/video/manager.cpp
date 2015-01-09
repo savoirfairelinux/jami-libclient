@@ -30,6 +30,7 @@
 #include "channel.h"
 #include "rate.h"
 #include "resolution.h"
+#include "../private/videorate_p.h"
 
 //Static member
 Video::Manager* Video::Manager::m_spInstance = nullptr;

@@ -19,6 +19,11 @@
 
 #include "accountmodel.h"
 
+class CategorizedAccountModelPrivate
+{
+
+};
+
 CategorizedAccountModel* CategorizedAccountModel::m_spInstance = nullptr;
 
 namespace {

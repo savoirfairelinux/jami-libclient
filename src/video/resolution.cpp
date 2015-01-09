@@ -17,18 +17,28 @@
  ***************************************************************************/
 #include "resolution.h"
 
+//Ring
 #include "../dbus/videomanager.h"
-#include "../private/videodevice_p.h"
 #include "channel.h"
 #include "rate.h"
 #include "device.h"
 
+//Ring private
+#include "../private/videodevice_p.h"
+#include "../private/videorate_p.h"
+#include "../private/videoresolution_p.h"
+
+//Qt
 #include <QtCore/QStringList>
 
 Video::Resolution::Resolution(const QString& size, Video::Channel* chan)
-: QAbstractListModel(chan), m_pCurrentRate(nullptr),m_pChannel(chan)
+: QAbstractListModel(chan),d_ptr(new VideoResolutionPrivate())
 {
    Q_ASSERT(chan != nullptr);
+
+   d_ptr->m_pChannel = chan;
+   d_ptr->m_pCurrentRate = nullptr;
+
    if (size.split('x').size() == 2) {
       setWidth(size.split('x')[0].toInt());
       setHeight(size.split('x')[1].toInt());
@@ -43,15 +53,15 @@ const QString Video::Resolution::name() const
 
 QVariant Video::Resolution::data( const QModelIndex& index, int role) const
 {
-   if (index.isValid() && role == Qt::DisplayRole && index.row() < m_lValidRates.size()) {
-      return m_lValidRates[index.row()]->name();
+   if (index.isValid() && role == Qt::DisplayRole && index.row() < d_ptr->m_lValidRates.size()) {
+      return d_ptr->m_lValidRates[index.row()]->name();
    }
    return QVariant();
 }
 
 int Video::Resolution::rowCount( const QModelIndex& parent) const
 {
-   return (parent.isValid())?0:m_lValidRates.size();
+   return (parent.isValid())?0:d_ptr->m_lValidRates.size();
 }
 
 Qt::ItemFlags Video::Resolution::flags( const QModelIndex& idx) const
@@ -71,76 +81,76 @@ bool Video::Resolution::setData( const QModelIndex& index, const QVariant &value
 
 
 const QList<Video::Rate*> Video::Resolution::validRates() const {
-   return m_lValidRates;
+   return d_ptr->m_lValidRates;
 }
 
 
 bool Video::Resolution::setActiveRate(Video::Rate* rate) {
-   if (!rate || (m_lValidRates.indexOf(rate) == -1)) {
+   if (!rate || (d_ptr->m_lValidRates.indexOf(rate) == -1)) {
       qWarning() << "Trying to set an invalid rate" << rate;
       return false;
    }
-   m_pCurrentRate = rate;
-   m_pChannel->device()->save();
+   d_ptr->m_pCurrentRate = rate;
+   d_ptr->m_pChannel->device()->save();
    return true;
 }
 
 
 bool Video::Resolution::setActiveRate(int idx)
 {
-   if (idx >= m_lValidRates.size() || idx < 0) return false;
-   return setActiveRate(m_lValidRates[idx]);
+   if (idx >= d_ptr->m_lValidRates.size() || idx < 0) return false;
+   return setActiveRate(d_ptr->m_lValidRates[idx]);
 }
 
-Video::Rate* Video::Resolution::activeRate()
+Video::Rate* Video::Resolution::activeRate() const
 {
-   if (!m_pChannel) {
+   if (!d_ptr->m_pChannel) {
       qWarning() << "Trying to get the active rate of an unattached resolution";
       return nullptr;
    }
-   if (!m_pCurrentRate && m_pChannel && m_pChannel->device()->isActive()) {
+   if (!d_ptr->m_pCurrentRate && d_ptr->m_pChannel && d_ptr->m_pChannel->device()->isActive()) {
       VideoManagerInterface& interface = DBus::VideoManager::instance();
       const QString rate = QMap<QString,QString>(
-         interface.getSettings(m_pChannel->device()->id()))[VideoDevicePrivate::PreferenceNames::RATE];
-      foreach(Video::Rate* r, m_lValidRates) {
+         interface.getSettings(d_ptr->m_pChannel->device()->id()))[VideoDevicePrivate::PreferenceNames::RATE];
+      foreach(Video::Rate* r, d_ptr->m_lValidRates) {
          if (r->name() == rate) {
-            m_pCurrentRate = r;
+            d_ptr->m_pCurrentRate = r;
             break;
          }
       }
    }
-   if ((!m_pCurrentRate) && m_lValidRates.size())
-      m_pCurrentRate = m_lValidRates[0];
+   if ((!d_ptr->m_pCurrentRate) && d_ptr->m_lValidRates.size())
+      d_ptr->m_pCurrentRate = d_ptr->m_lValidRates[0];
 
-   return m_pCurrentRate;
+   return d_ptr->m_pCurrentRate;
 }
 
 int Video::Resolution::relativeIndex() const
 {
-   return m_pChannel?m_pChannel->validResolutions().indexOf(const_cast<Video::Resolution*>(this)):-1;
+   return d_ptr->m_pChannel?d_ptr->m_pChannel->validResolutions().indexOf(const_cast<Video::Resolution*>(this)):-1;
 }
 
 int Video::Resolution::width() const
 {
-   return m_Size.width();
+   return d_ptr->m_Size.width();
 }
 
 int Video::Resolution::height() const
 {
-   return m_Size.height();
+   return d_ptr->m_Size.height();
 }
 
 QSize Video::Resolution::size() const
 {
-   return m_Size;
+   return d_ptr->m_Size;
 }
 
 void Video::Resolution::setWidth(int width)
 {
-   m_Size.setWidth(width);
+   d_ptr->m_Size.setWidth(width);
 }
 
 void Video::Resolution::setHeight(int height)
 {
-   m_Size.setHeight(height);
+   d_ptr->m_Size.setHeight(height);
 }

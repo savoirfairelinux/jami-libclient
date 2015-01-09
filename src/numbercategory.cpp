@@ -41,7 +41,6 @@ NumberCategory::NumberCategory(QObject* parent, const QString& name) : QObject(p
 
 NumberCategory::~NumberCategory()
 {
-   delete d_ptr;
 }
 
 QVariant NumberCategory::icon(bool isTracked, bool isPresent) const

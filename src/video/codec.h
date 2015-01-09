@@ -19,10 +19,12 @@
 #define VIDEO_CODEC_H
 
 #include "../typedefs.h"
+
+//Qt
 #include <QtCore/QObject>
 
+//Ring
 class Account;
-
 class VideoCodecPrivate;
 
 namespace Video {
@@ -59,7 +61,7 @@ class LIB_EXPORT Codec : public QObject {
       Codec(const QString &codecName, uint bitRate, bool enabled);
       virtual ~Codec();
 
-      VideoCodecPrivate* d_ptr;
+      const QScopedPointer<VideoCodecPrivate> d_ptr;
 };
 
 }

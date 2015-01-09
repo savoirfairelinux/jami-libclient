@@ -21,6 +21,8 @@
 #include "typedefs.h"
 #include <QtCore/QAbstractItemModel>
 
+class CategorizedAccountModelPrivate;
+
 class LIB_EXPORT CategorizedAccountModel : public QAbstractItemModel {
    Q_OBJECT
 public:
@@ -49,6 +51,8 @@ private:
       SERVER ,
       IP2IP  ,
    };
+
+   const QScopedPointer<CategorizedAccountModelPrivate> d_ptr;
 
    //Singleton
    static CategorizedAccountModel* m_spInstance;

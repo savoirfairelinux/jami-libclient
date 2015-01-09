@@ -21,6 +21,8 @@
 #include "typedefs.h"
 #include <QtCore/QAbstractListModel>
 
+class TlsMethodModelPrivate;
+
 ///Static model for handling encryption types
 class LIB_EXPORT TlsMethodModel : public QAbstractListModel {
    #pragma GCC diagnostic push
@@ -57,13 +59,13 @@ public:
    explicit TlsMethodModel();
 
    //Model functions
-   QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const;
-   int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const;
-   Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const;
-   virtual bool  setData  ( const QModelIndex& index, const QVariant &value, int role)      ;
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
 
    //Getters
-   QModelIndex   toIndex  (TlsMethodModel::Type type);
+   QModelIndex toIndex (TlsMethodModel::Type type);
    static const char* toDaemonName(TlsMethodModel::Type type);
    static TlsMethodModel::Type fromDaemonName(const QString& name);
 
@@ -72,6 +74,10 @@ public:
 
 private:
    static TlsMethodModel* m_spInstance;
+
+   TlsMethodModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(TlsMethodModel);
+
 };
 Q_DECLARE_METATYPE(TlsMethodModel*)
 #endif

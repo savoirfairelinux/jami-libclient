@@ -31,9 +31,9 @@ QHash<int,Call*> PhoneNumber::m_shMostUsed = QHash<int,Call*>();
 
 const PhoneNumber* PhoneNumber::m_spBlank = nullptr;
 
-class PrivatePhoneNumber {
+class PhoneNumberPrivate {
 public:
-   PrivatePhoneNumber(const URI& number, NumberCategory* cat, PhoneNumber::Type st);
+   PhoneNumberPrivate(const URI& number, NumberCategory* cat, PhoneNumber::Type st);
    NumberCategory*    m_pCategory        ;
    bool               m_Present          ;
    QString            m_PresentMessage   ;
@@ -71,43 +71,43 @@ public:
    void rebased(PhoneNumber* other);
 };
 
-void PrivatePhoneNumber::callAdded(Call* call)
+void PhoneNumberPrivate::callAdded(Call* call)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->callAdded(call);
 }
 
-void PrivatePhoneNumber::changed()
+void PhoneNumberPrivate::changed()
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->changed();
 }
 
-void PrivatePhoneNumber::presentChanged(bool s)
+void PhoneNumberPrivate::presentChanged(bool s)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->presentChanged(s);
 }
 
-void PrivatePhoneNumber::presenceMessageChanged(const QString& status)
+void PhoneNumberPrivate::presenceMessageChanged(const QString& status)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->presenceMessageChanged(status);
 }
 
-void PrivatePhoneNumber::trackedChanged(bool t)
+void PhoneNumberPrivate::trackedChanged(bool t)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->trackedChanged(t);
 }
 
-void PrivatePhoneNumber::primaryNameChanged(const QString& name)
+void PhoneNumberPrivate::primaryNameChanged(const QString& name)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->primaryNameChanged(name);
 }
 
-void PrivatePhoneNumber::rebased(PhoneNumber* other)
+void PhoneNumberPrivate::rebased(PhoneNumber* other)
 {
    foreach (PhoneNumber* n, m_lParents)
       emit n->rebased(other);
@@ -123,7 +123,7 @@ const PhoneNumber* PhoneNumber::BLANK()
    return m_spBlank;
 }
 
-PrivatePhoneNumber::PrivatePhoneNumber(const URI& uri, NumberCategory* cat, PhoneNumber::Type st) :
+PhoneNumberPrivate::PhoneNumberPrivate(const URI& uri, NumberCategory* cat, PhoneNumber::Type st) :
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pContact(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
@@ -132,7 +132,7 @@ PrivatePhoneNumber::PrivatePhoneNumber(const URI& uri, NumberCategory* cat, Phon
 
 ///Constructor
 PhoneNumber::PhoneNumber(const URI& number, NumberCategory* cat, Type st) : QObject(PhoneDirectoryModel::instance()),
-d_ptr(new PrivatePhoneNumber(number,cat,st))
+d_ptr(new PhoneNumberPrivate(number,cat,st))
 {
    setObjectName(d_ptr->m_Uri);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
@@ -145,8 +145,8 @@ d_ptr(new PrivatePhoneNumber(number,cat,st))
 PhoneNumber::~PhoneNumber()
 {
    d_ptr->m_lParents.removeAll(this);
-   if (!d_ptr->m_lParents.size())
-      delete d_ptr;
+//    if (!d_ptr->m_lParents.size())
+//       delete d_ptr;
 }
 
 ///Return if this number presence is being tracked
@@ -516,7 +516,7 @@ bool PhoneNumber::merge(PhoneNumber* other)
 
    //TODO Handle presence
 
-   PrivatePhoneNumber* currentD = d_ptr;
+   QSharedPointer<PhoneNumberPrivate> currentD = d_ptr;
 
    //Replace the D-Pointer
    this->d_ptr= other->d_ptr;
@@ -535,8 +535,8 @@ bool PhoneNumber::merge(PhoneNumber* other)
    emit rebased(other);
 
    currentD->m_lParents.removeAll(this);
-   if (!currentD->m_lParents.size())
-      delete currentD;
+//    if (!currentD->m_lParents.size())
+//       delete currentD;
    return true;
 }
 

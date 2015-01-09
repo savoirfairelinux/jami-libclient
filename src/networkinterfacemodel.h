@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,56 +15,42 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef TRANSITIONAL_CONTACT_BACKEND
-#define TRANSITIONAL_CONTACT_BACKEND
-
-#include "abstractitembackend.h"
+#ifndef NETWORKINTERFACEMODEL_H
+#define NETWORKINTERFACEMODEL_H
 
 #include "typedefs.h"
+#include <QtCore/QAbstractListModel>
 
-class TransitionalContactBackendPrivate;
+class NetworkInterfaceModelPrivate;
 
-///Contact backend for new unsaved contacts
-class LIB_EXPORT TransitionalContactBackend : public AbstractContactBackend {
+///Static model for handling encryption types
+class LIB_EXPORT NetworkInterfaceModel : public QAbstractListModel {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
+
 public:
 
-   virtual ~TransitionalContactBackend();
+   //Private constructor, can only be called by 'Account'
+   explicit NetworkInterfaceModel();
 
-   virtual bool load();
-   virtual bool reload();
-   virtual bool append(const Contact* item);
-   virtual bool save(const Contact* contact);
-   virtual bool isEnabled() const;
+   //Model functions
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
 
-   virtual QString name () const;
-   virtual QVariant icon() const;
-
-   virtual QByteArray  id() const;
-
-   ///Edit 'contact', the implementation may be a GUI or somehting else
-   virtual bool        edit       ( Contact*       contact     );
-   ///Add a new contact to the backend
-   virtual bool        addNew     ( Contact*       contact     );
-
-   ///Add a new phone number to an existing contact
-   virtual bool addPhoneNumber( Contact*       contact , PhoneNumber* number );
-
-   SupportedFeatures supportedFeatures() const;
-
-   virtual QList<Contact*> items() const override;
 
    //Singleton
-   static AbstractContactBackend* instance();
+   static NetworkInterfaceModel* instance();
 
 private:
-   explicit TransitionalContactBackend(QObject* parent = nullptr);
-   static AbstractContactBackend* m_spInstance;
+   static NetworkInterfaceModel* m_spInstance;
 
-   const QScopedPointer<TransitionalContactBackendPrivate> d_ptr;
+   NetworkInterfaceModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(NetworkInterfaceModel);
+
 };
-
+Q_DECLARE_METATYPE(NetworkInterfaceModel*)
 #endif

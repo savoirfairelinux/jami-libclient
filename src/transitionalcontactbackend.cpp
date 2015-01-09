@@ -17,6 +17,11 @@
  ***************************************************************************/
 #include "transitionalcontactbackend.h"
 
+class TransitionalContactBackendPrivate
+{
+   
+};
+
 AbstractContactBackend* TransitionalContactBackend::m_spInstance = nullptr;
 
 AbstractContactBackend* TransitionalContactBackend::instance()

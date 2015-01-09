@@ -130,9 +130,7 @@ public:
    void setActive         ( bool              active );
 
    //Operator
-   bool operator==(Contact* other);
    bool operator==(const Contact* other) const;
-   bool operator==(Contact& other);
    bool operator==(const Contact& other) const;
 
 private Q_SLOTS:

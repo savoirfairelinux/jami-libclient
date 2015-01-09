@@ -76,13 +76,13 @@ public:
    void         setColorVisitor  ( AccountListColorVisitor* visitor                         );
 
    //Mutators
-   Q_INVOKABLE Account* add                 ( const QString& alias         );
-   Q_INVOKABLE void     remove              ( Account* account             );
-   void                 remove              ( const QModelIndex& index     );
-   void                 save                (                              );
-   Q_INVOKABLE bool     moveUp              ( const QModelIndex& idx       );
-   Q_INVOKABLE bool     moveDown            ( const QModelIndex& idx       );
-   Q_INVOKABLE void     cancel              (                              );
+   Q_INVOKABLE Account* add                 ( const QString& alias     );
+   Q_INVOKABLE void     remove              ( Account* account         );
+   void                 remove              ( const QModelIndex& index );
+   void                 save                (                          );
+   Q_INVOKABLE bool     moveUp              ( const QModelIndex& idx   );
+   Q_INVOKABLE bool     moveDown            ( const QModelIndex& idx   );
+   Q_INVOKABLE void     cancel              (                          );
 
    //Operators
    Account*       operator[] (int            i)      ;
@@ -98,46 +98,47 @@ private:
    void add(Account* acc);
 
    //Attributes
-   static AccountModel* m_spAccountList   ;
-   static Account*          m_spPriorAccount  ;
+   static AccountModel* m_spAccountList  ;
+   static Account*      m_spPriorAccount ;
+
    QScopedPointer<AccountModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(AccountModel)
 
 public Q_SLOTS:
-   void update        ();
-   void updateAccounts();
+   void update             ();
+   void updateAccounts     ();
    void registerAllAccounts();
 
 
 Q_SIGNALS:
    ///The account list changed
-   void accountListUpdated();
+   void accountListUpdated(                                          );
    ///Emitted when an account state change
-   void accountStateChanged  ( Account* account, QString state);
+   void accountStateChanged  ( Account* account, const QString& state);
    ///Emitted when an account enable attribute change
-   void accountEnabledChanged( Account* source                );
+   void accountEnabledChanged( Account* source                       );
    ///Emitted when the default account change
-   void defaultAccountChanged( Account* a                     );
+   void defaultAccountChanged( Account* a                            );
    ///Emitted when the default account change
-   void priorAccountChanged  ( Account* a                     );
+   void priorAccountChanged  ( Account* a                            );
    ///Emitted when one account registration state change
-   void registrationChanged(Account* a, bool registration);
+   void registrationChanged(Account* a, bool registration            );
    ///Emitted when the network is down
-   void badGateway();
+   void badGateway(                                                  );
    ///Emitted when a new voice mail is available
-   void voiceMailNotify(Account* account, int count);
+   void voiceMailNotify(Account* account, int count                  );
    ///Propagate Account::presenceEnabledChanged
-   void presenceEnabledChanged(bool);
+   void presenceEnabledChanged(bool isPresent                        );
 };
 Q_DECLARE_METATYPE(AccountModel*)
 
 class LIB_EXPORT AccountListNoCheckProxyModel : public QAbstractListModel
 {
 public:
-   virtual QVariant data(const QModelIndex& index,int role = Qt::DisplayRole ) const;
-   virtual bool setData( const QModelIndex& index, const QVariant &value, int role);
-   virtual Qt::ItemFlags flags (const QModelIndex& index) const;
-   virtual int rowCount(const QModelIndex& parent = QModelIndex() ) const;
+   virtual QVariant      data    (const QModelIndex& index,int role = Qt::DisplayRole       ) const override;
+   virtual bool          setData ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual Qt::ItemFlags flags   (const QModelIndex& index                                  ) const override;
+   virtual int           rowCount(const QModelIndex& parent = QModelIndex()                 ) const override;
 };
 
 #endif

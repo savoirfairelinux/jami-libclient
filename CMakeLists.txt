@@ -5,6 +5,8 @@ IF(POLICY CMP0022)
 ENDIF(POLICY CMP0022)
 
 INCLUDE(GNUInstallDirs)
+INCLUDE(CMakePackageConfigHelpers)
+INCLUDE(GenerateExportHeader)
 
 ADD_DEFINITIONS("-std=c++0x")
 
@@ -54,6 +56,7 @@ SET( libringclient_LIB_SRCS
   src/phonenumber.cpp
   src/numbercategory.cpp
   src/abstractitembackendmodelextension.cpp
+  src/video/rate.cpp
   src/video/device.cpp
   src/video/renderer.cpp
   src/video/codec.cpp
@@ -82,12 +85,12 @@ SET( libringclient_LIB_SRCS
   src/certificate.cpp
   src/contactmodel.cpp
   src/itembackendmodel.cpp
+  src/networkinterfacemodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcesmodel.cpp
   src/video/codecmodel2.cpp
   src/video/channel.cpp
   src/video/resolution.cpp
-  src/video/rate.cpp
   src/video/manager.cpp
   src/audio/alsapluginmodel.cpp
   src/audio/codecmodel.cpp
@@ -161,7 +164,14 @@ SET( libringclient_LIB_HDRS
   src/hookmanager.h
   src/uri.h
   src/mime.h
+  src/categorizedcompositenode.h
   src/abstractitembackendmodelextension.h
+  src/commonbackendmanagerinterface.h
+  src/legacyhistorybackend.h
+  src/networkinterfacemodel.h
+)
+
+SET(libringclient_video_LIB_HDRS
   src/video/device.h
   src/video/devicemodel.h
   src/video/sourcesmodel.h
@@ -172,6 +182,9 @@ SET( libringclient_LIB_HDRS
   src/video/resolution.h
   src/video/channel.h
   src/video/rate.h
+)
+
+SET(libringclient_audio_LIB_HDRS
   src/audio/alsapluginmodel.h
   src/audio/codecmodel.h
   src/audio/inputdevicemodel.h
@@ -179,17 +192,23 @@ SET( libringclient_LIB_HDRS
   src/audio/outputdevicemodel.h
   src/audio/ringtonedevicemodel.h
   src/audio/settings.h
-
-  extensions/presenceitembackendmodelextension.h
-  #commonbackendmanagerinterface.h
 )
 
-SET( libringclient_extra_LIB_HDRS
-  src/typedefs.h
+SET(libringclient_extensions_LIB_HDRS
+  src/extensions/presenceitembackendmodelextension.h
+)
+
+SET(libringclient_visitors_LIB_HDRS
   src/visitors/accountlistcolorvisitor.h
   src/visitors/phonenumberselector.h
   src/visitors/presenceserializationvisitor.h
   src/visitors/itemmodelstateserializationvisitor.h
+  src/visitors/pixmapmanipulationvisitor.h
+  src/visitors/numbercategoryvisitor.h
+)
+
+SET( libringclient_extra_LIB_HDRS
+  src/typedefs.h
 )
 
 # presence manager interface
@@ -328,8 +347,10 @@ ENDIF(${ENABLE_QT5} MATCHES true)
 
 
 ADD_LIBRARY( ringclient  SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-# REMOVE_DEFINITIONS("-w")
+
+IF(NOT ${ENABLE_STATIC} MATCHES false)
+   ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ENDIF()
 
 IF(${ENABLE_QT5} MATCHES true)
    QT5_USE_MODULES(ringclient Core DBus)
@@ -357,6 +378,26 @@ INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
   COMPONENT Devel
 )
 
+INSTALL( FILES ${libringclient_video_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/video
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_audio_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/audio
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_extensions_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/extensions
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_visitors_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/visitors
+  COMPONENT Devel
+)
+
 #This hack force Debian based system to return a non multi-arch path
 #this is required to prevent the .deb libringclient.so from having an
 #higher priority than the prefixed one.
@@ -367,3 +408,27 @@ INSTALL( TARGETS ringclient
   LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
   DESTINATION ${SANE_LIBRARY_PATH}
 )
+
+# Create a CMake config file
+
+# TARGET_INCLUDE_DIRECTORIES(ringclient PUBLIC
+# "$<INSTALL_INTERFACE:$<CMAKE_INSTALL_PREFIX>/${INCLUDE_INSTALL_DIR}/libringclient>"
+# )
+SET(libringclient_CONFIG_PATH "${CMAKE_CURRENT_BINARY_DIR}/LibRingClientConfig.cmake")
+
+CONFIGURE_PACKAGE_CONFIG_FILE(
+   "${CMAKE_SOURCE_DIR}/cmake/LibRingClientConfig.cmake.in" ${libringclient_CONFIG_PATH}
+   INSTALL_DESTINATION ${LIB_INSTALL_DIR}/libringclient/cmake
+   PATH_VARS INCLUDE_INSTALL_DIR
+)
+
+INSTALL( FILES ${libringclient_CONFIG_PATH}
+  DESTINATION ${SANE_LIBRARY_PATH}/cmake/LibRingClient
+  COMPONENT Devel
+)
+
+# WRITE_BASIC_PACKAGE_VERSION_FILE(
+#    ${libringclient_CONFIG_PATH}
+#    VERSION ${GENERIC_LIB_VERSION}
+#    COMPATIBILITY SameMajorVersion
+# )

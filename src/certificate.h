@@ -23,6 +23,8 @@
 //Qt
 #include <QUrl>
 
+class CertificatePrivate;
+
 class LIB_EXPORT Certificate : public QObject {
    Q_OBJECT
 public:
@@ -55,9 +57,7 @@ public:
    bool isLocationSecure         () const;
 
 private:
-   QUrl m_Path;
-   Certificate::Type m_Type;
-   //TODO
+   CertificatePrivate* d_ptr;
 
 Q_SIGNALS:
    void changed();

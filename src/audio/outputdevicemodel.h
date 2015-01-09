@@ -52,6 +52,9 @@ public:
    //Mutator
    void reload();
 
+   //Static methods
+   static void playDTMF(const QString& str);
+
 private:
    QScopedPointer<OutputDeviceModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(OutputDeviceModel)

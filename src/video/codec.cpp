@@ -41,7 +41,6 @@ d_ptr(new VideoCodecPrivate())
 
 Video::Codec::~Codec()
 {
-   delete d_ptr;
 }
 
 ///Get the current codec name

@@ -25,6 +25,7 @@
 #include <QStringList>
 #include <QtCore/QSize>
 #include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 //Ring
 #include "uri.h"
@@ -35,7 +36,6 @@ class PhoneNumberPrivate;
 class TemporaryPhoneNumber;
 class NumberCategory;
 
-class PrivatePhoneNumber;
 
 ///PhoneNumber: represent a phone number
 class LIB_EXPORT PhoneNumber : public QObject {
@@ -43,7 +43,6 @@ class LIB_EXPORT PhoneNumber : public QObject {
 public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
-   friend class PrivatePhoneNumber;
    virtual ~PhoneNumber();
 
    //Properties
@@ -150,7 +149,7 @@ protected:
    void setPopularityIndex(int value);
 
    //Many phone numbers can have the same "d" if they were merged
-   PrivatePhoneNumber* d_ptr;
+   QSharedPointer<PhoneNumberPrivate> d_ptr;
 
 private:
    friend class PhoneNumberPrivate;

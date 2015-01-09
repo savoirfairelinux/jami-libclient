@@ -39,6 +39,9 @@
 #include "visitors/phonenumberselector.h"
 #include "contactmodel.h"
 
+//Other
+#include <unistd.h>
+
 //Private
 #include "private/call_p.h"
 
@@ -125,6 +128,11 @@ CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(pa
 ///Retrieve current and older calls from the daemon, fill history, model and enable drag n' drop
 CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new CallModelPrivate(this))
 {
+   //Register with the daemon
+   InstanceInterface& instance = DBus::InstanceManager::instance();
+   QDBusPendingReply<QString> reply = instance.Register(getpid(), "Ring KDE Client");
+   reply.waitForFinished();
+
    setObjectName("CallModel");
 } //CallModel
 
@@ -191,6 +199,11 @@ CallModel::~CallModel()
    d_ptr->m_sPrivateCallList_call.clear  ();
    d_ptr->m_sPrivateCallList_callId.clear();
    m_spInstance = nullptr;
+
+   //Unregister from the daemon
+   InstanceInterface& instance = DBus::InstanceManager::instance();
+   Q_NOREPLY instance.Unregister(getpid());
+   instance.connection().disconnectFromBus(instance.connection().baseService());
 }
 
 void CallModelPrivate::initRoles()
@@ -282,6 +295,11 @@ bool CallModel::hasConference() const
          return true;
    }
    return false;
+}
+
+bool CallModel::isConnected() const
+{
+   return DBus::InstanceManager::instance().connection().isConnected();
 }
 
 bool CallModel::isValid()

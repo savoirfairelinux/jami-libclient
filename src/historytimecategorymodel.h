@@ -24,6 +24,8 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 
+class HistoryTimeCategoryModelPrivate;
+
 class LIB_EXPORT HistoryTimeCategoryModel : public QAbstractListModel {
    Q_OBJECT
 public:
@@ -61,10 +63,10 @@ public:
    explicit HistoryTimeCategoryModel(QObject* parent = nullptr);
 
    //Abstract model member
-   virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-   virtual int rowCount(const QModelIndex& parent = QModelIndex()             ) const override;
-   virtual Qt::ItemFlags flags(const QModelIndex& index                       ) const override;
-   virtual bool setData(const QModelIndex& index, const QVariant &value, int role) override;
+   virtual QVariant      data    (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount(const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags   (const QModelIndex& index                                 ) const override;
+   virtual bool          setData (const QModelIndex& index, const QVariant &value, int role)       override;
 
    //Getters
    static QString indexToName(int idx);
@@ -76,6 +78,9 @@ public:
 private:
    static QVector<QString> m_lCategories;
    static HistoryTimeCategoryModel* m_spInstance;
+
+   HistoryTimeCategoryModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(HistoryTimeCategoryModel)
 };
 
 #endif

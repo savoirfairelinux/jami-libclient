@@ -19,25 +19,31 @@
 
 #include <QtCore/QFile>
 
-
-Certificate::Certificate(Certificate::Type type, const QObject* parent) : QObject(const_cast<QObject*>(parent)),m_Type(type)
+class CertificatePrivate
 {
-   
+public:
+   QUrl m_Path;
+   Certificate::Type m_Type;
+};
+
+Certificate::Certificate(Certificate::Type type, const QObject* parent) : QObject(const_cast<QObject*>(parent)),d_ptr(new CertificatePrivate())
+{
+   d_ptr->m_Type = type;
 }
 
 bool Certificate::exist() const
 {
-   return QFile::exists(m_Path.toLocalFile());
+   return QFile::exists(d_ptr->m_Path.toLocalFile());
 }
 
 QUrl Certificate::path() const
 {
-   return m_Path;
+   return d_ptr->m_Path;
 }
 
 void Certificate::setPath(const QUrl& path)
 {
-   m_Path = path;
+   d_ptr->m_Path = path;
    emit changed();
 }
 
@@ -78,5 +84,5 @@ bool Certificate::isLocationSecure() const
 
 Certificate::Type Certificate::type() const
 {
-   return m_Type;
+   return d_ptr->m_Type;
 }

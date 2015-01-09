@@ -28,13 +28,7 @@ namespace Video {
    class Device;
 }
 
-// class VideoResolutionPrivate
-// {
-// public:
-//    
-// };
-
-
+class VideoResolutionPrivate;
 
 namespace Video {
 
@@ -49,15 +43,17 @@ public:
    explicit Resolution();
 
    //Getter
-   const QString name() const;
-   const QList<Video::Rate*> validRates() const;
-   int relativeIndex() const;
-   Video::Rate* activeRate();
-   bool setActiveRate(Video::Rate* rate);
-   bool setActiveRate(int index);
-   int width() const;
-   int height() const;
-   QSize size() const;
+   const QString             name          () const;
+   int                       height        () const;
+   const QList<Video::Rate*> validRates    () const;
+   int                       relativeIndex () const;
+   Video::Rate*              activeRate    () const;
+   int                       width         () const;
+   QSize                     size          () const;
+
+   //Setters
+   bool setActiveRate( Video::Rate* rate );
+   bool setActiveRate( int index         );
 
    //Setters
    void setWidth(int width);
@@ -71,12 +67,8 @@ public:
 
 
 private:
+   VideoResolutionPrivate* d_ptr;
 
-   //Attributes
-   QList<Video::Rate*> m_lValidRates;
-   Video::Rate*        m_pCurrentRate;
-   Video::Channel*     m_pChannel;
-   QSize               m_Size;
 };
 
 }

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,30 +15,22 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "rate.h"
-#include "devicemodel.h"
-#include "channel.h"
-#include "resolution.h"
-#include "../private/videorate_p.h"
+#ifndef VIDEORESOLUTIONPRIVATE_H
+#define VIDEORESOLUTIONPRIVATE_H
 
-Video::Rate::Rate(const Video::Resolution* res,const QString& name) :
-   d_ptr(new RatePrivate())
-{
-   d_ptr->m_Name        = name;
-   d_ptr->m_pResolution = res;
-}
+namespace Video {
+   class Rate;
+   class Channel;
+};
 
-Video::Rate::~Rate()
+class VideoResolutionPrivate
 {
-   delete d_ptr;
-}
+public:
+   //Attributes
+   QList<Video::Rate*> m_lValidRates;
+   Video::Rate*        m_pCurrentRate;
+   Video::Channel*     m_pChannel;
+   QSize               m_Size;
+};
 
-int Video::Rate::relativeIndex()
-{
-   return Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()->validRates().indexOf(this);
-}
-
-QString Video::Rate::name() const
-{
-   return d_ptr->m_Name;
-}
+#endif

@@ -19,6 +19,11 @@
 
 #include <QtCore/QDate>
 
+class HistoryTimeCategoryModelPrivate
+{
+
+};
+
 QVector<QString> HistoryTimeCategoryModel::m_lCategories;
 HistoryTimeCategoryModel* HistoryTimeCategoryModel::m_spInstance = new HistoryTimeCategoryModel();
 

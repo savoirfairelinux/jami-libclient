@@ -1,7 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2009-2015 by Savoir-Faire Linux                          *
- *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
- *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2014 by Savoir-Faire Linux                               *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -16,12 +15,18 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifndef RATEPRIVATE_H
+#define RATEPRIVATE_H
 
-/* THIS FILE IS DEPRECATED DO NOT ADD NEW GLOBAL CONSTANTS */
+namespace Video {
+   class Resolution;
+}
 
-
-
-
-
+class RatePrivate
+{
+public:
+   QString m_Name;
+   const Video::Resolution* m_pResolution;
+};
 
 #endif
