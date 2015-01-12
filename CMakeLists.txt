@@ -22,14 +22,35 @@ SET(CMAKE_AUTOMOC TRUE)
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 SET(CMAKE_MODULE_PATH "${LOCAL_CMAKE_MODULE_PATH}")
 
-IF(NOT ${ENABLE_VIDEO} MATCHES false)
+set(QT5_PATH ~/Qt/5.3/clang_64/ CACHE PATH "Path to Qt5")
+set(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
+
+# OS X
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_definitions( -DENABLE_LIBWRAP=true ) # Use native calls (no dbus)
+    SET(ENABLE_QT5 true) # Use Qt5
+    SET(ENABLE_LIBWRAP true)
+    MESSAGE("Compiling for OS X: LibWrap enabled, Qt5 enabled.")
+
+    INCLUDE_DIRECTORIES ( ${CMAKE_SOURCE_DIR}/qtwrapper/)
+
+    SET(CMAKE_MACOSX_RPATH ON)
+    SET(CMAKE_SKIP_BUILD_RPATH FALSE)
+    SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}")
+    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+
+IF(${ENABLE_VIDEO} MATCHES true)
    MESSAGE("VIDEO enabled")
    SET(ENABLE_VIDEO 1 CACHE BOOLEAN "Enable video")
-   ADD_DEFINITIONS( -DENABLE_VIDEO=true )
-ENDIF(NOT ${ENABLE_VIDEO} MATCHES false)
+   add_definitions( -DENABLE_VIDEO=true )
+ENDIF(${ENABLE_VIDEO} MATCHES true)
 
 IF(${ENABLE_QT5} MATCHES true)
-   FIND_PACKAGE(Qt5Core)
+   FIND_PACKAGE(Qt5Core REQUIRED)
    FIND_PACKAGE(Qt5DBus)
    ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=0)
 ELSE()
@@ -209,134 +230,160 @@ SET(libringclient_visitors_LIB_HDRS
 
 SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
+  sflphone_const.h
 )
 
-# presence manager interface
-SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
+# Include the headers for linking directly with libDring (used on platforms
+# that don't have/use dbus.
+IF(${ENABLE_LIBWRAP} MATCHES true)
+    SET_SOURCE_FILES_PROPERTIES(
+        qtwrapper/presencemanager_wrap.h
+        PROPERTIES
+        CLASSNAME PresenceManagerInterface
+        INCLUDE "qtwrapper/metatypes.h")
 
-SET( dbus_metatype_path "${CMAKE_CURRENT_SOURCE_DIR}/src/dbus/metatypes.h")
+    SET_SOURCE_FILES_PROPERTIES(
+        qtwrapper/configurationmanager_wrap.h
+        PROPERTIES
+        CLASSNAME PresenceManagerInterface
+        INCLUDE "qtwrapper/metatypes.h")
+ELSE() # Use dbus to communicate with libDring
 
-SET_SOURCE_FILES_PROPERTIES(
-   ${presencemanager_xml}
-   PROPERTIES
-   CLASSNAME PresenceManagerInterface
-   INCLUDE ${dbus_metatype_path})
+  # presence manager interface
+  SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${presencemanager_xml}
-      presencemanager_dbus_interface
-   )
-ELSE()
-   QT4_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${presencemanager_xml}
-      presencemanager_dbus_interface
-   )
+  SET( dbus_metatype_path "${CMAKE_CURRENT_SOURCE_DIR}/src/dbus/metatypes.h")
 
-ENDIF(${ENABLE_QT5} MATCHES true)
+  SET_SOURCE_FILES_PROPERTIES(
+     ${presencemanager_xml}
+     PROPERTIES
+     CLASSNAME PresenceManagerInterface
+     INCLUDE ${dbus_metatype_path})
 
-# configuration manager interface
-SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/configurationmanager-introspec.xml )
+  IF(${ENABLE_QT5} MATCHES true)
+     QT5_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${presencemanager_xml}
+        presencemanager_dbus_interface
+     )
+  ELSE()
+     QT4_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${presencemanager_xml}
+        presencemanager_dbus_interface
+     )
 
-SET_SOURCE_FILES_PROPERTIES(
-   ${configurationmanager_xml}
-   PROPERTIES
-   CLASSNAME ConfigurationManagerInterface
-   INCLUDE ${dbus_metatype_path})
+  ENDIF(${ENABLE_QT5} MATCHES true)
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${configurationmanager_xml}
-      configurationmanager_dbus_interface
-   )
-ELSE()
-   QT4_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${configurationmanager_xml}
-      configurationmanager_dbus_interface
-   )
+  # configuration manager interface
+  SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/configurationmanager-introspec.xml )
 
-ENDIF(${ENABLE_QT5} MATCHES true)
+  SET_SOURCE_FILES_PROPERTIES(
+     ${configurationmanager_xml}
+     PROPERTIES
+     CLASSNAME ConfigurationManagerInterface
+     INCLUDE ${dbus_metatype_path})
 
-# call manager interface
-SET ( callmanager_xml  ${dbus_xml_introspecs_path}/callmanager-introspec.xml )
+  IF(${ENABLE_QT5} MATCHES true)
+     QT5_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${configurationmanager_xml}
+        configurationmanager_dbus_interface
+     )
+  ELSE()
+     QT4_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${configurationmanager_xml}
+        configurationmanager_dbus_interface
+     )
 
-SET_SOURCE_FILES_PROPERTIES(
-   ${callmanager_xml}
-   PROPERTIES
-   CLASSNAME CallManagerInterface
-   INCLUDE ${dbus_metatype_path})
+  ENDIF(${ENABLE_QT5} MATCHES true)
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${callmanager_xml}
-      callmanager_dbus_interface
-   )
-ELSE()
-   QT4_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${callmanager_xml}
-      callmanager_dbus_interface
-   )
-ENDIF(${ENABLE_QT5} MATCHES true)
+  # call manager interface
+  SET ( callmanager_xml  ${dbus_xml_introspecs_path}/callmanager-introspec.xml )
 
+  SET_SOURCE_FILES_PROPERTIES(
+     ${callmanager_xml}
+     PROPERTIES
+     CLASSNAME CallManagerInterface
+     INCLUDE ${dbus_metatype_path})
 
-# video manager interface
-SET ( video_xml  ${dbus_xml_introspecs_path}/videomanager-introspec.xml )
-
-SET_SOURCE_FILES_PROPERTIES(
-   ${video_xml}
-   PROPERTIES
-   CLASSNAME VideoManagerInterface
-   INCLUDE ${dbus_metatype_path})
-
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${video_xml}
-      video_dbus_interface
-   )
-ELSE()
-   QT4_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${video_xml}
-      video_dbus_interface
-   )
-ENDIF(${ENABLE_QT5} MATCHES true)
+  IF(${ENABLE_QT5} MATCHES true)
+     QT5_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${callmanager_xml}
+        callmanager_dbus_interface
+     )
+  ELSE()
+     QT4_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${callmanager_xml}
+        callmanager_dbus_interface
+     )
+  ENDIF(${ENABLE_QT5} MATCHES true)
 
 
-# instance interface
-SET ( instance_xml  ${dbus_xml_introspecs_path}/instance-introspec.xml )
+  # video manager interface
+  SET ( video_xml  ${dbus_xml_introspecs_path}/videomanager-introspec.xml )
 
-SET_SOURCE_FILES_PROPERTIES(
-   ${instance_xml}
-   PROPERTIES
-   CLASSNAME InstanceInterface
-   INCLUDE ${dbus_metatype_path})
+  SET_SOURCE_FILES_PROPERTIES(
+     ${video_xml}
+     PROPERTIES
+     CLASSNAME VideoManagerInterface
+     INCLUDE ${dbus_metatype_path})
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${instance_xml}
-      instance_dbus_interface
-   )
-ELSE()
-   QT4_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${instance_xml}
-      instance_dbus_interface
-   )
-ENDIF(${ENABLE_QT5} MATCHES true)
+  IF(${ENABLE_QT5} MATCHES true)
+     QT5_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${video_xml}
+        video_dbus_interface
+     )
+  ELSE()
+     QT4_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${video_xml}
+        video_dbus_interface
+     )
+  ENDIF(${ENABLE_QT5} MATCHES true)
+
+
+  # instance interface
+  SET ( instance_xml  ${dbus_xml_introspecs_path}/instance-introspec.xml )
+
+  SET_SOURCE_FILES_PROPERTIES(
+     ${instance_xml}
+     PROPERTIES
+     CLASSNAME InstanceInterface
+     INCLUDE ${dbus_metatype_path})
+
+  IF(${ENABLE_QT5} MATCHES true)
+     QT5_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${instance_xml}
+        instance_dbus_interface
+     )
+  ELSE()
+     QT4_ADD_DBUS_INTERFACE(
+        libringclient_LIB_SRCS
+        ${instance_xml}
+        instance_dbus_interface
+     )
+  ENDIF(${ENABLE_QT5} MATCHES true)
+
+ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
 # Manually wrap private files
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h
+
+   #OS X
+   qtwrapper/callmanager_wrap.h
+   qtwrapper/configurationmanager_wrap.h
+   qtwrapper/instancemanager_wrap.h
+   qtwrapper/presencemanager_wrap.h
+   qtwrapper/videomanager_wrap.h
 )
 
 IF(${ENABLE_QT5} MATCHES true)
