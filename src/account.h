@@ -171,8 +171,6 @@ class LIB_EXPORT Account : public QObject {
       static Account* buildExistingAccountFromId(const QString& _accountId);
       static Account* buildNewAccountFromAlias  (const QString& alias     );
 
-      void poll_events();
-
       enum Role {
          Alias                       = 100,
          Proto                       = 101,

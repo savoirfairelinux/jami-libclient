@@ -27,12 +27,12 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 
-#include <sflphone.h>
+#include <ring.h>
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
 /*
- * Proxy class for interface org.sflphone.SFLphone.VideoManager
+ * Proxy class for interface org.ring.Ring.VideoManager
  */
 class VideoManagerInterface: public QObject
 {
@@ -53,14 +53,14 @@ public:
     ~VideoManagerInterface() {}
 
 #ifdef ENABLE_VIDEO
-    sflph_video_ev_handlers video_ev_handlers;
+    ring_video_ev_handlers video_ev_handlers;
 #endif
 
 public Q_SLOTS: // METHODS
     void applySettings(const QString &name, MapStringString settings)
     {
 #ifdef ENABLE_VIDEO
-        sflph_video_apply_settings(
+        ring_video_apply_settings(
             name.toStdString(), convertMap(settings));
 #endif
     }
@@ -71,7 +71,7 @@ public Q_SLOTS: // METHODS
         MapStringMapStringVectorString ret;
 #ifdef ENABLE_VIDEO
         std::map<std::string, std::map<std::string, std::vector<std::string>>> temp;
-        temp = sflph_video_get_capabilities(name.toStdString());
+        temp = ring_video_get_capabilities(name.toStdString());
 
         for (auto& x : temp) {
                 map<QString, QStringList> ytemp;
@@ -88,7 +88,7 @@ public Q_SLOTS: // METHODS
     {
         VectorMapStringString temp;
 #ifdef ENABLE_VIDEO
-        for (auto x : sflph_video_get_codecs(accountID.toStdString())) {
+        for (auto x : ring_video_get_codecs(accountID.toStdString())) {
             temp.push_back(convertMap(x));
         }
 #endif
@@ -99,7 +99,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         QString temp(
-            sflph_video_get_current_codec_name(callID.toStdString()).c_str());
+            ring_video_get_current_codec_name(callID.toStdString()).c_str());
 #else
         QString temp;
 #endif
@@ -110,7 +110,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         QString temp(
-            sflph_video_get_default_device().c_str());
+            ring_video_get_default_device().c_str());
 #else
         QString temp;
 #endif
@@ -121,7 +121,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         QStringList temp =
-            convertStringList(sflph_video_get_device_list());
+            convertStringList(ring_video_get_device_list());
 #else
         QStringList temp;
 #endif
@@ -132,7 +132,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         MapStringString temp =
-            convertMap(sflph_video_get_settings(device.toStdString()));
+            convertMap(ring_video_get_settings(device.toStdString()));
 #else
         MapStringString temp;
 #endif
@@ -142,7 +142,7 @@ public Q_SLOTS: // METHODS
     bool hasCameraStarted()
     {
 #ifdef ENABLE_VIDEO
-        return sflph_video_has_camera_started();
+        return ring_video_has_camera_started();
 #else
         return false;
 #endif
@@ -155,35 +155,35 @@ public Q_SLOTS: // METHODS
         for (auto x : details) {
             temp.push_back(convertMap(x));
         }
-        sflph_video_set_codecs(accountID.toStdString(), temp);
+        ring_video_set_codecs(accountID.toStdString(), temp);
 #endif
     }
 
     void setDefaultDevice(const QString &name)
     {
 #ifdef ENABLE_VIDEO
-        sflph_video_set_default_device(name.toStdString());
+        ring_video_set_default_device(name.toStdString());
 #endif
     }
 
     void startCamera()
     {
 #ifdef ENABLE_VIDEO
-        sflph_video_start_camera();
+        ring_video_start_camera();
 #endif
     }
 
     void stopCamera()
     {
 #ifdef ENABLE_VIDEO
-        sflph_video_stop_camera();
+        ring_video_stop_camera();
 #endif
     }
 
     bool switchInput(const QString &resource)
     {
 #ifdef ENABLE_VIDEO
-        return sflph_video_switch_input(resource.toStdString());
+        return ring_video_switch_input(resource.toStdString());
 #else
         return false;
 #endif
@@ -196,8 +196,8 @@ Q_SIGNALS: // SIGNALS
 };
 
 namespace org {
-  namespace sflphone {
-    namespace SFLphone {
+  namespace ring {
+    namespace Ring {
       typedef ::VideoManagerInterface VideoManager;
     }
   }

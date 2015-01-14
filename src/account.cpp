@@ -187,13 +187,6 @@ Account::~Account()
    if (d_ptr->m_pAudioCodecs) delete d_ptr->m_pAudioCodecs ;
 }
 
-
-void Account::poll_events()
-{
-    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-    configurationManager.poll_events();
-}
-
 /*****************************************************************************
  *                                                                           *
  *                                   Slots                                   *

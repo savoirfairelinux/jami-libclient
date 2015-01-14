@@ -20,20 +20,22 @@ PROJECT(ringclient)
 SET(CMAKE_AUTOMOC TRUE)
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
-SET(CMAKE_MODULE_PATH "${LOCAL_CMAKE_MODULE_PATH}")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
-set(QT5_PATH ~/Qt/5.3/clang_64/ CACHE PATH "Path to Qt5")
-set(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
+SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
+
+FIND_PACKAGE(Ring REQUIRED)
 
 # OS X
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    add_definitions( -DENABLE_LIBWRAP=true ) # Use native calls (no dbus)
+    ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/qtwrapper)
+    ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Use native calls (no dbus)
     SET(ENABLE_QT5 true) # Use Qt5
     SET(ENABLE_LIBWRAP true)
     MESSAGE("Compiling for OS X: LibWrap enabled, Qt5 enabled.")
 
-    INCLUDE_DIRECTORIES ( ${CMAKE_SOURCE_DIR}/qtwrapper/)
-
+    INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/src/qtwrapper/)
+    INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
     SET(CMAKE_MACOSX_RPATH ON)
     SET(CMAKE_SKIP_BUILD_RPATH FALSE)
     SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
@@ -230,23 +232,22 @@ SET(libringclient_visitors_LIB_HDRS
 
 SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
-  sflphone_const.h
 )
 
 # Include the headers for linking directly with libDring (used on platforms
 # that don't have/use dbus.
 IF(${ENABLE_LIBWRAP} MATCHES true)
     SET_SOURCE_FILES_PROPERTIES(
-        qtwrapper/presencemanager_wrap.h
+        src/qtwrapper/presencemanager_wrap.h
         PROPERTIES
         CLASSNAME PresenceManagerInterface
-        INCLUDE "qtwrapper/metatypes.h")
+        INCLUDE "src/qtwrapper/metatypes.h")
 
     SET_SOURCE_FILES_PROPERTIES(
-        qtwrapper/configurationmanager_wrap.h
+        src/qtwrapper/configurationmanager_wrap.h
         PROPERTIES
         CLASSNAME PresenceManagerInterface
-        INCLUDE "qtwrapper/metatypes.h")
+        INCLUDE "src/qtwrapper/metatypes.h")
 ELSE() # Use dbus to communicate with libDring
 
   # presence manager interface
@@ -379,11 +380,11 @@ SET(libringclient_PRIVATE_HDRS
    src/private/instantmessagingmodel_p.h
 
    #OS X
-   qtwrapper/callmanager_wrap.h
-   qtwrapper/configurationmanager_wrap.h
-   qtwrapper/instancemanager_wrap.h
-   qtwrapper/presencemanager_wrap.h
-   qtwrapper/videomanager_wrap.h
+   src/qtwrapper/callmanager_wrap.h
+   src/qtwrapper/configurationmanager_wrap.h
+   src/qtwrapper/instancemanager_wrap.h
+   src/qtwrapper/presencemanager_wrap.h
+   src/qtwrapper/videomanager_wrap.h
 )
 
 IF(${ENABLE_QT5} MATCHES true)
@@ -413,6 +414,13 @@ TARGET_LINK_LIBRARIES( ringclient
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTCORE_LIBRARY}
 )
+
+# OS X
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   TARGET_LINK_LIBRARIES( ringclient
+    qtwrapper
+    ${ring_BIN})
+ENDIF()
 
 SET_TARGET_PROPERTIES( ringclient
   PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}

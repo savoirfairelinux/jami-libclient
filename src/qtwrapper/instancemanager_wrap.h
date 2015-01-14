@@ -18,46 +18,51 @@
 #ifndef INSTANCE_DBUS_INTERFACE_H
 #define INSTANCE_DBUS_INTERFACE_H
 
-#include <QtCore/QObject>
-#include <QtCore/QByteArray>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
-#include <QtDBus/QtDBus>
+#include <QObject>
+#include <QByteArray>
+#include <QList>
+#include <QMap>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
 
-#include <sflphone.h>
+#include "ring.h"
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
 /*
- * Proxy class for interface org.sflphone.SFLphone.Instance
+ * Proxy class for interface org.ring.Ring.Instance
  */
 class InstanceInterface: public QObject
 {
-    Q_OBJECT
+   Q_OBJECT
 public:
-    InstanceInterface() {}
+   InstanceInterface();
 
-    ~InstanceInterface() {}
+   ~InstanceInterface();
 
-// TODO: These are not present in sflphone.h
+// TODO: These are not present in ring.h
 
 public Q_SLOTS: // METHODS
-    void Register(int pid, const QString &name)
-    {}
+   void Register(int pid, const QString &name)
+   {}
 
-    void Unregister(int pid)
-    {}
+   void Unregister(int pid)
+   {}
+
+   bool isConnected();
+
+private:
+   QTimer* m_pTimer;
+   ring_ev_handlers evHandlers;
 
 Q_SIGNALS: // SIGNALS
-    void started();
+   void started();
 };
 
-namespace org {
-  namespace sflphone {
-    namespace SFLphone {
+namespace cx {
+  namespace Ring {
+    namespace Ring {
       typedef ::InstanceInterface Instance;
     }
   }

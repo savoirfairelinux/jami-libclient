@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2009-2014 by Savoir-Faire Linux                          *
- *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
- *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Authors : Alexandre Lision alexandre.lision@savoirfairelinux.com       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -16,28 +15,53 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
-#define CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
 
-#ifdef ENABLE_LIBWRAP
- #include "../qtwrapper/configurationmanager_wrap.h"
-#else
- #include "configurationmanager_dbus_interface.h"
-#endif
-#include "../typedefs.h"
+#include "instancemanager_wrap.h"
+#include "callmanager.h"
+#include "presencemanager.h"
+#include "configurationmanager.h"
+#ifdef ENABLE_VIDEO
+ #include "videomanager.h"
+#endif //ENABLE_VIDEO
 
-namespace DBus {
 
-   ///Singleton to access the ConfigurationManager dbus interface
-   class LIB_EXPORT ConfigurationManager
-   {
-   public:
-      static ConfigurationManagerInterface& instance();
+static int ringFlags = 0;
 
-   private:
-      static ConfigurationManagerInterface* interface;
+InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
+{
+   m_pTimer = new QTimer(this);
+   m_pTimer->setInterval(50);
+   connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
+   ringFlags |= RING_FLAG_DEBUG;
+   ringFlags |= RING_FLAG_CONSOLE_LOG;
+
+   evHandlers = {
+       .call_ev_handlers = DBus::CallManager::instance().call_ev_handlers,
+       .config_ev_handlers = DBus::ConfigurationManager::instance().config_ev_handlers,
+       .pres_ev_handlers = DBus::PresenceManager::instance().pres_ev_handlers,
+   #ifdef ENABLE_VIDEO
+      .video_ev_handler = DBus::VideoManager::instance().video_ev_handlers
+   #endif /* ENABLE_VIDEO */
    };
+
+   ring_init(&evHandlers, static_cast<ring_init_flag>(ringFlags));
+
+   printf("INITIATED DAEMON\n");
+}
+
+InstanceInterface::~InstanceInterface()
+{
 
 }
 
-#endif
+void pollEvents()
+{
+   ring_poll_events();
+}
+
+bool InstanceInterface::isConnected()
+{
+   return true;
+}
+
+

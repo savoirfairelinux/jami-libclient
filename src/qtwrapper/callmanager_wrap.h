@@ -27,12 +27,12 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 
-#include <sflphone.h>
+#include <ring.h>
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
 /*
- * Proxy class for interface org.sflphone.SFLphone.CallManager
+ * Proxy class for interface cx.ring.Ring.CallManager
  */
 class CallManagerInterface: public QObject
 {
@@ -42,7 +42,7 @@ public:
 
     CallManagerInterface()
     {
-        call_ev_handlers = sflph_call_ev_handlers {
+        call_ev_handlers = ring_call_ev_handlers {
             .on_state_change = [this] (const std::string &callID, const std::string &state) { printf("EMIT ONSTATECHANGE\n"); emit this->callStateChanged(QString(callID.c_str()), QString(state.c_str())); },
             .on_transfer_fail = [this] () { emit this->transferFailed(); },
             .on_transfer_success = [this] () { emit this->transferSucceeded(); },
@@ -73,93 +73,93 @@ public:
 
     bool isValid() { return true; }
 
-    sflph_call_ev_handlers call_ev_handlers;
+    ring_call_ev_handlers call_ev_handlers;
 
 public Q_SLOTS: // METHODS
     bool accept(const QString &callID)
     {
-        return sflph_call_accept(callID.toStdString());
+        return ring_call_accept(callID.toStdString());
     }
 
     void acceptEnrollment(const QString &callID, bool accepted)
     {
-        sflph_call_accept_enrollment(callID.toStdString(), accepted);
+        ring_call_accept_enrollment(callID.toStdString(), accepted);
     }
 
     bool addMainParticipant(const QString &confID)
     {
-        return sflph_call_add_main_participant(confID.toStdString());
+        return ring_call_add_main_participant(confID.toStdString());
     }
 
     bool addParticipant(const QString &callID, const QString &confID)
     {
-        return sflph_call_add_participant(
+        return ring_call_add_participant(
             callID.toStdString(), confID.toStdString());
     }
 
     bool attendedTransfer(const QString &transferID, const QString &targetID)
     {
-        return sflph_call_attended_transfer(
+        return ring_call_attended_transfer(
             transferID.toStdString(), targetID.toStdString());
     }
 
     void createConfFromParticipantList(const QStringList &participants)
     {
-        sflph_call_create_conf_from_participant_list(
+        ring_call_create_conf_from_participant_list(
             convertStringList(participants));
     }
 
     bool detachParticipant(const QString &callID)
     {
-        return sflph_call_detach_participant(callID.toStdString());
+        return ring_call_detach_participant(callID.toStdString());
     }
 
     MapStringString getCallDetails(const QString &callID)
     {
         MapStringString temp =
-            convertMap(sflph_call_get_call_details(callID.toStdString()));
+            convertMap(ring_call_get_call_details(callID.toStdString()));
         return temp;
     }
 
     QStringList getCallList()
     {
         QStringList temp =
-            convertStringList(sflph_call_get_call_list());
+            convertStringList(ring_call_get_call_list());
         return temp;
     }
 
     MapStringString getConferenceDetails(const QString &callID)
     {
         MapStringString temp =
-            convertMap(sflph_call_get_conference_details(
+            convertMap(ring_call_get_conference_details(
                 callID.toStdString()));
         return temp;
     }
 
     QString getConferenceId(const QString &callID)
     {
-        QString temp(sflph_call_get_conference_id(callID.toStdString()).c_str());
+        QString temp(ring_call_get_conference_id(callID.toStdString()).c_str());
         return temp;
     }
 
     QStringList getConferenceList()
     {
         QStringList temp =
-            convertStringList(sflph_call_get_conference_list());
+            convertStringList(ring_call_get_conference_list());
         return temp;
     }
 
     Q_DECL_DEPRECATED QString getCurrentAudioCodecName(const QString &callID)
     {
         QString temp(
-            sflph_call_get_current_audio_codec_name(callID.toStdString()).c_str());
+            ring_call_get_current_audio_codec_name(callID.toStdString()).c_str());
         return temp;
     }
 
     QStringList getDisplayNames(const QString &confID)
     {
         QStringList temp =
-            convertStringList(sflph_call_get_display_names(
+            convertStringList(ring_call_get_display_names(
                 confID.toStdString()));
         return temp;
     }
@@ -167,142 +167,142 @@ public Q_SLOTS: // METHODS
     bool getIsRecording(const QString &callID)
     {
         //TODO: match API
-        return sflph_call_is_recording(callID.toStdString());
+        return ring_call_is_recording(callID.toStdString());
     }
 
     QStringList getParticipantList(const QString &confID)
     {
         QStringList temp =
-            convertStringList(sflph_call_get_participant_list(
+            convertStringList(ring_call_get_participant_list(
                 confID.toStdString()));
         return temp;
     }
 
     bool hangUp(const QString &callID)
     {
-        return sflph_call_hang_up(callID.toStdString());
+        return ring_call_hang_up(callID.toStdString());
     }
 
     bool hangUpConference(const QString &confID)
     {
-        return sflph_call_hang_up_conference(confID.toStdString());
+        return ring_call_hang_up_conference(confID.toStdString());
     }
 
     bool hold(const QString &callID)
     {
-        return sflph_call_hold(callID.toStdString());
+        return ring_call_hold(callID.toStdString());
     }
 
     bool holdConference(const QString &confID)
     {
-        return sflph_call_hold_conference(confID.toStdString());
+        return ring_call_hold_conference(confID.toStdString());
     }
 
     bool isConferenceParticipant(const QString &callID)
     {
-        return sflph_call_is_conference_participant(callID.toStdString());
+        return ring_call_is_conference_participant(callID.toStdString());
     }
 
     bool joinConference(const QString &sel_confID, const QString &drag_confID)
     {
-        return sflph_call_join_conference(
+        return ring_call_join_conference(
             sel_confID.toStdString(), drag_confID.toStdString());
     }
 
     bool joinParticipant(const QString &sel_callID, const QString &drag_callID)
     {
-        return sflph_call_join_participant(
+        return ring_call_join_participant(
             sel_callID.toStdString(), drag_callID.toStdString());
     }
 
     bool placeCall(const QString &accountID, const QString &callID, const QString &to)
     {
         //TODO: match API
-        return sflph_call_place(
+        return ring_call_place(
             accountID.toStdString(), callID.toStdString(), to.toStdString());
     }
 
     void playDTMF(const QString &key)
     {
-        sflph_call_play_dtmf(key.toStdString());
+        ring_call_play_dtmf(key.toStdString());
     }
 
     void recordPlaybackSeek(double value)
     {
-        sflph_call_record_playback_seek(value);
+        ring_call_record_playback_seek(value);
     }
 
     bool refuse(const QString &callID)
     {
-        return sflph_call_refuse(callID.toStdString());
+        return ring_call_refuse(callID.toStdString());
     }
 
     void requestGoClear(const QString &callID)
     {
-        sflph_call_request_go_clear(callID.toStdString());
+        ring_call_request_go_clear(callID.toStdString());
     }
 
     void resetSASVerified(const QString &callID)
     {
-        sflph_call_reset_sas_verified(callID.toStdString());
+        ring_call_reset_sas_verified(callID.toStdString());
     }
 
     void sendTextMessage(const QString &callID, const QString &message)
     {
-        sflph_call_send_text_message(
+        ring_call_send_text_message(
             callID.toStdString(), message.toStdString());
     }
 
     void setConfirmGoClear(const QString &callID)
     {
-        sflph_call_set_confirm_go_clear(callID.toStdString());
+        ring_call_set_confirm_go_clear(callID.toStdString());
     }
 
     Q_DECL_DEPRECATED void setRecording(const QString &callID)
     {
-        sflph_call_set_recording(callID.toStdString());
+        ring_call_set_recording(callID.toStdString());
     }
 
     void setSASVerified(const QString &callID)
     {
-        sflph_call_set_sas_verified(callID.toStdString());
+        ring_call_set_sas_verified(callID.toStdString());
     }
 
     bool startRecordedFilePlayback(const QString &filepath)
     {
         // TODO: Change method name to match API
-        return sflph_call_play_recorded_file(filepath.toStdString());
+        return ring_call_play_recorded_file(filepath.toStdString());
     }
 
     void startTone(int start, int type)
     {
-        sflph_call_start_tone(start, type);
+        ring_call_start_tone(start, type);
     }
 
     void stopRecordedFilePlayback(const QString &filepath)
     {
-        sflph_call_stop_recorded_file(filepath.toStdString());
+        ring_call_stop_recorded_file(filepath.toStdString());
     }
 
     bool toggleRecording(const QString &callID)
     {
-        return sflph_call_toggle_recording(callID.toStdString());
+        return ring_call_toggle_recording(callID.toStdString());
     }
 
     bool transfer(const QString &callID, const QString &to)
     {
-        return sflph_call_transfer(
+        return ring_call_transfer(
             callID.toStdString(), to.toStdString());
     }
 
     bool unhold(const QString &callID)
     {
-        return sflph_call_unhold(callID.toStdString());
+        return ring_call_unhold(callID.toStdString());
     }
 
     bool unholdConference(const QString &confID)
     {
-        return sflph_call_unhold_conference(confID.toStdString());
+        return ring_call_unhold_conference(confID.toStdString());
     }
 
 Q_SIGNALS: // SIGNALS
@@ -334,8 +334,8 @@ Q_SIGNALS: // SIGNALS
 };
 
 namespace org {
-  namespace sflphone {
-    namespace SFLphone {
+  namespace ring {
+    namespace Ring {
       typedef ::CallManagerInterface CallManager;
     }
   }

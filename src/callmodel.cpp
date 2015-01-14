@@ -130,9 +130,10 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 {
    //Register with the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
+#ifndef ENABLE_LIBWRAP
    QDBusPendingReply<QString> reply = instance.Register(getpid(), "Ring KDE Client");
    reply.waitForFinished();
-
+#endif
    setObjectName("CallModel");
 } //CallModel
 
@@ -203,7 +204,11 @@ CallModel::~CallModel()
    //Unregister from the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
    Q_NOREPLY instance.Unregister(getpid());
+#ifdef ENABLE_LIBWRAP
+
+#else
    instance.connection().disconnectFromBus(instance.connection().baseService());
+#endif //ENABLE_LIBWRAP
 }
 
 void CallModelPrivate::initRoles()
@@ -299,7 +304,11 @@ bool CallModel::hasConference() const
 
 bool CallModel::isConnected() const
 {
+#ifdef ENABLE_LIBWRAP
+   return DBus::InstanceManager::instance().isConnected();
+#else 
    return DBus::InstanceManager::instance().connection().isConnected();
+#endif //ENABLE_LIBWRAP
 }
 
 bool CallModel::isValid()

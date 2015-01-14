@@ -27,14 +27,14 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 
-#include <sflphone.h>
+#include <ring.h>
 
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
 
 /*
- * Proxy class for interface org.sflphone.SFLphone.PresenceManager
+ * Proxy class for interface org.ring.Ring.PresenceManager
  */
 class PresenceManagerInterface: public QObject
 {
@@ -52,18 +52,18 @@ public:
 
     ~PresenceManagerInterface() {}
 
-    sflph_pres_ev_handlers pres_ev_handlers;
+    ring_pres_ev_handlers pres_ev_handlers;
 
 public Q_SLOTS: // METHODS
     void answerServerRequest(const QString &uri, bool flag)
     {
-        sflph_pres_answer_server_request(uri.toStdString(), flag);
+        ring_pres_answer_server_request(uri.toStdString(), flag);
     }
 
     VectorMapStringString getSubscriptions(const QString &accountID)
     {
         VectorMapStringString temp;
-        for (auto x : sflph_pres_get_subscriptions(accountID.toStdString())) {
+        for (auto x : ring_pres_get_subscriptions(accountID.toStdString())) {
             temp.push_back(convertMap(x));
         }
         return temp;
@@ -71,17 +71,17 @@ public Q_SLOTS: // METHODS
 
     void publish(const QString &accountID, bool status, const QString &note)
     {
-        sflph_pres_publish(accountID.toStdString(), status, note.toStdString());
+        ring_pres_publish(accountID.toStdString(), status, note.toStdString());
     }
 
     void setSubscriptions(const QString &accountID, const QStringList &uriList)
     {
-        sflph_pres_set_subscriptions(accountID.toStdString(), convertStringList(uriList));
+        ring_pres_set_subscriptions(accountID.toStdString(), convertStringList(uriList));
     }
 
     void subscribeBuddy(const QString &accountID, const QString &uri, bool flag)
     {
-        sflph_pres_subscribe_buddy(accountID.toStdString(), uri.toStdString(), flag);
+        ring_pres_subscribe_buddy(accountID.toStdString(), uri.toStdString(), flag);
     }
 
 Q_SIGNALS: // SIGNALS
@@ -92,8 +92,8 @@ Q_SIGNALS: // SIGNALS
 };
 
 namespace org {
-  namespace sflphone {
-    namespace SFLphone {
+  namespace ring {
+    namespace Ring {
       typedef ::PresenceManagerInterface PresenceManager;
     }
   }

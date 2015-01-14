@@ -29,7 +29,7 @@
 
 #include <future>
 
-#include <sflphone.h>
+#include <ring.h>
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
@@ -38,7 +38,7 @@
 
 
 /*
- * Proxy class for interface org.sflphone.SFLphone.ConfigurationManager
+ * Proxy class for interface org.ring.Ring.ConfigurationManager
  */
 class ConfigurationManagerInterface: public QObject
 {
@@ -47,8 +47,7 @@ class ConfigurationManagerInterface: public QObject
 public:
     ConfigurationManagerInterface()
     {
-        pollTimer_.setObjectName("GROSSE PATATE VOLANTE");
-        setObjectName("CONFIGURATIONMANAGETOMATE");
+        setObjectName("ConfigurationManagerInterface");
         config_ev_handlers = {
             .on_volume_change = [this] (const std::string &device, double value) { emit this->volumeChanged(QString(device.c_str()), value); },
             .on_accounts_change = [this] () { emit this->accountsChanged(); },
@@ -63,65 +62,60 @@ public:
 
     ~ConfigurationManagerInterface() {}
 
-    void poll_events() {
-        sflph_poll_events();
-    }
-
-    sflph_config_ev_handlers config_ev_handlers;
-    sflph_ev_handlers evHandlers;
+    ring_config_ev_handlers config_ev_handlers;
 
 public Q_SLOTS: // METHODS
     QString addAccount(MapStringString details)
     {
         QString temp(
-            sflph_config_add_account(convertMap(details)).c_str());
+            ring_config_add_account(convertMap(details)).c_str());
         return temp;
     }
 
     bool checkCertificateValidity(const QString &caPath, const QString &pemPath)
     {
-        return sflph_config_check_certificate_validity(
+        return ring_config_check_certificate_validity(
             caPath.toStdString(), pemPath.toStdString());
     }
 
     bool checkForPrivateKey(const QString &pemPath)
     {
-        return sflph_config_check_for_private_key(pemPath.toStdString());
+        return ring_config_check_for_private_key(pemPath.toStdString());
     }
 
     bool checkHostnameCertificate(const QString &host, const QString &port)
     {
-        return sflph_config_check_hostname_certificate(
+        return ring_config_check_hostname_certificate(
             host.toStdString(), port.toStdString());
     }
 
     void clearHistory()
     {
-        sflph_config_clear_history();
+        ring_config_clear_history();
     }
 
     MapStringString getAccountDetails(const QString &accountID)
     {
         MapStringString temp =
-            convertMap(sflph_config_get_account_details(accountID.toStdString()));
+            convertMap(ring_config_get_account_details(accountID.toStdString()));
         return temp;
     }
 
     QStringList getAccountList()
     {
         std::cout << "AccountList:" << std::endl;
-        for (auto x : sflph_config_get_account_list())
+        for (auto x : ring_config_get_account_list())
             std::cout << x << std::endl;
 
         QStringList temp =
-            convertStringList(sflph_config_get_account_list());
+            convertStringList(ring_config_get_account_list());
         return temp;
     }
 
     MapStringString getAccountTemplate()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_account_template());
+            convertMap(ring_config_get_account_template());
         return temp;
     }
 
@@ -129,85 +123,85 @@ public Q_SLOTS: // METHODS
     VectorInt getActiveAudioCodecList(const QString &accountID)
     {
         return QVector<int>::fromStdVector(
-            sflph_config_get_active_audio_codec_list(accountID.toStdString()));
+            ring_config_get_active_audio_codec_list(accountID.toStdString()));
     }
 
     QString getAddrFromInterfaceName(const QString &interface)
     {
         QString temp(
-            sflph_config_get_addr_from_interface_name(interface.toStdString()).c_str());
+            ring_config_get_addr_from_interface_name(interface.toStdString()).c_str());
         return temp;
     }
 
     QStringList getAllIpInterface()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_all_ip_interface());
+            convertStringList(ring_config_get_all_ip_interface());
         return temp;
     }
 
     QStringList getAllIpInterfaceByName()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_all_ip_interface_by_name());
+            convertStringList(ring_config_get_all_ip_interface_by_name());
         return temp;
     }
 
     QStringList getAudioCodecDetails(int payload)
     {
         QStringList temp =
-            convertStringList(sflph_config_get_audio_codec_details(payload));
+            convertStringList(ring_config_get_audio_codec_details(payload));
         return temp;
     }
 
 // TODO: works?
     VectorInt getAudioCodecList()
     {
-        return QVector<int>::fromStdVector(sflph_config_get_audio_codec_list());
+        return QVector<int>::fromStdVector(ring_config_get_audio_codec_list());
     }
 
     int getAudioInputDeviceIndex(const QString &devname)
     {
-        return sflph_config_get_audio_input_device_index(devname.toStdString());
+        return ring_config_get_audio_input_device_index(devname.toStdString());
     }
 
     QStringList getAudioInputDeviceList()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_audio_input_device_list());
+            convertStringList(ring_config_get_audio_input_device_list());
         return temp;
     }
 
     QString getAudioManager()
     {
         QString temp(
-            sflph_config_get_audio_manager().c_str());
+            ring_config_get_audio_manager().c_str());
         return temp;
     }
 
     int getAudioOutputDeviceIndex(const QString &devname)
     {
-        return sflph_config_get_audio_output_device_index(devname.toStdString());
+        return ring_config_get_audio_output_device_index(devname.toStdString());
     }
 
     QStringList getAudioOutputDeviceList()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_audio_output_device_list());
+            convertStringList(ring_config_get_audio_output_device_list());
         return temp;
     }
 
     QStringList getAudioPluginList()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_audio_plugin_list());
+            convertStringList(ring_config_get_audio_plugin_list());
         return temp;
     }
 
     VectorMapStringString getCredentials(const QString &accountID)
     {
         VectorMapStringString temp;
-        for(auto x : sflph_config_get_credentials(accountID.toStdString())) {
+        for(auto x : ring_config_get_credentials(accountID.toStdString())) {
             temp.push_back(convertMap(x));
         }
         return temp;
@@ -216,21 +210,21 @@ public Q_SLOTS: // METHODS
     QStringList getCurrentAudioDevicesIndex()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_current_audio_devices_index());
+            convertStringList(ring_config_get_current_audio_devices_index());
         return temp;
     }
 
     QString getCurrentAudioOutputPlugin()
     {
         QString temp(
-            sflph_config_get_current_audio_output_plugin().c_str());
+            ring_config_get_current_audio_output_plugin().c_str());
         return temp;
     }
 
     VectorMapStringString getHistory()
     {
         VectorMapStringString temp;
-        for (auto x : sflph_config_get_history()) {
+        for (auto x : ring_config_get_history()) {
             temp.push_back(convertMap(x));
         }
         return temp;
@@ -238,73 +232,73 @@ public Q_SLOTS: // METHODS
 
     int getHistoryLimit()
     {
-        return sflph_config_get_history_limit();
+        return ring_config_get_history_limit();
     }
 
     MapStringString getHookSettings()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_hook_settings());
+            convertMap(ring_config_get_hook_settings());
         return temp;
     }
 
     MapStringString getIp2IpDetails()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_ip2ip_details());
+            convertMap(ring_config_get_ip2ip_details());
         return temp;
     }
 
     bool getIsAlwaysRecording()
     {
         // TODO: update API
-        return sflph_config_is_always_recording();
+        return ring_config_is_always_recording();
     }
 
     bool getNoiseSuppressState()
     {
-        return sflph_config_get_noise_suppress_state();
+        return ring_config_get_noise_suppress_state();
     }
 
     QString getRecordPath()
     {
         QString temp(
-            sflph_config_get_record_path().c_str());
+            ring_config_get_record_path().c_str());
         return temp;
     }
 
     MapStringString getRingtoneList()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_ringtone_list());
+            convertMap(ring_config_get_ringtone_list());
         return temp;
     }
 
     MapStringString getShortcuts()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_shortcuts());
+            convertMap(ring_config_get_shortcuts());
         return temp;
     }
 
     QStringList getSupportedAudioManagers()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_supported_audio_managers());
+            convertStringList(ring_config_get_supported_audio_managers());
         return temp;
     }
 
     QStringList getSupportedTlsMethod()
     {
         QStringList temp =
-            convertStringList(sflph_config_get_supported_tls_method());
+            convertStringList(ring_config_get_supported_tls_method());
         return temp;
     }
 
     MapStringString getTlsSettings()
     {
         MapStringString temp =
-            convertMap(sflph_config_get_tls_settings());
+            convertMap(ring_config_get_tls_settings());
         return temp;
     }
 
@@ -312,116 +306,116 @@ public Q_SLOTS: // METHODS
     {
         // TODO: update API
         MapStringString temp =
-            convertMap(sflph_config_get_tls_default_settings());
+            convertMap(ring_config_get_tls_default_settings());
         return temp;
     }
 
     double getVolume(const QString &device)
     {
-        return sflph_config_get_volume(device.toStdString());
+        return ring_config_get_volume(device.toStdString());
     }
 
     bool isAgcEnabled()
     {
-        return sflph_config_is_agc_enabled();
+        return ring_config_is_agc_enabled();
     }
 
     bool isCaptureMuted()
     {
-        return sflph_config_is_capture_muted();
+        return ring_config_is_capture_muted();
     }
 
     bool isDtmfMuted()
     {
-        return sflph_config_is_dtmf_muted();
+        return ring_config_is_dtmf_muted();
     }
 
     int isIax2Enabled()
     {
-        return sflph_config_is_iax2_enabled();
+        return ring_config_is_iax2_enabled();
     }
 
     bool isPlaybackMuted()
     {
-        return sflph_config_is_playback_muted();
+        return ring_config_is_playback_muted();
     }
 
     void muteCapture(bool mute)
     {
-        sflph_config_mute_capture(mute);
+        ring_config_mute_capture(mute);
     }
 
     void muteDtmf(bool mute)
     {
-        sflph_config_mute_dtmf(mute);
+        ring_config_mute_dtmf(mute);
     }
 
     void mutePlayback(bool mute)
     {
-        sflph_config_mute_playback(mute);
+        ring_config_mute_playback(mute);
     }
 
     void registerAllAccounts()
     {
-        sflph_config_register_all_accounts();
+        ring_config_register_all_accounts();
     }
 
     void removeAccount(const QString &accountID)
     {
-        sflph_config_remove_account(accountID.toStdString());
+        ring_config_remove_account(accountID.toStdString());
     }
 
     void sendRegister(const QString &accountID, bool enable)
     {
-        sflph_config_send_register(accountID.toStdString(), enable);
+        ring_config_send_register(accountID.toStdString(), enable);
     }
 
     void setAccountDetails(const QString &accountID, MapStringString details)
     {
-        sflph_config_set_account_details(accountID.toStdString(),
+        ring_config_set_account_details(accountID.toStdString(),
             convertMap(details));
     }
 
     void setAccountsOrder(const QString &order)
     {
-        sflph_config_set_accounts_order(order.toStdString());
+        ring_config_set_accounts_order(order.toStdString());
     }
 
     void setActiveAudioCodecList(const QStringList &list, const QString &accountID)
     {
-        sflph_config_set_active_audio_codec_list(
+        ring_config_set_active_audio_codec_list(
             convertStringList(list), accountID.toStdString());
     }
 
     void setAgcState(bool enabled)
     {
         //TODO: update API
-        sflph_config_enable_agc(enabled);
+        ring_config_enable_agc(enabled);
     }
 
     void setAudioInputDevice(int index)
     {
-        sflph_config_set_audio_input_device(index);
+        ring_config_set_audio_input_device(index);
     }
 
     bool setAudioManager(const QString &api)
     {
-        return sflph_config_set_audio_manager(api.toStdString());
+        return ring_config_set_audio_manager(api.toStdString());
     }
 
     void setAudioOutputDevice(int index)
     {
-        sflph_config_set_audio_output_device(index);
+        ring_config_set_audio_output_device(index);
     }
 
     void setAudioPlugin(const QString &audioPlugin)
     {
-        sflph_config_set_audio_plugin(audioPlugin.toStdString());
+        ring_config_set_audio_plugin(audioPlugin.toStdString());
     }
 
     void setAudioRingtoneDevice(int index)
     {
-        sflph_config_set_audio_ringtone_device(index);
+        ring_config_set_audio_ringtone_device(index);
     }
 
     void setCredentials(const QString &accountID, VectorMapStringString credentialInformation)
@@ -430,48 +424,48 @@ public Q_SLOTS: // METHODS
         for (auto x : credentialInformation) {
             temp.push_back(convertMap(x));
         }
-        sflph_config_set_credentials(accountID.toStdString(), temp);
+        ring_config_set_credentials(accountID.toStdString(), temp);
     }
 
     void setHistoryLimit(int days)
     {
-        sflph_config_set_history_limit(days);
+        ring_config_set_history_limit(days);
     }
 
     void setHookSettings(MapStringString settings)
     {
-        sflph_config_set_hook_settings(convertMap(settings));
+        ring_config_set_hook_settings(convertMap(settings));
     }
 
     void setIsAlwaysRecording(bool enabled)
     {
         //TODO: update API
-        sflph_config_set_always_recording(enabled);
+        ring_config_set_always_recording(enabled);
     }
 
     void setNoiseSuppressState(bool state)
     {
-        sflph_config_set_noise_suppress_state(state);
+        ring_config_set_noise_suppress_state(state);
     }
 
     void setRecordPath(const QString &rec)
     {
-        sflph_config_set_record_path(rec.toStdString());
+        ring_config_set_record_path(rec.toStdString());
     }
 
     void setShortcuts(MapStringString shortcutsMap)
     {
-        sflph_config_set_shortcuts(convertMap(shortcutsMap));
+        ring_config_set_shortcuts(convertMap(shortcutsMap));
     }
 
     void setTlsSettings(MapStringString details)
     {
-        sflph_config_set_tls_settings(convertMap(details));
+        ring_config_set_tls_settings(convertMap(details));
     }
 
     void setVolume(const QString &device, double value)
     {
-        sflph_config_set_volume(device.toStdString(), value);
+        ring_config_set_volume(device.toStdString(), value);
     }
 
 Q_SIGNALS: // SIGNALS
@@ -487,8 +481,8 @@ Q_SIGNALS: // SIGNALS
 };
 
 namespace org {
-  namespace sflphone {
-    namespace SFLphone {
+  namespace ring {
+    namespace Ring {
       typedef ::ConfigurationManagerInterface ConfigurationManager;
     }
   }
