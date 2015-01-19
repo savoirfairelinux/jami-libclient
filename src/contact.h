@@ -85,7 +85,7 @@ public:
 
 protected:
    //The D-Pointer can be shared if a PlaceHolderContact is merged with a real one
-   ContactPrivate* d;
+   ContactPrivate* d_ptr;
    void replaceDPointer(Contact* other);
 
 public:

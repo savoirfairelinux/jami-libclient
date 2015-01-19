@@ -103,7 +103,6 @@ SET( libringclient_LIB_SRCS
 
   #Data backends
   src/transitionalcontactbackend.cpp
-  src/legacyhistorybackend.cpp
   src/abstractitembackend.cpp
 
   #Communication
@@ -167,7 +166,6 @@ SET( libringclient_LIB_HDRS
   src/categorizedcompositenode.h
   src/abstractitembackendmodelextension.h
   src/commonbackendmanagerinterface.h
-  src/legacyhistorybackend.h
   src/networkinterfacemodel.h
 )
 

@@ -46,7 +46,6 @@ class LIB_EXPORT HistoryModel : public QAbstractItemModel, public CommonBackendM
 public:
    friend class HistoryItemNode;
    friend class HistoryTopLevelItem;
-   friend class TopLevelItem;
 
    //Properties
    Q_PROPERTY(bool hasBackends   READ hasBackends  )

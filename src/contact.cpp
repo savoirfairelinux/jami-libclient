@@ -148,188 +148,188 @@ Contact* Contact::PhoneNumbers::contact() const
 
 ///Constructor
 Contact::Contact(AbstractContactBackend* parent):QObject(parent?parent:TransitionalContactBackend::instance()),
-   d(new ContactPrivate(this,parent))
+   d_ptr(new ContactPrivate(this,parent))
 {
-   d->m_isPlaceHolder = false;
-   d->m_lParents << this;
+   d_ptr->m_isPlaceHolder = false;
+   d_ptr->m_lParents << this;
 }
 
 ///Destructor
 Contact::~Contact()
 {
    //Unregister itself from the D-Pointer list
-   d->m_lParents.removeAll(this);
+   d_ptr->m_lParents.removeAll(this);
 
-   if (!d->m_lParents.size()) {
-      delete d;
+   if (!d_ptr->m_lParents.size()) {
+      delete d_ptr;
    }
 }
 
 ///Get the phone number list
 const Contact::PhoneNumbers& Contact::phoneNumbers() const
 {
-   return d->m_Numbers;
+   return d_ptr->m_Numbers;
 }
 
 ///Get the nickname
 const QString& Contact::nickName() const
 {
-   return d->m_NickName;
+   return d_ptr->m_NickName;
 }
 
 ///Get the firstname
 const QString& Contact::firstName() const
 {
-   return d->m_FirstName;
+   return d_ptr->m_FirstName;
 }
 
 ///Get the second/family name
 const QString& Contact::secondName() const
 {
-   return d->m_SecondName;
+   return d_ptr->m_SecondName;
 }
 
 ///Get the photo
 const QPixmap* Contact::photo() const
 {
-   return d->m_pPhoto;
+   return d_ptr->m_pPhoto;
 }
 
 ///Get the formatted name
 const QString& Contact::formattedName() const
 {
-   return d->m_FormattedName;
+   return d_ptr->m_FormattedName;
 }
 
 ///Get the organisation
 const QString& Contact::organization()  const
 {
-   return d->m_Organization;
+   return d_ptr->m_Organization;
 }
 
 ///Get the preferred email
 const QString& Contact::preferredEmail()  const
 {
-   return d->m_PreferredEmail;
+   return d_ptr->m_PreferredEmail;
 }
 
 ///Get the unique identifier (used for drag and drop) 
 const QByteArray& Contact::uid() const
 {
-   return d->m_Uid;
+   return d_ptr->m_Uid;
 }
 
 ///Get the group
 const QString& Contact::group() const
 {
-   return d->m_Group;
+   return d_ptr->m_Group;
 }
 
 const QString& Contact::department() const
 {
-   return d->m_Department;
+   return d_ptr->m_Department;
 }
 
 ///Set the phone number (type and number)
 void Contact::setPhoneNumbers(PhoneNumbers numbers)
 {
-   const int oldCount(d->m_Numbers.size()),newCount(numbers.size());
-   foreach(PhoneNumber* n, d->m_Numbers)
+   const int oldCount(d_ptr->m_Numbers.size()),newCount(numbers.size());
+   foreach(PhoneNumber* n, d_ptr->m_Numbers)
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
-   d->m_Numbers = numbers;
+   d_ptr->m_Numbers = numbers;
    if (newCount < oldCount) //Rows need to be removed from models first
-      d->phoneNumberCountAboutToChange(newCount,oldCount);
-   foreach(PhoneNumber* n, d->m_Numbers)
+      d_ptr->phoneNumberCountAboutToChange(newCount,oldCount);
+   foreach(PhoneNumber* n, d_ptr->m_Numbers)
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
    if (newCount > oldCount) //Need to be updated after the data to prevent invalid memory access
-      d->phoneNumberCountChanged(newCount,oldCount);
-   d->changed();
+      d_ptr->phoneNumberCountChanged(newCount,oldCount);
+   d_ptr->changed();
 }
 
 ///Set the nickname
 void Contact::setNickName(const QString& name)
 {
-   d->m_NickName = name;
-   d->changed();
+   d_ptr->m_NickName = name;
+   d_ptr->changed();
 }
 
 ///Set the first name
 void Contact::setFirstName(const QString& name)
 {
-   d->m_FirstName = name;
+   d_ptr->m_FirstName = name;
    setObjectName(formattedName());
-   d->changed();
+   d_ptr->changed();
 }
 
 ///Set the family name
 void Contact::setFamilyName(const QString& name)
 {
-   d->m_SecondName = name;
+   d_ptr->m_SecondName = name;
    setObjectName(formattedName());
-   d->changed();
+   d_ptr->changed();
 }
 
 ///Set the Photo/Avatar
 void Contact::setPhoto(QPixmap* photo)
 {
-   d->m_pPhoto = photo;
-   d->changed();
+   d_ptr->m_pPhoto = photo;
+   d_ptr->changed();
 }
 
 ///Set the formatted name (display name)
 void Contact::setFormattedName(const QString& name)
 {
-   d->m_FormattedName = name;
-   d->changed();
+   d_ptr->m_FormattedName = name;
+   d_ptr->changed();
 }
 
 ///Set the organisation / business
 void Contact::setOrganization(const QString& name)
 {
-   d->m_Organization = name;
-   d->changed();
+   d_ptr->m_Organization = name;
+   d_ptr->changed();
 }
 
 ///Set the default email
 void Contact::setPreferredEmail(const QString& name)
 {
-   d->m_PreferredEmail = name;
-   d->changed();
+   d_ptr->m_PreferredEmail = name;
+   d_ptr->changed();
 }
 
 ///Set UID
 void Contact::setUid(const QByteArray& id)
 {
-   d->m_Uid = id;
-   d->changed();
+   d_ptr->m_Uid = id;
+   d_ptr->changed();
 }
 
 ///Set Group
 void Contact::setGroup(const QString& name)
 {
-   d->m_Group = name;
-   d->changed();
+   d_ptr->m_Group = name;
+   d_ptr->changed();
 }
 
 ///Set department
 void Contact::setDepartment(const QString& name)
 {
-   d->m_Department = name;
-   d->changed();
+   d_ptr->m_Department = name;
+   d_ptr->changed();
 }
 
 ///If the contact have been deleted or not yet fully created
 void Contact::setActive( bool active)
 {
-   d->m_Active = active;
-   d->statusChanged(d->m_Active);
-   d->changed();
+   d_ptr->m_Active = active;
+   d_ptr->statusChanged(d_ptr->m_Active);
+   d_ptr->changed();
 }
 
 ///Return if one of the PhoneNumber is present
 bool Contact::isPresent() const
 {
-   foreach(const PhoneNumber* n,d->m_Numbers) {
+   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->isPresent())
          return true;
    }
@@ -339,7 +339,7 @@ bool Contact::isPresent() const
 ///Return if one of the PhoneNumber is tracked
 bool Contact::isTracked() const
 {
-   foreach(const PhoneNumber* n,d->m_Numbers) {
+   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->isTracked())
          return true;
    }
@@ -349,13 +349,13 @@ bool Contact::isTracked() const
 ///Have this contact been deleted or doesn't exist yet
 bool Contact::isActive() const
 {
-   return d->m_Active;
+   return d_ptr->m_Active;
 }
 
 ///Return if one of the PhoneNumber support presence
 bool Contact::supportPresence() const
 {
-   foreach(const PhoneNumber* n,d->m_Numbers) {
+   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->supportPresence())
          return true;
    }
@@ -380,45 +380,45 @@ time_t Contact::PhoneNumbers::lastUsedTimeStamp() const
 ///Recomputing the filter string is heavy, cache it
 QString Contact::filterString() const
 {
-   return d->filterString();
+   return d_ptr->filterString();
 }
 
 ///Callback when one of the phone number presence change
 void Contact::slotPresenceChanged()
 {
-   d->changed();
+   d_ptr->changed();
 }
 
 ///Save the contact
 bool Contact::save() const
 {
-   return d->m_pBackend->save(this);
+   return d_ptr->m_pBackend->save(this);
 }
 
 ///Show an implementation dependant dialog to edit the contact
 bool Contact::edit()
 {
-   return d->m_pBackend->edit(this);
+   return d_ptr->m_pBackend->edit(this);
 }
 
 ///Remove the contact from the backend
 bool Contact::remove()
 {
-   return d->m_pBackend->remove(this);
+   return d_ptr->m_pBackend->remove(this);
 }
 
 ///Add a new phone number to the backend
 ///@note The backend is expected to notify the Contact (asynchronously) when done
 bool Contact::addPhoneNumber(PhoneNumber* n)
 {
-   return d->m_pBackend->addPhoneNumber(this,n);
+   return d_ptr->m_pBackend->addPhoneNumber(this,n);
 }
 
 ///Create a placeholder contact, it will eventually be replaced when the real one is loaded
 ContactPlaceHolder::ContactPlaceHolder(const QByteArray& uid)
 {
    setUid(uid);
-   d->m_isPlaceHolder = true;
+   d_ptr->m_isPlaceHolder = true;
 }
 
 
@@ -427,7 +427,7 @@ bool ContactPlaceHolder::merge(Contact* contact)
    if ((!contact) || ((*contact) == this))
       return false;
 
-   ContactPrivate* currentD = d;
+   ContactPrivate* currentD = d_ptr;
    replaceDPointer(contact);
    currentD->m_lParents.removeAll(this);
    if (!currentD->m_lParents.size())
@@ -437,18 +437,18 @@ bool ContactPlaceHolder::merge(Contact* contact)
 
 void Contact::replaceDPointer(Contact* c)
 {
-   this->d = c->d;
-   d->m_lParents << this;
+   this->d_ptr = c->d_ptr;
+   d_ptr->m_lParents << this;
    emit changed();
    emit rebased(c);
 }
 
 bool Contact::operator==(const Contact* other) const
 {
-   return other && this->d == other->d;
+   return other && this->d_ptr == other->d_ptr;
 }
 
 bool Contact::operator==(const Contact& other) const
 {
-   return &other && this->d == other.d;
+   return &other && this->d_ptr == other.d_ptr;
 }

@@ -32,6 +32,8 @@
 class ContactBackend;
 class NumberTreeBackend;
 
+class BookmarkModelPrivate;
+
 class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public CommonBackendManagerInterface<AbstractBookmarkBackend>
 {
    #pragma GCC diagnostic push
@@ -83,45 +85,11 @@ public:
    //Singleton
    static BookmarkModel* instance();
 
-protected:
-   bool                  displayFrequentlyUsed() const;
-   QList<PhoneNumber*>   bookmarkList         () const;
-
-   //Helpers
-   static QVector<PhoneNumber*> serialisedToList(const QStringList& list);
-
 private:
    static BookmarkModel* m_spInstance;
-   ///Top level bookmark item
-   class TopLevelItem : public CategorizedCompositeNode {
-      friend class BookmarkModel;
-      public:
-         virtual QObject* getSelf() const;
-         int m_Row;
-      private:
-         explicit TopLevelItem(QString name);
-         QList<NumberTreeBackend*> m_lChildren;
-         QString m_Name;
-         bool m_MostPopular;
-   };
 
-   QVector<AbstractBookmarkBackend*> m_lBackends;
-
-   //Attributes
-   QList<TopLevelItem*>         m_lCategoryCounter ;
-   QHash<QString,TopLevelItem*> m_hCategories      ;
-   QStringList                  m_lMimes           ;
-
-   //Getters
-   QModelIndex getContactIndex(Contact* ct) const;
-
-   //Helpers
-   QVariant commonCallInfo(NumberTreeBackend* call, int role = Qt::DisplayRole) const;
-   QString category(NumberTreeBackend* number) const;
-
-private Q_SLOTS:
-   void slotRequest(const QString& uri);
-   void slotIndexChanged(const QModelIndex& idx);
+   BookmarkModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(BookmarkModel);
 
 public Q_SLOTS:
    void reloadCategories();
