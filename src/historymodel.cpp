@@ -602,7 +602,7 @@ void HistoryModel::addBackend(AbstractHistoryBackend* backend, LoadOptions optio
 }
 
 ///Call all backends that support clearing
-void HistoryModel::clearAllBackends() const
+bool HistoryModel::clearAllBackends() const
 {
    foreach (AbstractHistoryBackend* backend, d_ptr->m_lBackends) {
       if (backend->supportedFeatures() & AbstractHistoryBackend::ADD) {

@@ -52,6 +52,18 @@ AbstractHistoryBackend::~AbstractHistoryBackend()
 {
 }
 
+///Constructor
+AbstractBookmarkBackend::AbstractBookmarkBackend(AbstractItemBackendInterface<PhoneNumber>* parentBackend, QObject* par)
+: AbstractItemBackendInterface<PhoneNumber>(parentBackend),QObject(par?par:QCoreApplication::instance())
+{
+}
+
+///Destructor
+AbstractBookmarkBackend::~AbstractBookmarkBackend()
+{
+}
+
+
 QVector<AbstractItemBackendBase*> AbstractItemBackendBase::baseChildrenBackends() const
 {
    return m_lBaseChildren;
@@ -80,6 +92,11 @@ template <class T> bool AbstractItemBackendInterface<T>::remove(T* item)
 }
 
 bool AbstractItemBackendBase::enable(bool)
+{
+   return false;
+}
+
+template <class T> bool AbstractItemBackendInterface<T>::addPhoneNumber(T* item, PhoneNumber* number)
 {
    return false;
 }

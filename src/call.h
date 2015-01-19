@@ -47,28 +47,15 @@ class CallPrivate;
 
 
 /**
- *  This class represents a call either actual (in the call list
- *  displayed in main window), either past (in the call history).
- *  A call is represented by an automate, with a list of states
- *  (enum call_state) and 2 lists of transition signals
- *  (call_action when the user performs an action on the UI and 
- *  daemon_call_state when the daemon sends a stateChanged signal)
- *  When a transition signal is received, the automate calls a
- *  function then go to a new state according to the previous state
- *  of the call and the signal received.
- *  The functions to call and the new states to go to are placed in
- *  the maps actionPerformedStateMap, actionPerformedFunctionMap, 
- *  stateChangedStateMap and stateChangedFunctionMap.
- *  Those maps are used by actionPerformed and stateChanged functions
- *  to handle the behavior of the automate.
- *  When an actual call goes to the state OVER, it becomes part of
- *  the call history.
+ * This class represent a call object from a client perspective. It is
+ * fully stateful and has all properties required for a client. This object
+ * is created by the CallModel class and its state can be modified by sending
+ * Call::Action to the call using the '<<' operator.
  *
- *  It may be better to handle call list and call history separately,
- *  and to use the class Item to handle their display, or a model/view
- *  way. For this it needs to handle the becoming of a call to a past call
- *  keeping the information gathered by the call and needed by the history
- *  call (history state, start time...).
+ * History calls will have the Call::State::OVER set by default. The LifeCycleState
+ * system is designed to ensure that the call never go backward in its expected
+ * lifecycle and should be used instead of "if"/"switch" on individual states
+ * when possible. This will avoid accidentally forgetting a state.
 **/
 class  LIB_EXPORT Call : public QObject
 {
@@ -84,41 +71,41 @@ public:
 
    ///Model roles
    enum Role {
-      Name          = 100,
-      Number        = 101,
-      Direction2    = 102,
-      Date          = 103,
-      Length        = 104,
-      FormattedDate = 105,
-      HasRecording  = 106,
-      Historystate  = 107,
-      Filter        = 108,
-      FuzzyDate     = 109,
-      IsBookmark    = 110,
-      Security      = 111,
-      Department    = 112,
-      Email         = 113,
-      Organisation  = 114,
-      Object        = 117,
-      PhotoPtr      = 118,
-      CallState     = 119,
-      Id            = 120,
-      StartTime     = 121,
-      StopTime      = 122,
-      IsRecording   = 123,
-      PhoneNu       = 124,
-      IsPresent     = 125,
-      SupportPresence=126,
-      IsTracked     = 127,
-      CategoryIcon  = 128,
-      CallCount     = 129, /* The number of calls made with the same phone number */
-      TotalSpentTime= 130, /* The total time spent speaking to with this phone number*/
-      Missed        = 131,
-      CallLifeCycleState= 132,
-      DropState     = 300,
-      DTMFAnimState = 400,
-      LastDTMFidx   = 401,
-      DropPosition  = 402,
+      Name               = 100, /*!< The peer name from SIP or Contacts */
+      Number             = 101, /*!< The peer URI / phone number (as text) */
+      Direction2         = 102, /*!<  */
+      Date               = 103, /*!< The date when the call started */
+      Length             = 104, /*!< The current length of the call */
+      FormattedDate      = 105, /*!< An human readable starting date */
+      HasRecording       = 106, /*!< If the call has a recording attached */
+      Historystate       = 107, /*!<  */
+      Filter             = 108, /*!<  */
+      FuzzyDate          = 109, /*!<  */
+      IsBookmark         = 110, /*!<  */
+      Security           = 111, /*!<  */
+      Department         = 112, /*!<  */
+      Email              = 113, /*!<  */
+      Organisation       = 114, /*!<  */
+      Object             = 117, /*!<  */
+      PhotoPtr           = 118, /*!<  */
+      CallState          = 119, /*!<  */
+      Id                 = 120, /*!<  */
+      StartTime          = 121, /*!<  */
+      StopTime           = 122, /*!<  */
+      IsRecording        = 123, /*!<  */
+      PhoneNu            = 124, /*!<  */
+      IsPresent          = 125, /*!<  */
+      SupportPresence    = 126, /*!<  */
+      IsTracked          = 127, /*!<  */
+      CategoryIcon       = 128, /*!<  */
+      CallCount          = 129, /*!< The number of calls made with the same phone number */
+      TotalSpentTime     = 130, /*!< The total time spent speaking to with this phone number*/
+      Missed             = 131, /*!< This call has been missed */
+      CallLifeCycleState = 132, /*!<  */
+      DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop */
+      DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s) */
+      LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call */
+      DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop */
    };
 
    enum DropAction {
@@ -155,10 +142,10 @@ public:
    */
    enum class LegacyHistoryState : int //DEPRECATED remove
    {
-      INCOMING,
-      OUTGOING,
-      MISSED  ,
-      NONE
+      INCOMING, /*!< The call is coming from the peer */
+      OUTGOING, /*!< The call is going to the peer */
+      MISSED  , /*!< The call has been missed */
+      NONE      /*!< The legacy state is not set */
    };
 
    ///@enum Direction If the user have been called or have called
@@ -269,11 +256,11 @@ public:
    Q_PROPERTY( QString            dialNumber       READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
 
    //Constructors & Destructors
-   static Call* buildHistoryCall  (const QMap<QString,QString>& hc                                             );
+   static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
    ~Call();
 
    //Static getters
-   static const QString      toHumanStateName              ( const Call::State                                             );
+   static const QString      toHumanStateName ( const Call::State );
 
    //Getters
    Call::State              state            () const;
@@ -341,17 +328,23 @@ public Q_SLOTS:
 Q_SIGNALS:
    ///Emitted when a call change (state or details)
    void changed();
+   ///@TODO deprecated, use QObject::sender()
    void changed(Call* self);
-   ///Emitted when the call is over
+   ///Emitted when the call is over //TODO remove the argument
    void isOver(Call*);
+   ///The recording playback position changed
    void playbackPositionChanged(int,int);
+   ///The recording playback has stopped
    void playbackStopped();
+   ///The recording playback has started
    void playbackStarted();
    ///Notify that a DTMF have been played
    void dtmfPlayed(const QString& str);
    ///Notify of state change
    void stateChanged();
+   ///The call start timestamp changed, this usually indicate the call has started
    void startTimeStampChanged(time_t newTimeStamp);
+   ///The dial number has changed
    void dialNumberChanged(const QString& number);
 };
 

@@ -50,6 +50,8 @@ public:
 
    /// Return a backend
    virtual CommonItemBackendModel* backendModel() const = 0;
+
+   virtual bool clearAllBackends() const {}
 };
 
 #endif

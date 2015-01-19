@@ -20,7 +20,7 @@ PROJECT(ringclient)
 SET(CMAKE_AUTOMOC TRUE)
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
-SET(CMAKE_MODULE_PATH "${LOCAL_CMAKE_MODULE_PATH}")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
 IF(NOT ${ENABLE_VIDEO} MATCHES false)
    MESSAGE("VIDEO enabled")
@@ -65,7 +65,7 @@ SET( libringclient_LIB_SRCS
   src/accountmodel.cpp
   src/callmodel.cpp
   src/historymodel.cpp
-  src/abstractbookmarkmodel.cpp
+  src/bookmarkmodel.cpp
   src/credentialmodel.cpp
   src/instantmessagingmodel.cpp
   src/imconversationmanager.cpp
@@ -129,6 +129,7 @@ SET( libringclient_LIB_SRCS
   src/extensions/presenceitembackendmodelextension.cpp
 )
 
+# Public API
 SET( libringclient_LIB_HDRS
   src/account.h
   src/accountmodel.h
@@ -137,7 +138,7 @@ SET( libringclient_LIB_HDRS
   src/historymodel.h
   src/contact.h
   src/abstractitembackend.h
-  src/abstractbookmarkmodel.h
+  src/bookmarkmodel.h
   src/credentialmodel.h
   src/instantmessagingmodel.h
   src/imconversationmanager.h
@@ -159,7 +160,6 @@ SET( libringclient_LIB_HDRS
   src/certificate.h
   src/contactmodel.h
   src/transitionalcontactbackend.h
-  src/abstractitembackend.h
   src/itembackendmodel.h
   src/hookmanager.h
   src/uri.h

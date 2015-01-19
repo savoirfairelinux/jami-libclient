@@ -44,12 +44,12 @@ class LIB_EXPORT CallModel : public QAbstractItemModel
    public:
       ///Accepted (mime) payload types
       enum DropPayloadType {
-         NONE    = 0   ,
-         CALL    = 1<<0,
-         HISTORY = 1<<1,
-         CONTACT = 1<<2,
-         NUMBER  = 1<<3,
-         TEXT    = 1<<4,
+         NONE    = 0   , /*!< No drop payload is supported */
+         CALL    = 1<<0, /*!< The item support the dropping of a current or history call */
+         HISTORY = 1<<1, /*!< The item support the dropping of a history call */
+         CONTACT = 1<<2, /*!< The item support the dropping of a contact id */
+         NUMBER  = 1<<3, /*!< The item support the dropping of an URI */
+         TEXT    = 1<<4, /*!< The item support the dropping of random text (to be interpreted as URI) */
       };
 
       //Properties

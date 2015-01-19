@@ -59,21 +59,22 @@ public:
    bool isHistoryLimited           () const;
    int  historyLimit               () const;
    const CallMap getHistoryCalls   () const;
-   virtual bool hasBackends        () const override;
-   virtual bool hasEnabledBackends () const override;
-   virtual const QVector<AbstractHistoryBackend*> backends() const override;
-   virtual const QVector<AbstractHistoryBackend*> enabledBackends() const override;
-   virtual CommonItemBackendModel* backendModel() const override;
+
+   //Backend model implementation
+   virtual bool hasBackends                                       () const override;
+   virtual bool hasEnabledBackends                                () const override;
+   virtual const QVector<AbstractHistoryBackend*> backends        () const override;
+   virtual const QVector<AbstractHistoryBackend*> enabledBackends () const override;
+   virtual CommonItemBackendModel* backendModel                   () const override;
+   virtual bool clearAllBackends                                  () const override;
+   virtual bool enableBackend(AbstractHistoryBackend*, bool        )       override;
+   virtual void addBackend(AbstractHistoryBackend* backend, LoadOptions options = LoadOptions::NONE) override;
 
    //Setters
    void setCategoryRole(Call::Role role);
    void setHistoryLimited(bool isLimited);
    void setHistoryLimit(int numberOfDays);
 
-   //Mutator
-   void addBackend(AbstractHistoryBackend* backend, LoadOptions options = LoadOptions::NONE);
-   void clearAllBackends() const;
-   virtual bool enableBackend(AbstractHistoryBackend* backend, bool enabled);
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;

@@ -23,7 +23,12 @@
 class QObject;
 
 class CategorizedCompositeNodePrivate;
-
+/**
+ * This class is used internally to store QAbstractModelItems it will eventually
+ * need to be made private
+ * 
+ * @todo remove the export symbol and don't install the file in "make install"
+ */
 class LIB_EXPORT CategorizedCompositeNode {
 public:
    enum class Type {

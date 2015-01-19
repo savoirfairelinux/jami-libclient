@@ -25,6 +25,9 @@
 
 class CertificatePrivate;
 
+/**
+ * This class represent a conceptual certificate.
+ */
 class LIB_EXPORT Certificate : public QObject {
    Q_OBJECT
 public:

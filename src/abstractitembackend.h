@@ -90,7 +90,7 @@ public:
    virtual bool        addNew     ( T*       item     ) = 0;
 
    ///Add a new phone number to an existing item
-   virtual bool addPhoneNumber( T*       item , PhoneNumber* number )=0;
+   virtual bool addPhoneNumber( T*       item , PhoneNumber* number );
 
    AbstractItemBackendInterface<T>* parentBackend() const;
 
@@ -138,6 +138,22 @@ public:
 Q_SIGNALS:
    void reloaded();
    void newHistoryCallAdded(Call* c);
+};
+
+class LIB_EXPORT AbstractBookmarkBackend : public QObject, public AbstractItemBackendInterface<PhoneNumber>
+{
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+   Q_OBJECT
+   #pragma GCC diagnostic pop
+public:
+   explicit AbstractBookmarkBackend(AbstractItemBackendInterface<PhoneNumber>* parentBackend = nullptr,
+                                   QObject* parent = nullptr);
+   virtual ~AbstractBookmarkBackend();
+
+Q_SIGNALS:
+   void reloaded();
+   void newBookmarkAdded(PhoneNumber* c);
 };
 
 template <class T> AbstractItemBackendInterface<T>* AbstractItemBackendInterface<T>::parentBackend() const
