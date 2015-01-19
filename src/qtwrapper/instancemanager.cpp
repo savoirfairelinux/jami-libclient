@@ -26,11 +26,14 @@
 
 static int ringFlags = 0;
 
+void pollEvents();
+
 InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 {
    m_pTimer = new QTimer(this);
    m_pTimer->setInterval(50);
-   connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
+   connect(m_pTimer,&QTimer::timeout,this,&pollEvents);
+   m_pTimer->start();
    ringFlags |= RING_FLAG_DEBUG;
    ringFlags |= RING_FLAG_CONSOLE_LOG;
 

@@ -132,10 +132,6 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 {
    //Register with the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
-#ifndef ENABLE_LIBWRAP
-   QDBusPendingReply<QString> reply = instance.Register(getpid(), "Ring KDE Client");
-   reply.waitForFinished();
-#endif
    setObjectName("CallModel");
 } //CallModel
 
@@ -402,7 +398,13 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
 
    //No dialing call found, creating one
    Account* acc = (account)?account:AccountModel::currentAccount();
-   return (!acc)?nullptr:d_ptr->addCall(CallPrivate::buildDialingCall(QString::number(qrand()), peerName, acc));
+
+   if (!acc) {
+      qWarning() << "No account is available, cannot call" << DBus::ConfigurationManager::instance().getAccountList();
+      return nullptr;
+   }
+
+   return d_ptr->addCall(CallPrivate::buildDialingCall(QString::number(qrand()), peerName, acc));
 }  //dialingCall
 
 ///Create a new incoming call when the daemon is being called

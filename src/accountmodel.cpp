@@ -26,6 +26,7 @@
 //Ring library
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
+#include "dbus/instancemanager.h"
 #include "visitors/accountlistcolorvisitor.h"
 
 class AccountModelPrivate : public QObject
@@ -96,7 +97,7 @@ m_pColorVisitor(nullptr),m_pIP2IP(nullptr)
 AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 ,d_ptr(new AccountModelPrivate(this))
 {
-
+   InstanceInterface& instance = DBus::InstanceManager::instance();
 }
 
 ///Prevent constructor loop

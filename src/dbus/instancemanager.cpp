@@ -33,6 +33,8 @@ InstanceInterface& DBus::InstanceManager::instance()
    if(!interface->connection().isConnected()) {
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
    }
+   QDBusPendingReply<QString> reply = instance.Register(getpid(), "Ring KDE Client");
+   reply.waitForFinished();
 #endif
    return *interface;
 }
