@@ -25,6 +25,7 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
+#include <QTimer>
 
 #include "ring.h"
 #include "../dbus/metatypes.h"

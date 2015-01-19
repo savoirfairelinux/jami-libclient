@@ -24,6 +24,8 @@
 
 #include "../dbus/metatypes.h"
 
+#define Q_NOREPLY
+
 inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
     MapStringString temp;
     for (const auto& x : m) {

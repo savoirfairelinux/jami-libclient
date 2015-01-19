@@ -21,7 +21,7 @@ To install the appplication, type the following commands in a console, while in 
 	make -j3
 	sudo make install
 
-To generate a source tarball (sflphone-cliend-kde.tar.xz), just execute release.sh
+To generate a source tarball (ring-cliend-kde.tar.xz), just execute release.sh
 
 Explaination
 ==================
@@ -50,21 +50,17 @@ OS X Install
 
 # Install necessary tools:
 brew install dbus cmake
-brew install qt5 --with-d-bus
+brew install qt5
 export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.3.2/
 
-# First make sure you have built sflphone daemon for OS X. You currently need some special
-# care, but as the port matures, that should get fixed.
-
-cd ~/sflphone-kde/src/lib/
-install_name_tool -id @executable_path/libsflphone.0.dylib libsflphone.0.dylib
+# First make sure you have built ring daemon for OS X.
 
 mkdir build && cd build
 cmake .. [-DCMAKE_BUILD_TYPE=Debug for compiling with debug symbols]
 make
 
-install_name_tool -change @rpath/libsflphone.0.dylib @executable_path/libsflphone.0.dylib libqtsflphone.1.4.1.dylib
-install_name_tool -id @executable_path/libqtsflphone.1.4.1.dylib libqtsflphone.1.4.1.dylib
+install_name_tool -change @rpath/libring.0.dylib @executable_path/libring.0.dylib libringclient.1.4.1.dylib
+install_name_tool -id @executable_path/libringclient.1.4.1.dylib libringclient.1.4.1.dylib
 
 # You can now use thes libraries in a QtCreator project. Don't forget to copy both dylibs inside
 # your .app/Contents/MacOS/

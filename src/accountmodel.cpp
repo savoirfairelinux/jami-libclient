@@ -21,6 +21,7 @@
 
 //Qt
 #include <QtCore/QObject>
+#include <QtCore/QCoreApplication>
 
 //Ring library
 #include "dbus/configurationmanager.h"

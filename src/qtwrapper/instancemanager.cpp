@@ -24,7 +24,6 @@
  #include "videomanager.h"
 #endif //ENABLE_VIDEO
 
-
 static int ringFlags = 0;
 
 InstanceInterface::InstanceInterface() : m_pTimer(nullptr)

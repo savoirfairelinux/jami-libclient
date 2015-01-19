@@ -19,7 +19,9 @@
 
 //Qt
 #include <QtCore/QDebug>
+#include <QtCore/QCoreApplication>
 #include <QtGui/QDragEnterEvent>
+#include <QtCore/QMimeData>
 
 //Ring library
 #include "call.h"

@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "settings.h"
 
+//Qt include
+#include <QUrl>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
