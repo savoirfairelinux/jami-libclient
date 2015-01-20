@@ -21,10 +21,12 @@
 
 //Qt
 #include <QtCore/QObject>
+#include <QtCore/QCoreApplication>
 
 //Ring library
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
+#include "dbus/instancemanager.h"
 #include "visitors/accountlistcolorvisitor.h"
 
 class AccountModelPrivate : public QObject
@@ -95,7 +97,7 @@ m_pColorVisitor(nullptr),m_pIP2IP(nullptr)
 AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 ,d_ptr(new AccountModelPrivate(this))
 {
-
+   InstanceInterface& instance = DBus::InstanceManager::instance();
 }
 
 ///Prevent constructor loop
@@ -215,7 +217,7 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
    }
    if (!a) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      QStringList accountIds = configurationManager.getAccountList().value();
+      QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
          if ((!q_ptr->getById(accountIds[i])) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
             Account* acc = Account::buildExistingAccountFromId(accountIds[i]);
@@ -307,7 +309,7 @@ void AccountModel::update()
          remove(current);
    }
    //ask for the list of accounts ids to the configurationManager
-   const QStringList accountIds = configurationManager.getAccountList().value();
+   const QStringList accountIds = configurationManager.getAccountList();
    for (int i = 0; i < accountIds.size(); ++i) {
       if (d_ptr->m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
          Account* a = Account::buildExistingAccountFromId(accountIds[i]);
@@ -325,7 +327,7 @@ void AccountModel::updateAccounts()
 {
    qDebug() << "Updating all accounts";
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   QStringList accountIds = configurationManager.getAccountList().value();
+   QStringList accountIds = configurationManager.getAccountList();
    //m_lAccounts.clear();
    for (int i = 0; i < accountIds.size(); ++i) {
       Account* acc = getById(accountIds[i]);
@@ -347,7 +349,7 @@ void AccountModel::updateAccounts()
 void AccountModel::save()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   const QStringList accountIds = QStringList(configurationManager.getAccountList().value());
+   const QStringList accountIds = QStringList(configurationManager.getAccountList());
 
    //create or update each account from accountList
    for (int i = 0; i < size(); i++) {

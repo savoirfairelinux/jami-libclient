@@ -18,7 +18,12 @@
 #ifndef PRESENCEMANAGER_H
 #define PRESENCEMANAGER_H
 
-#include "presencemanager_dbus_interface.h"
+#ifdef ENABLE_LIBWRAP
+ #include "../qtwrapper/presencemanager_wrap.h"
+#else
+ #include "presencemanager_dbus_interface.h"
+#endif
+
 #include "../typedefs.h"
 
 namespace DBus {

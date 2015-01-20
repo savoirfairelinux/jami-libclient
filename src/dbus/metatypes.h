@@ -23,7 +23,10 @@
 #include <QtCore/QMap>
 #include <QVector>
 #include <QtCore/QString>
+
+#ifndef ENABLE_LIBWRAP
 #include <QtDBus/QtDBus>
+#endif
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 typedef QMap<QString, QString> MapStringString;
@@ -42,6 +45,7 @@ Q_DECLARE_METATYPE(VectorInt)
 Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 
+#ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
 inline void registerCommTypes() {
 	qDBusRegisterMetaType<MapStringString>();
@@ -53,6 +57,12 @@ inline void registerCommTypes() {
         qDBusRegisterMetaType<MapStringVectorString>();
    dbus_metaTypeInit = true;
 }
+#else
+inline void registerCommTypes() {
+
+}
+#endif
+
 #pragma GCC diagnostic pop
 
 #endif

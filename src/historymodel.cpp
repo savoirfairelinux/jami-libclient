@@ -20,6 +20,10 @@
 //C include
 #include <time.h>
 
+//Qt include
+#include <QMimeData>
+#include <QCoreApplication>
+
 //Ring lib
 #include "mime.h"
 #include "dbus/callmanager.h"

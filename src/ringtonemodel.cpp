@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QTimer>
+#include <QtCore/QFileInfo>
 
 //Ring
 #include "dbus/configurationmanager.h"

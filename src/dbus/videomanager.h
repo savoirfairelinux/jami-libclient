@@ -18,7 +18,12 @@
 #ifndef VIDEOMANAGER_H
 #define VIDEOMANAGER_H
 
-#include "video_dbus_interface.h"
+#ifdef ENABLE_LIBWRAP
+ #include "videomanager_wrap.h"
+#else
+ #include "video_dbus_interface.h"
+#endif
+
 #include "../typedefs.h"
 
 namespace DBus {

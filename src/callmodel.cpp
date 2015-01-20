@@ -19,7 +19,9 @@
 
 //Qt
 #include <QtCore/QDebug>
+#include <QtCore/QCoreApplication>
 #include <QtGui/QDragEnterEvent>
+#include <QtCore/QMimeData>
 
 //Ring library
 #include "call.h"
@@ -130,9 +132,6 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 {
    //Register with the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
-   QDBusPendingReply<QString> reply = instance.Register(getpid(), "Ring KDE Client");
-   reply.waitForFinished();
-
    setObjectName("CallModel");
 } //CallModel
 
@@ -203,7 +202,11 @@ CallModel::~CallModel()
    //Unregister from the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
    Q_NOREPLY instance.Unregister(getpid());
+#ifdef ENABLE_LIBWRAP
+
+#else
    instance.connection().disconnectFromBus(instance.connection().baseService());
+#endif //ENABLE_LIBWRAP
 }
 
 void CallModelPrivate::initRoles()
@@ -299,7 +302,11 @@ bool CallModel::hasConference() const
 
 bool CallModel::isConnected() const
 {
+#ifdef ENABLE_LIBWRAP
+   return DBus::InstanceManager::instance().isConnected();
+#else 
    return DBus::InstanceManager::instance().connection().isConnected();
+#endif //ENABLE_LIBWRAP
 }
 
 bool CallModel::isValid()
@@ -391,7 +398,13 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
 
    //No dialing call found, creating one
    Account* acc = (account)?account:AccountModel::currentAccount();
-   return (!acc)?nullptr:d_ptr->addCall(CallPrivate::buildDialingCall(QString::number(qrand()), peerName, acc));
+
+   if (!acc) {
+      qWarning() << "No account is available, cannot call" << DBus::ConfigurationManager::instance().getAccountList();
+      return nullptr;
+   }
+
+   return d_ptr->addCall(CallPrivate::buildDialingCall(QString::number(qrand()), peerName, acc));
 }  //dialingCall
 
 ///Create a new incoming call when the daemon is being called

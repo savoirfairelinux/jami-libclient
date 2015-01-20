@@ -187,7 +187,6 @@ Account::~Account()
    if (d_ptr->m_pAudioCodecs) delete d_ptr->m_pAudioCodecs ;
 }
 
-
 /*****************************************************************************
  *                                                                           *
  *                                   Slots                                   *
@@ -633,7 +632,7 @@ bool Account::isTlsRequireClientCertificate() const
 
 ///Return the account TLS security is enabled
 bool Account::isTlsEnabled() const
-{ 
+{
    return (d_ptr->accountDetail(Account::MapField::TLS::ENABLED) IS_TRUE);
 }
 
@@ -1405,7 +1404,7 @@ bool Account::updateState()
 {
    if(! isNew()) {
       ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
-      const MapStringString details       = configurationManager.getAccountDetails(id()).value();
+      const MapStringString details       = configurationManager.getAccountDetails(id());
       const QString         status        = details[Account::MapField::Registration::STATUS];
       const QString         currentStatus = registrationStatus();
       d_ptr->setAccountDetail(Account::MapField::Registration::STATUS, status); //Update -internal- object state

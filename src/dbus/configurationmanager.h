@@ -19,7 +19,11 @@
 #ifndef CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
 #define CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
 
-#include "configurationmanager_dbus_interface.h"
+#ifdef ENABLE_LIBWRAP
+ #include "../qtwrapper/configurationmanager_wrap.h"
+#else
+ #include "configurationmanager_dbus_interface.h"
+#endif
 #include "../typedefs.h"
 
 namespace DBus {

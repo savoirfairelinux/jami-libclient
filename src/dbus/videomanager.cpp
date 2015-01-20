@@ -21,12 +21,16 @@ VideoManagerInterface* DBus::VideoManager::interface = nullptr;
 
 VideoManagerInterface& DBus::VideoManager::instance()
 {
+#ifdef ENABLE_LIBWRAP
+   if (!interface)
+      interface = new VideoManagerInterface();
+#else
    if (!dbus_metaTypeInit) registerCommTypes();
    if (!interface)
       interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
-   
    if(!interface->connection().isConnected()) {
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
    }
+#endif
    return *interface;
 }

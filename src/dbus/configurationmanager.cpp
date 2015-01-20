@@ -17,11 +17,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "configurationmanager.h"
+#include "callbacks.h"
 
 ConfigurationManagerInterface* DBus::ConfigurationManager::interface = nullptr;
 
 ConfigurationManagerInterface& DBus::ConfigurationManager::instance()
 {
+#ifdef ENABLE_LIBWRAP
+   if (!interface) {
+        interface = new ConfigurationManagerInterface();
+    }
+#else
    if (!dbus_metaTypeInit) registerCommTypes();
    if (!interface)
       interface = new ConfigurationManagerInterface("cx.ring.Ring", "/cx/ring/Ring/ConfigurationManager", QDBusConnection::sessionBus());
@@ -31,5 +37,6 @@ ConfigurationManagerInterface& DBus::ConfigurationManager::instance()
    }
    if (!interface->isValid())
       throw "DRing daemon not available, be sure it running";
+#endif
    return *interface;
 }
