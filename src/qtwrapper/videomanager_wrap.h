@@ -42,9 +42,21 @@ public:
     {
 #ifdef ENABLE_VIDEO
         video_ev_handlers = {
-            .on_device_event = [this] () { emit this->deviceEvent(); }
-            .on_start_decoding = [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) { emit this->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer); }
-            .on_stop_decoding = [this] (const std::string &id, const std::string &shmPath, bool isMixer) { emit this->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer); }
+            .on_device_event = [this] () { 
+                  QTimer::singleShot(0, [this] {
+                      emit this->deviceEvent();
+                  });
+            },
+            .on_start_decoding = [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) {
+                  QTimer::singleShot(0, [this,id, shmPath, width, height, isMixer] {
+                     emit this->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
+                  });
+            },
+            .on_stop_decoding = [this] (const std::string &id, const std::string &shmPath, bool isMixer) {
+                  QTimer::singleShot(0, [this,id, shmPath, isMixer] {
+                     emit this->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
+                  });
+            }
         };
 #endif
     }

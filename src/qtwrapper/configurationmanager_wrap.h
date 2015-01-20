@@ -22,6 +22,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QTimer>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
@@ -48,14 +49,43 @@ public:
     {
         setObjectName("ConfigurationManagerInterface");
         config_ev_handlers = {
-            .on_volume_change = [this] (const std::string &device, double value) { emit this->volumeChanged(QString(device.c_str()), value); },
-            .on_accounts_change = [this] () { emit this->accountsChanged(); },
-            .on_history_change = [this] () { emit this->historyChanged(); },
-            .on_stun_status_fail = [this] (const std::string &reason) { emit this->stunStatusFailure(QString(reason.c_str())); },
-            .on_registration_state_change = [this] (const std::string &accountID, int registration_state) { emit this->registrationStateChanged(QString(accountID.c_str()), registration_state); },
-            .on_sip_registration_state_change = [this] (const std::string &accountID, const std::string &state, int code) { emit this->sipRegistrationStateChanged(QString(accountID.c_str()), QString(state.c_str()), code); },
+            .on_volume_change = [this] (const std::string &device, double value) {
+                      QTimer::singleShot(0, [this,device,value] {
+                            emit this->volumeChanged(QString(device.c_str()), value);
+                      });
+            },
+            .on_accounts_change = [this] () {
+                      QTimer::singleShot(0, [this] {
+                            emit this->accountsChanged();
+                      });
+             },
+            .on_history_change = [this] () {
+                      QTimer::singleShot(0, [this] {
+                            emit this->historyChanged();
+                      });
+            },
+             .on_stun_status_fail = [this] (const std::string &reason) {
+                      QTimer::singleShot(0, [this, reason] {
+                            emit this->stunStatusFailure(QString(reason.c_str()));
+                      });
+            },
+            .on_registration_state_change = [this] (const std::string &accountID, int registration_state) {
+                      QTimer::singleShot(0, [this, accountID, registration_state] {
+                            emit this->registrationStateChanged(QString(accountID.c_str()), registration_state);
+                      });
+            },
+            .on_sip_registration_state_change = [this] (const std::string &accountID, const std::string &state, int code) {
+                      QTimer::singleShot(0, [this,accountID, state, code] {
+                            emit this->sipRegistrationStateChanged(QString(accountID.c_str()), QString(state.c_str()), code);
+                      });
+            },
+
             //TODO: .on_volatile_details_change = [this] (const QString &message.c_str()) { emit this->volatileAccountDetailsChanged(); },
-            .on_error = [this] (int code) { emit this->errorAlert(code); }
+            .on_error = [this] (int code) {
+                      QTimer::singleShot(0, [this,code] {
+                        emit this->errorAlert(code);
+                      });
+            }
         };
     }
 
