@@ -21,6 +21,8 @@
 
 TlsMethodModel* TlsMethodModel::m_spInstance = nullptr;
 
+const char* TlsMethodModel::Name::DEFAULT = qPrintable(tr("Default", "Default TLS protocol version"));
+
 class TlsMethodModelPrivate : public QObject {
    Q_OBJECT
 public:
@@ -84,6 +86,7 @@ QModelIndex TlsMethodModel::toIndex(TlsMethodModel::Type type)
    return index(static_cast<int>(type),0,QModelIndex());
 }
 
+///Convert a TlsMethodModel::Type enum to the string expected by the daemon API
 const char* TlsMethodModel::toDaemonName(TlsMethodModel::Type type)
 {
    switch (type) {
@@ -99,6 +102,7 @@ const char* TlsMethodModel::toDaemonName(TlsMethodModel::Type type)
    return TlsMethodModel::DaemonName::DEFAULT;
 }
 
+///Convert a Daemon API string to a TlsMethodModel::Type enum
 TlsMethodModel::Type TlsMethodModel::fromDaemonName(const QString& name)
 {
    if (name.isEmpty() || name == TlsMethodModel::DaemonName::DEFAULT)

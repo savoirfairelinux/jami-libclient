@@ -62,22 +62,17 @@ bool TransitionalContactBackend::save(const Contact* contact)
    return false;
 }
 
+///Edit 'contact', the implementation may be a GUI or somehting else
 bool TransitionalContactBackend::edit( Contact* contact)
 {
    Q_UNUSED(contact)
    return false;
 }
 
+///Add a new contact to the backend
 bool TransitionalContactBackend::addNew( Contact* contact)
 {
    Q_UNUSED(contact)
-   return false;
-}
-
-bool TransitionalContactBackend::addPhoneNumber( Contact* contact , PhoneNumber* number )
-{
-   Q_UNUSED(contact)
-   Q_UNUSED(number)
    return false;
 }
 

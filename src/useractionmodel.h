@@ -101,6 +101,7 @@ private:
    Q_DECLARE_PRIVATE(UserActionModel)
 
 Q_SIGNALS:
+   ///The list of currently available actions has changed
    void actionStateChanged();
 };
 // Q_DECLARE_METATYPE(UserActionModel*)

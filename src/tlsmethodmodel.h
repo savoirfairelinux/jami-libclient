@@ -23,7 +23,12 @@
 
 class TlsMethodModelPrivate;
 
-///Static model for handling encryption types
+/**Static model for handling encryption types
+ * 
+ * This model can be used as a bridge between the Daemon API name (strings)
+ * and combobox indexes. It can also be used to translate "default" to the
+ * user locales
+ */
 class LIB_EXPORT TlsMethodModel : public QAbstractListModel {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -41,7 +46,7 @@ public:
 
    class Name {
    public:
-      constexpr static const char* DEFAULT = "Default";
+                static const char* DEFAULT            ;
       constexpr static const char* TLSv1   = "TLSv1"  ;
       constexpr static const char* SSLv3   = "SSLv3"  ;
       constexpr static const char* SSLv23  = "SSLv23" ;

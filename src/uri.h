@@ -100,15 +100,15 @@ public:
     * Defined at http://tools.ietf.org/html/rfc3261#page-222
     */
    enum class Transport {
-      NOT_SET, /** The transport have not been set directly in the URI  */
-      TLS    , /**                                                      */
-      tls    , /**                                                      */
-      TCP    , /**                                                      */
-      tcp    , /**                                                      */
-      UDP    , /**                                                      */
-      udp    , /**                                                      */
-      SCTP   , /**                                                      */
-      sctp   , /**                                                      */
+      NOT_SET, /*!<  The transport have not been set directly in the URI  */
+      TLS    , /*!<  Encrypted calls (capital)                            */
+      tls    , /*!<  Encrypted calls                                      */
+      TCP    , /*!<  TCP (the default) (capital)                          */
+      tcp    , /*!<  TCP (the default)                                    */
+      UDP    , /*!<  Without a connection (capital)                       */
+      udp    , /*!<  Without a connection                                 */
+      SCTP   , /*!<                                                       */
+      sctp   , /*!<                                                       */
    };
 
    QString hostname   () const;

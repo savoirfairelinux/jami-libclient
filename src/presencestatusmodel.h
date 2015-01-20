@@ -27,7 +27,13 @@ class PresenceSerializationVisitor;
 class AbstractItemBackendBase;
 class PresenceStatusModelPrivate;
 
-///CredentialModel: A model for account credentials
+/**
+ * This model present the **published** presence status. A published presence
+ * status is used to notify other users of your status. This is done by sending
+ * a string of text. This implementation also allow a name to describe each
+ * string. This is better from an user point of view, as it take less room
+ * in the GUI. The message is either selected from a list or set by hand.
+ */
 class LIB_EXPORT PresenceStatusModel : public QAbstractTableModel {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -112,13 +118,21 @@ public Q_SLOTS:
    void setCustomMessage  ( const QString& message   );
 
 Q_SIGNALS:
+   ///The current presence status has changed
    void currentIndexChanged   ( const QModelIndex& current   );
+   ///The current presence status name string changed
    void currentNameChanged    ( const QString&     name      );
+   ///The model now use custom strings instead of predefined ones
    void useCustomStatusChanged( bool               useCustom );
+   ///The current (custom) presence message changed
    void customMessageChanged  ( const QString&     message   );
+   ///The current (custom) presence status changed
    void customStatusChanged   ( bool               status    );
+   ///The default presence status changed
    void defaultStatusChanged  ( const QModelIndex& def       );
+   ///The current presence message changed
    void currentMessageChanged ( const QString&     message   );
+   ///The current presence status changed
    void currentStatusChanged  ( bool               status    );
 
 };

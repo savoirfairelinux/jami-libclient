@@ -43,12 +43,14 @@ URIPrivate::URIPrivate(QString* uri) : m_Parsed(false),m_HeaderType(URI::SchemeT
 {
 }
 
+///Constructor
 URI::URI(const QString& other):QString(), d_ptr(new URIPrivate(this))
 {
    d_ptr->m_Stripped              = URIPrivate::strip(other,d_ptr->m_HeaderType);
    (*static_cast<QString*>(this)) = d_ptr->m_Stripped                           ;
 }
 
+///Copy constructor
 URI::URI(const URI& o):QString(), d_ptr(new URIPrivate(this))
 {
    d_ptr->m_Parsed     = o.d_ptr->m_Parsed    ;
@@ -60,6 +62,7 @@ URI::URI(const URI& o):QString(), d_ptr(new URIPrivate(this))
    (*static_cast<QString*>(this)) = o.d_ptr->m_Stripped;
 }
 
+///Destructor
 URI::~URI()
 {
    (*static_cast<QString*>(this)) = QString();
@@ -67,6 +70,7 @@ URI::~URI()
 //    delete d_ptr;
 }
 
+/// Copy operator, make sure the cache is also copied
 URI& URI::operator=(const URI& o)
 {
    d_ptr->m_Parsed     = o.d_ptr->m_Parsed    ;
@@ -103,7 +107,10 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
    return uri.mid(start,end-start+1);
 }
 
-///Return the domaine of an URI (<sip:12345@example.com>)
+/**Return the domaine of an URI
+ *
+ * For example, example.com in <sip:12345@example.com>
+ */
 QString URI::hostname() const
 {
    if (!d_ptr->m_Parsed)
@@ -111,6 +118,11 @@ QString URI::hostname() const
    return d_ptr->m_Hostname;
 }
 
+/**
+ * Check if the URI has an hostname
+ * 
+ * This will return true if there is something between '@' and ';' (or an end of line)
+ */
 bool URI::hasHostname() const
 {
    if (!d_ptr->m_Parsed)
@@ -129,6 +141,11 @@ void URIPrivate::parse()
    }
 }
 
+/**
+ * Extract the user info field from the URI
+ *
+ * For example, "123" in sip:123@myserver.net
+ */
 QString URI::userinfo() const
 {
    if (!d_ptr->m_Parsed)
@@ -137,7 +154,7 @@ QString URI::userinfo() const
 }
 
 /**
- * Some feature, like SIP presence, require a properly formatted USI
+ * Some feature, like SIP presence, require a properly formatted URI
  */
 QString URI::fullUri() const
 {

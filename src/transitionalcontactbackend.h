@@ -24,7 +24,23 @@
 
 class TransitionalContactBackendPrivate;
 
-///Contact backend for new unsaved contacts
+/**
+ * A temporary contact backend until concrete ones are loaded
+ * 
+ * Some contacts are created early during the initialization process.
+ * This cause race issues between initialization of remote sources,
+ * such as GMail, and local one, such as history. As both contain some
+ * properties related to contact, if an incomplete one is loaded before
+ * the "real" one, then a temporary placeholder object have to be used.
+ * 
+ * This object will then be silently replaced by the "real" copy.
+ * 
+ * The old pointers will stay valid.
+ * 
+ * This backend is the default one when such scenarios happen. It can also
+ * be used when contacts are created locally, but a "real" backend have
+ * yet to be selected.
+ */
 class LIB_EXPORT TransitionalContactBackend : public AbstractContactBackend {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -34,28 +50,21 @@ public:
 
    virtual ~TransitionalContactBackend();
 
-   virtual bool load();
-   virtual bool reload();
-   virtual bool append(const Contact* item);
-   virtual bool save(const Contact* contact);
-   virtual bool isEnabled() const;
+   //Getters
+   virtual QByteArray      id       () const override;
+   virtual bool            isEnabled() const override;
+   virtual QString         name     () const override;
+   virtual QVariant        icon     () const override;
+   virtual QList<Contact*> items    () const override;
+   virtual SupportedFeatures supportedFeatures() const override;
 
-   virtual QString name () const;
-   virtual QVariant icon() const;
-
-   virtual QByteArray  id() const;
-
-   ///Edit 'contact', the implementation may be a GUI or somehting else
-   virtual bool        edit       ( Contact*       contact     );
-   ///Add a new contact to the backend
-   virtual bool        addNew     ( Contact*       contact     );
-
-   ///Add a new phone number to an existing contact
-   virtual bool addPhoneNumber( Contact*       contact , PhoneNumber* number );
-
-   SupportedFeatures supportedFeatures() const;
-
-   virtual QList<Contact*> items() const override;
+   //Mutators
+   virtual bool load       (                            ) override;
+   virtual bool reload     (                            ) override;
+   virtual bool append     ( const Contact* item        ) override;
+   virtual bool save       ( const Contact* contact     ) override;
+   virtual bool edit       ( Contact*       contact     ) override;
+   virtual bool addNew     ( Contact*       contact     ) override;
 
    //Singleton
    static AbstractContactBackend* instance();

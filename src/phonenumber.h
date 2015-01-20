@@ -46,36 +46,36 @@ public:
    virtual ~PhoneNumber();
 
    //Properties
-   Q_PROPERTY(Account*      account         READ account  WRITE setAccount)
-   Q_PROPERTY(Contact*      contact         READ contact  WRITE setContact)
-   Q_PROPERTY(int           lastUsed        READ lastUsed                 )
-   Q_PROPERTY(QString       uri             READ uri                      )
-   Q_PROPERTY(int           callCount       READ callCount                )
-   Q_PROPERTY(QList<Call*>  calls           READ calls                    )
-   Q_PROPERTY(int           popularityIndex READ popularityIndex          )
-   Q_PROPERTY(bool          bookmarked      READ isBookmarked             )
-   Q_PROPERTY(QString       uid             READ uid      WRITE setUid    )
-   Q_PROPERTY(bool               isTracked        READ isTracked         NOTIFY trackedChanged       )
-   Q_PROPERTY(bool               isPresent        READ isPresent         NOTIFY presentChanged       )
-   Q_PROPERTY(bool               supportPresence  READ supportPresence          )
-   Q_PROPERTY(QString            presenceMessage  READ presenceMessage  NOTIFY presenceMessageChanged        )
-   Q_PROPERTY(uint               weekCount        READ weekCount                )
-   Q_PROPERTY(uint               trimCount        READ trimCount                )
-   Q_PROPERTY(bool               haveCalled       READ haveCalled               )
-   Q_PROPERTY(QString            primaryName      READ primaryName              )
-   Q_PROPERTY(bool               isBookmarked     READ isBookmarked             )
-   Q_PROPERTY(QVariant           icon             READ icon                     )
-   Q_PROPERTY(int                totalSpentTime   READ totalSpentTime           )
+   Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
+   Q_PROPERTY(Contact*      contact          READ contact           WRITE setContact              )
+   Q_PROPERTY(int           lastUsed         READ lastUsed                                        )
+   Q_PROPERTY(QString       uri              READ uri                                             )
+   Q_PROPERTY(int           callCount        READ callCount                                       )
+   Q_PROPERTY(QList<Call*>  calls            READ calls                                           )
+   Q_PROPERTY(int           popularityIndex  READ popularityIndex                                 )
+   Q_PROPERTY(bool          bookmarked       READ isBookmarked                                    )
+   Q_PROPERTY(QString       uid              READ uid               WRITE setUid                  )
+   Q_PROPERTY(bool          isTracked        READ isTracked         NOTIFY trackedChanged         )
+   Q_PROPERTY(bool          isPresent        READ isPresent         NOTIFY presentChanged         )
+   Q_PROPERTY(bool          supportPresence  READ supportPresence                                 )
+   Q_PROPERTY(QString       presenceMessage  READ presenceMessage   NOTIFY presenceMessageChanged )
+   Q_PROPERTY(uint          weekCount        READ weekCount                                       )
+   Q_PROPERTY(uint          trimCount        READ trimCount                                       )
+   Q_PROPERTY(bool          haveCalled       READ haveCalled                                      )
+   Q_PROPERTY(QString       primaryName      READ primaryName                                     )
+   Q_PROPERTY(bool          isBookmarked     READ isBookmarked                                    )
+   Q_PROPERTY(QVariant      icon             READ icon                                            )
+   Q_PROPERTY(int           totalSpentTime   READ totalSpentTime                                  )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
    ///@enum Type: Is this temporary, blank, used or unused
    enum class Type {
-      BLANK     = 0, /*This number represent no number                                  */
-      TEMPORARY = 1, /*This number is not yet complete                                  */
-      USED      = 2, /*This number have been called before                              */
-      UNUSED    = 3, /*This number have never been called, but is in the address book   */
-      ACCOUNT   = 4, /*This number correspond to the URI of a SIP account               */
+      BLANK     = 0, /*!< This number represent no number                                  */
+      TEMPORARY = 1, /*!< This number is not yet complete                                  */
+      USED      = 2, /*!< This number have been called before                              */
+      UNUSED    = 3, /*!< This number have never been called, but is in the address book   */
+      ACCOUNT   = 4, /*!< This number correspond to the URI of a SIP account               */
    };
    Q_ENUMS(Type)
 
