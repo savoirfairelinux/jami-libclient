@@ -43,7 +43,6 @@ class LIB_EXPORT PhoneNumber : public QObject {
 public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
-   virtual ~PhoneNumber();
 
    //Properties
    Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
@@ -131,6 +130,7 @@ public:
 protected:
    //Constructor
    PhoneNumber(const URI& uri, NumberCategory* cat, Type st = Type::UNUSED);
+   virtual ~PhoneNumber();
 
    //Private setters
    void setPresent(bool present);
@@ -163,13 +163,29 @@ private Q_SLOTS:
    void contactRebased(Contact* other);
 
 Q_SIGNALS:
-   void callAdded(Call* call);
-   void changed  (          );
-   void presentChanged(bool);
-   void presenceMessageChanged(const QString&);
-   void trackedChanged(bool);
-   void primaryNameChanged(const QString& name);
-   void rebased(PhoneNumber* other);
+   ///A new call have used this PhoneNumber
+   void callAdded             ( Call* call          );
+   ///A property associated with this number has changed
+   void changed               (                     );
+   ///The presence status of this phone number has changed
+   void presentChanged        ( bool                );
+   ///The presence status message associated with this number
+   void presenceMessageChanged( const QString&      );
+   ///This number track presence
+   void trackedChanged        ( bool                );
+   /**
+    * The name used to be represent this number has changed
+    * It is important for user of this object to track this
+    * as the name will change over time as new contact
+    * sources are added
+    */
+   void primaryNameChanged    ( const QString& name );
+   /**
+    * Two previously independent number have been merged
+    * this happen when new information cues prove that number
+    * with previously ambiguous data
+    */
+   void rebased               ( PhoneNumber* other  );
 };
 
 Q_DECLARE_METATYPE(PhoneNumber*)
