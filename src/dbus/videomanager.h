@@ -22,6 +22,7 @@
  #include "videomanager_wrap.h"
 #else
  #include "video_dbus_interface.h"
+ #include <QDBusPendingReply>
 #endif
 
 #include "../typedefs.h"

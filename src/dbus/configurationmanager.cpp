@@ -17,7 +17,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "configurationmanager.h"
+
+#ifdef ENABLE_LIBWRAP
 #include "callbacks.h"
+#endif
 
 ConfigurationManagerInterface* DBus::ConfigurationManager::interface = nullptr;
 

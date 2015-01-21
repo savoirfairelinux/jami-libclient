@@ -23,6 +23,7 @@
  #include "../qtwrapper/instancemanager_wrap.h"
 #else
 #include "instance_dbus_interface.h"
+#include <QDBusPendingReply>
 #endif
 #include "../typedefs.h"
 

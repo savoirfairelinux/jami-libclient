@@ -23,6 +23,7 @@
  #include "../qtwrapper/configurationmanager_wrap.h"
 #else
  #include "configurationmanager_dbus_interface.h"
+ #include <QDBusPendingReply>
 #endif
 #include "../typedefs.h"
 

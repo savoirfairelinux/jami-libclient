@@ -22,6 +22,7 @@
  #include "../qtwrapper/presencemanager_wrap.h"
 #else
  #include "presencemanager_dbus_interface.h"
+ #include <QDBusPendingReply>
 #endif
 
 #include "../typedefs.h"

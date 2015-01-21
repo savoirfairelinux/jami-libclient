@@ -400,7 +400,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
    Account* acc = (account)?account:AccountModel::currentAccount();
 
    if (!acc) {
-      qWarning() << "No account is available, cannot call" << DBus::ConfigurationManager::instance().getAccountList();
+      qWarning() << "No account is available, cannot call" << QStringList(DBus::ConfigurationManager::instance().getAccountList());
       return nullptr;
    }
 
