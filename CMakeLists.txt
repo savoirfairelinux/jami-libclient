@@ -110,7 +110,7 @@ SET( libringclient_LIB_SRCS
   src/keyexchangemodel.cpp
   src/tlsmethodmodel.cpp
   src/numbercompletionmodel.cpp
-  src/categorizedaccountmodel.cpp
+  src/profilemodel.cpp
   src/ringtonemodel.cpp
   src/lastusednumbermodel.cpp
   src/securityvalidationmodel.cpp
@@ -151,6 +151,7 @@ SET( libringclient_LIB_SRCS
   src/visitors/pixmapmanipulationvisitor.cpp
   src/visitors/presenceserializationvisitor.cpp
   src/visitors/itemmodelstateserializationvisitor.cpp
+  src/visitors/profilepersistervisitor.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -183,7 +184,7 @@ SET( libringclient_LIB_HDRS
   src/keyexchangemodel.h
   src/tlsmethodmodel.h
   src/numbercompletionmodel.h
-  src/categorizedaccountmodel.h
+  src/profilemodel.h
   src/numbercategory.h
   src/ringtonemodel.h
   src/lastusednumbermodel.h
@@ -235,6 +236,7 @@ SET(libringclient_visitors_LIB_HDRS
   src/visitors/itemmodelstateserializationvisitor.h
   src/visitors/pixmapmanipulationvisitor.h
   src/visitors/numbercategoryvisitor.h
+  src/visitors/profilepersistervisitor.h
 )
 
 SET( libringclient_extra_LIB_HDRS
