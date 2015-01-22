@@ -24,6 +24,7 @@
 #include <QtCore/QCoreApplication>
 
 //Ring library
+#include "profilemodel.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
@@ -97,7 +98,11 @@ m_pColorVisitor(nullptr),m_pIP2IP(nullptr)
 AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 ,d_ptr(new AccountModelPrivate(this))
 {
+   //Make sure the daemon is running as this can be called first
    InstanceInterface& instance = DBus::InstanceManager::instance();
+
+   //Accounts currently require the profile model to exist, this may change later on
+   ProfileModel::instance();
 }
 
 ///Prevent constructor loop
@@ -212,7 +217,7 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
    Account* a = q_ptr->getById(account);
 
    if (!a || (a && a->registrationStatus() != state )) {
-      if (state != "OK") //Do not polute the log
+      if (state != "OK") //Do not pollute the log
          qDebug() << "Account" << account << "status changed to" << state;
    }
    if (!a) {

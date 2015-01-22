@@ -20,33 +20,114 @@
 //Parent
 #include "contact.h"
 
-//Qt
-#include <QtGui/QPixmap>
-
 //Ring library
 #include "phonenumber.h"
 #include "abstractitembackend.h"
 #include "transitionalcontactbackend.h"
+#include "account.h"
+#include "vcardutils.h"
+#include "numbercategorymodel.h"
+#include "numbercategory.h"
+#include "visitors/pixmapmanipulationvisitor.h"
+
+
+class AddressPrivate
+{
+public:
+   QString addressLine;
+   QString city;
+   QString zipCode;
+   QString state;
+   QString country;
+   QString type;
+};
+
+Contact::Address::Address() : d_ptr(new AddressPrivate())
+{
+
+}
+
+QString Contact::Address::addressLine() const
+{
+   return d_ptr->addressLine;
+}
+
+QString Contact::Address::city() const
+{
+   return d_ptr->city;
+}
+
+QString Contact::Address::zipCode() const
+{
+   return d_ptr->zipCode;
+}
+
+QString Contact::Address::state() const
+{
+   return d_ptr->state;
+}
+
+QString Contact::Address::country() const
+{
+   return d_ptr->country;
+}
+
+QString Contact::Address::type() const
+{
+   return d_ptr->type;
+}
+
+void Contact::Address::setAddressLine(const QString& value)
+{
+   d_ptr->addressLine = value;
+}
+
+void Contact::Address::setCity(const QString& value)
+{
+   d_ptr->city = value;
+}
+
+void Contact::Address::setZipCode(const QString& value)
+{
+   d_ptr->zipCode = value;
+}
+
+void Contact::Address::setState(const QString& value)
+{
+   d_ptr->state = value;
+}
+
+void Contact::Address::setCountry(const QString& value)
+{
+   d_ptr->country = value;
+}
+
+void Contact::Address::setType(const QString& value)
+{
+   d_ptr->type = value;
+}
 
 class ContactPrivate {
 public:
    ContactPrivate(Contact* contact, AbstractContactBackend* parent);
    ~ContactPrivate();
-   QString                 m_FirstName      ;
-   QString                 m_SecondName     ;
-   QString                 m_NickName       ;
-   QPixmap*                m_pPhoto         ;
-   QString                 m_FormattedName  ;
-   QString                 m_PreferredEmail ;
-   QString                 m_Organization   ;
-   QByteArray              m_Uid            ;
-   QString                 m_Group          ;
-   QString                 m_Department     ;
-   bool                    m_DisplayPhoto   ;
-   Contact::PhoneNumbers   m_Numbers        ;
-   bool                    m_Active         ;
-   AbstractContactBackend* m_pBackend       ;
-   bool                    m_isPlaceHolder  ;
+   QString                  m_FirstName        ;
+   QString                  m_SecondName       ;
+   QString                  m_NickName         ;
+   QVariant                 m_vPhoto           ;
+   QString                  m_FormattedName    ;
+   QString                  m_PreferredEmail   ;
+   QString                  m_Organization     ;
+   QByteArray               m_Uid              ;
+   QString                  m_Group            ;
+   QString                  m_Department       ;
+   bool                     m_DisplayPhoto     ;
+   Contact::PhoneNumbers    m_Numbers          ;
+   bool                     m_Active           ;
+   AbstractContactBackend*  m_pBackend         ;
+   bool                     m_isPlaceHolder    ;
+   QList<Contact::Address*> m_lAddresses       ;
+   QHash<QString, QString>  m_lCustomAttributes;
 
    //Cache
    QString m_CachedFilterString;
@@ -121,14 +202,13 @@ void ContactPrivate::phoneNumberCountAboutToChange(int n,int o)
    }
 }
 
-ContactPrivate::ContactPrivate(Contact* contact, AbstractContactBackend* parent):m_pPhoto(nullptr),
-   m_Numbers(contact),m_DisplayPhoto(nullptr),m_Active(true),
+ContactPrivate::ContactPrivate(Contact* contact, AbstractContactBackend* parent) :
+   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true),
    m_pBackend(parent?parent:TransitionalContactBackend::instance())
 {}
 
 ContactPrivate::~ContactPrivate()
 {
-   delete m_pPhoto;
 }
 
 Contact::PhoneNumbers::PhoneNumbers(Contact* parent) : QVector<PhoneNumber*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
@@ -190,9 +270,9 @@ const QString& Contact::secondName() const
 }
 
 ///Get the photo
-const QPixmap* Contact::photo() const
+const QVariant Contact::photo() const
 {
-   return d_ptr->m_pPhoto;
+   return d_ptr->m_vPhoto;
 }
 
 ///Get the formatted name
@@ -270,9 +350,9 @@ void Contact::setFamilyName(const QString& name)
 }
 
 ///Set the Photo/Avatar
-void Contact::setPhoto(QPixmap* photo)
+void Contact::setPhoto(const QVariant& photo)
 {
-   d_ptr->m_pPhoto = photo;
+   d_ptr->m_vPhoto = photo;
    d_ptr->changed();
 }
 
@@ -451,4 +531,50 @@ bool Contact::operator==(const Contact* other) const
 bool Contact::operator==(const Contact& other) const
 {
    return &other && this->d_ptr == other.d_ptr;
+}
+
+///Add a new address to this contact
+void Contact::addAddress(Contact::Address* addr)
+{
+   d_ptr->m_lAddresses << addr;
+}
+
+///Add custom fields for contact profiles
+void Contact::addCustomField(const QString& key, const QString& value)
+{
+   d_ptr->m_lCustomAttributes.insert(key, value);
+}
+
+const QByteArray Contact::toVCard(QList<Account*> accounts) const
+{
+   //serializing here
+   VCardUtils* maker = new VCardUtils();
+   maker->startVCard("2.1");
+   maker->addProperty(VCardUtils::Property::UID, uid());
+   maker->addProperty(VCardUtils::Property::NAME, QString(secondName()
+                                                   + VCardUtils::Delimiter::SEPARATOR_TOKEN
+                                                   + firstName()));
+   maker->addProperty(VCardUtils::Property::FORMATTED_NAME, formattedName());
+   maker->addProperty(VCardUtils::Property::ORGANIZATION, organization());
+
+   maker->addEmail("PREF", preferredEmail());
+
+   foreach (PhoneNumber* phone , phoneNumbers()) {
+      maker->addPhoneNumber(phone->category()->name(), phone->uri());
+   }
+
+   foreach (Address* addr , d_ptr->m_lAddresses) {
+      maker->addAddress(addr);
+   }
+
+   foreach (const QString& key , d_ptr->m_lCustomAttributes.keys()) {
+      maker->addProperty(key, d_ptr->m_lCustomAttributes.value(key));
+   }
+
+   foreach (Account* acc , accounts) {
+      maker->addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
+   }
+
+   maker->addPhoto(PixmapManipulationVisitor::instance()->toByteArray(photo()).simplified());
+   return maker->endVCard();
 }

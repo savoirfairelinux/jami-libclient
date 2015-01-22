@@ -22,13 +22,13 @@
 #include "contact.h"
 #include "account.h"
 #include <QStringList>
+#include <QSharedPointer>
 #include <QtCore/QAbstractItemModel>
 
 class ProfileContentBackend;
 class ProfilePersisterVisitor;
 class VCardMapper;
-
-typedef void (VCardMapper:: *mapToProperty)(Contact*, const QByteArray&);
+class ProfileModelPrivate;
 
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
@@ -38,17 +38,17 @@ public:
    static ProfileModel* instance();
 
    //Abstract model member
-   virtual QVariant data        (const QModelIndex& index, int role = Qt::DisplayRole         ) const;
-   virtual int rowCount         (const QModelIndex& parent = QModelIndex()                    ) const;
-   virtual int columnCount      (const QModelIndex& parent = QModelIndex()                    ) const;
-   virtual Qt::ItemFlags flags  (const QModelIndex& index                                     ) const;
-   virtual bool        setData         (const QModelIndex& index, const QVariant &value, int role    )      ;
-   virtual QModelIndex index    (int row, int column, const QModelIndex& parent=QModelIndex() ) const;
-   virtual QModelIndex parent   (const QModelIndex& index                                     ) const;
-   virtual QVariant    headerData  (int section, Qt::Orientation orientation, int role           ) const;
-   virtual QStringList mimeType () const;
-   virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole         ) const override;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                    ) const override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                    ) const override;
+   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                     ) const override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role    )       override;
+   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex() ) const override;
+   virtual QModelIndex   parent      ( const QModelIndex& index                                     ) const override;
+   virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role           ) const override;
+   virtual QStringList   mimeTypes   (                                                              ) const override;
+   virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                               ) const override;
+   virtual bool          dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
    //Getter
    QModelIndex mapToSource  (const QModelIndex& idx) const;
@@ -61,22 +61,14 @@ public:
    AbstractContactBackend* getBackEnd();
 
 private:
+   QSharedPointer<ProfileModelPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(ProfileModel);
 
    //Singleton
-   static ProfileModel*                   m_spInstance;
-   ProfileContentBackend*                 m_pProfileBackend;
-   ProfilePersisterVisitor*               m_pVisitor   ;
-
-   //Helpers
-   void updateIndexes();
+   static ProfileModel* m_spInstance;
 
 public Q_SLOTS:
    bool addNewProfile(Contact* c, AbstractContactBackend* backend = nullptr);
-
-private Q_SLOTS:
-   void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);
-   void slotLayoutchanged();
-
 };
 
 #endif

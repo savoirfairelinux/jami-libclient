@@ -23,7 +23,7 @@
 #include <QStringList>
 #include "contact.h"
 
-class VCardUtils
+class LIB_EXPORT VCardUtils
 {
 public:
 

@@ -156,6 +156,7 @@ SET( libringclient_LIB_SRCS
   #Other
   src/categorizedcompositenode.cpp
   src/hookmanager.cpp
+  src/vcardutils.cpp
 
   #Extension
   src/extensions/presenceitembackendmodelextension.cpp
@@ -200,6 +201,7 @@ SET( libringclient_LIB_HDRS
   src/abstractitembackendmodelextension.h
   src/commonbackendmanagerinterface.h
   src/networkinterfacemodel.h
+  src/vcardutils.h
 )
 
 SET(libringclient_video_LIB_HDRS

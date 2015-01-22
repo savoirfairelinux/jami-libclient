@@ -24,20 +24,12 @@
 #include <QtCore/QVariant>
 #include <time.h>
 
-//Qt
-class QPixmap;
-
-//KDE
-namespace KABC {
-   class Addressee   ;
-   class Picture     ;
-   class PhoneNumber ;
-}
-
 //Ring
 class PhoneNumber;
 class AbstractContactBackend;
 class ContactPrivate;
+class AddressPrivate;
+class Account;
 
 #include "typedefs.h"
 #include "categorizedcompositenode.h"
@@ -51,6 +43,32 @@ class LIB_EXPORT Contact : public QObject {
    #pragma GCC diagnostic pop
 public:
    friend class ContactPrivate;
+
+   ///Represent the physical address of a contact
+   class Address {
+      public:
+         Address();
+
+         //Getters
+         QString addressLine() const;
+         QString city       () const;
+         QString zipCode    () const;
+         QString state      () const;
+         QString country    () const;
+         QString type       () const;
+
+         //Setters
+         void setAddressLine(const QString& value);
+         void setCity       (const QString& value);
+         void setZipCode    (const QString& value);
+         void setState      (const QString& value);
+         void setCountry    (const QString& value);
+         void setType       (const QString& value);
+
+      private:
+         AddressPrivate* d_ptr;
+   };
+
 
    class  PhoneNumbers : public QVector<PhoneNumber*>, public CategorizedCompositeNode { //TODO private
    public:
@@ -72,7 +90,7 @@ public:
    Q_PROPERTY( QString               organization   READ organization   WRITE setOrganization                        )
    Q_PROPERTY( QByteArray            uid            READ uid            WRITE setUid                                 )
    Q_PROPERTY( QString               preferredEmail READ preferredEmail WRITE setPreferredEmail                      )
-//    Q_PROPERTY( QPixmap*              photo          READ photo          WRITE setPhoto                               )
+   Q_PROPERTY( QVariant              photo          READ photo          WRITE setPhoto                               )
    Q_PROPERTY( QString               group          READ group          WRITE setGroup                               )
    Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )
    Q_PROPERTY( bool                  active         READ isActive       WRITE setActive         NOTIFY statusChanged )
@@ -82,6 +100,9 @@ public:
    Q_INVOKABLE bool edit()      ;
    Q_INVOKABLE bool remove()    ;
    Q_INVOKABLE bool addPhoneNumber(PhoneNumber* n);
+   Q_INVOKABLE void addAddress(Address* addr);
+   Q_INVOKABLE void addCustomField(const QString& key, const QString& value);
+   Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts) const;
 
 protected:
    //The D-Pointer can be shared if a PlaceHolderContact is merged with a real one
@@ -102,7 +123,7 @@ public:
    const QString& organization     () const;
    const QByteArray& uid           () const;
    const QString& preferredEmail   () const;
-   const QPixmap* photo            () const;
+   const QVariant photo            () const;
    const QString& group            () const;
    const QString& department       () const;
    bool  isActive                  () const;
@@ -126,7 +147,7 @@ public:
    void setGroup          ( const QString&    name   );
    void setDepartment     ( const QString&    name   );
    void setUid            ( const QByteArray& id     );
-   void setPhoto          ( QPixmap*          photo  );
+   void setPhoto          ( const QVariant&   photo  );
    void setActive         ( bool              active );
 
    //Operator

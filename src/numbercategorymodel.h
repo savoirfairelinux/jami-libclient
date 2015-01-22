@@ -22,8 +22,6 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QVector>
 
-class QPixmap;
-
 class NumberCategoryVisitor;
 class PhoneNumber;
 class NumberCategory;
@@ -38,14 +36,14 @@ public:
    };
 
    //Abstract model member
-   virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole    ) const override;
-   virtual int rowCount(const QModelIndex& parent = QModelIndex()                ) const override;
-   virtual Qt::ItemFlags flags(const QModelIndex& index                          ) const override;
-   virtual bool setData(const QModelIndex& index, const QVariant &value, int role) override;
+   virtual QVariant       data    (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount (const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    (const QModelIndex& index                                 ) const override;
+   virtual bool          setData  (const QModelIndex& index, const QVariant &value, int role)       override;
 
    //Mutator
-   NumberCategory* addCategory(const QString& name, QPixmap* icon, int index = -1, bool enabled = true);
-   void setIcon(int index, QPixmap* icon);
+   NumberCategory* addCategory(const QString& name, const QVariant& icon, int index = -1, bool enabled = true);
+   void setIcon(int index, const QVariant& icon);
    void save();
 
    //Singleton

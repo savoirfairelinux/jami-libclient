@@ -27,10 +27,10 @@ public:
    NumberCategoryPrivate();
    //Attributes
    QString m_Name;
-   QPixmap* m_pIcon;
+   QVariant m_pIcon;
 };
 
-NumberCategoryPrivate::NumberCategoryPrivate() : m_pIcon(nullptr), m_Name()
+NumberCategoryPrivate::NumberCategoryPrivate() : m_pIcon(), m_Name()
 {
 }
 
@@ -53,7 +53,7 @@ QString  NumberCategory::name() const
    return d_ptr->m_Name;
 }
 
-void NumberCategory::setIcon(QPixmap*pixmap)
+void NumberCategory::setIcon(const QVariant& pixmap)
 {
    d_ptr->m_pIcon = pixmap;
 }

@@ -19,11 +19,14 @@
 #define MIME_H
 
 namespace RingMimes {
-   constexpr static const char* CALLID      = "text/ring.call.id"      ;
-   constexpr static const char* CONTACT     = "text/ring.contact"      ;
-   constexpr static const char* HISTORYID   = "text/ring.history.id"   ;
-   constexpr static const char* PHONENUMBER = "text/ring.phone.number" ;
-   constexpr static const char* PLAIN_TEXT  = "text/plain"             ;
+   constexpr static const char* CALLID      = "text/ring.call.id"       ;
+   constexpr static const char* CONTACT     = "text/ring.contact"       ;
+   constexpr static const char* HISTORYID   = "text/ring.history.id"    ;
+   constexpr static const char* PHONENUMBER = "text/ring.phone.number"  ;
+   constexpr static const char* PLAIN_TEXT  = "text/plain"              ;
+   constexpr static const char* HTML_TEXT   = "text/html"               ;
+   constexpr static const char* PROFILE     = "text/ring.profile.id"    ;
+   constexpr static const char* ACCOUNT     = "text/sflphone.account.id";
 }
 
 #endif

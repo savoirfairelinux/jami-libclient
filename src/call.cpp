@@ -1687,7 +1687,7 @@ QVariant Call::roleData(int role) const
          return QVariant::fromValue(const_cast<PhoneNumber*>(peerPhoneNumber()));
          break;
       case Call::Role::PhotoPtr:
-         return QVariant::fromValue((void*)(ct?ct->photo():nullptr));
+         return ct?ct->photo():QVariant();
          break;
       case Call::Role::CallState:
          return static_cast<int>(state()); //TODO Qt5, use the Q_ENUM

@@ -39,8 +39,8 @@ public:
    QString  name() const;
 
    //Setter
-   void setIcon(QPixmap*       pixmap );
-   void setName(const QString& name   );
+   void setIcon(const QVariant& pixmap );
+   void setName(const QString&  name   );
 
 private:
    NumberCategory(QObject* parent, const QString& name);

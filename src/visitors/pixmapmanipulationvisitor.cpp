@@ -33,7 +33,7 @@ QVariant PixmapManipulationVisitor::contactPhoto(Contact* c, const QSize& size, 
    return QVariant();
 }
 
-QVariant PixmapManipulationVisitor::numberCategoryIcon(const QPixmap* p, const QSize& size, bool displayPresence, bool isPresent)
+QVariant PixmapManipulationVisitor::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
 {
    Q_UNUSED(p)
    Q_UNUSED(size)
@@ -66,5 +66,17 @@ PixmapManipulationVisitor* PixmapManipulationVisitor::instance()
 QVariant PixmapManipulationVisitor::serurityIssueIcon(const QModelIndex& index)
 {
    Q_UNUSED(index)
+   return QVariant();
+}
+
+QByteArray PixmapManipulationVisitor::toByteArray(const QVariant& pxm)
+{
+   Q_UNUSED(pxm)
+   return QByteArray();
+}
+
+QVariant PixmapManipulationVisitor::profilePhoto(const QByteArray& data)
+{
+   Q_UNUSED(data)
    return QVariant();
 }
