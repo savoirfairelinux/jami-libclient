@@ -75,9 +75,6 @@ AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 {
    //Make sure the daemon is running as this can be called first
    InstanceInterface& instance = DBus::InstanceManager::instance();
-
-   //Accounts currently require the profile model to exist, this may change later on
-   ProfileModel::instance();
 }
 
 ///Prevent constructor loop

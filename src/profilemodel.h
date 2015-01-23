@@ -32,6 +32,7 @@ class ProfileModelPrivate;
 
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
+   friend class ProfileContentBackend;
 public:
    explicit ProfileModel(QObject* parent = nullptr);
    virtual ~ProfileModel();

@@ -133,7 +133,7 @@ static VCardMapper* vc_mapper = new VCardMapper;
 class ProfileContentBackend : public AbstractContactBackend {
    Q_OBJECT
 public:
-   explicit ProfileContentBackend(QObject* parent);
+   explicit ProfileContentBackend(ProfileModel* parent);
 
    //Re-implementation
    virtual QString  name(                                                                     ) const override;
@@ -155,7 +155,7 @@ public:
 
    //Attributes
    QList<Node*> m_lProfiles;
-   QHash<QString,Node*> m_hProfileByAccountId;
+   QHash<QByteArray,Node*> m_hProfileByAccountId;
    bool m_needSaving;
 
    QList<Contact*> m_bSaveBuffer;
@@ -168,6 +168,9 @@ public:
    Node* getProfileById(const QByteArray& id);
    void setupDefaultProfile();
    void addAccount(Node* parent, Account* acc);
+
+private:
+   ProfileModel* m_pParent;
 
 public Q_SLOTS:
    void contactChanged();
@@ -194,8 +197,8 @@ struct Node {
 
 ProfileModel* ProfileModel::m_spInstance = nullptr;
 
-ProfileContentBackend::ProfileContentBackend(QObject* parent) : AbstractContactBackend(this, parent),
-m_pDefault(nullptr)
+ProfileContentBackend::ProfileContentBackend(ProfileModel* parent) : AbstractContactBackend(this, parent),
+m_pDefault(nullptr),m_pParent(parent)
 {
 }
 
@@ -267,7 +270,6 @@ ProfileContentBackend::~ProfileContentBackend( )
 
 void ProfileContentBackend::setupDefaultProfile()
 {
-   qDebug() << "No profile found, creating one";
 
    QHash<Account*,bool> accounts;
    QList<Account*> orphans;
@@ -278,10 +280,11 @@ void ProfileContentBackend::setupDefaultProfile()
    //BUG this doesn't work with new accounts
    for (int i=0; i < AccountModel::instance()->size();i++) {
       accounts[(*AccountModel::instance())[i]] = false;
+      qDebug() << "MEH" << (*AccountModel::instance())[i]->id();
    }
 
    foreach (Node* node, m_lProfiles) {
-      foreach (Node* acc, m_lProfiles) {
+      foreach (Node* acc, node->children) {
          accounts[node->account] = true;
       }
    }
@@ -291,27 +294,32 @@ void ProfileContentBackend::setupDefaultProfile()
          orphans << i.key();
       }
    }
+   qDebug() << "ORPHAN" << orphans.size();
 
    if (orphans.size() && (!m_pDefault)) {
+      qDebug() << "No profile found, creating one";
       Contact* profile = new Contact(this);
       profile->setFormattedName(tr("Default"));
 
-      m_pDefault   = new Node           ;
+      m_pDefault          = new Node           ;
       m_pDefault->type    = Node::Type::PROFILE;
       m_pDefault->contact = profile            ;
       m_pDefault->m_Index = m_lProfiles.size() ;
 
+      m_pParent->beginInsertRows(QModelIndex(), m_lProfiles.size(), m_lProfiles.size());
       m_lProfiles << m_pDefault;
+      m_pParent->endInsertRows();
       ContactModel::instance()->addContact(profile);
    }
 
    foreach(Account* a, orphans) {
-      addAccount(m_pDefault,a);
+      addAccount(m_pDefault, a);
    }
 }
 
 void ProfileContentBackend::addAccount(Node* parent, Account* acc)
 {
+   qDebug() << "ADDING ACCOUNT" << acc->id();
    Node* account_pro = new Node;
    account_pro->type    = Node::Type::ACCOUNT;
    account_pro->contact = parent->contact;
@@ -319,7 +327,9 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    account_pro->account = acc;
    account_pro->m_Index = parent->children.size();
 
+   m_pParent->beginInsertRows(m_pParent->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
+   m_pParent->endInsertRows();
 }
 
 bool ProfileContentBackend::load()
@@ -380,7 +390,10 @@ bool ProfileContentBackend::load()
             }
          }
 
+         m_pParent->beginInsertRows(QModelIndex(), m_lProfiles.size(), m_lProfiles.size());
          m_lProfiles << pro;
+         m_pParent->endInsertRows();
+
          connect(profile, SIGNAL(changed()), this, SLOT(contactChanged()));
          ContactModel::instance()->addContact(profile);
       }
@@ -578,12 +591,11 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid())
       return QVariant();
+   //Accounts
    else if (index.parent().isValid()) {
-       switch (role) {
-          case Qt::DisplayRole:
-            return mapToSource(index).data();
-       };
+      return mapToSource(index).data(role);
    }
+   //Profiles
    else {
       switch (role) {
          case Qt::DisplayRole:
@@ -710,7 +722,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
    if (data->hasFormat(RingMimes::ACCOUNT)) {
       qDebug() << "dropping account";
 
-      QString accountId = data->data(RingMimes::ACCOUNT);
+      const QByteArray accountId = data->data(RingMimes::ACCOUNT);
       Node* newProfile = nullptr;
       int destIdx, indexOfAccountToMove = -1; // Where to insert in account list of profile
 
@@ -819,6 +831,7 @@ void ProfileModelPrivate::slotDataChanged(const QModelIndex& tl,const QModelInde
 
 void ProfileModelPrivate::slotLayoutchanged()
 {
+   m_pProfileBackend->setupDefaultProfile();
    emit q_ptr->layoutChanged();
 }
 
