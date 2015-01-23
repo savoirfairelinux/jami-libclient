@@ -168,6 +168,8 @@ public:
     */
    static const TypedStateMachine< Call::LifeCycleState , Call::State > metaStateMap;
 
+   static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
+
    static Call::DaemonState toDaemonCallState   (const QString& stateName);
    static Call::State       confStatetoCallState(const QString& stateName);
    Call::State stateChanged(const QString & newState);

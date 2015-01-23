@@ -21,6 +21,7 @@
 #define ACCOUNT_H
 
 #include <QtCore/QList>
+#include <QtCore/QSharedPointer>
 
 //Qt
 class QString;
@@ -63,6 +64,7 @@ class LIB_EXPORT Account : public QObject {
 
    friend class AccountModel;
    friend class AccountModelPrivate;
+   friend class AccountPlaceHolder;
 
    //Properties
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
@@ -165,11 +167,6 @@ class LIB_EXPORT Account : public QObject {
          constexpr static const char* YES  = "true";
          constexpr static const char* NO   = "false";
       };
-
-      ~Account();
-      //Constructors
-      static Account* buildExistingAccountFromId(const QString& _accountId);
-      static Account* buildNewAccountFromAlias  (const QString& alias     );
 
       enum Role {
          Alias                       = 100,
@@ -324,20 +321,21 @@ class LIB_EXPORT Account : public QObject {
       Account::EditState state() const;
 
       //Getters
-      bool            isNew()                             const;
-      const QString   id()                                const;
-      const QString   toHumanStateName()                  const;
-      const QString   alias()                             const;
-      bool            isRegistered()                      const;
-      QModelIndex     index()                                  ;
-      QString         stateColorName()                    const;
-      QVariant        stateColor()                        const;
+      bool             isNew           () const;
+      const QByteArray id              () const;
+      const QString    toHumanStateName() const;
+      const QString    alias           () const;
+      bool             isRegistered    () const;
+      QModelIndex      index           () const;
+      QString          stateColorName  () const;
+      QVariant         stateColor      () const;
+      virtual bool     isLoaded        () const;
 
-      Q_INVOKABLE CredentialModel*   credentialsModel() const;
-      Q_INVOKABLE Audio::CodecModel* audioCodecModel () const;
-      Q_INVOKABLE Video::CodecModel2* videoCodecModel () const;
-      Q_INVOKABLE RingToneModel*     ringToneModel   () const;
-      Q_INVOKABLE KeyExchangeModel*  keyExchangeModel() const;
+      Q_INVOKABLE CredentialModel*         credentialsModel       () const;
+      Q_INVOKABLE Audio::CodecModel*       audioCodecModel        () const;
+      Q_INVOKABLE Video::CodecModel2*      videoCodecModel        () const;
+      Q_INVOKABLE RingToneModel*           ringToneModel          () const;
+      Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
 
       //Getters
@@ -399,25 +397,25 @@ class LIB_EXPORT Account : public QObject {
       QVariant roleData            (int role) const;
 
       //Setters
-      void setId                            (const QString& id      );
+      void setId                            (const QByteArray& id   );
       void setAlias                         (const QString& detail  );
       void setProtocol                      (Account::Protocol proto);
-      void setHostname                      (const QString& detail );
-      void setUsername                      (const QString& detail );
-      void setMailbox                       (const QString& detail );
-      void setProxy                         (const QString& detail );
-      void setPassword                      (const QString& detail );
-      void setTlsPassword                   (const QString& detail );
-      void setTlsCaListCertificate          (Certificate* cert     );
-      void setTlsCertificate                (Certificate* cert     );
-      void setTlsPrivateKeyCertificate      (Certificate* cert     );
-      void setTlsCiphers                    (const QString& detail );
-      void setTlsServerName                 (const QString& detail );
-      void setSipStunServer                 (const QString& detail );
-      void setPublishedAddress              (const QString& detail );
-      void setLocalInterface                (const QString& detail );
-      void setRingtonePath                  (const QString& detail );
-      void setLastErrorMessage              (const QString& message);
+      void setHostname                      (const QString& detail  );
+      void setUsername                      (const QString& detail  );
+      void setMailbox                       (const QString& detail  );
+      void setProxy                         (const QString& detail  );
+      void setPassword                      (const QString& detail  );
+      void setTlsPassword                   (const QString& detail  );
+      void setTlsCaListCertificate          (Certificate* cert      );
+      void setTlsCertificate                (Certificate* cert      );
+      void setTlsPrivateKeyCertificate      (Certificate* cert      );
+      void setTlsCiphers                    (const QString& detail  );
+      void setTlsServerName                 (const QString& detail  );
+      void setSipStunServer                 (const QString& detail  );
+      void setPublishedAddress              (const QString& detail  );
+      void setLocalInterface                (const QString& detail  );
+      void setRingtonePath                  (const QString& detail  );
+      void setLastErrorMessage              (const QString& message );
       void setTlsMethod                     (TlsMethodModel::Type   detail);
       void setKeyExchange                   (KeyExchangeModel::Type detail);
       void setLastErrorCode                 (int  code  );
@@ -453,9 +451,6 @@ class LIB_EXPORT Account : public QObject {
 
       void setRoleData(int role, const QVariant& value);
 
-      //Updates
-      virtual bool updateState();
-
       //Operators
       bool operator==(const Account&)const;
 
@@ -472,14 +467,18 @@ class LIB_EXPORT Account : public QObject {
    private:
       //Constructors
       explicit Account();
+      ~Account();
 
-      QScopedPointer<AccountPrivate> d_ptr;
+      QSharedPointer<AccountPrivate> d_ptr;
       Q_DECLARE_PRIVATE(Account)
 
    Q_SIGNALS:
       ///The account state (Invalid,Trying,Registered) changed
       void stateChanged(QString state);
-      void detailChanged(Account* a,QString name,QString newVal, QString oldVal);
+      ///One of the account property changed
+      //TODO Qt5 drop the account parameter
+      void propertyChanged(Account* a, const QString& name, const QString& newVal, const QString& oldVal);
+      ///Something(s) in the account changed
       void changed(Account* a);
       ///The alias changed, take effect instantaneously
       void aliasChanged(const QString&);
@@ -488,4 +487,17 @@ class LIB_EXPORT Account : public QObject {
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
+
+/**
+ * Some accounts can be loaded at later time. This object will be upgraded
+ * to an account when it arrive
+ */
+class LIB_EXPORT AccountPlaceHolder : public Account {
+   Q_OBJECT
+   friend class AccountModel;
+private:
+   explicit AccountPlaceHolder(const QByteArray& uid);
+};
+
+
 #endif

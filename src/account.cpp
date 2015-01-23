@@ -32,6 +32,8 @@
 #include "visitors/accountlistcolorvisitor.h"
 #include "certificate.h"
 #include "accountmodel.h"
+#include "private/account_p.h"
+#include "private/accountmodel_p.h"
 #include "credentialmodel.h"
 #include "audio/codecmodel.h"
 #include "video/codecmodel2.h"
@@ -43,72 +45,6 @@
 #include "securityvalidationmodel.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
-
-typedef void (AccountPrivate::*account_function)();
-
-class AccountPrivate : public QObject
-{
-public:
-   Q_OBJECT
-   Q_DECLARE_PUBLIC(Account)
-
-   //Constructor
-   AccountPrivate(Account* acc);
-
-   //Attributes
-   QString                 m_AccountId      ;
-   QHash<QString,QString>  m_hAccountDetails;
-   PhoneNumber*            m_pAccountNumber ;
-
-   Account*                q_ptr       ;
-
-   //Setters
-   void setAccountDetails (const QHash<QString,QString>& m          );
-   bool setAccountDetail  (const QString& param, const QString& val );
-
-   //Getters
-   const QString accountDetail(const QString& param) const;
-
-   //Helpers
-   inline void changeState(Account::EditState state);
-
-   //State actions
-   void performAction(Account::EditAction action);
-   void nothing() {};
-   void edit()    {changeState(Account::EditState::EDITING );};
-   void modify()  {changeState(Account::EditState::MODIFIED);};
-   void remove()  {changeState(Account::EditState::REMOVED );};
-   void cancel()  {changeState(Account::EditState::READY   );};
-   void outdate() {changeState(Account::EditState::OUTDATED);};
-   void reload();
-   void save();
-   void reloadMod() {reload();modify();};
-
-   CredentialModel*          m_pCredentials     ;
-   Audio::CodecModel*        m_pAudioCodecs     ;
-   Video::CodecModel2*        m_pVideoCodecs     ;
-   RingToneModel*            m_pRingToneModel   ;
-   KeyExchangeModel*         m_pKeyExchangeModel;
-   SecurityValidationModel*  m_pSecurityValidationModel;
-   Account::EditState m_CurrentState;
-
-   // State machines
-   static const account_function stateMachineActionsOnState[6][7];
-
-   //Cached account details (as they are called too often for the hash)
-   mutable QString      m_HostName;
-   mutable QString      m_LastErrorMessage;
-   mutable int          m_LastErrorCode;
-   mutable int          m_VoiceMailCount;
-   mutable Certificate* m_pCaCert;
-   mutable Certificate* m_pTlsCert;
-   mutable Certificate* m_pPrivateKey;
-
-public Q_SLOTS:
-      void slotPresentChanged        (bool  present  );
-      void slotPresenceMessageChanged(const QString& );
-      void slotUpdateCertificate     (               );
-};
 
 #define AP &AccountPrivate
 const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
@@ -127,7 +63,7 @@ AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCreden
 m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pCaCert(nullptr),m_pTlsCert(nullptr),
-m_pPrivateKey(nullptr)
+m_pPrivateKey(nullptr),m_isLoaded(true)
 {
    Q_Q(Account);
 }
@@ -138,28 +74,31 @@ void AccountPrivate::changeState(Account::EditState state) {
    emit q_ptr->changed(q_ptr);
 }
 
-
 ///Constructors
 Account::Account():QObject(AccountModel::instance()),d_ptr(new AccountPrivate(this))
-
 {
 }
 
 ///Build an account from it'id
-Account* Account::buildExistingAccountFromId(const QString& _accountId)
+Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId)
 {
 //    qDebug() << "Building an account from id: " << _accountId;
    Account* a = new Account();
    a->d_ptr->m_AccountId = _accountId;
    a->d_ptr->setObjectName(_accountId);
 
-   a->performAction(EditAction::RELOAD);
+   a->performAction(Account::EditAction::RELOAD);
+
+   //If a placeholder exist for this account, upgrade it
+   if (AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]) {
+      AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]->d_ptr->merge(a);
+   }
 
    return a;
 } //buildExistingAccountFromId
 
 ///Build an account from it's name / alias
-Account* Account::buildNewAccountFromAlias(const QString& alias)
+Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
 {
    qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
@@ -174,7 +113,7 @@ Account* Account::buildNewAccountFromAlias(const QString& alias)
       a->d_ptr->m_hAccountDetails[iter.key()] = iter.value();
    }
    a->setHostname(a->d_ptr->m_hAccountDetails[Account::MapField::HOSTNAME]);
-   a->d_ptr->setAccountDetail(Account::MapField::ALIAS,alias);
+   a->d_ptr->setAccountProperty(Account::MapField::ALIAS,alias);
    a->setObjectName(a->id());
    return a;
 }
@@ -212,15 +151,15 @@ void AccountPrivate::slotUpdateCertificate()
       switch (cert->type()) {
          case Certificate::Type::AUTHORITY:
             if (accountDetail(Account::MapField::TLS::CA_LIST_FILE) != cert->path().toString())
-               setAccountDetail(Account::MapField::TLS::CA_LIST_FILE, cert->path().toString());
+               setAccountProperty(Account::MapField::TLS::CA_LIST_FILE, cert->path().toString());
             break;
          case Certificate::Type::USER:
             if (accountDetail(Account::MapField::TLS::CERTIFICATE_FILE) != cert->path().toString())
-               setAccountDetail(Account::MapField::TLS::CERTIFICATE_FILE, cert->path().toString());
+               setAccountProperty(Account::MapField::TLS::CERTIFICATE_FILE, cert->path().toString());
             break;
          case Certificate::Type::PRIVATE_KEY:
             if (accountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE) != cert->path().toString())
-               setAccountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE, cert->path().toString());
+               setAccountProperty(Account::MapField::TLS::PRIVATE_KEY_FILE, cert->path().toString());
             break;
          case Certificate::Type::NONE:
             break;
@@ -241,14 +180,14 @@ bool Account::isNew() const
 }
 
 ///Get this account ID
-const QString Account::id() const
+const QByteArray Account::id() const
 {
    if (isNew()) {
       qDebug() << "Error : getting AccountId of a new account.";
    }
    if (d_ptr->m_AccountId.isEmpty()) {
       qDebug() << "Account not configured";
-      return QString(); //WARNING May explode
+      return QByteArray(); //WARNING May explode
    }
 
    return d_ptr->m_AccountId;
@@ -338,7 +277,7 @@ bool Account::isRegistered() const
 }
 
 ///Return the model index of this item
-QModelIndex Account::index()
+QModelIndex Account::index() const
 {
    for (int i=0;i < AccountModel::instance()->size();i++) {
       if (this == (*AccountModel::instance())[i]) {
@@ -356,6 +295,12 @@ QString Account::stateColorName() const
    if(registrationStatus() == Account::State::REGISTERED || registrationStatus() == Account::State::READY)
       return "darkGreen";
    return "red";
+}
+
+///I
+bool Account::isLoaded() const
+{
+   return d_ptr->m_isLoaded;
 }
 
 ///Return status Qt color, QColor is not part of QtCore, use using the global variant
@@ -417,7 +362,7 @@ SecurityValidationModel* Account::securityValidationModel() const
 void Account::setAlias(const QString& detail)
 {
    const bool accChanged = detail != alias();
-   d_ptr->setAccountDetail(Account::MapField::ALIAS,detail);
+   d_ptr->setAccountProperty(Account::MapField::ALIAS,detail);
    if (accChanged)
       emit aliasChanged(detail);
 }
@@ -878,7 +823,7 @@ QVariant Account::roleData(int role) const
  ****************************************************************************/
 
 ///Set account details
-void AccountPrivate::setAccountDetails(const QHash<QString,QString>& m)
+void AccountPrivate::setAccountProperties(const QHash<QString,QString>& m)
 {
    m_hAccountDetails.clear();
    m_hAccountDetails = m;
@@ -886,14 +831,14 @@ void AccountPrivate::setAccountDetails(const QHash<QString,QString>& m)
 }
 
 ///Set a specific detail
-bool AccountPrivate::setAccountDetail(const QString& param, const QString& val)
+bool AccountPrivate::setAccountProperty(const QString& param, const QString& val)
 {
    const bool accChanged = m_hAccountDetails[param] != val;
    const QString buf = m_hAccountDetails[param];
    if (param == Account::MapField::Registration::STATUS) {
       m_hAccountDetails[param] = val;
       if (accChanged) {
-         emit q_ptr->detailChanged(q_ptr,param,val,buf);
+         emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
    }
    else {
@@ -901,7 +846,7 @@ bool AccountPrivate::setAccountDetail(const QString& param, const QString& val)
       if (m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW) {
          m_hAccountDetails[param] = val;
          if (accChanged) {
-            emit q_ptr->detailChanged(q_ptr,param,val,buf);
+            emit q_ptr->propertyChanged(q_ptr,param,val,buf);
          }
       }
    }
@@ -909,7 +854,7 @@ bool AccountPrivate::setAccountDetail(const QString& param, const QString& val)
 }
 
 ///Set the account id
-void Account::setId(const QString& id)
+void Account::setId(const QByteArray& id)
 {
    qDebug() << "Setting accountId = " << d_ptr->m_AccountId;
    if (! isNew())
@@ -922,10 +867,10 @@ void Account::setProtocol(Account::Protocol proto)
 {
    switch (proto) {
       case Account::Protocol::SIP:
-         d_ptr->setAccountDetail(Account::MapField::TYPE ,Account::ProtocolName::SIP);
+         d_ptr->setAccountProperty(Account::MapField::TYPE ,Account::ProtocolName::SIP);
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountDetail(Account::MapField::TYPE ,Account::ProtocolName::IAX);
+         d_ptr->setAccountProperty(Account::MapField::TYPE ,Account::ProtocolName::IAX);
          break;
    };
 }
@@ -935,26 +880,26 @@ void Account::setHostname(const QString& detail)
 {
    if (d_ptr->m_HostName != detail) {
       d_ptr->m_HostName = detail;
-      d_ptr->setAccountDetail(Account::MapField::HOSTNAME, detail);
+      d_ptr->setAccountProperty(Account::MapField::HOSTNAME, detail);
    }
 }
 
 ///Set the account username, everything is valid, some might be rejected by the PBX server
 void Account::setUsername(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::USERNAME, detail);
+   d_ptr->setAccountProperty(Account::MapField::USERNAME, detail);
 }
 
 ///Set the account mailbox, usually a number, but can be anything
 void Account::setMailbox(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::MAILBOX, detail);
+   d_ptr->setAccountProperty(Account::MapField::MAILBOX, detail);
 }
 
 ///Set the account mailbox, usually a number, but can be anything
 void Account::setProxy(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ROUTE, detail);
+   d_ptr->setAccountProperty(Account::MapField::ROUTE, detail);
 }
 
 ///Set the main credential password
@@ -970,7 +915,7 @@ void Account::setPassword(const QString& detail)
          }
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountDetail(Account::MapField::PASSWORD, detail);
+         d_ptr->setAccountProperty(Account::MapField::PASSWORD, detail);
          break;
    };
 }
@@ -978,64 +923,64 @@ void Account::setPassword(const QString& detail)
 ///Set the TLS (encryption) password
 void Account::setTlsPassword(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::PASSWORD, detail);
+   d_ptr->setAccountProperty(Account::MapField::TLS::PASSWORD, detail);
 }
 
 ///Set the certificate authority list file
 void Account::setTlsCaListCertificate(Certificate* cert)
 {
    d_ptr->m_pCaCert = cert; //FIXME memory leak
-   d_ptr->setAccountDetail(Account::MapField::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(Account::MapField::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the certificate
 void Account::setTlsCertificate(Certificate* cert)
 {
    d_ptr->m_pTlsCert = cert; //FIXME memory leak
-   d_ptr->setAccountDetail(Account::MapField::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(Account::MapField::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the private key
 void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert; //FIXME memory leak
-   d_ptr->setAccountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(Account::MapField::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the TLS cipher
 void Account::setTlsCiphers(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::CIPHERS, detail);
+   d_ptr->setAccountProperty(Account::MapField::TLS::CIPHERS, detail);
 }
 
 ///Set the TLS server
 void Account::setTlsServerName(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::SERVER_NAME, detail);
+   d_ptr->setAccountProperty(Account::MapField::TLS::SERVER_NAME, detail);
 }
 
 ///Set the stun server
 void Account::setSipStunServer(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::STUN::SERVER, detail);
+   d_ptr->setAccountProperty(Account::MapField::STUN::SERVER, detail);
 }
 
 ///Set the published address
 void Account::setPublishedAddress(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::PUBLISHED_ADDRESS, detail);
+   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_ADDRESS, detail);
 }
 
 ///Set the local interface
 void Account::setLocalInterface(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::LOCAL_INTERFACE, detail);
+   d_ptr->setAccountProperty(Account::MapField::LOCAL_INTERFACE, detail);
 }
 
 ///Set the ringtone path, it have to be a valid absolute path
 void Account::setRingtonePath(const QString& detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::Ringtone::PATH, detail);
+   d_ptr->setAccountProperty(Account::MapField::Ringtone::PATH, detail);
 }
 
 ///Set the number of voice mails
@@ -1059,176 +1004,208 @@ void Account::setLastErrorCode(int code)
 ///Set the Tls method
 void Account::setTlsMethod(TlsMethodModel::Type detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::METHOD ,TlsMethodModel::toDaemonName(detail));
+   d_ptr->setAccountProperty(Account::MapField::TLS::METHOD ,TlsMethodModel::toDaemonName(detail));
 }
 
 ///Set the Tls method
 void Account::setKeyExchange(KeyExchangeModel::Type detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::SRTP::KEY_EXCHANGE ,KeyExchangeModel::toDaemonName(detail));
+   d_ptr->setAccountProperty(Account::MapField::SRTP::KEY_EXCHANGE ,KeyExchangeModel::toDaemonName(detail));
 }
 
 ///Set the account timeout, it will be renegotiated when that timeout occur
 void Account::setRegistrationExpire(int detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::Registration::EXPIRE, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::Registration::EXPIRE, QString::number(detail));
 }
 
 ///Set TLS negotiation timeout in second
 void Account::setTlsNegotiationTimeoutSec(int detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
 }
 
 ///Set the TLS negotiation timeout in milliseconds
 void Account::setTlsNegotiationTimeoutMsec(int detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::NEGOTIATION_TIMEOUT_MSEC, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::TLS::NEGOTIATION_TIMEOUT_MSEC, QString::number(detail));
 }
 
 ///Set the local port for SIP/IAX communications
 void Account::setLocalPort(unsigned short detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::LOCAL_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::LOCAL_PORT, QString::number(detail));
 }
 
 ///Set the TLS listener port (0-2^16)
 void Account::setTlsListenerPort(unsigned short detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::LISTENER_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::TLS::LISTENER_PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
 void Account::setPublishedPort(unsigned short detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::PUBLISHED_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_PORT, QString::number(detail));
 }
 
 ///Set if the account is enabled or not
 void Account::setEnabled(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::ENABLED, (detail)TO_BOOL);
 }
 
 ///Set if the account should auto answer
 void Account::setAutoAnswer(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::AUTOANSWER, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::AUTOANSWER, (detail)TO_BOOL);
 }
 
 ///Set the TLS verification server
 void Account::setTlsVerifyServer(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::VERIFY_SERVER, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::TLS::VERIFY_SERVER, (detail)TO_BOOL);
 }
 
 ///Set the TLS verification client
 void Account::setTlsVerifyClient(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
 }
 
 ///Set if the peer need to be providing a certificate
 void Account::setTlsRequireClientCertificate(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
 }
 
 ///Set if the security settings are enabled
 void Account::setTlsEnabled(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::TLS::ENABLED ,(detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::TLS::ENABLED ,(detail)TO_BOOL);
 }
 
 void Account::setDisplaySasOnce(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
 }
 
 void Account::setSrtpRtpFallback(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
 }
 
 void Account::setSrtpEnabled(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::SRTP::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::SRTP::ENABLED, (detail)TO_BOOL);
 }
 
 void Account::setZrtpDisplaySas(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
 }
 
 void Account::setZrtpNotSuppWarning(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
 }
 
 void Account::setZrtpHelloHash(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::ZRTP::HELLO_HASH, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::ZRTP::HELLO_HASH, (detail)TO_BOOL);
 }
 
 void Account::setSipStunEnabled(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::STUN::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::STUN::ENABLED, (detail)TO_BOOL);
 }
 
+/**
+ * Set if the published address is the same as the local IP address
+ * @see Account::setPublishedAddress
+ * @see Account::publishedAddress
+ */
 void Account::setPublishedSameAsLocal(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::PUBLISHED_SAMEAS_LOCAL, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_SAMEAS_LOCAL, (detail)TO_BOOL);
 }
 
 ///Set if custom ringtone are enabled
 void Account::setRingtoneEnabled(bool detail)
 {
-   d_ptr->setAccountDetail(Account::MapField::Ringtone::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::Ringtone::ENABLED, (detail)TO_BOOL);
 }
 
+/**
+ * Set if the account broadcast its presence data
+ *
+ * @note This only works when the account support presence
+ * @see Account::supportPresencePublish()
+ */
 void Account::setPresenceEnabled(bool enable)
 {
-   d_ptr->setAccountDetail(Account::MapField::Presence::ENABLED, (enable)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::Presence::ENABLED, (enable)TO_BOOL);
    emit presenceEnabledChanged(enable);
 }
 
 ///Use video by default when available
 void Account::setVideoEnabled(bool enable)
 {
-   d_ptr->setAccountDetail(Account::MapField::Video::ENABLED, (enable)TO_BOOL);
+   d_ptr->setAccountProperty(Account::MapField::Video::ENABLED, (enable)TO_BOOL);
 }
 
+/**Set the maximum audio port
+ * This can be used when some routers without UPnP support open a narrow range
+ * of ports to allow the stream to go through.
+ */
 void Account::setAudioPortMax(int port )
 {
-   d_ptr->setAccountDetail(Account::MapField::Audio::PORT_MAX, QString::number(port));
+   d_ptr->setAccountProperty(Account::MapField::Audio::PORT_MAX, QString::number(port));
 }
 
+/**Set the minimum audio port
+ * This can be used when some routers without UPnP support open a narrow range
+ * of ports to allow the stream to go through.
+ */
 void Account::setAudioPortMin(int port )
 {
-   d_ptr->setAccountDetail(Account::MapField::Audio::PORT_MIN, QString::number(port));
+   d_ptr->setAccountProperty(Account::MapField::Audio::PORT_MIN, QString::number(port));
 }
 
+/**Set the maximum video port
+ * This can be used when some routers without UPnP support open a narrow range
+ * of ports to allow the stream to go through.
+ */
 void Account::setVideoPortMax(int port )
 {
-   d_ptr->setAccountDetail(Account::MapField::Video::PORT_MAX, QString::number(port));
+   d_ptr->setAccountProperty(Account::MapField::Video::PORT_MAX, QString::number(port));
 }
 
+/**Set the minimum video port
+ * This can be used when some routers without UPnP support open a narrow range
+ * of ports to allow the stream to go through.
+ */
 void Account::setVideoPortMin(int port )
 {
-   d_ptr->setAccountDetail(Account::MapField::Video::PORT_MIN, QString::number(port));
+   d_ptr->setAccountProperty(Account::MapField::Video::PORT_MIN, QString::number(port));
 }
 
+///TODO implement the "use default" logic correctly
+/**Set the user agent
+ * If the string is unchanged, the daemon should upgrade it automatically
+ */
 void Account::setUserAgent(const QString& agent)
 {
-   d_ptr->setAccountDetail(Account::MapField::USER_AGENT, agent);
+   d_ptr->setAccountProperty(Account::MapField::USER_AGENT, agent);
 }
 
 ///Set the DTMF type
 void Account::setDTMFType(DtmfType type)
 {
-   d_ptr->setAccountDetail(Account::MapField::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
+   d_ptr->setAccountProperty(Account::MapField::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
 }
 
+///Proxy for AccountModel::setData
 void Account::setRoleData(int role, const QVariant& value)
 {
    switch(role) {
@@ -1368,7 +1345,7 @@ void Account::setRoleData(int role, const QVariant& value)
          setDTMFType((DtmfType)value.toInt());
          break;
       case Account::Role::Id:
-         setId(value.toString());
+         setId(value.toByteArray());
          break;
    }
 }
@@ -1380,18 +1357,20 @@ void Account::setRoleData(int role, const QVariant& value)
  *                                                                           *
  ****************************************************************************/
 
-void AccountPrivate::performAction(Account::EditAction action)
+void AccountPrivate::performAction(const Account::EditAction action)
 {
    (this->*(stateMachineActionsOnState[(int)m_CurrentState][(int)action]))();//FIXME don't use integer cast
 }
 
-bool Account::performAction(EditAction action)
+///Change the current edition state
+bool Account::performAction(const Account::EditAction action)
 {
    Account::EditState curState = d_ptr->m_CurrentState;
    d_ptr->performAction(action);
    return curState != d_ptr->m_CurrentState;
 }
 
+///Get the current account edition state
 Account::EditState Account::state() const
 {
    return d_ptr->m_CurrentState;
@@ -1400,14 +1379,14 @@ Account::EditState Account::state() const
 /**Update the account
  * @return if the state changed
  */
-bool Account::updateState()
+bool AccountPrivate::updateState()
 {
-   if(! isNew()) {
-      ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
-      const MapStringString details       = configurationManager.getAccountDetails(id());
+   if(! q_ptr->isNew()) {
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const MapStringString details       = configurationManager.getAccountDetails(q_ptr->id());
       const QString         status        = details[Account::MapField::Registration::STATUS];
-      const QString         currentStatus = registrationStatus();
-      d_ptr->setAccountDetail(Account::MapField::Registration::STATUS, status); //Update -internal- object state
+      const QString         currentStatus = q_ptr->registrationStatus();
+      setAccountProperty(Account::MapField::Registration::STATUS, status); //Update -internal- object state
       return status == currentStatus;
    }
    return true;
@@ -1441,7 +1420,7 @@ void AccountPrivate::save()
       }
       q_ptr->saveAudioCodecs();
 
-      q_ptr->setId(currentId);
+      q_ptr->setId(currentId.toAscii());
       q_ptr->saveCredentials();
    } //New account
    else { //Existing account
@@ -1463,7 +1442,7 @@ void AccountPrivate::save()
       }
 
       q_ptr->performAction(Account::EditAction::RELOAD);
-      q_ptr->updateState();
+      updateState();
       m_CurrentState = Account::EditState::READY;
    }
    #ifdef ENABLE_VIDEO
@@ -1516,6 +1495,32 @@ void AccountPrivate::reload()
       emit q_ptr->changed(q_ptr);
    }
 }
+
+void AccountPrivate::nothing()
+{
+
+}
+
+void AccountPrivate::edit()    {
+   changeState(Account::EditState::EDITING );
+}
+
+void AccountPrivate::modify()  {
+   changeState(Account::EditState::MODIFIED);
+}
+
+void AccountPrivate::remove()  {
+   changeState(Account::EditState::REMOVED );
+}
+
+void AccountPrivate::cancel()  {
+   changeState(Account::EditState::READY   );
+}
+
+void AccountPrivate::outdate() {
+   changeState(Account::EditState::OUTDATED);
+}
+
 
 ///Reload credentials from DBUS
 void Account::reloadCredentials()
@@ -1592,9 +1597,31 @@ bool Account::operator==(const Account& a)const
 
 /*****************************************************************************
  *                                                                           *
- *                                   Video                                   *
+ *                               Placeholder                                 *
  *                                                                           *
  ****************************************************************************/
+
+///Constructor
+AccountPlaceHolder::AccountPlaceHolder(const QByteArray& uid) : Account()
+{
+   d_ptr->m_AccountId = uid  ;
+   d_ptr->m_isLoaded  = false;
+}
+
+///Merge an existing account into this temporary one
+bool AccountPrivate::merge(Account* account)
+{
+   if ((!account) || this == account->d_ptr.data())
+      return false;
+
+   AccountPrivate* p = (AccountPrivate*) d_ptr.take();
+   delete p;
+
+   q_ptr->d_ptr = account->d_ptr;
+   emit q_ptr->changed(q_ptr);
+
+   return true;
+}
 
 #undef TO_BOOL
 #undef IS_TRUE

@@ -257,7 +257,6 @@ public:
 
    //Constructors & Destructors
    static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
-   ~Call();
 
    //Static getters
    static const QString      toHumanStateName ( const Call::State );
@@ -315,7 +314,9 @@ public:
 
 private:
    explicit Call(const QString& confId, const QString& account);
+   ~Call();
    Call(Call::State startState, const QString& callId, const QString& peerName = QString(), PhoneNumber* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
+
    QScopedPointer<CallPrivate> d_ptr;
    Q_DECLARE_PRIVATE(Call)
 

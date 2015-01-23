@@ -25,41 +25,16 @@
 
 //Ring library
 #include "profilemodel.h"
+#include "private/account_p.h"
+#include "private/accountmodel_p.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 #include "visitors/accountlistcolorvisitor.h"
 
-class AccountModelPrivate : public QObject
-{
-   Q_OBJECT
-   Q_DECLARE_PUBLIC(AccountModel)
-
-public:
-   //Constructor
-   AccountModelPrivate(AccountModel* parent);
-   void init();
-   void setupRoleName();
-
-   //Helpers
-   Account* firstRegisteredAccount() const;
-
-   //Attributes
-   AccountModel*            q_ptr             ;
-   QVector<Account*>        m_lAccounts       ;
-   AccountListColorVisitor* m_pColorVisitor   ;
-   QStringList              m_lDeletedAccounts;
-   Account*                 m_pIP2IP          ;
-
-public Q_SLOTS:
-   void slotAccountChanged(const QString& account,const QString& state, int code);
-   void slotAccountChanged(Account* a);
-   void slotVoiceMailNotify( const QString& accountID , int count );
-   void slotAccountPresenceEnabledChanged(bool state);
-};
-
 AccountModel* AccountModel::m_spAccountList  = nullptr;
 Account*      AccountModel::m_spPriorAccount = nullptr;
+QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
 QVariant AccountListNoCheckProxyModel::data(const QModelIndex& idx,int role ) const
 {
@@ -214,7 +189,7 @@ void AccountModel::destroy()
 ///Account status changed
 void AccountModelPrivate::slotAccountChanged(const QString& account,const QString& state, int code)
 {
-   Account* a = q_ptr->getById(account);
+   Account* a = q_ptr->getById(account.toAscii());
 
    if (!a || (a && a->registrationStatus() != state )) {
       if (state != "OK") //Do not pollute the log
@@ -222,10 +197,10 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
    }
    if (!a) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      QStringList accountIds = configurationManager.getAccountList();
+      const QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
-         if ((!q_ptr->getById(accountIds[i])) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-            Account* acc = Account::buildExistingAccountFromId(accountIds[i]);
+         if ((!q_ptr->getById(accountIds[i].toAscii())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
+            Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
             m_lAccounts.insert(i, acc);
             connect(acc,SIGNAL(changed(Account*)),this,SLOT(slotAccountChanged(Account*)));
             connect(acc,SIGNAL(presenceEnabledChanged(bool)),this,SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -244,7 +219,7 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
    }
    else {
       const bool isRegistered = a->isRegistered();
-      a->updateState();
+      a->d_ptr->updateState();
       emit a->stateChanged(a->toHumanStateName());
       const QModelIndex idx = a->index();
       emit q_ptr->dataChanged(idx, idx);
@@ -284,7 +259,7 @@ void AccountModelPrivate::slotAccountChanged(Account* a)
 ///When a new voice mail is available
 void AccountModelPrivate::slotVoiceMailNotify(const QString &accountID, int count)
 {
-   Account* a = q_ptr->getById(accountID);
+   Account* a = q_ptr->getById(accountID.toAscii());
    if (a) {
       a->setVoiceMailCount(count);
       emit q_ptr->voiceMailNotify(a,count);
@@ -317,7 +292,7 @@ void AccountModel::update()
    const QStringList accountIds = configurationManager.getAccountList();
    for (int i = 0; i < accountIds.size(); ++i) {
       if (d_ptr->m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-         Account* a = Account::buildExistingAccountFromId(accountIds[i]);
+         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
          d_ptr->m_lAccounts.insert(i, a);
          emit dataChanged(index(i,0),index(size()-1,0));
          connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
@@ -335,9 +310,9 @@ void AccountModel::updateAccounts()
    QStringList accountIds = configurationManager.getAccountList();
    //m_lAccounts.clear();
    for (int i = 0; i < accountIds.size(); ++i) {
-      Account* acc = getById(accountIds[i]);
+      Account* acc = getById(accountIds[i].toAscii());
       if (!acc) {
-         Account* a = Account::buildExistingAccountFromId(accountIds[i]);
+         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
          d_ptr->m_lAccounts += a;
          connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr.data(),SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -364,7 +339,7 @@ void AccountModel::save()
 
    //remove accounts that are in the configurationManager but not in the client
    for (int i = 0; i < accountIds.size(); i++) {
-      if(!getById(accountIds[i])) {
+      if(!getById(accountIds[i].toAscii())) {
          configurationManager.removeAccount(accountIds[i]);
       }
    }
@@ -430,15 +405,35 @@ void AccountModel::cancel() {
  *                                                                           *
  ****************************************************************************/
 
-///Get account using its ID
-Account* AccountModel::getById(const QString& id) const
+/**
+ * Get an account by its ID
+ *
+ * @note This method have O(N) complexity, but the average account count is low
+ * 
+ * @param id The account identifier
+ * @param usePlaceHolder Return a placeholder for a future account instead of nullptr
+ * @return an account if it exist, a placeholder if usePlaceHolder==true or nullptr
+ */
+Account* AccountModel::getById(const QByteArray& id, bool usePlaceHolder) const
 {
    Q_ASSERT(!id.isEmpty());
+   //This function use a loop as the expected size is < 5
    for (int i = 0; i < d_ptr->m_lAccounts.size(); i++) {
       Account* acc = d_ptr->m_lAccounts[i];
       if (acc && !acc->isNew() && acc->id() == id)
          return acc;
    }
+
+   //The account doesn't exist (yet)
+   if (usePlaceHolder) {
+      AccountPlaceHolder* ph =  d_ptr->m_hsPlaceHolder[id];
+      if (!ph) {
+         ph = new AccountPlaceHolder(id);
+         d_ptr->m_hsPlaceHolder[id] = ph;
+      }
+      return ph;
+   }
+
    return nullptr;
 }
 
@@ -589,7 +584,7 @@ bool AccountModel::isPresenceSubscribeSupported() const
 ///Add an account
 Account* AccountModel::add(const QString& alias)
 {
-   Account* a = Account::buildNewAccountFromAlias(alias);
+   Account* a = AccountPrivate::buildNewAccountFromAlias(alias);
    connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
    d_ptr->m_lAccounts += a;
    connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr.data(),SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -673,7 +668,7 @@ Account* AccountModel::operator[] (int i)
 }
 
 ///Get accoutn by id
-Account* AccountModel::operator[] (const QString& i) {
+Account* AccountModel::operator[] (const QByteArray& i) {
    return getById(i);
 }
 

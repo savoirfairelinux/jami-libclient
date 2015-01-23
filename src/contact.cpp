@@ -501,7 +501,11 @@ ContactPlaceHolder::ContactPlaceHolder(const QByteArray& uid)
    d_ptr->m_isPlaceHolder = true;
 }
 
-
+/**
+ * Sometime, items will use contacts before they are loaded.
+ *
+ * Once loaded, those pointers need to be upgraded to the real contact.
+ */
 bool ContactPlaceHolder::merge(Contact* contact)
 {
    if ((!contact) || ((*contact) == this))

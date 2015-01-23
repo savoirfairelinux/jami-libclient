@@ -387,6 +387,8 @@ ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 # Manually wrap private files
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
+   src/private/account_p.h
+   src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h
 )

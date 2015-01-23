@@ -54,16 +54,16 @@ public:
    static void destroy();
 
    //Getters
-   Q_INVOKABLE Account*        getById                     ( const QString& id       ) const;
-   int                         size                        (                         ) const;
-   static Account*             currentAccount              (                         );
-   Account*                    getAccountByModelIndex      ( const QModelIndex& item ) const;
-   static QString              getSimilarAliasIndex        ( const QString& alias    );
-   AccountListColorVisitor*    colorVisitor                (                         ); //TODO VISITOR_REFACTOR
-   Account*                    ip2ip                       (                         ) const;
-   bool                        isPresenceEnabled           (                         ) const;
-   bool                        isPresencePublishSupported  (                         ) const;
-   bool                        isPresenceSubscribeSupported(                         ) const;
+   Q_INVOKABLE Account*        getById                     ( const QByteArray& id, bool ph = false) const;
+   int                         size                        (                                      ) const;
+   static Account*             currentAccount              (                                      );
+   Account*                    getAccountByModelIndex      ( const QModelIndex& item              ) const;
+   static QString              getSimilarAliasIndex        ( const QString& alias                 );
+   AccountListColorVisitor*    colorVisitor                (                                      ); //TODO VISITOR_REFACTOR
+   Account*                    ip2ip                       (                                      ) const;
+   bool                        isPresenceEnabled           (                                      ) const;
+   bool                        isPresencePublishSupported  (                                      ) const;
+   bool                        isPresenceSubscribeSupported(                                      ) const;
 
    //Abstract model accessors
    QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole ) const;
@@ -85,9 +85,9 @@ public:
    Q_INVOKABLE void     cancel              (                          );
 
    //Operators
-   Account*       operator[] (int            i)      ;
-   Account*       operator[] (const QString& i)      ;
-   const Account* operator[] (int            i) const;
+   Account*       operator[] (int               i)      ;
+   Account*       operator[] (const QByteArray& i)      ;
+   const Account* operator[] (int               i) const;
 
 private:
    //Constructors & Destructors

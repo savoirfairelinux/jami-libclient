@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QMimeData>
+#include <QtCore/QCoreApplication>
 
 //Ring
 #include "historymodel.h"

@@ -575,7 +575,7 @@ PhoneNumber* PhoneDirectoryModel::fromHash(const QString& hash)
    const QStringList fields = hash.split("///");
    if (fields.size() == 3) {
       const QString uri = fields[0];
-      Account* account = AccountModel::instance()->getById(fields[1]);
+      Account* account = AccountModel::instance()->getById(fields[1].toAscii());
       Contact* contact = ContactModel::instance()->getContactByUid(fields[2].toUtf8());
       return getNumber(uri,contact,account);
    }
@@ -650,7 +650,7 @@ void PhoneDirectoryModelPrivate::slotChanged()
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
    qDebug() << "New presence buddy" << uri << status << message;
-   PhoneNumber* number = q_ptr->getNumber(uri,AccountModel::instance()->getById(accountId));
+   PhoneNumber* number = q_ptr->getNumber(uri,AccountModel::instance()->getById(accountId.toAscii()));
    number->setPresent(status);
    number->setPresenceMessage(message);
    emit number->changed();

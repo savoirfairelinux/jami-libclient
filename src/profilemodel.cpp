@@ -368,7 +368,7 @@ bool ProfileContentBackend::load()
 
             //Link with accounts
             if(splitted[0] == VCardUtils::Property::X_RINGACCOUNT) {
-               Account* acc = AccountModel::instance()->getById(splitted[1].trimmed());
+               Account* acc = AccountModel::instance()->getById(splitted[1].trimmed(),true);
                if(!acc) {
                   qDebug() << "Could not find account: " << splitted[1].trimmed();
                   continue;
@@ -386,9 +386,7 @@ bool ProfileContentBackend::load()
       }
 
       //Ring need a profile for all account
-      if (!m_lProfiles.size()) {
-         
-      }
+      setupDefaultProfile();
    }
    else {
       qDebug() << "No ProfilePersistor loaded!";
@@ -674,7 +672,7 @@ QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
       Node* current = static_cast<Node*>(index.internalPointer());
 
       if (index.isValid() && index.parent().isValid() && current) {
-         mMimeData->setData(RingMimes::ACCOUNT , current->account->id().toUtf8());
+         mMimeData->setData(RingMimes::ACCOUNT , current->account->id());
       }
       else if (index.isValid() && current) {
         mMimeData->setData(RingMimes::PROFILE , current->contact->uid());
