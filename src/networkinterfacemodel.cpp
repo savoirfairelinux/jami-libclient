@@ -28,27 +28,27 @@ NetworkInterfaceModel* NetworkInterfaceModel::m_spInstance = nullptr;
 class NetworkInterfaceModelPrivate : public QObject {
    Q_OBJECT
 public:
+   QStringList m_Interfaces;
 };
 
 NetworkInterfaceModel::NetworkInterfaceModel() : QAbstractListModel(QCoreApplication::instance()),
 d_ptr(new NetworkInterfaceModelPrivate())
 {
-
+   //TODO get updates from the daemon
+   d_ptr->m_Interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
 }
 
 //Model functions
 QVariant NetworkInterfaceModel::data( const QModelIndex& index, int role) const
 {
-   const QStringList interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
    if (role == Qt::DisplayRole)
-      return interfaces[index.row()];
+      return d_ptr->m_Interfaces[index.row()];
    return QVariant();
 }
 
 int NetworkInterfaceModel::rowCount( const QModelIndex& parent ) const
 {
-   const QStringList interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
-   return interfaces.size();
+   return parent.isValid()?0:d_ptr->m_Interfaces.size();
 }
 
 Qt::ItemFlags NetworkInterfaceModel::flags( const QModelIndex& index ) const

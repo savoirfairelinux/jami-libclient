@@ -280,7 +280,6 @@ void ProfileContentBackend::setupDefaultProfile()
    //BUG this doesn't work with new accounts
    for (int i=0; i < AccountModel::instance()->size();i++) {
       accounts[(*AccountModel::instance())[i]] = false;
-      qDebug() << "MEH" << (*AccountModel::instance())[i]->id();
    }
 
    foreach (Node* node, m_lProfiles) {
@@ -330,6 +329,7 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    m_pParent->beginInsertRows(m_pParent->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
    m_pParent->endInsertRows();
+   m_hProfileByAccountId[acc->id()] = account_pro;
 }
 
 bool ProfileContentBackend::load()
@@ -386,7 +386,6 @@ bool ProfileContentBackend::load()
 
                addAccount(pro,acc);
 
-               m_hProfileByAccountId[acc->id()] = pro;
             }
          }
 
@@ -559,12 +558,13 @@ ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(
    ContactModel::instance()->addBackend(d_ptr->m_pProfileBackend,LoadOptions::FORCE_ENABLED);
 
    //Once LibRingClient is ready, start listening
-   QTimer::singleShot(0,d_ptr.data(),SLOT(slotDelayedInit()));
+   QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));
 }
 
 ProfileModel::~ProfileModel()
 {
    delete d_ptr->m_pProfileBackend;
+   delete d_ptr;
 }
 
 QModelIndex ProfileModel::mapToSource(const QModelIndex& idx) const
@@ -576,6 +576,7 @@ QModelIndex ProfileModel::mapToSource(const QModelIndex& idx) const
    return profile->children[idx.row()]->account->index();
 }
 
+#include <unistd.h>
 QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
 {
    if (!idx.isValid() || idx.model() != AccountModel::instance())
@@ -584,6 +585,12 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
    Account* acc = AccountModel::instance()->getAccountByModelIndex(idx);
    Node* pro = d_ptr->m_pProfileBackend->m_hProfileByAccountId[acc->id()];
 
+   //Something is wrong, there is an orphan
+   if (!pro) {
+      d_ptr->m_pProfileBackend->setupDefaultProfile();
+      pro = d_ptr->m_pProfileBackend->m_hProfileByAccountId[acc->id()];
+   }
+
    return AccountModel::instance()->index(pro->m_Index,0,index(pro->parent->m_Index,0,QModelIndex()));
 }
 
@@ -591,9 +598,12 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid())
       return QVariant();
+
+   Node* account_node = static_cast<Node*>(index.internalPointer());
+
    //Accounts
-   else if (index.parent().isValid()) {
-      return mapToSource(index).data(role);
+   if (account_node->account) {
+      return account_node->account->roleData(role);
    }
    //Profiles
    else {
@@ -607,13 +617,9 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
 
 int ProfileModel::rowCount(const QModelIndex& parent ) const
 {
-   if (parent.parent().isValid())
-      return 0;
-
    if (parent.isValid()) {
-      // This is an account
       Node* account_node = static_cast<Node*>(parent.internalPointer());
-      return account_node->children.size();
+      return (account_node->account)?0:account_node->children.size();
    }
    return d_ptr->m_pProfileBackend->items().size();
 }
@@ -653,7 +659,12 @@ QModelIndex ProfileModel::index( int row, int column, const QModelIndex& parent 
 
 Qt::ItemFlags ProfileModel::flags(const QModelIndex& index ) const
 {
-   if (index.parent().isValid())
+   if (!index.isValid())
+      return Qt::ItemIsEnabled;
+
+   Node* current = static_cast<Node*>(index.internalPointer());
+
+   if (current->parent)
       return QAbstractItemModel::flags(index)
               | Qt::ItemIsUserCheckable
               | Qt::ItemIsEnabled
@@ -661,14 +672,11 @@ Qt::ItemFlags ProfileModel::flags(const QModelIndex& index ) const
               | Qt::ItemIsDragEnabled
               | Qt::ItemIsDropEnabled;
 
-   if(index.isValid())
-       return QAbstractItemModel::flags(index)
-               | Qt::ItemIsEnabled
-               | Qt::ItemIsSelectable
-               | Qt::ItemIsDragEnabled
-               | Qt::ItemIsDropEnabled;
-
-   return Qt::ItemIsEnabled;
+   return QAbstractItemModel::flags(index)
+         | Qt::ItemIsEnabled
+         | Qt::ItemIsSelectable
+         | Qt::ItemIsDragEnabled
+         | Qt::ItemIsDropEnabled;
 }
 
 QStringList ProfileModel::mimeTypes() const
@@ -683,7 +691,7 @@ QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
    for (const QModelIndex &index : indexes) {
       Node* current = static_cast<Node*>(index.internalPointer());
 
-      if (index.isValid() && index.parent().isValid() && current) {
+      if (index.isValid() && current->parent && current) {
          mMimeData->setData(RingMimes::ACCOUNT , current->account->id());
       }
       else if (index.isValid() && current) {
@@ -797,7 +805,10 @@ bool ProfileModel::setData(const QModelIndex& index, const QVariant &value, int 
 {
    if (!index.isValid())
       return false;
-   else if (index.parent().isValid()) {
+
+   Node* current = static_cast<Node*>(index.internalPointer());
+
+   if (current->parent) {
       return AccountModel::instance()->setData(mapToSource(index),value,role);
    }
    return false;
@@ -824,9 +835,11 @@ bool ProfileModel::addNewProfile(Contact* c, AbstractContactBackend* backend)
 
 void ProfileModelPrivate::slotDataChanged(const QModelIndex& tl,const QModelIndex& br)
 {
-   Q_UNUSED(tl)
    Q_UNUSED(br)
-   emit q_ptr->layoutChanged();
+
+   const QModelIndex& idx = q_ptr->mapFromSource(tl);
+
+   emit q_ptr->dataChanged(idx,idx);
 }
 
 void ProfileModelPrivate::slotLayoutchanged()

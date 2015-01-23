@@ -317,7 +317,7 @@ private:
    ~Call();
    Call(Call::State startState, const QString& callId, const QString& peerName = QString(), PhoneNumber* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
 
-   QScopedPointer<CallPrivate> d_ptr;
+   CallPrivate* d_ptr;
    Q_DECLARE_PRIVATE(Call)
 
 public Q_SLOTS:

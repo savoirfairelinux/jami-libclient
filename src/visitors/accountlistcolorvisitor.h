@@ -25,9 +25,14 @@ class Account;
 ///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
 class LIB_EXPORT AccountListColorVisitor {
 public:
-   virtual QVariant getColor(const Account* a) = 0;
-   virtual QVariant getIcon(const Account* a)  = 0;
-   virtual ~AccountListColorVisitor() {}
+   virtual QVariant getColor(const Account* a);
+   virtual QVariant getIcon(const Account* a);
+   virtual ~AccountListColorVisitor();
+
+   static AccountListColorVisitor* instance();
+   static void setInstance(AccountListColorVisitor* visitor);
+private:
+   static AccountListColorVisitor* m_spInstance;
 };
 
 #endif

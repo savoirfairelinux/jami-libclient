@@ -306,10 +306,7 @@ bool Account::isLoaded() const
 ///Return status Qt color, QColor is not part of QtCore, use using the global variant
 QVariant Account::stateColor() const
 {
-   if (AccountModel::instance()->colorVisitor()) {
-      return AccountModel::instance()->colorVisitor()->getColor(this);
-   }
-   return QVariant();
+   return AccountListColorVisitor::instance()->getColor(this);
 }
 
 ///Create and return the credential model
@@ -719,6 +716,18 @@ QString Account::userAgent() const
 QVariant Account::roleData(int role) const
 {
    switch(role) {
+      //Generic
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+         return alias();
+      case Qt::CheckStateRole:
+         return QVariant(isEnabled() ? Qt::Checked : Qt::Unchecked);
+      case Qt::BackgroundRole:
+         return stateColor();
+      case Qt::DecorationRole:
+         return AccountListColorVisitor::instance()->getIcon(this);
+
+      //Specialized
       case Account::Role::Alias:
          return alias();
       case Account::Role::Proto:

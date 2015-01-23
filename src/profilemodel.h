@@ -62,7 +62,7 @@ public:
    AbstractContactBackend* getBackEnd();
 
 private:
-   QSharedPointer<ProfileModelPrivate> d_ptr;
+   ProfileModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(ProfileModel);
 
    //Singleton

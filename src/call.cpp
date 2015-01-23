@@ -277,6 +277,8 @@ Call::~Call()
    //m_pTransferNumber and m_pDialNumber are temporary, they are owned by the call
    if ( d_ptr->m_pTransferNumber ) delete d_ptr->m_pTransferNumber;
    if ( d_ptr->m_pDialNumber     ) delete d_ptr->m_pDialNumber;
+
+   delete d_ptr;
 }
 
 /*****************************************************************************
@@ -451,10 +453,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       call->peerPhoneNumber()->addCall(call);
 
       //Reload the glow and number colors
-      connect(call->peerPhoneNumber(),SIGNAL(presentChanged(bool)),call->d_ptr.data(),SLOT(updated()));
+      connect(call->peerPhoneNumber(),SIGNAL(presentChanged(bool)),call->d_ptr,SLOT(updated()));
 
       //Change the display name and picture
-      connect(call->peerPhoneNumber(),SIGNAL(rebased(PhoneNumber*)),call->d_ptr.data(),SLOT(updated()));
+      connect(call->peerPhoneNumber(),SIGNAL(rebased(PhoneNumber*)),call->d_ptr,SLOT(updated()));
    }
 
    return call;
@@ -846,8 +848,8 @@ void Call::setRecordingPath(const QString& path)
    d_ptr->m_RecordingPath = path;
    if (!d_ptr->m_RecordingPath.isEmpty()) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
-      connect(&callManager,SIGNAL(recordPlaybackStopped(QString)), d_ptr.data(), SLOT(stopPlayback(QString))  );
-      connect(&callManager,SIGNAL(updatePlaybackScale(QString,int,int))  , d_ptr.data(), SLOT(updatePlayback(QString,int,int)));
+      connect(&callManager,SIGNAL(recordPlaybackStopped(QString)), d_ptr, SLOT(stopPlayback(QString))  );
+      connect(&callManager,SIGNAL(updatePlaybackScale(QString,int,int))  , d_ptr, SLOT(updatePlayback(QString,int,int)));
    }
 }
 

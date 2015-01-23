@@ -19,16 +19,12 @@
 #ifndef ACCOUNTMODEL_H
 #define ACCOUNTMODEL_H
 
-
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
 
 #include "account.h"
 #include "typedefs.h"
-// #include "dbus/metatypes.h"
-
-class AccountListColorVisitor;
 
 //Private
 class AccountModelPrivate;
@@ -59,7 +55,6 @@ public:
    static Account*             currentAccount              (                                      );
    Account*                    getAccountByModelIndex      ( const QModelIndex& item              ) const;
    static QString              getSimilarAliasIndex        ( const QString& alias                 );
-   AccountListColorVisitor*    colorVisitor                (                                      ); //TODO VISITOR_REFACTOR
    Account*                    ip2ip                       (                                      ) const;
    bool                        isPresenceEnabled           (                                      ) const;
    bool                        isPresencePublishSupported  (                                      ) const;
@@ -73,7 +68,6 @@ public:
    //Setters
    void setPriorAccount          ( const Account*                                           );
    virtual bool setData          ( const QModelIndex& index, const QVariant &value, int role);
-   void         setColorVisitor  ( AccountListColorVisitor* visitor                         );
 
    //Mutators
    Q_INVOKABLE Account* add                 ( const QString& alias     );
@@ -101,7 +95,7 @@ private:
    static AccountModel* m_spAccountList  ;
    static Account*      m_spPriorAccount ;
 
-   QScopedPointer<AccountModelPrivate> d_ptr;
+   AccountModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountModel)
 
 public Q_SLOTS:

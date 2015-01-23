@@ -17,4 +17,31 @@
  ***************************************************************************/
 #include "accountlistcolorvisitor.h"
 
-//Interface only
+AccountListColorVisitor* AccountListColorVisitor::m_spInstance = new AccountListColorVisitor();
+
+QVariant AccountListColorVisitor::getColor(const Account* a)
+{
+   //The default implementation does nothing
+   return QVariant();
+}
+
+QVariant AccountListColorVisitor::getIcon(const Account* a)
+{
+   //The default implementation does nothing
+   return QVariant();
+}
+
+AccountListColorVisitor::~AccountListColorVisitor()
+{
+
+}
+
+AccountListColorVisitor* AccountListColorVisitor::instance()
+{
+   return m_spInstance;
+}
+
+void AccountListColorVisitor::setInstance(AccountListColorVisitor* visitor)
+{
+   m_spInstance = visitor;
+}

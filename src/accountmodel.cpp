@@ -30,7 +30,6 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
-#include "visitors/accountlistcolorvisitor.h"
 
 AccountModel* AccountModel::m_spAccountList  = nullptr;
 Account*      AccountModel::m_spPriorAccount = nullptr;
@@ -63,7 +62,7 @@ int AccountListNoCheckProxyModel::rowCount(const QModelIndex& parentIdx ) const
 }
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
-m_pColorVisitor(nullptr),m_pIP2IP(nullptr)
+m_pIP2IP(nullptr)
 {
    setupRoleName();
 }
@@ -101,6 +100,7 @@ AccountModel::~AccountModel()
       d_ptr->m_lAccounts.remove(0);
       delete a;
    }
+   delete d_ptr;
 }
 
 void AccountModelPrivate::setupRoleName()
@@ -292,8 +292,8 @@ void AccountModel::update()
          Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
          d_ptr->m_lAccounts.insert(i, a);
          emit dataChanged(index(i,0),index(size()-1,0));
-         connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
-         connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr.data(),SLOT(slotAccountPresenceEnabledChanged(bool)));
+         connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
+         connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
       }
    }
@@ -311,8 +311,8 @@ void AccountModel::updateAccounts()
       if (!acc) {
          Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
          d_ptr->m_lAccounts += a;
-         connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
-         connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr.data(),SLOT(slotAccountPresenceEnabledChanged(bool)));
+         connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
+         connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
       }
       else {
@@ -480,17 +480,7 @@ QVariant AccountModel::data ( const QModelIndex& idx, int role) const
    if (!idx.isValid() || idx.row() < 0 || idx.row() >= rowCount())
       return QVariant();
 
-   const Account* account = d_ptr->m_lAccounts[idx.row()];
-   if(idx.column() == 0 && (role == Qt::DisplayRole || role == Qt::EditRole))
-      return QVariant(account->alias());
-   else if(idx.column() == 0 && role == Qt::CheckStateRole)
-      return QVariant(account->isEnabled() ? Qt::Checked : Qt::Unchecked);
-   else if (role == Qt::BackgroundRole)
-      return (d_ptr->m_pColorVisitor)?d_ptr->m_pColorVisitor->getColor(account):account->stateColor();
-   else if(idx.column() == 0 && role == Qt::DecorationRole && d_ptr->m_pColorVisitor)
-      return d_ptr->m_pColorVisitor->getIcon(account);
-   else
-      return account->roleData(role);
+   return d_ptr->m_lAccounts[idx.row()]->roleData(role);
 } //data
 
 ///Flags for "idx"
@@ -513,11 +503,6 @@ Account* AccountModel::getAccountByModelIndex(const QModelIndex& item) const
    if (!item.isValid())
       return nullptr;
    return d_ptr->m_lAccounts[item.row()];
-}
-
-AccountListColorVisitor* AccountModel::colorVisitor()
-{
-   return d_ptr->m_pColorVisitor;
 }
 
 ///Generate an unique suffix to prevent multiple account from sharing alias
@@ -582,9 +567,9 @@ bool AccountModel::isPresenceSubscribeSupported() const
 Account* AccountModel::add(const QString& alias)
 {
    Account* a = AccountPrivate::buildNewAccountFromAlias(alias);
-   connect(a,SIGNAL(changed(Account*)),d_ptr.data(),SLOT(slotAccountChanged(Account*)));
+   connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
    d_ptr->m_lAccounts += a;
-   connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr.data(),SLOT(slotAccountPresenceEnabledChanged(bool)));
+   connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
 
    emit dataChanged(index(d_ptr->m_lAccounts.size()-1,0), index(d_ptr->m_lAccounts.size()-1,0));
    return a;
@@ -637,12 +622,6 @@ bool AccountModel::setData(const QModelIndex& idx, const QVariant& value, int ro
       }
    }
    return false;
-}
-
-///Set QAbstractItemModel BackgroundRole visitor
-void AccountModel::setColorVisitor(AccountListColorVisitor* visitor)
-{
-   d_ptr->m_pColorVisitor = visitor;
 }
 
 

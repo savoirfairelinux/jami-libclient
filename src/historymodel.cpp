@@ -73,7 +73,7 @@ public:
    QVector<AbstractHistoryBackend*> m_lBackends;
 
    //Model categories
-   QList<HistoryTopLevelItem*>         m_lCategoryCounter ;
+   QVector<HistoryTopLevelItem*>       m_lCategoryCounter ;
    QHash<int,HistoryTopLevelItem*>     m_hCategories      ;
    QHash<QString,HistoryTopLevelItem*> m_hCategoryByName  ;
    int                          m_Role             ;
@@ -136,7 +136,9 @@ HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) :
 {}
 
 HistoryTopLevelItem::~HistoryTopLevelItem() {
-   HistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.removeAll(this);
+   const int idx = HistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.indexOf(this);
+   if (idx != -1)
+      HistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.remove(idx);
    while(m_lChildren.size()) {
       HistoryModelPrivate::HistoryItem* item = m_lChildren[0];
       m_lChildren.remove(0);
@@ -225,7 +227,7 @@ HistoryModel::~HistoryModel()
    }
    while(d_ptr->m_lCategoryCounter.size()) {
       HistoryTopLevelItem* item = d_ptr->m_lCategoryCounter[0];
-      d_ptr->m_lCategoryCounter.removeAt(0);
+      d_ptr->m_lCategoryCounter.remove(0);
 
       delete item;
    }
@@ -250,7 +252,7 @@ HistoryModel* HistoryModel::instance()
 HistoryTopLevelItem* HistoryModelPrivate::getCategory(const Call* call)
 {
    HistoryTopLevelItem* category = nullptr;
-   QString name;
+   static QString name;
    int index = -1;
    if (m_Role == Call::Role::FuzzyDate) {
       index = call->roleData(Call::Role::FuzzyDate).toInt();
@@ -493,6 +495,7 @@ QModelIndex HistoryModel::parent( const QModelIndex& idx) const
    CategorizedCompositeNode* modelItem = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
    if (modelItem && modelItem->type() == CategorizedCompositeNode::Type::CALL) {
       const Call* call = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
+      //TODO this is called way to often to use getCategory, make sure getSelf return the node and cache this
       HistoryTopLevelItem* tli = d_ptr->getCategory(call);
       if (tli)
          return HistoryModel::index(tli->modelRow,0);
