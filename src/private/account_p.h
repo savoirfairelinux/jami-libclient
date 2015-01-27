@@ -33,6 +33,12 @@ public:
    Q_OBJECT
    Q_DECLARE_PUBLIC(Account)
 
+   class RegistrationEnabled {
+      public:
+         constexpr static const char* YES  = "true";
+         constexpr static const char* NO   = "false";
+   };
+
    friend class AccountPlaceHolder;
    friend class AccountModel;
    friend class AccountModelPrivate;

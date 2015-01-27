@@ -162,12 +162,6 @@ class LIB_EXPORT Account : public QObject {
          constexpr static const char* REQUEST_TIMEOUT           = "Request Timeout"        ;
       };
 
-      class RegistrationEnabled {
-      public:
-         constexpr static const char* YES  = "true";
-         constexpr static const char* NO   = "false";
-      };
-
       enum Role {
          Alias                       = 100,
          Proto                       = 101,
