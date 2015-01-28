@@ -27,7 +27,7 @@
 #include <QVariant>
 #include <QTimer>
 
-#include "ring.h"
+#include "dring.h"
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
@@ -42,7 +42,7 @@ public:
 
    ~InstanceInterface();
 
-// TODO: These are not present in ring.h
+// TODO: These are not present in dring.h
 
 public Q_SLOTS: // METHODS
    void Register(int pid, const QString &name)

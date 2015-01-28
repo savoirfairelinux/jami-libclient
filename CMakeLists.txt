@@ -50,6 +50,9 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    MESSAGE("Compiling for OS X: LibWrap enabled, Qt5 enabled.")
 
    INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/src/qtwrapper/)
+ENDIF()
+
+IF (${RING_FOUND} MATCHES "true")
    INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
 ENDIF()
 

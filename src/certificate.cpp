@@ -19,7 +19,7 @@
 
 #include <QtCore/QFile>
 #include "dbus/configurationmanager.h"
-#include "/home/lepagee/dev/sflphone_review/daemon/src/dring/security.h"
+#include <security.h>
 
 class CertificateDetailsCache {
 public:

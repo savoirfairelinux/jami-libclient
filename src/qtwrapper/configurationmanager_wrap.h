@@ -29,7 +29,7 @@
 
 #include <future>
 
-#include <ring.h>
+#include <dring.h>
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 

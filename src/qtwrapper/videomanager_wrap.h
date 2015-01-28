@@ -26,7 +26,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
-#include <ring.h>
+#include <dring.h>
 #include "../dbus/metatypes.h"
 #include "conversions_wrap.hpp"
 
