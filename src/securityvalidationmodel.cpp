@@ -143,66 +143,66 @@ Flaw* SecurityValidationModel::getFlaw(SecurityFlaw _se,Certificate::Type _ty)
 #define _F(_se,_ty) getFlaw(SecurityFlaw::_se,_ty);
 void SecurityValidationModel::update()
 {
-   m_lCurrentFlaws.clear();
-
-   /**********************************
-    *     Check general issues       *
-    *********************************/
-
-   /* If TLS is not enabled, everything else is worthless */
-   if (!m_pAccount->isTlsEnabled()) {
-      m_lCurrentFlaws << _F(TLS_DISABLED,Certificate::Type::NONE);
-   }
-
-   /* Check if the media stream is encrypted, it is something users
-    * may care about if they get this far ;) */
-   if (!m_pAccount->isSrtpEnabled()) {
-      m_lCurrentFlaws << _F(SRTP_DISABLED,Certificate::Type::NONE);
-   }
-
-   /* The user certificate need to have a private key, otherwise it wont
-    * be possible to encrypt anything */
-   if ((! m_pAccount->tlsCertificate()->hasPrivateKey()) && (!m_pAccount->tlsPrivateKeyCertificate()->exist())) {
-      m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
-   }
-
-   /**********************************
-    *      Certificates issues       *
-    *********************************/
-   QList<Certificate*> certs;
-   certs << m_pAccount->tlsCaListCertificate() << m_pAccount->tlsCertificate() << m_pAccount->tlsPrivateKeyCertificate();
-   foreach (Certificate* cert, certs) {
-      if (! cert->exist()) {
-         m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
-      }
-      if (! cert->isExpired()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_EXPIRED,cert->type());
-      }
-      if (! cert->isSelfSigned()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_SELF_SIGNED,cert->type());
-      }
-      if (! cert->hasProtectedPrivateKey()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-      }
-      if (! cert->hasRightPermissions()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-      }
-      if (! cert->hasRightFolderPermissions()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_FOLDER,cert->type());
-      }
-      if (! cert->isLocationSecure()) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_LOCATION,cert->type());
-      }
-   }
-
-   qSort(m_lCurrentFlaws.begin(),m_lCurrentFlaws.end(),[] (const Flaw* f1, const Flaw* f2) -> int {
-      return (*f1) < (*f2);
-   });
-   for (int i=0;i<m_lCurrentFlaws.size();i++) {
-      m_lCurrentFlaws[i]->m_Row = i;
-   }
-
-   emit layoutChanged();
+//    m_lCurrentFlaws.clear();
+// 
+//    /**********************************
+//     *     Check general issues       *
+//     *********************************/
+// 
+//    /* If TLS is not enabled, everything else is worthless */
+//    if (!m_pAccount->isTlsEnabled()) {
+//       m_lCurrentFlaws << _F(TLS_DISABLED,Certificate::Type::NONE);
+//    }
+// 
+//    /* Check if the media stream is encrypted, it is something users
+//     * may care about if they get this far ;) */
+//    if (!m_pAccount->isSrtpEnabled()) {
+//       m_lCurrentFlaws << _F(SRTP_DISABLED,Certificate::Type::NONE);
+//    }
+// 
+//    /* The user certificate need to have a private key, otherwise it wont
+//     * be possible to encrypt anything */
+//    if ((! m_pAccount->tlsCertificate()->hasPrivateKey()) && (!m_pAccount->tlsPrivateKeyCertificate()->exist())) {
+//       m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
+//    }
+// 
+//    /**********************************
+//     *      Certificates issues       *
+//     *********************************/
+//    QList<Certificate*> certs;
+//    certs << m_pAccount->tlsCaListCertificate() << m_pAccount->tlsCertificate() << m_pAccount->tlsPrivateKeyCertificate();
+//    foreach (Certificate* cert, certs) {
+//       if (! cert->exist()) {
+//          m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
+//       }
+//       if (! cert->isExpired()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_EXPIRED,cert->type());
+//       }
+//       if (! cert->isSelfSigned()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_SELF_SIGNED,cert->type());
+//       }
+//       if (! cert->hasProtectedPrivateKey()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
+//       }
+//       if (! cert->hasRightPermissions()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
+//       }
+//       if (! cert->hasRightFolderPermissions()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_FOLDER,cert->type());
+//       }
+//       if (! cert->isLocationSecure()) {
+//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_LOCATION,cert->type());
+//       }
+//    }
+// 
+//    qSort(m_lCurrentFlaws.begin(),m_lCurrentFlaws.end(),[] (const Flaw* f1, const Flaw* f2) -> int {
+//       return (*f1) < (*f2);
+//    });
+//    for (int i=0;i<m_lCurrentFlaws.size();i++) {
+//       m_lCurrentFlaws[i]->m_Row = i;
+//    }
+// 
+//    emit layoutChanged();
 }
 #undef _F
 

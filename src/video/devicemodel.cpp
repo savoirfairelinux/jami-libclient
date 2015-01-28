@@ -27,8 +27,9 @@
 Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
 
 namespace Video {
-class DeviceModelPrivate
+class DeviceModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
    DeviceModelPrivate();
 
@@ -37,12 +38,21 @@ public:
    QList<Video::Device*>         m_lDevices     ;
    Video::Device*                m_pDummyDevice ;
    Video::Device*                m_pActiveDevice;
+
+private Q_SLOTS:
+   void idleReload();
 };
 }
 
 Video::DeviceModelPrivate::DeviceModelPrivate() : m_pDummyDevice(nullptr),m_pActiveDevice(nullptr)
 {
-   
+
+}
+
+///
+void Video::DeviceModelPrivate::idleReload()
+{
+   DeviceModel::instance()->setActive(DeviceModel::instance()->activeDevice());
 }
 
 ///Constructor
@@ -161,7 +171,10 @@ void Video::DeviceModel::reload()
 
    emit layoutChanged();
 //    channelModel   ()->reload();
-   setActive(activeDevice());
+
+   //Avoid a possible infinite loop by using a reload event
+   QTimer::singleShot(0,d_ptr.data(),SLOT(idleReload()));
+
 }
 
 
@@ -204,3 +217,5 @@ QList<Video::Device*> Video::DeviceModel::devices() const
 {
    return d_ptr->m_lDevices;
 }
+
+#include <devicemodel.moc>
