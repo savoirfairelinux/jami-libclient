@@ -172,6 +172,11 @@ public:
    QVariant checkResults(Certificate::CertificateCheck check) const;
    QVariant detailResult(Certificate::CertificateDetails detail) const;
 
+   QString getName        (Certificate::CertificateCheck   check  );
+   QString getName        (Certificate::CertificateDetails details);
+   QString getDescription (Certificate::CertificateCheck   check  );
+   QString getDescription (Certificate::CertificateDetails details);
+
    //Checks
    CheckValues hasPrivateKey                       () const;
    CheckValues isNotExpired                        () const;

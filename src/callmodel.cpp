@@ -1159,7 +1159,7 @@ void CallModelPrivate::slotCallChanged(Call* call)
          emit q_ptr->callStateChanged(call, Call::State::TRANSFERRED);
          break;
       //Same goes for some errors
-      case Call::State::__COUNT:
+      case Call::State::COUNT__:
       case Call::State::ERROR:
          removeCall(call);
          break;

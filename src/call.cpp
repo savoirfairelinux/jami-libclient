@@ -207,7 +207,7 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
          dbg.nospace() << "HOLD";
       case Call::Action::RECORD:
          dbg.nospace() << "RECORD";
-      case Call::Action::__COUNT:
+      case Call::Action::COUNT__:
          dbg.nospace() << "COUNT";
    };
    dbg.space();
@@ -584,7 +584,7 @@ const QString Call::toHumanStateName(const Call::State cur)
          break;
       case Call::State::CONFERENCE_HOLD:
          return tr( "Conference (hold)" );
-      case Call::State::__COUNT:
+      case Call::State::COUNT__:
          return tr( "ERROR"             );
       case Call::State::INITIALIZATION:
          return tr( "Initialization"    );
@@ -884,7 +884,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
    const Call::State previousState = m_CurrentState;
    if (q_ptr->type() != Call::Type::CONFERENCE) {
       Call::DaemonState dcs = toDaemonCallState(newStateName);
-      if (dcs == Call::DaemonState::__COUNT || m_CurrentState == Call::State::__COUNT) {
+      if (dcs == Call::DaemonState::COUNT__ || m_CurrentState == Call::State::COUNT__) {
          qDebug() << "Error: Invalid state change";
          return Call::State::FAILURE;
       }
@@ -1024,7 +1024,7 @@ Call::State Call::performAction(Call::Action action)
 ///Change the state, do not abuse of this, but it is necessary for error cases
 void CallPrivate::changeCurrentState(Call::State newState)
 {
-   if (newState == Call::State::__COUNT) {
+   if (newState == Call::State::COUNT__) {
       qDebug() << "Error: Call reach invalid state";
       FORCE_ERROR_STATE_P()
       throw newState;
@@ -1384,7 +1384,7 @@ void CallPrivate::warning()
    switch (m_CurrentState) {
       case Call::State::FAILURE        :
       case Call::State::ERROR          :
-      case Call::State::__COUNT          :
+      case Call::State::COUNT__          :
          //If not stopped, then the counter will keep going
          //Getting here indicate something wrong happened
          //It can be normal, aka, an invalid URI such as '><'
@@ -1438,7 +1438,7 @@ void Call::appendText(const QString& str)
    case Call::State::ERROR:
    case Call::State::CONFERENCE:
    case Call::State::CONFERENCE_HOLD:
-   case Call::State::__COUNT:
+   case Call::State::COUNT__:
    default:
       qDebug() << "Backspace on call not editable. Doing nothing.";
       return;
@@ -1481,7 +1481,7 @@ void Call::backspaceItemText()
       case Call::State::ERROR:
       case Call::State::CONFERENCE:
       case Call::State::CONFERENCE_HOLD:
-      case Call::State::__COUNT:
+      case Call::State::COUNT__:
       default                          :
          qDebug() << "Backspace on call not editable. Doing nothing.";
          return;
@@ -1526,7 +1526,7 @@ void Call::reset()
       case Call::State::ERROR            :
       case Call::State::CONFERENCE       :
       case Call::State::CONFERENCE_HOLD  :
-      case Call::State::__COUNT:
+      case Call::State::COUNT__:
       default                            :
          qDebug() << "Cannot reset" << d_ptr->m_CurrentState << "calls";
          return;

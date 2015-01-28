@@ -129,7 +129,7 @@ public:
       CONFERENCE      = 11,/*!< This call is the current conference*/
       CONFERENCE_HOLD = 12,/*!< This call is a conference on hold*/
       INITIALIZATION  = 13,/*!< The call have been placed, but the peer hasn't confirmed yet */
-      __COUNT,
+      COUNT__,
    };
    Q_ENUMS(State)
 
@@ -173,7 +173,7 @@ public:
       HOLD    = 3, /*!< Call is on hold */
       HUNG_UP = 4, /*!< Call is over  */
       FAILURE = 5, /*!< Call has failed */
-      __COUNT,
+      COUNT__,
    };
 
    /** @enum Call::Action
@@ -186,7 +186,7 @@ public:
       TRANSFER = 2, /*!< Put into or out of transfer mode*/
       HOLD     = 3, /*!< Hold or unhold the call */
       RECORD   = 4, /*!< Enable or disable recording */
-      __COUNT,
+      COUNT__,
    };
 
    /** @enum Call::LifeCycleState
@@ -199,7 +199,7 @@ public:
       INITIALIZATION = 0, /*!< Anything before the media transfer start   */
       PROGRESS       = 1, /*!< The peers are in communication (or hold)   */
       FINISHED       = 2, /*!< Everything is over, there is no going back */
-      __COUNT
+      COUNT__
    };
 
    ///"getHistory()" fields

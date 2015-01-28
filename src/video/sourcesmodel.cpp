@@ -90,7 +90,7 @@ QVariant Video::SourcesModel::data( const QModelIndex& index, int role ) const
          };
          break;
       default:
-         return Video::DeviceModel::instance()->data(Video::DeviceModel::instance()->index(index.row()-ExtendedDeviceList::__COUNT,0),role);
+         return Video::DeviceModel::instance()->data(Video::DeviceModel::instance()->index(index.row()-ExtendedDeviceList::COUNT__,0),role);
    };
    return QVariant();
 }
@@ -98,7 +98,7 @@ QVariant Video::SourcesModel::data( const QModelIndex& index, int role ) const
 int Video::SourcesModel::rowCount( const QModelIndex& parent ) const
 {
    Q_UNUSED(parent)
-   return Video::DeviceModel::instance()->rowCount() + ExtendedDeviceList::__COUNT;
+   return Video::DeviceModel::instance()->rowCount() + ExtendedDeviceList::COUNT__;
 }
 
 Qt::ItemFlags Video::SourcesModel::flags( const QModelIndex& idx ) const
@@ -110,7 +110,7 @@ Qt::ItemFlags Video::SourcesModel::flags( const QModelIndex& idx ) const
          return QAbstractItemModel::flags(idx) | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
          break;
       default:
-         return Video::DeviceModel::instance()->flags(Video::DeviceModel::instance()->index(idx.row()-ExtendedDeviceList::__COUNT,0));
+         return Video::DeviceModel::instance()->flags(Video::DeviceModel::instance()->index(idx.row()-ExtendedDeviceList::COUNT__,0));
    };
 }
 
@@ -147,7 +147,7 @@ void Video::SourcesModel::switchTo(const int idx)
          break;
       default:
          DBus::VideoManager::instance().switchInput(Video::SourcesModelPrivate::ProtocolPrefix::V4L2 +
-            Video::DeviceModel::instance()->index(idx-ExtendedDeviceList::__COUNT,0).data(Qt::DisplayRole).toString());
+            Video::DeviceModel::instance()->index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          break;
    };
    d_ptr->m_CurrentSelection = (ExtendedDeviceList) idx;
@@ -167,14 +167,14 @@ Video::Device* Video::SourcesModel::deviceAt(const QModelIndex& idx) const
       case ExtendedDeviceList::FILE:
          return nullptr;
       default:
-         return Video::DeviceModel::instance()->devices()[idx.row()-ExtendedDeviceList::__COUNT];
+         return Video::DeviceModel::instance()->devices()[idx.row()-ExtendedDeviceList::COUNT__];
    };
 }
 
 int Video::SourcesModel::activeIndex() const
 {
    if (d_ptr->m_CurrentSelection == -1) {
-      return ExtendedDeviceList::__COUNT + Video::DeviceModel::instance()->activeIndex();
+      return ExtendedDeviceList::COUNT__ + Video::DeviceModel::instance()->activeIndex();
    }
    return d_ptr->m_CurrentSelection;
 }

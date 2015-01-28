@@ -90,7 +90,7 @@ public:
       REQUIRE_CERTIFICATE_DISABLED   ,
       MISSING_CERTIFICATE            ,
       MISSING_AUTHORITY              ,
-      __COUNT
+      COUNT__
    };
 
    ///Role for the model

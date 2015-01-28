@@ -243,6 +243,7 @@ SET(libringclient_visitors_LIB_HDRS
 
 SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
+  src/typedefs.hpp
 )
 
 # Include the headers for linking directly with libDring (used on platforms

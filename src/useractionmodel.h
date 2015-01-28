@@ -54,7 +54,7 @@ public:
       REFUSE   = 6,
       ACCEPT   = 7,
       HANGUP   = 8,
-      __COUNT,
+      COUNT__,
    };
    Q_ENUMS(Action)
 
