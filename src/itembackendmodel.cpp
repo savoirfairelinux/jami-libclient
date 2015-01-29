@@ -204,6 +204,10 @@ QModelIndex CommonItemBackendModel::index( int row, int column, const QModelInde
       if (row < d_ptr->m_lTopLevelBackends.size())
          item = d_ptr->m_lTopLevelBackends[row];
       else {
+
+         if (row >= ContactModel::instance()->backends().size())
+            return QModelIndex();
+
          item = new CommonItemBackendModelPrivate::ProxyItem();
          item->backend = ContactModel::instance()->backends()[row];
          d_ptr->m_lTopLevelBackends << item;

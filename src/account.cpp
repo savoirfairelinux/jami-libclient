@@ -31,6 +31,7 @@
 #include "dbus/videomanager.h"
 #include "visitors/accountlistcolorvisitor.h"
 #include "certificate.h"
+#include "certificatemodel.h"
 #include "accountmodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
@@ -501,10 +502,12 @@ int Account::tlsListenerPort() const
 Certificate* Account::tlsCaListCertificate() const
 {
    if (!d_ptr->m_pCaCert) {
-      d_ptr->m_pCaCert = new Certificate(Certificate::Type::AUTHORITY,this);
+      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::CA_LIST_FILE);
+      if (path.isEmpty())
+         return nullptr;
+      d_ptr->m_pCaCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::AUTHORITY);
       connect(d_ptr->m_pCaCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
-   const_cast<Account*>(this)->d_ptr->m_pCaCert->setPath(d_ptr->accountDetail(Account::MapField::TLS::CA_LIST_FILE));
    return d_ptr->m_pCaCert;
 }
 
@@ -512,10 +515,12 @@ Certificate* Account::tlsCaListCertificate() const
 Certificate* Account::tlsCertificate() const
 {
    if (!d_ptr->m_pTlsCert) {
-      d_ptr->m_pTlsCert = new Certificate(Certificate::Type::USER,this);
+      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::CERTIFICATE_FILE);
+      if (path.isEmpty())
+         return nullptr;
+      d_ptr->m_pTlsCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::USER);
       connect(d_ptr->m_pTlsCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
-   const_cast<Account*>(this)->d_ptr->m_pTlsCert->setPath(d_ptr->accountDetail(Account::MapField::TLS::CERTIFICATE_FILE));
    return d_ptr->m_pTlsCert;
 }
 
@@ -523,10 +528,12 @@ Certificate* Account::tlsCertificate() const
 Certificate* Account::tlsPrivateKeyCertificate() const
 {
    if (!d_ptr->m_pPrivateKey) {
-      d_ptr->m_pPrivateKey = new Certificate(Certificate::Type::PRIVATE_KEY,this);
+      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE);
+      if (path.isEmpty())
+         return nullptr;
+      d_ptr->m_pPrivateKey = CertificateModel::instance()->getCertificate(path,Certificate::Type::PRIVATE_KEY);
       connect(d_ptr->m_pPrivateKey,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
-   const_cast<Account*>(this)->d_ptr->m_pPrivateKey->setPath(d_ptr->accountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE));
    return d_ptr->m_pPrivateKey;
 }
 
@@ -745,11 +752,11 @@ QVariant Account::roleData(int role) const
       case Account::Role::TlsPassword:
          return tlsPassword();
       case Account::Role::TlsCaListCertificate:
-         return tlsCaListCertificate()->path().toLocalFile();
+         return tlsCaListCertificate()?tlsCaListCertificate()->path().toLocalFile():QVariant();
       case Account::Role::TlsCertificate:
-         return tlsCertificate()->path().toLocalFile();
+         return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
       case Account::Role::TlsPrivateKeyCertificate:
-         return tlsPrivateKeyCertificate()->path().toLocalFile();
+         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
       case Account::Role::TlsCiphers:
          return tlsCiphers();
       case Account::Role::TlsServerName:

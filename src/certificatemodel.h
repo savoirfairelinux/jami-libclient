@@ -20,6 +20,8 @@
 #include <QtCore/QAbstractItemModel>
 #include "typedefs.h"
 
+#include "certificate.h"
+
 class CertificateModelPrivate;
 
 class LIB_EXPORT CertificateModel : public QAbstractItemModel
@@ -27,25 +29,34 @@ class LIB_EXPORT CertificateModel : public QAbstractItemModel
    Q_OBJECT
 public:
 
-   CertificateModel(QObject* parent);
+   enum class Columns {
+      NAME  = 0,
+      VALUE = 1,
+   };
+
+   //Constructor
+   CertificateModel(QObject* parent = nullptr);
    virtual ~CertificateModel();
 
    //Model implementation
-   virtual bool          setData      ( const QModelIndex& index, const QVariant &value, int role   ) override;
-   virtual QVariant      data         ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
-   virtual int           rowCount     ( const QModelIndex& parent = QModelIndex()                   ) const override;
-   virtual Qt::ItemFlags flags        ( const QModelIndex& index                                    ) const override;
-   virtual int           columnCount  ( const QModelIndex& parent = QModelIndex()                   ) const override;
-   virtual QModelIndex   parent       ( const QModelIndex& index                                    ) const override;
-   virtual QModelIndex   index        ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
-   virtual QVariant      headerData   ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
-   virtual QStringList   mimeTypes    (                                                             ) const override;
-   virtual QMimeData*    mimeData     ( const QModelIndexList &indexes                              ) const override;
-   virtual bool          dropMimeData ( const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent ) override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
+   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual QModelIndex   parent      ( const QModelIndex& index                                    ) const override;
+   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
+
+   //Mutator
+   Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
+
+   //Singleton
+   static CertificateModel* instance();
 
 private:
    CertificateModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(CertificateModelPrivate);
+   Q_DECLARE_PRIVATE(CertificateModel);
 };
 
 #endif

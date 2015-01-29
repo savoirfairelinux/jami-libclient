@@ -621,6 +621,7 @@ bool HistoryModel::clearAllBackends() const
    //Clear the daemon history backend as apparently the Gnome client wont
    //Use its native backend anytime soon
    DBus::ConfigurationManager::instance().clearHistory();
+   return true;
 }
 
 

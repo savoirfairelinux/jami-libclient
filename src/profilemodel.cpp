@@ -284,7 +284,7 @@ void ProfileContentBackend::setupDefaultProfile()
 
    foreach (Node* node, m_lProfiles) {
       foreach (Node* acc, node->children) {
-         accounts[node->account] = true;
+         accounts[acc->account] = true;
       }
    }
 

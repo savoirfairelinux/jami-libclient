@@ -30,6 +30,9 @@ class CertificatePrivate;
  */
 class LIB_EXPORT Certificate : public QObject {
    Q_OBJECT
+
+   friend class CertificateModel;
+   friend class CertificateModelPrivate;
 public:
 
    //Properties
@@ -46,7 +49,6 @@ public:
    Q_PROPERTY(CheckValues arePublicKeyStorageLocationOk       READ arePublicKeyStorageLocationOk       )
    Q_PROPERTY(CheckValues arePrivateKeySelinuxAttributesOk    READ arePrivateKeySelinuxAttributesOk    )
    Q_PROPERTY(CheckValues arePublicKeySelinuxAttributesOk     READ arePublicKeySelinuxAttributesOk     )
-   Q_PROPERTY(QString     outgoingServer                      READ outgoingServer                      )
    Q_PROPERTY(CheckValues exist                               READ exist                               )
    Q_PROPERTY(CheckValues isValid                             READ isValid                             )
    Q_PROPERTY(CheckValues hasValidAuthority                   READ hasValidAuthority                   )
@@ -73,6 +75,8 @@ public:
    Q_PROPERTY(QByteArray publicKeyId                          READ publicKeyId              )
    Q_PROPERTY(QByteArray issuerDn                             READ issuerDn                 )
    Q_PROPERTY(QDateTime  nextExpectedUpdateDate               READ nextExpectedUpdateDate   )
+   Q_PROPERTY(QString    outgoingServer                       READ outgoingServer           )
+
 
    //Structures
    enum class Type {
@@ -83,10 +87,10 @@ public:
    };
 
    /**
-   * @enum CertificateCheck All validation fields
+   * @enum Checks All validation fields
    *
    */
-   enum class CertificateCheck {
+   enum class Checks {
       HAS_PRIVATE_KEY                   , /** This certificate has a build in private key                          */
       EXPIRED                           , /** This certificate is past its expiration date                         */
       STRONG_SIGNING                    , /** This certificate has been signed with a brute-force-able method      */
@@ -100,7 +104,6 @@ public:
       PUBLIC_KEY_STORAGE_LOCATION       , /** Some operating systems have extra policies for certificate storage   */
       PRIVATE_KEY_SELINUX_ATTRIBUTES    , /** Some operating systems require keys to have extra attributes         */
       PUBLIC_KEY_SELINUX_ATTRIBUTES     , /** Some operating systems require keys to have extra attributes         */
-      OUTGOING_SERVER                   , /** The hostname/outgoing server used for this certificate               */
       EXIST                             , /** The certificate file doesn't exist or is not accessible              */
       VALID                             , /** The file is not a certificate                                        */
       VALID_AUTHORITY                   , /** The claimed authority did not sign the certificate                   */
@@ -113,9 +116,9 @@ public:
    };
 
    /**
-   * @enum CertificateDetails Informative fields about a certificate
+   * @enum Details Informative fields about a certificate
    */
-   enum class CertificateDetails {
+   enum class Details {
       EXPIRATION_DATE                , /** The certificate expiration date                                      */
       ACTIVATION_DATE                , /** The certificate activation date                                      */
       REQUIRE_PRIVATE_KEY_PASSWORD   , /** Does the private key require a password                              */
@@ -133,11 +136,13 @@ public:
       PUBLIC_KEY_ID                  ,
       ISSUER_DN                      ,
       NEXT_EXPECTED_UPDATE_DATE      ,
+      OUTGOING_SERVER                , /** The hostname/outgoing server used for this certificate               */
+
       COUNT__
    };
 
    /**
-   * @enum CheckValuesType Categories of possible values for each CertificateCheck
+   * @enum CheckValuesType Categories of possible values for each Checks
    */
    enum class CheckValuesType {
       BOOLEAN,
@@ -158,24 +163,22 @@ public:
    * new validated types are required.
    */
    enum class CheckValues {
-      PASSED     , /** Equivalent of a boolean "true"                                    */
       FAILED     , /** Equivalent of a boolean "false"                                   */
+      PASSED     , /** Equivalent of a boolean "true"                                    */
       UNSUPPORTED, /** The operating system doesn't support or require the check         */
       COUNT__,
    };
 
-   explicit Certificate(Certificate::Type type ,const QObject* parent = nullptr);
-
    //Getter
    QUrl path() const;
    Certificate::Type type() const;
-   QVariant checkResults(Certificate::CertificateCheck check) const;
-   QVariant detailResult(Certificate::CertificateDetails detail) const;
+   Certificate::CheckValues checkResult (Certificate::Checks check  ) const;
+   QVariant detailResult(Certificate::Details detail) const;
 
-   QString getName        (Certificate::CertificateCheck   check  );
-   QString getName        (Certificate::CertificateDetails details);
-   QString getDescription (Certificate::CertificateCheck   check  );
-   QString getDescription (Certificate::CertificateDetails details);
+   QString getName        (Certificate::Checks   check  );
+   QString getName        (Certificate::Details details );
+   QString getDescription (Certificate::Checks   check  );
+   QString getDescription (Certificate::Details details );
 
    //Checks
    CheckValues hasPrivateKey                       () const;
@@ -191,7 +194,6 @@ public:
    CheckValues arePublicKeyStorageLocationOk       () const;
    CheckValues arePrivateKeySelinuxAttributesOk    () const;
    CheckValues arePublicKeySelinuxAttributesOk     () const;
-   QString     outgoingServer                      () const;
    CheckValues exist                               () const;
    CheckValues isValid                             () const;
    CheckValues hasValidAuthority                   () const;
@@ -199,7 +201,7 @@ public:
    CheckValues isNotRevoked                        () const;
    CheckValues authorityMatch                      () const;
    CheckValues hasExpectedOwner                    () const;
-   bool       isActivated                          () const;
+   bool        isActivated                         () const;
 
    //Details
    QDateTime  expirationDate                       () const;
@@ -219,14 +221,19 @@ public:
    QByteArray publicKeyId                          () const;
    QByteArray issuerDn                             () const;
    QDateTime  nextExpectedUpdateDate               () const;
+   QString    outgoingServer                       () const;
+
 
    //Setter
    void setPath(const QUrl& path);
 
 private:
+   explicit Certificate(const QUrl& path, Type type = Type::NONE, const QUrl& privateKey = QUrl());
+   virtual ~Certificate();
    CertificatePrivate* d_ptr;
 
 Q_SIGNALS:
+   ///This certificate changed, all users need to reload it
    void changed();
 };
 Q_DECLARE_METATYPE(Certificate*)

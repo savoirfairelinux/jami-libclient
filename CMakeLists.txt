@@ -26,6 +26,31 @@ SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
 
+# Enable some useful warnings
+ADD_DEFINITIONS(
+   -Wall
+   -Wextra
+   -Wno-cpp
+   #-Wmissing-declarations
+   -Wmissing-noreturn
+   -Wpointer-arith
+   -Wcast-align
+   -Wwrite-strings
+   -Wformat-nonliteral
+   -Wformat-security
+   -Wswitch-enum
+   -Winit-self
+   -Wmissing-include-dirs
+   -Wundef
+   -Wmissing-format-attribute
+   -Wno-reorder
+   -Wunused
+   -Wuninitialized
+   -Woverloaded-virtual
+   #-Wsuggest-attribute=const
+   #-Wsystem-headers
+)
+
 # OS X
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    SET(ENABLE_LIBWRAP true)
@@ -121,6 +146,7 @@ SET( libringclient_LIB_SRCS
   src/contactmodel.cpp
   src/itembackendmodel.cpp
   src/networkinterfacemodel.cpp
+  src/certificatemodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcesmodel.cpp
   src/video/codecmodel2.cpp
@@ -205,6 +231,7 @@ SET( libringclient_LIB_HDRS
   src/commonbackendmanagerinterface.h
   src/networkinterfacemodel.h
   src/vcardutils.h
+  src/certificatemodel.h
 )
 
 SET(libringclient_video_LIB_HDRS

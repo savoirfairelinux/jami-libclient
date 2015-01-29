@@ -21,12 +21,14 @@ AccountListColorVisitor* AccountListColorVisitor::m_spInstance = new AccountList
 
 QVariant AccountListColorVisitor::getColor(const Account* a)
 {
+   Q_UNUSED(a)
    //The default implementation does nothing
    return QVariant();
 }
 
 QVariant AccountListColorVisitor::getIcon(const Account* a)
 {
+   Q_UNUSED(a)
    //The default implementation does nothing
    return QVariant();
 }

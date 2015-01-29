@@ -136,7 +136,6 @@ private:
 template<class EnumClass>
 struct EnumIterator
 {
-
    /**
    * An Iterator for enum classes
    */

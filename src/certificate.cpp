@@ -17,13 +17,17 @@
  ***************************************************************************/
 #include "certificate.h"
 
+//Qt
 #include <QtCore/QFile>
+
+//Ring
 #include "dbus/configurationmanager.h"
+#include <certificatemodel.h>
 #include <security.h>
 
-class CertificateDetailsCache {
+class DetailsCache {
 public:
-   CertificateDetailsCache(const MapStringString& details);
+   DetailsCache(const MapStringString& details);
 
    QDateTime  m_ExpirationDate            ;
    QDateTime  m_ActivationDate            ;
@@ -42,11 +46,13 @@ public:
    QByteArray m_PublicKeyId               ;
    QByteArray m_IssuerDn                  ;
    QDateTime  m_NextExpectedUpdateDate    ;
+   QString    m_OutgoingServer            ;
+
 };
 
-class CertificateChecksCache {
+class ChecksCache {
 public:
-   CertificateChecksCache(const MapStringString& checks);
+   ChecksCache(const MapStringString& checks);
 
    Certificate::CheckValues m_HasPrivateKey                       ;
    Certificate::CheckValues m_IsExpired                           ;
@@ -61,7 +67,6 @@ public:
    Certificate::CheckValues m_ArePublicKeyStorageLocationOk       ;
    Certificate::CheckValues m_ArePrivateKeySelinuxAttributesOk    ;
    Certificate::CheckValues m_ArePublicKeySelinuxAttributesOk     ;
-   QString                  m_OutgoingServer                      ;
    Certificate::CheckValues m_Exist                               ;
    Certificate::CheckValues m_IsValid                             ;
    Certificate::CheckValues m_ValidAuthority                      ;
@@ -75,21 +80,122 @@ public:
 class CertificatePrivate
 {
 public:
+   //Types
+   typedef Certificate::CheckValues (Certificate::*accessor)();
+
    //Attributes
    CertificatePrivate();
    ~CertificatePrivate();
    QUrl m_Path;
    Certificate::Type m_Type;
 
-   mutable CertificateDetailsCache* m_pDetailsCache;
-   mutable CertificateChecksCache*  m_pCheckCache  ;
+   mutable DetailsCache* m_pDetailsCache;
+   mutable ChecksCache*  m_pCheckCache  ;
 
    //Helpers
    void loadDetails();
    void loadChecks ();
 
+   static Matrix1D<Certificate::Checks ,QString> m_slChecksName;
+   static Matrix1D<Certificate::Checks ,QString> m_slChecksDescription;
+   static Matrix1D<Certificate::Details,QString> m_slDetailssName;
+   static Matrix1D<Certificate::Details,QString> m_slDetailssDescription;
+
    static Certificate::CheckValues toBool(const QString& string);
 };
+
+Matrix1D<Certificate::Checks ,QString> CertificatePrivate::m_slChecksName = {{
+   /* HAS_PRIVATE_KEY                   */ QObject::tr("Has a private key"                               ),
+   /* EXPIRED                           */ QObject::tr("Is not expired"                                  ),
+   /* STRONG_SIGNING                    */ QObject::tr("Has strong signing"                              ),
+   /* NOT_SELF_SIGNED                   */ QObject::tr("Is not self signed"                              ),
+   /* KEY_MATCH                         */ QObject::tr("Have a matching key pair"                        ),
+   /* PRIVATE_KEY_STORAGE_PERMISSION    */ QObject::tr("Has the right private key file permissions"      ),
+   /* PUBLIC_KEY_STORAGE_PERMISSION     */ QObject::tr("Has the right public key file permissions"       ),
+   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ QObject::tr("Has the right private key directory permissions" ),
+   /* PUBLIC_KEY_STORAGE_PERMISSION     */ QObject::tr("Has the right public key directory permissions"  ),
+   /* PRIVATE_KEY_STORAGE_LOCATION      */ QObject::tr("Has the right private key directory location"    ),
+   /* PUBLIC_KEY_STORAGE_LOCATION       */ QObject::tr("Has the right public key directory location"     ),
+   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ QObject::tr("Has the right private key SELinux attributes"    ),
+   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ QObject::tr("Has the right public key SELinux attributes"     ),
+   /* EXIST                             */ QObject::tr("The certificate file exist and is readable"      ),
+   /* VALID                             */ QObject::tr("The file is a valid certificate"                 ),
+   /* VALID_AUTHORITY                   */ QObject::tr("The certificate has a valid authority"           ),
+   /* KNOWN_AUTHORITY                   */ QObject::tr("The certificate has a known authority"           ),
+   /* NOT_REVOKED                       */ QObject::tr("The certificate is not revoked"                  ),
+   /* AUTHORITY_MATCH                   */ QObject::tr("The certificate authority match"                 ),
+   /* EXPECTED_OWNER                    */ QObject::tr("The certificate has the expected owner"          ),
+   /* ACTIVATED                         */ QObject::tr("The certificate is within its active period"     ),
+}};
+
+Matrix1D<Certificate::Checks ,QString> CertificatePrivate::m_slChecksDescription = {{
+   /* HAS_PRIVATE_KEY                   */ QObject::tr("TODO"),
+   /* EXPIRED                           */ QObject::tr("TODO"),
+   /* STRONG_SIGNING                    */ QObject::tr("TODO"),
+   /* NOT_SELF_SIGNED                   */ QObject::tr("TODO"),
+   /* KEY_MATCH                         */ QObject::tr("TODO"),
+   /* PRIVATE_KEY_STORAGE_PERMISSION    */ QObject::tr("TODO"),
+   /* PUBLIC_KEY_STORAGE_PERMISSION     */ QObject::tr("TODO"),
+   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ QObject::tr("TODO"),
+   /* PUBLIC_KEY_DIRECTORY_PERMISSIONS  */ QObject::tr("TODO"),
+   /* PRIVATE_KEY_STORAGE_LOCATION      */ QObject::tr("TODO"),
+   /* PUBLIC_KEY_STORAGE_LOCATION       */ QObject::tr("TODO"),
+   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ QObject::tr("TODO"),
+   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ QObject::tr("TODO"),
+   /* EXIST                             */ QObject::tr("TODO"),
+   /* VALID                             */ QObject::tr("TODO"),
+   /* VALID_AUTHORITY                   */ QObject::tr("TODO"),
+   /* KNOWN_AUTHORITY                   */ QObject::tr("TODO"),
+   /* NOT_REVOKED                       */ QObject::tr("TODO"),
+   /* AUTHORITY_MATCH                   */ QObject::tr("TODO"),
+   /* EXPECTED_OWNER                    */ QObject::tr("TODO"),
+   /* ACTIVATED                         */ QObject::tr("TODO"),
+}};
+
+Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssName = {{
+   /* EXPIRATION_DATE                */ QObject::tr("Expiration date"               ),
+   /* ACTIVATION_DATE                */ QObject::tr("Activation date"               ),
+   /* REQUIRE_PRIVATE_KEY_PASSWORD   */ QObject::tr("Require a private key password"),
+   /* PUBLIC_SIGNATURE               */ QObject::tr("Public signature"              ),
+   /* VERSION_NUMBER                 */ QObject::tr("Version"                       ),
+   /* SERIAL_NUMBER                  */ QObject::tr("Serial number"                 ),
+   /* ISSUER                         */ QObject::tr("Issuer"                        ),
+   /* SUBJECT_KEY_ALGORITHM          */ QObject::tr("Subject key algorithm"         ),
+   /* CN                             */ QObject::tr("Common name (CN)"              ),
+   /* N                              */ QObject::tr("Name (N)"                      ),
+   /* O                              */ QObject::tr("Organization (O)"              ),
+   /* SIGNATURE_ALGORITHM            */ QObject::tr("Signature algorithm"           ),
+   /* MD5_FINGERPRINT                */ QObject::tr("Md5 fingerprint"               ),
+   /* SHA1_FINGERPRINT               */ QObject::tr("Sha1 fingerprint"              ),
+   /* PUBLIC_KEY_ID                  */ QObject::tr("Public key id"                 ),
+   /* ISSUER_DN                      */ QObject::tr("Issuer domain name"            ),
+   /* NEXT_EXPECTED_UPDATE_DATE      */ QObject::tr("Next expected update"          ),
+   /* OUTGOING_SERVER                */ QObject::tr("Outgoing server"               ),
+
+}};
+
+Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescription = {{
+   /* EXPIRATION_DATE                 */ QObject::tr("TODO"),
+   /* ACTIVATION_DATE                 */ QObject::tr("TODO"),
+   /* REQUIRE_PRIVATE_KEY_PASSWORD    */ QObject::tr("TODO"),
+   /* PUBLIC_SIGNATURE                */ QObject::tr("TODO"),
+   /* VERSION_NUMBER                  */ QObject::tr("TODO"),
+   /* SERIAL_NUMBER                   */ QObject::tr("TODO"),
+   /* ISSUER                          */ QObject::tr("TODO"),
+   /* SUBJECT_KEY_ALGORITHM           */ QObject::tr("TODO"),
+   /* CN                              */ QObject::tr("TODO"),
+   /* N                               */ QObject::tr("TODO"),
+   /* O                               */ QObject::tr("TODO"),
+   /* SIGNATURE_ALGORITHM             */ QObject::tr("TODO"),
+   /* MD5_FINGERPRINT                 */ QObject::tr("TODO"),
+   /* SHA1_FINGERPRINT                */ QObject::tr("TODO"),
+   /* PUBLIC_KEY_ID                   */ QObject::tr("TODO"),
+   /* ISSUER_DN                       */ QObject::tr("TODO"),
+   /* NEXT_EXPECTED_UPDATE_DATE       */ QObject::tr("TODO"),
+   /* OUTGOING_SERVER                 */ QObject::tr("TODO"),
+
+}};
+
 
 CertificatePrivate::CertificatePrivate() :
 m_pCheckCache(nullptr), m_pDetailsCache(nullptr)
@@ -112,10 +218,10 @@ Certificate::CheckValues CertificatePrivate::toBool(const QString& string)
       return Certificate::CheckValues::UNSUPPORTED;
 }
 
-CertificateDetailsCache::CertificateDetailsCache(const MapStringString& details)
+DetailsCache::DetailsCache(const MapStringString& details)
 {
-   m_ExpirationDate             = QDateTime::fromTime_t( details[DRing::Certificate::DetailsNames::EXPIRATION_DATE ].toInt());
-   m_ActivationDate             = QDateTime::fromTime_t( details[DRing::Certificate::DetailsNames::ACTIVATION_DATE ].toInt());
+   m_ExpirationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::EXPIRATION_DATE ],"yyyy-mm-dd");
+   m_ActivationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::ACTIVATION_DATE ],"yyyy-mm-dd");
    m_RequirePrivateKeyPassword  = false;//TODO//details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD].toBool();
    m_PublicSignature            = details[DRing::Certificate::DetailsNames::PUBLIC_SIGNATURE            ].toAscii();
    m_VersionNumber              = details[DRing::Certificate::DetailsNames::VERSION_NUMBER              ].toInt();
@@ -130,10 +236,11 @@ CertificateDetailsCache::CertificateDetailsCache(const MapStringString& details)
    m_Sha1Fingerprint            = details[DRing::Certificate::DetailsNames::SHA1_FINGERPRINT            ].toAscii();
    m_PublicKeyId                = details[DRing::Certificate::DetailsNames::PUBLIC_KEY_ID               ].toAscii();
    m_IssuerDn                   = details[DRing::Certificate::DetailsNames::ISSUER_DN                   ].toAscii();
-   m_NextExpectedUpdateDate     = QDateTime::fromTime_t(details[DRing::Certificate::DetailsNames::NEXT_EXPECTED_UPDATE_DATE ].toInt());
+   m_NextExpectedUpdateDate     = QDateTime::fromString(details[DRing::Certificate::DetailsNames::NEXT_EXPECTED_UPDATE_DATE ],"yyyy-mm-dd");
+   m_OutgoingServer             = details[DRing::Certificate::DetailsNames::OUTGOING_SERVER             ] ;
 }
 
-CertificateChecksCache::CertificateChecksCache(const MapStringString& checks)
+ChecksCache::ChecksCache(const MapStringString& checks)
 {
    m_HasPrivateKey                       = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::HAS_PRIVATE_KEY                  ]);
    m_IsExpired                           = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::EXPIRED                          ]);
@@ -148,7 +255,6 @@ CertificateChecksCache::CertificateChecksCache(const MapStringString& checks)
    m_ArePublicKeyStorageLocationOk       = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::PUBLIC_KEY_STORAGE_LOCATION      ]);
    m_ArePrivateKeySelinuxAttributesOk    = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::PRIVATE_KEY_SELINUX_ATTRIBUTES   ]);
    m_ArePublicKeySelinuxAttributesOk     = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::PUBLIC_KEY_SELINUX_ATTRIBUTES    ]);
-   m_OutgoingServer                      = checks[DRing::Certificate::ChecksNames::OUTGOING_SERVER                                             ] ;
    m_Exist                               = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::EXIST                            ]);
    m_IsValid                             = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::VALID                            ]);
    m_ValidAuthority                      = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::VALID_AUTHORITY                  ]);
@@ -162,8 +268,8 @@ CertificateChecksCache::CertificateChecksCache(const MapStringString& checks)
 void CertificatePrivate::loadDetails()
 {
    if (!m_pDetailsCache) {
-      const MapStringString details = DBus::ConfigurationManager::instance().getCertificateDetails(m_Path.toString());
-      m_pDetailsCache = new CertificateDetailsCache(details);
+      const MapStringString d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Path.toString());
+      m_pDetailsCache = new DetailsCache(d);
    }
 }
 
@@ -171,33 +277,40 @@ void CertificatePrivate::loadChecks()
 {
    if (!m_pCheckCache) {
       const MapStringString checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),QString());
-      m_pCheckCache = new CertificateChecksCache(checks);
+      m_pCheckCache = new ChecksCache(checks);
    }
 }
 
-Certificate::Certificate(Certificate::Type type, const QObject* parent) : QObject(const_cast<QObject*>(parent)),d_ptr(new CertificatePrivate())
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate())
 {
+   Q_UNUSED(privateKey)
+   d_ptr->m_Path = path.path();
    d_ptr->m_Type = type;
 }
 
-QString Certificate::getName(Certificate::CertificateCheck check)
+Certificate::~Certificate()
 {
-   
+
 }
 
-QString Certificate::getName(Certificate::CertificateDetails details)
+QString Certificate::getName(Certificate::Checks check)
 {
-   
+   return CertificatePrivate::m_slChecksName[check];
 }
 
-QString Certificate::getDescription(Certificate::CertificateCheck check)
+QString Certificate::getName(Certificate::Details detail)
 {
-   
+   return CertificatePrivate::m_slDetailssName[detail];
 }
 
-QString Certificate::getDescription(Certificate::CertificateDetails details)
+QString Certificate::getDescription(Certificate::Checks check)
 {
-   
+   return CertificatePrivate::m_slChecksDescription[check];
+}
+
+QString Certificate::getDescription(Certificate::Details detail)
+{
+   return CertificatePrivate::m_slDetailssDescription[detail];
 }
 
 Certificate::CheckValues Certificate::hasPrivateKey() const
@@ -276,12 +389,6 @@ Certificate::CheckValues Certificate::arePublicKeySelinuxAttributesOk() const
 {
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePublicKeySelinuxAttributesOk;
-}
-
-QString Certificate::outgoingServer() const
-{
-   d_ptr->loadChecks();
-   return d_ptr->m_pCheckCache->m_OutgoingServer;
 }
 
 Certificate::CheckValues Certificate::exist() const
@@ -449,59 +556,66 @@ Certificate::Type Certificate::type() const
    return d_ptr->m_Type;
 }
 
-
-QVariant Certificate::checkResults(Certificate::CertificateCheck check) const
+QString Certificate::outgoingServer() const
 {
-   switch (check) {
-      case CertificateCheck::HAS_PRIVATE_KEY                   : return static_cast<int>(hasPrivateKey                       ());
-      case CertificateCheck::EXPIRED                           : return static_cast<int>(isNotExpired                        ());
-      case CertificateCheck::STRONG_SIGNING                    : return static_cast<int>(hasStrongSigning                    ());
-      case CertificateCheck::NOT_SELF_SIGNED                   : return static_cast<int>(isNotSelfSigned                     ());
-      case CertificateCheck::KEY_MATCH                         : return static_cast<int>(privateKeyMatch                     ());
-      case CertificateCheck::PRIVATE_KEY_STORAGE_PERMISSION    : return static_cast<int>(arePrivateKeyStoragePermissionOk    ());
-      case CertificateCheck::PUBLIC_KEY_STORAGE_PERMISSION     : return static_cast<int>(arePublicKeyStoragePermissionOk     ());
-      case CertificateCheck::PRIVATE_KEY_DIRECTORY_PERMISSIONS : return static_cast<int>(arePrivateKeyDirectoryPermissionsOk ());
-      case CertificateCheck::PUBLIC_KEY_DIRECTORY_PERMISSIONS  : return static_cast<int>(arePublicKeyDirectoryPermissionsOk  ());
-      case CertificateCheck::PRIVATE_KEY_STORAGE_LOCATION      : return static_cast<int>(arePrivateKeyStorageLocationOk      ());
-      case CertificateCheck::PUBLIC_KEY_STORAGE_LOCATION       : return static_cast<int>(arePublicKeyStorageLocationOk       ());
-      case CertificateCheck::PRIVATE_KEY_SELINUX_ATTRIBUTES    : return static_cast<int>(arePrivateKeySelinuxAttributesOk    ());
-      case CertificateCheck::PUBLIC_KEY_SELINUX_ATTRIBUTES     : return static_cast<int>(arePublicKeySelinuxAttributesOk     ());
-      case CertificateCheck::OUTGOING_SERVER                   : return outgoingServer();
-      case CertificateCheck::EXIST                             : return static_cast<int>(exist                               ());
-      case CertificateCheck::VALID                             : return static_cast<int>(isValid                             ());
-      case CertificateCheck::VALID_AUTHORITY                   : return static_cast<int>(hasValidAuthority                   ());
-      case CertificateCheck::KNOWN_AUTHORITY                   : return static_cast<int>(hasKnownAuthority                   ());
-      case CertificateCheck::NOT_REVOKED                       : return static_cast<int>(isNotRevoked                        ());
-      case CertificateCheck::AUTHORITY_MATCH                   : return static_cast<int>(authorityMatch                      ());
-      case CertificateCheck::EXPECTED_OWNER                    : return static_cast<int>(hasExpectedOwner                    ());
-      case CertificateCheck::ACTIVATED                         : return static_cast<int>(isActivated                         ());
-      case CertificateCheck::COUNT__:
-         Q_ASSERT(false);
-   };
-   return QVariant();
+   d_ptr->loadChecks();
+   return d_ptr->m_pDetailsCache->m_OutgoingServer;
 }
 
-QVariant Certificate::detailResult(Certificate::CertificateDetails detail) const
+
+Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
+{
+   switch (check) {
+      case Checks::HAS_PRIVATE_KEY                   : return hasPrivateKey                       ();
+      case Checks::EXPIRED                           : return isNotExpired                        ();
+      case Checks::STRONG_SIGNING                    : return hasStrongSigning                    ();
+      case Checks::NOT_SELF_SIGNED                   : return isNotSelfSigned                     ();
+      case Checks::KEY_MATCH                         : return privateKeyMatch                     ();
+      case Checks::PRIVATE_KEY_STORAGE_PERMISSION    : return arePrivateKeyStoragePermissionOk    ();
+      case Checks::PUBLIC_KEY_STORAGE_PERMISSION     : return arePublicKeyStoragePermissionOk     ();
+      case Checks::PRIVATE_KEY_DIRECTORY_PERMISSIONS : return arePrivateKeyDirectoryPermissionsOk ();
+      case Checks::PUBLIC_KEY_DIRECTORY_PERMISSIONS  : return arePublicKeyDirectoryPermissionsOk  ();
+      case Checks::PRIVATE_KEY_STORAGE_LOCATION      : return arePrivateKeyStorageLocationOk      ();
+      case Checks::PUBLIC_KEY_STORAGE_LOCATION       : return arePublicKeyStorageLocationOk       ();
+      case Checks::PRIVATE_KEY_SELINUX_ATTRIBUTES    : return arePrivateKeySelinuxAttributesOk    ();
+      case Checks::PUBLIC_KEY_SELINUX_ATTRIBUTES     : return arePublicKeySelinuxAttributesOk     ();
+      case Checks::EXIST                             : return exist                               ();
+      case Checks::VALID                             : return isValid                             ();
+      case Checks::VALID_AUTHORITY                   : return hasValidAuthority                   ();
+      case Checks::KNOWN_AUTHORITY                   : return hasKnownAuthority                   ();
+      case Checks::NOT_REVOKED                       : return isNotRevoked                        ();
+      case Checks::AUTHORITY_MATCH                   : return authorityMatch                      ();
+      case Checks::EXPECTED_OWNER                    : return hasExpectedOwner                    ();
+      case Checks::ACTIVATED                         : return static_cast<Certificate::CheckValues>(isActivated());
+      case Checks::COUNT__:
+         Q_ASSERT(false);
+   };
+   return Certificate::CheckValues::UNSUPPORTED;
+}
+
+QVariant Certificate::detailResult(Certificate::Details detail) const
 {
    switch(detail) {
-      case CertificateDetails::EXPIRATION_DATE                : expirationDate                       ();
-      case CertificateDetails::ACTIVATION_DATE                : activationDate                       ();
-      case CertificateDetails::REQUIRE_PRIVATE_KEY_PASSWORD   : requirePrivateKeyPassword            ();
-      case CertificateDetails::PUBLIC_SIGNATURE               : publicSignature                      ();
-      case CertificateDetails::VERSION_NUMBER                 : versionNumber                        ();
-      case CertificateDetails::SERIAL_NUMBER                  : serialNumber                         ();
-      case CertificateDetails::ISSUER                         : issuer                               ();
-      case CertificateDetails::SUBJECT_KEY_ALGORITHM          : subjectKeyAlgorithm                  ();
-      case CertificateDetails::CN                             : cn                                   ();
-      case CertificateDetails::N                              : n                                    ();
-      case CertificateDetails::O                              : o                                    ();
-      case CertificateDetails::SIGNATURE_ALGORITHM            : signatureAlgorithm                   ();
-      case CertificateDetails::MD5_FINGERPRINT                : md5Fingerprint                       ();
-      case CertificateDetails::SHA1_FINGERPRINT               : sha1Fingerprint                      ();
-      case CertificateDetails::PUBLIC_KEY_ID                  : publicKeyId                          ();
-      case CertificateDetails::ISSUER_DN                      : issuerDn                             ();
-      case CertificateDetails::NEXT_EXPECTED_UPDATE_DATE      : nextExpectedUpdateDate               ();
-      case CertificateDetails::COUNT__:
+      case Details::EXPIRATION_DATE                : return expirationDate                ();
+      case Details::ACTIVATION_DATE                : return activationDate                ();
+      case Details::REQUIRE_PRIVATE_KEY_PASSWORD   : return requirePrivateKeyPassword     ();
+      case Details::PUBLIC_SIGNATURE               : return publicSignature               ();
+      case Details::VERSION_NUMBER                 : return versionNumber                 ();
+      case Details::SERIAL_NUMBER                  : return serialNumber                  ();
+      case Details::ISSUER                         : return issuer                        ();
+      case Details::SUBJECT_KEY_ALGORITHM          : return subjectKeyAlgorithm           ();
+      case Details::CN                             : return cn                            ();
+      case Details::N                              : return n                             ();
+      case Details::O                              : return o                             ();
+      case Details::SIGNATURE_ALGORITHM            : return signatureAlgorithm            ();
+      case Details::MD5_FINGERPRINT                : return md5Fingerprint                ();
+      case Details::SHA1_FINGERPRINT               : return sha1Fingerprint               ();
+      case Details::PUBLIC_KEY_ID                  : return publicKeyId                   ();
+      case Details::ISSUER_DN                      : return issuerDn                      ();
+      case Details::NEXT_EXPECTED_UPDATE_DATE      : return nextExpectedUpdateDate        ();
+      case Details::OUTGOING_SERVER                : return outgoingServer                ();
+
+      case Details::COUNT__:
          Q_ASSERT(false);
    };
    return QVariant();

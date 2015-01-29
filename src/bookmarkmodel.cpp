@@ -325,11 +325,12 @@ QModelIndex BookmarkModel::parent( const QModelIndex& idx) const
 ///Get the index
 QModelIndex BookmarkModel::index(int row, int column, const QModelIndex& parent) const
 {
-   if (parent.isValid())
+   if (parent.isValid() && !column)
       return createIndex(row,column,(void*) static_cast<CategorizedCompositeNode*>(d_ptr->m_lCategoryCounter[parent.row()]->m_lChildren[row]));
-   else {
+   else if (row >= 0 && row < d_ptr->m_lCategoryCounter.size() && !column) {
       return createIndex(row,column,(void*) static_cast<CategorizedCompositeNode*>(d_ptr->m_lCategoryCounter[row]));
    }
+   return QModelIndex();
 }
 
 ///Get bookmarks mime types
@@ -500,6 +501,7 @@ void BookmarkModel::removeBookmark(PhoneNumber* number)
 
 void BookmarkModel::remove(const QModelIndex& idx)
 {
+   Q_UNUSED(idx)
 //    PhoneNumber* nb = getNumber(idx);
 //    if (nb) {
 //       removeRows(idx.row(),1,idx.parent());
@@ -562,10 +564,13 @@ bool BookmarkModel::clearAllBackends() const
          backend->clear();
       }
    }
+   return true;
 }
 
 bool BookmarkModel::enableBackend(AbstractBookmarkBackend* backend, bool enable)
 {
+   Q_UNUSED(backend)
+   Q_UNUSED(enable)
    return false; //TODO
 }
 
