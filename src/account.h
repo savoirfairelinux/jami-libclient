@@ -36,6 +36,7 @@ class RingToneModel  ;
 class PhoneNumber    ;
 class SecurityValidationModel;
 class Certificate    ;
+class CipherModel    ;
 
 namespace Audio {
    class CodecModel;
@@ -65,6 +66,8 @@ class LIB_EXPORT Account : public QObject {
    friend class AccountModel;
    friend class AccountModelPrivate;
    friend class AccountPlaceHolder;
+   friend class CipherModelPrivate;
+   friend class CipherModel;
 
    //Properties
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
@@ -77,7 +80,6 @@ class LIB_EXPORT Account : public QObject {
 //    Q_PROPERTY(QString        tlsCaListFile                READ tlsCaListFile                 WRITE setTlsCaListFile               )
 //    Q_PROPERTY(QString        tlsCertificateFile           READ tlsCertificateFile            WRITE setTlsCertificateFile          )
 //    Q_PROPERTY(QString        tlsPrivateKeyFile            READ tlsPrivateKeyFile             WRITE setTlsPrivateKeyFile           )
-   Q_PROPERTY(QString        tlsCiphers                   READ tlsCiphers                    WRITE setTlsCiphers                  )
    Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
@@ -173,7 +175,6 @@ class LIB_EXPORT Account : public QObject {
          TlsCaListCertificate        = 108,
          TlsCertificate              = 109,
          TlsPrivateKeyCertificate    = 110,
-         TlsCiphers                  = 111,
          TlsServerName               = 112,
          SipStunServer               = 113,
          PublishedAddress            = 114,
@@ -330,6 +331,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE Video::CodecModel2*      videoCodecModel        () const;
       Q_INVOKABLE RingToneModel*           ringToneModel          () const;
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
+      Q_INVOKABLE CipherModel*             cipherModel            () const;
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
 
       //Getters
@@ -357,7 +359,6 @@ class LIB_EXPORT Account : public QObject {
       Certificate* tlsCaListCertificate    () const;
       Certificate* tlsCertificate          () const;
       Certificate* tlsPrivateKeyCertificate() const;
-      QString tlsCiphers                   () const;
       QString tlsServerName                () const;
       int     tlsNegotiationTimeoutSec     () const;
       int     tlsNegotiationTimeoutMsec    () const;
@@ -403,7 +404,6 @@ class LIB_EXPORT Account : public QObject {
       void setTlsCaListCertificate          (Certificate* cert      );
       void setTlsCertificate                (Certificate* cert      );
       void setTlsPrivateKeyCertificate      (Certificate* cert      );
-      void setTlsCiphers                    (const QString& detail  );
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );

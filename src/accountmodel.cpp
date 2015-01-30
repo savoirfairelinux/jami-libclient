@@ -116,7 +116,6 @@ void AccountModelPrivate::setupRoleName()
    roles.insert(Account::Role::TlsCaListCertificate     ,QByteArray("tlsCaListCertificate"          ));
    roles.insert(Account::Role::TlsCertificate           ,QByteArray("tlsCertificate"                ));
    roles.insert(Account::Role::TlsPrivateKeyCertificate ,QByteArray("tlsPrivateKeyCertificate"      ));
-   roles.insert(Account::Role::TlsCiphers               ,QByteArray("tlsCiphers"                    ));
    roles.insert(Account::Role::TlsServerName            ,QByteArray("tlsServerName"                 ));
    roles.insert(Account::Role::SipStunServer            ,QByteArray("sipStunServer"                 ));
    roles.insert(Account::Role::PublishedAddress         ,QByteArray("publishedAddress"              ));

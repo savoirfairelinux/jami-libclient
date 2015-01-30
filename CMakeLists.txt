@@ -120,6 +120,7 @@ SET( libringclient_LIB_SRCS
   src/video/device.cpp
   src/video/renderer.cpp
   src/video/codec.cpp
+  src/certificate.cpp
 
   #Models
   src/accountmodel.cpp
@@ -142,11 +143,11 @@ SET( libringclient_LIB_SRCS
   src/ringtonemodel.cpp
   src/lastusednumbermodel.cpp
   src/securityvalidationmodel.cpp
-  src/certificate.cpp
   src/contactmodel.cpp
   src/itembackendmodel.cpp
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
+  src/ciphermodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcesmodel.cpp
   src/video/codecmodel2.cpp
@@ -232,6 +233,7 @@ SET( libringclient_LIB_HDRS
   src/networkinterfacemodel.h
   src/vcardutils.h
   src/certificatemodel.h
+  src/ciphermodel.h
 )
 
 SET(libringclient_video_LIB_HDRS

@@ -36,6 +36,7 @@
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "credentialmodel.h"
+#include "ciphermodel.h"
 #include "audio/codecmodel.h"
 #include "video/codecmodel2.h"
 #include "ringtonemodel.h"
@@ -64,7 +65,7 @@ AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCreden
 m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pCaCert(nullptr),m_pTlsCert(nullptr),
-m_pPrivateKey(nullptr),m_isLoaded(true)
+m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr)
 {
    Q_Q(Account);
 }
@@ -349,6 +350,14 @@ KeyExchangeModel* Account::keyExchangeModel() const
    return d_ptr->m_pKeyExchangeModel;
 }
 
+CipherModel* Account::cipherModel() const
+{
+   if (!d_ptr->m_pCipherModel) {
+      d_ptr->m_pCipherModel = new CipherModel(const_cast<Account*>(this));
+   }
+   return d_ptr->m_pCipherModel;
+}
+
 SecurityValidationModel* Account::securityValidationModel() const
 {
    if (!d_ptr->m_pSecurityValidationModel) {
@@ -535,12 +544,6 @@ Certificate* Account::tlsPrivateKeyCertificate() const
       connect(d_ptr->m_pPrivateKey,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pPrivateKey;
-}
-
-///Return the account cipher
-QString Account::tlsCiphers() const
-{
-   return d_ptr->accountDetail(Account::MapField::TLS::CIPHERS);
 }
 
 ///Return the account TLS server name
@@ -757,8 +760,6 @@ QVariant Account::roleData(int role) const
          return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
       case Account::Role::TlsPrivateKeyCertificate:
          return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
-      case Account::Role::TlsCiphers:
-         return tlsCiphers();
       case Account::Role::TlsServerName:
          return tlsServerName();
       case Account::Role::SipStunServer:
@@ -961,12 +962,6 @@ void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert; //FIXME memory leak
    d_ptr->setAccountProperty(Account::MapField::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
-}
-
-///Set the TLS cipher
-void Account::setTlsCiphers(const QString& detail)
-{
-   d_ptr->setAccountProperty(Account::MapField::TLS::CIPHERS, detail);
 }
 
 ///Set the TLS server
@@ -1268,9 +1263,6 @@ void Account::setRoleData(int role, const QVariant& value)
          if ((tlsPrivateKeyCertificate() && tlsPrivateKeyCertificate()->path() != QUrl(path)) || !tlsPrivateKeyCertificate())
             tlsPrivateKeyCertificate()->setPath(path);
       }
-         break;
-      case Account::Role::TlsCiphers:
-         setTlsCiphers(value.toString());
          break;
       case Account::Role::TlsServerName:
          setTlsServerName(value.toString());

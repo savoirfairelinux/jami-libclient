@@ -24,6 +24,7 @@
 
 class AccountPrivate;
 class PhoneNumber;
+class CipherModel;
 
 typedef void (AccountPrivate::*account_function)();
 
@@ -42,6 +43,8 @@ public:
    friend class AccountPlaceHolder;
    friend class AccountModel;
    friend class AccountModelPrivate;
+   friend class CipherModelPrivate;
+   friend class CipherModel;
 
    //Constructor
    AccountPrivate(Account* acc);
@@ -87,6 +90,7 @@ public:
    Video::CodecModel2*       m_pVideoCodecs     ;
    RingToneModel*            m_pRingToneModel   ;
    KeyExchangeModel*         m_pKeyExchangeModel;
+   CipherModel*              m_pCipherModel     ;
    SecurityValidationModel*  m_pSecurityValidationModel;
    Account::EditState m_CurrentState;
 
