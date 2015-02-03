@@ -25,6 +25,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+//Ring daemon
+#include <account_const.h>
+
 //Ring lib
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -37,6 +40,7 @@
 #include "private/accountmodel_p.h"
 #include "credentialmodel.h"
 #include "ciphermodel.h"
+#include "accountstatusmodel.h"
 #include "audio/codecmodel.h"
 #include "video/codecmodel2.h"
 #include "ringtonemodel.h"
@@ -65,7 +69,7 @@ AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCreden
 m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pCaCert(nullptr),m_pTlsCert(nullptr),
-m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr)
+m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),m_pStatusModel(nullptr),m_LastTransportCode(0)
 {
    Q_Q(Account);
 }
@@ -106,7 +110,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    Account* a = new Account();
    a->d_ptr->m_hAccountDetails.clear();
-   a->d_ptr->m_hAccountDetails[Account::MapField::ENABLED] = "false";
+   a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ENABLED] = "false";
    a->d_ptr->m_pAccountNumber = const_cast<PhoneNumber*>(PhoneNumber::BLANK());
    MapStringString tmp = configurationManager.getAccountTemplate();
    QMutableMapIterator<QString, QString> iter(tmp);
@@ -114,8 +118,8 @@ Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
       iter.next();
       a->d_ptr->m_hAccountDetails[iter.key()] = iter.value();
    }
-   a->setHostname(a->d_ptr->m_hAccountDetails[Account::MapField::HOSTNAME]);
-   a->d_ptr->setAccountProperty(Account::MapField::ALIAS,alias);
+   a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+   a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
    a->setObjectName(a->id());
    return a;
 }
@@ -152,16 +156,16 @@ void AccountPrivate::slotUpdateCertificate()
    if (cert) {
       switch (cert->type()) {
          case Certificate::Type::AUTHORITY:
-            if (accountDetail(Account::MapField::TLS::CA_LIST_FILE) != cert->path().toString())
-               setAccountProperty(Account::MapField::TLS::CA_LIST_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE) != cert->path().toString())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert->path().toString());
             break;
          case Certificate::Type::USER:
-            if (accountDetail(Account::MapField::TLS::CERTIFICATE_FILE) != cert->path().toString())
-               setAccountProperty(Account::MapField::TLS::CERTIFICATE_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE) != cert->path().toString())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert->path().toString());
             break;
          case Certificate::Type::PRIVATE_KEY:
-            if (accountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE) != cert->path().toString())
-               setAccountProperty(Account::MapField::TLS::PRIVATE_KEY_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE) != cert->path().toString())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path().toString());
             break;
          case Certificate::Type::NONE:
             break;
@@ -198,7 +202,7 @@ const QByteArray Account::id() const
 ///Get current state
 const QString Account::toHumanStateName() const
 {
-   const QString s = d_ptr->m_hAccountDetails[Account::MapField::Registration::STATUS];
+   const QString s = d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::Registration::STATUS];
 
    static const QString registered             = tr("Registered"               );
    static const QString notRegistered          = tr("Not Registered"           );
@@ -252,9 +256,9 @@ const QString AccountPrivate::accountDetail(const QString& param) const
       return m_hAccountDetails[param];
    }
    else if (m_hAccountDetails.count() > 0) {
-      if (param == Account::MapField::ENABLED) //If an account is invalid, at least does not try to register it
+      if (param == DRing::Account::ConfProperties::ENABLED) //If an account is invalid, at least does not try to register it
          return AccountPrivate::RegistrationEnabled::NO;
-      if (param == Account::MapField::Registration::STATUS) //If an account is new, then it is unregistered
+      if (param == DRing::Account::ConfProperties::Registration::STATUS) //If an account is new, then it is unregistered
          return Account::State::UNREGISTERED;
       if (q_ptr->protocol() != Account::Protocol::IAX) //IAX accounts lack some fields, be quiet
          qDebug() << "Account parameter \"" << param << "\" not found";
@@ -269,13 +273,13 @@ const QString AccountPrivate::accountDetail(const QString& param) const
 ///Get the alias
 const QString Account::alias() const
 {
-   return d_ptr->accountDetail(Account::MapField::ALIAS);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ALIAS);
 }
 
 ///Is this account registered
 bool Account::isRegistered() const
 {
-   return (d_ptr->accountDetail(Account::MapField::Registration::STATUS) == Account::State::REGISTERED);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS) == Account::State::REGISTERED);
 }
 
 ///Return the model index of this item
@@ -358,6 +362,14 @@ CipherModel* Account::cipherModel() const
    return d_ptr->m_pCipherModel;
 }
 
+AccountStatusModel* Account::statusModel() const
+{
+   if (!d_ptr->m_pStatusModel) {
+      d_ptr->m_pStatusModel = new AccountStatusModel(const_cast<Account*>(this));
+   }
+   return d_ptr->m_pStatusModel;
+}
+
 SecurityValidationModel* Account::securityValidationModel() const
 {
    if (!d_ptr->m_pSecurityValidationModel) {
@@ -369,7 +381,7 @@ SecurityValidationModel* Account::securityValidationModel() const
 void Account::setAlias(const QString& detail)
 {
    const bool accChanged = detail != alias();
-   d_ptr->setAccountProperty(Account::MapField::ALIAS,detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,detail);
    if (accChanged)
       emit aliasChanged(detail);
 }
@@ -383,31 +395,31 @@ QString Account::hostname() const
 ///Return if the account is enabled
 bool Account::isEnabled() const
 {
-   return d_ptr->accountDetail(Account::MapField::ENABLED) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ENABLED) IS_TRUE;
 }
 
 ///Return if the account should auto answer
 bool Account::isAutoAnswer() const
 {
-   return d_ptr->accountDetail(Account::MapField::AUTOANSWER) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::AUTOANSWER) IS_TRUE;
 }
 
 ///Return the account user name
 QString Account::username() const
 {
-   return d_ptr->accountDetail(Account::MapField::USERNAME);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::USERNAME);
 }
 
 ///Return the account mailbox address
 QString Account::mailbox() const
 {
-   return d_ptr->accountDetail(Account::MapField::MAILBOX);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::MAILBOX);
 }
 
 ///Return the account mailbox address
 QString Account::proxy() const
 {
-   return d_ptr->accountDetail(Account::MapField::ROUTE);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ROUTE);
 }
 
 
@@ -418,7 +430,7 @@ QString Account::password() const
          if (credentialsModel()->rowCount())
             return credentialsModel()->data(credentialsModel()->index(0,0),CredentialModel::Role::PASSWORD).toString();
       case Account::Protocol::IAX:
-         return d_ptr->accountDetail(Account::MapField::PASSWORD);
+         return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
    };
    return "";
 }
@@ -426,92 +438,92 @@ QString Account::password() const
 ///
 bool Account::isDisplaySasOnce() const
 {
-   return d_ptr->accountDetail(Account::MapField::ZRTP::DISPLAY_SAS_ONCE) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS_ONCE) IS_TRUE;
 }
 
 ///Return the account security fallback
 bool Account::isSrtpRtpFallback() const
 {
-   return d_ptr->accountDetail(Account::MapField::SRTP::RTP_FALLBACK) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::SRTP::RTP_FALLBACK) IS_TRUE;
 }
 
 //Return if SRTP is enabled or not
 bool Account::isSrtpEnabled() const
 {
-   return d_ptr->accountDetail(Account::MapField::SRTP::ENABLED) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::SRTP::ENABLED) IS_TRUE;
 }
 
 ///
 bool Account::isZrtpDisplaySas         () const
 {
-   return d_ptr->accountDetail(Account::MapField::ZRTP::DISPLAY_SAS) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS) IS_TRUE;
 }
 
 ///Return if the other side support warning
 bool Account::isZrtpNotSuppWarning() const
 {
-   return d_ptr->accountDetail(Account::MapField::ZRTP::NOT_SUPP_WARNING) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::NOT_SUPP_WARNING) IS_TRUE;
 }
 
 ///
 bool Account::isZrtpHelloHash() const
 {
-   return d_ptr->accountDetail(Account::MapField::ZRTP::HELLO_HASH) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::HELLO_HASH) IS_TRUE;
 }
 
 ///Return if the account is using a STUN server
 bool Account::isSipStunEnabled() const
 {
-   return d_ptr->accountDetail(Account::MapField::STUN::ENABLED) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::STUN::ENABLED) IS_TRUE;
 }
 
 ///Return the account STUN server
 QString Account::sipStunServer() const
 {
-   return d_ptr->accountDetail(Account::MapField::STUN::SERVER);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::STUN::SERVER);
 }
 
 ///Return when the account expire (require renewal)
 int Account::registrationExpire() const
 {
-   return d_ptr->accountDetail(Account::MapField::Registration::EXPIRE).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::EXPIRE).toInt();
 }
 
 ///Return if the published address is the same as the local one
 bool Account::isPublishedSameAsLocal() const
 {
-   return d_ptr->accountDetail(Account::MapField::PUBLISHED_SAMEAS_LOCAL) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::PUBLISHED_SAMEAS_LOCAL) IS_TRUE;
 }
 
 ///Return the account published address
 QString Account::publishedAddress() const
 {
-   return d_ptr->accountDetail(Account::MapField::PUBLISHED_ADDRESS);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::PUBLISHED_ADDRESS);
 }
 
 ///Return the account published port
 int Account::publishedPort() const
 {
-   return d_ptr->accountDetail(Account::MapField::PUBLISHED_PORT).toUInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::PUBLISHED_PORT).toUInt();
 }
 
 ///Return the account tls password
 QString Account::tlsPassword() const
 {
-   return d_ptr->accountDetail(Account::MapField::TLS::PASSWORD);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PASSWORD);
 }
 
 ///Return the account TLS port
 int Account::tlsListenerPort() const
 {
-   return d_ptr->accountDetail(Account::MapField::TLS::LISTENER_PORT).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
 }
 
 ///Return the account TLS certificate authority list file
 Certificate* Account::tlsCaListCertificate() const
 {
    if (!d_ptr->m_pCaCert) {
-      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::CA_LIST_FILE);
+      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
       if (path.isEmpty())
          return nullptr;
       d_ptr->m_pCaCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::AUTHORITY);
@@ -524,7 +536,7 @@ Certificate* Account::tlsCaListCertificate() const
 Certificate* Account::tlsCertificate() const
 {
    if (!d_ptr->m_pTlsCert) {
-      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::CERTIFICATE_FILE);
+      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
       if (path.isEmpty())
          return nullptr;
       d_ptr->m_pTlsCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::USER);
@@ -537,7 +549,7 @@ Certificate* Account::tlsCertificate() const
 Certificate* Account::tlsPrivateKeyCertificate() const
 {
    if (!d_ptr->m_pPrivateKey) {
-      const QString& path = d_ptr->accountDetail(Account::MapField::TLS::PRIVATE_KEY_FILE);
+      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE);
       if (path.isEmpty())
          return nullptr;
       d_ptr->m_pPrivateKey = CertificateModel::instance()->getCertificate(path,Certificate::Type::PRIVATE_KEY);
@@ -549,68 +561,62 @@ Certificate* Account::tlsPrivateKeyCertificate() const
 ///Return the account TLS server name
 QString Account::tlsServerName() const
 {
-   return d_ptr->accountDetail(Account::MapField::TLS::SERVER_NAME);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::SERVER_NAME);
 }
 
 ///Return the account negotiation timeout in seconds
 int Account::tlsNegotiationTimeoutSec() const
 {
-   return d_ptr->accountDetail(Account::MapField::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
-}
-
-///Return the account negotiation timeout in milliseconds
-int Account::tlsNegotiationTimeoutMsec() const
-{
-   return d_ptr->accountDetail(Account::MapField::TLS::NEGOTIATION_TIMEOUT_MSEC).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
 }
 
 ///Return the account TLS verify server
 bool Account::isTlsVerifyServer() const
 {
-   return (d_ptr->accountDetail(Account::MapField::TLS::VERIFY_SERVER) IS_TRUE);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_SERVER) IS_TRUE);
 }
 
 ///Return the account TLS verify client
 bool Account::isTlsVerifyClient() const
 {
-   return (d_ptr->accountDetail(Account::MapField::TLS::VERIFY_CLIENT) IS_TRUE);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT) IS_TRUE);
 }
 
 ///Return if it is required for the peer to have a certificate
 bool Account::isTlsRequireClientCertificate() const
 {
-   return (d_ptr->accountDetail(Account::MapField::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
 }
 
 ///Return the account TLS security is enabled
 bool Account::isTlsEnabled() const
 {
-   return (d_ptr->accountDetail(Account::MapField::TLS::ENABLED) IS_TRUE);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
 }
 
 ///Return the account the TLS encryption method
 TlsMethodModel::Type Account::tlsMethod() const
 {
-   const QString value = d_ptr->accountDetail(Account::MapField::TLS::METHOD);
+   const QString value = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
    return TlsMethodModel::fromDaemonName(value);
 }
 
 ///Return the key exchange mechanism
 KeyExchangeModel::Type Account::keyExchange() const
 {
-   return KeyExchangeModel::fromDaemonName(d_ptr->accountDetail(Account::MapField::SRTP::KEY_EXCHANGE));
+   return KeyExchangeModel::fromDaemonName(d_ptr->accountDetail(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE));
 }
 
 ///Return if the ringtone are enabled
 bool Account::isRingtoneEnabled() const
 {
-   return (d_ptr->accountDetail(Account::MapField::Ringtone::ENABLED) IS_TRUE);
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
 }
 
 ///Return the account ringtone path
 QString Account::ringtonePath() const
 {
-   return d_ptr->accountDetail(Account::MapField::Ringtone::PATH);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
 }
 
 ///Return the last error message received
@@ -625,10 +631,22 @@ int Account::lastErrorCode() const
    return d_ptr->m_LastErrorCode;
 }
 
+///Get the last transport error code, this is used to debug why registration failed
+int Account::lastTransportErrorCode() const
+{
+   return d_ptr->m_LastTransportCode;
+}
+
+///Get the last transport error message, this is used to debug why registration failed
+QString Account::lastTransportErrorMessage() const
+{
+   return d_ptr->m_LastTransportMessage;
+}
+
 ///Return the account local port
 int Account::localPort() const
 {
-   return d_ptr->accountDetail(Account::MapField::LOCAL_PORT).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_PORT).toInt();
 }
 
 ///Return the number of voicemails
@@ -640,19 +658,19 @@ int Account::voiceMailCount() const
 ///Return the account local interface
 QString Account::localInterface() const
 {
-   return d_ptr->accountDetail(Account::MapField::LOCAL_INTERFACE);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_INTERFACE);
 }
 
 ///Return the account registration status
 QString Account::registrationStatus() const
 {
-   return d_ptr->accountDetail(Account::MapField::Registration::STATUS);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS);
 }
 
 ///Return the account type
 Account::Protocol Account::protocol() const
 {
-   const QString str = d_ptr->accountDetail(Account::MapField::TYPE);
+   const QString str = d_ptr->accountDetail(DRing::Account::ConfProperties::TYPE);
    if (str.isEmpty() || str == Account::ProtocolName::SIP)
       return Account::Protocol::SIP;
    else if (str == Account::ProtocolName::IAX)
@@ -664,7 +682,7 @@ Account::Protocol Account::protocol() const
 ///Return the DTMF type
 DtmfType Account::DTMFType() const
 {
-   QString type = d_ptr->accountDetail(Account::MapField::DTMF_TYPE);
+   QString type = d_ptr->accountDetail(DRing::Account::ConfProperties::DTMF_TYPE);
    return (type == "overrtp" || type.isEmpty())? DtmfType::OverRtp:DtmfType::OverSip;
 }
 
@@ -680,47 +698,47 @@ QString Account::presenceMessage() const
 
 bool Account::supportPresencePublish() const
 {
-   return d_ptr->accountDetail(Account::MapField::Presence::SUPPORT_PUBLISH) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::SUPPORT_PUBLISH) IS_TRUE;
 }
 
 bool Account::supportPresenceSubscribe() const
 {
-   return d_ptr->accountDetail(Account::MapField::Presence::SUPPORT_SUBSCRIBE) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::SUPPORT_SUBSCRIBE) IS_TRUE;
 }
 
 bool Account::presenceEnabled() const
 {
-   return d_ptr->accountDetail(Account::MapField::Presence::ENABLED) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::ENABLED) IS_TRUE;
 }
 
 bool Account::isVideoEnabled() const
 {
-   return d_ptr->accountDetail(Account::MapField::Video::ENABLED) IS_TRUE;
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
 }
 
 int Account::videoPortMax() const
 {
-   return d_ptr->accountDetail(Account::MapField::Video::PORT_MAX).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
 }
 
 int Account::videoPortMin() const
 {
-   return d_ptr->accountDetail(Account::MapField::Video::PORT_MIN).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
 }
 
 int Account::audioPortMin() const
 {
-   return d_ptr->accountDetail(Account::MapField::Audio::PORT_MIN).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
 }
 
 int Account::audioPortMax() const
 {
-   return d_ptr->accountDetail(Account::MapField::Audio::PORT_MAX).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 }
 
 QString Account::userAgent() const
 {
-   return d_ptr->accountDetail(Account::MapField::USER_AGENT);
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::USER_AGENT);
 }
 
 QVariant Account::roleData(int role) const
@@ -776,8 +794,6 @@ QVariant Account::roleData(int role) const
          return registrationExpire();
       case Account::Role::TlsNegotiationTimeoutSec:
          return tlsNegotiationTimeoutSec();
-      case Account::Role::TlsNegotiationTimeoutMsec:
-         return tlsNegotiationTimeoutMsec();
       case Account::Role::LocalPort:
          return localPort();
       case Account::Role::TlsListenerPort:
@@ -844,7 +860,7 @@ void AccountPrivate::setAccountProperties(const QHash<QString,QString>& m)
 {
    m_hAccountDetails.clear();
    m_hAccountDetails = m;
-   m_HostName = m[Account::MapField::HOSTNAME];
+   m_HostName = m[DRing::Account::ConfProperties::HOSTNAME];
 }
 
 ///Set a specific detail
@@ -852,7 +868,7 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
 {
    const bool accChanged = m_hAccountDetails[param] != val;
    const QString buf = m_hAccountDetails[param];
-   if (param == Account::MapField::Registration::STATUS) {
+   if (param == DRing::Account::ConfProperties::Registration::STATUS) {
       m_hAccountDetails[param] = val;
       if (accChanged) {
          emit q_ptr->propertyChanged(q_ptr,param,val,buf);
@@ -884,10 +900,10 @@ void Account::setProtocol(Account::Protocol proto)
 {
    switch (proto) {
       case Account::Protocol::SIP:
-         d_ptr->setAccountProperty(Account::MapField::TYPE ,Account::ProtocolName::SIP);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::SIP);
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(Account::MapField::TYPE ,Account::ProtocolName::IAX);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::IAX);
          break;
    };
 }
@@ -897,26 +913,26 @@ void Account::setHostname(const QString& detail)
 {
    if (d_ptr->m_HostName != detail) {
       d_ptr->m_HostName = detail;
-      d_ptr->setAccountProperty(Account::MapField::HOSTNAME, detail);
+      d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME, detail);
    }
 }
 
 ///Set the account username, everything is valid, some might be rejected by the PBX server
 void Account::setUsername(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::USERNAME, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::USERNAME, detail);
 }
 
 ///Set the account mailbox, usually a number, but can be anything
 void Account::setMailbox(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::MAILBOX, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::MAILBOX, detail);
 }
 
 ///Set the account mailbox, usually a number, but can be anything
 void Account::setProxy(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ROUTE, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ROUTE, detail);
 }
 
 ///Set the main credential password
@@ -932,7 +948,7 @@ void Account::setPassword(const QString& detail)
          }
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(Account::MapField::PASSWORD, detail);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::PASSWORD, detail);
          break;
    };
 }
@@ -940,58 +956,58 @@ void Account::setPassword(const QString& detail)
 ///Set the TLS (encryption) password
 void Account::setTlsPassword(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::PASSWORD, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
 }
 
 ///Set the certificate authority list file
 void Account::setTlsCaListCertificate(Certificate* cert)
 {
    d_ptr->m_pCaCert = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(Account::MapField::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the certificate
 void Account::setTlsCertificate(Certificate* cert)
 {
    d_ptr->m_pTlsCert = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(Account::MapField::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the private key
 void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(Account::MapField::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
 }
 
 ///Set the TLS server
 void Account::setTlsServerName(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::SERVER_NAME, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
 }
 
 ///Set the stun server
 void Account::setSipStunServer(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::STUN::SERVER, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::STUN::SERVER, detail);
 }
 
 ///Set the published address
 void Account::setPublishedAddress(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_ADDRESS, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_ADDRESS, detail);
 }
 
 ///Set the local interface
 void Account::setLocalInterface(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::LOCAL_INTERFACE, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_INTERFACE, detail);
 }
 
 ///Set the ringtone path, it have to be a valid absolute path
 void Account::setRingtonePath(const QString& detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::Ringtone::PATH, detail);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::PATH, detail);
 }
 
 ///Set the number of voice mails
@@ -1015,120 +1031,114 @@ void Account::setLastErrorCode(int code)
 ///Set the Tls method
 void Account::setTlsMethod(TlsMethodModel::Type detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::METHOD ,TlsMethodModel::toDaemonName(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD ,TlsMethodModel::toDaemonName(detail));
 }
 
 ///Set the Tls method
 void Account::setKeyExchange(KeyExchangeModel::Type detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::SRTP::KEY_EXCHANGE ,KeyExchangeModel::toDaemonName(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE ,KeyExchangeModel::toDaemonName(detail));
 }
 
 ///Set the account timeout, it will be renegotiated when that timeout occur
 void Account::setRegistrationExpire(int detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::Registration::EXPIRE, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Registration::EXPIRE, QString::number(detail));
 }
 
 ///Set TLS negotiation timeout in second
 void Account::setTlsNegotiationTimeoutSec(int detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
-}
-
-///Set the TLS negotiation timeout in milliseconds
-void Account::setTlsNegotiationTimeoutMsec(int detail)
-{
-   d_ptr->setAccountProperty(Account::MapField::TLS::NEGOTIATION_TIMEOUT_MSEC, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
 }
 
 ///Set the local port for SIP/IAX communications
 void Account::setLocalPort(unsigned short detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::LOCAL_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
 }
 
 ///Set the TLS listener port (0-2^16)
 void Account::setTlsListenerPort(unsigned short detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::LISTENER_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
 void Account::setPublishedPort(unsigned short detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_PORT, QString::number(detail));
 }
 
 ///Set if the account is enabled or not
 void Account::setEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ENABLED, (detail)TO_BOOL);
 }
 
 ///Set if the account should auto answer
 void Account::setAutoAnswer(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::AUTOANSWER, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::AUTOANSWER, (detail)TO_BOOL);
 }
 
 ///Set the TLS verification server
 void Account::setTlsVerifyServer(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::VERIFY_SERVER, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
 }
 
 ///Set the TLS verification client
 void Account::setTlsVerifyClient(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
 }
 
 ///Set if the peer need to be providing a certificate
 void Account::setTlsRequireClientCertificate(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
 }
 
 ///Set if the security settings are enabled
 void Account::setTlsEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::TLS::ENABLED ,(detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
 }
 
 void Account::setDisplaySasOnce(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
 }
 
 void Account::setSrtpRtpFallback(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
 }
 
 void Account::setSrtpEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::SRTP::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::ENABLED, (detail)TO_BOOL);
 }
 
 void Account::setZrtpDisplaySas(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
 }
 
 void Account::setZrtpNotSuppWarning(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
 }
 
 void Account::setZrtpHelloHash(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::ZRTP::HELLO_HASH, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::HELLO_HASH, (detail)TO_BOOL);
 }
 
 void Account::setSipStunEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::STUN::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::STUN::ENABLED, (detail)TO_BOOL);
 }
 
 /**
@@ -1138,13 +1148,13 @@ void Account::setSipStunEnabled(bool detail)
  */
 void Account::setPublishedSameAsLocal(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::PUBLISHED_SAMEAS_LOCAL, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_SAMEAS_LOCAL, (detail)TO_BOOL);
 }
 
 ///Set if custom ringtone are enabled
 void Account::setRingtoneEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(Account::MapField::Ringtone::ENABLED, (detail)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::ENABLED, (detail)TO_BOOL);
 }
 
 /**
@@ -1155,14 +1165,14 @@ void Account::setRingtoneEnabled(bool detail)
  */
 void Account::setPresenceEnabled(bool enable)
 {
-   d_ptr->setAccountProperty(Account::MapField::Presence::ENABLED, (enable)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Presence::ENABLED, (enable)TO_BOOL);
    emit presenceEnabledChanged(enable);
 }
 
 ///Use video by default when available
 void Account::setVideoEnabled(bool enable)
 {
-   d_ptr->setAccountProperty(Account::MapField::Video::ENABLED, (enable)TO_BOOL);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::ENABLED, (enable)TO_BOOL);
 }
 
 /**Set the maximum audio port
@@ -1171,7 +1181,7 @@ void Account::setVideoEnabled(bool enable)
  */
 void Account::setAudioPortMax(int port )
 {
-   d_ptr->setAccountProperty(Account::MapField::Audio::PORT_MAX, QString::number(port));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MAX, QString::number(port));
 }
 
 /**Set the minimum audio port
@@ -1180,7 +1190,7 @@ void Account::setAudioPortMax(int port )
  */
 void Account::setAudioPortMin(int port )
 {
-   d_ptr->setAccountProperty(Account::MapField::Audio::PORT_MIN, QString::number(port));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MIN, QString::number(port));
 }
 
 /**Set the maximum video port
@@ -1189,7 +1199,7 @@ void Account::setAudioPortMin(int port )
  */
 void Account::setVideoPortMax(int port )
 {
-   d_ptr->setAccountProperty(Account::MapField::Video::PORT_MAX, QString::number(port));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MAX, QString::number(port));
 }
 
 /**Set the minimum video port
@@ -1198,7 +1208,7 @@ void Account::setVideoPortMax(int port )
  */
 void Account::setVideoPortMin(int port )
 {
-   d_ptr->setAccountProperty(Account::MapField::Video::PORT_MIN, QString::number(port));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MIN, QString::number(port));
 }
 
 ///TODO implement the "use default" logic correctly
@@ -1207,13 +1217,13 @@ void Account::setVideoPortMin(int port )
  */
 void Account::setUserAgent(const QString& agent)
 {
-   d_ptr->setAccountProperty(Account::MapField::USER_AGENT, agent);
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::USER_AGENT, agent);
 }
 
 ///Set the DTMF type
 void Account::setDTMFType(DtmfType type)
 {
-   d_ptr->setAccountProperty(Account::MapField::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
 }
 
 ///Proxy for AccountModel::setData
@@ -1294,9 +1304,6 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case Account::Role::TlsNegotiationTimeoutSec:
          setTlsNegotiationTimeoutSec(value.toInt());
-         break;
-      case Account::Role::TlsNegotiationTimeoutMsec:
-         setTlsNegotiationTimeoutMsec(value.toInt());
          break;
       case Account::Role::LocalPort:
          setLocalPort(value.toInt());
@@ -1392,9 +1399,9 @@ bool AccountPrivate::updateState()
    if(! q_ptr->isNew()) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
       const MapStringString details       = configurationManager.getAccountDetails(q_ptr->id());
-      const QString         status        = details[Account::MapField::Registration::STATUS];
+      const QString         status        = details[DRing::Account::ConfProperties::Registration::STATUS];
       const QString         currentStatus = q_ptr->registrationStatus();
-      setAccountProperty(Account::MapField::Registration::STATUS, status); //Update -internal- object state
+      setAccountProperty(DRing::Account::ConfProperties::Registration::STATUS, status); //Update -internal- object state
       return status == currentStatus;
    }
    return true;
@@ -1481,7 +1488,7 @@ void AccountPrivate::reload()
             iter.next();
             m_hAccountDetails[iter.key()] = iter.value();
          }
-         q_ptr->setHostname(m_hAccountDetails[Account::MapField::HOSTNAME]);
+         q_ptr->setHostname(m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
       }
       m_CurrentState = Account::EditState::READY;
 
@@ -1501,6 +1508,8 @@ void AccountPrivate::reload()
       if (m_pCredentials)
          q_ptr->reloadCredentials();
       emit q_ptr->changed(q_ptr);
+
+      AccountModel::instance()->d_ptr->slotVolatileAccountDetailsChange(q_ptr->id(),configurationManager.getVolatileAccountDetails(q_ptr->id()));
    }
 }
 
@@ -1542,9 +1551,9 @@ void Account::reloadCredentials()
       VectorMapStringString credentials = configurationManager.getCredentials(id());
       for (int i=0; i < credentials.size(); i++) {
          QModelIndex idx = d_ptr->m_pCredentials->addCredentials();
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ Account::MapField::USERNAME ],CredentialModel::Role::NAME    );
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ Account::MapField::PASSWORD ],CredentialModel::Role::PASSWORD);
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ Account::MapField::REALM    ],CredentialModel::Role::REALM   );
+         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
+         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
+         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
       }
    }
 }
@@ -1567,9 +1576,9 @@ void Account::saveCredentials() {
             realm = '*';
             d_ptr->m_pCredentials->setData(idx,realm,CredentialModel::Role::REALM);
          }
-         credentialData[ Account::MapField::USERNAME ] = user;
-         credentialData[ Account::MapField::PASSWORD ] = d_ptr->m_pCredentials->data(idx,CredentialModel::Role::PASSWORD).toString();
-         credentialData[ Account::MapField::REALM    ] = realm;
+         credentialData[ DRing::Account::ConfProperties::USERNAME ] = user;
+         credentialData[ DRing::Account::ConfProperties::PASSWORD ] = d_ptr->m_pCredentials->data(idx,CredentialModel::Role::PASSWORD).toString();
+         credentialData[ DRing::Account::ConfProperties::REALM    ] = realm;
          toReturn << credentialData;
       }
       configurationManager.setCredentials(id(),toReturn);

@@ -20,6 +20,9 @@
 //Qt
 #include <QtCore/QCoreApplication>
 
+//Ring daemon
+#include <account_const.h>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "account.h"
@@ -55,7 +58,7 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent)
 
    m_lChecked = new bool[m_slSupportedCiphers.size()]{};
 
-   foreach(const QString& cipher, parent->d_ptr->accountDetail(Account::MapField::TLS::CIPHERS).split(' ')) {
+   foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
       m_lChecked[m_shMapping[cipher]] = true;
    }
 }
@@ -114,7 +117,7 @@ bool CipherModel::setData( const QModelIndex& index, const QVariant &value, int 
          if (d_ptr->m_lChecked[i])
             ciphers << d_ptr->m_slSupportedCiphers[i];
       }
-      d_ptr->m_pAccount->d_ptr->setAccountProperty(Account::MapField::TLS::CIPHERS,ciphers.join(QString(' ')));
+      d_ptr->m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CIPHERS,ciphers.join(QString(' ')));
       return true;
    }
    return false;

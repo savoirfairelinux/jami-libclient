@@ -23,10 +23,15 @@
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
 
+//Ring daemon
+#include <account_const.h>
+
 //Ring library
+#include "account.h"
 #include "profilemodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
+#include "accountstatusmodel.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
@@ -89,6 +94,8 @@ void AccountModelPrivate::init()
       SLOT(updateAccounts())                  );
    connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
       SLOT(slotVoiceMailNotify(QString,int))  );
+   connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
+      SLOT(slotVolatileAccountDetailsChange(QString,int)));
 
 }
 
@@ -183,16 +190,18 @@ void AccountModel::destroy()
 }
 
 ///Account status changed
-void AccountModelPrivate::slotAccountChanged(const QString& account,const QString& state, int code)
+void AccountModelPrivate::slotAccountChanged(const QString& account,const QString& status, int code)
 {
    Account* a = q_ptr->getById(account.toAscii());
 
-   if (!a || (a && a->registrationStatus() != state )) {
-      if (state != "OK") //Do not pollute the log
-         qDebug() << "Account" << account << "status changed to" << state;
+   if (!a || (a && a->registrationStatus() != status )) {
+      if (status != "OK") //Do not pollute the log
+         qDebug() << "Account" << account << "status changed to" << status;
    }
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+   //The account may have been deleted by the user, but 'apply' have not been pressed
    if (!a) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
       const QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
          if ((!q_ptr->getById(accountIds[i].toAscii())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
@@ -220,15 +229,23 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
       const QModelIndex idx = a->index();
       emit q_ptr->dataChanged(idx, idx);
       const bool regStateChanged = isRegistered != a->isRegistered();
+
+      //Handle some important events directly
       if (regStateChanged && (code == 502 || code == 503)) {
          emit q_ptr->badGateway();
       }
       else if (regStateChanged)
          emit q_ptr->registrationChanged(a,a->isRegistered());
 
+      //Send the messages to AccountStatusModel for processing
+      a->statusModel()->addSipRegistrationEvent(status,code);
+
       //Keep the error message
-      a->setLastErrorMessage(state);
+      a->setLastErrorMessage(status);
       a->setLastErrorCode(code);
+
+      //Make sure volatile details get reloaded
+      slotVolatileAccountDetailsChange(account,configurationManager.getVolatileAccountDetails(account));
 
       emit q_ptr->accountStateChanged(a,a->toHumanStateName());
    }
@@ -267,6 +284,21 @@ void AccountModelPrivate::slotAccountPresenceEnabledChanged(bool state)
 {
    Q_UNUSED(state)
    emit q_ptr->presenceEnabledChanged(q_ptr->isPresenceEnabled());
+}
+
+///Emited when some runtime details changes
+void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details)
+{
+   Account* a = q_ptr->getById(accountId.toAscii());
+   if (a) {
+      const int     transportCode = details[DRing::Account::VolatileProperties::Transport::STATE_CODE].toInt();
+      const QString transportDesc = details[DRing::Account::VolatileProperties::Transport::STATE_DESC];
+
+      a->statusModel()->addTransportEvent(transportDesc,transportCode);
+
+      a->d_ptr->m_LastTransportCode    = transportCode;
+      a->d_ptr->m_LastTransportMessage = transportDesc;
+   }
 }
 
 ///Update accounts

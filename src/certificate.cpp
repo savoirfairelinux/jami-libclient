@@ -20,10 +20,12 @@
 //Qt
 #include <QtCore/QFile>
 
+//Ring daemon
+#include <security_const.h>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include <certificatemodel.h>
-#include <security.h>
 
 class DetailsCache {
 public:

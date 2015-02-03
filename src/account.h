@@ -31,12 +31,13 @@ class QString;
 #include "keyexchangemodel.h"
 #include "tlsmethodmodel.h"
 #include "typedefs.h"
-class CredentialModel;
-class RingToneModel  ;
-class PhoneNumber    ;
+class CredentialModel        ;
+class RingToneModel          ;
+class PhoneNumber            ;
 class SecurityValidationModel;
-class Certificate    ;
-class CipherModel    ;
+class Certificate            ;
+class CipherModel            ;
+class AccountStatusModel     ;
 
 namespace Audio {
    class CodecModel;
@@ -68,6 +69,8 @@ class LIB_EXPORT Account : public QObject {
    friend class AccountPlaceHolder;
    friend class CipherModelPrivate;
    friend class CipherModel;
+   friend class AccountStatusModelPrivate;
+   friend class AccountStatusModel;
 
    //Properties
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
@@ -91,7 +94,6 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(int            lastErrorCode                READ lastErrorCode                 WRITE setLastErrorCode               )
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
    Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
-   Q_PROPERTY(int            tlsNegotiationTimeoutMsec    READ tlsNegotiationTimeoutMsec     WRITE setTlsNegotiationTimeoutMsec   )
    Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
    Q_PROPERTY(int            tlsListenerPort              READ tlsListenerPort               WRITE setTlsListenerPort             )
    Q_PROPERTY(int            publishedPort                READ publishedPort                 WRITE setPublishedPort               )
@@ -210,91 +212,6 @@ class LIB_EXPORT Account : public QObject {
          PresenceMessage             = 143,
       };
 
-      class MapField {
-      public:
-         constexpr static const char* ID                     = "Account.id"                        ;
-         constexpr static const char* TYPE                   = "Account.type"                      ;
-         constexpr static const char* ALIAS                  = "Account.alias"                     ;
-         constexpr static const char* ENABLED                = "Account.enable"                    ;
-         constexpr static const char* MAILBOX                = "Account.mailbox"                   ;
-         constexpr static const char* DTMF_TYPE              = "Account.dtmfType"                  ;
-         constexpr static const char* AUTOANSWER             = "Account.autoAnswer"                ;
-         constexpr static const char* HOSTNAME               = "Account.hostname"                  ;
-         constexpr static const char* USERNAME               = "Account.username"                  ;
-         constexpr static const char* ROUTE                  = "Account.routeset"                  ;
-         constexpr static const char* PASSWORD               = "Account.password"                  ;
-         constexpr static const char* REALM                  = "Account.realm"                     ;
-         constexpr static const char* LOCAL_INTERFACE        = "Account.localInterface"            ;
-         constexpr static const char* PUBLISHED_SAMEAS_LOCAL = "Account.publishedSameAsLocal"      ;
-         constexpr static const char* LOCAL_PORT             = "Account.localPort"                 ;
-         constexpr static const char* PUBLISHED_PORT         = "Account.publishedPort"             ;
-         constexpr static const char* PUBLISHED_ADDRESS      = "Account.publishedAddress"          ;
-         constexpr static const char* USER_AGENT             = "Account.useragent"                 ;
-         class Audio {
-         public:
-            constexpr static const char* PORT_MAX            = "Account.audioPortMax"              ;
-            constexpr static const char* PORT_MIN            = "Account.audioPortMin"              ;
-         };
-         class Video {
-         public:
-            constexpr static const char* ENABLED             = "Account.videoEnabled"              ;
-            constexpr static const char* PORT_MAX            = "Account.videoPortMax"              ;
-            constexpr static const char* PORT_MIN            = "Account.videoPortMin"              ;
-         };
-         class STUN {
-         public:
-            constexpr static const char* SERVER              = "STUN.server"                       ;
-            constexpr static const char* ENABLED             = "STUN.enable"                       ;
-         };
-         class Presence {
-         public:
-            constexpr static const char* SUPPORT_PUBLISH     = "Account.presencePublishSupported"  ;
-            constexpr static const char* SUPPORT_SUBSCRIBE   = "Account.presenceSubscribeSupported";
-            constexpr static const char* ENABLED             = "Account.presenceEnabled"           ;
-         };
-         class Registration {
-         public:
-            constexpr static const char* EXPIRE              = "Account.registrationExpire"        ;
-            constexpr static const char* STATUS              = "Account.registrationStatus"        ;
-         };
-         class Ringtone {
-         public:
-            constexpr static const char* PATH                = "Account.ringtonePath"              ;
-            constexpr static const char* ENABLED             = "Account.ringtoneEnabled"           ;
-         };
-         class SRTP {
-         public:
-            constexpr static const char* KEY_EXCHANGE        = "SRTP.keyExchange"                  ;
-            constexpr static const char* ENABLED             = "SRTP.enable"                       ;
-            constexpr static const char* RTP_FALLBACK        = "SRTP.rtpFallback"                  ;
-         };
-         class ZRTP {
-         public:
-            constexpr static const char* DISPLAY_SAS         = "ZRTP.displaySAS"                   ;
-            constexpr static const char* NOT_SUPP_WARNING    = "ZRTP.notSuppWarning"               ;
-            constexpr static const char* HELLO_HASH          = "ZRTP.helloHashEnable"              ;
-            constexpr static const char* DISPLAY_SAS_ONCE    = "ZRTP.displaySasOnce"               ;
-         };
-         class TLS {
-         public:
-            constexpr static const char* LISTENER_PORT       = "TLS.listenerPort"                  ;
-            constexpr static const char* ENABLED             = "TLS.enable"                        ;
-            constexpr static const char* PORT                = "TLS.port"                          ;
-            constexpr static const char* CA_LIST_FILE        = "TLS.certificateListFile"           ;
-            constexpr static const char* CERTIFICATE_FILE    = "TLS.certificateFile"               ;
-            constexpr static const char* PRIVATE_KEY_FILE    = "TLS.privateKeyFile"                ;
-            constexpr static const char* PASSWORD            = "TLS.password"                      ;
-            constexpr static const char* METHOD              = "TLS.method"                        ;
-            constexpr static const char* CIPHERS             = "TLS.ciphers"                       ;
-            constexpr static const char* SERVER_NAME         = "TLS.serverName"                    ;
-            constexpr static const char* VERIFY_SERVER       = "TLS.verifyServer"                  ;
-            constexpr static const char* VERIFY_CLIENT       = "TLS.verifyClient"                  ;
-            constexpr static const char* REQUIRE_CLIENT_CERTIFICATE = "TLS.requireClientCertificate";
-            constexpr static const char* NEGOTIATION_TIMEOUT_SEC    = "TLS.negotiationTimeoutSec"   ;
-            constexpr static const char* NEGOTIATION_TIMEOUT_MSEC   = "TLS.negotiationTimemoutMsec" ;
-         };
-      };
-
       class ProtocolName {
       public:
          constexpr static const char* SIP   = "SIP"  ;
@@ -332,6 +249,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE RingToneModel*           ringToneModel          () const;
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
       Q_INVOKABLE CipherModel*             cipherModel            () const;
+      Q_INVOKABLE AccountStatusModel*      statusModel            () const;
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
 
       //Getters
@@ -361,7 +279,6 @@ class LIB_EXPORT Account : public QObject {
       Certificate* tlsPrivateKeyCertificate() const;
       QString tlsServerName                () const;
       int     tlsNegotiationTimeoutSec     () const;
-      int     tlsNegotiationTimeoutMsec    () const;
       bool    isTlsVerifyServer            () const;
       bool    isTlsVerifyClient            () const;
       bool    isTlsRequireClientCertificate() const;
@@ -385,6 +302,8 @@ class LIB_EXPORT Account : public QObject {
       int     videoPortMin                 () const;
       int     audioPortMin                 () const;
       int     audioPortMax                 () const;
+      int     lastTransportErrorCode       () const;
+      QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
       Account::Protocol      protocol      () const;
       TlsMethodModel::Type   tlsMethod     () const;
@@ -416,7 +335,6 @@ class LIB_EXPORT Account : public QObject {
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
       void setTlsNegotiationTimeoutSec      (int  detail);
-      void setTlsNegotiationTimeoutMsec     (int  detail);
       void setLocalPort                     (unsigned short detail);
       void setTlsListenerPort               (unsigned short detail);
       void setPublishedPort                 (unsigned short detail);

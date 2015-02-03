@@ -25,6 +25,7 @@
 class AccountPrivate;
 class PhoneNumber;
 class CipherModel;
+class AccountStatusModel;
 
 typedef void (AccountPrivate::*account_function)();
 
@@ -45,16 +46,20 @@ public:
    friend class AccountModelPrivate;
    friend class CipherModelPrivate;
    friend class CipherModel;
+   friend class AccountStatusModelPrivate;
+   friend class AccountStatusModel;
 
    //Constructor
    AccountPrivate(Account* acc);
 
    //Attributes
-   QByteArray              m_AccountId      ;
-   QHash<QString,QString>  m_hAccountDetails;
-   PhoneNumber*            m_pAccountNumber ;
-   Account*                q_ptr            ;
-   bool                    m_isLoaded       ;
+   QByteArray              m_AccountId           ;
+   QHash<QString,QString>  m_hAccountDetails     ;
+   PhoneNumber*            m_pAccountNumber      ;
+   Account*                q_ptr                 ;
+   bool                    m_isLoaded            ;
+   int                     m_LastTransportCode   ;
+   QString                 m_LastTransportMessage;
 
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );
@@ -91,6 +96,7 @@ public:
    RingToneModel*            m_pRingToneModel   ;
    KeyExchangeModel*         m_pKeyExchangeModel;
    CipherModel*              m_pCipherModel     ;
+   AccountStatusModel*       m_pStatusModel     ;
    SecurityValidationModel*  m_pSecurityValidationModel;
    Account::EditState m_CurrentState;
 

@@ -148,6 +148,7 @@ SET( libringclient_LIB_SRCS
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
+  src/accountstatusmodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcesmodel.cpp
   src/video/codecmodel2.cpp
@@ -234,6 +235,7 @@ SET( libringclient_LIB_HDRS
   src/vcardutils.h
   src/certificatemodel.h
   src/ciphermodel.h
+  src/accountstatusmodel.h
 )
 
 SET(libringclient_video_LIB_HDRS
