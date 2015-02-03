@@ -23,7 +23,7 @@
 
 #include <QtCore/QAbstractItemModel>
 
-#include "commonbackendmanagerinterface.h"
+#include "backendmanagerinterface.h"
 #include "contactmodel.h"
 #include "abstractitembackend.h"
 

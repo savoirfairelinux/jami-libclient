@@ -26,7 +26,7 @@
 
 #include "typedefs.h"
 #include "contact.h"
-#include "commonbackendmanagerinterface.h"
+#include "backendmanagerinterface.h"
 
 //Ring
 class Contact;
@@ -39,7 +39,7 @@ typedef QVector<Contact*> ContactList;
 
 ///ContactModel: Allow different way to handle contact without poluting the library
 class LIB_EXPORT ContactModel :
-   public QAbstractItemModel, public CommonBackendManagerInterface<AbstractContactBackend> {
+   public QAbstractItemModel, public BackendManagerInterface<AbstractContactBackend> {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -79,6 +79,7 @@ public:
    virtual const QVector<AbstractContactBackend*> backends() const override;
    virtual bool enableBackend(AbstractContactBackend* backend, bool enabled) override;
    virtual CommonItemBackendModel* backendModel() const override;
+   virtual QString backendCategoryName() const override;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -99,6 +100,9 @@ private:
 
    //Singleton
    static ContactModel* m_spInstance;
+
+   //Backend interface
+   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
 
 public Q_SLOTS:
    bool addNewContact(Contact* c, AbstractContactBackend* backend = nullptr);

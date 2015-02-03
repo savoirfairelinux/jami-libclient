@@ -24,7 +24,7 @@
 #include <QtCore/QDateTime>
 
 //Ring
-#include "commonbackendmanagerinterface.h"
+#include "backendmanagerinterface.h"
 #include "abstractitembackend.h"
 #include "typedefs.h"
 // #include "contact.h"
@@ -34,7 +34,7 @@ class NumberTreeBackend;
 
 class BookmarkModelPrivate;
 
-class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public CommonBackendManagerInterface<AbstractBookmarkBackend>
+class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public BackendManagerInterface<AbstractBookmarkBackend>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -59,6 +59,7 @@ public:
    virtual bool clearAllBackends                                  () const override;
    virtual bool enableBackend(AbstractBookmarkBackend*, bool       )       override;
    virtual void addBackend(AbstractBookmarkBackend* backend, LoadOptions options = LoadOptions::NONE) override;
+   virtual QString backendCategoryName                            () const override;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
@@ -90,6 +91,9 @@ private:
 
    BookmarkModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(BookmarkModel);
+
+   //Backend interface
+   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
 
 public Q_SLOTS:
    void reloadCategories();

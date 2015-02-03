@@ -582,5 +582,14 @@ void BookmarkModel::addBackend(AbstractBookmarkBackend* backend, LoadOptions opt
       backend->load();
 }
 
+void BookmarkModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
+{
+
+}
+
+QString BookmarkModel::backendCategoryName() const
+{
+   return tr("Bookmarks");
+}
 
 #include <bookmarkmodel.moc>

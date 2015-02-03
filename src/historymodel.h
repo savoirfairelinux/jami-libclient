@@ -27,7 +27,7 @@
 
 //Ring
 #include "call.h"
-#include "commonbackendmanagerinterface.h"
+#include "backendmanagerinterface.h"
 
 //Typedef
 typedef QMap<uint, Call*>  CallMap;
@@ -38,7 +38,7 @@ class AbstractHistoryBackend;
 class HistoryModelPrivate;
 //TODO split ASAP
 ///HistoryModel: History call manager
-class LIB_EXPORT HistoryModel : public QAbstractItemModel, public CommonBackendManagerInterface<AbstractHistoryBackend> {
+class LIB_EXPORT HistoryModel : public QAbstractItemModel, public BackendManagerInterface<AbstractHistoryBackend> {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -68,6 +68,7 @@ public:
    virtual bool clearAllBackends                                  () const override;
    virtual bool enableBackend(AbstractHistoryBackend*, bool        )       override;
    virtual void addBackend(AbstractHistoryBackend* backend, LoadOptions options = LoadOptions::NONE) override;
+   virtual QString backendCategoryName() const override;
 
    //Setters
    void setCategoryRole(Call::Role role);
@@ -99,6 +100,9 @@ private:
 
    //Static attributes
    static HistoryModel* m_spInstance;
+
+   //Backend interface
+   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
 
 public Q_SLOTS:
    void add(Call* call);

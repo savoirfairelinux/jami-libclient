@@ -608,6 +608,16 @@ void HistoryModel::addBackend(AbstractHistoryBackend* backend, LoadOptions optio
    emit newBackendAdded(backend);
 }
 
+QString HistoryModel::backendCategoryName() const
+{
+   return tr("History");
+}
+
+void HistoryModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
+{
+
+}
+
 ///Call all backends that support clearing
 bool HistoryModel::clearAllBackends() const
 {

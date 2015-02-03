@@ -15,12 +15,19 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COMMONBACKENDMANAGERINTERFACE_H
-#define COMMONBACKENDMANAGERINTERFACE_H
+#ifndef BACKENDMANAGERINTERFACE_H
+#define BACKENDMANAGERINTERFACE_H
 
 #include "typedefs.h"
 
+//Qt
+#include <QtCore/QString>
+
+//libstdc++
+#include <type_traits>
+
 class CommonItemBackendModel;
+class AbstractItemBackendInterface2;
 
 enum LoadOptions {
    NONE           = 0x0     ,
@@ -28,11 +35,13 @@ enum LoadOptions {
    FORCE_DISABLED = 0x1 << 1,
 };
 
-template <class T> class LIB_EXPORT CommonBackendManagerInterface {
+template <class T> class LIB_EXPORT BackendManagerInterface {
 public:
-   virtual ~CommonBackendManagerInterface() {};
+   virtual ~BackendManagerInterface() {};
 
-
+   /*template <class T2>
+   typename std::enable_if<std::is_base_of<AbstractItemBackendInterface2, T2>::value, void>::type
+   AbstractItemBackendInterface2* addBackend2(LoadOptions options = LoadOptions::NONE);*/
 
    /// Add a new backend
    virtual void addBackend(T* backend, LoadOptions options = LoadOptions::NONE) = 0;
@@ -52,6 +61,11 @@ public:
    virtual CommonItemBackendModel* backendModel() const = 0;
 
    virtual bool clearAllBackends() const {return false;}
+
+   virtual QString backendCategoryName() const = 0;
+
+private:
+   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) = 0;
 };
 
 #endif

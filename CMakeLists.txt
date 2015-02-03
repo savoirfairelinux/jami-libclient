@@ -230,7 +230,7 @@ SET( libringclient_LIB_HDRS
   src/mime.h
   src/categorizedcompositenode.h
   src/abstractitembackendmodelextension.h
-  src/commonbackendmanagerinterface.h
+  src/backendmanagerinterface.h
   src/networkinterfacemodel.h
   src/vcardutils.h
   src/certificatemodel.h

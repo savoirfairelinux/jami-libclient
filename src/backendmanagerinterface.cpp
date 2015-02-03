@@ -15,9 +15,9 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "commonbackendmanagerinterface.h"
+#include "BackendManagerInterface.h"
 
-// template <class T> CommonBackendManagerInterface<T>::~CommonBackendManagerInterface()
+// template <class T> BackendManagerInterface<T>::~BackendManagerInterface()
 // {
 //    
 // }

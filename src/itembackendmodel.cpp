@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "itembackendmodel.h"
 
-#include "commonbackendmanagerinterface.h"
+#include "backendmanagerinterface.h"
 #include "visitors/itemmodelstateserializationvisitor.h"
 #include "abstractitembackendmodelextension.h"
 

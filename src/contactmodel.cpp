@@ -242,6 +242,16 @@ CommonItemBackendModel* ContactModel::backendModel() const
    return d_ptr->m_pBackendModel; //TODO
 }
 
+QString ContactModel::backendCategoryName() const
+{
+   return tr("Contacts");
+}
+
+void ContactModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
+{
+
+}
+
 const QVector<AbstractContactBackend*> ContactModel::backends() const
 {
    return d_ptr->m_lBackends;
