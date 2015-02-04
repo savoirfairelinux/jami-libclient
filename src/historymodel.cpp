@@ -267,14 +267,14 @@ HistoryTopLevelItem* HistoryModelPrivate::getCategory(const Call* call)
    if (!category) {
       category = new HistoryTopLevelItem(name,index);
       category->modelRow = m_lCategoryCounter.size();
-//       emit layoutAboutToBeChanged(); //Not necessary
-//       beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
+      //emit layoutAboutToBeChanged(); //Not necessary
+      HistoryModel::instance()->beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
       category->m_AbsoluteIndex = m_lCategoryCounter.size();
       m_lCategoryCounter << category;
       m_hCategories    [index] = category;
       m_hCategoryByName[name ] = category;
-//       endInsertRows();
-//       emit layoutChanged();
+      HistoryModel::instance()->endInsertRows();
+      //emit layoutChanged();
    }
    return category;
 }
