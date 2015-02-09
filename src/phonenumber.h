@@ -20,6 +20,7 @@
 
 #include "typedefs.h"
 #include <time.h>
+#include <itembase.h>
 
 //Qt
 #include <QStringList>
@@ -38,7 +39,8 @@ class NumberCategory;
 
 
 ///PhoneNumber: represent a phone number
-class LIB_EXPORT PhoneNumber : public QObject {
+class LIB_EXPORT PhoneNumber : public ItemBase<QObject>
+{
    Q_OBJECT
 public:
    friend class PhoneDirectoryModel;

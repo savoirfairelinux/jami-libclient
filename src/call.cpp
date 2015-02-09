@@ -31,7 +31,7 @@
 //Ring library
 #include "dbus/callmanager.h"
 
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 #include "contact.h"
 #include "uri.h"
 #include "account.h"
@@ -220,14 +220,14 @@ m_pStopTimeStamp(0),
 m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerPhoneNumber(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_CallId(),m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
-m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_pBackend(nullptr),m_Type(Call::Type::CALL),
+m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(new UserActionModel(parent))
 {
 }
 
 ///Constructor
 Call::Call(Call::State startState, const QString& callId, const QString& peerName, PhoneNumber* number, Account* account)
-   : QObject(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    Q_ASSERT(!callId.isEmpty());
 
@@ -247,7 +247,7 @@ Call::Call(Call::State startState, const QString& callId, const QString& peerNam
 
 ///Constructor
 Call::Call(const QString& confId, const QString& account)
-   : QObject(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
    d_ptr->m_Account      = AccountModel::instance()->getById(account.toAscii());
@@ -718,13 +718,6 @@ Call::Type Call::type() const
    return d_ptr->m_Type;
 }
 
-///Return the backend used to serialize this call
-AbstractHistoryBackend* Call::backend() const
-{
-   return d_ptr->m_pBackend;
-}
-
-
 ///Does this call currently has video
 bool Call::hasVideo() const
 {
@@ -864,12 +857,6 @@ void Call::setAccount( Account* account)
 {
    if (state() == Call::State::DIALING)
       d_ptr->m_Account = account;
-}
-
-/// Set the backend to save this call to. It is currently impossible to migrate.
-void Call::setBackend(AbstractHistoryBackend* backend)
-{
-   d_ptr->m_pBackend = backend;
 }
 
 /*****************************************************************************
@@ -1686,7 +1673,7 @@ QVariant Call::roleData(int role) const
          return QVariant::fromValue(const_cast<Call*>(this));
          break;
       case Call::Role::PhoneNu:
-         return QVariant::fromValue(const_cast<PhoneNumber*>(peerPhoneNumber()));
+         return QVariant::fromValue(peerPhoneNumber());
          break;
       case Call::Role::PhotoPtr:
          return ct?ct->photo():QVariant();

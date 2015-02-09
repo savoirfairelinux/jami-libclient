@@ -131,7 +131,7 @@ PhoneNumberPrivate::PhoneNumberPrivate(const URI& uri, NumberCategory* cat, Phon
 {}
 
 ///Constructor
-PhoneNumber::PhoneNumber(const URI& number, NumberCategory* cat, Type st) : QObject(PhoneDirectoryModel::instance()),
+PhoneNumber::PhoneNumber(const URI& number, NumberCategory* cat, Type st) : ItemBase<QObject>(PhoneDirectoryModel::instance()),
 d_ptr(new PhoneNumberPrivate(number,cat,st))
 {
    setObjectName(d_ptr->m_Uri);

@@ -20,6 +20,7 @@
 #define CALL_H
 
 #include "categorizedcompositenode.h"
+#include <itembase.h>
 #include <time.h>
 
 //Qt
@@ -35,7 +36,7 @@ class InstantMessagingModel;
 class UserActionModel;
 class PhoneNumber;
 class TemporaryPhoneNumber;
-class AbstractHistoryBackend;
+class CollectionInterface;
 namespace Video {
    class Renderer;
 }
@@ -57,7 +58,7 @@ class CallPrivate;
  * lifecycle and should be used instead of "if"/"switch" on individual states
  * when possible. This will avoid accidentally forgetting a state.
 **/
-class  LIB_EXPORT Call : public QObject
+class  LIB_EXPORT Call : public ItemBase<QObject>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -286,7 +287,6 @@ public:
    bool                     isHistory        ()      ;
    bool                     isMissed         () const;
    Call::Direction          direction        () const;
-   AbstractHistoryBackend*  backend          () const;
    bool                     hasVideo         () const;
    Call::LifeCycleState     lifeCycleState   () const;
    Call::Type               type             () const;
@@ -301,7 +301,6 @@ public:
    void setRecordingPath  ( const QString&     path       );
    void setPeerName       ( const QString&     name       );
    void setAccount        ( Account*           account    );
-   void setBackend        ( AbstractHistoryBackend* backend);
 
    //Mutators
    void appendText(const QString& str);

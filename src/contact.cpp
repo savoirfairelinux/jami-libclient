@@ -22,7 +22,7 @@
 
 //Ring library
 #include "phonenumber.h"
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 #include "transitionalcontactbackend.h"
 #include "account.h"
 #include "vcardutils.h"
@@ -109,7 +109,7 @@ void Contact::Address::setType(const QString& value)
 
 class ContactPrivate {
 public:
-   ContactPrivate(Contact* contact, AbstractContactBackend* parent);
+   ContactPrivate(Contact* contact);
    ~ContactPrivate();
    QString                  m_FirstName        ;
    QString                  m_SecondName       ;
@@ -124,7 +124,6 @@ public:
    bool                     m_DisplayPhoto     ;
    Contact::PhoneNumbers    m_Numbers          ;
    bool                     m_Active           ;
-   AbstractContactBackend*  m_pBackend         ;
    bool                     m_isPlaceHolder    ;
    QList<Contact::Address*> m_lAddresses       ;
    QHash<QString, QString>  m_lCustomAttributes;
@@ -202,10 +201,10 @@ void ContactPrivate::phoneNumberCountAboutToChange(int n,int o)
    }
 }
 
-ContactPrivate::ContactPrivate(Contact* contact, AbstractContactBackend* parent) :
-   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true),
-   m_pBackend(parent?parent:TransitionalContactBackend::instance())
-{}
+ContactPrivate::ContactPrivate(Contact* contact) :
+   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true)
+{
+}
 
 ContactPrivate::~ContactPrivate()
 {
@@ -227,9 +226,10 @@ Contact* Contact::PhoneNumbers::contact() const
 }
 
 ///Constructor
-Contact::Contact(AbstractContactBackend* parent):QObject(parent?parent:TransitionalContactBackend::instance()),
-   d_ptr(new ContactPrivate(this,parent))
+Contact::Contact(CollectionInterface* parent): ItemBase<QObject>(parent!=nullptr?((QAbstractItemModel*)parent->model()):((QAbstractItemModel*)TransitionalContactBackend::instance())),
+   d_ptr(new ContactPrivate(this))
 {
+   setBackend(parent?parent:TransitionalContactBackend::instance());
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
 }
@@ -467,31 +467,6 @@ QString Contact::filterString() const
 void Contact::slotPresenceChanged()
 {
    d_ptr->changed();
-}
-
-///Save the contact
-bool Contact::save() const
-{
-   return d_ptr->m_pBackend->save(this);
-}
-
-///Show an implementation dependant dialog to edit the contact
-bool Contact::edit()
-{
-   return d_ptr->m_pBackend->edit(this);
-}
-
-///Remove the contact from the backend
-bool Contact::remove()
-{
-   return d_ptr->m_pBackend->remove(this);
-}
-
-///Add a new phone number to the backend
-///@note The backend is expected to notify the Contact (asynchronously) when done
-bool Contact::addPhoneNumber(PhoneNumber* n)
-{
-   return d_ptr->m_pBackend->addPhoneNumber(this,n);
 }
 
 ///Create a placeholder contact, it will eventually be replaced when the real one is loaded

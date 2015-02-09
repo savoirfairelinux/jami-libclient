@@ -23,20 +23,21 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 #include <time.h>
+#include <itembase.h>
 
 //Ring
 class PhoneNumber;
-class AbstractContactBackend;
 class ContactPrivate;
 class AddressPrivate;
 class Account;
+class CollectionInterface;
 
 #include "typedefs.h"
 #include "categorizedcompositenode.h"
 
-
 ///Contact: Abstract version of a contact
-class LIB_EXPORT Contact : public QObject {
+class LIB_EXPORT Contact : public ItemBase<QObject>
+{
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -96,10 +97,6 @@ public:
    Q_PROPERTY( bool                  active         READ isActive       WRITE setActive         NOTIFY statusChanged )
 
    //Mutator
-   Q_INVOKABLE bool save() const;
-   Q_INVOKABLE bool edit()      ;
-   Q_INVOKABLE bool remove()    ;
-   Q_INVOKABLE bool addPhoneNumber(PhoneNumber* n);
    Q_INVOKABLE void addAddress(Address* addr);
    Q_INVOKABLE void addCustomField(const QString& key, const QString& value);
    Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts) const;
@@ -111,7 +108,7 @@ protected:
 
 public:
    //Constructors & Destructors
-   explicit Contact(AbstractContactBackend* parent = nullptr);
+   explicit Contact(CollectionInterface* parent = nullptr);
    virtual ~Contact();
 
    //Getters

@@ -4,11 +4,22 @@ IF(POLICY CMP0022)
    CMAKE_POLICY(SET CMP0022 NEW)
 ENDIF(POLICY CMP0022)
 
+# First, check is the compiler is new enough, most version of Clang are fine
+# until problems arise, checking for GCC is enough
+IF (CMAKE_COMPILER_IS_GNUCC)
+   EXECUTE_PROCESS(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+   IF (GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
+      MESSAGE(STATUS "Found GCC version >= 4.8: " ${GCC_VERSION})
+   ELSE()
+      MESSAGE(FATAL_ERROR "Your version of GCC is too old, please install GCC 4.8 or later")
+   ENDIF()
+ENDIF()
+
 INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++0x")
+ADD_DEFINITIONS("-std=c++14")
 
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
@@ -47,9 +58,53 @@ ADD_DEFINITIONS(
    -Wunused
    -Wuninitialized
    -Woverloaded-virtual
+   -Wsuggest-attribute=const
+   -Wunused-value
+#    -pedantic
+   -Wdouble-promotion
+   -Wnonnull
+   -Wsequence-point
+   -Wunused-but-set-parameter
    #-Wsuggest-attribute=const
    #-Wsystem-headers
+   -Wsizeof-pointer-memaccess
+#    -Wuseless-cast
+   -Wvarargs
 )
+
+#Add more warnings for compilers that support it. I used this command:
+#curl https://gcc.gnu.org/onlinedocs/gcc-4.9.2/gcc/Warning-Options.html | \
+#grep -E "^[\t ]+<br><dt><code>-W[a-zA-Z=-]*" -o | grep -E "\-W[a-zA-Z=-]*" -o >
+#cat /tmp/48 /tmp/49 | sort | uniq -u
+# IF (CMAKE_COMPILER_IS_GNUCC)
+
+IF (CMAKE_COMPILER_IS_GNUCC)
+   IF (GCC_VERSION VERSION_GREATER 4.9 OR GCC_VERSION VERSION_EQUAL 4.9)
+      ADD_DEFINITIONS(
+         -Wconditionally-supported
+         -Wdate-time
+         -Wdelete-incomplete
+         -Wfloat-conversion
+      )
+   ENDIF()
+
+   IF (GCC_VERSION VERSION_GREATER 5.0 OR GCC_VERSION VERSION_EQUAL 5.0)
+      ADD_DEFINITIONS(
+         -Wsuggest-override
+         -Wsuggest-final-types
+         -Wsuggest-final-methods
+         -Wbool-compare
+         -Wformat-signedness
+         -Wlogical-not-parentheses
+         -Wnormalized
+         -Wshift-count-negative
+         -Wshift-count-overflow
+         -Wsized-deallocation
+         -Wsizeof-array-argument
+      )
+   ENDIF()
+
+ENDIF()
 
 # OS X
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -115,7 +170,7 @@ SET( libringclient_LIB_SRCS
   src/contact.cpp
   src/phonenumber.cpp
   src/numbercategory.cpp
-  src/abstractitembackendmodelextension.cpp
+  src/collectionextensioninterface.cpp
   src/video/rate.cpp
   src/video/device.cpp
   src/video/renderer.cpp
@@ -144,7 +199,7 @@ SET( libringclient_LIB_SRCS
   src/lastusednumbermodel.cpp
   src/securityvalidationmodel.cpp
   src/contactmodel.cpp
-  src/itembackendmodel.cpp
+  src/collectionmodel.cpp
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
@@ -166,7 +221,8 @@ SET( libringclient_LIB_SRCS
 
   #Data backends
   src/transitionalcontactbackend.cpp
-  src/abstractitembackend.cpp
+  src/collectioninterface.cpp
+  src/collectioneditor.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -190,7 +246,7 @@ SET( libringclient_LIB_SRCS
   src/vcardutils.cpp
 
   #Extension
-  src/extensions/presenceitembackendmodelextension.cpp
+  src/extensions/presencecollectionextension.cpp
 )
 
 # Public API
@@ -201,7 +257,8 @@ SET( libringclient_LIB_HDRS
   src/callmodel.h
   src/historymodel.h
   src/contact.h
-  src/abstractitembackend.h
+  src/collectioninterface.h
+  src/collectioninterface.hpp
   src/bookmarkmodel.h
   src/credentialmodel.h
   src/instantmessagingmodel.h
@@ -224,18 +281,25 @@ SET( libringclient_LIB_HDRS
   src/certificate.h
   src/contactmodel.h
   src/transitionalcontactbackend.h
-  src/itembackendmodel.h
+  src/collectionmodel.h
   src/hookmanager.h
   src/uri.h
+  src/itembase.h
+  src/itembase.hpp
   src/mime.h
   src/categorizedcompositenode.h
-  src/abstractitembackendmodelextension.h
-  src/backendmanagerinterface.h
+  src/collectionextensioninterface.h
+  src/collectionmanagerinterface.h
+  src/collectionmanagerinterface.hpp
   src/networkinterfacemodel.h
   src/vcardutils.h
   src/certificatemodel.h
   src/ciphermodel.h
   src/accountstatusmodel.h
+  src/collectionmediator.h
+  src/collectionmediator.hpp
+  src/collectioneditor.h
+  src/collectioneditor.hpp
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -262,7 +326,7 @@ SET(libringclient_audio_LIB_HDRS
 )
 
 SET(libringclient_extensions_LIB_HDRS
-  src/extensions/presenceitembackendmodelextension.h
+  src/extensions/presencecollectionextension.h
 )
 
 SET(libringclient_visitors_LIB_HDRS
