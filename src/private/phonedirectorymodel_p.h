@@ -21,12 +21,12 @@
 
 //Ring
 class PhoneDirectoryModel;
-#include "phonenumber.h"
+#include "contactmethod.h"
 
 //Internal data structures
 ///@struct NumberWrapper Wrap phone numbers to prevent collisions
 struct NumberWrapper {
-   QVector<PhoneNumber*> numbers;
+   QVector<ContactMethod*> numbers;
 };
 
 class PhoneDirectoryModelPrivate : public QObject
@@ -60,14 +60,14 @@ public:
 
 
    //Helpers
-   void indexNumber(PhoneNumber* number, const QStringList& names   );
-   void setAccount (PhoneNumber* number,       Account*     account );
-   PhoneNumber* fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type);
+   void indexNumber(ContactMethod* number, const QStringList& names   );
+   void setAccount (ContactMethod* number,       Account*     account );
+   ContactMethod* fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type);
 
    //Attributes
-   QVector<PhoneNumber*>         m_lNumbers         ;
+   QVector<ContactMethod*>         m_lNumbers         ;
    QHash<QString,NumberWrapper*> m_hDirectory       ;
-   QVector<PhoneNumber*>         m_lPopularityIndex ;
+   QVector<ContactMethod*>         m_lPopularityIndex ;
    QMap<QString,NumberWrapper*>  m_lSortedNames     ;
    QMap<QString,NumberWrapper*>  m_hSortedNumbers   ;
    QHash<QString,NumberWrapper*> m_hNumbersByNames  ;

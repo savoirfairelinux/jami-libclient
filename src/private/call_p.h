@@ -28,7 +28,7 @@ class QTimer;
 
 //Ring
 class Account;
-class PhoneNumber;
+class ContactMethod;
 class UserActionModel;
 class InstantMessagingModel;
 
@@ -101,7 +101,7 @@ public:
    //Attributes
    Account*                 m_Account         ;
    QString                  m_CallId          ;
-   PhoneNumber*             m_pPeerPhoneNumber;
+   ContactMethod*             m_pPeerContactMethod;
    QString                  m_PeerName        ;
    QString                  m_RecordingPath   ;
    Call::LegacyHistoryState m_HistoryState    ;
@@ -117,8 +117,8 @@ public:
    Call::Direction          m_Direction       ;
    Call::Type               m_Type            ;
 
-   mutable TemporaryPhoneNumber* m_pTransferNumber ;
-   mutable TemporaryPhoneNumber* m_pDialNumber     ;
+   mutable TemporaryContactMethod* m_pTransferNumber ;
+   mutable TemporaryContactMethod* m_pDialNumber     ;
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;

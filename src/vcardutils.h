@@ -74,7 +74,7 @@ public:
    void addProperty(const QString& prop, const QString& value);
    void addEmail(const QString& type, const QString& num);
    void addAddress(const Person::Address* addr);
-   void addPhoneNumber(const QString& type, const QString& num);
+   void addContactMethod(const QString& type, const QString& num);
    void addPhoto(const QByteArray img);
    const QByteArray endVCard();
 

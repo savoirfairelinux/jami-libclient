@@ -21,7 +21,7 @@
 #include "person.h"
 
 //Ring library
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "collectioninterface.h"
 #include "transitionalpersonbackend.h"
 #include "account.h"
@@ -122,7 +122,7 @@ public:
    QString                  m_Group            ;
    QString                  m_Department       ;
    bool                     m_DisplayPhoto     ;
-   Person::PhoneNumbers    m_Numbers          ;
+   Person::ContactMethods    m_Numbers          ;
    bool                     m_Active           ;
    bool                     m_isPlaceHolder    ;
    QList<Person::Address*> m_lAddresses       ;
@@ -138,7 +138,7 @@ public:
 
    //As a single D-Pointer can have multiple parent (when merged), all emit need
    //to use a proxy to make sure everybody is notified
-   void presenceChanged( PhoneNumber* );
+   void presenceChanged( ContactMethod* );
    void statusChanged  ( bool         );
    void changed        (              );
    void phoneNumberCountChanged(int,int);
@@ -151,7 +151,7 @@ QString PersonPrivate::filterString()
       return m_CachedFilterString;
 
    //Also filter by phone numbers, accents are negligible
-   foreach(const PhoneNumber* n , m_Numbers) {
+   foreach(const ContactMethod* n , m_Numbers) {
       m_CachedFilterString += n->uri();
    }
 
@@ -173,7 +173,7 @@ void PersonPrivate::changed()
    }
 }
 
-void PersonPrivate::presenceChanged( PhoneNumber* n )
+void PersonPrivate::presenceChanged( ContactMethod* n )
 {
    foreach (Person* c,m_lParents) {
       emit c->presenceChanged(n);
@@ -210,17 +210,17 @@ PersonPrivate::~PersonPrivate()
 {
 }
 
-Person::PhoneNumbers::PhoneNumbers(Person* parent) : QVector<PhoneNumber*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
+Person::ContactMethods::ContactMethods(Person* parent) : QVector<ContactMethod*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
     m_pParent2(parent)
 {
 }
 
-Person::PhoneNumbers::PhoneNumbers(Person* parent, const QVector<PhoneNumber*>& list)
-: QVector<PhoneNumber*>(list),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),m_pParent2(parent)
+Person::ContactMethods::ContactMethods(Person* parent, const QVector<ContactMethod*>& list)
+: QVector<ContactMethod*>(list),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),m_pParent2(parent)
 {
 }
 
-Person* Person::PhoneNumbers::contact() const
+Person* Person::ContactMethods::contact() const
 {
    return m_pParent2;
 }
@@ -246,7 +246,7 @@ Person::~Person()
 }
 
 ///Get the phone number list
-const Person::PhoneNumbers& Person::phoneNumbers() const
+const Person::ContactMethods& Person::phoneNumbers() const
 {
    return d_ptr->m_Numbers;
 }
@@ -311,15 +311,15 @@ const QString& Person::department() const
 }
 
 ///Set the phone number (type and number)
-void Person::setPhoneNumbers(PhoneNumbers numbers)
+void Person::setContactMethods(ContactMethods numbers)
 {
    const int oldCount(d_ptr->m_Numbers.size()),newCount(numbers.size());
-   foreach(PhoneNumber* n, d_ptr->m_Numbers)
+   foreach(ContactMethod* n, d_ptr->m_Numbers)
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
    d_ptr->m_Numbers = numbers;
    if (newCount < oldCount) //Rows need to be removed from models first
       d_ptr->phoneNumberCountAboutToChange(newCount,oldCount);
-   foreach(PhoneNumber* n, d_ptr->m_Numbers)
+   foreach(ContactMethod* n, d_ptr->m_Numbers)
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
    if (newCount > oldCount) //Need to be updated after the data to prevent invalid memory access
       d_ptr->phoneNumberCountChanged(newCount,oldCount);
@@ -406,20 +406,20 @@ void Person::setActive( bool active)
    d_ptr->changed();
 }
 
-///Return if one of the PhoneNumber is present
+///Return if one of the ContactMethod is present
 bool Person::isPresent() const
 {
-   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
+   foreach(const ContactMethod* n,d_ptr->m_Numbers) {
       if (n->isPresent())
          return true;
    }
    return false;
 }
 
-///Return if one of the PhoneNumber is tracked
+///Return if one of the ContactMethod is tracked
 bool Person::isTracked() const
 {
-   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
+   foreach(const ContactMethod* n,d_ptr->m_Numbers) {
       if (n->isTracked())
          return true;
    }
@@ -432,10 +432,10 @@ bool Person::isActive() const
    return d_ptr->m_Active;
 }
 
-///Return if one of the PhoneNumber support presence
+///Return if one of the ContactMethod support presence
 bool Person::supportPresence() const
 {
-   foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
+   foreach(const ContactMethod* n,d_ptr->m_Numbers) {
       if (n->supportPresence())
          return true;
    }
@@ -443,11 +443,11 @@ bool Person::supportPresence() const
 }
 
 
-QObject* Person::PhoneNumbers::getSelf() const {
+QObject* Person::ContactMethods::getSelf() const {
    return m_pParent2;
 }
 
-time_t Person::PhoneNumbers::lastUsedTimeStamp() const
+time_t Person::ContactMethods::lastUsedTimeStamp() const
 {
    time_t t = 0;
    for (int i=0;i<size();i++) {
@@ -538,8 +538,8 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
 
    maker->addEmail("PREF", preferredEmail());
 
-   foreach (PhoneNumber* phone , phoneNumbers()) {
-      maker->addPhoneNumber(phone->category()->name(), phone->uri());
+   foreach (ContactMethod* phone , phoneNumbers()) {
+      maker->addContactMethod(phone->category()->name(), phone->uri());
    }
 
    foreach (Address* addr , d_ptr->m_lAddresses) {

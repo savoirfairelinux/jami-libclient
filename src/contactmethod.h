@@ -33,13 +33,13 @@
 class Account;
 class Person;
 class Call;
-class PhoneNumberPrivate;
-class TemporaryPhoneNumber;
+class ContactMethodPrivate;
+class TemporaryContactMethod;
 class NumberCategory;
 
 
-///PhoneNumber: represent a phone number
-class LIB_EXPORT PhoneNumber : public ItemBase<QObject>
+///ContactMethod: represent a phone number
+class LIB_EXPORT ContactMethod : public ItemBase<QObject>
 {
    Q_OBJECT
 public:
@@ -89,7 +89,7 @@ public:
    Account*           account         () const;
    Person*           contact         () const;
    time_t             lastUsed        () const;
-   PhoneNumber::Type  type            () const;
+   ContactMethod::Type  type            () const;
    int                callCount       () const;
    uint               weekCount       () const;
    uint               trimCount       () const;
@@ -111,35 +111,35 @@ public:
    void             setCategory(NumberCategory* cat  );
    void             setBookmarked(bool bookmarked    );
    void             setUid(const QString& uri        );
-   bool             setType(PhoneNumber::Type t      );
+   bool             setType(ContactMethod::Type t      );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
    Q_INVOKABLE void incrementAlternativeName(const QString& name);
 
    //Static
-   static const PhoneNumber* BLANK();
+   static const ContactMethod* BLANK();
 
    //Helper
    QString toHash() const;
 
    //Operator
-   bool operator==(PhoneNumber* other);
-   bool operator==(const PhoneNumber* other) const;
-   bool operator==(PhoneNumber& other);
-   bool operator==(const PhoneNumber& other) const;
+   bool operator==(ContactMethod* other);
+   bool operator==(const ContactMethod* other) const;
+   bool operator==(ContactMethod& other);
+   bool operator==(const ContactMethod& other) const;
 
 protected:
    //Constructor
-   PhoneNumber(const URI& uri, NumberCategory* cat, Type st = Type::UNUSED);
-   virtual ~PhoneNumber();
+   ContactMethod(const URI& uri, NumberCategory* cat, Type st = Type::UNUSED);
+   virtual ~ContactMethod();
 
    //Private setters
    void setPresent(bool present);
    void setPresenceMessage(const QString& message);
 
    //PhoneDirectoryModel mutator
-   bool merge(PhoneNumber* other);
+   bool merge(ContactMethod* other);
 
    //Getter
    bool hasType() const;
@@ -151,21 +151,21 @@ protected:
    void setPopularityIndex(int value);
 
    //Many phone numbers can have the same "d" if they were merged
-   QSharedPointer<PhoneNumberPrivate> d_ptr;
+   QSharedPointer<ContactMethodPrivate> d_ptr;
 
 private:
-   friend class PhoneNumberPrivate;
+   friend class ContactMethodPrivate;
 
    //Static attributes
    static QHash<int,Call*> m_shMostUsed  ;
-   static const PhoneNumber* m_spBlank   ;
+   static const ContactMethod* m_spBlank   ;
 
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);
 
 Q_SIGNALS:
-   ///A new call have used this PhoneNumber
+   ///A new call have used this ContactMethod
    void callAdded             ( Call* call          );
    ///A property associated with this number has changed
    void changed               (                     );
@@ -187,16 +187,16 @@ Q_SIGNALS:
     * this happen when new information cues prove that number
     * with previously ambiguous data
     */
-   void rebased               ( PhoneNumber* other  );
+   void rebased               ( ContactMethod* other  );
 };
 
-Q_DECLARE_METATYPE(PhoneNumber*)
+Q_DECLARE_METATYPE(ContactMethod*)
 
-///@class TemporaryPhoneNumber: An incomplete phone number
-class LIB_EXPORT TemporaryPhoneNumber : public PhoneNumber {
+///@class TemporaryContactMethod: An incomplete phone number
+class LIB_EXPORT TemporaryContactMethod : public ContactMethod {
    Q_OBJECT
 public:
-   explicit TemporaryPhoneNumber(const PhoneNumber* number = nullptr);
+   explicit TemporaryContactMethod(const ContactMethod* number = nullptr);
    void setUri(const QString& uri);
 };
 

@@ -23,7 +23,7 @@
 #include <QtCore/QAbstractListModel>
 
 class Call;
-class PhoneNumber;
+class ContactMethod;
 
 class LastUsedNumberModelPrivate;
 

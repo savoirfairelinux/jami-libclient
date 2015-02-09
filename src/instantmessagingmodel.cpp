@@ -21,7 +21,7 @@
 #include "dbus/callmanager.h"
 #include "call.h"
 #include "person.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "private/instantmessagingmodel_p.h"
 
 InstantMessagingModelPrivate::InstantMessagingModelPrivate(InstantMessagingModel* parent) : QObject(parent), q_ptr(parent)
@@ -66,14 +66,14 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return static_cast<int>(MessageRole::INCOMMING_IM);
             break;
          case InstantMessagingModel::Role::CONTACT:
-            if (d_ptr->m_pCall->peerPhoneNumber()->contact()) {
+            if (d_ptr->m_pCall->peerContactMethod()->contact()) {
                return QVariant();
             }
             break;
          case InstantMessagingModel::Role::IMAGE: {
             if (d_ptr->m_lImages.find(idx) != d_ptr->m_lImages.end())
                return d_ptr->m_lImages[idx];
-            const Person* c = d_ptr->m_pCall->peerPhoneNumber()->contact();
+            const Person* c = d_ptr->m_pCall->peerContactMethod()->contact();
             if (c && c->photo().isValid()) {
                return c->photo();
             }

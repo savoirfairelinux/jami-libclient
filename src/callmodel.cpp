@@ -27,7 +27,7 @@
 #include "call.h"
 #include "uri.h"
 #include "phonedirectorymodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "accountmodel.h"
 #include "dbus/metatypes.h"
 #include "dbus/callmanager.h"
@@ -529,7 +529,7 @@ void CallModel::attendedTransfer(Call* toTransfer, Call* target)
 } //attendedTransfer
 
 ///Transfer this call to  "target" number
-void CallModel::transfer(Call* toTransfer, const PhoneNumber* target)
+void CallModel::transfer(Call* toTransfer, const ContactMethod* target)
 {
    qDebug() << "Transferring call " << toTransfer->id() << "to" << target->uri();
    toTransfer->setTransferNumber        ( target->uri()            );
@@ -830,7 +830,7 @@ QMimeData* CallModel::mimeData(const QModelIndexList& indexes) const
          mData->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
          Call* call = getCall(idx);
          if (call)
-            mData->setData(RingMimes::PHONENUMBER, call->peerPhoneNumber()->toHash().toUtf8());
+            mData->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
          qDebug() << "Setting mime" << idx.data(Call::Role::Id).toString();
          mData->setData(RingMimes::CALLID  , idx.data(Call::Role::Id).toString().toUtf8());
          return mData;
@@ -920,11 +920,11 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       }
    }
    else if (mimedata->hasFormat(RingMimes::PHONENUMBER)) {
-      const QByteArray encodedPhoneNumber = mimedata->data( RingMimes::PHONENUMBER );
+      const QByteArray encodedContactMethod = mimedata->data( RingMimes::PHONENUMBER );
       Call* target = getCall(targetIdx);
-      qDebug() << "Phone number" << encodedPhoneNumber << "on call" << target;
+      qDebug() << "Phone number" << encodedContactMethod << "on call" << target;
       Call* newCall = dialingCall(QString(),target->account());
-      PhoneNumber* nb = PhoneDirectoryModel::instance()->fromHash(encodedPhoneNumber);
+      ContactMethod* nb = PhoneDirectoryModel::instance()->fromHash(encodedContactMethod);
       newCall->setDialNumber(nb);
       newCall->performAction(Call::Action::ACCEPT);
       createConferenceFromCall(newCall,target);
@@ -933,8 +933,8 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       const QByteArray encodedPerson = mimedata->data(RingMimes::CONTACT);
       Call* target = getCall(targetIdx);
       qDebug() << "Contact" << encodedPerson << "on call" << target;
-      if (PhoneNumberSelector::defaultDelegate()) {
-         const PhoneNumber* number = PhoneNumberSelector::defaultDelegate()->getNumber(
+      if (ContactMethodSelector::defaultDelegate()) {
+         const ContactMethod* number = ContactMethodSelector::defaultDelegate()->getNumber(
          PersonModel::instance()->getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();

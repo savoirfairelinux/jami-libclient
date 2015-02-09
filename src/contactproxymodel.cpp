@@ -26,7 +26,7 @@
 //Ring
 #include "callmodel.h"
 #include "historymodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "historytimecategorymodel.h"
 #include "person.h"
@@ -46,8 +46,8 @@ private:
 private Q_SLOTS:
    void slotContactChanged();
    void slotStatusChanged();
-   void slotPhoneNumberCountChanged(int,int);
-   void slotPhoneNumberCountAboutToChange(int,int);
+   void slotContactMethodCountChanged(int,int);
+   void slotContactMethodCountAboutToChange(int,int);
 };
 
 class ContactTopLevelItem : public CategorizedCompositeNode {
@@ -139,8 +139,8 @@ ContactTreeBinder::ContactTreeBinder(ContactProxyModel* m,ContactTreeNode* n) :
    QObject(),m_pTreeNode(n),m_pModel(m)
 {
    connect(n->m_pContact,SIGNAL(changed()),this,SLOT(slotContactChanged()));
-   connect(n->m_pContact,SIGNAL(phoneNumberCountChanged(int,int)),this,SLOT(slotPhoneNumberCountChanged(int,int)));
-   connect(n->m_pContact,SIGNAL(phoneNumberCountAboutToChange(int,int)),this,SLOT(slotPhoneNumberCountAboutToChange(int,int)));
+   connect(n->m_pContact,SIGNAL(phoneNumberCountChanged(int,int)),this,SLOT(slotContactMethodCountChanged(int,int)));
+   connect(n->m_pContact,SIGNAL(phoneNumberCountAboutToChange(int,int)),this,SLOT(slotContactMethodCountAboutToChange(int,int)));
 }
 
 
@@ -158,7 +158,7 @@ void ContactTreeBinder::slotStatusChanged()
    
 }
 
-void ContactTreeBinder::slotPhoneNumberCountChanged(int count, int oldCount)
+void ContactTreeBinder::slotContactMethodCountChanged(int count, int oldCount)
 {
    const QModelIndex idx = m_pModel->index(m_pTreeNode->m_Index,0,m_pModel->index(m_pTreeNode->m_pParent3->m_Index,0));
    if (count > oldCount) {
@@ -169,7 +169,7 @@ void ContactTreeBinder::slotPhoneNumberCountChanged(int count, int oldCount)
    emit m_pModel->dataChanged(idx,idx);
 }
 
-void ContactTreeBinder::slotPhoneNumberCountAboutToChange(int count, int oldCount)
+void ContactTreeBinder::slotContactMethodCountAboutToChange(int count, int oldCount)
 {
    const QModelIndex idx = m_pModel->index(m_pTreeNode->m_Index,0,m_pModel->index(m_pTreeNode->m_pParent3->m_Index,0));
    if (count < oldCount) {
@@ -381,8 +381,8 @@ bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction actio
                }
             } break;
             case CategorizedCompositeNode::Type::NUMBER: {
-               const Person::PhoneNumbers nbs = *static_cast<Person::PhoneNumbers*>(modelItem);
-               const PhoneNumber*          nb  = nbs[row];
+               const Person::ContactMethods nbs = *static_cast<Person::ContactMethods*>(modelItem);
+               const ContactMethod*          nb  = nbs[row];
                if (nb) {
                   call->setTransferNumber(nb->uri());
                   CallModel::instance()->transfer(call,nb);
@@ -473,7 +473,7 @@ QModelIndex ContactProxyModel::index( int row, int column, const QModelIndex& pa
             const ContactTreeNode* ctn = (ContactTreeNode*)parentNode;
             const Person*          ct = (Person*)ctn->getSelf()    ;
             if (ct->phoneNumbers().size()>row) {
-               const_cast<Person::PhoneNumbers*>(&ct->phoneNumbers())->setParentNode((CategorizedCompositeNode*)ctn);
+               const_cast<Person::ContactMethods*>(&ct->phoneNumbers())->setParentNode((CategorizedCompositeNode*)ctn);
                return createIndex(row,column,(void*)&ct->phoneNumbers());
             }
          }
@@ -517,8 +517,8 @@ QMimeData* ContactProxyModel::mimeData(const QModelIndexList &indexes) const
             case CategorizedCompositeNode::Type::NUMBER: {
                //Phone number
                const QString text = data(index, Qt::DisplayRole).toString();
-               const Person::PhoneNumbers nbs = *static_cast<Person::PhoneNumbers*>(index.internalPointer());
-               const PhoneNumber*          nb  = nbs[index.row()];
+               const Person::ContactMethods nbs = *static_cast<Person::ContactMethods*>(index.internalPointer());
+               const ContactMethod*          nb  = nbs[index.row()];
                mimeData->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
                mimeData->setData(RingMimes::PHONENUMBER, nb->toHash().toUtf8());
                return mimeData;

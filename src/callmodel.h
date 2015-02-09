@@ -27,7 +27,7 @@
 #include "call.h"
 class Account;
 struct InternalStruct;
-class PhoneNumber;
+class ContactMethod;
 class CallModelPrivate;
 
 //Typedef
@@ -64,7 +64,7 @@ class LIB_EXPORT CallModel : public QAbstractItemModel
       //Call related
       Q_INVOKABLE Call* dialingCall      ( const QString& peerName=QString(), Account* account=nullptr );
       Q_INVOKABLE void  attendedTransfer ( Call* toTransfer , Call* target              );
-      Q_INVOKABLE void  transfer         ( Call* toTransfer , const PhoneNumber* target );
+      Q_INVOKABLE void  transfer         ( Call* toTransfer , const ContactMethod* target );
       QModelIndex getIndex               ( Call* call                                   );
 
       //Conference related

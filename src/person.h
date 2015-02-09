@@ -26,7 +26,7 @@
 #include <itembase.h>
 
 //Ring
-class PhoneNumber;
+class ContactMethod;
 class PersonPrivate;
 class AddressPrivate;
 class Account;
@@ -71,11 +71,11 @@ public:
    };
 
 
-   class  PhoneNumbers : public QVector<PhoneNumber*>, public CategorizedCompositeNode { //TODO private
+   class  ContactMethods : public QVector<ContactMethod*>, public CategorizedCompositeNode { //TODO private
    public:
       virtual QObject* getSelf() const __attribute__ ((const));
-      explicit PhoneNumbers(Person* parent);
-      PhoneNumbers(Person* parent, const QVector<PhoneNumber*>& list);
+      explicit ContactMethods(Person* parent);
+      ContactMethods(Person* parent, const QVector<ContactMethod*>& list);
       Person* contact() const;
       time_t lastUsedTimeStamp() const;
    private:
@@ -83,7 +83,7 @@ public:
    };
 
    //Properties
-   Q_PROPERTY( PhoneNumbers          phoneNumbers   READ phoneNumbers   WRITE setPhoneNumbers                        )
+   Q_PROPERTY( ContactMethods          phoneNumbers   READ phoneNumbers   WRITE setContactMethods                        )
    Q_PROPERTY( QString               nickName       READ nickName       WRITE setNickName                            )
    Q_PROPERTY( QString               firstName      READ firstName      WRITE setFirstName                           )
    Q_PROPERTY( QString               secondName     READ secondName     WRITE setFamilyName                          )
@@ -112,7 +112,7 @@ public:
    virtual ~Person();
 
    //Getters
-   const PhoneNumbers& phoneNumbers() const;
+   const ContactMethods& phoneNumbers() const;
    const QString& nickName         () const;
    const QString& firstName        () const;
    const QString& secondName       () const;
@@ -134,7 +134,7 @@ public:
    bool supportPresence            () const;
 
    //Setters
-   void setPhoneNumbers   ( PhoneNumbers             );
+   void setContactMethods   ( ContactMethods             );
    void setFormattedName  ( const QString&    name   );
    void setNickName       ( const QString&    name   );
    void setFirstName      ( const QString&    name   );
@@ -155,7 +155,7 @@ private Q_SLOTS:
    void slotPresenceChanged(); //TODO remove
 
 Q_SIGNALS:
-   void presenceChanged( PhoneNumber* );
+   void presenceChanged( ContactMethod* );
    void statusChanged  ( bool         );
    void changed        (              );
    void phoneNumberCountChanged(int,int);

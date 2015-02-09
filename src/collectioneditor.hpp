@@ -54,7 +54,7 @@ template <class T> bool CollectionEditor<T>::batchSave(const QList<T*> contacts)
 }
 
 template <class T>
-bool CollectionEditor<T>::addPhoneNumber( T*       item , PhoneNumber* number )
+bool CollectionEditor<T>::addContactMethod( T*       item , ContactMethod* number )
 {
    Q_UNUSED(item)
    Q_UNUSED(number)

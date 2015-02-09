@@ -168,7 +168,7 @@ SET( libringclient_LIB_SRCS
   src/uri.cpp
   src/account.cpp
   src/person.cpp
-  src/phonenumber.cpp
+  src/contactmethod.cpp
   src/numbercategory.cpp
   src/collectionextensioninterface.cpp
   src/video/rate.cpp
@@ -266,7 +266,7 @@ SET( libringclient_LIB_HDRS
   src/contactproxymodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
-  src/phonenumber.h
+  src/contactmethod.h
   src/phonedirectorymodel.h
   src/historytimecategorymodel.h
   src/numbercategorymodel.h

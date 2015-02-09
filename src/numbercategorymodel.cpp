@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "numbercategorymodel.h"
 #include "delegates/numbercategorydelegate.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "numbercategory.h"
 
 NumberCategoryModel* NumberCategoryModel::m_spInstance = nullptr;
@@ -141,7 +141,7 @@ QModelIndex NumberCategoryModel::nameToIndex(const QString& name) const
 }
 
 ///Be sure the category exist, increment the counter
-void NumberCategoryModel::registerNumber(PhoneNumber* number)
+void NumberCategoryModel::registerNumber(ContactMethod* number)
 {
    NumberCategoryModelPrivate::InternalTypeRepresentation* rep = d_ptr->m_hByName[number->category()->name()];
    if (!rep) {
@@ -151,7 +151,7 @@ void NumberCategoryModel::registerNumber(PhoneNumber* number)
    rep->counter++;
 }
 
-void NumberCategoryModel::unregisterNumber(PhoneNumber* number)
+void NumberCategoryModel::unregisterNumber(ContactMethod* number)
 {
    NumberCategoryModelPrivate::InternalTypeRepresentation* rep = d_ptr->m_hByName[number->category()->name()];
    if (rep)

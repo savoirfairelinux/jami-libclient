@@ -25,7 +25,7 @@
 
 //Ring
 #include "phonedirectorymodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "call.h"
 #include "uri.h"
 #include "numbercategory.h"
@@ -54,13 +54,13 @@ public:
    void updateModel();
 
    //Helper
-   void locateNameRange  (const QString& prefix, QSet<PhoneNumber*>& set);
-   void locateNumberRange(const QString& prefix, QSet<PhoneNumber*>& set);
-   uint getWeight(PhoneNumber* number);
-   void getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<PhoneNumber*>& set) const;
+   void locateNameRange  (const QString& prefix, QSet<ContactMethod*>& set);
+   void locateNumberRange(const QString& prefix, QSet<ContactMethod*>& set);
+   uint getWeight(ContactMethod* number);
+   void getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const;
 
    //Attributes
-   QMultiMap<int,PhoneNumber*> m_hNumbers              ;
+   QMultiMap<int,ContactMethod*> m_hNumbers              ;
    QString                     m_Prefix                ;
    Call*                       m_pCall                 ;
    bool                        m_Enabled               ;
@@ -89,8 +89,8 @@ NumberCompletionModel::~NumberCompletionModel()
 QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid()) return QVariant();
-   const QMap<int,PhoneNumber*>::iterator i = d_ptr->m_hNumbers.end()-1-index.row();
-   const PhoneNumber* n = i.value();
+   const QMap<int,ContactMethod*>::iterator i = d_ptr->m_hNumbers.end()-1-index.row();
+   const ContactMethod* n = i.value();
    const int weight     = i.key  ();
 
    bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() && n->account() != AccountModel::instance()->currentAccount()
@@ -213,7 +213,7 @@ Call* NumberCompletionModel::call() const
    return d_ptr->m_pCall;
 }
 
-PhoneNumber* NumberCompletionModel::number(const QModelIndex& idx) const
+ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
 {
    if (idx.isValid()) {
       return (d_ptr->m_hNumbers.end()-1-idx.row()).value();
@@ -223,14 +223,14 @@ PhoneNumber* NumberCompletionModel::number(const QModelIndex& idx) const
 
 void NumberCompletionModelPrivate::updateModel()
 {
-   QSet<PhoneNumber*> numbers;
+   QSet<ContactMethod*> numbers;
    q_ptr->beginResetModel();
    m_hNumbers.clear();
    if (!m_Prefix.isEmpty()) {
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
-      foreach(PhoneNumber* n,numbers) {
+      foreach(ContactMethod* n,numbers) {
          if (m_UseUnregisteredAccount || ((n->account() && n->account()->isRegistered()) || !n->account()))
             m_hNumbers.insert(getWeight(n),n);
       }
@@ -239,7 +239,7 @@ void NumberCompletionModelPrivate::updateModel()
    emit q_ptr->layoutChanged();
 }
 
-void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<PhoneNumber*>& set) const
+void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const
 {
    if (prefix.isEmpty())
       return;
@@ -295,7 +295,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
       iBeg = map.end();
    }
    while(iBeg != iEnd) {
-      foreach(PhoneNumber* n,iBeg.value()->numbers) {
+      foreach(ContactMethod* n,iBeg.value()->numbers) {
          if (n) {
             set << n;
          }
@@ -304,17 +304,17 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
    }
 }
 
-void NumberCompletionModelPrivate::locateNameRange(const QString& prefix, QSet<PhoneNumber*>& set)
+void NumberCompletionModelPrivate::locateNameRange(const QString& prefix, QSet<ContactMethod*>& set)
 {
    getRange(PhoneDirectoryModel::instance()->d_ptr->m_lSortedNames,prefix,set);
 }
 
-void NumberCompletionModelPrivate::locateNumberRange(const QString& prefix, QSet<PhoneNumber*>& set)
+void NumberCompletionModelPrivate::locateNumberRange(const QString& prefix, QSet<ContactMethod*>& set)
 {
    getRange(PhoneDirectoryModel::instance()->d_ptr->m_hSortedNumbers,prefix,set);
 }
 
-uint NumberCompletionModelPrivate::getWeight(PhoneNumber* number)
+uint NumberCompletionModelPrivate::getWeight(ContactMethod* number)
 {
    Q_UNUSED(number)
    uint weight = 1;

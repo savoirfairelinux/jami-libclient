@@ -30,7 +30,7 @@
 #include "dbus/configurationmanager.h"
 #include "call.h"
 #include "person.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "callmodel.h"
 #include "collectioneditor.h"
 #include "historytimecategorymodel.h"
@@ -552,7 +552,7 @@ QMimeData* HistoryModel::mimeData(const QModelIndexList &indexes) const
          const QString text = data(idx, Call::Role::Number).toString();
          mimeData2->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
          const Call* call = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
-         mimeData2->setData(RingMimes::PHONENUMBER, call->peerPhoneNumber()->toHash().toUtf8());
+         mimeData2->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
          CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
          if (node->type() == CategorizedCompositeNode::Type::CALL)
             mimeData2->setData(RingMimes::HISTORYID  , static_cast<Call*>(node->getSelf())->id().toUtf8());
@@ -569,7 +569,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
    Q_UNUSED(column)
    Q_UNUSED(action)
    setData(parentIdx,-1,Call::Role::DropState);
-   QByteArray encodedPhoneNumber = mime->data( RingMimes::PHONENUMBER );
+   QByteArray encodedContactMethod = mime->data( RingMimes::PHONENUMBER );
    QByteArray encodedPerson     = mime->data( RingMimes::CONTACT     );
 
    if (parentIdx.isValid() && mime->hasFormat( RingMimes::CALLID)) {
@@ -580,7 +580,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
          if (idx.isValid()) {
             const Call* target = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
             if (target) {
-               CallModel::instance()->transfer(call,target->peerPhoneNumber());
+               CallModel::instance()->transfer(call,target->peerContactMethod());
                return true;
             }
          }

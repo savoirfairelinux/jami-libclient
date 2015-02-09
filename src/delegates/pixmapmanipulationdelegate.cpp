@@ -50,7 +50,7 @@ QVariant PixmapManipulationDelegate::callPhoto(Call* c, const QSize& size, bool 
    return QVariant();
 }
 
-QVariant PixmapManipulationDelegate::callPhoto(const PhoneNumber* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulationDelegate::callPhoto(const ContactMethod* c, const QSize& size, bool displayPresence)
 {
    Q_UNUSED(c)
    Q_UNUSED(size)

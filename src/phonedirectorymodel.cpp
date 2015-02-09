@@ -21,7 +21,7 @@
 #include <QtCore/QCoreApplication>
 
 //Ring
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "call.h"
 #include "uri.h"
 #include "account.h"
@@ -88,7 +88,7 @@ PhoneDirectoryModel* PhoneDirectoryModel::instance()
 QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid() || index.row() >= d_ptr->m_lNumbers.size()) return QVariant();
-   const PhoneNumber* number = d_ptr->m_lNumbers[index.row()];
+   const ContactMethod* number = d_ptr->m_lNumbers[index.row()];
    switch (static_cast<PhoneDirectoryModelPrivate::Columns>(index.column())) {
       case PhoneDirectoryModelPrivate::Columns::URI:
          switch (role) {
@@ -260,7 +260,7 @@ Qt::ItemFlags PhoneDirectoryModel::flags(const QModelIndex& index ) const
 {
    Q_UNUSED(index)
 
-   const PhoneNumber* number = d_ptr->m_lNumbers[index.row()];
+   const ContactMethod* number = d_ptr->m_lNumbers[index.row()];
    const bool enabled = !((index.column() == static_cast<int>(PhoneDirectoryModelPrivate::Columns::TRACKED)
       || static_cast<int>(PhoneDirectoryModelPrivate::Columns::PRESENT))
       && number->account() && (!number->account()->supportPresenceSubscribe()));
@@ -273,7 +273,7 @@ Qt::ItemFlags PhoneDirectoryModel::flags(const QModelIndex& index ) const
 ///This model is read and for debug purpose
 bool PhoneDirectoryModel::setData(const QModelIndex& index, const QVariant &value, int role )
 {
-   PhoneNumber* number = d_ptr->m_lNumbers[index.row()];
+   ContactMethod* number = d_ptr->m_lNumbers[index.row()];
    if (static_cast<PhoneDirectoryModelPrivate::Columns>(index.column())==PhoneDirectoryModelPrivate::Columns::TRACKED) {
       if (role == Qt::CheckStateRole && number) {
          number->setTracked(value.toBool());
@@ -298,7 +298,7 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
  * correctly with their alternate URIs. In case there is an obvious duplication,
  * it will try to merge both numbers.
  */
-void PhoneDirectoryModelPrivate::setAccount(PhoneNumber* number, Account* account ) {
+void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* account ) {
    const URI& strippedUri = number->uri();
    const bool hasAtSign = strippedUri.hasHostname();
    number->setAccount(account);
@@ -317,7 +317,7 @@ void PhoneDirectoryModelPrivate::setAccount(PhoneNumber* number, Account* accoun
       }
       else {
          //After all this, it is possible the number is now a duplicate
-         foreach(PhoneNumber* n, wrap->numbers) {
+         foreach(ContactMethod* n, wrap->numbers) {
             if (n != number && n->account() && n->account() == number->account()) {
                number->merge(n);
             }
@@ -333,19 +333,19 @@ void PhoneDirectoryModelPrivate::setAccount(PhoneNumber* number, Account* accoun
  * It will also try to attach an account to existing numbers. This is not 100% reliable, but
  * it is correct often enough to do it.
  */
-PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Account* account, const QString& type)
+ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Account* account, const QString& type)
 {
    return getNumber(uri,nullptr,account,type);
 }
 
 ///Add new information to existing numbers and try to merge
-PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type)
+ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type)
 {
    //TODO pick the best URI
    //TODO the account hostname change corner case
    //TODO search for account that has the same hostname as the URI
    if (wrap) {
-      foreach(PhoneNumber* number, wrap->numbers) {
+      foreach(ContactMethod* number, wrap->numbers) {
 
          //BEGIN Check if contact can be set
 
@@ -414,12 +414,12 @@ PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const 
 }
 
 ///Return/create a number when no information is available
-PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, const QString& type)
+ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString& type)
 {
    const URI strippedUri(uri);
    NumberWrapper* wrap = d_ptr->m_hDirectory[strippedUri];
    if (wrap) {
-      PhoneNumber* nb = wrap->numbers[0];
+      ContactMethod* nb = wrap->numbers[0];
       if ((!nb->hasType()) && (!type.isEmpty())) {
          nb->setCategory(NumberCategoryModel::instance()->getCategory(type));
       }
@@ -427,7 +427,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, const QString& t
    }
 
    //Too bad, lets create one
-   PhoneNumber* number = new PhoneNumber(strippedUri,NumberCategoryModel::instance()->getCategory(type));
+   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance()->getCategory(type));
    number->setIndex(d_ptr->m_lNumbers.size());
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
@@ -446,7 +446,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, const QString& t
 }
 
 ///Create a number when a more information is available duplicated ones
-PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact, Account* account, const QString& type)
+ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact, Account* account, const QString& type)
 {
    //Remove extra data such as "<sip:" from the main URI
    const URI strippedUri(uri);
@@ -466,18 +466,18 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
    }
 
    //Check
-   PhoneNumber* confirmedCandidate = d_ptr->fillDetails(wrap,strippedUri,account,contact,type);
+   ContactMethod* confirmedCandidate = d_ptr->fillDetails(wrap,strippedUri,account,contact,type);
 
    //URIs can be represented in multiple way, check if a more verbose version
    //already exist
-   PhoneNumber* confirmedCandidate2 = nullptr;
+   ContactMethod* confirmedCandidate2 = nullptr;
 
-   //Try to use a PhoneNumber with a contact when possible, work only after the
+   //Try to use a ContactMethod with a contact when possible, work only after the
    //contact are loaded
    if (confirmedCandidate && confirmedCandidate->contact())
       confirmedCandidate2 = d_ptr->fillDetails(wrap2,strippedUri,account,contact,type);
 
-   PhoneNumber* confirmedCandidate3 = nullptr;
+   ContactMethod* confirmedCandidate3 = nullptr;
 
    //Else, try to see if the hostname correspond to the account and flush it
    //This have to be done after the parent if as the above give "better"
@@ -486,7 +486,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
    if (hasAtSign && account && strippedUri.hostname() == account->hostname()) {
      wrap3 = d_ptr->m_hDirectory[strippedUri.userinfo()];
      if (wrap3) {
-         foreach(PhoneNumber* number, wrap3->numbers) {
+         foreach(ContactMethod* number, wrap3->numbers) {
             if (number->account() == account) {
                if (contact && ((!number->contact()) || (contact->uid() == number->contact()->uid())))
                   number->setPerson(contact); //TODO Check all cases from fillDetails()
@@ -498,7 +498,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
      }
    }
 
-   //If multiple PhoneNumber are confirmed, then they are the same, merge them
+   //If multiple ContactMethod are confirmed, then they are the same, merge them
    if (confirmedCandidate3 && (confirmedCandidate || confirmedCandidate2)) {
       confirmedCandidate3->merge(confirmedCandidate?confirmedCandidate:confirmedCandidate2);
    }
@@ -520,7 +520,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
 
    //No better candidates were found than the original assumption, use it
    if (wrap) {
-      foreach(PhoneNumber* number, wrap->numbers) {
+      foreach(ContactMethod* number, wrap->numbers) {
          if (((!account) || number->account() == account) && ((!contact) || ((*contact) == number->contact()) || (!number->contact()))) {
             //Assume this is valid until a smarter solution is implemented to merge both
             //For a short time, a placeholder contact and a contact can coexist, drop the placeholder
@@ -533,7 +533,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
    }
 
    //Create the number
-   PhoneNumber* number = new PhoneNumber(strippedUri,NumberCategoryModel::instance()->getCategory(type));
+   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance()->getCategory(type));
    number->setAccount(account);
    number->setIndex( d_ptr->m_lNumbers.size());
    if (contact)
@@ -565,12 +565,12 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact,
    return number;
 }
 
-PhoneNumber* PhoneDirectoryModel::fromTemporary(const TemporaryPhoneNumber* number)
+ContactMethod* PhoneDirectoryModel::fromTemporary(const TemporaryContactMethod* number)
 {
    return getNumber(number->uri(),number->contact(),number->account());
 }
 
-PhoneNumber* PhoneDirectoryModel::fromHash(const QString& hash)
+ContactMethod* PhoneDirectoryModel::fromHash(const QString& hash)
 {
    const QStringList fields = hash.split("///");
    if (fields.size() == 3) {
@@ -587,7 +587,7 @@ PhoneNumber* PhoneDirectoryModel::fromHash(const QString& hash)
    return nullptr;
 }
 
-QVector<PhoneNumber*> PhoneDirectoryModel::getNumbersByPopularity() const
+QVector<ContactMethod*> PhoneDirectoryModel::getNumbersByPopularity() const
 {
    return d_ptr->m_lPopularityIndex;
 }
@@ -595,14 +595,14 @@ QVector<PhoneNumber*> PhoneDirectoryModel::getNumbersByPopularity() const
 void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
 {
    Q_UNUSED(call)
-   PhoneNumber* number = qobject_cast<PhoneNumber*>(sender());
+   ContactMethod* number = qobject_cast<ContactMethod*>(sender());
    if (number) {
       int currentIndex = number->popularityIndex();
 
       //The number is already in the top 10 and just passed the "index-1" one
       if (currentIndex > 0 && m_lPopularityIndex[currentIndex-1]->callCount() < number->callCount()) {
          do {
-            PhoneNumber* tmp = m_lPopularityIndex[currentIndex-1];
+            ContactMethod* tmp = m_lPopularityIndex[currentIndex-1];
             m_lPopularityIndex[currentIndex-1] = number;
             m_lPopularityIndex[currentIndex  ] = tmp   ;
             tmp->setPopularityIndex(tmp->popularityIndex()+1);
@@ -619,7 +619,7 @@ void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
       }
       //The top 10 is full, but this number just made it to the top 10
       else if (currentIndex == -1 && m_lPopularityIndex.size() >= 10 && m_lPopularityIndex[9] != number && m_lPopularityIndex[9]->callCount() < number->callCount()) {
-         PhoneNumber* tmp = m_lPopularityIndex[9];
+         ContactMethod* tmp = m_lPopularityIndex[9];
          tmp->setPopularityIndex(-1);
          m_lPopularityIndex[9]     = number;
          number->setPopularityIndex(9);
@@ -636,7 +636,7 @@ void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
 
 void PhoneDirectoryModelPrivate::slotChanged()
 {
-   PhoneNumber* number = qobject_cast<PhoneNumber*>(sender());
+   ContactMethod* number = qobject_cast<ContactMethod*>(sender());
    if (number) {
       const int idx = number->index();
 #ifndef NDEBUG
@@ -650,14 +650,14 @@ void PhoneDirectoryModelPrivate::slotChanged()
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
    qDebug() << "New presence buddy" << uri << status << message;
-   PhoneNumber* number = q_ptr->getNumber(uri,AccountModel::instance()->getById(accountId.toAscii()));
+   ContactMethod* number = q_ptr->getNumber(uri,AccountModel::instance()->getById(accountId.toAscii()));
    number->setPresent(status);
    number->setPresenceMessage(message);
    emit number->changed();
 }
 
 ///Make sure the indexes are still valid for those names
-void PhoneDirectoryModelPrivate::indexNumber(PhoneNumber* number, const QStringList &names)
+void PhoneDirectoryModelPrivate::indexNumber(ContactMethod* number, const QStringList &names)
 {
    foreach(const QString& name, names) {
       const QString lower = name.toLower();

@@ -89,7 +89,7 @@ void VCardUtils::addAddress(const Person::Address* addr)
    addProperty(prop, value);
 }
 
-void VCardUtils::addPhoneNumber(const QString& type, const QString& num)
+void VCardUtils::addContactMethod(const QString& type, const QString& num)
 {
    // This will need some formatting
    addProperty(Property::TELEPHONE, type + num);

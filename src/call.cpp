@@ -43,7 +43,7 @@
 #include "callmodel.h"
 #include "numbercategory.h"
 #include "phonedirectorymodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "video/renderer.h"
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
@@ -218,7 +218,7 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
 CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
 m_pStopTimeStamp(0),
 m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
-m_PeerName(),m_pPeerPhoneNumber(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
+m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_CallId(),m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(new UserActionModel(parent))
@@ -226,7 +226,7 @@ m_pUserActionModel(new UserActionModel(parent))
 }
 
 ///Constructor
-Call::Call(Call::State startState, const QString& callId, const QString& peerName, PhoneNumber* number, Account* account)
+Call::Call(Call::State startState, const QString& callId, const QString& peerName, ContactMethod* number, Account* account)
    : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    Q_ASSERT(!callId.isEmpty());
@@ -235,7 +235,7 @@ Call::Call(Call::State startState, const QString& callId, const QString& peerNam
    d_ptr->m_Type             = Call::Type::CALL;
    d_ptr->m_Account          = account;
    d_ptr->m_PeerName         = peerName;
-   d_ptr->m_pPeerPhoneNumber = number;
+   d_ptr->m_pPeerContactMethod = number;
    d_ptr->m_CallId           = callId;
 
    setObjectName("Call:"+callId);
@@ -301,7 +301,7 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    Call::State   startState    = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE], details[CallPrivate::DetailsMapFields::TYPE]);
    Account*      acc           = AccountModel::instance()->getById(account.toAscii());
-   PhoneNumber*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
+   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
    Call*         call          = new Call(startState, callId, peerName, nb, acc);
    call->d_ptr->m_Recording    = callManager.getIsRecording(callId);
    call->d_ptr->m_HistoryState = historyStateFromType(details[Call::HistoryMapFields::STATE]);
@@ -316,8 +316,8 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 
    call->d_ptr->initTimer();
 
-   if (call->peerPhoneNumber()) {
-      call->peerPhoneNumber()->addCall(call);
+   if (call->peerContactMethod()) {
+      call->peerContactMethod()->addCall(call);
    }
 
    return call;
@@ -346,12 +346,12 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
    Account*      acc           = AccountModel::instance()->getById(account.toAscii());
-   PhoneNumber*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
+   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::INCOMING, callId, peerName, nb, acc);
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
    call->d_ptr->m_Direction    = Call::Direction::INCOMING;
-   if (call->peerPhoneNumber()) {
-      call->peerPhoneNumber()->addCall(call);
+   if (call->peerContactMethod()) {
+      call->peerContactMethod()->addCall(call);
    }
    return call;
 } //buildIncomingCall
@@ -366,13 +366,13 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
    Account*      acc           = AccountModel::instance()->getById(account.toAscii());
-   PhoneNumber*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
+   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::RINGING, callId, peerName, nb, acc);
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
    call->d_ptr->m_Direction    = Call::Direction::OUTGOING;
 
-   if (call->peerPhoneNumber()) {
-      call->peerPhoneNumber()->addCall(call);
+   if (call->peerContactMethod()) {
+      call->peerContactMethod()->addCall(call);
    }
    return call;
 } //buildRingingCall
@@ -412,7 +412,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toAscii());
 
    Account*      acc       = AccountModel::instance()->getById(accId);
-   PhoneNumber*  nb        = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
+   ContactMethod*  nb        = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
 
    Call*         call      = new Call(Call::State::OVER, callId, (name == "empty")?QString():name, nb, acc );
 
@@ -449,14 +449,14 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    call->setObjectName("History:"+call->d_ptr->m_CallId);
 
-   if (call->peerPhoneNumber()) {
-      call->peerPhoneNumber()->addCall(call);
+   if (call->peerContactMethod()) {
+      call->peerContactMethod()->addCall(call);
 
       //Reload the glow and number colors
-      connect(call->peerPhoneNumber(),SIGNAL(presentChanged(bool)),call->d_ptr,SLOT(updated()));
+      connect(call->peerContactMethod(),SIGNAL(presentChanged(bool)),call->d_ptr,SLOT(updated()));
 
       //Change the display name and picture
-      connect(call->peerPhoneNumber(),SIGNAL(rebased(PhoneNumber*)),call->d_ptr,SLOT(updated()));
+      connect(call->peerContactMethod(),SIGNAL(rebased(ContactMethod*)),call->d_ptr,SLOT(updated()));
    }
 
    return call;
@@ -621,7 +621,7 @@ const QString Call::dialNumber() const
 {
    if (d_ptr->m_CurrentState != Call::State::DIALING) return QString();
    if (!d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryPhoneNumber();
+      d_ptr->m_pDialNumber = new TemporaryContactMethod();
    }
    return d_ptr->m_pDialNumber->uri();
 }
@@ -632,17 +632,17 @@ const QString Call::id() const
    return d_ptr->m_CallId;
 }
 
-PhoneNumber* Call::peerPhoneNumber() const
+ContactMethod* Call::peerContactMethod() const
 {
    if (d_ptr->m_CurrentState == Call::State::DIALING) {
       if (!d_ptr->m_pTransferNumber) {
-         d_ptr->m_pTransferNumber = new TemporaryPhoneNumber(d_ptr->m_pPeerPhoneNumber);
+         d_ptr->m_pTransferNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
       }
       if (!d_ptr->m_pDialNumber)
-         d_ptr->m_pDialNumber = new TemporaryPhoneNumber(d_ptr->m_pPeerPhoneNumber);
+         d_ptr->m_pDialNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
       return d_ptr->m_pDialNumber;
    }
-   return d_ptr->m_pPeerPhoneNumber?d_ptr->m_pPeerPhoneNumber:const_cast<PhoneNumber*>(PhoneNumber::BLANK());
+   return d_ptr->m_pPeerContactMethod?d_ptr->m_pPeerContactMethod:const_cast<ContactMethod*>(ContactMethod::BLANK());
 }
 
 ///Get the peer name
@@ -656,14 +656,14 @@ const QString Call::formattedName() const
 {
    if (type() == Call::Type::CONFERENCE)
       return tr("Conference");
-   else if (!peerPhoneNumber())
+   else if (!peerContactMethod())
       return "Error";
-   else if (peerPhoneNumber()->contact() && !peerPhoneNumber()->contact()->formattedName().isEmpty())
-      return peerPhoneNumber()->contact()->formattedName();
+   else if (peerContactMethod()->contact() && !peerContactMethod()->contact()->formattedName().isEmpty())
+      return peerContactMethod()->contact()->formattedName();
    else if (!peerName().isEmpty())
       return d_ptr->m_PeerName;
-   else if (peerPhoneNumber())
-      return peerPhoneNumber()->uri();
+   else if (peerContactMethod())
+      return peerContactMethod()->uri();
    else
       return tr("Unknown");
 }
@@ -798,7 +798,7 @@ Video::Renderer* Call::videoRenderer() const
 void Call::setTransferNumber(const QString& number)
 {
    if (!d_ptr->m_pTransferNumber) {
-      d_ptr->m_pTransferNumber = new TemporaryPhoneNumber();
+      d_ptr->m_pTransferNumber = new TemporaryContactMethod();
    }
    d_ptr->m_pTransferNumber->setUri(number);
 }
@@ -813,7 +813,7 @@ void Call::setDialNumber(const QString& number)
    }
 
    if (!d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryPhoneNumber();
+      d_ptr->m_pDialNumber = new TemporaryContactMethod();
    }
 
    d_ptr->m_pDialNumber->setUri(number);
@@ -823,10 +823,10 @@ void Call::setDialNumber(const QString& number)
 }
 
 ///Set the dial number from a full phone number
-void Call::setDialNumber(const PhoneNumber* number)
+void Call::setDialNumber(const ContactMethod* number)
 {
    if (d_ptr->m_CurrentState == Call::State::DIALING && !d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryPhoneNumber(number);
+      d_ptr->m_pDialNumber = new TemporaryContactMethod(number);
    }
    if (d_ptr->m_pDialNumber && number)
       d_ptr->m_pDialNumber->setUri(number->uri());
@@ -937,8 +937,8 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       emit q_ptr->stateChanged();
    }
    if (m_CurrentState != Call::State::DIALING && m_pDialNumber) {
-      if (!m_pPeerPhoneNumber)
-         m_pPeerPhoneNumber = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+      if (!m_pPeerContactMethod)
+         m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
@@ -1245,25 +1245,25 @@ void CallPrivate::call()
    }
    //Normal case
    else if(m_Account) {
-      qDebug() << "Calling " << q_ptr->peerPhoneNumber()->uri() << " with account " << m_Account << ". callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+      qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account << ". callId : " << m_CallId  << "ConfId:" << q_ptr->id();
 
-      this->m_pPeerPhoneNumber = PhoneDirectoryModel::instance()->getNumber(m_pDialNumber->uri(),q_ptr->account());
+      this->m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(m_pDialNumber->uri(),q_ptr->account());
 
       //Warning: m_pDialNumber can become nullptr when linking directly
       callManager.placeCall(m_Account->id(), m_CallId, m_pDialNumber->uri());
 
       if (PersonModel::instance()->hasBackends()) {
-         if (q_ptr->peerPhoneNumber()->contact())
-            m_PeerName = q_ptr->peerPhoneNumber()->contact()->formattedName();
+         if (q_ptr->peerContactMethod()->contact())
+            m_PeerName = q_ptr->peerContactMethod()->contact()->formattedName();
       }
-      connect(q_ptr->peerPhoneNumber(),SIGNAL(presentChanged(bool)),this,SLOT(updated()));
+      connect(q_ptr->peerContactMethod(),SIGNAL(presentChanged(bool)),this,SLOT(updated()));
       time_t curTime;
       ::time(&curTime);
       setStartTimeStamp(curTime);
       this->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
       m_Direction = Call::Direction::OUTGOING;
-      if (q_ptr->peerPhoneNumber()) {
-         q_ptr->peerPhoneNumber()->addCall(q_ptr);
+      if (q_ptr->peerContactMethod()) {
+         q_ptr->peerContactMethod()->addCall(q_ptr);
       }
       if (m_pDialNumber)
          emit q_ptr->dialNumberChanged(QString());
@@ -1324,8 +1324,8 @@ void CallPrivate::start()
    emit q_ptr->changed();
    emit q_ptr->changed(q_ptr);
    if (m_pDialNumber) {
-      if (!m_pPeerPhoneNumber)
-         m_pPeerPhoneNumber = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+      if (!m_pPeerContactMethod)
+         m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
@@ -1404,7 +1404,7 @@ void CallPrivate::warning()
 ///Input text on the call item
 void Call::appendText(const QString& str)
 {
-   TemporaryPhoneNumber* editNumber = nullptr;
+   TemporaryContactMethod* editNumber = nullptr;
 
    switch (d_ptr->m_CurrentState) {
    case Call::State::TRANSFERRED :
@@ -1437,7 +1437,7 @@ void Call::appendText(const QString& str)
          emit dialNumberChanged(editNumber->uri());
    }
    else
-      qDebug() << "TemporaryPhoneNumber not defined";
+      qDebug() << "TemporaryContactMethod not defined";
 
 
    emit changed();
@@ -1447,7 +1447,7 @@ void Call::appendText(const QString& str)
 ///Remove the last character
 void Call::backspaceItemText()
 {
-   TemporaryPhoneNumber* editNumber = nullptr;
+   TemporaryContactMethod* editNumber = nullptr;
 
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
@@ -1486,13 +1486,13 @@ void Call::backspaceItemText()
       }
    }
    else
-      qDebug() << "TemporaryPhoneNumber not defined";
+      qDebug() << "TemporaryContactMethod not defined";
 }
 
 ///Reset the string a dialing or transfer call
 void Call::reset()
 {
-   TemporaryPhoneNumber* editNumber = nullptr;
+   TemporaryContactMethod* editNumber = nullptr;
 
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
@@ -1602,7 +1602,7 @@ void CallPrivate::initTimer()
 ///Common source for model data roles
 QVariant Call::roleData(int role) const
 {
-   const Person* ct = peerPhoneNumber()?peerPhoneNumber()->contact():nullptr;
+   const Person* ct = peerContactMethod()?peerContactMethod()->contact():nullptr;
    switch (role) {
       case Call::Role::Name:
       case Qt::DisplayRole:
@@ -1611,7 +1611,7 @@ QVariant Call::roleData(int role) const
          else if (state() == Call::State::DIALING)
             return dialNumber();
          else if (d_ptr->m_PeerName.isEmpty())
-            return ct?ct->formattedName():peerPhoneNumber()?peerPhoneNumber()->uri():dialNumber();
+            return ct?ct->formattedName():peerContactMethod()?peerContactMethod()->uri():dialNumber();
          else
             return formattedName();
          break;
@@ -1621,7 +1621,7 @@ QVariant Call::roleData(int role) const
       case Qt::EditRole:
          return dialNumber();
       case Call::Role::Number:
-         return peerPhoneNumber()->uri();
+         return peerContactMethod()->uri();
          break;
       case Call::Role::Direction2:
          return static_cast<int>(d_ptr->m_Direction); //TODO Qt5, use the Q_ENUM
@@ -1673,7 +1673,7 @@ QVariant Call::roleData(int role) const
          return QVariant::fromValue(const_cast<Call*>(this));
          break;
       case Call::Role::PhoneNu:
-         return QVariant::fromValue(peerPhoneNumber());
+         return QVariant::fromValue(peerContactMethod());
          break;
       case Call::Role::PhotoPtr:
          return ct?ct->photo():QVariant();
@@ -1691,17 +1691,17 @@ QVariant Call::roleData(int role) const
       case Call::Role::IsRecording:
          return isRecording();
       case Call::Role::IsPresent:
-         return peerPhoneNumber()->isPresent();
+         return peerContactMethod()->isPresent();
       case Call::Role::IsTracked:
-         return peerPhoneNumber()->isTracked();
+         return peerContactMethod()->isTracked();
       case Call::Role::SupportPresence:
-         return peerPhoneNumber()->supportPresence();
+         return peerContactMethod()->supportPresence();
       case Call::Role::CategoryIcon:
-         return peerPhoneNumber()->category()->icon(peerPhoneNumber()->isTracked(),peerPhoneNumber()->isPresent());
+         return peerContactMethod()->category()->icon(peerContactMethod()->isTracked(),peerContactMethod()->isPresent());
       case Call::Role::CallCount:
-         return peerPhoneNumber()->callCount();
+         return peerContactMethod()->callCount();
       case Call::Role::TotalSpentTime:
-         return peerPhoneNumber()->totalSpentTime();
+         return peerContactMethod()->totalSpentTime();
       case Call::Role::DropState:
          return property("dropState");
          break;

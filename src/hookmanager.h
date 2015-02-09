@@ -37,7 +37,7 @@ public:
    Q_PROPERTY(QString command             READ command              WRITE setCommand            )
    Q_PROPERTY(bool    iax2Enabled         READ isIax2Enabled        WRITE setIax2Enabled        )
    Q_PROPERTY(bool    sipEnabled          READ isSipEnabled         WRITE setSipEnabled         )
-   Q_PROPERTY(bool    phoneNumberEnabled  READ isPhoneNumberEnabled WRITE setPhoneNumberEnabled )
+   Q_PROPERTY(bool    phoneNumberEnabled  READ isContactMethodEnabled WRITE setContactMethodEnabled )
 
    //Getters
    QString prefix           () const;
@@ -45,7 +45,7 @@ public:
    QString command          () const;
    bool isIax2Enabled       () const;
    bool isSipEnabled        () const;
-   bool isPhoneNumberEnabled() const;
+   bool isContactMethodEnabled() const;
 
    //Setters
    void setPrefix             (const QString& prefix );
@@ -53,7 +53,7 @@ public:
    void setCommand            (const QString& command);
    void setIax2Enabled        (bool enabled          );
    void setSipEnabled         (bool enabled          );
-   void setPhoneNumberEnabled (bool enabled          );
+   void setContactMethodEnabled (bool enabled          );
 
 private:
    explicit HookManager();

@@ -23,7 +23,7 @@
 #include "person.h"
 #include "call.h"
 #include "uri.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "collectioninterface.h"
 #include "collectionmodel.h"
 #include "collectioneditor.h"
@@ -162,7 +162,7 @@ QModelIndex PersonModel::parent( const QModelIndex& idx) const
       return QModelIndex();
    CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)idx.internalPointer();
    if (modelItem && modelItem->type() == CategorizedCompositeNode::Type::NUMBER) {
-      int idx2 = d_ptr->m_lPersons.indexOf(((Person::PhoneNumbers*)modelItem)->contact());
+      int idx2 = d_ptr->m_lPersons.indexOf(((Person::ContactMethods*)modelItem)->contact());
       if (idx2 != -1) {
          return PersonModel::index(idx2,0,QModelIndex());
       }

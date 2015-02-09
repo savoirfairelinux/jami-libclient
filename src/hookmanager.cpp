@@ -41,7 +41,7 @@ public:
    QString m_Command        ;
    bool m_Iax2Enabled       ;
    bool m_SipEnabled        ;
-   bool m_PhoneNumberEnabled;
+   bool m_ContactMethodEnabled;
 };
 
 HookManager* HookManager::m_spInstance = nullptr;
@@ -55,7 +55,7 @@ HookManager::HookManager() : QObject(QCoreApplication::instance()),d_ptr(new Hoo
    d_ptr->m_Command            = hooks[HookManagerPrivate::Names::URLHOOK_COMMAND             ];
    d_ptr->m_Iax2Enabled        = hooks[HookManagerPrivate::Names::URLHOOK_IAX2_ENABLED        ]=="true"?true:false;
    d_ptr->m_SipEnabled         = hooks[HookManagerPrivate::Names::URLHOOK_SIP_ENABLED         ]=="true"?true:false;
-   d_ptr->m_PhoneNumberEnabled = hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ENABLED   ]=="true"?true:false;
+   d_ptr->m_ContactMethodEnabled = hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ENABLED   ]=="true"?true:false;
 
 }
 
@@ -73,7 +73,7 @@ void HookManagerPrivate::save()
    hooks[HookManagerPrivate::Names::URLHOOK_COMMAND             ] = m_Command;
    hooks[HookManagerPrivate::Names::URLHOOK_IAX2_ENABLED        ] = m_Iax2Enabled?"true":"false";
    hooks[HookManagerPrivate::Names::URLHOOK_SIP_ENABLED         ] = m_SipEnabled?"true":"false";
-   hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ENABLED   ] = m_PhoneNumberEnabled?"true":"false";
+   hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ENABLED   ] = m_ContactMethodEnabled?"true":"false";
    configurationManager.setHookSettings(hooks);
 }
 
@@ -109,9 +109,9 @@ bool HookManager::isSipEnabled() const
    return d_ptr->m_SipEnabled;
 }
 
-bool HookManager::isPhoneNumberEnabled() const
+bool HookManager::isContactMethodEnabled() const
 {
-   return d_ptr->m_PhoneNumberEnabled;
+   return d_ptr->m_ContactMethodEnabled;
 }
 
 void HookManager::setPrefix(const QString& prefix)
@@ -144,8 +144,8 @@ void HookManager::setSipEnabled(bool enabled)
    d_ptr->save();
 }
 
-void HookManager::setPhoneNumberEnabled(bool enabled)
+void HookManager::setContactMethodEnabled(bool enabled)
 {
-   d_ptr->m_PhoneNumberEnabled = enabled;
+   d_ptr->m_ContactMethodEnabled = enabled;
    d_ptr->save();
 }

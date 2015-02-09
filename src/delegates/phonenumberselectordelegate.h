@@ -22,19 +22,19 @@
 #include "../typedefs.h"
 #include "../person.h"
 
-class PhoneNumber;
+class ContactMethod;
 class Person;
 
 ///Common point visitor for UI specific contact dialog
-class LIB_EXPORT PhoneNumberSelector {
+class LIB_EXPORT ContactMethodSelector {
 public:
-   virtual ~PhoneNumberSelector() {}
-   virtual PhoneNumber* getNumber(const Person* nb) = 0;
-   static PhoneNumberSelector* defaultDelegate();
+   virtual ~ContactMethodSelector() {}
+   virtual ContactMethod* getNumber(const Person* nb) = 0;
+   static ContactMethodSelector* defaultDelegate();
 protected:
-   static void setDefaultDelegate(PhoneNumberSelector* v);
+   static void setDefaultDelegate(ContactMethodSelector* v);
 private:
-   static PhoneNumberSelector* m_spDefaultDelegate;
+   static ContactMethodSelector* m_spDefaultDelegate;
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include <QtCore/QVector>
 
 class NumberCategoryDelegate;
-class PhoneNumber;
+class ContactMethod;
 class NumberCategory;
 class NumberCategoryModelPrivate;
 
@@ -55,8 +55,8 @@ public:
    static NumberCategory* other();
 
    //Mutator
-   void registerNumber  (PhoneNumber* number);
-   void unregisterNumber(PhoneNumber* number);
+   void registerNumber  (ContactMethod* number);
+   void unregisterNumber(ContactMethod* number);
 
 private:
    explicit NumberCategoryModel(QObject* parent = nullptr);

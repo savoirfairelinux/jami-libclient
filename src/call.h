@@ -34,8 +34,8 @@ class QTimer;
 class Account;
 class InstantMessagingModel;
 class UserActionModel;
-class PhoneNumber;
-class TemporaryPhoneNumber;
+class ContactMethod;
+class TemporaryContactMethod;
 class CollectionInterface;
 namespace Video {
    class Renderer;
@@ -250,7 +250,7 @@ public:
    Q_PROPERTY( Call::LegacyHistoryState historyState     READ historyState                        )
 
    //Read/write properties
-   Q_PROPERTY( PhoneNumber*       peerPhoneNumber  READ peerPhoneNumber                           )
+   Q_PROPERTY( ContactMethod*       peerContactMethod  READ peerContactMethod                           )
    Q_PROPERTY( QString            peerName         READ peerName          WRITE setPeerName       )
    Q_PROPERTY( QString            transferNumber   READ transferNumber    WRITE setTransferNumber )
    Q_PROPERTY( QString            recordingPath    READ recordingPath     WRITE setRecordingPath  )
@@ -265,7 +265,7 @@ public:
    //Getters
    Call::State              state            () const;
    const QString            id               () const;
-   PhoneNumber*             peerPhoneNumber  () const;
+   ContactMethod*             peerContactMethod  () const;
    const QString            peerName         () const;
    Call::LegacyHistoryState historyState     () const;
    bool                     isRecording      () const;
@@ -297,7 +297,7 @@ public:
    //Setters
    void setTransferNumber ( const QString&     number     );
    void setDialNumber     ( const QString&     number     );
-   void setDialNumber     ( const PhoneNumber* number     );
+   void setDialNumber     ( const ContactMethod* number     );
    void setRecordingPath  ( const QString&     path       );
    void setPeerName       ( const QString&     name       );
    void setAccount        ( Account*           account    );
@@ -314,7 +314,7 @@ public:
 private:
    explicit Call(const QString& confId, const QString& account);
    ~Call();
-   Call(Call::State startState, const QString& callId, const QString& peerName = QString(), PhoneNumber* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
+   Call(Call::State startState, const QString& callId, const QString& peerName = QString(), ContactMethod* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
 
    CallPrivate* d_ptr;
    Q_DECLARE_PRIVATE(Call)

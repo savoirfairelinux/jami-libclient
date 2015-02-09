@@ -23,7 +23,7 @@
 #include <account.h>
 
 class AccountPrivate;
-class PhoneNumber;
+class ContactMethod;
 class CipherModel;
 class AccountStatusModel;
 
@@ -55,7 +55,7 @@ public:
    //Attributes
    QByteArray              m_AccountId           ;
    QHash<QString,QString>  m_hAccountDetails     ;
-   PhoneNumber*            m_pAccountNumber      ;
+   ContactMethod*            m_pAccountNumber      ;
    Account*                q_ptr                 ;
    bool                    m_isLoaded            ;
    int                     m_LastTransportCode   ;

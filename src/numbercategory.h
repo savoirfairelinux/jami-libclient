@@ -26,7 +26,7 @@ class QPixmap;
 class NumberCategoryPrivate;
 
 /**
- * This class represent a PhoneNumber category. Categories usually
+ * This class represent a ContactMethod category. Categories usually
  * come from the contact provider, but can be added dynamically too
  */
 class LIB_EXPORT NumberCategory : public QObject {

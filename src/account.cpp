@@ -44,7 +44,7 @@
 #include "audio/codecmodel.h"
 #include "video/codecmodel2.h"
 #include "ringtonemodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "presencestatusmodel.h"
 #include "uri.h"
@@ -111,7 +111,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
    Account* a = new Account();
    a->d_ptr->m_hAccountDetails.clear();
    a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ENABLED] = "false";
-   a->d_ptr->m_pAccountNumber = const_cast<PhoneNumber*>(PhoneNumber::BLANK());
+   a->d_ptr->m_pAccountNumber = const_cast<ContactMethod*>(ContactMethod::BLANK());
    MapStringString tmp = configurationManager.getAccountTemplate();
    QMutableMapIterator<QString, QString> iter(tmp);
    while (iter.hasNext()) {
@@ -1499,7 +1499,7 @@ void AccountPrivate::reload()
             disconnect(m_pAccountNumber,SIGNAL(presentChanged(bool)),this,SLOT(slotPresentChanged(bool)));
          }
          m_pAccountNumber = PhoneDirectoryModel::instance()->getNumber(currentUri,q_ptr);
-         m_pAccountNumber->setType(PhoneNumber::Type::ACCOUNT);
+         m_pAccountNumber->setType(ContactMethod::Type::ACCOUNT);
          connect(m_pAccountNumber,SIGNAL(presenceMessageChanged(QString)),this,SLOT(slotPresenceMessageChanged(QString)));
          connect(m_pAccountNumber,SIGNAL(presentChanged(bool)),this,SLOT(slotPresentChanged(bool)));
       }

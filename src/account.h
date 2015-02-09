@@ -33,7 +33,7 @@ class QString;
 #include "typedefs.h"
 class CredentialModel        ;
 class RingToneModel          ;
-class PhoneNumber            ;
+class ContactMethod            ;
 class SecurityValidationModel;
 class Certificate            ;
 class CipherModel            ;

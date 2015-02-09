@@ -25,7 +25,7 @@
 #include "historymodel.h"
 #include "dbus/presencemanager.h"
 #include "phonedirectorymodel.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "callmodel.h"
 #include "call.h"
 #include "person.h"
@@ -64,8 +64,8 @@ public:
    QVariant commonCallInfo(NumberTreeBackend* call, int role = Qt::DisplayRole) const;
    QString category(NumberTreeBackend* number) const;
    bool                  displayFrequentlyUsed() const;
-   QVector<PhoneNumber*>   bookmarkList         () const;
-   static QVector<PhoneNumber*> serialisedToList(const QStringList& list);
+   QVector<ContactMethod*>   bookmarkList         () const;
+   static QVector<ContactMethod*> serialisedToList(const QStringList& list);
 
 private Q_SLOTS:
    void slotRequest(const QString& uri);
@@ -85,11 +85,11 @@ class NumberTreeBackend : public CategorizedCompositeNode
 {
    friend class BookmarkModel;
    public:
-      NumberTreeBackend(PhoneNumber* number);
+      NumberTreeBackend(ContactMethod* number);
       virtual ~NumberTreeBackend();
       virtual QObject* getSelf() const { return nullptr; }
 
-      PhoneNumber* m_pNumber;
+      ContactMethod* m_pNumber;
       BookmarkTopLevelItem* m_pParent;
       int m_Index;
       BookmarkItemNode* m_pNode;
@@ -99,9 +99,9 @@ class BookmarkItemNode : public QObject //TODO remove this once Qt4 support is d
 {
    Q_OBJECT
 public:
-   BookmarkItemNode(BookmarkModel* m, PhoneNumber* n, NumberTreeBackend* backend);
+   BookmarkItemNode(BookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend);
 private:
-   PhoneNumber* m_pNumber;
+   ContactMethod* m_pNumber;
    NumberTreeBackend* m_pBackend;
    BookmarkModel* m_pModel;
 private Q_SLOTS:
@@ -115,7 +115,7 @@ BookmarkModelPrivate::BookmarkModelPrivate(BookmarkModel* parent) : QObject(pare
    
 }
 
-NumberTreeBackend::NumberTreeBackend(PhoneNumber* number): CategorizedCompositeNode(CategorizedCompositeNode::Type::BOOKMARK),
+NumberTreeBackend::NumberTreeBackend(ContactMethod* number): CategorizedCompositeNode(CategorizedCompositeNode::Type::BOOKMARK),
    m_pNumber(number),m_pParent(nullptr),m_pNode(nullptr),m_Index(-1){
    Q_ASSERT(number != nullptr);
 }
@@ -124,7 +124,7 @@ NumberTreeBackend::~NumberTreeBackend() {
    if (m_pNode) delete m_pNode;
 }
 
-BookmarkItemNode::BookmarkItemNode(BookmarkModel* m, PhoneNumber* n, NumberTreeBackend* backend) :
+BookmarkItemNode::BookmarkItemNode(BookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend) :
 m_pNumber(n),m_pBackend(backend),m_pModel(m){
    connect(n,SIGNAL(changed()),this,SLOT(slotNumberChanged()));
 }
@@ -182,10 +182,10 @@ void BookmarkModel::reloadCategories()
          item->m_Row = d_ptr->m_lCategoryCounter.size();
          item->m_MostPopular = true;
          d_ptr->m_lCategoryCounter << item;
-         const QVector<PhoneNumber*> cl = PhoneDirectoryModel::instance()->getNumbersByPopularity();
+         const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance()->getNumbersByPopularity();
 
          for (int i=0;i<((cl.size()>=10)?10:cl.size());i++) {
-            PhoneNumber* n = cl[i];
+            ContactMethod* n = cl[i];
             NumberTreeBackend* bm = new NumberTreeBackend(n);
             bm->m_pParent = item;
             bm->m_Index = item->m_lChildren.size();
@@ -196,7 +196,7 @@ void BookmarkModel::reloadCategories()
 
       }
 
-      foreach(PhoneNumber* bookmark, d_ptr->bookmarkList()) {
+      foreach(ContactMethod* bookmark, d_ptr->bookmarkList()) {
          NumberTreeBackend* bm = new NumberTreeBackend(bookmark);
          const QString val = d_ptr->category(bm);
          if (!d_ptr->m_hCategories[val]) {
@@ -374,7 +374,7 @@ QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int rol
          cat = number->m_pNumber->presenceMessage();
          break;
       case Call::Role::Number:
-         cat = number->m_pNumber->uri();//call->getPeerPhoneNumber();
+         cat = number->m_pNumber->uri();//call->getPeerContactMethod();
          break;
       case Call::Role::Direction2:
          cat = 4;//call->getHistoryState();
@@ -398,7 +398,7 @@ QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int rol
          cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
          break;
       case Call::Role::PhoneNu:
-         return QVariant::fromValue(const_cast<PhoneNumber*>(number->m_pNumber));
+         return QVariant::fromValue(const_cast<ContactMethod*>(number->m_pNumber));
       case Call::Role::IsBookmark:
          return true;
       case Call::Role::Filter:
@@ -432,11 +432,11 @@ void BookmarkModelPrivate::slotRequest(const QString& uri)
 
 
 
-QVector<PhoneNumber*> BookmarkModelPrivate::serialisedToList(const QStringList& list)
+QVector<ContactMethod*> BookmarkModelPrivate::serialisedToList(const QStringList& list)
 {
-   QVector<PhoneNumber*> numbers;
+   QVector<ContactMethod*> numbers;
    foreach(const QString& item,list) {
-      PhoneNumber* nb = PhoneDirectoryModel::instance()->fromHash(item);
+      ContactMethod* nb = PhoneDirectoryModel::instance()->fromHash(item);
       if (nb) {
          nb->setTracked(true);
          nb->setUid(item);
@@ -451,9 +451,9 @@ bool BookmarkModelPrivate::displayFrequentlyUsed() const
    return true;
 }
 
-QVector<PhoneNumber*> BookmarkModelPrivate::bookmarkList() const
+QVector<ContactMethod*> BookmarkModelPrivate::bookmarkList() const
 {
-   return (q_ptr->backends().size() > 0) ? q_ptr->backends()[0]->items<PhoneNumber>() : QVector<PhoneNumber*>();
+   return (q_ptr->backends().size() > 0) ? q_ptr->backends()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
 }
 
 BookmarkTopLevelItem::BookmarkTopLevelItem(QString name) 
@@ -484,16 +484,16 @@ bool BookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
    return false;
 }
 
-void BookmarkModel::addBookmark(PhoneNumber* number)
+void BookmarkModel::addBookmark(ContactMethod* number)
 {
    Q_UNUSED(number)
    if (backends().size())
-      backends()[0]->editor<PhoneNumber>()->append(number);
+      backends()[0]->editor<ContactMethod>()->append(number);
    else
       qWarning() << "No bookmark backend is set";
 }
 
-void BookmarkModel::removeBookmark(PhoneNumber* number)
+void BookmarkModel::removeBookmark(ContactMethod* number)
 {
    Q_UNUSED(number)
 }
@@ -501,7 +501,7 @@ void BookmarkModel::removeBookmark(PhoneNumber* number)
 void BookmarkModel::remove(const QModelIndex& idx)
 {
    Q_UNUSED(idx)
-//    PhoneNumber* nb = getNumber(idx);
+//    ContactMethod* nb = getNumber(idx);
 //    if (nb) {
 //       removeRows(idx.row(),1,idx.parent());
 //       removeBookmark(nb);
@@ -510,7 +510,7 @@ void BookmarkModel::remove(const QModelIndex& idx)
 //    }
 }
 
-PhoneNumber* BookmarkModel::getNumber(const QModelIndex& idx)
+ContactMethod* BookmarkModel::getNumber(const QModelIndex& idx)
 {
    if (idx.isValid()) {
       if (idx.parent().isValid() && idx.parent().row() < d_ptr->m_lCategoryCounter.size()) {
@@ -547,14 +547,14 @@ void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 // }
 
 
-bool BookmarkModel::addItemCallback(PhoneNumber* item)
+bool BookmarkModel::addItemCallback(ContactMethod* item)
 {
    Q_UNUSED(item)
    reloadCategories(); //TODO this is far from optimal
    return true;
 }
 
-bool BookmarkModel::removeItemCallback(PhoneNumber* item)
+bool BookmarkModel::removeItemCallback(ContactMethod* item)
 {
    Q_UNUSED(item)
    return false;
@@ -590,7 +590,7 @@ bool BookmarkModel::clearAllBackends() const
 // void BookmarkModel::addBackend(CollectionInterface* backend, LoadOptions options)
 // {
 //    d_ptr->m_lBackends << backend;
-//    connect(backend,SIGNAL(newBookmarkAdded(PhoneNumber*)),this,SLOT(reloadCategories()));
+//    connect(backend,SIGNAL(newBookmarkAdded(ContactMethod*)),this,SLOT(reloadCategories()));
 //    if (options & LoadOptions::FORCE_ENABLED)
 //       backend->load();
 // }

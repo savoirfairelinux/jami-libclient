@@ -86,7 +86,7 @@ struct VCardMapper {
       c->setPhoto(photo);
    }
 
-   void addPhoneNumber(Person* c, const QString& key, const QByteArray& fn) {
+   void addContactMethod(Person* c, const QString& key, const QByteArray& fn) {
       Q_UNUSED(c)
       Q_UNUSED(key)
       qDebug() << fn;
@@ -120,7 +120,7 @@ struct VCardMapper {
          }
 
          if(key.contains(VCardUtils::Property::TELEPHONE)) {
-            addPhoneNumber(c, key, value);
+            addContactMethod(c, key, value);
             return true;
          }
 
@@ -515,7 +515,7 @@ ProfileContentBackend::SupportedFeatures ProfileContentBackend::supportedFeature
       //TODO ^^ Remove that one once debugging is done
 }
 
-// bool ProfileContentBackend::addPhoneNumber( Person* contact , PhoneNumber* number)
+// bool ProfileContentBackend::addContactMethod( Person* contact , ContactMethod* number)
 // {
 //    Q_UNUSED(contact)
 //    Q_UNUSED(number)

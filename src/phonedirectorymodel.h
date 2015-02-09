@@ -25,11 +25,11 @@
 
 //Ring
 #include "uri.h"
-class PhoneNumber         ;
+class ContactMethod         ;
 class Person              ;
 class Account             ;
 class Call                ;
-class TemporaryPhoneNumber;
+class TemporaryContactMethod;
 
 //Private
 class PhoneDirectoryModelPrivate;
@@ -45,7 +45,7 @@ class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
    friend class AutoCompletionTest;
 
    //Phone number need to update the indexes as they change
-   friend class PhoneNumber;
+   friend class ContactMethod;
 
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -68,11 +68,11 @@ public:
    static PhoneDirectoryModel* instance();
 
    //Factory
-   Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, const QString& type = QString());
-   Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, Account* account, const QString& type = QString());
-   Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, Person* contact, Account* account = nullptr, const QString& type = QString());
-   Q_INVOKABLE PhoneNumber* fromHash (const QString& hash);
-   Q_INVOKABLE PhoneNumber* fromTemporary(const TemporaryPhoneNumber* number);
+   Q_INVOKABLE ContactMethod* getNumber(const QString& uri, const QString& type = QString());
+   Q_INVOKABLE ContactMethod* getNumber(const QString& uri, Account* account, const QString& type = QString());
+   Q_INVOKABLE ContactMethod* getNumber(const QString& uri, Person* contact, Account* account = nullptr, const QString& type = QString());
+   Q_INVOKABLE ContactMethod* fromHash (const QString& hash);
+   Q_INVOKABLE ContactMethod* fromTemporary(const TemporaryContactMethod* number);
 
    //Getter
    int count() const;
@@ -82,7 +82,7 @@ public:
    void setCallWithAccount(bool value);
 
    //Static
-   QVector<PhoneNumber*> getNumbersByPopularity() const;
+   QVector<ContactMethod*> getNumbersByPopularity() const;
 
 private:
    //Constructor

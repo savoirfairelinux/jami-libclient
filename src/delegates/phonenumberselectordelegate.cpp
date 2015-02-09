@@ -18,14 +18,14 @@
 #include "phonenumberselectordelegate.h"
 
 //Interface only
-PhoneNumberSelector* PhoneNumberSelector::m_spDefaultDelegate = nullptr;
+ContactMethodSelector* ContactMethodSelector::m_spDefaultDelegate = nullptr;
 
-void PhoneNumberSelector::setDefaultDelegate(PhoneNumberSelector* v)
+void ContactMethodSelector::setDefaultDelegate(ContactMethodSelector* v)
 {
    m_spDefaultDelegate = v;
 }
 
-PhoneNumberSelector* PhoneNumberSelector::defaultDelegate()
+ContactMethodSelector* ContactMethodSelector::defaultDelegate()
 {
    return m_spDefaultDelegate;
 }

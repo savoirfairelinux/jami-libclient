@@ -25,7 +25,7 @@
 
 //Ring
 class Person    ;
-class PhoneNumber;
+class ContactMethod;
 class Call       ;
 
 /**
@@ -44,7 +44,7 @@ public:
    virtual ~PixmapManipulationDelegate() {}
    virtual QVariant contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
    virtual QVariant callPhoto(Call* c, const QSize& size, bool displayPresence = true);
-   virtual QVariant callPhoto(const PhoneNumber* n, const QSize& size, bool displayPresence = true);
+   virtual QVariant callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
    virtual QVariant numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
    virtual QVariant serurityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);

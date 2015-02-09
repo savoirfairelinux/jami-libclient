@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "presencecollectionextension.h"
 #include "collectioninterface.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "person.h"
 #include "presencestatusmodel.h"
 
@@ -52,7 +52,7 @@ bool PresenceCollectionExtension::setData(CollectionInterface* backend, const QM
       switch(value.toInt()){
          case Qt::Checked:
             foreach(Person* c, backend->items<Person>()) {
-               foreach(PhoneNumber* n,c->phoneNumbers()) {
+               foreach(ContactMethod* n,c->phoneNumbers()) {
                   n->setTracked(true);
                }
             }
@@ -61,7 +61,7 @@ bool PresenceCollectionExtension::setData(CollectionInterface* backend, const QM
             break;
          case Qt::Unchecked:
             foreach(Person* c, backend->items<Person>()) {
-               foreach(PhoneNumber* n,c->phoneNumbers()) {
+               foreach(ContactMethod* n,c->phoneNumbers()) {
                   n->setTracked(false);
                }
             }

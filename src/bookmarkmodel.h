@@ -27,7 +27,7 @@
 #include "collectionmanagerinterface.h"
 #include "collectioninterface.h"
 #include "typedefs.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 // #include "person.h"
 // #include "call.h"
 class PersonBackend;
@@ -36,7 +36,7 @@ class NumberTreeBackend;
 class BookmarkModelPrivate;
 class CollectionInterface2;
 
-class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public CollectionManagerInterface<PhoneNumber>
+class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public CollectionManagerInterface<ContactMethod>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -70,12 +70,12 @@ public:
 
    //Management
    void remove        (const QModelIndex& idx );
-   void addBookmark   (PhoneNumber* number    );
-   void removeBookmark(PhoneNumber* number    );
+   void addBookmark   (ContactMethod* number    );
+   void removeBookmark(ContactMethod* number    );
 
    //Getters
    int          acceptedPayloadTypes();
-   PhoneNumber* getNumber(const QModelIndex& idx);
+   ContactMethod* getNumber(const QModelIndex& idx);
 
    //Singleton
    static BookmarkModel* instance();
@@ -88,8 +88,8 @@ private:
 
    //Backend interface
    virtual void backendAddedCallback(CollectionInterface* backend) override;
-   virtual bool addItemCallback(PhoneNumber* item) override;
-   virtual bool removeItemCallback(PhoneNumber* item) override;
+   virtual bool addItemCallback(ContactMethod* item) override;
+   virtual bool removeItemCallback(ContactMethod* item) override;
 
 public Q_SLOTS:
    void reloadCategories();

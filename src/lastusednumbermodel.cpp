@@ -18,16 +18,16 @@
 #include "lastusednumbermodel.h"
 #include "call.h"
 #include "uri.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 
 LastUsedNumberModel* LastUsedNumberModel::m_spInstance = nullptr;
 
 
-struct ChainedPhoneNumber {
-   ChainedPhoneNumber(PhoneNumber* n) : m_pPrevious(nullptr),m_pNext(nullptr),m_pSelf(n){}
-   ChainedPhoneNumber* m_pPrevious;
-   ChainedPhoneNumber* m_pNext;
-   PhoneNumber*  m_pSelf;
+struct ChainedContactMethod {
+   ChainedContactMethod(ContactMethod* n) : m_pPrevious(nullptr),m_pNext(nullptr),m_pSelf(n){}
+   ChainedContactMethod* m_pPrevious;
+   ChainedContactMethod* m_pNext;
+   ContactMethod*  m_pSelf;
 };
 
 class LastUsedNumberModelPrivate
@@ -39,10 +39,10 @@ public:
    constexpr static const int MAX_ITEM = 15;
 
    //Attributes
-   ChainedPhoneNumber* m_pFirstNode;
-   QHash<PhoneNumber*,ChainedPhoneNumber*> m_hNumbers;
+   ChainedContactMethod* m_pFirstNode;
+   QHash<ContactMethod*,ChainedContactMethod*> m_hNumbers;
    bool m_IsValid;
-   ChainedPhoneNumber* m_lLastNumbers[MAX_ITEM];
+   ChainedContactMethod* m_lLastNumbers[MAX_ITEM];
 };
 
 LastUsedNumberModelPrivate::LastUsedNumberModelPrivate():m_pFirstNode(nullptr),m_IsValid(false)
@@ -70,15 +70,15 @@ LastUsedNumberModel* LastUsedNumberModel::instance()
 ///Push 'call' phoneNumber on the top of the stack
 void LastUsedNumberModel::addCall(Call* call)
 {
-   PhoneNumber* number = call->peerPhoneNumber();
-   ChainedPhoneNumber* node = d_ptr->m_hNumbers[number];
+   ContactMethod* number = call->peerContactMethod();
+   ChainedContactMethod* node = d_ptr->m_hNumbers[number];
    if (!number || ( node && d_ptr->m_pFirstNode == node) ) {
       //TODO enable threaded numbers now
       return;
    }
 
    if (!node) {
-      node = new ChainedPhoneNumber(number);
+      node = new ChainedContactMethod(number);
       d_ptr->m_hNumbers[number] = node;
    }
    else {
@@ -102,7 +102,7 @@ QVariant LastUsedNumberModel::data( const QModelIndex& index, int role) const
    if (!index.isValid())
       return QVariant();
    if (!d_ptr->m_IsValid) {
-      ChainedPhoneNumber* current = d_ptr->m_pFirstNode;
+      ChainedContactMethod* current = d_ptr->m_pFirstNode;
       for (int i=0;i<LastUsedNumberModelPrivate::MAX_ITEM;i++) { //Can only grow, no need to clear
          d_ptr->m_lLastNumbers[i] = current;
          current = current->m_pNext;

@@ -22,7 +22,7 @@
 #include <typedefs.h>
 
 //Ring
-class PhoneNumber;
+class ContactMethod;
 
 class LIB_EXPORT CollectionEditorBase {
 public:
@@ -67,7 +67,7 @@ public:
    virtual bool addNew     ( T*       item     ) = 0;
 
    ///Add a new phone number to an existing item
-   virtual bool addPhoneNumber( T*       item , PhoneNumber* number );
+   virtual bool addContactMethod( T*       item , ContactMethod* number );
 
 private:
    /**

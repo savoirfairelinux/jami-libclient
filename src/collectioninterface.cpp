@@ -23,7 +23,7 @@
 //Ring library
 #include "person.h"
 #include "call.h"
-#include "phonenumber.h"
+#include "contactmethod.h"
 #include "collectioneditor.h"
 #include "itembase.h"
 

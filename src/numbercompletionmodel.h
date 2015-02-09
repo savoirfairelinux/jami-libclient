@@ -23,7 +23,7 @@
 #include "phonedirectorymodel.h"
 
 //Ring
-class PhoneNumber;
+class ContactMethod;
 class Call;
 
 //Private
@@ -60,7 +60,7 @@ public:
 
    //Getters
    Call* call() const;
-   PhoneNumber* number(const QModelIndex& idx) const;
+   ContactMethod* number(const QModelIndex& idx) const;
    bool isUsingUnregisteredAccounts();
    QString prefix() const;
 
