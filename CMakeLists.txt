@@ -167,7 +167,7 @@ SET( libringclient_LIB_SRCS
   src/call.cpp
   src/uri.cpp
   src/account.cpp
-  src/contact.cpp
+  src/person.cpp
   src/phonenumber.cpp
   src/numbercategory.cpp
   src/collectionextensioninterface.cpp
@@ -198,7 +198,7 @@ SET( libringclient_LIB_SRCS
   src/ringtonemodel.cpp
   src/lastusednumbermodel.cpp
   src/securityvalidationmodel.cpp
-  src/contactmodel.cpp
+  src/personmodel.cpp
   src/collectionmodel.cpp
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
@@ -220,7 +220,7 @@ SET( libringclient_LIB_SRCS
 
 
   #Data backends
-  src/transitionalcontactbackend.cpp
+  src/transitionalpersonbackend.cpp
   src/collectioninterface.cpp
   src/collectioneditor.cpp
 
@@ -256,7 +256,7 @@ SET( libringclient_LIB_HDRS
   src/call.h
   src/callmodel.h
   src/historymodel.h
-  src/contact.h
+  src/person.h
   src/collectioninterface.h
   src/collectioninterface.hpp
   src/bookmarkmodel.h
@@ -279,8 +279,8 @@ SET( libringclient_LIB_HDRS
   src/lastusednumbermodel.h
   src/securityvalidationmodel.h
   src/certificate.h
-  src/contactmodel.h
-  src/transitionalcontactbackend.h
+  src/personmodel.h
+  src/transitionalpersonbackend.h
   src/collectionmodel.h
   src/hookmanager.h
   src/uri.h

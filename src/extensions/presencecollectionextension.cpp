@@ -18,7 +18,7 @@
 #include "presencecollectionextension.h"
 #include "collectioninterface.h"
 #include "phonenumber.h"
-#include "contact.h"
+#include "person.h"
 #include "presencestatusmodel.h"
 
 PresenceCollectionExtension::PresenceCollectionExtension(QObject* parent) :
@@ -51,7 +51,7 @@ bool PresenceCollectionExtension::setData(CollectionInterface* backend, const QM
    if (index.isValid() && role == Qt::CheckStateRole) {
       switch(value.toInt()){
          case Qt::Checked:
-            foreach(Contact* c, backend->items<Contact>()) {
+            foreach(Person* c, backend->items<Person>()) {
                foreach(PhoneNumber* n,c->phoneNumbers()) {
                   n->setTracked(true);
                }
@@ -60,7 +60,7 @@ bool PresenceCollectionExtension::setData(CollectionInterface* backend, const QM
             emit dataChanged(index);
             break;
          case Qt::Unchecked:
-            foreach(Contact* c, backend->items<Contact>()) {
+            foreach(Person* c, backend->items<Person>()) {
                foreach(PhoneNumber* n,c->phoneNumbers()) {
                   n->setTracked(false);
                }

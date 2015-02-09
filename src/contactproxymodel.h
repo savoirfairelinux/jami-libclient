@@ -24,8 +24,8 @@
 
 //Ring
 #include "typedefs.h"
-#include "contact.h"
-class ContactModel;
+#include "person.h"
+class PersonModel;
 class ContactTreeNode;
 class TopLevelItem;
 class ContactTreeBinder;
@@ -38,7 +38,7 @@ class LIB_EXPORT ContactProxyModel :  public QAbstractItemModel
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class ContactModel;
+   friend class PersonModel;
    friend class ContactTreeNode;
    friend class ContactTreeBinder;
    explicit ContactProxyModel(int role = Qt::DisplayRole, bool showAll = false);

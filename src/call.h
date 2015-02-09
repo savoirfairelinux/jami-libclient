@@ -72,7 +72,7 @@ public:
 
    ///Model roles
    enum Role {
-      Name               = 100, /*!< The peer name from SIP or Contacts */
+      Name               = 100, /*!< The peer name from SIP or Persons */
       Number             = 101, /*!< The peer URI / phone number (as text) */
       Direction2         = 102, /*!<  */
       Date               = 103, /*!< The date when the call started */

@@ -20,16 +20,16 @@
 #define PHONENUMBERSELECTOR_H
 
 #include "../typedefs.h"
-#include "../contact.h"
+#include "../person.h"
 
 class PhoneNumber;
-class Contact;
+class Person;
 
 ///Common point visitor for UI specific contact dialog
 class LIB_EXPORT PhoneNumberSelector {
 public:
    virtual ~PhoneNumberSelector() {}
-   virtual PhoneNumber* getNumber(const Contact* nb) = 0;
+   virtual PhoneNumber* getNumber(const Person* nb) = 0;
    static PhoneNumberSelector* defaultVisitor();
 protected:
    static void setDefaultVisitor(PhoneNumberSelector* v);

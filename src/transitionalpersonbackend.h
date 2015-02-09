@@ -22,7 +22,7 @@
 
 #include "typedefs.h"
 
-class TransitionalContactBackendPrivate;
+class TransitionalPersonBackendPrivate;
 
 /**
  * A temporary contact backend until concrete ones are loaded
@@ -41,13 +41,13 @@ class TransitionalContactBackendPrivate;
  * be used when contacts are created locally, but a "real" backend have
  * yet to be selected.
  */
-class LIB_EXPORT TransitionalContactBackend : public CollectionInterface {
+class LIB_EXPORT TransitionalPersonBackend : public CollectionInterface {
 public:
    template<typename T>
-   explicit TransitionalContactBackend(CollectionMediator<T>* mediator);
+   explicit TransitionalPersonBackend(CollectionMediator<T>* mediator);
    static CollectionInterface* m_spInstance;
 
-   virtual ~TransitionalContactBackend();
+   virtual ~TransitionalPersonBackend();
 
    //Getters
    virtual QByteArray      id       () const override;
@@ -66,7 +66,7 @@ public:
 
 private:
 
-   const QScopedPointer<TransitionalContactBackendPrivate> d_ptr;
+   const QScopedPointer<TransitionalPersonBackendPrivate> d_ptr;
 };
 
 #endif

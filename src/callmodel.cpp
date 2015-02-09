@@ -39,7 +39,7 @@
 #include "dbus/videomanager.h"
 #include "historymodel.h"
 #include "visitors/phonenumberselector.h"
-#include "contactmodel.h"
+#include "personmodel.h"
 
 //Other
 #include <unistd.h>
@@ -930,12 +930,12 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       createConferenceFromCall(newCall,target);
    }
    else if (mimedata->hasFormat(RingMimes::CONTACT)) {
-      const QByteArray encodedContact = mimedata->data(RingMimes::CONTACT);
+      const QByteArray encodedPerson = mimedata->data(RingMimes::CONTACT);
       Call* target = getCall(targetIdx);
-      qDebug() << "Contact" << encodedContact << "on call" << target;
+      qDebug() << "Contact" << encodedPerson << "on call" << target;
       if (PhoneNumberSelector::defaultVisitor()) {
          const PhoneNumber* number = PhoneNumberSelector::defaultVisitor()->getNumber(
-         ContactModel::instance()->getContactByUid(encodedContact));
+         PersonModel::instance()->getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();
             newCall->setDialNumber(number);
@@ -943,7 +943,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
             createConferenceFromCall(newCall,target);
          }
          else {
-            qDebug() << "Contact not found";
+            qDebug() << "Person not found";
          }
       }
       else

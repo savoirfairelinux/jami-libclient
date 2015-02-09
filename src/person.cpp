@@ -18,12 +18,12 @@
  ***************************************************************************/
 
 //Parent
-#include "contact.h"
+#include "person.h"
 
 //Ring library
 #include "phonenumber.h"
 #include "collectioninterface.h"
-#include "transitionalcontactbackend.h"
+#include "transitionalpersonbackend.h"
 #include "account.h"
 #include "vcardutils.h"
 #include "numbercategorymodel.h"
@@ -42,75 +42,75 @@ public:
    QString type;
 };
 
-Contact::Address::Address() : d_ptr(new AddressPrivate())
+Person::Address::Address() : d_ptr(new AddressPrivate())
 {
 
 }
 
-QString Contact::Address::addressLine() const
+QString Person::Address::addressLine() const
 {
    return d_ptr->addressLine;
 }
 
-QString Contact::Address::city() const
+QString Person::Address::city() const
 {
    return d_ptr->city;
 }
 
-QString Contact::Address::zipCode() const
+QString Person::Address::zipCode() const
 {
    return d_ptr->zipCode;
 }
 
-QString Contact::Address::state() const
+QString Person::Address::state() const
 {
    return d_ptr->state;
 }
 
-QString Contact::Address::country() const
+QString Person::Address::country() const
 {
    return d_ptr->country;
 }
 
-QString Contact::Address::type() const
+QString Person::Address::type() const
 {
    return d_ptr->type;
 }
 
-void Contact::Address::setAddressLine(const QString& value)
+void Person::Address::setAddressLine(const QString& value)
 {
    d_ptr->addressLine = value;
 }
 
-void Contact::Address::setCity(const QString& value)
+void Person::Address::setCity(const QString& value)
 {
    d_ptr->city = value;
 }
 
-void Contact::Address::setZipCode(const QString& value)
+void Person::Address::setZipCode(const QString& value)
 {
    d_ptr->zipCode = value;
 }
 
-void Contact::Address::setState(const QString& value)
+void Person::Address::setState(const QString& value)
 {
    d_ptr->state = value;
 }
 
-void Contact::Address::setCountry(const QString& value)
+void Person::Address::setCountry(const QString& value)
 {
    d_ptr->country = value;
 }
 
-void Contact::Address::setType(const QString& value)
+void Person::Address::setType(const QString& value)
 {
    d_ptr->type = value;
 }
 
-class ContactPrivate {
+class PersonPrivate {
 public:
-   ContactPrivate(Contact* contact);
-   ~ContactPrivate();
+   PersonPrivate(Person* contact);
+   ~PersonPrivate();
    QString                  m_FirstName        ;
    QString                  m_SecondName       ;
    QString                  m_NickName         ;
@@ -122,10 +122,10 @@ public:
    QString                  m_Group            ;
    QString                  m_Department       ;
    bool                     m_DisplayPhoto     ;
-   Contact::PhoneNumbers    m_Numbers          ;
+   Person::PhoneNumbers    m_Numbers          ;
    bool                     m_Active           ;
    bool                     m_isPlaceHolder    ;
-   QList<Contact::Address*> m_lAddresses       ;
+   QList<Person::Address*> m_lAddresses       ;
    QHash<QString, QString>  m_lCustomAttributes;
 
    //Cache
@@ -134,7 +134,7 @@ public:
    QString filterString();
 
    //Helper code to help handle multiple parents
-   QList<Contact*> m_lParents;
+   QList<Person*> m_lParents;
 
    //As a single D-Pointer can have multiple parent (when merged), all emit need
    //to use a proxy to make sure everybody is notified
@@ -145,7 +145,7 @@ public:
    void phoneNumberCountAboutToChange(int,int);
 };
 
-QString ContactPrivate::filterString()
+QString PersonPrivate::filterString()
 {
    if (m_CachedFilterString.size())
       return m_CachedFilterString;
@@ -165,77 +165,77 @@ QString ContactPrivate::filterString()
    return m_CachedFilterString;
 }
 
-void ContactPrivate::changed()
+void PersonPrivate::changed()
 {
    m_CachedFilterString.clear();
-   foreach (Contact* c,m_lParents) {
+   foreach (Person* c,m_lParents) {
       emit c->changed();
    }
 }
 
-void ContactPrivate::presenceChanged( PhoneNumber* n )
+void PersonPrivate::presenceChanged( PhoneNumber* n )
 {
-   foreach (Contact* c,m_lParents) {
+   foreach (Person* c,m_lParents) {
       emit c->presenceChanged(n);
    }
 }
 
-void ContactPrivate::statusChanged  ( bool s )
+void PersonPrivate::statusChanged  ( bool s )
 {
-   foreach (Contact* c,m_lParents) {
+   foreach (Person* c,m_lParents) {
       emit c->statusChanged(s);
    }
 }
 
-void ContactPrivate::phoneNumberCountChanged(int n,int o)
+void PersonPrivate::phoneNumberCountChanged(int n,int o)
 {
-   foreach (Contact* c,m_lParents) {
+   foreach (Person* c,m_lParents) {
       emit c->phoneNumberCountChanged(n,o);
    }
 }
 
-void ContactPrivate::phoneNumberCountAboutToChange(int n,int o)
+void PersonPrivate::phoneNumberCountAboutToChange(int n,int o)
 {
-   foreach (Contact* c,m_lParents) {
+   foreach (Person* c,m_lParents) {
       emit c->phoneNumberCountAboutToChange(n,o);
    }
 }
 
-ContactPrivate::ContactPrivate(Contact* contact) :
+PersonPrivate::PersonPrivate(Person* contact) :
    m_Numbers(contact),m_DisplayPhoto(false),m_Active(true)
 {
 }
 
-ContactPrivate::~ContactPrivate()
+PersonPrivate::~PersonPrivate()
 {
 }
 
-Contact::PhoneNumbers::PhoneNumbers(Contact* parent) : QVector<PhoneNumber*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
+Person::PhoneNumbers::PhoneNumbers(Person* parent) : QVector<PhoneNumber*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
     m_pParent2(parent)
 {
 }
 
-Contact::PhoneNumbers::PhoneNumbers(Contact* parent, const QVector<PhoneNumber*>& list)
+Person::PhoneNumbers::PhoneNumbers(Person* parent, const QVector<PhoneNumber*>& list)
 : QVector<PhoneNumber*>(list),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),m_pParent2(parent)
 {
 }
 
-Contact* Contact::PhoneNumbers::contact() const
+Person* Person::PhoneNumbers::contact() const
 {
    return m_pParent2;
 }
 
 ///Constructor
-Contact::Contact(CollectionInterface* parent): ItemBase<QObject>(parent!=nullptr?((QAbstractItemModel*)parent->model()):((QAbstractItemModel*)TransitionalContactBackend::instance())),
-   d_ptr(new ContactPrivate(this))
+Person::Person(CollectionInterface* parent): ItemBase<QObject>(parent?parent->model():TransitionalPersonBackend::instance()->model()),
+   d_ptr(new PersonPrivate(this))
 {
-   setBackend(parent?parent:TransitionalContactBackend::instance());
+   setBackend(parent?parent:TransitionalPersonBackend::instance());
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
 }
 
 ///Destructor
-Contact::~Contact()
+Person::~Person()
 {
    //Unregister itself from the D-Pointer list
    d_ptr->m_lParents.removeAll(this);
@@ -246,72 +246,72 @@ Contact::~Contact()
 }
 
 ///Get the phone number list
-const Contact::PhoneNumbers& Contact::phoneNumbers() const
+const Person::PhoneNumbers& Person::phoneNumbers() const
 {
    return d_ptr->m_Numbers;
 }
 
 ///Get the nickname
-const QString& Contact::nickName() const
+const QString& Person::nickName() const
 {
    return d_ptr->m_NickName;
 }
 
 ///Get the firstname
-const QString& Contact::firstName() const
+const QString& Person::firstName() const
 {
    return d_ptr->m_FirstName;
 }
 
 ///Get the second/family name
-const QString& Contact::secondName() const
+const QString& Person::secondName() const
 {
    return d_ptr->m_SecondName;
 }
 
 ///Get the photo
-const QVariant Contact::photo() const
+const QVariant Person::photo() const
 {
    return d_ptr->m_vPhoto;
 }
 
 ///Get the formatted name
-const QString& Contact::formattedName() const
+const QString& Person::formattedName() const
 {
    return d_ptr->m_FormattedName;
 }
 
 ///Get the organisation
-const QString& Contact::organization()  const
+const QString& Person::organization()  const
 {
    return d_ptr->m_Organization;
 }
 
 ///Get the preferred email
-const QString& Contact::preferredEmail()  const
+const QString& Person::preferredEmail()  const
 {
    return d_ptr->m_PreferredEmail;
 }
 
 ///Get the unique identifier (used for drag and drop) 
-const QByteArray& Contact::uid() const
+const QByteArray& Person::uid() const
 {
    return d_ptr->m_Uid;
 }
 
 ///Get the group
-const QString& Contact::group() const
+const QString& Person::group() const
 {
    return d_ptr->m_Group;
 }
 
-const QString& Contact::department() const
+const QString& Person::department() const
 {
    return d_ptr->m_Department;
 }
 
 ///Set the phone number (type and number)
-void Contact::setPhoneNumbers(PhoneNumbers numbers)
+void Person::setPhoneNumbers(PhoneNumbers numbers)
 {
    const int oldCount(d_ptr->m_Numbers.size()),newCount(numbers.size());
    foreach(PhoneNumber* n, d_ptr->m_Numbers)
@@ -327,14 +327,14 @@ void Contact::setPhoneNumbers(PhoneNumbers numbers)
 }
 
 ///Set the nickname
-void Contact::setNickName(const QString& name)
+void Person::setNickName(const QString& name)
 {
    d_ptr->m_NickName = name;
    d_ptr->changed();
 }
 
 ///Set the first name
-void Contact::setFirstName(const QString& name)
+void Person::setFirstName(const QString& name)
 {
    d_ptr->m_FirstName = name;
    setObjectName(formattedName());
@@ -342,7 +342,7 @@ void Contact::setFirstName(const QString& name)
 }
 
 ///Set the family name
-void Contact::setFamilyName(const QString& name)
+void Person::setFamilyName(const QString& name)
 {
    d_ptr->m_SecondName = name;
    setObjectName(formattedName());
@@ -350,56 +350,56 @@ void Contact::setFamilyName(const QString& name)
 }
 
 ///Set the Photo/Avatar
-void Contact::setPhoto(const QVariant& photo)
+void Person::setPhoto(const QVariant& photo)
 {
    d_ptr->m_vPhoto = photo;
    d_ptr->changed();
 }
 
 ///Set the formatted name (display name)
-void Contact::setFormattedName(const QString& name)
+void Person::setFormattedName(const QString& name)
 {
    d_ptr->m_FormattedName = name;
    d_ptr->changed();
 }
 
 ///Set the organisation / business
-void Contact::setOrganization(const QString& name)
+void Person::setOrganization(const QString& name)
 {
    d_ptr->m_Organization = name;
    d_ptr->changed();
 }
 
 ///Set the default email
-void Contact::setPreferredEmail(const QString& name)
+void Person::setPreferredEmail(const QString& name)
 {
    d_ptr->m_PreferredEmail = name;
    d_ptr->changed();
 }
 
 ///Set UID
-void Contact::setUid(const QByteArray& id)
+void Person::setUid(const QByteArray& id)
 {
    d_ptr->m_Uid = id;
    d_ptr->changed();
 }
 
 ///Set Group
-void Contact::setGroup(const QString& name)
+void Person::setGroup(const QString& name)
 {
    d_ptr->m_Group = name;
    d_ptr->changed();
 }
 
 ///Set department
-void Contact::setDepartment(const QString& name)
+void Person::setDepartment(const QString& name)
 {
    d_ptr->m_Department = name;
    d_ptr->changed();
 }
 
 ///If the contact have been deleted or not yet fully created
-void Contact::setActive( bool active)
+void Person::setActive( bool active)
 {
    d_ptr->m_Active = active;
    d_ptr->statusChanged(d_ptr->m_Active);
@@ -407,7 +407,7 @@ void Contact::setActive( bool active)
 }
 
 ///Return if one of the PhoneNumber is present
-bool Contact::isPresent() const
+bool Person::isPresent() const
 {
    foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->isPresent())
@@ -417,7 +417,7 @@ bool Contact::isPresent() const
 }
 
 ///Return if one of the PhoneNumber is tracked
-bool Contact::isTracked() const
+bool Person::isTracked() const
 {
    foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->isTracked())
@@ -427,13 +427,13 @@ bool Contact::isTracked() const
 }
 
 ///Have this contact been deleted or doesn't exist yet
-bool Contact::isActive() const
+bool Person::isActive() const
 {
    return d_ptr->m_Active;
 }
 
 ///Return if one of the PhoneNumber support presence
-bool Contact::supportPresence() const
+bool Person::supportPresence() const
 {
    foreach(const PhoneNumber* n,d_ptr->m_Numbers) {
       if (n->supportPresence())
@@ -443,11 +443,11 @@ bool Contact::supportPresence() const
 }
 
 
-QObject* Contact::PhoneNumbers::getSelf() const {
+QObject* Person::PhoneNumbers::getSelf() const {
    return m_pParent2;
 }
 
-time_t Contact::PhoneNumbers::lastUsedTimeStamp() const
+time_t Person::PhoneNumbers::lastUsedTimeStamp() const
 {
    time_t t = 0;
    for (int i=0;i<size();i++) {
@@ -458,19 +458,19 @@ time_t Contact::PhoneNumbers::lastUsedTimeStamp() const
 }
 
 ///Recomputing the filter string is heavy, cache it
-QString Contact::filterString() const
+QString Person::filterString() const
 {
    return d_ptr->filterString();
 }
 
 ///Callback when one of the phone number presence change
-void Contact::slotPresenceChanged()
+void Person::slotPresenceChanged()
 {
    d_ptr->changed();
 }
 
 ///Create a placeholder contact, it will eventually be replaced when the real one is loaded
-ContactPlaceHolder::ContactPlaceHolder(const QByteArray& uid)
+PersonPlaceHolder::PersonPlaceHolder(const QByteArray& uid)
 {
    setUid(uid);
    d_ptr->m_isPlaceHolder = true;
@@ -481,12 +481,12 @@ ContactPlaceHolder::ContactPlaceHolder(const QByteArray& uid)
  *
  * Once loaded, those pointers need to be upgraded to the real contact.
  */
-bool ContactPlaceHolder::merge(Contact* contact)
+bool PersonPlaceHolder::merge(Person* contact)
 {
    if ((!contact) || ((*contact) == this))
       return false;
 
-   ContactPrivate* currentD = d_ptr;
+   PersonPrivate* currentD = d_ptr;
    replaceDPointer(contact);
    currentD->m_lParents.removeAll(this);
    if (!currentD->m_lParents.size())
@@ -494,7 +494,7 @@ bool ContactPlaceHolder::merge(Contact* contact)
    return true;
 }
 
-void Contact::replaceDPointer(Contact* c)
+void Person::replaceDPointer(Person* c)
 {
    this->d_ptr = c->d_ptr;
    d_ptr->m_lParents << this;
@@ -502,29 +502,29 @@ void Contact::replaceDPointer(Contact* c)
    emit rebased(c);
 }
 
-bool Contact::operator==(const Contact* other) const
+bool Person::operator==(const Person* other) const
 {
    return other && this->d_ptr == other->d_ptr;
 }
 
-bool Contact::operator==(const Contact& other) const
+bool Person::operator==(const Person& other) const
 {
    return &other && this->d_ptr == other.d_ptr;
 }
 
 ///Add a new address to this contact
-void Contact::addAddress(Contact::Address* addr)
+void Person::addAddress(Person::Address* addr)
 {
    d_ptr->m_lAddresses << addr;
 }
 
 ///Add custom fields for contact profiles
-void Contact::addCustomField(const QString& key, const QString& value)
+void Person::addCustomField(const QString& key, const QString& value)
 {
    d_ptr->m_lCustomAttributes.insert(key, value);
 }
 
-const QByteArray Contact::toVCard(QList<Account*> accounts) const
+const QByteArray Person::toVCard(QList<Account*> accounts) const
 {
    //serializing here
    VCardUtils* maker = new VCardUtils();

@@ -66,7 +66,7 @@ void VCardUtils::addEmail(const QString& type, const QString& email)
    addProperty(QString("%1%2%3%4").arg(Property::EMAIL).arg(Delimiter::SEPARATOR_TOKEN).arg("TYPE=").arg(type), email);
 }
 
-void VCardUtils::addAddress(const Contact::Address* addr)
+void VCardUtils::addAddress(const Person::Address* addr)
 {
    QString prop = QString("%1%2%3").arg(Property::ADDRESS)
          .arg(Delimiter::SEPARATOR_TOKEN)

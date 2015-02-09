@@ -27,7 +27,7 @@
 
 //Ring
 class PhoneNumber;
-class ContactPrivate;
+class PersonPrivate;
 class AddressPrivate;
 class Account;
 class CollectionInterface;
@@ -35,15 +35,15 @@ class CollectionInterface;
 #include "typedefs.h"
 #include "categorizedcompositenode.h"
 
-///Contact: Abstract version of a contact
-class LIB_EXPORT Contact : public ItemBase<QObject>
+///Person: Abstract version of a contact
+class LIB_EXPORT Person : public ItemBase<QObject>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class ContactPrivate;
+   friend class PersonPrivate;
 
    ///Represent the physical address of a contact
    class Address {
@@ -74,12 +74,12 @@ public:
    class  PhoneNumbers : public QVector<PhoneNumber*>, public CategorizedCompositeNode { //TODO private
    public:
       virtual QObject* getSelf() const __attribute__ ((const));
-      explicit PhoneNumbers(Contact* parent);
-      PhoneNumbers(Contact* parent, const QVector<PhoneNumber*>& list);
-      Contact* contact() const;
+      explicit PhoneNumbers(Person* parent);
+      PhoneNumbers(Person* parent, const QVector<PhoneNumber*>& list);
+      Person* contact() const;
       time_t lastUsedTimeStamp() const;
    private:
-      Contact* m_pParent2       ;
+      Person* m_pParent2       ;
    };
 
    //Properties
@@ -102,14 +102,14 @@ public:
    Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts) const;
 
 protected:
-   //The D-Pointer can be shared if a PlaceHolderContact is merged with a real one
-   ContactPrivate* d_ptr;
-   void replaceDPointer(Contact* other);
+   //The D-Pointer can be shared if a PlaceHolderPerson is merged with a real one
+   PersonPrivate* d_ptr;
+   void replaceDPointer(Person* other);
 
 public:
    //Constructors & Destructors
-   explicit Contact(CollectionInterface* parent = nullptr);
-   virtual ~Contact();
+   explicit Person(CollectionInterface* parent = nullptr);
+   virtual ~Person();
 
    //Getters
    const PhoneNumbers& phoneNumbers() const;
@@ -148,8 +148,8 @@ public:
    void setActive         ( bool              active );
 
    //Operator
-   bool operator==(const Contact* other) const;
-   bool operator==(const Contact& other) const;
+   bool operator==(const Person* other) const;
+   bool operator==(const Person& other) const;
 
 private Q_SLOTS:
    void slotPresenceChanged(); //TODO remove
@@ -160,21 +160,21 @@ Q_SIGNALS:
    void changed        (              );
    void phoneNumberCountChanged(int,int);
    void phoneNumberCountAboutToChange(int,int);
-   void rebased        ( Contact*     );
+   void rebased        ( Person*     );
 
 protected:
    //Presence secret methods
    void updatePresenceInformations(const QString& uri, bool status, const QString& message);
 };
 
-class LIB_EXPORT ContactPlaceHolder : public Contact {
+class LIB_EXPORT PersonPlaceHolder : public Person {
    Q_OBJECT
 public:
-   explicit ContactPlaceHolder(const QByteArray& uid);
-   bool merge(Contact* contact);
+   explicit PersonPlaceHolder(const QByteArray& uid);
+   bool merge(Person* contact);
 };
 
 
-Q_DECLARE_METATYPE(Contact*)
+Q_DECLARE_METATYPE(Person*)
 
 #endif

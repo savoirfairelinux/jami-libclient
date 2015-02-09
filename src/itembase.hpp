@@ -23,6 +23,7 @@
 class ItemBasePrivate
 {
 public:
+   ItemBasePrivate() : m_pBackend(nullptr){}
    CollectionInterface* m_pBackend;
 };
 

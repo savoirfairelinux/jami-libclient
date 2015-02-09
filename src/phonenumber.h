@@ -31,7 +31,7 @@
 //Ring
 #include "uri.h"
 class Account;
-class Contact;
+class Person;
 class Call;
 class PhoneNumberPrivate;
 class TemporaryPhoneNumber;
@@ -48,7 +48,7 @@ public:
 
    //Properties
    Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
-   Q_PROPERTY(Contact*      contact          READ contact           WRITE setContact              )
+   Q_PROPERTY(Person*      contact          READ contact           WRITE setPerson              )
    Q_PROPERTY(int           lastUsed         READ lastUsed                                        )
    Q_PROPERTY(QString       uri              READ uri                                             )
    Q_PROPERTY(int           callCount        READ callCount                                       )
@@ -87,7 +87,7 @@ public:
    bool               isPresent       () const;
    QString            presenceMessage () const;
    Account*           account         () const;
-   Contact*           contact         () const;
+   Person*           contact         () const;
    time_t             lastUsed        () const;
    PhoneNumber::Type  type            () const;
    int                callCount       () const;
@@ -106,7 +106,7 @@ public:
 
    //Setters
    Q_INVOKABLE void setAccount(Account*       account);
-   Q_INVOKABLE void setContact(Contact*       contact);
+   Q_INVOKABLE void setPerson(Person*       contact);
    Q_INVOKABLE void setTracked(bool           track  );
    void             setCategory(NumberCategory* cat  );
    void             setBookmarked(bool bookmarked    );
@@ -162,7 +162,7 @@ private:
 
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
-   void contactRebased(Contact* other);
+   void contactRebased(Person* other);
 
 Q_SIGNALS:
    ///A new call have used this PhoneNumber

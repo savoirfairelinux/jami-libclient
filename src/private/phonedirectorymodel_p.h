@@ -62,7 +62,7 @@ public:
    //Helpers
    void indexNumber(PhoneNumber* number, const QStringList& names   );
    void setAccount (PhoneNumber* number,       Account*     account );
-   PhoneNumber* fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Contact* contact, const QString& type);
+   PhoneNumber* fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type);
 
    //Attributes
    QVector<PhoneNumber*>         m_lNumbers         ;

@@ -15,152 +15,152 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "transitionalcontactbackend.h"
-#include <contactmodel.h>
+#include "transitionalpersonbackend.h"
+#include <personmodel.h>
 
 #include <collectioneditor.h>
 
-class TransitionalContactBackendPrivate
+class TransitionalPersonBackendPrivate
 {
 
 };
 
-class TransitionalContactEditor : public CollectionEditor<Contact>
+class TransitionalPersonEditor : public CollectionEditor<Person>
 {
 public:
-   TransitionalContactEditor(CollectionMediator<Contact>* m) : CollectionEditor<Contact>(m) {}
-   virtual bool save       ( const Contact* item ) override;
-   virtual bool append     ( const Contact* item ) override;
-   virtual bool remove     ( Contact*       item ) override;
-   virtual bool edit       ( Contact*       item ) override;
-   virtual bool addNew     ( Contact*       item ) override;
+   TransitionalPersonEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
+   virtual bool save       ( const Person* item ) override;
+   virtual bool append     ( const Person* item ) override;
+   virtual bool remove     ( Person*       item ) override;
+   virtual bool edit       ( Person*       item ) override;
+   virtual bool addNew     ( Person*       item ) override;
 
 private:
-   virtual QVector<Contact*> items() const override;
+   virtual QVector<Person*> items() const override;
 };
 
-bool TransitionalContactEditor::save(const Contact* item)
+bool TransitionalPersonEditor::save(const Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool TransitionalContactEditor::append(const Contact* item)
+bool TransitionalPersonEditor::append(const Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool TransitionalContactEditor::remove(Contact* item)
+bool TransitionalPersonEditor::remove(Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool TransitionalContactEditor::edit( Contact* item)
+bool TransitionalPersonEditor::edit( Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool TransitionalContactEditor::addNew( Contact* item)
+bool TransitionalPersonEditor::addNew( Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-QVector<Contact*> TransitionalContactEditor::items() const
+QVector<Person*> TransitionalPersonEditor::items() const
 {
-   return QVector<Contact*>();
+   return QVector<Person*>();
 }
 
-CollectionInterface* TransitionalContactBackend::m_spInstance = nullptr;
+CollectionInterface* TransitionalPersonBackend::m_spInstance = nullptr;
 
-CollectionInterface* TransitionalContactBackend::instance()
+CollectionInterface* TransitionalPersonBackend::instance()
 {
    if (!m_spInstance) {
-      m_spInstance = ContactModel::instance()->addBackend<TransitionalContactBackend>();
+      m_spInstance = PersonModel::instance()->addBackend<TransitionalPersonBackend>();
    }
    return m_spInstance;
 }
 
-TransitionalContactBackend::~TransitionalContactBackend()
+TransitionalPersonBackend::~TransitionalPersonBackend()
 {
 }
 
 template<typename T>
-TransitionalContactBackend::TransitionalContactBackend(CollectionMediator<T>* mediator) :
-CollectionInterface(new TransitionalContactEditor(mediator), nullptr)
+TransitionalPersonBackend::TransitionalPersonBackend(CollectionMediator<T>* mediator) :
+CollectionInterface(new TransitionalPersonEditor(mediator), nullptr)
 {
 }
 
-bool TransitionalContactBackend::load()
-{
-   return false;
-}
-
-bool TransitionalContactBackend::reload()
+bool TransitionalPersonBackend::load()
 {
    return false;
 }
 
-// bool TransitionalContactBackend::append(const Contact* item)
+bool TransitionalPersonBackend::reload()
+{
+   return false;
+}
+
+// bool TransitionalPersonBackend::append(const Person* item)
 // {
 //    Q_UNUSED(item)
 //    return false;
 // }
 
-// bool TransitionalContactBackend::save(const Contact* contact)
+// bool TransitionalPersonBackend::save(const Person* contact)
 // {
 //    Q_UNUSED(contact)
 //    return false;
 // }
 
 ///Edit 'contact', the implementation may be a GUI or somehting else
-// bool TransitionalContactBackend::edit( Contact* contact)
+// bool TransitionalPersonBackend::edit( Person* contact)
 // {
 //    Q_UNUSED(contact)
 //    return false;
 // }
 
 ///Add a new contact to the backend
-// bool TransitionalContactBackend::addNew( Contact* contact)
+// bool TransitionalPersonBackend::addNew( Person* contact)
 // {
 //    Q_UNUSED(contact)
 //    return false;
 // }
 
-bool TransitionalContactBackend::isEnabled() const
+bool TransitionalPersonBackend::isEnabled() const
 {
    return false;
 }
 
-CollectionInterface::SupportedFeatures TransitionalContactBackend::supportedFeatures() const
+CollectionInterface::SupportedFeatures TransitionalPersonBackend::supportedFeatures() const
 {
    return CollectionInterface::SupportedFeatures::NONE;
 }
 
-QString TransitionalContactBackend::name () const
+QString TransitionalPersonBackend::name () const
 {
    return QObject::tr("Transitional contact backend");
 }
 
-QString TransitionalContactBackend::category () const
+QString TransitionalPersonBackend::category () const
 {
    return QObject::tr("Contact");
 }
 
-QVariant TransitionalContactBackend::icon() const
+QVariant TransitionalPersonBackend::icon() const
 {
    return QVariant();
 }
 
-QByteArray TransitionalContactBackend::id() const
+QByteArray TransitionalPersonBackend::id() const
 {
    return  "trcb";
 }
 
-// QList<Contact*> TransitionalContactBackend::items() const
+// QList<Person*> TransitionalPersonBackend::items() const
 // {
-//    return QList<Contact*>();
+//    return QList<Person*>();
 // }

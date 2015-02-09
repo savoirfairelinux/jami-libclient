@@ -36,7 +36,7 @@ bool ProfilePersisterVisitor::load()
    return false;
 }
 
-bool ProfilePersisterVisitor::save(const Contact* c)
+bool ProfilePersisterVisitor::save(const Person* c)
 {
    Q_UNUSED(c)
    return false;

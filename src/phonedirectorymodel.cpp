@@ -25,14 +25,14 @@
 #include "call.h"
 #include "uri.h"
 #include "account.h"
-#include "contact.h"
+#include "person.h"
 #include "accountmodel.h"
 #include "numbercategory.h"
 #include "numbercategorymodel.h"
 #include "collectioninterface.h"
 #include "dbus/presencemanager.h"
 #include "visitors/pixmapmanipulationvisitor.h"
-#include "contactmodel.h"
+#include "personmodel.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -286,7 +286,7 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
 {
    Q_UNUSED(section)
    Q_UNUSED(orientation)
-   static const QString headers[] = {tr("URI"), tr("Type"), tr("Contact"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
+   static const QString headers[] = {tr("URI"), tr("Type"), tr("Person"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
    tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"), tr("Bookmarked"), tr("Tracked"), tr("Present"),
    tr("Presence message"), tr("Uid") };
    if (role == Qt::DisplayRole) return headers[section];
@@ -339,7 +339,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Account* account
 }
 
 ///Add new information to existing numbers and try to merge
-PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Contact* contact, const QString& type)
+PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type)
 {
    //TODO pick the best URI
    //TODO the account hostname change corner case
@@ -350,7 +350,7 @@ PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const 
          //BEGIN Check if contact can be set
 
          //Check if the contact is compatible
-         const bool hasCompatibleContact = contact && (
+         const bool hasCompatiblePerson = contact && (
                (!number->contact())
             || (
                   (number->contact()->uid() == contact->uid())
@@ -359,7 +359,7 @@ PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const 
          );
 
          //Check if the URI match
-         const bool hasCompatibleURI =  hasCompatibleContact && (number->uri().hasHostname()?(
+         const bool hasCompatibleURI =  hasCompatiblePerson && (number->uri().hasHostname()?(
                /* Has hostname */
                    strippedUri == number->uri()
                    /* Something with an hostname can be used with IP2IP */ //TODO support DHT here
@@ -385,7 +385,7 @@ PhoneNumber* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const 
 
          //If everything match, set the contact
          if (hasCompatibleAccount)
-            number->setContact(contact);
+            number->setPerson(contact);
          //END Check if the contact can be set
 
 
@@ -446,7 +446,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, const QString& t
 }
 
 ///Create a number when a more information is available duplicated ones
-PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Contact* contact, Account* account, const QString& type)
+PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Person* contact, Account* account, const QString& type)
 {
    //Remove extra data such as "<sip:" from the main URI
    const URI strippedUri(uri);
@@ -489,7 +489,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Contact* contact
          foreach(PhoneNumber* number, wrap3->numbers) {
             if (number->account() == account) {
                if (contact && ((!number->contact()) || (contact->uid() == number->contact()->uid())))
-                  number->setContact(contact); //TODO Check all cases from fillDetails()
+                  number->setPerson(contact); //TODO Check all cases from fillDetails()
                //TODO add alternate URI
                confirmedCandidate3 = number;
                break;
@@ -525,7 +525,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Contact* contact
             //Assume this is valid until a smarter solution is implemented to merge both
             //For a short time, a placeholder contact and a contact can coexist, drop the placeholder
             if (contact && (!number->contact() || (contact->uid() == number->contact()->uid())))
-               number->setContact(contact);
+               number->setPerson(contact);
 
             return number;
          }
@@ -537,7 +537,7 @@ PhoneNumber* PhoneDirectoryModel::getNumber(const QString& uri, Contact* contact
    number->setAccount(account);
    number->setIndex( d_ptr->m_lNumbers.size());
    if (contact)
-      number->setContact(contact);
+      number->setPerson(contact);
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
@@ -576,7 +576,7 @@ PhoneNumber* PhoneDirectoryModel::fromHash(const QString& hash)
    if (fields.size() == 3) {
       const QString uri = fields[0];
       Account* account = AccountModel::instance()->getById(fields[1].toAscii());
-      Contact* contact = ContactModel::instance()->getContactByUid(fields[2].toUtf8());
+      Person* contact = PersonModel::instance()->getPersonByUid(fields[2].toUtf8());
       return getNumber(uri,contact,account);
    }
    else if (fields.size() == 1) {

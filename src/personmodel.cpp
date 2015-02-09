@@ -17,10 +17,10 @@
  ***************************************************************************/
 
 //Parent
-#include "contactmodel.h"
+#include "personmodel.h"
 
 //Ring library
-#include "contact.h"
+#include "person.h"
 #include "call.h"
 #include "uri.h"
 #include "phonenumber.h"
@@ -34,57 +34,57 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 
-ContactModel* ContactModel::m_spInstance = nullptr;
+PersonModel* PersonModel::m_spInstance = nullptr;
 
 
-class ContactModelPrivate : public QObject
+class PersonModelPrivate : public QObject
 {
    Q_OBJECT
 public:
-   ContactModelPrivate(ContactModel* parent);
+   PersonModelPrivate(PersonModel* parent);
 
    //Attributes
 //    QVector<CollectionInterface*> m_lBackends;
    CommonCollectionModel* m_pBackendModel;
-   QHash<QByteArray,ContactPlaceHolder*> m_hPlaceholders;
+   QHash<QByteArray,PersonPlaceHolder*> m_hPlaceholders;
 
    //Indexes
-   QHash<QByteArray,Contact*> m_hContactsByUid;
-   QVector<Contact*> m_lContacts;
+   QHash<QByteArray,Person*> m_hPersonsByUid;
+   QVector<Person*> m_lPersons;
 
 private:
-   ContactModel* q_ptr;
+   PersonModel* q_ptr;
 
 private Q_SLOTS:
    void slotReloaded();
-//    void slotContactAdded(Contact* c);
+//    void slotPersonAdded(Person* c);
 };
 
-ContactModelPrivate::ContactModelPrivate(ContactModel* parent) : QObject(parent), q_ptr(parent),
+PersonModelPrivate::PersonModelPrivate(PersonModel* parent) : QObject(parent), q_ptr(parent),
 m_pBackendModel(nullptr)
 {
    
 }
 
 ///Constructor
-ContactModel::ContactModel(QObject* par) : QAbstractItemModel(par?par:QCoreApplication::instance()), d_ptr(new ContactModelPrivate(this))
+PersonModel::PersonModel(QObject* par) : QAbstractItemModel(par?par:QCoreApplication::instance()), d_ptr(new PersonModelPrivate(this))
 {
 }
 
 ///Destructor
-ContactModel::~ContactModel()
+PersonModel::~PersonModel()
 {
-   d_ptr->m_hContactsByUid.clear();
-   while (d_ptr->m_lContacts.size()) {
-      Contact* c = d_ptr->m_lContacts[0];
-      d_ptr->m_lContacts.remove(0);
+   d_ptr->m_hPersonsByUid.clear();
+   while (d_ptr->m_lPersons.size()) {
+      Person* c = d_ptr->m_lPersons[0];
+      d_ptr->m_lPersons.remove(0);
       delete c;
    }
 }
 
-ContactModel* ContactModel::instance() {
+PersonModel* PersonModel::instance() {
    if (!m_spInstance)
-      m_spInstance = new ContactModel(QCoreApplication::instance());
+      m_spInstance = new PersonModel(QCoreApplication::instance());
    return m_spInstance;
 }
 
@@ -95,7 +95,7 @@ ContactModel* ContactModel::instance() {
  ****************************************************************************/
 
 
-bool ContactModel::setData( const QModelIndex& idx, const QVariant &value, int role)
+bool PersonModel::setData( const QModelIndex& idx, const QVariant &value, int role)
 {
    Q_UNUSED(idx)
    Q_UNUSED(value)
@@ -103,38 +103,38 @@ bool ContactModel::setData( const QModelIndex& idx, const QVariant &value, int r
    return false;
 }
 
-QVariant ContactModel::data( const QModelIndex& idx, int role) const
+QVariant PersonModel::data( const QModelIndex& idx, int role) const
 {
    if (!idx.isValid())
       return QVariant();
    if (!idx.parent().isValid() && (role == Qt::DisplayRole || role == Qt::EditRole)) {
-      const Contact* c = d_ptr->m_lContacts[idx.row()];
+      const Person* c = d_ptr->m_lPersons[idx.row()];
       if (c)
          return QVariant(c->formattedName());
    }
    else if (idx.parent().isValid() && (role == Qt::DisplayRole || role == Qt::EditRole)) {
-      const Contact* c = d_ptr->m_lContacts[idx.parent().row()];
+      const Person* c = d_ptr->m_lPersons[idx.parent().row()];
       if (c)
          return QVariant(c->phoneNumbers()[idx.row()]->uri());
    }
    return QVariant();
 }
 
-QVariant ContactModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant PersonModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
    Q_UNUSED(section)
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-      return QVariant(tr("Contacts"));
+      return QVariant(tr("Persons"));
    return QVariant();
 }
 
-int ContactModel::rowCount( const QModelIndex& par ) const
+int PersonModel::rowCount( const QModelIndex& par ) const
 {
    if (!par.isValid()) {
-      return d_ptr->m_lContacts.size();
+      return d_ptr->m_lPersons.size();
    }
-   else if (!par.parent().isValid() && par.row() < d_ptr->m_lContacts.size()) {
-      const Contact* c = d_ptr->m_lContacts[par.row()];
+   else if (!par.parent().isValid() && par.row() < d_ptr->m_lPersons.size()) {
+      const Person* c = d_ptr->m_lPersons[par.row()];
       if (c) {
          const int size = c->phoneNumbers().size();
          return size==1?0:size;
@@ -143,40 +143,40 @@ int ContactModel::rowCount( const QModelIndex& par ) const
    return 0;
 }
 
-Qt::ItemFlags ContactModel::flags( const QModelIndex& idx ) const
+Qt::ItemFlags PersonModel::flags( const QModelIndex& idx ) const
 {
    if (!idx.isValid())
       return Qt::NoItemFlags;
    return Qt::ItemIsEnabled | ((idx.parent().isValid())?Qt::ItemIsSelectable:Qt::ItemIsEnabled);
 }
 
-int ContactModel::columnCount ( const QModelIndex& par) const
+int PersonModel::columnCount ( const QModelIndex& par) const
 {
    Q_UNUSED(par)
    return 1;
 }
 
-QModelIndex ContactModel::parent( const QModelIndex& idx) const
+QModelIndex PersonModel::parent( const QModelIndex& idx) const
 {
    if (!idx.isValid())
       return QModelIndex();
    CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)idx.internalPointer();
    if (modelItem && modelItem->type() == CategorizedCompositeNode::Type::NUMBER) {
-      int idx2 = d_ptr->m_lContacts.indexOf(((Contact::PhoneNumbers*)modelItem)->contact());
+      int idx2 = d_ptr->m_lPersons.indexOf(((Person::PhoneNumbers*)modelItem)->contact());
       if (idx2 != -1) {
-         return ContactModel::index(idx2,0,QModelIndex());
+         return PersonModel::index(idx2,0,QModelIndex());
       }
    }
    return QModelIndex();
 }
 
-QModelIndex ContactModel::index( int row, int column, const QModelIndex& par) const
+QModelIndex PersonModel::index( int row, int column, const QModelIndex& par) const
 {
-   if (!par.isValid() && d_ptr->m_lContacts.size() > row) {
-      return createIndex(row,column,d_ptr->m_lContacts[row]);
+   if (!par.isValid() && d_ptr->m_lPersons.size() > row) {
+      return createIndex(row,column,d_ptr->m_lPersons[row]);
    }
-   else if (par.isValid() && d_ptr->m_lContacts[par.row()]->phoneNumbers().size() > row) {
-      return createIndex(row,column,(CategorizedCompositeNode*)(&(d_ptr->m_lContacts[par.row()]->phoneNumbers())));
+   else if (par.isValid() && d_ptr->m_lPersons[par.row()]->phoneNumbers().size() > row) {
+      return createIndex(row,column,(CategorizedCompositeNode*)(&(d_ptr->m_lPersons[par.row()]->phoneNumbers())));
    }
    return QModelIndex();
 }
@@ -189,18 +189,18 @@ QModelIndex ContactModel::index( int row, int column, const QModelIndex& par) co
 
 
 ///Find contact by UID
-Contact* ContactModel::getContactByUid(const QByteArray& uid)
+Person* PersonModel::getPersonByUid(const QByteArray& uid)
 {
-   return d_ptr->m_hContactsByUid[uid];
+   return d_ptr->m_hPersonsByUid[uid];
 }
 
 /**
  * Create a temporary contact or return the existing one for an UID
  * This temporary contact should eventually be merged into the real one
  */
-Contact* ContactModel::getPlaceHolder(const QByteArray& uid )
+Person* PersonModel::getPlaceHolder(const QByteArray& uid )
 {
-   Contact* ct = d_ptr->m_hContactsByUid[uid];
+   Person* ct = d_ptr->m_hPersonsByUid[uid];
 
    //Do not create a placeholder if the real deal exist
    if (ct) {
@@ -212,65 +212,65 @@ Contact* ContactModel::getPlaceHolder(const QByteArray& uid )
    if (ct)
       return ct;
 
-   ContactPlaceHolder* ct2 = new ContactPlaceHolder(uid);
+   PersonPlaceHolder* ct2 = new PersonPlaceHolder(uid);
 
    d_ptr->m_hPlaceholders[ct2->uid()] = ct2;
    return ct2;
 }
 
 ///Return if there is backends
-// bool ContactModel::hasBackends() const
+// bool PersonModel::hasBackends() const
 // {
 //    return d_ptr->m_lBackends.size();
 // }
 
 
-// const QVector<CollectionInterface*> ContactModel::enabledBackends() const
+// const QVector<CollectionInterface*> PersonModel::enabledBackends() const
 // {
 //    return d_ptr->m_lBackends;
 // }
 
-// bool ContactModel::hasEnabledBackends() const
+// bool PersonModel::hasEnabledBackends() const
 // {
 //    return d_ptr->m_lBackends.size()>0;
 // }
 
-// CommonCollectionModel* ContactModel::backendModel() const
+// CommonCollectionModel* PersonModel::backendModel() const
 // {
 //    if (!d_ptr->m_pBackendModel) {
-//       d_ptr->m_pBackendModel = new CommonCollectionModel(const_cast<ContactModel*>(this));
+//       d_ptr->m_pBackendModel = new CommonCollectionModel(const_cast<PersonModel*>(this));
 //    }
 //    return d_ptr->m_pBackendModel; //TODO
 // }
 
-// QString ContactModel::backendCategoryName() const
+// QString PersonModel::backendCategoryName() const
 // {
-//    return tr("Contacts");
+//    return tr("Persons");
 // }
 
-void ContactModel::backendAddedCallback(CollectionInterface* backend)
+void PersonModel::backendAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }
 
-// const QVector<CollectionInterface*> ContactModel::backends() const
+// const QVector<CollectionInterface*> PersonModel::backends() const
 // {
 //    return d_ptr->m_lBackends;
 // }
 
-bool ContactModel::addItemCallback(Contact* item)
+bool PersonModel::addItemCallback(Person* item)
 {
-   addContact(item);
+   addPerson(item);
    return true;
 }
 
-bool ContactModel::removeItemCallback(Contact* item)
+bool PersonModel::removeItemCallback(Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-// bool ContactModel::enableBackend(CollectionInterface* backend, bool enabled)
+// bool PersonModel::enableBackend(CollectionInterface* backend, bool enabled)
 // {
 //    Q_UNUSED(backend)
 //    Q_UNUSED(enabled)
@@ -278,17 +278,17 @@ bool ContactModel::removeItemCallback(Contact* item)
 //    return false;
 // }
 
-bool ContactModel::addContact(Contact* c)
+bool PersonModel::addPerson(Person* c)
 {
    if (!c)
       return false;
-   beginInsertRows(QModelIndex(),d_ptr->m_lContacts.size()-1,d_ptr->m_lContacts.size());
-   d_ptr->m_lContacts << c;
-   d_ptr->m_hContactsByUid[c->uid()] = c;
+   beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size()-1,d_ptr->m_lPersons.size());
+   d_ptr->m_lPersons << c;
+   d_ptr->m_hPersonsByUid[c->uid()] = c;
 
    //Deprecate the placeholder
    if (d_ptr->m_hPlaceholders.contains(c->uid())) {
-      ContactPlaceHolder* c2 = d_ptr->m_hPlaceholders[c->uid()];
+      PersonPlaceHolder* c2 = d_ptr->m_hPlaceholders[c->uid()];
       if (c2) {
          c2->merge(c);
          d_ptr->m_hPlaceholders[c->uid()] = nullptr;
@@ -296,36 +296,36 @@ bool ContactModel::addContact(Contact* c)
    }
    endInsertRows();
    emit layoutChanged();
-   emit newContactAdded(c);
+   emit newPersonAdded(c);
    return true;
 }
 
 
-void ContactModel::disableContact(Contact* c)
+void PersonModel::disablePerson(Person* c)
 {
    if (c)
       c->setActive(false);
 }
 
-const ContactList ContactModel::contacts() const
+const PersonList PersonModel::contacts() const
 {
-   return d_ptr->m_lContacts;
+   return d_ptr->m_lPersons;
 }
 
-// void ContactModel::addBackend(CollectionInterface* backend, LoadOptions options)
+// void PersonModel::addBackend(CollectionInterface* backend, LoadOptions options)
 // {
 //    d_ptr->m_lBackends << backend;
 //    connect(backend,SIGNAL(reloaded()),d_ptr.data(),SLOT(slotReloaded()));
-//    connect(backend,SIGNAL(newContactAdded(Contact*)),d_ptr.data(),SLOT(slotContactAdded(Contact*)));
+//    connect(backend,SIGNAL(newPersonAdded(Person*)),d_ptr.data(),SLOT(slotPersonAdded(Person*)));
 //    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
 //       backend->load();
 //    emit newBackendAdded(backend);
 // }
 
-bool ContactModel::addNewContact(Contact* c, CollectionInterface* backend)
+bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
    Q_UNUSED(backend);
-   return backends()[0]->editor<Contact>()->addNew(c);
+   return backends()[0]->editor<Person>()->addNew(c);
 }
 
 
@@ -335,10 +335,10 @@ bool ContactModel::addNewContact(Contact* c, CollectionInterface* backend)
  *                                                                           *
  ****************************************************************************/
 
-void ContactModelPrivate::slotReloaded()
+void PersonModelPrivate::slotReloaded()
 {
    emit q_ptr->reloaded();
 }
 
 
-#include <contactmodel.moc>
+#include <personmodel.moc>

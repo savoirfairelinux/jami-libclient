@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "phonenumber.h"
 #include "phonedirectorymodel.h"
-#include "contact.h"
+#include "person.h"
 #include "account.h"
 #include "call.h"
 #include "dbus/presencemanager.h"
@@ -38,7 +38,7 @@ public:
    bool               m_Present          ;
    QString            m_PresentMessage   ;
    bool               m_Tracked          ;
-   Contact*           m_pContact         ;
+   Person*           m_pPerson         ;
    Account*           m_pAccount         ;
    time_t             m_LastUsed         ;
    QList<Call*>       m_lCalls           ;
@@ -125,7 +125,7 @@ const PhoneNumber* PhoneNumber::BLANK()
 
 PhoneNumberPrivate::PhoneNumberPrivate(const URI& uri, NumberCategory* cat, PhoneNumber::Type st) :
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
-   m_Type(st),m_PopularityIndex(-1),m_pContact(nullptr),m_pAccount(nullptr),
+   m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
    m_Index(-1)
 {}
@@ -197,9 +197,9 @@ Account* PhoneNumber::account() const
 }
 
 ///Return this number associated contact, if any
-Contact* PhoneNumber::contact() const
+Person* PhoneNumber::contact() const
 {
-   return d_ptr->m_pContact;
+   return d_ptr->m_pPerson;
 }
 
 ///Return when this number was last used
@@ -218,14 +218,14 @@ void PhoneNumber::setAccount(Account* account)
 }
 
 ///Set this number contact
-void PhoneNumber::setContact(Contact* contact)
+void PhoneNumber::setPerson(Person* contact)
 {
-   d_ptr->m_pContact = contact;
+   d_ptr->m_pPerson = contact;
    if (contact && d_ptr->m_Type != PhoneNumber::Type::TEMPORARY) {
       PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+QStringList(contact->formattedName()));
       d_ptr->m_PrimaryName_cache = contact->formattedName();
       d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
-      connect(contact,SIGNAL(rebased(Contact*)),this,SLOT(contactRebased(Contact*)));
+      connect(contact,SIGNAL(rebased(Person*)),this,SLOT(contactRebased(Person*)));
    }
    d_ptr->changed();
 }
@@ -467,9 +467,9 @@ void PhoneNumber::incrementAlternativeName(const QString& name)
    const bool needReIndexing = !d_ptr->m_hNames[name];
    d_ptr->m_hNames[name]++;
    if (needReIndexing && d_ptr->m_Type != PhoneNumber::Type::TEMPORARY) {
-      PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+(d_ptr->m_pContact?(QStringList(d_ptr->m_pContact->formattedName())):QStringList()));
+      PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+(d_ptr->m_pPerson?(QStringList(d_ptr->m_pPerson->formattedName())):QStringList()));
       //Invalid m_PrimaryName_cache
-      if (!d_ptr->m_pContact)
+      if (!d_ptr->m_pPerson)
          d_ptr->m_PrimaryName_cache.clear();
    }
 }
@@ -484,7 +484,7 @@ void PhoneNumber::accountDestroyed(QObject* o)
  * When the PhoneNumber contact is merged with another one, the phone number
  * data might be replaced, like the preferred name.
  */
-void PhoneNumber::contactRebased(Contact* other)
+void PhoneNumber::contactRebased(Person* other)
 {
    d_ptr->m_PrimaryName_cache = other->formattedName();
    d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
@@ -577,7 +577,7 @@ TemporaryPhoneNumber::TemporaryPhoneNumber(const PhoneNumber* number) :
    PhoneNumber(QString(),NumberCategoryModel::other(),PhoneNumber::Type::TEMPORARY)
 {
    if (number) {
-      setContact(number->contact());
+      setPerson(number->contact());
       setAccount(number->account());
    }
 }

@@ -51,13 +51,13 @@ class CollectionManagerInterfacePrivate;
  * All implementation should define their item backend type in the
  * class declaration like:
  *
- * template <typename T > using CollectionMediator = CollectionMediator<Contact>;
+ * template <typename T > using CollectionMediator = CollectionMediator<Person>;
  *
  * And individual backends should extend that alias. For example:
  *
- * class MyContactSourceBackend : public CollectionInterface {
+ * class MyPersonSourceBackend : public CollectionInterface {
  *     public:
- *        MyContactSourceBackend(CollectionInterfaceMediator* mediator)
+ *        MyPersonSourceBackend(CollectionInterfaceMediator* mediator)
  * };
  *
  * The mediator is used to bridge the model and the item backends. The mediator

@@ -21,7 +21,7 @@
 
 #include "typedefs.h"
 #include <QStringList>
-#include "contact.h"
+#include "person.h"
 
 class LIB_EXPORT VCardUtils
 {
@@ -73,7 +73,7 @@ public:
    void addProperty(const char* prop, const QString& value);
    void addProperty(const QString& prop, const QString& value);
    void addEmail(const QString& type, const QString& num);
-   void addAddress(const Contact::Address* addr);
+   void addAddress(const Person::Address* addr);
    void addPhoneNumber(const QString& type, const QString& num);
    void addPhoto(const QByteArray img);
    const QByteArray endVCard();

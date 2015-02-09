@@ -57,7 +57,7 @@ CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObjec
 
 CollectionModel::CollectionModel(QObject* parent) : QAbstractTableModel(parent), d_ptr(new CollectionModelPrivate(this))
 {
-   connect(ContactModel::instance(),SIGNAL(newBackendAdded(CollectionInterface*)),d_ptr.data(),SLOT(slotUpdate()));
+   connect(PersonModel::instance(),SIGNAL(newBackendAdded(CollectionInterface*)),d_ptr.data(),SLOT(slotUpdate()));
    load();
 }
 
@@ -113,8 +113,8 @@ int CollectionModel::rowCount (const QModelIndex& parent) const
       static bool init = false; //FIXME this doesn't allow dynamic backends
       static int result = 0;
       if (!init) {
-         for(int i=0;i<ContactModel::instance()->backends().size();i++)
-            result += ContactModel::instance()->backends()[i]->parent()==nullptr?1:0;
+         for(int i=0;i<PersonModel::instance()->backends().size();i++)
+            result += PersonModel::instance()->backends()[i]->parent()==nullptr?1:0;
          init = true;
       }
       return result;
@@ -205,11 +205,11 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
          item = d_ptr->m_lTopLevelBackends[row];
       else {
 
-         if (row >= ContactModel::instance()->backends().size())
+         if (row >= PersonModel::instance()->backends().size())
             return QModelIndex();
 
          item = new CollectionModelPrivate::ProxyItem();
-         item->backend = ContactModel::instance()->backends()[row];
+         item->backend = PersonModel::instance()->backends()[row];
          d_ptr->m_lTopLevelBackends << item;
       }
       item->row = row;

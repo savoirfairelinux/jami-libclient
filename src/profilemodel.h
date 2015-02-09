@@ -19,7 +19,7 @@
 #define PROFILEMODEL_H
 
 #include "typedefs.h"
-#include "contact.h"
+#include "person.h"
 #include "account.h"
 #include <QStringList>
 #include <QSharedPointer>
@@ -66,7 +66,7 @@ private:
    static ProfileModel* m_spInstance;
 
 public Q_SLOTS:
-//    bool addNewProfile(Contact* c, CollectionInterface* backend = nullptr);
+//    bool addNewProfile(Person* c, CollectionInterface* backend = nullptr);
 //    bool createProfile(const QString& name);
 };
 

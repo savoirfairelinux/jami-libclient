@@ -25,21 +25,21 @@
 #include <QtCore/QAbstractItemModel>
 
 #include "typedefs.h"
-#include "contact.h"
+#include "person.h"
 #include "collectionmanagerinterface.h"
 
 //Ring
-class Contact;
+class Person;
 class Account;
 class CollectionInterface;
-class ContactModelPrivate;
+class PersonModelPrivate;
 
 //Typedef
-typedef QVector<Contact*> ContactList;
+typedef QVector<Person*> PersonList;
 
-///ContactModel: Allow different way to handle contact without poluting the library
-class LIB_EXPORT ContactModel :
-   public QAbstractItemModel, public CollectionManagerInterface<Contact> {
+///PersonModel: Allow different way to handle contact without poluting the library
+class LIB_EXPORT PersonModel :
+   public QAbstractItemModel, public CollectionManagerInterface<Person> {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -58,20 +58,20 @@ public:
       DropState         = 300, //State for drag and drop
    };
 
-   template <typename T > using ItemMediator = CollectionMediator<Contact>;
+   template <typename T > using ItemMediator = CollectionMediator<Person>;
 
 
-   explicit ContactModel(QObject* parent = nullptr);
-   virtual ~ContactModel();
+   explicit PersonModel(QObject* parent = nullptr);
+   virtual ~PersonModel();
 
    //Mutator
-   bool addContact(Contact* c);
-   void disableContact(Contact* c);
+   bool addPerson(Person* c);
+   void disablePerson(Person* c);
 
    //Getters
-   Contact* getContactByUid   ( const QByteArray& uid );
-   Contact* getPlaceHolder(const QByteArray& uid );
-   const ContactList contacts() const;
+   Person* getPersonByUid   ( const QByteArray& uid );
+   Person* getPlaceHolder(const QByteArray& uid );
+   const PersonList contacts() const;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -84,26 +84,26 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
 
    //Singleton
-   static ContactModel* instance();
+   static PersonModel* instance();
 
 private:
-   QScopedPointer<ContactModelPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(ContactModel)
+   QScopedPointer<PersonModelPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(PersonModel)
 
    //Singleton
-   static ContactModel* m_spInstance;
+   static PersonModel* m_spInstance;
 
    //Backend interface
    virtual void backendAddedCallback(CollectionInterface* backend) override;
-   virtual bool addItemCallback(Contact* item) override;
-   virtual bool removeItemCallback(Contact* item) override;
+   virtual bool addItemCallback(Person* item) override;
+   virtual bool removeItemCallback(Person* item) override;
 
 public Q_SLOTS:
-   bool addNewContact(Contact* c, CollectionInterface* backend = nullptr);
+   bool addNewPerson(Person* c, CollectionInterface* backend = nullptr);
 
 Q_SIGNALS:
    void reloaded();
-   void newContactAdded(Contact* c);
+   void newPersonAdded(Person* c);
    void newBackendAdded(CollectionInterface* backend);
 };
 

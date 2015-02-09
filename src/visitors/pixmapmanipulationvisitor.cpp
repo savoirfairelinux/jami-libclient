@@ -25,7 +25,7 @@ PixmapManipulationVisitor::PixmapManipulationVisitor() {
    m_spInstance = this;
 }
 
-QVariant PixmapManipulationVisitor::contactPhoto(Contact* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulationVisitor::contactPhoto(Person* c, const QSize& size, bool displayPresence)
 {
    Q_UNUSED(c)
    Q_UNUSED(size)

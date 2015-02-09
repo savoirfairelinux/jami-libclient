@@ -39,8 +39,8 @@ template<typename T> class ItemBase;
  *
  * The class need to be extended with a template constructor:
  *
- * MyBackend::MyBackend<Contact>(CollectionMediator<Contact>* mediator, CollectionInterface* parent = nullptr) :
- *    CollectionMediator<Contact*>(mediator,parent) {}
+ * MyBackend::MyBackend<Person>(CollectionMediator<Person>* mediator, CollectionInterface* parent = nullptr) :
+ *    CollectionMediator<Person>(mediator,parent) {}
  *
  * Each backends also need to implement that constructor or they wont load.
  */

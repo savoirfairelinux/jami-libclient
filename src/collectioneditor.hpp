@@ -22,7 +22,7 @@
 template<typename T>
 CollectionEditor<T>::CollectionEditor(CollectionMediator<T>* m) : CollectionEditorBase(m->model()), m_pMediator(m)
 {
-
+   Q_ASSERT(m);
 }
 
 template<typename T>

@@ -27,13 +27,13 @@
 #include <QDir>
 
 //SFLPhone
-class Contact;
+class Person;
 
 class LIB_EXPORT ProfilePersisterVisitor {
 public:
    virtual ~ProfilePersisterVisitor() {}
    virtual bool load();
-   virtual bool save(const Contact* c);
+   virtual bool save(const Person* c);
    virtual QDir getProfilesDir();
 
    //Singleton

@@ -32,7 +32,7 @@
 #include "dbus/callmanager.h"
 
 #include "collectioninterface.h"
-#include "contact.h"
+#include "person.h"
 #include "uri.h"
 #include "account.h"
 #include "accountmodel.h"
@@ -47,7 +47,7 @@
 #include "video/renderer.h"
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
-#include "contactmodel.h"
+#include "personmodel.h"
 #include "imconversationmanager.h"
 
 //Track where state changes are performed on finished (over, error, failed) calls
@@ -407,9 +407,9 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 //    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
    const QString& contactUid     = hc[ Call::HistoryMapFields::CONTACT_UID  ];
 
-   Contact* ct = nullptr;
+   Person* ct = nullptr;
    if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
-      ct = ContactModel::instance()->getPlaceHolder(contactUid.toAscii());
+      ct = PersonModel::instance()->getPlaceHolder(contactUid.toAscii());
 
    Account*      acc       = AccountModel::instance()->getById(accId);
    PhoneNumber*  nb        = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
@@ -1252,7 +1252,7 @@ void CallPrivate::call()
       //Warning: m_pDialNumber can become nullptr when linking directly
       callManager.placeCall(m_Account->id(), m_CallId, m_pDialNumber->uri());
 
-      if (ContactModel::instance()->hasBackends()) {
+      if (PersonModel::instance()->hasBackends()) {
          if (q_ptr->peerPhoneNumber()->contact())
             m_PeerName = q_ptr->peerPhoneNumber()->contact()->formattedName();
       }
@@ -1602,7 +1602,7 @@ void CallPrivate::initTimer()
 ///Common source for model data roles
 QVariant Call::roleData(int role) const
 {
-   const Contact* ct = peerPhoneNumber()?peerPhoneNumber()->contact():nullptr;
+   const Person* ct = peerPhoneNumber()?peerPhoneNumber()->contact():nullptr;
    switch (role) {
       case Call::Role::Name:
       case Qt::DisplayRole:

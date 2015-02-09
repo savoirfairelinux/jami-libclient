@@ -28,7 +28,7 @@
 #include "phonenumber.h"
 #include "callmodel.h"
 #include "call.h"
-#include "contact.h"
+#include "person.h"
 #include "uri.h"
 #include "mime.h"
 #include "collectioneditor.h"
@@ -59,9 +59,6 @@ public:
    QList<BookmarkTopLevelItem*>         m_lCategoryCounter ;
    QHash<QString,BookmarkTopLevelItem*> m_hCategories      ;
    QStringList                          m_lMimes           ;
-
-   //Getters
-   QModelIndex getContactIndex(Contact* ct) const;
 
    //Helpers
    QVariant commonCallInfo(NumberTreeBackend* call, int role = Qt::DisplayRole) const;

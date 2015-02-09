@@ -28,9 +28,9 @@
 #include "collectioninterface.h"
 #include "typedefs.h"
 #include "phonenumber.h"
-// #include "contact.h"
+// #include "person.h"
 // #include "call.h"
-class ContactBackend;
+class PersonBackend;
 class NumberTreeBackend;
 
 class BookmarkModelPrivate;

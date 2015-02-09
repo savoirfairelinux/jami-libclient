@@ -29,10 +29,10 @@
 #include "phonenumber.h"
 #include "phonedirectorymodel.h"
 #include "historytimecategorymodel.h"
-#include "contact.h"
+#include "person.h"
 #include "uri.h"
 #include "mime.h"
-#include "contactmodel.h"
+#include "personmodel.h"
 
 class ContactTreeNode;
 
@@ -69,9 +69,9 @@ class ContactTopLevelItem : public CategorizedCompositeNode {
 
 class ContactTreeNode : public CategorizedCompositeNode {
 public:
-   ContactTreeNode(Contact* ct, ContactProxyModel* parent);
+   ContactTreeNode(Person* ct, ContactProxyModel* parent);
    virtual ~ContactTreeNode();
-   Contact* m_pContact;
+   Person* m_pContact;
    ContactTopLevelItem* m_pParent3;
    uint m_Index;
    virtual QObject* getSelf() const override;
@@ -85,10 +85,10 @@ public:
    ContactProxyModelPrivate(ContactProxyModel* parent);
 
    //Helpers
-   QString category(const Contact* ct) const;
+   QString category(const Person* ct) const;
 
    //Attributes
-   QHash<Contact*, time_t>      m_hContactByDate   ;
+   QHash<Person*, time_t>      m_hContactByDate   ;
    QVector<ContactTopLevelItem*>       m_lCategoryCounter ;
    QHash<QString,ContactTopLevelItem*> m_hCategories      ;
    int                          m_Role             ;
@@ -103,7 +103,7 @@ private:
 
 public Q_SLOTS:
    void reloadCategories();
-   void slotContactAdded(Contact* c);
+   void slotContactAdded(Person* c);
 };
 
 ContactTopLevelItem::~ContactTopLevelItem() {
@@ -119,7 +119,7 @@ QObject* ContactTopLevelItem::getSelf() const
    return nullptr;
 }
 
-ContactTreeNode::ContactTreeNode(Contact* ct, ContactProxyModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(Person* ct, ContactProxyModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContact(ct),m_pParent3(nullptr),m_Index(-1)
 {
    m_pBinder = new ContactTreeBinder(parent,this);
@@ -193,18 +193,18 @@ ContactProxyModel::ContactProxyModel(int role, bool showAll) : QAbstractItemMode
    d_ptr->m_ShowAll = showAll;
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
-   connect(ContactModel::instance(),SIGNAL(reloaded()),d_ptr.data(),SLOT(reloadCategories()));
-   connect(ContactModel::instance(),SIGNAL(newContactAdded(Contact*)),d_ptr.data(),SLOT(slotContactAdded(Contact*)));
+   connect(PersonModel::instance(),SIGNAL(reloaded()),d_ptr.data(),SLOT(reloadCategories()));
+   connect(PersonModel::instance(),SIGNAL(newContactAdded(Person*)),d_ptr.data(),SLOT(slotContactAdded(Person*)));
    QHash<int, QByteArray> roles = roleNames();
-   roles.insert(ContactModel::Role::Organization      ,QByteArray("organization")     );
-   roles.insert(ContactModel::Role::Group             ,QByteArray("group")            );
-   roles.insert(ContactModel::Role::Department        ,QByteArray("department")       );
-   roles.insert(ContactModel::Role::PreferredEmail    ,QByteArray("preferredEmail")   );
-   roles.insert(ContactModel::Role::FormattedLastUsed ,QByteArray("formattedLastUsed"));
-   roles.insert(ContactModel::Role::IndexedLastUsed   ,QByteArray("indexedLastUsed")  );
-   roles.insert(ContactModel::Role::DatedLastUsed     ,QByteArray("datedLastUsed")    );
-   roles.insert(ContactModel::Role::Filter            ,QByteArray("filter")           );
-   roles.insert(ContactModel::Role::DropState         ,QByteArray("dropState")        );
+   roles.insert(PersonModel::Role::Organization      ,QByteArray("organization")     );
+   roles.insert(PersonModel::Role::Group             ,QByteArray("group")            );
+   roles.insert(PersonModel::Role::Department        ,QByteArray("department")       );
+   roles.insert(PersonModel::Role::PreferredEmail    ,QByteArray("preferredEmail")   );
+   roles.insert(PersonModel::Role::FormattedLastUsed ,QByteArray("formattedLastUsed"));
+   roles.insert(PersonModel::Role::IndexedLastUsed   ,QByteArray("indexedLastUsed")  );
+   roles.insert(PersonModel::Role::DatedLastUsed     ,QByteArray("datedLastUsed")    );
+   roles.insert(PersonModel::Role::Filter            ,QByteArray("filter")           );
+   roles.insert(PersonModel::Role::DropState         ,QByteArray("dropState")        );
    setRoleNames(roles);
 }
 
@@ -242,11 +242,11 @@ void ContactProxyModelPrivate::reloadCategories()
    }
    q_ptr->endRemoveRows();
    m_lCategoryCounter.clear();
-   foreach(const Contact* cont, ContactModel::instance()->contacts()) {
+   foreach(const Person* cont, PersonModel::instance()->contacts()) {
       if (cont) {
          const QString val = category(cont);
          ContactTopLevelItem* item = getContactTopLevelItem(val);
-         ContactTreeNode* contactNode = new ContactTreeNode(const_cast<Contact*>(cont),q_ptr);
+         ContactTreeNode* contactNode = new ContactTreeNode(const_cast<Person*>(cont),q_ptr);
          contactNode->m_pParent3 = item;
          contactNode->m_Index = item->m_lChildren.size();
          item->m_lChildren << contactNode;
@@ -256,7 +256,7 @@ void ContactProxyModelPrivate::reloadCategories()
    emit q_ptr->layoutChanged();
 }
 
-void ContactProxyModelPrivate::slotContactAdded(Contact* c)
+void ContactProxyModelPrivate::slotContactAdded(Person* c)
 {
    if (!c) return;
    const QString val = category(c);
@@ -275,7 +275,7 @@ bool ContactProxyModel::setData( const QModelIndex& index, const QVariant &value
 {
    if (index.isValid() && index.parent().isValid()) {
       CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)index.internalPointer();
-      if (role == ContactModel::Role::DropState) {
+      if (role == PersonModel::Role::DropState) {
          modelItem->setDropState(value.toInt());
          emit dataChanged(index, index);
          return true;
@@ -295,38 +295,38 @@ QVariant ContactProxyModel::data( const QModelIndex& index, int role) const
       switch (role) {
          case Qt::DisplayRole:
             return static_cast<const ContactTopLevelItem*>(modelItem)->m_Name;
-         case ContactModel::Role::IndexedLastUsed:
-            return index.child(0,0).data(ContactModel::Role::IndexedLastUsed);
-         case ContactModel::Role::Active:
+         case PersonModel::Role::IndexedLastUsed:
+            return index.child(0,0).data(PersonModel::Role::IndexedLastUsed);
+         case PersonModel::Role::Active:
             return true;
          default:
             break;
       }
       break;
    case CategorizedCompositeNode::Type::CONTACT:{
-      const Contact* c = static_cast<Contact*>(modelItem->getSelf());
+      const Person* c = static_cast<Person*>(modelItem->getSelf());
       switch (role) {
          case Qt::DisplayRole:
             return QVariant(c->formattedName());
-         case ContactModel::Role::Organization:
+         case PersonModel::Role::Organization:
             return QVariant(c->organization());
-         case ContactModel::Role::Group:
+         case PersonModel::Role::Group:
             return QVariant(c->group());
-         case ContactModel::Role::Department:
+         case PersonModel::Role::Department:
             return QVariant(c->department());
-         case ContactModel::Role::PreferredEmail:
+         case PersonModel::Role::PreferredEmail:
             return QVariant(c->preferredEmail());
-         case ContactModel::Role::DropState:
+         case PersonModel::Role::DropState:
             return QVariant(modelItem->dropState());
-         case ContactModel::Role::FormattedLastUsed:
+         case PersonModel::Role::FormattedLastUsed:
             return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(c->phoneNumbers().lastUsedTimeStamp()));
-         case ContactModel::Role::IndexedLastUsed:
+         case PersonModel::Role::IndexedLastUsed:
             return QVariant((int)HistoryTimeCategoryModel::timeToHistoryConst(c->phoneNumbers().lastUsedTimeStamp()));
-         case ContactModel::Role::Active:
+         case PersonModel::Role::Active:
             return c->isActive();
-         case ContactModel::Role::DatedLastUsed:
+         case PersonModel::Role::DatedLastUsed:
             return QVariant(QDateTime::fromTime_t( c->phoneNumbers().lastUsedTimeStamp()));
-         case ContactModel::Role::Filter:
+         case PersonModel::Role::Filter:
             return c->filterString();
          default:
             break;
@@ -338,7 +338,7 @@ QVariant ContactProxyModel::data( const QModelIndex& index, int role) const
    case CategorizedCompositeNode::Type::BOOKMARK:
    default:
       switch (role) {
-         case ContactModel::Role::Active:
+         case PersonModel::Role::Active:
             return true;
       }
       break;
@@ -366,7 +366,7 @@ bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction actio
          CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)targetIdx.internalPointer();
          switch (modelItem->type()) {
             case CategorizedCompositeNode::Type::CONTACT: {
-               const Contact* ct = static_cast<Contact*>(modelItem->getSelf());
+               const Person* ct = static_cast<Person*>(modelItem->getSelf());
                if (ct) {
                   switch(ct->phoneNumbers().size()) {
                      case 0: //Do nothing when there is no phone numbers
@@ -381,7 +381,7 @@ bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction actio
                }
             } break;
             case CategorizedCompositeNode::Type::NUMBER: {
-               const Contact::PhoneNumbers nbs = *static_cast<Contact::PhoneNumbers*>(modelItem);
+               const Person::PhoneNumbers nbs = *static_cast<Person::PhoneNumbers*>(modelItem);
                const PhoneNumber*          nb  = nbs[row];
                if (nb) {
                   call->setTransferNumber(nb->uri());
@@ -408,7 +408,7 @@ int ContactProxyModel::rowCount( const QModelIndex& parent ) const
       case CategorizedCompositeNode::Type::TOP_LEVEL:
          return static_cast<const ContactTopLevelItem*>(parentNode)->m_lChildren.size();
       case CategorizedCompositeNode::Type::CONTACT: {
-         const Contact* ct = static_cast<Contact*>(parentNode->getSelf());
+         const Person* ct = static_cast<Person*>(parentNode->getSelf());
          const int size = ct->phoneNumbers().size();
          //Do not return the number if there is only one, it will be drawn part of the contact
          return size==1?0:size;
@@ -471,9 +471,9 @@ QModelIndex ContactProxyModel::index( int row, int column, const QModelIndex& pa
             break;
          case CategorizedCompositeNode::Type::CONTACT: {
             const ContactTreeNode* ctn = (ContactTreeNode*)parentNode;
-            const Contact*          ct = (Contact*)ctn->getSelf()    ;
+            const Person*          ct = (Person*)ctn->getSelf()    ;
             if (ct->phoneNumbers().size()>row) {
-               const_cast<Contact::PhoneNumbers*>(&ct->phoneNumbers())->setParentNode((CategorizedCompositeNode*)ctn);
+               const_cast<Person::PhoneNumbers*>(&ct->phoneNumbers())->setParentNode((CategorizedCompositeNode*)ctn);
                return createIndex(row,column,(void*)&ct->phoneNumbers());
             }
          }
@@ -505,7 +505,7 @@ QMimeData* ContactProxyModel::mimeData(const QModelIndexList &indexes) const
          switch(modelItem->type()) {
             case CategorizedCompositeNode::Type::CONTACT: {
                //Contact
-               const Contact* ct = static_cast<Contact*>(modelItem->getSelf());
+               const Person* ct = static_cast<Person*>(modelItem->getSelf());
                if (ct) {
                   if (ct->phoneNumbers().size() == 1) {
                      mimeData->setData(RingMimes::PHONENUMBER , ct->phoneNumbers()[0]->toHash().toUtf8());
@@ -517,7 +517,7 @@ QMimeData* ContactProxyModel::mimeData(const QModelIndexList &indexes) const
             case CategorizedCompositeNode::Type::NUMBER: {
                //Phone number
                const QString text = data(index, Qt::DisplayRole).toString();
-               const Contact::PhoneNumbers nbs = *static_cast<Contact::PhoneNumbers*>(index.internalPointer());
+               const Person::PhoneNumbers nbs = *static_cast<Person::PhoneNumbers*>(index.internalPointer());
                const PhoneNumber*          nb  = nbs[index.row()];
                mimeData->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
                mimeData->setData(RingMimes::PHONENUMBER, nb->toHash().toUtf8());
@@ -549,30 +549,30 @@ int ContactProxyModel::acceptedPayloadTypes()
  ****************************************************************************/
 
 
-QString ContactProxyModelPrivate::category(const Contact* ct) const {
+QString ContactProxyModelPrivate::category(const Person* ct) const {
    if (!ct)
       return QString();
    QString cat;
    switch (m_Role) {
-      case ContactModel::Role::Organization:
+      case PersonModel::Role::Organization:
          cat = ct->organization();
          break;
-      case ContactModel::Role::Group:
+      case PersonModel::Role::Group:
          cat = ct->group();
          break;
-      case ContactModel::Role::Department:
+      case PersonModel::Role::Department:
          cat = ct->department();
          break;
-      case ContactModel::Role::PreferredEmail:
+      case PersonModel::Role::PreferredEmail:
          cat = ct->preferredEmail();
          break;
-      case ContactModel::Role::FormattedLastUsed:
+      case PersonModel::Role::FormattedLastUsed:
          cat = HistoryTimeCategoryModel::timeToHistoryCategory(ct->phoneNumbers().lastUsedTimeStamp());
          break;
-      case ContactModel::Role::IndexedLastUsed:
+      case PersonModel::Role::IndexedLastUsed:
          cat = QString::number((int)HistoryTimeCategoryModel::timeToHistoryConst(ct->phoneNumbers().lastUsedTimeStamp()));
          break;
-      case ContactModel::Role::DatedLastUsed:
+      case PersonModel::Role::DatedLastUsed:
          cat = QDateTime::fromTime_t(ct->phoneNumbers().lastUsedTimeStamp()).toString();
          break;
       default:

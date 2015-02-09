@@ -26,7 +26,7 @@
 //Ring
 #include "uri.h"
 class PhoneNumber         ;
-class Contact             ;
+class Person              ;
 class Account             ;
 class Call                ;
 class TemporaryPhoneNumber;
@@ -70,7 +70,7 @@ public:
    //Factory
    Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, const QString& type = QString());
    Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, Account* account, const QString& type = QString());
-   Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, Contact* contact, Account* account = nullptr, const QString& type = QString());
+   Q_INVOKABLE PhoneNumber* getNumber(const QString& uri, Person* contact, Account* account = nullptr, const QString& type = QString());
    Q_INVOKABLE PhoneNumber* fromHash (const QString& hash);
    Q_INVOKABLE PhoneNumber* fromTemporary(const TemporaryPhoneNumber* number);
 

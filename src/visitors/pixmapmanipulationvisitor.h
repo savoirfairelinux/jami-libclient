@@ -24,7 +24,7 @@
 #include <QtCore/QModelIndex>
 
 //Ring
-class Contact    ;
+class Person    ;
 class PhoneNumber;
 class Call       ;
 
@@ -42,7 +42,7 @@ class LIB_EXPORT PixmapManipulationVisitor {
 public:
    PixmapManipulationVisitor();
    virtual ~PixmapManipulationVisitor() {}
-   virtual QVariant contactPhoto(Contact* c, const QSize& size, bool displayPresence = true);
+   virtual QVariant contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
    virtual QVariant callPhoto(Call* c, const QSize& size, bool displayPresence = true);
    virtual QVariant callPhoto(const PhoneNumber* n, const QSize& size, bool displayPresence = true);
    virtual QVariant numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);

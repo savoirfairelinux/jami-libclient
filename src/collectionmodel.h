@@ -19,12 +19,12 @@
 #define COLLECTION_MODEL_H
 
 #include "typedefs.h"
-#include "contact.h"
+#include "person.h"
 
 #include <QtCore/QAbstractItemModel>
 
 #include "collectionmanagerinterface.h"
-#include "contactmodel.h"
+#include "personmodel.h"
 #include "collectioninterface.h"
 
 //Ring

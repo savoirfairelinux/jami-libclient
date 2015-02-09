@@ -29,7 +29,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "call.h"
-#include "contact.h"
+#include "person.h"
 #include "phonenumber.h"
 #include "callmodel.h"
 #include "collectioneditor.h"
@@ -292,9 +292,9 @@ void HistoryModel::add(Call* call)
       return;
    }
 
-//    if (!m_HaveContactModel && call->contactBackend()) {
+//    if (!m_HavePersonModel && call->contactBackend()) {
 //       connect(((QObject*)call->contactBackend()),SIGNAL(collectionChanged()),this,SLOT(reloadCategories()));
-//       m_HaveContactModel = true;
+//       m_HavePersonModel = true;
 //    }//TODO implement reordering
 
    emit newHistoryCall(call);
@@ -570,7 +570,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
    Q_UNUSED(action)
    setData(parentIdx,-1,Call::Role::DropState);
    QByteArray encodedPhoneNumber = mime->data( RingMimes::PHONENUMBER );
-   QByteArray encodedContact     = mime->data( RingMimes::CONTACT     );
+   QByteArray encodedPerson     = mime->data( RingMimes::CONTACT     );
 
    if (parentIdx.isValid() && mime->hasFormat( RingMimes::CALLID)) {
       QByteArray encodedCallId      = mime->data( RingMimes::CALLID      );
