@@ -27,8 +27,8 @@
 #include <type_traits>
 
 //Ring
-#include <itembackendinterface.h>
-#include <itembackendmediator.h>
+#include <collectioninterface.h>
+#include <collectionmediator.h>
 
 class CommonCollectionModel;
 
@@ -138,6 +138,6 @@ private:
    CollectionManagerInterfacePrivate<T>* d_ptr;
 };
 
-#include "itembackendmanagerinterface.hpp"
+#include "collectionmanagerinterface.hpp"
 
 #endif

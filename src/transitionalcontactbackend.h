@@ -18,7 +18,7 @@
 #ifndef TRANSITIONAL_CONTACT_BACKEND
 #define TRANSITIONAL_CONTACT_BACKEND
 
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 
 #include "typedefs.h"
 
@@ -41,12 +41,11 @@ class TransitionalContactBackendPrivate;
  * be used when contacts are created locally, but a "real" backend have
  * yet to be selected.
  */
-class LIB_EXPORT TransitionalContactBackend : public AbstractContactBackend {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   Q_OBJECT
-   #pragma GCC diagnostic pop
+class LIB_EXPORT TransitionalContactBackend : public CollectionInterface {
 public:
+   template<typename T>
+   explicit TransitionalContactBackend(CollectionMediator<T>* mediator);
+   static CollectionInterface* m_spInstance;
 
    virtual ~TransitionalContactBackend();
 
@@ -54,24 +53,18 @@ public:
    virtual QByteArray      id       () const override;
    virtual bool            isEnabled() const override;
    virtual QString         name     () const override;
+   virtual QString         category () const override;
    virtual QVariant        icon     () const override;
-   virtual QList<Contact*> items    () const override;
    virtual SupportedFeatures supportedFeatures() const override;
 
    //Mutators
    virtual bool load       (                            ) override;
    virtual bool reload     (                            ) override;
-   virtual bool append     ( const Contact* item        ) override;
-   virtual bool save       ( const Contact* contact     ) override;
-   virtual bool edit       ( Contact*       contact     ) override;
-   virtual bool addNew     ( Contact*       contact     ) override;
 
    //Singleton
-   static AbstractContactBackend* instance();
+   static CollectionInterface* instance();
 
 private:
-   explicit TransitionalContactBackend(QObject* parent = nullptr);
-   static AbstractContactBackend* m_spInstance;
 
    const QScopedPointer<TransitionalContactBackendPrivate> d_ptr;
 };

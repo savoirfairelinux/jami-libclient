@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,12 +15,10 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "collectioneditor.h"
+#include "collectionextensioninterface.h"
 
-CollectionEditorBase::CollectionEditorBase(QAbstractItemModel* m) : m_pModel(m)
-{}
 
-QAbstractItemModel* CollectionEditorBase::model() const
+CollectionExtensionInterface::CollectionExtensionInterface(QObject* parent) : QObject(parent)
 {
-   return m_pModel;
+   
 }

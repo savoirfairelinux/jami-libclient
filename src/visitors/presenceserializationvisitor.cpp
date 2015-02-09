@@ -21,8 +21,8 @@ class LIB_EXPORT DummyPresenceSerializationVisitor : public PresenceSerializatio
 public:
    virtual void serialize() override;
    virtual void load     () override;
-   virtual bool isTracked(AbstractItemBackendBase* backend) override;
-   virtual void setTracked(AbstractItemBackendBase* backend, bool tracked) override;
+   virtual bool isTracked(CollectionInterface* backend) override;
+   virtual void setTracked(CollectionInterface* backend, bool tracked) override;
    virtual ~DummyPresenceSerializationVisitor();
 
 };
@@ -38,13 +38,13 @@ void DummyPresenceSerializationVisitor::load()
    
 }
 
-bool DummyPresenceSerializationVisitor::isTracked(AbstractItemBackendBase* backend)
+bool DummyPresenceSerializationVisitor::isTracked(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
    return false;
 }
 
-void DummyPresenceSerializationVisitor::setTracked(AbstractItemBackendBase* backend, bool tracked)
+void DummyPresenceSerializationVisitor::setTracked(CollectionInterface* backend, bool tracked)
 {
    Q_UNUSED(backend)
    Q_UNUSED(tracked)

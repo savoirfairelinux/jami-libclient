@@ -32,9 +32,10 @@
 #include "contact.h"
 #include "phonenumber.h"
 #include "callmodel.h"
+#include "collectioneditor.h"
 #include "historytimecategorymodel.h"
 #include "lastusednumbermodel.h"
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 #include "visitors/itemmodelstateserializationvisitor.h"
 
 /*****************************************************************************
@@ -70,7 +71,7 @@ public:
 
    //Attributes
    static CallMap m_sHistoryCalls;
-   QVector<AbstractHistoryBackend*> m_lBackends;
+   QVector<CollectionInterface*> m_lBackends;
 
    //Model categories
    QVector<HistoryTopLevelItem*>       m_lCategoryCounter ;
@@ -319,9 +320,9 @@ void HistoryModel::add(Call* call)
    // Loop until it find a compatible backend
    //HACK only support a single active history backend
    if (!call->backend()) {
-      foreach (AbstractHistoryBackend* backend, d_ptr->m_lBackends) {
-         if (backend->supportedFeatures() & AbstractHistoryBackend::ADD) {
-            if (backend->append(call)) {
+      foreach (CollectionInterface* backend, d_ptr->m_lBackends) {
+         if (backend->supportedFeatures() & CollectionInterface::ADD) {
+            if (backend->editor<Call>()->append(call)) {
                call->setBackend(backend);
                break;
             }
@@ -589,40 +590,40 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
 }
 
 
-bool HistoryModel::hasBackends() const
-{
-   return d_ptr->m_lBackends.size();
-}
+// bool HistoryModel::hasBackends() const
+// {
+//    return d_ptr->m_lBackends.size();
+// }
 
-bool HistoryModel::hasEnabledBackends() const
-{
-   return d_ptr->m_lBackends.size();
-}
+// bool HistoryModel::hasEnabledBackends() const
+// {
+//    return d_ptr->m_lBackends.size();
+// }
 
-void HistoryModel::addBackend(AbstractHistoryBackend* backend, LoadOptions options)
-{
-   d_ptr->m_lBackends << backend;
-   connect(backend,SIGNAL(newHistoryCallAdded(Call*)),this,SLOT(add(Call*)));
-   if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
-      backend->load();
-   emit newBackendAdded(backend);
-}
+// void HistoryModel::addBackend(CollectionInterface* backend, LoadOptions options)
+// {
+//    d_ptr->m_lBackends << backend;
+//    connect(backend,SIGNAL(newHistoryCallAdded(Call*)),this,SLOT(add(Call*)));
+//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
+//       backend->load();
+//    emit newBackendAdded(backend);
+// }
 
-QString HistoryModel::backendCategoryName() const
-{
-   return tr("History");
-}
+// QString HistoryModel::backendCategoryName() const
+// {
+//    return tr("History");
+// }
 
-void HistoryModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
+void HistoryModel::backendAddedCallback(CollectionInterface* backend)
 {
-
+   Q_UNUSED(backend)
 }
 
 ///Call all backends that support clearing
 bool HistoryModel::clearAllBackends() const
 {
-   foreach (AbstractHistoryBackend* backend, d_ptr->m_lBackends) {
-      if (backend->supportedFeatures() & AbstractHistoryBackend::ADD) {
+   foreach (CollectionInterface* backend, d_ptr->m_lBackends) {
+      if (backend->supportedFeatures() & CollectionInterface::ADD) {
          backend->clear();
       }
    }
@@ -635,27 +636,39 @@ bool HistoryModel::clearAllBackends() const
 }
 
 
-bool HistoryModel::enableBackend(AbstractHistoryBackend* backend, bool enabled)
+// bool HistoryModel::enableBackend(CollectionInterface* backend, bool enabled)
+// {
+//    Q_UNUSED(backend)
+//    Q_UNUSED(enabled)
+//    return false;//TODO
+// }
+
+// CommonCollectionModel* HistoryModel::backendModel() const
+// {
+//    return nullptr; //TODO
+// }
+
+// const QVector<CollectionInterface*> HistoryModel::backends() const
+// {
+//    return d_ptr->m_lBackends;
+// }
+
+bool HistoryModel::addItemCallback(Call* item)
 {
-   Q_UNUSED(backend)
-   Q_UNUSED(enabled)
-   return false;//TODO
+   add(item);
+   return true;
 }
 
-CommonItemBackendModel* HistoryModel::backendModel() const
+bool HistoryModel::removeItemCallback(Call* item)
 {
-   return nullptr; //TODO
+   Q_UNUSED(item)
+   return false;
 }
 
-const QVector<AbstractHistoryBackend*> HistoryModel::backends() const
-{
-   return d_ptr->m_lBackends;
-}
-
-const QVector<AbstractHistoryBackend*> HistoryModel::enabledBackends() const
-{
-   return d_ptr->m_lBackends;
-}
+// const QVector<CollectionInterface*> HistoryModel::enabledBackends() const
+// {
+//    return d_ptr->m_lBackends;
+// }
 
 ///Return valid payload types
 int HistoryModel::acceptedPayloadTypes() const

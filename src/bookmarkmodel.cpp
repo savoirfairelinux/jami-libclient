@@ -28,9 +28,11 @@
 #include "phonenumber.h"
 #include "callmodel.h"
 #include "call.h"
+#include "contact.h"
 #include "uri.h"
 #include "mime.h"
-#include "abstractitembackend.h"
+#include "collectioneditor.h"
+#include "collectioninterface.h"
 
 ///Top level bookmark item
 class BookmarkTopLevelItem : public CategorizedCompositeNode {
@@ -51,12 +53,12 @@ class BookmarkModelPrivate : public QObject
 public:
    BookmarkModelPrivate(BookmarkModel* parent);
 
-   QVector<AbstractBookmarkBackend*> m_lBackends;
+//    QVector<CollectionInterface*> m_lBackends;
 
    //Attributes
    QList<BookmarkTopLevelItem*>         m_lCategoryCounter ;
    QHash<QString,BookmarkTopLevelItem*> m_hCategories      ;
-   QStringList                  m_lMimes           ;
+   QStringList                          m_lMimes           ;
 
    //Getters
    QModelIndex getContactIndex(Contact* ct) const;
@@ -65,7 +67,7 @@ public:
    QVariant commonCallInfo(NumberTreeBackend* call, int role = Qt::DisplayRole) const;
    QString category(NumberTreeBackend* number) const;
    bool                  displayFrequentlyUsed() const;
-   QList<PhoneNumber*>   bookmarkList         () const;
+   QVector<PhoneNumber*>   bookmarkList         () const;
    static QVector<PhoneNumber*> serialisedToList(const QStringList& list);
 
 private Q_SLOTS:
@@ -452,9 +454,9 @@ bool BookmarkModelPrivate::displayFrequentlyUsed() const
    return true;
 }
 
-QList<PhoneNumber*> BookmarkModelPrivate::bookmarkList() const
+QVector<PhoneNumber*> BookmarkModelPrivate::bookmarkList() const
 {
-   return (m_lBackends.size() > 0) ? m_lBackends[0]->items() : QList<PhoneNumber*>();
+   return (q_ptr->backends().size() > 0) ? q_ptr->backends()[0]->items<PhoneNumber>() : QVector<PhoneNumber*>();
 }
 
 BookmarkTopLevelItem::BookmarkTopLevelItem(QString name) 
@@ -488,8 +490,8 @@ bool BookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
 void BookmarkModel::addBookmark(PhoneNumber* number)
 {
    Q_UNUSED(number)
-   if (d_ptr->m_lBackends.size())
-      d_ptr->m_lBackends[0]->append(number);
+   if (backends().size())
+      backends()[0]->editor<PhoneNumber>()->append(number);
    else
       qWarning() << "No bookmark backend is set";
 }
@@ -528,68 +530,82 @@ void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 }
 
 
-bool BookmarkModel::hasBackends() const
+// bool BookmarkModel::hasBackends() const
+// {
+//    return d_ptr->m_lBackends.size();
+// }
+
+// bool BookmarkModel::hasEnabledBackends() const
+// {
+//    foreach(CollectionInterface* b, d_ptr->m_lBackends) {
+//       if (b->isEnabled())
+//          return true;
+//    }
+//    return false;
+// }
+
+// const QVector<CollectionInterface*> BookmarkModel::backends() const
+// {
+//    return d_ptr->m_lBackends;
+// }
+
+
+bool BookmarkModel::addItemCallback(PhoneNumber* item)
 {
-   return d_ptr->m_lBackends.size();
+   Q_UNUSED(item)
+   reloadCategories(); //TODO this is far from optimal
+   return true;
 }
 
-bool BookmarkModel::hasEnabledBackends() const
+bool BookmarkModel::removeItemCallback(PhoneNumber* item)
 {
-   foreach(AbstractBookmarkBackend* b, d_ptr->m_lBackends) {
-      if (b->isEnabled())
-         return true;
-   }
+   Q_UNUSED(item)
    return false;
 }
 
-const QVector<AbstractBookmarkBackend*> BookmarkModel::backends() const
-{
-   return d_ptr->m_lBackends;
-}
+// const QVector<CollectionInterface*> BookmarkModel::enabledBackends() const
+// {
+//    return d_ptr->m_lBackends; //TODO filter them
+// }
 
-const QVector<AbstractBookmarkBackend*> BookmarkModel::enabledBackends() const
-{
-   return d_ptr->m_lBackends; //TODO filter them
-}
-
-CommonItemBackendModel* BookmarkModel::backendModel() const
-{
-   return nullptr; //TODO
-}
+// CommonCollectionModel* BookmarkModel::backendModel() const
+// {
+//    return nullptr; //TODO
+// }
 
 bool BookmarkModel::clearAllBackends() const
 {
-   foreach (AbstractBookmarkBackend* backend, d_ptr->m_lBackends) {
-      if (backend->supportedFeatures() & AbstractBookmarkBackend::ADD) {
+   foreach (CollectionInterface* backend, backends()) {
+      if (backend->supportedFeatures() & CollectionInterface::ADD) {
          backend->clear();
       }
    }
    return true;
 }
 
-bool BookmarkModel::enableBackend(AbstractBookmarkBackend* backend, bool enable)
+// bool BookmarkModel::enableBackend(CollectionInterface* backend, bool enable)
+// {
+//    Q_UNUSED(backend)
+//    Q_UNUSED(enable)
+//    return false; //TODO
+// }
+
+// void BookmarkModel::addBackend(CollectionInterface* backend, LoadOptions options)
+// {
+//    d_ptr->m_lBackends << backend;
+//    connect(backend,SIGNAL(newBookmarkAdded(PhoneNumber*)),this,SLOT(reloadCategories()));
+//    if (options & LoadOptions::FORCE_ENABLED)
+//       backend->load();
+// }
+
+void BookmarkModel::backendAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
-   Q_UNUSED(enable)
-   return false; //TODO
 }
 
-void BookmarkModel::addBackend(AbstractBookmarkBackend* backend, LoadOptions options)
-{
-   d_ptr->m_lBackends << backend;
-   connect(backend,SIGNAL(newBookmarkAdded(PhoneNumber*)),this,SLOT(reloadCategories()));
-   if (options & LoadOptions::FORCE_ENABLED)
-      backend->load();
-}
-
-void BookmarkModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
-{
-
-}
-
-QString BookmarkModel::backendCategoryName() const
-{
-   return tr("Bookmarks");
-}
+// QString BookmarkModel::backendCategoryName() const
+// {
+//    return tr("Bookmarks");
+// }
 
 #include <bookmarkmodel.moc>

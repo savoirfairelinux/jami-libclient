@@ -38,13 +38,6 @@ CollectionMediator<T>* CollectionEditor<T>::mediator() const
 }
 
 template<typename T>
-QVector<T*> CollectionEditor<T>::items() const
-{
-//    Q_ASSERT(T::staticMetaObject().className() == T2::staticMetaObject().className());
-   return items();
-}
-
-template<typename T>
 QMetaObject metaObject()
 {
    return T::staticMetaObject();

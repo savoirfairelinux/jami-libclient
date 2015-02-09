@@ -20,20 +20,20 @@
 
 #include <typedefs.h>
 
-#include <itembackendinterface.h>
+#include <collectioninterface.h>
 
 class ItemBasePrivate;
 
 /**
- * Base class for all items to be managed in ItemBackendInterface
+ * Base class for all items to be managed in CollectionInterface
  */
 template<typename T>
 class LIB_EXPORT ItemBase : public T {
-   friend class ItemBackendInterface;
+   friend class CollectionInterface;
 public:
    //Constructor
    explicit ItemBase(T* parent = nullptr);
-   virtual ItemBackendInterface* backend() final;
+   virtual CollectionInterface* backend() final;
 
    //Mutator methods
    bool save() const;
@@ -41,7 +41,7 @@ public:
    bool remove()    ;
 
    //Setter
-   void setBackend(ItemBackendInterface* backend);
+   void setBackend(CollectionInterface* backend);
 
 protected:
 private:

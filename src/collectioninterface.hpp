@@ -42,7 +42,7 @@ public:
 };
 
 template<typename T>
-CollectionInterface::CollectionInterface(CollectionMediator<T>* mediator, CollectionEditor<T>* editor, CollectionInterface* parent) :
+CollectionInterface::CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent) :
 d_ptr(new CollectionInterfacePrivate())
 {
    //Ensure the type is based on QObject (required)
@@ -65,7 +65,7 @@ d_ptr(new CollectionInterfacePrivate())
 template<typename T>
 QVector<T*> CollectionInterface::items() const
 {
-   return editor<T>()->items<T>();
+   return editor<T>()->items();
 }
 
 template<typename T>

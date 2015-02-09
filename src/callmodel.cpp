@@ -35,7 +35,7 @@
 #include "dbus/instancemanager.h"
 #include "mime.h"
 #include "typedefs.h"
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 #include "dbus/videomanager.h"
 #include "historymodel.h"
 #include "visitors/phonenumberselector.h"

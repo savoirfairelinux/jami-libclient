@@ -30,6 +30,8 @@ class ProfilePersisterVisitor;
 class VCardMapper;
 class ProfileModelPrivate;
 
+template<typename T> class CollectionMediator;
+
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
    friend class ProfileContentBackend;
@@ -56,11 +58,6 @@ public:
    QModelIndex mapFromSource(const QModelIndex& idx) const;
    int acceptedPayloadTypes() const;
 
-   //Attributes
-   QStringList m_lMimes;
-
-   AbstractContactBackend* getBackEnd();
-
 private:
    ProfileModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(ProfileModel);
@@ -69,7 +66,8 @@ private:
    static ProfileModel* m_spInstance;
 
 public Q_SLOTS:
-   bool addNewProfile(Contact* c, AbstractContactBackend* backend = nullptr);
+//    bool addNewProfile(Contact* c, CollectionInterface* backend = nullptr);
+//    bool createProfile(const QString& name);
 };
 
 #endif

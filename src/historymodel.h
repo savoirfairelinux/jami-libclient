@@ -27,7 +27,7 @@
 
 //Ring
 #include "call.h"
-#include "backendmanagerinterface.h"
+#include "collectionmanagerinterface.h"
 
 //Typedef
 typedef QMap<uint, Call*>  CallMap;
@@ -38,7 +38,7 @@ class AbstractHistoryBackend;
 class HistoryModelPrivate;
 //TODO split ASAP
 ///HistoryModel: History call manager
-class LIB_EXPORT HistoryModel : public QAbstractItemModel, public BackendManagerInterface<AbstractHistoryBackend> {
+class LIB_EXPORT HistoryModel : public QAbstractItemModel, public CollectionManagerInterface<Call> {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -60,15 +60,7 @@ public:
    const CallMap getHistoryCalls   () const;
 
    //Backend model implementation
-   virtual bool hasBackends                                       () const override;
-   virtual bool hasEnabledBackends                                () const override;
-   virtual const QVector<AbstractHistoryBackend*> backends        () const override;
-   virtual const QVector<AbstractHistoryBackend*> enabledBackends () const override;
-   virtual CommonItemBackendModel* backendModel                   () const override;
-   virtual bool clearAllBackends                                  () const override;
-   virtual bool enableBackend(AbstractHistoryBackend*, bool        )       override;
-   virtual void addBackend(AbstractHistoryBackend* backend, LoadOptions options = LoadOptions::NONE) override;
-   virtual QString backendCategoryName() const override;
+   virtual bool clearAllBackends   () const override;
 
    //Setters
    void setCategoryRole(Call::Role role);
@@ -102,7 +94,9 @@ private:
    static HistoryModel* m_spInstance;
 
    //Backend interface
-   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
+   virtual void backendAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(Call* item) override;
+   virtual bool removeItemCallback(Call* item) override;
 
 public Q_SLOTS:
    void add(Call* call);

@@ -116,7 +116,6 @@ public:
    bool                     m_Missed          ;
    Call::Direction          m_Direction       ;
    Call::Type               m_Type            ;
-   AbstractHistoryBackend*  m_pBackend        ;
 
    mutable TemporaryPhoneNumber* m_pTransferNumber ;
    mutable TemporaryPhoneNumber* m_pDialNumber     ;

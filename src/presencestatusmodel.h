@@ -24,7 +24,7 @@
 #include <QtCore/QAbstractTableModel>
 
 class PresenceSerializationVisitor;
-class AbstractItemBackendBase;
+class CollectionInterface;
 class PresenceStatusModelPrivate;
 
 /**
@@ -88,7 +88,7 @@ public:
 
    //Setters
    void setDefaultStatus( const QModelIndex& idx );
-   void setAutoTracked(AbstractItemBackendBase* backend, bool tracked) const;
+   void setAutoTracked(CollectionInterface* backend, bool tracked) const;
 
    //Getters
    QString     customMessage   () const;
@@ -98,7 +98,7 @@ public:
    QString     currentMessage  () const;
    QString     currentName     () const;
    QModelIndex defaultStatus   () const;
-   bool        isAutoTracked(AbstractItemBackendBase* backend) const;
+   bool        isAutoTracked(CollectionInterface* backend) const;
 
 private:
    QScopedPointer<PresenceStatusModelPrivate> d_ptr;

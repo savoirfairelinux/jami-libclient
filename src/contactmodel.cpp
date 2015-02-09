@@ -24,8 +24,9 @@
 #include "call.h"
 #include "uri.h"
 #include "phonenumber.h"
-#include "abstractitembackend.h"
-#include "itembackendmodel.h"
+#include "collectioninterface.h"
+#include "collectionmodel.h"
+#include "collectioneditor.h"
 #include "visitors/itemmodelstateserializationvisitor.h"
 
 //Qt
@@ -43,8 +44,8 @@ public:
    ContactModelPrivate(ContactModel* parent);
 
    //Attributes
-   QVector<AbstractContactBackend*> m_lBackends;
-   CommonItemBackendModel* m_pBackendModel;
+//    QVector<CollectionInterface*> m_lBackends;
+   CommonCollectionModel* m_pBackendModel;
    QHash<QByteArray,ContactPlaceHolder*> m_hPlaceholders;
 
    //Indexes
@@ -56,7 +57,7 @@ private:
 
 private Q_SLOTS:
    void slotReloaded();
-   void slotContactAdded(Contact* c);
+//    void slotContactAdded(Contact* c);
 };
 
 ContactModelPrivate::ContactModelPrivate(ContactModel* parent) : QObject(parent), q_ptr(parent),
@@ -218,52 +219,64 @@ Contact* ContactModel::getPlaceHolder(const QByteArray& uid )
 }
 
 ///Return if there is backends
-bool ContactModel::hasBackends() const
-{
-   return d_ptr->m_lBackends.size();
-}
+// bool ContactModel::hasBackends() const
+// {
+//    return d_ptr->m_lBackends.size();
+// }
 
 
-const QVector<AbstractContactBackend*> ContactModel::enabledBackends() const
-{
-   return d_ptr->m_lBackends;
-}
+// const QVector<CollectionInterface*> ContactModel::enabledBackends() const
+// {
+//    return d_ptr->m_lBackends;
+// }
 
-bool ContactModel::hasEnabledBackends() const
-{
-   return d_ptr->m_lBackends.size()>0;
-}
+// bool ContactModel::hasEnabledBackends() const
+// {
+//    return d_ptr->m_lBackends.size()>0;
+// }
 
-CommonItemBackendModel* ContactModel::backendModel() const
-{
-   if (!d_ptr->m_pBackendModel) {
-      d_ptr->m_pBackendModel = new CommonItemBackendModel(const_cast<ContactModel*>(this));
-   }
-   return d_ptr->m_pBackendModel; //TODO
-}
+// CommonCollectionModel* ContactModel::backendModel() const
+// {
+//    if (!d_ptr->m_pBackendModel) {
+//       d_ptr->m_pBackendModel = new CommonCollectionModel(const_cast<ContactModel*>(this));
+//    }
+//    return d_ptr->m_pBackendModel; //TODO
+// }
 
-QString ContactModel::backendCategoryName() const
-{
-   return tr("Contacts");
-}
+// QString ContactModel::backendCategoryName() const
+// {
+//    return tr("Contacts");
+// }
 
-void ContactModel::backendAddedCallback(AbstractItemBackendInterface2* backend)
-{
-
-}
-
-const QVector<AbstractContactBackend*> ContactModel::backends() const
-{
-   return d_ptr->m_lBackends;
-}
-
-bool ContactModel::enableBackend(AbstractContactBackend* backend, bool enabled)
+void ContactModel::backendAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
-   Q_UNUSED(enabled)
-   //TODO;
+}
+
+// const QVector<CollectionInterface*> ContactModel::backends() const
+// {
+//    return d_ptr->m_lBackends;
+// }
+
+bool ContactModel::addItemCallback(Contact* item)
+{
+   addContact(item);
+   return true;
+}
+
+bool ContactModel::removeItemCallback(Contact* item)
+{
+   Q_UNUSED(item)
    return false;
 }
+
+// bool ContactModel::enableBackend(CollectionInterface* backend, bool enabled)
+// {
+//    Q_UNUSED(backend)
+//    Q_UNUSED(enabled)
+//    //TODO;
+//    return false;
+// }
 
 bool ContactModel::addContact(Contact* c)
 {
@@ -299,20 +312,20 @@ const ContactList ContactModel::contacts() const
    return d_ptr->m_lContacts;
 }
 
-void ContactModel::addBackend(AbstractContactBackend* backend, LoadOptions options)
-{
-   d_ptr->m_lBackends << backend;
-   connect(backend,SIGNAL(reloaded()),d_ptr.data(),SLOT(slotReloaded()));
-   connect(backend,SIGNAL(newContactAdded(Contact*)),d_ptr.data(),SLOT(slotContactAdded(Contact*)));
-   if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
-      backend->load();
-   emit newBackendAdded(backend);
-}
+// void ContactModel::addBackend(CollectionInterface* backend, LoadOptions options)
+// {
+//    d_ptr->m_lBackends << backend;
+//    connect(backend,SIGNAL(reloaded()),d_ptr.data(),SLOT(slotReloaded()));
+//    connect(backend,SIGNAL(newContactAdded(Contact*)),d_ptr.data(),SLOT(slotContactAdded(Contact*)));
+//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
+//       backend->load();
+//    emit newBackendAdded(backend);
+// }
 
-bool ContactModel::addNewContact(Contact* c, AbstractContactBackend* backend)
+bool ContactModel::addNewContact(Contact* c, CollectionInterface* backend)
 {
    Q_UNUSED(backend);
-   return d_ptr->m_lBackends[0]->addNew(c);
+   return backends()[0]->editor<Contact>()->addNew(c);
 }
 
 
@@ -327,9 +340,5 @@ void ContactModelPrivate::slotReloaded()
    emit q_ptr->reloaded();
 }
 
-void ContactModelPrivate::slotContactAdded(Contact* c)
-{
-   q_ptr->addContact(c);
-}
 
 #include <contactmodel.moc>

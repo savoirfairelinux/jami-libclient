@@ -49,6 +49,6 @@ private:
    CollectionMediatorPrivate<T>* d_ptr;
 };
 
-#include <itembackendmediator.hpp>
+#include <collectionmediator.hpp>
 
 #endif

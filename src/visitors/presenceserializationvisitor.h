@@ -21,14 +21,14 @@
 #include "../typedefs.h"
 
 class AbstractBookmarkModel;
-class AbstractItemBackendBase;
+class CollectionInterface;
 
 class LIB_EXPORT PresenceSerializationVisitor {
 public:
    virtual void serialize() = 0;
    virtual void load     () = 0;
-   virtual bool isTracked(AbstractItemBackendBase* backend) = 0;
-   virtual void setTracked(AbstractItemBackendBase* backend, bool tracked) = 0;
+   virtual bool isTracked(CollectionInterface* backend) = 0;
+   virtual void setTracked(CollectionInterface* backend, bool tracked) = 0;
    virtual ~PresenceSerializationVisitor(){};
 
    static PresenceSerializationVisitor* instance();

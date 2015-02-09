@@ -29,7 +29,7 @@
 #include "accountmodel.h"
 #include "numbercategory.h"
 #include "numbercategorymodel.h"
-#include "abstractitembackend.h"
+#include "collectioninterface.h"
 #include "dbus/presencemanager.h"
 #include "visitors/pixmapmanipulationvisitor.h"
 #include "contactmodel.h"

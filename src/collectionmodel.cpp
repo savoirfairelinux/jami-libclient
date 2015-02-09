@@ -17,9 +17,9 @@
  ***************************************************************************/
 #include "collectionmodel.h"
 
-#include "itembackendmanagerinterface.h"
+#include "collectionmanagerinterface.h"
 #include "visitors/itemmodelstateserializationvisitor.h"
-#include "abstractitembackendmodelextension.h"
+#include "collectionextensioninterface.h"
 
 class CollectionModelPrivate : public QObject
 {
@@ -42,7 +42,7 @@ public:
    };
    QHash<CollectionInterface**,ProxyItem*> m_hBackendsNodes;
    QVector<ProxyItem*> m_lTopLevelBackends;
-   QVector<AbstractCollectionModelExtension*> m_lExtensions;
+   QVector<CollectionExtensionInterface*> m_lExtensions;
 
 private:
    CollectionModel* q_ptr;
@@ -281,7 +281,7 @@ CollectionInterface* CollectionModel::backendAt(const QModelIndex& index)
    return static_cast<CollectionModelPrivate::ProxyItem*>(index.internalPointer())->backend;
 }
 
-void CollectionModel::addExtension(AbstractCollectionModelExtension* extension)
+void CollectionModel::addExtension(CollectionExtensionInterface* extension)
 {
    emit layoutAboutToBeChanged();
    d_ptr->m_lExtensions << extension;
@@ -294,4 +294,4 @@ void CollectionModelPrivate::slotExtensionDataChanged(const QModelIndex& idx)
    emit q_ptr->dataChanged(idx,idx);
 }
 
-#include <itembackendmodel.moc>
+#include <collectionmodel.moc>

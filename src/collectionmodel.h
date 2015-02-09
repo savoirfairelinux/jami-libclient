@@ -23,12 +23,12 @@
 
 #include <QtCore/QAbstractItemModel>
 
-#include "itembackendmanagerinterface.h"
+#include "collectionmanagerinterface.h"
 #include "contactmodel.h"
-#include "itembackendinterface.h"
+#include "collectioninterface.h"
 
 //Ring
-class AbstractItemBackendModelExtension;
+class CollectionExtensionInterface;
 
 class CollectionModelPrivate;
 
@@ -48,9 +48,9 @@ public:
    virtual QModelIndex   parent ( const QModelIndex& index                                    ) const override;
    virtual QModelIndex   index  ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
 
-   ItemBackendInterface* backendAt(const QModelIndex& index);
+   CollectionInterface* backendAt(const QModelIndex& index);
 
-   void addExtension(AbstractItemBackendModelExtension* extension);
+   void addExtension(CollectionExtensionInterface* extension);
 
    bool save();
    bool load();

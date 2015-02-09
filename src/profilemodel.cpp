@@ -21,13 +21,16 @@
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 #include <QMimeData>
+#include <QtCore/QCoreApplication>
 #include <QtCore/QPointer>
 
 //SFLPhone library
 #include "accountmodel.h"
+#include "collectioninterface.h"
+#include "collectioneditor.h"
 #include "contactmodel.h"
 #include "callmodel.h"
-#include "abstractitembackend.h"
+#include "contact.h"
 #include "visitors/profilepersistervisitor.h"
 #include "visitors/pixmapmanipulationvisitor.h"
 #include "vcardutils.h"
@@ -129,45 +132,57 @@ struct VCardMapper {
 };
 static VCardMapper* vc_mapper = new VCardMapper;
 
-///ProfileContentBackend: Implement a backend for Profiles
-class ProfileContentBackend : public AbstractContactBackend {
-   Q_OBJECT
+class ProfileEditor : public CollectionEditor<Contact>
+{
 public:
-   explicit ProfileContentBackend(ProfileModel* parent);
+   ProfileEditor(CollectionMediator<Contact>* m) : CollectionEditor<Contact>(m) {};
+   ~ProfileEditor();
+   virtual bool save       ( const Contact* item ) override;
+   virtual bool append     ( const Contact* item ) override;
+   virtual bool remove     ( Contact*       item ) override;
+   virtual bool edit       ( Contact*       item ) override;
+   virtual bool addNew     ( Contact*       item ) override;
 
-   //Re-implementation
-   virtual QString  name(                                                                     ) const override;
-   virtual QVariant icon(                                                                     ) const override;
-   virtual bool     isEnabled(                                                                ) const override;
-   virtual bool     enable (bool enable                                                       ) override;
-   virtual QByteArray  id  (                                                                  ) const override;
-   virtual bool     edit   ( Contact* contact                                                 ) override;
-   virtual bool     addNew ( Contact* contact                                                 ) override;
-   virtual bool     remove ( Contact* c                                                       ) override;
-   virtual bool     append (const Contact* item                                               ) override;
-   virtual          ~ProfileContentBackend (                                                  );
-   virtual bool     load(                                                                     ) override;
-   virtual bool     reload(                                                                   ) override;
-   virtual bool     save(const Contact* contact                                               ) override;
-   SupportedFeatures supportedFeatures(                                                       ) const;
-   virtual QList<Contact*> items(                                                             ) const override;
-   virtual bool addPhoneNumber( Contact* contact , PhoneNumber* number                        ) override;
-
-   //Attributes
+   Node* getProfileById(const QByteArray& id);
+   QList<Account*> getAccountsForProfile(const QString& id);
    QList<Node*> m_lProfiles;
    QHash<QByteArray,Node*> m_hProfileByAccountId;
+
+private:
+   virtual QVector<Contact*> items() const override;
+};
+
+///ProfileContentBackend: Implement a backend for Profiles
+class ProfileContentBackend : public QObject, public CollectionInterface {
+   Q_OBJECT
+public:
+   template<typename T>
+   explicit ProfileContentBackend(CollectionMediator<T>* mediator);
+   virtual ~ProfileContentBackend ();
+
+   //Re-implementation
+   virtual QString  name              (             ) const override;
+   virtual QString  category          (             ) const override;
+   virtual QVariant icon              (             ) const override;
+   virtual bool     isEnabled         (             ) const override;
+   virtual bool     enable            ( bool enable )       override;
+   virtual QByteArray  id             (             ) const override;
+   virtual bool     load              (             )       override;
+   virtual bool     reload            (             )       override;
+   SupportedFeatures supportedFeatures(             ) const override;
+
+   //Attributes
    bool m_needSaving;
 
    QList<Contact*> m_bSaveBuffer;
    bool saveAll();
 
-   QList<Account*> getAccountsForProfile(const QString& id);
    Node* m_pDefault;
+   ProfileEditor* m_pEditor;
 
    //Helper
-   Node* getProfileById(const QByteArray& id);
-   void setupDefaultProfile();
-   void addAccount(Node* parent, Account* acc);
+   void  setupDefaultProfile();
+   void  addAccount(Node* parent, Account* acc);
 
 private:
    ProfileModel* m_pParent;
@@ -194,17 +209,78 @@ struct Node {
    int             m_Index;
 };
 
+bool ProfileEditor::save(const Contact* contact)
+{
+   QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
+   qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
+   const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
+
+   QFile file(profilesDir.absolutePath()+"/"+contact->uid()+".vcf");
+   file.open(QIODevice::WriteOnly);
+   file.write(result);
+   file.close();
+   return true;
+}
+
+ProfileEditor::~ProfileEditor()
+{
+   while (m_lProfiles.size()) {
+      Node* c = m_lProfiles[0];
+      m_lProfiles.removeAt(0);
+      delete c;
+   }
+}
+
+bool ProfileEditor::append(const Contact* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
+bool ProfileEditor::remove(Contact* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
+bool ProfileEditor::edit( Contact* contact)
+{
+   qDebug() << "Attempt to edit a profile contact" << contact->uid();
+   return false;
+}
+
+bool ProfileEditor::addNew( Contact* contact)
+{
+   qDebug() << "Creating new profile" << contact->uid();
+   save(contact);
+//    load(); //FIXME
+   return true;
+}
+
+QVector<Contact*> ProfileEditor::items() const
+{
+   return QVector<Contact*>();
+}
+
+
 
 ProfileModel* ProfileModel::m_spInstance = nullptr;
 
-ProfileContentBackend::ProfileContentBackend(ProfileModel* parent) : AbstractContactBackend(this, parent),
-m_pDefault(nullptr),m_pParent(parent)
+template<typename T>
+ProfileContentBackend::ProfileContentBackend(CollectionMediator<T>* mediator) :
+  CollectionInterface(new ProfileEditor(mediator),nullptr), m_pDefault(nullptr),m_pParent(ProfileModel::instance())
 {
+   m_pEditor = static_cast<ProfileEditor*>(editor<Contact>());
 }
 
 QString ProfileContentBackend::name () const
 {
    return tr("Profile backend");
+}
+
+QString ProfileContentBackend::category () const
+{
+   return tr("Profile");
 }
 
 QVariant ProfileContentBackend::icon() const
@@ -233,39 +309,35 @@ QByteArray  ProfileContentBackend::id() const
    return "Profile_backend";
 }
 
-bool ProfileContentBackend::edit( Contact* contact )
-{
-   qDebug() << "Attempt to edit a profile contact" << contact->uid();
-   return false;
-}
+// bool ProfileContentBackend::edit( Contact* contact )
+// {
+//    qDebug() << "Attempt to edit a profile contact" << contact->uid();
+//    return false;
+// }
 
-bool ProfileContentBackend::addNew( Contact* contact )
-{
-   qDebug() << "Creating new profile" << contact->uid();
-   save(contact);
-   load();
-   return true;
-}
+// bool ProfileContentBackend::addNew( Contact* contact )
+// {
+//    qDebug() << "Creating new profile" << contact->uid();
+//    save(contact);
+//    load();
+//    return true;
+// }
 
-bool ProfileContentBackend::remove( Contact* c )
-{
-   Q_UNUSED(c)
-   return false;
-}
+// bool ProfileContentBackend::remove( Contact* c )
+// {
+//    Q_UNUSED(c)
+//    return false;
+// }
 
-bool ProfileContentBackend::append(const Contact* item)
-{
-   Q_UNUSED(item)
-   return false;
-}
+// bool ProfileContentBackend::append(const Contact* item)
+// {
+//    Q_UNUSED(item)
+//    return false;
+// }
 
 ProfileContentBackend::~ProfileContentBackend( )
 {
-   while (m_lProfiles.size()) {
-      Node* c = m_lProfiles[0];
-      m_lProfiles.removeAt(0);
-      delete c;
-   }
+
 }
 
 void ProfileContentBackend::setupDefaultProfile()
@@ -282,7 +354,7 @@ void ProfileContentBackend::setupDefaultProfile()
       accounts[(*AccountModel::instance())[i]] = false;
    }
 
-   foreach (Node* node, m_lProfiles) {
+   foreach (Node* node, m_pEditor->m_lProfiles) {
       foreach (Node* acc, node->children) {
          accounts[acc->account] = true;
       }
@@ -303,10 +375,10 @@ void ProfileContentBackend::setupDefaultProfile()
       m_pDefault          = new Node           ;
       m_pDefault->type    = Node::Type::PROFILE;
       m_pDefault->contact = profile            ;
-      m_pDefault->m_Index = m_lProfiles.size() ;
+      m_pDefault->m_Index = m_pEditor->m_lProfiles.size() ;
 
-      m_pParent->beginInsertRows(QModelIndex(), m_lProfiles.size(), m_lProfiles.size());
-      m_lProfiles << m_pDefault;
+      m_pParent->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
+      m_pEditor->m_lProfiles << m_pDefault;
       m_pParent->endInsertRows();
       ContactModel::instance()->addContact(profile);
    }
@@ -329,13 +401,13 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    m_pParent->beginInsertRows(m_pParent->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
    m_pParent->endInsertRows();
-   m_hProfileByAccountId[acc->id()] = account_pro;
+   m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
 }
 
 bool ProfileContentBackend::load()
 {
    if (ProfilePersisterVisitor::instance()) {
-      m_lProfiles.clear();
+      m_pEditor->m_lProfiles.clear();
 
       QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
 
@@ -359,7 +431,7 @@ bool ProfileContentBackend::load()
          Node* pro    = new Node           ;
          pro->type    = Node::Type::PROFILE;
          pro->contact = profile            ;
-         pro->m_Index = m_lProfiles.size() ;
+         pro->m_Index = m_pEditor->m_lProfiles.size() ;
 
          const QByteArray all = file.readAll();
 
@@ -389,8 +461,8 @@ bool ProfileContentBackend::load()
             }
          }
 
-         m_pParent->beginInsertRows(QModelIndex(), m_lProfiles.size(), m_lProfiles.size());
-         m_lProfiles << pro;
+         m_pParent->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
+         m_pEditor->m_lProfiles << pro;
          m_pParent->endInsertRows();
 
          connect(profile, SIGNAL(changed()), this, SLOT(contactChanged()));
@@ -412,23 +484,23 @@ bool ProfileContentBackend::reload()
    return false;
 }
 
-bool ProfileContentBackend::save(const Contact* contact)
-{
-   QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
-   qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
-   const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
-
-   QFile file(profilesDir.absolutePath()+"/"+contact->uid()+".vcf");
-   file.open(QIODevice::WriteOnly);
-   file.write(result);
-   file.close();
-   return true;
-}
+// bool ProfileContentBackend::save(const Contact* contact)
+// {
+//    QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
+//    qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
+//    const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
+// 
+//    QFile file(profilesDir.absolutePath()+"/"+contact->uid()+".vcf");
+//    file.open(QIODevice::WriteOnly);
+//    file.write(result);
+//    file.close();
+//    return true;
+// }
 
 bool ProfileContentBackend::saveAll()
 {
-   for(Node* pro : m_lProfiles) {
-      save(pro->contact);
+   for(Node* pro : m_pEditor->m_lProfiles) {
+      editor<Contact>()->save(pro->contact);
    }
    return true;
 }
@@ -446,23 +518,23 @@ ProfileContentBackend::SupportedFeatures ProfileContentBackend::supportedFeature
       //TODO ^^ Remove that one once debugging is done
 }
 
-bool ProfileContentBackend::addPhoneNumber( Contact* contact , PhoneNumber* number)
-{
-   Q_UNUSED(contact)
-   Q_UNUSED(number)
-   return false;
-}
+// bool ProfileContentBackend::addPhoneNumber( Contact* contact , PhoneNumber* number)
+// {
+//    Q_UNUSED(contact)
+//    Q_UNUSED(number)
+//    return false;
+// }
 
-QList<Contact*> ProfileContentBackend::items() const
-{
-   QList<Contact*> contacts;
-   for (int var = 0; var < m_lProfiles.size(); ++var) {
-      contacts << m_lProfiles[var]->contact;
-   }
-   return contacts;
-}
+// QList<Contact*> ProfileContentBackend::items() const
+// {
+//    QList<Contact*> contacts;
+//    for (int var = 0; var < m_pEditor->m_lProfiles.size(); ++var) {
+//       contacts << m_pEditor->m_lProfiles[var]->contact;
+//    }
+//    return contacts;
+// }
 
-QList<Account*> ProfileContentBackend::getAccountsForProfile(const QString& id)
+QList<Account*> ProfileEditor::getAccountsForProfile(const QString& id)
 {
    QList<Account*> result;
    Node* profile = getProfileById(id.toUtf8());
@@ -475,7 +547,7 @@ QList<Account*> ProfileContentBackend::getAccountsForProfile(const QString& id)
    return result;
 }
 
-Node* ProfileContentBackend::getProfileById(const QByteArray& id)
+Node* ProfileEditor::getProfileById(const QByteArray& id)
 {
    for (Node* p : m_lProfiles) {
       if(p->contact->uid() == id)
@@ -486,7 +558,7 @@ Node* ProfileContentBackend::getProfileById(const QByteArray& id)
 
 void ProfileContentBackend::contactChanged()
 {
-   Contact* c = qobject_cast<Contact*>(QObject::sender());
+   Contact* c = qobject_cast<Contact*>(sender());
    qDebug() << c->formattedName();
    qDebug() << "contactChanged!";
 
@@ -502,7 +574,7 @@ void ProfileContentBackend::save()
 {
    for (Contact* item : m_bSaveBuffer) {
       qDebug() << "saving:" << item->formattedName();
-      save(item);
+      editor<Contact>()->save(item);
    }
 
    m_bSaveBuffer.clear();
@@ -513,7 +585,7 @@ void ProfileContentBackend::save()
 ProfileModel* ProfileModel::instance()
 {
    if (!m_spInstance)
-      m_spInstance = new ProfileModel();
+      m_spInstance = new ProfileModel(QCoreApplication::instance());
    return m_spInstance;
 }
 
@@ -523,6 +595,7 @@ public:
    ProfileModelPrivate(ProfileModel* parent);
    ProfileContentBackend*                 m_pProfileBackend;
    ProfilePersisterVisitor*               m_pVisitor   ;
+   QStringList m_lMimes;
 
    //Helpers
    void updateIndexes();
@@ -551,11 +624,10 @@ void ProfileModelPrivate::slotDelayedInit()
 ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new ProfileModelPrivate(this))
 {
 
-   m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
+   d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
 
    //Creating the profile contact backend
-   d_ptr->m_pProfileBackend = new ProfileContentBackend(this);
-   ContactModel::instance()->addBackend(d_ptr->m_pProfileBackend,LoadOptions::FORCE_ENABLED);
+   d_ptr->m_pProfileBackend = static_cast<ProfileContentBackend*>(ContactModel::instance()->addBackend<ProfileContentBackend>(LoadOptions::FORCE_ENABLED));
 
    //Once LibRingClient is ready, start listening
    QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));
@@ -583,12 +655,12 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
       return QModelIndex();
 
    Account* acc = AccountModel::instance()->getAccountByModelIndex(idx);
-   Node* pro = d_ptr->m_pProfileBackend->m_hProfileByAccountId[acc->id()];
+   Node* pro = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[acc->id()];
 
    //Something is wrong, there is an orphan
    if (!pro) {
       d_ptr->m_pProfileBackend->setupDefaultProfile();
-      pro = d_ptr->m_pProfileBackend->m_hProfileByAccountId[acc->id()];
+      pro = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[acc->id()];
    }
 
    return AccountModel::instance()->index(pro->m_Index,0,index(pro->parent->m_Index,0,QModelIndex()));
@@ -609,7 +681,7 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
    else {
       switch (role) {
          case Qt::DisplayRole:
-            return d_ptr->m_pProfileBackend->items()[index.row()]->formattedName();
+            return d_ptr->m_pProfileBackend->items<Contact>()[index.row()]->formattedName();
       };
    }
    return QVariant();
@@ -621,7 +693,7 @@ int ProfileModel::rowCount(const QModelIndex& parent ) const
       Node* account_node = static_cast<Node*>(parent.internalPointer());
       return (account_node->account)?0:account_node->children.size();
    }
-   return d_ptr->m_pProfileBackend->items().size();
+   return d_ptr->m_pProfileBackend->items<Contact>().size();
 }
 
 int ProfileModel::columnCount(const QModelIndex& parent ) const
@@ -651,8 +723,8 @@ QModelIndex ProfileModel::index( int row, int column, const QModelIndex& parent 
    if(parent.isValid() && current && !column && row < current->children.size()) {
       return createIndex(row, 0, current->children[row]);
    }
-   else if(row < d_ptr->m_pProfileBackend->m_lProfiles.size() && !column) {
-      return createIndex(row, 0, d_ptr->m_pProfileBackend->m_lProfiles[row]);
+   else if(row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size() && !column) {
+      return createIndex(row, 0, d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles[row]);
    }
    return QModelIndex();
 }
@@ -681,7 +753,7 @@ Qt::ItemFlags ProfileModel::flags(const QModelIndex& index ) const
 
 QStringList ProfileModel::mimeTypes() const
 {
-   return m_lMimes;
+   return d_ptr->m_lMimes;
 }
 
 QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
@@ -711,10 +783,10 @@ int ProfileModel::acceptedPayloadTypes() const
 
 void ProfileModelPrivate::updateIndexes()
 {
-   for (int i = 0; i < m_pProfileBackend->m_lProfiles.size(); ++i) {
-      m_pProfileBackend->m_lProfiles[i]->m_Index = i;
-      for (int j = 0; j < m_pProfileBackend->m_lProfiles[i]->children.size(); ++j) {
-         m_pProfileBackend->m_lProfiles[i]->children[j]->m_Index = j;
+   for (int i = 0; i < m_pProfileBackend->m_pEditor->m_lProfiles.size(); ++i) {
+      m_pProfileBackend->m_pEditor->m_lProfiles[i]->m_Index = i;
+      for (int j = 0; j < m_pProfileBackend->m_pEditor->m_lProfiles[i]->children.size(); ++j) {
+         m_pProfileBackend->m_pEditor->m_lProfiles[i]->children[j]->m_Index = j;
       }
    }
 }
@@ -734,10 +806,10 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       Node* newProfile = nullptr;
       int destIdx, indexOfAccountToMove = -1; // Where to insert in account list of profile
 
-      if(!parent.isValid() && row < d_ptr->m_pProfileBackend->m_lProfiles.size()) {
+      if(!parent.isValid() && row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size()) {
          qDebug() << "Dropping on profile title";
          qDebug() << "row:" << row;
-         newProfile = d_ptr->m_pProfileBackend->m_lProfiles[row];
+         newProfile = d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles[row];
          destIdx = 0;
       }
       else if (parent.isValid()) {
@@ -745,7 +817,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
          destIdx = row;
       }
 
-      Node* accountProfile = d_ptr->m_pProfileBackend->m_hProfileByAccountId[accountId];
+      Node* accountProfile = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId];
       for (Node* acc : accountProfile->children) {
          if(acc->account->id() == accountId) {
             indexOfAccountToMove = acc->m_Index;
@@ -766,7 +838,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       qDebug() << "Moving:" << accountToMove->account->alias();
       accountProfile->children.remove(indexOfAccountToMove);
       accountToMove->parent = newProfile;
-      d_ptr->m_pProfileBackend->m_hProfileByAccountId[accountId] = newProfile;
+      d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId] = newProfile;
       newProfile->children.insert(destIdx, accountToMove);
       d_ptr->updateIndexes();
       d_ptr->m_pProfileBackend->saveAll();
@@ -779,20 +851,20 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       int destinationRow = -1;
       if(row < 0) {
          // drop on bottom of the list
-         destinationRow = d_ptr->m_pProfileBackend->m_lProfiles.size();
+         destinationRow = d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size();
       }
       else {
          destinationRow = row;
       }
 
-      Node* moving = d_ptr->m_pProfileBackend->getProfileById(data->data(RingMimes::PROFILE));
+      Node* moving = d_ptr->m_pProfileBackend->m_pEditor->getProfileById(data->data(RingMimes::PROFILE));
 
       if(!beginMoveRows(QModelIndex(), moving->m_Index, moving->m_Index, QModelIndex(), destinationRow)) {
          return false;
       }
 
-      d_ptr->m_pProfileBackend->m_lProfiles.removeAt(moving->m_Index);
-      d_ptr->m_pProfileBackend->m_lProfiles.insert(destinationRow, moving);
+      d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.removeAt(moving->m_Index);
+      d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.insert(destinationRow, moving);
       d_ptr->updateIndexes();
       endMoveRows();
 
@@ -822,16 +894,11 @@ QVariant ProfileModel::headerData(int section, Qt::Orientation orientation, int 
    return QVariant();
 }
 
-AbstractContactBackend* ProfileModel::getBackEnd()
-{
-   return d_ptr->m_pProfileBackend;
-}
-
-bool ProfileModel::addNewProfile(Contact* c, AbstractContactBackend* backend)
-{
-   Q_UNUSED(backend);
-   return d_ptr->m_pProfileBackend->addNew(c);
-}
+// bool ProfileModel::addNewProfile(Contact* c, CollectionInterface* backend)
+// {
+//    Q_UNUSED(backend);
+//    return d_ptr->m_pProfileBackend->addNew(c);
+// }
 
 void ProfileModelPrivate::slotDataChanged(const QModelIndex& tl,const QModelIndex& br)
 {

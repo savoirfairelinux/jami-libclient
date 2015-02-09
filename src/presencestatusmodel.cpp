@@ -376,12 +376,12 @@ void PresenceStatusModel::setDefaultStatus( const QModelIndex& idx )
    emit dataChanged(idx,idx);
 }
 
-bool PresenceStatusModel::isAutoTracked(AbstractItemBackendBase* backend) const
+bool PresenceStatusModel::isAutoTracked(CollectionInterface* backend) const
 {
    return PresenceSerializationVisitor::instance()->isTracked(backend);
 }
 
-void PresenceStatusModel::setAutoTracked(AbstractItemBackendBase* backend, bool tracked) const
+void PresenceStatusModel::setAutoTracked(CollectionInterface* backend, bool tracked) const
 {
    PresenceSerializationVisitor::instance()->setTracked(backend,tracked);
 }

@@ -74,7 +74,7 @@ public:
 
    //Constructor
    template<typename T>
-   explicit CollectionInterface(CollectionMediator<T>* mediator, CollectionEditor<T>* editor, CollectionInterface* parent = nullptr);
+   explicit CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent = nullptr);
    virtual ~CollectionInterface();
 
    //Generic information getters

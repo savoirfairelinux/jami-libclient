@@ -18,13 +18,13 @@
  ***********************************************************************************/
 
 //Parent
-#include "itembackendinterface.h"
+#include "collectioninterface.h"
 
 //Ring library
 #include "contact.h"
 #include "call.h"
 #include "phonenumber.h"
-#include "itembackendeditor.h"
+#include "collectioneditor.h"
 #include "itembase.h"
 
 //Libstdc++

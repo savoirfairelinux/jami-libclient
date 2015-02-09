@@ -26,12 +26,12 @@
 
 #include "typedefs.h"
 #include "contact.h"
-#include "backendmanagerinterface.h"
+#include "collectionmanagerinterface.h"
 
 //Ring
 class Contact;
 class Account;
-class AbstractContactBackend;
+class CollectionInterface;
 class ContactModelPrivate;
 
 //Typedef
@@ -39,7 +39,7 @@ typedef QVector<Contact*> ContactList;
 
 ///ContactModel: Allow different way to handle contact without poluting the library
 class LIB_EXPORT ContactModel :
-   public QAbstractItemModel, public BackendManagerInterface<AbstractContactBackend> {
+   public QAbstractItemModel, public CollectionManagerInterface<Contact> {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -58,8 +58,8 @@ public:
       DropState         = 300, //State for drag and drop
    };
 
-   //Properties
-   Q_PROPERTY(bool hasBackends   READ hasBackends  )
+   template <typename T > using ItemMediator = CollectionMediator<Contact>;
+
 
    explicit ContactModel(QObject* parent = nullptr);
    virtual ~ContactModel();
@@ -67,19 +67,11 @@ public:
    //Mutator
    bool addContact(Contact* c);
    void disableContact(Contact* c);
-   void addBackend(AbstractContactBackend* backend, LoadOptions = LoadOptions::NONE);
 
    //Getters
    Contact* getContactByUid   ( const QByteArray& uid );
    Contact* getPlaceHolder(const QByteArray& uid );
-   bool     hasBackends       () const;
    const ContactList contacts() const;
-   virtual const QVector<AbstractContactBackend*> enabledBackends() const override;
-   virtual bool hasEnabledBackends  () const override;
-   virtual const QVector<AbstractContactBackend*> backends() const override;
-   virtual bool enableBackend(AbstractContactBackend* backend, bool enabled) override;
-   virtual CommonItemBackendModel* backendModel() const override;
-   virtual QString backendCategoryName() const override;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -102,15 +94,17 @@ private:
    static ContactModel* m_spInstance;
 
    //Backend interface
-   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
+   virtual void backendAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(Contact* item) override;
+   virtual bool removeItemCallback(Contact* item) override;
 
 public Q_SLOTS:
-   bool addNewContact(Contact* c, AbstractContactBackend* backend = nullptr);
+   bool addNewContact(Contact* c, CollectionInterface* backend = nullptr);
 
 Q_SIGNALS:
    void reloaded();
    void newContactAdded(Contact* c);
-   void newBackendAdded(AbstractContactBackend* backend);
+   void newBackendAdded(CollectionInterface* backend);
 };
 
 

@@ -20,7 +20,7 @@
 #define ITEMMODELSTATESERIALIZATIONVISITOR_H
 
 #include "../typedefs.h"
-class AbstractItemBackendBase;
+class CollectionInterface;
 class Account;
 
 ///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
@@ -34,10 +34,10 @@ public:
    static ItemModelStateSerializationVisitor* instance();
 
    //Getter
-   virtual bool isChecked(AbstractItemBackendBase* backend) const = 0;
+   virtual bool isChecked(CollectionInterface* backend) const = 0;
 
    //Setter
-   virtual bool setChecked(AbstractItemBackendBase* backend, bool enabled) = 0;
+   virtual bool setChecked(CollectionInterface* backend, bool enabled) = 0;
 
 private:
    static ItemModelStateSerializationVisitor* m_spInstance;

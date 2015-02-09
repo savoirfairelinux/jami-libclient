@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,12 +15,30 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "collectioneditor.h"
+#ifndef ABSTRACTITEMBACKENDMODELEXTENSION_H
+#define ABSTRACTITEMBACKENDMODELEXTENSION_H
 
-CollectionEditorBase::CollectionEditorBase(QAbstractItemModel* m) : m_pModel(m)
-{}
+#include "typedefs.h"
 
-QAbstractItemModel* CollectionEditorBase::model() const
+#include <QtCore/QVariant>
+#include <QtCore/QModelIndex>
+
+class CollectionInterface;
+
+class LIB_EXPORT CollectionExtensionInterface : public QObject
 {
-   return m_pModel;
-}
+   Q_OBJECT
+
+public:
+   explicit CollectionExtensionInterface(QObject* parent);
+
+   virtual QVariant      data    (CollectionInterface* backend, const QModelIndex& index, int role = Qt::DisplayRole      ) const = 0;
+   virtual Qt::ItemFlags flags   (CollectionInterface* backend, const QModelIndex& index                                  ) const = 0;
+   virtual bool          setData (CollectionInterface* backend, const QModelIndex& index, const QVariant &value, int role ) = 0;
+   virtual QString       headerName() const = 0;
+
+Q_SIGNALS:
+   void dataChanged(const QModelIndex& idx);
+};
+
+#endif

@@ -24,17 +24,19 @@
 #include <QtCore/QDateTime>
 
 //Ring
-#include "backendmanagerinterface.h"
-#include "abstractitembackend.h"
+#include "collectionmanagerinterface.h"
+#include "collectioninterface.h"
 #include "typedefs.h"
+#include "phonenumber.h"
 // #include "contact.h"
 // #include "call.h"
 class ContactBackend;
 class NumberTreeBackend;
 
 class BookmarkModelPrivate;
+class CollectionInterface2;
 
-class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public BackendManagerInterface<AbstractBookmarkBackend>
+class LIB_EXPORT BookmarkModel :  public QAbstractItemModel, public CollectionManagerInterface<PhoneNumber>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -51,15 +53,7 @@ public:
    void setShowAll(bool showAll);
 
    //Backend model implementation
-   virtual bool hasBackends                                       () const override;
-   virtual bool hasEnabledBackends                                () const override;
-   virtual const QVector<AbstractBookmarkBackend*> backends       () const override;
-   virtual const QVector<AbstractBookmarkBackend*> enabledBackends() const override;
-   virtual CommonItemBackendModel* backendModel                   () const override;
-   virtual bool clearAllBackends                                  () const override;
-   virtual bool enableBackend(AbstractBookmarkBackend*, bool       )       override;
-   virtual void addBackend(AbstractBookmarkBackend* backend, LoadOptions options = LoadOptions::NONE) override;
-   virtual QString backendCategoryName                            () const override;
+   virtual bool clearAllBackends() const override;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
@@ -93,7 +87,9 @@ private:
    Q_DECLARE_PRIVATE(BookmarkModel);
 
    //Backend interface
-   virtual void backendAddedCallback(AbstractItemBackendInterface2* backend) override;
+   virtual void backendAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(PhoneNumber* item) override;
+   virtual bool removeItemCallback(PhoneNumber* item) override;
 
 public Q_SLOTS:
    void reloadCategories();

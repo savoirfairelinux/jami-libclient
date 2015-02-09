@@ -15,15 +15,15 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "itembackendinterface.h"
-#include "itembackendeditor.h"
+#include "collectioninterface.h"
+#include "collectioneditor.h"
 #include <QtCore/QObject>
 #include <QtCore/QMetaObject>
 
 class ItemBasePrivate
 {
 public:
-   ItemBackendInterface* m_pBackend;
+   CollectionInterface* m_pBackend;
 };
 
 template<typename Base>
@@ -32,13 +32,13 @@ ItemBase<Base>::ItemBase(Base* parent) : Base(parent), d_ptr(new ItemBasePrivate
 }
 
 template<typename Base>
-ItemBackendInterface* ItemBase<Base>::backend()
+CollectionInterface* ItemBase<Base>::backend()
 {
    return d_ptr->m_pBackend;
 }
 
 template<typename Base>
-void ItemBase<Base>::setBackend(ItemBackendInterface* backend)
+void ItemBase<Base>::setBackend(CollectionInterface* backend)
 {
    d_ptr->m_pBackend = backend;
 }
