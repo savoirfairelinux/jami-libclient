@@ -23,7 +23,7 @@
 #include <QtCore/QString>
 #include <QtCore/QAbstractTableModel>
 
-class PresenceSerializationVisitor;
+class PresenceSerializationDelegate;
 class CollectionInterface;
 class PresenceStatusModelPrivate;
 

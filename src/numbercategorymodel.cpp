@@ -16,7 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "numbercategorymodel.h"
-#include "visitors/numbercategoryvisitor.h"
+#include "delegates/numbercategorydelegate.h"
 #include "phonenumber.h"
 #include "numbercategory.h"
 
@@ -58,7 +58,7 @@ QVariant NumberCategoryModel::data(const QModelIndex& index, int role) const
          return name.isEmpty()?tr("Uncategorized"):name;
       }
       case Qt::DecorationRole:
-         return d_ptr->m_lCategories[index.row()]->category->icon();//m_pVisitor->icon(m_lCategories[index.row()]->icon);
+         return d_ptr->m_lCategories[index.row()]->category->icon();//m_pDelegate->icon(m_lCategories[index.row()]->icon);
       case Qt::CheckStateRole:
          return d_ptr->m_lCategories[index.row()]->enabled?Qt::Checked:Qt::Unchecked;
       case Role::INDEX:
@@ -128,7 +128,7 @@ void NumberCategoryModel::setIcon(int idx, const QVariant& icon)
 
 void NumberCategoryModel::save()
 {
-   NumberCategoryVisitor::instance()->serialize(this);
+   NumberCategoryDelegate::instance()->serialize(this);
 }
 
 QModelIndex NumberCategoryModel::nameToIndex(const QString& name) const

@@ -15,50 +15,50 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "presenceserializationvisitor.h"
+#include "presenceserializationdelegate.h"
 
-class LIB_EXPORT DummyPresenceSerializationVisitor : public PresenceSerializationVisitor {
+class LIB_EXPORT DummyPresenceSerializationDelegate : public PresenceSerializationDelegate {
 public:
    virtual void serialize() override;
    virtual void load     () override;
    virtual bool isTracked(CollectionInterface* backend) override;
    virtual void setTracked(CollectionInterface* backend, bool tracked) override;
-   virtual ~DummyPresenceSerializationVisitor();
+   virtual ~DummyPresenceSerializationDelegate();
 
 };
 
-PresenceSerializationVisitor* PresenceSerializationVisitor::m_spInstance = new DummyPresenceSerializationVisitor();
+PresenceSerializationDelegate* PresenceSerializationDelegate::m_spInstance = new DummyPresenceSerializationDelegate();
 
-void DummyPresenceSerializationVisitor::serialize()
+void DummyPresenceSerializationDelegate::serialize()
 {
    
 }
-void DummyPresenceSerializationVisitor::load()
+void DummyPresenceSerializationDelegate::load()
 {
    
 }
 
-bool DummyPresenceSerializationVisitor::isTracked(CollectionInterface* backend)
+bool DummyPresenceSerializationDelegate::isTracked(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
    return false;
 }
 
-void DummyPresenceSerializationVisitor::setTracked(CollectionInterface* backend, bool tracked)
+void DummyPresenceSerializationDelegate::setTracked(CollectionInterface* backend, bool tracked)
 {
    Q_UNUSED(backend)
    Q_UNUSED(tracked)
 }
 
-DummyPresenceSerializationVisitor::~DummyPresenceSerializationVisitor()
+DummyPresenceSerializationDelegate::~DummyPresenceSerializationDelegate()
 {}
 
-PresenceSerializationVisitor* PresenceSerializationVisitor::instance()
+PresenceSerializationDelegate* PresenceSerializationDelegate::instance()
 {
    return m_spInstance;
 }
 
-void PresenceSerializationVisitor::setInstance(PresenceSerializationVisitor* ins)
+void PresenceSerializationDelegate::setInstance(PresenceSerializationDelegate* ins)
 {
    m_spInstance = ins;
    ins->load();

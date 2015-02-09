@@ -36,12 +36,12 @@ class Call       ;
  * Most methods return QVariants as this library doesn't link against QtGui
  * 
  * This interface is not frozen, more methods may be added later. To implement,
- * just create an object somewhere, be sure to call PixmapManipulationVisitor()
+ * just create an object somewhere, be sure to call PixmapManipulationDelegate()
  */
-class LIB_EXPORT PixmapManipulationVisitor {
+class LIB_EXPORT PixmapManipulationDelegate {
 public:
-   PixmapManipulationVisitor();
-   virtual ~PixmapManipulationVisitor() {}
+   PixmapManipulationDelegate();
+   virtual ~PixmapManipulationDelegate() {}
    virtual QVariant contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
    virtual QVariant callPhoto(Call* c, const QSize& size, bool displayPresence = true);
    virtual QVariant callPhoto(const PhoneNumber* n, const QSize& size, bool displayPresence = true);
@@ -52,9 +52,9 @@ public:
 
 
    //Singleton
-   static PixmapManipulationVisitor* instance();
+   static PixmapManipulationDelegate* instance();
 protected:
-   static PixmapManipulationVisitor* m_spInstance;
+   static PixmapManipulationDelegate* m_spInstance;
 };
 
 #endif //PIXMAPMANIPULATIONVISITOR_H

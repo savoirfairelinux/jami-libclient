@@ -19,7 +19,7 @@
 
 #include <QtCore/QSize>
 
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 class NumberCategoryPrivate
 {
@@ -45,7 +45,7 @@ NumberCategory::~NumberCategory()
 
 QVariant NumberCategory::icon(bool isTracked, bool isPresent) const
 {
-   return PixmapManipulationVisitor::instance()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),isTracked,isPresent);
+   return PixmapManipulationDelegate::instance()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),isTracked,isPresent);
 }
 
 QString  NumberCategory::name() const

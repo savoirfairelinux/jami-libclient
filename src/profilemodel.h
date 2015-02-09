@@ -26,7 +26,7 @@
 #include <QtCore/QAbstractItemModel>
 
 class ProfileContentBackend;
-class ProfilePersisterVisitor;
+class ProfilePersisterDelegate;
 class VCardMapper;
 class ProfileModelPrivate;
 

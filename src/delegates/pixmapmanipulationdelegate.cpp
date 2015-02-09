@@ -15,17 +15,17 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "pixmapmanipulationvisitor.h"
+#include "pixmapmanipulationdelegate.h"
 
 #include <QtCore/QSize>
 
-PixmapManipulationVisitor* PixmapManipulationVisitor::m_spInstance = new PixmapManipulationVisitor();
+PixmapManipulationDelegate* PixmapManipulationDelegate::m_spInstance = new PixmapManipulationDelegate();
 
-PixmapManipulationVisitor::PixmapManipulationVisitor() {
+PixmapManipulationDelegate::PixmapManipulationDelegate() {
    m_spInstance = this;
 }
 
-QVariant PixmapManipulationVisitor::contactPhoto(Person* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulationDelegate::contactPhoto(Person* c, const QSize& size, bool displayPresence)
 {
    Q_UNUSED(c)
    Q_UNUSED(size)
@@ -33,7 +33,7 @@ QVariant PixmapManipulationVisitor::contactPhoto(Person* c, const QSize& size, b
    return QVariant();
 }
 
-QVariant PixmapManipulationVisitor::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
+QVariant PixmapManipulationDelegate::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
 {
    Q_UNUSED(p)
    Q_UNUSED(size)
@@ -42,7 +42,7 @@ QVariant PixmapManipulationVisitor::numberCategoryIcon(const QVariant& p, const 
    return QVariant();
 }
 
-QVariant PixmapManipulationVisitor::callPhoto(Call* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulationDelegate::callPhoto(Call* c, const QSize& size, bool displayPresence)
 {
    Q_UNUSED(c)
    Q_UNUSED(size)
@@ -50,7 +50,7 @@ QVariant PixmapManipulationVisitor::callPhoto(Call* c, const QSize& size, bool d
    return QVariant();
 }
 
-QVariant PixmapManipulationVisitor::callPhoto(const PhoneNumber* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulationDelegate::callPhoto(const PhoneNumber* c, const QSize& size, bool displayPresence)
 {
    Q_UNUSED(c)
    Q_UNUSED(size)
@@ -58,24 +58,24 @@ QVariant PixmapManipulationVisitor::callPhoto(const PhoneNumber* c, const QSize&
    return QVariant();
 }
 
-PixmapManipulationVisitor* PixmapManipulationVisitor::instance()
+PixmapManipulationDelegate* PixmapManipulationDelegate::instance()
 {
    return m_spInstance;
 }
 
-QVariant PixmapManipulationVisitor::serurityIssueIcon(const QModelIndex& index)
+QVariant PixmapManipulationDelegate::serurityIssueIcon(const QModelIndex& index)
 {
    Q_UNUSED(index)
    return QVariant();
 }
 
-QByteArray PixmapManipulationVisitor::toByteArray(const QVariant& pxm)
+QByteArray PixmapManipulationDelegate::toByteArray(const QVariant& pxm)
 {
    Q_UNUSED(pxm)
    return QByteArray();
 }
 
-QVariant PixmapManipulationVisitor::profilePhoto(const QByteArray& data)
+QVariant PixmapManipulationDelegate::profilePhoto(const QByteArray& data)
 {
    Q_UNUSED(data)
    return QVariant();

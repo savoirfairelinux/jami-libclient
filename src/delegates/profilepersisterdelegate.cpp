@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2014 by Savoir-Faire Linux                           *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -16,23 +16,33 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-#ifndef ACCOUNTLISTCOLORVISITOR_H
-#define ACCOUNTLISTCOLORVISITOR_H
+#include "profilepersisterdelegate.h"
+#include <QtCore/QSize>
 
-#include "../typedefs.h"
-class Account;
+ProfilePersisterDelegate* ProfilePersisterDelegate::m_spInstance = nullptr;
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT AccountListColorVisitor {
-public:
-   virtual QVariant getColor(const Account* a);
-   virtual QVariant getIcon(const Account* a);
-   virtual ~AccountListColorVisitor();
+void ProfilePersisterDelegate::setInstance(ProfilePersisterDelegate* i)
+{
+   m_spInstance = i;
+}
 
-   static AccountListColorVisitor* instance();
-   static void setInstance(AccountListColorVisitor* visitor);
-private:
-   static AccountListColorVisitor* m_spInstance;
-};
+ProfilePersisterDelegate* ProfilePersisterDelegate::instance()
+{
+   return m_spInstance;
+}
 
-#endif
+bool ProfilePersisterDelegate::load()
+{
+   return false;
+}
+
+bool ProfilePersisterDelegate::save(const Person* c)
+{
+   Q_UNUSED(c)
+   return false;
+}
+
+QDir ProfilePersisterDelegate::getProfilesDir()
+{
+   return *(new QDir());
+}

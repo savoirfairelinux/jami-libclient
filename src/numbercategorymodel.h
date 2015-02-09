@@ -22,7 +22,7 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QVector>
 
-class NumberCategoryVisitor;
+class NumberCategoryDelegate;
 class PhoneNumber;
 class NumberCategory;
 class NumberCategoryModelPrivate;

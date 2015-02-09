@@ -15,25 +15,39 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef NUMBERCATEGORYVISITOR_H
-#define NUMBERCATEGORYVISITOR_H
+#include "numbercategorydelegate.h"
+#include "../numbercategorymodel.h"
 
-#include "../typedefs.h"
-
-class NumberCategoryModel;
-
-class LIB_EXPORT NumberCategoryVisitor {
+class DummyNumberCategoryDelegate : public NumberCategoryDelegate{
 public:
-   virtual void     serialize(NumberCategoryModel* model) = 0;
-   virtual void     load     (NumberCategoryModel* model) = 0;
-//    virtual QVariant icon     (QPixmap*             icon ) = 0;
-   virtual ~NumberCategoryVisitor(){};
-
-   static NumberCategoryVisitor* instance();
-   static void setInstance(NumberCategoryVisitor* ins);
-
-private:
-   static NumberCategoryVisitor* m_spInstance;
+   virtual void serialize(NumberCategoryModel* model) override;
+   virtual void load     (NumberCategoryModel* model) override;
+   virtual ~DummyNumberCategoryDelegate();
 };
 
-#endif //NUMBERCATEGORYVISITOR_H
+NumberCategoryDelegate* NumberCategoryDelegate::m_spInstance = new DummyNumberCategoryDelegate();
+
+
+void DummyNumberCategoryDelegate::serialize(NumberCategoryModel* model)
+{
+   Q_UNUSED(model)
+}
+
+void DummyNumberCategoryDelegate::load(NumberCategoryModel* model)
+{
+   Q_UNUSED(model)
+}
+
+DummyNumberCategoryDelegate::~DummyNumberCategoryDelegate()
+{}
+
+NumberCategoryDelegate* NumberCategoryDelegate::instance()
+{
+   return m_spInstance;
+}
+
+void NumberCategoryDelegate::setInstance(NumberCategoryDelegate* ins)
+{
+   m_spInstance = ins;
+   ins->load(NumberCategoryModel::instance());
+}

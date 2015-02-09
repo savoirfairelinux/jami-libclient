@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,39 +15,32 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "numbercategoryvisitor.h"
-#include "../numbercategorymodel.h"
 
-class DummyNumberCategoryVisitor : public NumberCategoryVisitor{
+#ifndef ITEMMODELSTATESERIALIZATIONVISITOR_H
+#define ITEMMODELSTATESERIALIZATIONVISITOR_H
+
+#include "../typedefs.h"
+class CollectionInterface;
+class Account;
+
+///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
+class LIB_EXPORT ItemModelStateSerializationDelegate {
 public:
-   virtual void serialize(NumberCategoryModel* model) override;
-   virtual void load     (NumberCategoryModel* model) override;
-   virtual ~DummyNumberCategoryVisitor();
+   virtual bool save() = 0;
+   virtual bool load() = 0;
+   virtual ~ItemModelStateSerializationDelegate() {}
+
+   static void setInstance(ItemModelStateSerializationDelegate* i);
+   static ItemModelStateSerializationDelegate* instance();
+
+   //Getter
+   virtual bool isChecked(CollectionInterface* backend) const = 0;
+
+   //Setter
+   virtual bool setChecked(CollectionInterface* backend, bool enabled) = 0;
+
+private:
+   static ItemModelStateSerializationDelegate* m_spInstance;
 };
 
-NumberCategoryVisitor* NumberCategoryVisitor::m_spInstance = new DummyNumberCategoryVisitor();
-
-
-void DummyNumberCategoryVisitor::serialize(NumberCategoryModel* model)
-{
-   Q_UNUSED(model)
-}
-
-void DummyNumberCategoryVisitor::load(NumberCategoryModel* model)
-{
-   Q_UNUSED(model)
-}
-
-DummyNumberCategoryVisitor::~DummyNumberCategoryVisitor()
-{}
-
-NumberCategoryVisitor* NumberCategoryVisitor::instance()
-{
-   return m_spInstance;
-}
-
-void NumberCategoryVisitor::setInstance(NumberCategoryVisitor* ins)
-{
-   m_spInstance = ins;
-   ins->load(NumberCategoryModel::instance());
-}
+#endif

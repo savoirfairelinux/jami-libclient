@@ -31,7 +31,7 @@
 #include "numbercategorymodel.h"
 #include "collectioninterface.h"
 #include "dbus/presencemanager.h"
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 #include "personmodel.h"
 
 //Private
@@ -96,7 +96,7 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                return number->uri();
                break;
             case Qt::DecorationRole :
-               return PixmapManipulationVisitor::instance()->callPhoto(number,QSize(16,16));
+               return PixmapManipulationDelegate::instance()->callPhoto(number,QSize(16,16));
                break;
          }
          break;

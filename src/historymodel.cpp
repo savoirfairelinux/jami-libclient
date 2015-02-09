@@ -36,7 +36,7 @@
 #include "historytimecategorymodel.h"
 #include "lastusednumbermodel.h"
 #include "collectioninterface.h"
-#include "visitors/itemmodelstateserializationvisitor.h"
+#include "delegates/itemmodelstateserializationdelegate.h"
 
 /*****************************************************************************
  *                                                                           *
@@ -604,7 +604,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
 // {
 //    d_ptr->m_lBackends << backend;
 //    connect(backend,SIGNAL(newHistoryCallAdded(Call*)),this,SLOT(add(Call*)));
-//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
+//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationDelegate::instance()->isChecked(backend))
 //       backend->load();
 //    emit newBackendAdded(backend);
 // }

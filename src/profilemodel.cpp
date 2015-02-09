@@ -31,8 +31,8 @@
 #include "personmodel.h"
 #include "callmodel.h"
 #include "person.h"
-#include "visitors/profilepersistervisitor.h"
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/profilepersisterdelegate.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 #include "vcardutils.h"
 #include "mime.h"
 
@@ -82,7 +82,7 @@ struct VCardMapper {
 
    void setPhoto(Person* c, const QByteArray& fn) {
       qDebug() << fn;
-      QVariant photo = PixmapManipulationVisitor::instance()->profilePhoto(fn);
+      QVariant photo = PixmapManipulationDelegate::instance()->profilePhoto(fn);
       c->setPhoto(photo);
    }
 
@@ -208,7 +208,7 @@ struct Node {
 
 bool ProfileEditor::save(const Person* contact)
 {
-   QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
+   QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
    qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
    const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
 
@@ -403,10 +403,10 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
 
 bool ProfileContentBackend::load()
 {
-   if (ProfilePersisterVisitor::instance()) {
+   if (ProfilePersisterDelegate::instance()) {
       m_pEditor->m_lProfiles.clear();
 
-      QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
+      QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
 
       qDebug() << "Loading vcf from:" << profilesDir;
 
@@ -483,7 +483,7 @@ bool ProfileContentBackend::reload()
 
 // bool ProfileContentBackend::save(const Person* contact)
 // {
-//    QDir profilesDir = ProfilePersisterVisitor::instance()->getProfilesDir();
+//    QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
 //    qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
 //    const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
 // 
@@ -591,7 +591,7 @@ class ProfileModelPrivate : public QObject {
 public:
    ProfileModelPrivate(ProfileModel* parent);
    ProfileContentBackend*                 m_pProfileBackend;
-   ProfilePersisterVisitor*               m_pVisitor   ;
+   ProfilePersisterDelegate*               m_pDelegate   ;
    QStringList m_lMimes;
 
    //Helpers

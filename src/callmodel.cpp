@@ -38,7 +38,7 @@
 #include "collectioninterface.h"
 #include "dbus/videomanager.h"
 #include "historymodel.h"
-#include "visitors/phonenumberselector.h"
+#include "delegates/phonenumberselectordelegate.h"
 #include "personmodel.h"
 
 //Other
@@ -933,8 +933,8 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       const QByteArray encodedPerson = mimedata->data(RingMimes::CONTACT);
       Call* target = getCall(targetIdx);
       qDebug() << "Contact" << encodedPerson << "on call" << target;
-      if (PhoneNumberSelector::defaultVisitor()) {
-         const PhoneNumber* number = PhoneNumberSelector::defaultVisitor()->getNumber(
+      if (PhoneNumberSelector::defaultDelegate()) {
+         const PhoneNumber* number = PhoneNumberSelector::defaultDelegate()->getNumber(
          PersonModel::instance()->getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();

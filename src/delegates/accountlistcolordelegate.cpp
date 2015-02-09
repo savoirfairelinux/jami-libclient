@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                         ***
+ *   Copyright (C) 2012 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,26 +15,35 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PRESENCESERIALIZATIONVISITOR_H
-#define PRESENCESERIALIZATIONVISITOR_H
+#include "accountlistcolordelegate.h"
 
-#include "../typedefs.h"
+AccountListColorDelegate* AccountListColorDelegate::m_spInstance = new AccountListColorDelegate();
 
-class AbstractBookmarkModel;
-class CollectionInterface;
+QVariant AccountListColorDelegate::getColor(const Account* a)
+{
+   Q_UNUSED(a)
+   //The default implementation does nothing
+   return QVariant();
+}
 
-class LIB_EXPORT PresenceSerializationVisitor {
-public:
-   virtual void serialize() = 0;
-   virtual void load     () = 0;
-   virtual bool isTracked(CollectionInterface* backend) = 0;
-   virtual void setTracked(CollectionInterface* backend, bool tracked) = 0;
-   virtual ~PresenceSerializationVisitor(){};
+QVariant AccountListColorDelegate::getIcon(const Account* a)
+{
+   Q_UNUSED(a)
+   //The default implementation does nothing
+   return QVariant();
+}
 
-   static PresenceSerializationVisitor* instance();
-   static void setInstance(PresenceSerializationVisitor* ins);
-private:
-   static PresenceSerializationVisitor* m_spInstance;
-};
+AccountListColorDelegate::~AccountListColorDelegate()
+{
 
-#endif //PRESENCESERIALIZATIONVISITOR_H
+}
+
+AccountListColorDelegate* AccountListColorDelegate::instance()
+{
+   return m_spInstance;
+}
+
+void AccountListColorDelegate::setInstance(AccountListColorDelegate* visitor)
+{
+   m_spInstance = visitor;
+}

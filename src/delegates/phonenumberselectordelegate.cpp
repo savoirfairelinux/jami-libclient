@@ -15,17 +15,17 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "phonenumberselector.h"
+#include "phonenumberselectordelegate.h"
 
 //Interface only
-PhoneNumberSelector* PhoneNumberSelector::m_spDefaultVisitor = nullptr;
+PhoneNumberSelector* PhoneNumberSelector::m_spDefaultDelegate = nullptr;
 
-void PhoneNumberSelector::setDefaultVisitor(PhoneNumberSelector* v)
+void PhoneNumberSelector::setDefaultDelegate(PhoneNumberSelector* v)
 {
-   m_spDefaultVisitor = v;
+   m_spDefaultDelegate = v;
 }
 
-PhoneNumberSelector* PhoneNumberSelector::defaultVisitor()
+PhoneNumberSelector* PhoneNumberSelector::defaultDelegate()
 {
-   return m_spDefaultVisitor;
+   return m_spDefaultDelegate;
 }

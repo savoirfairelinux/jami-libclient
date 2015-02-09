@@ -31,7 +31,7 @@
 #include "numbercategory.h"
 #include "accountmodel.h"
 #include "numbercategorymodel.h"
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"

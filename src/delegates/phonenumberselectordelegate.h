@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                           *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -16,33 +16,25 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-#include "profilepersistervisitor.h"
-#include <QtCore/QSize>
+#ifndef PHONENUMBERSELECTOR_H
+#define PHONENUMBERSELECTOR_H
 
-ProfilePersisterVisitor* ProfilePersisterVisitor::m_spInstance = nullptr;
+#include "../typedefs.h"
+#include "../person.h"
 
-void ProfilePersisterVisitor::setInstance(ProfilePersisterVisitor* i)
-{
-   m_spInstance = i;
-}
+class PhoneNumber;
+class Person;
 
-ProfilePersisterVisitor* ProfilePersisterVisitor::instance()
-{
-   return m_spInstance;
-}
+///Common point visitor for UI specific contact dialog
+class LIB_EXPORT PhoneNumberSelector {
+public:
+   virtual ~PhoneNumberSelector() {}
+   virtual PhoneNumber* getNumber(const Person* nb) = 0;
+   static PhoneNumberSelector* defaultDelegate();
+protected:
+   static void setDefaultDelegate(PhoneNumberSelector* v);
+private:
+   static PhoneNumberSelector* m_spDefaultDelegate;
+};
 
-bool ProfilePersisterVisitor::load()
-{
-   return false;
-}
-
-bool ProfilePersisterVisitor::save(const Person* c)
-{
-   Q_UNUSED(c)
-   return false;
-}
-
-QDir ProfilePersisterVisitor::getProfilesDir()
-{
-   return *(new QDir());
-}
+#endif

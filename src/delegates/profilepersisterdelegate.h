@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -16,31 +16,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-#ifndef ITEMMODELSTATESERIALIZATIONVISITOR_H
-#define ITEMMODELSTATESERIALIZATIONVISITOR_H
+#ifndef PROFILEPERSISTERVISITOR_H
+#define PROFILEPERSISTERVISITOR_H
 
 #include "../typedefs.h"
-class CollectionInterface;
-class Account;
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT ItemModelStateSerializationVisitor {
+//Qt
+#include <QtCore/QVariant>
+#include <QtCore/QModelIndex>
+#include <QDir>
+
+//SFLPhone
+class Person;
+
+class LIB_EXPORT ProfilePersisterDelegate {
 public:
-   virtual bool save() = 0;
-   virtual bool load() = 0;
-   virtual ~ItemModelStateSerializationVisitor() {}
+   virtual ~ProfilePersisterDelegate() {}
+   virtual bool load();
+   virtual bool save(const Person* c);
+   virtual QDir getProfilesDir();
 
-   static void setInstance(ItemModelStateSerializationVisitor* i);
-   static ItemModelStateSerializationVisitor* instance();
+   //Singleton
+   static ProfilePersisterDelegate* instance();
+   static void setInstance(ProfilePersisterDelegate* i);
 
-   //Getter
-   virtual bool isChecked(CollectionInterface* backend) const = 0;
-
-   //Setter
-   virtual bool setChecked(CollectionInterface* backend, bool enabled) = 0;
-
-private:
-   static ItemModelStateSerializationVisitor* m_spInstance;
+protected:
+   static ProfilePersisterDelegate* m_spInstance;
 };
 
-#endif
+#endif // PROFILEPERSISTERVISITOR_H

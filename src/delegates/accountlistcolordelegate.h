@@ -15,35 +15,24 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "accountlistcolorvisitor.h"
 
-AccountListColorVisitor* AccountListColorVisitor::m_spInstance = new AccountListColorVisitor();
+#ifndef ACCOUNTLISTCOLORVISITOR_H
+#define ACCOUNTLISTCOLORVISITOR_H
 
-QVariant AccountListColorVisitor::getColor(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+#include "../typedefs.h"
+class Account;
 
-QVariant AccountListColorVisitor::getIcon(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
+class LIB_EXPORT AccountListColorDelegate {
+public:
+   virtual QVariant getColor(const Account* a);
+   virtual QVariant getIcon(const Account* a);
+   virtual ~AccountListColorDelegate();
 
-AccountListColorVisitor::~AccountListColorVisitor()
-{
+   static AccountListColorDelegate* instance();
+   static void setInstance(AccountListColorDelegate* visitor);
+private:
+   static AccountListColorDelegate* m_spInstance;
+};
 
-}
-
-AccountListColorVisitor* AccountListColorVisitor::instance()
-{
-   return m_spInstance;
-}
-
-void AccountListColorVisitor::setInstance(AccountListColorVisitor* visitor)
-{
-   m_spInstance = visitor;
-}
+#endif

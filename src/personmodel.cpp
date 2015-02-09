@@ -27,7 +27,7 @@
 #include "collectioninterface.h"
 #include "collectionmodel.h"
 #include "collectioneditor.h"
-#include "visitors/itemmodelstateserializationvisitor.h"
+#include "delegates/itemmodelstateserializationdelegate.h"
 
 //Qt
 #include <QtCore/QHash>
@@ -317,7 +317,7 @@ const PersonList PersonModel::contacts() const
 //    d_ptr->m_lBackends << backend;
 //    connect(backend,SIGNAL(reloaded()),d_ptr.data(),SLOT(slotReloaded()));
 //    connect(backend,SIGNAL(newPersonAdded(Person*)),d_ptr.data(),SLOT(slotPersonAdded(Person*)));
-//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationVisitor::instance()->isChecked(backend))
+//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationDelegate::instance()->isChecked(backend))
 //       backend->load();
 //    emit newBackendAdded(backend);
 // }

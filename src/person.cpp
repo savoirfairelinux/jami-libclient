@@ -28,7 +28,7 @@
 #include "vcardutils.h"
 #include "numbercategorymodel.h"
 #include "numbercategory.h"
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 
 class AddressPrivate
@@ -554,6 +554,6 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
       maker->addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
    }
 
-   maker->addPhoto(PixmapManipulationVisitor::instance()->toByteArray(photo()).simplified());
+   maker->addPhoto(PixmapManipulationDelegate::instance()->toByteArray(photo()).simplified());
    return maker->endVCard();
 }

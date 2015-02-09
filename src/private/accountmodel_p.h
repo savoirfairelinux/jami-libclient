@@ -22,7 +22,7 @@
 #include <QtCore/QStringList>
 #include <account.h>
 class AccountModel;
-class AccountListColorVisitor;
+class AccountListColorDelegate;
 
 class AccountModelPrivate : public QObject
 {
@@ -42,7 +42,7 @@ public:
    //Attributes
    AccountModel*            q_ptr             ;
    QVector<Account*>        m_lAccounts       ;
-   AccountListColorVisitor* m_pColorVisitor   ;
+   AccountListColorDelegate* m_pColorDelegate   ;
    QStringList              m_lDeletedAccounts;
    Account*                 m_pIP2IP          ;
 

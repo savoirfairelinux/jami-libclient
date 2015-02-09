@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,16 +15,25 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "itemmodelstateserializationvisitor.h"
+#ifndef NUMBERCATEGORYVISITOR_H
+#define NUMBERCATEGORYVISITOR_H
 
-ItemModelStateSerializationVisitor* ItemModelStateSerializationVisitor::m_spInstance = nullptr;
+#include "../typedefs.h"
 
-void ItemModelStateSerializationVisitor::setInstance(ItemModelStateSerializationVisitor* i)
-{
-   m_spInstance = i;
-}
+class NumberCategoryModel;
 
-ItemModelStateSerializationVisitor* ItemModelStateSerializationVisitor::instance()
-{
-   return m_spInstance;
-}
+class LIB_EXPORT NumberCategoryDelegate {
+public:
+   virtual void     serialize(NumberCategoryModel* model) = 0;
+   virtual void     load     (NumberCategoryModel* model) = 0;
+//    virtual QVariant icon     (QPixmap*             icon ) = 0;
+   virtual ~NumberCategoryDelegate(){};
+
+   static NumberCategoryDelegate* instance();
+   static void setInstance(NumberCategoryDelegate* ins);
+
+private:
+   static NumberCategoryDelegate* m_spInstance;
+};
+
+#endif //NUMBERCATEGORYVISITOR_H

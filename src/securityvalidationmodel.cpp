@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "securityvalidationmodel.h"
 #include "account.h"
-#include "visitors/pixmapmanipulationvisitor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 #include <QtAlgorithms>
 
@@ -105,7 +105,7 @@ QVariant SecurityValidationModel::data( const QModelIndex& index, int role) cons
          return static_cast<int>(m_lCurrentFlaws[index.row()]->severity());
       }
       else if (role == Qt::DecorationRole) {
-         return PixmapManipulationVisitor::instance()->serurityIssueIcon(index);
+         return PixmapManipulationDelegate::instance()->serurityIssueIcon(index);
       }
    }
    return QVariant();

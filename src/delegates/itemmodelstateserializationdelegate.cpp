@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,26 +15,16 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#include "itemmodelstateserializationdelegate.h"
 
-#ifndef PHONENUMBERSELECTOR_H
-#define PHONENUMBERSELECTOR_H
+ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::m_spInstance = nullptr;
 
-#include "../typedefs.h"
-#include "../person.h"
+void ItemModelStateSerializationDelegate::setInstance(ItemModelStateSerializationDelegate* i)
+{
+   m_spInstance = i;
+}
 
-class PhoneNumber;
-class Person;
-
-///Common point visitor for UI specific contact dialog
-class LIB_EXPORT PhoneNumberSelector {
-public:
-   virtual ~PhoneNumberSelector() {}
-   virtual PhoneNumber* getNumber(const Person* nb) = 0;
-   static PhoneNumberSelector* defaultVisitor();
-protected:
-   static void setDefaultVisitor(PhoneNumberSelector* v);
-private:
-   static PhoneNumberSelector* m_spDefaultVisitor;
-};
-
-#endif
+ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::instance()
+{
+   return m_spInstance;
+}

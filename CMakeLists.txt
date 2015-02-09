@@ -231,14 +231,14 @@ SET( libringclient_LIB_SRCS
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
 
-  #Visitors
-  src/visitors/accountlistcolorvisitor.cpp
-  src/visitors/phonenumberselector.cpp
-  src/visitors/numbercategoryvisitor.cpp
-  src/visitors/pixmapmanipulationvisitor.cpp
-  src/visitors/presenceserializationvisitor.cpp
-  src/visitors/itemmodelstateserializationvisitor.cpp
-  src/visitors/profilepersistervisitor.cpp
+  #Delegates
+  src/delegates/accountlistcolordelegate.cpp
+  src/delegates/phonenumberselectordelegate.cpp
+  src/delegates/numbercategorydelegate.cpp
+  src/delegates/pixmapmanipulationdelegate.cpp
+  src/delegates/presenceserializationdelegate.cpp
+  src/delegates/itemmodelstateserializationdelegate.cpp
+  src/delegates/profilepersisterdelegate.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -329,14 +329,14 @@ SET(libringclient_extensions_LIB_HDRS
   src/extensions/presencecollectionextension.h
 )
 
-SET(libringclient_visitors_LIB_HDRS
-  src/visitors/accountlistcolorvisitor.h
-  src/visitors/phonenumberselector.h
-  src/visitors/presenceserializationvisitor.h
-  src/visitors/itemmodelstateserializationvisitor.h
-  src/visitors/pixmapmanipulationvisitor.h
-  src/visitors/numbercategoryvisitor.h
-  src/visitors/profilepersistervisitor.h
+SET(libringclient_delegates_LIB_HDRS
+  src/delegates/accountlistcolordelegate.h
+  src/delegates/phonenumberselectordelegate.h
+  src/delegates/presenceserializationdelegate.h
+  src/delegates/itemmodelstateserializationdelegate.h
+  src/delegates/pixmapmanipulationdelegate.h
+  src/delegates/numbercategorydelegate.h
+  src/delegates/profilepersisterdelegate.h
 )
 
 SET( libringclient_extra_LIB_HDRS
@@ -568,8 +568,8 @@ INSTALL( FILES ${libringclient_extensions_LIB_HDRS}
   COMPONENT Devel
 )
 
-INSTALL( FILES ${libringclient_visitors_LIB_HDRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/visitors
+INSTALL( FILES ${libringclient_delegates_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/delegates
   COMPONENT Devel
 )
 
