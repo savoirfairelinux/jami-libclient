@@ -36,6 +36,7 @@ public:
    ///Use Qt introspection to make sure casting is valid
    QMetaObject                    m_pEditorType;
 
+   std::function<bool(ItemBase<QObject>*)>  m_pAdd       ;
    std::function<bool(ItemBase<QObject>*)>  m_pSave      ;
    std::function<bool(ItemBase<QObject>*)>  m_pEdit      ;
    std::function<bool(ItemBase<QObject>*)>  m_pRemove    ;
@@ -51,6 +52,9 @@ d_ptr(new CollectionInterfacePrivate())
    d_ptr->m_pEditor = (void*) editor;
 
    //The cast is safe because the metatype is checked earlier
+   d_ptr->m_pAdd = [editor](ItemBase<QObject>* item)->bool {
+      return editor->addNew(static_cast<T*>(item));
+   };
    d_ptr->m_pSave = [editor](ItemBase<QObject>* item)->bool {
       return editor->edit(static_cast<T*>(item));
    };

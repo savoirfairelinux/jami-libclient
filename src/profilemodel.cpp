@@ -147,6 +147,7 @@ public:
    QList<Account*> getAccountsForProfile(const QString& id);
    QList<Node*> m_lProfiles;
    QHash<QByteArray,Node*> m_hProfileByAccountId;
+   QVector<Person*> m_lProfilePersons;
 
 private:
    virtual QVector<Person*> items() const override;
@@ -187,6 +188,7 @@ public:
 public Q_SLOTS:
    void contactChanged();
    void save();
+   void loadProfiles();
 };
 
 
@@ -237,6 +239,7 @@ bool ProfileEditor::append(const Person* item)
 bool ProfileEditor::remove(Person* item)
 {
    Q_UNUSED(item)
+   mediator()->removeItem(item);
    return false;
 }
 
@@ -249,6 +252,8 @@ bool ProfileEditor::edit( Person* contact)
 bool ProfileEditor::addNew( Person* contact)
 {
    qDebug() << "Creating new profile" << contact->uid();
+   m_lProfilePersons << contact;
+   mediator()->addItem(contact);
    save(contact);
 //    load(); //FIXME
    return true;
@@ -256,7 +261,7 @@ bool ProfileEditor::addNew( Person* contact)
 
 QVector<Person*> ProfileEditor::items() const
 {
-   return QVector<Person*>();
+   return m_lProfilePersons;
 }
 
 
@@ -362,11 +367,12 @@ void ProfileContentBackend::setupDefaultProfile()
          orphans << i.key();
       }
    }
-   qDebug() << "ORPHAN" << orphans.size();
+   qDebug() << "ORPHAN" << orphans.size() << m_pEditor << m_pEditor->m_lProfiles.size();
 
    if (orphans.size() && (!m_pDefault)) {
       qDebug() << "No profile found, creating one";
       Person* profile = new Person(this);
+      PersonModel::instance()->addPerson(profile);
       profile->setFormattedName(tr("Default"));
 
       m_pDefault          = new Node           ;
@@ -377,7 +383,6 @@ void ProfileContentBackend::setupDefaultProfile()
       ProfileModel::instance()->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
       m_pEditor->m_lProfiles << m_pDefault;
       ProfileModel::instance()->endInsertRows();
-      PersonModel::instance()->addPerson(profile);
    }
 
    foreach(Account* a, orphans) {
@@ -401,12 +406,13 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
 }
 
-bool ProfileContentBackend::load()
+
+void ProfileContentBackend::loadProfiles()
 {
    if (ProfilePersisterDelegate::instance()) {
       m_pEditor->m_lProfiles.clear();
 
-      QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
+      const QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
 
       qDebug() << "Loading vcf from:" << profilesDir;
 
@@ -471,8 +477,12 @@ bool ProfileContentBackend::load()
    }
    else {
       qDebug() << "No ProfilePersistor loaded!";
-      return false;
    }
+}
+
+bool ProfileContentBackend::load()
+{
+   QTimer::singleShot(0,this,SLOT(loadProfiles()));
    return true;
 }
 

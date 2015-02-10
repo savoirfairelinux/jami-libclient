@@ -44,5 +44,5 @@ bool ProfilePersisterDelegate::save(const Person* c)
 
 QDir ProfilePersisterDelegate::getProfilesDir()
 {
-   return *(new QDir());
+   return QDir();
 }

@@ -226,7 +226,7 @@ Person* Person::ContactMethods::contact() const
 }
 
 ///Constructor
-Person::Person(CollectionInterface* parent): ItemBase<QObject>(parent?parent->model():TransitionalPersonBackend::instance()->model()),
+Person::Person(CollectionInterface* parent): ItemBase<QObject>(nullptr),
    d_ptr(new PersonPrivate(this))
 {
    setBackend(parent?parent:TransitionalPersonBackend::instance());

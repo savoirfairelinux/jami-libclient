@@ -258,9 +258,23 @@ void PersonModel::backendAddedCallback(CollectionInterface* backend)
 //    return d_ptr->m_lBackends;
 // }
 
-bool PersonModel::addItemCallback(Person* item)
+bool PersonModel::addItemCallback(Person* c)
 {
-   addPerson(item);
+   beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size()-1,d_ptr->m_lPersons.size());
+   d_ptr->m_lPersons << c;
+   d_ptr->m_hPersonsByUid[c->uid()] = c;
+
+   //Deprecate the placeholder
+   if (d_ptr->m_hPlaceholders.contains(c->uid())) {
+      PersonPlaceHolder* c2 = d_ptr->m_hPlaceholders[c->uid()];
+      if (c2) {
+         c2->merge(c);
+         d_ptr->m_hPlaceholders[c->uid()] = nullptr;
+      }
+   }
+   endInsertRows();
+   emit layoutChanged();
+   emit newPersonAdded(c);
    return true;
 }
 
@@ -282,21 +296,8 @@ bool PersonModel::addPerson(Person* c)
 {
    if (!c)
       return false;
-   beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size()-1,d_ptr->m_lPersons.size());
-   d_ptr->m_lPersons << c;
-   d_ptr->m_hPersonsByUid[c->uid()] = c;
-
-   //Deprecate the placeholder
-   if (d_ptr->m_hPlaceholders.contains(c->uid())) {
-      PersonPlaceHolder* c2 = d_ptr->m_hPlaceholders[c->uid()];
-      if (c2) {
-         c2->merge(c);
-         d_ptr->m_hPlaceholders[c->uid()] = nullptr;
-      }
-   }
-   endInsertRows();
-   emit layoutChanged();
-   emit newPersonAdded(c);
+   if (backends().size()) //TODO this is wrong, it work for now because profilemodel is [0]
+      backends()[0]->add(c);
    return true;
 }
 

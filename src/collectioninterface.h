@@ -47,6 +47,7 @@ template<typename T> class ItemBase;
 class LIB_EXPORT CollectionInterface
 {
    template<typename T> friend class CollectionMediator;
+   template<typename T> friend class CollectionManagerInterface;
    friend class ItemBase<QObject>;
 public:
 
@@ -191,6 +192,10 @@ public:
    template<typename T>
    CollectionEditor<T>* editor() const;
 
+   /**
+    * Add a new element to the backend
+    */
+   bool add   (ItemBase<QObject>* base);
 
 protected:
    void addChildren(CollectionInterface* c);

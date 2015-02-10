@@ -79,6 +79,12 @@ void CollectionInterface::addChildren(CollectionInterface* c)
    d_ptr->m_lChildren << c;
 }
 
+
+bool CollectionInterface::add(ItemBase<QObject>* base)
+{
+   return d_ptr->m_pAdd(base);
+}
+
 bool CollectionInterface::save(ItemBase<QObject>* base)
 {
    return d_ptr->m_pSave(base);

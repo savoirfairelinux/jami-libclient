@@ -28,7 +28,7 @@ public:
 };
 
 template<typename Base>
-ItemBase<Base>::ItemBase(Base* parent) : Base(parent), d_ptr(new ItemBasePrivate())
+ItemBase<Base>::ItemBase(Base* parent) :Base(parent), d_ptr(new ItemBasePrivate())
 {
 }
 
