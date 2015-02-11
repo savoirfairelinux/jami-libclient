@@ -94,6 +94,25 @@ PersonModel* PersonModel::instance() {
  *                                                                           *
  ****************************************************************************/
 
+QHash<int,QByteArray> PersonModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[ Role::Organization      ] = "Organization";
+      roles[ Role::Group             ] = "Group";
+      roles[ Role::Department        ] = "Department";
+      roles[ Role::PreferredEmail    ] = "PreferredEmail";
+      roles[ Role::FormattedLastUsed ] = "FormattedLastUsed";
+      roles[ Role::IndexedLastUsed   ] = "IndexedLastUsed";
+      roles[ Role::DatedLastUsed     ] = "DatedLastUsed";
+      roles[ Role::Active            ] = "Active";
+      roles[ Role::Filter            ] = "Filter"; //All roles, all at once
+      roles[ Role::DropState         ] = "DropState"; //State for drag and drop
+   }
+   return roles;
+}
 
 bool PersonModel::setData( const QModelIndex& idx, const QVariant &value, int role)
 {

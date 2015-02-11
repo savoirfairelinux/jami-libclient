@@ -77,6 +77,17 @@ CollectionModel::~CollectionModel()
    }
 }
 
+QHash<int,QByteArray> CollectionModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 QVariant CollectionModel::data (const QModelIndex& idx, int role) const
 {
    if (idx.isValid()) {

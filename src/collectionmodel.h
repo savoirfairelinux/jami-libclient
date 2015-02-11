@@ -47,6 +47,7 @@ public:
    virtual bool setData         (const QModelIndex& index, const QVariant &value, int role    )       override;
    virtual QModelIndex   parent ( const QModelIndex& index                                    ) const override;
    virtual QModelIndex   index  ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    CollectionInterface* backendAt(const QModelIndex& index);
 

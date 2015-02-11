@@ -70,6 +70,17 @@ Video::DeviceModel* Video::DeviceModel::instance()
    return m_spInstance;
 }
 
+QHash<int,QByteArray> Video::DeviceModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 ///Get data from the model
 QVariant Video::DeviceModel::data( const QModelIndex& idx, int role) const
 {

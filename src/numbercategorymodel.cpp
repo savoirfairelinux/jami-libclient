@@ -48,6 +48,17 @@ NumberCategoryModel::~NumberCategoryModel()
 //    delete d_ptr;
 }
 
+QHash<int,QByteArray> NumberCategoryModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[Role::INDEX] = "index";
+   }
+   return roles;
+}
+
 //Abstract model member
 QVariant NumberCategoryModel::data(const QModelIndex& index, int role) const
 {

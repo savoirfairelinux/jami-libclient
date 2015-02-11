@@ -52,22 +52,23 @@ public:
    //Getters
    Q_INVOKABLE Account*        getById                     ( const QByteArray& id, bool ph = false) const;
    int                         size                        (                                      ) const;
-   static Account*             currentAccount              (                                      );
+   static Account*             currentAccount              (                                      )      ;
    Account*                    getAccountByModelIndex      ( const QModelIndex& item              ) const;
-   static QString              getSimilarAliasIndex        ( const QString& alias                 );
+   static QString              getSimilarAliasIndex        ( const QString& alias                 )      ;
    Account*                    ip2ip                       (                                      ) const;
    bool                        isPresenceEnabled           (                                      ) const;
    bool                        isPresencePublishSupported  (                                      ) const;
    bool                        isPresenceSubscribeSupported(                                      ) const;
 
    //Abstract model accessors
-   QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole ) const;
-   int           rowCount ( const QModelIndex& parent = QModelIndex()            ) const;
-   Qt::ItemFlags flags    ( const QModelIndex& index                             ) const;
+   virtual QVariant              data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int                   rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags         flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool                  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
 
    //Setters
-   void setPriorAccount          ( const Account*                                           );
-   virtual bool setData          ( const QModelIndex& index, const QVariant &value, int role);
+   void setPriorAccount ( const Account* );
 
    //Mutators
    Q_INVOKABLE Account* add                 ( const QString& alias     );

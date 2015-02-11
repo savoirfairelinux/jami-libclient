@@ -85,6 +85,17 @@ PhoneDirectoryModel* PhoneDirectoryModel::instance()
    return m_spInstance;
 }
 
+QHash<int,QByteArray> PhoneDirectoryModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid() || index.row() >= d_ptr->m_lNumbers.size()) return QVariant();

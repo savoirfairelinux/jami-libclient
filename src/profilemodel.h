@@ -52,6 +52,7 @@ public:
    virtual QStringList   mimeTypes   (                                                              ) const override;
    virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                               ) const override;
    virtual bool          dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
    QModelIndex mapToSource  (const QModelIndex& idx) const;

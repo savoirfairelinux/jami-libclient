@@ -83,6 +83,17 @@ d_ptr(new CipherModelPrivate(parent))
 CipherModel::~CipherModel()
 {}
 
+QHash<int,QByteArray> CipherModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   /*if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Model functions
 QVariant CipherModel::data( const QModelIndex& index, int role) const
 {

@@ -195,17 +195,6 @@ ContactProxyModel::ContactProxyModel(int role, bool showAll) : QAbstractItemMode
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
    connect(PersonModel::instance(),SIGNAL(reloaded()),d_ptr.data(),SLOT(reloadCategories()));
    connect(PersonModel::instance(),SIGNAL(newContactAdded(Person*)),d_ptr.data(),SLOT(slotContactAdded(Person*)));
-   QHash<int, QByteArray> roles = roleNames();
-   roles.insert(PersonModel::Role::Organization      ,QByteArray("organization")     );
-   roles.insert(PersonModel::Role::Group             ,QByteArray("group")            );
-   roles.insert(PersonModel::Role::Department        ,QByteArray("department")       );
-   roles.insert(PersonModel::Role::PreferredEmail    ,QByteArray("preferredEmail")   );
-   roles.insert(PersonModel::Role::FormattedLastUsed ,QByteArray("formattedLastUsed"));
-   roles.insert(PersonModel::Role::IndexedLastUsed   ,QByteArray("indexedLastUsed")  );
-   roles.insert(PersonModel::Role::DatedLastUsed     ,QByteArray("datedLastUsed")    );
-   roles.insert(PersonModel::Role::Filter            ,QByteArray("filter")           );
-   roles.insert(PersonModel::Role::DropState         ,QByteArray("dropState")        );
-   setRoleNames(roles);
 }
 
 ContactProxyModel::~ContactProxyModel()
@@ -213,6 +202,25 @@ ContactProxyModel::~ContactProxyModel()
    foreach(ContactTopLevelItem* item,d_ptr->m_lCategoryCounter) {
       delete item;
    }
+}
+
+QHash<int,QByteArray> ContactProxyModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(PersonModel::Role::Organization      ,QByteArray("organization")     );
+      roles.insert(PersonModel::Role::Group             ,QByteArray("group")            );
+      roles.insert(PersonModel::Role::Department        ,QByteArray("department")       );
+      roles.insert(PersonModel::Role::PreferredEmail    ,QByteArray("preferredEmail")   );
+      roles.insert(PersonModel::Role::FormattedLastUsed ,QByteArray("formattedLastUsed"));
+      roles.insert(PersonModel::Role::IndexedLastUsed   ,QByteArray("indexedLastUsed")  );
+      roles.insert(PersonModel::Role::DatedLastUsed     ,QByteArray("datedLastUsed")    );
+      roles.insert(PersonModel::Role::Filter            ,QByteArray("filter")           );
+      roles.insert(PersonModel::Role::DropState         ,QByteArray("dropState")        );
+   }
+   return roles;
 }
 
 ContactTopLevelItem* ContactProxyModelPrivate::getContactTopLevelItem(const QString& category)

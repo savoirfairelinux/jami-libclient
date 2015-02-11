@@ -60,10 +60,11 @@ public:
    virtual ~InstantMessagingModel();
 
    //Abstract model function
-   QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
-   int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
-   Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
    virtual bool  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
 private:
    const QScopedPointer<InstantMessagingModelPrivate> d_ptr;

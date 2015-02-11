@@ -39,10 +39,6 @@ CredentialModel::CredentialModel(QObject* par) : QAbstractListModel(par?par:QCor
 d_ptr(new CredentialModelPrivate())
 {
    QHash<int, QByteArray> roles = roleNames();
-   roles.insert(CredentialModel::Role::NAME    ,QByteArray("name"));
-   roles.insert(CredentialModel::Role::PASSWORD,QByteArray("password"));
-   roles.insert(CredentialModel::Role::REALM   ,QByteArray("realm"));
-   setRoleNames(roles);
 }
 
 CredentialModel::~CredentialModel()
@@ -50,6 +46,19 @@ CredentialModel::~CredentialModel()
    foreach (CredentialModelPrivate::CredentialData2* data, d_ptr->m_lCredentials) {
       delete data;
    }
+}
+
+QHash<int,QByteArray> CredentialModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(CredentialModel::Role::NAME    ,QByteArray("name"));
+      roles.insert(CredentialModel::Role::PASSWORD,QByteArray("password"));
+      roles.insert(CredentialModel::Role::REALM   ,QByteArray("realm"));
+   }
+   return roles;
 }
 
 ///Model data

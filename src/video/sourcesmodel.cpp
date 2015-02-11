@@ -50,7 +50,7 @@ public:
 
 Video::SourcesModelPrivate::SourcesModelPrivate() : m_CurrentSelection(-1)
 {
-   
+
 }
 
 Video::SourcesModel* Video::SourcesModel::m_spInstance = nullptr;
@@ -66,6 +66,17 @@ Video::SourcesModel* Video::SourcesModel::instance()
    if (!m_spInstance)
       m_spInstance = new Video::SourcesModel();
    return m_spInstance;
+}
+
+QHash<int,QByteArray> Video::SourcesModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }
+   return roles;
 }
 
 QVariant Video::SourcesModel::data( const QModelIndex& index, int role ) const

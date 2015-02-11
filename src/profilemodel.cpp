@@ -646,6 +646,17 @@ ProfileModel::~ProfileModel()
    delete d_ptr;
 }
 
+QHash<int,QByteArray> ProfileModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = AccountModel::instance()->roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 QModelIndex ProfileModel::mapToSource(const QModelIndex& idx) const
 {
    if (!idx.isValid() || !idx.parent().isValid() || idx.model() != this)

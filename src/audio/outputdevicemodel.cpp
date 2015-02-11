@@ -36,7 +36,7 @@ private:
 
 OutputDeviceModelPrivate::OutputDeviceModelPrivate(Audio::OutputDeviceModel* parent) : q_ptr(parent)
 {
-   
+
 }
 
 ///Constructor
@@ -50,7 +50,18 @@ d_ptr(new OutputDeviceModelPrivate(this))
 ///Destructor
 Audio::OutputDeviceModel::~OutputDeviceModel()
 {
-   
+
+}
+
+QHash<int,QByteArray> Audio::OutputDeviceModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
 }
 
 ///Re-implement QAbstractListModel data

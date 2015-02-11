@@ -33,19 +33,26 @@ InstantMessagingModelPrivate::InstantMessagingModelPrivate(InstantMessagingModel
 InstantMessagingModel::InstantMessagingModel(Call* call, QObject* par) : QAbstractListModel(par), d_ptr(new InstantMessagingModelPrivate(this))
 {
    d_ptr->m_pCall = call;
-   //QStringList callList = callManager.getCallList();
-   QHash<int, QByteArray> roles = roleNames();
-   roles.insert(InstantMessagingModel::Role::TYPE    ,QByteArray("type"));
-   roles.insert(InstantMessagingModel::Role::FROM    ,QByteArray("from"));
-   roles.insert(InstantMessagingModel::Role::TEXT    ,QByteArray("text"));
-   roles.insert(InstantMessagingModel::Role::IMAGE   ,QByteArray("image"));
-   roles.insert(InstantMessagingModel::Role::CONTACT ,QByteArray("contact"));
-   setRoleNames(roles);
 }
 
 InstantMessagingModel::~InstantMessagingModel()
 {
 //    delete d_ptr;
+}
+
+QHash<int,QByteArray> InstantMessagingModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(InstantMessagingModel::Role::TYPE    ,QByteArray( "type"    ));
+      roles.insert(InstantMessagingModel::Role::FROM    ,QByteArray( "from"    ));
+      roles.insert(InstantMessagingModel::Role::TEXT    ,QByteArray( "text"    ));
+      roles.insert(InstantMessagingModel::Role::IMAGE   ,QByteArray( "image"   ));
+      roles.insert(InstantMessagingModel::Role::CONTACT ,QByteArray( "contact" ));
+   }
+   return roles;
 }
 
 ///Get data from the model

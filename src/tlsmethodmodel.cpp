@@ -34,6 +34,17 @@ d_ptr(new TlsMethodModelPrivate())
 
 }
 
+QHash<int,QByteArray> TlsMethodModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Model functions
 QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
 {

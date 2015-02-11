@@ -56,6 +56,17 @@ HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractL
    m_lCategories << tr("Never")                                 ;//24
 }
 
+QHash<int,QByteArray> HistoryTimeCategoryModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Abstract model member
 QVariant HistoryTimeCategoryModel::data(const QModelIndex& index, int role ) const
 {

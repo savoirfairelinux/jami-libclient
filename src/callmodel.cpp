@@ -82,7 +82,6 @@ public:
 
       //Helpers
       bool isPartOf(const QModelIndex& confIdx, Call* call);
-      void initRoles();
       void removeConference       ( Call* conf                    );
       void removeInternal(InternalStruct* internal);
 
@@ -139,7 +138,6 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 void CallModelPrivate::init()
 {
    static bool dbusInit = false;
-   initRoles();
    if (!dbusInit) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
       #ifdef ENABLE_VIDEO
@@ -209,35 +207,39 @@ CallModel::~CallModel()
 #endif //ENABLE_LIBWRAP
 }
 
-void CallModelPrivate::initRoles()
+QHash<int,QByteArray> CallModel::roleNames() const
 {
-   QHash<int, QByteArray> roles = q_ptr->roleNames();
-   roles.insert(Call::Role::Name          ,QByteArray("name"));
-   roles.insert(Call::Role::Number        ,QByteArray("number"));
-   roles.insert(Call::Role::Direction2    ,QByteArray("direction"));
-   roles.insert(Call::Role::Date          ,QByteArray("date"));
-   roles.insert(Call::Role::Length        ,QByteArray("length"));
-   roles.insert(Call::Role::FormattedDate ,QByteArray("formattedDate"));
-   roles.insert(Call::Role::HasRecording  ,QByteArray("hasRecording"));
-   roles.insert(Call::Role::Historystate  ,QByteArray("historyState"));
-   roles.insert(Call::Role::Filter        ,QByteArray("filter"));
-   roles.insert(Call::Role::FuzzyDate     ,QByteArray("fuzzyDate"));
-   roles.insert(Call::Role::IsBookmark    ,QByteArray("isBookmark"));
-   roles.insert(Call::Role::Security      ,QByteArray("security"));
-   roles.insert(Call::Role::Department    ,QByteArray("department"));
-   roles.insert(Call::Role::Email         ,QByteArray("email"));
-   roles.insert(Call::Role::Organisation  ,QByteArray("organisation"));
-   roles.insert(Call::Role::Object        ,QByteArray("object"));
-   roles.insert(Call::Role::PhotoPtr      ,QByteArray("photoPtr"));
-   roles.insert(Call::Role::CallState     ,QByteArray("callState"));
-   roles.insert(Call::Role::Id            ,QByteArray("id"));
-   roles.insert(Call::Role::StartTime     ,QByteArray("startTime"));
-   roles.insert(Call::Role::StopTime      ,QByteArray("stopTime"));
-   roles.insert(Call::Role::DropState     ,QByteArray("dropState"));
-   roles.insert(Call::Role::DTMFAnimState ,QByteArray("dTMFAnimState"));
-   roles.insert(Call::Role::LastDTMFidx   ,QByteArray("lastDTMFidx"));
-   roles.insert(Call::Role::IsRecording   ,QByteArray("isRecording"));
-   q_ptr->setRoleNames(roles);
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(Call::Role::Name          ,QByteArray("name"));
+      roles.insert(Call::Role::Number        ,QByteArray("number"));
+      roles.insert(Call::Role::Direction2    ,QByteArray("direction"));
+      roles.insert(Call::Role::Date          ,QByteArray("date"));
+      roles.insert(Call::Role::Length        ,QByteArray("length"));
+      roles.insert(Call::Role::FormattedDate ,QByteArray("formattedDate"));
+      roles.insert(Call::Role::HasRecording  ,QByteArray("hasRecording"));
+      roles.insert(Call::Role::Historystate  ,QByteArray("historyState"));
+      roles.insert(Call::Role::Filter        ,QByteArray("filter"));
+      roles.insert(Call::Role::FuzzyDate     ,QByteArray("fuzzyDate"));
+      roles.insert(Call::Role::IsBookmark    ,QByteArray("isBookmark"));
+      roles.insert(Call::Role::Security      ,QByteArray("security"));
+      roles.insert(Call::Role::Department    ,QByteArray("department"));
+      roles.insert(Call::Role::Email         ,QByteArray("email"));
+      roles.insert(Call::Role::Organisation  ,QByteArray("organisation"));
+      roles.insert(Call::Role::Object        ,QByteArray("object"));
+      roles.insert(Call::Role::PhotoPtr      ,QByteArray("photoPtr"));
+      roles.insert(Call::Role::CallState     ,QByteArray("callState"));
+      roles.insert(Call::Role::Id            ,QByteArray("id"));
+      roles.insert(Call::Role::StartTime     ,QByteArray("startTime"));
+      roles.insert(Call::Role::StopTime      ,QByteArray("stopTime"));
+      roles.insert(Call::Role::DropState     ,QByteArray("dropState"));
+      roles.insert(Call::Role::DTMFAnimState ,QByteArray("dTMFAnimState"));
+      roles.insert(Call::Role::LastDTMFidx   ,QByteArray("lastDTMFidx"));
+      roles.insert(Call::Role::IsRecording   ,QByteArray("isRecording"));
+   }
+   return roles;
 }
 
 
@@ -254,14 +256,12 @@ int CallModel::size()
 }
 
 ///Return the action call list
- CallList CallModel::getActiveCalls()
+CallList CallModel::getActiveCalls()
 {
    CallList callList;
-   #pragma GCC diagnostic ignored "-Wshadow"
    foreach(InternalStruct* internalS, d_ptr->m_lInternalModel) {
       callList.push_back(internalS->call_real);
       if (internalS->m_lChildren.size()) {
-         #pragma GCC diagnostic ignored "-Wshadow"
          foreach(InternalStruct* childInt,internalS->m_lChildren) {
             callList.push_back(childInt->call_real);
          }

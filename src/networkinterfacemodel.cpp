@@ -38,6 +38,17 @@ d_ptr(new NetworkInterfaceModelPrivate())
    d_ptr->m_Interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
 }
 
+QHash<int,QByteArray> NetworkInterfaceModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Model functions
 QVariant NetworkInterfaceModel::data( const QModelIndex& index, int role) const
 {

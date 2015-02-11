@@ -53,6 +53,17 @@ KeyExchangeModel::~KeyExchangeModel()
 //    delete d_ptr;
 }
 
+QHash<int,QByteArray> KeyExchangeModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Model functions
 QVariant KeyExchangeModel::data( const QModelIndex& index, int role) const
 {

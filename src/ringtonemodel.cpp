@@ -51,6 +51,18 @@ RingToneModel::~RingToneModel()
    }
 }
 
+QHash<int,QByteArray> RingToneModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[Role::IsPlaying ] = "IsPlaying";
+      roles[Role::FullPath  ] = "FullPath";
+   }
+   return roles;
+}
+
 QVariant RingToneModel::data( const QModelIndex& index, int role ) const
 {
    if (!index.isValid())

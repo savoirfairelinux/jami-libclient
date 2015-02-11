@@ -344,6 +344,17 @@ d_ptr(new AccountStatusModelPrivate(parent))
 AccountStatusModel::~AccountStatusModel()
 {}
 
+QHash<int,QByteArray> AccountStatusModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 //Model functions
 QVariant AccountStatusModel::data( const QModelIndex& index, int role) const
 {

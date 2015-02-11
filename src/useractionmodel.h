@@ -29,6 +29,8 @@ class UserActionModelPrivate;
 
 /**
  * @class UserActionModel Hold available actions for a given call state
+ *
+ * @todo This is not a model yet, however, it would be nice if it was
  **/
 class LIB_EXPORT UserActionModel : public QObject/*QAbstractItemModel*/ {
    #pragma GCC diagnostic push
@@ -80,6 +82,7 @@ public:
 //    virtual int           columnCount(const QModelIndex& parent = QModelIndex()             ) const;
 //    virtual Qt::ItemFlags flags      (const QModelIndex& index                              ) const;
 //    virtual bool          setData    (const QModelIndex& index, const QVariant &value, int role);
+//    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
    Q_INVOKABLE bool isActionEnabled ( UserActionModel::Action action ) const;

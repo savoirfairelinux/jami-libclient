@@ -57,6 +57,17 @@ Video::CodecModel2::~CodecModel2()
 //    delete d_ptr;
 }
 
+QHash<int,QByteArray> Video::CodecModel2::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 ///Get data from the model
 QVariant Video::CodecModel2::data( const QModelIndex& idx, int role) const
 {

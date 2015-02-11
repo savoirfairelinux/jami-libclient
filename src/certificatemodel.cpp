@@ -114,6 +114,17 @@ CertificateModel* CertificateModel::instance()
    return CertificateModelPrivate::m_spInstance;
 }
 
+QHash<int,QByteArray> CertificateModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 void CertificateNode::setStrings(const QString& col1, const QVariant& col2, const QString& tooltip)
 {
    m_Col1    = col1;

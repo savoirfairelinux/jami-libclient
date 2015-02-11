@@ -86,6 +86,19 @@ NumberCompletionModel::~NumberCompletionModel()
 
 }
 
+QHash<int,QByteArray> NumberCompletionModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[Role::ALTERNATE_ACCOUNT]= "AlternateAccount";
+      roles[Role::FORCE_ACCOUNT    ]= "ForceAccount";
+      roles[Role::ACCOUNT          ]= "Account";
+   }
+   return roles;
+}
+
 QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
 {
    if (!index.isValid()) return QVariant();

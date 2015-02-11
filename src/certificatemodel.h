@@ -47,6 +47,7 @@ public:
    virtual QModelIndex   parent      ( const QModelIndex& index                                    ) const override;
    virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);

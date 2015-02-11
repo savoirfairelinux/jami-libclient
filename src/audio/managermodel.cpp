@@ -75,6 +75,17 @@ Audio::ManagerModel::~ManagerModel()
    d_ptr->m_lDeviceList.clear();
 }
 
+QHash<int,QByteArray> Audio::ManagerModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 ///Re-implement QAbstractListModel data
 QVariant Audio::ManagerModel::data( const QModelIndex& index, int role) const
 {

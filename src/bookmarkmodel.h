@@ -67,6 +67,7 @@ public:
    virtual QStringList   mimeTypes   (                                                             ) const override;
    virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                              ) const override;
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    //Management
    void remove        (const QModelIndex& idx );

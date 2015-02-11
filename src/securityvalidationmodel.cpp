@@ -95,6 +95,17 @@ SecurityValidationModel::~SecurityValidationModel()
    
 }
 
+QHash<int,QByteArray> SecurityValidationModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[Role::SeverityRole] = "SeverityRole";
+   }
+   return roles;
+}
+
 QVariant SecurityValidationModel::data( const QModelIndex& index, int role) const
 {
    if (index.isValid())  {

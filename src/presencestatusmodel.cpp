@@ -61,6 +61,17 @@ PresenceStatusModel::~PresenceStatusModel()
    }
 }
 
+QHash<int,QByteArray> PresenceStatusModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 ///Get model data
 QVariant PresenceStatusModel::data(const QModelIndex& index, int role ) const
 {
@@ -158,7 +169,7 @@ bool PresenceStatusModel::setData(const QModelIndex& index, const QVariant &valu
             break;
          case PresenceStatusModel::Columns::Color:
             if (role == Qt::EditRole) {
-               
+
             }
             break;
          case PresenceStatusModel::Columns::Status:

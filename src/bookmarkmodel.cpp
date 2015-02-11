@@ -159,6 +159,17 @@ BookmarkModel* BookmarkModel::instance()
    return m_spInstance;
 }
 
+QHash<int,QByteArray> BookmarkModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles[Call::Role::Name] = CallModel::instance()->roleNames()[Call::Role::Name];
+   }
+   return roles;
+}
+
 ///Reload bookmark cateogries
 void BookmarkModel::reloadCategories()
 {

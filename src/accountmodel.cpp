@@ -69,7 +69,6 @@ int AccountListNoCheckProxyModel::rowCount(const QModelIndex& parentIdx ) const
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
 m_pIP2IP(nullptr)
 {
-   setupRoleName();
 }
 
 ///Constructors
@@ -110,53 +109,56 @@ AccountModel::~AccountModel()
    delete d_ptr;
 }
 
-void AccountModelPrivate::setupRoleName()
+QHash<int,QByteArray> AccountModel::roleNames() const
 {
-   QHash<int, QByteArray> roles = q_ptr->roleNames();
-   roles.insert(Account::Role::Alias                    ,QByteArray("alias"                         ));
-   roles.insert(Account::Role::Proto                    ,QByteArray("protocol"                      ));
-   roles.insert(Account::Role::Hostname                 ,QByteArray("hostname"                      ));
-   roles.insert(Account::Role::Username                 ,QByteArray("username"                      ));
-   roles.insert(Account::Role::Mailbox                  ,QByteArray("mailbox"                       ));
-   roles.insert(Account::Role::Proxy                    ,QByteArray("proxy"                         ));
-   roles.insert(Account::Role::TlsPassword              ,QByteArray("tlsPassword"                   ));
-   roles.insert(Account::Role::TlsCaListCertificate     ,QByteArray("tlsCaListCertificate"          ));
-   roles.insert(Account::Role::TlsCertificate           ,QByteArray("tlsCertificate"                ));
-   roles.insert(Account::Role::TlsPrivateKeyCertificate ,QByteArray("tlsPrivateKeyCertificate"      ));
-   roles.insert(Account::Role::TlsServerName            ,QByteArray("tlsServerName"                 ));
-   roles.insert(Account::Role::SipStunServer            ,QByteArray("sipStunServer"                 ));
-   roles.insert(Account::Role::PublishedAddress         ,QByteArray("publishedAddress"              ));
-   roles.insert(Account::Role::LocalInterface           ,QByteArray("localInterface"                ));
-   roles.insert(Account::Role::RingtonePath             ,QByteArray("ringtonePath"                  ));
-   roles.insert(Account::Role::TlsMethod                ,QByteArray("tlsMethod"                     ));
-   roles.insert(Account::Role::RegistrationExpire       ,QByteArray("registrationExpire"            ));
-   roles.insert(Account::Role::TlsNegotiationTimeoutSec ,QByteArray("tlsNegotiationTimeoutSec"      ));
-   roles.insert(Account::Role::TlsNegotiationTimeoutMsec,QByteArray("tlsNegotiationTimeoutMsec"     ));
-   roles.insert(Account::Role::LocalPort                ,QByteArray("localPort"                     ));
-   roles.insert(Account::Role::TlsListenerPort          ,QByteArray("tlsListenerPort"               ));
-   roles.insert(Account::Role::PublishedPort            ,QByteArray("publishedPort"                 ));
-   roles.insert(Account::Role::Enabled                  ,QByteArray("enabled"                       ));
-   roles.insert(Account::Role::AutoAnswer               ,QByteArray("autoAnswer"                    ));
-   roles.insert(Account::Role::TlsVerifyServer          ,QByteArray("tlsVerifyServer"               ));
-   roles.insert(Account::Role::TlsVerifyClient          ,QByteArray("tlsVerifyClient"               ));
-   roles.insert(Account::Role::TlsRequireClientCertificate,QByteArray("tlsRequireClientCertificate" ));
-   roles.insert(Account::Role::TlsEnabled               ,QByteArray("tlsEnabled"                    ));
-   roles.insert(Account::Role::DisplaySasOnce           ,QByteArray("displaySasOnce"                ));
-   roles.insert(Account::Role::SrtpRtpFallback          ,QByteArray("srtpRtpFallback"               ));
-   roles.insert(Account::Role::ZrtpDisplaySas           ,QByteArray("zrtpDisplaySas"                ));
-   roles.insert(Account::Role::ZrtpNotSuppWarning       ,QByteArray("zrtpNotSuppWarning"            ));
-   roles.insert(Account::Role::ZrtpHelloHash            ,QByteArray("zrtpHelloHash"                 ));
-   roles.insert(Account::Role::SipStunEnabled           ,QByteArray("sipStunEnabled"                ));
-   roles.insert(Account::Role::PublishedSameAsLocal     ,QByteArray("publishedSameAsLocal"          ));
-   roles.insert(Account::Role::RingtoneEnabled          ,QByteArray("ringtoneEnabled"               ));
-   roles.insert(Account::Role::dTMFType                 ,QByteArray("dTMFType"                      ));
-   roles.insert(Account::Role::Id                       ,QByteArray("id"                            ));
-   roles.insert(Account::Role::Object                   ,QByteArray("object"                        ));
-   roles.insert(Account::Role::TypeName                 ,QByteArray("typeName"                      ));
-   roles.insert(Account::Role::PresenceStatus           ,QByteArray("presenceStatus"                ));
-   roles.insert(Account::Role::PresenceMessage          ,QByteArray("presenceMessage"               ));
-
-   q_ptr->setRoleNames(roles);
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(Account::Role::Alias                    ,QByteArray("alias"                         ));
+      roles.insert(Account::Role::Proto                    ,QByteArray("protocol"                      ));
+      roles.insert(Account::Role::Hostname                 ,QByteArray("hostname"                      ));
+      roles.insert(Account::Role::Username                 ,QByteArray("username"                      ));
+      roles.insert(Account::Role::Mailbox                  ,QByteArray("mailbox"                       ));
+      roles.insert(Account::Role::Proxy                    ,QByteArray("proxy"                         ));
+      roles.insert(Account::Role::TlsPassword              ,QByteArray("tlsPassword"                   ));
+      roles.insert(Account::Role::TlsCaListCertificate     ,QByteArray("tlsCaListCertificate"          ));
+      roles.insert(Account::Role::TlsCertificate           ,QByteArray("tlsCertificate"                ));
+      roles.insert(Account::Role::TlsPrivateKeyCertificate ,QByteArray("tlsPrivateKeyCertificate"      ));
+      roles.insert(Account::Role::TlsServerName            ,QByteArray("tlsServerName"                 ));
+      roles.insert(Account::Role::SipStunServer            ,QByteArray("sipStunServer"                 ));
+      roles.insert(Account::Role::PublishedAddress         ,QByteArray("publishedAddress"              ));
+      roles.insert(Account::Role::LocalInterface           ,QByteArray("localInterface"                ));
+      roles.insert(Account::Role::RingtonePath             ,QByteArray("ringtonePath"                  ));
+      roles.insert(Account::Role::TlsMethod                ,QByteArray("tlsMethod"                     ));
+      roles.insert(Account::Role::RegistrationExpire       ,QByteArray("registrationExpire"            ));
+      roles.insert(Account::Role::TlsNegotiationTimeoutSec ,QByteArray("tlsNegotiationTimeoutSec"      ));
+      roles.insert(Account::Role::TlsNegotiationTimeoutMsec,QByteArray("tlsNegotiationTimeoutMsec"     ));
+      roles.insert(Account::Role::LocalPort                ,QByteArray("localPort"                     ));
+      roles.insert(Account::Role::TlsListenerPort          ,QByteArray("tlsListenerPort"               ));
+      roles.insert(Account::Role::PublishedPort            ,QByteArray("publishedPort"                 ));
+      roles.insert(Account::Role::Enabled                  ,QByteArray("enabled"                       ));
+      roles.insert(Account::Role::AutoAnswer               ,QByteArray("autoAnswer"                    ));
+      roles.insert(Account::Role::TlsVerifyServer          ,QByteArray("tlsVerifyServer"               ));
+      roles.insert(Account::Role::TlsVerifyClient          ,QByteArray("tlsVerifyClient"               ));
+      roles.insert(Account::Role::TlsRequireClientCertificate,QByteArray("tlsRequireClientCertificate" ));
+      roles.insert(Account::Role::TlsEnabled               ,QByteArray("tlsEnabled"                    ));
+      roles.insert(Account::Role::DisplaySasOnce           ,QByteArray("displaySasOnce"                ));
+      roles.insert(Account::Role::SrtpRtpFallback          ,QByteArray("srtpRtpFallback"               ));
+      roles.insert(Account::Role::ZrtpDisplaySas           ,QByteArray("zrtpDisplaySas"                ));
+      roles.insert(Account::Role::ZrtpNotSuppWarning       ,QByteArray("zrtpNotSuppWarning"            ));
+      roles.insert(Account::Role::ZrtpHelloHash            ,QByteArray("zrtpHelloHash"                 ));
+      roles.insert(Account::Role::SipStunEnabled           ,QByteArray("sipStunEnabled"                ));
+      roles.insert(Account::Role::PublishedSameAsLocal     ,QByteArray("publishedSameAsLocal"          ));
+      roles.insert(Account::Role::RingtoneEnabled          ,QByteArray("ringtoneEnabled"               ));
+      roles.insert(Account::Role::dTMFType                 ,QByteArray("dTMFType"                      ));
+      roles.insert(Account::Role::Id                       ,QByteArray("id"                            ));
+      roles.insert(Account::Role::Object                   ,QByteArray("object"                        ));
+      roles.insert(Account::Role::TypeName                 ,QByteArray("typeName"                      ));
+      roles.insert(Account::Role::PresenceStatus           ,QByteArray("presenceStatus"                ));
+      roles.insert(Account::Role::PresenceMessage          ,QByteArray("presenceMessage"               ));
+   }
+   return roles;
 }
 
 ///Get the IP2IP account

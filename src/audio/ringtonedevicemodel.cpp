@@ -48,7 +48,18 @@ d_ptr(new RingtoneDeviceModelPrivate(this))
 ///Destructor
 Audio::RingtoneDeviceModel::~RingtoneDeviceModel()
 {
-   
+
+}
+
+QHash<int,QByteArray> Audio::RingtoneDeviceModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
 }
 
 ///Re-implement QAbstractListModel data

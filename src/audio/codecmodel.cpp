@@ -61,12 +61,6 @@ QAbstractListModel(account?(QObject*)account:(QObject*)QCoreApplication::instanc
 {
    d_ptr->m_pAccount = account;
    setObjectName("CodecModel: "+(account?account->id():"Unknown"));
-   QHash<int, QByteArray> roles = roleNames();
-   roles.insert(Audio::CodecModel::Role::ID        ,QByteArray("id"));
-   roles.insert(Audio::CodecModel::Role::NAME      ,QByteArray("name"));
-   roles.insert(Audio::CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
-   roles.insert(Audio::CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
-   setRoleNames(roles);
 }
 
 Audio::CodecModel::~CodecModel()
@@ -76,6 +70,20 @@ Audio::CodecModel::~CodecModel()
       d_ptr->m_lAudioCodecs.removeAt(0);
       delete c;
    }
+}
+
+QHash<int,QByteArray> Audio::CodecModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      roles.insert(Audio::CodecModel::Role::ID        ,QByteArray("id"));
+      roles.insert(Audio::CodecModel::Role::NAME      ,QByteArray("name"));
+      roles.insert(Audio::CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
+      roles.insert(Audio::CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
+   }
+   return roles;
 }
 
 ///Model data

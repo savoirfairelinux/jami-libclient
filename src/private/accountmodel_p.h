@@ -34,7 +34,6 @@ public:
    //Constructor
    AccountModelPrivate(AccountModel* parent);
    void init();
-   void setupRoleName();
 
    //Helpers
    Account* firstRegisteredAccount() const;

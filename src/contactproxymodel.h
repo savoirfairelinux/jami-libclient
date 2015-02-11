@@ -60,6 +60,7 @@ public:
    virtual QStringList   mimeTypes   (                                                             ) const override;
    virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                              ) const override;
    virtual bool dropMimeData         ( const QMimeData*, Qt::DropAction, int, int, const QModelIndex& ) override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
    static int acceptedPayloadTypes();

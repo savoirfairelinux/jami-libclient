@@ -34,7 +34,18 @@ private:
 
 InputDeviceModelPrivate::InputDeviceModelPrivate(Audio::InputDeviceModel* parent) : q_ptr(parent)
 {
-   
+
+}
+
+QHash<int,QByteArray> Audio::InputDeviceModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
 }
 
 ///Constructor

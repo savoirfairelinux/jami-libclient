@@ -67,6 +67,17 @@ LastUsedNumberModel* LastUsedNumberModel::instance()
    return m_spInstance;
 }
 
+QHash<int,QByteArray> LastUsedNumberModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
+}
+
 ///Push 'call' phoneNumber on the top of the stack
 void LastUsedNumberModel::addCall(Call* call)
 {

@@ -33,7 +33,7 @@ private:
 
 AlsaPluginModelPrivate::AlsaPluginModelPrivate(Audio::AlsaPluginModel* parent) : q_ptr(parent)
 {
-   
+
 }
 
 ///Constructor
@@ -47,7 +47,18 @@ d_ptr(new AlsaPluginModelPrivate(this))
 ///Destructor
 Audio::AlsaPluginModel::~AlsaPluginModel()
 {
-   
+
+}
+
+QHash<int,QByteArray> Audio::AlsaPluginModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   /*static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+
+   }*/
+   return roles;
 }
 
 ///Re-implement QAbstractListModel data
