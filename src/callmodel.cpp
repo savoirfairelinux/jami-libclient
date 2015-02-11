@@ -1203,7 +1203,7 @@ void CallModelPrivate::slotDTMFPlayed( const QString& str )
    Call* call = qobject_cast<Call*>(QObject::sender());
    if (str.size()==1) {
       int idx = 0;
-      char s = str.toLower().toAscii()[0];
+      char s = str.toLower().toLatin1()[0];
       if (s >= '1' && s <= '9'     ) idx = s - '1'     ;
       else if (s >= 'a' && s <= 'v') idx = (s - 'a')/3 ;
       else if (s >= 'w' && s <= 'z') idx = 8           ;

@@ -143,13 +143,9 @@ IF(${ENABLE_VIDEO} MATCHES true)
    add_definitions( -DENABLE_VIDEO=true )
 ENDIF(${ENABLE_VIDEO} MATCHES true)
 
-IF(${ENABLE_QT5} MATCHES true)
-   FIND_PACKAGE(Qt5Core REQUIRED)
-   FIND_PACKAGE(Qt5DBus)
-   ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=0)
-ELSE()
-   FIND_PACKAGE ( Qt4  REQUIRED )
-ENDIF(${ENABLE_QT5} MATCHES true)
+FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5DBus)
+ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=0)
 
 SET(GENERIC_LIB_VERSION "1.4.1")
 
@@ -369,22 +365,14 @@ ELSE() # Use dbus to communicate with libDring
       ${presencemanager_xml}
       PROPERTIES
       CLASSNAME PresenceManagerInterface
-      INCLUDE ${dbus_metatype_path})
+      INCLUDE ${dbus_metatype_path}
+   )
 
-   IF(${ENABLE_QT5} MATCHES true)
-      QT5_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${presencemanager_xml}
-         presencemanager_dbus_interface
-      )
-   ELSE()
-      QT4_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${presencemanager_xml}
-         presencemanager_dbus_interface
-      )
-
-   ENDIF(${ENABLE_QT5} MATCHES true)
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${presencemanager_xml}
+      presencemanager_dbus_interface
+   )
 
    # configuration manager interface
    SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/configurationmanager-introspec.xml )
@@ -393,22 +381,14 @@ ELSE() # Use dbus to communicate with libDring
       ${configurationmanager_xml}
       PROPERTIES
       CLASSNAME ConfigurationManagerInterface
-      INCLUDE ${dbus_metatype_path})
+      INCLUDE ${dbus_metatype_path}
+   )
 
-   IF(${ENABLE_QT5} MATCHES true)
-      QT5_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${configurationmanager_xml}
-         configurationmanager_dbus_interface
-      )
-   ELSE()
-      QT4_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${configurationmanager_xml}
-         configurationmanager_dbus_interface
-      )
-
-   ENDIF(${ENABLE_QT5} MATCHES true)
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${configurationmanager_xml}
+      configurationmanager_dbus_interface
+   )
 
    # call manager interface
    SET ( callmanager_xml  ${dbus_xml_introspecs_path}/callmanager-introspec.xml )
@@ -417,22 +397,14 @@ ELSE() # Use dbus to communicate with libDring
       ${callmanager_xml}
       PROPERTIES
       CLASSNAME CallManagerInterface
-      INCLUDE ${dbus_metatype_path})
+      INCLUDE ${dbus_metatype_path}
+   )
 
-   IF(${ENABLE_QT5} MATCHES true)
-      QT5_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${callmanager_xml}
-         callmanager_dbus_interface
-      )
-   ELSE()
-      QT4_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${callmanager_xml}
-         callmanager_dbus_interface
-      )
-   ENDIF(${ENABLE_QT5} MATCHES true)
-
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${callmanager_xml}
+      callmanager_dbus_interface
+   )
 
    # video manager interface
    SET ( video_xml  ${dbus_xml_introspecs_path}/videomanager-introspec.xml )
@@ -441,21 +413,14 @@ ELSE() # Use dbus to communicate with libDring
       ${video_xml}
       PROPERTIES
       CLASSNAME VideoManagerInterface
-      INCLUDE ${dbus_metatype_path})
+      INCLUDE ${dbus_metatype_path}
+   )
 
-   IF(${ENABLE_QT5} MATCHES true)
-      QT5_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${video_xml}
-         video_dbus_interface
-      )
-   ELSE()
-      QT4_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${video_xml}
-         video_dbus_interface
-      )
-   ENDIF(${ENABLE_QT5} MATCHES true)
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${video_xml}
+      video_dbus_interface
+   )
 
 
    # instance interface
@@ -465,21 +430,14 @@ ELSE() # Use dbus to communicate with libDring
       ${instance_xml}
       PROPERTIES
       CLASSNAME InstanceInterface
-      INCLUDE ${dbus_metatype_path})
+      INCLUDE ${dbus_metatype_path}
+   )
 
-   IF(${ENABLE_QT5} MATCHES true)
-      QT5_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${instance_xml}
-         instance_dbus_interface
-      )
-   ELSE()
-      QT4_ADD_DBUS_INTERFACE(
-         libringclient_LIB_SRCS
-         ${instance_xml}
-         instance_dbus_interface
-      )
-   ENDIF(${ENABLE_QT5} MATCHES true)
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${instance_xml}
+      instance_dbus_interface
+   )
 
 ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
@@ -504,11 +462,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    )
 ENDIF()
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
-ELSE()
-   QT4_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
-ENDIF(${ENABLE_QT5} MATCHES true)
+QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 
 
 ADD_LIBRARY( ringclient  SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
@@ -517,12 +471,10 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 ENDIF()
 
-IF(${ENABLE_QT5} MATCHES true)
-   QT5_USE_MODULES(ringclient Core)
-   IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-      QT5_USE_MODULES(ringclient DBus)
-   ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-ENDIF(${ENABLE_QT5} MATCHES true)
+QT5_USE_MODULES(ringclient Core)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+   QT5_USE_MODULES(ringclient DBus)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
 TARGET_LINK_LIBRARIES( ringclient

@@ -20,5 +20,5 @@ FIND_LIBRARY(ring_BIN NAMES ring
              PATHS ${RING_BUILD_DIR}/.libs 
              PATHS ${CMAKE_INSTALL_PREFIX}/libexec )
 
-MESSAGE("Ring daemon header is " ${ring_INCLUDE_DIRS}/dring.h)
-MESSAGE("Ring library path is " ${ring_BIN})
+MESSAGE("-- Ring daemon header is " ${ring_INCLUDE_DIRS}/dring.h)
+MESSAGE("-- Ring library path is " ${ring_BIN})

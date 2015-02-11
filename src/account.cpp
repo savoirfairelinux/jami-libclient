@@ -1435,7 +1435,7 @@ void AccountPrivate::save()
       }
       q_ptr->saveAudioCodecs();
 
-      q_ptr->setId(currentId.toAscii());
+      q_ptr->setId(currentId.toLatin1());
       q_ptr->saveCredentials();
    } //New account
    else { //Existing account

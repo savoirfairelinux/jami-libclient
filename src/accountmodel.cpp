@@ -192,7 +192,7 @@ void AccountModel::destroy()
 ///Account status changed
 void AccountModelPrivate::slotAccountChanged(const QString& account,const QString& status, int code)
 {
-   Account* a = q_ptr->getById(account.toAscii());
+   Account* a = q_ptr->getById(account.toLatin1());
 
    if (!a || (a && a->registrationStatus() != status )) {
       if (status != "OK") //Do not pollute the log
@@ -204,8 +204,8 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
    if (!a) {
       const QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
-         if ((!q_ptr->getById(accountIds[i].toAscii())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-            Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
+         if ((!q_ptr->getById(accountIds[i].toLatin1())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
+            Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
             m_lAccounts.insert(i, acc);
             connect(acc,SIGNAL(changed(Account*)),this,SLOT(slotAccountChanged(Account*)));
             connect(acc,SIGNAL(presenceEnabledChanged(bool)),this,SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -272,7 +272,7 @@ void AccountModelPrivate::slotAccountChanged(Account* a)
 ///When a new voice mail is available
 void AccountModelPrivate::slotVoiceMailNotify(const QString &accountID, int count)
 {
-   Account* a = q_ptr->getById(accountID.toAscii());
+   Account* a = q_ptr->getById(accountID.toLatin1());
    if (a) {
       a->setVoiceMailCount(count);
       emit q_ptr->voiceMailNotify(a,count);
@@ -289,7 +289,7 @@ void AccountModelPrivate::slotAccountPresenceEnabledChanged(bool state)
 ///Emited when some runtime details changes
 void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details)
 {
-   Account* a = q_ptr->getById(accountId.toAscii());
+   Account* a = q_ptr->getById(accountId.toLatin1());
    if (a) {
       const int     transportCode = details[DRing::Account::VolatileProperties::Transport::STATE_CODE].toInt();
       const QString transportDesc = details[DRing::Account::VolatileProperties::Transport::STATE_DESC];
@@ -320,7 +320,7 @@ void AccountModel::update()
    const QStringList accountIds = configurationManager.getAccountList();
    for (int i = 0; i < accountIds.size(); ++i) {
       if (d_ptr->m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
+         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
          d_ptr->m_lAccounts.insert(i, a);
          emit dataChanged(index(i,0),index(size()-1,0));
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
@@ -338,9 +338,9 @@ void AccountModel::updateAccounts()
    QStringList accountIds = configurationManager.getAccountList();
    //m_lAccounts.clear();
    for (int i = 0; i < accountIds.size(); ++i) {
-      Account* acc = getById(accountIds[i].toAscii());
+      Account* acc = getById(accountIds[i].toLatin1());
       if (!acc) {
-         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toAscii());
+         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
          d_ptr->m_lAccounts += a;
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -367,7 +367,7 @@ void AccountModel::save()
 
    //remove accounts that are in the configurationManager but not in the client
    for (int i = 0; i < accountIds.size(); i++) {
-      if(!getById(accountIds[i].toAscii())) {
+      if(!getById(accountIds[i].toLatin1())) {
          configurationManager.removeAccount(accountIds[i]);
       }
    }

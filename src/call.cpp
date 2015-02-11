@@ -250,7 +250,7 @@ Call::Call(const QString& confId, const QString& account)
    : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
-   d_ptr->m_Account      = AccountModel::instance()->getById(account.toAscii());
+   d_ptr->m_Account      = AccountModel::instance()->getById(account.toLatin1());
    d_ptr->m_Type         = (!confId.isEmpty())?Call::Type::CONFERENCE:Call::Type::CALL;
    d_ptr->m_CallId       = confId;
 
@@ -300,7 +300,7 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    Call::State   startState    = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE], details[CallPrivate::DetailsMapFields::TYPE]);
-   Account*      acc           = AccountModel::instance()->getById(account.toAscii());
+   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
    Call*         call          = new Call(startState, callId, peerName, nb, acc);
    call->d_ptr->m_Recording    = callManager.getIsRecording(callId);
@@ -345,7 +345,7 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-   Account*      acc           = AccountModel::instance()->getById(account.toAscii());
+   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::INCOMING, callId, peerName, nb, acc);
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
@@ -365,7 +365,7 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-   Account*      acc           = AccountModel::instance()->getById(account.toAscii());
+   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::RINGING, callId, peerName, nb, acc);
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
@@ -395,7 +395,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1";
    time_t         startTimeStamp  = hc[ Call::HistoryMapFields::TIMESTAMP_START ].toUInt() ;
    time_t         stopTimeStamp   = hc[ Call::HistoryMapFields::TIMESTAMP_STOP  ].toUInt() ;
-   QByteArray accId               = hc[ Call::HistoryMapFields::ACCOUNT_ID      ].toAscii();
+   QByteArray accId               = hc[ Call::HistoryMapFields::ACCOUNT_ID      ].toLatin1();
 
    if (accId.isEmpty()) {
       qWarning() << "An history call has an invalid account identifier";
@@ -409,7 +409,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    Person* ct = nullptr;
    if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
-      ct = PersonModel::instance()->getPlaceHolder(contactUid.toAscii());
+      ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
 
    Account*      acc       = AccountModel::instance()->getById(accId);
    ContactMethod*  nb        = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);

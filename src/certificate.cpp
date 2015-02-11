@@ -225,19 +225,19 @@ DetailsCache::DetailsCache(const MapStringString& details)
    m_ExpirationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::EXPIRATION_DATE ],"yyyy-mm-dd");
    m_ActivationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::ACTIVATION_DATE ],"yyyy-mm-dd");
    m_RequirePrivateKeyPassword  = false;//TODO//details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD].toBool();
-   m_PublicSignature            = details[DRing::Certificate::DetailsNames::PUBLIC_SIGNATURE            ].toAscii();
+   m_PublicSignature            = details[DRing::Certificate::DetailsNames::PUBLIC_SIGNATURE            ].toLatin1();
    m_VersionNumber              = details[DRing::Certificate::DetailsNames::VERSION_NUMBER              ].toInt();
-   m_SerialNumber               = details[DRing::Certificate::DetailsNames::SERIAL_NUMBER               ].toAscii();
+   m_SerialNumber               = details[DRing::Certificate::DetailsNames::SERIAL_NUMBER               ].toLatin1();
    m_Issuer                     = details[DRing::Certificate::DetailsNames::ISSUER                      ];
-   m_SubjectKeyAlgorithm        = details[DRing::Certificate::DetailsNames::SUBJECT_KEY_ALGORITHM       ].toAscii();
+   m_SubjectKeyAlgorithm        = details[DRing::Certificate::DetailsNames::SUBJECT_KEY_ALGORITHM       ].toLatin1();
    m_Cn                         = details[DRing::Certificate::DetailsNames::CN                          ];
    m_N                          = details[DRing::Certificate::DetailsNames::N                           ];
    m_O                          = details[DRing::Certificate::DetailsNames::O                           ];
-   m_SignatureAlgorithm         = details[DRing::Certificate::DetailsNames::SIGNATURE_ALGORITHM         ].toAscii();
-   m_Md5Fingerprint             = details[DRing::Certificate::DetailsNames::MD5_FINGERPRINT             ].toAscii();
-   m_Sha1Fingerprint            = details[DRing::Certificate::DetailsNames::SHA1_FINGERPRINT            ].toAscii();
-   m_PublicKeyId                = details[DRing::Certificate::DetailsNames::PUBLIC_KEY_ID               ].toAscii();
-   m_IssuerDn                   = details[DRing::Certificate::DetailsNames::ISSUER_DN                   ].toAscii();
+   m_SignatureAlgorithm         = details[DRing::Certificate::DetailsNames::SIGNATURE_ALGORITHM         ].toLatin1();
+   m_Md5Fingerprint             = details[DRing::Certificate::DetailsNames::MD5_FINGERPRINT             ].toLatin1();
+   m_Sha1Fingerprint            = details[DRing::Certificate::DetailsNames::SHA1_FINGERPRINT            ].toLatin1();
+   m_PublicKeyId                = details[DRing::Certificate::DetailsNames::PUBLIC_KEY_ID               ].toLatin1();
+   m_IssuerDn                   = details[DRing::Certificate::DetailsNames::ISSUER_DN                   ].toLatin1();
    m_NextExpectedUpdateDate     = QDateTime::fromString(details[DRing::Certificate::DetailsNames::NEXT_EXPECTED_UPDATE_DATE ],"yyyy-mm-dd");
    m_OutgoingServer             = details[DRing::Certificate::DetailsNames::OUTGOING_SERVER             ] ;
 }

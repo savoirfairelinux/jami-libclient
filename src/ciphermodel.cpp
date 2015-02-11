@@ -52,7 +52,7 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent)
    if (!CipherModelPrivate::m_sIsLoaded) {
       const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers(Account::ProtocolName::IP2IP);
       foreach(const QString& c, cs)
-         m_slSupportedCiphers << c.toAscii();
+         m_slSupportedCiphers << c.toLatin1();
       m_sIsLoaded = true;
    }
 
@@ -72,7 +72,7 @@ void CipherModelPrivate::loadCiphers()
 {
    const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers("IP2IP");
    foreach(const QString& c, cs)
-      m_slSupportedCiphers << c.toAscii();
+      m_slSupportedCiphers << c.toLatin1();
    m_sIsLoaded = true;
 }
 

@@ -202,7 +202,7 @@ bool Video::Renderer::startShm()
       return false;
    }
 
-   d_ptr->fd = shm_open(d_ptr->m_ShmPath.toAscii(), O_RDWR, 0);
+   d_ptr->fd = shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
    if (d_ptr->fd < 0) {
       qDebug() << "could not open shm area " << d_ptr->m_ShmPath << ", shm_open failed:" << strerror(errno);
       return false;
