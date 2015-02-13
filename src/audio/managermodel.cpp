@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "managermodel.h"
 
+//Qt
+#include <QtCore/QItemSelectionModel>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "settings.h"
@@ -35,14 +38,19 @@ public:
 
    QStringList m_lDeviceList;
    QList<Audio::ManagerModel::Manager> m_lSupportedManagers;
+   mutable QItemSelectionModel* m_pSelectionModel;
 
 private:
    Audio::ManagerModel* q_ptr;
+
+public Q_SLOTS:
+   void slotSelectionChanged(const QModelIndex& idx);
 };
 
-ManagerModelPrivate::ManagerModelPrivate(Audio::ManagerModel* parent) : q_ptr(parent)
+ManagerModelPrivate::ManagerModelPrivate(Audio::ManagerModel* parent) : q_ptr(parent),
+   m_pSelectionModel(nullptr)
 {
-   
+
 }
 
 ///Constructor
@@ -123,62 +131,61 @@ bool Audio::ManagerModel::setData( const QModelIndex& index, const QVariant &val
 }
 
 /**
- * Return the current audio manager
- * @warning Changes to the current index model will invalid Input/Output/Ringtone devices models
+ * This model allow automatic synchronisation of the audio manager
  */
-QModelIndex Audio::ManagerModel::currentManagerIndex() const
+QItemSelectionModel* Audio::ManagerModel::selectionModel() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   const QString manager = configurationManager.getAudioManager();
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::ManagerModel*>(this));
+      connect(d_ptr->m_pSelectionModel,&QItemSelectionModel::currentChanged,d_ptr.data(),&ManagerModelPrivate::slotSelectionChanged);
+
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const QString manager = configurationManager.getAudioManager();
+
       if (manager == ManagerModelPrivate::ManagerName::PULSEAUDIO)
-         return index((int)Manager::PULSE,0);
+         d_ptr->m_pSelectionModel->setCurrentIndex( index((int)Manager::PULSE,0) , QItemSelectionModel::ClearAndSelect );
       else if (manager == ManagerModelPrivate::ManagerName::ALSA)
-         return index((int)Manager::ALSA,0);
+         d_ptr->m_pSelectionModel->setCurrentIndex( index((int)Manager::ALSA,0)  , QItemSelectionModel::ClearAndSelect );
       else if (manager == ManagerModelPrivate::ManagerName::JACK)
-         return index((int)Manager::JACK,0);
-      return QModelIndex();
+         d_ptr->m_pSelectionModel->setCurrentIndex( index((int)Manager::JACK,0)  , QItemSelectionModel::ClearAndSelect );
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
+void ManagerModelPrivate::slotSelectionChanged(const QModelIndex& idx)
+{
+   if (!idx.isValid())
+      return;
+
+   bool ret = true;
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   switch (m_lSupportedManagers[idx.row()]) {
+      case Audio::ManagerModel::Manager::PULSE:
+         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::PULSEAUDIO);
+         Audio::Settings::instance()->reload();
+         break;
+      case Audio::ManagerModel::Manager::ALSA:
+         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::ALSA);
+         Audio::Settings::instance()->reload();
+         break;
+      case Audio::ManagerModel::Manager::JACK:
+         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::JACK);
+         Audio::Settings::instance()->reload();
+         break;
+      case Audio::ManagerModel::Manager::ERROR:
+         break;
+   };
+   if (!ret) {
+      emit q_ptr->currentManagerChanged(q_ptr->currentManager());
+   }
+   return;
 }
 
 Audio::ManagerModel::Manager Audio::ManagerModel::currentManager() const
 {
-   return d_ptr->m_lSupportedManagers[currentManagerIndex().row()];
-}
-
-///Set current audio manager
-bool Audio::ManagerModel::setCurrentManager(const QModelIndex& idx)
-{
-   if (!idx.isValid())
-      return false;
-
-   bool ret = true;
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   switch (d_ptr->m_lSupportedManagers[idx.row()]) {
-      case Manager::PULSE:
-         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::PULSEAUDIO);
-         Audio::Settings::instance()->reload();
-         break;
-      case Manager::ALSA:
-         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::ALSA);
-         Audio::Settings::instance()->reload();
-         break;
-      case Manager::JACK:
-         ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::JACK);
-         Audio::Settings::instance()->reload();
-         break;
-   };
-   if (!ret) {
-      const QModelIndex& newIdx = currentManagerIndex();
-      emit currentManagerChanged(currentManager());
-      emit currentManagerChanged(newIdx);
-      emit currentManagerChanged(newIdx.row());
-   }
-   return ret;
-}
-
-///QCombobox -> QModelIndex shim
-bool Audio::ManagerModel::setCurrentManager(int idx)
-{
-   return setCurrentManager(index(idx,0));
+   const int idx = selectionModel()->currentIndex().row();
+   return idx>=0 ? d_ptr->m_lSupportedManagers[idx] : Manager::ERROR;
 }
 
 #include <managermodel.moc>

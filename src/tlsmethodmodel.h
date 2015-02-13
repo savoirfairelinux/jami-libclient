@@ -21,10 +21,15 @@
 #include "typedefs.h"
 #include <QtCore/QAbstractListModel>
 
+//Qt
+class QItemSelectionModel;
+
+//Ring
 class TlsMethodModelPrivate;
+class Account;
 
 /**Static model for handling encryption types
- * 
+ *
  * This model can be used as a bridge between the Daemon API name (strings)
  * and combobox indexes. It can also be used to translate "default" to the
  * user locales
@@ -44,24 +49,8 @@ public:
       SSLv23  = 3,
    };
 
-   class Name {
-   public:
-                static const char* DEFAULT            ;
-      constexpr static const char* TLSv1   = "TLSv1"  ;
-      constexpr static const char* SSLv3   = "SSLv3"  ;
-      constexpr static const char* SSLv23  = "SSLv23" ;
-   };
-
-   class DaemonName {
-   public:
-      constexpr static const char* DEFAULT = "Default";
-      constexpr static const char* TLSv1   = "TLSv1"  ;
-      constexpr static const char* SSLv3   = "SSLv3"  ;
-      constexpr static const char* SSLv23  = "SSLv23" ;
-   };
-
    //Private constructor, can only be called by 'Account'
-   explicit TlsMethodModel();
+   explicit TlsMethodModel(Account* a);
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -71,16 +60,10 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QModelIndex toIndex (TlsMethodModel::Type type);
-   static const char* toDaemonName(TlsMethodModel::Type type);
-   static TlsMethodModel::Type fromDaemonName(const QString& name);
-
-   //Singleton
-   static TlsMethodModel* instance();
+   QModelIndex toIndex (TlsMethodModel::Type type) const;
+   QItemSelectionModel* selectionModel() const;
 
 private:
-   static TlsMethodModel* m_spInstance;
-
    TlsMethodModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(TlsMethodModel);
 

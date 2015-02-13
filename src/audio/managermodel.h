@@ -22,6 +22,7 @@
 
 //Qt
 #include <QtCore/QStringList>
+class QItemSelectionModel;
 
 //Ring
 #include "../typedefs.h"
@@ -38,6 +39,7 @@ public:
       ALSA =0,
       PULSE=1,
       JACK =2,
+      ERROR=3,
    };
    explicit ManagerModel(const QObject* parent);
    virtual ~ManagerModel();
@@ -50,19 +52,11 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QModelIndex currentManagerIndex() const;
-   Manager     currentManager() const;
-
-   //Setters
-   bool setCurrentManager(const QModelIndex& index);
-
-public Q_SLOTS:
-   bool setCurrentManager(int idx);
+   QItemSelectionModel* selectionModel() const;
+   Manager              currentManager() const;
 
 Q_SIGNALS:
    void currentManagerChanged(Manager);
-   void currentManagerChanged(int);
-   void currentManagerChanged(const QModelIndex&);
 
 private:
    QScopedPointer<ManagerModelPrivate> d_ptr;

@@ -33,7 +33,7 @@ class QString;
 #include "typedefs.h"
 class CredentialModel        ;
 class RingToneModel          ;
-class ContactMethod            ;
+class ContactMethod          ;
 class SecurityValidationModel;
 class Certificate            ;
 class CipherModel            ;
@@ -64,6 +64,7 @@ class LIB_EXPORT Account : public QObject {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
+   //The account class delegate all properties part of "sets" to children models
    friend class AccountModel;
    friend class AccountModelPrivate;
    friend class AccountPlaceHolder;
@@ -71,6 +72,8 @@ class LIB_EXPORT Account : public QObject {
    friend class CipherModel;
    friend class AccountStatusModelPrivate;
    friend class AccountStatusModel;
+   friend class TlsMethodModelPrivate;
+   friend class TlsMethodModel;
 
    //Properties
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
@@ -89,7 +92,6 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        localInterface               READ localInterface                WRITE setLocalInterface              )
    Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
    Q_PROPERTY(QString        lastErrorMessage             READ lastErrorMessage              WRITE setLastErrorMessage            )
-   Q_PROPERTY(TlsMethodModel::Type tlsMethod              READ tlsMethod                     WRITE setTlsMethod                   )
    Q_PROPERTY(KeyExchangeModel::Type keyExchange          READ keyExchange                   WRITE setKeyExchange                 )
    Q_PROPERTY(int            lastErrorCode                READ lastErrorCode                 WRITE setLastErrorCode               )
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
@@ -182,7 +184,6 @@ class LIB_EXPORT Account : public QObject {
          PublishedAddress            = 114,
          LocalInterface              = 115,
          RingtonePath                = 116,
-         TlsMethod                   = 117,
          KeyExchange                 = 190,
          RegistrationExpire          = 118,
          TlsNegotiationTimeoutSec    = 119,
@@ -251,6 +252,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE CipherModel*             cipherModel            () const;
       Q_INVOKABLE AccountStatusModel*      statusModel            () const;
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
+      Q_INVOKABLE TlsMethodModel*          tlsMethodModel         () const;
 
       //Getters
       QString hostname                     () const;
@@ -306,7 +308,6 @@ class LIB_EXPORT Account : public QObject {
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
       Account::Protocol      protocol      () const;
-      TlsMethodModel::Type   tlsMethod     () const;
       KeyExchangeModel::Type keyExchange   () const;
       QVariant roleData            (int role) const;
 
@@ -329,7 +330,6 @@ class LIB_EXPORT Account : public QObject {
       void setLocalInterface                (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
       void setLastErrorMessage              (const QString& message );
-      void setTlsMethod                     (TlsMethodModel::Type   detail);
       void setKeyExchange                   (KeyExchangeModel::Type detail);
       void setLastErrorCode                 (int  code  );
       void setVoiceMailCount                (int  count );

@@ -68,8 +68,9 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pAudioCodecs(nullptr),
 m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
-m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pCaCert(nullptr),m_pTlsCert(nullptr),
-m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),m_pStatusModel(nullptr),m_LastTransportCode(0)
+m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
+m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
+m_pStatusModel(nullptr),m_LastTransportCode(0)
 {
    Q_Q(Account);
 }
@@ -378,6 +379,14 @@ SecurityValidationModel* Account::securityValidationModel() const
    return d_ptr->m_pSecurityValidationModel;
 }
 
+TlsMethodModel* Account::tlsMethodModel() const
+{
+   if (!d_ptr->m_pTlsMethodModel ) {
+      d_ptr->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
+   }
+   return d_ptr->m_pTlsMethodModel;
+}
+
 void Account::setAlias(const QString& detail)
 {
    const bool accChanged = detail != alias();
@@ -594,13 +603,6 @@ bool Account::isTlsEnabled() const
    return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
 }
 
-///Return the account the TLS encryption method
-TlsMethodModel::Type Account::tlsMethod() const
-{
-   const QString value = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
-   return TlsMethodModel::fromDaemonName(value);
-}
-
 ///Return the key exchange mechanism
 KeyExchangeModel::Type Account::keyExchange() const
 {
@@ -788,8 +790,6 @@ QVariant Account::roleData(int role) const
          return localInterface();
       case Account::Role::RingtonePath:
          return ringtonePath();
-      case Account::Role::TlsMethod:
-         return static_cast<int>(tlsMethod());
       case Account::Role::RegistrationExpire:
          return registrationExpire();
       case Account::Role::TlsNegotiationTimeoutSec:
@@ -1026,12 +1026,6 @@ void Account::setLastErrorMessage(const QString& message)
 void Account::setLastErrorCode(int code)
 {
    d_ptr->m_LastErrorCode = code;
-}
-
-///Set the Tls method
-void Account::setTlsMethod(TlsMethodModel::Type detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD ,TlsMethodModel::toDaemonName(detail));
 }
 
 ///Set the Tls method
@@ -1289,11 +1283,6 @@ void Account::setRoleData(int role, const QVariant& value)
       case Account::Role::RingtonePath:
          setRingtonePath(value.toString());
          break;
-      case Account::Role::TlsMethod: {
-         const int method = value.toInt();
-         setTlsMethod(method<=TlsMethodModel::instance()->rowCount()?static_cast<TlsMethodModel::Type>(method):TlsMethodModel::Type::DEFAULT);
-         break;
-      }
       case Account::Role::KeyExchange: {
          const int method = value.toInt();
          setKeyExchange(method<=keyExchangeModel()->rowCount()?static_cast<KeyExchangeModel::Type>(method):KeyExchangeModel::Type::NONE);

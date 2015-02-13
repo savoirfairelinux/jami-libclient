@@ -769,12 +769,14 @@ Call::LegacyHistoryState Call::historyState() const
 bool Call::isSecure() const
 {
 
-   if (!d_ptr->m_Account) {
+   /*if (!d_ptr->m_Account) {
       qDebug() << "Account not set, can't check security";
       return false;
    }
    //BUG this doesn't work
-   return d_ptr->m_Account && ((d_ptr->m_Account->isTlsEnabled()) || (d_ptr->m_Account->tlsMethod() != TlsMethodModel::Type::DEFAULT));
+   return d_ptr->m_Account && ((d_ptr->m_Account->isTlsEnabled()) || (d_ptr->m_Account->tlsMethod() != TlsMethodModel::Type::DEFAULT));*/
+
+   return false; //No, it is not and cannot be
 } //isSecure
 
 ///Return the renderer associated with this call or nullptr

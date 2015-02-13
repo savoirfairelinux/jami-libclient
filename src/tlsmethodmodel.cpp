@@ -17,19 +17,58 @@
  ***************************************************************************/
 #include "tlsmethodmodel.h"
 
+//Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QItemSelectionModel>
 
-TlsMethodModel* TlsMethodModel::m_spInstance = nullptr;
+//Ring daemon
+#include <account_const.h>
 
-const char* TlsMethodModel::Name::DEFAULT = qPrintable(tr("Default", "Default TLS protocol version"));
+//Ring
+#include <account.h>
+#include <private/account_p.h>
 
 class TlsMethodModelPrivate : public QObject {
    Q_OBJECT
 public:
+
+   TlsMethodModelPrivate(Account* a);
+
+   class Name {
+   public:
+      static const QString         DEFAULT            ;
+      constexpr static const char* TLSv1   = "TLSv1"  ;
+      constexpr static const char* SSLv3   = "SSLv3"  ;
+      constexpr static const char* SSLv23  = "SSLv23" ;
+   };
+
+   class DaemonName {
+   public:
+      constexpr static const char* DEFAULT = "Default";
+      constexpr static const char* TLSv1   = "TLSv1"  ;
+      constexpr static const char* SSLv3   = "SSLv3"  ;
+      constexpr static const char* SSLv23  = "SSLv23" ;
+   };
+
+   static const char* toDaemonName(TlsMethodModel::Type type);
+   static TlsMethodModel::Type fromDaemonName(const QString& name);
+
+   mutable QItemSelectionModel* m_pSelectionModel;
+   Account* m_pAccount;
+
+public Q_SLOTS:
+   void slotSelectionChanged(const QModelIndex& idx);
 };
 
-TlsMethodModel::TlsMethodModel() : QAbstractListModel(QCoreApplication::instance()),
-d_ptr(new TlsMethodModelPrivate())
+const QString TlsMethodModelPrivate::Name::DEFAULT = tr("Default", "Default TLS protocol version");
+
+TlsMethodModelPrivate::TlsMethodModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a)
+{
+
+}
+
+TlsMethodModel::TlsMethodModel(Account* a) : QAbstractListModel(QCoreApplication::instance()),
+d_ptr(new TlsMethodModelPrivate(a))
 {
 
 }
@@ -53,13 +92,13 @@ QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
    if (role == Qt::DisplayRole) {
       switch (method) {
          case TlsMethodModel::Type::DEFAULT:
-            return TlsMethodModel::Name::DEFAULT;
+            return TlsMethodModelPrivate::Name::DEFAULT;
          case TlsMethodModel::Type::TLSv1:
-            return TlsMethodModel::Name::TLSv1;
+            return TlsMethodModelPrivate::Name::TLSv1;
          case TlsMethodModel::Type::SSLv3:
-            return TlsMethodModel::Name::SSLv3;
+            return TlsMethodModelPrivate::Name::SSLv3;
          case TlsMethodModel::Type::SSLv23:
-            return TlsMethodModel::Name::SSLv23;
+            return TlsMethodModelPrivate::Name::SSLv23;
       };
    }
    return QVariant();
@@ -84,45 +123,61 @@ bool TlsMethodModel::setData( const QModelIndex& index, const QVariant &value, i
    return false;
 }
 
-TlsMethodModel* TlsMethodModel::instance()
-{
-   if (!m_spInstance)
-      m_spInstance = new TlsMethodModel();
-   return m_spInstance;
-}
-
 ///Translate enum type to QModelIndex
-QModelIndex TlsMethodModel::toIndex(TlsMethodModel::Type type)
+QModelIndex TlsMethodModel::toIndex(TlsMethodModel::Type type) const
 {
    return index(static_cast<int>(type),0,QModelIndex());
 }
 
+QItemSelectionModel* TlsMethodModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<TlsMethodModel*>(this));
+      const QString value = d_ptr->m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
+      const QModelIndex& idx = toIndex(TlsMethodModelPrivate::fromDaemonName(value));
+      d_ptr->m_pSelectionModel->setCurrentIndex(idx,QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel,&QItemSelectionModel::currentChanged,d_ptr,&TlsMethodModelPrivate::slotSelectionChanged);
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
+void TlsMethodModelPrivate::slotSelectionChanged(const QModelIndex& idx)
+{
+   if (!idx.isValid())
+      return;
+
+   const char* value = toDaemonName(static_cast<TlsMethodModel::Type>(idx.row()));
+   m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD , value);
+}
+
 ///Convert a TlsMethodModel::Type enum to the string expected by the daemon API
-const char* TlsMethodModel::toDaemonName(TlsMethodModel::Type type)
+const char* TlsMethodModelPrivate::toDaemonName(TlsMethodModel::Type type)
 {
    switch (type) {
       case TlsMethodModel::Type::DEFAULT:
-         return TlsMethodModel::DaemonName::DEFAULT;
+         return TlsMethodModelPrivate::DaemonName::DEFAULT;
       case TlsMethodModel::Type::TLSv1:
-         return TlsMethodModel::DaemonName::TLSv1;
+         return TlsMethodModelPrivate::DaemonName::TLSv1;
       case TlsMethodModel::Type::SSLv3:
-         return TlsMethodModel::DaemonName::SSLv3;
+         return TlsMethodModelPrivate::DaemonName::SSLv3;
       case TlsMethodModel::Type::SSLv23:
-         return TlsMethodModel::DaemonName::SSLv23;
+         return TlsMethodModelPrivate::DaemonName::SSLv23;
    };
-   return TlsMethodModel::DaemonName::DEFAULT;
+   return TlsMethodModelPrivate::DaemonName::DEFAULT;
 }
 
 ///Convert a Daemon API string to a TlsMethodModel::Type enum
-TlsMethodModel::Type TlsMethodModel::fromDaemonName(const QString& name)
+TlsMethodModel::Type TlsMethodModelPrivate::fromDaemonName(const QString& name)
 {
-   if (name.isEmpty() || name == TlsMethodModel::DaemonName::DEFAULT)
+   if (name.isEmpty() || name == TlsMethodModelPrivate::DaemonName::DEFAULT)
       return TlsMethodModel::Type::DEFAULT;
-   else if (name == TlsMethodModel::DaemonName::TLSv1)
+   else if (name == TlsMethodModelPrivate::DaemonName::TLSv1)
       return TlsMethodModel::Type::TLSv1;
-   else if (name == TlsMethodModel::DaemonName::SSLv3)
+   else if (name == TlsMethodModelPrivate::DaemonName::SSLv3)
       return TlsMethodModel::Type::SSLv3;
-   else if (name == TlsMethodModel::DaemonName::SSLv23)
+   else if (name == TlsMethodModelPrivate::DaemonName::SSLv23)
       return TlsMethodModel::Type::SSLv23;
    qDebug() << "Unknown TLS method" << name;
    return TlsMethodModel::Type::DEFAULT;

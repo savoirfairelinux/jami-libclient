@@ -26,6 +26,7 @@ class AccountPrivate;
 class ContactMethod;
 class CipherModel;
 class AccountStatusModel;
+class TlsMethodModel;
 
 typedef void (AccountPrivate::*account_function)();
 
@@ -48,6 +49,8 @@ public:
    friend class CipherModel;
    friend class AccountStatusModelPrivate;
    friend class AccountStatusModel;
+   friend class TlsMethodModelPrivate;
+   friend class TlsMethodModel;
 
    //Constructor
    AccountPrivate(Account* acc);
@@ -98,6 +101,7 @@ public:
    CipherModel*              m_pCipherModel     ;
    AccountStatusModel*       m_pStatusModel     ;
    SecurityValidationModel*  m_pSecurityValidationModel;
+   TlsMethodModel*           m_pTlsMethodModel  ;
    Account::EditState m_CurrentState;
 
    // State machines

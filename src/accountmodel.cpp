@@ -94,7 +94,7 @@ void AccountModelPrivate::init()
    connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
       SLOT(slotVoiceMailNotify(QString,int))  );
    connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
-      SLOT(slotVolatileAccountDetailsChange(QString,int)));
+      SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
 
 }
 
@@ -130,7 +130,6 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(Account::Role::PublishedAddress         ,QByteArray("publishedAddress"              ));
       roles.insert(Account::Role::LocalInterface           ,QByteArray("localInterface"                ));
       roles.insert(Account::Role::RingtonePath             ,QByteArray("ringtonePath"                  ));
-      roles.insert(Account::Role::TlsMethod                ,QByteArray("tlsMethod"                     ));
       roles.insert(Account::Role::RegistrationExpire       ,QByteArray("registrationExpire"            ));
       roles.insert(Account::Role::TlsNegotiationTimeoutSec ,QByteArray("tlsNegotiationTimeoutSec"      ));
       roles.insert(Account::Role::TlsNegotiationTimeoutMsec,QByteArray("tlsNegotiationTimeoutMsec"     ));
