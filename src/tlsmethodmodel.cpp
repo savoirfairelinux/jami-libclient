@@ -133,7 +133,7 @@ QItemSelectionModel* TlsMethodModel::selectionModel() const
 {
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<TlsMethodModel*>(this));
-      const QString value = d_ptr->m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
+      const QString value    = d_ptr->m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
       const QModelIndex& idx = toIndex(TlsMethodModelPrivate::fromDaemonName(value));
       d_ptr->m_pSelectionModel->setCurrentIndex(idx,QItemSelectionModel::ClearAndSelect);
 

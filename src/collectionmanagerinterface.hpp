@@ -20,14 +20,17 @@ template <class T>
 class CollectionManagerInterfacePrivate
 {
 public:
-   CollectionManagerInterfacePrivate(CollectionManagerInterface<T>* p) : m_pMediator(nullptr),q_ptr(p)
+   ///All manager should be QAbstractItemModel, this wont compile (on purpose) if the aren't
+   CollectionManagerInterfacePrivate(QAbstractItemModel* p2, CollectionManagerInterface<T>* p) :
+   m_pMediator(nullptr),q_ptr(p2),i_ptr(p)
    {}
    ~CollectionManagerInterfacePrivate();
 
    QVector< CollectionInterface* > m_lBackends;
    QVector< CollectionInterface* > m_lEnabledBackends;
    mutable CollectionMediator<T>*  m_pMediator;
-   CollectionManagerInterface<T>*      q_ptr;
+   QAbstractItemModel*             q_ptr;
+   CollectionManagerInterface<T>*  i_ptr;
 
    CollectionMediator<T>* itemMediator() const;
 };
@@ -36,7 +39,7 @@ template<class T>
 CollectionMediator<T>* CollectionManagerInterfacePrivate<T>::itemMediator() const
 {
    if (!m_pMediator) {
-      m_pMediator = new CollectionMediator<T>(q_ptr,nullptr);
+      m_pMediator = new CollectionMediator<T>(i_ptr,q_ptr);
    }
    return m_pMediator;
 }
@@ -71,7 +74,7 @@ T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions opti
 }
 
 template<class T>
-CollectionManagerInterface<T>::CollectionManagerInterface() : d_ptr(new CollectionManagerInterfacePrivate<T>(this))
+CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* self) : d_ptr(new CollectionManagerInterfacePrivate<T>(self,this))
 {
 
 }

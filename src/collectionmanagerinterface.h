@@ -31,6 +31,7 @@
 #include <collectionmediator.h>
 
 class CommonCollectionModel;
+class QAbstractItemModel;
 
 enum LoadOptions {
    NONE           = 0x0     ,
@@ -68,7 +69,15 @@ template <class T> class LIB_EXPORT CollectionManagerInterface {
    friend class CollectionMediator<T>;
 
 public:
-   CollectionManagerInterface();
+   /**
+    * Extend a QAbstractItemModel to have the collection management interface.
+    * This will add the addBackend and a few other methods.
+    *
+    * This interface need to be used on a QAbstractItemModel derived class
+    *
+    * @param in self: "this"
+    */
+   explicit CollectionManagerInterface(QAbstractItemModel* self);
    virtual ~CollectionManagerInterface() {};
 
    /**

@@ -139,7 +139,8 @@ QObject* BookmarkTopLevelItem::getSelf() const
    return nullptr;
 }
 
-BookmarkModel::BookmarkModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new BookmarkModelPrivate(this))
+BookmarkModel::BookmarkModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<ContactMethod>(this),
+d_ptr(new BookmarkModelPrivate(this))
 {
    setObjectName("BookmarkModel");
    reloadCategories();

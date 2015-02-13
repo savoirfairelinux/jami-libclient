@@ -67,7 +67,8 @@ m_pBackendModel(nullptr)
 }
 
 ///Constructor
-PersonModel::PersonModel(QObject* par) : QAbstractItemModel(par?par:QCoreApplication::instance()), d_ptr(new PersonModelPrivate(this))
+PersonModel::PersonModel(QObject* par) : QAbstractItemModel(par?par:QCoreApplication::instance()), CollectionManagerInterface<Person>(this),
+d_ptr(new PersonModelPrivate(this))
 {
 }
 

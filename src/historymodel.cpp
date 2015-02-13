@@ -187,7 +187,8 @@ m_Role(Call::Role::FuzzyDate)
 }
 
 ///Constructor
-HistoryModel::HistoryModel():QAbstractItemModel(QCoreApplication::instance()),d_ptr(new HistoryModelPrivate(this))
+HistoryModel::HistoryModel():QAbstractItemModel(QCoreApplication::instance()),CollectionManagerInterface<Call>(this),
+d_ptr(new HistoryModelPrivate(this))
 {
    m_spInstance  = this;
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER << RingMimes::HISTORYID;
