@@ -34,8 +34,12 @@ InstanceInterface& DBus::InstanceManager::instance()
    if(!interface->connection().isConnected()) {
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
    }
-   QDBusPendingReply<QString> reply = interface->Register(getpid(), "Ring KDE Client");
-   reply.waitForFinished();
+   static bool registred = false;
+   if (!registred) {
+      QDBusPendingReply<QString> reply = interface->Register(getpid(), "");
+      registred = true;
+      reply.waitForFinished();
+   }
 #endif
    return *interface;
 }
