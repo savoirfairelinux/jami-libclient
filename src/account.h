@@ -127,7 +127,7 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
    Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
-
+   Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
 
    public:
       ///@enum EditState: Manage how and when an account can be reloaded or change state
@@ -151,24 +151,16 @@ class LIB_EXPORT Account : public QObject {
          CANCEL  = 6
       };
 
-      class State {
-      public:
-         constexpr static const char* REGISTERED                = "REGISTERED"             ;
-         constexpr static const char* READY                     = "READY"                  ;
-         constexpr static const char* UNREGISTERED              = "UNREGISTERED"           ;
-         constexpr static const char* TRYING                    = "TRYING"                 ;
-         constexpr static const char* ERROR                     = "ERROR"                  ;
-         constexpr static const char* ERROR_AUTH                = "ERRORAUTH"              ;
-         constexpr static const char* ERROR_NETWORK             = "ERRORNETWORK"           ;
-         constexpr static const char* ERROR_HOST                = "ERRORHOST"              ;
-         constexpr static const char* ERROR_CONF_STUN           = "ERROR_CONF_STUN"        ;
-         constexpr static const char* ERROR_EXIST_STUN          = "ERROREXISTSTUN"         ;
-         constexpr static const char* ERROR_SERVICE_UNAVAILABLE = "ERRORSERVICEUNAVAILABLE";
-         constexpr static const char* ERROR_NOT_ACCEPTABLE      = "ERRORNOTACCEPTABLE"     ;
-         constexpr static const char* REQUEST_TIMEOUT           = "Request Timeout"        ;
+      ///@enum RegistrationState The account state from a client point of view
+      enum class RegistrationState {
+         READY        = 0,
+         UNREGISTERED = 1,
+         TRYING       = 2,
+         ERROR        = 3,
       };
+      Q_ENUMS(RegistrationState)
 
-      enum Role {
+      enum class Role {
          Alias                       = 100,
          Proto                       = 101,
          Hostname                    = 102,
@@ -211,6 +203,7 @@ class LIB_EXPORT Account : public QObject {
          TypeName                    = 141,
          PresenceStatus              = 142,
          PresenceMessage             = 143,
+         RegistrationState           = 144,
       };
 
       class ProtocolName {
@@ -231,14 +224,13 @@ class LIB_EXPORT Account : public QObject {
        * @return If the state changed
        */
       bool performAction(Account::EditAction action);
-      Account::EditState state() const;
+      Account::EditState editState() const;
 
       //Getters
       bool             isNew           () const;
       const QByteArray id              () const;
       const QString    toHumanStateName() const;
       const QString    alias           () const;
-      bool             isRegistered    () const;
       QModelIndex      index           () const;
       QString          stateColorName  () const;
       QVariant         stateColor      () const;
@@ -292,7 +284,6 @@ class LIB_EXPORT Account : public QObject {
       int     localPort                    () const;
       int     voiceMailCount               () const;
       QString localInterface               () const;
-      QString registrationStatus           () const;
       DtmfType DTMFType                    () const;
       bool    presenceStatus               () const;
       QString presenceMessage              () const;
@@ -307,6 +298,7 @@ class LIB_EXPORT Account : public QObject {
       int     lastTransportErrorCode       () const;
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
+      RegistrationState  registrationState () const;
       Account::Protocol      protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
       QVariant roleData            (int role) const;
@@ -386,7 +378,7 @@ class LIB_EXPORT Account : public QObject {
 
    Q_SIGNALS:
       ///The account state (Invalid,Trying,Registered) changed
-      void stateChanged(QString state);
+      void stateChanged(Account::RegistrationState state);
       ///One of the account property changed
       //TODO Qt5 drop the account parameter
       void propertyChanged(Account* a, const QString& name, const QString& newVal, const QString& oldVal);
@@ -399,6 +391,7 @@ class LIB_EXPORT Account : public QObject {
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
+Q_DECLARE_METATYPE(Account::RegistrationState)
 
 /**
  * Some accounts can be loaded at later time. This object will be upgraded

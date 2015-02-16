@@ -37,28 +37,28 @@ class LIB_EXPORT AccountModel : public QAbstractListModel {
    #pragma GCC diagnostic pop
 
 public:
-   Q_PROPERTY(Account* ip2ip READ ip2ip)
-   Q_PROPERTY(bool presenceEnabled   READ isPresenceEnabled   )
-   Q_PROPERTY(bool presencePublishSupported READ isPresencePublishSupported )
-   Q_PROPERTY(bool presenceSubscribeSupported READ isPresenceSubscribeSupported )
+   Q_PROPERTY(Account* ip2ip                      READ ip2ip                        )
+   Q_PROPERTY(bool     presenceEnabled            READ isPresenceEnabled            )
+   Q_PROPERTY(bool     presencePublishSupported   READ isPresencePublishSupported   )
+   Q_PROPERTY(bool     presenceSubscribeSupported READ isPresenceSubscribeSupported )
 
    friend class Account;
    friend class AccountPrivate;
+   friend class AvailableAccountModel;
+   friend class AvailableAccountModelPrivate;
 
    //Static getter and destructor
    static AccountModel* instance();
-   static void destroy();
 
    //Getters
-   Q_INVOKABLE Account*        getById                     ( const QByteArray& id, bool ph = false) const;
-   int                         size                        (                                      ) const;
-   static Account*             currentAccount              (                                      )      ;
-   Account*                    getAccountByModelIndex      ( const QModelIndex& item              ) const;
-   static QString              getSimilarAliasIndex        ( const QString& alias                 )      ;
-   Account*                    ip2ip                       (                                      ) const;
-   bool                        isPresenceEnabled           (                                      ) const;
-   bool                        isPresencePublishSupported  (                                      ) const;
-   bool                        isPresenceSubscribeSupported(                                      ) const;
+   Q_INVOKABLE Account* getById                     ( const QByteArray& id, bool ph = false) const;
+   int                  size                        (                                      ) const;
+   Account*             getAccountByModelIndex      ( const QModelIndex& item              ) const;
+   static QString       getSimilarAliasIndex        ( const QString& alias                 )      ;
+   Account*             ip2ip                       (                                      ) const;
+   bool                 isPresenceEnabled           (                                      ) const;
+   bool                 isPresencePublishSupported  (                                      ) const;
+   bool                 isPresenceSubscribeSupported(                                      ) const;
 
    //Abstract model accessors
    virtual QVariant              data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -67,17 +67,14 @@ public:
    virtual bool                  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
 
-   //Setters
-   void setPriorAccount ( const Account* );
-
    //Mutators
-   Q_INVOKABLE Account* add                 ( const QString& alias     );
-   Q_INVOKABLE void     remove              ( Account* account         );
-   void                 remove              ( const QModelIndex& index );
-   void                 save                (                          );
-   Q_INVOKABLE bool     moveUp              ( const QModelIndex& idx   );
-   Q_INVOKABLE bool     moveDown            ( const QModelIndex& idx   );
-   Q_INVOKABLE void     cancel              (                          );
+   Q_INVOKABLE Account* add      ( const QString& alias     );
+   Q_INVOKABLE void     remove   ( Account* account         );
+   void                 remove   ( const QModelIndex& index );
+   void                 save     (                          );
+   Q_INVOKABLE bool     moveUp   ( const QModelIndex& idx   );
+   Q_INVOKABLE bool     moveDown ( const QModelIndex& idx   );
+   Q_INVOKABLE void     cancel   (                          );
 
    //Operators
    Account*       operator[] (int               i)      ;
@@ -86,15 +83,11 @@ public:
 
 private:
    //Constructors & Destructors
-   explicit AccountModel();
-   ~AccountModel();
+   explicit AccountModel ();
+   virtual  ~AccountModel();
 
    //Helpers
    void add(Account* acc);
-
-   //Attributes
-   static AccountModel* m_spAccountList  ;
-   static Account*      m_spPriorAccount ;
 
    AccountModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountModel)
@@ -108,14 +101,10 @@ public Q_SLOTS:
 Q_SIGNALS:
    ///The account list changed
    void accountListUpdated(                                          );
-   ///Emitted when an account state change
-   void accountStateChanged  ( Account* account, const QString& state);
    ///Emitted when an account enable attribute change
    void accountEnabledChanged( Account* source                       );
    ///Emitted when the default account change
    void defaultAccountChanged( Account* a                            );
-   ///Emitted when the default account change
-   void priorAccountChanged  ( Account* a                            );
    ///Emitted when one account registration state change
    void registrationChanged(Account* a, bool registration            );
    ///Emitted when the network is down
@@ -124,17 +113,11 @@ Q_SIGNALS:
    void voiceMailNotify(Account* account, int count                  );
    ///Propagate Account::presenceEnabledChanged
    void presenceEnabledChanged(bool isPresent                        );
+   ///An account has been removed
+   void accountRemoved(Account* account                              );
+   ///Emitted when an account state change
+   void accountStateChanged  ( Account* account, const Account::RegistrationState state);
 };
 Q_DECLARE_METATYPE(AccountModel*)
-
-//TODO Qt5 use QAbstractItemProxyModel
-class LIB_EXPORT AccountListNoCheckProxyModel : public QAbstractListModel
-{
-public:
-   virtual QVariant      data    (const QModelIndex& index,int role = Qt::DisplayRole       ) const override;
-   virtual bool          setData (const QModelIndex& index, const QVariant &value, int role )       override;
-   virtual Qt::ItemFlags flags   (const QModelIndex& index                                  ) const override;
-   virtual int           rowCount(const QModelIndex& parent = QModelIndex()                 ) const override;
-};
 
 #endif

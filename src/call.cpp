@@ -36,6 +36,7 @@
 #include "uri.h"
 #include "account.h"
 #include "accountmodel.h"
+#include "availableaccountmodel.h"
 #include "video/manager.h"
 #include "historymodel.h"
 #include "instantmessagingmodel.h"
@@ -1228,7 +1229,7 @@ void CallPrivate::call()
    qDebug() << "account = " << m_Account;
    if(!m_Account) {
       qDebug() << "Account is not set, taking the first registered.";
-      this->m_Account = AccountModel::currentAccount();
+      m_Account = AvailableAccountModel::currentDefaultAccount();
    }
    //Calls to empty URI should not be allowed, dring will go crazy
    if ((!m_pDialNumber) || m_pDialNumber->uri().isEmpty()) {

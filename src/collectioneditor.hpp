@@ -16,8 +16,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
+//Qt
 #include <QtCore/QMetaObject>
 
+//Ring
+#include <collectionmediator.h>
 
 template<typename T>
 CollectionEditor<T>::CollectionEditor(CollectionMediator<T>* m) : CollectionEditorBase(m->model()), m_pMediator(m)

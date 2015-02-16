@@ -70,7 +70,7 @@ m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
-m_pStatusModel(nullptr),m_LastTransportCode(0)
+m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED)
 {
    Q_Q(Account);
 }
@@ -219,29 +219,29 @@ const QString Account::toHumanStateName() const
    static const QString invalid                = tr("Invalid"                  );
    static const QString requestTimeout         = tr("Request Timeout"          );
 
-   if(s == Account::State::REGISTERED       )
+   if(s == DRing::Account::States::REGISTERED       )
       return registered             ;
-   if(s == Account::State::UNREGISTERED     )
+   if(s == DRing::Account::States::UNREGISTERED     )
       return notRegistered          ;
-   if(s == Account::State::TRYING           )
+   if(s == DRing::Account::States::TRYING           )
       return trying                 ;
-   if(s == Account::State::ERROR            )
+   if(s == DRing::Account::States::ERROR            )
       return d_ptr->m_LastErrorMessage.isEmpty()?error:d_ptr->m_LastErrorMessage;
-   if(s == Account::State::ERROR_AUTH       )
+   if(s == DRing::Account::States::ERROR_AUTH       )
       return authenticationFailed   ;
-   if(s == Account::State::ERROR_NETWORK    )
+   if(s == DRing::Account::States::ERROR_NETWORK    )
       return networkUnreachable     ;
-   if(s == Account::State::ERROR_HOST       )
+   if(s == DRing::Account::States::ERROR_HOST       )
       return hostUnreachable        ;
-   if(s == Account::State::ERROR_CONF_STUN  )
+   if(s == DRing::Account::States::ERROR_CONF_STUN  )
       return stunConfigurationError ;
-   if(s == Account::State::ERROR_EXIST_STUN )
+   if(s == DRing::Account::States::ERROR_EXIST_STUN )
       return stunServerInvalid      ;
-   if(s == Account::State::ERROR_SERVICE_UNAVAILABLE )
+   if(s == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE )
       return serviceUnavailable     ;
-   if(s == Account::State::ERROR_NOT_ACCEPTABLE      )
+   if(s == DRing::Account::States::ERROR_NOT_ACCEPTABLE      )
       return notAcceptable          ;
-   if(s == Account::State::REQUEST_TIMEOUT           )
+   if(s == DRing::Account::States::REQUEST_TIMEOUT           )
       return requestTimeout         ;
    return invalid                   ;
 }
@@ -259,8 +259,9 @@ const QString AccountPrivate::accountDetail(const QString& param) const
    else if (m_hAccountDetails.count() > 0) {
       if (param == DRing::Account::ConfProperties::ENABLED) //If an account is invalid, at least does not try to register it
          return AccountPrivate::RegistrationEnabled::NO;
-      if (param == DRing::Account::ConfProperties::Registration::STATUS) //If an account is new, then it is unregistered
-         return Account::State::UNREGISTERED;
+      if (param == DRing::Account::ConfProperties::Registration::STATUS) { //If an account is new, then it is unregistered
+         return DRing::Account::States::UNREGISTERED;
+      }
       if (q_ptr->protocol() != Account::Protocol::IAX) //IAX accounts lack some fields, be quiet
          qDebug() << "Account parameter \"" << param << "\" not found";
       return QString();
@@ -277,15 +278,10 @@ const QString Account::alias() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ALIAS);
 }
 
-///Is this account registered
-bool Account::isRegistered() const
-{
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS) == Account::State::REGISTERED);
-}
-
 ///Return the model index of this item
 QModelIndex Account::index() const
 {
+   //There is usually < 5 accounts, the loop may be faster than a hash for most users
    for (int i=0;i < AccountModel::instance()->size();i++) {
       if (this == (*AccountModel::instance())[i]) {
          return AccountModel::instance()->index(i,0);
@@ -297,11 +293,17 @@ QModelIndex Account::index() const
 ///Return status color name
 QString Account::stateColorName() const
 {
-   if(registrationStatus() == Account::State::UNREGISTERED)
-      return "black";
-   if(registrationStatus() == Account::State::REGISTERED || registrationStatus() == Account::State::READY)
-      return "darkGreen";
-   return "red";
+   switch(registrationState()) {
+      case RegistrationState::READY:
+         return "darkGreen";
+      case RegistrationState::UNREGISTERED:
+         return "black";
+      case RegistrationState::TRYING:
+         return "orange";
+      case RegistrationState::ERROR:
+         return "red";
+   };
+   return QString();
 }
 
 ///I
@@ -664,9 +666,9 @@ QString Account::localInterface() const
 }
 
 ///Return the account registration status
-QString Account::registrationStatus() const
+Account::RegistrationState Account::registrationState() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS);
+   return d_ptr->m_RegistrationState;
 }
 
 ///Return the account type
@@ -743,6 +745,7 @@ QString Account::userAgent() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USER_AGENT);
 }
 
+#define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
 {
    switch(role) {
@@ -758,95 +761,98 @@ QVariant Account::roleData(int role) const
          return AccountListColorDelegate::instance()->getIcon(this);
 
       //Specialized
-      case Account::Role::Alias:
+      case CAST(Account::Role::Alias):
          return alias();
-      case Account::Role::Proto:
+      case CAST(Account::Role::Proto):
          return static_cast<int>(protocol());
-      case Account::Role::Hostname:
+      case CAST(Account::Role::Hostname):
          return hostname();
-      case Account::Role::Username:
+      case CAST(Account::Role::Username):
          return username();
-      case Account::Role::Mailbox:
+      case CAST(Account::Role::Mailbox):
          return mailbox();
-      case Account::Role::Proxy:
+      case CAST(Account::Role::Proxy):
          return proxy();
 //       case Password:
 //          return accountPassword();
-      case Account::Role::TlsPassword:
+      case CAST(Account::Role::TlsPassword):
          return tlsPassword();
-      case Account::Role::TlsCaListCertificate:
+      case CAST(Account::Role::TlsCaListCertificate):
          return tlsCaListCertificate()?tlsCaListCertificate()->path().toLocalFile():QVariant();
-      case Account::Role::TlsCertificate:
+      case CAST(Account::Role::TlsCertificate):
          return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
-      case Account::Role::TlsPrivateKeyCertificate:
+      case CAST(Account::Role::TlsPrivateKeyCertificate):
          return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
-      case Account::Role::TlsServerName:
+      case CAST(Account::Role::TlsServerName):
          return tlsServerName();
-      case Account::Role::SipStunServer:
+      case CAST(Account::Role::SipStunServer):
          return sipStunServer();
-      case Account::Role::PublishedAddress:
+      case CAST(Account::Role::PublishedAddress):
          return publishedAddress();
-      case Account::Role::LocalInterface:
+      case CAST(Account::Role::LocalInterface):
          return localInterface();
-      case Account::Role::RingtonePath:
+      case CAST(Account::Role::RingtonePath):
          return ringtonePath();
-      case Account::Role::RegistrationExpire:
+      case CAST(Account::Role::RegistrationExpire):
          return registrationExpire();
-      case Account::Role::TlsNegotiationTimeoutSec:
+      case CAST(Account::Role::TlsNegotiationTimeoutSec):
          return tlsNegotiationTimeoutSec();
-      case Account::Role::LocalPort:
+      case CAST(Account::Role::LocalPort):
          return localPort();
-      case Account::Role::TlsListenerPort:
+      case CAST(Account::Role::TlsListenerPort):
          return tlsListenerPort();
-      case Account::Role::PublishedPort:
+      case CAST(Account::Role::PublishedPort):
          return publishedPort();
-      case Account::Role::Enabled:
+      case CAST(Account::Role::Enabled):
          return isEnabled();
-      case Account::Role::AutoAnswer:
+      case CAST(Account::Role::AutoAnswer):
          return isAutoAnswer();
-      case Account::Role::TlsVerifyServer:
+      case CAST(Account::Role::TlsVerifyServer):
          return isTlsVerifyServer();
-      case Account::Role::TlsVerifyClient:
+      case CAST(Account::Role::TlsVerifyClient):
          return isTlsVerifyClient();
-      case Account::Role::TlsRequireClientCertificate:
+      case CAST(Account::Role::TlsRequireClientCertificate):
          return isTlsRequireClientCertificate();
-      case Account::Role::TlsEnabled:
+      case CAST(Account::Role::TlsEnabled):
          return isTlsEnabled();
-      case Account::Role::DisplaySasOnce:
+      case CAST(Account::Role::DisplaySasOnce):
          return isDisplaySasOnce();
-      case Account::Role::SrtpRtpFallback:
+      case CAST(Account::Role::SrtpRtpFallback):
          return isSrtpRtpFallback();
-      case Account::Role::ZrtpDisplaySas:
+      case CAST(Account::Role::ZrtpDisplaySas):
          return isZrtpDisplaySas();
-      case Account::Role::ZrtpNotSuppWarning:
+      case CAST(Account::Role::ZrtpNotSuppWarning):
          return isZrtpNotSuppWarning();
-      case Account::Role::ZrtpHelloHash:
+      case CAST(Account::Role::ZrtpHelloHash):
          return isZrtpHelloHash();
-      case Account::Role::SipStunEnabled:
+      case CAST(Account::Role::SipStunEnabled):
          return isSipStunEnabled();
-      case Account::Role::PublishedSameAsLocal:
+      case CAST(Account::Role::PublishedSameAsLocal):
          return isPublishedSameAsLocal();
-      case Account::Role::RingtoneEnabled:
+      case CAST(Account::Role::RingtoneEnabled):
          return isRingtoneEnabled();
-      case Account::Role::dTMFType:
+      case CAST(Account::Role::dTMFType):
          return DTMFType();
-      case Account::Role::Id:
+      case CAST(Account::Role::Id):
          return id();
-      case Account::Role::Object: {
+      case CAST(Account::Role::Object): {
          QVariant var;
          var.setValue(const_cast<Account*>(this));
          return var;
       }
-      case Account::Role::TypeName:
+      case CAST(Account::Role::TypeName):
          return static_cast<int>(protocol());
-      case Account::Role::PresenceStatus:
+      case CAST(Account::Role::PresenceStatus):
          return PresenceStatusModel::instance()->currentStatus();
-      case Account::Role::PresenceMessage:
+      case CAST(Account::Role::PresenceMessage):
          return PresenceStatusModel::instance()->currentMessage();
+      case CAST(Account::Role::RegistrationState):
+         return QVariant::fromValue(registrationState());
       default:
          return QVariant();
    }
 }
+#undef CAST
 
 
 /*****************************************************************************
@@ -868,6 +874,8 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
 {
    const bool accChanged = m_hAccountDetails[param] != val;
    const QString buf = m_hAccountDetails[param];
+   //Status can be changed regardless of the EditState
+   //TODO make this more generic for volatile properties
    if (param == DRing::Account::ConfProperties::Registration::STATUS) {
       m_hAccountDetails[param] = val;
       if (accChanged) {
@@ -1220,139 +1228,141 @@ void Account::setDTMFType(DtmfType type)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
 }
 
+#define CAST(item) static_cast<int>(item)
 ///Proxy for AccountModel::setData
 void Account::setRoleData(int role, const QVariant& value)
 {
    switch(role) {
-      case Account::Role::Alias:
+      case CAST(Account::Role::Alias):
          setAlias(value.toString());
          break;
-      case Account::Role::Proto: {
+      case CAST(Account::Role::Proto): {
          const int proto = value.toInt();
          setProtocol((proto>=0&&proto<=1)?static_cast<Account::Protocol>(proto):Account::Protocol::SIP);
          break;
       }
-      case Account::Role::Hostname:
+      case CAST(Account::Role::Hostname):
          setHostname(value.toString());
          break;
-      case Account::Role::Username:
+      case CAST(Account::Role::Username):
          setUsername(value.toString());
          break;
-      case Account::Role::Mailbox:
+      case CAST(Account::Role::Mailbox):
          setMailbox(value.toString());
          break;
-      case Account::Role::Proxy:
+      case CAST(Account::Role::Proxy):
          setProxy(value.toString());
          break;
 //       case Password:
 //          accountPassword();
-      case Account::Role::TlsPassword:
+      case CAST(Account::Role::TlsPassword):
          setTlsPassword(value.toString());
          break;
-      case Account::Role::TlsCaListCertificate: {
+      case CAST(Account::Role::TlsCaListCertificate): {
          const QString path = value.toString();
          if ((tlsCaListCertificate() && tlsCaListCertificate()->path() != QUrl(path)) || !tlsCaListCertificate()) {
             tlsCaListCertificate()->setPath(path);
          }
          break;
       }
-      case Account::Role::TlsCertificate: {
+      case CAST(Account::Role::TlsCertificate): {
          const QString path = value.toString();
          if ((tlsCertificate() && tlsCertificate()->path() != QUrl(path)) || !tlsCertificate())
             tlsCertificate()->setPath(path);
       }
          break;
-      case Account::Role::TlsPrivateKeyCertificate: {
+      case CAST(Account::Role::TlsPrivateKeyCertificate): {
          const QString path = value.toString();
          if ((tlsPrivateKeyCertificate() && tlsPrivateKeyCertificate()->path() != QUrl(path)) || !tlsPrivateKeyCertificate())
             tlsPrivateKeyCertificate()->setPath(path);
       }
          break;
-      case Account::Role::TlsServerName:
+      case CAST(Account::Role::TlsServerName):
          setTlsServerName(value.toString());
          break;
-      case Account::Role::SipStunServer:
+      case CAST(Account::Role::SipStunServer):
          setSipStunServer(value.toString());
          break;
-      case Account::Role::PublishedAddress:
+      case CAST(Account::Role::PublishedAddress):
          setPublishedAddress(value.toString());
          break;
-      case Account::Role::LocalInterface:
+      case CAST(Account::Role::LocalInterface):
          setLocalInterface(value.toString());
          break;
-      case Account::Role::RingtonePath:
+      case CAST(Account::Role::RingtonePath):
          setRingtonePath(value.toString());
          break;
-      case Account::Role::KeyExchange: {
+      case CAST(Account::Role::KeyExchange): {
          const int method = value.toInt();
          setKeyExchange(method<=keyExchangeModel()->rowCount()?static_cast<KeyExchangeModel::Type>(method):KeyExchangeModel::Type::NONE);
          break;
       }
-      case Account::Role::RegistrationExpire:
+      case CAST(Account::Role::RegistrationExpire):
          setRegistrationExpire(value.toInt());
          break;
-      case Account::Role::TlsNegotiationTimeoutSec:
+      case CAST(Account::Role::TlsNegotiationTimeoutSec):
          setTlsNegotiationTimeoutSec(value.toInt());
          break;
-      case Account::Role::LocalPort:
+      case CAST(Account::Role::LocalPort):
          setLocalPort(value.toInt());
          break;
-      case Account::Role::TlsListenerPort:
+      case CAST(Account::Role::TlsListenerPort):
          setTlsListenerPort(value.toInt());
          break;
-      case Account::Role::PublishedPort:
+      case CAST(Account::Role::PublishedPort):
          setPublishedPort(value.toInt());
          break;
-      case Account::Role::Enabled:
+      case CAST(Account::Role::Enabled):
          setEnabled(value.toBool());
          break;
-      case Account::Role::AutoAnswer:
+      case CAST(Account::Role::AutoAnswer):
          setAutoAnswer(value.toBool());
          break;
-      case Account::Role::TlsVerifyServer:
+      case CAST(Account::Role::TlsVerifyServer):
          setTlsVerifyServer(value.toBool());
          break;
-      case Account::Role::TlsVerifyClient:
+      case CAST(Account::Role::TlsVerifyClient):
          setTlsVerifyClient(value.toBool());
          break;
-      case Account::Role::TlsRequireClientCertificate:
+      case CAST(Account::Role::TlsRequireClientCertificate):
          setTlsRequireClientCertificate(value.toBool());
          break;
-      case Account::Role::TlsEnabled:
+      case CAST(Account::Role::TlsEnabled):
          setTlsEnabled(value.toBool());
          break;
-      case Account::Role::DisplaySasOnce:
+      case CAST(Account::Role::DisplaySasOnce):
          setDisplaySasOnce(value.toBool());
          break;
-      case Account::Role::SrtpRtpFallback:
+      case CAST(Account::Role::SrtpRtpFallback):
          setSrtpRtpFallback(value.toBool());
          break;
-      case Account::Role::ZrtpDisplaySas:
+      case CAST(Account::Role::ZrtpDisplaySas):
          setZrtpDisplaySas(value.toBool());
          break;
-      case Account::Role::ZrtpNotSuppWarning:
+      case CAST(Account::Role::ZrtpNotSuppWarning):
          setZrtpNotSuppWarning(value.toBool());
          break;
-      case Account::Role::ZrtpHelloHash:
+      case CAST(Account::Role::ZrtpHelloHash):
          setZrtpHelloHash(value.toBool());
          break;
-      case Account::Role::SipStunEnabled:
+      case CAST(Account::Role::SipStunEnabled):
          setSipStunEnabled(value.toBool());
          break;
-      case Account::Role::PublishedSameAsLocal:
+      case CAST(Account::Role::PublishedSameAsLocal):
          setPublishedSameAsLocal(value.toBool());
          break;
-      case Account::Role::RingtoneEnabled:
+      case CAST(Account::Role::RingtoneEnabled):
          setRingtoneEnabled(value.toBool());
          break;
-      case Account::Role::dTMFType:
+      case CAST(Account::Role::dTMFType):
          setDTMFType((DtmfType)value.toInt());
          break;
-      case Account::Role::Id:
+      case CAST(Account::Role::Id):
          setId(value.toByteArray());
          break;
    }
 }
+#undef CAST
 
 
 /*****************************************************************************
@@ -1375,7 +1385,7 @@ bool Account::performAction(const Account::EditAction action)
 }
 
 ///Get the current account edition state
-Account::EditState Account::state() const
+Account::EditState Account::editState() const
 {
    return d_ptr->m_CurrentState;
 }
@@ -1387,11 +1397,18 @@ bool AccountPrivate::updateState()
 {
    if(! q_ptr->isNew()) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      const MapStringString details       = configurationManager.getAccountDetails(q_ptr->id());
-      const QString         status        = details[DRing::Account::ConfProperties::Registration::STATUS];
-      const QString         currentStatus = q_ptr->registrationStatus();
+      const MapStringString details        = configurationManager.getVolatileAccountDetails(q_ptr->id());
+      const QString         status         = details[DRing::Account::VolatileProperties::Registration::STATUS];
+      const Account::RegistrationState cst = q_ptr->registrationState();
+      const Account::RegistrationState st  = AccountModelPrivate::fromDaemonName(status);
+
       setAccountProperty(DRing::Account::ConfProperties::Registration::STATUS, status); //Update -internal- object state
-      return status == currentStatus;
+      m_RegistrationState = st;
+
+      if (st != cst)
+         emit q_ptr->stateChanged(q_ptr->registrationState());
+
+      return st == cst;
    }
    return true;
 }
@@ -1481,7 +1498,9 @@ void AccountPrivate::reload()
       }
       m_CurrentState = Account::EditState::READY;
 
+      //TODO port this to the URI class helpers, this doesn't cover all corner cases
       const QString currentUri = QString("%1@%2").arg(q_ptr->username()).arg(m_HostName);
+
       if (!m_pAccountNumber || (m_pAccountNumber && m_pAccountNumber->uri() != currentUri)) {
          if (m_pAccountNumber) {
             disconnect(m_pAccountNumber,SIGNAL(presenceMessageChanged(QString)),this,SLOT(slotPresenceMessageChanged(QString)));
@@ -1497,6 +1516,9 @@ void AccountPrivate::reload()
       if (m_pCredentials)
          q_ptr->reloadCredentials();
       emit q_ptr->changed(q_ptr);
+
+      //The registration state is cached, update that cache
+      updateState();
 
       AccountModel::instance()->d_ptr->slotVolatileAccountDetailsChange(q_ptr->id(),configurationManager.getVolatileAccountDetails(q_ptr->id()));
    }

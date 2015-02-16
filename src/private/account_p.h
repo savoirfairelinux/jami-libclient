@@ -56,13 +56,15 @@ public:
    AccountPrivate(Account* acc);
 
    //Attributes
-   QByteArray              m_AccountId           ;
-   QHash<QString,QString>  m_hAccountDetails     ;
-   ContactMethod*            m_pAccountNumber      ;
-   Account*                q_ptr                 ;
-   bool                    m_isLoaded            ;
-   int                     m_LastTransportCode   ;
-   QString                 m_LastTransportMessage;
+   QByteArray                 m_AccountId                ;
+   QHash<QString,QString>     m_hAccountDetails          ;
+   ContactMethod*             m_pAccountNumber           ;
+   Account*                   q_ptr                      ;
+   bool                       m_isLoaded                 ;
+   int                        m_LastTransportCode        ;
+   QString                    m_LastTransportMessage     ;
+   Account::RegistrationState m_RegistrationState        ;
+   QString                    m_LastSipRegistrationStatus;
 
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );

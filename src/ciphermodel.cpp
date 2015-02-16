@@ -86,8 +86,8 @@ CipherModel::~CipherModel()
 QHash<int,QByteArray> CipherModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-   static bool initRoles = false;
-   /*if (!initRoles) {
+   /*static bool initRoles = false;
+   if (!initRoles) {
       initRoles = true;
 
    }*/

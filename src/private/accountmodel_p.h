@@ -30,20 +30,23 @@ class AccountModelPrivate : public QObject
    Q_DECLARE_PUBLIC(AccountModel)
 
    friend class AccountPrivate;
+   friend class AvailableAccountModel;
 public:
    //Constructor
    AccountModelPrivate(AccountModel* parent);
    void init();
 
    //Helpers
-   Account* firstRegisteredAccount() const;
+   static Account::RegistrationState fromDaemonName(const QString& st);
 
    //Attributes
    AccountModel*            q_ptr             ;
    QVector<Account*>        m_lAccounts       ;
-   AccountListColorDelegate* m_pColorDelegate   ;
+   AccountListColorDelegate* m_pColorDelegate ;
    QStringList              m_lDeletedAccounts;
    Account*                 m_pIP2IP          ;
+   QList<Account*>          m_pRemovedAccounts;
+   static AccountModel*     m_spAccountList   ;
 
    //Future account cache
    static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;

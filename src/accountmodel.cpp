@@ -36,35 +36,8 @@
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 
-AccountModel* AccountModel::m_spAccountList  = nullptr;
-Account*      AccountModel::m_spPriorAccount = nullptr;
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
-
-QVariant AccountListNoCheckProxyModel::data(const QModelIndex& idx,int role ) const
-{
-   if (role == Qt::CheckStateRole) {
-      return QVariant();
-   }
-   return AccountModel::instance()->data(idx,role);
-}
-
-bool AccountListNoCheckProxyModel::setData( const QModelIndex& idx, const QVariant &value, int role)
-{
-   return AccountModel::instance()->setData(idx,value,role);
-}
-
-Qt::ItemFlags AccountListNoCheckProxyModel::flags (const QModelIndex& idx) const
-{
-   const QModelIndex& src = AccountModel::instance()->index(idx.row(),idx.column());
-   if (!idx.row() || AccountModel::instance()->data(src,Qt::CheckStateRole) == Qt::Unchecked)
-      return Qt::NoItemFlags;
-   return AccountModel::instance()->flags(idx);
-}
-
-int AccountListNoCheckProxyModel::rowCount(const QModelIndex& parentIdx ) const
-{
-   return AccountModel::instance()->rowCount(parentIdx);
-}
+AccountModel*     AccountModelPrivate::m_spAccountList;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
 m_pIP2IP(nullptr)
@@ -106,59 +79,64 @@ AccountModel::~AccountModel()
       d_ptr->m_lAccounts.remove(0);
       delete a;
    }
+   for(Account* a : d_ptr->m_pRemovedAccounts) {
+      delete a;
+   }
    delete d_ptr;
 }
 
+#define CAST(item) static_cast<int>(item)
 QHash<int,QByteArray> AccountModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert(Account::Role::Alias                    ,QByteArray("alias"                         ));
-      roles.insert(Account::Role::Proto                    ,QByteArray("protocol"                      ));
-      roles.insert(Account::Role::Hostname                 ,QByteArray("hostname"                      ));
-      roles.insert(Account::Role::Username                 ,QByteArray("username"                      ));
-      roles.insert(Account::Role::Mailbox                  ,QByteArray("mailbox"                       ));
-      roles.insert(Account::Role::Proxy                    ,QByteArray("proxy"                         ));
-      roles.insert(Account::Role::TlsPassword              ,QByteArray("tlsPassword"                   ));
-      roles.insert(Account::Role::TlsCaListCertificate     ,QByteArray("tlsCaListCertificate"          ));
-      roles.insert(Account::Role::TlsCertificate           ,QByteArray("tlsCertificate"                ));
-      roles.insert(Account::Role::TlsPrivateKeyCertificate ,QByteArray("tlsPrivateKeyCertificate"      ));
-      roles.insert(Account::Role::TlsServerName            ,QByteArray("tlsServerName"                 ));
-      roles.insert(Account::Role::SipStunServer            ,QByteArray("sipStunServer"                 ));
-      roles.insert(Account::Role::PublishedAddress         ,QByteArray("publishedAddress"              ));
-      roles.insert(Account::Role::LocalInterface           ,QByteArray("localInterface"                ));
-      roles.insert(Account::Role::RingtonePath             ,QByteArray("ringtonePath"                  ));
-      roles.insert(Account::Role::RegistrationExpire       ,QByteArray("registrationExpire"            ));
-      roles.insert(Account::Role::TlsNegotiationTimeoutSec ,QByteArray("tlsNegotiationTimeoutSec"      ));
-      roles.insert(Account::Role::TlsNegotiationTimeoutMsec,QByteArray("tlsNegotiationTimeoutMsec"     ));
-      roles.insert(Account::Role::LocalPort                ,QByteArray("localPort"                     ));
-      roles.insert(Account::Role::TlsListenerPort          ,QByteArray("tlsListenerPort"               ));
-      roles.insert(Account::Role::PublishedPort            ,QByteArray("publishedPort"                 ));
-      roles.insert(Account::Role::Enabled                  ,QByteArray("enabled"                       ));
-      roles.insert(Account::Role::AutoAnswer               ,QByteArray("autoAnswer"                    ));
-      roles.insert(Account::Role::TlsVerifyServer          ,QByteArray("tlsVerifyServer"               ));
-      roles.insert(Account::Role::TlsVerifyClient          ,QByteArray("tlsVerifyClient"               ));
-      roles.insert(Account::Role::TlsRequireClientCertificate,QByteArray("tlsRequireClientCertificate" ));
-      roles.insert(Account::Role::TlsEnabled               ,QByteArray("tlsEnabled"                    ));
-      roles.insert(Account::Role::DisplaySasOnce           ,QByteArray("displaySasOnce"                ));
-      roles.insert(Account::Role::SrtpRtpFallback          ,QByteArray("srtpRtpFallback"               ));
-      roles.insert(Account::Role::ZrtpDisplaySas           ,QByteArray("zrtpDisplaySas"                ));
-      roles.insert(Account::Role::ZrtpNotSuppWarning       ,QByteArray("zrtpNotSuppWarning"            ));
-      roles.insert(Account::Role::ZrtpHelloHash            ,QByteArray("zrtpHelloHash"                 ));
-      roles.insert(Account::Role::SipStunEnabled           ,QByteArray("sipStunEnabled"                ));
-      roles.insert(Account::Role::PublishedSameAsLocal     ,QByteArray("publishedSameAsLocal"          ));
-      roles.insert(Account::Role::RingtoneEnabled          ,QByteArray("ringtoneEnabled"               ));
-      roles.insert(Account::Role::dTMFType                 ,QByteArray("dTMFType"                      ));
-      roles.insert(Account::Role::Id                       ,QByteArray("id"                            ));
-      roles.insert(Account::Role::Object                   ,QByteArray("object"                        ));
-      roles.insert(Account::Role::TypeName                 ,QByteArray("typeName"                      ));
-      roles.insert(Account::Role::PresenceStatus           ,QByteArray("presenceStatus"                ));
-      roles.insert(Account::Role::PresenceMessage          ,QByteArray("presenceMessage"               ));
+      roles.insert(CAST(Account::Role::Alias                       ) ,QByteArray("alias"                         ));
+      roles.insert(CAST(Account::Role::Proto                       ) ,QByteArray("protocol"                      ));
+      roles.insert(CAST(Account::Role::Hostname                    ) ,QByteArray("hostname"                      ));
+      roles.insert(CAST(Account::Role::Username                    ) ,QByteArray("username"                      ));
+      roles.insert(CAST(Account::Role::Mailbox                     ) ,QByteArray("mailbox"                       ));
+      roles.insert(CAST(Account::Role::Proxy                       ) ,QByteArray("proxy"                         ));
+      roles.insert(CAST(Account::Role::TlsPassword                 ) ,QByteArray("tlsPassword"                   ));
+      roles.insert(CAST(Account::Role::TlsCaListCertificate        ) ,QByteArray("tlsCaListCertificate"          ));
+      roles.insert(CAST(Account::Role::TlsCertificate              ) ,QByteArray("tlsCertificate"                ));
+      roles.insert(CAST(Account::Role::TlsPrivateKeyCertificate    ) ,QByteArray("tlsPrivateKeyCertificate"      ));
+      roles.insert(CAST(Account::Role::TlsServerName               ) ,QByteArray("tlsServerName"                 ));
+      roles.insert(CAST(Account::Role::SipStunServer               ) ,QByteArray("sipStunServer"                 ));
+      roles.insert(CAST(Account::Role::PublishedAddress            ) ,QByteArray("publishedAddress"              ));
+      roles.insert(CAST(Account::Role::LocalInterface              ) ,QByteArray("localInterface"                ));
+      roles.insert(CAST(Account::Role::RingtonePath                ) ,QByteArray("ringtonePath"                  ));
+      roles.insert(CAST(Account::Role::RegistrationExpire          ) ,QByteArray("registrationExpire"            ));
+      roles.insert(CAST(Account::Role::TlsNegotiationTimeoutSec    ) ,QByteArray("tlsNegotiationTimeoutSec"      ));
+      roles.insert(CAST(Account::Role::TlsNegotiationTimeoutMsec   ) ,QByteArray("tlsNegotiationTimeoutMsec"     ));
+      roles.insert(CAST(Account::Role::LocalPort                   ) ,QByteArray("localPort"                     ));
+      roles.insert(CAST(Account::Role::TlsListenerPort             ) ,QByteArray("tlsListenerPort"               ));
+      roles.insert(CAST(Account::Role::PublishedPort               ) ,QByteArray("publishedPort"                 ));
+      roles.insert(CAST(Account::Role::Enabled                     ) ,QByteArray("enabled"                       ));
+      roles.insert(CAST(Account::Role::AutoAnswer                  ) ,QByteArray("autoAnswer"                    ));
+      roles.insert(CAST(Account::Role::TlsVerifyServer             ) ,QByteArray("tlsVerifyServer"               ));
+      roles.insert(CAST(Account::Role::TlsVerifyClient             ) ,QByteArray("tlsVerifyClient"               ));
+      roles.insert(CAST(Account::Role::TlsRequireClientCertificate ) ,QByteArray("tlsRequireClientCertificate"   ));
+      roles.insert(CAST(Account::Role::TlsEnabled                  ) ,QByteArray("tlsEnabled"                    ));
+      roles.insert(CAST(Account::Role::DisplaySasOnce              ) ,QByteArray("displaySasOnce"                ));
+      roles.insert(CAST(Account::Role::SrtpRtpFallback             ) ,QByteArray("srtpRtpFallback"               ));
+      roles.insert(CAST(Account::Role::ZrtpDisplaySas              ) ,QByteArray("zrtpDisplaySas"                ));
+      roles.insert(CAST(Account::Role::ZrtpNotSuppWarning          ) ,QByteArray("zrtpNotSuppWarning"            ));
+      roles.insert(CAST(Account::Role::ZrtpHelloHash               ) ,QByteArray("zrtpHelloHash"                 ));
+      roles.insert(CAST(Account::Role::SipStunEnabled              ) ,QByteArray("sipStunEnabled"                ));
+      roles.insert(CAST(Account::Role::PublishedSameAsLocal        ) ,QByteArray("publishedSameAsLocal"          ));
+      roles.insert(CAST(Account::Role::RingtoneEnabled             ) ,QByteArray("ringtoneEnabled"               ));
+      roles.insert(CAST(Account::Role::dTMFType                    ) ,QByteArray("dTMFType"                      ));
+      roles.insert(CAST(Account::Role::Id                          ) ,QByteArray("id"                            ));
+      roles.insert(CAST(Account::Role::Object                      ) ,QByteArray("object"                        ));
+      roles.insert(CAST(Account::Role::TypeName                    ) ,QByteArray("typeName"                      ));
+      roles.insert(CAST(Account::Role::PresenceStatus              ) ,QByteArray("presenceStatus"                ));
+      roles.insert(CAST(Account::Role::PresenceMessage             ) ,QByteArray("presenceMessage"               ));
    }
    return roles;
 }
+#undef CAST
 
 ///Get the IP2IP account
 Account* AccountModel::ip2ip() const
@@ -175,19 +153,45 @@ Account* AccountModel::ip2ip() const
 ///Singleton
 AccountModel* AccountModel::instance()
 {
-   if (! m_spAccountList) {
-      m_spAccountList = new AccountModel();
-      m_spAccountList->d_ptr->init();
+   if (! AccountModelPrivate::m_spAccountList) {
+      AccountModelPrivate::m_spAccountList = new AccountModel();
+      AccountModelPrivate::m_spAccountList->d_ptr->init();
    }
-   return m_spAccountList;
+   return AccountModelPrivate::m_spAccountList;
 }
 
-///Static destructor
-void AccountModel::destroy()
+/**
+ * The client have a different point of view when it come to the account
+ * state. All the different errors are also handled elsewhere
+ */
+Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st)
 {
-   if (m_spAccountList)
-      delete m_spAccountList;
-   m_spAccountList = nullptr;
+   if     ( st == DRing::Account::States::REGISTERED
+        ||  st == DRing::Account::States::READY                    )
+      return Account::RegistrationState::READY;
+
+   else if( st == DRing::Account::States::UNREGISTERED             )
+      return Account::RegistrationState::UNREGISTERED;
+
+   else if( st == DRing::Account::States::TRYING                   )
+      return Account::RegistrationState::TRYING;
+
+   else if( st == DRing::Account::States::ERROR
+        ||  st == DRing::Account::States::ERROR_AUTH
+        ||  st == DRing::Account::States::ERROR_NETWORK
+        ||  st == DRing::Account::States::ERROR_HOST
+        ||  st == DRing::Account::States::ERROR_CONF_STUN
+        ||  st == DRing::Account::States::ERROR_EXIST_STUN
+        ||  st == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE
+        ||  st == DRing::Account::States::ERROR_NOT_ACCEPTABLE
+        ||  st == DRing::Account::States::REQUEST_TIMEOUT          )
+      return Account::RegistrationState::ERROR;
+
+   else {
+      qWarning() << "Unkown registration state" << st;
+      return Account::RegistrationState::ERROR;
+   }
+
 }
 
 ///Account status changed
@@ -195,10 +199,13 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
 {
    Account* a = q_ptr->getById(account.toLatin1());
 
-   if (!a || (a && a->registrationStatus() != status )) {
+   //TODO move this to AccountStatusModel
+   if (!a || (a && a->d_ptr->m_LastSipRegistrationStatus != status )) {
       if (status != "OK") //Do not pollute the log
          qDebug() << "Account" << account << "status changed to" << status;
    }
+   a->d_ptr->m_LastSipRegistrationStatus = status;
+
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
    //The account may have been deleted by the user, but 'apply' have not been pressed
@@ -216,7 +223,7 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
       }
       foreach (Account* acc, m_lAccounts) {
          const int idx =accountIds.indexOf(acc->id());
-         if (idx == -1 && (acc->state() == Account::EditState::READY || acc->state() == Account::EditState::REMOVED)) {
+         if (idx == -1 && (acc->editState() == Account::EditState::READY || acc->editState() == Account::EditState::REMOVED)) {
             m_lAccounts.remove(idx);
             emit q_ptr->dataChanged(q_ptr->index(idx - 1, 0), q_ptr->index(m_lAccounts.size()-1, 0));
             emit q_ptr->layoutChanged();
@@ -224,19 +231,18 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
       }
    }
    else {
-      const bool isRegistered = a->isRegistered();
+      const bool isRegistered = a->registrationState() == Account::RegistrationState::READY;
       a->d_ptr->updateState();
-      emit a->stateChanged(a->toHumanStateName());
       const QModelIndex idx = a->index();
       emit q_ptr->dataChanged(idx, idx);
-      const bool regStateChanged = isRegistered != a->isRegistered();
+      const bool regStateChanged = isRegistered != (a->registrationState() == Account::RegistrationState::READY);
 
       //Handle some important events directly
       if (regStateChanged && (code == 502 || code == 503)) {
          emit q_ptr->badGateway();
       }
       else if (regStateChanged)
-         emit q_ptr->registrationChanged(a,a->isRegistered());
+         emit q_ptr->registrationChanged(a,a->registrationState() == Account::RegistrationState::READY);
 
       //Send the messages to AccountStatusModel for processing
       a->statusModel()->addSipRegistrationEvent(status,code);
@@ -246,9 +252,10 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
       a->setLastErrorCode(code);
 
       //Make sure volatile details get reloaded
+      //TODO eventually remove this call and trust the signal
       slotVolatileAccountDetailsChange(account,configurationManager.getVolatileAccountDetails(account));
 
-      emit q_ptr->accountStateChanged(a,a->toHumanStateName());
+      emit q_ptr->accountStateChanged(a,a->registrationState());
    }
 
 }
@@ -294,11 +301,15 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
    if (a) {
       const int     transportCode = details[DRing::Account::VolatileProperties::Transport::STATE_CODE].toInt();
       const QString transportDesc = details[DRing::Account::VolatileProperties::Transport::STATE_DESC];
+      const QString status        = details[DRing::Account::VolatileProperties::Registration::STATUS];
 
       a->statusModel()->addTransportEvent(transportDesc,transportCode);
 
       a->d_ptr->m_LastTransportCode    = transportCode;
       a->d_ptr->m_LastTransportMessage = transportDesc;
+
+      const Account::RegistrationState state = fromDaemonName(a->d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
+      a->d_ptr->m_RegistrationState = state;
    }
 }
 
@@ -312,9 +323,9 @@ void AccountModel::update()
 
    for (int i = 0; i < tmp.size(); i++) {
       Account* current = tmp[i];
-      if (!current->isNew() && (current->state() != Account::EditState::NEW
-         && current->state() != Account::EditState::MODIFIED
-         && current->state() != Account::EditState::OUTDATED))
+      if (!current->isNew() && (current->editState() != Account::EditState::NEW
+         && current->editState() != Account::EditState::MODIFIED
+         && current->editState() != Account::EditState::OUTDATED))
          remove(current);
    }
    //ask for the list of accounts ids to the configurationManager
@@ -421,7 +432,7 @@ void AccountModel::registerAllAccounts()
 ///Cancel all modifications
 void AccountModel::cancel() {
    foreach (Account* a, d_ptr->m_lAccounts) {
-      if (a->state() == Account::EditState::MODIFIED || a->state() == Account::EditState::OUTDATED)
+      if (a->editState() == Account::EditState::MODIFIED || a->editState() == Account::EditState::OUTDATED)
          a->performAction(Account::EditAction::CANCEL);
    }
    d_ptr->m_lDeletedAccounts.clear();
@@ -466,45 +477,11 @@ Account* AccountModel::getById(const QByteArray& id, bool usePlaceHolder) const
    return nullptr;
 }
 
-///Get the first registerred account (default account)
-Account* AccountModelPrivate::firstRegisteredAccount() const
-{
-   for (int i = 0; i < m_lAccounts.count(); ++i) {
-      Account* current = m_lAccounts[i];
-      if(current && current->registrationStatus() == Account::State::REGISTERED && current->isEnabled())
-         return current;
-      else if (current && (current->registrationStatus() == Account::State::READY) && m_lAccounts.count() == 1)
-         return current;
-//       else if (current && !(current->accountRegistrationStatus()() == ACCOUNT_STATE_READY)) {
-//          qDebug() << "Account " << ((current)?current->accountId():"") << " is not registered ("
-//          << ((current)?current->accountRegistrationStatus()():"") << ") State:"
-//          << ((current)?current->accountRegistrationStatus()():"");
-//       }
-   }
-   return nullptr;
-}
-
 ///Get the account size
 int AccountModel::size() const
 {
    return d_ptr->m_lAccounts.size();
 }
-
-///Return the current account
-Account* AccountModel::currentAccount()
-{
-   Account* priorAccount = m_spPriorAccount;
-   if(priorAccount && priorAccount->registrationStatus() == Account::State::REGISTERED && priorAccount->isEnabled() ) {
-      return priorAccount;
-   }
-   else {
-      Account* a = instance()->d_ptr->firstRegisteredAccount();
-      if (!a)
-         a = instance()->getById(Account::ProtocolName::IP2IP);
-      instance()->setPriorAccount(a);
-      return a;
-   }
-} //getCurrentAccount
 
 ///Get data from the model
 QVariant AccountModel::data ( const QModelIndex& idx, int role) const
@@ -615,24 +592,17 @@ void AccountModel::remove(Account* account)
    const int aindex = d_ptr->m_lAccounts.indexOf(account);
    d_ptr->m_lAccounts.remove(aindex);
    d_ptr->m_lDeletedAccounts << account->id();
-   if (currentAccount() == account)
-      setPriorAccount(getById(Account::ProtocolName::IP2IP));
+
+   emit accountRemoved(account);
    emit dataChanged(index(aindex,0), index(d_ptr->m_lAccounts.size()-1,0));
    emit layoutChanged();
    //delete account;
+   d_ptr->m_pRemovedAccounts << account;
 }
 
 void AccountModel::remove(const QModelIndex& idx )
 {
    remove(getAccountByModelIndex(idx));
-}
-
-///Set the previous account used
-void AccountModel::setPriorAccount(const Account* account) {
-   const bool changed = (account && m_spPriorAccount != account) || (!account && m_spPriorAccount);
-   m_spPriorAccount = const_cast<Account*>(account);
-   if (changed)
-      emit priorAccountChanged(currentAccount());
 }
 
 ///Set model data

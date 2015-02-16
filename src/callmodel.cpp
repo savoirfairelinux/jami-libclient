@@ -29,6 +29,7 @@
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "accountmodel.h"
+#include "availableaccountmodel.h"
 #include "dbus/metatypes.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
@@ -123,7 +124,7 @@ CallModel* CallModel::instance() {
 
 CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent)
 {
-   
+
 }
 
 ///Retrieve current and older calls from the daemon, fill history, model and enable drag n' drop
@@ -397,7 +398,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
    }
 
    //No dialing call found, creating one
-   Account* acc = (account)?account:AccountModel::currentAccount();
+   Account* acc = (account)?account:AvailableAccountModel::currentDefaultAccount();
 
    if (!acc) {
       qWarning() << "No account is available, cannot call" << QStringList(DBus::ConfigurationManager::instance().getAccountList());
@@ -1049,7 +1050,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
             q_ptr->beginInsertRows(QModelIndex(),m_lInternalModel.size(),m_lInternalModel.size());
             m_lInternalModel << child;
             q_ptr->endInsertRows();
-            const QModelIndex idx = q_ptr->getIndex(child->call_real);
+//             const QModelIndex idx = q_ptr->getIndex(child->call_real);
          }
       }
       confInt->m_lChildren.clear();

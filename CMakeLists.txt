@@ -19,7 +19,7 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++14")
+ADD_DEFINITIONS("-std=c++1y")
 
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
@@ -175,6 +175,7 @@ SET( libringclient_LIB_SRCS
 
   #Models
   src/accountmodel.cpp
+  src/availableaccountmodel.cpp
   src/callmodel.cpp
   src/historymodel.cpp
   src/bookmarkmodel.cpp
@@ -249,6 +250,7 @@ SET( libringclient_LIB_SRCS
 SET( libringclient_LIB_HDRS
   src/account.h
   src/accountmodel.h
+  src/availableaccountmodel.h
   src/call.h
   src/callmodel.h
   src/historymodel.h

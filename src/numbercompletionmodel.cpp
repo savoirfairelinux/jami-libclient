@@ -30,6 +30,7 @@
 #include "uri.h"
 #include "numbercategory.h"
 #include "accountmodel.h"
+#include "availableaccountmodel.h"
 #include "numbercategorymodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
@@ -106,7 +107,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
    const ContactMethod* n = i.value();
    const int weight     = i.key  ();
 
-   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() && n->account() != AccountModel::instance()->currentAccount()
+   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() && n->account() != AvailableAccountModel::currentDefaultAccount()
                   && n->account()->alias() != Account::ProtocolName::IP2IP;
 
    switch (static_cast<NumberCompletionModelPrivate::Columns>(index.column())) {
@@ -144,7 +145,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
       case NumberCompletionModelPrivate::Columns::ACCOUNT:
          switch (role) {
             case Qt::DisplayRole:
-               return n->account()?n->account()->id():AccountModel::instance()->currentAccount()->id();
+               return n->account()?n->account()->id():AvailableAccountModel::currentDefaultAccount()->id();
          };
          break;
       case NumberCompletionModelPrivate::Columns::WEIGHT:
@@ -244,7 +245,8 @@ void NumberCompletionModelPrivate::updateModel()
       locateNumberRange( m_Prefix, numbers );
 
       foreach(ContactMethod* n,numbers) {
-         if (m_UseUnregisteredAccount || ((n->account() && n->account()->isRegistered()) || !n->account()))
+         if (m_UseUnregisteredAccount || ((n->account() && n->account()->registrationState() == Account::RegistrationState::READY)
+          || !n->account()))
             m_hNumbers.insert(getWeight(n),n);
       }
    }
