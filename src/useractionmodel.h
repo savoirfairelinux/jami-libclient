@@ -25,14 +25,14 @@
 #include "call.h"
 
 class Call;
+class CallModel;
 class UserActionModelPrivate;
 
 /**
  * @class UserActionModel Hold available actions for a given call state
  *
- * @todo This is not a model yet, however, it would be nice if it was
  **/
-class LIB_EXPORT UserActionModel : public QObject/*QAbstractItemModel*/ {
+class LIB_EXPORT UserActionModel : public QAbstractListModel {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -45,59 +45,46 @@ public:
       RELATIVEINDEX = 101,
    };
 
+   ///If options are checkable or not
+   enum class ActionStatfulnessLevel {
+      UNISTATE  = 0, /*!< The action has no state beside being available or not                              */
+      CHECKABLE = 1, /*!< The action can be (un)available and "checked"                                      */
+      TRISTATE  = 2, /*!< The action can be (un)available and unchecked, partially checked and fully checked */
+      COUNT__,
+   };
+
    ///(End)user action, all possibility, not only state aware ones like "Action"
    enum class Action {
-      PICKUP   = 0,
-      HOLD     = 1,
-      UNHOLD   = 2,
-      MUTE     = 3,
-      TRANSFER = 4,
-      RECORD   = 5,
-      REFUSE   = 6,
-      ACCEPT   = 7,
-      HANGUP   = 8,
+      //Uni selection
+      ACCEPT          , /*!< Pickup incoming call(s) or send                        */
+      HOLD            , /*!< [Stateful] Hold (check) or Unhold (uncheck) call(s)    */
+      MUTE_AUDIO      , /*!< [Stateful] Stop sending audio to call(s)               */
+      MUTE_VIDEO      , /*!< [Stateful] Stop sending video to call(s)               */
+      SERVER_TRANSFER , /*!< [Stateful] Perform an unattended transfer              */
+      RECORD          , /*!< [Stateful] Record the call(s) to .wav file(s)          */
+      HANGUP          , /*!< Resuse an incomming call or hang up an in progress one */
+
+      //Multi selection
+      JOIN            , /*!< [Stateful] Join all seclect calls into a conference    */
       COUNT__,
    };
    Q_ENUMS(Action)
 
-   //Properties
-   Q_PROPERTY( bool isPickupEnabled   READ isPickupEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isHoldEnabled     READ isHoldEnabled     NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isUnholdEnabled   READ isUnholdEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isHangupEnabled   READ isHangupEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isMuteEnabled     READ isMuteEnabled     NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isTransferEnabled READ isTransferEnabled NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isRecordEnabled   READ isRecordEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isRefuseEnabled   READ isRefuseEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( bool isAcceptEnabled   READ isAcceptEnabled   NOTIFY actionStateChanged )
-   Q_PROPERTY( uint enabledCount      READ enabledCount      NOTIFY actionStateChanged )
-
    //Constructor
    explicit UserActionModel(Call* parent);
+   UserActionModel(CallModel* parent);
    virtual ~UserActionModel();
 
    //Abstract model members
-//    virtual QVariant      data       (const QModelIndex& index, int role = Qt::DisplayRole  ) const;
-//    virtual int           rowCount   (const QModelIndex& parent = QModelIndex()             ) const;
-//    virtual int           columnCount(const QModelIndex& parent = QModelIndex()             ) const;
-//    virtual Qt::ItemFlags flags      (const QModelIndex& index                              ) const;
-//    virtual bool          setData    (const QModelIndex& index, const QVariant &value, int role);
-//    virtual QHash<int,QByteArray> roleNames() const override;
+   virtual QVariant      data       (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount   (const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags      (const QModelIndex& index                                 ) const override;
+   virtual bool          setData    (const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
    Q_INVOKABLE bool isActionEnabled ( UserActionModel::Action action ) const;
    Q_INVOKABLE uint relativeIndex   ( UserActionModel::Action action ) const;
-   Q_INVOKABLE uint enabledCount    (                                ) const;
-
-   bool isPickupEnabled  () const;
-   bool isHoldEnabled    () const;
-   bool isUnholdEnabled  () const;
-   bool isHangupEnabled  () const;
-   bool isMuteEnabled    () const;
-   bool isTransferEnabled() const;
-   bool isRecordEnabled  () const;
-   bool isRefuseEnabled  () const;
-   bool isAcceptEnabled  () const;
 
 private:
    const QScopedPointer<UserActionModelPrivate> d_ptr;
@@ -107,6 +94,6 @@ Q_SIGNALS:
    ///The list of currently available actions has changed
    void actionStateChanged();
 };
-// Q_DECLARE_METATYPE(UserActionModel*)
+Q_DECLARE_METATYPE(UserActionModel*)
 
 #endif

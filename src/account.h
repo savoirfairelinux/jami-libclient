@@ -157,6 +157,7 @@ class LIB_EXPORT Account : public QObject {
          UNREGISTERED = 1,
          TRYING       = 2,
          ERROR        = 3,
+         COUNT__,
       };
       Q_ENUMS(RegistrationState)
 
@@ -211,11 +212,14 @@ class LIB_EXPORT Account : public QObject {
          constexpr static const char* SIP   = "SIP"  ;
          constexpr static const char* IAX   = "IAX"  ;
          constexpr static const char* IP2IP = "IP2IP";
+         constexpr static const char* DHT   = "DHT"  ;
       };
 
       enum class Protocol {
          SIP = 0,
          IAX = 1,
+         DHT = 2,
+         COUNT__,
       };
       Q_ENUMS(Protocol)
 

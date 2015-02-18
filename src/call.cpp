@@ -222,7 +222,7 @@ m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_CallId(),m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(new UserActionModel(parent))
+m_pUserActionModel(nullptr)
 {
 }
 
@@ -1580,6 +1580,8 @@ void CallPrivate::updatePlayback(const QString& path, int position,int size)
 
 UserActionModel* Call::userActionModel() const
 {
+   if (!d_ptr->m_pUserActionModel)
+      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<Call*>(this));
    return d_ptr->m_pUserActionModel;
 }
 

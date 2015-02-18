@@ -302,6 +302,8 @@ QString Account::stateColorName() const
          return "orange";
       case RegistrationState::ERROR:
          return "red";
+      case RegistrationState::COUNT__:
+         break;
    };
    return QString();
 }
@@ -440,8 +442,15 @@ QString Account::password() const
       case Account::Protocol::SIP:
          if (credentialsModel()->rowCount())
             return credentialsModel()->data(credentialsModel()->index(0,0),CredentialModel::Role::PASSWORD).toString();
+         break;
       case Account::Protocol::IAX:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
+         break;
+      case Account::Protocol::DHT:
+         return tlsPassword();
+         break;
+      case Account::Protocol::COUNT__:
+         break;
    };
    return "";
 }
@@ -906,12 +915,18 @@ void Account::setId(const QByteArray& id)
 ///Set the account type, SIP or IAX
 void Account::setProtocol(Account::Protocol proto)
 {
+   //TODO prevent this if the protocol has been saved
    switch (proto) {
       case Account::Protocol::SIP:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::SIP);
          break;
       case Account::Protocol::IAX:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::IAX);
+         break;
+      case Account::Protocol::DHT:
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::DHT);
+         break;
+      case Account::Protocol::COUNT__:
          break;
    };
 }
@@ -957,6 +972,10 @@ void Account::setPassword(const QString& detail)
          break;
       case Account::Protocol::IAX:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::PASSWORD, detail);
+         break;
+      case Account::Protocol::DHT:
+         setTlsPassword(detail);
+      case Account::Protocol::COUNT__:
          break;
    };
 }

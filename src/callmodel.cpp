@@ -20,8 +20,8 @@
 //Qt
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
-#include <QtGui/QDragEnterEvent>
 #include <QtCore/QMimeData>
+#include <QtCore/QItemSelectionModel>
 
 //Ring library
 #include "call.h"
@@ -41,6 +41,7 @@
 #include "historymodel.h"
 #include "delegates/phonenumberselectordelegate.h"
 #include "personmodel.h"
+#include "useractionmodel.h"
 
 //Other
 #include <unistd.h>
@@ -79,6 +80,8 @@ public:
       QList<InternalStruct*> m_lInternalModel;
       QHash< Call*       , InternalStruct* > m_sPrivateCallList_call   ;
       QHash< QString     , InternalStruct* > m_sPrivateCallList_callId ;
+      QItemSelectionModel* m_pSelectionModel;
+      UserActionModel*     m_pUserActionModel;
 
 
       //Helpers
@@ -122,7 +125,8 @@ CallModel* CallModel::instance() {
    return m_spInstance;
 }
 
-CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent)
+CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),
+m_pUserActionModel(nullptr)
 {
 
 }
@@ -244,6 +248,14 @@ QHash<int,QByteArray> CallModel::roleNames() const
 }
 
 
+QItemSelectionModel* CallModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<CallModel*>(this));
+   }
+   return d_ptr->m_pSelectionModel;
+}
+
 /*****************************************************************************
  *                                                                           *
  *                         Access related functions                          *
@@ -305,7 +317,7 @@ bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
    return DBus::InstanceManager::instance().isConnected();
-#else 
+#else
    return DBus::InstanceManager::instance().connection().isConnected();
 #endif //ENABLE_LIBWRAP
 }
@@ -313,6 +325,14 @@ bool CallModel::isConnected() const
 bool CallModel::isValid()
 {
    return DBus::CallManager::instance().isValid();
+}
+
+
+UserActionModel* CallModel::userActionModel() const
+{
+   if (!d_ptr->m_pUserActionModel)
+      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<CallModel*>(this));
+   return d_ptr->m_pUserActionModel;
 }
 
 
