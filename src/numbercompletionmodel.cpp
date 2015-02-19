@@ -256,7 +256,7 @@ void NumberCompletionModelPrivate::updateModel()
 
 void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const
 {
-   if (prefix.isEmpty())
+   if (prefix.isEmpty() || map.isEmpty())
       return;
    QMap<QString,NumberWrapper*>::iterator iBeg = map.begin();
    QMap<QString,NumberWrapper*>::iterator iEnd = map.end  ()-1;
@@ -302,7 +302,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
       size = ::ceil(size/2.0f);
    }
 
-   while (iBeg.key().left(prefixLen) != pref && iBeg != iEnd)
+   while (iBeg.key().left(prefixLen) != pref && iBeg != map.end() && iBeg != iEnd)
       ++iBeg;
 
    if (iEnd == iBeg && iBeg.key().left(prefixLen) != pref) {
