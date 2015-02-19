@@ -17,6 +17,8 @@
  ***************************************************************************/
 #include "pixmapmanipulationdelegate.h"
 
+#include <useractionmodel.h>
+
 #include <QtCore/QSize>
 
 PixmapManipulationDelegate* PixmapManipulationDelegate::m_spInstance = new PixmapManipulationDelegate();
@@ -78,5 +80,11 @@ QByteArray PixmapManipulationDelegate::toByteArray(const QVariant& pxm)
 QVariant PixmapManipulationDelegate::profilePhoto(const QByteArray& data)
 {
    Q_UNUSED(data)
+   return QVariant();
+}
+
+QVariant PixmapManipulationDelegate::userActionIcon(const UserActionElement& state) const
+{
+   Q_UNUSED(state)
    return QVariant();
 }

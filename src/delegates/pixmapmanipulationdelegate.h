@@ -24,9 +24,10 @@
 #include <QtCore/QModelIndex>
 
 //Ring
-class Person    ;
-class ContactMethod;
-class Call       ;
+class  Person           ;
+class  ContactMethod    ;
+class  Call             ;
+struct UserActionElement;
 
 /**
  * Different clients can have multiple way of displaying images. Some may
@@ -42,14 +43,18 @@ class LIB_EXPORT PixmapManipulationDelegate {
 public:
    PixmapManipulationDelegate();
    virtual ~PixmapManipulationDelegate() {}
-   virtual QVariant contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
-   virtual QVariant callPhoto(Call* c, const QSize& size, bool displayPresence = true);
-   virtual QVariant callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
-   virtual QVariant numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
-   virtual QVariant serurityIssueIcon(const QModelIndex& index);
+   virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
+   virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true);
+   virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
+   virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
+   virtual QVariant   serurityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);
-   virtual QVariant profilePhoto(const QByteArray& data);
+   virtual QVariant   profilePhoto(const QByteArray& data);
 
+   /**
+    * Return the icons associated with the action and its state
+    */
+   virtual QVariant userActionIcon(const UserActionElement& state) const;
 
    //Singleton
    static PixmapManipulationDelegate* instance();

@@ -22,8 +22,11 @@
 #include <QtCore/QAbstractItemModel>
 #include "typedefs.h"
 
-#include "call.h"
+//Qt
+class QSortFilterProxyModel;
 
+//Ring
+#include "call.h"
 class Call;
 class CallModel;
 class UserActionModelPrivate;
@@ -70,6 +73,8 @@ public:
    };
    Q_ENUMS(Action)
 
+   Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel);
+
    //Constructor
    explicit UserActionModel(Call* parent);
    UserActionModel(CallModel* parent);
@@ -85,6 +90,11 @@ public:
    //Getters
    Q_INVOKABLE bool isActionEnabled ( UserActionModel::Action action ) const;
    Q_INVOKABLE uint relativeIndex   ( UserActionModel::Action action ) const;
+   QSortFilterProxyModel* activeActionModel() const;
+
+   //Mutators
+   bool execute( const Action action    ) const;
+   bool execute( const QModelIndex& idx ) const;
 
 private:
    const QScopedPointer<UserActionModelPrivate> d_ptr;
@@ -95,5 +105,15 @@ Q_SIGNALS:
    void actionStateChanged();
 };
 Q_DECLARE_METATYPE(UserActionModel*)
+
+
+/**
+ * "Java bean" used to avoid having a 5+ parameter pixmap delegate
+ */
+struct UserActionElement {
+   UserActionModel::Action action     ;
+   QList<Call*>            calls      ;
+   Qt::CheckState          checkState ;
+};
 
 #endif
