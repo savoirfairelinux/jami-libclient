@@ -185,7 +185,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c)
 {
-   dbg.nospace() << QString(Call::toHumanStateName(c));
+   dbg.nospace() << Call::toHumanStateName(c);
    return dbg.space();
 }
 
@@ -200,16 +200,22 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
    switch (c) {
       case Call::Action::ACCEPT:
          dbg.nospace() << "ACCEPT";
+         break;
       case Call::Action::REFUSE:
          dbg.nospace() << "REFUSE";
+         break;
       case Call::Action::TRANSFER:
          dbg.nospace() << "TRANSFER";
+         break;
       case Call::Action::HOLD:
          dbg.nospace() << "HOLD";
+         break;
       case Call::Action::RECORD:
          dbg.nospace() << "RECORD";
+         break;
       case Call::Action::COUNT__:
          dbg.nospace() << "COUNT";
+         break;
    };
    dbg.space();
    dbg.nospace() << '(' << static_cast<int>(c) << ')';
@@ -222,7 +228,7 @@ m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_CallId(),m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(nullptr)
+m_pUserActionModel(nullptr),m_HistoryState(Call::LegacyHistoryState::NONE), m_CurrentState(Call::State::ERROR)
 {
 }
 
@@ -1648,7 +1654,7 @@ QVariant Call::roleData(int role) const
          break;
       case Call::Role::Filter: {
          QString normStripppedC;
-         foreach(QChar char2,QString(static_cast<int>(historyState())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
+         foreach(QChar char2,(static_cast<int>(historyState())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
             roleData(Call::Role::Number).toString()).toLower().normalized(QString::NormalizationForm_KD) ) {
             if (!char2.combiningClass())
                normStripppedC += char2;

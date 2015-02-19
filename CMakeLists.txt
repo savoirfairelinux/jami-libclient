@@ -42,7 +42,7 @@ ADD_DEFINITIONS(
    -Wall
    -Wextra
    -Wno-cpp
-   #-Wmissing-declarations
+   -Wmissing-declarations
    -Wmissing-noreturn
    -Wpointer-arith
    -Wcast-align
@@ -60,15 +60,15 @@ ADD_DEFINITIONS(
    -Woverloaded-virtual
    -Wsuggest-attribute=const
    -Wunused-value
-#    -pedantic
+   -pedantic
    -Wdouble-promotion
    -Wnonnull
    -Wsequence-point
    -Wunused-but-set-parameter
-   #-Wsuggest-attribute=const
+   -Wsuggest-attribute=const
    #-Wsystem-headers
    -Wsizeof-pointer-memaccess
-#    -Wuseless-cast
+   #-Wuseless-cast
    -Wvarargs
 )
 

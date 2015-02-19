@@ -85,7 +85,7 @@ private:
    static BookmarkModel* m_spInstance;
 
    BookmarkModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(BookmarkModel);
+   Q_DECLARE_PRIVATE(BookmarkModel)
 
    //Backend interface
    virtual void backendAddedCallback(CollectionInterface* backend) override;

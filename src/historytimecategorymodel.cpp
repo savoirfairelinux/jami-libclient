@@ -27,7 +27,8 @@ class HistoryTimeCategoryModelPrivate
 QVector<QString> HistoryTimeCategoryModel::m_lCategories;
 HistoryTimeCategoryModel* HistoryTimeCategoryModel::m_spInstance = new HistoryTimeCategoryModel();
 
-HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractListModel(parent)
+HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractListModel(parent),
+d_ptr(new HistoryTimeCategoryModelPrivate)
 {
    m_lCategories << tr("Today")                                 ;//0
    m_lCategories << tr("Yesterday")                             ;//1
@@ -54,6 +55,11 @@ HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractL
    m_lCategories << tr("Last year")                             ;//22
    m_lCategories << tr("Very long time ago")                    ;//23
    m_lCategories << tr("Never")                                 ;//24
+}
+
+HistoryTimeCategoryModel::~HistoryTimeCategoryModel()
+{
+   delete d_ptr;
 }
 
 QHash<int,QByteArray> HistoryTimeCategoryModel::roleNames() const

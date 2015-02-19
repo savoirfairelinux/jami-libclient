@@ -33,7 +33,7 @@ class AccountModelPrivate : public QObject
    friend class AvailableAccountModel;
 public:
    //Constructor
-   AccountModelPrivate(AccountModel* parent);
+   explicit AccountModelPrivate(AccountModel* parent);
    void init();
 
    //Helpers

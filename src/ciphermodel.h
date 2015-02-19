@@ -56,7 +56,7 @@ private:
    virtual ~CipherModel();
 
    CipherModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(CipherModel);
+   Q_DECLARE_PRIVATE(CipherModel)
 
 };
 Q_DECLARE_METATYPE(CipherModel*)

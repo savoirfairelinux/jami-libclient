@@ -26,6 +26,14 @@
  */
 namespace UserActions {
 
+bool accept(const QList<Call*> calls);
+bool hangup(const QList<Call*> calls);
+bool refuse(const QList<Call*> calls);
+bool hold(const QList<Call*> calls);
+bool unhold(const QList<Call*> calls);
+bool transfer(const QList<Call*> calls);
+bool record(const QList<Call*> calls);
+
 bool accept(const QList<Call*> calls)
 {
    bool ret = true;
@@ -175,6 +183,6 @@ bool record(const QList<Call*> calls)
    return ret;
 }
 
-}; //namespace UserActions
+} //namespace UserActions
 
 #endif

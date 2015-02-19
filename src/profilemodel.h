@@ -61,7 +61,7 @@ public:
 
 private:
    ProfileModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(ProfileModel);
+   Q_DECLARE_PRIVATE(ProfileModel)
 
    //Singleton
    static ProfileModel* m_spInstance;

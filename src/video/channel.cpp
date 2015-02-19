@@ -24,7 +24,8 @@
 #include "../private/videochannel_p.h"
 #include "../private/videodevice_p.h"
 
-VideoChannelPrivate::VideoChannelPrivate() : m_pCurrentResolution(nullptr)
+VideoChannelPrivate::VideoChannelPrivate() : m_pCurrentResolution(nullptr),
+m_pDevice(nullptr)
 {
 }
 

@@ -127,7 +127,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1)
+   m_Index(-1),m_hasType(false)
 {}
 
 ///Constructor

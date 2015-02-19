@@ -35,7 +35,7 @@ public:
    };
 
    //Constructor
-   CertificateModel(QObject* parent = nullptr);
+   explicit CertificateModel(QObject* parent = nullptr);
    virtual ~CertificateModel();
 
    //Model implementation
@@ -57,7 +57,7 @@ public:
 
 private:
    CertificateModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(CertificateModel);
+   Q_DECLARE_PRIVATE(CertificateModel)
 };
 
 #endif

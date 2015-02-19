@@ -73,7 +73,7 @@ public:
    };
    Q_ENUMS(Action)
 
-   Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel);
+   Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel)
 
    //Constructor
    explicit UserActionModel(Call* parent);

@@ -132,7 +132,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
                return needAcc;
             case NumberCompletionModel::Role::ACCOUNT:
                if (needAcc)
-                  return QVariant::fromValue(const_cast<Account*>(n->account()));
+                  return QVariant::fromValue(n->account());
                break;
          };
          break;

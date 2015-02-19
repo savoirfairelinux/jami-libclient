@@ -72,7 +72,7 @@ private:
    virtual ~AccountStatusModel();
 
    AccountStatusModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(AccountStatusModel);
+   Q_DECLARE_PRIVATE(AccountStatusModel)
 
 };
 Q_DECLARE_METATYPE(AccountStatusModel*)

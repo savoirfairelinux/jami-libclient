@@ -410,7 +410,7 @@ QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int rol
          cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
          break;
       case Call::Role::PhoneNu:
-         return QVariant::fromValue(const_cast<ContactMethod*>(number->m_pNumber));
+         return QVariant::fromValue(number->m_pNumber);
       case Call::Role::IsBookmark:
          return true;
       case Call::Role::Filter:

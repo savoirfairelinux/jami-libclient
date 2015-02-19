@@ -28,7 +28,7 @@ public:
 };
 
 CategorizedCompositeNodePrivate::CategorizedCompositeNodePrivate():
-m_DropState(0),m_pParent(nullptr),m_HoverState(0)
+m_DropState(0),m_pParent(nullptr),m_HoverState(0),m_type(CategorizedCompositeNode::Type::CALL)
 {
    
 }

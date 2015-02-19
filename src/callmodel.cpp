@@ -433,7 +433,7 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
    Call* call = addCall(CallPrivate::buildIncomingCall(callId));
    //Call without account is not possible
-   if (dynamic_cast<Account*>(call->account())) {
+   if (call->account()) {
       if (call->account()->isAutoAnswer()) {
          call->performAction(Call::Action::ACCEPT);
       }
@@ -476,7 +476,7 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
    InternalStruct* internal = m_sPrivateCallList_call[call];
 
    if (!internal || !call) {
-      qDebug() << "Cannot remove " << internal->call_real << ": call not found";
+      qDebug() << "Cannot remove " << (internal?internal->call_real->id():"nullptr") << ": call not found";
       return;
    }
 
@@ -1050,7 +1050,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
    }
    Call* conf = confInt->call_real;
    qDebug() << "Changing conference state" << conf << confID;
-   if (conf && dynamic_cast<Call*>(conf)) { //Prevent a race condition between call and conference
+   if (conf && conf) { //Prevent a race condition between call and conference
       if (!q_ptr->getIndex(conf).isValid()) {
          qWarning() << "The conference item does not exist";
          return;

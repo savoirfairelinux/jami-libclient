@@ -39,7 +39,8 @@ private:
    QString* q_ptr;
 };
 
-URIPrivate::URIPrivate(QString* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri)
+URIPrivate::URIPrivate(QString* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri),
+m_hasChevrons(false)
 {
 }
 

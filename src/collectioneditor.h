@@ -38,10 +38,10 @@ template<typename T> class CollectionMediator;
 /**
  * This is the class that does the actual work. This class
  * represent a delegate of CollectionInterface. It is usually
- * recommanded to implement this as a private class in the .cpp
+ * recommended to implement this as a private class in the .cpp
  * that implement the CollectionInterface.
  *
- * The rational behind this inversion of responsability layer
+ * The rational behind this inversion of responsibility layer
  * is to avoid using a template class for CollectionInterface.
  * This would add obstable when implementing objects using it due
  * to C++11 lack of generic template polymorphism. A base class
@@ -51,7 +51,7 @@ template<typename T>
 class LIB_EXPORT CollectionEditor : public CollectionEditorBase {
    friend class CollectionInterface;
 public:
-   CollectionEditor(CollectionMediator<T>* m);
+   explicit CollectionEditor(CollectionMediator<T>* m);
    virtual ~CollectionEditor();
 
    CollectionMediator<T>* mediator() const;

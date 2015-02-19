@@ -270,7 +270,8 @@ ProfileModel* ProfileModel::m_spInstance = nullptr;
 
 template<typename T>
 ProfileContentBackend::ProfileContentBackend(CollectionMediator<T>* mediator) :
-  CollectionInterface(new ProfileEditor(mediator),nullptr), m_pDefault(nullptr)
+  CollectionInterface(new ProfileEditor(mediator),nullptr), m_pDefault(nullptr),
+  m_needSaving(false)
 {
    m_pEditor = static_cast<ProfileEditor*>(editor<Person>());
 }
@@ -616,7 +617,7 @@ private:
    ProfileModel* q_ptr;
 };
 
-ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent), q_ptr(parent)
+ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent), q_ptr(parent),m_pProfileBackend(nullptr)
 {
 
 }
@@ -634,7 +635,7 @@ ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
 
    //Creating the profile contact backend
-   d_ptr->m_pProfileBackend = static_cast<ProfileContentBackend*>(PersonModel::instance()->addBackend<ProfileContentBackend>(LoadOptions::FORCE_ENABLED));
+   d_ptr->m_pProfileBackend = PersonModel::instance()->addBackend<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
 
    //Once LibRingClient is ready, start listening
    QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));
@@ -781,7 +782,7 @@ QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
    for (const QModelIndex &index : indexes) {
       Node* current = static_cast<Node*>(index.internalPointer());
 
-      if (index.isValid() && current->parent && current) {
+      if (current && index.isValid() && current->parent) {
          mMimeData->setData(RingMimes::ACCOUNT , current->account->id());
       }
       else if (index.isValid() && current) {
@@ -822,7 +823,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
 
       const QByteArray accountId = data->data(RingMimes::ACCOUNT);
       Node* newProfile = nullptr;
-      int destIdx, indexOfAccountToMove = -1; // Where to insert in account list of profile
+      int destIdx = 0, indexOfAccountToMove = -1; // Where to insert in account list of profile
 
       if(!parent.isValid() && row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size()) {
          qDebug() << "Dropping on profile title";

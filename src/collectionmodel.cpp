@@ -203,7 +203,7 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
       else {
          item = new CollectionModelPrivate::ProxyItem();
          item->parent = parentItem;
-         item->backend = static_cast<CollectionInterface*>(parentItem->backend->children()[row]);
+         item->backend = parentItem->backend->children()[row];
          parentItem->m_Children << item;
       }
       item->row    = row;

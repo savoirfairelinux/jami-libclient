@@ -53,7 +53,7 @@ public:
    friend class TlsMethodModel;
 
    //Constructor
-   AccountPrivate(Account* acc);
+   explicit AccountPrivate(Account* acc);
 
    //Attributes
    QByteArray                 m_AccountId                ;

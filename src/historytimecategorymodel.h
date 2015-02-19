@@ -61,6 +61,7 @@ public:
 
    //Constructor
    explicit HistoryTimeCategoryModel(QObject* parent = nullptr);
+   virtual ~HistoryTimeCategoryModel();
 
    //Abstract model member
    virtual QVariant      data    (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;

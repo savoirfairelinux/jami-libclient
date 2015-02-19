@@ -52,6 +52,7 @@ public:
    static Video::SourcesModel* instance();
 private:
    explicit SourcesModel();
+   virtual ~SourcesModel();
 
    Video::SourcesModelPrivate* d_ptr;
    static Video::SourcesModel* m_spInstance;

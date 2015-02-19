@@ -34,7 +34,7 @@ template<typename T> class CollectionMediator;
 template<typename T> class ItemBase;
 
 /**
- * This is the iterface that must be implemented by each item backends to
+ * This is the interface that must be implemented by each item backends to
  * be used by a CollectionManager.
  *
  * The class need to be extended with a template constructor:

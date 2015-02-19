@@ -65,7 +65,7 @@ public:
 
 private:
    TlsMethodModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(TlsMethodModel);
+   Q_DECLARE_PRIVATE(TlsMethodModel)
 
 };
 Q_DECLARE_METATYPE(TlsMethodModel*)

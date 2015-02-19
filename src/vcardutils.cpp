@@ -49,16 +49,16 @@ void VCardUtils::startVCard(const QString& version)
 
 void VCardUtils::addProperty(const char* prop, const QString& value)
 {
-   if(value.isEmpty() || value == ";")
+   if (value.isEmpty() || value == QString(';'))
       return;
-   m_vCard << QString(QString::fromUtf8(prop) + ":" + value);
+   m_vCard << (QString::fromUtf8(prop) + ':' + value);
 }
 
 void VCardUtils::addProperty(const QString& prop, const QString& value)
 {
-   if(value.isEmpty() || value == ";")
+   if (value.isEmpty() || value == QString(';'))
       return;
-   m_vCard << QString(prop + ":" + value);
+   m_vCard << (prop + ':' + value);
 }
 
 void VCardUtils::addEmail(const QString& type, const QString& email)
@@ -101,12 +101,12 @@ void VCardUtils::addContactMethod(const QString& type, const QString& num)
 
 void VCardUtils::addPhoto(const QByteArray img)
 {
-   m_vCard << QString(QString::fromUtf8(Property::PHOTO) +
-                      QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-                      "ENCODING=BASE64" +
-                      QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-                      "TYPE=PNG:" +
-                      img.toBase64());
+   m_vCard << (QString::fromUtf8(Property::PHOTO) +
+               QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+               "ENCODING=BASE64" +
+               QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+               "TYPE=PNG:" +
+               img.toBase64());
 }
 
 const QByteArray VCardUtils::endVCard()

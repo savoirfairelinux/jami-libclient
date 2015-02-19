@@ -156,7 +156,7 @@ QString PersonPrivate::filterString()
    }
 
    //Strip non essential characters like accents from the filter string
-   foreach(const QChar& char2,QString(m_FormattedName+'\n'+m_Organization+'\n'+m_Group+'\n'+
+   foreach(const QChar& char2,(m_FormattedName+'\n'+m_Organization+'\n'+m_Group+'\n'+
       m_Department+'\n'+m_PreferredEmail).toLower().normalized(QString::NormalizationForm_KD) ) {
       if (!char2.combiningClass())
          m_CachedFilterString += char2;
@@ -202,7 +202,7 @@ void PersonPrivate::phoneNumberCountAboutToChange(int n,int o)
 }
 
 PersonPrivate::PersonPrivate(Person* contact) :
-   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true)
+   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false)
 {
 }
 
@@ -530,7 +530,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
    VCardUtils* maker = new VCardUtils();
    maker->startVCard("2.1");
    maker->addProperty(VCardUtils::Property::UID, uid());
-   maker->addProperty(VCardUtils::Property::NAME, QString(secondName()
+   maker->addProperty(VCardUtils::Property::NAME, (secondName()
                                                    + VCardUtils::Delimiter::SEPARATOR_TOKEN
                                                    + firstName()));
    maker->addProperty(VCardUtils::Property::FORMATTED_NAME, formattedName());

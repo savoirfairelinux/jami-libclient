@@ -61,6 +61,11 @@ d_ptr(new Video::SourcesModelPrivate())
    d_ptr->m_Display.rect = QRect(0,0,0,0);
 }
 
+Video::SourcesModel::~SourcesModel()
+{
+   delete d_ptr;
+}
+
 Video::SourcesModel* Video::SourcesModel::instance()
 {
    if (!m_spInstance)

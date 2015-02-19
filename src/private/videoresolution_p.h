@@ -21,7 +21,7 @@
 namespace Video {
    class Rate;
    class Channel;
-};
+}
 
 class VideoResolutionPrivate
 {

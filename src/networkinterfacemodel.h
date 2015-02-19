@@ -49,7 +49,7 @@ private:
    static NetworkInterfaceModel* m_spInstance;
 
    NetworkInterfaceModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(NetworkInterfaceModel);
+   Q_DECLARE_PRIVATE(NetworkInterfaceModel)
 
 };
 Q_DECLARE_METATYPE(NetworkInterfaceModel*)

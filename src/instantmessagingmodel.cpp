@@ -24,7 +24,8 @@
 #include "contactmethod.h"
 #include "private/instantmessagingmodel_p.h"
 
-InstantMessagingModelPrivate::InstantMessagingModelPrivate(InstantMessagingModel* parent) : QObject(parent), q_ptr(parent)
+InstantMessagingModelPrivate::InstantMessagingModelPrivate(InstantMessagingModel* parent) : QObject(parent), q_ptr(parent),
+m_pCall(nullptr)
 {
 
 }

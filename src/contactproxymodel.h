@@ -41,12 +41,11 @@ public:
    friend class PersonModel;
    friend class ContactTreeNode;
    friend class ContactTreeBinder;
-   explicit ContactProxyModel(int role = Qt::DisplayRole, bool showAll = false);
+   explicit ContactProxyModel(int role = Qt::DisplayRole);
    virtual ~ContactProxyModel();
 
    //Setters
    void setRole(int role);
-   void setShowAll(bool showAll);
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;

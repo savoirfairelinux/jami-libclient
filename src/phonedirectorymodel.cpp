@@ -201,14 +201,14 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
       case PhoneDirectoryModelPrivate::Columns::POPULARITY_INDEX:
          switch (role) {
             case Qt::DisplayRole:
-               return (int)number->popularityIndex();
+               return number->popularityIndex();
                break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::BOOKMARED:
          switch (role) {
             case Qt::CheckStateRole:
-               return (bool)number->isBookmarked()?Qt::Checked:Qt::Unchecked;
+               return number->isBookmarked()?Qt::Checked:Qt::Unchecked;
                break;
          }
          break;

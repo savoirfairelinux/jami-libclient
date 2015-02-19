@@ -92,7 +92,6 @@ public:
    QVector<ContactTopLevelItem*>       m_lCategoryCounter ;
    QHash<QString,ContactTopLevelItem*> m_hCategories      ;
    int                          m_Role             ;
-   bool                         m_ShowAll          ;
    QStringList                  m_lMimes           ;
 
    //Helper
@@ -162,7 +161,6 @@ void ContactTreeBinder::slotContactMethodCountChanged(int count, int oldCount)
 {
    const QModelIndex idx = m_pModel->index(m_pTreeNode->m_Index,0,m_pModel->index(m_pTreeNode->m_pParent3->m_Index,0));
    if (count > oldCount) {
-      const QModelIndex lastPhoneIdx = m_pModel->index(oldCount-1,0,idx);
       m_pModel->beginInsertRows(idx,oldCount,count-1);
       m_pModel->endInsertRows();
    }
@@ -180,17 +178,16 @@ void ContactTreeBinder::slotContactMethodCountAboutToChange(int count, int oldCo
 }
 
 ContactProxyModelPrivate::ContactProxyModelPrivate(ContactProxyModel* parent) : QObject(parent), q_ptr(parent),
-m_lCategoryCounter()
+m_lCategoryCounter(),m_Role(Qt::DisplayRole)
 {
    
 }
 
 //
-ContactProxyModel::ContactProxyModel(int role, bool showAll) : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new ContactProxyModelPrivate(this))
+ContactProxyModel::ContactProxyModel(int role) : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new ContactProxyModelPrivate(this))
 {
    setObjectName("ContactProxyModel");
    d_ptr->m_Role    = role;
-   d_ptr->m_ShowAll = showAll;
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
    connect(PersonModel::instance(),SIGNAL(reloaded()),d_ptr.data(),SLOT(reloadCategories()));
@@ -586,7 +583,7 @@ QString ContactProxyModelPrivate::category(const Person* ct) const {
       default:
          cat = ct->formattedName();
    }
-   if (cat.size() && !m_ShowAll)
+   if (cat.size())
       cat = cat[0].toUpper();
    return cat;
 }
@@ -595,14 +592,6 @@ void ContactProxyModel::setRole(int role)
 {
    if (role != d_ptr->m_Role) {
       d_ptr->m_Role = role;
-      d_ptr->reloadCategories();
-   }
-}
-
-void ContactProxyModel::setShowAll(bool showAll)
-{
-   if (showAll != d_ptr->m_ShowAll) {
-      d_ptr->m_ShowAll = showAll;
       d_ptr->reloadCategories();
    }
 }

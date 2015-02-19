@@ -294,7 +294,7 @@ void AccountModelPrivate::slotAccountPresenceEnabledChanged(bool state)
    emit q_ptr->presenceEnabledChanged(q_ptr->isPresenceEnabled());
 }
 
-///Emited when some runtime details changes
+///Emitted when some runtime details changes
 void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details)
 {
    Account* a = q_ptr->getById(accountId.toLatin1());
