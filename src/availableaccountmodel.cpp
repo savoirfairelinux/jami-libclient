@@ -21,6 +21,9 @@
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QCoreApplication>
 
+//DRing
+#include <account_const.h>
+
 //Ring
 #include "private/accountmodel_p.h"
 
@@ -100,7 +103,7 @@ Account* AvailableAccountModel::currentDefaultAccount()
    else {
       Account* a = AvailableAccountModelPrivate::firstRegisteredAccount();
       if (!a)
-         a = AccountModel::instance()->getById(Account::ProtocolName::IP2IP);
+         a = AccountModel::instance()->getById(DRing::Account::ProtocolNames::IP2IP);
 
       AvailableAccountModelPrivate::setPriorAccount(a);
       return a;

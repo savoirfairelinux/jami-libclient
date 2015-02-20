@@ -111,7 +111,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TlsNegotiationTimeoutSec    ) ,QByteArray("tlsNegotiationTimeoutSec"      ));
       roles.insert(CAST(Account::Role::TlsNegotiationTimeoutMsec   ) ,QByteArray("tlsNegotiationTimeoutMsec"     ));
       roles.insert(CAST(Account::Role::LocalPort                   ) ,QByteArray("localPort"                     ));
-      roles.insert(CAST(Account::Role::TlsListenerPort             ) ,QByteArray("tlsListenerPort"               ));
+      roles.insert(CAST(Account::Role::BootstrapPort               ) ,QByteArray("bootstrapPort"                 ));
       roles.insert(CAST(Account::Role::PublishedPort               ) ,QByteArray("publishedPort"                 ));
       roles.insert(CAST(Account::Role::Enabled                     ) ,QByteArray("enabled"                       ));
       roles.insert(CAST(Account::Role::AutoAnswer                  ) ,QByteArray("autoAnswer"                    ));
@@ -143,7 +143,7 @@ Account* AccountModel::ip2ip() const
 {
    if (!d_ptr->m_pIP2IP) {
       foreach(Account* a, d_ptr->m_lAccounts) {
-         if (a->id() == Account::ProtocolName::IP2IP)
+         if (a->id() == DRing::Account::ProtocolNames::IP2IP)
             d_ptr->m_pIP2IP = a;
       }
    }
@@ -177,6 +177,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
       return Account::RegistrationState::TRYING;
 
    else if( st == DRing::Account::States::ERROR
+        ||  st == DRing::Account::States::ERROR_GENERIC
         ||  st == DRing::Account::States::ERROR_AUTH
         ||  st == DRing::Account::States::ERROR_NETWORK
         ||  st == DRing::Account::States::ERROR_HOST

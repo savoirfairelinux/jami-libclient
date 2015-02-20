@@ -65,6 +65,7 @@ public:
    QString                    m_LastTransportMessage     ;
    Account::RegistrationState m_RegistrationState        ;
    QString                    m_LastSipRegistrationStatus;
+   unsigned short             m_UseDefaultPort           ;
 
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );

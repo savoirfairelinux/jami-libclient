@@ -27,6 +27,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 
+//DRing
+#include <account_const.h>
 
 //Ring library
 #include "dbus/callmanager.h"
@@ -406,7 +408,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    if (accId.isEmpty()) {
       qWarning() << "An history call has an invalid account identifier";
-      accId = Account::ProtocolName::IP2IP;
+      accId = DRing::Account::ProtocolNames::IP2IP;
    }
 
    //Try to assiciate a contact now, the real contact object is probably not

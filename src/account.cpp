@@ -70,7 +70,8 @@ m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
-m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED)
+m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
+m_UseDefaultPort(false)
 {
    Q_Q(Account);
 }
@@ -534,9 +535,9 @@ QString Account::tlsPassword() const
 }
 
 ///Return the account TLS port
-int Account::tlsListenerPort() const
+int Account::bootstrapPort() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PORT).toInt();
 }
 
 ///Return the account TLS certificate authority list file
@@ -659,7 +660,19 @@ QString Account::lastTransportErrorMessage() const
 ///Return the account local port
 int Account::localPort() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_PORT).toInt();
+   switch (protocol()) {
+      case Account::Protocol::SIP:
+      case Account::Protocol::IAX:
+         if (isTlsEnabled())
+            return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
+         else
+            return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_PORT).toInt();
+      case Account::Protocol::DHT:
+         return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
+      case Account::Protocol::COUNT__:
+         break;
+   };
+   return 0;
 }
 
 ///Return the number of voicemails
@@ -684,10 +697,12 @@ Account::RegistrationState Account::registrationState() const
 Account::Protocol Account::protocol() const
 {
    const QString str = d_ptr->accountDetail(DRing::Account::ConfProperties::TYPE);
-   if (str.isEmpty() || str == Account::ProtocolName::SIP)
+   if (str.isEmpty() || str == DRing::Account::ProtocolNames::SIP)
       return Account::Protocol::SIP;
-   else if (str == Account::ProtocolName::IAX)
+   else if (str == DRing::Account::ProtocolNames::IAX)
       return Account::Protocol::IAX;
+   else if (str == DRing::Account::ProtocolNames::DHT)
+      return Account::Protocol::DHT;
    qDebug() << "Warning: unhandled protocol name" << str << ", defaulting to SIP";
    return Account::Protocol::SIP;
 }
@@ -754,6 +769,11 @@ QString Account::userAgent() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USER_AGENT);
 }
 
+bool Account::useDefaultPort() const
+{
+   return d_ptr->m_UseDefaultPort;
+}
+
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
 {
@@ -808,8 +828,8 @@ QVariant Account::roleData(int role) const
          return tlsNegotiationTimeoutSec();
       case CAST(Account::Role::LocalPort):
          return localPort();
-      case CAST(Account::Role::TlsListenerPort):
-         return tlsListenerPort();
+      case CAST(Account::Role::BootstrapPort):
+         return bootstrapPort();
       case CAST(Account::Role::PublishedPort):
          return publishedPort();
       case CAST(Account::Role::Enabled):
@@ -918,13 +938,13 @@ void Account::setProtocol(Account::Protocol proto)
    //TODO prevent this if the protocol has been saved
    switch (proto) {
       case Account::Protocol::SIP:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::SIP);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::SIP);
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::IAX);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::IAX);
          break;
       case Account::Protocol::DHT:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,Account::ProtocolName::DHT);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::DHT);
          break;
       case Account::Protocol::COUNT__:
          break;
@@ -1076,13 +1096,24 @@ void Account::setTlsNegotiationTimeoutSec(int detail)
 ///Set the local port for SIP/IAX communications
 void Account::setLocalPort(unsigned short detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
+   switch (protocol()) {
+      case Account::Protocol::SIP:
+      case Account::Protocol::IAX:
+         if (isTlsEnabled())
+            d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
+         else
+            d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
+      case Account::Protocol::DHT:
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
+      case Account::Protocol::COUNT__:
+         break;
+   };
 }
 
 ///Set the TLS listener port (0-2^16)
-void Account::setTlsListenerPort(unsigned short detail)
+void Account::setBootstrapPort(unsigned short detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
@@ -1241,6 +1272,24 @@ void Account::setUserAgent(const QString& agent)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::USER_AGENT, agent);
 }
 
+void Account::setUseDefaultPort(bool value)
+{
+   if (value) {
+      switch (protocol()) {
+         case Account::Protocol::SIP:
+         case Account::Protocol::IAX:
+            setLocalPort(5060);
+            break;
+         case Account::Protocol::DHT:
+            setLocalPort(5061);
+            break;
+         case Account::Protocol::COUNT__:
+            break;
+      };
+   }
+   d_ptr->m_UseDefaultPort = value;
+}
+
 ///Set the DTMF type
 void Account::setDTMFType(DtmfType type)
 {
@@ -1325,8 +1374,8 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::LocalPort):
          setLocalPort(value.toInt());
          break;
-      case CAST(Account::Role::TlsListenerPort):
-         setTlsListenerPort(value.toInt());
+      case CAST(Account::Role::BootstrapPort):
+         setBootstrapPort(value.toInt());
          break;
       case CAST(Account::Role::PublishedPort):
          setPublishedPort(value.toInt());

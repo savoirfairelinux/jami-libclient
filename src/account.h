@@ -97,7 +97,7 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
    Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
    Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
-   Q_PROPERTY(int            tlsListenerPort              READ tlsListenerPort               WRITE setTlsListenerPort             )
+   Q_PROPERTY(int            bootstrapPort                READ bootstrapPort                 WRITE setBootstrapPort               )
    Q_PROPERTY(int            publishedPort                READ publishedPort                 WRITE setPublishedPort               )
    Q_PROPERTY(bool           enabled                      READ isEnabled                     WRITE setEnabled                     )
    Q_PROPERTY(bool           autoAnswer                   READ isAutoAnswer                  WRITE setAutoAnswer                  )
@@ -127,6 +127,7 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
    Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
+   Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
 
    public:
@@ -182,7 +183,7 @@ class LIB_EXPORT Account : public QObject {
          TlsNegotiationTimeoutSec    = 119,
          TlsNegotiationTimeoutMsec   = 120,
          LocalPort                   = 121,
-         TlsListenerPort             = 122,
+         BootstrapPort               = 122,
          PublishedPort               = 123,
          Enabled                     = 124,
          AutoAnswer                  = 125,
@@ -205,14 +206,7 @@ class LIB_EXPORT Account : public QObject {
          PresenceStatus              = 142,
          PresenceMessage             = 143,
          RegistrationState           = 144,
-      };
-
-      class ProtocolName {
-      public:
-         constexpr static const char* SIP   = "SIP"  ;
-         constexpr static const char* IAX   = "IAX"  ;
-         constexpr static const char* IP2IP = "IP2IP";
-         constexpr static const char* DHT   = "DHT"  ;
+         UseDefaultPort              = 145,
       };
 
       enum class Protocol {
@@ -271,7 +265,7 @@ class LIB_EXPORT Account : public QObject {
       QString publishedAddress             () const;
       int     publishedPort                () const;
       QString tlsPassword                  () const;
-      int     tlsListenerPort              () const;
+      int     bootstrapPort                () const;
       Certificate* tlsCaListCertificate    () const;
       Certificate* tlsCertificate          () const;
       Certificate* tlsPrivateKeyCertificate() const;
@@ -302,6 +296,7 @@ class LIB_EXPORT Account : public QObject {
       int     lastTransportErrorCode       () const;
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
+      bool    useDefaultPort               () const;
       RegistrationState  registrationState () const;
       Account::Protocol      protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
@@ -332,7 +327,7 @@ class LIB_EXPORT Account : public QObject {
       void setRegistrationExpire            (int  detail);
       void setTlsNegotiationTimeoutSec      (int  detail);
       void setLocalPort                     (unsigned short detail);
-      void setTlsListenerPort               (unsigned short detail);
+      void setBootstrapPort                 (unsigned short detail);
       void setPublishedPort                 (unsigned short detail);
       void setAutoAnswer                    (bool detail);
       void setTlsVerifyServer               (bool detail);
@@ -356,6 +351,7 @@ class LIB_EXPORT Account : public QObject {
       void setVideoPortMin                  (int port   );
       void setDTMFType                      (DtmfType type);
       void setUserAgent                     (const QString& agent);
+      void setUseDefaultPort                (bool value );
 
       void setRoleData(int role, const QVariant& value);
 
