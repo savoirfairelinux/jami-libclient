@@ -40,6 +40,7 @@
 #include "private/accountmodel_p.h"
 #include "credentialmodel.h"
 #include "ciphermodel.h"
+#include "protocolmodel.h"
 #include "accountstatusmodel.h"
 #include "audio/codecmodel.h"
 #include "video/codecmodel2.h"
@@ -71,7 +72,7 @@ m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false)
+m_UseDefaultPort(false),m_pProtocolModel(nullptr)
 {
    Q_Q(Account);
 }
@@ -392,6 +393,14 @@ TlsMethodModel* Account::tlsMethodModel() const
    return d_ptr->m_pTlsMethodModel;
 }
 
+ProtocolModel* Account::protocolModel() const
+{
+   if (!d_ptr->m_pProtocolModel ) {
+      d_ptr->m_pProtocolModel  = new ProtocolModel(const_cast<Account*>(this));
+   }
+   return d_ptr->m_pProtocolModel;
+}
+
 void Account::setAlias(const QString& detail)
 {
    const bool accChanged = detail != alias();
@@ -447,7 +456,7 @@ QString Account::password() const
       case Account::Protocol::IAX:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
          break;
-      case Account::Protocol::DHT:
+      case Account::Protocol::RING:
          return tlsPassword();
          break;
       case Account::Protocol::COUNT__:
@@ -667,7 +676,7 @@ int Account::localPort() const
             return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
          else
             return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_PORT).toInt();
-      case Account::Protocol::DHT:
+      case Account::Protocol::RING:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
       case Account::Protocol::COUNT__:
          break;
@@ -697,12 +706,13 @@ Account::RegistrationState Account::registrationState() const
 Account::Protocol Account::protocol() const
 {
    const QString str = d_ptr->accountDetail(DRing::Account::ConfProperties::TYPE);
+
    if (str.isEmpty() || str == DRing::Account::ProtocolNames::SIP)
       return Account::Protocol::SIP;
    else if (str == DRing::Account::ProtocolNames::IAX)
       return Account::Protocol::IAX;
-   else if (str == DRing::Account::ProtocolNames::DHT)
-      return Account::Protocol::DHT;
+   else if (str == DRing::Account::ProtocolNames::RING)
+      return Account::Protocol::RING;
    qDebug() << "Warning: unhandled protocol name" << str << ", defaulting to SIP";
    return Account::Protocol::SIP;
 }
@@ -938,13 +948,13 @@ void Account::setProtocol(Account::Protocol proto)
    //TODO prevent this if the protocol has been saved
    switch (proto) {
       case Account::Protocol::SIP:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::SIP);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::SIP );
          break;
       case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::IAX);
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::IAX );
          break;
-      case Account::Protocol::DHT:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::DHT);
+      case Account::Protocol::RING:
+         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::RING);
          break;
       case Account::Protocol::COUNT__:
          break;
@@ -993,7 +1003,7 @@ void Account::setPassword(const QString& detail)
       case Account::Protocol::IAX:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::PASSWORD, detail);
          break;
-      case Account::Protocol::DHT:
+      case Account::Protocol::RING:
          setTlsPassword(detail);
       case Account::Protocol::COUNT__:
          break;
@@ -1103,7 +1113,7 @@ void Account::setLocalPort(unsigned short detail)
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
          else
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
-      case Account::Protocol::DHT:
+      case Account::Protocol::RING:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
       case Account::Protocol::COUNT__:
          break;
@@ -1280,7 +1290,7 @@ void Account::setUseDefaultPort(bool value)
          case Account::Protocol::IAX:
             setLocalPort(5060);
             break;
-         case Account::Protocol::DHT:
+         case Account::Protocol::RING:
             setLocalPort(5061);
             break;
          case Account::Protocol::COUNT__:

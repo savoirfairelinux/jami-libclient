@@ -27,6 +27,7 @@ class ContactMethod;
 class CipherModel;
 class AccountStatusModel;
 class TlsMethodModel;
+class ProtocolModel;
 
 typedef void (AccountPrivate::*account_function)();
 
@@ -105,6 +106,7 @@ public:
    AccountStatusModel*       m_pStatusModel     ;
    SecurityValidationModel*  m_pSecurityValidationModel;
    TlsMethodModel*           m_pTlsMethodModel  ;
+   ProtocolModel*            m_pProtocolModel   ;
    Account::EditState m_CurrentState;
 
    // State machines

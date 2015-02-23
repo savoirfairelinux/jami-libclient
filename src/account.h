@@ -38,6 +38,7 @@ class SecurityValidationModel;
 class Certificate            ;
 class CipherModel            ;
 class AccountStatusModel     ;
+class ProtocolModel          ;
 
 namespace Audio {
    class CodecModel;
@@ -76,6 +77,7 @@ class LIB_EXPORT Account : public QObject {
    friend class TlsMethodModel;
 
    //Properties
+   Q_PROPERTY(QByteArray     id                           READ id                                                                 )
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
@@ -210,9 +212,9 @@ class LIB_EXPORT Account : public QObject {
       };
 
       enum class Protocol {
-         SIP = 0,
-         IAX = 1,
-         DHT = 2,
+         SIP  = 0,
+         IAX  = 1,
+         RING = 2,
          COUNT__,
       };
       Q_ENUMS(Protocol)
@@ -243,6 +245,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE AccountStatusModel*      statusModel            () const;
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
       Q_INVOKABLE TlsMethodModel*          tlsMethodModel         () const;
+      Q_INVOKABLE ProtocolModel*           protocolModel          () const;
 
       //Getters
       QString hostname                     () const;
@@ -298,7 +301,7 @@ class LIB_EXPORT Account : public QObject {
       QString userAgent                    () const;
       bool    useDefaultPort               () const;
       RegistrationState  registrationState () const;
-      Account::Protocol      protocol      () const;
+      Protocol               protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
       QVariant roleData            (int role) const;
 

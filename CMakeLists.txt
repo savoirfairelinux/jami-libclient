@@ -190,6 +190,7 @@ SET( libringclient_LIB_SRCS
   src/numbercategorymodel.cpp
   src/keyexchangemodel.cpp
   src/tlsmethodmodel.cpp
+  src/protocolmodel.cpp
   src/numbercompletionmodel.cpp
   src/profilemodel.cpp
   src/ringtonemodel.cpp
@@ -270,6 +271,7 @@ SET( libringclient_LIB_HDRS
   src/numbercategorymodel.h
   src/keyexchangemodel.h
   src/tlsmethodmodel.h
+  src/protocolmodel.h
   src/numbercompletionmodel.h
   src/profilemodel.h
   src/numbercategory.h
