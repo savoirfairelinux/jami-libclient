@@ -20,7 +20,7 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QSize>
-#include "../typedefs.h"
+#include <typedefs.h>
 
 namespace Video {
    class Rate;

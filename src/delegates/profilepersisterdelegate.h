@@ -19,7 +19,7 @@
 #ifndef PROFILEPERSISTERVISITOR_H
 #define PROFILEPERSISTERVISITOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 //Qt
 #include <QtCore/QVariant>

@@ -27,7 +27,6 @@
 class QString;
 
 //Ring
-#include "video/codecmodel2.h"
 #include "keyexchangemodel.h"
 #include "tlsmethodmodel.h"
 #include "typedefs.h"
@@ -39,13 +38,7 @@ class Certificate            ;
 class CipherModel            ;
 class AccountStatusModel     ;
 class ProtocolModel          ;
-
-namespace Audio {
-   class CodecModel;
-}
-namespace Video {
-   class CodecModel2;
-}
+class CodecModel             ;
 
 //Private
 class AccountPrivate;
@@ -237,8 +230,7 @@ class LIB_EXPORT Account : public QObject {
       virtual bool     isLoaded        () const;
 
       Q_INVOKABLE CredentialModel*         credentialsModel       () const;
-      Q_INVOKABLE Audio::CodecModel*       audioCodecModel        () const;
-      Q_INVOKABLE Video::CodecModel2*      videoCodecModel        () const;
+      Q_INVOKABLE CodecModel*              codecModel             () const;
       Q_INVOKABLE RingToneModel*           ringToneModel          () const;
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
       Q_INVOKABLE CipherModel*             cipherModel            () const;
@@ -363,9 +355,9 @@ class LIB_EXPORT Account : public QObject {
 
       //Mutator
       Q_INVOKABLE void saveCredentials  ();
-      Q_INVOKABLE void saveAudioCodecs  ();
+      Q_INVOKABLE void saveCodecs       ();
       Q_INVOKABLE void reloadCredentials();
-      Q_INVOKABLE void reloadAudioCodecs();
+      Q_INVOKABLE void reloadCodecs     ();
 
 
    public Q_SLOTS:

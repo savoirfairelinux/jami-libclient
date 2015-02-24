@@ -18,7 +18,7 @@
 #ifndef VIDEODEVICEMODEL_H
 #define VIDEODEVICEMODEL_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QUrl>
 #include <QtCore/QRect>

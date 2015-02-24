@@ -19,7 +19,7 @@
 #ifndef PHONENUMBERSELECTOR_H
 #define PHONENUMBERSELECTOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 #include "../person.h"
 
 class ContactMethod;

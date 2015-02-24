@@ -18,7 +18,7 @@
 #ifndef VIDEORATE_H
 #define VIDEORATE_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 //Ring
 namespace Video {

@@ -18,7 +18,7 @@
 #ifndef PRESENCESERIALIZATIONVISITOR_H
 #define PRESENCESERIALIZATIONVISITOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 class AbstractBookmarkModel;
 class CollectionInterface;

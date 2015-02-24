@@ -21,7 +21,7 @@
 #include <QtCore/QAbstractListModel>
 
 //Ring
-#include "../typedefs.h"
+#include <typedefs.h>
 
 
 namespace Audio {

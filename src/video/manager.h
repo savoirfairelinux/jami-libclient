@@ -18,7 +18,7 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 //Base
-#include "../typedefs.h"
+#include <typedefs.h>
 #include <QtCore/QThread>
 
 //Qt

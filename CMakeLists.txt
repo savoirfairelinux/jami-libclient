@@ -170,7 +170,6 @@ SET( libringclient_LIB_SRCS
   src/video/rate.cpp
   src/video/device.cpp
   src/video/renderer.cpp
-  src/video/codec.cpp
   src/certificate.cpp
 
   #Models
@@ -202,14 +201,13 @@ SET( libringclient_LIB_SRCS
   src/certificatemodel.cpp
   src/ciphermodel.cpp
   src/accountstatusmodel.cpp
+  src/codecmodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcesmodel.cpp
-  src/video/codecmodel2.cpp
   src/video/channel.cpp
   src/video/resolution.cpp
   src/video/manager.cpp
   src/audio/alsapluginmodel.cpp
-  src/audio/codecmodel.cpp
   src/audio/inputdevicemodel.cpp
   src/audio/managermodel.cpp
   src/audio/outputdevicemodel.cpp
@@ -308,8 +306,6 @@ SET(libringclient_video_LIB_HDRS
   src/video/device.h
   src/video/devicemodel.h
   src/video/sourcesmodel.h
-  src/video/codec.h
-  src/video/codecmodel2.h
   src/video/manager.h
   src/video/renderer.h
   src/video/resolution.h
@@ -319,7 +315,7 @@ SET(libringclient_video_LIB_HDRS
 
 SET(libringclient_audio_LIB_HDRS
   src/audio/alsapluginmodel.h
-  src/audio/codecmodel.h
+  src/codecmodel.h
   src/audio/inputdevicemodel.h
   src/audio/managermodel.h
   src/audio/outputdevicemodel.h

@@ -19,7 +19,7 @@
 #ifndef ITEMMODELSTATESERIALIZATIONVISITOR_H
 #define ITEMMODELSTATESERIALIZATIONVISITOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 class CollectionInterface;
 class Account;
 

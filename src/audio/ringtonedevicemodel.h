@@ -24,7 +24,7 @@
 #include <QtCore/QStringList>
 
 //Ring
-#include "../typedefs.h"
+#include <typedefs.h>
 
 class RingtoneDeviceModelPrivate;
 

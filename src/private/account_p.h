@@ -98,8 +98,7 @@ public:
    void reloadMod() {reload();modify();};
 
    CredentialModel*          m_pCredentials     ;
-   Audio::CodecModel*        m_pAudioCodecs     ;
-   Video::CodecModel2*       m_pVideoCodecs     ;
+   CodecModel*               m_pCodecModel      ;
    RingToneModel*            m_pRingToneModel   ;
    KeyExchangeModel*         m_pKeyExchangeModel;
    CipherModel*              m_pCipherModel     ;

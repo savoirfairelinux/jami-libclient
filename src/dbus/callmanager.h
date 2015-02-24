@@ -27,7 +27,7 @@
  #include <QDBusPendingReply>
 #endif
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 namespace DBus {
 

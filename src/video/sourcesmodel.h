@@ -19,7 +19,7 @@
 #define VIDEOSOURCESMODEL_H
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QRect>
-#include "../typedefs.h"
+#include <typedefs.h>
 
 //Ring
 

@@ -25,7 +25,7 @@
 class QItemSelectionModel;
 
 //Ring
-#include "../typedefs.h"
+#include <typedefs.h>
 
 class ManagerModelPrivate;
 

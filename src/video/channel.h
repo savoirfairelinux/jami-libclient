@@ -18,7 +18,7 @@
 #ifndef VIDEOCHANNEL_H
 #define VIDEOCHANNEL_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 //Qt
 #include <QtCore/QAbstractListModel>

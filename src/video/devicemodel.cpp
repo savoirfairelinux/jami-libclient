@@ -19,7 +19,6 @@
 #include "device.h"
 #include <call.h>
 #include <account.h>
-#include "codec.h"
 #include "../dbus/videomanager.h"
 
 #include <QtCore/QCoreApplication>

@@ -18,7 +18,7 @@
 #ifndef NUMBERCATEGORYVISITOR_H
 #define NUMBERCATEGORYVISITOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 
 class NumberCategoryModel;
 

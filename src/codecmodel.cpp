@@ -21,6 +21,9 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 
+//DRing
+#include <account_const.h>
+
 //Ring
 #include "account.h"
 #include "dbus/configurationmanager.h"
@@ -29,7 +32,7 @@ class CodecModelPrivate : public QObject
 {
    Q_OBJECT
 public:
-   CodecModelPrivate(Audio::CodecModel* parent);
+   CodecModelPrivate(CodecModel* parent);
    ///@struct AudioCodecData store audio codec information
    struct AudioCodecData {
       int              id        ;
@@ -47,23 +50,23 @@ public:
    bool findCodec(int id);
 
 private:
-   Audio::CodecModel* q_ptr;
+   CodecModel* q_ptr;
 };
 
-CodecModelPrivate::CodecModelPrivate(Audio::CodecModel* parent) : q_ptr(parent)
+CodecModelPrivate::CodecModelPrivate(CodecModel* parent) : q_ptr(parent)
 {
    
 }
 
 ///Constructor
-Audio::CodecModel::CodecModel(Account* account) :
+CodecModel::CodecModel(Account* account) :
 QAbstractListModel(account?(QObject*)account:(QObject*)QCoreApplication::instance()), d_ptr(new CodecModelPrivate(this))
 {
    d_ptr->m_pAccount = account;
    setObjectName("CodecModel: "+(account?account->id():"Unknown"));
 }
 
-Audio::CodecModel::~CodecModel()
+CodecModel::~CodecModel()
 {
    while (d_ptr->m_lAudioCodecs.size()) {
       CodecModelPrivate::AudioCodecData* c = d_ptr->m_lAudioCodecs[0];
@@ -72,64 +75,64 @@ Audio::CodecModel::~CodecModel()
    }
 }
 
-QHash<int,QByteArray> Audio::CodecModel::roleNames() const
+QHash<int,QByteArray> CodecModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert(Audio::CodecModel::Role::ID        ,QByteArray("id"));
-      roles.insert(Audio::CodecModel::Role::NAME      ,QByteArray("name"));
-      roles.insert(Audio::CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
-      roles.insert(Audio::CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
+      roles.insert(CodecModel::Role::ID        ,QByteArray("id"));
+      roles.insert(CodecModel::Role::NAME      ,QByteArray("name"));
+      roles.insert(CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
+      roles.insert(CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
    }
    return roles;
 }
 
 ///Model data
-QVariant Audio::CodecModel::data(const QModelIndex& idx, int role) const {
+QVariant CodecModel::data(const QModelIndex& idx, int role) const {
    if(idx.column() == 0      && role == Qt::DisplayRole                   ) {
       return QVariant(d_ptr->m_lAudioCodecs[idx.row()]->name);
    }
    else if(idx.column() == 0 && role == Qt::CheckStateRole                ) {
       return QVariant(d_ptr->m_lEnabledCodecs[d_ptr->m_lAudioCodecs[idx.row()]->id] ? Qt::Checked : Qt::Unchecked);
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::Role::NAME       ) {
+   else if (idx.column() == 0 && role == CodecModel::Role::NAME       ) {
       return d_ptr->m_lAudioCodecs[idx.row()]->name;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::Role::BITRATE    ) {
+   else if (idx.column() == 0 && role == CodecModel::Role::BITRATE    ) {
       return d_ptr->m_lAudioCodecs[idx.row()]->bitrate;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::Role::SAMPLERATE ) {
+   else if (idx.column() == 0 && role == CodecModel::Role::SAMPLERATE ) {
       return d_ptr->m_lAudioCodecs[idx.row()]->samplerate;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::Role::ID         ) {
+   else if (idx.column() == 0 && role == CodecModel::Role::ID         ) {
       return d_ptr->m_lAudioCodecs[idx.row()]->id;
    }
    return QVariant();
 }
 
 ///Number of audio codecs
-int Audio::CodecModel::rowCount(const QModelIndex& par) const {
+int CodecModel::rowCount(const QModelIndex& par) const {
    Q_UNUSED(par)
    return d_ptr->m_lAudioCodecs.size();
 }
 
 ///Model flags
-Qt::ItemFlags Audio::CodecModel::flags(const QModelIndex& idx) const {
+Qt::ItemFlags CodecModel::flags(const QModelIndex& idx) const {
    if (idx.column() == 0)
       return QAbstractItemModel::flags(idx) | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
    return QAbstractItemModel::flags(idx);
 }
 
 ///Set audio codec data
-bool Audio::CodecModel::setData( const QModelIndex& idx, const QVariant &value, int role) {
-   if (idx.column() == 0 && role == Audio::CodecModel::NAME) {
+bool CodecModel::setData( const QModelIndex& idx, const QVariant &value, int role) {
+   if (idx.column() == 0 && role == CodecModel::NAME) {
       d_ptr->m_lAudioCodecs[idx.row()]->name = value.toString();
       emit dataChanged(idx, idx);
       return true;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::BITRATE) {
+   else if (idx.column() == 0 && role == CodecModel::BITRATE) {
       d_ptr->m_lAudioCodecs[idx.row()]->bitrate = value.toString();
       emit dataChanged(idx, idx);
       return true;
@@ -139,12 +142,12 @@ bool Audio::CodecModel::setData( const QModelIndex& idx, const QVariant &value, 
       emit dataChanged(idx, idx);
       return true;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::SAMPLERATE) {
+   else if (idx.column() == 0 && role == CodecModel::SAMPLERATE) {
       d_ptr->m_lAudioCodecs[idx.row()]->samplerate = value.toString();
       emit dataChanged(idx, idx);
       return true;
    }
-   else if (idx.column() == 0 && role == Audio::CodecModel::ID) {
+   else if (idx.column() == 0 && role == CodecModel::ID) {
       d_ptr->m_lAudioCodecs[idx.row()]->id = value.toInt();
       emit dataChanged(idx, idx);
       return true;
@@ -153,14 +156,14 @@ bool Audio::CodecModel::setData( const QModelIndex& idx, const QVariant &value, 
 }
 
 ///Add a new audio codec
-QModelIndex Audio::CodecModel::add() {
+QModelIndex CodecModel::add() {
    d_ptr->m_lAudioCodecs << new CodecModelPrivate::AudioCodecData;
    emit dataChanged(index(d_ptr->m_lAudioCodecs.size()-1,0), index(d_ptr->m_lAudioCodecs.size()-1,0));
    return index(d_ptr->m_lAudioCodecs.size()-1,0);
 }
 
 ///Remove audio codec at 'idx'
-void Audio::CodecModel::remove(const QModelIndex& idx) {
+void CodecModel::remove(const QModelIndex& idx) {
    if (idx.isValid()) {
       CodecModelPrivate::AudioCodecData* d = d_ptr->m_lAudioCodecs[idx.row()];
       d_ptr->m_lAudioCodecs.removeAt(idx.row());
@@ -173,7 +176,7 @@ void Audio::CodecModel::remove(const QModelIndex& idx) {
 }
 
 ///Remove everything
-void Audio::CodecModel::clear()
+void CodecModel::clear()
 {
    while(d_ptr->m_lAudioCodecs.size()) {
       CodecModelPrivate::AudioCodecData* d = d_ptr->m_lAudioCodecs[0];
@@ -185,7 +188,7 @@ void Audio::CodecModel::clear()
 }
 
 ///Increase codec priority
-bool Audio::CodecModel::moveUp(const QModelIndex& idx)
+bool CodecModel::moveUp(const QModelIndex& idx)
 {
    if(idx.row() > 0 && idx.row() <= rowCount()) {
       CodecModelPrivate::AudioCodecData* data2 = d_ptr->m_lAudioCodecs[idx.row()];
@@ -198,7 +201,7 @@ bool Audio::CodecModel::moveUp(const QModelIndex& idx)
 }
 
 ///Decrease codec priority
-bool Audio::CodecModel::moveDown(const QModelIndex& idx)
+bool CodecModel::moveDown(const QModelIndex& idx)
 {
    if(idx.row() >= 0 && idx.row() < rowCount()) {
       CodecModelPrivate::AudioCodecData* data2 = d_ptr->m_lAudioCodecs[idx.row()];
@@ -211,23 +214,24 @@ bool Audio::CodecModel::moveDown(const QModelIndex& idx)
 }
 
 ///Reload the codeclist
-void Audio::CodecModel::reload()
+void CodecModel::reload()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   QVector<int> codecIdList = configurationManager.getAudioCodecList();
+   QVector<uint> codecIdList = configurationManager.getCodecList();
    if (!d_ptr->m_pAccount->isNew()) {
-      QVector<int> activeCodecList = configurationManager.getActiveAudioCodecList(d_ptr->m_pAccount->id());
+      QVector<uint> activeCodecList = configurationManager.getActiveCodecList(d_ptr->m_pAccount->id());
       QStringList tmpNameList;
 
       foreach (const int aCodec, activeCodecList) {
          if (!d_ptr->findCodec(aCodec)) {
-            const QStringList codec = configurationManager.getAudioCodecDetails(aCodec);
+            const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
             QModelIndex idx = add();
-            setData(idx,codec[0]     ,Audio::CodecModel::Role::NAME       );
-            setData(idx,codec[1]     ,Audio::CodecModel::Role::SAMPLERATE );
-            setData(idx,codec[2]     ,Audio::CodecModel::Role::BITRATE    );
-            setData(idx,aCodec       ,Audio::CodecModel::Role::ID         );
+            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+            setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
             setData(idx, Qt::Checked ,Qt::CheckStateRole               );
+
             if (codecIdList.indexOf(aCodec)!=-1)
                codecIdList.remove(codecIdList.indexOf(aCodec));
          }
@@ -236,30 +240,30 @@ void Audio::CodecModel::reload()
 
    foreach (const int aCodec, codecIdList) {
       if (!d_ptr->findCodec(aCodec)) {
-         const QStringList codec = configurationManager.getAudioCodecDetails(aCodec);
+         const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
          const QModelIndex& idx = add();
-         setData(idx,codec[0],Audio::CodecModel::Role::NAME       );
-         setData(idx,codec[1],Audio::CodecModel::Role::SAMPLERATE );
-         setData(idx,codec[2],Audio::CodecModel::Role::BITRATE    );
-         setData(idx,aCodec  ,Audio::CodecModel::Role::ID         );
+         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+         setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
          setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
       }
    }
 }
 
 ///Save details
-void Audio::CodecModel::save()
+void CodecModel::save()
 {
-   QStringList _codecList;
+   VectorUInt _codecList;
    for (int i=0; i < rowCount();i++) {
       const QModelIndex& idx = index(i,0);
       if (data(idx,Qt::CheckStateRole) == Qt::Checked) {
-         _codecList << data(idx,Audio::CodecModel::Role::ID).toString();
+         _codecList << data(idx,CodecModel::Role::ID).toInt();
       }
    }
 
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   configurationManager.setActiveAudioCodecList(_codecList, d_ptr->m_pAccount->id());
+   configurationManager.setActiveCodecList(d_ptr->m_pAccount->id(), _codecList);
 }
 
 ///Check is a codec is already in the list

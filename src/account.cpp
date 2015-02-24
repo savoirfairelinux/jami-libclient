@@ -42,8 +42,7 @@
 #include "ciphermodel.h"
 #include "protocolmodel.h"
 #include "accountstatusmodel.h"
-#include "audio/codecmodel.h"
-#include "video/codecmodel2.h"
+#include "codecmodel.h"
 #include "ringtonemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
@@ -66,8 +65,8 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 };
 #undef AP
 
-AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pAudioCodecs(nullptr),
-m_pVideoCodecs(nullptr),m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
+AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
+m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
@@ -132,7 +131,7 @@ Account::~Account()
 {
    disconnect();
    if (d_ptr->m_pCredentials) delete d_ptr->m_pCredentials ;
-   if (d_ptr->m_pAudioCodecs) delete d_ptr->m_pAudioCodecs ;
+   if (d_ptr->m_pCodecModel) delete d_ptr->m_pCodecModel   ;
 }
 
 /*****************************************************************************
@@ -331,19 +330,11 @@ CredentialModel* Account::credentialsModel() const
 }
 
 ///Create and return the audio codec model
-Audio::CodecModel* Account::audioCodecModel() const
+CodecModel* Account::codecModel() const
 {
-   if (!d_ptr->m_pAudioCodecs)
-      const_cast<Account*>(this)->reloadAudioCodecs();
-   return d_ptr->m_pAudioCodecs;
-}
-
-///Create and return the video codec model
-Video::CodecModel2* Account::videoCodecModel() const
-{
-   if (!d_ptr->m_pVideoCodecs)
-      d_ptr->m_pVideoCodecs = new Video::CodecModel2(const_cast<Account*>(this));
-   return d_ptr->m_pVideoCodecs;
+   if (!d_ptr->m_pCodecModel)
+      const_cast<Account*>(this)->reloadCodecs();
+   return d_ptr->m_pCodecModel;
 }
 
 RingToneModel* Account::ringToneModel() const
@@ -1507,17 +1498,23 @@ void AccountPrivate::save()
       const QString currentId = configurationManager.addAccount(details);
 
       //Be sure there is audio codec enabled to avoid obscure error messages for the user
-      const QVector<int> codecIdList = configurationManager.getAudioCodecList();
+      const QVector<uint> codecIdList = configurationManager.getCodecList();
       foreach (const int aCodec, codecIdList) {
-         const QStringList codec = configurationManager.getAudioCodecDetails(aCodec);
-         const QModelIndex idx = m_pAudioCodecs->add();
-         m_pAudioCodecs->setData(idx,codec[0],Audio::CodecModel::Role::NAME       );
-         m_pAudioCodecs->setData(idx,codec[1],Audio::CodecModel::Role::SAMPLERATE );
-         m_pAudioCodecs->setData(idx,codec[2],Audio::CodecModel::Role::BITRATE    );
-         m_pAudioCodecs->setData(idx,aCodec  ,Audio::CodecModel::Role::ID         );
-         m_pAudioCodecs->setData(idx, Qt::Checked ,Qt::CheckStateRole);
+         const QMap<QString,QString> codec = configurationManager.getCodecDetails(q_ptr->id(),aCodec);
+         const QModelIndex idx = m_pCodecModel->add();
+         /*Ring::Account::ConfProperties::CodecInfo::NAME          ; //TODO move this to CodecModel
+         Ring::Account::ConfProperties::CodecInfo::TYPE          ;
+         Ring::Account::ConfProperties::CodecInfo::SAMPLE_RATE   ;
+         Ring::Account::ConfProperties::CodecInfo::FRAME_RATE    ;
+         Ring::Account::ConfProperties::CodecInfo::BITRATE       ;
+         Ring::Account::ConfProperties::CodecInfo::CHANNEL_NUMBER;*/
+         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+         m_pCodecModel->setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
+         m_pCodecModel->setData(idx, Qt::Checked ,Qt::CheckStateRole);
       }
-      q_ptr->saveAudioCodecs();
+      q_ptr->saveCodecs();
 
       q_ptr->setId(currentId.toLatin1());
       q_ptr->saveCredentials();
@@ -1547,7 +1544,7 @@ void AccountPrivate::save()
    #ifdef ENABLE_VIDEO
    q_ptr->videoCodecModel()->save();
    #endif
-   q_ptr->saveAudioCodecs();
+   q_ptr->saveCodecs();
    emit q_ptr->changed(q_ptr);
 }
 
@@ -1675,18 +1672,18 @@ void Account::saveCredentials() {
 }
 
 ///Reload all audio codecs
-void Account::reloadAudioCodecs()
+void Account::reloadCodecs()
 {
-   if (!d_ptr->m_pAudioCodecs) {
-      d_ptr->m_pAudioCodecs = new Audio::CodecModel(this);
+   if (!d_ptr->m_pCodecModel) {
+      d_ptr->m_pCodecModel = new CodecModel(this);
    }
-   d_ptr->m_pAudioCodecs->reload();
+   d_ptr->m_pCodecModel->reload();
 }
 
 ///Save audio codecs
-void Account::saveAudioCodecs() {
-   if (d_ptr->m_pAudioCodecs)
-      d_ptr->m_pAudioCodecs->save();
+void Account::saveCodecs() {
+   if (d_ptr->m_pCodecModel)
+      d_ptr->m_pCodecModel->save();
 }
 
 /*****************************************************************************

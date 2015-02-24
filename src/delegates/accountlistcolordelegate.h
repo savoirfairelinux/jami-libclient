@@ -19,7 +19,7 @@
 #ifndef ACCOUNTLISTCOLORVISITOR_H
 #define ACCOUNTLISTCOLORVISITOR_H
 
-#include "../typedefs.h"
+#include <typedefs.h>
 class Account;
 
 ///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
