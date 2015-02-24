@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtCore/QUrl>
 #include <QMimeData>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPointer>
@@ -44,94 +45,6 @@ class Person;
 class Account;
 struct Node;
 
-typedef void (VCardMapper:: *mapToProperty)(Person*, const QByteArray&);
-
-struct VCardMapper {
-
-   QHash<QByteArray, mapToProperty> m_hHash;
-
-   VCardMapper() {
-      m_hHash[VCardUtils::Property::UID] = &VCardMapper::setUid;
-      m_hHash[VCardUtils::Property::NAME] = &VCardMapper::setNames;
-      m_hHash[VCardUtils::Property::FORMATTED_NAME] = &VCardMapper::setFormattedName;
-      m_hHash[VCardUtils::Property::EMAIL] = &VCardMapper::setEmail;
-      m_hHash[VCardUtils::Property::ORGANIZATION] = &VCardMapper::setOrganization;
-   }
-
-   void setFormattedName(Person* c, const QByteArray& fn) {
-      c->setFormattedName(QString::fromUtf8(fn));
-   }
-
-   void setNames(Person* c, const QByteArray& fn) {
-      QList<QByteArray> splitted = fn.split(';');
-      c->setFamilyName(splitted[0].trimmed());
-      c->setFirstName(splitted[1].trimmed());
-   }
-
-   void setUid(Person* c, const QByteArray& fn) {
-      c->setUid(fn);
-   }
-
-   void setEmail(Person* c, const QByteArray& fn) {
-      c->setPreferredEmail(fn);
-   }
-
-   void setOrganization(Person* c, const QByteArray& fn) {
-      c->setOrganization(QString::fromUtf8(fn));
-   }
-
-   void setPhoto(Person* c, const QByteArray& fn) {
-      qDebug() << fn;
-      QVariant photo = PixmapManipulationDelegate::instance()->profilePhoto(fn);
-      c->setPhoto(photo);
-   }
-
-   void addContactMethod(Person* c, const QString& key, const QByteArray& fn) {
-      Q_UNUSED(c)
-      Q_UNUSED(key)
-      qDebug() << fn;
-   }
-
-   void addAddress(Person* c, const QString& key, const QByteArray& fn) {
-      Person::Address* addr = new Person::Address();
-      QList<QByteArray> fields = fn.split(VCardUtils::Delimiter::SEPARATOR_TOKEN[0]);
-
-      addr->setType        (key.split(VCardUtils::Delimiter::SEPARATOR_TOKEN)[1] );
-      addr->setAddressLine (QString::fromUtf8(fields[2])                         );
-      addr->setCity        (QString::fromUtf8(fields[3])                         );
-      addr->setState       (QString::fromUtf8(fields[4])                         );
-      addr->setZipCode     (QString::fromUtf8(fields[5])                         );
-      addr->setCountry     (QString::fromUtf8(fields[6])                         );
-
-      c->addAddress(addr);
-   }
-
-   bool metacall(Person* c, const QByteArray& key, const QByteArray& value) {
-      if (!m_hHash[key]) {
-         if(key.contains(VCardUtils::Property::PHOTO)) {
-            //key must contain additionnal attributes, we don't need them right now (ENCODING, TYPE...)
-            setPhoto(c, value);
-            return true;
-         }
-
-         if(key.contains(VCardUtils::Property::ADDRESS)) {
-            addAddress(c, key, value);
-            return true;
-         }
-
-         if(key.contains(VCardUtils::Property::TELEPHONE)) {
-            addContactMethod(c, key, value);
-            return true;
-         }
-
-         return false;
-      }
-      (this->*(m_hHash[key]))(c,value);
-      return true;
-   }
-};
-static VCardMapper* vc_mapper = new VCardMapper;
-
 class ProfileEditor : public CollectionEditor<Person>
 {
 public:
@@ -142,6 +55,7 @@ public:
    virtual bool remove     ( Person*       item ) override;
    virtual bool edit       ( Person*       item ) override;
    virtual bool addNew     ( Person*       item ) override;
+   virtual bool addExisting( Person*       item ) override;
 
    Node* getProfileById(const QByteArray& id);
    QList<Account*> getAccountsForProfile(const QString& id);
@@ -259,6 +173,13 @@ bool ProfileEditor::addNew( Person* contact)
    return true;
 }
 
+bool ProfileEditor::addExisting( Person* contact)
+{
+   m_lProfilePersons << contact;
+   mediator()->addItem(contact);
+   return true;
+}
+
 QVector<Person*> ProfileEditor::items() const
 {
    return m_lProfilePersons;
@@ -373,7 +294,7 @@ void ProfileContentBackend::setupDefaultProfile()
    if (orphans.size() && (!m_pDefault)) {
       qDebug() << "No profile found, creating one";
       Person* profile = new Person(this);
-      PersonModel::instance()->addPerson(profile);
+      m_pEditor->addNew(profile);
       profile->setFormattedName(tr("Default"));
 
       m_pDefault          = new Node           ;
@@ -417,18 +338,9 @@ void ProfileContentBackend::loadProfiles()
 
       qDebug() << "Loading vcf from:" << profilesDir;
 
-      QStringList extensions = QStringList();
-      extensions << "*.vcf";
-
-      QStringList entries = profilesDir.entryList(extensions, QDir::Files);
+      QStringList entries = profilesDir.entryList({"*.vcf"}, QDir::Files);
 
       foreach (const QString& item , entries) {
-         qDebug() << "Loading profile: " << item;
-         QFile file(profilesDir.absolutePath()+"/"+item);
-         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "Error opening vcard: " << item;
-            continue;
-         }
 
          Person* profile = new Person(this);
 
@@ -437,33 +349,10 @@ void ProfileContentBackend::loadProfiles()
          pro->contact = profile            ;
          pro->m_Index = m_pEditor->m_lProfiles.size() ;
 
-         const QByteArray all = file.readAll();
-
-         bool propertyInserted = false;
-
-         for (const QByteArray& property : all.split('\n')){
-            qDebug() << "property: " << property;
-            const QList<QByteArray> splitted = property.split(':');
-            if(splitted.size() < 2){
-               qDebug() << "Property malformed!";
-               continue;
-            }
-            propertyInserted = vc_mapper->metacall(profile,splitted[0],splitted[1].trimmed());
-            if(!propertyInserted)
-               qDebug() << "Could not extract: " << splitted[0];
-
-            //Link with accounts
-            if(splitted[0] == VCardUtils::Property::X_RINGACCOUNT) {
-               Account* acc = AccountModel::instance()->getById(splitted[1].trimmed(),true);
-               if(!acc) {
-                  qDebug() << "Could not find account: " << splitted[1].trimmed();
-                  continue;
-               }
-
-               addAccount(pro,acc);
-
-            }
-         }
+         Account* acc = nullptr;
+         VCardUtils::mapToPerson(profile,QUrl(item),&acc);
+         if (acc)
+            addAccount(pro,acc);
 
          ProfileModel::instance()->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
          m_pEditor->m_lProfiles << pro;

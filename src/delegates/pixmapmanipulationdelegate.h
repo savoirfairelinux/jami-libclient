@@ -49,7 +49,7 @@ public:
    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
    virtual QVariant   serurityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);
-   virtual QVariant   profilePhoto(const QByteArray& data);
+   virtual QVariant   profilePhoto(const QByteArray& data, const QString& type = "PNG");
 
    /**
     * Return the icons associated with the action and its state

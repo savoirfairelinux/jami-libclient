@@ -190,8 +190,12 @@ ContactProxyModel::ContactProxyModel(int role) : QAbstractItemModel(QCoreApplica
    d_ptr->m_Role    = role;
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
+
    connect(PersonModel::instance(),SIGNAL(reloaded()),d_ptr.data(),SLOT(reloadCategories()));
-   connect(PersonModel::instance(),SIGNAL(newContactAdded(Person*)),d_ptr.data(),SLOT(slotContactAdded(Person*)));
+   connect(PersonModel::instance(),SIGNAL(newPersonAdded(Person*)),d_ptr.data(),SLOT(slotContactAdded(Person*)));
+   for (Person* p : PersonModel::instance()->contacts()) {
+      d_ptr->slotContactAdded(p);
+   }
 }
 
 ContactProxyModel::~ContactProxyModel()

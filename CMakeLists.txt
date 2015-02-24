@@ -221,6 +221,7 @@ SET( libringclient_LIB_SRCS
   src/transitionalpersonbackend.cpp
   src/collectioninterface.cpp
   src/collectioneditor.cpp
+  src/fallbackpersoncollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -300,6 +301,7 @@ SET( libringclient_LIB_HDRS
   src/collectionmediator.hpp
   src/collectioneditor.h
   src/collectioneditor.hpp
+  src/fallbackpersoncollection.h
 )
 
 SET(libringclient_video_LIB_HDRS

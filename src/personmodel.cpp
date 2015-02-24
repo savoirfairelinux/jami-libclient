@@ -70,6 +70,7 @@ m_pBackendModel(nullptr)
 PersonModel::PersonModel(QObject* par) : QAbstractItemModel(par?par:QCoreApplication::instance()), CollectionManagerInterface<Person>(this),
 d_ptr(new PersonModelPrivate(this))
 {
+   setObjectName("PersonModel");
 }
 
 ///Destructor
@@ -280,9 +281,12 @@ void PersonModel::backendAddedCallback(CollectionInterface* backend)
 
 bool PersonModel::addItemCallback(Person* c)
 {
-   beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size()-1,d_ptr->m_lPersons.size());
+   //Add to the model
+   beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size(),d_ptr->m_lPersons.size());
    d_ptr->m_lPersons << c;
    d_ptr->m_hPersonsByUid[c->uid()] = c;
+   endInsertRows();
+   emit newPersonAdded(c);
 
    //Deprecate the placeholder
    if (d_ptr->m_hPlaceholders.contains(c->uid())) {
@@ -292,9 +296,6 @@ bool PersonModel::addItemCallback(Person* c)
          d_ptr->m_hPlaceholders[c->uid()] = nullptr;
       }
    }
-   endInsertRows();
-   emit layoutChanged();
-   emit newPersonAdded(c);
    return true;
 }
 
@@ -345,8 +346,10 @@ const PersonList PersonModel::contacts() const
 
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
-   Q_UNUSED(backend);
-   return backends()[0]->editor<Person>()->addNew(c);
+   if ((!backend) || (!backends().size()))
+      return false;
+
+   return (backend?backend:backends()[0])->editor<Person>()->addNew(c);
 }
 
 

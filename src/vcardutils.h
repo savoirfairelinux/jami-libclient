@@ -78,6 +78,12 @@ public:
    void addPhoto(const QByteArray img);
    const QByteArray endVCard();
 
+   //Loading
+   static QList<Person*> loadDir(const QUrl& path, bool& ok);
+
+   //Mapping
+   static bool mapToPerson(Person* p, const QUrl& url, Account** a = nullptr);
+
 private:
 
    //Attributes

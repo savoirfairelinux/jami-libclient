@@ -34,6 +34,7 @@ public:
    virtual bool remove     ( Person*       item ) override;
    virtual bool edit       ( Person*       item ) override;
    virtual bool addNew     ( Person*       item ) override;
+   virtual bool addExisting( Person*       item ) override;
 
 private:
    virtual QVector<Person*> items() const override;
@@ -68,6 +69,13 @@ bool TransitionalPersonEditor::addNew( Person* item)
    Q_UNUSED(item)
    return false;
 }
+
+bool TransitionalPersonEditor::addExisting( Person* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
 
 QVector<Person*> TransitionalPersonEditor::items() const
 {

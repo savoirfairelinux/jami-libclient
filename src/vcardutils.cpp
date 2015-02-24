@@ -17,7 +17,23 @@
  ***************************************************************************/
 
 #include "vcardutils.h"
-#include <QBuffer>
+
+//Qt
+#include <QtCore/QBuffer>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QUrl>
+
+//Ring
+#include "phonedirectorymodel.h"
+#include "contactmethod.h"
+#include "accountmodel.h"
+#include "delegates/pixmapmanipulationdelegate.h"
+
+/* https://www.ietf.org/rfc/rfc2045.txt
+ * https://www.ietf.org/rfc/rfc2047.txt
+ * https://www.ietf.org/rfc/rfc2426.txt
+ */
 
 //BEGIN:VCARD
 //VERSION:3.0
@@ -35,6 +51,118 @@
 //EMAIL;TYPE=PREF,INTERNET:forrestgump@example.com
 //REV:20080424T195243Z
 //END:VCARD
+
+struct VCardMapper;
+
+typedef void (VCardMapper:: *mapToProperty)(Person*, const QByteArray&);
+
+struct VCardMapper {
+
+   QHash<QByteArray, mapToProperty> m_hHash;
+
+   VCardMapper() {
+      m_hHash[VCardUtils::Property::UID] = &VCardMapper::setUid;
+      m_hHash[VCardUtils::Property::NAME] = &VCardMapper::setNames;
+      m_hHash[VCardUtils::Property::FORMATTED_NAME] = &VCardMapper::setFormattedName;
+      m_hHash[VCardUtils::Property::EMAIL] = &VCardMapper::setEmail;
+      m_hHash[VCardUtils::Property::ORGANIZATION] = &VCardMapper::setOrganization;
+   }
+
+   void setFormattedName(Person* c, const QByteArray& fn) {
+      c->setFormattedName(QString::fromUtf8(fn));
+   }
+
+   void setNames(Person* c, const QByteArray& fn) {
+      QList<QByteArray> splitted = fn.split(';');
+      c->setFamilyName(splitted[0].trimmed());
+      c->setFirstName(splitted[1].trimmed());
+   }
+
+   void setUid(Person* c, const QByteArray& fn) {
+      c->setUid(fn);
+   }
+
+   void setEmail(Person* c, const QByteArray& fn) {
+      c->setPreferredEmail(fn);
+   }
+
+   void setOrganization(Person* c, const QByteArray& fn) {
+      c->setOrganization(QString::fromUtf8(fn));
+   }
+
+   void setPhoto(Person* c, const QByteArray& fn, const QByteArray& key) {
+      QByteArray type = "PNG";
+
+      QRegExp rx("TYPE=([A-Za-z]*)");
+
+      while ((rx.indexIn(key, 0)) != -1) {
+         type = rx.cap(1).toLatin1();
+         break;
+      }
+
+      QVariant photo = PixmapManipulationDelegate::instance()->profilePhoto(fn,type);
+      c->setPhoto(photo);
+   }
+
+   void addContactMethod(Person* c, const QString& key, const QByteArray& fn) {
+      Q_UNUSED(c)
+      Q_UNUSED(key)
+      QByteArray type;
+
+      QRegExp rx("TYPE=([A-Za-z,]*)");
+
+      while ((rx.indexIn(key, 0)) != -1) {
+         type = rx.cap(1).toLatin1();
+         break;
+      }
+
+      const QStringList categories = QString(type).split(',');
+
+      ContactMethod* cm = PhoneDirectoryModel::instance()->getNumber(fn,c,nullptr,categories.size()?categories[0]:QString());
+      Person::ContactMethods m = c->phoneNumbers();
+      m << cm;
+      c->setContactMethods(m);
+   }
+
+   void addAddress(Person* c, const QString& key, const QByteArray& fn) {
+      Person::Address* addr = new Person::Address();
+      QList<QByteArray> fields = fn.split(VCardUtils::Delimiter::SEPARATOR_TOKEN[0]);
+
+      addr->setType        (key.split(VCardUtils::Delimiter::SEPARATOR_TOKEN)[1] );
+      addr->setAddressLine (QString::fromUtf8(fields[2])                         );
+      addr->setCity        (QString::fromUtf8(fields[3])                         );
+      addr->setState       (QString::fromUtf8(fields[4])                         );
+      addr->setZipCode     (QString::fromUtf8(fields[5])                         );
+      addr->setCountry     (QString::fromUtf8(fields[6])                         );
+
+      c->addAddress(addr);
+   }
+
+   bool metacall(Person* c, const QByteArray& key, const QByteArray& value) {
+      if (!m_hHash[key]) {
+         if(key.contains(VCardUtils::Property::PHOTO)) {
+            //key must contain additionnal attributes, we don't need them right now (ENCODING, TYPE...)
+            setPhoto(c, value, key);
+            return true;
+         }
+
+         if(key.contains(VCardUtils::Property::ADDRESS)) {
+            addAddress(c, key, value);
+            return true;
+         }
+
+         if(key.contains(VCardUtils::Property::TELEPHONE)) {
+            addContactMethod(c, key, value);
+            return true;
+         }
+
+         return false;
+      }
+      (this->*(m_hHash[key]))(c,value);
+      return true;
+   }
+};
+static VCardMapper* vc_mapper = new VCardMapper;
 
 VCardUtils::VCardUtils()
 {
@@ -114,4 +242,83 @@ const QByteArray VCardUtils::endVCard()
    m_vCard << Delimiter::END_TOKEN;
    const QString result = m_vCard.join(QString::fromUtf8(Delimiter::END_LINE_TOKEN));
    return result.toUtf8();
+}
+
+QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok)
+{
+   QList< Person* > ret;
+
+   QDir dir(path.toString());
+   if (!dir.exists())
+      ok = false;
+   else {
+      ok = true;
+      for (const QString& file : dir.entryList({"*.vcf"},QDir::Files)) {
+         Person* p = new Person();
+         mapToPerson(p,QUrl(dir.absoluteFilePath(file)));
+         ret << p;
+      }
+   }
+
+   return ret;
+}
+
+bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
+{
+
+   qDebug() << "file" << path.toString();
+
+   QFile file(path.toString());
+   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      qDebug() << "Error opening vcard: " << path;
+      return false;
+   }
+
+   const QByteArray all = file.readAll();
+
+//    bool propertyInserted = false;
+   QByteArray previousKey,previousValue;
+   for (const QByteArray& property : all.split('\n')) {
+
+      //Ignore empty lines
+      if (property.size()) {
+
+         //Some properties are over multiple lines
+         if (property[0] == ' ' && previousKey.size()) {
+            previousValue += property.right(property.size()-1);
+         }
+         else {
+            if (previousKey.size()) {
+               /*propertyInserted = */vc_mapper->metacall(p,previousKey,previousValue.trimmed());
+
+//                if(!propertyInserted)
+//                   qDebug() << "Could not extract: " << previousKey;
+            }
+
+            const QList<QByteArray> splitted = property.split(':');
+            if(splitted.size() < 2){
+               qDebug() << "Malformed vCard property!" << splitted[0] << property[0] << (property[0] == ' ');
+               continue;
+            }
+
+
+            //Link with accounts
+            if(splitted[0] == VCardUtils::Property::X_RINGACCOUNT) {
+               if (a) {
+                  *a = AccountModel::instance()->getById(splitted[1].trimmed(),true);
+                  if(!*a) {
+                     qDebug() << "Could not find account: " << splitted[1].trimmed();
+                     continue;
+                  }
+               }
+            }
+
+            previousKey   = splitted[0];
+            previousValue = splitted[1];
+         }
+
+      }
+
+   }
+   return true;
 }
