@@ -215,7 +215,7 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
 
 
-  #Data backends
+  #Data collections
   src/transitionalpersonbackend.cpp
   src/collectioninterface.cpp
   src/collectioneditor.cpp

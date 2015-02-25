@@ -71,7 +71,6 @@ public:
 
    //Attributes
    static CallMap m_sHistoryCalls;
-   QVector<CollectionInterface*> m_lBackends;
 
    //Model categories
    QVector<HistoryTopLevelItem*>       m_lCategoryCounter ;
@@ -84,6 +83,7 @@ private:
    HistoryModel* q_ptr;
 
 public Q_SLOTS:
+   void add(Call* call);
    void reloadCategories();
    void slotChanged(const QModelIndex& idx);
 };
@@ -295,7 +295,7 @@ const CallMap HistoryModel::getHistoryCalls() const
 }
 
 ///Add to history
-void HistoryModel::add(Call* call)
+void HistoryModelPrivate::add(Call* call)
 {
    if (!call || call->lifeCycleState() != Call::LifeCycleState::FINISHED || !call->startTimeStamp()) {
       return;
@@ -306,33 +306,33 @@ void HistoryModel::add(Call* call)
 //       m_HavePersonModel = true;
 //    }//TODO implement reordering
 
-   emit newHistoryCall(call);
-   emit layoutAboutToBeChanged();
-   HistoryTopLevelItem* tl = d_ptr->getCategory(call);
-   const QModelIndex& parentIdx = index(tl->modelRow,0);
-   beginInsertRows(parentIdx,tl->m_lChildren.size(),tl->m_lChildren.size());
+   emit q_ptr->newHistoryCall(call);
+   emit q_ptr->layoutAboutToBeChanged();
+   HistoryTopLevelItem* tl = getCategory(call);
+   const QModelIndex& parentIdx = q_ptr->index(tl->modelRow,0);
+   q_ptr->beginInsertRows(parentIdx,tl->m_lChildren.size(),tl->m_lChildren.size());
    HistoryModelPrivate::HistoryItem* item = new HistoryModelPrivate::HistoryItem(call);
    item->m_pParent = tl;
-   item->m_pNode = new HistoryItemNode(this,call,item);
-   connect(item->m_pNode,SIGNAL(changed(QModelIndex)),d_ptr.data(),SLOT(slotChanged(QModelIndex)));
+   item->m_pNode = new HistoryItemNode(q_ptr,call,item);
+   connect(item->m_pNode,SIGNAL(changed(QModelIndex)),this,SLOT(slotChanged(QModelIndex)));
    item->m_Index = tl->m_lChildren.size();
    tl->m_lChildren << item;
 
    //Try to prevent startTimeStamp() collisions, it technically doesn't work as time_t are signed
    //we don't care
-   d_ptr->m_sHistoryCalls[(call->startTimeStamp() << 10)+qrand()%1024] = call;
-   endInsertRows();
-   emit layoutChanged();
+   m_sHistoryCalls[(call->startTimeStamp() << 10)+qrand()%1024] = call;
+   q_ptr->endInsertRows();
+   emit q_ptr->layoutChanged();
    LastUsedNumberModel::instance()->addCall(call);
-   emit historyChanged();
+   emit q_ptr->historyChanged();
 
    // Loop until it find a compatible backend
    //HACK only support a single active history backend
-   if (!call->backend()) {
-      foreach (CollectionInterface* backend, d_ptr->m_lBackends) {
+   if (!call->collection()) {
+      foreach (CollectionInterface* backend, q_ptr->collections()) {
          if (backend->supportedFeatures() & CollectionInterface::ADD) {
-            if (backend->editor<Call>()->append(call)) {
-               call->setBackend(backend);
+            if (backend->editor<Call>()->addNew(call)) {
+               call->setCollection(backend);
                break;
             }
          }
@@ -598,40 +598,15 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
    return false;
 }
 
-
-// bool HistoryModel::hasBackends() const
-// {
-//    return d_ptr->m_lBackends.size();
-// }
-
-// bool HistoryModel::hasEnabledBackends() const
-// {
-//    return d_ptr->m_lBackends.size();
-// }
-
-// void HistoryModel::addBackend(CollectionInterface* backend, LoadOptions options)
-// {
-//    d_ptr->m_lBackends << backend;
-//    connect(backend,SIGNAL(newHistoryCallAdded(Call*)),this,SLOT(add(Call*)));
-//    if (options & LoadOptions::FORCE_ENABLED || ItemModelStateSerializationDelegate::instance()->isChecked(backend))
-//       backend->load();
-//    emit newBackendAdded(backend);
-// }
-
-// QString HistoryModel::backendCategoryName() const
-// {
-//    return tr("History");
-// }
-
-void HistoryModel::backendAddedCallback(CollectionInterface* backend)
+void HistoryModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }
 
-///Call all backends that support clearing
-bool HistoryModel::clearAllBackends() const
+///Call all collections that support clearing
+bool HistoryModel::clearAllCollections() const
 {
-   foreach (CollectionInterface* backend, d_ptr->m_lBackends) {
+   foreach (CollectionInterface* backend, collections()) {
       if (backend->supportedFeatures() & CollectionInterface::ADD) {
          backend->clear();
       }
@@ -644,40 +619,17 @@ bool HistoryModel::clearAllBackends() const
    return true;
 }
 
-
-// bool HistoryModel::enableBackend(CollectionInterface* backend, bool enabled)
-// {
-//    Q_UNUSED(backend)
-//    Q_UNUSED(enabled)
-//    return false;//TODO
-// }
-
-// CommonCollectionModel* HistoryModel::backendModel() const
-// {
-//    return nullptr; //TODO
-// }
-
-// const QVector<CollectionInterface*> HistoryModel::backends() const
-// {
-//    return d_ptr->m_lBackends;
-// }
-
-bool HistoryModel::addItemCallback(Call* item)
+bool HistoryModel::addItemCallback(const Call* item)
 {
-   add(item);
+   d_ptr->add(const_cast<Call*>(item));
    return true;
 }
 
-bool HistoryModel::removeItemCallback(Call* item)
+bool HistoryModel::removeItemCallback(const Call* item)
 {
    Q_UNUSED(item)
    return false;
 }
-
-// const QVector<CollectionInterface*> HistoryModel::enabledBackends() const
-// {
-//    return d_ptr->m_lBackends;
-// }
 
 ///Return valid payload types
 int HistoryModel::acceptedPayloadTypes() const

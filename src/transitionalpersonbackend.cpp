@@ -30,11 +30,10 @@ class TransitionalPersonEditor : public CollectionEditor<Person>
 public:
    TransitionalPersonEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
    virtual bool save       ( const Person* item ) override;
-   virtual bool append     ( const Person* item ) override;
-   virtual bool remove     ( Person*       item ) override;
+   virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
-   virtual bool addNew     ( Person*       item ) override;
-   virtual bool addExisting( Person*       item ) override;
+   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addExisting( const Person* item ) override;
 
 private:
    virtual QVector<Person*> items() const override;
@@ -46,13 +45,7 @@ bool TransitionalPersonEditor::save(const Person* item)
    return false;
 }
 
-bool TransitionalPersonEditor::append(const Person* item)
-{
-   Q_UNUSED(item)
-   return false;
-}
-
-bool TransitionalPersonEditor::remove(Person* item)
+bool TransitionalPersonEditor::remove(const Person* item)
 {
    Q_UNUSED(item)
    return false;
@@ -64,13 +57,13 @@ bool TransitionalPersonEditor::edit( Person* item)
    return false;
 }
 
-bool TransitionalPersonEditor::addNew( Person* item)
+bool TransitionalPersonEditor::addNew(const  Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool TransitionalPersonEditor::addExisting( Person* item)
+bool TransitionalPersonEditor::addExisting(const  Person* item)
 {
    Q_UNUSED(item)
    return false;

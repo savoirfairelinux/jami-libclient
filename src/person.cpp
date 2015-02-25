@@ -229,7 +229,7 @@ Person* Person::ContactMethods::contact() const
 Person::Person(CollectionInterface* parent): ItemBase<QObject>(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   setBackend(parent?parent:TransitionalPersonBackend::instance());
+   setCollection(parent?parent:TransitionalPersonBackend::instance());
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
 }

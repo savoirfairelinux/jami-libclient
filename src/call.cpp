@@ -1263,7 +1263,7 @@ void CallPrivate::call()
       //Warning: m_pDialNumber can become nullptr when linking directly
       callManager.placeCall(m_Account->id(), m_CallId, m_pDialNumber->uri());
 
-      if (PersonModel::instance()->hasBackends()) {
+      if (PersonModel::instance()->hasCollections()) {
          if (q_ptr->peerContactMethod()->contact())
             m_PeerName = q_ptr->peerContactMethod()->contact()->formattedName();
       }

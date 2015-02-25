@@ -43,27 +43,27 @@ template <class T>
 class CollectionManagerInterfacePrivate;
 
 /**
- * This is the base for all models based on the itembackend framework.
+ * This is the base for all models based on the itemcollection framework.
  *
  * This interface has to be implemented by each models. The abstract
- * private methods will be called when the managed backends need
+ * private methods will be called when the managed collections need
  * to interact with the model.
  *
- * All implementation should define their item backend type in the
+ * All implementation should define their item collection type in the
  * class declaration like:
  *
  * template <typename T > using CollectionMediator = CollectionMediator<Person>;
  *
- * And individual backends should extend that alias. For example:
+ * And individual collections should extend that alias. For example:
  *
  * class MyPersonSourceBackend : public CollectionInterface {
  *     public:
  *        MyPersonSourceBackend(CollectionInterfaceMediator* mediator)
  * };
  *
- * The mediator is used to bridge the model and the item backends. The mediator
+ * The mediator is used to bridge the model and the item collections. The mediator
  * implement the common logic that should otherwise have been copy pasted in each
- * backends.
+ * collections.
  */
 template <class T> class LIB_EXPORT CollectionManagerInterface {
    friend class CollectionMediator<T>;
@@ -81,50 +81,50 @@ public:
    virtual ~CollectionManagerInterface() {};
 
    /**
-    * This method is used to add a backend to a model. The LoadOptions
+    * This method is used to add a collection to a model. The LoadOptions
     * can be used to enforce some parameters. Please note this function is
-    * a variadic template. If the backend require some arguments to be passed
+    * a variadic template. If the collection require some arguments to be passed
     * to its constructor, they can be added as extra parameters.
     *
-    * Please note that each backend need to take a CollectionMediator as first
+    * Please note that each collection need to take a CollectionMediator as first
     * argument.
     *
-    * @return The newly created backend
+    * @return The newly created collection
     */
    template <class T2, typename ...Ts>
    T2* addBackend(Ts... args, const LoadOptions options = LoadOptions::NONE);
 
-   /// Do this manager have active backends
-   virtual bool hasEnabledBackends () const final;
-   virtual bool hasBackends        () const final;
+   /// Do this manager have active collections
+   virtual bool hasEnabledCollections () const final;
+   virtual bool hasCollections        () const final;
 
-   /// List all backends
-   virtual const QVector< CollectionInterface* > backends       () const final;
-   virtual const QVector< CollectionInterface* > enabledBackends() const final;
+   /// List all Collections
+   virtual const QVector< CollectionInterface* > collections       () const final;
+   virtual const QVector< CollectionInterface* > enabledCollections() const final;
 
-   ///Enable / disable a backend
-   virtual bool enableBackend( CollectionInterface*  backend, bool enabled) final;
+   ///Enable / disable a collection
+   virtual bool enableBackend( CollectionInterface*  collection, bool enabled) final;
 
-   virtual bool clearAllBackends() const;
+   virtual bool clearAllCollections() const;
 
    /**
-    * Delete the item from the model and from its backend. This
+    * Delete the item from the model and from its collection. This
     * is permanent and cannot be undone.
     *
     * Please note that certain type of items, while removed from the view
     * will continue to exist after being removed. This include items part
-    * of multiple backends or items generated from runtime data.
+    * of multiple Collections or items generated from runtime data.
     *
-    * @return true if successful, false is the backend doesn't support removing items or the operation failed.
+    * @return true if successful, false is the collection doesn't support removing items or the operation failed.
     */
    bool deleteItem(T* item);
 
 private:
    /**
-    * This method is called when a new backend is added. Some models
+    * This method is called when a new collection is added. Some models
     * may need to act on such action, other don't.
     */
-   virtual void backendAddedCallback(CollectionInterface* backend);
+   virtual void collectionAddedCallback(CollectionInterface* collection);
 
    /**
     * This method implement the logic necessary to add the item to
@@ -132,8 +132,11 @@ private:
     *
     * This method can be called with items already part of the model.
     * All implementation must handle that.
+    * 
+    * Please note that the constness is expected to be broken when using
+    * setData(), but not otherwise.
     */
-   virtual bool addItemCallback   (T* item) = 0;
+   virtual bool addItemCallback   (const T* item) = 0;
 
    /**
     * Remove an item from the model. Subclasses must implement the logic
@@ -142,7 +145,7 @@ private:
     * This function can be called with nullptr or with items not part
     * of the model. All implementations must handle that.
     */
-   virtual bool removeItemCallback(T* item) = 0;
+   virtual bool removeItemCallback(const T* item) = 0;
 
    CollectionManagerInterfacePrivate<T>* d_ptr;
 };

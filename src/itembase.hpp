@@ -33,13 +33,13 @@ ItemBase<Base>::ItemBase(Base* parent) :Base(parent), d_ptr(new ItemBasePrivate(
 }
 
 template<typename Base>
-CollectionInterface* ItemBase<Base>::backend()
+CollectionInterface* ItemBase<Base>::collection() const
 {
    return d_ptr->m_pBackend;
 }
 
 template<typename Base>
-void ItemBase<Base>::setBackend(CollectionInterface* backend)
+void ItemBase<Base>::setCollection(CollectionInterface* backend)
 {
    d_ptr->m_pBackend = backend;
 }

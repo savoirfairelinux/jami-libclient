@@ -57,18 +57,17 @@ public:
    CollectionMediator<T>* mediator() const;
 
    virtual bool save(const T* item) =0;
-   virtual bool append(const T* item) =0;
    virtual bool batchSave(const QList<T*> contacts);
-   virtual bool remove(T* item);
+   virtual bool remove(const T* item);
 
    ///Edit 'item', the implementation may be a GUI or something else
    virtual bool edit       ( T*       item     ) = 0;
 
    ///Add a new item to the backend
-   virtual bool addNew     ( T*       item     ) = 0;
+   virtual bool addNew     (const  T*       item     ) = 0;
 
    ///Add an existing item to the collection
-   virtual bool addExisting( T*       item     ) = 0;
+   virtual bool addExisting(const  T*       item     ) = 0;
 
    ///Add a new phone number to an existing item
    virtual bool addContactMethod( T*       item , ContactMethod* number );

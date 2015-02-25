@@ -29,7 +29,7 @@ class CollectionMediatorPrivate;
 /**
  * This is the base class for each BackendMediator. A backend mediator
  * is a intermediary object between the backend and the model responsible
- * to manage the backends objects. The purpose of this layer are:
+ * to manage the collections objects. The purpose of this layer are:
  *
  *  * Isolate the item gestion away from the manager public API
  *  * Work around the lack of polymorphic generics for template objects
@@ -40,8 +40,8 @@ template<typename T>
 class LIB_EXPORT CollectionMediator {
 public:
    CollectionMediator(CollectionManagerInterface<T>* parentManager, QAbstractItemModel* m);
-   bool addItem   (T* item);
-   bool removeItem(T* item);
+   bool addItem   (const T* item);
+   bool removeItem(const T* item);
 
    QAbstractItemModel* model() const;
 

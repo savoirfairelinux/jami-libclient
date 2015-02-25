@@ -53,7 +53,7 @@ public:
    void setShowAll(bool showAll);
 
    //Backend model implementation
-   virtual bool clearAllBackends() const override;
+   virtual bool clearAllCollections() const override;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
@@ -88,9 +88,9 @@ private:
    Q_DECLARE_PRIVATE(BookmarkModel)
 
    //Backend interface
-   virtual void backendAddedCallback(CollectionInterface* backend) override;
-   virtual bool addItemCallback(ContactMethod* item) override;
-   virtual bool removeItemCallback(ContactMethod* item) override;
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(const ContactMethod* item) override;
+   virtual bool removeItemCallback(const ContactMethod* item) override;
 
 public Q_SLOTS:
    void reloadCategories();

@@ -121,11 +121,11 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
 int CollectionModel::rowCount (const QModelIndex& parent) const
 {
    if (!parent.isValid()) {
-      static bool init = false; //FIXME this doesn't allow dynamic backends
+      static bool init = false; //FIXME this doesn't allow dynamic collections
       static int result = 0;
       if (!init) {
-         for(int i=0;i<PersonModel::instance()->backends().size();i++)
-            result += PersonModel::instance()->backends()[i]->parent()==nullptr?1:0;
+         for(int i=0;i<PersonModel::instance()->collections().size();i++)
+            result += PersonModel::instance()->collections()[i]->parent()==nullptr?1:0;
          init = true;
       }
       return result;
@@ -216,11 +216,11 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
          item = d_ptr->m_lTopLevelBackends[row];
       else {
 
-         if (row >= PersonModel::instance()->backends().size())
+         if (row >= PersonModel::instance()->collections().size())
             return QModelIndex();
 
          item = new CollectionModelPrivate::ProxyItem();
-         item->backend = PersonModel::instance()->backends()[row];
+         item->backend = PersonModel::instance()->collections()[row];
          d_ptr->m_lTopLevelBackends << item;
       }
       item->row = row;
@@ -249,7 +249,7 @@ bool CollectionModel::save()
 {
    if (ItemModelStateSerializationDelegate::instance()) {
 
-      //Load newly enabled backends
+      //Load newly enabled collections
       foreach(CollectionModelPrivate::ProxyItem* top, d_ptr->m_lTopLevelBackends) {
          CollectionInterface* current = top->backend;
          bool check = ItemModelStateSerializationDelegate::instance()->isChecked(current);

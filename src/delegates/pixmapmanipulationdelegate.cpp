@@ -80,6 +80,7 @@ QByteArray PixmapManipulationDelegate::toByteArray(const QVariant& pxm)
 QVariant PixmapManipulationDelegate::profilePhoto(const QByteArray& data, const QString& type)
 {
    Q_UNUSED(data)
+   Q_UNUSED(type)
    return QVariant();
 }
 

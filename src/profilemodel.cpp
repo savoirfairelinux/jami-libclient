@@ -51,11 +51,10 @@ public:
    ProfileEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {};
    ~ProfileEditor();
    virtual bool save       ( const Person* item ) override;
-   virtual bool append     ( const Person* item ) override;
-   virtual bool remove     ( Person*       item ) override;
-   virtual bool edit       ( Person*       item ) override;
-   virtual bool addNew     ( Person*       item ) override;
-   virtual bool addExisting( Person*       item ) override;
+   virtual bool remove     ( const Person* item ) override;
+   virtual bool edit       (       Person* item ) override;
+   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addExisting( const Person* item ) override;
 
    Node* getProfileById(const QByteArray& id);
    QList<Account*> getAccountsForProfile(const QString& id);
@@ -144,13 +143,7 @@ ProfileEditor::~ProfileEditor()
    }
 }
 
-bool ProfileEditor::append(const Person* item)
-{
-   Q_UNUSED(item)
-   return false;
-}
-
-bool ProfileEditor::remove(Person* item)
+bool ProfileEditor::remove(const Person* item)
 {
    Q_UNUSED(item)
    mediator()->removeItem(item);
@@ -163,19 +156,19 @@ bool ProfileEditor::edit( Person* contact)
    return false;
 }
 
-bool ProfileEditor::addNew( Person* contact)
+bool ProfileEditor::addNew(const Person* contact)
 {
    qDebug() << "Creating new profile" << contact->uid();
-   m_lProfilePersons << contact;
+   m_lProfilePersons << const_cast<Person*>(contact);
    mediator()->addItem(contact);
    save(contact);
 //    load(); //FIXME
    return true;
 }
 
-bool ProfileEditor::addExisting( Person* contact)
+bool ProfileEditor::addExisting(const Person* contact)
 {
-   m_lProfilePersons << contact;
+   m_lProfilePersons << const_cast<Person*>(contact);
    mediator()->addItem(contact);
    return true;
 }

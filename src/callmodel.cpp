@@ -1015,7 +1015,8 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
 
    //Add to history
    if (call->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-      HistoryModel::instance()->add(call);
+      //HistoryModel::instance()->add(call);
+      //FIXME check all collection with a "::ADD" filter and add the call
    }
 
    emit q_ptr->callStateChanged(call,previousState);

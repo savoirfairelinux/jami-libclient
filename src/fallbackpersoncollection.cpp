@@ -38,11 +38,10 @@ class FallbackPersonBackendEditor : public CollectionEditor<Person>
 public:
    FallbackPersonBackendEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
    virtual bool save       ( const Person* item ) override;
-   virtual bool append     ( const Person* item ) override;
-   virtual bool remove     ( Person*       item ) override;
+   virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
-   virtual bool addNew     ( Person*       item ) override;
-   virtual bool addExisting( Person*       item ) override;
+   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addExisting( const Person* item ) override;
 
    QVector<Person*> m_lItems;
 
@@ -81,13 +80,7 @@ bool FallbackPersonBackendEditor::save(const Person* item)
    return true;
 }
 
-bool FallbackPersonBackendEditor::append(const Person* item)
-{
-   Q_UNUSED(item)
-   return false;
-}
-
-bool FallbackPersonBackendEditor::remove(Person* item)
+bool FallbackPersonBackendEditor::remove(const Person* item)
 {
    Q_UNUSED(item)
    return false;
@@ -99,17 +92,15 @@ bool FallbackPersonBackendEditor::edit( Person* item)
    return false;
 }
 
-bool FallbackPersonBackendEditor::addNew( Person* item)
+bool FallbackPersonBackendEditor::addNew(const Person* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool FallbackPersonBackendEditor::addExisting( Person* item)
+bool FallbackPersonBackendEditor::addExisting(const Person* item)
 {
-   Q_UNUSED(item)
-
-   m_lItems << item;
+   m_lItems << const_cast<Person*>(item);
    mediator()->addItem(item);
    return true;
 }

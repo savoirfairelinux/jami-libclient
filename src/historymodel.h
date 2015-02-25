@@ -48,7 +48,7 @@ public:
    friend class HistoryTopLevelItem;
 
    //Properties
-   Q_PROPERTY(bool hasBackends   READ hasBackends  )
+   Q_PROPERTY(bool hasCollections   READ hasCollections  )
 
    //Singleton
    static HistoryModel* instance();
@@ -60,7 +60,7 @@ public:
    const CallMap getHistoryCalls   () const;
 
    //Backend model implementation
-   virtual bool clearAllBackends   () const override;
+   virtual bool clearAllCollections() const override;
 
    //Setters
    void setCategoryRole(Call::Role role);
@@ -94,19 +94,15 @@ private:
    static HistoryModel* m_spInstance;
 
    //Backend interface
-   virtual void backendAddedCallback(CollectionInterface* backend) override;
-   virtual bool addItemCallback(Call* item) override;
-   virtual bool removeItemCallback(Call* item) override;
-
-public Q_SLOTS:
-   void add(Call* call);
+   virtual void collectionAddedCallback(CollectionInterface* collection) override;
+   virtual bool addItemCallback(const Call* item) override;
+   virtual bool removeItemCallback(const Call* item) override;
 
 Q_SIGNALS:
    ///Emitted when the history change (new items, cleared)
    void historyChanged          (            );
    ///Emitted when a new item is added to prevent full reload
    void newHistoryCall          ( Call* call );
-   void newBackendAdded(AbstractHistoryBackend* backend);
 };
 
 #endif

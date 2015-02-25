@@ -95,16 +95,16 @@ private:
    static PersonModel* m_spInstance;
 
    //Backend interface
-   virtual void backendAddedCallback(CollectionInterface* backend) override;
-   virtual bool addItemCallback(Person* item) override;
-   virtual bool removeItemCallback(Person* item) override;
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(const Person* item) override;
+   virtual bool removeItemCallback(const Person* item) override;
 
 public Q_SLOTS:
    bool addNewPerson(Person* c, CollectionInterface* backend = nullptr);
 
 Q_SIGNALS:
    void reloaded();
-   void newPersonAdded(Person* c);
+   void newPersonAdded(const Person* c);
    void newBackendAdded(CollectionInterface* backend);
 };
 

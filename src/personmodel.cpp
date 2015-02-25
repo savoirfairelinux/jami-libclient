@@ -45,7 +45,6 @@ public:
 
    //Attributes
 //    QVector<CollectionInterface*> m_lBackends;
-   CommonCollectionModel* m_pBackendModel;
    QHash<QByteArray,PersonPlaceHolder*> m_hPlaceholders;
 
    //Indexes
@@ -60,8 +59,7 @@ private Q_SLOTS:
 //    void slotPersonAdded(Person* c);
 };
 
-PersonModelPrivate::PersonModelPrivate(PersonModel* parent) : QObject(parent), q_ptr(parent),
-m_pBackendModel(nullptr)
+PersonModelPrivate::PersonModelPrivate(PersonModel* parent) : QObject(parent), q_ptr(parent)
 {
    
 }
@@ -239,7 +237,7 @@ Person* PersonModel::getPlaceHolder(const QByteArray& uid )
    return ct2;
 }
 
-///Return if there is backends
+///Return if there is collections
 // bool PersonModel::hasBackends() const
 // {
 //    return d_ptr->m_lBackends.size();
@@ -269,22 +267,22 @@ Person* PersonModel::getPlaceHolder(const QByteArray& uid )
 //    return tr("Persons");
 // }
 
-void PersonModel::backendAddedCallback(CollectionInterface* backend)
+void PersonModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }
 
-// const QVector<CollectionInterface*> PersonModel::backends() const
+// const QVector<CollectionInterface*> PersonModel::collections() const
 // {
 //    return d_ptr->m_lBackends;
 // }
 
-bool PersonModel::addItemCallback(Person* c)
+bool PersonModel::addItemCallback(const Person* c)
 {
    //Add to the model
    beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size(),d_ptr->m_lPersons.size());
-   d_ptr->m_lPersons << c;
-   d_ptr->m_hPersonsByUid[c->uid()] = c;
+   d_ptr->m_lPersons << const_cast<Person*>(c);
+   d_ptr->m_hPersonsByUid[c->uid()] = const_cast<Person*>(c);
    endInsertRows();
    emit newPersonAdded(c);
 
@@ -292,14 +290,14 @@ bool PersonModel::addItemCallback(Person* c)
    if (d_ptr->m_hPlaceholders.contains(c->uid())) {
       PersonPlaceHolder* c2 = d_ptr->m_hPlaceholders[c->uid()];
       if (c2) {
-         c2->merge(c);
+         c2->merge(const_cast<Person*>(c));
          d_ptr->m_hPlaceholders[c->uid()] = nullptr;
       }
    }
    return true;
 }
 
-bool PersonModel::removeItemCallback(Person* item)
+bool PersonModel::removeItemCallback(const Person* item)
 {
    Q_UNUSED(item)
    return false;
@@ -317,8 +315,8 @@ bool PersonModel::addPerson(Person* c)
 {
    if (!c)
       return false;
-   if (backends().size()) //TODO this is wrong, it work for now because profilemodel is [0]
-      backends()[0]->add(c);
+   if (collections().size()) //TODO this is wrong, it work for now because profilemodel is [0]
+      collections()[0]->add(c);
    return true;
 }
 
@@ -346,10 +344,10 @@ const PersonList PersonModel::contacts() const
 
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
-   if ((!backend) || (!backends().size()))
+   if ((!backend) || (!collections().size()))
       return false;
 
-   return (backend?backend:backends()[0])->editor<Person>()->addNew(c);
+   return (backend?backend:collections()[0])->editor<Person>()->addNew(c);
 }
 
 

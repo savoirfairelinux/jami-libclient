@@ -26,8 +26,8 @@ public:
    {}
    ~CollectionManagerInterfacePrivate();
 
-   QVector< CollectionInterface* > m_lBackends;
-   QVector< CollectionInterface* > m_lEnabledBackends;
+   QVector< CollectionInterface* > m_lCollections;
+   QVector< CollectionInterface* > m_lEnabledCollections;
    mutable CollectionMediator<T>*  m_pMediator;
    QAbstractItemModel*             q_ptr;
    CollectionManagerInterface<T>*  i_ptr;
@@ -55,22 +55,22 @@ template<class T>
 template <class T2, typename ...Ts>
 T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions options)
 {
-   T2* backend = new T2(d_ptr->itemMediator(),args...);
+   T2* collection = new T2(d_ptr->itemMediator(),args...);
 
    //This will force the T2 to be a CollectionInterface subclass
-   CollectionInterface* b = backend;
-   d_ptr->m_lBackends << b;
+   CollectionInterface* b = collection;
+   d_ptr->m_lCollections << b;
 
-   if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the backend is checked
+   if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the collection is checked
 
-      //Some backends can fail to load directly
+      //Some collections can fail to load directly
       //eventually it will necessary to add an async version of this
-      //to load the backend only when it is loaded
-      if (backend->load())
-         d_ptr->m_lEnabledBackends << backend;
+      //to load the collection only when it is loaded
+      if (collection->load())
+         d_ptr->m_lEnabledCollections << collection;
    }
 
-   return backend;
+   return collection;
 }
 
 template<class T>
@@ -80,52 +80,52 @@ CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* se
 }
 
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::backends() const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections() const
 {
-   return d_ptr->m_lBackends;
+   return d_ptr->m_lCollections;
 }
 
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledBackends() const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledCollections() const
 {
-   return d_ptr->m_lEnabledBackends;
+   return d_ptr->m_lEnabledCollections;
 }
 
-/// Do this manager have active backends
+/// Do this manager have active collections
 template<class T>
-bool CollectionManagerInterface<T>::hasEnabledBackends() const
+bool CollectionManagerInterface<T>::hasEnabledCollections() const
 {
-   return d_ptr->m_lEnabledBackends.size();
-}
-
-template<class T>
-bool CollectionManagerInterface<T>::hasBackends() const
-{
-   return d_ptr->m_lBackends.size();
+   return d_ptr->m_lEnabledCollections.size();
 }
 
 template<class T>
-bool CollectionManagerInterface<T>::clearAllBackends() const
+bool CollectionManagerInterface<T>::hasCollections() const
+{
+   return d_ptr->m_lCollections.size();
+}
+
+template<class T>
+bool CollectionManagerInterface<T>::clearAllCollections() const
 {
    return false;
 }
 
 template<class T>
-void CollectionManagerInterface<T>::backendAddedCallback(CollectionInterface* backend)
+void CollectionManagerInterface<T>::collectionAddedCallback(CollectionInterface* collection)
 {
-   Q_UNUSED(backend)
+   Q_UNUSED(collection)
 }
 
 template<class T>
 bool CollectionManagerInterface<T>::deleteItem(T* item)
 {
-   if (item->backend()->model() == (QAbstractItemModel*) this) {
-      if (item->backend()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
-         static_cast<CollectionInterface*>(item->backend())->editor<T>()->remove(item);
+   if (item->collection()->model() == (QAbstractItemModel*) this) {
+      if (item->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
+         static_cast<CollectionInterface*>(item->collection())->editor<T>()->remove(item);
          return true;
       }
       else
-         qDebug() << item << "cannot be deleted, the backend doesn't support removing items";
+         qDebug() << item << "cannot be deleted, the collection doesn't support removing items";
    }
    else
       qDebug() << item << "cannot be deleted, it is not managed by" << this;
@@ -133,9 +133,9 @@ bool CollectionManagerInterface<T>::deleteItem(T* item)
 }
 
 template<class T>
-bool CollectionManagerInterface<T>::enableBackend( CollectionInterface*  backend, bool enabled)
+bool CollectionManagerInterface<T>::enableBackend( CollectionInterface*  collection, bool enabled)
 {
    Q_UNUSED(enabled) //TODO implement it
-   backend->load();
+   collection->load();
    return true;
 }

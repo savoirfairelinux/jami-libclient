@@ -46,7 +46,7 @@ QMetaObject metaObject()
    return T::staticMetaObject();
 }
 
-///Default batch saving implementation, some backends have better APIs
+///Default batch saving implementation, some collections have better APIs
 template <class T> bool CollectionEditor<T>::batchSave(const QList<T*> contacts)
 {
    bool ret = true;
@@ -65,7 +65,7 @@ bool CollectionEditor<T>::addContactMethod( T*       item , ContactMethod* numbe
 }
 
 template <class T>
-bool CollectionEditor<T>::remove(T* item)
+bool CollectionEditor<T>::remove(const T* item)
 {
    Q_UNUSED(item)
    return false;

@@ -465,7 +465,7 @@ bool BookmarkModelPrivate::displayFrequentlyUsed() const
 
 QVector<ContactMethod*> BookmarkModelPrivate::bookmarkList() const
 {
-   return (q_ptr->backends().size() > 0) ? q_ptr->backends()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
+   return (q_ptr->collections().size() > 0) ? q_ptr->collections()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
 }
 
 BookmarkTopLevelItem::BookmarkTopLevelItem(QString name) 
@@ -499,8 +499,8 @@ bool BookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
 void BookmarkModel::addBookmark(ContactMethod* number)
 {
    Q_UNUSED(number)
-   if (backends().size())
-      backends()[0]->editor<ContactMethod>()->append(number);
+   if (collections().size())
+      collections()[0]->editor<ContactMethod>()->addNew(number);
    else
       qWarning() << "No bookmark backend is set";
 }
@@ -539,12 +539,12 @@ void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 }
 
 
-// bool BookmarkModel::hasBackends() const
+// bool BookmarkModel::hasCollections() const
 // {
 //    return d_ptr->m_lBackends.size();
 // }
 
-// bool BookmarkModel::hasEnabledBackends() const
+// bool BookmarkModel::hasEnabledCollections() const
 // {
 //    foreach(CollectionInterface* b, d_ptr->m_lBackends) {
 //       if (b->isEnabled())
@@ -553,26 +553,26 @@ void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 //    return false;
 // }
 
-// const QVector<CollectionInterface*> BookmarkModel::backends() const
+// const QVector<CollectionInterface*> BookmarkModel::collections() const
 // {
 //    return d_ptr->m_lBackends;
 // }
 
 
-bool BookmarkModel::addItemCallback(ContactMethod* item)
+bool BookmarkModel::addItemCallback(const ContactMethod* item)
 {
    Q_UNUSED(item)
    reloadCategories(); //TODO this is far from optimal
    return true;
 }
 
-bool BookmarkModel::removeItemCallback(ContactMethod* item)
+bool BookmarkModel::removeItemCallback(const ContactMethod* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-// const QVector<CollectionInterface*> BookmarkModel::enabledBackends() const
+// const QVector<CollectionInterface*> BookmarkModel::enabledCollections() const
 // {
 //    return d_ptr->m_lBackends; //TODO filter them
 // }
@@ -582,9 +582,9 @@ bool BookmarkModel::removeItemCallback(ContactMethod* item)
 //    return nullptr; //TODO
 // }
 
-bool BookmarkModel::clearAllBackends() const
+bool BookmarkModel::clearAllCollections() const
 {
-   foreach (CollectionInterface* backend, backends()) {
+   foreach (CollectionInterface* backend, collections()) {
       if (backend->supportedFeatures() & CollectionInterface::ADD) {
          backend->clear();
       }
@@ -607,7 +607,7 @@ bool BookmarkModel::clearAllBackends() const
 //       backend->load();
 // }
 
-void BookmarkModel::backendAddedCallback(CollectionInterface* backend)
+void BookmarkModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }

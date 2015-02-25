@@ -35,13 +35,13 @@ CollectionMediator<T>::CollectionMediator(CollectionManagerInterface<T>* parentM
 }
 
 template<typename T>
-bool CollectionMediator<T>::addItem(T* item)
+bool CollectionMediator<T>::addItem(const T* item)
 {
    return d_ptr->m_pParent->addItemCallback(item);
 }
 
 template<typename T>
-bool CollectionMediator<T>::removeItem(T* item)
+bool CollectionMediator<T>::removeItem(const T* item)
 {
    return d_ptr->m_pParent->removeItemCallback(item); //TODO wrong
 }

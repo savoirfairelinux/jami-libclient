@@ -33,7 +33,7 @@ class LIB_EXPORT ItemBase : public T {
 public:
    //Constructor
    explicit ItemBase(T* parent = nullptr);
-   virtual CollectionInterface* backend() final;
+   virtual CollectionInterface* collection() const final;
 
    //Mutator methods
    bool save() const;
@@ -41,7 +41,7 @@ public:
    bool remove()    ;
 
    //Setter
-   void setBackend(CollectionInterface* backend);
+   void setCollection(CollectionInterface* backend);
 
 protected:
 private:

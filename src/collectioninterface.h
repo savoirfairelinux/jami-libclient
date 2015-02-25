@@ -34,7 +34,7 @@ template<typename T> class CollectionMediator;
 template<typename T> class ItemBase;
 
 /**
- * This is the interface that must be implemented by each item backends to
+ * This is the interface that must be implemented by each item collections to
  * be used by a CollectionManager.
  *
  * The class need to be extended with a template constructor:
@@ -42,7 +42,7 @@ template<typename T> class ItemBase;
  * MyBackend::MyBackend<Person>(CollectionMediator<Person>* mediator, CollectionInterface* parent = nullptr) :
  *    CollectionMediator<Person>(mediator,parent) {}
  *
- * Each backends also need to implement that constructor or they wont load.
+ * Each collections also need to implement that constructor or they wont load.
  */
 class LIB_EXPORT CollectionInterface
 {
@@ -61,13 +61,13 @@ public:
       LOAD        = 0x1 <<  0, /*!< Load this backend, DO NOT load anything before "load" is called         */
       SAVE        = 0x1 <<  1, /*!< Save an item                                                            */
       EDIT        = 0x1 <<  2, /*!< Edit, but **DOT NOT**, save an item)                                    */
-      PROBE       = 0x1 <<  3, /*!< Check if the backend has new items (some backends do this automagically)*/
+      PROBE       = 0x1 <<  3, /*!< Check if the backend has new items (some collections do this automagically)*/
       ADD         = 0x1 <<  4, /*!< Add (and save) a new item to the backend                                */
       SAVE_ALL    = 0x1 <<  5, /*!< Save all items at once, this may or may not be faster than "add"        */
       CLEAR       = 0x1 <<  6, /*!< Clear all items from this backend                                       */
       REMOVE      = 0x1 <<  7, /*!< Remove a single item                                                    */
-      EXPORT      = 0x1 <<  8, /*!< Export all items, format and output need to be defined by each backends */
-      IMPORT      = 0x1 <<  9, /*!< Import items from an external source, details defined by each backends  */
+      EXPORT      = 0x1 <<  8, /*!< Export all items, format and output need to be defined by each collections */
+      IMPORT      = 0x1 <<  9, /*!< Import items from an external source, details defined by each collections  */
       ENABLEABLE  = 0x1 << 10, /*!< Can be enabled, I know, it is not a word, but Java use it too           */
       DISABLEABLE = 0x1 << 11, /*!< Can be disabled, I know, it is not a word, but Java use it too          */
       MANAGEABLE  = 0x1 << 12, /*!< Can be managed the config GUI                                           */
@@ -88,7 +88,7 @@ public:
    virtual QString    name     () const = 0;
 
    /**
-    * Each MANAGEABLE backends can be part of a meta category. This category
+    * Each MANAGEABLE collections can be part of a meta category. This category
     * will be the top level element of the BackendManagerModel. This name
     * must never change once it is set.
     */
@@ -172,7 +172,7 @@ public:
    QVector<T*> items() const;
 
    /**
-    * Some backends can be hierarchical, for example, a email backend
+    * Some collections can be hierarchical, for example, a email backend
     * can have multiple "folders" where mails are stored, a contact backend
     * can have multiple contact groups and an history one can have an archived
     * section for previous years. This method return the parent when applicable.
@@ -181,7 +181,7 @@ public:
 
    /**
     * As explained in the "parent()" method, this method return the backend children
-    * backends. This can be used by a client to implement different behaviour depending
+    * collections. This can be used by a client to implement different behaviour depending
     * on the backend at a finer level.
     */
    QVector<CollectionInterface*>  children() const;

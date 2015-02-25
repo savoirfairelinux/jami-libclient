@@ -57,7 +57,7 @@ CollectionInterface* BackendManagerInterface<T>::addBackend(const LoadOptions op
 
    if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the backend is checked
 
-      //Some backends can fail to load directly
+      //Some collections can fail to load directly
       //eventually it will necessary to add an async version of this
       //to load the backend only when it is loaded
       if (backend->load())
@@ -74,32 +74,32 @@ BackendManagerInterface<T>::BackendManagerInterface() : d_ptr(new BackendManager
 }
 
 template<class T>
-const QVector< CollectionInterface* > BackendManagerInterface<T>::backends() const
+const QVector< CollectionInterface* > BackendManagerInterface<T>::collections() const
 {
    return d_ptr->m_lBackends;
 }
 
 template<class T>
-const QVector< CollectionInterface* > BackendManagerInterface<T>::enabledBackends() const
+const QVector< CollectionInterface* > BackendManagerInterface<T>::enabledCollections() const
 {
    return d_ptr->m_lEnabledBackends;
 }
 
-/// Do this manager have active backends
+/// Do this manager have active collections
 template<class T>
-bool BackendManagerInterface<T>::hasEnabledBackends() const
+bool BackendManagerInterface<T>::hasEnabledCollections() const
 {
    return d_ptr->m_lEnabledBackends.size();
 }
 
 template<class T>
-bool BackendManagerInterface<T>::hasBackends() const
+bool BackendManagerInterface<T>::hasCollections() const
 {
    return d_ptr->m_lBackends.size();
 }
 
 template<class T>
-bool BackendManagerInterface<T>::clearAllBackends() const
+bool BackendManagerInterface<T>::clearAllCollections() const
 {
    return false;
 }
