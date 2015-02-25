@@ -1541,9 +1541,7 @@ void AccountPrivate::save()
       updateState();
       m_CurrentState = Account::EditState::READY;
    }
-   #ifdef ENABLE_VIDEO
-   q_ptr->videoCodecModel()->save();
-   #endif
+
    q_ptr->saveCodecs();
    emit q_ptr->changed(q_ptr);
 }
