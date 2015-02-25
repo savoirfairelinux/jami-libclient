@@ -148,6 +148,7 @@ public:
       MISSED  , /*!< The call has been missed */
       NONE      /*!< The legacy state is not set */
    };
+   Q_ENUMS(LegacyHistoryState)
 
    ///@enum Direction If the user have been called or have called
    enum class Direction : int {
@@ -349,6 +350,9 @@ Q_SIGNALS:
 };
 
 Q_DECLARE_METATYPE(Call*)
+Q_DECLARE_METATYPE(Call::State)
+Q_DECLARE_METATYPE(Call::Direction)
+Q_DECLARE_METATYPE(Call::LegacyHistoryState)
 
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::DaemonState& c );

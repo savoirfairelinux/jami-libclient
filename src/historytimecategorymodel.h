@@ -84,5 +84,7 @@ private:
    HistoryTimeCategoryModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(HistoryTimeCategoryModel)
 };
+Q_DECLARE_METATYPE(HistoryTimeCategoryModel::HistoryConst)
+Q_DECLARE_METATYPE(HistoryTimeCategoryModel*)
 
 #endif
