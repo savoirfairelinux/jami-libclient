@@ -99,23 +99,23 @@ public:
    explicit CallPrivate(Call* parent);
 
    //Attributes
-   Account*                 m_Account         ;
-   QString                  m_CallId          ;
-   ContactMethod*             m_pPeerContactMethod;
-   QString                  m_PeerName        ;
-   QString                  m_RecordingPath   ;
-   Call::LegacyHistoryState m_HistoryState    ;
-   time_t                   m_pStartTimeStamp ;
-   time_t                   m_pStopTimeStamp  ;
-   Call::State              m_CurrentState    ;
-   bool                     m_Recording       ;
-   InstantMessagingModel*   m_pImModel        ;
-   QTimer*                  m_pTimer          ;
-   UserActionModel*         m_pUserActionModel;
-   bool                     m_History         ;
-   bool                     m_Missed          ;
-   Call::Direction          m_Direction       ;
-   Call::Type               m_Type            ;
+   Account*                 m_Account           ;
+   QString                  m_DringId           ;
+   ContactMethod*           m_pPeerContactMethod;
+   QString                  m_PeerName          ;
+   QString                  m_RecordingPath     ;
+   Call::LegacyHistoryState m_HistoryState      ;
+   time_t                   m_pStartTimeStamp   ;
+   time_t                   m_pStopTimeStamp    ;
+   Call::State              m_CurrentState      ;
+   bool                     m_Recording         ;
+   InstantMessagingModel*   m_pImModel          ;
+   QTimer*                  m_pTimer            ;
+   UserActionModel*         m_pUserActionModel  ;
+   bool                     m_History           ;
+   bool                     m_Missed            ;
+   Call::Direction          m_Direction         ;
+   Call::Type               m_Type              ;
 
    mutable TemporaryContactMethod* m_pTransferNumber ;
    mutable TemporaryContactMethod* m_pDialNumber     ;
@@ -210,10 +210,10 @@ public:
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );
 
    //Constructor
-   static Call* buildDialingCall  (const QString& callId, const QString & peerName, Account* account = nullptr );
-   static Call* buildIncomingCall (const QString& callId                                                       );
-   static Call* buildRingingCall  (const QString& callId                                                       );
-   static Call* buildExistingCall (const QString& callId                                                       );
+   static Call* buildDialingCall  (const QString & peerName, Account* account = nullptr );
+   static Call* buildIncomingCall (const QString& callId                                );
+   static Call* buildRingingCall  (const QString& callId                                );
+   static Call* buildExistingCall (const QString& callId                                );
 
 private:
    Call* q_ptr;

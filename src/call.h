@@ -39,6 +39,7 @@ class TemporaryContactMethod;
 class CollectionInterface;
 namespace Video {
    class Renderer;
+   class Manager;
 }
 
 class Call;
@@ -66,7 +67,10 @@ class  LIB_EXPORT Call : public ItemBase<QObject>
    #pragma GCC diagnostic pop
 public:
    friend class CallModel;
+   friend class HistoryModel;
    friend class CallModelPrivate;
+   friend class IMConversationManager;
+   friend class Video::Manager;
 
    //Enum
 
@@ -90,7 +94,6 @@ public:
       Object             = 117, /*!<  */
       PhotoPtr           = 118, /*!<  */
       CallState          = 119, /*!<  */
-      Id                 = 120, /*!<  */
       StartTime          = 121, /*!<  */
       StopTime           = 122, /*!<  */
       IsRecording        = 123, /*!<  */
@@ -231,7 +234,7 @@ public:
 
    //Read only properties
    Q_PROPERTY( Call::State        state            READ state             NOTIFY stateChanged     )
-   Q_PROPERTY( QString            id               READ id                                        )
+   Q_PROPERTY( QString            historyId        READ historyId                                 )
    Q_PROPERTY( Account*           account          READ account                                   )
    Q_PROPERTY( bool               isHistory        READ isHistory                                 )
    Q_PROPERTY( uint               stopTimeStamp    READ stopTimeStamp                             )
@@ -264,8 +267,8 @@ public:
 
    //Getters
    Call::State              state            () const;
-   const QString            id               () const;
-   ContactMethod*             peerContactMethod  () const;
+   const QString            historyId        () const;
+   ContactMethod*           peerContactMethod() const;
    const QString            peerName         () const;
    Call::LegacyHistoryState historyState     () const;
    bool                     isRecording      () const;
@@ -290,6 +293,7 @@ public:
    bool                     hasVideo         () const;
    Call::LifeCycleState     lifeCycleState   () const;
    Call::Type               type             () const;
+   bool                     hasRemote        () const;
 
    //Automated function
    Call::State performAction(Call::Action action);
@@ -297,7 +301,7 @@ public:
    //Setters
    void setTransferNumber ( const QString&     number     );
    void setDialNumber     ( const QString&     number     );
-   void setDialNumber     ( const ContactMethod* number     );
+   void setDialNumber     ( const ContactMethod* number   );
    void setRecordingPath  ( const QString&     path       );
    void setPeerName       ( const QString&     name       );
    void setAccount        ( Account*           account    );
@@ -314,7 +318,10 @@ public:
 private:
    explicit Call(const QString& confId, const QString& account);
    ~Call();
-   Call(Call::State startState, const QString& callId, const QString& peerName = QString(), ContactMethod* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
+   Call(Call::State startState, const QString& peerName = QString(), ContactMethod* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
+
+   //Friend API
+   const QString dringId() const;
 
    CallPrivate* d_ptr;
    Q_DECLARE_PRIVATE(Call)

@@ -87,7 +87,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
 ///Singleton
 InstantMessagingModel* IMConversationManager::getModel(Call* call) {
-   const QString key = call->id();
+   const QString key = call->dringId();
    if (!d_ptr->m_lModels[key]) {
       d_ptr->m_lModels[key] = new InstantMessagingModel(call);
       emit newMessagingModel(call,d_ptr->m_lModels[key]);

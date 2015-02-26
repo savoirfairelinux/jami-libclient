@@ -32,6 +32,7 @@ class Account;
 struct InternalStruct;
 class ContactMethod;
 class CallModelPrivate;
+class CallPrivate;
 
 //Typedef
 typedef QMap<uint, Call*>  CallMap;
@@ -44,6 +45,12 @@ class LIB_EXPORT CallModel : public QAbstractItemModel
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 Q_OBJECT
 #pragma GCC diagnostic pop
+
+   //Handling "in call" text message has been delayed to it's own manager
+   friend class IMConversationManagerPrivate;
+   //Now that the ID is set at a later time, this model need to be notified
+   friend class CallPrivate;
+
 public:
    ///Accepted (mime) payload types
    enum DropPayloadType {
@@ -66,10 +73,12 @@ public:
    Q_PROPERTY(UserActionModel* userActionModel READ userActionModel )
 
    //Call related
-   Q_INVOKABLE Call* dialingCall      ( const QString& peerName=QString(), Account* account=nullptr );
-   Q_INVOKABLE void  attendedTransfer ( Call* toTransfer , Call* target              );
-   Q_INVOKABLE void  transfer         ( Call* toTransfer , const ContactMethod* target );
-   QModelIndex getIndex               ( Call* call                                   );
+   Q_INVOKABLE Call*       dialingCall      ( const QString& peerName=QString(), Account* account=nullptr );
+   Q_INVOKABLE void        attendedTransfer ( Call* toTransfer , Call* target                             );
+   Q_INVOKABLE void        transfer         ( Call* toTransfer , const ContactMethod* target              );
+   Q_INVOKABLE QByteArray  getMime          ( const Call* call                                            ) const;
+   Q_INVOKABLE QModelIndex getIndex         ( Call* call                                                  ) const;
+   Q_INVOKABLE Call*       fromMime         ( const QByteArray& fromMime                                  ) const;
 
    //Conference related
    Q_INVOKABLE bool createConferenceFromCall ( Call* call1, Call* call2      );
@@ -87,7 +96,6 @@ public:
    bool                 isConnected         () const;
    UserActionModel*     userActionModel     () const;
 
-   Q_INVOKABLE Call* getCall ( const QString& callId  ) const;
    Q_INVOKABLE Call* getCall ( const QModelIndex& idx ) const;
 
    //Model implementation
@@ -115,6 +123,10 @@ private:
    explicit CallModel();
    QScopedPointer<CallModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CallModel)
+
+   //Friend API
+   Call* getCall ( const QString& callId  ) const;
+   void  registerCall(Call* call);
 
    //Singleton
    static CallModel* m_spInstance;

@@ -370,7 +370,7 @@ bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction actio
    if (data->hasFormat(RingMimes::CALLID)) {
       const QByteArray encodedCallId = data->data( RingMimes::CALLID    );
       const QModelIndex targetIdx    = index   ( row,column,parent );
-      Call* call                     = CallModel::instance()->getCall ( encodedCallId        );
+      Call* call                     = CallModel::instance()->fromMime ( encodedCallId        );
       if (call && targetIdx.isValid()) {
          CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)targetIdx.internalPointer();
          switch (modelItem->type()) {

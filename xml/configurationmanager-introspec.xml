@@ -383,17 +383,17 @@
        </method>
 
        <method name="getActiveCodecList" tp:name-for-bindings="getActiveCodecList">
+           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="VectorUInt"/>
            <arg type="s" name="accountID" direction="in">
            </arg>
-           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="VectorUInt"/>
            <arg type="au" name="list" direction="out">
            </arg>
        </method>
 
        <method name="setActiveCodecList" tp:name-for-bindings="setActiveCodecList">
+           <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="VectorUInt"/>
            <arg type="s" name="accountID" direction="in">
            </arg>
-           <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="VectorUInt"/>
            <arg type="au" name="list" direction="in">
            </arg>
        </method>
@@ -516,19 +516,7 @@
            </arg>
        </method>
 
-       <method name="getHistory" tp:name-for-bindings="getHistory">
-           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="VectorMapStringString"/>
-           <!-- Return a List of type Dict<string, string> >...a List of Dicts -->
-           <arg type="aa{ss}" name="entries" direction="out"/>
-       </method>
-
-       <method name="clearHistory" tp:name-for-bindings="clearHistory">
-       </method>
-
        <signal name="accountsChanged" tp:name-for-bindings="accountsChanged">
-       </signal>
-
-       <signal name="historyChanged" tp:name-for-bindings="historyChanged">
        </signal>
 
        <!-- FIXME: we should rethink these two signals -->

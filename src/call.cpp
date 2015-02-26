@@ -228,26 +228,22 @@ CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
 m_pStopTimeStamp(0),
 m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
-m_CallId(),m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
+m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(nullptr),m_HistoryState(Call::LegacyHistoryState::NONE), m_CurrentState(Call::State::ERROR)
 {
 }
 
 ///Constructor
-Call::Call(Call::State startState, const QString& callId, const QString& peerName, ContactMethod* number, Account* account)
+Call::Call(Call::State startState, const QString& peerName, ContactMethod* number, Account* account)
    : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
-   Q_ASSERT(!callId.isEmpty());
-
    d_ptr->m_CurrentState     = startState;
    d_ptr->m_Type             = Call::Type::CALL;
    d_ptr->m_Account          = account;
    d_ptr->m_PeerName         = peerName;
    d_ptr->m_pPeerContactMethod = number;
-   d_ptr->m_CallId           = callId;
 
-   setObjectName("Call:"+callId);
    d_ptr->changeCurrentState(startState);
 
    emit changed();
@@ -261,7 +257,7 @@ Call::Call(const QString& confId, const QString& account)
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
    d_ptr->m_Account      = AccountModel::instance()->getById(account.toLatin1());
    d_ptr->m_Type         = (!confId.isEmpty())?Call::Type::CONFERENCE:Call::Type::CALL;
-   d_ptr->m_CallId       = confId;
+   d_ptr->m_DringId      = confId;
 
    setObjectName("Conf:"+confId);
 
@@ -271,7 +267,7 @@ Call::Call(const QString& confId, const QString& account)
       d_ptr->setStartTimeStamp(curTime);
       d_ptr->initTimer();
       CallManagerInterface& callManager = DBus::CallManager::instance();
-      MapStringString        details    = callManager.getConferenceDetails(id())  ;
+      MapStringString        details    = callManager.getConferenceDetails(dringId())  ;
       d_ptr->m_CurrentState             = d_ptr->confStatetoCallState(details[CallPrivate::ConfDetailsMapFields::CONF_STATE]);
       emit stateChanged();
    }
@@ -311,7 +307,8 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
    Call::State   startState    = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE], details[CallPrivate::DetailsMapFields::TYPE]);
    Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
-   Call*         call          = new Call(startState, callId, peerName, nb, acc);
+   Call*         call          = new Call(startState, peerName, nb, acc);
+   call->d_ptr->m_DringId      = callId;
    call->d_ptr->m_Recording    = callManager.getIsRecording(callId);
    call->d_ptr->m_HistoryState = historyStateFromType(details[Call::HistoryMapFields::STATE]);
 
@@ -333,9 +330,9 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 } //buildExistingCall
 
 ///Build a call from a dialing call (a call that is about to exist)
-Call* CallPrivate::buildDialingCall(const QString& callId, const QString & peerName, Account* account)
+Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
 {
-   Call* call = new Call(Call::State::DIALING, callId, peerName, nullptr, account);
+   Call* call = new Call(Call::State::DIALING, peerName, nullptr, account);
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::NONE;
    call->d_ptr->m_Direction = Call::Direction::OUTGOING;
    if (Audio::Settings::instance()->isRoomToneEnabled()) {
@@ -348,15 +345,16 @@ Call* CallPrivate::buildDialingCall(const QString& callId, const QString & peerN
 ///Build a call from a dbus event
 Call* CallPrivate::buildIncomingCall(const QString& callId)
 {
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = DBus::CallManager::instance();
    MapStringString details = callManager.getCallDetails(callId);
 
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
    Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
-   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
-   Call* call                  = new Call(Call::State::INCOMING, callId, peerName, nb, acc);
+   ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
+   Call* call                  = new Call(Call::State::INCOMING, peerName, nb, acc);
+   call->d_ptr->m_DringId      = callId;
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
    call->d_ptr->m_Direction    = Call::Direction::INCOMING;
    if (call->peerContactMethod()) {
@@ -375,8 +373,9 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
    Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
-   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(from,acc);
-   Call* call                  = new Call(Call::State::RINGING, callId, peerName, nb, acc);
+   ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
+   Call* call                  = new Call(Call::State::RINGING, peerName, nb, acc);
+   call->d_ptr->m_DringId      = callId;
    call->d_ptr->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
    call->d_ptr->m_Direction    = Call::Direction::OUTGOING;
 
@@ -420,14 +419,15 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
 
-   Account*      acc       = AccountModel::instance()->getById(accId);
-   ContactMethod*  nb        = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
+   Account*        acc            = AccountModel::instance()->getById(accId);
+   ContactMethod*  nb             = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
 
-   Call*         call      = new Call(Call::State::OVER, callId, (name == "empty")?QString():name, nb, acc );
+   Call*           call           = new Call(Call::State::OVER, (name == "empty")?QString():name, nb, acc );
+   call->d_ptr->m_DringId         = callId;
 
    call->d_ptr->m_pStopTimeStamp  = stopTimeStamp ;
-   call->d_ptr->m_History         = true;
    call->d_ptr->setStartTimeStamp(startTimeStamp);
+   call->d_ptr->m_History         = true;
    call->d_ptr->m_HistoryState    = CallPrivate::historyStateFromType(type);
    call->d_ptr->m_Account         = AccountModel::instance()->getById(accId);
 
@@ -456,7 +456,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
    //END
 
-   call->setObjectName("History:"+call->d_ptr->m_CallId);
+   call->setObjectName("History:"+call->d_ptr->m_DringId);
 
    if (call->peerContactMethod()) {
       call->peerContactMethod()->addCall(call);
@@ -636,9 +636,16 @@ const QString Call::dialNumber() const
 }
 
 ///Return the call id
-const QString Call::id() const
+const QString Call::historyId() const
 {
-   return d_ptr->m_CallId;
+   return d_ptr->m_DringId;
+}
+
+///Return the call id
+const QString Call::dringId() const
+{
+   Q_ASSERT(!d_ptr->m_DringId.isEmpty());
+   return d_ptr->m_DringId;
 }
 
 ContactMethod* Call::peerContactMethod() const
@@ -725,6 +732,12 @@ Call::Direction Call::direction() const
 Call::Type Call::type() const
 {
    return d_ptr->m_Type;
+}
+
+
+bool Call::hasRemote() const
+{
+   return !d_ptr->m_DringId.isEmpty();
 }
 
 ///Does this call currently has video
@@ -918,7 +931,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       }
 
       CallManagerInterface & callManager = DBus::CallManager::instance();
-      MapStringString details = callManager.getCallDetails(m_CallId);
+      MapStringString details = callManager.getCallDetails(m_DringId);
       if (details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName)
          m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
 
@@ -1015,7 +1028,7 @@ Call::State Call::performAction(Call::Action action)
       FORCE_ERROR_STATE()
       return d_ptr->m_CurrentState;
    }
-   qDebug() << "Calling action " << action << " on " << id() << " with state " << previousState << ". Become " << d_ptr->m_CurrentState;
+   qDebug() << "Calling action " << action << " on " << this << " with state " << previousState << ". Become " << d_ptr->m_CurrentState;
    return d_ptr->m_CurrentState;
 } //actionPerformed
 
@@ -1053,7 +1066,7 @@ void CallPrivate::setStartTimeStamp(time_t stamp)
 void Call::sendTextMessage(const QString& message)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.sendTextMessage(d_ptr->m_CallId,message);
+   Q_NOREPLY callManager.sendTextMessage(d_ptr->m_DringId,message);
    if (!d_ptr->m_pImModel) {
       d_ptr->m_pImModel = IMConversationManager::instance()->getModel(this);
    }
@@ -1100,8 +1113,8 @@ void CallPrivate::accept()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Accepting call. callId : " << m_CallId  << "ConfId:" << m_CallId;
-   Q_NOREPLY callManager.accept(m_CallId);
+   qDebug() << "Accepting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+   Q_NOREPLY callManager.accept(m_DringId);
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
@@ -1113,8 +1126,8 @@ void CallPrivate::accept()
 void CallPrivate::refuse()
 {
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Refusing call. callId : " << m_CallId  << "ConfId:" << m_CallId;
-   const bool ret = callManager.refuse(m_CallId);
+   qDebug() << "Refusing call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+   const bool ret = callManager.refuse(m_DringId);
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
@@ -1136,9 +1149,9 @@ void CallPrivate::acceptTransf()
       return;
    }
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Accepting call and transferring it to number : " << m_pTransferNumber->uri() << ". callId : " << m_CallId  << "ConfId:" << m_CallId;
-   callManager.accept(m_CallId);
-   Q_NOREPLY callManager.transfer(m_CallId, m_pTransferNumber->uri());
+   qDebug() << "Accepting call and transferring it to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr  << "ConfId:" << q_ptr;
+   callManager.accept(m_DringId);
+   Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
 }
 
 ///Put the call on hold
@@ -1147,9 +1160,9 @@ void CallPrivate::acceptHold()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Accepting call and holding it. callId : " << m_CallId  << "ConfId:" << m_CallId;
-   callManager.accept(m_CallId);
-   Q_NOREPLY callManager.hold(m_CallId);
+   qDebug() << "Accepting call and holding it. callId : " << q_ptr  << "ConfId:" << q_ptr;
+   callManager.accept(m_DringId);
+   Q_NOREPLY callManager.hold(m_DringId);
    this->m_HistoryState = Call::LegacyHistoryState::INCOMING;
    m_Direction = Call::Direction::INCOMING;
 }
@@ -1163,15 +1176,15 @@ void CallPrivate::hangUp()
    time_t curTime;
    ::time(&curTime);
    m_pStopTimeStamp = curTime;
-   qDebug() << "Hanging up call. callId : " << m_CallId << "ConfId:" << m_CallId;
+   qDebug() << "Hanging up call. callId : " << q_ptr << "ConfId:" << q_ptr;
    bool ret;
    if (q_ptr->videoRenderer()) { //TODO remove, cheap hack
       q_ptr->videoRenderer()->stopRendering();
    }
    if (q_ptr->type() != Call::Type::CONFERENCE)
-      ret = callManager.hangUp(m_CallId);
+      ret = callManager.hangUp(m_DringId);
    else
-      ret = callManager.hangUpConference(m_CallId);
+      ret = callManager.hangUpConference(m_DringId);
    if (!ret) { //Can happen if the daemon crash and open again
       qDebug() << "Error: Invalid call, the daemon may have crashed";
       changeCurrentState(Call::State::OVER);
@@ -1191,9 +1204,9 @@ void CallPrivate::remove()
    //HACK Call hang up again to make sure the busytone stop, this should
    //return true or false, both are valid, no point to check the result
    if (q_ptr->type() != Call::Type::CONFERENCE)
-      callManager.hangUp(m_CallId);
+      callManager.hangUp(q_ptr->dringId());
    else
-      callManager.hangUpConference(q_ptr->id());
+      callManager.hangUpConference(q_ptr->dringId());
 
    emit q_ptr->isOver(q_ptr);
    emit q_ptr->stateChanged();
@@ -1206,10 +1219,10 @@ void CallPrivate::cancel()
 {
    //This one can be over if the peer server failed to comply with the correct sequence
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Canceling call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Canceling call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->dialNumberChanged(QString());
-//    Q_NOREPLY callManager.hangUp(m_CallId);
-   if (!callManager.hangUp(m_CallId)) {
+//    Q_NOREPLY callManager.hangUp(m_DringId);
+   if (!callManager.hangUp(m_DringId)) {
       qWarning() << "HangUp failed, the call was probably already over";
       changeCurrentState(Call::State::OVER);
    }
@@ -1221,11 +1234,11 @@ void CallPrivate::hold()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Holding call. callId : " << m_CallId << "ConfId:" << q_ptr->id();
+   qDebug() << "Holding call. callId : " << q_ptr << "ConfId:" << q_ptr;
    if (q_ptr->type() != Call::Type::CONFERENCE)
-      Q_NOREPLY callManager.hold(m_CallId);
+      Q_NOREPLY callManager.hold(q_ptr->dringId());
    else
-      Q_NOREPLY callManager.holdConference(q_ptr->id());
+      Q_NOREPLY callManager.holdConference(q_ptr->dringId());
 }
 
 ///Start the call
@@ -1256,12 +1269,15 @@ void CallPrivate::call()
    }
    //Normal case
    else if(m_Account) {
-      qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account << ". callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+      qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account << ". callId : " << q_ptr  << "ConfId:" << q_ptr;
 
       this->m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(m_pDialNumber->uri(),q_ptr->account());
 
       //Warning: m_pDialNumber can become nullptr when linking directly
-      callManager.placeCall(m_Account->id(), m_CallId, m_pDialNumber->uri());
+      m_DringId = callManager.placeCall(m_Account->id(), m_pDialNumber->uri());
+
+      CallModel::instance()->registerCall(q_ptr);
+      setObjectName("Call:"+m_DringId);
 
       if (PersonModel::instance()->hasCollections()) {
          if (q_ptr->peerContactMethod()->contact())
@@ -1283,7 +1299,7 @@ void CallPrivate::call()
    }
    else {
       qDebug() << "Trying to call " << (m_pTransferNumber?QString(m_pTransferNumber->uri()):"ERROR") 
-         << " with no account registered . callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+         << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
       this->m_HistoryState = Call::LegacyHistoryState::NONE;
       throw tr("No account registered!");
    }
@@ -1296,8 +1312,8 @@ void CallPrivate::transfer()
 
    if (m_pTransferNumber) {
       CallManagerInterface & callManager = DBus::CallManager::instance();
-      qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << m_CallId;
-      Q_NOREPLY callManager.transfer(m_CallId, m_pTransferNumber->uri());
+      qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
+      Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
       time_t curTime;
       ::time(&curTime);
       m_pStopTimeStamp = curTime;
@@ -1310,26 +1326,26 @@ void CallPrivate::unhold()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Unholding call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Unholding call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    if (q_ptr->type() != Call::Type::CONFERENCE)
-      Q_NOREPLY callManager.unhold(m_CallId);
+      Q_NOREPLY callManager.unhold(q_ptr->dringId());
    else
-      Q_NOREPLY callManager.unholdConference(q_ptr->id());
+      Q_NOREPLY callManager.unholdConference(q_ptr->dringId());
 }
 
 ///Record the call
 void CallPrivate::toggleRecord()
 {
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Setting record " << !m_Recording << " for call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Setting record " << !m_Recording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
-   callManager.toggleRecording(q_ptr->id());
+   callManager.toggleRecording(q_ptr->dringId());
 }
 
 ///Start the timer
 void CallPrivate::start()
 {
-   qDebug() << "Starting call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    time_t curTime;
    ::time(&curTime);
    emit q_ptr->changed();
@@ -1346,7 +1362,7 @@ void CallPrivate::start()
 ///Toggle the timer
 void CallPrivate::startStop()
 {
-   qDebug() << "Starting and stoping call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Starting and stoping call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
@@ -1356,7 +1372,7 @@ void CallPrivate::startStop()
 ///Stop the timer
 void CallPrivate::stop()
 {
-   qDebug() << "Stoping call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Stoping call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    if (q_ptr->videoRenderer()) { //TODO remove, cheap hack
       q_ptr->videoRenderer()->stopRendering();
    }
@@ -1368,17 +1384,17 @@ void CallPrivate::stop()
 ///Handle error instead of crashing
 void CallPrivate::startWeird()
 {
-   qDebug() << "Starting call. callId : " << m_CallId  << "ConfId:" << q_ptr->id();
+   qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
-   qDebug() << "Warning : call " << m_CallId << " had an unexpected transition of state at its start.";
+   qDebug() << "Warning : call " << q_ptr << " had an unexpected transition of state at its start.";
 }
 
 ///Print a warning
 void CallPrivate::warning()
 {
-   qWarning() << "Warning : call " << m_CallId << " had an unexpected transition of state.(" << m_CurrentState << ")";
+   qWarning() << "Warning : call " << q_ptr << " had an unexpected transition of state.(" << m_CurrentState << ")";
    switch (m_CurrentState) {
       case Call::State::FAILURE        :
       case Call::State::ERROR          :
@@ -1693,9 +1709,6 @@ QVariant Call::roleData(int role) const
          break;
       case Call::Role::CallState:
          return static_cast<int>(state()); //TODO Qt5, use the Q_ENUM
-         break;
-      case Call::Role::Id:
-         return id();
          break;
       case Call::Role::StartTime:
          return (int) d_ptr->m_pStartTimeStamp;

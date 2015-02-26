@@ -233,7 +233,6 @@ QHash<int,QByteArray> HistoryModel::roleNames() const
       roles.insert(Call::Role::Object        ,QByteArray("object"        ));
       roles.insert(Call::Role::PhotoPtr      ,QByteArray("photoPtr"      ));
       roles.insert(Call::Role::CallState     ,QByteArray("callState"     ));
-      roles.insert(Call::Role::Id            ,QByteArray("id"            ));
       roles.insert(Call::Role::StartTime     ,QByteArray("startTime"     ));
       roles.insert(Call::Role::StopTime      ,QByteArray("stopTime"      ));
       roles.insert(Call::Role::DropState     ,QByteArray("dropState"     ));
@@ -564,7 +563,7 @@ QMimeData* HistoryModel::mimeData(const QModelIndexList &indexes) const
          mimeData2->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
          CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
          if (node->type() == CategorizedCompositeNode::Type::CALL)
-            mimeData2->setData(RingMimes::HISTORYID  , static_cast<Call*>(node->getSelf())->id().toUtf8());
+            mimeData2->setData(RingMimes::HISTORYID  , static_cast<Call*>(node->getSelf())->dringId().toUtf8());
          return mimeData2;
       }
    }
@@ -583,7 +582,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
 
    if (parentIdx.isValid() && mime->hasFormat( RingMimes::CALLID)) {
       QByteArray encodedCallId      = mime->data( RingMimes::CALLID      );
-      Call* call = CallModel::instance()->getCall(encodedCallId);
+      Call* call = CallModel::instance()->fromMime(encodedCallId);
       if (call) {
          const QModelIndex& idx = index(row,column,parentIdx);
          if (idx.isValid()) {
@@ -606,16 +605,11 @@ void HistoryModel::collectionAddedCallback(CollectionInterface* backend)
 ///Call all collections that support clearing
 bool HistoryModel::clearAllCollections() const
 {
-   foreach (CollectionInterface* backend, collections()) {
-      if (backend->supportedFeatures() & CollectionInterface::ADD) {
+   foreach (CollectionInterface* backend, collections()) { //TODO use the filter API
+      if (backend->supportedFeatures() & CollectionInterface::CLEAR) {
          backend->clear();
       }
    }
-
-   //TODO Remove this
-   //Clear the daemon history backend as apparently the Gnome client wont
-   //Use its native backend anytime soon
-   DBus::ConfigurationManager::instance().clearHistory();
    return true;
 }
 

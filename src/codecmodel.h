@@ -35,6 +35,9 @@ class LIB_EXPORT CodecModel : public QAbstractListModel {
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
+
+   friend class Account;
+
 public:
    //friend class Account;
    //Roles
@@ -44,10 +47,6 @@ public:
       BITRATE    = 101,
       SAMPLERATE = 102,
    };
-
-   //Constructor
-   explicit CodecModel(Account* account);
-   virtual ~CodecModel();
 
    //Abstract model member
    virtual QVariant data        (const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
@@ -66,6 +65,11 @@ public:
    Q_INVOKABLE void save     (                        );
 
 private:
+
+   //Constructor
+   explicit CodecModel(Account* account);
+   virtual ~CodecModel();
+
    QScopedPointer<CodecModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CodecModel)
 };

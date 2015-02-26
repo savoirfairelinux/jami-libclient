@@ -96,7 +96,7 @@ Video::Manager* Video::Manager::instance()
 Video::Renderer* Video::Manager::getRenderer(const Call* call) const
 {
    if (!call) return nullptr;
-   return d_ptr->m_lRenderers[call->id()];
+   return d_ptr->m_lRenderers[call->dringId()];
 }
 
 ///Get the video preview renderer
