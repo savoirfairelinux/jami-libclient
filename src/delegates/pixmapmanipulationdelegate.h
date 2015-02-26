@@ -17,7 +17,7 @@
  ***************************************************************************/
 #ifndef PIXMAPMANIPULATIONVISITOR_H
 #define PIXMAPMANIPULATIONVISITOR_H
-#include "../typedefs.h"
+#include <typedefs.h>
 
 //Qt
 #include <QtCore/QVariant>

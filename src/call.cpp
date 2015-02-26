@@ -1653,7 +1653,7 @@ QVariant Call::roleData(int role) const
          return peerContactMethod()->uri();
          break;
       case Call::Role::Direction2:
-         return static_cast<int>(d_ptr->m_Direction); //TODO Qt5, use the Q_ENUM
+         return QVariant::fromValue(d_ptr->m_Direction);
          break;
       case Call::Role::Date:
          return (int)startTimeStamp();
@@ -1668,7 +1668,7 @@ QVariant Call::roleData(int role) const
          return hasRecording();
          break;
       case Call::Role::Historystate:
-         return static_cast<int>(historyState());
+         return QVariant::fromValue(historyState());
          break;
       case Call::Role::Filter: {
          QString normStripppedC;
@@ -1681,7 +1681,7 @@ QVariant Call::roleData(int role) const
          }
          break;
       case Call::Role::FuzzyDate:
-         return (int)d_ptr->m_HistoryConst; //TODO Qt5, use the Q_ENUM
+         return QVariant::fromValue(d_ptr->m_HistoryConst);
          break;
       case Call::Role::IsBookmark:
          return false;
@@ -1708,7 +1708,7 @@ QVariant Call::roleData(int role) const
          return ct?ct->photo():QVariant();
          break;
       case Call::Role::CallState:
-         return static_cast<int>(state()); //TODO Qt5, use the Q_ENUM
+         return QVariant::fromValue(state());
          break;
       case Call::Role::StartTime:
          return (int) d_ptr->m_pStartTimeStamp;
