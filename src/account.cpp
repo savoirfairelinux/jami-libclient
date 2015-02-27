@@ -1465,6 +1465,13 @@ void AccountPrivate::performAction(const Account::EditAction action)
    (this->*(stateMachineActionsOnState[(int)m_CurrentState][(int)action]))();//FIXME don't use integer cast
 }
 
+/// anAccount << Call::EditAction::SAVE
+Account* Account::operator<<(Account::EditAction& action)
+{
+   performAction(action);
+   return this;
+}
+
 ///Change the current edition state
 bool Account::performAction(const Account::EditAction action)
 {

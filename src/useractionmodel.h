@@ -46,6 +46,7 @@ public:
    enum Role {
       VISIBLE       = 100,
       RELATIVEINDEX = 101,
+      ACTION        = 102,
    };
 
    ///If options are checkable or not
@@ -105,6 +106,7 @@ Q_SIGNALS:
    void actionStateChanged();
 };
 Q_DECLARE_METATYPE(UserActionModel*)
+Q_DECLARE_METATYPE(UserActionModel::Action)
 
 
 /**

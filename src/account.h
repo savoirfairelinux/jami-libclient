@@ -147,6 +147,7 @@ class LIB_EXPORT Account : public QObject {
          MODIFY  = 5,
          CANCEL  = 6
       };
+      Q_ENUMS(EditAction)
 
       ///@enum RegistrationState The account state from a client point of view
       enum class RegistrationState {
@@ -355,6 +356,7 @@ class LIB_EXPORT Account : public QObject {
 
       //Operators
       bool operator==(const Account&)const;
+      Account* operator<<(Account::EditAction& action);
 
       //Mutator
       Q_INVOKABLE void saveCredentials  ();
@@ -390,6 +392,7 @@ class LIB_EXPORT Account : public QObject {
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
 Q_DECLARE_METATYPE(Account::RegistrationState)
+Q_DECLARE_METATYPE(Account::EditAction)
 
 /**
  * Some accounts can be loaded at later time. This object will be upgraded

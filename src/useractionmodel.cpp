@@ -284,6 +284,8 @@ QVariant UserActionModel::data(const QModelIndex& idx, int role ) const
          state.checkState = Qt::Unchecked;
          return PixmapManipulationDelegate::instance()->userActionIcon(state);
       }
+      case UserActionModel::Role::ACTION:
+         return QVariant::fromValue(static_cast<Action>(idx.row()));
    };
 
    return QVariant();
