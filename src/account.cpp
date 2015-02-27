@@ -1472,6 +1472,11 @@ Account* Account::operator<<(Account::EditAction& action)
    return this;
 }
 
+Account* operator<<(Account* a, Account::EditAction action)
+{
+   return (!a)?nullptr : (*a) << action;
+}
+
 ///Change the current edition state
 bool Account::performAction(const Account::EditAction action)
 {

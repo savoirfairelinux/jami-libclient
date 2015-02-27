@@ -492,6 +492,18 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
    return true; //TODO handle errors
 }
 
+UserActionModel* UserActionModel::operator<<(UserActionModel::Action& action)
+{
+   execute(action);
+   return this;
+}
+
+
+UserActionModel* operator<<(UserActionModel* m,UserActionModel::Action action)
+{
+   return (!m)? nullptr : (*m) << action;
+}
+
 /**
  * Execute an action
  * @param idx A model index. It can be from proxies.

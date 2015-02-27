@@ -52,7 +52,17 @@ enum DtmfType {
 };
 Q_ENUMS(DtmfType)
 
-///Account: a daemon account (SIP or AIX)
+/**
+ * A communication account.
+ * 
+ * This class represent an account based around a protocol and a bunch of properties.
+ * 
+ * Using the setters on this object wont cause the changes to take effect immediately.
+ * 
+ * To save the changes, use the "<<" operator on the account with Account::EditAction::SAVE.
+ * Similarly, the Account::EditAction::RELOAD action will reset the changes to match the
+ * current properties used by daemon.
+ */
 class LIB_EXPORT Account : public QObject {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -393,6 +403,8 @@ class LIB_EXPORT Account : public QObject {
 Q_DECLARE_METATYPE(Account*)
 Q_DECLARE_METATYPE(Account::RegistrationState)
 Q_DECLARE_METATYPE(Account::EditAction)
+
+Account* operator<<(Account* a, Account::EditAction action);
 
 /**
  * Some accounts can be loaded at later time. This object will be upgraded

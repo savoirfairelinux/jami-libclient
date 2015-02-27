@@ -97,6 +97,9 @@ public:
    bool execute( const Action action    ) const;
    bool execute( const QModelIndex& idx ) const;
 
+   //Operators
+   UserActionModel* operator<<(UserActionModel::Action& action);
+
 private:
    const QScopedPointer<UserActionModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(UserActionModel)
@@ -108,6 +111,8 @@ Q_SIGNALS:
 Q_DECLARE_METATYPE(UserActionModel*)
 Q_DECLARE_METATYPE(UserActionModel::Action)
 
+
+UserActionModel* operator<<(UserActionModel* m,UserActionModel::Action action);
 
 /**
  * "Java bean" used to avoid having a 5+ parameter pixmap delegate

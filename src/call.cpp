@@ -478,6 +478,12 @@ Call* Call::operator<<( Call::Action& c)
    return this;
 }
 
+
+Call* operator<<(Call* c, Call::Action action)
+{
+   return (!c) ? nullptr : (*c) << action;
+}
+
 ///Get the history state from the type (see Call.cpp header)
 Call::LegacyHistoryState CallPrivate::historyStateFromType(const QString& type)
 {

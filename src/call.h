@@ -361,6 +361,7 @@ Q_DECLARE_METATYPE(Call::State)
 Q_DECLARE_METATYPE(Call::Direction)
 Q_DECLARE_METATYPE(Call::LegacyHistoryState)
 
+Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::DaemonState& c );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
