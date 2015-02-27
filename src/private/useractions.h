@@ -37,29 +37,30 @@ bool record(const QList<Call*> calls);
 bool accept(const QList<Call*> calls)
 {
    bool ret = true;
+
+   //Add a new call if none is there
+   if (!calls.size()) {
+      Call* call = CallModel::instance()->dialingCall();
+      CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
+      return true;
+   }
+
    for (Call* call : calls) {
-      if(!call) {
-         qDebug() << "Calling when no item is selected. Opening an item.";
-         CallModel::instance()->dialingCall();
-         CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
+      const Call::State state = call->state();
+      //TODO port to lifeCycle code
+      if (state == Call::State::RINGING || state == Call::State::CURRENT || state == Call::State::HOLD
+         || state == Call::State::BUSY || state == Call::State::FAILURE || state == Call::State::ERROR) {
+         qDebug() << "Calling when item currently ringing, current, hold or busy. Opening an item.";
+         Call* c2 = CallModel::instance()->dialingCall();
+         CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(c2), QItemSelectionModel::ClearAndSelect);
       }
       else {
-         const Call::State state = call->state();
-         //TODO port to lifeCycle code
-         if (state == Call::State::RINGING || state == Call::State::CURRENT || state == Call::State::HOLD
-            || state == Call::State::BUSY || state == Call::State::FAILURE || state == Call::State::ERROR) {
-            qDebug() << "Calling when item currently ringing, current, hold or busy. Opening an item.";
-            Call* c2 = CallModel::instance()->dialingCall();
-            CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(c2), QItemSelectionModel::ClearAndSelect);
+         try {
+            call->performAction(Call::Action::ACCEPT);
          }
-         else {
-            try {
-               call->performAction(Call::Action::ACCEPT);
-            }
-            catch(const char * msg) {
+         catch(const char * msg) {
 //                KMessageBox::error(Ring::app(),i18n(msg));
-               ret = false;
-            }
+            ret = false;
          }
       }
    }

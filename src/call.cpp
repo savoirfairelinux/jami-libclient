@@ -478,7 +478,6 @@ Call* Call::operator<<( Call::Action& c)
    return this;
 }
 
-
 Call* operator<<(Call* c, Call::Action action)
 {
    return (!c) ? nullptr : (*c) << action;

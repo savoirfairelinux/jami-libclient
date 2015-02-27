@@ -479,7 +479,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             d_ptr->updateActions();
          break;
       case UserActionModel::Action::HANGUP          :
-         if (UserActions::accept(selected))
+         if (UserActions::hangup(selected))
             d_ptr->updateActions();
          break;
       case UserActionModel::Action::JOIN            :
