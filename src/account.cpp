@@ -885,6 +885,26 @@ QVariant Account::roleData(int role) const
 #undef CAST
 
 
+bool Account::supportScheme( URI::SchemeType type )
+{
+   switch(type) {
+      case URI::SchemeType::NONE :
+         return true;
+      case URI::SchemeType::SIP  :
+      case URI::SchemeType::SIPS :
+         if (protocol() == Account::Protocol::SIP)
+            return true;
+      case URI::SchemeType::IAX  :
+         if (protocol() == Account::Protocol::IAX)
+            return true;
+      case URI::SchemeType::RING :
+         if (protocol() == Account::Protocol::RING)
+            return true;
+   }
+   return false;
+}
+
+
 /*****************************************************************************
  *                                                                           *
  *                                  Setters                                  *

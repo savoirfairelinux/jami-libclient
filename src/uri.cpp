@@ -131,9 +131,20 @@ bool URI::hasHostname() const
    return !d_ptr->m_Hostname.isEmpty();
 }
 
+/**
+ * Return the URI SchemeType
+ */
+URI::SchemeType URI::schemeType() const
+{
+   if (!d_ptr->m_Parsed)
+      const_cast<URI*>(this)->d_ptr->parse();
+   return d_ptr->m_HeaderType;
+}
+
 ///Keep a cache of the values to avoid re-parsing them
 void URIPrivate::parse()
 {
+   //TODO DHT hashes have 40 chars or 45 with sips:/ring: is set
    if (q_ptr->indexOf('@') != -1) {
       const QStringList split = q_ptr->split('@');
       m_Hostname = split[1];//split[1].left(split[1].size())

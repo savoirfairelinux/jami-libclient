@@ -33,6 +33,7 @@ public:
    CollectionManagerInterface<T>*  i_ptr;
 
    CollectionMediator<T>* itemMediator() const;
+   inline const QVector< CollectionInterface* > filterCollections(QVector< CollectionInterface* > in, CollectionInterface::SupportedFeatures features) const;
 };
 
 template<class T>
@@ -80,28 +81,70 @@ CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* se
 }
 
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections() const
+const QVector< CollectionInterface* > CollectionManagerInterfacePrivate<T>::filterCollections(QVector< CollectionInterface* > in, CollectionInterface::SupportedFeatures features) const
 {
-   return d_ptr->m_lCollections;
+   QVector< CollectionInterface* > out;
+   for (CollectionInterface* col : in) {
+      if ((col->supportedFeatures() & features) == features)
+         out << col;
+   }
+   return out;
 }
 
+/**
+ * Return the list of all collections associated with this manager
+ * @param features An optional set of required features
+ * @note Please note that this method complexity is O(N) when "features" is set
+ */
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledCollections() const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections(CollectionInterface::SupportedFeatures features) const
 {
-   return d_ptr->m_lEnabledCollections;
+   if (features != CollectionInterface::SupportedFeatures::NONE)
+      return d_ptr->filterCollections(d_ptr->m_lCollections, features);
+   else
+      return d_ptr->m_lCollections;
 }
 
-/// Do this manager have active collections
+/**
+ * Return the list of all enabled collections associated with this manager
+ * @param features An optional set of required features
+ * @note Please note that this method complexity is O(N) when "features" is set
+ */
 template<class T>
-bool CollectionManagerInterface<T>::hasEnabledCollections() const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledCollections(CollectionInterface::SupportedFeatures features) const
 {
-   return d_ptr->m_lEnabledCollections.size();
+   if (features != CollectionInterface::SupportedFeatures::NONE)
+      return d_ptr->filterCollections(d_ptr->m_lEnabledCollections, features);
+   else
+      return d_ptr->m_lEnabledCollections;
 }
 
+/**
+ * Return if the manager has enabled collections
+ * @param features An optional set of required features
+ * @note Please note that this method complexity is O(N) when "features" is set
+ */
 template<class T>
-bool CollectionManagerInterface<T>::hasCollections() const
+bool CollectionManagerInterface<T>::hasEnabledCollections(CollectionInterface::SupportedFeatures features) const
 {
-   return d_ptr->m_lCollections.size();
+   if (features != CollectionInterface::SupportedFeatures::NONE)
+      return d_ptr->filterCollections(d_ptr->m_lEnabledCollections, features).size();
+   else
+      return d_ptr->m_lEnabledCollections.size();
+}
+
+/**
+ * Return the list of all collections associated with this manager
+ * @param features An optional set of required features
+ * @note Please note that this method complexity is O(N) when "features" is set
+ */
+template<class T>
+bool CollectionManagerInterface<T>::hasCollections(CollectionInterface::SupportedFeatures features) const
+{
+   if (features != CollectionInterface::SupportedFeatures::NONE)
+      return d_ptr->filterCollections(d_ptr->m_lCollections, features).size();
+   else
+      return d_ptr->m_lCollections.size();
 }
 
 template<class T>

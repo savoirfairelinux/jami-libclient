@@ -49,7 +49,7 @@ public:
    QItemSelectionModel* selectionModel() const;
 
    //Getter
-   static Account* currentDefaultAccount();
+   static Account* currentDefaultAccount(ContactMethod* method = nullptr);
 
    //Singleton
    static AvailableAccountModel* instance();

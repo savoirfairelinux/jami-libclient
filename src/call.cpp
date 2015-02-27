@@ -1250,7 +1250,7 @@ void CallPrivate::call()
    qDebug() << "account = " << m_Account;
    if(!m_Account) {
       qDebug() << "Account is not set, taking the first registered.";
-      m_Account = AvailableAccountModel::currentDefaultAccount();
+      m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber);
    }
    //Calls to empty URI should not be allowed, dring will go crazy
    if ((!m_pDialNumber) || m_pDialNumber->uri().isEmpty()) {
@@ -1275,6 +1275,14 @@ void CallPrivate::call()
 
       //Warning: m_pDialNumber can become nullptr when linking directly
       m_DringId = callManager.placeCall(m_Account->id(), m_pDialNumber->uri());
+
+      //This can happen when the daemon cannot allocate memory
+      if (m_DringId.isEmpty()) {
+         changeCurrentState(Call::State::FAILURE);
+         qWarning() << "Creating the call to" << m_pDialNumber->uri() << "failed";
+         m_DringId = "FAILED"; //TODO once the ABORTED state is implemented, use it
+         return;
+      }
 
       CallModel::instance()->registerCall(q_ptr);
       setObjectName("Call:"+m_DringId);

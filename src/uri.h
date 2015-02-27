@@ -85,6 +85,7 @@ public:
       SIP  ,
       SIPS ,
       IAX  ,
+      RING ,
    };
 
    ///Strings associated with SchemeType
@@ -93,6 +94,7 @@ public:
       /*SIP  = */ "sip:" ,
       /*SIPS = */ "sips:",
       /*IAX  = */ "iax:" ,
+      /*RING = */ "ring:",
    };
 
    /**
@@ -111,10 +113,11 @@ public:
       sctp   , /*!<                                                       */
    };
 
-   QString hostname   () const;
-   QString fullUri    () const;
-   QString userinfo   () const;
-   bool    hasHostname() const;
+   QString    hostname    () const;
+   QString    fullUri     () const;
+   QString    userinfo    () const;
+   bool       hasHostname () const;
+   SchemeType schemeType  () const;
 
    URI& operator=(const URI&);
 

@@ -325,18 +325,17 @@ void HistoryModelPrivate::add(Call* call)
    LastUsedNumberModel::instance()->addCall(call);
    emit q_ptr->historyChanged();
 
+   /*
    // Loop until it find a compatible backend
    //HACK only support a single active history backend
    if (!call->collection()) {
-      foreach (CollectionInterface* backend, q_ptr->collections()) {
-         if (backend->supportedFeatures() & CollectionInterface::ADD) {
-            if (backend->editor<Call>()->addNew(call)) {
-               call->setCollection(backend);
-               break;
-            }
+      foreach (CollectionInterface* backend, q_ptr->collections(CollectionInterface::ADD)) {
+         if (backend->editor<Call>()->addNew(call)) {
+            call->setCollection(backend);
+            break;
          }
       }
-   }
+   }*/
 }
 
 ///Set if the history has a limit

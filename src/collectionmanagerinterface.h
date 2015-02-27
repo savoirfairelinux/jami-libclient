@@ -95,12 +95,12 @@ public:
    T2* addBackend(Ts... args, const LoadOptions options = LoadOptions::NONE);
 
    /// Do this manager have active collections
-   virtual bool hasEnabledCollections () const final;
-   virtual bool hasCollections        () const final;
+   virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
 
    /// List all Collections
-   virtual const QVector< CollectionInterface* > collections       () const final;
-   virtual const QVector< CollectionInterface* > enabledCollections() const final;
+   virtual const QVector< CollectionInterface* > collections       (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual const QVector< CollectionInterface* > enabledCollections(CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
 
    ///Enable / disable a collection
    virtual bool enableBackend( CollectionInterface*  collection, bool enabled) final;

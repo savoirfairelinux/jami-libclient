@@ -26,6 +26,8 @@
 
 //Ring
 #include "private/accountmodel_p.h"
+#include "contactmethod.h"
+#include "uri.h"
 
 class AvailableAccountModelPrivate : public QObject
 {
@@ -38,7 +40,7 @@ public:
    static AvailableAccountModel* m_spInstance     ;
 
    static void     setPriorAccount       ( const Account* account );
-   static Account* firstRegisteredAccount(                        );
+   static Account* firstRegisteredAccount( URI::SchemeType type = URI::SchemeType::NONE );
 
    AvailableAccountModel* q_ptr;
 
@@ -94,14 +96,19 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
 
 
 ///Return the current account
-Account* AvailableAccountModel::currentDefaultAccount()
+Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
    Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
-   if(priorAccount && priorAccount->registrationState() == Account::RegistrationState::READY && priorAccount->isEnabled() ) {
+   URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
+   if(priorAccount
+     && priorAccount->registrationState() == Account::RegistrationState::READY
+     && priorAccount->isEnabled()
+     && (priorAccount->supportScheme(type))
+   ) {
       return priorAccount;
    }
    else {
-      Account* a = AvailableAccountModelPrivate::firstRegisteredAccount();
+      Account* a = AvailableAccountModelPrivate::firstRegisteredAccount(type);
       if (!a)
          a = AccountModel::instance()->getById(DRing::Account::ProtocolNames::IP2IP);
 
@@ -127,10 +134,14 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account) {
 }
 
 ///Get the first registerred account (default account)
-Account* AvailableAccountModelPrivate::firstRegisteredAccount()
+Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType type)
 {
    for (Account* current : AccountModel::instance()->d_ptr->m_lAccounts) {
-      if(current && current->registrationState() == Account::RegistrationState::READY && current->isEnabled())
+      if(current
+        && current->registrationState() == Account::RegistrationState::READY
+        && current->isEnabled()
+        && current->supportScheme(type)
+      )
          return current;
    }
    return nullptr;

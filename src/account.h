@@ -29,6 +29,7 @@ class QString;
 //Ring
 #include "keyexchangemodel.h"
 #include "tlsmethodmodel.h"
+#include "uri.h"
 #include "typedefs.h"
 class CredentialModel        ;
 class RingToneModel          ;
@@ -295,7 +296,9 @@ class LIB_EXPORT Account : public QObject {
       RegistrationState  registrationState () const;
       Protocol               protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
-      QVariant roleData            (int role) const;
+
+      Q_INVOKABLE QVariant roleData ( int role             ) const;
+      Q_INVOKABLE bool supportScheme( URI::SchemeType type )      ;
 
       //Setters
       void setId                            (const QByteArray& id   );
