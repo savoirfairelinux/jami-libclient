@@ -84,8 +84,8 @@ Q_SIGNALS:
    void videoCallInitiated(Video::Renderer*);
    ///The preview started/stopped
    void previewStateChanged(bool startStop);
-   void previewStarted(Video::Renderer* renderer);
-   void previewStopped(Video::Renderer* renderer);
+   void previewStarted(Video::Renderer* Renderer);
+   void previewStopped(Video::Renderer* Renderer);
 
 };
 

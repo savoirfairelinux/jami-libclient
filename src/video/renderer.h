@@ -15,71 +15,72 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEO_RENDERER_H
-#define VIDEO_RENDERER_H
+#ifndef VIDEO_ABSTRACT_RENDERER_H
+#define VIDEO_ABSTRACT_RENDERER_H
 
 //Base
 #include <QtCore/QObject>
-#include <QtCore/QTime>
 #include <typedefs.h>
-#include <time.h>
 
 //Qt
-class QTimer;
 class QMutex;
 
 //Ring
 #include "device.h"
 
-//Private
-struct SHMHeader;
-
 
 namespace Video {
+
 class RendererPrivate;
+class ShmRendererPrivate;
+class DirectRendererPrivate;
 
-///Manage shared memory and convert it to QByteArray
+/**
+ * This class provide a rendering object to be used by clients
+ * to get the video content. This object is not intended to be
+ * extended outside of the LibRingClient.
+ * 
+ * Each platform transparently provide its own implementation.
+ */
 class LIB_EXPORT Renderer : public QObject {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   Q_OBJECT
-   #pragma GCC diagnostic pop
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+Q_OBJECT
+#pragma GCC diagnostic pop
 
-   public:
-      //Constructor
-      Renderer (const QString& id, const QString& shmPath, const QSize& res);
-      virtual ~Renderer();
+friend class Video::ShmRendererPrivate;
+friend class Video::DirectRendererPrivate;
 
-      //Mutators
-      bool resizeShm();
-      void stopShm  ();
-      bool startShm ();
+public:
+   //Constructor
+   Renderer (const QByteArray& id,  const QSize& res);
+   virtual ~Renderer();
 
-      //Getters
-      const char*       rawData         ()      ;
-      bool              isRendering     ()      ;
-      const QByteArray& currentFrame    ()      ;
-      QSize             size            ()      ;
-      QMutex*           mutex           ()      ;
-      int               fps             () const;
+   //Getters
+   virtual bool              isRendering     () const;
+   virtual const QByteArray& currentFrame    () const;
+   virtual QSize             size            () const;
+   virtual QMutex*           mutex           () const;
+   virtual QString           id              () const;
 
-      //Setters
-      void setSize(const QSize& res);
-      void setShmPath   (const QString& path);
-
-private:
-   QScopedPointer<RendererPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(Renderer)
-
-public Q_SLOTS:
-   void startRendering();
-   void stopRendering ();
+   //Setters
+   void setRendering(bool rendering)            const;
+   void setSize(const QSize& size)              const;
 
 Q_SIGNALS:
    ///Emitted when a new frame is ready
    void frameUpdated();
-   void stopped();
-   void started();
+   void stopped     ();
+   void started     ();
+
+public Q_SLOTS:
+   virtual void startRendering() = 0;
+   virtual void stopRendering () = 0;
+
+
+private:
+   QScopedPointer<RendererPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(Renderer)
 
 };
 

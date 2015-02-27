@@ -23,6 +23,7 @@
 #include "resolution.h"
 #include "rate.h"
 #include "channel.h"
+#include "renderer.h"
 
 //Ring private
 #include "../private/videochannel_p.h"

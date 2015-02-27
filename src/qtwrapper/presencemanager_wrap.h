@@ -1,6 +1,7 @@
 /******************************************************************************
  *   Copyright (C) 2014 by Savoir-Faire Linux                                 *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -27,9 +28,8 @@
 #include <QtCore/QVariant>
 #include <QtCore/QTimer>
 
-#include <dring.h>
-
-#include "../dbus/metatypes.h"
+#include "typedefs.h"
+#include <presencemanager_interface.h>
 #include "conversions_wrap.hpp"
 
 
@@ -40,46 +40,54 @@ class PresenceManagerInterface: public QObject
 {
     Q_OBJECT
 public:
+
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> presHandlers;
+
     PresenceManagerInterface()
     {
-        pres_ev_handlers = {
-            .on_new_server_subscription_request = [this] (const std::string &buddyUri) {
-                      QTimer::singleShot(0, [this,buddyUri] {
-                            emit this->newServerSubscriptionRequest(QString(buddyUri.c_str()));
-                      });
-            },
-            .on_server_error = [this] (const std::string &accountID, const std::string &error, const std::string &msg) {
-                      QTimer::singleShot(0, [this,accountID, error, msg] {
-                            emit this->serverError(QString(accountID.c_str()), QString(error.c_str()), QString(msg.c_str()));
-                      });
-            },
-            .on_new_buddy_notification = [this] (const std::string &accountID, const std::string &buddyUri, bool status, const std::string &lineStatus) {
-                      QTimer::singleShot(0, [this,accountID, buddyUri, status, lineStatus] {
-                            emit this->newBuddyNotification(QString(accountID.c_str()), QString(buddyUri.c_str()), status, QString(lineStatus.c_str()));
-                      });
-            },
-            .on_subscription_state_change = [this] (const std::string &accountID, const std::string &buddyUri, bool state) {
-                      QTimer::singleShot(0, [this,accountID, buddyUri, state] {
-                            emit this->subscriptionStateChanged(QString(accountID.c_str()), QString(buddyUri.c_str()), state);
-                      });
-            }
-        };
+        using DRing::exportable_callback;
+        using DRing::PresenceSignal;
+
+        presHandlers = {
+            exportable_callback<PresenceSignal::NewServerSubscriptionRequest>(
+                [this] (const std::string &buddyUri) {
+                       QTimer::singleShot(0, [this,buddyUri] {
+                             emit this->newServerSubscriptionRequest(QString(buddyUri.c_str()));
+                       });
+            }),
+            exportable_callback<PresenceSignal::ServerError>(
+                [this] (const std::string &accountID, const std::string &error, const std::string &msg) {
+                       QTimer::singleShot(0, [this,accountID, error, msg] {
+                             emit this->serverError(QString(accountID.c_str()), QString(error.c_str()), QString(msg.c_str()));
+                       });
+            }),
+            exportable_callback<PresenceSignal::NewBuddyNotification>(
+                [this] (const std::string &accountID, const std::string &buddyUri, bool status, const std::string &lineStatus) {
+                       QTimer::singleShot(0, [this,accountID, buddyUri, status, lineStatus] {
+                             emit this->newBuddyNotification(QString(accountID.c_str()), QString(buddyUri.c_str()), status, QString(lineStatus.c_str()));
+                       });
+            }),
+            exportable_callback<PresenceSignal::SubscriptionStateChanged>(
+                [this] (const std::string &accountID, const std::string &buddyUri, bool state) {
+                       QTimer::singleShot(0, [this,accountID, buddyUri, state] {
+                             emit this->subscriptionStateChanged(QString(accountID.c_str()), QString(buddyUri.c_str()), state);
+                       });
+            })
+         };
     }
 
     ~PresenceManagerInterface() {}
 
-    ring_pres_ev_handlers pres_ev_handlers;
-
 public Q_SLOTS: // METHODS
     void answerServerRequest(const QString &uri, bool flag)
     {
-        ring_pres_answer_server_request(uri.toStdString(), flag);
+        DRing::answerServerRequest(uri.toStdString(), flag);
     }
 
     VectorMapStringString getSubscriptions(const QString &accountID)
     {
         VectorMapStringString temp;
-        for (auto x : ring_pres_get_subscriptions(accountID.toStdString())) {
+        for (auto x : DRing::getSubscriptions(accountID.toStdString())) {
             temp.push_back(convertMap(x));
         }
         return temp;
@@ -87,17 +95,17 @@ public Q_SLOTS: // METHODS
 
     void publish(const QString &accountID, bool status, const QString &note)
     {
-        ring_pres_publish(accountID.toStdString(), status, note.toStdString());
+        DRing::publish(accountID.toStdString(), status, note.toStdString());
     }
 
     void setSubscriptions(const QString &accountID, const QStringList &uriList)
     {
-        ring_pres_set_subscriptions(accountID.toStdString(), convertStringList(uriList));
+        DRing::setSubscriptions(accountID.toStdString(), convertStringList(uriList));
     }
 
     void subscribeBuddy(const QString &accountID, const QString &uri, bool flag)
     {
-        ring_pres_subscribe_buddy(accountID.toStdString(), uri.toStdString(), flag);
+        DRing::subscribeBuddy(accountID.toStdString(), uri.toStdString(), flag);
     }
 
 Q_SIGNALS: // SIGNALS

@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QFile>
+#include <QtCore/QDateTime>
 
 //Ring daemon
 #include <security_const.h>

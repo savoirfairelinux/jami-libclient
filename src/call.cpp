@@ -26,6 +26,7 @@
 //Qt
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
+#include <QtCore/QDateTime>
 
 //DRing
 #include <account_const.h>
@@ -1311,7 +1312,7 @@ void CallPrivate::call()
       m_pDialNumber = nullptr;
    }
    else {
-      qDebug() << "Trying to call " << (m_pTransferNumber?QString(m_pTransferNumber->uri()):"ERROR") 
+      qDebug() << "Trying to call " << (m_pTransferNumber?QString(m_pTransferNumber->uri()):"ERROR")
          << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
       this->m_HistoryState = Call::LegacyHistoryState::NONE;
       throw tr("No account registered!");

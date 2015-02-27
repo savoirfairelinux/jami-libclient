@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "inputdevicemodel.h"
 
+//Qt
+#include <QtCore/QItemSelectionModel>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "settings.h"
@@ -27,12 +30,14 @@ class InputDeviceModelPrivate : public QObject
 public:
    InputDeviceModelPrivate(Audio::InputDeviceModel* parent);
    QStringList m_lDeviceList;
+   mutable QItemSelectionModel* m_pSelectionModel;
 
 private:
    Audio::InputDeviceModel* q_ptr;
 };
 
-InputDeviceModelPrivate::InputDeviceModelPrivate(Audio::InputDeviceModel* parent) : q_ptr(parent)
+InputDeviceModelPrivate::InputDeviceModelPrivate(Audio::InputDeviceModel* parent) : q_ptr(parent),
+    m_pSelectionModel(nullptr)
 {
 
 }
@@ -59,7 +64,7 @@ d_ptr(new InputDeviceModelPrivate(this))
 ///Destructor
 Audio::InputDeviceModel::~InputDeviceModel()
 {
-   
+
 }
 
 ///Re-implement QAbstractListModel data
@@ -98,15 +103,18 @@ bool Audio::InputDeviceModel::setData( const QModelIndex& index, const QVariant 
    return false;
 }
 
-///Return the current input device index
-QModelIndex Audio::InputDeviceModel::currentDevice() const
+QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-   const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::INPUT)].toInt();
-   if (idx >= d_ptr->m_lDeviceList.size())
-      return QModelIndex();
-   return index(idx,0);
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::InputDeviceModel*>(this));
+
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
+      const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::INPUT)].toInt();
+      if (!(idx >= d_ptr->m_lDeviceList.size()))
+         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+   }
+   return d_ptr->m_pSelectionModel;
 }
 
 ///Set the current input device

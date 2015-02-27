@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "../dbus/metatypes.h"
+#include "../typedefs.h"
 
 #define Q_NOREPLY
 
@@ -44,6 +44,14 @@ inline std::map<std::string, std::string> convertMap(const MapStringString& m) {
 
 inline QStringList convertStringList(const std::vector<std::string>& v) {
     QStringList temp;
+    for (const auto& x : v) {
+        temp.push_back(QString(x.c_str()));
+    }
+    return temp;
+}
+
+inline VectorString convertVectorString(const std::vector<std::string>& v) {
+    VectorString temp;
     for (const auto& x : v) {
         temp.push_back(QString(x.c_str()));
     }

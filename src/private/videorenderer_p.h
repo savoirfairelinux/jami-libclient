@@ -15,51 +15,39 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef OUTPUTDEVICEMODEL_H
-#define OUTPUTDEVICEMODEL_H
-
-#include <QtCore/QAbstractListModel>
+#ifndef RENDERERPRIVATE_H
+#define RENDERERPRIVATE_H
 
 //Qt
-#include <QtCore/QStringList>
-class QItemSelectionModel;
+#include <QtCore/QObject>
+#include <QtCore/QSize>
+class QMutex;
 
-//Ring
-#include <typedefs.h>
+namespace Video {
 
-class OutputDeviceModelPrivate;
+class Renderer;
 
-namespace Audio {
-
-class LIB_EXPORT OutputDeviceModel  : public QAbstractListModel {
-   Q_OBJECT
+class RendererPrivate : public QObject
+{
+Q_OBJECT
 public:
-   explicit OutputDeviceModel(const QObject* parent);
-   virtual ~OutputDeviceModel();
+   RendererPrivate(Video::Renderer* parent);
 
-   //Models function
-   virtual QVariant      data    ( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-   virtual int           rowCount( const QModelIndex& parent = QModelIndex()            ) const override;
-   virtual Qt::ItemFlags flags   ( const QModelIndex& index                             ) const override;
-   virtual bool          setData ( const QModelIndex& index, const QVariant &value, int role)   override;
-   virtual QHash<int,QByteArray> roleNames() const override;
+   //Attributes
+   bool              m_isRendering;
+   QByteArray        m_Frame[2]   ;
+   bool              m_FrameIdx   ;
+   QMutex*           m_pMutex     ;
+   QString           m_Id         ;
+   QSize             m_pSize      ;
 
-   //Getters
-   QItemSelectionModel* selectionModel() const;
-
-   //Setters
-   void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
-
-   //Mutator
-   void reload();
-
-   //Static methods
-   static void playDTMF(const QString& str);
+   //Helpers
+   QByteArray& otherFrame       () const;
+   void        updateFrameIndex ()      ;
 
 private:
-   QScopedPointer<OutputDeviceModelPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(OutputDeviceModel)
+   Video::Renderer* q_ptr;
+
 };
 
 }

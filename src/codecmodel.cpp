@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
 
 //DRing
 #include <account_const.h>
@@ -39,12 +40,15 @@ public:
       QString          name      ;
       QString          bitrate   ;
       QString          samplerate;
+      QString          type      ;
    };
 
    //Attributes
    QList<AudioCodecData*> m_lAudioCodecs  ;
    QMap<int,bool>         m_lEnabledCodecs;
    Account*               m_pAccount      ;
+   QSortFilterProxyModel* m_pAudioProxy   ;
+   QSortFilterProxyModel* m_pVideoProxy   ;
 
    //Helpers
    bool findCodec(int id);
@@ -53,9 +57,10 @@ private:
    CodecModel* q_ptr;
 };
 
-CodecModelPrivate::CodecModelPrivate(CodecModel* parent) : q_ptr(parent)
+CodecModelPrivate::CodecModelPrivate(CodecModel* parent) : q_ptr(parent),
+m_pAudioProxy(nullptr),m_pVideoProxy(nullptr)
 {
-   
+
 }
 
 ///Constructor
@@ -85,6 +90,7 @@ QHash<int,QByteArray> CodecModel::roleNames() const
       roles.insert(CodecModel::Role::NAME      ,QByteArray("name"));
       roles.insert(CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
       roles.insert(CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
+      roles.insert(CodecModel::Role::TYPE      ,QByteArray("type"));
    }
    return roles;
 }
@@ -108,6 +114,9 @@ QVariant CodecModel::data(const QModelIndex& idx, int role) const {
    }
    else if (idx.column() == 0 && role == CodecModel::Role::ID         ) {
       return d_ptr->m_lAudioCodecs[idx.row()]->id;
+   }
+   else if (idx.column() == 0 && role == CodecModel::Role::TYPE         ) {
+      return d_ptr->m_lAudioCodecs[idx.row()]->type;
    }
    return QVariant();
 }
@@ -149,6 +158,11 @@ bool CodecModel::setData( const QModelIndex& idx, const QVariant &value, int rol
    }
    else if (idx.column() == 0 && role == CodecModel::ID) {
       d_ptr->m_lAudioCodecs[idx.row()]->id = value.toInt();
+      emit dataChanged(idx, idx);
+      return true;
+   }
+   else if (idx.column() == 0 && role == CodecModel::TYPE) {
+      d_ptr->m_lAudioCodecs[idx.row()]->type = value.toString();
       emit dataChanged(idx, idx);
       return true;
    }
@@ -224,11 +238,14 @@ void CodecModel::reload()
 
       foreach (const int aCodec, activeCodecList) {
          if (!d_ptr->findCodec(aCodec)) {
+
             const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+
             QModelIndex idx = add();
             setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
             setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
             setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
             setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
             setData(idx, Qt::Checked ,Qt::CheckStateRole               );
 
@@ -245,6 +262,7 @@ void CodecModel::reload()
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
          setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
          setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
       }
@@ -274,6 +292,29 @@ bool CodecModelPrivate::findCodec(int id)
          return true;
    }
    return false;
+}
+
+
+QSortFilterProxyModel* CodecModel::audioCodecs() const
+{
+    if (!d_ptr->m_pAudioProxy) {
+        d_ptr->m_pAudioProxy = new QSortFilterProxyModel(const_cast<CodecModel*>(this));
+        d_ptr->m_pAudioProxy->setSourceModel(const_cast<CodecModel*>(this));
+        d_ptr->m_pAudioProxy->setFilterRole(CodecModel::Role::TYPE);
+        d_ptr->m_pAudioProxy->setFilterFixedString("AUDIO");
+    }
+    return d_ptr->m_pAudioProxy;
+}
+
+QSortFilterProxyModel* CodecModel::videoCodecs() const
+{
+    if (!d_ptr->m_pVideoProxy) {
+        d_ptr->m_pVideoProxy = new QSortFilterProxyModel(const_cast<CodecModel*>(this));
+        d_ptr->m_pVideoProxy->setSourceModel(const_cast<CodecModel*>(this));
+        d_ptr->m_pVideoProxy->setFilterRole(CodecModel::Role::TYPE);
+        d_ptr->m_pVideoProxy->setFilterFixedString("VIDEO");
+    }
+    return d_ptr->m_pVideoProxy;
 }
 
 #include <codecmodel.moc>

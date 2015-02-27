@@ -22,6 +22,7 @@
 
 //Qt
 #include <QtCore/QString>
+class QSortFilterProxyModel;
 
 //Ring
 #include <typedefs.h>
@@ -46,6 +47,7 @@ public:
       NAME       = 100,
       BITRATE    = 101,
       SAMPLERATE = 102,
+      TYPE       = 104,
    };
 
    //Abstract model member
@@ -54,6 +56,10 @@ public:
    virtual Qt::ItemFlags flags  (const QModelIndex& index                                  ) const override;
    virtual bool setData         (const QModelIndex& index, const QVariant &value, int role )       override;
    virtual QHash<int,QByteArray> roleNames() const override;
+
+   //Proxies
+   QSortFilterProxyModel* audioCodecs() const;
+   QSortFilterProxyModel* videoCodecs() const;
 
    //Mutator
    QModelIndex add();

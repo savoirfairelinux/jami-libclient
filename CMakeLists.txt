@@ -136,7 +136,6 @@ IF (${RING_FOUND} MATCHES "true")
    INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
 ENDIF()
 
-
 IF(${ENABLE_VIDEO} MATCHES true)
    MESSAGE("VIDEO enabled")
    SET(ENABLE_VIDEO 1 CACHE BOOLEAN "Enable video")
@@ -246,6 +245,16 @@ SET( libringclient_LIB_SRCS
   src/extensions/presencecollectionextension.cpp
 )
 
+IF(${ENABLE_LIBWRAP} MATCHES true)
+SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
+  src/private/directrenderer.cpp
+)
+ELSE()
+SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
+  src/private/shmrenderer.cpp
+)
+ENDIF(${ENABLE_LIBWRAP} MATCHES true)
+
 # Public API
 SET( libringclient_LIB_HDRS
   src/account.h
@@ -311,6 +320,7 @@ SET(libringclient_video_LIB_HDRS
   src/video/resolution.h
   src/video/channel.h
   src/video/rate.h
+  #The renderer implementations are not exported on purpose
 )
 
 SET(libringclient_audio_LIB_HDRS
@@ -342,22 +352,9 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.hpp
 )
 
-# Include the headers for linking directly with libDring (used on platforms
-# that don't have/use dbus.
 IF(${ENABLE_LIBWRAP} MATCHES true)
-   SET_SOURCE_FILES_PROPERTIES(
-      src/qtwrapper/presencemanager_wrap.h
-      PROPERTIES
-      CLASSNAME PresenceManagerInterface
-      INCLUDE "src/qtwrapper/metatypes.h")
 
-   SET_SOURCE_FILES_PROPERTIES(
-      src/qtwrapper/configurationmanager_wrap.h
-      PROPERTIES
-      CLASSNAME PresenceManagerInterface
-      INCLUDE "src/qtwrapper/metatypes.h")
-ELSE() # Use dbus to communicate with libDring
-
+ELSE()
    # presence manager interface
    SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
 
@@ -450,6 +447,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h
+   src/private/videorenderer_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -467,7 +465,7 @@ ENDIF()
 QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 
 
-ADD_LIBRARY( ringclient  SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )

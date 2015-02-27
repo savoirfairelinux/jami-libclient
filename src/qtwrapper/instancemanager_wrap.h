@@ -1,6 +1,7 @@
 /******************************************************************************
  *   Copyright (C) 2014 by Savoir-Faire Linux                                 *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -28,7 +29,7 @@
 #include <QTimer>
 
 #include "dring.h"
-#include "../dbus/metatypes.h"
+#include "../typedefs.h"
 #include "conversions_wrap.hpp"
 
 /*
@@ -55,7 +56,6 @@ public Q_SLOTS: // METHODS
 
 private:
    QTimer* m_pTimer;
-   ring_ev_handlers evHandlers;
 
 Q_SIGNALS: // SIGNALS
    void started();

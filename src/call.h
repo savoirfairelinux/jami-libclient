@@ -38,8 +38,8 @@ class ContactMethod;
 class TemporaryContactMethod;
 class CollectionInterface;
 namespace Video {
-   class Renderer;
    class Manager;
+   class Renderer;
 }
 
 class Call;
@@ -241,7 +241,7 @@ public:
    Q_PROPERTY( uint               stopTimeStamp    READ stopTimeStamp                             )
    Q_PROPERTY( uint               startTimeStamp   READ startTimeStamp                            )
    Q_PROPERTY( bool               isSecure         READ isSecure                                  )
-   Q_PROPERTY( Video::Renderer*   videoRenderer    READ videoRenderer                             )
+   Q_PROPERTY( Video::Renderer* videoRenderer READ videoRenderer                          )
    Q_PROPERTY( QString            formattedName    READ formattedName                             )
    Q_PROPERTY( QString            length           READ length                                    )
    Q_PROPERTY( bool               hasRecording     READ hasRecording                              )

@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "outputdevicemodel.h"
 
+//Qt
+#include <QtCore/QItemSelectionModel>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -28,13 +31,15 @@ class OutputDeviceModelPrivate : public QObject
 public:
    OutputDeviceModelPrivate(Audio::OutputDeviceModel* parent);
    QStringList m_lDeviceList;
+   mutable QItemSelectionModel* m_pSelectionModel;
 
 private:
    Audio::OutputDeviceModel* q_ptr;
 };
 
 
-OutputDeviceModelPrivate::OutputDeviceModelPrivate(Audio::OutputDeviceModel* parent) : q_ptr(parent)
+OutputDeviceModelPrivate::OutputDeviceModelPrivate(Audio::OutputDeviceModel* parent) : q_ptr(parent),
+    m_pSelectionModel(nullptr)
 {
 
 }
@@ -100,16 +105,17 @@ bool Audio::OutputDeviceModel::setData( const QModelIndex& index, const QVariant
    return false;
 }
 
-///Return the current output device
-QModelIndex Audio::OutputDeviceModel::currentDevice() const
+QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-   const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
-
-   if (idx >= d_ptr->m_lDeviceList.size())
-      return QModelIndex();
-   return index(idx,0);
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::OutputDeviceModel*>(this));
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
+      const int idx = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
+      if (!(idx >= d_ptr->m_lDeviceList.size()))
+         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+   }
+   return d_ptr->m_pSelectionModel;
 }
 
 ///Set the current output device

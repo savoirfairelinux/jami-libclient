@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2009-2014 by Savoir-Faire Linux                          *
  *   Authors : Alexandre Lision alexandre.lision@savoirfairelinux.com       *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -30,25 +31,45 @@ void pollEvents();
 
 InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 {
+    using namespace std::placeholders;
+
+    using std::bind;
+    using DRing::exportable_callback;
+    using DRing::CallSignal;
+    using DRing::ConfigurationSignal;
+    using DRing::PresenceSignal;
+
+    #ifdef ENABLE_VIDEO
+    using DRing::VideoSignal;
+    #endif
+
    m_pTimer = new QTimer(this);
    m_pTimer->setInterval(50);
    connect(m_pTimer,&QTimer::timeout,this,&pollEvents);
    m_pTimer->start();
-   ringFlags |= RING_FLAG_DEBUG;
-   ringFlags |= RING_FLAG_CONSOLE_LOG;
+   ringFlags |= DRing::DRING_FLAG_DEBUG;
+   ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
 
-   evHandlers = {
-       .call_ev_handlers = DBus::CallManager::instance().call_ev_handlers,
-       .config_ev_handlers = DBus::ConfigurationManager::instance().config_ev_handlers,
-       .pres_ev_handlers = DBus::PresenceManager::instance().pres_ev_handlers,
-   #ifdef ENABLE_VIDEO
-      .video_ev_handler = DBus::VideoManager::instance().video_ev_handlers
-   #endif /* ENABLE_VIDEO */
-   };
+   const std::map<DRing::EventHandlerKey, std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>>> evHandlers = {
+        { // Call event handlers
+            DRing::EventHandlerKey::CALL, DBus::CallManager::instance().callHandlers
+        },
+        { // Configuration event handlers
+            DRing::EventHandlerKey::CONFIG, DBus::ConfigurationManager::instance().confHandlers
+        },
+        { // Presence event handlers
+            DRing::EventHandlerKey::PRESENCE, DBus::PresenceManager::instance().presHandlers
+        }
+#ifdef ENABLE_VIDEO
+        ,{ // Video event handlers
+            DRing::EventHandlerKey::VIDEO, DBus::VideoManager::instance().videoHandlers
+        }
+#endif
+    };
 
-   ring_init(&evHandlers, static_cast<ring_init_flag>(ringFlags));
+    DRing::init(evHandlers, static_cast<DRing::InitFlag>(ringFlags));
 
-   printf("INITIATED DAEMON\n");
+    printf("INITIATED DAEMON\n");
 }
 
 InstanceInterface::~InstanceInterface()
@@ -58,12 +79,10 @@ InstanceInterface::~InstanceInterface()
 
 void pollEvents()
 {
-   ring_poll_events();
+    DRing::poll_events();
 }
 
 bool InstanceInterface::isConnected()
 {
    return true;
 }
-
-

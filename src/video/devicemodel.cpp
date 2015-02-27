@@ -22,6 +22,7 @@
 #include "../dbus/videomanager.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QTimer>
 
 Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
 

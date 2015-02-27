@@ -24,24 +24,18 @@
 #include <QVector>
 #include <QtCore/QString>
 
+#include "../typedefs.h"
+
 #ifndef ENABLE_LIBWRAP
 #include <QtDBus/QtDBus>
 #endif
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-typedef QMap<QString, QString> MapStringString;
-typedef QMap<QString, int> MapStringInt;
-typedef QVector<int> VectorInt;
-typedef QVector<uint> VectorUInt;
-typedef QVector< QMap<QString, QString> > VectorMapStringString;
-typedef QVector< QString > VectorString;
-typedef QMap< QString, QMap< QString, QVector<QString> > > MapStringMapStringVectorString;
-typedef QMap< QString, QVector<QString> > MapStringVectorString;
 
 Q_DECLARE_METATYPE(MapStringString)
 Q_DECLARE_METATYPE(MapStringInt)
 Q_DECLARE_METATYPE(VectorMapStringString)
-Q_DECLARE_METATYPE(MapStringMapStringVectorString)
+Q_DECLARE_METATYPE(MapStringMapStringStringList)
 Q_DECLARE_METATYPE(VectorInt)
 Q_DECLARE_METATYPE(VectorUInt)
 Q_DECLARE_METATYPE(VectorString)
@@ -50,14 +44,14 @@ Q_DECLARE_METATYPE(MapStringVectorString)
 #ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
 inline void registerCommTypes() {
-	qDBusRegisterMetaType<MapStringString>();
-	qDBusRegisterMetaType<MapStringInt>();
-	qDBusRegisterMetaType<VectorMapStringString>();
-        qDBusRegisterMetaType<MapStringMapStringVectorString>();
-        qDBusRegisterMetaType<VectorInt>();
-        qDBusRegisterMetaType<VectorUInt>();
-	qDBusRegisterMetaType<VectorString>();
-        qDBusRegisterMetaType<MapStringVectorString>();
+   qDBusRegisterMetaType<MapStringString>               ();
+   qDBusRegisterMetaType<MapStringInt>                  ();
+   qDBusRegisterMetaType<VectorMapStringString>         ();
+   qDBusRegisterMetaType<MapStringMapStringVectorString>();
+   qDBusRegisterMetaType<VectorInt>                     ();
+   qDBusRegisterMetaType<VectorUInt>                    ();
+   qDBusRegisterMetaType<VectorString>                  ();
+   qDBusRegisterMetaType<MapStringVectorString>         ();
    dbus_metaTypeInit = true;
 }
 #else

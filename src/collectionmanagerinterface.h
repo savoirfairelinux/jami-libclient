@@ -80,6 +80,13 @@ public:
    explicit CollectionManagerInterface(QAbstractItemModel* self);
    virtual ~CollectionManagerInterface() {};
 
+#ifdef Q_OS_DARWIN
+   /*
+    * Issue with LLVM 3.5svn shipped in Mac OSX with variadic template
+    */
+   template <class T2>
+   T2* addBackend(const LoadOptions options = LoadOptions::NONE);
+#else
    /**
     * This method is used to add a collection to a model. The LoadOptions
     * can be used to enforce some parameters. Please note this function is
@@ -93,6 +100,7 @@ public:
     */
    template <class T2, typename ...Ts>
    T2* addBackend(Ts... args, const LoadOptions options = LoadOptions::NONE);
+#endif // Q_OS_DARWIN
 
    /// Do this manager have active collections
    virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;

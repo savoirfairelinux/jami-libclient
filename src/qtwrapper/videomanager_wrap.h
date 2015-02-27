@@ -1,6 +1,7 @@
 /******************************************************************************
  *   Copyright (C) 2014 by Savoir-Faire Linux                                 *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -25,9 +26,11 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
+#include <QtCore/QTimer>
 
-#include <dring.h>
-#include "../dbus/metatypes.h"
+#include <videomanager_interface.h>
+
+#include "typedefs.h"
 #include "conversions_wrap.hpp"
 
 /*
@@ -41,22 +44,27 @@ public:
     VideoManagerInterface()
     {
 #ifdef ENABLE_VIDEO
-        video_ev_handlers = {
-            .on_device_event = [this] () { 
-                  QTimer::singleShot(0, [this] {
-                      emit this->deviceEvent();
-                  });
-            },
-            .on_start_decoding = [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) {
-                  QTimer::singleShot(0, [this,id, shmPath, width, height, isMixer] {
-                     emit this->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
-                  });
-            },
-            .on_stop_decoding = [this] (const std::string &id, const std::string &shmPath, bool isMixer) {
-                  QTimer::singleShot(0, [this,id, shmPath, isMixer] {
-                     emit this->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
-                  });
-            }
+        using DRing::exportable_callback;
+        using DRing::VideoSignal;
+        videoHandlers = {
+            exportable_callback<VideoSignal::DeviceEvent>(
+                [this] () {
+                   QTimer::singleShot(0, [this] {
+                       emit this->deviceEvent();
+                   });
+            }),
+            exportable_callback<VideoSignal::DecodingStarted>(
+                [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) {
+                   QTimer::singleShot(0, [this,id, shmPath, width, height, isMixer] {
+                      emit this->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
+                   });
+            }),
+            exportable_callback<VideoSignal::DecodingStopped>(
+                [this] (const std::string &id, const std::string &shmPath, bool isMixer) {
+                   QTimer::singleShot(0, [this,id, shmPath, isMixer] {
+                      emit this->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
+                   });
+            })
         };
 #endif
     }
@@ -64,14 +72,14 @@ public:
     ~VideoManagerInterface() {}
 
 #ifdef ENABLE_VIDEO
-    ring_video_ev_handlers video_ev_handlers;
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
 #endif
 
 public Q_SLOTS: // METHODS
     void applySettings(const QString &name, MapStringString settings)
     {
 #ifdef ENABLE_VIDEO
-        ring_video_apply_settings(
+        DRing::applySettings(
             name.toStdString(), convertMap(settings));
 #endif
     }
@@ -82,12 +90,12 @@ public Q_SLOTS: // METHODS
         MapStringMapStringVectorString ret;
 #ifdef ENABLE_VIDEO
         std::map<std::string, std::map<std::string, std::vector<std::string>>> temp;
-        temp = ring_video_get_capabilities(name.toStdString());
+        temp = DRing::getCapabilities(name.toStdString());
 
         for (auto& x : temp) {
-                map<QString, QStringList> ytemp;
-            for (auto& y : x) {
-                ytemp[QString(y.first.c_str())] = convertStringList(y.second);
+                QMap<QString, VectorString> ytemp;
+            for (auto& y : x.second) {
+                ytemp[QString(y.first.c_str())] = convertVectorString(y.second);
             }
             ret[QString(x.first.c_str())] = ytemp;
         }
@@ -95,33 +103,11 @@ public Q_SLOTS: // METHODS
         return ret;
     }
 
-    VectorMapStringString getCodecs(const QString &accountID)
-    {
-        VectorMapStringString temp;
-#ifdef ENABLE_VIDEO
-        for (auto x : ring_video_get_codecs(accountID.toStdString())) {
-            temp.push_back(convertMap(x));
-        }
-#endif
-        return temp;
-    }
-
-    Q_DECL_DEPRECATED QString getCurrentCodecName(const QString &callID)
-    {
-#ifdef ENABLE_VIDEO
-        QString temp(
-            ring_video_get_current_codec_name(callID.toStdString()).c_str());
-#else
-        QString temp;
-#endif
-        return temp;
-    }
-
     QString getDefaultDevice()
     {
 #ifdef ENABLE_VIDEO
         QString temp(
-            ring_video_get_default_device().c_str());
+            DRing::getDefaultDevice().c_str());
 #else
         QString temp;
 #endif
@@ -132,7 +118,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         QStringList temp =
-            convertStringList(ring_video_get_device_list());
+            convertStringList(DRing::getDeviceList());
 #else
         QStringList temp;
 #endif
@@ -143,7 +129,7 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         MapStringString temp =
-            convertMap(ring_video_get_settings(device.toStdString()));
+            convertMap(DRing::getSettings(device.toStdString()));
 #else
         MapStringString temp;
 #endif
@@ -153,48 +139,37 @@ public Q_SLOTS: // METHODS
     bool hasCameraStarted()
     {
 #ifdef ENABLE_VIDEO
-        return ring_video_has_camera_started();
+        return DRing::hasCameraStarted();
 #else
         return false;
-#endif
-    }
-
-    void setCodecs(const QString &accountID, VectorMapStringString details)
-    {
-#ifdef ENABLE_VIDEO
-        std::vector<std::map<std::string, std::string> > temp;
-        for (auto x : details) {
-            temp.push_back(convertMap(x));
-        }
-        ring_video_set_codecs(accountID.toStdString(), temp);
 #endif
     }
 
     void setDefaultDevice(const QString &name)
     {
 #ifdef ENABLE_VIDEO
-        ring_video_set_default_device(name.toStdString());
+        DRing::setDefaultDevice(name.toStdString());
 #endif
     }
 
     void startCamera()
     {
 #ifdef ENABLE_VIDEO
-        ring_video_start_camera();
+        DRing::startCamera();
 #endif
     }
 
     void stopCamera()
     {
 #ifdef ENABLE_VIDEO
-        ring_video_stop_camera();
+        DRing::stopCamera();
 #endif
     }
 
     bool switchInput(const QString &resource)
     {
 #ifdef ENABLE_VIDEO
-        return ring_video_switch_input(resource.toStdString());
+        return DRing::switchInput(resource.toStdString());
 #else
         return false;
 #endif

@@ -122,7 +122,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
    }
    a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
    a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
-   a->setObjectName(a->id());
+   //a->setObjectName(a->id());
    return a;
 }
 
@@ -929,6 +929,7 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
    if (param == DRing::Account::ConfProperties::Registration::STATUS) {
       m_hAccountDetails[param] = val;
       if (accChanged) {
+         emit q_ptr->changed(q_ptr);
          emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
    }
@@ -937,6 +938,7 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
       if (m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW) {
          m_hAccountDetails[param] = val;
          if (accChanged) {
+            emit q_ptr->changed(q_ptr);
             emit q_ptr->propertyChanged(q_ptr,param,val,buf);
          }
       }
@@ -1533,7 +1535,7 @@ void AccountPrivate::save()
       const QVector<uint> codecIdList = configurationManager.getCodecList();
       foreach (const int aCodec, codecIdList) {
          const QMap<QString,QString> codec = configurationManager.getCodecDetails(q_ptr->id(),aCodec);
-         const QModelIndex idx = m_pCodecModel->add();
+         const QModelIndex idx = q_ptr->codecModel()->add();
          /*Ring::Account::ConfProperties::CodecInfo::NAME          ; //TODO move this to CodecModel
          Ring::Account::ConfProperties::CodecInfo::TYPE          ;
          Ring::Account::ConfProperties::CodecInfo::SAMPLE_RATE   ;

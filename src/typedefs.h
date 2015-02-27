@@ -23,7 +23,7 @@
 //Qt
 #include <QtCore/QMetaType>
 #include <QtCore/QMap>
-#include <QVector>
+#include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QDebug>
 
@@ -32,10 +32,16 @@
 #include <type_traits>
 
 //Typedefs (required to avoid '<' and '>' in the DBus XML)
-typedef QMap<QString, QString> MapStringString;
-typedef QVector< QMap<QString, QString> > VectorMapStringString;
-typedef QMap< QString, QMap< QString, QVector<QString> > > MapStringMapStringVectorString;
-typedef QMap<QString, int> MapStringInt;
+typedef QMap<QString, QString>                              MapStringString               ;
+typedef QMap<QString, int>                                  MapStringInt                  ;
+typedef QVector<int>                                        VectorInt                     ;
+typedef QVector<uint>                                       VectorUInt                    ;
+typedef QVector< QMap<QString, QString> >                   VectorMapStringString         ;
+typedef QVector< QString >                                  VectorString                  ;
+typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVectorString;
+typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
+typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
+typedef QMap< QString, QStringList >                        MapStringStringList           ;
 
 template<class T, class E>
 struct TypedStateMachine

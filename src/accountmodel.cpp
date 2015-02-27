@@ -337,6 +337,7 @@ void AccountModel::update()
          d_ptr->m_lAccounts.insert(i, a);
          emit dataChanged(index(i,0),index(size()-1,0));
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
+         //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
       }
@@ -354,8 +355,11 @@ void AccountModel::updateAccounts()
       Account* acc = getById(accountIds[i].toLatin1());
       if (!acc) {
          Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
+         beginInsertRows(QModelIndex(),d_ptr->m_lAccounts.size(),d_ptr->m_lAccounts.size());
          d_ptr->m_lAccounts += a;
+         endInsertRows();
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
+         //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
       }
@@ -450,7 +454,7 @@ void AccountModel::cancel() {
  * Get an account by its ID
  *
  * @note This method have O(N) complexity, but the average account count is low
- * 
+ *
  * @param id The account identifier
  * @param usePlaceHolder Return a placeholder for a future account instead of nullptr
  * @return an account if it exist, a placeholder if usePlaceHolder==true or nullptr
@@ -578,8 +582,11 @@ Account* AccountModel::add(const QString& alias)
 {
    Account* a = AccountPrivate::buildNewAccountFromAlias(alias);
    connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
+   beginInsertRows(QModelIndex(),d_ptr->m_lAccounts.size(),d_ptr->m_lAccounts.size());
    d_ptr->m_lAccounts += a;
+   endInsertRows();
    connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
+   //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
 
    emit dataChanged(index(d_ptr->m_lAccounts.size()-1,0), index(d_ptr->m_lAccounts.size()-1,0));
    return a;
@@ -591,9 +598,10 @@ void AccountModel::remove(Account* account)
    if (not account) return;
    qDebug() << "Removing" << account->alias() << account->id();
    const int aindex = d_ptr->m_lAccounts.indexOf(account);
+   beginRemoveRows(QModelIndex(),aindex,aindex);
    d_ptr->m_lAccounts.remove(aindex);
    d_ptr->m_lDeletedAccounts << account->id();
-
+   endRemoveRows();
    emit accountRemoved(account);
    emit dataChanged(index(aindex,0), index(d_ptr->m_lAccounts.size()-1,0));
    emit layoutChanged();

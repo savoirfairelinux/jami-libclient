@@ -53,6 +53,28 @@ CollectionManagerInterfacePrivate<T>::~CollectionManagerInterfacePrivate()
 }
 
 template<class T>
+#ifdef Q_OS_DARWIN
+template <class T2>
+T2* CollectionManagerInterface<T>::addBackend(const LoadOptions options)
+{
+   T2* backend = new T2(d_ptr->itemMediator());
+
+   //This will force the T2 to be a CollectionInterface subclass
+   CollectionInterface* b = backend;
+   d_ptr->m_lCollections << b;
+
+   if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the backend is checked
+
+      //Some backends can fail to load directly
+      //eventually it will necessary to add an async version of this
+      //to load the backend only when it is loaded
+      if (backend->load())
+         d_ptr->m_lEnabledCollections << backend;
+   }
+
+   return backend;
+}
+#else
 template <class T2, typename ...Ts>
 T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions options)
 {
@@ -73,6 +95,7 @@ T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions opti
 
    return collection;
 }
+#endif //Q_OS_DARWIN
 
 template<class T>
 CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* self) : d_ptr(new CollectionManagerInterfacePrivate<T>(self,this))

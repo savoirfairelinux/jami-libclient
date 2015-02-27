@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,48 +15,59 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef INPUTDEVICEMODEL_H
-#define INPUTDEVICEMODEL_H
+#ifndef VIDEO_SHM_RENDERER_H
+#define VIDEO_SHM_RENDERER_H
 
-#include <QtCore/QAbstractListModel>
+//Base
+#include "video/renderer.h"
+#include "typedefs.h"
 
 //Qt
-#include <QtCore/QStringList>
-class QItemSelectionModel;
+class QMutex;
 
 //Ring
-#include <typedefs.h>
+#include "video/device.h"
 
-class InputDeviceModelPrivate;
+//Private
+struct SHMHeader;
 
-namespace Audio {
 
-class LIB_EXPORT InputDeviceModel   : public QAbstractListModel {
+namespace Video {
+class ShmRendererPrivate;
+
+///Manage shared memory and convert it to QByteArray
+class LIB_EXPORT ShmRenderer : public Renderer {
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
-public:
-   explicit InputDeviceModel(const QObject* parent);
-   virtual ~InputDeviceModel();
+   #pragma GCC diagnostic pop
 
-   //Models function
-   virtual QVariant      data    ( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-   virtual int           rowCount( const QModelIndex& parent = QModelIndex()            ) const override;
-   virtual Qt::ItemFlags flags   ( const QModelIndex& index                             ) const override;
-   virtual bool          setData ( const QModelIndex& index, const QVariant &value, int role)   override;
-   virtual QHash<int,QByteArray> roleNames() const override;
+   public:
+      //Constructor
+      ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
+      virtual ~ShmRenderer();
 
-   //Getters
-   QItemSelectionModel* selectionModel() const;
+      //Mutators
+      bool resizeShm();
+      void stopShm  ();
+      bool startShm ();
 
-   //Setters
-   void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
+      //Getters
+      virtual int fps             () const         ;
 
-   //Mutator
-   void reload();
+      //Setters
+      void setShmPath   (const QString& path);
 
-private:
-   QScopedPointer<InputDeviceModelPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(InputDeviceModel)
+   private:
+      QScopedPointer<ShmRendererPrivate> d_ptr;
+      Q_DECLARE_PRIVATE(ShmRenderer)
+
+   public Q_SLOTS:
+      void startRendering();
+      void stopRendering ();
+
+
+
 };
 
 }

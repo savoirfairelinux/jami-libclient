@@ -22,6 +22,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 
 //Ring daemon
 #include <account_const.h>
@@ -137,21 +138,13 @@ static void init_statuscode()
    SET_MESSAGE(703) QObject::tr("Error sending message to destination server");
 
    //This section match to POSIX error codes
+#ifdef Q_OS_LINUX
    SET_MESSAGE(PJ_SYS_ERR + EBFONT          ) QObject::tr("Bad font file format"                             );
-   SET_MESSAGE(PJ_SYS_ERR + ENOSTR          ) QObject::tr("Device not a stream"                              );
-   SET_MESSAGE(PJ_SYS_ERR + ENODATA         ) QObject::tr("No data available"                                );
-   SET_MESSAGE(PJ_SYS_ERR + ETIME           ) QObject::tr("Timer expired"                                    );
-   SET_MESSAGE(PJ_SYS_ERR + ENOSR           ) QObject::tr("Out of streams resources"                         );
    SET_MESSAGE(PJ_SYS_ERR + ENONET          ) QObject::tr("Machine is not on the network"                    );
-   SET_MESSAGE(PJ_SYS_ERR + ENOLINK         ) QObject::tr("Link has been severed"                            );
    SET_MESSAGE(PJ_SYS_ERR + EADV            ) QObject::tr("Advertise error"                                  );
    SET_MESSAGE(PJ_SYS_ERR + ESRMNT          ) QObject::tr("Srmount error"                                    );
    SET_MESSAGE(PJ_SYS_ERR + ECOMM           ) QObject::tr("Communication error on send"                      );
-   SET_MESSAGE(PJ_SYS_ERR + EPROTO          ) QObject::tr("Protocol error"                                   );
-   SET_MESSAGE(PJ_SYS_ERR + EMULTIHOP       ) QObject::tr("Multihop attempted"                               );
    SET_MESSAGE(PJ_SYS_ERR + EDOTDOT         ) QObject::tr("RFS specific error"                               );
-   SET_MESSAGE(PJ_SYS_ERR + EBADMSG         ) QObject::tr("Not a data message"                               );
-   SET_MESSAGE(PJ_SYS_ERR + EOVERFLOW       ) QObject::tr("Value too large for defined data type"            );
    SET_MESSAGE(PJ_SYS_ERR + ENOTUNIQ        ) QObject::tr("Name not unique on network"                       );
    SET_MESSAGE(PJ_SYS_ERR + EBADFD          ) QObject::tr("File descriptor in bad state"                     );
    SET_MESSAGE(PJ_SYS_ERR + EREMCHG         ) QObject::tr("Remote address changed"                           );
@@ -159,9 +152,32 @@ static void init_statuscode()
    SET_MESSAGE(PJ_SYS_ERR + ELIBBAD         ) QObject::tr("Accessing a corrupted shared library"             );
    SET_MESSAGE(PJ_SYS_ERR + ELIBMAX         ) QObject::tr("Attempting to link in too many shared libraries"  );
    SET_MESSAGE(PJ_SYS_ERR + ELIBEXEC        ) QObject::tr("Cannot exec a shared library directly"            );
-   SET_MESSAGE(PJ_SYS_ERR + EILSEQ          ) QObject::tr("Illegal byte sequence"                            );
    SET_MESSAGE(PJ_SYS_ERR + ERESTART        ) QObject::tr("Interrupted system call should be restarted"      );
    SET_MESSAGE(PJ_SYS_ERR + ESTRPIPE        ) QObject::tr("Streams pipe error"                               );
+   SET_MESSAGE(PJ_SYS_ERR + EUCLEAN         ) QObject::tr("Structure needs cleaning"                         );
+   SET_MESSAGE(PJ_SYS_ERR + ENOTNAM         ) QObject::tr("Not a XENIX named type file"                      );
+   SET_MESSAGE(PJ_SYS_ERR + ENAVAIL         ) QObject::tr("No XENIX semaphores available"                    );
+   SET_MESSAGE(PJ_SYS_ERR + EISNAM          ) QObject::tr("Is a named type file"                             );
+   SET_MESSAGE(PJ_SYS_ERR + EREMOTEIO       ) QObject::tr("Remote I/O error"                                 );
+   SET_MESSAGE(PJ_SYS_ERR + ENOMEDIUM       ) QObject::tr("No medium found"                                  );
+   SET_MESSAGE(PJ_SYS_ERR + EMEDIUMTYPE     ) QObject::tr("Wrong medium type"                                );
+   SET_MESSAGE(PJ_SYS_ERR + ENOKEY          ) QObject::tr("Required key not available"                       );
+   SET_MESSAGE(PJ_SYS_ERR + EKEYEXPIRED     ) QObject::tr("Key has expired"                                  );
+   SET_MESSAGE(PJ_SYS_ERR + EKEYREVOKED     ) QObject::tr("Key has been revoked"                             );
+   SET_MESSAGE(PJ_SYS_ERR + EKEYREJECTED    ) QObject::tr("Key was rejected by service"                      );
+   SET_MESSAGE(PJ_SYS_ERR + EDQUOT          ) QObject::tr("Quota exceeded"                                   );
+   SET_MESSAGE(PJ_SYS_ERR + ECANCELED       ) QObject::tr("Operation Canceled"                               );
+#endif
+   SET_MESSAGE(PJ_SYS_ERR + ENOSTR          ) QObject::tr("Device not a stream"                              );
+   SET_MESSAGE(PJ_SYS_ERR + ENODATA         ) QObject::tr("No data available"                                );
+   SET_MESSAGE(PJ_SYS_ERR + ETIME           ) QObject::tr("Timer expired"                                    );
+   SET_MESSAGE(PJ_SYS_ERR + ENOSR           ) QObject::tr("Out of streams resources"                         );
+   SET_MESSAGE(PJ_SYS_ERR + ENOLINK         ) QObject::tr("Link has been severed"                            );
+   SET_MESSAGE(PJ_SYS_ERR + EPROTO          ) QObject::tr("Protocol error"                                   );
+   SET_MESSAGE(PJ_SYS_ERR + EMULTIHOP       ) QObject::tr("Multihop attempted"                               );
+   SET_MESSAGE(PJ_SYS_ERR + EBADMSG         ) QObject::tr("Not a data message"                               );
+   SET_MESSAGE(PJ_SYS_ERR + EOVERFLOW       ) QObject::tr("Value too large for defined data type"            );
+   SET_MESSAGE(PJ_SYS_ERR + EILSEQ          ) QObject::tr("Illegal byte sequence"                            );
    SET_MESSAGE(PJ_SYS_ERR + EUSERS          ) QObject::tr("Too many users"                                   );
    SET_MESSAGE(PJ_SYS_ERR + ENOTSOCK        ) QObject::tr("Socket operation on non-socket"                   );
    SET_MESSAGE(PJ_SYS_ERR + EDESTADDRREQ    ) QObject::tr("Destination address required"                     );
@@ -192,19 +208,6 @@ static void init_statuscode()
    SET_MESSAGE(PJ_SYS_ERR + EALREADY        ) QObject::tr("Operation already in progress"                    );
    SET_MESSAGE(PJ_SYS_ERR + EINPROGRESS     ) QObject::tr("Operation now in progress"                        );
    SET_MESSAGE(PJ_SYS_ERR + ESTALE          ) QObject::tr("Stale file handle"                                );
-   SET_MESSAGE(PJ_SYS_ERR + EUCLEAN         ) QObject::tr("Structure needs cleaning"                         );
-   SET_MESSAGE(PJ_SYS_ERR + ENOTNAM         ) QObject::tr("Not a XENIX named type file"                      );
-   SET_MESSAGE(PJ_SYS_ERR + ENAVAIL         ) QObject::tr("No XENIX semaphores available"                    );
-   SET_MESSAGE(PJ_SYS_ERR + EISNAM          ) QObject::tr("Is a named type file"                             );
-   SET_MESSAGE(PJ_SYS_ERR + EREMOTEIO       ) QObject::tr("Remote I/O error"                                 );
-   SET_MESSAGE(PJ_SYS_ERR + EDQUOT          ) QObject::tr("Quota exceeded"                                   );
-   SET_MESSAGE(PJ_SYS_ERR + ENOMEDIUM       ) QObject::tr("No medium found"                                  );
-   SET_MESSAGE(PJ_SYS_ERR + EMEDIUMTYPE     ) QObject::tr("Wrong medium type"                                );
-   SET_MESSAGE(PJ_SYS_ERR + ECANCELED       ) QObject::tr("Operation Canceled"                               );
-   SET_MESSAGE(PJ_SYS_ERR + ENOKEY          ) QObject::tr("Required key not available"                       );
-   SET_MESSAGE(PJ_SYS_ERR + EKEYEXPIRED     ) QObject::tr("Key has expired"                                  );
-   SET_MESSAGE(PJ_SYS_ERR + EKEYREVOKED     ) QObject::tr("Key has been revoked"                             );
-   SET_MESSAGE(PJ_SYS_ERR + EKEYREJECTED    ) QObject::tr("Key was rejected by service"                      );
 
    //The next sections represent pjproject specific errors
 

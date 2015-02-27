@@ -1,22 +1,23 @@
 /******************************************************************************
- *   Copyright (C) 2014 by Savoir-Faire Linux                                 *
- *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
- *                                                                            *
- *   This library is free software; you can redistribute it and/or            *
- *   modify it under the terms of the GNU Lesser General Public               *
- *   License as published by the Free Software Foundation; either             *
- *   version 2.1 of the License, or (at your option) any later version.       *
- *                                                                            *
- *   This library is distributed in the hope that it will be useful,          *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        *
- *   Lesser General Public License for more details.                          *
- *                                                                            *
- *   You should have received a copy of the Lesser GNU General Public License *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
- *****************************************************************************/
-#ifndef CONFIGURATIONMANAGER_DBUS_INTERFACE_H
-#define CONFIGURATIONMANAGER_DBUS_INTERFACE_H
+*   Copyright (C) 2014 by Savoir-Faire Linux                                 *
+*   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
+*   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
+*                                                                            *
+*   This library is free software; you can redistribute it and/or            *
+*   modify it under the terms of the GNU Lesser General Public               *
+*   License as published by the Free Software Foundation; either             *
+*   version 2.1 of the License, or (at your option) any later version.       *
+*                                                                            *
+*   This library is distributed in the hope that it will be useful,          *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        *
+*   Lesser General Public License for more details.                          *
+*                                                                            *
+*   You should have received a copy of the Lesser GNU General Public License *
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
+*****************************************************************************/
+#ifndef CONFIGURATIONMANAGER_STATIC_INTERFACE_H
+#define CONFIGURATIONMANAGER_STATIC_INTERFACE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -29,8 +30,9 @@
 
 #include <future>
 
-#include <dring.h>
-#include "../dbus/metatypes.h"
+#include <configurationmanager_interface.h>
+
+#include "typedefs.h"
 #include "conversions_wrap.hpp"
 
 // TEMPORARY
@@ -45,192 +47,182 @@ class ConfigurationManagerInterface: public QObject
     Q_OBJECT
 
 public:
+
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
+
     ConfigurationManagerInterface()
     {
         setObjectName("ConfigurationManagerInterface");
-        config_ev_handlers = {
-            .on_volume_change = [this] (const std::string &device, double value) {
-                      QTimer::singleShot(0, [this,device,value] {
-                            emit this->volumeChanged(QString(device.c_str()), value);
-                      });
-            },
-            .on_accounts_change = [this] () {
-                      QTimer::singleShot(0, [this] {
-                            emit this->accountsChanged();
-                      });
-             },
-            .on_history_change = [this] () {
-                      QTimer::singleShot(0, [this] {
-                            emit this->historyChanged();
-                      });
-            },
-             .on_stun_status_fail = [this] (const std::string &reason) {
-                      QTimer::singleShot(0, [this, reason] {
-                            emit this->stunStatusFailure(QString(reason.c_str()));
-                      });
-            },
-            .on_registration_state_change = [this] (const std::string &accountID, int registration_state) {
-                      QTimer::singleShot(0, [this, accountID, registration_state] {
-                            emit this->registrationStateChanged(QString(accountID.c_str()), registration_state);
-                      });
-            },
-            .on_sip_registration_state_change = [this] (const std::string &accountID, const std::string &state, int code) {
-                      QTimer::singleShot(0, [this,accountID, state, code] {
-                            emit this->sipRegistrationStateChanged(QString(accountID.c_str()), QString(state.c_str()), code);
-                      });
-            },
+        using DRing::exportable_callback;
+        using DRing::ConfigurationSignal;
 
-            //TODO: .on_volatile_details_change = [this] (const QString &message.c_str()) { emit this->volatileAccountDetailsChanged(); },
-            .on_error = [this] (int code) {
-                      QTimer::singleShot(0, [this,code] {
-                        emit this->errorAlert(code);
-                      });
-            }
+        setObjectName("ConfigurationManagerInterface");
+        confHandlers = {
+            exportable_callback<ConfigurationSignal::VolumeChanged>(
+                [this] (const std::string &device, double value) {
+                       QTimer::singleShot(0, [this,device,value] {
+                             emit this->volumeChanged(QString(device.c_str()), value);
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::AccountsChanged>(
+                [this] () {
+                       QTimer::singleShot(0, [this] {
+                             emit this->accountsChanged();
+                       });
+             }),
+             exportable_callback<ConfigurationSignal::HistoryChanged>(
+                [this] () {
+                       QTimer::singleShot(0, [this] {
+                             emit this->historyChanged();
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::StunStatusFailed>(
+                [this] (const std::string &reason) {
+                       QTimer::singleShot(0, [this, reason] {
+                             emit this->stunStatusFailure(QString(reason.c_str()));
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::RegistrationStateChanged>(
+                [this] (const std::string &accountID, int registration_state) {
+                       QTimer::singleShot(0, [this, accountID, registration_state] {
+                             emit this->registrationStateChanged(QString(accountID.c_str()), registration_state);
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::SipRegistrationStateChanged>(
+                [this] (const std::string &accountID, const std::string &state, int code) {
+                       QTimer::singleShot(0, [this,accountID, state, code] {
+                             emit this->sipRegistrationStateChanged(QString(accountID.c_str()), QString(state.c_str()), code);
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::VolatileDetailsChanged>(
+                [this] (const std::string &accountID, const std::map<std::string, std::string>& details) {
+                       QTimer::singleShot(0, [this, accountID, details] {
+                         emit this->volatileAccountDetailsChanged(QString(accountID.c_str()), convertMap(details));
+                       });
+            }),
+            exportable_callback<ConfigurationSignal::Error>(
+                [this] (int code) {
+                       QTimer::singleShot(0, [this,code] {
+                         emit this->errorAlert(code);
+                       });
+            })
         };
     }
 
     ~ConfigurationManagerInterface() {}
 
-    ring_config_ev_handlers config_ev_handlers;
-
 public Q_SLOTS: // METHODS
     QString addAccount(MapStringString details)
     {
         QString temp(
-            ring_config_add_account(convertMap(details)).c_str());
+            DRing::addAccount(convertMap(details)).c_str());
         return temp;
-    }
-
-    bool checkCertificateValidity(const QString &caPath, const QString &pemPath)
-    {
-        return ring_config_check_certificate_validity(
-            caPath.toStdString(), pemPath.toStdString());
-    }
-
-    bool checkForPrivateKey(const QString &pemPath)
-    {
-        return ring_config_check_for_private_key(pemPath.toStdString());
-    }
-
-    bool checkHostnameCertificate(const QString &host, const QString &port)
-    {
-        return ring_config_check_hostname_certificate(
-            host.toStdString(), port.toStdString());
-    }
-
-    void clearHistory()
-    {
-        ring_config_clear_history();
     }
 
     MapStringString getAccountDetails(const QString &accountID)
     {
         MapStringString temp =
-            convertMap(ring_config_get_account_details(accountID.toStdString()));
+            convertMap(DRing::getAccountDetails(accountID.toStdString()));
         return temp;
     }
 
     QStringList getAccountList()
     {
-        std::cout << "AccountList:" << std::endl;
-        for (auto x : ring_config_get_account_list())
-            std::cout << x << std::endl;
-
         QStringList temp =
-            convertStringList(ring_config_get_account_list());
+            convertStringList(DRing::getAccountList());
         return temp;
     }
 
     MapStringString getAccountTemplate()
     {
         MapStringString temp =
-            convertMap(ring_config_get_account_template());
+            convertMap(DRing::getAccountTemplate());
         return temp;
     }
 
-// TODO: works?
-    VectorInt getActiveAudioCodecList(const QString &accountID)
+    // TODO: works?
+    VectorUInt getActiveCodecList(const QString &accountID)
     {
-        return QVector<int>::fromStdVector(
-            ring_config_get_active_audio_codec_list(accountID.toStdString()));
+        return QVector<unsigned int>::fromStdVector(
+            DRing::getActiveCodecList(accountID.toStdString()));
     }
 
     QString getAddrFromInterfaceName(const QString &interface)
     {
         QString temp(
-            ring_config_get_addr_from_interface_name(interface.toStdString()).c_str());
+            DRing::getAddrFromInterfaceName(interface.toStdString()).c_str());
         return temp;
     }
 
     QStringList getAllIpInterface()
     {
         QStringList temp =
-            convertStringList(ring_config_get_all_ip_interface());
+            convertStringList(DRing::getAllIpInterface());
         return temp;
     }
 
     QStringList getAllIpInterfaceByName()
     {
         QStringList temp =
-            convertStringList(ring_config_get_all_ip_interface_by_name());
+            convertStringList(DRing::getAllIpInterfaceByName());
         return temp;
     }
 
-    QStringList getAudioCodecDetails(int payload)
+    MapStringString getCodecDetails(const QString accountID, int payload)
     {
-        QStringList temp =
-            convertStringList(ring_config_get_audio_codec_details(payload));
+        MapStringString temp =
+            convertMap(DRing::getCodecDetails(
+                accountID.toStdString().c_str(), payload));
         return temp;
     }
 
-// TODO: works?
-    VectorInt getAudioCodecList()
+    VectorUInt getCodecList()
     {
-        return QVector<int>::fromStdVector(ring_config_get_audio_codec_list());
+        return QVector<unsigned int>::fromStdVector(DRing::getCodecList());
     }
 
     int getAudioInputDeviceIndex(const QString &devname)
     {
-        return ring_config_get_audio_input_device_index(devname.toStdString());
+        return DRing::getAudioInputDeviceIndex(devname.toStdString());
     }
 
     QStringList getAudioInputDeviceList()
     {
         QStringList temp =
-            convertStringList(ring_config_get_audio_input_device_list());
+            convertStringList(DRing::getAudioInputDeviceList());
         return temp;
     }
 
     QString getAudioManager()
     {
         QString temp(
-            ring_config_get_audio_manager().c_str());
+            DRing::getAudioManager().c_str());
         return temp;
     }
 
     int getAudioOutputDeviceIndex(const QString &devname)
     {
-        return ring_config_get_audio_output_device_index(devname.toStdString());
+        return DRing::getAudioOutputDeviceIndex(devname.toStdString());
     }
 
     QStringList getAudioOutputDeviceList()
     {
         QStringList temp =
-            convertStringList(ring_config_get_audio_output_device_list());
+            convertStringList(DRing::getAudioOutputDeviceList());
         return temp;
     }
 
     QStringList getAudioPluginList()
     {
         QStringList temp =
-            convertStringList(ring_config_get_audio_plugin_list());
+            convertStringList(DRing::getAudioPluginList());
         return temp;
     }
 
     VectorMapStringString getCredentials(const QString &accountID)
     {
         VectorMapStringString temp;
-        for(auto x : ring_config_get_credentials(accountID.toStdString())) {
+        for(auto x : DRing::getCredentials(accountID.toStdString())) {
             temp.push_back(convertMap(x));
         }
         return temp;
@@ -239,212 +231,216 @@ public Q_SLOTS: // METHODS
     QStringList getCurrentAudioDevicesIndex()
     {
         QStringList temp =
-            convertStringList(ring_config_get_current_audio_devices_index());
+            convertStringList(DRing::getCurrentAudioDevicesIndex());
         return temp;
     }
 
     QString getCurrentAudioOutputPlugin()
     {
         QString temp(
-            ring_config_get_current_audio_output_plugin().c_str());
-        return temp;
-    }
-
-    VectorMapStringString getHistory()
-    {
-        VectorMapStringString temp;
-        for (auto x : ring_config_get_history()) {
-            temp.push_back(convertMap(x));
-        }
+            DRing::getCurrentAudioOutputPlugin().c_str());
         return temp;
     }
 
     int getHistoryLimit()
     {
-        return ring_config_get_history_limit();
+        return DRing::getHistoryLimit();
     }
 
     MapStringString getHookSettings()
     {
         MapStringString temp =
-            convertMap(ring_config_get_hook_settings());
+            convertMap(DRing::getHookSettings());
         return temp;
     }
 
     MapStringString getIp2IpDetails()
     {
         MapStringString temp =
-            convertMap(ring_config_get_ip2ip_details());
+            convertMap(DRing::getIp2IpDetails());
         return temp;
     }
 
     bool getIsAlwaysRecording()
     {
-        // TODO: update API
-        return ring_config_is_always_recording();
+        return DRing::getIsAlwaysRecording();
     }
 
     bool getNoiseSuppressState()
     {
-        return ring_config_get_noise_suppress_state();
+        return DRing::getNoiseSuppressState();
     }
 
     QString getRecordPath()
     {
         QString temp(
-            ring_config_get_record_path().c_str());
+            DRing::getRecordPath().c_str());
         return temp;
     }
 
-    MapStringString getRingtoneList()
+    QStringList getSupportedAudioManagers()
     {
-        MapStringString temp =
-            convertMap(ring_config_get_ringtone_list());
+        QStringList temp;
         return temp;
     }
 
     MapStringString getShortcuts()
     {
         MapStringString temp =
-            convertMap(ring_config_get_shortcuts());
-        return temp;
-    }
-
-    QStringList getSupportedAudioManagers()
-    {
-        QStringList temp =
-            convertStringList(ring_config_get_supported_audio_managers());
+            convertMap(DRing::getShortcuts());
         return temp;
     }
 
     QStringList getSupportedTlsMethod()
     {
         QStringList temp =
-            convertStringList(ring_config_get_supported_tls_method());
+            convertStringList(DRing::getSupportedTlsMethod());
         return temp;
     }
 
     MapStringString getTlsSettings()
     {
         MapStringString temp =
-            convertMap(ring_config_get_tls_settings());
+            convertMap(DRing::getTlsSettings());
         return temp;
     }
 
-    MapStringString getTlsSettingsDefault()
+    MapStringString validateCertificate(const QString& unused, const QString certificate, const QString& privateKey)
     {
-        // TODO: update API
         MapStringString temp =
-            convertMap(ring_config_get_tls_default_settings());
+            convertMap(DRing::validateCertificate(unused.toStdString(),
+                                                certificate.toStdString(),
+                                                privateKey.toStdString()));
+        return temp;
+    }
+
+    MapStringString getCertificateDetails(const QString &certificate)
+    {
+        MapStringString temp =
+            convertMap(DRing::getCertificateDetails(certificate.toStdString()));
+        return temp;
+    }
+
+    QStringList getSupportedCiphers(const QString &accountID)
+    {
+        QStringList temp =
+            convertStringList(DRing::getSupportedCiphers(accountID.toStdString()));
+        return temp;
+    }
+
+    MapStringString getTlsDefaultSettings()
+    {
+        MapStringString temp =
+            convertMap(DRing::getTlsDefaultSettings());
         return temp;
     }
 
     double getVolume(const QString &device)
     {
-        return ring_config_get_volume(device.toStdString());
+        return DRing::getVolume(device.toStdString());
     }
 
     bool isAgcEnabled()
     {
-        return ring_config_is_agc_enabled();
+        return DRing::isAgcEnabled();
     }
 
     bool isCaptureMuted()
     {
-        return ring_config_is_capture_muted();
+        return DRing::isCaptureMuted();
     }
 
     bool isDtmfMuted()
     {
-        return ring_config_is_dtmf_muted();
+        return DRing::isDtmfMuted();
     }
 
     int isIax2Enabled()
     {
-        return ring_config_is_iax2_enabled();
+        return DRing::isIax2Enabled();
     }
 
     bool isPlaybackMuted()
     {
-        return ring_config_is_playback_muted();
+        return DRing::isPlaybackMuted();
     }
 
     void muteCapture(bool mute)
     {
-        ring_config_mute_capture(mute);
+        DRing::muteCapture(mute);
     }
 
     void muteDtmf(bool mute)
     {
-        ring_config_mute_dtmf(mute);
+        DRing::muteDtmf(mute);
     }
 
     void mutePlayback(bool mute)
     {
-        ring_config_mute_playback(mute);
+        DRing::mutePlayback(mute);
     }
 
     void registerAllAccounts()
     {
-        ring_config_register_all_accounts();
+        DRing::registerAllAccounts();
     }
 
     void removeAccount(const QString &accountID)
     {
-        ring_config_remove_account(accountID.toStdString());
+        DRing::removeAccount(accountID.toStdString());
     }
 
     void sendRegister(const QString &accountID, bool enable)
     {
-        ring_config_send_register(accountID.toStdString(), enable);
+        DRing::sendRegister(accountID.toStdString(), enable);
     }
 
     void setAccountDetails(const QString &accountID, MapStringString details)
     {
-        ring_config_set_account_details(accountID.toStdString(),
+        DRing::setAccountDetails(accountID.toStdString(),
             convertMap(details));
     }
 
     void setAccountsOrder(const QString &order)
     {
-        ring_config_set_accounts_order(order.toStdString());
+        DRing::setAccountsOrder(order.toStdString());
     }
 
-    void setActiveAudioCodecList(const QStringList &list, const QString &accountID)
+    void setActiveCodecList(const QString &accountID, VectorUInt &list)
     {
-        ring_config_set_active_audio_codec_list(
-            convertStringList(list), accountID.toStdString());
+        //const std::vector<unsigned int> converted = convertStringList(list);
+        DRing::setActiveCodecList(accountID.toStdString(),
+        list.toStdVector());
     }
 
     void setAgcState(bool enabled)
     {
-        //TODO: update API
-        ring_config_enable_agc(enabled);
+        DRing::setAgcState(enabled);
     }
 
     void setAudioInputDevice(int index)
     {
-        ring_config_set_audio_input_device(index);
+        DRing::setAudioInputDevice(index);
     }
 
     bool setAudioManager(const QString &api)
     {
-        return ring_config_set_audio_manager(api.toStdString());
+        return DRing::setAudioManager(api.toStdString());
     }
 
     void setAudioOutputDevice(int index)
     {
-        ring_config_set_audio_output_device(index);
+        DRing::setAudioOutputDevice(index);
     }
 
     void setAudioPlugin(const QString &audioPlugin)
     {
-        ring_config_set_audio_plugin(audioPlugin.toStdString());
+        DRing::setAudioPlugin(audioPlugin.toStdString());
     }
 
     void setAudioRingtoneDevice(int index)
     {
-        ring_config_set_audio_ringtone_device(index);
+        DRing::setAudioRingtoneDevice(index);
     }
 
     void setCredentials(const QString &accountID, VectorMapStringString credentialInformation)
@@ -453,48 +449,53 @@ public Q_SLOTS: // METHODS
         for (auto x : credentialInformation) {
             temp.push_back(convertMap(x));
         }
-        ring_config_set_credentials(accountID.toStdString(), temp);
+        DRing::setCredentials(accountID.toStdString(), temp);
     }
 
     void setHistoryLimit(int days)
     {
-        ring_config_set_history_limit(days);
+        DRing::setHistoryLimit(days);
     }
 
     void setHookSettings(MapStringString settings)
     {
-        ring_config_set_hook_settings(convertMap(settings));
+        DRing::setHookSettings(convertMap(settings));
     }
 
     void setIsAlwaysRecording(bool enabled)
     {
-        //TODO: update API
-        ring_config_set_always_recording(enabled);
+        DRing::setIsAlwaysRecording(enabled);
     }
 
     void setNoiseSuppressState(bool state)
     {
-        ring_config_set_noise_suppress_state(state);
+        DRing::setNoiseSuppressState(state);
     }
 
     void setRecordPath(const QString &rec)
     {
-        ring_config_set_record_path(rec.toStdString());
+        DRing::setRecordPath(rec.toStdString());
     }
 
     void setShortcuts(MapStringString shortcutsMap)
     {
-        ring_config_set_shortcuts(convertMap(shortcutsMap));
+        DRing::setShortcuts(convertMap(shortcutsMap));
     }
 
     void setTlsSettings(MapStringString details)
     {
-        ring_config_set_tls_settings(convertMap(details));
+        DRing::setTlsSettings(convertMap(details));
     }
 
     void setVolume(const QString &device, double value)
     {
-        ring_config_set_volume(device.toStdString(), value);
+        DRing::setVolume(device.toStdString(), value);
+    }
+
+    MapStringString getVolatileAccountDetails(const QString &accountID)
+    {
+        MapStringString temp = convertMap(DRing::getVolatileAccountDetails(accountID.toStdString()));
+        return temp;
     }
 
 Q_SIGNALS: // SIGNALS
@@ -506,6 +507,7 @@ Q_SIGNALS: // SIGNALS
     void sipRegistrationStateChanged(const QString &accountID, const QString &state, int code);
     void stunStatusSuccess(const QString &message);
     void errorAlert(int code);
+    void volatileAccountDetailsChanged(const QString &accountID, MapStringString details);
 
 };
 

@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Authors : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>*
+ *             Alexandre Lision <alexandre.lision@savoirfairelinux.com>     *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -30,7 +31,13 @@
 #include "channel.h"
 #include "rate.h"
 #include "resolution.h"
-#include "../private/videorate_p.h"
+#include "private/videorate_p.h"
+#if defined(Q_OS_DARWIN)
+#include "private/directrenderer.h"
+#else
+#include "private/shmrenderer.h"
+#endif
+
 
 //Static member
 Video::Manager* Video::Manager::m_spInstance = nullptr;
@@ -46,10 +53,8 @@ public:
    //Attributes
    bool           m_PreviewState;
    uint           m_BufferSize  ;
-   uint           m_ShmKey      ;
-   uint           m_SemKey      ;
    QMutex*        m_SSMutex     ;
-   QHash<QString,Video::Renderer*> m_lRenderers;
+   QHash<QByteArray,Video::Renderer*> m_lRenderers;
 
 private:
    Video::Manager* q_ptr;
@@ -63,9 +68,9 @@ private Q_SLOTS:
 }
 
 Video::ManagerPrivate::ManagerPrivate(Video::Manager* parent) : QObject(parent), q_ptr(parent),
-m_BufferSize(0),m_ShmKey(0),m_SemKey(0),m_PreviewState(false),m_SSMutex(new QMutex())
+m_BufferSize(0),m_PreviewState(false),m_SSMutex(new QMutex())
 {
-   
+
 }
 
 ///Constructor
@@ -92,14 +97,14 @@ Video::Manager* Video::Manager::instance()
    return m_spInstance;
 }
 
-///Return the call renderer or nullptr
+///Return the call Renderer or nullptr
 Video::Renderer* Video::Manager::getRenderer(const Call* call) const
 {
    if (!call) return nullptr;
-   return d_ptr->m_lRenderers[call->dringId()];
+   return d_ptr->m_lRenderers[call->dringId().toLatin1()];
 }
 
-///Get the video preview renderer
+///Get the video preview Renderer
 Video::Renderer* Video::Manager::previewRenderer()
 {
    if (!d_ptr->m_lRenderers["local"]) {
@@ -108,7 +113,12 @@ Video::Renderer* Video::Manager::previewRenderer()
          qWarning() << "Misconfigured video device";
          return nullptr;
       }
-      d_ptr->m_lRenderers["local"] = new Video::Renderer("local","",res->size());
+#if defined(Q_OS_DARWIN)
+      d_ptr->m_lRenderers["local"] = new Video::DirectRenderer("local", res->size());
+
+#else
+      d_ptr->m_lRenderers["local"] = new Video::ShmRenderer("local","",res->size());
+#endif
    }
    return d_ptr->m_lRenderers["local"];
 }
@@ -151,43 +161,41 @@ void Video::ManagerPrivate::deviceEvent()
 ///A video is not being rendered
 void Video::ManagerPrivate::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-   Q_UNUSED(id)
 
    QSize res = QSize(width,height);
-//    if (Video::DeviceModel::instance()->activeDevice()
-//       && Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()->width() == width) {
-//       //FIXME flawed logic
-//       res = Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()->size();
-//    }
-//    else {
-//       res =  QSize(width,height);
-//    }
 
-   if (m_lRenderers[id] == nullptr ) {
-      m_lRenderers[id] = new Video::Renderer(id,shmPath,res);
-      m_lRenderers[id]->moveToThread(q_ptr);
+   if (m_lRenderers[id.toLatin1()] == nullptr ) {
+       #if defined(Q_OS_DARWIN)
+             m_lRenderers["local"] = new Video::DirectRenderer("local", res);
+       #else
+             m_lRenderers["local"] = new Video::ShmRenderer("local",shmPath,res);
+       #endif
+      m_lRenderers[id.toLatin1()]->moveToThread(q_ptr);
       if (!q_ptr->isRunning())
          q_ptr->start();
    }
    else {
-      Video::Renderer* renderer = m_lRenderers[id];
-      renderer->setShmPath(shmPath);
-      renderer->setSize(res);
+      Video::Renderer* Renderer = m_lRenderers[id.toLatin1()];
+      //TODO: do direct renderer stuff here
+      m_lRenderers[id.toLatin1()]->setSize(res);
+#if !defined(Q_OS_DARWIN)
+      static_cast<ShmRenderer*>(m_lRenderers[id.toLatin1()])->setShmPath(shmPath);
+#endif
    }
 
-   m_lRenderers[id]->startRendering();
+   m_lRenderers[id.toLatin1()]->startRendering();
    Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
    if (dev) {
-      emit dev->renderingStarted(m_lRenderers[id]);
+      emit dev->renderingStarted(m_lRenderers[id.toLatin1()]);
    }
    if (id != "local") {
       qDebug() << "Starting video for call" << id;
-      emit q_ptr->videoCallInitiated(m_lRenderers[id]);
+      emit q_ptr->videoCallInitiated(m_lRenderers[id.toLatin1()]);
    }
    else {
       m_PreviewState = true;
       emit q_ptr->previewStateChanged(true);
-      emit q_ptr->previewStarted(m_lRenderers[id]);
+      emit q_ptr->previewStarted(m_lRenderers[id.toLatin1()]);
    }
 }
 
@@ -195,11 +203,11 @@ void Video::ManagerPrivate::startedDecoding(const QString& id, const QString& sh
 void Video::ManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
 {
    Q_UNUSED(shmPath)
-   Video::Renderer* r = m_lRenderers[id];
+   Video::Renderer* r = m_lRenderers[id.toLatin1()];
    if ( r ) {
       r->stopRendering();
    }
-   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << (m_lRenderers[id] != nullptr);
+   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << (m_lRenderers[id.toLatin1()] != nullptr);
 //    emit videoStopped();
 
    Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
@@ -212,7 +220,7 @@ void Video::ManagerPrivate::stoppedDecoding(const QString& id, const QString& sh
       emit q_ptr->previewStopped(r);
    }
 //    r->mutex()->lock();
-   m_lRenderers[id] = nullptr;
+   m_lRenderers[id.toLatin1()] = nullptr;
    delete r;
 }
 
