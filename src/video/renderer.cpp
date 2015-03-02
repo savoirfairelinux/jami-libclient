@@ -28,7 +28,7 @@ m_pMutex(new QMutex()), m_FrameIdx(false)
 {
 }
 
-Video::Renderer::Renderer(const QByteArray& id, const QSize& res)
+Video::Renderer::Renderer(const QByteArray& id, const QSize& res) : d_ptr(new RendererPrivate(this))
 {
   d_ptr->m_pSize = res;
   d_ptr->m_Id = id;
