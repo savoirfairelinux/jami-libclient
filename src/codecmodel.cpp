@@ -232,28 +232,26 @@ void CodecModel::reload()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    QVector<uint> codecIdList = configurationManager.getCodecList();
-   if (!d_ptr->m_pAccount->isNew()) {
       QVector<uint> activeCodecList = configurationManager.getActiveCodecList(d_ptr->m_pAccount->id());
       QStringList tmpNameList;
 
-      foreach (const int aCodec, activeCodecList) {
-         if (!d_ptr->findCodec(aCodec)) {
+  foreach (const int aCodec, activeCodecList) {
+     if (!d_ptr->findCodec(aCodec)) {
 
-            const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+        const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
 
-            QModelIndex idx = add();
-            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-            setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
-            setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
-            setData(idx, Qt::Checked ,Qt::CheckStateRole               );
+        QModelIndex idx = add();
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+        setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
+        setData(idx, Qt::Checked ,Qt::CheckStateRole               );
 
-            if (codecIdList.indexOf(aCodec)!=-1)
-               codecIdList.remove(codecIdList.indexOf(aCodec));
-         }
-      }
-   }
+        if (codecIdList.indexOf(aCodec)!=-1)
+           codecIdList.remove(codecIdList.indexOf(aCodec));
+     }
+  }
 
    foreach (const int aCodec, codecIdList) {
       if (!d_ptr->findCodec(aCodec)) {
