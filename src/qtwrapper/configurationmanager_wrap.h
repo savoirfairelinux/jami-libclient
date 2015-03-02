@@ -70,12 +70,6 @@ public:
                              emit this->accountsChanged();
                        });
              }),
-             exportable_callback<ConfigurationSignal::HistoryChanged>(
-                [this] () {
-                       QTimer::singleShot(0, [this] {
-                             emit this->historyChanged();
-                       });
-            }),
             exportable_callback<ConfigurationSignal::StunStatusFailed>(
                 [this] (const std::string &reason) {
                        QTimer::singleShot(0, [this, reason] {
