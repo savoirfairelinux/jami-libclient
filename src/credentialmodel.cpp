@@ -63,6 +63,9 @@ QHash<int,QByteArray> CredentialModel::roleNames() const
 
 ///Model data
 QVariant CredentialModel::data(const QModelIndex& idx, int role) const {
+   if (!idx.isValid())
+      return QVariant();
+
    if (idx.column() == 0) {
       switch (role) {
          case Qt::DisplayRole:
@@ -121,7 +124,9 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
 
 ///Add a new credential
 QModelIndex CredentialModel::addCredentials() {
+   beginInsertRows(QModelIndex(), d_ptr->m_lCredentials.size()-1, d_ptr->m_lCredentials.size()-1);
    d_ptr->m_lCredentials << new CredentialModelPrivate::CredentialData2;
+   endInsertRows();
    emit dataChanged(index(d_ptr->m_lCredentials.size()-1,0), index(d_ptr->m_lCredentials.size()-1,0));
    return index(d_ptr->m_lCredentials.size()-1,0);
 }
@@ -129,7 +134,9 @@ QModelIndex CredentialModel::addCredentials() {
 ///Remove credential at 'idx'
 void CredentialModel::removeCredentials(QModelIndex idx) {
    if (idx.isValid()) {
+      beginRemoveRows(QModelIndex(), idx.row(), idx.row());
       d_ptr->m_lCredentials.removeAt(idx.row());
+      endRemoveRows();
       emit dataChanged(idx, index(d_ptr->m_lCredentials.size()-1,0));
    }
    else {
