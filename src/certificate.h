@@ -83,6 +83,7 @@ public:
       AUTHORITY  ,
       USER       ,
       PRIVATE_KEY,
+      CALL       ,
       NONE       ,
    };
 
@@ -229,6 +230,7 @@ public:
 
 private:
    explicit Certificate(const QUrl& path, Type type = Type::NONE, const QUrl& privateKey = QUrl());
+   Certificate(const QByteArray& content, Type type = Type::CALL);
    virtual ~Certificate();
    CertificatePrivate* d_ptr;
 

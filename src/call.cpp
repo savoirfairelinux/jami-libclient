@@ -30,6 +30,7 @@
 
 //DRing
 #include <account_const.h>
+#include <call_const.h>
 
 //Ring library
 #include "dbus/callmanager.h"
@@ -45,7 +46,9 @@
 #include "instantmessagingmodel.h"
 #include "useractionmodel.h"
 #include "callmodel.h"
+#include "certificate.h"
 #include "numbercategory.h"
+#include "certificatemodel.h"
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "video/renderer.h"
@@ -106,7 +109,7 @@ const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::St
 }};//                                                                                                                 */
 
 
-const TypedStateMachine< TypedStateMachine< Call::State , Call::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
+const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
 {{
 //                        RINGING                   CURRENT                   BUSY                  HOLD                        HUNGUP                 FAILURE           /**/
 /*INCOMING     */ {{Call::State::INCOMING    , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
@@ -125,7 +128,7 @@ const TypedStateMachine< TypedStateMachine< Call::State , Call::DaemonState> , C
 /*INIT         */ {{Call::State::RINGING     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 }};//                                                                                                                                                                        */
 
-const TypedStateMachine< TypedStateMachine< function , Call::DaemonState > , Call::State > CallPrivate::stateChangedFunctionMap =
+const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState > , Call::State > CallPrivate::stateChangedFunctionMap =
 {{
 //                      RINGING                  CURRENT             BUSY              HOLD                    HUNGUP                  FAILURE       /**/
 /*INCOMING       */  {{CP::nothing    , CP::start     , CP::startWeird     , CP::startWeird   ,  CP::startStop    , CP::failure }},/**/
@@ -185,6 +188,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
 
+QDebug LIB_EXPORT operator<<(QDebug dbg, const CallPrivate::DaemonState& c );
 
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c)
 {
@@ -192,7 +196,7 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c)
    return dbg.space();
 }
 
-QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::DaemonState& c)
+QDebug LIB_EXPORT operator<<(QDebug dbg, const CallPrivate::DaemonState& c)
 {
    dbg.nospace() << static_cast<int>(c);
    return dbg.space();
@@ -231,7 +235,7 @@ m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(nullptr),m_HistoryState(Call::LegacyHistoryState::NONE), m_CurrentState(Call::State::ERROR)
+m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr)
 {
 }
 
@@ -311,7 +315,6 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
    Call*         call          = new Call(startState, peerName, nb, acc);
    call->d_ptr->m_DringId      = callId;
    call->d_ptr->m_Recording    = callManager.getIsRecording(callId);
-   call->d_ptr->m_HistoryState = historyStateFromType(details[Call::HistoryMapFields::STATE]);
 
    if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
       call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
@@ -327,6 +330,11 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
       call->peerContactMethod()->addCall(call);
    }
 
+   //Load the certificate if it's now available
+   if (!call->certificate() && !details[DRing::Call::Details::TLS_PEER_CERT].isEmpty()) {
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::Call::Details::TLS_PEER_CERT].toLatin1());
+   }
+
    return call;
 } //buildExistingCall
 
@@ -334,7 +342,6 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
 {
    Call* call = new Call(Call::State::DIALING, peerName, nullptr, account);
-   call->d_ptr->m_HistoryState = Call::LegacyHistoryState::NONE;
    call->d_ptr->m_Direction = Call::Direction::OUTGOING;
    if (Audio::Settings::instance()->isRoomToneEnabled()) {
       Audio::Settings::instance()->playRoomTone();
@@ -356,11 +363,16 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::INCOMING, peerName, nb, acc);
    call->d_ptr->m_DringId      = callId;
-   call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
    call->d_ptr->m_Direction    = Call::Direction::INCOMING;
    if (call->peerContactMethod()) {
       call->peerContactMethod()->addCall(call);
    }
+
+   //Load the certificate if it's now available
+   if (!call->certificate() && !details[DRing::Call::Details::TLS_PEER_CERT].isEmpty()) {
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::Call::Details::TLS_PEER_CERT].toLatin1());
+   }
+
    return call;
 } //buildIncomingCall
 
@@ -377,12 +389,17 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
    ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::RINGING, peerName, nb, acc);
    call->d_ptr->m_DringId      = callId;
-   call->d_ptr->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
    call->d_ptr->m_Direction    = Call::Direction::OUTGOING;
 
    if (call->peerContactMethod()) {
       call->peerContactMethod()->addCall(call);
    }
+
+   //Load the certificate if it's now available
+   if (!call->certificate() && !details[DRing::Call::Details::TLS_PEER_CERT].isEmpty()) {
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::Call::Details::TLS_PEER_CERT].toLatin1());
+   }
+
    return call;
 } //buildRingingCall
 
@@ -429,33 +446,21 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    call->d_ptr->m_pStopTimeStamp  = stopTimeStamp ;
    call->d_ptr->setStartTimeStamp(startTimeStamp);
    call->d_ptr->m_History         = true;
-   call->d_ptr->m_HistoryState    = CallPrivate::historyStateFromType(type);
    call->d_ptr->m_Account         = AccountModel::instance()->getById(accId);
 
-   //BEGIN In ~2015, remove the old logic and clean this
-   if (missed || call->d_ptr->m_HistoryState == Call::LegacyHistoryState::MISSED) {
+   if (missed) {
       call->d_ptr->m_Missed = true;
-      call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
    }
    if (!direction.isEmpty()) {
       if (direction == Call::HistoryStateName::INCOMING) {
          call->d_ptr->m_Direction    = Call::Direction::INCOMING         ;
-         call->d_ptr->m_HistoryState = Call::LegacyHistoryState::INCOMING;
       }
       else if (direction == Call::HistoryStateName::OUTGOING) {
          call->d_ptr->m_Direction    = Call::Direction::OUTGOING         ;
-         call->d_ptr->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
       }
    }
-   else if (call->d_ptr->m_HistoryState == Call::LegacyHistoryState::INCOMING)
-      call->d_ptr->m_Direction    = Call::Direction::INCOMING            ;
-   else if (call->d_ptr->m_HistoryState == Call::LegacyHistoryState::OUTGOING)
-      call->d_ptr->m_Direction    = Call::Direction::OUTGOING            ;
    else //Getting there is a bug. Pick one, even if it is the wrong one
       call->d_ptr->m_Direction    = Call::Direction::OUTGOING            ;
-   if (missed)
-      call->d_ptr->m_HistoryState = Call::LegacyHistoryState::MISSED;
-   //END
 
    call->setObjectName("History:"+call->d_ptr->m_DringId);
 
@@ -482,18 +487,6 @@ Call* Call::operator<<( Call::Action& c)
 Call* operator<<(Call* c, Call::Action action)
 {
    return (!c) ? nullptr : (*c) << action;
-}
-
-///Get the history state from the type (see Call.cpp header)
-Call::LegacyHistoryState CallPrivate::historyStateFromType(const QString& type)
-{
-   if(type == Call::HistoryStateName::MISSED        )
-      return Call::LegacyHistoryState::MISSED   ;
-   else if(type == Call::HistoryStateName::OUTGOING )
-      return Call::LegacyHistoryState::OUTGOING ;
-   else if(type == Call::HistoryStateName::INCOMING )
-      return Call::LegacyHistoryState::INCOMING ;
-   return  Call::LegacyHistoryState::NONE       ;
 }
 
 ///Get the start sate from the daemon state
@@ -525,25 +518,25 @@ Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCall
  ****************************************************************************/
 
 ///Transfer state from internal to daemon internal syntaz
-Call::DaemonState CallPrivate::toDaemonCallState(const QString& stateName)
+CallPrivate::DaemonState CallPrivate::toDaemonCallState(const QString& stateName)
 {
    if(stateName == CallPrivate::StateChange::HUNG_UP        )
-      return Call::DaemonState::HUNG_UP ;
+      return CallPrivate::DaemonState::HUNG_UP ;
    if(stateName == CallPrivate::StateChange::RINGING        )
-      return Call::DaemonState::RINGING ;
+      return CallPrivate::DaemonState::RINGING ;
    if(stateName == CallPrivate::StateChange::CURRENT        )
-      return Call::DaemonState::CURRENT ;
+      return CallPrivate::DaemonState::CURRENT ;
    if(stateName == CallPrivate::StateChange::UNHOLD_CURRENT )
-      return Call::DaemonState::CURRENT ;
+      return CallPrivate::DaemonState::CURRENT ;
    if(stateName == CallPrivate::StateChange::HOLD           )
-      return Call::DaemonState::HOLD    ;
+      return CallPrivate::DaemonState::HOLD    ;
    if(stateName == CallPrivate::StateChange::BUSY           )
-      return Call::DaemonState::BUSY    ;
+      return CallPrivate::DaemonState::BUSY    ;
    if(stateName == CallPrivate::StateChange::FAILURE        )
-      return Call::DaemonState::FAILURE ;
+      return CallPrivate::DaemonState::FAILURE ;
 
    qDebug() << "stateChanged signal received with unknown state.";
-   return Call::DaemonState::FAILURE    ;
+   return CallPrivate::DaemonState::FAILURE    ;
 } //toDaemonCallState
 
 ///Transform a conference call state to a proper call state
@@ -696,6 +689,12 @@ bool Call::hasRecording() const
    return !recordingPath().isEmpty() && QFile::exists(recordingPath());
 }
 
+///If this call is encrypted, return the certificate associated with it
+Certificate* Call::certificate() const
+{
+   return d_ptr->m_pCertificate;
+}
+
 ///Generate an human readable string from the difference between StartTimeStamp and StopTimeStamp (or 'now')
 QString Call::length() const
 {
@@ -715,7 +714,7 @@ QString Call::length() const
 }
 
 ///Is this call part of history
-bool Call::isHistory()
+bool Call::isHistory() const
 {
    if (lifeCycleState() == Call::LifeCycleState::FINISHED && !d_ptr->m_History)
       d_ptr->m_History = true;
@@ -725,7 +724,7 @@ bool Call::isHistory()
 ///Is this call missed
 bool Call::isMissed() const
 {
-   return d_ptr->m_Missed || d_ptr->m_HistoryState == Call::LegacyHistoryState::MISSED;
+   return d_ptr->m_Missed;
 }
 
 ///Is the call incoming or outgoing
@@ -785,12 +784,6 @@ Account* Call::account() const
 const QString Call::recordingPath() const
 {
    return d_ptr->m_RecordingPath;
-}
-
-///Get the history state
-Call::LegacyHistoryState Call::historyState() const
-{
-   return d_ptr->m_HistoryState;
 }
 
 ///This function could also be called mayBeSecure or haveChancesToBeEncryptedButWeCantTell.
@@ -900,8 +893,8 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
 {
    const Call::State previousState = m_CurrentState;
    if (q_ptr->type() != Call::Type::CONFERENCE) {
-      Call::DaemonState dcs = toDaemonCallState(newStateName);
-      if (dcs == Call::DaemonState::COUNT__ || m_CurrentState == Call::State::COUNT__) {
+      CallPrivate::DaemonState dcs = toDaemonCallState(newStateName);
+      if (dcs == CallPrivate::DaemonState::COUNT__ || m_CurrentState == Call::State::COUNT__) {
          qDebug() << "Error: Invalid state change";
          return Call::State::FAILURE;
       }
@@ -925,7 +918,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
          FORCE_ERROR_STATE_P()
          return m_CurrentState;
       }
-      catch(Call::DaemonState& state) {
+      catch(CallPrivate::DaemonState& state) {
          qDebug() << "State change failed (stateChangedStateMap)" << state;
          FORCE_ERROR_STATE_P()
          return m_CurrentState;
@@ -941,6 +934,11 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       if (details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName)
          m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
 
+      //Load the certificate if it's now available
+      if (!q_ptr->certificate() && !details[DRing::Call::Details::TLS_PEER_CERT].isEmpty()) {
+         m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::Call::Details::TLS_PEER_CERT].toLatin1());
+      }
+
       try {
          (this->*(stateChangedFunctionMap[previousState][dcs]))();
       }
@@ -949,7 +947,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
          FORCE_ERROR_STATE_P()
          return m_CurrentState;
       }
-      catch(Call::DaemonState& state) {
+      catch(CallPrivate::DaemonState& state) {
          qDebug() << "State change failed (stateChangedFunctionMap)" << state;
          FORCE_ERROR_STATE_P()
          return m_CurrentState;
@@ -1124,7 +1122,6 @@ void CallPrivate::accept()
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
-   this->m_HistoryState = Call::LegacyHistoryState::INCOMING;
    m_Direction = Call::Direction::INCOMING;
 }
 
@@ -1137,7 +1134,6 @@ void CallPrivate::refuse()
    time_t curTime;
    ::time(&curTime);
    setStartTimeStamp(curTime);
-   this->m_HistoryState = Call::LegacyHistoryState::MISSED;
    m_Missed = true;
 
    //If the daemon crashed then re-spawned when a call is ringing, this happen.
@@ -1169,7 +1165,6 @@ void CallPrivate::acceptHold()
    qDebug() << "Accepting call and holding it. callId : " << q_ptr  << "ConfId:" << q_ptr;
    callManager.accept(m_DringId);
    Q_NOREPLY callManager.hold(m_DringId);
-   this->m_HistoryState = Call::LegacyHistoryState::INCOMING;
    m_Direction = Call::Direction::INCOMING;
 }
 
@@ -1301,7 +1296,6 @@ void CallPrivate::call()
       time_t curTime;
       ::time(&curTime);
       setStartTimeStamp(curTime);
-      this->m_HistoryState = Call::LegacyHistoryState::OUTGOING;
       m_Direction = Call::Direction::OUTGOING;
       if (q_ptr->peerContactMethod()) {
          q_ptr->peerContactMethod()->addCall(q_ptr);
@@ -1314,7 +1308,6 @@ void CallPrivate::call()
    else {
       qDebug() << "Trying to call " << (m_pTransferNumber?QString(m_pTransferNumber->uri()):"ERROR")
          << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
-      this->m_HistoryState = Call::LegacyHistoryState::NONE;
       throw tr("No account registered!");
    }
 }
@@ -1642,12 +1635,17 @@ void CallPrivate::initTimer()
    }
 }
 
+QVariant Call::roleData(Call::Role role) const
+{
+   return roleData(static_cast<int>(role));
+}
+
 ///Common source for model data roles
 QVariant Call::roleData(int role) const
 {
    const Person* ct = peerContactMethod()?peerContactMethod()->contact():nullptr;
    switch (role) {
-      case Call::Role::Name:
+      case static_cast<int>(Call::Role::Name):
       case Qt::DisplayRole:
          if (type() == Call::Type::CONFERENCE)
             return tr("Conference");
@@ -1663,30 +1661,27 @@ QVariant Call::roleData(int role) const
          break;
       case Qt::EditRole:
          return dialNumber();
-      case Call::Role::Number:
+      case static_cast<int>(Call::Role::Number):
          return peerContactMethod()->uri();
          break;
-      case Call::Role::Direction2:
+      case static_cast<int>(Call::Role::Direction):
          return QVariant::fromValue(d_ptr->m_Direction);
          break;
-      case Call::Role::Date:
+      case static_cast<int>(Call::Role::Date):
          return (int)startTimeStamp();
          break;
-      case Call::Role::Length:
+      case static_cast<int>(Call::Role::Length):
          return length();
          break;
-      case Call::Role::FormattedDate:
+      case static_cast<int>(Call::Role::FormattedDate):
          return QDateTime::fromTime_t(startTimeStamp()).toString();
          break;
-      case Call::Role::HasRecording:
+      case static_cast<int>(Call::Role::HasRecording):
          return hasRecording();
          break;
-      case Call::Role::Historystate:
-         return QVariant::fromValue(historyState());
-         break;
-      case Call::Role::Filter: {
+      case static_cast<int>(Call::Role::Filter): {
          QString normStripppedC;
-         foreach(QChar char2,(static_cast<int>(historyState())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
+         foreach(QChar char2,(static_cast<int>(direction())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
             roleData(Call::Role::Number).toString()).toLower().normalized(QString::NormalizationForm_KD) ) {
             if (!char2.combiningClass())
                normStripppedC += char2;
@@ -1694,68 +1689,71 @@ QVariant Call::roleData(int role) const
          return normStripppedC;
          }
          break;
-      case Call::Role::FuzzyDate:
+      case static_cast<int>(Call::Role::FuzzyDate):
          return QVariant::fromValue(d_ptr->m_HistoryConst);
          break;
-      case Call::Role::IsBookmark:
+      case static_cast<int>(Call::Role::IsBookmark):
          return false;
          break;
-      case Call::Role::Security:
+      case static_cast<int>(Call::Role::Security):
          return isSecure();
          break;
-      case Call::Role::Department:
+      case static_cast<int>(Call::Role::Department):
          return ct?ct->department():QVariant();
          break;
-      case Call::Role::Email:
+      case static_cast<int>(Call::Role::Email):
          return ct?ct->preferredEmail():QVariant();
          break;
-      case Call::Role::Organisation:
+      case static_cast<int>(Call::Role::Organisation):
          return ct?ct->organization():QVariant();
          break;
-      case Call::Role::Object:
+      case static_cast<int>(Call::Role::Object):
          return QVariant::fromValue(const_cast<Call*>(this));
          break;
-      case Call::Role::PhoneNu:
+      case static_cast<int>(Call::Role::ContactMethod):
          return QVariant::fromValue(peerContactMethod());
          break;
-      case Call::Role::PhotoPtr:
+      case static_cast<int>(Call::Role::Photo):
          return ct?ct->photo():QVariant();
          break;
-      case Call::Role::CallState:
+      case static_cast<int>(Call::Role::State):
          return QVariant::fromValue(state());
          break;
-      case Call::Role::StartTime:
+      case static_cast<int>(Call::Role::StartTime):
          return (int) d_ptr->m_pStartTimeStamp;
-      case Call::Role::StopTime:
+      case static_cast<int>(Call::Role::StopTime):
          return (int) d_ptr->m_pStopTimeStamp;
-      case Call::Role::IsRecording:
+      case static_cast<int>(Call::Role::IsRecording):
          return isRecording();
-      case Call::Role::IsPresent:
+      case static_cast<int>(Call::Role::IsPresent):
          return peerContactMethod()->isPresent();
-      case Call::Role::IsTracked:
+      case static_cast<int>(Call::Role::IsTracked):
          return peerContactMethod()->isTracked();
-      case Call::Role::SupportPresence:
+      case static_cast<int>(Call::Role::SupportPresence):
          return peerContactMethod()->supportPresence();
-      case Call::Role::CategoryIcon:
+      case static_cast<int>(Call::Role::CategoryIcon):
          return peerContactMethod()->category()->icon(peerContactMethod()->isTracked(),peerContactMethod()->isPresent());
-      case Call::Role::CallCount:
+      case static_cast<int>(Call::Role::CallCount):
          return peerContactMethod()->callCount();
-      case Call::Role::TotalSpentTime:
+      case static_cast<int>(Call::Role::TotalSpentTime):
          return peerContactMethod()->totalSpentTime();
-      case Call::Role::DropState:
+      case static_cast<int>(Call::Role::Certificate):
+         return QVariant::fromValue(certificate());
+         break;
+      case static_cast<int>(Call::Role::DropState):
          return property("dropState");
          break;
-      case Call::Role::Missed:
+      case static_cast<int>(Call::Role::Missed):
          return isMissed();
-      case Call::Role::CallLifeCycleState:
+      case static_cast<int>(Call::Role::LifeCycleState):
          return static_cast<int>(lifeCycleState()); //TODO Qt5, use the Q_ENUM
-      case Call::Role::DTMFAnimState:
+      case static_cast<int>(Call::Role::DTMFAnimState):
          return property("DTMFAnimState");
          break;
-      case Call::Role::LastDTMFidx:
+      case static_cast<int>(Call::Role::LastDTMFidx):
          return property("latestDtmfIdx");
          break;
-      case Call::Role::DropPosition:
+      case static_cast<int>(Call::Role::DropPosition):
          return property("dropPosition");
          break;
       default:

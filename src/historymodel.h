@@ -63,7 +63,7 @@ public:
    virtual bool clearAllCollections() const override;
 
    //Setters
-   void setCategoryRole(Call::Role role);
+   void setCategoryRole(int role);
    void setHistoryLimited(bool isLimited);
    void setHistoryLimit(int numberOfDays);
 

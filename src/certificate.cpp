@@ -80,17 +80,30 @@ public:
    Certificate::CheckValues m_NotActivated                        ;
 };
 
+/**
+ * Certificates can be loaded either from disk or directly from the
+ * network sockets. In that case, they don't (always) need to be saved
+ */
+enum class LoadingType {
+   FROM_PATH,
+   FROM_CONTENT
+};
+
 class CertificatePrivate
 {
 public:
    //Types
    typedef Certificate::CheckValues (Certificate::*accessor)();
 
-   //Attributes
-   CertificatePrivate();
+   //Constructor
+   CertificatePrivate(LoadingType _ltype);
    ~CertificatePrivate();
-   QUrl m_Path;
-   Certificate::Type m_Type;
+
+   //Attributes
+   QUrl              m_Path       ;
+   Certificate::Type m_Type       ;
+   QByteArray        m_Content    ;
+   LoadingType       m_LoadingType;
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
@@ -200,8 +213,8 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 }};
 
 
-CertificatePrivate::CertificatePrivate() :
-m_pCheckCache(nullptr), m_pDetailsCache(nullptr)
+CertificatePrivate::CertificatePrivate(LoadingType _type) :
+m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type)
 {
 }
 
@@ -271,7 +284,15 @@ ChecksCache::ChecksCache(const MapStringString& checks)
 void CertificatePrivate::loadDetails()
 {
    if (!m_pDetailsCache) {
-      const MapStringString d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Path.toString());
+      MapStringString d;
+      switch(m_LoadingType) {
+         case LoadingType::FROM_PATH:
+            d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Path.toString());
+            break;
+         case LoadingType::FROM_CONTENT:
+            d = DBus::ConfigurationManager::instance().getCertificateDetailsRaw(m_Content);
+            break;
+      }
       m_pDetailsCache = new DetailsCache(d);
    }
 }
@@ -284,11 +305,17 @@ void CertificatePrivate::loadChecks()
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate())
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
    d_ptr->m_Path = path.path();
    d_ptr->m_Type = type;
+}
+
+Certificate::Certificate(const QByteArray& content, Type type): QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
+{
+   d_ptr->m_Content = content;
+   d_ptr->m_Type    = type;
 }
 
 Certificate::~Certificate()

@@ -182,7 +182,7 @@ Call* HistoryModelPrivate::HistoryItem::call() const
  ****************************************************************************/
 
 HistoryModelPrivate::HistoryModelPrivate(HistoryModel* parent) : QObject(parent), q_ptr(parent),
-m_Role(Call::Role::FuzzyDate)
+m_Role(static_cast<int>(Call::Role::FuzzyDate))
 {
 }
 
@@ -215,30 +215,30 @@ QHash<int,QByteArray> HistoryModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert(Call::Role::Name          ,QByteArray("name"          ));
-      roles.insert(Call::Role::Number        ,QByteArray("number"        ));
-      roles.insert(Call::Role::Direction2    ,QByteArray("direction"     ));
-      roles.insert(Call::Role::Date          ,QByteArray("date"          ));
-      roles.insert(Call::Role::Length        ,QByteArray("length"        ));
-      roles.insert(Call::Role::FormattedDate ,QByteArray("formattedDate" ));
-      roles.insert(Call::Role::HasRecording  ,QByteArray("hasRecording"  ));
-      roles.insert(Call::Role::Historystate  ,QByteArray("historyState"  ));
-      roles.insert(Call::Role::Filter        ,QByteArray("filter"        ));
-      roles.insert(Call::Role::FuzzyDate     ,QByteArray("fuzzyDate"     ));
-      roles.insert(Call::Role::IsBookmark    ,QByteArray("isBookmark"    ));
-      roles.insert(Call::Role::Security      ,QByteArray("security"      ));
-      roles.insert(Call::Role::Department    ,QByteArray("department"    ));
-      roles.insert(Call::Role::Email         ,QByteArray("email"         ));
-      roles.insert(Call::Role::Organisation  ,QByteArray("organisation"  ));
-      roles.insert(Call::Role::Object        ,QByteArray("object"        ));
-      roles.insert(Call::Role::PhotoPtr      ,QByteArray("photoPtr"      ));
-      roles.insert(Call::Role::CallState     ,QByteArray("callState"     ));
-      roles.insert(Call::Role::StartTime     ,QByteArray("startTime"     ));
-      roles.insert(Call::Role::StopTime      ,QByteArray("stopTime"      ));
-      roles.insert(Call::Role::DropState     ,QByteArray("dropState"     ));
-      roles.insert(Call::Role::DTMFAnimState ,QByteArray("dTMFAnimState" ));
-      roles.insert(Call::Role::LastDTMFidx   ,QByteArray("lastDTMFidx"   ));
-      roles.insert(Call::Role::IsRecording   ,QByteArray("isRecording"   ));
+      roles.insert(static_cast<int>(Call::Role::Name          ) ,QByteArray("name"          ));
+      roles.insert(static_cast<int>(Call::Role::Number        ) ,QByteArray("number"        ));
+      roles.insert(static_cast<int>(Call::Role::Direction     ) ,QByteArray("direction"     ));
+      roles.insert(static_cast<int>(Call::Role::Date          ) ,QByteArray("date"          ));
+      roles.insert(static_cast<int>(Call::Role::Length        ) ,QByteArray("length"        ));
+      roles.insert(static_cast<int>(Call::Role::FormattedDate ) ,QByteArray("formattedDate" ));
+      roles.insert(static_cast<int>(Call::Role::HasRecording  ) ,QByteArray("hasRecording"  ));
+      roles.insert(static_cast<int>(Call::Role::Historystate  ) ,QByteArray("historyState"  ));
+      roles.insert(static_cast<int>(Call::Role::Filter        ) ,QByteArray("filter"        ));
+      roles.insert(static_cast<int>(Call::Role::FuzzyDate     ) ,QByteArray("fuzzyDate"     ));
+      roles.insert(static_cast<int>(Call::Role::IsBookmark    ) ,QByteArray("isBookmark"    ));
+      roles.insert(static_cast<int>(Call::Role::Security      ) ,QByteArray("security"      ));
+      roles.insert(static_cast<int>(Call::Role::Department    ) ,QByteArray("department"    ));
+      roles.insert(static_cast<int>(Call::Role::Email         ) ,QByteArray("email"         ));
+      roles.insert(static_cast<int>(Call::Role::Organisation  ) ,QByteArray("organisation"  ));
+      roles.insert(static_cast<int>(Call::Role::Object        ) ,QByteArray("object"        ));
+      roles.insert(static_cast<int>(Call::Role::Photo         ) ,QByteArray("photo"         ));
+      roles.insert(static_cast<int>(Call::Role::State         ) ,QByteArray("state"         ));
+      roles.insert(static_cast<int>(Call::Role::StartTime     ) ,QByteArray("startTime"     ));
+      roles.insert(static_cast<int>(Call::Role::StopTime      ) ,QByteArray("stopTime"      ));
+      roles.insert(static_cast<int>(Call::Role::DropState     ) ,QByteArray("dropState"     ));
+      roles.insert(static_cast<int>(Call::Role::DTMFAnimState ) ,QByteArray("dTMFAnimState" ));
+      roles.insert(static_cast<int>(Call::Role::LastDTMFidx   ) ,QByteArray("lastDTMFidx"   ));
+      roles.insert(static_cast<int>(Call::Role::IsRecording   ) ,QByteArray("isRecording"   ));
    }
    return roles;
 }
@@ -263,7 +263,7 @@ HistoryTopLevelItem* HistoryModelPrivate::getCategory(const Call* call)
    HistoryTopLevelItem* category = nullptr;
    static QString name;
    int index = -1;
-   if (m_Role == Call::Role::FuzzyDate) {
+   if (m_Role == static_cast<int>(Call::Role::FuzzyDate)) {
       index = call->roleData(Call::Role::FuzzyDate).toInt();
       name = HistoryTimeCategoryModel::indexToName(index);
       category = m_hCategories[index];
@@ -407,7 +407,7 @@ bool HistoryModel::setData( const QModelIndex& idx, const QVariant &value, int r
 {
    if (idx.isValid() && idx.parent().isValid()) {
       CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)idx.internalPointer();
-      if (role == Call::Role::DropState) {
+      if (role == static_cast<int>(Call::Role::DropState)) {
          modelItem->setDropState(value.toInt());
          emit dataChanged(idx, idx);
       }
@@ -426,15 +426,15 @@ QVariant HistoryModel::data( const QModelIndex& idx, int role) const
       switch (role) {
          case Qt::DisplayRole:
             return static_cast<HistoryTopLevelItem*>(modelItem)->m_NameStr;
-         case Call::Role::FuzzyDate:
-         case Call::Role::Date:
+         case static_cast<int>(Call::Role::FuzzyDate):
+         case static_cast<int>(Call::Role::Date):
             return d_ptr->m_lCategoryCounter.size() - static_cast<HistoryTopLevelItem*>(modelItem)->m_Index;
          default:
             break;
       }
       break;
    case CategorizedCompositeNode::Type::CALL:
-      if (role == Call::Role::DropState)
+      if (role == static_cast<int>(Call::Role::DropState))
          return QVariant(modelItem->dropState());
       else {
          const int parRow = idx.parent().row();
@@ -556,7 +556,7 @@ QMimeData* HistoryModel::mimeData(const QModelIndexList &indexes) const
    QMimeData *mimeData2 = new QMimeData();
    foreach (const QModelIndex &idx, indexes) {
       if (idx.isValid()) {
-         const QString text = data(idx, Call::Role::Number).toString();
+         const QString text = data(idx, static_cast<int>(Call::Role::Number)).toString();
          mimeData2->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
          const Call* call = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
          mimeData2->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
@@ -575,7 +575,7 @@ bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, in
    Q_UNUSED(row)
    Q_UNUSED(column)
    Q_UNUSED(action)
-   setData(parentIdx,-1,Call::Role::DropState);
+   setData(parentIdx,-1,static_cast<int>(Call::Role::DropState));
    QByteArray encodedContactMethod = mime->data( RingMimes::PHONENUMBER );
    QByteArray encodedPerson     = mime->data( RingMimes::CONTACT     );
 
@@ -630,7 +630,7 @@ int HistoryModel::acceptedPayloadTypes() const
    return CallModel::DropPayloadType::CALL;
 }
 
-void HistoryModel::setCategoryRole(Call::Role role) 
+void HistoryModel::setCategoryRole(int role)
 {
    if (d_ptr->m_Role != role) {
       d_ptr->m_Role = role;

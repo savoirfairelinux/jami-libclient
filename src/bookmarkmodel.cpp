@@ -166,7 +166,7 @@ QHash<int,QByteArray> BookmarkModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles[Call::Role::Name] = CallModel::instance()->roleNames()[Call::Role::Name];
+      roles[static_cast<int>(Call::Role::Name)] = CallModel::instance()->roleNames()[static_cast<int>(Call::Role::Name)];
    }
    return roles;
 }
@@ -260,7 +260,7 @@ QVariant BookmarkModel::data( const QModelIndex& index, int role) const
          switch (role) {
             case Qt::DisplayRole:
                return static_cast<BookmarkTopLevelItem*>(modelItem)->m_Name;
-            case Call::Role::Name:
+            case static_cast<int>(Call::Role::Name):
                if (static_cast<BookmarkTopLevelItem*>(modelItem)->m_MostPopular) {
                   return "000000";
                }
@@ -356,7 +356,7 @@ QMimeData* BookmarkModel::mimeData(const QModelIndexList &indexes) const
    QMimeData *mimeData = new QMimeData();
    foreach (const QModelIndex &index, indexes) {
       if (index.isValid()) {
-         QString text = data(index, Call::Role::Number).toString();
+         QString text = data(index, static_cast<int>(Call::Role::Number)).toString();
          mimeData->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
          mimeData->setData(RingMimes::PHONENUMBER, text.toUtf8());
          return mimeData;
@@ -379,45 +379,42 @@ QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int rol
    QVariant cat;
    switch (role) {
       case Qt::DisplayRole:
-      case Call::Role::Name:
+      case static_cast<int>(Call::Role::Name):
          cat = number->m_pNumber->contact()?number->m_pNumber->contact()->formattedName():number->m_pNumber->primaryName();
          break;
       case Qt::ToolTipRole:
          cat = number->m_pNumber->presenceMessage();
          break;
-      case Call::Role::Number:
+      case static_cast<int>(Call::Role::Number):
          cat = number->m_pNumber->uri();//call->getPeerContactMethod();
          break;
-      case Call::Role::Direction2:
+      case static_cast<int>(Call::Role::Direction):
          cat = 4;//call->getHistoryState();
          break;
-      case Call::Role::Date:
+      case static_cast<int>(Call::Role::Date):
          cat = tr("N/A");//call->getStartTimeStamp();
          break;
-      case Call::Role::Length:
+      case static_cast<int>(Call::Role::Length):
          cat = tr("N/A");//call->getLength();
          break;
-      case Call::Role::FormattedDate:
+      case static_cast<int>(Call::Role::FormattedDate):
          cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
          break;
-      case Call::Role::HasRecording:
+      case static_cast<int>(Call::Role::HasRecording):
          cat = false;//call->hasRecording();
          break;
-      case Call::Role::Historystate:
-         cat = (int)Call::LegacyHistoryState::NONE;//call->getHistoryState();
-         break;
-      case Call::Role::FuzzyDate:
+      case static_cast<int>(Call::Role::FuzzyDate):
          cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
          break;
-      case Call::Role::PhoneNu:
+      case static_cast<int>(Call::Role::ContactMethod):
          return QVariant::fromValue(number->m_pNumber);
-      case Call::Role::IsBookmark:
+      case static_cast<int>(Call::Role::IsBookmark):
          return true;
-      case Call::Role::Filter:
+      case static_cast<int>(Call::Role::Filter):
          return number->m_pNumber->uri()+number->m_pNumber->primaryName();
-      case Call::Role::IsPresent:
+      case static_cast<int>(Call::Role::IsPresent):
          return number->m_pNumber->isPresent();
-      case Call::Role::PhotoPtr:
+      case static_cast<int>(Call::Role::Photo):
          if (number->m_pNumber->contact())
             return number->m_pNumber->contact()->photo();
          cat = true;

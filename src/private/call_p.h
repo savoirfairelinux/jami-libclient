@@ -31,6 +31,7 @@ class Account;
 class ContactMethod;
 class UserActionModel;
 class InstantMessagingModel;
+class Certificate;
 
 class CallPrivate;
 typedef  void (CallPrivate::*function)();
@@ -96,6 +97,20 @@ public:
       constexpr static const char* OUTGOING = "1";
    };
 
+   /** @enum DaemonState
+   * This enum have all the states a call can take for the daemon.
+   */
+   enum class DaemonState : unsigned int
+   {
+      RINGING = 0, /*!< Ringing outgoing or incoming call         */
+      CURRENT = 1, /*!< Call to which the user can speak and hear */
+      BUSY    = 2, /*!< Call is busy                              */
+      HOLD    = 3, /*!< Call is on hold                           */
+      HUNG_UP = 4, /*!< Call is over                              */
+      FAILURE = 5, /*!< Call has failed                           */
+      COUNT__,
+   };
+
    explicit CallPrivate(Call* parent);
 
    //Attributes
@@ -104,7 +119,6 @@ public:
    ContactMethod*           m_pPeerContactMethod;
    QString                  m_PeerName          ;
    QString                  m_RecordingPath     ;
-   Call::LegacyHistoryState m_HistoryState      ;
    time_t                   m_pStartTimeStamp   ;
    time_t                   m_pStopTimeStamp    ;
    Call::State              m_CurrentState      ;
@@ -116,6 +130,7 @@ public:
    bool                     m_Missed            ;
    Call::Direction          m_Direction         ;
    Call::Type               m_Type              ;
+   Certificate*             m_pCertificate      ;
 
    mutable TemporaryContactMethod* m_pTransferNumber ;
    mutable TemporaryContactMethod* m_pDialNumber     ;
@@ -144,7 +159,7 @@ public:
     *  callStateChanged with arg daemon_new_state
     *  on a call in state orig_state.
    **/
-   static const TypedStateMachine< TypedStateMachine< Call::State , Call::DaemonState > , Call::State > stateChangedStateMap;
+   static const TypedStateMachine< TypedStateMachine< Call::State , DaemonState > , Call::State > stateChangedStateMap;
 
    /**
     *  stateChangedFunctionMap[orig_state][daemon_new_state]
@@ -152,7 +167,7 @@ public:
     *  callStateChanged with arg daemon_new_state
     *  on a call in state orig_state.
    **/
-   static const TypedStateMachine< TypedStateMachine< function , Call::DaemonState > , Call::State > stateChangedFunctionMap;
+   static const TypedStateMachine< TypedStateMachine< function , DaemonState > , Call::State > stateChangedFunctionMap;
 
    /**
     * metaStateTransitionValidationMap help validate if a state transition violate the lifecycle logic.
@@ -169,7 +184,7 @@ public:
 
    static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
 
-   static Call::DaemonState toDaemonCallState   (const QString& stateName);
+   static DaemonState toDaemonCallState   (const QString& stateName);
    static Call::State       confStatetoCallState(const QString& stateName);
    Call::State stateChanged(const QString & newState);
    void performAction(Call::State previousState, Call::Action action);
@@ -206,7 +221,6 @@ public:
    void initTimer();
 
    //Static getters
-   static Call::LegacyHistoryState historyStateFromType    ( const QString& type                                           );
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );
 
    //Constructor

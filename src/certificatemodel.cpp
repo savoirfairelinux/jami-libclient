@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QCoreApplication>
 #include <QtCore/QObject>
+#include <QtCore/QCryptographicHash>
 
 //LibSTDC++
 #include <functional>
@@ -304,4 +305,11 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    }
 
    return cert;
+}
+
+Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, bool save)
+{
+   QCryptographicHash hash(QCryptographicHash::Sha1);
+   hash.addData(rawContent);
+   return nullptr;
 }

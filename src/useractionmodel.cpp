@@ -386,7 +386,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
 
          //Aggregate and reduce the action state for each selected calls
          for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
-            const Call* c = qvariant_cast<Call*>(idx.data(Call::Role::Object));
+            const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
             updateCheckMask    ( state ,action, c );
             ret &= updateByCall( action       , c );
          }
@@ -433,7 +433,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          break;
       case UserActionModelPrivate::UserActionModelMode::CALLMODEL: {
          for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
-            Call* c = qvariant_cast<Call*>(idx.data(Call::Role::Object));
+            Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
             if (c)
                selected << c;
          }

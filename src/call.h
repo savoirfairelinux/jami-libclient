@@ -31,12 +31,14 @@ class QTimer;
 //Ring
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
-class Account;
-class InstantMessagingModel;
-class UserActionModel;
-class ContactMethod;
+class Account               ;
+class InstantMessagingModel ;
+class UserActionModel       ;
+class ContactMethod         ;
 class TemporaryContactMethod;
-class CollectionInterface;
+class CollectionInterface   ;
+class Certificate           ;
+
 namespace Video {
    class Manager;
    class Renderer;
@@ -66,50 +68,51 @@ class  LIB_EXPORT Call : public ItemBase<QObject>
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class CallModel;
-   friend class HistoryModel;
-   friend class CallModelPrivate;
+   friend class CallModel            ;
+   friend class HistoryModel         ;
+   friend class CallModelPrivate     ;
    friend class IMConversationManager;
-   friend class Video::Manager;
+   friend class Video::Manager       ;
 
    //Enum
 
    ///Model roles
-   enum Role {
-      Name               = 100, /*!< The peer name from SIP or Persons */
-      Number             = 101, /*!< The peer URI / phone number (as text) */
-      Direction2         = 102, /*!<  */
-      Date               = 103, /*!< The date when the call started */
-      Length             = 104, /*!< The current length of the call */
-      FormattedDate      = 105, /*!< An human readable starting date */
-      HasRecording       = 106, /*!< If the call has a recording attached */
-      Historystate       = 107, /*!<  */
-      Filter             = 108, /*!<  */
-      FuzzyDate          = 109, /*!<  */
-      IsBookmark         = 110, /*!<  */
-      Security           = 111, /*!<  */
-      Department         = 112, /*!<  */
-      Email              = 113, /*!<  */
-      Organisation       = 114, /*!<  */
-      Object             = 117, /*!<  */
-      PhotoPtr           = 118, /*!<  */
-      CallState          = 119, /*!<  */
-      StartTime          = 121, /*!<  */
-      StopTime           = 122, /*!<  */
-      IsRecording        = 123, /*!<  */
-      PhoneNu            = 124, /*!<  */
-      IsPresent          = 125, /*!<  */
-      SupportPresence    = 126, /*!<  */
-      IsTracked          = 127, /*!<  */
-      CategoryIcon       = 128, /*!<  */
-      CallCount          = 129, /*!< The number of calls made with the same phone number */
-      TotalSpentTime     = 130, /*!< The total time spent speaking to with this phone number*/
-      Missed             = 131, /*!< This call has been missed */
-      CallLifeCycleState = 132, /*!<  */
-      DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop */
-      DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s) */
-      LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call */
-      DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop */
+   enum class Role {
+      Name               = 100, /*!< The peer name from SIP or Persons                                   */
+      Number             = 101, /*!< The peer URI / phone number (as text)                               */
+      Direction          = 102, /*!<                                                                     */
+      Date               = 103, /*!< The date when the call started                                      */
+      Length             = 104, /*!< The current length of the call                                      */
+      FormattedDate      = 105, /*!< An human readable starting date                                     */
+      HasRecording       = 106, /*!< If the call has a recording attached                                */
+      Historystate       = 107, /*!<                                                                     */
+      Filter             = 108, /*!<                                                                     */
+      FuzzyDate          = 109, /*!<                                                                     */
+      IsBookmark         = 110, /*!<                                                                     */
+      Security           = 111, /*!<                                                                     */
+      Department         = 112, /*!<                                                                     */
+      Email              = 113, /*!<                                                                     */
+      Organisation       = 114, /*!<                                                                     */
+      Object             = 117, /*!<                                                                     */
+      Photo              = 118, /*!<                                                                     */
+      State              = 119, /*!<                                                                     */
+      StartTime          = 121, /*!<                                                                     */
+      StopTime           = 122, /*!<                                                                     */
+      IsRecording        = 123, /*!<                                                                     */
+      ContactMethod      = 124, /*!<                                                                     */
+      IsPresent          = 125, /*!<                                                                     */
+      SupportPresence    = 126, /*!<                                                                     */
+      IsTracked          = 127, /*!<                                                                     */
+      CategoryIcon       = 128, /*!<                                                                     */
+      CallCount          = 129, /*!< The number of calls made with the same phone number                 */
+      TotalSpentTime     = 130, /*!< The total time spent speaking to with this phone number             */
+      Missed             = 131, /*!< This call has been missed                                           */
+      LifeCycleState     = 132, /*!<                                                                     */
+      Certificate        = 133, /*!< The certificate (for encrypted calls)                               */
+      DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop    */
+      DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
+      LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
+      DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop    */
    };
 
    enum DropAction {
@@ -119,39 +122,23 @@ public:
 
    ///Possible call states
    enum class State : unsigned int{
-      INCOMING        = 0, /*!<  Ringing incoming call */
-      RINGING         = 1, /*!< Ringing outgoing call */
-      CURRENT         = 2, /*!< Call to which the user can speak and hear */
-      DIALING         = 3, /*!< Call which numbers are being added by the user */
-      HOLD            = 4, /*!< Call is on hold */
-      FAILURE         = 5, /*!< Call has failed */
-      BUSY            = 6, /*!< Call is busy */
+      INCOMING        = 0, /*!< Ringing incoming call                                                             */
+      RINGING         = 1, /*!< Ringing outgoing call                                                             */
+      CURRENT         = 2, /*!< Call to which the user can speak and hear                                         */
+      DIALING         = 3, /*!< Call which numbers are being added by the user                                    */
+      HOLD            = 4, /*!< Call is on hold                                                                   */
+      FAILURE         = 5, /*!< Call has failed                                                                   */
+      BUSY            = 6, /*!< Call is busy                                                                      */
       TRANSFERRED     = 7, /*!< Call is being transferred.  During this state, the user can enter the new number. */
-      TRANSF_HOLD     = 8, /*!< Call is on hold for transfer */
-      OVER            = 9, /*!< Call is over and should not be used */
-      ERROR           = 10,/*!< This state should never be reached */
-      CONFERENCE      = 11,/*!< This call is the current conference*/
-      CONFERENCE_HOLD = 12,/*!< This call is a conference on hold*/
-      INITIALIZATION  = 13,/*!< The call have been placed, but the peer hasn't confirmed yet */
+      TRANSF_HOLD     = 8, /*!< Call is on hold for transfer                                                      */
+      OVER            = 9, /*!< Call is over and should not be used                                               */
+      ERROR           = 10,/*!< This state should never be reached                                                */
+      CONFERENCE      = 11,/*!< This call is the current conference                                               */
+      CONFERENCE_HOLD = 12,/*!< This call is a conference on hold                                                 */
+      INITIALIZATION  = 13,/*!< The call have been placed, but the peer hasn't confirmed yet                      */
       COUNT__,
    };
    Q_ENUMS(State)
-
-   /**
-   * @enum Call::LegacyHistoryState
-   * History items create before December 2013 will have a "state" field
-   * mixing direction and missed. Newer items will have separated fields for that.
-   *
-   * Ring-KDE will keep support for at least a year
-   */
-   enum class LegacyHistoryState : int //DEPRECATED remove
-   {
-      INCOMING, /*!< The call is coming from the peer */
-      OUTGOING, /*!< The call is going to the peer */
-      MISSED  , /*!< The call has been missed */
-      NONE      /*!< The legacy state is not set */
-   };
-   Q_ENUMS(LegacyHistoryState)
 
    ///@enum Direction If the user have been called or have called
    enum class Direction : int {
@@ -167,30 +154,16 @@ public:
       HISTORY   , /*!< A call from a previous session */
    };
 
-   /** @enum Call::DaemonState
-   * This enum have all the states a call can take for the daemon.
-   */
-   enum class DaemonState : unsigned int
-   {
-      RINGING = 0, /*!< Ringing outgoing or incoming call */
-      CURRENT = 1, /*!< Call to which the user can speak and hear */
-      BUSY    = 2, /*!< Call is busy */
-      HOLD    = 3, /*!< Call is on hold */
-      HUNG_UP = 4, /*!< Call is over  */
-      FAILURE = 5, /*!< Call has failed */
-      COUNT__,
-   };
-
    /** @enum Call::Action
    * This enum have all the actions you can make on a call.
    */
    enum class Action : unsigned int
    {
       ACCEPT   = 0, /*!< Accept, create or place call or place transfer */
-      REFUSE   = 1, /*!< Red button, refuse or hang up */
-      TRANSFER = 2, /*!< Put into or out of transfer mode*/
-      HOLD     = 3, /*!< Hold or unhold the call */
-      RECORD   = 4, /*!< Enable or disable recording */
+      REFUSE   = 1, /*!< Red button, refuse or hang up                  */
+      TRANSFER = 2, /*!< Put into or out of transfer mode               */
+      HOLD     = 3, /*!< Hold or unhold the call                        */
+      RECORD   = 4, /*!< Enable or disable recording                    */
       COUNT__,
    };
 
@@ -207,7 +180,7 @@ public:
       COUNT__
    };
 
-   ///"getHistory()" fields
+   ///TODO should be deprecated when a better factory system is implemented
    class HistoryMapFields {
    public:
       constexpr static const char* ACCOUNT_ID        = "accountid"      ;
@@ -225,6 +198,7 @@ public:
       constexpr static const char* NUMBER_TYPE       = "number_type"    ;
    };
 
+   //TODO should be deprecated when a better factory system is implemented
    ///@class HistoryStateName history map fields state names
    class HistoryStateName {
    public:
@@ -234,31 +208,31 @@ public:
    };
 
    //Read only properties
-   Q_PROPERTY( Call::State        state            READ state             NOTIFY stateChanged     )
-   Q_PROPERTY( QString            historyId        READ historyId                                 )
-   Q_PROPERTY( Account*           account          READ account                                   )
-   Q_PROPERTY( bool               isHistory        READ isHistory                                 )
-   Q_PROPERTY( uint               stopTimeStamp    READ stopTimeStamp                             )
-   Q_PROPERTY( uint               startTimeStamp   READ startTimeStamp                            )
-   Q_PROPERTY( bool               isSecure         READ isSecure                                  )
-   Q_PROPERTY( Video::Renderer* videoRenderer READ videoRenderer                          )
-   Q_PROPERTY( QString            formattedName    READ formattedName                             )
-   Q_PROPERTY( QString            length           READ length                                    )
-   Q_PROPERTY( bool               hasRecording     READ hasRecording                              )
-   Q_PROPERTY( bool               recording        READ isRecording                               )
-   Q_PROPERTY( UserActionModel*   userActionModel  READ userActionModel   CONSTANT                )
-   Q_PROPERTY( QString            toHumanStateName READ toHumanStateName                          )
-   Q_PROPERTY( bool               missed           READ isMissed                                  )
-   Q_PROPERTY( Direction          direction        READ direction                                 )
-   Q_PROPERTY( bool               hasVideo         READ hasVideo                                  )
-   Q_PROPERTY( Call::LegacyHistoryState historyState     READ historyState                        )
+   Q_PROPERTY( Call::State        state              READ state             NOTIFY stateChanged     )
+   Q_PROPERTY( QString            historyId          READ historyId                                 )
+   Q_PROPERTY( Account*           account            READ account                                   )
+   Q_PROPERTY( bool               isHistory          READ isHistory                                 )
+   Q_PROPERTY( uint               stopTimeStamp      READ stopTimeStamp                             )
+   Q_PROPERTY( uint               startTimeStamp     READ startTimeStamp                            )
+   Q_PROPERTY( bool               isSecure           READ isSecure                                  )
+   Q_PROPERTY( Video::Renderer*   videoRenderer      READ videoRenderer                             )
+   Q_PROPERTY( QString            formattedName      READ formattedName                             )
+   Q_PROPERTY( QString            length             READ length                                    )
+   Q_PROPERTY( bool               hasRecording       READ hasRecording                              )
+   Q_PROPERTY( bool               recording          READ isRecording                               )
+   Q_PROPERTY( UserActionModel*   userActionModel    READ userActionModel   CONSTANT                )
+   Q_PROPERTY( QString            toHumanStateName   READ toHumanStateName                          )
+   Q_PROPERTY( bool               missed             READ isMissed                                  )
+   Q_PROPERTY( Direction          direction          READ direction                                 )
+   Q_PROPERTY( bool               hasVideo           READ hasVideo                                  )
+   Q_PROPERTY( Certificate*       certificate        READ certificate                               )
 
    //Read/write properties
-   Q_PROPERTY( ContactMethod*       peerContactMethod  READ peerContactMethod                           )
-   Q_PROPERTY( QString            peerName         READ peerName          WRITE setPeerName       )
-   Q_PROPERTY( QString            transferNumber   READ transferNumber    WRITE setTransferNumber )
-   Q_PROPERTY( QString            recordingPath    READ recordingPath     WRITE setRecordingPath  )
-   Q_PROPERTY( QString            dialNumber       READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
+   Q_PROPERTY( ContactMethod*     peerContactMethod  READ peerContactMethod                         )
+   Q_PROPERTY( QString            peerName           READ peerName          WRITE setPeerName       )
+   Q_PROPERTY( QString            transferNumber     READ transferNumber    WRITE setTransferNumber )
+   Q_PROPERTY( QString            recordingPath      READ recordingPath     WRITE setRecordingPath  )
+   Q_PROPERTY( QString            dialNumber         READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
 
    //Constructors & Destructors
    static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
@@ -271,7 +245,6 @@ public:
    const QString            historyId        () const;
    ContactMethod*           peerContactMethod() const;
    const QString            peerName         () const;
-   Call::LegacyHistoryState historyState     () const;
    bool                     isRecording      () const;
    Account*                 account          () const;
    bool                     isHistory        () const;
@@ -285,16 +258,17 @@ public:
    const QString            formattedName    () const;
    bool                     hasRecording     () const;
    QString                  length           () const;
-   QVariant                 roleData         (int role) const;
    UserActionModel*         userActionModel  () const;
    QString                  toHumanStateName () const;
-   bool                     isHistory        ()      ;
    bool                     isMissed         () const;
    Call::Direction          direction        () const;
    bool                     hasVideo         () const;
    Call::LifeCycleState     lifeCycleState   () const;
    Call::Type               type             () const;
    bool                     hasRemote        () const;
+   Certificate*             certificate      () const;
+   QVariant                 roleData         (int role) const;
+   QVariant                 roleData         (Role role) const;
 
    //Automated function
    Call::State performAction(Call::Action action);
@@ -358,12 +332,13 @@ Q_SIGNALS:
 
 Q_DECLARE_METATYPE(Call*)
 Q_DECLARE_METATYPE(Call::State)
+Q_DECLARE_METATYPE(Call::Type)
+Q_DECLARE_METATYPE(Call::Action)
 Q_DECLARE_METATYPE(Call::Direction)
-Q_DECLARE_METATYPE(Call::LegacyHistoryState)
+Q_DECLARE_METATYPE(Call::LifeCycleState)
 
 Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
-QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::DaemonState& c );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
 
 #endif

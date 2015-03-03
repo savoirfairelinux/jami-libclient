@@ -366,7 +366,7 @@ QVariant ContactProxyModel::headerData(int section, Qt::Orientation orientation,
 bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
    Q_UNUSED( action )
-   setData(parent,-1,Call::Role::DropState);
+   setData(parent,-1,static_cast<int>(Call::Role::DropState));
    if (data->hasFormat(RingMimes::CALLID)) {
       const QByteArray encodedCallId = data->data( RingMimes::CALLID    );
       const QModelIndex targetIdx    = index   ( row,column,parent );

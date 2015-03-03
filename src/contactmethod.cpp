@@ -444,7 +444,7 @@ void ContactMethod::addCall(Call* call)
    if (now - 3600*24*7*15 < call->stopTimeStamp())
       d_ptr->m_LastTrimCount++;
 
-   if (call->historyState() == Call::LegacyHistoryState::OUTGOING || call->direction() == Call::Direction::OUTGOING)
+   if (call->direction() == Call::Direction::OUTGOING)
       d_ptr->m_HaveCalled = true;
 
    d_ptr->callAdded(call);

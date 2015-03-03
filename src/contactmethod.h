@@ -48,7 +48,7 @@ public:
 
    //Properties
    Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
-   Q_PROPERTY(Person*      contact          READ contact           WRITE setPerson              )
+   Q_PROPERTY(Person*       person           READ contact           WRITE setPerson               )
    Q_PROPERTY(int           lastUsed         READ lastUsed                                        )
    Q_PROPERTY(QString       uri              READ uri                                             )
    Q_PROPERTY(int           callCount        READ callCount                                       )
@@ -81,37 +81,37 @@ public:
    Q_ENUMS(Type)
 
    //Getters
-   URI                uri             () const;
-   NumberCategory*    category        () const;
-   bool               isTracked       () const;
-   bool               isPresent       () const;
-   QString            presenceMessage () const;
-   Account*           account         () const;
-   Person*           contact         () const;
-   time_t             lastUsed        () const;
-   ContactMethod::Type  type            () const;
-   int                callCount       () const;
-   uint               weekCount       () const;
-   uint               trimCount       () const;
-   bool               haveCalled      () const;
-   QList<Call*>       calls           () const;
-   int                popularityIndex () const;
-   QHash<QString,int> alternativeNames() const;
-   QString            primaryName     () const;
-   bool               isBookmarked    () const;
-   bool               supportPresence () const;
-   QVariant           icon            () const;
-   int                totalSpentTime  () const;
-   QString            uid             () const;
+   URI                 uri             () const;
+   NumberCategory*     category        () const;
+   bool                isTracked       () const;
+   bool                isPresent       () const;
+   QString             presenceMessage () const;
+   Account*            account         () const;
+   Person*             contact         () const;
+   time_t              lastUsed        () const;
+   ContactMethod::Type type            () const;
+   int                 callCount       () const;
+   uint                weekCount       () const;
+   uint                trimCount       () const;
+   bool                haveCalled      () const;
+   QList<Call*>        calls           () const;
+   int                 popularityIndex () const;
+   QHash<QString,int>  alternativeNames() const;
+   QString             primaryName     () const;
+   bool                isBookmarked    () const;
+   bool                supportPresence () const;
+   QVariant            icon            () const;
+   int                 totalSpentTime  () const;
+   QString             uid             () const;
 
    //Setters
-   Q_INVOKABLE void setAccount(Account*       account);
-   Q_INVOKABLE void setPerson(Person*       contact);
-   Q_INVOKABLE void setTracked(bool           track  );
-   void             setCategory(NumberCategory* cat  );
-   void             setBookmarked(bool bookmarked    );
-   void             setUid(const QString& uri        );
-   bool             setType(ContactMethod::Type t      );
+   Q_INVOKABLE void setAccount   (Account*            account   );
+   Q_INVOKABLE void setPerson    (Person*             contact   );
+   Q_INVOKABLE void setTracked   (bool                track     );
+   void             setCategory  (NumberCategory*     cat       );
+   void             setBookmarked(bool                bookmarked);
+   void             setUid       (const QString&      uri       );
+   bool             setType      (ContactMethod::Type t         );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
