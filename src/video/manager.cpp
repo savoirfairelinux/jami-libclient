@@ -165,17 +165,17 @@ void Video::ManagerPrivate::startedDecoding(const QString& id, const QString& sh
    QSize res = QSize(width,height);
 
    if (m_lRenderers[id.toLatin1()] == nullptr ) {
-       #if defined(Q_OS_DARWIN)
-             m_lRenderers["local"] = new Video::DirectRenderer("local", res);
-       #else
-             m_lRenderers["local"] = new Video::ShmRenderer("local",shmPath,res);
-       #endif
+#if defined(Q_OS_DARWIN)
+      m_lRenderers[id.toLatin1()] = new Video::DirectRenderer(id.toLatin1(), res);
+#else
+      m_lRenderers[id.toLatin1()] = new Video::ShmRenderer(id.toLatin1(),shmPath,res);
+#endif
       m_lRenderers[id.toLatin1()]->moveToThread(q_ptr);
       if (!q_ptr->isRunning())
          q_ptr->start();
    }
    else {
-      Video::Renderer* Renderer = m_lRenderers[id.toLatin1()];
+      // Video::Renderer* Renderer = m_lRenderers[id.toLatin1()];
       //TODO: do direct renderer stuff here
       m_lRenderers[id.toLatin1()]->setSize(res);
 #if !defined(Q_OS_DARWIN)
