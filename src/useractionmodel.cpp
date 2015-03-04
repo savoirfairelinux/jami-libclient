@@ -104,7 +104,7 @@ public Q_SLOTS:
 //Enabled actions
 const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
  /*                   INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD:*/
- /*ACCEPT          */ {{ true   , true ,  false,  true , false, false, false,   false,     false,    false, false,  false,      false    }},
+ /*ACCEPT          */ {{ true   , false , false,  true , false, false, false,   false,     false,    false, false,  false,      false    }},
  /*HOLD            */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,      false    }},
  /*MUTE_AUDIO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,      false    }},
  /*MUTE_VIDEO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,      false    }},
