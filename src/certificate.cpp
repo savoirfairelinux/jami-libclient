@@ -300,7 +300,15 @@ void CertificatePrivate::loadDetails()
 void CertificatePrivate::loadChecks()
 {
    if (!m_pCheckCache) {
-      const MapStringString checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),QString());
+      MapStringString checks;
+      switch(m_LoadingType) {
+         case LoadingType::FROM_PATH:
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),QString());
+            break;
+         case LoadingType::FROM_CONTENT:
+            checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),m_Content);
+            break;
+      }
       m_pCheckCache = new ChecksCache(checks);
    }
 }

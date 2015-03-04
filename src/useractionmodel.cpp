@@ -103,16 +103,16 @@ public Q_SLOTS:
 
 //Enabled actions
 const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
- /*                   INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD:*/
- /*ACCEPT          */ {{ true   , false , false,  true , false, false, false,   false,     false,    false, false,  false,      false    }},
- /*HOLD            */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,      false    }},
- /*MUTE_AUDIO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,      false    }},
- /*MUTE_VIDEO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,      false    }},
- /*SERVER_TRANSFER */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,      false    }},
- /*RECORD          */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,      true     }},
- /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,      true     }},
+ /*                   INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION*/
+ /*ACCEPT          */ {{ true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false}},
+ /*HOLD            */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false}},
+ /*MUTE_AUDIO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
+ /*MUTE_VIDEO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
+ /*SERVER_TRANSFER */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,       false,           false}},
+ /*RECORD          */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
+ /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           false}},
 
- /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,      true     }},
+ /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false }},
 }};
 
 /**

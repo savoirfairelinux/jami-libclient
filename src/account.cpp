@@ -170,6 +170,7 @@ void AccountPrivate::slotUpdateCertificate()
                setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path().toString());
             break;
          case Certificate::Type::NONE:
+         case Certificate::Type::CALL:
             break;
       };
    }

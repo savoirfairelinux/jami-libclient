@@ -418,7 +418,8 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    const QString& number          = hc[ Call::HistoryMapFields::PEER_NUMBER     ]          ;
    const QString& type            = hc[ Call::HistoryMapFields::STATE           ]          ;
    const QString& direction       = hc[ Call::HistoryMapFields::DIRECTION       ]          ;
-   const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1";
+   const QString& cert_path       = hc[ Call::HistoryMapFields::CERT_PATH       ]          ;
+   const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1"   ;
    time_t         startTimeStamp  = hc[ Call::HistoryMapFields::TIMESTAMP_START ].toUInt() ;
    time_t         stopTimeStamp   = hc[ Call::HistoryMapFields::TIMESTAMP_STOP  ].toUInt() ;
    QByteArray accId               = hc[ Call::HistoryMapFields::ACCOUNT_ID      ].toLatin1();

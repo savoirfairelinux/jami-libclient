@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,23 +15,24 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTLISTCOLORVISITOR_H
-#define ACCOUNTLISTCOLORVISITOR_H
+#ifndef CERTIFICATESERIALIZATIONDELEGATE_H
+#define CERTIFICATESERIALIZATIONDELEGATE_H
 
 #include <typedefs.h>
-class Account;
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT AccountListColorDelegate {
+class LIB_EXPORT CertificateSerializationDelegate
+{
 public:
-   virtual QVariant getColor(const Account* a);
-   virtual QVariant getIcon(const Account* a);
-   virtual ~AccountListColorDelegate();
+   virtual QByteArray loadCertificate(const QByteArray& id);
+   virtual QUrl      saveCertificate(const QByteArray& id, const QByteArray& content);
+   virtual bool       deleteCertificate(const QByteArray& id);
+   virtual QList<QByteArray> listCertificates();
 
-   static AccountListColorDelegate* instance();
-   static void setInstance(AccountListColorDelegate* visitor);
-private:
-   static AccountListColorDelegate* m_spInstance;
+   static CertificateSerializationDelegate* instance();
+   static void setInstance(CertificateSerializationDelegate* visitor);
+protected:
+   virtual ~CertificateSerializationDelegate(){}
+   static CertificateSerializationDelegate* m_spInstance;
 };
 
 #endif

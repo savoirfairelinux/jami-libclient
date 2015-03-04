@@ -51,6 +51,7 @@ struct TypedStateMachine
 
    T& operator[](E v) {
    if (size_t(v) >= size_t(E::COUNT__)) {
+      Q_ASSERT(false);
       qDebug() << "State Machine Out of Bound" << size_t(v);
       throw v;
    }
@@ -59,6 +60,7 @@ struct TypedStateMachine
 
    const T& operator[](E v) const {
    if (size_t(v) >= size_t(E::COUNT__)) {
+      Q_ASSERT(false);
       qDebug() << "State Machine Out of Bound" << size_t(v);
       throw v;
    }

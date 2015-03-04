@@ -196,6 +196,7 @@ public:
       constexpr static const char* CONTACT_USED      = "contact_used"   ;
       constexpr static const char* CONTACT_UID       = "contact_uid"    ;
       constexpr static const char* NUMBER_TYPE       = "number_type"    ;
+      constexpr static const char* CERT_PATH         = "cert_path"      ;
    };
 
    //TODO should be deprecated when a better factory system is implemented

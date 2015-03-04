@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,23 +15,42 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTLISTCOLORVISITOR_H
-#define ACCOUNTLISTCOLORVISITOR_H
+#include "certificateserializationdelegate.h"
 
-#include <typedefs.h>
-class Account;
+#include <QtCore/QUrl>
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT AccountListColorDelegate {
-public:
-   virtual QVariant getColor(const Account* a);
-   virtual QVariant getIcon(const Account* a);
-   virtual ~AccountListColorDelegate();
+CertificateSerializationDelegate* CertificateSerializationDelegate::m_spInstance = new CertificateSerializationDelegate();
 
-   static AccountListColorDelegate* instance();
-   static void setInstance(AccountListColorDelegate* visitor);
-private:
-   static AccountListColorDelegate* m_spInstance;
-};
+CertificateSerializationDelegate* CertificateSerializationDelegate::instance()
+{
+   return m_spInstance;
+}
 
-#endif
+void CertificateSerializationDelegate::setInstance(CertificateSerializationDelegate* visitor)
+{
+   m_spInstance = visitor;
+}
+
+QByteArray CertificateSerializationDelegate::loadCertificate(const QByteArray& id)
+{
+   Q_UNUSED(id)
+   return QByteArray();
+}
+
+QUrl CertificateSerializationDelegate::saveCertificate(const QByteArray& id, const QByteArray& content)
+{
+   Q_UNUSED(id)
+   Q_UNUSED(content)
+   return QUrl();
+}
+
+QList<QByteArray> CertificateSerializationDelegate::listCertificates()
+{
+   return QList<QByteArray>();
+}
+
+bool CertificateSerializationDelegate::deleteCertificate(const QByteArray& id)
+{
+   Q_UNUSED(id)
+   return false;
+}

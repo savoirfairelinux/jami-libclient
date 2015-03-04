@@ -169,6 +169,7 @@ public:
       UNSUPPORTED, /** The operating system doesn't support or require the check         */
       COUNT__,
    };
+   Q_ENUMS(CheckValues)
 
    //Getter
    QUrl path() const;
@@ -239,5 +240,6 @@ Q_SIGNALS:
    void changed();
 };
 Q_DECLARE_METATYPE(Certificate*)
+Q_DECLARE_METATYPE(Certificate::CheckValues)
 
 #endif

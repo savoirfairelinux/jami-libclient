@@ -21,12 +21,16 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QObject>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 
 //LibSTDC++
 #include <functional>
 
 //Ring
 #include "certificate.h"
+#include "delegates/certificateserializationdelegate.h"
 
 struct CertificateNode {
 
@@ -53,6 +57,36 @@ struct CertificateNode {
    bool                      m_IsLoaded    ;
 };
 
+class BackgroundLoader : public QThread
+{
+   Q_OBJECT
+public:
+
+   //Attributes
+   QList<QByteArray> m_lIdList    ;
+   QMutex            m_LoaderMutex;
+   QList<QByteArray> m_lQueue     ;
+
+   QByteArray        loadCert(const QByteArray& id);
+
+protected:
+   virtual void run() override;
+
+Q_SIGNALS:
+   void listLoaded(const QList<QByteArray>& list);
+};
+
+QByteArray BackgroundLoader::loadCert(const QByteArray& id)
+{
+   if (m_lIdList.isEmpty()) //WARNING potential race
+      QList<QByteArray> m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
+
+   if (m_lIdList.indexOf(id) == -1) //TODO use an hash map for this
+      return QByteArray();
+
+   return CertificateSerializationDelegate::instance()->loadCertificate(id);
+}
+
 class CertificateModelPrivate
 {
 public:
@@ -67,6 +101,7 @@ public:
    QVector<CertificateNode*>   m_lTopLevelNodes  ;
    QHash<QString,Certificate*> m_hCertificates   ;
    CertificateNode*            m_pDefaultCategory;
+   QMutex                      m_CertLoader;
 
    //Singleton
    static CertificateModel* m_spInstance;
@@ -92,7 +127,7 @@ CertificateNode::CertificateNode(int index, Level level, CertificateNode* parent
 }
 
 CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),
- m_pDefaultCategory(nullptr)
+ m_pDefaultCategory(nullptr),m_CertLoader()
 {
 
 }
@@ -113,6 +148,18 @@ CertificateModel* CertificateModel::instance()
    if (!CertificateModelPrivate::m_spInstance)
       CertificateModelPrivate::m_spInstance = new CertificateModel(QCoreApplication::instance());
    return CertificateModelPrivate::m_spInstance;
+}
+
+void BackgroundLoader::run()
+{
+   if (m_lIdList.isEmpty()) //WARNING potential race
+      QList<QByteArray> m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
+
+   QMutexLocker(&this->m_LoaderMutex);
+   for(const QByteArray& id : m_lIdList) {
+      CertificateModel::instance()->getCertificateFromContent(loadCert(id),false);
+   }
+   exit(0);
 }
 
 QHash<int,QByteArray> CertificateModel::roleNames() const
@@ -151,6 +198,8 @@ CertificateNode* CertificateModelPrivate::defaultCategory()
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
 {
+   QMutexLocker(&this->m_CertLoader);
+
    if (!category)
       category = defaultCategory();
 
@@ -299,6 +348,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    //The certificate is not loaded yet
    if (!cert) {
       cert = new Certificate(path);
+      d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
 
       //Add it to the model
       d_ptr->addToTree(cert);
@@ -310,6 +360,24 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
 Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, bool save)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
+
+   //Create a reproducible key for this file
+   QByteArray id = hash.result().toHex();
+
    hash.addData(rawContent);
-   return nullptr;
+   Certificate* cert = d_ptr->m_hCertificates[id];
+   if (!cert) {
+      cert = new Certificate(rawContent);
+      d_ptr->m_hCertificates[id] = cert;
+
+      d_ptr->addToTree(cert);
+
+      if (save) {
+         CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
+      }
+   }
+
+   return cert;
 }
+
+#include <certificatemodel.moc>
