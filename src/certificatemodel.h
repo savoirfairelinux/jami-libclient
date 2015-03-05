@@ -22,6 +22,8 @@
 
 #include "certificate.h"
 
+class Account;
+
 class CertificateModelPrivate;
 
 class LIB_EXPORT CertificateModel : public QAbstractItemModel
@@ -32,7 +34,8 @@ public:
    friend class CertificateNode;
 
    enum class Role {
-      NodeType = 100,
+      NodeType       = 100,
+      DetailRoleBase = 1000,
    };
 
    enum class Columns {
@@ -64,11 +67,12 @@ public:
 
    //Getters
    QAbstractItemModel* model(const Certificate* cert) const;
-   QAbstractItemModel* model(const QModelIndex& idx) const;
+   QAbstractItemModel* model(const QModelIndex& idx ) const;
 
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
-   Certificate* getCertificateFromContent(const QByteArray& rawContent, bool save = true);
+   Certificate* getCertificate(const QUrl& path, Account* a);
+   Certificate* getCertificateFromContent(const QByteArray& rawContent, Account* a = nullptr, bool save = true);
 
    //Singleton
    static CertificateModel* instance();

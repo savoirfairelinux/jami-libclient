@@ -31,6 +31,7 @@
 
 //Ring
 #include "certificate.h"
+#include "account.h"
 #include "delegates/certificateserializationdelegate.h"
 
 struct CertificateNode {
@@ -39,16 +40,17 @@ struct CertificateNode {
    void setStrings(const QString& col1, const QVariant& col2, const QString& tooltip);
 
    //Attributes
-   QVector<CertificateNode*>  m_lChildren   ;
-   CertificateNode*           m_pParent     ;
-   Certificate*               m_pCertificate;
-   CertificateModel::NodeType m_Level       ;
-   int                        m_Index       ;
-   QString                    m_Col1        ;
-   QVariant                   m_Col2        ;
-   QString                    m_ToolTip     ;
-   std::function<void()>      m_fLoader     ;
-   bool                       m_IsLoaded    ;
+   QVector<CertificateNode*>  m_lChildren      ;
+   CertificateNode*           m_pParent        ;
+   Certificate*               m_pCertificate   ;
+   CertificateModel::NodeType m_Level          ;
+   int                        m_Index          ;
+   QString                    m_Col1           ;
+   QVariant                   m_Col2           ;
+   QString                    m_ToolTip        ;
+   std::function<void()>      m_fLoader        ;
+   bool                       m_IsLoaded       ;
+   QHash<Account*,CertificateNode*> m_hSiblings;
 };
 
 class BackgroundLoader : public QThread
@@ -96,15 +98,19 @@ public:
 
    //Helper
    CertificateNode* defaultCategory();
+   CertificateNode* createCategory(const QString& name, const QString& col2, const QString& tooltip);
+   CertificateNode* createCategory(Account* a);
    CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
+   CertificateNode* addToTree(Certificate* cert, Account* a);
    QModelIndex      createIndex(int r ,int c , void* p);
    QAbstractItemModel* getModelCommon(CertificateNode* node);
 
    //Attributes
-   QVector<CertificateNode*>   m_lTopLevelNodes  ;
-   QHash<QString,Certificate*> m_hCertificates   ;
-   CertificateNode*            m_pDefaultCategory;
-   QMutex                      m_CertLoader      ;
+   QVector<CertificateNode*>        m_lTopLevelNodes   ;
+   QHash<Account*,CertificateNode*> m_hAccToCat        ;
+   QHash<QString,Certificate*>      m_hCertificates    ;
+   CertificateNode*                 m_pDefaultCategory ;
+   QMutex                           m_CertLoader       ;
    QHash<const Certificate*,CertificateNode*> m_hNodes ;
 
    //Singleton
@@ -151,6 +157,17 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
  d_ptr(new CertificateModelPrivate(this))
 {
    setObjectName("CertificateModel");
+
+   //Load the stored certificates
+   BackgroundLoader* loader = new BackgroundLoader();
+   connect(loader, SIGNAL(finished()), loader, SLOT(deleteLater()));
+
+   /*if (!loader->isFinished())
+      connect(loader,&BackgroundLoader::finished,[loader](){
+         delete loader;
+      });*/
+
+   loader->start();
 }
 
 CertificateModel::~CertificateModel()
@@ -168,11 +185,11 @@ CertificateModel* CertificateModel::instance()
 void BackgroundLoader::run()
 {
    if (m_lIdList.isEmpty()) //WARNING potential race
-      QList<QByteArray> m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
+      m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
 
    QMutexLocker(&this->m_LoaderMutex);
    for(const QByteArray& id : m_lIdList) {
-      CertificateModel::instance()->getCertificateFromContent(loadCert(id),false);
+      CertificateModel::instance()->getCertificateFromContent(loadCert(id),nullptr,false);
    }
    exit(0);
 }
@@ -180,11 +197,23 @@ void BackgroundLoader::run()
 QHash<int,QByteArray> CertificateModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-   /*static bool initRoles = false;
+   static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
+      roles[static_cast<int>(Role::NodeType)] = "nodeType";
 
-   }*/
+      //Add all the details, this isn't safe because of tr(), but good enough for debugging
+      for (const Certificate::Details d :  EnumIterator<Certificate::Details>()) {
+         QString name = Certificate::getName(d).toLatin1();
+         while (name.indexOf(' ') != -1) {
+            const int idx = name.indexOf(' ')  ;
+            name          = name.remove(idx,1) ;
+            name[idx]     = name[idx].toUpper();
+            name[0  ]     = name[0].toLower  ();
+         }
+         roles[static_cast<int>(Role::DetailRoleBase)+static_cast<int>(d)] = name.toLatin1();
+      }
+   }
    return roles;
 }
 
@@ -195,17 +224,24 @@ void CertificateNode::setStrings(const QString& col1, const QVariant& col2, cons
    m_ToolTip = tooltip;
 }
 
+CertificateNode* CertificateModelPrivate::createCategory(const QString& name, const QString& col2, const QString& tooltip )
+{
+   const int idx = m_hCertificates.size();
+
+   CertificateNode* n = new CertificateNode(idx, CertificateModel::NodeType::CATEGORY, nullptr, nullptr);
+   n->setStrings(name,col2,tooltip);
+
+   q_ptr->beginInsertRows(QModelIndex(), idx, idx);
+   m_lTopLevelNodes << n;
+   q_ptr->endInsertRows();
+
+   return n;
+}
+
 CertificateNode* CertificateModelPrivate::defaultCategory()
 {
    if (!m_pDefaultCategory) {
-      const int idx = m_hCertificates.size();
-
-      m_pDefaultCategory = new CertificateNode(idx, CertificateModel::NodeType::CATEGORY, nullptr, nullptr);
-      m_pDefaultCategory->setStrings(QObject::tr("Default"),QObject::tr("Certificate not associated with a group"),QString());
-
-      q_ptr->beginInsertRows(QModelIndex(), idx, idx);
-      m_lTopLevelNodes << m_pDefaultCategory;
-      q_ptr->endInsertRows();
+      m_pDefaultCategory = createCategory(QObject::tr("Default"),QObject::tr("Certificate not associated with a group"),QString());
    }
 
    return m_pDefaultCategory;
@@ -214,6 +250,29 @@ CertificateNode* CertificateModelPrivate::defaultCategory()
 QModelIndex CertificateModelPrivate::createIndex(int r ,int c , void* p)
 {
    return q_ptr->createIndex(r,c,p);
+}
+
+CertificateNode* CertificateModelPrivate::createCategory(Account* a)
+{
+   CertificateNode* cat = m_hAccToCat[a];
+
+   if (!cat) {
+      cat = createCategory(a->alias(),QString(),QString());
+      m_hAccToCat[a] = cat;
+   }
+
+   return cat;
+}
+
+//For convenience
+CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Account* a)
+{
+   if (!a)
+      return addToTree(cert);
+
+   CertificateNode* cat = createCategory(a);
+
+   return addToTree(cert,cat);
 }
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
@@ -292,15 +351,25 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
    if (!index.isValid())
       return QVariant();
    const CertificateNode* node = static_cast<CertificateNode*>(index.internalPointer());
-      switch(role) {
-         case Qt::DisplayRole:
-         case Qt::EditRole:
-            return index.column()?node->m_Col2:node->m_Col1;
-         case Qt::ToolTipRole:
-            return node->m_ToolTip;
-         case static_cast<int>(Role::NodeType):
-            return QVariant::fromValue(node->m_Level);
-      };
+
+   switch(role) {
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+         return index.column()?node->m_Col2:node->m_Col1;
+      case Qt::ToolTipRole:
+         return node->m_ToolTip;
+      case static_cast<int>(Role::NodeType):
+         return QVariant::fromValue(node->m_Level);
+   };
+
+   //Add the details as roles for certificates
+   if (node && node->m_Level == NodeType::CERTIFICATE && role >= static_cast<int>(Role::DetailRoleBase) && role < static_cast<int>(Role::DetailRoleBase)+enum_class_size<Certificate::Details>()) {
+      Certificate* cert = node->m_pCertificate;
+      if (cert) {
+         return cert->detailResult(static_cast<Certificate::Details>(role - static_cast<int>(Role::DetailRoleBase)));
+      }
+   }
+
    return QVariant();
 }
 
@@ -360,6 +429,34 @@ QVariant CertificateModel::headerData( int section, Qt::Orientation orientation,
    return QVariant();
 }
 
+Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
+{
+   if (!a)
+      return getCertificate(path,Certificate::Type::CALL);
+
+   CertificateNode* cat  = d_ptr->createCategory(a);
+
+   Certificate* cert = d_ptr->m_hCertificates[path.path()];
+
+   if (!cert) {
+      cert = new Certificate(path);
+      d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
+
+      //Add it to the model
+      d_ptr->addToTree(cert,a);
+   }
+
+   CertificateNode* node = d_ptr->m_hNodes[cert];
+
+   if (node) {
+      if (node->m_pParent != cat) {
+         CertificateNode* node2 = d_ptr->addToTree(cert,cat);
+         node->m_hSiblings[a] = node2;
+      }
+   }
+   return cert;
+}
+
 Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Type type)
 {
    Q_UNUSED(type)
@@ -379,7 +476,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    return cert;
 }
 
-Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, bool save)
+Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
 
@@ -392,10 +489,11 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
       cert = new Certificate(rawContent);
       d_ptr->m_hCertificates[id] = cert;
 
-      d_ptr->addToTree(cert);
+      d_ptr->addToTree(cert,a);
 
       if (save) {
-         CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
+         const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
+         cert->setPath(path);
       }
    }
 

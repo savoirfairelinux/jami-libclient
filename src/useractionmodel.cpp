@@ -110,7 +110,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionMod
  /*MUTE_VIDEO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
  /*SERVER_TRANSFER */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,       false,           false}},
  /*RECORD          */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
- /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           false}},
+ /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           true }},
 
  /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false }},
 }};

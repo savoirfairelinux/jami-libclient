@@ -179,10 +179,10 @@ public:
    QVariant detailResult(Certificate::Details detail) const;
    QAbstractItemModel* model() const;
 
-   QString getName        (Certificate::Checks   check  );
-   QString getName        (Certificate::Details details );
-   QString getDescription (Certificate::Checks   check  );
-   QString getDescription (Certificate::Details details );
+   static QString getName        (Certificate::Checks   check  );
+   static QString getName        (Certificate::Details details );
+   static QString getDescription (Certificate::Checks   check  );
+   static QString getDescription (Certificate::Details details );
 
    //Checks
    CheckValues hasPrivateKey                       () const;
