@@ -49,10 +49,10 @@ bool Video::Renderer::isRendering() const
   return d_ptr->m_isRendering;
 }
 
-QByteArray& Video::RendererPrivate::otherFrame() const
+QByteArray& Video::RendererPrivate::otherFrame()
 {
   static QByteArray empty;
-  return q_ptr->isRendering()?const_cast<Video::RendererPrivate*>(this)->m_Frame[!m_FrameIdx]:empty;
+  return q_ptr->isRendering()?m_Frame[!m_FrameIdx]:empty;
 }
 
 ///Return the current framerate

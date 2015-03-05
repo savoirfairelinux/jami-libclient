@@ -19,6 +19,10 @@
 #ifndef VIDEO_DBUS_INTERFACE_H
 #define VIDEO_DBUS_INTERFACE_H
 
+// libstdc++
+#include <functional>
+
+// Qt
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QByteArray>
@@ -87,10 +91,6 @@ public:
 private:
     VideoManagerSignalProxy* proxy;
     VideoManagerProxySender* sender;
-
-#ifdef ENABLE_VIDEO
-    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
-#endif
 
 public Q_SLOTS: // METHODS
     void applySettings(const QString &name, MapStringString settings)
@@ -192,17 +192,27 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    void registerSinkTarget(const QString &sinkID, std::function<void(uint8_t*)>&& cb)
+    {
+#ifdef ENABLE_VIDEO
+        DRing::registerSinkTarget(sinkID.toStdString(), std::move(cb));
+#endif
+    }
+
+    void registerSinkTarget(const QString &sinkID, std::function<void(uint8_t*)>& cb)
+    {
+#ifdef ENABLE_VIDEO
+        DRing::registerSinkTarget(sinkID.toStdString(), std::move(cb));
+#endif
+    }
+
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
     void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
 };
 
-namespace org {
-  namespace ring {
-    namespace Ring {
+namespace org { namespace ring { namespace Ring {
       typedef ::VideoManagerInterface VideoManager;
-    }
-  }
-}
+}}} // namesapce org::ring::Ring
 #endif

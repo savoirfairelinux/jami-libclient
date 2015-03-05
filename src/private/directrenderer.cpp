@@ -21,7 +21,9 @@
 #include <QtCore/QMutex>
 #include <QtCore/QThread>
 #include <QtCore/QTime>
+#include <QtCore/QTimer>
 
+#include <cstring>
 
 #ifndef CLOCK_REALTIME
 #define CLOCK_REALTIME 0
@@ -48,8 +50,6 @@ private:
 
 }
 
-
-
 Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent), q_ptr(parent)
 {
 }
@@ -58,12 +58,6 @@ Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* paren
 Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res): Renderer(id, res), d_ptr(new DirectRendererPrivate(this))
 {
    setObjectName("Video::DirectRenderer:"+id);
-
-
-   //DBusVideoManager::instance().registerFrameListener("local", [this] {
-//       qDebug() << "RECEIVED FRAME";
-  // });
-
 }
 
 ///Destructor
@@ -74,10 +68,28 @@ Video::DirectRenderer::~DirectRenderer()
 void Video::DirectRenderer::startRendering()
 {
 
+    qWarning() << "STARTING RENDERING";
+    setRendering(true);
+    emit started();
 }
 void Video::DirectRenderer::stopRendering ()
 {
+    qWarning() << "STOPPING RENDERING";
+    setRendering(false);
+    emit stopped();
+}
 
+void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
+{
+//    qDebug("Frame received by DirectRenderer, size: w %d, h %d", size().width(), size().height());
+    if (!isRendering()) {
+       return;
+    }
+    if (static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().size() != (size().height() * size().width()))
+    static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().resize(size().height() * size().width()*4);
+    ::memcpy(static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().data(),frame,static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().size());
+    static_cast<Video::Renderer*>(this)->d_ptr->updateFrameIndex();
+    emit frameUpdated();
 }
 
 #include <directrenderer.moc>

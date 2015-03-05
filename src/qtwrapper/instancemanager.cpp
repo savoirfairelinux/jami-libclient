@@ -39,9 +39,9 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
     using DRing::ConfigurationSignal;
     using DRing::PresenceSignal;
 
-    #ifdef ENABLE_VIDEO
+#ifdef ENABLE_VIDEO
     using DRing::VideoSignal;
-    #endif
+#endif
 
    m_pTimer = new QTimer(this);
    m_pTimer->setInterval(50);
@@ -55,7 +55,7 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
     registerCallHandlers(DBus::CallManager::instance().callHandlers);
     registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
     registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
-#ifdef RING_VIDEO
+#ifdef ENABLE_VIDEO
     registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
 #endif
 

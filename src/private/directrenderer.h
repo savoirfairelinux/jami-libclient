@@ -25,6 +25,8 @@
 
 //Qt
 class QMutex;
+class QTimer;
+class QThread;
 
 //Ring
 #include "video/device.h"
@@ -41,10 +43,14 @@ class LIB_EXPORT DirectRenderer : public Renderer {
    #pragma GCC diagnostic pop
 
    public:
+
       //Constructor
       DirectRenderer (const QByteArray& id, const QSize& res);
       virtual ~DirectRenderer();
 
+      void onNewFrame(const QByteArray& frame);
+
+  public Q_SLOTS:
       virtual void startRendering() override;
       virtual void stopRendering () override;
 

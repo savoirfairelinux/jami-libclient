@@ -45,7 +45,7 @@ public:
    QSize             m_pSize      ;
 
    //Helpers
-   QByteArray& otherFrame       () const;
+   QByteArray& otherFrame       ()      ;
    void        updateFrameIndex ()      ;
 
 private:

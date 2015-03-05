@@ -34,12 +34,13 @@ namespace Video {
 class RendererPrivate;
 class ShmRendererPrivate;
 class DirectRendererPrivate;
+class DirectRenderer;
 
 /**
  * This class provide a rendering object to be used by clients
  * to get the video content. This object is not intended to be
  * extended outside of the LibRingClient.
- * 
+ *
  * Each platform transparently provide its own implementation.
  */
 class LIB_EXPORT Renderer : public QObject {
@@ -50,6 +51,7 @@ Q_OBJECT
 
 friend class Video::ShmRendererPrivate;
 friend class Video::DirectRendererPrivate;
+friend class Video::DirectRenderer;
 
 public:
    //Constructor

@@ -18,6 +18,9 @@
  ***************************************************************************/
 #include "videorenderermanager.h"
 
+
+#include <vector>
+
 //Qt
 #include <QtCore/QMutex>
 
@@ -58,7 +61,7 @@ public:
 private:
    VideoRendererManager* q_ptr;
 
-private Q_SLOTS:
+public Q_SLOTS:
    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
    void stoppedDecoding(const QString& id, const QString& shmPath);
    void deviceEvent();
@@ -124,6 +127,7 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
+    //d_ptr->stoppedDecoding("local","");
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    interface.stopCamera();
    d_ptr->m_PreviewState = false;
@@ -132,6 +136,9 @@ void VideoRendererManager::stopPreview()
 ///Start video preview
 void VideoRendererManager::startPreview()
 {
+    qWarning() << "STARTING PREVIEW";
+   // d_ptr->startedDecoding("local","",500,500);
+
    if (d_ptr->m_PreviewState) return;
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    interface.startCamera();
@@ -159,13 +166,18 @@ void VideoRendererManagerPrivate::deviceEvent()
 ///A video is not being rendered
 void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-
    const QSize res = QSize(width,height);
    const QByteArray rid = id.toLatin1();
+   qWarning() << "startedDecoding for sink id: " << id;
 
    if (m_lRenderers[rid] == nullptr ) {
 #if defined(Q_OS_DARWIN)
       m_lRenderers[rid] = new Video::DirectRenderer(rid, res);
+      qWarning() << "Calling registerFrameListener";
+      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
+          static_cast<Video::DirectRenderer*>(m_lRenderers[id.toLatin1()])->onNewFrame(
+                                    QByteArray::fromRawData(reinterpret_cast<const char *>(frame), width*height));
+      });
 #else
       m_lRenderers[rid] = new Video::ShmRenderer(rid,shmPath,res);
 #endif
@@ -174,9 +186,12 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
          q_ptr->start();
    }
    else {
-      // Video::Renderer* Renderer = m_lRenderers[rid];
-      //TODO: do direct renderer stuff here
       m_lRenderers[rid]->setSize(res);
+      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
+          static_cast<Video::DirectRenderer*>(m_lRenderers[id.toLatin1()])->onNewFrame(
+                                    QByteArray::fromRawData(reinterpret_cast<const char *>(frame), width*height));
+      });
+
 #if !defined(Q_OS_DARWIN)
       static_cast<Video::ShmRenderer*>(m_lRenderers[rid])->setShmPath(shmPath);
 #endif
