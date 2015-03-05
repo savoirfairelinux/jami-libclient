@@ -658,3 +658,16 @@ QVariant Certificate::detailResult(Certificate::Details detail) const
    };
    return QVariant();
 }
+
+/**
+ * Get the details of this certificate as a QAbstractItemModel
+ *
+ * Please note that the object ownership will be transferred. To avoid memory
+ * leaks, the users of this object must delete it once they are done with it.
+ */
+QAbstractItemModel* Certificate::model() const
+{
+   return CertificateModel::instance()->model(this);
+}
+
+#include <certificate.moc>

@@ -22,6 +22,7 @@
 
 //Qt
 #include <QUrl>
+class QAbstractItemModel;
 
 class CertificatePrivate;
 
@@ -176,6 +177,7 @@ public:
    Certificate::Type type() const;
    Certificate::CheckValues checkResult (Certificate::Checks check  ) const;
    QVariant detailResult(Certificate::Details detail) const;
+   QAbstractItemModel* model() const;
 
    QString getName        (Certificate::Checks   check  );
    QString getName        (Certificate::Details details );

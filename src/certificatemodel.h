@@ -28,10 +28,23 @@ class LIB_EXPORT CertificateModel : public QAbstractItemModel
 {
    Q_OBJECT
 public:
+   friend class CertificateProxyModel;
+   friend class CertificateNode;
+
+   enum class Role {
+      NodeType = 100,
+   };
 
    enum class Columns {
       NAME  = 0,
       VALUE = 1,
+   };
+
+   enum class NodeType {
+      CATEGORY         = 0,
+      CERTIFICATE      = 1,
+      DETAILS_CATEGORY = 2,
+      DETAILS          = 3,
    };
 
    //Constructor
@@ -49,6 +62,10 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Getters
+   QAbstractItemModel* model(const Certificate* cert) const;
+   QAbstractItemModel* model(const QModelIndex& idx) const;
+
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
    Certificate* getCertificateFromContent(const QByteArray& rawContent, bool save = true);
@@ -60,5 +77,6 @@ private:
    CertificateModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CertificateModel)
 };
+Q_DECLARE_METATYPE(CertificateModel::NodeType)
 
 #endif

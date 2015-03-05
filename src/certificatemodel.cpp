@@ -24,6 +24,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
 #include <QtCore/QMutexLocker>
+#include <QtCore/QAbstractProxyModel>
 
 //LibSTDC++
 #include <functional>
@@ -34,27 +35,20 @@
 
 struct CertificateNode {
 
-   enum class Level {
-      CATEGORY         = 0,
-      CERTIFICATE      = 1,
-      DETAILS_CATEGORY = 2,
-      DETAILS          = 3,
-   };
-
-   CertificateNode(int index, Level level, CertificateNode* parent, Certificate* cert);
+   CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert);
    void setStrings(const QString& col1, const QVariant& col2, const QString& tooltip);
 
    //Attributes
-   QVector<CertificateNode*> m_lChildren   ;
-   CertificateNode*          m_pParent     ;
-   Certificate*              m_pCertificate;
-   CertificateNode::Level    m_Level       ;
-   int                       m_Index       ;
-   QString                   m_Col1        ;
-   QVariant                  m_Col2        ;
-   QString                   m_ToolTip     ;
-   std::function<void()>     m_fLoader     ;
-   bool                      m_IsLoaded    ;
+   QVector<CertificateNode*>  m_lChildren   ;
+   CertificateNode*           m_pParent     ;
+   Certificate*               m_pCertificate;
+   CertificateModel::NodeType m_Level       ;
+   int                        m_Index       ;
+   QString                    m_Col1        ;
+   QVariant                   m_Col2        ;
+   QString                    m_ToolTip     ;
+   std::function<void()>      m_fLoader     ;
+   bool                       m_IsLoaded    ;
 };
 
 class BackgroundLoader : public QThread
@@ -76,6 +70,50 @@ Q_SIGNALS:
    void listLoaded(const QList<QByteArray>& list);
 };
 
+class CertificateProxyModel : public QAbstractProxyModel
+{
+   Q_OBJECT
+public:
+   CertificateProxyModel(CertificateModel* parent, CertificateNode* root);
+
+   //Model implementation
+   virtual QModelIndex   mapFromSource( const QModelIndex& sourceIndex                              ) const override;
+   virtual QModelIndex   mapToSource  ( const QModelIndex& proxyIndex                               ) const override;
+   virtual QModelIndex   index        ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual QModelIndex   parent       ( const QModelIndex& index                                    ) const override;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                    ) const override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                    ) const override;
+
+private:
+   CertificateNode* m_pRoot;
+};
+
+class CertificateModelPrivate
+{
+public:
+   CertificateModelPrivate(CertificateModel* parent);
+   virtual ~CertificateModelPrivate();
+
+   //Helper
+   CertificateNode* defaultCategory();
+   CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
+   QModelIndex      createIndex(int r ,int c , void* p);
+   QAbstractItemModel* getModelCommon(CertificateNode* node);
+
+   //Attributes
+   QVector<CertificateNode*>   m_lTopLevelNodes  ;
+   QHash<QString,Certificate*> m_hCertificates   ;
+   CertificateNode*            m_pDefaultCategory;
+   QMutex                      m_CertLoader      ;
+   QHash<const Certificate*,CertificateNode*> m_hNodes ;
+
+   //Singleton
+   static CertificateModel* m_spInstance;
+
+private:
+   CertificateModel* q_ptr;
+};
+
 QByteArray BackgroundLoader::loadCert(const QByteArray& id)
 {
    if (m_lIdList.isEmpty()) //WARNING potential race
@@ -87,29 +125,6 @@ QByteArray BackgroundLoader::loadCert(const QByteArray& id)
    return CertificateSerializationDelegate::instance()->loadCertificate(id);
 }
 
-class CertificateModelPrivate
-{
-public:
-   CertificateModelPrivate(CertificateModel* parent);
-   virtual ~CertificateModelPrivate();
-
-   //Helper
-   CertificateNode* defaultCategory();
-   CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
-
-   //Attributes
-   QVector<CertificateNode*>   m_lTopLevelNodes  ;
-   QHash<QString,Certificate*> m_hCertificates   ;
-   CertificateNode*            m_pDefaultCategory;
-   QMutex                      m_CertLoader;
-
-   //Singleton
-   static CertificateModel* m_spInstance;
-
-private:
-   CertificateModel* q_ptr;
-};
-
 CertificateModel* CertificateModelPrivate::m_spInstance = nullptr;
 
 CertificateModelPrivate::~CertificateModelPrivate()
@@ -120,10 +135,10 @@ CertificateModelPrivate::~CertificateModelPrivate()
    }
 }
 
-CertificateNode::CertificateNode(int index, Level level, CertificateNode* parent, Certificate* cert) :
+CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert) :
    m_pParent(parent), m_pCertificate(cert), m_Level(level), m_Index(index), m_IsLoaded(true)
 {
-
+   CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
 }
 
 CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),
@@ -185,7 +200,7 @@ CertificateNode* CertificateModelPrivate::defaultCategory()
    if (!m_pDefaultCategory) {
       const int idx = m_hCertificates.size();
 
-      m_pDefaultCategory = new CertificateNode(idx, CertificateNode::Level::CATEGORY, nullptr, nullptr);
+      m_pDefaultCategory = new CertificateNode(idx, CertificateModel::NodeType::CATEGORY, nullptr, nullptr);
       m_pDefaultCategory->setStrings(QObject::tr("Default"),QObject::tr("Certificate not associated with a group"),QString());
 
       q_ptr->beginInsertRows(QModelIndex(), idx, idx);
@@ -194,6 +209,11 @@ CertificateNode* CertificateModelPrivate::defaultCategory()
    }
 
    return m_pDefaultCategory;
+}
+
+QModelIndex CertificateModelPrivate::createIndex(int r ,int c , void* p)
+{
+   return q_ptr->createIndex(r,c,p);
 }
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
@@ -205,7 +225,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
 
    const int idx = category->m_lChildren.size();
 
-   CertificateNode* node = new CertificateNode(idx, CertificateNode::Level::CERTIFICATE, category, cert);
+   CertificateNode* node = new CertificateNode(idx, CertificateModel::NodeType::CERTIFICATE, category, cert);
    node->setStrings(QObject::tr("A certificate"),QObject::tr("An organisation"),QString());
 
 
@@ -221,8 +241,8 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
 
       //Insert the check and details categories
       q_ptr->beginInsertRows(index, 0, static_cast<int>(CertificateModel::Columns::NAME ));
-      CertificateNode* details = new CertificateNode(static_cast<int>(CertificateModel::Columns::NAME ), CertificateNode::Level::DETAILS_CATEGORY, node, nullptr);
-      CertificateNode* checks  = new CertificateNode(static_cast<int>(CertificateModel::Columns::VALUE), CertificateNode::Level::DETAILS_CATEGORY, node, nullptr);
+      CertificateNode* details = new CertificateNode(static_cast<int>(CertificateModel::Columns::NAME ), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
+      CertificateNode* checks  = new CertificateNode(static_cast<int>(CertificateModel::Columns::VALUE), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
       details->setStrings(QObject::tr("Details"),QString(),QObject::tr("The content of the certificate")       );
       checks ->setStrings(QObject::tr("Checks") ,QString(),QObject::tr("Various security related information") );
       node->m_lChildren << details; node->m_lChildren << checks;
@@ -234,7 +254,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       const QModelIndex detailsI(q_ptr->createIndex(details->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),details));
       q_ptr->beginInsertRows(detailsI, static_cast<int>(CertificateModel::Columns::NAME ), detailsC);
       for (const Certificate::Details detail : EnumIterator<Certificate::Details>()) {
-         CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateNode::Level::DETAILS, details, nullptr);
+         CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateModel::NodeType::DETAILS, details, nullptr);
          d->setStrings(cert->getName(detail),cert->detailResult(detail),cert->getDescription(detail)       );
          details->m_lChildren << d;
       }
@@ -245,7 +265,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       q_ptr->beginInsertRows(checksI, static_cast<int>(CertificateModel::Columns::NAME ), checksC);
       for (const Certificate::Checks check : EnumIterator<Certificate::Checks>()) {
          if (cert->checkResult(check) != Certificate::CheckValues::UNSUPPORTED) {
-            CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateNode::Level::DETAILS, checks, nullptr);
+            CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateModel::NodeType::DETAILS, checks, nullptr);
             d->setStrings(cert->getName(check),static_cast<bool>(cert->checkResult(check)),cert->getDescription(check));
             checks->m_lChildren << d;
          }
@@ -278,6 +298,8 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
             return index.column()?node->m_Col2:node->m_Col1;
          case Qt::ToolTipRole:
             return node->m_ToolTip;
+         case static_cast<int>(Role::NodeType):
+            return QVariant::fromValue(node->m_Level);
       };
    return QVariant();
 }
@@ -290,7 +312,7 @@ int CertificateModel::rowCount( const QModelIndex& parent) const
       const CertificateNode* node = static_cast<CertificateNode*>(parent.internalPointer());
 
       //Load that info only when it is needed
-      if (node->m_Level == CertificateNode::Level::CERTIFICATE && (!node->m_IsLoaded))
+      if (node->m_Level == CertificateModel::NodeType::CERTIFICATE && (!node->m_IsLoaded))
          node->m_fLoader();
       return node->m_lChildren.size();
    }
@@ -378,6 +400,110 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
    }
 
    return cert;
+}
+
+CertificateProxyModel::CertificateProxyModel(CertificateModel* parent, CertificateNode* root) : QAbstractProxyModel(parent),m_pRoot(root)
+{
+   setSourceModel(parent);
+}
+
+QModelIndex CertificateProxyModel::mapFromSource(const QModelIndex& sourceIndex) const
+{
+   if (!sourceIndex.isValid())
+      return QModelIndex();
+   CertificateModel::NodeType type = qvariant_cast<CertificateModel::NodeType>(sourceIndex.data((int)CertificateModel::Role::NodeType));
+   switch (type) {
+      case CertificateModel::NodeType::CATEGORY        :
+      case CertificateModel::NodeType::CERTIFICATE     :
+         return QModelIndex();
+      case CertificateModel::NodeType::DETAILS_CATEGORY:
+      case CertificateModel::NodeType::DETAILS         :
+         return createIndex(sourceIndex.row(),sourceIndex.column(),sourceIndex.internalPointer());
+   }
+   return QModelIndex();
+}
+
+QModelIndex CertificateProxyModel::mapToSource(const QModelIndex& proxyIndex) const
+{
+   return CertificateModel::instance()->d_ptr->createIndex(proxyIndex.row(),proxyIndex.column(),proxyIndex.internalPointer());
+}
+
+QModelIndex CertificateProxyModel::index( int row, int column, const QModelIndex& parent) const
+{
+   if ((parent.isValid() && parent.model() != this) || column > 1)
+      return QModelIndex();
+
+   CertificateNode* node = parent.isValid()?static_cast<CertificateNode*>(parent.internalPointer()):m_pRoot;
+
+   if ((!node) || row >= node->m_lChildren.size())
+      return QModelIndex();
+
+   return createIndex(row, column, node->m_lChildren[row]);
+}
+
+QModelIndex CertificateProxyModel::parent( const QModelIndex& index ) const
+{
+   if ((index.model() != this) || (!index.isValid()))
+      return QModelIndex();
+
+   CertificateNode* node = static_cast<CertificateNode*>(index.internalPointer());
+
+   if (!node)
+      return QModelIndex();
+
+   return (node->m_pParent == m_pRoot)?QModelIndex() : createIndex(node->m_pParent->m_Index, index.column(), node->m_pParent);
+}
+
+int CertificateProxyModel::rowCount( const QModelIndex& parent ) const
+{
+   return parent.isValid()? sourceModel()->rowCount(mapToSource(parent)) : m_pRoot->m_lChildren.size();
+}
+
+int CertificateProxyModel::columnCount( const QModelIndex& parent ) const
+{
+   return sourceModel()->columnCount(mapToSource(parent));
+}
+
+QAbstractItemModel* CertificateModelPrivate::getModelCommon(CertificateNode* node)
+{
+   if (node) {
+      if (node->m_Level == CertificateModel::NodeType::CERTIFICATE && (!node->m_IsLoaded))
+         node->m_fLoader();
+
+      CertificateProxyModel* m = new CertificateProxyModel(q_ptr,node);
+
+      return m;
+   }
+
+   return nullptr;
+}
+
+/**
+ * This model is a proxy of CertificateModel with only the current certificate
+ *
+ * Please note that the object ownership will be transferred. To avoid memory
+ * leaks, the users of this object must delete it once they are done with it.
+ */
+QAbstractItemModel* CertificateModel::model(const Certificate* cert) const
+{
+   if (!cert)
+      return nullptr;
+   return d_ptr->getModelCommon(d_ptr->m_hNodes[cert]);
+}
+
+/**
+ * This model is a proxy of CertificateModel with only the current certificate
+ *
+ * Please note that the object ownership will be transferred. To avoid memory
+ * leaks, the users of this object must delete it once they are done with it.
+ */
+QAbstractItemModel* CertificateModel::model(const QModelIndex& idx) const
+{
+   if ((!idx.isValid()) || (idx.model() != this))
+      return nullptr;
+
+   CertificateNode* node = static_cast<CertificateNode*>(idx.internalPointer());
+   return d_ptr->getModelCommon(node);
 }
 
 #include <certificatemodel.moc>
