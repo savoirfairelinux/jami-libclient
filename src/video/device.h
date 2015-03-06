@@ -46,8 +46,8 @@ namespace Video {
 ///Device: V4L devices used to record video for video call
 class LIB_EXPORT Device : public QAbstractListModel {
    Q_OBJECT
-   friend class Video::Manager;
-   friend class Video::ManagerPrivate;
+   friend class VideoRendererManager;
+   friend class VideoRendererManagerPrivate;
    friend class Video::DeviceModel;
    friend class VideoDevicePrivate;
 

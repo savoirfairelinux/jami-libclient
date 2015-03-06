@@ -42,6 +42,7 @@ class Certificate           ;
 namespace Video {
    class Manager;
    class Renderer;
+   class ManagerPrivate;
 }
 
 class Call;
@@ -72,7 +73,8 @@ public:
    friend class HistoryModel         ;
    friend class CallModelPrivate     ;
    friend class IMConversationManager;
-   friend class Video::Manager       ;
+   friend class VideoRendererManager;
+   friend class VideoRendererManagerPrivate;
 
    //Enum
 
@@ -329,6 +331,8 @@ Q_SIGNALS:
    void startTimeStampChanged(time_t newTimeStamp);
    ///The dial number has changed
    void dialNumberChanged(const QString& number);
+   ///Announce a new video renderer
+   void videoStarted(Video::Renderer* renderer);
 };
 
 Q_DECLARE_METATYPE(Call*)

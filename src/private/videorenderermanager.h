@@ -15,8 +15,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef VIDEORENDERERMANAGER_H
+#define VIDEORENDERERMANAGER_H
 //Base
 #include <typedefs.h>
 #include <QtCore/QThread>
@@ -25,7 +25,7 @@
 #include <QtCore/QHash>
 
 //Ring
-#include "device.h"
+#include "video/device.h"
 namespace Video {
    class Renderer;
 }
@@ -33,55 +33,45 @@ class Call;
 class QMutex;
 struct SHMHeader;
 
-namespace Video {
 
-class ManagerPrivate;
+class VideoRendererManagerPrivate;
 
 ///VideoModel: Video event dispatcher
-class LIB_EXPORT Manager : public QThread {
+class VideoRendererManager : public QThread {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
    //Singleton
-   static Manager* instance();
+   static VideoRendererManager* instance();
 
    //Getters
-   bool       isPreviewing       ();
-   Video::Renderer* getRenderer(const Call* call) const;
+   bool             isPreviewing   ();
    Video::Renderer* previewRenderer();
-   QMutex* startStopMutex() const;
 
-   //Setters
+   //Helpers
+   Video::Renderer* getRenderer(const Call* call) const;
+   QMutex* startStopMutex() const;
    void setBufferSize(uint size);
    void switchDevice(const Video::Device* device) const;
 
-protected:
-//    void run();
-
 private:
    //Constructor
-   explicit Manager();
-   virtual ~Manager();
+   explicit VideoRendererManager();
+   virtual ~VideoRendererManager();
 
-   QScopedPointer<ManagerPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(Manager)
+   QScopedPointer<VideoRendererManagerPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(VideoRendererManager)
 
    //Static attributes
-   static Manager* m_spInstance;
+   static VideoRendererManager* m_spInstance;
 
 public Q_SLOTS:
    void stopPreview ();
    void startPreview();
 
 Q_SIGNALS:
-   ///Emitted when a new frame is ready
-//    void frameUpdated();
-   ///Emmitted when the video is stopped, before the framebuffer become invalid
-//    void videoStopped();
-   ///Emmitted when a call make video available
-   void videoCallInitiated(Video::Renderer*);
    ///The preview started/stopped
    void previewStateChanged(bool startStop);
    void previewStarted(Video::Renderer* Renderer);
@@ -89,6 +79,5 @@ Q_SIGNALS:
 
 };
 
-}
 
 #endif

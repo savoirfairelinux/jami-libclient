@@ -205,7 +205,6 @@ SET( libringclient_LIB_SRCS
   src/video/sourcesmodel.cpp
   src/video/channel.cpp
   src/video/resolution.cpp
-  src/video/manager.cpp
   src/audio/alsapluginmodel.cpp
   src/audio/inputdevicemodel.cpp
   src/audio/managermodel.cpp
@@ -241,6 +240,8 @@ SET( libringclient_LIB_SRCS
   src/categorizedcompositenode.cpp
   src/hookmanager.cpp
   src/vcardutils.cpp
+  src/private/videorenderermanager.cpp
+  src/video/previewmanager.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
@@ -316,11 +317,11 @@ SET(libringclient_video_LIB_HDRS
   src/video/device.h
   src/video/devicemodel.h
   src/video/sourcesmodel.h
-  src/video/manager.h
   src/video/renderer.h
   src/video/resolution.h
   src/video/channel.h
   src/video/rate.h
+  src/video/previewmanager.h
   #The renderer implementations are not exported on purpose
 )
 

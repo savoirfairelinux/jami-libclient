@@ -27,7 +27,7 @@
 #define CLOCK_REALTIME 0
 #endif
 
-#include "video/manager.h"
+#include "private/videorenderermanager.h"
 #include "video/resolution.h"
 #include "private/videorenderer_p.h"
 

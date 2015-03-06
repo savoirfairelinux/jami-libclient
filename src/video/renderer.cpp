@@ -30,8 +30,9 @@ m_pMutex(new QMutex()), m_FrameIdx(false)
 
 Video::Renderer::Renderer(const QByteArray& id, const QSize& res) : d_ptr(new RendererPrivate(this))
 {
-  d_ptr->m_pSize = res;
-  d_ptr->m_Id = id;
+   setObjectName("Renderer:"+id);
+   d_ptr->m_pSize = res;
+   d_ptr->m_Id = id;
 }
 
 Video::Renderer::~Renderer()
@@ -59,12 +60,6 @@ const QByteArray& Video::Renderer::currentFrame() const
 {
   static QByteArray empty;
   return isRendering()?d_ptr->m_Frame[d_ptr->m_FrameIdx]:empty;
-}
-
-///Get id of this renderer
-QString Video::Renderer::id() const
-{
-  return d_ptr->m_Id;
 }
 
 ///Get mutex, in case renderer and views are not in the same thread

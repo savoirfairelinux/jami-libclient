@@ -34,6 +34,11 @@ class ContactMethod;
 class CallModelPrivate;
 class CallPrivate;
 
+namespace Video {
+   class ManagerPrivate;
+   class Renderer;
+}
+
 //Typedef
 typedef QMap<uint, Call*>  CallMap;
 typedef QList<Call*>       CallList;
@@ -50,6 +55,8 @@ Q_OBJECT
    friend class IMConversationManagerPrivate;
    //Now that the ID is set at a later time, this model need to be notified
    friend class CallPrivate;
+   //The renderer use DringId as identifiers and have to be matched to calls
+   friend class VideoRendererManagerPrivate;
 
 public:
    ///Accepted (mime) payload types
@@ -95,6 +102,7 @@ public:
    bool                 hasConference       () const;
    bool                 isConnected         () const;
    UserActionModel*     userActionModel     () const;
+   QItemSelectionModel* selectionModel      () const;
 
    Q_INVOKABLE Call* getCall ( const QModelIndex& idx ) const;
 
@@ -112,7 +120,6 @@ public:
    virtual bool          dropMimeData ( const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent ) override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   QItemSelectionModel* selectionModel() const;
 
    //Singleton
    static CallModel* instance();
@@ -144,6 +151,8 @@ Q_SIGNALS:
    void conferenceRemoved       ( Call* conf                              );
    ///Emitted when a call is added
    void callAdded               ( Call* call               , Call* parent );
+   ///Emitted when a new Video::Renderer is available
+   void rendererAdded           ( Call* call, Video::Renderer* renderer   );
 };
 Q_DECLARE_METATYPE(CallModel*)
 

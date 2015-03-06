@@ -41,7 +41,7 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
-#include "video/manager.h"
+#include "private/videorenderermanager.h"
 #include "historymodel.h"
 #include "instantmessagingmodel.h"
 #include "useractionmodel.h"
@@ -755,7 +755,7 @@ bool Call::hasRemote() const
 bool Call::hasVideo() const
 {
    #ifdef ENABLE_VIDEO
-   return Video::Manager::instance()->getRenderer(this) != nullptr;
+   return VideoRendererManager::instance()->getRenderer(this) != nullptr;
    #else
    return false;
    #endif
@@ -810,7 +810,17 @@ bool Call::isSecure() const
 Video::Renderer* Call::videoRenderer() const
 {
    #ifdef ENABLE_VIDEO
-   return Video::Manager::instance()->getRenderer(this);
+   return VideoRendererManager::instance()->getRenderer(this);
+   #else
+   return nullptr;
+   #endif
+}
+
+
+void CallPrivate::registerRenderer(Video::Renderer* renderer)
+{
+   #ifdef ENABLE_VIDEO
+   emit q_ptr->videoStarted(renderer);
    #else
    return nullptr;
    #endif

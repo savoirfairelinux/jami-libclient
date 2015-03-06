@@ -219,6 +219,7 @@ public:
    void changeCurrentState(Call::State newState);
    void setStartTimeStamp(time_t stamp);
    void initTimer();
+   void registerRenderer(Video::Renderer* renderer);
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );

@@ -34,6 +34,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
+#include "private/videorenderermanager.h"
 #include "mime.h"
 #include "typedefs.h"
 #include "collectioninterface.h"
@@ -42,6 +43,7 @@
 #include "delegates/phonenumberselectordelegate.h"
 #include "personmodel.h"
 #include "useractionmodel.h"
+#include "video/renderer.h"
 
 //Other
 #include <unistd.h>
@@ -137,6 +139,9 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
    //Register with the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
    setObjectName("CallModel");
+   #ifdef ENABLE_VIDEO
+   VideoRendererManager::instance();
+   #endif
 } //CallModel
 
 ///Constructor (there fix an initializationn loop)
@@ -411,6 +416,9 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       emit q_ptr->dataChanged(idx, idx);
       connect(call,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
+      connect(call,&Call::videoStarted,[this,call](Video::Renderer* r){
+         emit q_ptr->rendererAdded(call, r);
+      });
       emit q_ptr->layoutChanged();
    }
    return call;

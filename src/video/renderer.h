@@ -61,7 +61,6 @@ public:
    virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
-   virtual QString           id              () const;
 
    //Setters
    void setRendering(bool rendering)            const;
