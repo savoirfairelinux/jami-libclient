@@ -99,7 +99,7 @@ public:
    //Helper
    CertificateNode* defaultCategory();
    CertificateNode* createCategory(const QString& name, const QString& col2, const QString& tooltip);
-   CertificateNode* createCategory(Account* a);
+   CertificateNode* createCategory(const Account* a);
    CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
    CertificateNode* addToTree(Certificate* cert, Account* a);
    QModelIndex      createIndex(int r ,int c , void* p);
@@ -107,10 +107,10 @@ public:
 
    //Attributes
    QVector<CertificateNode*>        m_lTopLevelNodes   ;
-   QHash<Account*,CertificateNode*> m_hAccToCat        ;
    QHash<QString,Certificate*>      m_hCertificates    ;
    CertificateNode*                 m_pDefaultCategory ;
    QMutex                           m_CertLoader       ;
+   QHash<const Account*,CertificateNode*> m_hAccToCat  ;
    QHash<const Certificate*,CertificateNode*> m_hNodes ;
 
    //Singleton
@@ -252,7 +252,7 @@ QModelIndex CertificateModelPrivate::createIndex(int r ,int c , void* p)
    return q_ptr->createIndex(r,c,p);
 }
 
-CertificateNode* CertificateModelPrivate::createCategory(Account* a)
+CertificateNode* CertificateModelPrivate::createCategory(const Account* a)
 {
    CertificateNode* cat = m_hAccToCat[a];
 
@@ -295,6 +295,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
 
    //Lazy loaded function to reduce the overhead of this (mostly hidden) model
    node->m_fLoader = [this,node,cert]() {
+      node->m_Col1 = cert->detailResult(Certificate::Details::PUBLIC_KEY_ID).toString();
       node->m_IsLoaded = true;
       const QModelIndex index = q_ptr->createIndex(node->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),node);
 
@@ -479,11 +480,11 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
 Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
+   hash.addData(rawContent);
 
    //Create a reproducible key for this file
    QByteArray id = hash.result().toHex();
 
-   hash.addData(rawContent);
    Certificate* cert = d_ptr->m_hCertificates[id];
    if (!cert) {
       cert = new Certificate(rawContent);
@@ -577,6 +578,17 @@ QAbstractItemModel* CertificateModelPrivate::getModelCommon(CertificateNode* nod
 }
 
 /**
+ * Create a view of the CertificateModel with only the certificates
+ * associated with an account. This doesn't contain the account
+ * own certificates.
+ */
+QAbstractItemModel* CertificateModel::model(const Account* a ) const
+{
+   CertificateNode* cat = d_ptr->createCategory(a);
+   return new CertificateProxyModel(const_cast<CertificateModel*>(this),cat);
+}
+
+/**
  * This model is a proxy of CertificateModel with only the current certificate
  *
  * Please note that the object ownership will be transferred. To avoid memory
@@ -592,12 +604,26 @@ QAbstractItemModel* CertificateModel::model(const Certificate* cert) const
 /**
  * This model is a proxy of CertificateModel with only the current certificate
  *
+ * @param idx An index from a CertificateModel or one of its proxies
+ *
  * Please note that the object ownership will be transferred. To avoid memory
  * leaks, the users of this object must delete it once they are done with it.
  */
 QAbstractItemModel* CertificateModel::model(const QModelIndex& idx) const
 {
-   if ((!idx.isValid()) || (idx.model() != this))
+   if ((!idx.isValid()))
+      return nullptr;
+
+   QModelIndex index = idx;
+   while(index.model() != this) {
+      QAbstractProxyModel* m = qobject_cast<QAbstractProxyModel*>(const_cast<QAbstractItemModel*>(idx.model()));
+      if (!m)
+         break;
+
+      index = m->mapToSource(index);
+   }
+
+   if ((!index.isValid()))
       return nullptr;
 
    CertificateNode* node = static_cast<CertificateNode*>(idx.internalPointer());

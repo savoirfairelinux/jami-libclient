@@ -68,6 +68,7 @@ public:
    //Getters
    QAbstractItemModel* model(const Certificate* cert) const;
    QAbstractItemModel* model(const QModelIndex& idx ) const;
+   QAbstractItemModel* model(const Account* a       ) const;
 
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
