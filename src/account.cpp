@@ -41,6 +41,7 @@
 #include "credentialmodel.h"
 #include "ciphermodel.h"
 #include "protocolmodel.h"
+#include "bootstrapmodel.h"
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
 #include "ringtonemodel.h"
@@ -71,7 +72,7 @@ m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr)
+m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr)
 {
    Q_Q(Account);
 }
@@ -391,6 +392,18 @@ ProtocolModel* Account::protocolModel() const
       d_ptr->m_pProtocolModel  = new ProtocolModel(const_cast<Account*>(this));
    }
    return d_ptr->m_pProtocolModel;
+}
+
+BootstrapModel* Account::bootstrapModel() const
+{
+   if (protocol() != Account::Protocol::RING)
+      return nullptr;
+
+   if (!d_ptr->m_pBootstrapModel ) {
+      d_ptr->m_pBootstrapModel  = new BootstrapModel(const_cast<Account*>(this));
+   }
+
+   return d_ptr->m_pBootstrapModel;
 }
 
 void Account::setAlias(const QString& detail)

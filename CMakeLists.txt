@@ -172,6 +172,7 @@ SET( libringclient_LIB_SRCS
   src/certificate.cpp
 
   #Models
+  src/bootstrapmodel.cpp
   src/accountmodel.cpp
   src/availableaccountmodel.cpp
   src/callmodel.cpp
@@ -266,6 +267,7 @@ SET( libringclient_LIB_HDRS
   src/callmodel.h
   src/historymodel.h
   src/person.h
+  src/bootstrapmodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
   src/bookmarkmodel.h

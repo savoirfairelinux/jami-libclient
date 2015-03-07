@@ -40,6 +40,7 @@ class CipherModel            ;
 class AccountStatusModel     ;
 class ProtocolModel          ;
 class CodecModel             ;
+class BootstrapModel         ;
 
 //Private
 class AccountPrivate;
@@ -79,6 +80,7 @@ class LIB_EXPORT Account : public QObject {
    friend class AccountStatusModel;
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
+   friend class BootstrapModelPrivate;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
@@ -250,6 +252,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
       Q_INVOKABLE TlsMethodModel*          tlsMethodModel         () const;
       Q_INVOKABLE ProtocolModel*           protocolModel          () const;
+      Q_INVOKABLE BootstrapModel*          bootstrapModel         () const;
 
       //Getters
       QString hostname                     () const;

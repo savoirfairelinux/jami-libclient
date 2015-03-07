@@ -28,6 +28,7 @@ class CipherModel;
 class AccountStatusModel;
 class TlsMethodModel;
 class ProtocolModel;
+class BootstrapModel;
 
 typedef void (AccountPrivate::*account_function)();
 
@@ -52,6 +53,7 @@ public:
    friend class AccountStatusModel;
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
+   friend class BootstrapModelPrivate;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
@@ -106,6 +108,7 @@ public:
    SecurityValidationModel*  m_pSecurityValidationModel;
    TlsMethodModel*           m_pTlsMethodModel  ;
    ProtocolModel*            m_pProtocolModel   ;
+   BootstrapModel*           m_pBootstrapModel  ;
    Account::EditState m_CurrentState;
 
    // State machines
