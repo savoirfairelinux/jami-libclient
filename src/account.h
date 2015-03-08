@@ -55,11 +55,11 @@ Q_ENUMS(DtmfType)
 
 /**
  * A communication account.
- * 
+ *
  * This class represent an account based around a protocol and a bunch of properties.
- * 
+ *
  * Using the setters on this object wont cause the changes to take effect immediately.
- * 
+ *
  * To save the changes, use the "<<" operator on the account with Account::EditAction::SAVE.
  * Similarly, the Account::EditAction::RELOAD action will reset the changes to match the
  * current properties used by daemon.
@@ -134,6 +134,9 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
    Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
    Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
+   Q_PROPERTY(bool           upnpEnabled                  READ isUpnpEnabled                 WRITE setUpnpEnabled                 )
+   Q_PROPERTY(bool           hasCustomUserAgent           READ hasCustomUserAgent            WRITE setHasCustomUserAgent          )
+
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
@@ -303,6 +306,8 @@ class LIB_EXPORT Account : public QObject {
       int     videoPortMin                 () const;
       int     audioPortMin                 () const;
       int     audioPortMax                 () const;
+      bool    isUpnpEnabled                () const;
+      bool    hasCustomUserAgent           () const;
       int     lastTransportErrorCode       () const;
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
@@ -363,6 +368,8 @@ class LIB_EXPORT Account : public QObject {
       void setVideoPortMin                  (int port   );
       void setDTMFType                      (DtmfType type);
       void setUserAgent                     (const QString& agent);
+      void setUpnpEnabled                   (bool enable);
+      void setHasCustomUserAgent            (bool enable);
       void setUseDefaultPort                (bool value );
 
       void setRoleData(int role, const QVariant& value);

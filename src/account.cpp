@@ -779,6 +779,16 @@ int Account::audioPortMax() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 }
 
+bool Account::isUpnpEnabled() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::UPNP_ENABLED) IS_TRUE;
+}
+
+bool Account::hasCustomUserAgent() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::HAS_CUSTOM_USER_AGENT) IS_TRUE;
+}
+
 QString Account::userAgent() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USER_AGENT);
@@ -1298,6 +1308,16 @@ void Account::setVideoPortMax(int port )
 void Account::setVideoPortMin(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MIN, QString::number(port));
+}
+
+void Account::setUpnpEnabled(bool enable)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::UPNP_ENABLED, (enable)TO_BOOL);
+}
+
+void Account::setHasCustomUserAgent(bool enable)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::HAS_CUSTOM_USER_AGENT, (enable)TO_BOOL);
 }
 
 ///TODO implement the "use default" logic correctly
