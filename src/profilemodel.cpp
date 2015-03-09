@@ -517,7 +517,7 @@ ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
 
    //Creating the profile contact backend
-   d_ptr->m_pProfileBackend = PersonModel::instance()->addBackend<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
+   d_ptr->m_pProfileBackend = PersonModel::instance()->addCollection<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
 
    //Once LibRingClient is ready, start listening
    QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));

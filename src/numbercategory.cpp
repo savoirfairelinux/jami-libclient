@@ -20,6 +20,10 @@
 #include <QtCore/QSize>
 
 #include "delegates/pixmapmanipulationdelegate.h"
+#include "collectionmediator.h"
+#include "collectioneditor.h"
+#include "contactmethod.h"
+#include "numbercategorymodel.h"
 
 class NumberCategoryPrivate
 {
@@ -34,13 +38,19 @@ NumberCategoryPrivate::NumberCategoryPrivate() : m_pIcon(), m_Name()
 {
 }
 
-NumberCategory::NumberCategory(QObject* parent, const QString& name) : QObject(parent), d_ptr(new NumberCategoryPrivate())
+NumberCategory::NumberCategory(CollectionMediator<ContactMethod>* mediator, const QString& name) : CollectionInterface(static_cast<CollectionEditor<ContactMethod>*>(nullptr)), d_ptr(new NumberCategoryPrivate())
 {
+   Q_UNUSED(mediator)
    d_ptr->m_Name = name;
 }
 
 NumberCategory::~NumberCategory()
 {
+}
+
+QVariant NumberCategory::icon() const
+{
+   return PixmapManipulationDelegate::instance()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),false,false);
 }
 
 QVariant NumberCategory::icon(bool isTracked, bool isPresent) const
@@ -51,6 +61,38 @@ QVariant NumberCategory::icon(bool isTracked, bool isPresent) const
 QString  NumberCategory::name() const
 {
    return d_ptr->m_Name;
+}
+
+QString NumberCategory::category() const
+{
+   return QObject::tr("Phone number types");
+}
+
+bool NumberCategory::isEnabled() const
+{
+   return true;
+}
+
+QByteArray NumberCategory::id() const
+{
+   return "numbercat"+d_ptr->m_Name.toLatin1();
+}
+
+bool NumberCategory::load()
+{
+   return false;
+}
+
+int NumberCategory::size() const
+{
+   return NumberCategoryModel::instance()->getSize(this);
+}
+
+CollectionInterface::SupportedFeatures NumberCategory::supportedFeatures() const
+{
+   return (CollectionInterface::SupportedFeatures)   (
+      CollectionInterface::SupportedFeatures::NONE   |
+      CollectionInterface::SupportedFeatures::LOAD   );
 }
 
 void NumberCategory::setIcon(const QVariant& pixmap)

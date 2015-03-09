@@ -18,32 +18,45 @@
 #ifndef NUMBERCATEGORY_H
 #define NUMBERCATEGORY_H
 
-#include <QtCore/QObject>
+#include <collectioninterface.h>
 
 #include "typedefs.h"
 
 class QPixmap;
 class NumberCategoryPrivate;
+class ContactMethod;
+class NumberCategoryModel;
+template <typename T> class CollectionManagerInterface;
 
 /**
  * This class represent a ContactMethod category. Categories usually
  * come from the contact provider, but can be added dynamically too
  */
-class LIB_EXPORT NumberCategory : public QObject {
-   Q_OBJECT
+class LIB_EXPORT NumberCategory : public CollectionInterface {
+
 public:
    friend class NumberCategoryModel;
+   friend class CollectionManagerInterface<ContactMethod>;
 
-   //Getter
-   QVariant icon(bool isTracked = false, bool isPresent = false) const;
-   QString  name() const;
+   virtual QString    name     () const override;
+   virtual QString    category () const override;
+   virtual QVariant   icon     () const override;
+   virtual bool       isEnabled() const override;
+   virtual QByteArray id       () const override;
+   virtual int        size     () const override;
+
+   QVariant icon(bool isTracked, bool isPresent = false) const;
+
+   virtual SupportedFeatures  supportedFeatures() const override;
+   virtual bool load  () override;
+
 
    //Setter
    void setIcon(const QVariant& pixmap );
    void setName(const QString&  name   );
 
 private:
-   NumberCategory(QObject* parent, const QString& name);
+   NumberCategory(CollectionMediator<ContactMethod>* mediator, const QString& name);
    virtual ~NumberCategory();
 
    const QScopedPointer<NumberCategoryPrivate> d_ptr;

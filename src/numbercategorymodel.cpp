@@ -34,12 +34,13 @@ public:
    QVector<InternalTypeRepresentation*>   m_lCategories;
    QHash<int,InternalTypeRepresentation*> m_hByIdx;
    QHash<QString,InternalTypeRepresentation*> m_hByName;
+   QHash<const NumberCategory*,InternalTypeRepresentation*> m_hToInternal;
    static NumberCategory*                 m_spOther    ;
 };
 
 NumberCategory*      NumberCategoryModelPrivate::m_spOther    = nullptr;
 
-NumberCategoryModel::NumberCategoryModel(QObject* parent) : QAbstractListModel(parent),d_ptr(new NumberCategoryModelPrivate())
+NumberCategoryModel::NumberCategoryModel(QObject* parent) : QAbstractListModel(parent),CollectionManagerInterface(this),d_ptr(new NumberCategoryModelPrivate())
 {
 }
 
@@ -109,14 +110,16 @@ NumberCategory* NumberCategoryModel::addCategory(const QString& name, const QVar
       rep = new NumberCategoryModelPrivate::InternalTypeRepresentation();
       rep->counter = 0      ;
    }
-   NumberCategory* cat = new NumberCategory(this,name);
+   NumberCategory* cat = addCollection<NumberCategory,QString>(name,LoadOptions::NONE);
    cat->setIcon(icon);
    rep->category   = cat    ;
    rep->index      = index  ;
    rep->enabled    = enabled;
-   d_ptr->m_hByIdx[index] = rep    ;
-   d_ptr->m_hByName[name] = rep    ;
-   d_ptr->m_lCategories  << rep    ;
+
+   d_ptr->m_hToInternal[cat] = rep ;
+   d_ptr->m_hByIdx[index]    = rep ;
+   d_ptr->m_hByName[name]    = rep ;
+   d_ptr->m_lCategories     << rep ;
    emit layoutChanged()     ;
    return cat;
 }
@@ -180,11 +183,35 @@ NumberCategory* NumberCategoryModel::getCategory(const QString& type)
 
 NumberCategory* NumberCategoryModel::other()
 {
-   if (instance()->d_ptr->m_hByName["Other"])
-      return instance()->d_ptr->m_hByName["Other"]->category;
+   QString translated = QObject::tr("Other");
+   if (instance()->d_ptr->m_hByName[translated])
+      return instance()->d_ptr->m_hByName[translated]->category;
    if (NumberCategoryModelPrivate::m_spOther)
-      NumberCategoryModelPrivate::m_spOther = new NumberCategory(instance(),"Other");
+      NumberCategoryModelPrivate::m_spOther = instance()->addCollection<NumberCategory,QString>(translated,LoadOptions::NONE);
    return NumberCategoryModelPrivate::m_spOther;
+}
+
+int NumberCategoryModel::getSize(const NumberCategory* cat) const
+{
+   NumberCategoryModelPrivate::InternalTypeRepresentation* i = d_ptr->m_hToInternal[cat];
+   return i ? i->counter : 0;
+}
+
+void NumberCategoryModel::collectionAddedCallback(CollectionInterface* collection)
+{
+   Q_UNUSED(collection)
+}
+
+bool NumberCategoryModel::addItemCallback(const ContactMethod* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
+bool NumberCategoryModel::removeItemCallback(const ContactMethod* item)
+{
+   Q_UNUSED(item)
+   return false;
 }
 
 #include <numbercategorymodel.moc>

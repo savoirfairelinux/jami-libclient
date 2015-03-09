@@ -300,6 +300,8 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
       cat->m_AltName   = col->category();
       cat->collection  = nullptr;
 
+      m_hCategories[cat->m_AltName] = cat;
+
       q_ptr->beginInsertRows(QModelIndex(),m_lTopLevelBackends.size(),m_lTopLevelBackends.size());
       m_lTopLevelBackends << cat;
       q_ptr->endInsertRows();

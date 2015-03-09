@@ -54,26 +54,27 @@ d_ptr(new CollectionInterfacePrivate())
 
    //The cast is safe because the metatype is checked earlier
    d_ptr->m_fAdd = [editor](ItemBase<QObject>* item)->bool {
-      return editor->addNew(static_cast<T*>(item));
+      return editor?editor->addNew(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fSave = [editor](ItemBase<QObject>* item)->bool {
-      return editor->edit(static_cast<T*>(item));
+      return editor?editor->edit(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fEdit = [editor](ItemBase<QObject>* item)->bool {
-      return editor->edit(static_cast<T*>(item));
+      return editor?editor->edit(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fRemove = [editor](ItemBase<QObject>* item)->bool {
-      return editor->remove(static_cast<T*>(item));
+      return editor?editor->remove(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fSize = [editor]()->int {
-      return editor->items().size();
+      return editor?editor->items().size() : 0;
    };
 }
 
 template<typename T>
 QVector<T*> CollectionInterface::items() const
 {
-   return editor<T>()->items();
+   const CollectionEditor<T>* e = editor<T>();
+   return e?e->items() : QVector<T*>();
 }
 
 template<typename T>

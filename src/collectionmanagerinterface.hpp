@@ -52,10 +52,10 @@ CollectionManagerInterfacePrivate<T>::~CollectionManagerInterfacePrivate()
       delete m_pMediator;
 }
 
-template<class T>
 #ifdef Q_OS_DARWIN
+template<class T>
 template <class T2>
-T2* CollectionManagerInterface<T>::addBackend(const LoadOptions options)
+T2* CollectionManagerInterface<T>::addCollection(const LoadOptions options)
 {
    T2* backend = new T2(d_ptr->itemMediator());
 
@@ -76,9 +76,11 @@ T2* CollectionManagerInterface<T>::addBackend(const LoadOptions options)
 
    return backend;
 }
-#else
+#endif
+
+template<class T>
 template <class T2, typename ...Ts>
-T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions options)
+T2* CollectionManagerInterface<T>::addCollection(Ts... args, const LoadOptions options)
 {
    T2* collection = new T2(d_ptr->itemMediator(),args...);
 
@@ -99,7 +101,6 @@ T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions opti
 
    return collection;
 }
-#endif //Q_OS_DARWIN
 
 template<class T>
 CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* self) : d_ptr(new CollectionManagerInterfacePrivate<T>(self,this))

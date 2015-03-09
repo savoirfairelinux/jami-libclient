@@ -21,13 +21,14 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QVector>
+#include "collectionmanagerinterface.h"
 
 class NumberCategoryDelegate;
 class ContactMethod;
 class NumberCategory;
 class NumberCategoryModelPrivate;
 
-class LIB_EXPORT NumberCategoryModel : public QAbstractListModel {
+class LIB_EXPORT NumberCategoryModel : public QAbstractListModel, public CollectionManagerInterface<ContactMethod> {
    Q_OBJECT
 public:
 
@@ -54,9 +55,10 @@ public:
    QModelIndex nameToIndex(const QString& name) const;
    NumberCategory* getCategory(const QString& type);
    static NumberCategory* other();
+   int getSize(const NumberCategory* cat) const;
 
    //Mutator
-   void registerNumber  (ContactMethod* number);
+   void registerNumber  (ContactMethod* number); //FIXME this should be private
    void unregisterNumber(ContactMethod* number);
 
 private:
@@ -64,6 +66,11 @@ private:
    ~NumberCategoryModel();
 
    QScopedPointer<NumberCategoryModelPrivate> d_ptr;
+
+   //Re-implementation
+   virtual void collectionAddedCallback(CollectionInterface* collection) override;
+   virtual bool addItemCallback(const ContactMethod* item) override;
+   virtual bool removeItemCallback(const ContactMethod* item) override;
 
    //Singleton
    static NumberCategoryModel* m_spInstance;

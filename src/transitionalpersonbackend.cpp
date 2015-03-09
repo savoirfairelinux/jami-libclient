@@ -80,7 +80,7 @@ CollectionInterface* TransitionalPersonBackend::m_spInstance = nullptr;
 CollectionInterface* TransitionalPersonBackend::instance()
 {
    if (!m_spInstance) {
-      m_spInstance = PersonModel::instance()->addBackend<TransitionalPersonBackend>();
+      m_spInstance = PersonModel::instance()->addCollection<TransitionalPersonBackend>();
    }
    return m_spInstance;
 }
