@@ -82,22 +82,27 @@ void CollectionInterface::addChildren(CollectionInterface* c)
 
 bool CollectionInterface::add(ItemBase<QObject>* base)
 {
-   return d_ptr->m_pAdd(base);
+   return d_ptr->m_fAdd(base);
 }
 
 bool CollectionInterface::save(ItemBase<QObject>* base)
 {
-   return d_ptr->m_pSave(base);
+   return d_ptr->m_fSave(base);
 }
 
 bool CollectionInterface::edit(ItemBase<QObject>* base)
 {
-   return d_ptr->m_pEdit(base);
+   return d_ptr->m_fEdit(base);
 }
 
 bool CollectionInterface::remove(ItemBase<QObject>* base)
 {
-   return d_ptr->m_pRemove(base);
+   return d_ptr->m_fRemove(base);
+}
+
+int CollectionInterface::size() const
+{
+   return  d_ptr->m_fSize();
 }
 
 QMetaObject CollectionInterface::metaObject()

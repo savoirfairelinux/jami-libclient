@@ -160,6 +160,12 @@ public:
    virtual bool clear  (    );
 
    /**
+    * Return the number of elements tracked by this collection.
+    * This can usually be extracted from editor<T>()->items().size();
+    */
+   virtual int size() const;
+
+   /**
     * Return a pointer to the model implementing the CollectionManager.
     */
    QAbstractItemModel* model() const;

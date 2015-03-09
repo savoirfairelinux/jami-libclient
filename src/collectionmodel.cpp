@@ -33,7 +33,6 @@ CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObjec
 
 CollectionModel::CollectionModel(QObject* parent) : QAbstractTableModel(parent), d_ptr(new CollectionModelPrivate(this))
 {
-   connect(PersonModel::instance(),SIGNAL(newBackendAdded(CollectionInterface*)),d_ptr.data(),SLOT(slotUpdate()));
    load();
 }
 
@@ -76,28 +75,34 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
    if (idx.isValid()) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
 
-      if (idx.column() > 0)
+      if (idx.column() > 0 && item->collection)
          return d_ptr->m_lExtensions[idx.column()-1]->data(item->collection,idx,role);
 
-      switch(role) {
-         case Qt::DisplayRole:
-            return item->collection->name();
-            break;
-         case Qt::DecorationRole:
-            return item->collection->icon();
-            break;
-//          case Qt::CheckStateRole:
-//             return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
-         case Qt::CheckStateRole: {
-            if (ItemModelStateSerializationDelegate::instance())
-               return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
+      if (item->collection) {
+         switch(role) {
+            case Qt::DisplayRole:
+               return item->collection->name();
+               break;
+            case Qt::DecorationRole:
+               return item->collection->icon();
+               break;
+            case Qt::UserRole:
+               return 'x'+QString::number(item->collection->size());
+               break;
+            case Qt::CheckStateRole: {
+               if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
+                  return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
+            }
+         };
+      }
+      else {
+         switch(role) {
+            case Qt::DisplayRole:
+               return item->m_AltName;
+               break;
          }
-      };
+      }
    }
-   //else {
-//       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
-//       return item->model->data(item->model->index(item->row,item->col));
-   //}
    return QVariant();
 }
 
@@ -108,7 +113,7 @@ int CollectionModel::rowCount (const QModelIndex& parent) const
    }
    else {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(parent.internalPointer());
-      return item->collection->children().size();
+      return item->m_Children.size();
    }
 }
 
@@ -123,6 +128,11 @@ Qt::ItemFlags CollectionModel::flags(const QModelIndex& idx) const
    if (!idx.isValid())
       return 0;
    CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
+
+   //Categories can only be displayed
+   if (!item->collection)
+      return Qt::ItemIsEnabled;
+
    if (idx.column() > 0) {
       //Make sure the cell is disabled if the row is
       Qt::ItemFlags f = d_ptr->m_lExtensions[idx.column()-1]->flags(item->collection,idx);
@@ -140,12 +150,12 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
    Q_UNUSED(role)
    if (idx.isValid() && idx.column() > 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
-      return d_ptr->m_lExtensions[idx.column()-1]->setData(item->collection,idx,value,role);
+      return (!item->collection)?false : d_ptr->m_lExtensions[idx.column()-1]->setData(item->collection,idx,value,role);
    }
 
    if (role == Qt::CheckStateRole && idx.column() == 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
-      if (item) {
+      if (item && item->collection) {
          const bool old = item->collection->isEnabled();
          ItemModelStateSerializationDelegate::instance()->setChecked(item->collection,value==Qt::Checked);
          emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
@@ -177,12 +187,9 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
       if (row < parentItem->m_Children.size())
          item = parentItem->m_Children[row];
       else {
-         item = new CollectionModelPrivate::ProxyItem();
-         item->parent = parentItem;
-         item->collection = parentItem->collection->children()[row];
-         parentItem->m_Children << item;
+         return QModelIndex();
       }
-      item->row    = row;
+      item->row    = row; //FIXME dead code?
       item->col    = column;
       return createIndex(row,column,item);
    }
@@ -191,15 +198,9 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
       if (row < d_ptr->m_lTopLevelBackends.size())
          item = d_ptr->m_lTopLevelBackends[row];
       else {
-
-         if (row >= PersonModel::instance()->collections().size())
-            return QModelIndex();
-
-         item = new CollectionModelPrivate::ProxyItem();
-         item->collection = PersonModel::instance()->collections()[row];
-         d_ptr->m_lTopLevelBackends << item;
+         return QModelIndex();
       }
-      item->row = row;
+      item->row = row; //FIXME dead code?
       item->col = column;
       return createIndex(item->row,item->col,item);
    }
@@ -286,25 +287,33 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
    if (!col)
       return;
 
-   ProxyItem* item = new ProxyItem();
-   if (col->parent()) {
-      ProxyItem* p = m_hBackendsNodes[col->parent()];
-      item->parent = p;
-      item->row    = p->m_Children.size();
-      item->col    = 0;
-      q_ptr->beginInsertRows(q_ptr->createIndex(p->row,p->col,p),p->m_Children.size(),p->m_Children.size());
-      p->m_Children << item;
-      q_ptr->endInsertRows();
+   ProxyItem* cat = m_hCategories[col->category()];
+   if (col->category().isEmpty()){
+      //TODO implement a default category
    }
-   else {
-      item->parent = nullptr;
-      item->row    = m_lTopLevelBackends.size();
-      item->col    = 0;
+
+   if (!cat) {
+      cat              = new ProxyItem();
+      cat->parent      = nullptr;
+      cat->row         = m_lTopLevelBackends.size();
+      cat->col         = 0;
+      cat->m_AltName   = col->category();
+      cat->collection  = nullptr;
 
       q_ptr->beginInsertRows(QModelIndex(),m_lTopLevelBackends.size(),m_lTopLevelBackends.size());
-      m_lTopLevelBackends << item;
+      m_lTopLevelBackends << cat;
       q_ptr->endInsertRows();
    }
+
+   ProxyItem* item = new ProxyItem();
+   ProxyItem* par = col->parent()?m_hBackendsNodes[col->parent()] : cat;
+
+   item->parent = par;
+   item->row    = par->m_Children.size();
+   item->col    = 0;
+   q_ptr->beginInsertRows(q_ptr->createIndex(par->row,par->col,par),par->m_Children.size(),par->m_Children.size());
+   par->m_Children << item;
+   q_ptr->endInsertRows();
 
 
    item->collection      = col ;

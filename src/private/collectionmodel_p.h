@@ -44,11 +44,13 @@ public:
       CollectionInterface* collection;
       ProxyItem* parent;
       QVector<ProxyItem*> m_Children;
+      QString m_AltName;
    };
 
    QHash<CollectionInterface*,ProxyItem*> m_hBackendsNodes;
    QVector<ProxyItem*>                    m_lTopLevelBackends;
    QVector<CollectionExtensionInterface*> m_lExtensions;
+   QHash<QString,ProxyItem*>              m_hCategories;
    static CollectionModel*                m_spInstance;
 
    //Helper
