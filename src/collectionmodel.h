@@ -39,6 +39,28 @@ class LIB_EXPORT CollectionModel : public QAbstractTableModel
 
    friend class CollectionManagerInterfaceBase;
 
+   /**
+    * Imported from CollectionInterface::SupportedFeatures
+    */
+   enum class Role {
+      count = Qt::UserRole,
+      supportNone         ,
+      supportLoad         ,
+      supportSave         ,
+      supportEdit         ,
+      supportProbe        ,
+      supportAdd          ,
+      supportSave_all     ,
+      supportClear        ,
+      supportRemove       ,
+      supportExport       ,
+      supportImport       ,
+      isEnableable        ,
+      isDisableable       ,
+      isManageable        ,
+      hasManageableChildren,
+   };
+
 public:
    explicit CollectionModel(QObject* parent = nullptr);
    virtual ~CollectionModel();
@@ -54,6 +76,8 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    CollectionInterface* collectionAt(const QModelIndex& index);
+
+   QAbstractItemModel* manageableCollections() const;
 
    void addExtension(CollectionExtensionInterface* extension);
 

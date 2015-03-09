@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring
 #include "collectionmanagerinterface.h"
@@ -28,7 +29,17 @@
 
 CollectionModel* CollectionModelPrivate::m_spInstance = nullptr;
 
-CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObject(parent),q_ptr(parent)
+class ManageableCollectionProxy : public QSortFilterProxyModel
+{
+public:
+   ManageableCollectionProxy(QAbstractItemModel* parent) : QSortFilterProxyModel(parent)
+   {
+      setSourceModel(parent);
+   }
+   virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+};
+
+CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObject(parent),q_ptr(parent),m_pManageableProxy(nullptr)
 {}
 
 CollectionModel::CollectionModel(QObject* parent) : QAbstractTableModel(parent), d_ptr(new CollectionModelPrivate(this))
@@ -62,11 +73,28 @@ CollectionModel* CollectionModel::instance()
 QHash<int,QByteArray> CollectionModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-   /*static bool initRoles = false;
+   static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
+      roles[static_cast<int>(Role::count                ) ] = "count"                 ;
+      roles[static_cast<int>(Role::supportNone          ) ] = "supportNone"           ;
+      roles[static_cast<int>(Role::supportLoad          ) ] = "supportLoad"           ;
+      roles[static_cast<int>(Role::supportSave          ) ] = "supportSave"           ;
+      roles[static_cast<int>(Role::supportEdit          ) ] = "supportEdit"           ;
+      roles[static_cast<int>(Role::supportProbe         ) ] = "supportProbe"          ;
+      roles[static_cast<int>(Role::supportAdd           ) ] = "supportAdd"            ;
+      roles[static_cast<int>(Role::supportSave_all      ) ] = "supportSave_all"       ;
+      roles[static_cast<int>(Role::supportClear         ) ] = "supportClear"          ;
+      roles[static_cast<int>(Role::supportRemove        ) ] = "supportRemove"         ;
+      roles[static_cast<int>(Role::supportExport        ) ] = "supportExport"         ;
+      roles[static_cast<int>(Role::supportImport        ) ] = "supportImport"         ;
+      roles[static_cast<int>(Role::isEnableable         ) ] = "isEnableable"          ;
+      roles[static_cast<int>(Role::isDisableable        ) ] = "isDisableable"         ;
+      roles[static_cast<int>(Role::isManageable         ) ] = "isManageable"          ;
+      roles[static_cast<int>(Role::hasManageableChildren) ] = "hasManageableChildren" ;
 
-   }*/
+   }
+
    return roles;
 }
 
@@ -86,19 +114,30 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
             case Qt::DecorationRole:
                return item->collection->icon();
                break;
-            case Qt::UserRole:
+            case Qt::UserRole: // and Role::count
                return 'x'+QString::number(item->collection->size());
                break;
             case Qt::CheckStateRole: {
                if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
                   return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
             }
+            case static_cast<int>(Role::hasManageableChildren):
+               return item->manageableCount ? true : false;
+               break;
          };
+
+         //Retro-map to the SupportedFeatures //WARNING if SupportedFeatures change, this need to be updated
+         if (role > Qt::UserRole && role <= Qt::UserRole+14) {
+            return (bool) (role == Qt::UserRole+1 ? true : item->collection->supportedFeatures() & (0x01 << (role - Qt::UserRole - 2)));
+         }
       }
       else {
          switch(role) {
             case Qt::DisplayRole:
                return item->m_AltName;
+               break;
+            case static_cast<int>(Role::hasManageableChildren):
+               return item->manageableCount ? true : false;
                break;
          }
       }
@@ -317,9 +356,36 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
    par->m_Children << item;
    q_ptr->endInsertRows();
 
+   //Make sure the manageable proxy get noticed things changed
+   if (col->supportedFeatures() & CollectionInterface::SupportedFeatures::MANAGEABLE) {
+      item->manageableCount++;
+      while(par) {
+         par->manageableCount++;
+         const QModelIndex& idx = q_ptr->createIndex(par->row,0,par);
+         emit q_ptr->dataChanged(idx,idx);
+         par = par->parent;
+      }
+   }
 
    item->collection      = col ;
    m_hBackendsNodes[col] = item;
+}
+
+bool ManageableCollectionProxy::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+   CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(sourceModel()->index(source_row,0,source_parent).internalPointer());
+   return item ? item->manageableCount : false;
+}
+
+/**
+ * Filter the CollectionModel to only keep the manageable collections. Those
+ * collections can be exposed and configured in the UI
+ */
+QAbstractItemModel* CollectionModel::manageableCollections() const
+{
+   if (!d_ptr->m_pManageableProxy)
+      d_ptr->m_pManageableProxy = new ManageableCollectionProxy(const_cast<CollectionModel*>(this));
+   return d_ptr->m_pManageableProxy;
 }
 
 #include <collectionmodel.moc>

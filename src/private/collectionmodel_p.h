@@ -18,10 +18,13 @@
 #ifndef COLLECTIONMODELPRIVATE_H
 #define COLLECTIONMODELPRIVATE_H
 
+//Qt
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 #include <QtCore/QHash>
+class QAbstractItemModel;
 
+//Ring
 class CollectionInterface;
 class CollectionModel;
 class CollectionExtensionInterface;
@@ -38,13 +41,14 @@ public:
     * index have to be implemented.
     */
    struct ProxyItem {
-      ProxyItem() : parent(nullptr),col(1),row(0),collection(nullptr){}
+      ProxyItem() : parent(nullptr),col(1),row(0),collection(nullptr),manageableCount(0){}
       int row;
       int col;
       CollectionInterface* collection;
       ProxyItem* parent;
       QVector<ProxyItem*> m_Children;
       QString m_AltName;
+      int manageableCount;
    };
 
    QHash<CollectionInterface*,ProxyItem*> m_hBackendsNodes;
@@ -52,6 +56,7 @@ public:
    QVector<CollectionExtensionInterface*> m_lExtensions;
    QHash<QString,ProxyItem*>              m_hCategories;
    static CollectionModel*                m_spInstance;
+   QAbstractItemModel*                    m_pManageableProxy;
 
    //Helper
    void registerNew(CollectionInterface* col);

@@ -90,9 +90,10 @@ int NumberCategory::size() const
 
 CollectionInterface::SupportedFeatures NumberCategory::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures)   (
-      CollectionInterface::SupportedFeatures::NONE   |
-      CollectionInterface::SupportedFeatures::LOAD   );
+   return (CollectionInterface::SupportedFeatures)         (
+      CollectionInterface::SupportedFeatures::NONE         |
+      CollectionInterface::SupportedFeatures::MANAGEABLE   |
+      CollectionInterface::SupportedFeatures::LOAD         );
 }
 
 void NumberCategory::setIcon(const QVariant& pixmap)
