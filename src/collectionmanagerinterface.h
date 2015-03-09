@@ -30,13 +30,35 @@
 #include <collectioninterface.h>
 #include <collectionmediator.h>
 
-class CommonCollectionModel;
 class QAbstractItemModel;
 
 enum LoadOptions {
    NONE           = 0x0     ,
    FORCE_ENABLED  = 0x1 << 0,
    FORCE_DISABLED = 0x1 << 1,
+};
+
+class CollectionManagerInterfaceBasePrivate;
+
+/**
+ * Common elements for each CollectionManagerInterface
+ */
+class CollectionManagerInterfaceBase {
+public:
+   virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
+   virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
+
+   ///Enable / disable a collection
+   virtual bool enableBackend( CollectionInterface*  collection, bool enabled) = 0;
+
+   virtual bool clearAllCollections() const = 0;
+
+protected:
+   void registerToModel(CollectionInterface* col) const;
+
+private:
+   CollectionManagerInterfaceBasePrivate* d_ptr;
+   Q_DECLARE_PRIVATE(CollectionManagerInterfaceBase)
 };
 
 template <class T>
@@ -65,7 +87,7 @@ class CollectionManagerInterfacePrivate;
  * implement the common logic that should otherwise have been copy pasted in each
  * collections.
  */
-template <class T> class LIB_EXPORT CollectionManagerInterface {
+template <class T> class LIB_EXPORT CollectionManagerInterface  : public CollectionManagerInterfaceBase {
    friend class CollectionMediator<T>;
 
 public:

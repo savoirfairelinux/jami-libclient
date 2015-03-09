@@ -31,10 +31,14 @@
 class CollectionExtensionInterface;
 
 class CollectionModelPrivate;
+class CollectionManagerInterfaceBase;
 
 class LIB_EXPORT CollectionModel : public QAbstractTableModel
 {
    Q_OBJECT
+
+   friend class CollectionManagerInterfaceBase;
+
 public:
    explicit CollectionModel(QObject* parent = nullptr);
    virtual ~CollectionModel();
@@ -49,12 +53,14 @@ public:
    virtual QModelIndex   index  ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   CollectionInterface* backendAt(const QModelIndex& index);
+   CollectionInterface* collectionAt(const QModelIndex& index);
 
    void addExtension(CollectionExtensionInterface* extension);
 
    bool save();
    bool load();
+
+   static CollectionModel* instance();
 
 Q_SIGNALS:
    void checkStateChanged();

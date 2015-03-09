@@ -197,6 +197,7 @@ SET( libringclient_LIB_SRCS
   src/securityvalidationmodel.cpp
   src/personmodel.cpp
   src/collectionmodel.cpp
+  src/collectionmanagerinterface.cpp
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
@@ -453,6 +454,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h
    src/private/videorenderer_p.h
+   src/private/collectionmodel_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

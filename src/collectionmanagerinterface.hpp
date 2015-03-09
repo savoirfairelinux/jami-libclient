@@ -72,6 +72,8 @@ T2* CollectionManagerInterface<T>::addBackend(const LoadOptions options)
          d_ptr->m_lEnabledCollections << backend;
    }
 
+   registerToModel(backend);
+
    return backend;
 }
 #else
@@ -92,6 +94,8 @@ T2* CollectionManagerInterface<T>::addBackend(Ts... args, const LoadOptions opti
       if (collection->load())
          d_ptr->m_lEnabledCollections << collection;
    }
+
+   registerToModel(collection);
 
    return collection;
 }

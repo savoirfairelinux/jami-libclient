@@ -17,40 +17,16 @@
  ***************************************************************************/
 #include "collectionmodel.h"
 
+//Qt
+#include <QtCore/QCoreApplication>
+
+//Ring
 #include "collectionmanagerinterface.h"
 #include "delegates/itemmodelstateserializationdelegate.h"
 #include "collectionextensioninterface.h"
+#include "private/collectionmodel_p.h"
 
-class CollectionModelPrivate : public QObject
-{
-   Q_OBJECT
-public:
-   CollectionModelPrivate(CollectionModel* parent);
-
-   /*
-    * This is not very efficient, it doesn't really have to be given the low
-    * volume. If it ever have to scale, a better mapToSource using persistent
-    * index have to be implemented.
-    */
-   struct ProxyItem {
-      ProxyItem() : parent(nullptr),col(1),row(0),backend(nullptr){}
-      int row;
-      int col;
-      CollectionInterface* backend;
-      ProxyItem* parent;
-      QVector<ProxyItem*> m_Children;
-   };
-   QHash<CollectionInterface**,ProxyItem*> m_hBackendsNodes;
-   QVector<ProxyItem*> m_lTopLevelBackends;
-   QVector<CollectionExtensionInterface*> m_lExtensions;
-
-private:
-   CollectionModel* q_ptr;
-
-private Q_SLOTS:
-   void slotUpdate();
-   void slotExtensionDataChanged(const QModelIndex& idx);
-};
+CollectionModel* CollectionModelPrivate::m_spInstance = nullptr;
 
 CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObject(parent),q_ptr(parent)
 {}
@@ -77,6 +53,13 @@ CollectionModel::~CollectionModel()
    }
 }
 
+CollectionModel* CollectionModel::instance()
+{
+   if (!CollectionModelPrivate::m_spInstance)
+      CollectionModelPrivate::m_spInstance = new CollectionModel(QCoreApplication::instance());
+   return CollectionModelPrivate::m_spInstance;
+}
+
 QHash<int,QByteArray> CollectionModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
@@ -94,20 +77,20 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
 
       if (idx.column() > 0)
-         return d_ptr->m_lExtensions[idx.column()-1]->data(item->backend,idx,role);
+         return d_ptr->m_lExtensions[idx.column()-1]->data(item->collection,idx,role);
 
       switch(role) {
          case Qt::DisplayRole:
-            return item->backend->name();
+            return item->collection->name();
             break;
          case Qt::DecorationRole:
-            return item->backend->icon();
+            return item->collection->icon();
             break;
 //          case Qt::CheckStateRole:
-//             return item->backend->isEnabled()?Qt::Checked:Qt::Unchecked;
+//             return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
          case Qt::CheckStateRole: {
             if (ItemModelStateSerializationDelegate::instance())
-               return ItemModelStateSerializationDelegate::instance()->isChecked(item->backend)?Qt::Checked:Qt::Unchecked;
+               return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
          }
       };
    }
@@ -121,18 +104,11 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
 int CollectionModel::rowCount (const QModelIndex& parent) const
 {
    if (!parent.isValid()) {
-      static bool init = false; //FIXME this doesn't allow dynamic collections
-      static int result = 0;
-      if (!init) {
-         for(int i=0;i<PersonModel::instance()->collections().size();i++)
-            result += PersonModel::instance()->collections()[i]->parent()==nullptr?1:0;
-         init = true;
-      }
-      return result;
+      return d_ptr->m_lTopLevelBackends.size();
    }
    else {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(parent.internalPointer());
-      return item->backend->children().size();
+      return item->collection->children().size();
    }
 }
 
@@ -149,10 +125,10 @@ Qt::ItemFlags CollectionModel::flags(const QModelIndex& idx) const
    CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
    if (idx.column() > 0) {
       //Make sure the cell is disabled if the row is
-      Qt::ItemFlags f = d_ptr->m_lExtensions[idx.column()-1]->flags(item->backend,idx);
-      return  (((f&Qt::ItemIsEnabled)&&(!item->backend->isEnabled()))?f^Qt::ItemIsEnabled:f);
+      Qt::ItemFlags f = d_ptr->m_lExtensions[idx.column()-1]->flags(item->collection,idx);
+      return  (((f&Qt::ItemIsEnabled)&&(!item->collection->isEnabled()))?f^Qt::ItemIsEnabled:f);
    }
-   const bool checkable = item->backend->supportedFeatures() & (CollectionInterface::SupportedFeatures::ENABLEABLE |
+   const bool checkable = item->collection->supportedFeatures() & (CollectionInterface::SupportedFeatures::ENABLEABLE |
    CollectionInterface::SupportedFeatures::DISABLEABLE | CollectionInterface::SupportedFeatures::MANAGEABLE  );
    return Qt::ItemIsEnabled | Qt::ItemIsSelectable | (checkable?Qt::ItemIsUserCheckable:Qt::NoItemFlags);
 }
@@ -164,14 +140,14 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
    Q_UNUSED(role)
    if (idx.isValid() && idx.column() > 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
-      return d_ptr->m_lExtensions[idx.column()-1]->setData(item->backend,idx,value,role);
+      return d_ptr->m_lExtensions[idx.column()-1]->setData(item->collection,idx,value,role);
    }
 
    if (role == Qt::CheckStateRole && idx.column() == 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
       if (item) {
-         const bool old = item->backend->isEnabled();
-         ItemModelStateSerializationDelegate::instance()->setChecked(item->backend,value==Qt::Checked);
+         const bool old = item->collection->isEnabled();
+         ItemModelStateSerializationDelegate::instance()->setChecked(item->collection,value==Qt::Checked);
          emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
          if (old != (value==Qt::Checked)) {
             emit checkStateChanged();
@@ -203,7 +179,7 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
       else {
          item = new CollectionModelPrivate::ProxyItem();
          item->parent = parentItem;
-         item->backend = parentItem->backend->children()[row];
+         item->collection = parentItem->collection->children()[row];
          parentItem->m_Children << item;
       }
       item->row    = row;
@@ -220,7 +196,7 @@ QModelIndex CollectionModel::index( int row, int column, const QModelIndex& pare
             return QModelIndex();
 
          item = new CollectionModelPrivate::ProxyItem();
-         item->backend = PersonModel::instance()->collections()[row];
+         item->collection = PersonModel::instance()->collections()[row];
          d_ptr->m_lTopLevelBackends << item;
       }
       item->row = row;
@@ -251,7 +227,7 @@ bool CollectionModel::save()
 
       //Load newly enabled collections
       foreach(CollectionModelPrivate::ProxyItem* top, d_ptr->m_lTopLevelBackends) {
-         CollectionInterface* current = top->backend;
+         CollectionInterface* current = top->collection;
          bool check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
          bool wasChecked = current->isEnabled();
          if (check && !wasChecked)
@@ -261,7 +237,7 @@ bool CollectionModel::save()
 
          //TODO implement real tree digging
          foreach(CollectionModelPrivate::ProxyItem* leaf ,top->m_Children) {
-            current = leaf->backend;
+            current = leaf->collection;
             check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
             wasChecked = current->isEnabled();
             if (check && !wasChecked)
@@ -284,12 +260,12 @@ bool CollectionModel::load()
    return false;
 }
 
-///Return the backend at a given index
-CollectionInterface* CollectionModel::backendAt(const QModelIndex& index)
+///Return the collection at a given index
+CollectionInterface* CollectionModel::collectionAt(const QModelIndex& index)
 {
    if (!index.isValid())
       return nullptr;
-   return static_cast<CollectionModelPrivate::ProxyItem*>(index.internalPointer())->backend;
+   return static_cast<CollectionModelPrivate::ProxyItem*>(index.internalPointer())->collection;
 }
 
 void CollectionModel::addExtension(CollectionExtensionInterface* extension)
@@ -303,6 +279,36 @@ void CollectionModel::addExtension(CollectionExtensionInterface* extension)
 void CollectionModelPrivate::slotExtensionDataChanged(const QModelIndex& idx)
 {
    emit q_ptr->dataChanged(idx,idx);
+}
+
+void CollectionModelPrivate::registerNew(CollectionInterface* col)
+{
+   if (!col)
+      return;
+
+   ProxyItem* item = new ProxyItem();
+   if (col->parent()) {
+      ProxyItem* p = m_hBackendsNodes[col->parent()];
+      item->parent = p;
+      item->row    = p->m_Children.size();
+      item->col    = 0;
+      q_ptr->beginInsertRows(q_ptr->createIndex(p->row,p->col,p),p->m_Children.size(),p->m_Children.size());
+      p->m_Children << item;
+      q_ptr->endInsertRows();
+   }
+   else {
+      item->parent = nullptr;
+      item->row    = m_lTopLevelBackends.size();
+      item->col    = 0;
+
+      q_ptr->beginInsertRows(QModelIndex(),m_lTopLevelBackends.size(),m_lTopLevelBackends.size());
+      m_lTopLevelBackends << item;
+      q_ptr->endInsertRows();
+   }
+
+
+   item->collection      = col ;
+   m_hBackendsNodes[col] = item;
 }
 
 #include <collectionmodel.moc>
