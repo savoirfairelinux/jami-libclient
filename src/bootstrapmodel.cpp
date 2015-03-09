@@ -66,7 +66,9 @@ bool BootstrapModelPrivate::save()
       Lines* l = m_lines[i];
       if (l->hostname.isEmpty() && l->port == -1) {
          q_ptr->beginRemoveRows(QModelIndex(),i,i);
-         m_lines.removeAll(l);
+         const int idx = m_lines.indexOf(l);
+         if (idx >= 0)
+            m_lines.removeAt(idx);
          q_ptr->endRemoveRows();
          val = false;
       }
