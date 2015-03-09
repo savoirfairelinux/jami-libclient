@@ -822,7 +822,7 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
    #ifdef ENABLE_VIDEO
    emit q_ptr->videoStarted(renderer);
    #else
-   return nullptr;
+   return;
    #endif
 }
 
