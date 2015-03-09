@@ -308,10 +308,26 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    MapStringString validateCertificateRaw(const QString& unused, const QByteArray& content)
+    {
+        std::vector<unsigned char> raw(content.begin(), content.end());
+        MapStringString temp =
+            convertMap(DRing::validateCertificateRaw(unused.toStdString(), raw));
+        return temp;
+    }
+
     MapStringString getCertificateDetails(const QString &certificate)
     {
         MapStringString temp =
             convertMap(DRing::getCertificateDetails(certificate.toStdString()));
+        return temp;
+    }
+
+    MapStringString getCertificateDetailsRaw(const QByteArray &content)
+    {
+        std::vector<unsigned char> raw(content.begin(), content.end());
+        MapStringString temp =
+            convertMap(DRing::getCertificateDetailsRaw(raw));
         return temp;
     }
 
