@@ -430,7 +430,7 @@ void AccountStatusModel::addSipRegistrationEvent(const QString& fallbackMessage,
 
 void AccountStatusModel::addTransportEvent(const QString& fallbackMessage, int errorCode)
 {
-   if (errorCode != d_ptr->m_pAccount->lastTransportErrorCode()) {
+   if (!d_ptr->m_lRows.size() || errorCode != d_ptr->m_pAccount->lastTransportErrorCode()) {
       beginInsertRows(QModelIndex(), d_ptr->m_lRows.size(), d_ptr->m_lRows.size());
       d_ptr->m_lRows << new AccountStatusRow(fallbackMessage, errorCode, Type::TRANSPORT);
       endInsertRows();
