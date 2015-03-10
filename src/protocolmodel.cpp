@@ -92,6 +92,9 @@ QVariant ProtocolModel::data( const QModelIndex& index, int role) const
             break;
       };
    }
+   else if (role == Qt::UserRole) {
+      return QVariant::fromValue(proto);
+   }
    return QVariant();
 }
 
@@ -102,7 +105,7 @@ int ProtocolModel::rowCount( const QModelIndex& parent ) const
 
 Qt::ItemFlags ProtocolModel::flags( const QModelIndex& index ) const
 {
-   const bool isNew = d_ptr->m_pAccount->isNew();
+   const bool isNew = d_ptr->m_pAccount ? d_ptr->m_pAccount->isNew() : true;
    if (!index.isValid() || (!isNew)) return Qt::NoItemFlags;
 
    //Account type cannot be changed, the daemon doesn't support that and crash
@@ -124,7 +127,7 @@ QItemSelectionModel* ProtocolModel::selectionModel() const
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<ProtocolModel*>(this));
 
-      const Account::Protocol proto    = d_ptr->m_pAccount->protocol();
+      const Account::Protocol proto    = d_ptr->m_pAccount ? d_ptr->m_pAccount->protocol() : Account::Protocol::RING;
 
       const QModelIndex& idx = index(static_cast<int>(proto),0);
       d_ptr->m_pSelectionModel->setCurrentIndex(idx,QItemSelectionModel::ClearAndSelect);
@@ -137,7 +140,7 @@ QItemSelectionModel* ProtocolModel::selectionModel() const
 
 void ProtocolModelPrivate::slotSelectionChanged(const QModelIndex& idx)
 {
-   if (!idx.isValid())
+   if (!m_pAccount || !idx.isValid())
       return;
 
    m_pAccount->setProtocol(static_cast<Account::Protocol>(idx.row()));

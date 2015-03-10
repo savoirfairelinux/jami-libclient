@@ -107,7 +107,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 } //buildExistingAccountFromId
 
 ///Build an account from it's name / alias
-Account* AccountPrivate::buildNewAccountFromAlias(const QString& alias)
+Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
 {
    qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();

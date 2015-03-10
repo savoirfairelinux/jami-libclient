@@ -29,6 +29,7 @@
 //Ring library
 #include "account.h"
 #include "profilemodel.h"
+#include "protocolmodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "accountstatusmodel.h"
@@ -40,7 +41,7 @@ QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 AccountModel*     AccountModelPrivate::m_spAccountList;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
-m_pIP2IP(nullptr)
+m_pIP2IP(nullptr),m_pProtocolModel(nullptr)
 {
 }
 
@@ -571,16 +572,23 @@ bool AccountModel::isPresenceSubscribeSupported() const
 }
 
 
+ProtocolModel* AccountModel::protocolModel() const
+{
+   if (!d_ptr->m_pProtocolModel)
+      d_ptr->m_pProtocolModel = new ProtocolModel();
+   return d_ptr->m_pProtocolModel;
+}
+
+
 /*****************************************************************************
  *                                                                           *
  *                                  Setters                                  *
  *                                                                           *
  ****************************************************************************/
 
-///Add an account
-Account* AccountModel::add(const QString& alias)
+Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 {
-   Account* a = AccountPrivate::buildNewAccountFromAlias(alias);
+   Account* a = AccountPrivate::buildNewAccountFromAlias(proto,alias);
    connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
    beginInsertRows(QModelIndex(),d_ptr->m_lAccounts.size(),d_ptr->m_lAccounts.size());
    d_ptr->m_lAccounts += a;
@@ -589,6 +597,13 @@ Account* AccountModel::add(const QString& alias)
    //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
 
    emit dataChanged(index(d_ptr->m_lAccounts.size()-1,0), index(d_ptr->m_lAccounts.size()-1,0));
+   return a;
+}
+
+Account* AccountModel::add(const QString& alias, const QModelIndex& idx)
+{
+   Account* a = add(alias);
+   a->setProtocol(qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
    return a;
 }
 

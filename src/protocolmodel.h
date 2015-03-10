@@ -40,8 +40,12 @@ class LIB_EXPORT ProtocolModel : public QAbstractListModel {
 
 public:
 
+   enum class Role {
+      Protocol = Qt::UserRole
+   };
+
    //Private constructor, can only be called by 'Account'
-   explicit ProtocolModel(Account* a);
+   explicit ProtocolModel(Account* a = nullptr);
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;

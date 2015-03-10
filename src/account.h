@@ -413,6 +413,7 @@ class LIB_EXPORT Account : public QObject {
 Q_DECLARE_METATYPE(Account*)
 Q_DECLARE_METATYPE(Account::RegistrationState)
 Q_DECLARE_METATYPE(Account::EditAction)
+Q_DECLARE_METATYPE(Account::Protocol)
 
 Account* operator<<(Account* a, Account::EditAction action);
 

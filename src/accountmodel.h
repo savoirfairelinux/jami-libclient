@@ -37,10 +37,11 @@ class LIB_EXPORT AccountModel : public QAbstractListModel {
    #pragma GCC diagnostic pop
 
 public:
-   Q_PROPERTY(Account* ip2ip                      READ ip2ip                        )
-   Q_PROPERTY(bool     presenceEnabled            READ isPresenceEnabled            )
-   Q_PROPERTY(bool     presencePublishSupported   READ isPresencePublishSupported   )
-   Q_PROPERTY(bool     presenceSubscribeSupported READ isPresenceSubscribeSupported )
+   Q_PROPERTY(Account*       ip2ip                      READ ip2ip                        )
+   Q_PROPERTY(bool           presenceEnabled            READ isPresenceEnabled            )
+   Q_PROPERTY(bool           presencePublishSupported   READ isPresencePublishSupported   )
+   Q_PROPERTY(bool           presenceSubscribeSupported READ isPresenceSubscribeSupported )
+   Q_PROPERTY(ProtocolModel* protocolModel              READ protocolModel                )
 
    friend class Account;
    friend class AccountPrivate;
@@ -59,6 +60,7 @@ public:
    bool                 isPresenceEnabled           (                                      ) const;
    bool                 isPresencePublishSupported  (                                      ) const;
    bool                 isPresenceSubscribeSupported(                                      ) const;
+   ProtocolModel*       protocolModel               (                                      ) const;
 
    //Abstract model accessors
    virtual QVariant              data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -68,13 +70,14 @@ public:
    virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
 
    //Mutators
-   Q_INVOKABLE Account* add      ( const QString& alias     );
-   Q_INVOKABLE void     remove   ( Account* account         );
-   void                 remove   ( const QModelIndex& index );
-   void                 save     (                          );
-   Q_INVOKABLE bool     moveUp   ( const QModelIndex& idx   );
-   Q_INVOKABLE bool     moveDown ( const QModelIndex& idx   );
-   Q_INVOKABLE void     cancel   (                          );
+   Q_INVOKABLE Account* add      ( const QString& alias, const Account::Protocol protocol = Account::Protocol::SIP);
+   Q_INVOKABLE Account* add      ( const QString& alias, const QModelIndex&      protocol                         );
+   Q_INVOKABLE void     remove   ( Account* account                                                               );
+   void                 remove   ( const QModelIndex& index                                                       );
+   void                 save     (                                                                                );
+   Q_INVOKABLE bool     moveUp   ( const QModelIndex& idx                                                         );
+   Q_INVOKABLE bool     moveDown ( const QModelIndex& idx                                                         );
+   Q_INVOKABLE void     cancel   (                                                                                );
 
    //Operators
    Account*       operator[] (int               i)      ;

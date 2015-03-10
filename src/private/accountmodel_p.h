@@ -23,6 +23,7 @@
 #include <account.h>
 class AccountModel;
 class AccountListColorDelegate;
+class ProtocolModel;
 
 class AccountModelPrivate : public QObject
 {
@@ -47,6 +48,7 @@ public:
    Account*                 m_pIP2IP          ;
    QList<Account*>          m_pRemovedAccounts;
    static AccountModel*     m_spAccountList   ;
+   ProtocolModel*           m_pProtocolModel  ;
 
    //Future account cache
    static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
