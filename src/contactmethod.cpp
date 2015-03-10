@@ -22,6 +22,7 @@
 #include "call.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
+#include "private/numbercategorymodel_p.h"
 #include "numbercategory.h"
 
 //Private
@@ -137,7 +138,7 @@ d_ptr(new ContactMethodPrivate(number,cat,st))
    setObjectName(d_ptr->m_Uri);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
    if (d_ptr->m_hasType) {
-      NumberCategoryModel::instance()->registerNumber(this);
+      NumberCategoryModel::instance()->d_ptr->registerNumber(this);
    }
    d_ptr->m_lParents << this;
 }
@@ -252,11 +253,11 @@ void ContactMethod::setCategory(NumberCategory* cat)
 {
    if (cat == d_ptr->m_pCategory) return;
    if (d_ptr->m_hasType)
-      NumberCategoryModel::instance()->unregisterNumber(this);
+      NumberCategoryModel::instance()->d_ptr->unregisterNumber(this);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
    d_ptr->m_pCategory = cat;
    if (d_ptr->m_hasType)
-      NumberCategoryModel::instance()->registerNumber(this);
+      NumberCategoryModel::instance()->d_ptr->registerNumber(this);
    d_ptr->changed();
 }
 

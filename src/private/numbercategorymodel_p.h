@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,39 +15,30 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "numbercategorydelegate.h"
-#include "../numbercategorymodel.h"
+#ifndef NUMBERCATEGORYPRIVATE_H
+#define NUMBERCATEGORYPRIVATE_H
 
-class DummyNumberCategoryDelegate : public NumberCategoryDelegate{
+class NumberCategoryModelPrivate
+{
 public:
-   virtual void serialize(NumberCategoryModel* model) override;
-   virtual void load     (NumberCategoryModel* model) override;
-   virtual ~DummyNumberCategoryDelegate();
+   struct InternalTypeRepresentation {
+      NumberCategory* category;
+      int             index   ;
+      bool            enabled ;
+      int             counter ;
+   };
+
+   //Attributes
+   QVector<InternalTypeRepresentation*>                     m_lCategories ;
+   QHash<int,InternalTypeRepresentation*>                   m_hByIdx      ;
+   QHash<QString,InternalTypeRepresentation*>               m_hByName     ;
+   QHash<const NumberCategory*,InternalTypeRepresentation*> m_hToInternal ;
+   static NumberCategory*                                   m_spOther     ;
+
+   //Mutator
+   void registerNumber  ( ContactMethod* number     ); //FIXME this should be private
+   void unregisterNumber( ContactMethod* number     );
+   int  getSize         ( const NumberCategory* cat ) const;
 };
 
-NumberCategoryDelegate* NumberCategoryDelegate::m_spInstance = new DummyNumberCategoryDelegate();
-
-
-void DummyNumberCategoryDelegate::serialize(NumberCategoryModel* model)
-{
-   Q_UNUSED(model)
-}
-
-void DummyNumberCategoryDelegate::load(NumberCategoryModel* model)
-{
-   Q_UNUSED(model)
-}
-
-DummyNumberCategoryDelegate::~DummyNumberCategoryDelegate()
-{}
-
-NumberCategoryDelegate* NumberCategoryDelegate::instance()
-{
-   return m_spInstance;
-}
-
-void NumberCategoryDelegate::setInstance(NumberCategoryDelegate* ins)
-{
-   m_spInstance = ins;
-   ins->load(NumberCategoryModel::instance());
-}
+#endif

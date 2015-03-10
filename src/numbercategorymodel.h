@@ -28,38 +28,40 @@ class ContactMethod;
 class NumberCategory;
 class NumberCategoryModelPrivate;
 
+/**
+ * This class manage the ContactMethod categories. Those are usually associated
+ * with PhoneNumber types used by contacts.
+ *
+ * The model is mostly for debugging purpose. The information is also available
+ * in the CollectionModel.
+ */
 class LIB_EXPORT NumberCategoryModel : public QAbstractListModel, public CollectionManagerInterface<ContactMethod> {
    Q_OBJECT
 public:
+   friend class NumberCategory;
+   friend class ContactMethod ;
 
    enum Role {
-      INDEX = 100,
+      KEY = 100,
    };
 
    //Abstract model member
-   virtual QVariant       data    (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual QVariant      data     (const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount (const QModelIndex& parent = QModelIndex()                ) const override;
    virtual Qt::ItemFlags flags    (const QModelIndex& index                                 ) const override;
    virtual bool          setData  (const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Mutator
-   NumberCategory* addCategory(const QString& name, const QVariant& icon, int index = -1, bool enabled = true);
-   void setIcon(int index, const QVariant& icon);
-   void save();
+   NumberCategory* addCategory(const QString& name, const QVariant& icon, int key = -1);
 
    //Singleton
    static NumberCategoryModel* instance();
 
    //Getter
-   QModelIndex nameToIndex(const QString& name) const;
-   NumberCategory* getCategory(const QString& type);
-   static NumberCategory* other();
-   int getSize(const NumberCategory* cat) const;
-
-   //Mutator
-   void registerNumber  (ContactMethod* number); //FIXME this should be private
-   void unregisterNumber(ContactMethod* number);
+   QModelIndex            nameToIndex(const QString& name       ) const;
+   NumberCategory*        getCategory(const QString& type       );
+   static NumberCategory* other      (                          );
 
 private:
    explicit NumberCategoryModel(QObject* parent = nullptr);
@@ -69,8 +71,8 @@ private:
 
    //Re-implementation
    virtual void collectionAddedCallback(CollectionInterface* collection) override;
-   virtual bool addItemCallback(const ContactMethod* item) override;
-   virtual bool removeItemCallback(const ContactMethod* item) override;
+   virtual bool addItemCallback        (const ContactMethod* item      ) override;
+   virtual bool removeItemCallback     (const ContactMethod* item      ) override;
 
    //Singleton
    static NumberCategoryModel* m_spInstance;

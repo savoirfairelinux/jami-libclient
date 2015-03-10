@@ -268,12 +268,15 @@ bool CollectionModel::save()
       //Load newly enabled collections
       foreach(CollectionModelPrivate::ProxyItem* top, d_ptr->m_lTopLevelBackends) {
          CollectionInterface* current = top->collection;
-         bool check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
-         bool wasChecked = current->isEnabled();
-         if (check && !wasChecked)
-            current->enable(true);
-         else if ((!check) && wasChecked)
-            current->enable(false);
+         bool check,wasChecked;
+         if (current) {
+            check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
+            wasChecked = current->isEnabled();
+            if (check && !wasChecked)
+               current->enable(true);
+            else if ((!check) && wasChecked)
+               current->enable(false);
+         }
 
          //TODO implement real tree digging
          foreach(CollectionModelPrivate::ProxyItem* leaf ,top->m_Children) {

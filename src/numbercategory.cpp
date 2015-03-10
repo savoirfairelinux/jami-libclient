@@ -24,17 +24,20 @@
 #include "collectioneditor.h"
 #include "contactmethod.h"
 #include "numbercategorymodel.h"
+#include "private/numbercategorymodel_p.h"
 
 class NumberCategoryPrivate
 {
 public:
    NumberCategoryPrivate();
+
    //Attributes
-   QString m_Name;
+   QString  m_Name ;
    QVariant m_pIcon;
+   int      m_Key  ;
 };
 
-NumberCategoryPrivate::NumberCategoryPrivate() : m_pIcon(), m_Name()
+NumberCategoryPrivate::NumberCategoryPrivate() : m_pIcon(), m_Name(), m_Key(-1)
 {
 }
 
@@ -85,7 +88,12 @@ bool NumberCategory::load()
 
 int NumberCategory::size() const
 {
-   return NumberCategoryModel::instance()->getSize(this);
+   return NumberCategoryModel::instance()->d_ptr->getSize(this);
+}
+
+int NumberCategory::key() const
+{
+   return d_ptr->m_Key;
 }
 
 CollectionInterface::SupportedFeatures NumberCategory::supportedFeatures() const
@@ -104,4 +112,9 @@ void NumberCategory::setIcon(const QVariant& pixmap)
 void NumberCategory::setName(const QString& name)
 {
    d_ptr->m_Name = name;
+}
+
+void NumberCategory::setKey(const int key)
+{
+   d_ptr->m_Key = key;
 }

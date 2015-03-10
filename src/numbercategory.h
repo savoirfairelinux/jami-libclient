@@ -45,15 +45,18 @@ public:
    virtual QByteArray id       () const override;
    virtual int        size     () const override;
 
+   //Getters
+   int      key (                                      ) const;
    QVariant icon(bool isTracked, bool isPresent = false) const;
 
-   virtual SupportedFeatures  supportedFeatures() const override;
-   virtual bool load  () override;
 
+   virtual SupportedFeatures  supportedFeatures() const override;
+   virtual bool load() override;
 
    //Setter
    void setIcon(const QVariant& pixmap );
    void setName(const QString&  name   );
+   void setKey (const int       key    );
 
 private:
    NumberCategory(CollectionMediator<ContactMethod>* mediator, const QString& name);

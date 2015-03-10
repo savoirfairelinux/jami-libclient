@@ -231,7 +231,6 @@ SET( libringclient_LIB_SRCS
   #Delegates
   src/delegates/accountlistcolordelegate.cpp
   src/delegates/phonenumberselectordelegate.cpp
-  src/delegates/numbercategorydelegate.cpp
   src/delegates/pixmapmanipulationdelegate.cpp
   src/delegates/presenceserializationdelegate.cpp
   src/delegates/itemmodelstateserializationdelegate.cpp
@@ -348,7 +347,6 @@ SET(libringclient_delegates_LIB_HDRS
   src/delegates/presenceserializationdelegate.h
   src/delegates/itemmodelstateserializationdelegate.h
   src/delegates/pixmapmanipulationdelegate.h
-  src/delegates/numbercategorydelegate.h
   src/delegates/profilepersisterdelegate.h
   src/delegates/certificateserializationdelegate.h
 )
