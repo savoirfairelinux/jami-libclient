@@ -112,6 +112,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
    qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    Account* a = new Account();
+   a->setProtocol(proto);
    a->d_ptr->m_hAccountDetails.clear();
    a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ENABLED] = "false";
    a->d_ptr->m_pAccountNumber = const_cast<ContactMethod*>(ContactMethod::BLANK());
