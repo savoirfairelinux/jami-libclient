@@ -128,8 +128,10 @@ bool Video::ShmRendererPrivate::renderToBitmap()
       return false;
    }
 
-   if(!VideoRendererManager::instance()->startStopMutex()->tryLock())
+   if(!VideoRendererManager::instance()->startStopMutex()->tryLock()) {
+	  shmUnlock();
       return false;
+   }
 
    // wait for a new buffer
    while (m_BufferGen == m_pShmArea->m_BufferGen) {
@@ -169,6 +171,7 @@ bool Video::ShmRendererPrivate::renderToBitmap()
    if (!q_ptr->resizeShm()) {
       qDebug() << "Could not resize shared memory";
       VideoRendererManager::instance()->startStopMutex()->unlock();
+	  shmUnlock();
       return false;
    }
 
@@ -176,10 +179,10 @@ bool Video::ShmRendererPrivate::renderToBitmap()
       static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().resize(m_pShmArea->m_BufferSize);
    memcpy(static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().data(),m_pShmArea->m_Data,m_pShmArea->m_BufferSize);
    m_BufferGen = m_pShmArea->m_BufferGen;
-   shmUnlock();
    static_cast<Video::Renderer*>(q_ptr)->d_ptr->updateFrameIndex();
-
    VideoRendererManager::instance()->startStopMutex()->unlock();
+   shmUnlock();
+
    return true;
 #else
    return false;
@@ -306,8 +309,8 @@ void Video::ShmRendererPrivate::timedEvents()
 ///Start the rendering loop
 void Video::ShmRenderer::startRendering()
 {
+   QMutexLocker locker {mutex()};
    VideoRendererManager::instance()->startStopMutex()->lock();
-   QMutexLocker locker(mutex());
    startShm();
    if (!d_ptr->m_pTimer) {
       d_ptr->m_pTimer = new QTimer(nullptr);
@@ -331,8 +334,8 @@ void Video::ShmRenderer::startRendering()
 ///Stop the rendering loop
 void Video::ShmRenderer::stopRendering()
 {
+   QMutexLocker locker {mutex()};
    VideoRendererManager::instance()->startStopMutex()->lock();
-   QMutexLocker locker(mutex());
    setRendering(false);
    qDebug() << "Stopping rendering on" << this;
    if (d_ptr->m_pTimer)
