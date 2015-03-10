@@ -91,9 +91,9 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        mailbox                      READ mailbox                       WRITE setMailbox                     )
    Q_PROPERTY(QString        proxy                        READ proxy                         WRITE setProxy                       )
    Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
-//    Q_PROPERTY(QString        tlsCaListFile                READ tlsCaListFile                 WRITE setTlsCaListFile               )
-//    Q_PROPERTY(QString        tlsCertificateFile           READ tlsCertificateFile            WRITE setTlsCertificateFile          )
-//    Q_PROPERTY(QString        tlsPrivateKeyFile            READ tlsPrivateKeyFile             WRITE setTlsPrivateKeyFile           )
+   Q_PROPERTY(Certificate*   tlsCaListCertificate         READ tlsCaListCertificate          WRITE setTlsCaListCertificate        )
+   Q_PROPERTY(Certificate*   tlsCertificate               READ tlsCertificate                WRITE setTlsCertificate              )
+   Q_PROPERTY(Certificate*   tlsPrivateKeyCertificate     READ tlsPrivateKeyCertificate      WRITE setTlsPrivateKeyCertificate    )
    Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
@@ -332,6 +332,9 @@ class LIB_EXPORT Account : public QObject {
       void setTlsCaListCertificate          (Certificate* cert      );
       void setTlsCertificate                (Certificate* cert      );
       void setTlsPrivateKeyCertificate      (Certificate* cert      );
+      void setTlsCaListCertificate          (const QString& detail  );
+      void setTlsCertificate                (const QString& detail  );
+      void setTlsPrivateKeyCertificate      (const QString& detail  );
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );

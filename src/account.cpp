@@ -1055,24 +1055,45 @@ void Account::setTlsPassword(const QString& detail)
 }
 
 ///Set the certificate authority list file
+void Account::setTlsCaListCertificate(const QString& path)
+{
+   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   setTlsCaListCertificate(cert);
+}
+
+///Set the certificate
+void Account::setTlsCertificate(const QString& path)
+{
+   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   setTlsCertificate(cert);
+}
+
+///Set the private key
+void Account::setTlsPrivateKeyCertificate(const QString& path)
+{
+   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   setTlsPrivateKeyCertificate(cert);
+}
+
+///Set the certificate authority list file
 void Account::setTlsCaListCertificate(Certificate* cert)
 {
-   d_ptr->m_pCaCert = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->m_pCaCert = cert;
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().path():QString());
 }
 
 ///Set the certificate
 void Account::setTlsCertificate(Certificate* cert)
 {
-   d_ptr->m_pTlsCert = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->m_pTlsCert = cert;
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().path():QString());
 }
 
 ///Set the private key
 void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
-   d_ptr->m_pPrivateKey = cert; //FIXME memory leak
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->m_pPrivateKey = cert;
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().path():QString());
 }
 
 ///Set the TLS server
