@@ -569,7 +569,6 @@ QMimeData* HistoryModel::mimeData(const QModelIndexList &indexes) const
    return mimeData2;
 }
 
-
 bool HistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction action, int row, int column, const QModelIndex &parentIdx)
 {
    Q_UNUSED(row)

@@ -26,6 +26,7 @@
 #include "callmodel.h"
 #include "account.h"
 #include "accountmodel.h"
+#include "availableaccountmodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "private/useractions.h"
 
@@ -112,7 +113,9 @@ const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionMod
  /*RECORD          */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
  /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           true }},
 
- /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false }},
+ /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
+
+ /*ADD_NEW         */ {{ false  , false,  false,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
 }};
 
 /**
@@ -130,6 +133,8 @@ const TypedStateMachine< TypedStateMachine< bool , Account::RegistrationState > 
    /* HANGUP          */ {{ true ,    true ,     true ,    true   }},
 
    /* JOIN            */ {{ true ,    true ,     true ,    true   }},
+
+   /* ADD_NEW         */ {{ true ,    false,     true ,    true   }},
 }};
 
 /**
@@ -146,6 +151,8 @@ const TypedStateMachine< TypedStateMachine< bool , UserActionModelPrivate::Selec
    /* HANGUP          */ {{ false,  true ,  true  }},
 
    /* JOIN            */ {{ false,  false,  true  }},
+
+   /* ADD_NEW         */ {{ true ,  false,  false }},
 }};
 
 /**
@@ -161,6 +168,8 @@ const TypedStateMachine< bool, UserActionModel::Action > UserActionModelPrivate:
    /* HANGUP          */ true  , /* N/A                                       */
 
    /* JOIN            */ true  , /* N/A                                       */
+
+   /* ADD_NEW         */ false , /* N/A                                       */
 }};
 
 /**
@@ -177,6 +186,8 @@ const TypedStateMachine< TypedStateMachine< bool , Account::Protocol > , UserAct
    /* HANGUP          */ {{ true , true , true  }},
 
    /* JOIN            */ {{ true , true , true  }},
+
+   /* ADD_NEW         */ {{ true , true , true  }},
 }};
 
 /**
@@ -197,6 +208,8 @@ const TypedStateMachine< TypedStateMachine< UserActionModel::ActionStatfulnessLe
    /* HANGUP          */ {{ ST UNISTATE,  ST UNISTATE     ,  ST TRISTATE  }},
 
    /* JOIN            */ {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }},
+
+   /* ADD_NEW         */ {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }},
 }};
 #undef ST
 
@@ -210,6 +223,8 @@ const TypedStateMachine< QString, UserActionModel::Action> UserActionModelPrivat
    /* HANGUP          */ QObject::tr("HANGUP"          ),
 
    /* JOIN            */ QObject::tr("JOIN"            ),
+
+   /* JOIN            */ QObject::tr("ADD_NEW"         ),
 }};
 
 UserActionModelPrivate::UserActionModelPrivate(UserActionModel* parent) : QObject(parent),q_ptr(parent),
@@ -230,6 +245,7 @@ UserActionModel::UserActionModel(Call* parent) : QAbstractListModel(parent),d_pt
    d_ptr->m_pCall = parent;
 
    connect(AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(slotStateChanged()));
+   d_ptr->updateActions();
 }
 
 /**
@@ -245,6 +261,7 @@ UserActionModel::UserActionModel(CallModel* parent) : QAbstractListModel(parent)
    connect(parent->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection))        , d_ptr.data(), SLOT(updateActions()));
    connect(parent,                   SIGNAL(callStateChanged(Call*,Call::State))                    , d_ptr.data(), SLOT(updateActions()));
    connect(AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(updateActions()));
+   d_ptr->updateActions();
 }
 
 UserActionModel::~UserActionModel()
@@ -299,7 +316,7 @@ int UserActionModel::rowCount(const QModelIndex& parent ) const
 ///For now, this model probably wont be used that way
 Qt::ItemFlags UserActionModel::flags(const QModelIndex& idx ) const
 {
-   if (!idx.isValid() && (idx.row()>=0 && idx.row() < enum_class_size<UserActionModel::Action>()))
+   if ((!idx.isValid()) || !(idx.row()>=0 && idx.row() < enum_class_size<UserActionModel::Action>()))
       return Qt::NoItemFlags;
 
    UserActionModel::Action action = static_cast<UserActionModel::Action>(idx.row());
@@ -355,6 +372,9 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::JOIN            :
          ret += 0;
          break;
+      case UserActionModel::Action::ADD_NEW         :
+         ret += 0;
+         break;
       case UserActionModel::Action::COUNT__:
          break;
    };
@@ -385,10 +405,17 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
          m_SelectionState = CallModel::instance()->selectionModel()->selectedRows().size() > 1 ? SelectionState::MULTI : SelectionState::UNIQUE;
 
          //Aggregate and reduce the action state for each selected calls
-         for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
-            const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
-            updateCheckMask    ( state ,action, c );
-            ret &= updateByCall( action       , c );
+         if (CallModel::instance()->selectionModel()->selectedRows().size()) {
+            for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
+               const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
+               updateCheckMask    ( state ,action, c );
+               ret &= updateByCall( action       , c );
+            }
+         }
+         else {
+            Account* a = AvailableAccountModel::instance()->currentDefaultAccount();
+            ret = multi_call_options[action][UserActionModelPrivate::SelectionState::NONE]
+               && (a?availableAccountActionMap[action][a->registrationState()]:false);
          }
 
          //Detect if the multiple selection has mismatching item states, disable it if necessary
@@ -484,6 +511,10 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          break;
       case UserActionModel::Action::JOIN            :
          //TODO unimplemented
+         break;
+      case UserActionModel::Action::ADD_NEW         :
+         if (UserActions::addNew())
+            d_ptr->updateActions();
          break;
       case UserActionModel::Action::COUNT__:
          break;

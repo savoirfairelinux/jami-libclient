@@ -162,41 +162,42 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 {
 
    const QSize res = QSize(width,height);
+   const QByteArray rid = id.toLatin1();
 
-   if (m_lRenderers[id.toLatin1()] == nullptr ) {
+   if (m_lRenderers[rid] == nullptr ) {
 #if defined(Q_OS_DARWIN)
-      m_lRenderers[id.toLatin1()] = new Video::DirectRenderer(id.toLatin1(), res);
+      m_lRenderers[rid] = new Video::DirectRenderer(rid, res);
 #else
-      m_lRenderers[id.toLatin1()] = new Video::ShmRenderer(id.toLatin1(),shmPath,res);
+      m_lRenderers[rid] = new Video::ShmRenderer(rid,shmPath,res);
 #endif
-      m_lRenderers[id.toLatin1()]->moveToThread(q_ptr);
+      m_lRenderers[rid]->moveToThread(q_ptr);
       if (!q_ptr->isRunning())
          q_ptr->start();
    }
    else {
-      // Video::Renderer* Renderer = m_lRenderers[id.toLatin1()];
+      // Video::Renderer* Renderer = m_lRenderers[rid];
       //TODO: do direct renderer stuff here
-      m_lRenderers[id.toLatin1()]->setSize(res);
+      m_lRenderers[rid]->setSize(res);
 #if !defined(Q_OS_DARWIN)
-      static_cast<Video::ShmRenderer*>(m_lRenderers[id.toLatin1()])->setShmPath(shmPath);
+      static_cast<Video::ShmRenderer*>(m_lRenderers[rid])->setShmPath(shmPath);
 #endif
    }
 
-   m_lRenderers[id.toLatin1()]->startRendering();
+   m_lRenderers[rid]->startRendering();
    Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
    if (dev) {
-      emit dev->renderingStarted(m_lRenderers[id.toLatin1()]);
+      emit dev->renderingStarted(m_lRenderers[rid]);
    }
    if (id != "local") {
       qDebug() << "Starting video for call" << id;
       Call* c = CallModel::instance()->getCall(id);
       if (c)
-         c->d_ptr->registerRenderer(m_lRenderers[id.toLatin1()]);
+         c->d_ptr->registerRenderer(m_lRenderers[rid]);
    }
    else {
       m_PreviewState = true;
       emit q_ptr->previewStateChanged(true);
-      emit q_ptr->previewStarted(m_lRenderers[id.toLatin1()]);
+      emit q_ptr->previewStarted(m_lRenderers[rid]);
    }
 }
 

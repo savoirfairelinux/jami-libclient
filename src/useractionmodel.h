@@ -70,6 +70,9 @@ public:
 
       //Multi selection
       JOIN            , /*!< [Stateful] Join all seclect calls into a conference    */
+      
+      //No selection
+      ADD_NEW         , /*!< Add a new call                                         */
       COUNT__,
    };
    Q_ENUMS(Action)

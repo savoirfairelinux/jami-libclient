@@ -26,6 +26,7 @@
  */
 namespace UserActions {
 
+bool addNew();
 bool accept(const QList<Call*> calls);
 bool hangup(const QList<Call*> calls);
 bool refuse(const QList<Call*> calls);
@@ -34,15 +35,20 @@ bool unhold(const QList<Call*> calls);
 bool transfer(const QList<Call*> calls);
 bool record(const QList<Call*> calls);
 
+bool addNew()
+{
+   Call* call = CallModel::instance()->dialingCall();
+      CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
+      return true;
+}
+
 bool accept(const QList<Call*> calls)
 {
    bool ret = true;
 
    //Add a new call if none is there
    if (!calls.size()) {
-      Call* call = CallModel::instance()->dialingCall();
-      CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
-      return true;
+      return addNew();
    }
 
    for (Call* call : calls) {

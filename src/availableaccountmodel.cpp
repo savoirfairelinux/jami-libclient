@@ -144,7 +144,7 @@ Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType ty
       )
          return current;
    }
-   return nullptr;
+   return firstRegisteredAccount(); //We need one
 }
 
 QItemSelectionModel* AvailableAccountModel::selectionModel() const

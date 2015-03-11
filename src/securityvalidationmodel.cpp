@@ -95,12 +95,17 @@ m_pAccount(account), m_CurrentSecurityLevel(SecurityValidationModel::SecurityLev
 SecurityValidationModel::SecurityValidationModel(Account* account) : QAbstractListModel(account),
 d_ptr(new SecurityValidationModelPrivate(account,this))
 {
-   
+   if (account) {
+      d_ptr->m_pCa         = d_ptr->m_pAccount->tlsCaListCertificate    ();
+      d_ptr->m_pCert       = d_ptr->m_pAccount->tlsCertificate          ();
+      d_ptr->m_pPrivateKey = d_ptr->m_pAccount->tlsPrivateKeyCertificate();
+      d_ptr->update();
+   }
 }
 
 SecurityValidationModel::~SecurityValidationModel()
 {
-   
+
 }
 
 QHash<int,QByteArray> SecurityValidationModel::roleNames() const
@@ -162,6 +167,10 @@ SecurityFlaw* SecurityValidationModelPrivate::getFlaw(SecurityValidationModel::A
 #define _F(_se,_ty) getFlaw(SecurityValidationModel::AccountSecurityFlaw::_se,_ty);
 void SecurityValidationModelPrivate::update()
 {
+   if (!m_pAccount)
+      return; //TODO use the local certificates
+   qDebug() << "\n\n\nUPDATING";
+
    m_lCurrentFlaws.clear();
 
    /**********************************
@@ -189,7 +198,15 @@ void SecurityValidationModelPrivate::update()
     *      Certificates issues       *
     *********************************/
    QList<Certificate*> certs;
-   certs << m_pAccount->tlsCaListCertificate() << m_pAccount->tlsCertificate() << m_pAccount->tlsPrivateKeyCertificate();
+   if (m_pCa)
+      certs << m_pCa;
+
+   if (m_pCert)
+      certs << m_pCert;
+
+//    if (m_pPrivateKey)
+//       certs << m_pPrivateKey;
+
    foreach (Certificate* cert, certs) {
       if (cert->exist() == Certificate::CheckValues::FAILED) {
          m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
