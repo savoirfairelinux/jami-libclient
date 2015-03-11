@@ -181,7 +181,7 @@ void SecurityValidationModelPrivate::update()
 
    /* The user certificate need to have a private key, otherwise it wont
     * be possible to encrypt anything */
-   if (( m_pAccount->tlsCertificate()->hasPrivateKey() == Certificate::CheckValues::FAILED) && (m_pAccount->tlsPrivateKeyCertificate()->exist()  == Certificate::CheckValues::FAILED)) {
+   if (( m_pAccount->tlsCertificate() && m_pAccount->tlsCertificate()->hasPrivateKey() == Certificate::CheckValues::FAILED) && (m_pAccount->tlsPrivateKeyCertificate() && m_pAccount->tlsPrivateKeyCertificate()->exist()  == Certificate::CheckValues::FAILED)) {
       m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
    }
 
