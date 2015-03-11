@@ -50,6 +50,7 @@
 #include "presencestatusmodel.h"
 #include "uri.h"
 #include "securityvalidationmodel.h"
+#include "private/securityvalidationmodel_p.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -1052,6 +1053,7 @@ void Account::setPassword(const QString& detail)
 void Account::setTlsPassword(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
@@ -1080,6 +1082,7 @@ void Account::setTlsCaListCertificate(Certificate* cert)
 {
    d_ptr->m_pCaCert = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().path():QString());
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the certificate
@@ -1087,6 +1090,7 @@ void Account::setTlsCertificate(Certificate* cert)
 {
    d_ptr->m_pTlsCert = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().path():QString());
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the private key
@@ -1094,12 +1098,14 @@ void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().path():QString());
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the TLS server
 void Account::setTlsServerName(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the stun server
@@ -1148,6 +1154,7 @@ void Account::setLastErrorCode(int code)
 void Account::setKeyExchange(KeyExchangeModel::Type detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE ,KeyExchangeModel::toDaemonName(detail));
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the account timeout, it will be renegotiated when that timeout occur
@@ -1160,6 +1167,7 @@ void Account::setRegistrationExpire(int detail)
 void Account::setTlsNegotiationTimeoutSec(int detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the local port for SIP/IAX communications
@@ -1207,54 +1215,64 @@ void Account::setAutoAnswer(bool detail)
 void Account::setTlsVerifyServer(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set the TLS verification client
 void Account::setTlsVerifyClient(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set if the peer need to be providing a certificate
 void Account::setTlsRequireClientCertificate(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 ///Set if the security settings are enabled
 void Account::setTlsEnabled(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setDisplaySasOnce(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setSrtpRtpFallback(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setSrtpEnabled(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::ENABLED, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setZrtpDisplaySas(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setZrtpNotSuppWarning(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setZrtpHelloHash(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::HELLO_HASH, (detail)TO_BOOL);
+   d_ptr->regenSecurityValidation();
 }
 
 void Account::setSipStunEnabled(bool detail)
@@ -1756,6 +1774,16 @@ void Account::saveCredentials() {
          toReturn << credentialData;
       }
       configurationManager.setCredentials(id(),toReturn);
+   }
+}
+
+void AccountPrivate::regenSecurityValidation()
+{
+   if (m_pSecurityValidationModel) {
+      m_pSecurityValidationModel->setTlsCaListCertificate(q_ptr->tlsCaListCertificate());
+      m_pSecurityValidationModel->setTlsCertificate(q_ptr->tlsCertificate());
+      m_pSecurityValidationModel->setTlsPrivateKeyCertificate(q_ptr->tlsPrivateKeyCertificate());
+      m_pSecurityValidationModel->d_ptr->update();
    }
 }
 

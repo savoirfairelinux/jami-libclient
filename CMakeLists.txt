@@ -170,6 +170,7 @@ SET( libringclient_LIB_SRCS
   src/video/device.cpp
   src/video/renderer.cpp
   src/certificate.cpp
+  src/securityflaw.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -313,6 +314,7 @@ SET( libringclient_LIB_HDRS
   src/collectioneditor.h
   src/collectioneditor.hpp
   src/fallbackpersoncollection.h
+  src/securityflaw.h
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -453,6 +455,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/instantmessagingmodel_p.h
    src/private/videorenderer_p.h
    src/private/collectionmodel_p.h
+   src/private/securityflaw_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

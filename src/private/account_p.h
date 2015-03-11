@@ -86,6 +86,7 @@ public:
    //Helpers
    inline void changeState(Account::EditState state);
    bool updateState();
+   void regenSecurityValidation();
 
    //State actions
    void performAction(Account::EditAction action);

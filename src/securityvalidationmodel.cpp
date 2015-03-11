@@ -18,10 +18,13 @@
 #include "securityvalidationmodel.h"
 #include "account.h"
 #include "delegates/pixmapmanipulationdelegate.h"
+#include "private/securityvalidationmodel_p.h"
+#include "securityflaw.h"
+#include "private/securityflaw_p.h"
 
 #include <QtAlgorithms>
 
-const QString SecurityValidationModel::messages[enum_class_size<SecurityFlaw>()] = {
+const QString SecurityValidationModelPrivate::messages[enum_class_size<SecurityValidationModel::AccountSecurityFlaw>()] = {
    QObject::tr("Your communication negotiation is secured, but not the media stream, please enable ZRTP or SDES"),
    QObject::tr("TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to "
    "snooping"),
@@ -41,51 +44,56 @@ const QString SecurityValidationModel::messages[enum_class_size<SecurityFlaw>()]
    QObject::tr("REQUIRE_CERTIFICATE_DISABLED   "),
 };
 
-const TypedStateMachine< SecurityValidationModel::SecurityLevel , SecurityValidationModel::SecurityFlaw >
-SecurityValidationModel::maximumSecurityLevel = {{
-   /* SRTP_DISABLED                  */ SecurityLevel::WEAK       ,
-   /* TLS_DISABLED                   */ SecurityLevel::WEAK       ,
-   /* CERTIFICATE_EXPIRED            */ SecurityLevel::MEDIUM     ,
-   /* CERTIFICATE_SELF_SIGNED        */ SecurityLevel::MEDIUM     ,
-   /* CA_CERTIFICATE_MISSING         */ SecurityLevel::MEDIUM     ,
-   /* END_CERTIFICATE_MISSING        */ SecurityLevel::MEDIUM     ,
-   /* PRIVATE_KEY_MISSING            */ SecurityLevel::MEDIUM     ,
-   /* CERTIFICATE_MISMATCH           */ SecurityLevel::NONE       ,
-   /* CERTIFICATE_STORAGE_PERMISSION */ SecurityLevel::ACCEPTABLE ,
-   /* CERTIFICATE_STORAGE_FOLDER     */ SecurityLevel::ACCEPTABLE ,
-   /* CERTIFICATE_STORAGE_LOCATION   */ SecurityLevel::ACCEPTABLE ,
-   /* OUTGOING_SERVER_MISMATCH       */ SecurityLevel::ACCEPTABLE ,
-   /* VERIFY_INCOMING_DISABLED       */ SecurityLevel::MEDIUM     ,
-   /* VERIFY_ANSWER_DISABLED         */ SecurityLevel::MEDIUM     ,
-   /* REQUIRE_CERTIFICATE_DISABLED   */ SecurityLevel::MEDIUM     ,
-   /* MISSING_CERTIFICATE            */ SecurityLevel::NONE       ,
-   /* MISSING_AUTHORITY              */ SecurityLevel::WEAK       ,
+const TypedStateMachine< SecurityValidationModel::SecurityLevel , SecurityValidationModel::AccountSecurityFlaw >
+SecurityValidationModelPrivate::maximumSecurityLevel = {{
+   /* SRTP_DISABLED                  */ SecurityValidationModel::SecurityLevel::WEAK       ,
+   /* TLS_DISABLED                   */ SecurityValidationModel::SecurityLevel::WEAK       ,
+   /* CERTIFICATE_EXPIRED            */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* CERTIFICATE_SELF_SIGNED        */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* CA_CERTIFICATE_MISSING         */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* END_CERTIFICATE_MISSING        */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* PRIVATE_KEY_MISSING            */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* CERTIFICATE_MISMATCH           */ SecurityValidationModel::SecurityLevel::NONE       ,
+   /* CERTIFICATE_STORAGE_PERMISSION */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
+   /* CERTIFICATE_STORAGE_FOLDER     */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
+   /* CERTIFICATE_STORAGE_LOCATION   */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
+   /* OUTGOING_SERVER_MISMATCH       */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
+   /* VERIFY_INCOMING_DISABLED       */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* VERIFY_ANSWER_DISABLED         */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* REQUIRE_CERTIFICATE_DISABLED   */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
+   /* MISSING_CERTIFICATE            */ SecurityValidationModel::SecurityLevel::NONE       ,
+   /* MISSING_AUTHORITY              */ SecurityValidationModel::SecurityLevel::WEAK       ,
 }};
 
-const TypedStateMachine< SecurityValidationModel::Severity , SecurityValidationModel::SecurityFlaw >
-SecurityValidationModel::flawSeverity = {{
-   /* SRTP_DISABLED                  */ Severity::ISSUE   ,
-   /* TLS_DISABLED                   */ Severity::ISSUE   ,
-   /* CERTIFICATE_EXPIRED            */ Severity::WARNING ,
-   /* CERTIFICATE_SELF_SIGNED        */ Severity::WARNING ,
-   /* CA_CERTIFICATE_MISSING         */ Severity::ISSUE   ,
-   /* END_CERTIFICATE_MISSING        */ Severity::ISSUE   ,
-   /* PRIVATE_KEY_MISSING            */ Severity::ERROR   ,
-   /* CERTIFICATE_MISMATCH           */ Severity::ERROR   ,
-   /* CERTIFICATE_STORAGE_PERMISSION */ Severity::WARNING ,
-   /* CERTIFICATE_STORAGE_FOLDER     */ Severity::INFORMATION ,
-   /* CERTIFICATE_STORAGE_LOCATION   */ Severity::INFORMATION ,
-   /* OUTGOING_SERVER_MISMATCH       */ Severity::WARNING ,
-   /* VERIFY_INCOMING_DISABLED       */ Severity::ISSUE   ,
-   /* VERIFY_ANSWER_DISABLED         */ Severity::ISSUE   ,
-   /* REQUIRE_CERTIFICATE_DISABLED   */ Severity::ISSUE   ,
-   /* MISSING_CERTIFICATE            */ Severity::ERROR   ,
-   /* MISSING_AUTHORITY              */ Severity::ERROR   ,
+const TypedStateMachine< SecurityValidationModel::Severity , SecurityValidationModel::AccountSecurityFlaw >
+SecurityValidationModelPrivate::flawSeverity = {{
+   /* SRTP_DISABLED                  */ SecurityValidationModel::Severity::ISSUE   ,
+   /* TLS_DISABLED                   */ SecurityValidationModel::Severity::ISSUE   ,
+   /* CERTIFICATE_EXPIRED            */ SecurityValidationModel::Severity::WARNING ,
+   /* CERTIFICATE_SELF_SIGNED        */ SecurityValidationModel::Severity::WARNING ,
+   /* CA_CERTIFICATE_MISSING         */ SecurityValidationModel::Severity::ISSUE   ,
+   /* END_CERTIFICATE_MISSING        */ SecurityValidationModel::Severity::ISSUE   ,
+   /* PRIVATE_KEY_MISSING            */ SecurityValidationModel::Severity::ERROR   ,
+   /* CERTIFICATE_MISMATCH           */ SecurityValidationModel::Severity::ERROR   ,
+   /* CERTIFICATE_STORAGE_PERMISSION */ SecurityValidationModel::Severity::WARNING ,
+   /* CERTIFICATE_STORAGE_FOLDER     */ SecurityValidationModel::Severity::INFORMATION ,
+   /* CERTIFICATE_STORAGE_LOCATION   */ SecurityValidationModel::Severity::INFORMATION ,
+   /* OUTGOING_SERVER_MISMATCH       */ SecurityValidationModel::Severity::WARNING ,
+   /* VERIFY_INCOMING_DISABLED       */ SecurityValidationModel::Severity::ISSUE   ,
+   /* VERIFY_ANSWER_DISABLED         */ SecurityValidationModel::Severity::ISSUE   ,
+   /* REQUIRE_CERTIFICATE_DISABLED   */ SecurityValidationModel::Severity::ISSUE   ,
+   /* MISSING_CERTIFICATE            */ SecurityValidationModel::Severity::ERROR   ,
+   /* MISSING_AUTHORITY              */ SecurityValidationModel::Severity::ERROR   ,
 }};
 
+SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent) : q_ptr(parent),
+m_pAccount(account), m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE)
+{
+   
+}
 
 SecurityValidationModel::SecurityValidationModel(Account* account) : QAbstractListModel(account),
-m_pAccount(account),m_CurrentSecurityLevel(SecurityLevel::NONE)
+d_ptr(new SecurityValidationModelPrivate(account,this))
 {
    
 }
@@ -110,10 +118,10 @@ QVariant SecurityValidationModel::data( const QModelIndex& index, int role) cons
 {
    if (index.isValid())  {
       if (role == Qt::DisplayRole) {
-         return messages[static_cast<int>( m_lCurrentFlaws[index.row()]->flaw() )];
+         return SecurityValidationModelPrivate::messages[static_cast<int>( d_ptr->m_lCurrentFlaws[index.row()]->flaw() )];
       }
       else if (role == Role::SeverityRole) {
-         return static_cast<int>(m_lCurrentFlaws[index.row()]->severity());
+         return static_cast<int>(d_ptr->m_lCurrentFlaws[index.row()]->severity());
       }
       else if (role == Qt::DecorationRole) {
          return PixmapManipulationDelegate::instance()->serurityIssueIcon(index);
@@ -125,7 +133,7 @@ QVariant SecurityValidationModel::data( const QModelIndex& index, int role) cons
 int SecurityValidationModel::rowCount( const QModelIndex& parent) const
 {
    Q_UNUSED(parent)
-   return m_lCurrentFlaws.size();
+   return d_ptr->m_lCurrentFlaws.size();
 }
 
 Qt::ItemFlags SecurityValidationModel::flags( const QModelIndex& index) const
@@ -143,106 +151,101 @@ bool SecurityValidationModel::setData( const QModelIndex& index, const QVariant 
 }
 
 ///Do some unsafe convertions to bypass Qt4 issues with C++11 enum class
-Flaw* SecurityValidationModel::getFlaw(SecurityFlaw _se,Certificate::Type _ty)
+SecurityFlaw* SecurityValidationModelPrivate::getFlaw(SecurityValidationModel::AccountSecurityFlaw _se, Certificate::Type _ty)
 {
    if (! m_hFlaws[(int)_se][(int)_ty]) {
-      m_hFlaws[(int)_se][(int)_ty] = new Flaw(_se,_ty);
+      m_hFlaws[(int)_se][(int)_ty] = new SecurityFlaw(_se,_ty);
    }
    return m_hFlaws[(int)_se][(int)_ty];
 }
 
-#define _F(_se,_ty) getFlaw(SecurityFlaw::_se,_ty);
-void SecurityValidationModel::update()
+#define _F(_se,_ty) getFlaw(SecurityValidationModel::AccountSecurityFlaw::_se,_ty);
+void SecurityValidationModelPrivate::update()
 {
-//    m_lCurrentFlaws.clear();
-// 
-//    /**********************************
-//     *     Check general issues       *
-//     *********************************/
-// 
-//    /* If TLS is not enabled, everything else is worthless */
-//    if (!m_pAccount->isTlsEnabled()) {
-//       m_lCurrentFlaws << _F(TLS_DISABLED,Certificate::Type::NONE);
-//    }
-// 
-//    /* Check if the media stream is encrypted, it is something users
-//     * may care about if they get this far ;) */
-//    if (!m_pAccount->isSrtpEnabled()) {
-//       m_lCurrentFlaws << _F(SRTP_DISABLED,Certificate::Type::NONE);
-//    }
-// 
-//    /* The user certificate need to have a private key, otherwise it wont
-//     * be possible to encrypt anything */
-//    if ((! m_pAccount->tlsCertificate()->hasPrivateKey()) && (!m_pAccount->tlsPrivateKeyCertificate()->exist())) {
-//       m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
-//    }
-// 
-//    /**********************************
-//     *      Certificates issues       *
-//     *********************************/
-//    QList<Certificate*> certs;
-//    certs << m_pAccount->tlsCaListCertificate() << m_pAccount->tlsCertificate() << m_pAccount->tlsPrivateKeyCertificate();
-//    foreach (Certificate* cert, certs) {
-//       if (! cert->exist()) {
-//          m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
-//       }
-//       if (! cert->isExpired()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_EXPIRED,cert->type());
-//       }
-//       if (! cert->isSelfSigned()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_SELF_SIGNED,cert->type());
-//       }
-//       if (! cert->hasProtectedPrivateKey()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-//       }
-//       if (! cert->hasRightPermissions()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-//       }
-//       if (! cert->hasRightFolderPermissions()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_FOLDER,cert->type());
-//       }
-//       if (! cert->isLocationSecure()) {
-//          m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_LOCATION,cert->type());
-//       }
-//    }
-// 
-//    qSort(m_lCurrentFlaws.begin(),m_lCurrentFlaws.end(),[] (const Flaw* f1, const Flaw* f2) -> int {
-//       return (*f1) < (*f2);
-//    });
-//    for (int i=0;i<m_lCurrentFlaws.size();i++) {
-//       m_lCurrentFlaws[i]->m_Row = i;
-//    }
-// 
-//    emit layoutChanged();
+   m_lCurrentFlaws.clear();
+
+   /**********************************
+    *     Check general issues       *
+    *********************************/
+
+   /* If TLS is not enabled, everything else is worthless */
+   if (!m_pAccount->isTlsEnabled()) {
+      m_lCurrentFlaws << _F(TLS_DISABLED,Certificate::Type::NONE);
+   }
+
+   /* Check if the media stream is encrypted, it is something users
+    * may care about if they get this far ;) */
+   if (!m_pAccount->isSrtpEnabled()) {
+      m_lCurrentFlaws << _F(SRTP_DISABLED,Certificate::Type::NONE);
+   }
+
+   /* The user certificate need to have a private key, otherwise it wont
+    * be possible to encrypt anything */
+   if (( m_pAccount->tlsCertificate()->hasPrivateKey() == Certificate::CheckValues::FAILED) && (m_pAccount->tlsPrivateKeyCertificate()->exist()  == Certificate::CheckValues::FAILED)) {
+      m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
+   }
+
+   /**********************************
+    *      Certificates issues       *
+    *********************************/
+   QList<Certificate*> certs;
+   certs << m_pAccount->tlsCaListCertificate() << m_pAccount->tlsCertificate() << m_pAccount->tlsPrivateKeyCertificate();
+   foreach (Certificate* cert, certs) {
+      if (cert->exist() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
+      }
+      if (cert->isNotExpired() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_EXPIRED,cert->type());
+      }
+      if (cert->isNotSelfSigned() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_SELF_SIGNED,cert->type());
+      }
+      if (cert->arePrivateKeyStoragePermissionOk() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
+      }
+      if (cert->arePublicKeyStoragePermissionOk() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
+      }
+      if (cert->arePrivateKeyDirectoryPermissionsOk() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_FOLDER,cert->type());
+      }
+      if (cert->arePrivateKeyStorageLocationOk() == Certificate::CheckValues::FAILED) {
+         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_LOCATION,cert->type());
+      }
+   }
+
+   qSort(m_lCurrentFlaws.begin(),m_lCurrentFlaws.end(),[] (const SecurityFlaw* f1, const SecurityFlaw* f2) -> int {
+      return (*f1) < (*f2);
+   });
+   for (int i=0;i<m_lCurrentFlaws.size();i++) {
+      m_lCurrentFlaws[i]->d_ptr->m_Row = i;
+   }
+
+   emit q_ptr->layoutChanged();
 }
 #undef _F
 
-QModelIndex SecurityValidationModel::getIndex(const Flaw* flaw)
+QModelIndex SecurityValidationModel::getIndex(const SecurityFlaw* flaw)
 {
-   return index(flaw->m_Row,0);
+   return index(flaw->d_ptr->m_Row,0);
 }
 
-QList<Flaw*> SecurityValidationModel::currentFlaws()
+QList<SecurityFlaw*> SecurityValidationModel::currentFlaws()
 {
-   return m_lCurrentFlaws;
+   return d_ptr->m_lCurrentFlaws;
 }
 
-Certificate::Type Flaw::type() const
+void SecurityValidationModel::setTlsCaListCertificate( Certificate* cert )
 {
-   return m_certType;
+   d_ptr->m_pCa = cert;
 }
 
-SecurityValidationModel::SecurityFlaw Flaw::flaw() const
+void SecurityValidationModel::setTlsCertificate( Certificate* cert )
 {
-   return m_flaw;
+   d_ptr->m_pCert = cert;
 }
 
-SecurityValidationModel::Severity Flaw::severity() const
+void SecurityValidationModel::setTlsPrivateKeyCertificate( Certificate* cert )
 {
-   return m_severity;
-}
-
-void Flaw::slotRequestHighlight()
-{
-   emit requestHighlight();
+   d_ptr->m_pPrivateKey = cert;
 }
