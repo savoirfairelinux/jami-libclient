@@ -63,6 +63,10 @@ T2* CollectionManagerInterface<T>::addCollection(const LoadOptions options)
    CollectionInterface* b = backend;
    d_ptr->m_lCollections << b;
 
+   setCollectionConfigurator(backend,[this]() {
+      return registerConfigarator<T2>();
+   });
+
    if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the backend is checked
 
       //Some backends can fail to load directly
@@ -88,6 +92,12 @@ T2* CollectionManagerInterface<T>::addCollection(Ts... args, const LoadOptions o
    CollectionInterface* b = collection;
    d_ptr->m_lCollections << b;
 
+   //This is the last time we have the class type (T2), so create a lambda
+   //to keep track of the configurator type while we still can
+   setCollectionConfigurator(collection,[this]() {
+      return registerConfigarator<T2>();
+   });
+
    if (options & LoadOptions::FORCE_ENABLED) { //TODO check is the collection is checked
 
       //Some collections can fail to load directly
@@ -100,6 +110,30 @@ T2* CollectionManagerInterface<T>::addCollection(Ts... args, const LoadOptions o
    registerToModel(collection);
 
    return collection;
+}
+
+template<class T>
+template <class T2>
+CollectionCreationInterface* CollectionManagerInterface<T>::registerCreator(CollectionCreationInterface* creator)
+{
+   static CollectionCreationInterface* cfg = nullptr;
+   if (creator) {
+      cfg = creator;
+      addCreatorToList(creator);
+   }
+   return cfg;
+}
+
+template<class T>
+template <class T2>
+CollectionConfigurationInterface* CollectionManagerInterface<T>::registerConfigarator(CollectionConfigurationInterface* configurator)
+{
+   static CollectionConfigurationInterface* cfg = nullptr;
+   if (configurator) {
+      cfg = configurator;
+      addConfiguratorToList(configurator);
+   }
+   return cfg;
 }
 
 template<class T>
@@ -204,7 +238,7 @@ bool CollectionManagerInterface<T>::deleteItem(T* item)
 }
 
 template<class T>
-bool CollectionManagerInterface<T>::enableBackend( CollectionInterface*  collection, bool enabled)
+bool CollectionManagerInterface<T>::enableCollection( CollectionInterface*  collection, bool enabled)
 {
    Q_UNUSED(enabled) //TODO implement it
    collection->load();

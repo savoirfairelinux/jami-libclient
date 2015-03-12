@@ -40,6 +40,7 @@ CategorizedCompositeNode::CategorizedCompositeNode(CategorizedCompositeNode::Typ
 
 CategorizedCompositeNode::~CategorizedCompositeNode()
 {
+   delete d_ptr;
 }
 
 char CategorizedCompositeNode::dropState()

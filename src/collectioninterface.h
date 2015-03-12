@@ -26,9 +26,13 @@
 
 #include "typedefs.h"
 
+//Libstdc++
+#include <functional>
+
 //Ring
 class CollectionInterfacePrivate;
 class CollectionEditorBase;
+class CollectionConfigurationInterface;
 template<typename T> class CollectionEditor;
 template<typename T> class CollectionMediator;
 template<typename T> class ItemBase;
@@ -48,6 +52,7 @@ class LIB_EXPORT CollectionInterface
 {
    template<typename T> friend class CollectionMediator;
    template<typename T> friend class CollectionManagerInterface;
+   friend class CollectionManagerInterfaceBase;
    friend class ItemBase<QObject>;
 public:
 
@@ -203,7 +208,16 @@ public:
     */
    bool add   (ItemBase<QObject>* base);
 
+   /**
+    * Return an object that has been associated with this collection type
+    * 
+    * It can be set using registerConfigarator() available in every collection
+    * manager objects such as PersonModel, HistoryModel and others.
+    */
+   CollectionConfigurationInterface* configurator() const;
+
 protected:
+   void setConfigurator(std::function<CollectionConfigurationInterface*()> getter);
    void addChildren(CollectionInterface* c);
 
    bool save  (ItemBase<QObject>* base);

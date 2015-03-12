@@ -114,3 +114,13 @@ QMetaObject CollectionInterface::metaObject()
 {
    return d_ptr->m_pEditorType;
 }
+
+CollectionConfigurationInterface* CollectionInterface::configurator() const
+{
+   return d_ptr->m_fConfigurator();
+}
+
+void CollectionInterface::setConfigurator(std::function<CollectionConfigurationInterface*()> getter)
+{
+   d_ptr->m_fConfigurator = getter;
+}

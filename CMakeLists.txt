@@ -315,6 +315,9 @@ SET( libringclient_LIB_HDRS
   src/collectioneditor.hpp
   src/fallbackpersoncollection.h
   src/securityflaw.h
+  src/collectioncreationinterface.h
+  src/collectionconfigurationinterface.h
+
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -446,7 +449,7 @@ ELSE()
 
 ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
-# Manually wrap private files
+# Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
    src/private/account_p.h
@@ -456,6 +459,8 @@ SET(libringclient_PRIVATE_HDRS
    src/private/videorenderer_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h
+   src/collectioncreationinterface.h
+   src/collectionconfigurationinterface.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

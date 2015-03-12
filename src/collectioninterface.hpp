@@ -18,7 +18,6 @@
 
 
 //TODO don't do this
-#include <functional>
 template<typename T> class ItemBase;
 
 class CollectionInterfacePrivate {
@@ -41,6 +40,8 @@ public:
    std::function<bool(ItemBase<QObject>*)>  m_fEdit      ;
    std::function<bool(ItemBase<QObject>*)>  m_fRemove    ;
    std::function<int()                   >  m_fSize      ;
+
+   std::function<CollectionConfigurationInterface*()> m_fConfigurator;
 };
 
 template<typename T>

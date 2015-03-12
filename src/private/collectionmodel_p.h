@@ -28,6 +28,8 @@ class QAbstractItemModel;
 class CollectionInterface;
 class CollectionModel;
 class CollectionExtensionInterface;
+class CollectionConfigurationInterface;
+class CollectionCreationInterface;
 
 class CollectionModelPrivate : public QObject
 {
@@ -51,12 +53,14 @@ public:
       int manageableCount;
    };
 
-   QHash<CollectionInterface*,ProxyItem*> m_hBackendsNodes;
-   QVector<ProxyItem*>                    m_lTopLevelBackends;
-   QVector<CollectionExtensionInterface*> m_lExtensions;
-   QHash<QString,ProxyItem*>              m_hCategories;
-   static CollectionModel*                m_spInstance;
-   QAbstractItemModel*                    m_pManageableProxy;
+   QHash<CollectionInterface*,ProxyItem*>   m_hBackendsNodes;
+   QVector<ProxyItem*>                      m_lTopLevelBackends;
+   QVector<CollectionExtensionInterface*>   m_lExtensions;
+   QHash<QString,ProxyItem*>                m_hCategories;
+   static CollectionModel*                  m_spInstance;
+   QAbstractItemModel*                      m_pManageableProxy;
+   QList<CollectionConfigurationInterface*> m_lConfigurator;
+   QList<CollectionCreationInterface*>      m_lCreator;
 
    //Helper
    void registerNew(CollectionInterface* col);

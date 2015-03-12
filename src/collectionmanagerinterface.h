@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef BACKENDMANAGERINTERFACE_H
-#define BACKENDMANAGERINTERFACE_H
+#ifndef COLLECTIONMANAGERINTERFACE_H
+#define COLLECTIONMANAGERINTERFACE_H
 
 #include "typedefs.h"
 
@@ -25,6 +25,7 @@
 
 //libstdc++
 #include <type_traits>
+#include <functional>
 
 //Ring
 #include <collectioninterface.h>
@@ -39,6 +40,8 @@ enum LoadOptions {
 };
 
 class CollectionManagerInterfaceBasePrivate;
+class CollectionCreationInterface;
+class CollectionConfigurationInterface;
 
 /**
  * Common elements for each CollectionManagerInterface
@@ -49,12 +52,15 @@ public:
    virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
 
    ///Enable / disable a collection
-   virtual bool enableBackend( CollectionInterface*  collection, bool enabled) = 0;
+   virtual bool enableCollection( CollectionInterface*  collection, bool enabled) = 0;
 
    virtual bool clearAllCollections() const = 0;
 
 protected:
    void registerToModel(CollectionInterface* col) const;
+   void addCreatorToList(CollectionCreationInterface* creator);
+   void addConfiguratorToList(CollectionConfigurationInterface* configurator);
+   void setCollectionConfigurator(CollectionInterface* col, std::function<CollectionConfigurationInterface*()> getter);
 
 private:
    CollectionManagerInterfaceBasePrivate* d_ptr;
@@ -123,6 +129,22 @@ public:
    template <class T2, typename ...Ts>
    T2* addCollection(Ts... args, const LoadOptions options = LoadOptions::NONE);
 
+   /**
+    * Set an object that will be used when the user wish to add a new collection
+    * of that type.
+    * 
+    * That object can be a widget or anything. I will be passed when a creator
+    * is requested for that type of collection.
+    */
+   template <class T2>
+   CollectionCreationInterface* registerCreator(CollectionCreationInterface* creator = nullptr);
+
+   /**
+    * @see  template <class T2> void registerCreator(CollectionCreationInterface* creator);
+    */
+   template <class T2>
+   CollectionConfigurationInterface* registerConfigarator(CollectionConfigurationInterface* creator = nullptr);
+
 
    /// Do this manager have active collections
    virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
@@ -133,7 +155,7 @@ public:
    virtual const QVector< CollectionInterface* > enabledCollections(CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
 
    ///Enable / disable a collection
-   virtual bool enableBackend( CollectionInterface*  collection, bool enabled) final;
+   virtual bool enableCollection( CollectionInterface*  collection, bool enabled) final;
 
    virtual bool clearAllCollections() const;
 

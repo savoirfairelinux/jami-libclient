@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,34 +15,21 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "collectionmanagerinterface.h"
+#ifndef COLLECTIONCREATIONINTERFACE_H
+#define COLLECTIONCREATIONINTERFACE_H
 
-//Ring
-#include <collectionmodel.h>
-#include "private/collectionmodel_p.h"
+#include <QtCore/QObject>
 
-class CollectionManagerInterfaceBasePrivate
+#include "typedefs.h"
+class LIB_EXPORT CollectionCreationInterface : public QObject
 {
+   Q_OBJECT
 public:
-
+   virtual QByteArray id  () const = 0;
+   virtual QString    name() const = 0;
+   virtual QVariant   icon() const = 0;
 };
 
-void CollectionManagerInterfaceBase::registerToModel(CollectionInterface* col) const
-{
-   CollectionModel::instance()->d_ptr->registerNew(col);
-}
+Q_DECLARE_METATYPE(CollectionCreationInterface*)
 
-void CollectionManagerInterfaceBase::addCreatorToList(CollectionCreationInterface* creator)
-{
-   CollectionModel::instance()->d_ptr->m_lCreator << creator;
-}
-
-void CollectionManagerInterfaceBase::addConfiguratorToList(CollectionConfigurationInterface* configurator)
-{
-   CollectionModel::instance()->d_ptr->m_lConfigurator << configurator;
-}
-
-void CollectionManagerInterfaceBase::setCollectionConfigurator(CollectionInterface* col, std::function<CollectionConfigurationInterface*()> getter)
-{
-   col->setConfigurator(getter);
-}
+#endif
