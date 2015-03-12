@@ -22,21 +22,24 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QHash>
+#include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtWidgets/QApplication>
 #include <QtCore/QStandardPaths>
 
 //Ring
 #include "person.h"
+#include "personmodel.h"
 #include "vcardutils.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 
 class FallbackPersonBackendEditor : public CollectionEditor<Person>
 {
 public:
-   FallbackPersonBackendEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
+   FallbackPersonBackendEditor(CollectionMediator<Person>* m, const QString& path) : CollectionEditor<Person>(m),m_Path(path) {}
    virtual bool save       ( const Person* item ) override;
    virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
@@ -44,6 +47,7 @@ public:
    virtual bool addExisting( const Person* item ) override;
 
    QVector<Person*> m_lItems;
+   QString          m_Path  ;
 
 private:
    virtual QVector<Person*> items() const override;
@@ -52,17 +56,23 @@ private:
 class FallbackPersonCollectionPrivate
 {
 public:
-   FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator);
+   FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator, const QString& path);
    CollectionMediator<Person>*  m_pMediator;
+   QString                      m_Path     ;
+   QString                      m_Name     ;
 };
 
-FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator) : m_pMediator(mediator)
+FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator, const QString& path) : m_pMediator(mediator), m_Path(path)
 {
-
+   m_Name = path.split('/').last();
+   if (m_Name.size())
+      m_Name[0] = m_Name[0].toUpper();
+   else
+      m_Name = "vCard";
 }
 
-FallbackPersonCollection::FallbackPersonCollection(CollectionMediator<Person>* mediator) :
-CollectionInterface(new FallbackPersonBackendEditor(mediator)),d_ptr(new FallbackPersonCollectionPrivate(mediator))
+FallbackPersonCollection::FallbackPersonCollection(CollectionMediator<Person>* mediator, const QString& path, FallbackPersonCollection* parent) :
+CollectionInterface(new FallbackPersonBackendEditor(mediator,path),parent),d_ptr(new FallbackPersonCollectionPrivate(mediator,path))
 {
 }
 
@@ -73,7 +83,7 @@ FallbackPersonCollection::~FallbackPersonCollection()
 
 bool FallbackPersonBackendEditor::save(const Person* item)
 {
-   QFile file("/tmp/vcard/"+item->uid()+".vcf");
+   QFile file(m_Path+'/'+item->uid()+".vcf");
    file.open(QIODevice::WriteOnly);
    file.write(item->toVCard({}));
    file.close();
@@ -112,7 +122,7 @@ QVector<Person*> FallbackPersonBackendEditor::items() const
 
 QString FallbackPersonCollection::name () const
 {
-   return QObject::tr("vCard backend");
+   return d_ptr->m_Name;
 }
 
 QString FallbackPersonCollection::category () const
@@ -122,7 +132,7 @@ QString FallbackPersonCollection::category () const
 
 QVariant FallbackPersonCollection::icon() const
 {
-   return QVariant();
+   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CONTACT);
 }
 
 bool FallbackPersonCollection::isEnabled() const
@@ -133,10 +143,19 @@ bool FallbackPersonCollection::isEnabled() const
 bool FallbackPersonCollection::load()
 {
    bool ok;
-   QList< Person* > ret =  VCardUtils::loadDir(QUrl("/tmp/vcard"),ok);
+   QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok);
    for(Person* p : ret) {
       editor<Person>()->addExisting(p);
    }
+
+   //Add all sub directories as new backends
+   QTimer::singleShot(0,[this]() {
+      QDir d(d_ptr->m_Path);
+      for (const QString& dir : d.entryList(QDir::AllDirs)) {
+         PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(d_ptr->m_Path+'/'+dir,this);
+      }
+   });
+
    return true;
 }
 
@@ -147,17 +166,18 @@ bool FallbackPersonCollection::reload()
 
 CollectionInterface::SupportedFeatures FallbackPersonCollection::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures) (
-      CollectionInterface::SupportedFeatures::NONE  |
-      CollectionInterface::SupportedFeatures::LOAD  |
-      CollectionInterface::SupportedFeatures::CLEAR |
+   return (CollectionInterface::SupportedFeatures)       (
+      CollectionInterface::SupportedFeatures::NONE       |
+      CollectionInterface::SupportedFeatures::LOAD       |
+      CollectionInterface::SupportedFeatures::CLEAR      |
+      CollectionInterface::SupportedFeatures::MANAGEABLE |
 //       CollectionInterface::SupportedFeatures::REMOVE|
-      CollectionInterface::SupportedFeatures::ADD   );
+      CollectionInterface::SupportedFeatures::ADD        );
 }
 
 bool FallbackPersonCollection::clear()
 {
-   QDir dir("/tmp/vcard");
+   QDir dir(d_ptr->m_Path);
    for (const QString& file : dir.entryList({"*.vcf"},QDir::Files))
       dir.remove(file);
    return true;

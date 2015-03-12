@@ -24,9 +24,10 @@
 #include <QtCore/QModelIndex>
 
 //Ring
-class  Person           ;
-class  ContactMethod    ;
-class  Call             ;
+class  Person             ;
+class  ContactMethod      ;
+class  Call               ;
+class  CollectionInterface;
 struct UserActionElement;
 
 /**
@@ -41,6 +42,19 @@ struct UserActionElement;
  */
 class LIB_EXPORT PixmapManipulationDelegate {
 public:
+   //Implementation can use random values to extend this
+   enum CollectionIconHint {
+      NONE,
+      HISTORY,
+      CONTACT,
+      BOOKMARK,
+      PHONE_NUMBER,
+      RINGTONE,
+      PROFILE,
+      CERTIFICATE,
+      ACCOUNT,
+   };
+
    PixmapManipulationDelegate();
    virtual ~PixmapManipulationDelegate() {}
    virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
@@ -50,6 +64,7 @@ public:
    virtual QVariant   serurityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);
    virtual QVariant   profilePhoto(const QByteArray& data, const QString& type = "PNG");
+   virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
 
    /**
     * Return the icons associated with the action and its state

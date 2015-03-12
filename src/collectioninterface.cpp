@@ -26,6 +26,7 @@
 #include "contactmethod.h"
 #include "collectioneditor.h"
 #include "itembase.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 //Libstdc++
 #include <functional>
@@ -53,6 +54,10 @@ QVector<CollectionInterface*> CollectionInterface::children() const
    return d_ptr->m_lChildren;
 }
 
+QVariant CollectionInterface::icon() const
+{
+   return PixmapManipulationDelegate::instance()->collectionIcon(this);
+}
 
 bool CollectionInterface::clear()
 {

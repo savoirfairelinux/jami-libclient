@@ -98,7 +98,7 @@ public:
     * This method must return an optinal icon to be used in the
     * backend manager is SupportedFeatures::MANAGEABLE is set.
     */
-   virtual QVariant   icon     () const = 0;
+   virtual QVariant   icon     () const   ;
 
    /**
     * Return if the backend is currently enabled. An enabled backend

@@ -169,7 +169,6 @@ void SecurityValidationModelPrivate::update()
 {
    if (!m_pAccount)
       return; //TODO use the local certificates
-   qDebug() << "\n\n\nUPDATING";
 
    m_lCurrentFlaws.clear();
 

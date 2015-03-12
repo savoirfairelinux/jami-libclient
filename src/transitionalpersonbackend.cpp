@@ -20,6 +20,8 @@
 
 #include <collectioneditor.h>
 
+#include "delegates/pixmapmanipulationdelegate.h"
+
 class TransitionalPersonBackendPrivate
 {
 
@@ -143,7 +145,7 @@ CollectionInterface::SupportedFeatures TransitionalPersonBackend::supportedFeatu
 
 QString TransitionalPersonBackend::name () const
 {
-   return QObject::tr("Transitional contact backend");
+   return QObject::tr("Contact placeholders");
 }
 
 QString TransitionalPersonBackend::category () const
@@ -153,7 +155,7 @@ QString TransitionalPersonBackend::category () const
 
 QVariant TransitionalPersonBackend::icon() const
 {
-   return QVariant();
+   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CONTACT);
 }
 
 QByteArray TransitionalPersonBackend::id() const

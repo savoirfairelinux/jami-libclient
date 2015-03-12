@@ -89,3 +89,11 @@ QVariant PixmapManipulationDelegate::userActionIcon(const UserActionElement& sta
    Q_UNUSED(state)
    return QVariant();
 }
+
+QVariant PixmapManipulationDelegate::collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint) const
+{
+   Q_UNUSED(interface)
+   Q_UNUSED(hint)
+   return QVariant();
+}
+

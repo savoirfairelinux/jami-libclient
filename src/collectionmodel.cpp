@@ -343,6 +343,7 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
       cat->collection  = nullptr;
 
       m_hCategories[cat->m_AltName] = cat;
+      m_hBackendsNodes[col] = cat;
 
       q_ptr->beginInsertRows(QModelIndex(),m_lTopLevelBackends.size(),m_lTopLevelBackends.size());
       m_lTopLevelBackends << cat;
@@ -350,7 +351,8 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
    }
 
    ProxyItem* item = new ProxyItem();
-   ProxyItem* par = col->parent()?m_hBackendsNodes[col->parent()] : cat;
+   const bool hasParent = col->parent();
+   ProxyItem* par = hasParent?m_hBackendsNodes[col->parent()] : cat;
 
    item->parent = par;
    item->row    = par->m_Children.size();

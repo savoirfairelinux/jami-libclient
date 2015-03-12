@@ -37,7 +37,7 @@ template<typename T> class CollectionMediator;
 class LIB_EXPORT FallbackPersonCollection : public CollectionInterface
 {
 public:
-   explicit FallbackPersonCollection(CollectionMediator<Person>* mediator);
+   explicit FallbackPersonCollection(CollectionMediator<Person>* mediator, const QString& path = "/tmp/vcard", FallbackPersonCollection* parent = nullptr);
    virtual ~FallbackPersonCollection();
 
    virtual bool load  () override;
