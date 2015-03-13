@@ -17,7 +17,9 @@ FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Ring REQUIRED)
 
 set(libqtwrapper_LIB_SRCS
-   instancemanager.cpp)
+   instancemanager.cpp
+   videomanager_wrap.cpp
+)
 
 INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
@@ -31,4 +33,3 @@ TARGET_LINK_LIBRARIES( qtwrapper
    ${QT_QTCORE_LIBRARY}
    ${ring_BIN}
 )
-

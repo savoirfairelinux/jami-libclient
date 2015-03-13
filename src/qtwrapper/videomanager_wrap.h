@@ -20,7 +20,9 @@
 #define VIDEO_DBUS_INTERFACE_H
 
 #include <QtCore/QObject>
+#include <QtCore/QCoreApplication>
 #include <QtCore/QByteArray>
+#include <QtCore/QThread>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QString>
@@ -33,6 +35,37 @@
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
 
+class VideoManagerInterface;
+
+class VideoManagerSignalProxy : public QObject
+{
+   Q_OBJECT
+public:
+   VideoManagerSignalProxy(VideoManagerInterface* parent);
+
+public Q_SLOTS:
+   void slotDeviceEvent();
+   void slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
+   void slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
+
+private:
+   VideoManagerInterface* m_pParent;
+};
+
+class VideoManagerProxySender : public QObject
+{
+    Q_OBJECT
+    friend class VideoManagerInterface;
+public:
+
+Q_SIGNALS:
+    void deviceEvent();
+    void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
+    void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
+};
+
+
+
 /*
  * Proxy class for interface org.ring.Ring.VideoManager
  */
@@ -40,36 +73,20 @@ class VideoManagerInterface: public QObject
 {
     Q_OBJECT
 
-public:
-    VideoManagerInterface()
-    {
-#ifdef ENABLE_VIDEO
-        using DRing::exportable_callback;
-        using DRing::VideoSignal;
-        videoHandlers = {
-            exportable_callback<VideoSignal::DeviceEvent>(
-                [this] () {
-                   QTimer::singleShot(0, [this] {
-                       emit this->deviceEvent();
-                   });
-            }),
-            exportable_callback<VideoSignal::DecodingStarted>(
-                [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) {
-                   QTimer::singleShot(0, [this,id, shmPath, width, height, isMixer] {
-                      emit this->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
-                   });
-            }),
-            exportable_callback<VideoSignal::DecodingStopped>(
-                [this] (const std::string &id, const std::string &shmPath, bool isMixer) {
-                   QTimer::singleShot(0, [this,id, shmPath, isMixer] {
-                      emit this->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
-                   });
-            })
-        };
-#endif
-    }
+friend class VideoManagerSignalProxy;
 
-    ~VideoManagerInterface() {}
+public:
+
+    VideoManagerInterface();
+    ~VideoManagerInterface();
+
+#ifdef ENABLE_VIDEO
+     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
+#endif
+
+private:
+    VideoManagerSignalProxy* proxy;
+    VideoManagerProxySender* sender;
 
 #ifdef ENABLE_VIDEO
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
