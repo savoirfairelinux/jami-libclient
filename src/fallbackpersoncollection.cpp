@@ -53,16 +53,22 @@ private:
    virtual QVector<Person*> items() const override;
 };
 
-class FallbackPersonCollectionPrivate
+class FallbackPersonCollectionPrivate : public QObject
 {
+   Q_OBJECT
 public:
-   FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator, const QString& path);
+   FallbackPersonCollectionPrivate(FallbackPersonCollection* parent, CollectionMediator<Person>* mediator, const QString& path);
    CollectionMediator<Person>*  m_pMediator;
    QString                      m_Path     ;
    QString                      m_Name     ;
+
+   FallbackPersonCollection* q_ptr;
+
+public Q_SLOTS:
+   void loadAsync();
 };
 
-FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(CollectionMediator<Person>* mediator, const QString& path) : m_pMediator(mediator), m_Path(path)
+FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonCollection* parent, CollectionMediator<Person>* mediator, const QString& path) : q_ptr(parent), m_pMediator(mediator), m_Path(path)
 {
    m_Name = path.split('/').last();
    if (m_Name.size())
@@ -72,7 +78,7 @@ FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(CollectionMedia
 }
 
 FallbackPersonCollection::FallbackPersonCollection(CollectionMediator<Person>* mediator, const QString& path, FallbackPersonCollection* parent) :
-CollectionInterface(new FallbackPersonBackendEditor(mediator,path),parent),d_ptr(new FallbackPersonCollectionPrivate(mediator,path))
+CollectionInterface(new FallbackPersonBackendEditor(mediator,path),parent),d_ptr(new FallbackPersonCollectionPrivate(this,mediator,path))
 {
 }
 
@@ -149,12 +155,7 @@ bool FallbackPersonCollection::load()
    }
 
    //Add all sub directories as new backends
-   QTimer::singleShot(0,[this]() {
-      QDir d(d_ptr->m_Path);
-      for (const QString& dir : d.entryList(QDir::AllDirs)) {
-         PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(d_ptr->m_Path+'/'+dir,this);
-      }
-   });
+   QTimer::singleShot(0,d_ptr,&FallbackPersonCollectionPrivate::loadAsync);
 
    return true;
 }
@@ -187,3 +188,14 @@ QByteArray FallbackPersonCollection::id() const
 {
    return "fpc2";
 }
+
+
+void FallbackPersonCollectionPrivate::loadAsync()
+{
+   QDir d(m_Path);
+   for (const QString& dir : d.entryList(QDir::AllDirs)) {
+      PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
+   }
+}
+
+#include "fallbackpersoncollection.moc"
