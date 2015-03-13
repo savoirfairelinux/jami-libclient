@@ -53,7 +53,6 @@ public:
    //Attributes
    bool           m_PreviewState;
    uint           m_BufferSize  ;
-   QMutex*        m_SSMutex     ;
    QHash<QByteArray,Video::Renderer*> m_lRenderers;
 
 private:
@@ -67,7 +66,7 @@ private Q_SLOTS:
 };
 
 VideoRendererManagerPrivate::VideoRendererManagerPrivate(VideoRendererManager* parent) : QObject(parent), q_ptr(parent),
-m_BufferSize(0),m_PreviewState(false),m_SSMutex(new QMutex())
+m_BufferSize(0),m_PreviewState(false)
 {
 
 }
@@ -230,11 +229,6 @@ void VideoRendererManager::switchDevice(const Video::Device* device) const
 {
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    interface.switchInput(device->id());
-}
-
-QMutex* VideoRendererManager::startStopMutex() const
-{
-   return d_ptr->m_SSMutex;
 }
 
 #include <videorenderermanager.moc>

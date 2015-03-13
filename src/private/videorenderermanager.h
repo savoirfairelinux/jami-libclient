@@ -52,7 +52,6 @@ public:
 
    //Helpers
    Video::Renderer* getRenderer(const Call* call) const;
-   QMutex* startStopMutex() const;
    void setBufferSize(uint size);
    void switchDevice(const Video::Device* device) const;
 

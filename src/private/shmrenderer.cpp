@@ -31,7 +31,6 @@
 #include <semaphore.h>
 #include <errno.h>
 
-
 #ifndef CLOCK_REALTIME
 #define CLOCK_REALTIME 0
 #endif
@@ -42,7 +41,7 @@
 #include "private/videorenderer_p.h"
 
 ///Shared memory object
-struct SHMHeader{
+struct SHMHeader {
    sem_t notification;
    sem_t mutex;
 
@@ -72,7 +71,6 @@ public:
    signed int        m_ShmAreaLen ;
    uint              m_BufferGen  ;
    QTimer*           m_pTimer     ;
-   QMutex*           m_pSSMutex   ;
    int               m_fpsC       ;
    int               m_Fps        ;
    QTime             m_CurrentTime;
@@ -98,7 +96,7 @@ private Q_SLOTS:
 Video::ShmRendererPrivate::ShmRendererPrivate(Video::ShmRenderer* parent) : QObject(parent), q_ptr(parent),
    fd(-1),m_fpsC(0),m_Fps(0),
    m_pShmArea((SHMHeader*)MAP_FAILED), m_ShmAreaLen(0), m_BufferGen(0),
-   m_pTimer(nullptr),m_pSSMutex(new QMutex())
+   m_pTimer(nullptr)
 {
 }
 
@@ -119,58 +117,41 @@ Video::ShmRenderer::~ShmRenderer()
 ///Get the data from shared memory and transform it into a QByteArray
 bool Video::ShmRendererPrivate::renderToBitmap()
 {
+   QMutexLocker locker {q_ptr->mutex()};
+
 #ifdef Q_OS_LINUX
-   if (!q_ptr->isRendering()) {
+   if (!q_ptr->isRendering())
       return false;
-   }
 
-   if (!shmLock()) {
+   if (!shmLock())
       return false;
-   }
 
-   if(!VideoRendererManager::instance()->startStopMutex()->tryLock()) {
-	  shmUnlock();
-      return false;
-   }
+   if (m_BufferGen == m_pShmArea->m_BufferGen) {
+	   // wait for a new buffer
+	   do {
+		   shmUnlock();
+		   auto err = sem_trywait(&m_pShmArea->notification);
+		   if (!err)
+			   break;
 
-   // wait for a new buffer
-   while (m_BufferGen == m_pShmArea->m_BufferGen) {
-      shmUnlock();
+		   // Fatal error?
+		   if (errno != EAGAIN)
+			   return false;
 
-      int err = sem_trywait(&m_pShmArea->notification);
-      // Useful for debugging
-//       switch (errno ) {
-//          case EINTR:
-//             qDebug() << "Unlock failed: Interrupted function call (POSIX.1); see signal(7)";
-//             ok = false;
-//             return QByteArray();
-//             break;
-//          case EINVAL:
-//             qDebug() << "Unlock failed: Invalid argument (POSIX.1)";
-//             ok = false;
-//             return QByteArray();
-//             break;
-//          case EAGAIN:
-//             qDebug() << "Unlock failed: Resource temporarily unavailable (may be the same value as EWOULDBLOCK) (POSIX.1)";
-//             ok = false;
-//             return QByteArray();
-//             break;
-//          case ETIMEDOUT:
-//             qDebug() << "Unlock failed: Connection timed out (POSIX.1)";
-//             ok = false;
-//             return QByteArray();
-//             break;
-//       }
-      if ((err < 0) || (!shmLock())) {
-         VideoRendererManager::instance()->startStopMutex()->unlock();
-         return false;
-      }
-      usleep((1/60.0)*100);
+		   // wait a little bit that deamon does its work
+		   usleep(10); // must be less than the maximal framerate possible
+
+           // stopRendering called?
+           if (!q_ptr->isRendering())
+               return false;
+	   } while (m_BufferGen == m_pShmArea->m_BufferGen);
+
+	   if (!shmLock())
+		   return false;
    }
 
    if (!q_ptr->resizeShm()) {
       qDebug() << "Could not resize shared memory";
-      VideoRendererManager::instance()->startStopMutex()->unlock();
 	  shmUnlock();
       return false;
    }
@@ -180,7 +161,6 @@ bool Video::ShmRendererPrivate::renderToBitmap()
    memcpy(static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().data(),m_pShmArea->m_Data,m_pShmArea->m_BufferSize);
    m_BufferGen = m_pShmArea->m_BufferGen;
    static_cast<Video::Renderer*>(q_ptr)->d_ptr->updateFrameIndex();
-   VideoRendererManager::instance()->startStopMutex()->unlock();
    shmUnlock();
 
    return true;
@@ -272,7 +252,9 @@ bool Video::ShmRendererPrivate::shmLock()
 ///Remove the lock, allow a new frame to be drawn
 void Video::ShmRendererPrivate::shmUnlock()
 {
+#ifdef Q_OS_LINUX
    sem_post(&m_pShmArea->mutex);
+#endif
 }
 
 
@@ -285,11 +267,7 @@ void Video::ShmRendererPrivate::shmUnlock()
 ///Update the buffer
 void Video::ShmRendererPrivate::timedEvents()
 {
-
-   bool ok = renderToBitmap();
-
-   if (ok) {
-
+   if (renderToBitmap()) {
       //Compute the FPS shown to the client
       if (m_CurrentTime.second() != QTime::currentTime().second()) {
          m_Fps = m_fpsC;
@@ -310,7 +288,6 @@ void Video::ShmRendererPrivate::timedEvents()
 void Video::ShmRenderer::startRendering()
 {
    QMutexLocker locker {mutex()};
-   VideoRendererManager::instance()->startStopMutex()->lock();
    startShm();
    if (!d_ptr->m_pTimer) {
       d_ptr->m_pTimer = new QTimer(nullptr);
@@ -328,21 +305,19 @@ void Video::ShmRenderer::startRendering()
       qDebug() << "Timer already started!";
 
    setRendering(true);
-   VideoRendererManager::instance()->startStopMutex()->unlock();
 }
 
 ///Stop the rendering loop
 void Video::ShmRenderer::stopRendering()
 {
-   QMutexLocker locker {mutex()};
-   VideoRendererManager::instance()->startStopMutex()->lock();
    setRendering(false);
+
+   QMutexLocker locker {mutex()};
    qDebug() << "Stopping rendering on" << this;
    if (d_ptr->m_pTimer)
       d_ptr->m_pTimer->stop();
    emit stopped();
    stopShm();
-   VideoRendererManager::instance()->startStopMutex()->unlock();
 }
 
 

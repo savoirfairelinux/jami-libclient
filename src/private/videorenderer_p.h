@@ -21,6 +21,9 @@
 //Qt
 #include <QtCore/QObject>
 #include <QtCore/QSize>
+
+#include <atomic>
+
 class QMutex;
 
 namespace Video {
@@ -34,7 +37,7 @@ public:
    RendererPrivate(Video::Renderer* parent);
 
    //Attributes
-   bool              m_isRendering;
+   std::atomic_bool  m_isRendering;
    QByteArray        m_Frame[2]   ;
    bool              m_FrameIdx   ;
    QMutex*           m_pMutex     ;
