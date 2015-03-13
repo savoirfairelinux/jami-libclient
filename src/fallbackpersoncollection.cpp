@@ -155,7 +155,7 @@ bool FallbackPersonCollection::load()
    }
 
    //Add all sub directories as new backends
-   QTimer::singleShot(0,d_ptr,&FallbackPersonCollectionPrivate::loadAsync);
+   QTimer::singleShot(0,d_ptr,SLOT(loadAsync()));
 
    return true;
 }
