@@ -50,26 +50,19 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
    ringFlags |= DRing::DRING_FLAG_DEBUG;
    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
 
-   const std::map<DRing::EventHandlerKey, std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>>> evHandlers = {
-        { // Call event handlers
-            DRing::EventHandlerKey::CALL, DBus::CallManager::instance().callHandlers
-        },
-        { // Configuration event handlers
-            DRing::EventHandlerKey::CONFIG, DBus::ConfigurationManager::instance().confHandlers
-        },
-        { // Presence event handlers
-            DRing::EventHandlerKey::PRESENCE, DBus::PresenceManager::instance().presHandlers
-        }
-#ifdef ENABLE_VIDEO
-        ,{ // Video event handlers
-            DRing::EventHandlerKey::VIDEO, DBus::VideoManager::instance().videoHandlers
-        }
+    DRing::init(static_cast<DRing::InitFlag>(ringFlags));
+
+    registerCallHandlers(DBus::CallManager::instance().callHandlers);
+    registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
+    registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
+#ifdef RING_VIDEO
+    registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
 #endif
-    };
 
-    DRing::init(evHandlers, static_cast<DRing::InitFlag>(ringFlags));
-
-    printf("INITIATED DAEMON\n");
+    if (!DRing::start())
+        printf("Error initializing daemon\n");
+    else
+        printf("Daemon is running\n");
 }
 
 InstanceInterface::~InstanceInterface()
@@ -79,7 +72,7 @@ InstanceInterface::~InstanceInterface()
 
 void pollEvents()
 {
-    DRing::poll_events();
+    DRing::pollEvents();
 }
 
 bool InstanceInterface::isConnected()
