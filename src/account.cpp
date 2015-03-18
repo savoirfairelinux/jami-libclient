@@ -117,7 +117,20 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
    a->d_ptr->m_hAccountDetails.clear();
    a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ENABLED] = "false";
    a->d_ptr->m_pAccountNumber = const_cast<ContactMethod*>(ContactMethod::BLANK());
-   MapStringString tmp = configurationManager.getAccountTemplate();
+   MapStringString tmp;
+   switch (proto) {
+      case Account::Protocol::SIP:
+         tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::SIP);
+         break;
+      case Account::Protocol::IAX:
+         tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::IAX);
+         break;
+      case Account::Protocol::RING:
+         tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::RING);
+         break;
+      default:
+         break;
+   }
    QMutableMapIterator<QString, QString> iter(tmp);
    while (iter.hasNext()) {
       iter.next();

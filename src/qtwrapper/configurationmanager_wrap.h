@@ -127,10 +127,10 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    MapStringString getAccountTemplate()
+    MapStringString getAccountTemplate(const QString& accountType)
     {
         MapStringString temp =
-            convertMap(DRing::getAccountTemplate());
+            convertMap(DRing::getAccountTemplate(accountType.toStdString()));
         return temp;
     }
 
