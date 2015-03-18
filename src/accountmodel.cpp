@@ -51,7 +51,7 @@ AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 ,d_ptr(new AccountModelPrivate(this))
 {
    //Make sure the daemon is running as this can be called first
-   InstanceInterface& instance = DBus::InstanceManager::instance();
+   DBus::InstanceManager::instance();
 }
 
 ///Prevent constructor loop

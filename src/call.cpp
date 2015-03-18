@@ -416,7 +416,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    const QString& callId          = hc[ Call::HistoryMapFields::CALLID          ]          ;
    const QString& name            = hc[ Call::HistoryMapFields::DISPLAY_NAME    ]          ;
    const QString& number          = hc[ Call::HistoryMapFields::PEER_NUMBER     ]          ;
-   const QString& type            = hc[ Call::HistoryMapFields::STATE           ]          ;
+   //const QString& type            = hc[ Call::HistoryMapFields::STATE           ]          ;
    const QString& direction       = hc[ Call::HistoryMapFields::DIRECTION       ]          ;
    const QString& cert_path       = hc[ Call::HistoryMapFields::CERT_PATH       ]          ;
    const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1"   ;
@@ -476,8 +476,8 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    }
 
    //Check the certificate
-   if (!hc[Call::HistoryMapFields::CERT_PATH].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificate(QUrl(hc[Call::HistoryMapFields::CERT_PATH]),acc);
+   if (!cert_path.isEmpty()) {
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificate(QUrl(cert_path),acc);
    }
 
    return call;

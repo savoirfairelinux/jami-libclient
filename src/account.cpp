@@ -128,6 +128,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
       case Account::Protocol::RING:
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::RING);
          break;
+      case Account::Protocol::COUNT__:
       default:
          break;
    }

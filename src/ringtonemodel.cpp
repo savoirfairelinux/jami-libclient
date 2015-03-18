@@ -29,7 +29,7 @@
 RingToneModel::RingToneModel(Account* a) : QAbstractTableModel(a),m_pAccount(a),m_pTimer(nullptr),
 m_pCurrent(nullptr)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    QMap<QString,QString> m_hRingtonePath ;//= configurationManager.getRingtoneList();
    QMutableMapIterator<QString, QString> iter(m_hRingtonePath);
    while (iter.hasNext()) {

@@ -137,7 +137,7 @@ m_pUserActionModel(nullptr)
 CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new CallModelPrivate(this))
 {
    //Register with the daemon
-   InstanceInterface& instance = DBus::InstanceManager::instance();
+   DBus::InstanceManager::instance();
    setObjectName("CallModel");
    #ifdef ENABLE_VIDEO
    VideoRendererManager::instance();
