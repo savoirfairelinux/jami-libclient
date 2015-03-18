@@ -602,9 +602,7 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 
 Account* AccountModel::add(const QString& alias, const QModelIndex& idx)
 {
-   Account* a = add(alias);
-   a->setProtocol(qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
-   return a;
+   return add(alias, qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
 }
 
 ///Remove an account
