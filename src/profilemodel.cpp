@@ -718,6 +718,9 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
          destIdx = row;
       }
 
+      if (!newProfile)
+         return false;
+
       Node* accountProfile = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId];
       for (Node* acc : accountProfile->children) {
          if(acc->account->id() == accountId) {

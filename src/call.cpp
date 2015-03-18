@@ -869,7 +869,10 @@ void Call::setDialNumber(const ContactMethod* number)
    }
    if (d_ptr->m_pDialNumber && number)
       d_ptr->m_pDialNumber->setUri(number->uri());
-   emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
+
+   if (d_ptr->m_pDialNumber)
+      emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
+
    emit changed();
    emit changed(this);
 }

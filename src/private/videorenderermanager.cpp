@@ -187,10 +187,12 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    }
    else {
       m_lRenderers[rid]->setSize(res);
+#ifdef ENABLE_LIBWRAP
       DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
           static_cast<Video::DirectRenderer*>(m_lRenderers[id.toLatin1()])->onNewFrame(
                                     QByteArray::fromRawData(reinterpret_cast<const char *>(frame), width*height));
       });
+#endif
 
 #if !defined(Q_OS_DARWIN)
       static_cast<Video::ShmRenderer*>(m_lRenderers[rid])->setShmPath(shmPath);

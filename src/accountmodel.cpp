@@ -206,7 +206,9 @@ void AccountModelPrivate::slotAccountChanged(const QString& account,const QStrin
       if (status != "OK") //Do not pollute the log
          qDebug() << "Account" << account << "status changed to" << status;
    }
-   a->d_ptr->m_LastSipRegistrationStatus = status;
+
+   if (a)
+      a->d_ptr->m_LastSipRegistrationStatus = status;
 
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
