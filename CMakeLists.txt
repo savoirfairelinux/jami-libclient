@@ -37,11 +37,11 @@ SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
 
+
 # Enable some useful warnings
 ADD_DEFINITIONS(
    -Wall
    -Wextra
-   -Wno-cpp
    -Wmissing-declarations
    -Wmissing-noreturn
    -Wpointer-arith
@@ -58,14 +58,10 @@ ADD_DEFINITIONS(
    -Wunused
    -Wuninitialized
    -Woverloaded-virtual
-   -Wsuggest-attribute=const
    -Wunused-value
    -pedantic
-   -Wdouble-promotion
    -Wnonnull
    -Wsequence-point
-   -Wunused-but-set-parameter
-   -Wsuggest-attribute=const
    #-Wsystem-headers
    -Wsizeof-pointer-memaccess
    #-Wuseless-cast
@@ -81,7 +77,11 @@ ADD_DEFINITIONS(
 IF (CMAKE_COMPILER_IS_GNUCC)
    IF (GCC_VERSION VERSION_GREATER 4.9 OR GCC_VERSION VERSION_EQUAL 4.9)
       ADD_DEFINITIONS(
+         -Wunused-but-set-parameter
          -Wconditionally-supported
+         -Wsuggest-attribute=const
+         -Wno-cpp
+         -Wdouble-promotion
          -Wdate-time
          -Wdelete-incomplete
          -Wfloat-conversion
