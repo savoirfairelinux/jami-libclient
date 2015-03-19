@@ -77,15 +77,12 @@ public:
                        });
             }),
             exportable_callback<ConfigurationSignal::RegistrationStateChanged>(
-                [this] (const std::string &accountID, int registration_state) {
-                       QTimer::singleShot(0, [this, accountID, registration_state] {
-                             emit this->registrationStateChanged(QString(accountID.c_str()), registration_state);
-                       });
-            }),
-            exportable_callback<ConfigurationSignal::SipRegistrationStateChanged>(
-                [this] (const std::string &accountID, const std::string &state, int code) {
-                       QTimer::singleShot(0, [this,accountID, state, code] {
-                             emit this->sipRegistrationStateChanged(QString(accountID.c_str()), QString(state.c_str()), code);
+                [this] (const std::string &accountID, int registration_state, unsigned detail_code, const std::string& detail_str) {
+                       QTimer::singleShot(0, [this, accountID, registration_state, detail_code, detail_str] {
+                             emit this->registrationStateChanged(QString(accountID.c_str()),
+                                                                registration_state,
+                                                                detail_code,
+                                                                QString(detail_str.c_str()));
                        });
             }),
             exportable_callback<ConfigurationSignal::VolatileDetailsChanged>(
@@ -513,8 +510,7 @@ Q_SIGNALS: // SIGNALS
     void accountsChanged();
     void historyChanged();
     void stunStatusFailure(const QString &reason);
-    void registrationStateChanged(const QString &accountID, int registration_state);
-    void sipRegistrationStateChanged(const QString &accountID, const QString &state, int code);
+    void registrationStateChanged(const QString& accountID, int registration_state, unsigned detail_code, const QString& detail_str);
     void stunStatusSuccess(const QString &message);
     void errorAlert(int code);
     void volatileAccountDetailsChanged(const QString &accountID, MapStringString details);

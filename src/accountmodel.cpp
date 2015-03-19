@@ -61,8 +61,8 @@ void AccountModelPrivate::init()
    CallManagerInterface& callManager = DBus::CallManager::instance();
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
-   connect(&configurationManager, SIGNAL(sipRegistrationStateChanged(QString,QString,int)),this ,
-      SLOT(slotAccountChanged(QString,QString,int)));
+   connect(&configurationManager, SIGNAL(registrationStateChanged(QString,int, unsigned, QString)),this ,
+      SLOT(slotAccountChanged(QString,int, unsigned, QString)));
    connect(&configurationManager, SIGNAL(accountsChanged())                               ,q_ptr,
       SLOT(updateAccounts())                  );
    connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
@@ -197,7 +197,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
 }
 
 ///Account status changed
-void AccountModelPrivate::slotAccountChanged(const QString& account,const QString& status, int code)
+void AccountModelPrivate::slotAccountChanged(const QString& account,int registration_state, unsigned code, const QString& status)
 {
    Account* a = q_ptr->getById(account.toLatin1());
 
