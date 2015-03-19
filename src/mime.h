@@ -27,6 +27,8 @@ namespace RingMimes {
    constexpr static const char* HTML_TEXT   = "text/html"               ;
    constexpr static const char* PROFILE     = "text/ring.profile.id"    ;
    constexpr static const char* ACCOUNT     = "text/sflphone.account.id";
+   constexpr static const char* AUDIO_CODEC = "text/ring.codec.audio";
+   constexpr static const char* VIDEO_CODEC = "text/ring.codec.video";
 }
 
 #endif

@@ -61,13 +61,15 @@ Q_OBJECT
 public:
    ///Accepted (mime) payload types
    enum DropPayloadType {
-      NONE    = 0   , /*!< No drop payload is supported                                            */
-      CALL    = 1<<0, /*!< The item support the dropping of a current or history call              */
-      HISTORY = 1<<1, /*!< The item support the dropping of a history call                         */
-      CONTACT = 1<<2, /*!< The item support the dropping of a contact id                           */
-      NUMBER  = 1<<3, /*!< The item support the dropping of an URI                                 */
-      TEXT    = 1<<4, /*!< The item support the dropping of random text (to be interpreted as URI) */
-      ACCOUNT = 1<<5, /*!< The item support the dropping of an account id                          */
+      NONE        = 0   , /*!< No drop payload is supported                                            */
+      CALL        = 1<<0, /*!< The item support the dropping of a current or history call              */
+      HISTORY     = 1<<1, /*!< The item support the dropping of a history call                         */
+      CONTACT     = 1<<2, /*!< The item support the dropping of a contact id                           */
+      NUMBER      = 1<<3, /*!< The item support the dropping of an URI                                 */
+      TEXT        = 1<<4, /*!< The item support the dropping of random text (to be interpreted as URI) */
+      ACCOUNT     = 1<<5, /*!< The item support the dropping of an account id                          */
+      AUDIO_CODEC = 1<<6, /*!< The item support the dropping of an audio codec id                      */
+      VIDEO_CODEC = 1<<7, /*!< The item support the dropping of a video codec id                       */
    };
 
    //Properties
