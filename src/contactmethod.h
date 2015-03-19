@@ -46,6 +46,13 @@ public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
 
+   enum class Role {
+      Uri          = 1000,
+      Object       = 1001,
+      CategoryIcon = 1002,
+      //TODO implement all others
+   };
+
    //Properties
    Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
    Q_PROPERTY(Person*       person           READ contact           WRITE setPerson               )
@@ -103,6 +110,8 @@ public:
    QVariant            icon            () const;
    int                 totalSpentTime  () const;
    QString             uid             () const;
+
+   QVariant roleData(int role) const;
 
    //Setters
    Q_INVOKABLE void setAccount   (Account*            account   );

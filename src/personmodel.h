@@ -33,6 +33,7 @@ class Person;
 class Account;
 class CollectionInterface;
 class PersonModelPrivate;
+class PersonItemNode;
 
 //Typedef
 typedef QVector<Person*> PersonList;
@@ -44,19 +45,8 @@ class LIB_EXPORT PersonModel :
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
+   friend class PersonItemNode;
 public:
-   enum Role {
-      Organization      = 100,
-      Group             = 101,
-      Department        = 102,
-      PreferredEmail    = 103,
-      FormattedLastUsed = 104,
-      IndexedLastUsed   = 105,
-      DatedLastUsed     = 106,
-      Active            = 107,
-      Filter            = 200, //All roles, all at once
-      DropState         = 300, //State for drag and drop
-   };
 
    template <typename T > using ItemMediator = CollectionMediator<Person>;
 
@@ -71,7 +61,6 @@ public:
    //Getters
    Person* getPersonByUid   ( const QByteArray& uid );
    Person* getPlaceHolder(const QByteArray& uid );
-   const PersonList contacts() const;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -103,7 +92,6 @@ public Q_SLOTS:
    bool addNewPerson(Person* c, CollectionInterface* backend = nullptr);
 
 Q_SIGNALS:
-   void reloaded();
    void newPersonAdded(const Person* c);
    void newBackendAdded(CollectionInterface* backend);
 };

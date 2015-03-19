@@ -431,6 +431,21 @@ QHash<QString,int> ContactMethod::alternativeNames() const
    return d_ptr->m_hNames;
 }
 
+QVariant ContactMethod::roleData(int role) const
+{
+   switch(role) {
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+      case static_cast<int>(Role::Uri):
+         return uri();
+      case static_cast<int>(Role::Object):
+         return QVariant::fromValue(const_cast<ContactMethod*>(this));
+      case static_cast<int>(Role::CategoryIcon):
+         return category()? d_ptr->m_pCategory->icon(isTracked(), isPresent()) : QVariant();
+   }
+   return QVariant();
+}
+
 ///Add a call to the call list, notify listener
 void ContactMethod::addCall(Call* call)
 {

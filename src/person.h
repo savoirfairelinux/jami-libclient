@@ -43,7 +43,20 @@ class LIB_EXPORT Person : public ItemBase<QObject>
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class PersonPrivate;
+
+   enum class Role {
+      Organization      = 100,
+      Group             = 101,
+      Department        = 102,
+      PreferredEmail    = 103,
+      FormattedLastUsed = 104,
+      IndexedLastUsed   = 105,
+      DatedLastUsed     = 106,
+      Active            = 107,
+      Object            = 108,
+      Filter            = 200, //All roles, all at once
+      DropState         = 300, //State for drag and drop
+   };
 
    ///Represent the physical address of a contact
    class Address {
@@ -70,20 +83,10 @@ public:
          AddressPrivate* d_ptr;
    };
 
-
-   class  ContactMethods : public QVector<ContactMethod*>, public CategorizedCompositeNode { //TODO private
-   public:
-      virtual QObject* getSelf() const __attribute__ ((const));
-      explicit ContactMethods(Person* parent);
-      ContactMethods(Person* parent, const QVector<ContactMethod*>& list);
-      Person* contact() const;
-      time_t lastUsedTimeStamp() const;
-   private:
-      Person* m_pParent2       ;
-   };
+   typedef QVector<ContactMethod*> ContactMethods;
 
    //Properties
-   Q_PROPERTY( ContactMethods          phoneNumbers   READ phoneNumbers   WRITE setContactMethods                        )
+   Q_PROPERTY( ContactMethods        phoneNumbers   READ phoneNumbers   WRITE setContactMethods                      )
    Q_PROPERTY( QString               nickName       READ nickName       WRITE setNickName                            )
    Q_PROPERTY( QString               firstName      READ firstName      WRITE setFirstName                           )
    Q_PROPERTY( QString               secondName     READ secondName     WRITE setFamilyName                          )
@@ -95,6 +98,7 @@ public:
    Q_PROPERTY( QString               group          READ group          WRITE setGroup                               )
    Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )
    Q_PROPERTY( bool                  active         READ isActive       WRITE setActive         NOTIFY statusChanged )
+   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                                                )
 
    //Mutator
    Q_INVOKABLE void addAddress(Address* addr);
@@ -104,6 +108,8 @@ public:
 protected:
    //The D-Pointer can be shared if a PlaceHolderPerson is merged with a real one
    PersonPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(Person)
+
    void replaceDPointer(Person* other);
 
 public:
@@ -112,18 +118,21 @@ public:
    virtual ~Person();
 
    //Getters
-   const ContactMethods& phoneNumbers() const;
-   const QString& nickName         () const;
-   const QString& firstName        () const;
-   const QString& secondName       () const;
-   const QString& formattedName    () const;
-   const QString& organization     () const;
-   const QByteArray& uid           () const;
-   const QString& preferredEmail   () const;
-   const QVariant photo            () const;
-   const QString& group            () const;
-   const QString& department       () const;
-   bool  isActive                  () const;
+   const  ContactMethods& phoneNumbers() const;
+   const  QString& nickName         () const;
+   const  QString& firstName        () const;
+   const  QString& secondName       () const;
+   const  QString& formattedName    () const;
+   const  QString& organization     () const;
+   const  QByteArray& uid           () const;
+   const  QString& preferredEmail   () const;
+   const  QVariant photo            () const;
+   const  QString& group            () const;
+   const  QString& department       () const;
+   bool   isActive                  () const;
+   time_t lastUsedTime              () const;
+
+   QVariant roleData(int role) const;
 
    //Cache
    QString filterString            () const;
@@ -134,7 +143,7 @@ public:
    bool supportPresence            () const;
 
    //Setters
-   void setContactMethods   ( ContactMethods             );
+   void setContactMethods ( ContactMethods           );
    void setFormattedName  ( const QString&    name   );
    void setNickName       ( const QString&    name   );
    void setFirstName      ( const QString&    name   );

@@ -589,7 +589,8 @@ ContactMethod* PhoneDirectoryModel::fromHash(const QString& hash)
    const QStringList fields = hash.split("///");
    if (fields.size() == 3) {
       const QString uri = fields[0];
-      Account* account = AccountModel::instance()->getById(fields[1].toLatin1());
+      const QByteArray acc = fields[1].toLatin1();
+      Account* account = acc.isEmpty() ? nullptr : AccountModel::instance()->getById(acc);
       Person* contact = PersonModel::instance()->getPersonByUid(fields[2].toUtf8());
       return getNumber(uri,contact,account);
    }

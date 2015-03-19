@@ -20,12 +20,17 @@
 //Parent
 #include "person.h"
 
+//Qt
+#include <QtCore/QDateTime>
+
 //Ring library
 #include "contactmethod.h"
 #include "collectioninterface.h"
 #include "transitionalpersonbackend.h"
 #include "account.h"
 #include "vcardutils.h"
+#include "personmodel.h"
+#include "historytimecategorymodel.h"
 #include "numbercategorymodel.h"
 #include "numbercategory.h"
 #include "delegates/pixmapmanipulationdelegate.h"
@@ -135,6 +140,7 @@ public:
 
    //Helper code to help handle multiple parents
    QList<Person*> m_lParents;
+   Person* q_ptr;
 
    //As a single D-Pointer can have multiple parent (when merged), all emit need
    //to use a proxy to make sure everybody is notified
@@ -202,27 +208,12 @@ void PersonPrivate::phoneNumberCountAboutToChange(int n,int o)
 }
 
 PersonPrivate::PersonPrivate(Person* contact) :
-   m_Numbers(contact),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false)
+   m_Numbers(),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false),q_ptr(contact)
 {
 }
 
 PersonPrivate::~PersonPrivate()
 {
-}
-
-Person::ContactMethods::ContactMethods(Person* parent) : QVector<ContactMethod*>(),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
-    m_pParent2(parent)
-{
-}
-
-Person::ContactMethods::ContactMethods(Person* parent, const QVector<ContactMethod*>& list)
-: QVector<ContactMethod*>(list),CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),m_pParent2(parent)
-{
-}
-
-Person* Person::ContactMethods::contact() const
-{
-   return m_pParent2;
 }
 
 ///Constructor
@@ -432,6 +423,19 @@ bool Person::isActive() const
    return d_ptr->m_Active;
 }
 
+/** Get the last time this person was contacted
+ *  @warning This method complexity is O(N)
+ */
+time_t Person::lastUsedTime() const
+{
+   time_t t = 0;
+   for (int i=0;i<phoneNumbers().size();i++) {
+      if (phoneNumbers().at(i)->lastUsed() > t)
+         t = phoneNumbers().at(i)->lastUsed();
+   }
+   return t;
+}
+
 ///Return if one of the ContactMethod support presence
 bool Person::supportPresence() const
 {
@@ -442,25 +446,44 @@ bool Person::supportPresence() const
    return false;
 }
 
-
-QObject* Person::ContactMethods::getSelf() const {
-   return m_pParent2;
-}
-
-time_t Person::ContactMethods::lastUsedTimeStamp() const
-{
-   time_t t = 0;
-   for (int i=0;i<size();i++) {
-      if (at(i)->lastUsed() > t)
-         t = at(i)->lastUsed();
-   }
-   return t;
-}
-
 ///Recomputing the filter string is heavy, cache it
 QString Person::filterString() const
 {
    return d_ptr->filterString();
+}
+
+///Get the role value
+QVariant Person::roleData(int role) const
+{
+   switch (role) {
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+         return QVariant(formattedName());
+      case (int)Person::Role::Organization:
+         return QVariant(organization());
+      case (int)Person::Role::Group:
+         return QVariant(group());
+      case (int)Person::Role::Department:
+         return QVariant(department());
+      case (int)Person::Role::PreferredEmail:
+         return QVariant(preferredEmail());
+      case (int)Person::Role::FormattedLastUsed:
+         return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(lastUsedTime()));
+      case (int)Person::Role::IndexedLastUsed:
+         return QVariant((int)HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime()));
+      case (int)Person::Role::Object:
+         return QVariant::fromValue(const_cast<Person*>(this));
+      case (int)Person::Role::Active:
+         return isActive();
+      case (int)Person::Role::DatedLastUsed:
+         return QVariant(QDateTime::fromTime_t( lastUsedTime()));
+      case (int)Person::Role::Filter:
+         return filterString();
+      default:
+         break;
+   }
+
+   return QVariant();
 }
 
 ///Callback when one of the phone number presence change
