@@ -42,7 +42,7 @@
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
 #include "private/videorenderermanager.h"
-#include "historymodel.h"
+#include "categorizedhistorymodel.h"
 #include "instantmessagingmodel.h"
 #include "useractionmodel.h"
 #include "callmodel.h"

@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "contactproxymodel.h"
+#include "categorizedcontactmodel.h"
 
 //Qt
 #include <QtCore/QDebug>
@@ -25,7 +25,7 @@
 
 //Ring
 #include "callmodel.h"
-#include "historymodel.h"
+#include "categorizedhistorymodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "historytimecategorymodel.h"
@@ -38,8 +38,8 @@ class ContactTreeNode;
 
 class ContactTreeNode : public CategorizedCompositeNode {
 public:
-   friend class ContactProxyModel;
-   friend class ContactProxyModelPrivate;
+   friend class CategorizedContactModel;
+   friend class CategorizedContactModelPrivate;
    friend class ContactTreeBinder;
 
    enum class NodeType {
@@ -49,9 +49,9 @@ public:
    };
 
    //Constructor
-   ContactTreeNode( Person* ct          , ContactProxyModel* parent);
-   ContactTreeNode( ContactMethod* cm   , ContactProxyModel* parent);
-   ContactTreeNode( const QString& name , ContactProxyModel* parent);
+   ContactTreeNode( Person* ct          , CategorizedContactModel* parent);
+   ContactTreeNode( ContactMethod* cm   , CategorizedContactModel* parent);
+   ContactTreeNode( const QString& name , CategorizedContactModel* parent);
    virtual ~ContactTreeNode();
 
    virtual QObject* getSelf() const override;
@@ -64,7 +64,7 @@ public:
    NodeType                  m_Type          ;
    ContactTreeNode*          m_pParent       ;
    QVector<ContactTreeNode*> m_lChildren     ;
-   ContactProxyModel*        m_pModel        ;
+   CategorizedContactModel*        m_pModel        ;
 
    //Helpers
    void slotChanged                        (       );
@@ -72,11 +72,11 @@ public:
    void slotContactMethodCountAboutToChange(int,int);
 };
 
-class ContactProxyModelPrivate : public QObject
+class CategorizedContactModelPrivate : public QObject
 {
    Q_OBJECT
 public:
-   ContactProxyModelPrivate(ContactProxyModel* parent);
+   CategorizedContactModelPrivate(CategorizedContactModel* parent);
 
    //Helpers
    QString category(const Person* ct) const;
@@ -93,14 +93,14 @@ public:
    QModelIndex getIndex(int row, int column, ContactTreeNode* parent);
 
 private:
-   ContactProxyModel* q_ptr;
+   CategorizedContactModel* q_ptr;
 
 public Q_SLOTS:
    void reloadCategories();
    void slotContactAdded(Person* c);
 };
 
-ContactTreeNode::ContactTreeNode(Person* ct, ContactProxyModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent)
 {
    QObject::connect(m_pContact,&Person::changed                      ,[this](            ){ slotChanged                        (   ); });
@@ -108,13 +108,13 @@ ContactTreeNode::ContactTreeNode(Person* ct, ContactProxyModel* parent) : Catego
    QObject::connect(m_pContact,&Person::phoneNumberCountAboutToChange,[this](int n, int o){ slotContactMethodCountAboutToChange(n,o); });
 }
 
-ContactTreeNode::ContactTreeNode(ContactMethod* cm, ContactProxyModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
+ContactTreeNode::ContactTreeNode(ContactMethod* cm, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
    m_pContactMethod(cm),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CONTACTMETHOD),m_pParent(nullptr),m_pModel(parent)
 {
    QObject::connect(m_pContactMethod,&ContactMethod::changed,[this](){ slotChanged(); });
 }
 
-ContactTreeNode::ContactTreeNode(const QString& name, ContactProxyModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContactMethod(nullptr),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CATEGORY),m_Name(name),m_pParent(nullptr),m_pModel(parent)
 {
 }
@@ -123,7 +123,7 @@ ContactTreeNode::~ContactTreeNode()
 {
 }
 
-QModelIndex ContactProxyModelPrivate::getIndex(int row, int column, ContactTreeNode* parent)
+QModelIndex CategorizedContactModelPrivate::getIndex(int row, int column, ContactTreeNode* parent)
 {
    return q_ptr->createIndex(row,column,parent);
 }
@@ -172,16 +172,16 @@ void ContactTreeNode::slotContactMethodCountAboutToChange(int count, int oldCoun
    }
 }
 
-ContactProxyModelPrivate::ContactProxyModelPrivate(ContactProxyModel* parent) : QObject(parent), q_ptr(parent),
+CategorizedContactModelPrivate::CategorizedContactModelPrivate(CategorizedContactModel* parent) : QObject(parent), q_ptr(parent),
 m_lCategoryCounter(),m_Role(Qt::DisplayRole)
 {
 
 }
 
 //
-ContactProxyModel::ContactProxyModel(int role) : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new ContactProxyModelPrivate(this))
+CategorizedContactModel::CategorizedContactModel(int role) : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new CategorizedContactModelPrivate(this))
 {
-   setObjectName("ContactProxyModel");
+   setObjectName("CategorizedContactModel");
    d_ptr->m_Role    = role;
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
@@ -195,14 +195,14 @@ ContactProxyModel::ContactProxyModel(int role) : QAbstractItemModel(QCoreApplica
 
 }
 
-ContactProxyModel::~ContactProxyModel()
+CategorizedContactModel::~CategorizedContactModel()
 {
    foreach(ContactTreeNode* item,d_ptr->m_lCategoryCounter) {
       delete item;
    }
 }
 
-QHash<int,QByteArray> ContactProxyModel::roleNames() const
+QHash<int,QByteArray> CategorizedContactModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
@@ -221,7 +221,7 @@ QHash<int,QByteArray> ContactProxyModel::roleNames() const
    return roles;
 }
 
-ContactTreeNode* ContactProxyModelPrivate::getContactTopLevelItem(const QString& category)
+ContactTreeNode* CategorizedContactModelPrivate::getContactTopLevelItem(const QString& category)
 {
    if (!m_hCategories[category]) {
       ContactTreeNode* item = new ContactTreeNode(category,q_ptr);
@@ -237,7 +237,7 @@ ContactTreeNode* ContactProxyModelPrivate::getContactTopLevelItem(const QString&
    return item;
 }
 
-void ContactProxyModelPrivate::reloadCategories()
+void CategorizedContactModelPrivate::reloadCategories()
 {
    emit q_ptr->layoutAboutToBeChanged(); //FIXME far from optimal
    q_ptr->beginResetModel();
@@ -256,7 +256,7 @@ void ContactProxyModelPrivate::reloadCategories()
    emit q_ptr->layoutChanged();
 }
 
-void ContactProxyModelPrivate::slotContactAdded(Person* c)
+void CategorizedContactModelPrivate::slotContactAdded(Person* c)
 {
    if (!c) return;
    const QString val = category(c);
@@ -283,7 +283,7 @@ void ContactProxyModelPrivate::slotContactAdded(Person* c)
    //emit layoutChanged();
 }
 
-bool ContactProxyModel::setData( const QModelIndex& index, const QVariant &value, int role)
+bool CategorizedContactModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
    if (index.isValid() && index.parent().isValid()) {
       ContactTreeNode* modelItem = (ContactTreeNode*)index.internalPointer();
@@ -296,7 +296,7 @@ bool ContactProxyModel::setData( const QModelIndex& index, const QVariant &value
    return false;
 }
 
-QVariant ContactProxyModel::data( const QModelIndex& index, int role) const
+QVariant CategorizedContactModel::data( const QModelIndex& index, int role) const
 {
    if (!index.isValid())
       return QVariant();
@@ -336,7 +336,7 @@ QVariant ContactProxyModel::data( const QModelIndex& index, int role) const
    return QVariant();
 }
 
-QVariant ContactProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant CategorizedContactModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
    Q_UNUSED(section)
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
@@ -344,7 +344,7 @@ QVariant ContactProxyModel::headerData(int section, Qt::Orientation orientation,
    return QVariant();
 }
 
-bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+bool CategorizedContactModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
    Q_UNUSED( action )
    setData(parent,-1,static_cast<int>(Call::Role::DropState));
@@ -386,7 +386,7 @@ bool ContactProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction actio
 }
 
 
-int ContactProxyModel::rowCount( const QModelIndex& parent ) const
+int CategorizedContactModel::rowCount( const QModelIndex& parent ) const
 {
    if (!parent.isValid() || !parent.internalPointer())
       return d_ptr->m_lCategoryCounter.size();
@@ -398,20 +398,20 @@ int ContactProxyModel::rowCount( const QModelIndex& parent ) const
    return 0;
 }
 
-Qt::ItemFlags ContactProxyModel::flags( const QModelIndex& index ) const
+Qt::ItemFlags CategorizedContactModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid())
       return Qt::NoItemFlags;
    return Qt::ItemIsEnabled | Qt::ItemIsSelectable | (index.parent().isValid()?Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled:Qt::ItemIsEnabled);
 }
 
-int ContactProxyModel::columnCount ( const QModelIndex& parent) const
+int CategorizedContactModel::columnCount ( const QModelIndex& parent) const
 {
    Q_UNUSED(parent)
    return 1;
 }
 
-QModelIndex ContactProxyModel::parent( const QModelIndex& index) const
+QModelIndex CategorizedContactModel::parent( const QModelIndex& index) const
 {
    if (!index.isValid() || !index.internalPointer())
       return QModelIndex();
@@ -424,7 +424,7 @@ QModelIndex ContactProxyModel::parent( const QModelIndex& index) const
    return QModelIndex();
 }
 
-QModelIndex ContactProxyModel::index( int row, int column, const QModelIndex& parent) const
+QModelIndex CategorizedContactModel::index( int row, int column, const QModelIndex& parent) const
 {
    if (!parent.isValid() && row < d_ptr->m_lCategoryCounter.size()) {
       return createIndex(row,column,d_ptr->m_lCategoryCounter[row]);
@@ -438,12 +438,12 @@ QModelIndex ContactProxyModel::index( int row, int column, const QModelIndex& pa
    return QModelIndex();
 }
 
-QStringList ContactProxyModel::mimeTypes() const
+QStringList CategorizedContactModel::mimeTypes() const
 {
    return d_ptr->m_lMimes;
 }
 
-QMimeData* ContactProxyModel::mimeData(const QModelIndexList &indexes) const
+QMimeData* CategorizedContactModel::mimeData(const QModelIndexList &indexes) const
 {
    QMimeData *mimeData = new QMimeData();
    foreach (const QModelIndex &index, indexes) {
@@ -481,7 +481,7 @@ QMimeData* ContactProxyModel::mimeData(const QModelIndexList &indexes) const
 }
 
 ///Return valid payload types
-int ContactProxyModel::acceptedPayloadTypes()
+int CategorizedContactModel::acceptedPayloadTypes()
 {
    return CallModel::DropPayloadType::CALL;
 }
@@ -495,7 +495,7 @@ int ContactProxyModel::acceptedPayloadTypes()
  ****************************************************************************/
 
 
-QString ContactProxyModelPrivate::category(const Person* ct) const {
+QString CategorizedContactModelPrivate::category(const Person* ct) const {
    if (!ct)
       return QString();
 
@@ -507,7 +507,7 @@ QString ContactProxyModelPrivate::category(const Person* ct) const {
    return cat;
 }
 
-void ContactProxyModel::setRole(int role)
+void CategorizedContactModel::setRole(int role)
 {
    if (role != d_ptr->m_Role) {
       d_ptr->m_Role = role;
@@ -515,4 +515,4 @@ void ContactProxyModel::setRole(int role)
    }
 }
 
-#include <contactproxymodel.moc>
+#include <categorizedcontactmodel.moc>

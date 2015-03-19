@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,94 +15,85 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef HISTORY_MODEL_H
-#define HISTORY_MODEL_H
-//Base
-#include "typedefs.h"
-#include <QtCore/QObject>
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QStringList>
+#ifndef CATEGORIZEDBOOKMARKMODEL_H
+#define CATEGORIZEDBOOKMARKMODEL_H
 
-//Qt
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QHash>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
 
 //Ring
-#include "call.h"
 #include "collectionmanagerinterface.h"
+#include "collectioninterface.h"
+#include "typedefs.h"
+#include "contactmethod.h"
+// #include "person.h"
+// #include "call.h"
+class PersonBackend;
+class NumberTreeBackend;
 
-//Typedef
-typedef QMap<uint, Call*>  CallMap;
-typedef QList<Call*>       CallList;
+class CategorizedBookmarkModelPrivate;
+class CollectionInterface2;
 
-class HistoryItemNode;
-class AbstractHistoryBackend;
-class HistoryModelPrivate;
-//TODO split ASAP
-///HistoryModel: History call manager
-class LIB_EXPORT HistoryModel : public QAbstractItemModel, public CollectionManagerInterface<Call> {
+class LIB_EXPORT CategorizedBookmarkModel :  public QAbstractItemModel, public CollectionManagerInterface<ContactMethod>
+{
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class HistoryItemNode;
-   friend class HistoryTopLevelItem;
+   friend class NumberTreeBackend;
+   //Constructor
+   virtual ~CategorizedBookmarkModel() {}
+   explicit CategorizedBookmarkModel(QObject* parent);
 
-   //Properties
-   Q_PROPERTY(bool hasCollections   READ hasCollections  )
-
-   //Singleton
-   static HistoryModel* instance();
-
-   //Getters
-   int  acceptedPayloadTypes       () const;
-   bool isHistoryLimited           () const;
-   int  historyLimit               () const;
-   const CallMap getHistoryCalls   () const;
+   //Setters
+   void setRole(int role);
+   void setShowAll(bool showAll);
 
    //Backend model implementation
    virtual bool clearAllCollections() const override;
 
-   //Setters
-   void setCategoryRole(int role);
-   void setHistoryLimited(bool isLimited);
-   void setHistoryLimit(int numberOfDays);
-
-
    //Model implementation
-   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
+   virtual bool          removeRows  ( int row, int count, const QModelIndex& parent=QModelIndex() )       override;
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
    virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const override;
-   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const  override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const override;
    virtual QModelIndex   parent      ( const QModelIndex& index                                    ) const override;
    virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
-   virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
    virtual QStringList   mimeTypes   (                                                             ) const override;
    virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                              ) const override;
-   virtual bool          dropMimeData( const QMimeData*, Qt::DropAction, int, int, const QModelIndex& ) override;
-   virtual bool          insertRows  ( int row, int count, const QModelIndex & parent = QModelIndex() ) override;
+   virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-private:
-   //Constructor
-   explicit HistoryModel();
-   ~HistoryModel();
-   QScopedPointer<HistoryModelPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(HistoryModel)
+   //Management
+   void remove        (const QModelIndex& idx );
+   void addBookmark   (ContactMethod* number    );
+   void removeBookmark(ContactMethod* number    );
 
-   //Static attributes
-   static HistoryModel* m_spInstance;
+   //Getters
+   int          acceptedPayloadTypes();
+   ContactMethod* getNumber(const QModelIndex& idx);
+
+   //Singleton
+   static CategorizedBookmarkModel* instance();
+
+private:
+   static CategorizedBookmarkModel* m_spInstance;
+
+   CategorizedBookmarkModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(CategorizedBookmarkModel)
 
    //Backend interface
-   virtual void collectionAddedCallback(CollectionInterface* collection) override;
-   virtual bool addItemCallback(const Call* item) override;
-   virtual bool removeItemCallback(const Call* item) override;
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(const ContactMethod* item) override;
+   virtual bool removeItemCallback(const ContactMethod* item) override;
 
-Q_SIGNALS:
-   ///Emitted when the history change (new items, cleared)
-   void historyChanged          (            );
-   ///Emitted when a new item is added to prevent full reload
-   void newHistoryCall          ( Call* call );
+public Q_SLOTS:
+   void reloadCategories();
 };
 
 #endif

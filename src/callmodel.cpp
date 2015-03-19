@@ -39,7 +39,7 @@
 #include "typedefs.h"
 #include "collectioninterface.h"
 #include "dbus/videomanager.h"
-#include "historymodel.h"
+#include "categorizedhistorymodel.h"
 #include "delegates/phonenumberselectordelegate.h"
 #include "personmodel.h"
 #include "useractionmodel.h"
@@ -169,11 +169,11 @@ void CallModelPrivate::init()
       #endif
       /*                                                                                                                           */
 
-      connect(HistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
+      connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
 
       dbusInit = true;
 
-      HistoryModel::instance();
+      CategorizedHistoryModel::instance();
    }
    static bool m_sInstanceInit = false;
    if (!m_sInstanceInit)
@@ -1047,7 +1047,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    //Add to history
    if (call->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       if (!call->collection()) {
-         foreach (CollectionInterface* backend, HistoryModel::instance()->collections(CollectionInterface::ADD)) {
+         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance()->collections(CollectionInterface::ADD)) {
             if (backend->editor<Call>()->addNew(call))
                call->setCollection(backend);
          }

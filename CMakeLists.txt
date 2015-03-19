@@ -177,12 +177,12 @@ SET( libringclient_LIB_SRCS
   src/accountmodel.cpp
   src/availableaccountmodel.cpp
   src/callmodel.cpp
-  src/historymodel.cpp
-  src/bookmarkmodel.cpp
+  src/categorizedhistorymodel.cpp
+  src/categorizedbookmarkmodel.cpp
   src/credentialmodel.cpp
   src/instantmessagingmodel.cpp
   src/imconversationmanager.cpp
-  src/contactproxymodel.cpp
+  src/categorizedcontactmodel.cpp
   src/useractionmodel.cpp
   src/presencestatusmodel.cpp
   src/phonedirectorymodel.cpp
@@ -266,16 +266,16 @@ SET( libringclient_LIB_HDRS
   src/availableaccountmodel.h
   src/call.h
   src/callmodel.h
-  src/historymodel.h
+  src/categorizedhistorymodel.h
   src/person.h
   src/bootstrapmodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
-  src/bookmarkmodel.h
+  src/categorizedbookmarkmodel.h
   src/credentialmodel.h
   src/instantmessagingmodel.h
   src/imconversationmanager.h
-  src/contactproxymodel.h
+  src/categorizedcontactmodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
   src/contactmethod.h

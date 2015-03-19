@@ -15,14 +15,14 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "bookmarkmodel.h"
+#include "categorizedbookmarkmodel.h"
 
 //Qt
 #include <QtCore/QMimeData>
 #include <QtCore/QCoreApplication>
 
 //Ring
-#include "historymodel.h"
+#include "categorizedhistorymodel.h"
 #include "dbus/presencemanager.h"
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
@@ -36,7 +36,7 @@
 
 ///Top level bookmark item
 class BookmarkTopLevelItem : public CategorizedCompositeNode {
-   friend class BookmarkModel;
+   friend class CategorizedBookmarkModel;
    public:
       virtual QObject* getSelf() const;
       int m_Row;
@@ -47,11 +47,11 @@ class BookmarkTopLevelItem : public CategorizedCompositeNode {
       bool m_MostPopular;
 };
 
-class BookmarkModelPrivate : public QObject
+class CategorizedBookmarkModelPrivate : public QObject
 {
    Q_OBJECT
 public:
-   BookmarkModelPrivate(BookmarkModel* parent);
+   CategorizedBookmarkModelPrivate(CategorizedBookmarkModel* parent);
 
 //    QVector<CollectionInterface*> m_lBackends;
 
@@ -72,10 +72,10 @@ private Q_SLOTS:
    void slotIndexChanged(const QModelIndex& idx);
 
 private:
-   BookmarkModel* q_ptr;
+   CategorizedBookmarkModel* q_ptr;
 };
 
-BookmarkModel* BookmarkModel::m_spInstance = nullptr;
+CategorizedBookmarkModel* CategorizedBookmarkModel::m_spInstance = nullptr;
 
 class BookmarkItemNode;
 
@@ -83,7 +83,7 @@ static bool test = false;
 //Model item/index
 class NumberTreeBackend : public CategorizedCompositeNode
 {
-   friend class BookmarkModel;
+   friend class CategorizedBookmarkModel;
    public:
       NumberTreeBackend(ContactMethod* number);
       virtual ~NumberTreeBackend();
@@ -99,18 +99,18 @@ class BookmarkItemNode : public QObject //TODO remove this once Qt4 support is d
 {
    Q_OBJECT
 public:
-   BookmarkItemNode(BookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend);
+   BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend);
 private:
    ContactMethod* m_pNumber;
    NumberTreeBackend* m_pBackend;
-   BookmarkModel* m_pModel;
+   CategorizedBookmarkModel* m_pModel;
 private Q_SLOTS:
    void slotNumberChanged();
 Q_SIGNALS:
    void changed(const QModelIndex& idx);
 };
 
-BookmarkModelPrivate::BookmarkModelPrivate(BookmarkModel* parent) : QObject(parent), q_ptr(parent)
+CategorizedBookmarkModelPrivate::CategorizedBookmarkModelPrivate(CategorizedBookmarkModel* parent) : QObject(parent), q_ptr(parent)
 {
    
 }
@@ -124,7 +124,7 @@ NumberTreeBackend::~NumberTreeBackend() {
    if (m_pNode) delete m_pNode;
 }
 
-BookmarkItemNode::BookmarkItemNode(BookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend) :
+BookmarkItemNode::BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend) :
 m_pNumber(n),m_pBackend(backend),m_pModel(m){
    connect(n,SIGNAL(changed()),this,SLOT(slotNumberChanged()));
 }
@@ -139,10 +139,10 @@ QObject* BookmarkTopLevelItem::getSelf() const
    return nullptr;
 }
 
-BookmarkModel::BookmarkModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<ContactMethod>(this),
-d_ptr(new BookmarkModelPrivate(this))
+CategorizedBookmarkModel::CategorizedBookmarkModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<ContactMethod>(this),
+d_ptr(new CategorizedBookmarkModelPrivate(this))
 {
-   setObjectName("BookmarkModel");
+   setObjectName("CategorizedBookmarkModel");
    reloadCategories();
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
 
@@ -153,14 +153,14 @@ d_ptr(new BookmarkModelPrivate(this))
 //    } //TODO implement reordering
 }
 
-BookmarkModel* BookmarkModel::instance()
+CategorizedBookmarkModel* CategorizedBookmarkModel::instance()
 {
    if (! m_spInstance )
-      m_spInstance = new BookmarkModel(QCoreApplication::instance());
+      m_spInstance = new CategorizedBookmarkModel(QCoreApplication::instance());
    return m_spInstance;
 }
 
-QHash<int,QByteArray> BookmarkModel::roleNames() const
+QHash<int,QByteArray> CategorizedBookmarkModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
@@ -172,7 +172,7 @@ QHash<int,QByteArray> BookmarkModel::roleNames() const
 }
 
 ///Reload bookmark cateogries
-void BookmarkModel::reloadCategories()
+void CategorizedBookmarkModel::reloadCategories()
 {
    test = true;
    beginResetModel(); {
@@ -238,7 +238,7 @@ void BookmarkModel::reloadCategories()
 } //reloadCategories
 
 //Do nothing
-bool BookmarkModel::setData( const QModelIndex& index, const QVariant &value, int role)
+bool CategorizedBookmarkModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
    Q_UNUSED(index)
    Q_UNUSED(value)
@@ -247,7 +247,7 @@ bool BookmarkModel::setData( const QModelIndex& index, const QVariant &value, in
 }
 
 ///Get bookmark model data CategorizedCompositeNode::Type and Call::Role
-QVariant BookmarkModel::data( const QModelIndex& index, int role) const
+QVariant CategorizedBookmarkModel::data( const QModelIndex& index, int role) const
 {
    if (!index.isValid() || test)
       return QVariant();
@@ -281,7 +281,7 @@ QVariant BookmarkModel::data( const QModelIndex& index, int role) const
 } //Data
 
 ///Get header data
-QVariant BookmarkModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant CategorizedBookmarkModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
    Q_UNUSED(section)
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
@@ -291,7 +291,7 @@ QVariant BookmarkModel::headerData(int section, Qt::Orientation orientation, int
 
 
 ///Get the number of child of "parent"
-int BookmarkModel::rowCount( const QModelIndex& parent ) const
+int CategorizedBookmarkModel::rowCount( const QModelIndex& parent ) const
 {
    if (test) return 0; //HACK
    if (!parent.isValid())
@@ -303,7 +303,7 @@ int BookmarkModel::rowCount( const QModelIndex& parent ) const
    return 0;
 }
 
-Qt::ItemFlags BookmarkModel::flags( const QModelIndex& index ) const
+Qt::ItemFlags CategorizedBookmarkModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid())
       return 0;
@@ -311,14 +311,14 @@ Qt::ItemFlags BookmarkModel::flags( const QModelIndex& index ) const
 }
 
 ///There is only 1 column
-int BookmarkModel::columnCount ( const QModelIndex& parent) const
+int CategorizedBookmarkModel::columnCount ( const QModelIndex& parent) const
 {
    Q_UNUSED(parent)
    return 1;
 }
 
 ///Get the bookmark parent
-QModelIndex BookmarkModel::parent( const QModelIndex& idx) const
+QModelIndex CategorizedBookmarkModel::parent( const QModelIndex& idx) const
 {
    if (!idx.isValid()) {
       return QModelIndex();
@@ -334,7 +334,7 @@ QModelIndex BookmarkModel::parent( const QModelIndex& idx) const
 } //parent
 
 ///Get the index
-QModelIndex BookmarkModel::index(int row, int column, const QModelIndex& parent) const
+QModelIndex CategorizedBookmarkModel::index(int row, int column, const QModelIndex& parent) const
 {
    if (parent.isValid() && !column)
       return createIndex(row,column,(void*) static_cast<CategorizedCompositeNode*>(d_ptr->m_lCategoryCounter[parent.row()]->m_lChildren[row]));
@@ -345,13 +345,13 @@ QModelIndex BookmarkModel::index(int row, int column, const QModelIndex& parent)
 }
 
 ///Get bookmarks mime types
-QStringList BookmarkModel::mimeTypes() const
+QStringList CategorizedBookmarkModel::mimeTypes() const
 {
    return d_ptr->m_lMimes;
 }
 
 ///Generate mime data
-QMimeData* BookmarkModel::mimeData(const QModelIndexList &indexes) const
+QMimeData* CategorizedBookmarkModel::mimeData(const QModelIndexList &indexes) const
 {
    QMimeData *mimeData = new QMimeData();
    foreach (const QModelIndex &index, indexes) {
@@ -366,13 +366,13 @@ QMimeData* BookmarkModel::mimeData(const QModelIndexList &indexes) const
 } //mimeData
 
 ///Return valid payload types
-int BookmarkModel::acceptedPayloadTypes()
+int CategorizedBookmarkModel::acceptedPayloadTypes()
 {
    return CallModel::DropPayloadType::CALL;
 }
 
 ///Get call info TODO use Call:: one
-QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int role) const
+QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int role) const
 {
    if (!number)
       return QVariant();
@@ -424,7 +424,7 @@ QVariant BookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int rol
 } //commonCallInfo
 
 ///Get category
-QString BookmarkModelPrivate::category(NumberTreeBackend* number) const
+QString CategorizedBookmarkModelPrivate::category(NumberTreeBackend* number) const
 {
    QString cat = commonCallInfo(number).toString();
    if (cat.size())
@@ -432,7 +432,7 @@ QString BookmarkModelPrivate::category(NumberTreeBackend* number) const
    return cat;
 }
 
-void BookmarkModelPrivate::slotRequest(const QString& uri)
+void CategorizedBookmarkModelPrivate::slotRequest(const QString& uri)
 {
    Q_UNUSED(uri)
    qDebug() << "Presence Request" << uri << "denied";
@@ -441,7 +441,7 @@ void BookmarkModelPrivate::slotRequest(const QString& uri)
 
 
 
-QVector<ContactMethod*> BookmarkModelPrivate::serialisedToList(const QStringList& list)
+QVector<ContactMethod*> CategorizedBookmarkModelPrivate::serialisedToList(const QStringList& list)
 {
    QVector<ContactMethod*> numbers;
    foreach(const QString& item,list) {
@@ -455,12 +455,12 @@ QVector<ContactMethod*> BookmarkModelPrivate::serialisedToList(const QStringList
    return numbers;
 }
 
-bool BookmarkModelPrivate::displayFrequentlyUsed() const
+bool CategorizedBookmarkModelPrivate::displayFrequentlyUsed() const
 {
    return true;
 }
 
-QVector<ContactMethod*> BookmarkModelPrivate::bookmarkList() const
+QVector<ContactMethod*> CategorizedBookmarkModelPrivate::bookmarkList() const
 {
    return (q_ptr->collections().size() > 0) ? q_ptr->collections()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
 }
@@ -471,7 +471,7 @@ BookmarkTopLevelItem::BookmarkTopLevelItem(QString name)
 {
 }
 
-bool BookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
+bool CategorizedBookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
 {
    if (parent.isValid()) {
       const int parentRow = parent.row();
@@ -493,7 +493,7 @@ bool BookmarkModel::removeRows( int row, int count, const QModelIndex & parent)
    return false;
 }
 
-void BookmarkModel::addBookmark(ContactMethod* number)
+void CategorizedBookmarkModel::addBookmark(ContactMethod* number)
 {
    Q_UNUSED(number)
    if (collections().size())
@@ -502,12 +502,12 @@ void BookmarkModel::addBookmark(ContactMethod* number)
       qWarning() << "No bookmark backend is set";
 }
 
-void BookmarkModel::removeBookmark(ContactMethod* number)
+void CategorizedBookmarkModel::removeBookmark(ContactMethod* number)
 {
    Q_UNUSED(number)
 }
 
-void BookmarkModel::remove(const QModelIndex& idx)
+void CategorizedBookmarkModel::remove(const QModelIndex& idx)
 {
    Q_UNUSED(idx)
 //    ContactMethod* nb = getNumber(idx);
@@ -519,7 +519,7 @@ void BookmarkModel::remove(const QModelIndex& idx)
 //    }
 }
 
-ContactMethod* BookmarkModel::getNumber(const QModelIndex& idx)
+ContactMethod* CategorizedBookmarkModel::getNumber(const QModelIndex& idx)
 {
    if (idx.isValid()) {
       if (idx.parent().isValid() && idx.parent().row() < d_ptr->m_lCategoryCounter.size()) {
@@ -530,18 +530,18 @@ ContactMethod* BookmarkModel::getNumber(const QModelIndex& idx)
 }
 
 ///Callback when an item change
-void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
+void CategorizedBookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 {
    emit q_ptr->dataChanged(idx,idx);
 }
 
 
-// bool BookmarkModel::hasCollections() const
+// bool CategorizedBookmarkModel::hasCollections() const
 // {
 //    return d_ptr->m_lBackends.size();
 // }
 
-// bool BookmarkModel::hasEnabledCollections() const
+// bool CategorizedBookmarkModel::hasEnabledCollections() const
 // {
 //    foreach(CollectionInterface* b, d_ptr->m_lBackends) {
 //       if (b->isEnabled())
@@ -550,36 +550,36 @@ void BookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
 //    return false;
 // }
 
-// const QVector<CollectionInterface*> BookmarkModel::collections() const
+// const QVector<CollectionInterface*> CategorizedBookmarkModel::collections() const
 // {
 //    return d_ptr->m_lBackends;
 // }
 
 
-bool BookmarkModel::addItemCallback(const ContactMethod* item)
+bool CategorizedBookmarkModel::addItemCallback(const ContactMethod* item)
 {
    Q_UNUSED(item)
    reloadCategories(); //TODO this is far from optimal
    return true;
 }
 
-bool BookmarkModel::removeItemCallback(const ContactMethod* item)
+bool CategorizedBookmarkModel::removeItemCallback(const ContactMethod* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-// const QVector<CollectionInterface*> BookmarkModel::enabledCollections() const
+// const QVector<CollectionInterface*> CategorizedBookmarkModel::enabledCollections() const
 // {
 //    return d_ptr->m_lBackends; //TODO filter them
 // }
 
-// CommonCollectionModel* BookmarkModel::backendModel() const
+// CommonCollectionModel* CategorizedBookmarkModel::backendModel() const
 // {
 //    return nullptr; //TODO
 // }
 
-bool BookmarkModel::clearAllCollections() const
+bool CategorizedBookmarkModel::clearAllCollections() const
 {
    foreach (CollectionInterface* backend, collections()) {
       if (backend->supportedFeatures() & CollectionInterface::ADD) {
@@ -589,14 +589,14 @@ bool BookmarkModel::clearAllCollections() const
    return true;
 }
 
-// bool BookmarkModel::enableBackend(CollectionInterface* backend, bool enable)
+// bool CategorizedBookmarkModel::enableBackend(CollectionInterface* backend, bool enable)
 // {
 //    Q_UNUSED(backend)
 //    Q_UNUSED(enable)
 //    return false; //TODO
 // }
 
-// void BookmarkModel::addBackend(CollectionInterface* backend, LoadOptions options)
+// void CategorizedBookmarkModel::addBackend(CollectionInterface* backend, LoadOptions options)
 // {
 //    d_ptr->m_lBackends << backend;
 //    connect(backend,SIGNAL(newBookmarkAdded(ContactMethod*)),this,SLOT(reloadCategories()));
@@ -604,14 +604,14 @@ bool BookmarkModel::clearAllCollections() const
 //       backend->load();
 // }
 
-void BookmarkModel::collectionAddedCallback(CollectionInterface* backend)
+void CategorizedBookmarkModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }
 
-// QString BookmarkModel::backendCategoryName() const
+// QString CategorizedBookmarkModel::backendCategoryName() const
 // {
 //    return tr("Bookmarks");
 // }
 
-#include <bookmarkmodel.moc>
+#include <categorizedbookmarkmodel.moc>

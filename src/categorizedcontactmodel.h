@@ -29,9 +29,9 @@ class PersonModel;
 class ContactTreeNode;
 class TopLevelItem;
 class ContactTreeBinder;
-class ContactProxyModelPrivate;
+class CategorizedContactModelPrivate;
 
-class LIB_EXPORT ContactProxyModel :  public QAbstractItemModel
+class LIB_EXPORT CategorizedContactModel :  public QAbstractItemModel
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -41,8 +41,8 @@ public:
    friend class PersonModel;
    friend class ContactTreeNode;
    friend class ContactTreeBinder;
-   explicit ContactProxyModel(int role = Qt::DisplayRole);
-   virtual ~ContactProxyModel();
+   explicit CategorizedContactModel(int role = Qt::DisplayRole);
+   virtual ~CategorizedContactModel();
 
    //Setters
    void setRole(int role);
@@ -65,8 +65,8 @@ public:
    static int acceptedPayloadTypes();
 
 private:
-   QScopedPointer<ContactProxyModelPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(ContactProxyModel)
+   QScopedPointer<CategorizedContactModelPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(CategorizedContactModel)
 };
 
 #endif

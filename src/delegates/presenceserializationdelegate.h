@@ -20,7 +20,7 @@
 
 #include <typedefs.h>
 
-class AbstractBookmarkModel;
+class AbstractCategorizedBookmarkModel;
 class CollectionInterface;
 
 class LIB_EXPORT PresenceSerializationDelegate {
