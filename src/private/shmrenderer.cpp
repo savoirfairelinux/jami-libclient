@@ -40,6 +40,11 @@
 #include "video/resolution.h"
 #include "private/videorenderer_p.h"
 
+//#define DEBUG_FPS
+#ifdef DEBUG_FPS
+#include <chrono>
+#endif
+
 ///Shared memory object
 struct SHMHeader {
    sem_t notification;
@@ -75,6 +80,11 @@ public:
    int               m_Fps        ;
    QTime             m_CurrentTime;
 
+#ifdef DEBUG_FPS
+   unsigned          m_frameCount;
+   std::chrono::time_point<std::chrono::system_clock> m_lastFrameDebug;
+#endif
+
    //Constants
    static const int TIMEOUT_SEC = 1; // 1 second
 
@@ -97,6 +107,10 @@ Video::ShmRendererPrivate::ShmRendererPrivate(Video::ShmRenderer* parent) : QObj
    fd(-1),m_fpsC(0),m_Fps(0),
    m_pShmArea((SHMHeader*)MAP_FAILED), m_ShmAreaLen(0), m_BufferGen(0),
    m_pTimer(nullptr)
+#ifdef DEBUG_FPS
+   , m_frameCount(0)
+   , m_lastFrameDebug(std::chrono::system_clock::now())
+#endif
 {
 }
 
@@ -162,6 +176,17 @@ bool Video::ShmRendererPrivate::renderToBitmap()
    m_BufferGen = m_pShmArea->m_BufferGen;
    static_cast<Video::Renderer*>(q_ptr)->d_ptr->updateFrameIndex();
    shmUnlock();
+
+#ifdef DEBUG_FPS
+    auto currentTime = std::chrono::system_clock::now();
+    const std::chrono::duration<double> seconds = currentTime - m_lastFrameDebug;
+    ++m_frameCount;
+    if (seconds.count() > 1) {
+        qDebug() << this << ": FPS " << (m_frameCount / seconds.count());
+        m_frameCount = 0;
+        m_lastFrameDebug = currentTime;
+    }
+#endif
 
    return true;
 #else
