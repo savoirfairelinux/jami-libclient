@@ -63,12 +63,13 @@ public:
 
    //Mutator
    QModelIndex add();
-   Q_INVOKABLE void    remove      ( const QModelIndex& idx        );
-   virtual QMimeData*  mimeData    ( const QModelIndexList &indexes) const override;
+   Q_INVOKABLE void    remove      ( const QModelIndex& idx         );
+   virtual QMimeData*  mimeData    ( const QModelIndexList &indexes ) const override;
    virtual bool        dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
-   Q_INVOKABLE void    clear       (                        );
-   Q_INVOKABLE void    reload      (                        );
-   Q_INVOKABLE void    save        (                        );
+   virtual QStringList mimeTypes   (                                ) const override;
+   Q_INVOKABLE void    clear       (                                );
+   Q_INVOKABLE void    reload      (                                );
+   Q_INVOKABLE void    save        (                                );
 
    int acceptedPayloadTypes() const;
    QModelIndex getIndexofCodecByID(int id);
