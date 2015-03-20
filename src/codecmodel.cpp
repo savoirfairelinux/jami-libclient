@@ -303,7 +303,6 @@ QModelIndex CodecModel::getIndexofCodecByID(int id)
     for (int i=0; i < rowCount();i++) {
        const QModelIndex& idx = index(i,0);
        if (data(idx, CodecModel::Role::ID) == id) {
-           qDebug() << "FOUND";
           return idx;
        }
     }
@@ -374,7 +373,6 @@ QMimeData* CodecModel::mimeData(const QModelIndexList& indexes) const
 
    for (const QModelIndex& index : indexes) {
       if (index.isValid()) {
-          qDebug() << "setting mime data for row: " << index.row();
          if(index.data(CodecModel::Role::TYPE).toString() == "AUDIO")
             mMimeData->setData(RingMimes::AUDIO_CODEC , index.data(CodecModel::Role::ID).toByteArray());
          else
