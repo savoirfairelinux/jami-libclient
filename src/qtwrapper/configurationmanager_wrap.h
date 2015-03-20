@@ -77,10 +77,10 @@ public:
                        });
             }),
             exportable_callback<ConfigurationSignal::RegistrationStateChanged>(
-                [this] (const std::string &accountID, int registration_state, unsigned detail_code, const std::string& detail_str) {
+                [this] (const std::string &accountID, const std::string& registration_state, unsigned detail_code, const std::string& detail_str) {
                        QTimer::singleShot(0, [this, accountID, registration_state, detail_code, detail_str] {
                              emit this->registrationStateChanged(QString(accountID.c_str()),
-                                                                registration_state,
+                                                                QString(registration_state.c_str()),
                                                                 detail_code,
                                                                 QString(detail_str.c_str()));
                        });
@@ -510,7 +510,7 @@ Q_SIGNALS: // SIGNALS
     void accountsChanged();
     void historyChanged();
     void stunStatusFailure(const QString &reason);
-    void registrationStateChanged(const QString& accountID, int registration_state, unsigned detail_code, const QString& detail_str);
+    void registrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
     void stunStatusSuccess(const QString &message);
     void errorAlert(int code);
     void volatileAccountDetailsChanged(const QString &accountID, MapStringString details);
