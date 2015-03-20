@@ -630,8 +630,6 @@ void AccountModel::remove(Account* account)
    d_ptr->m_lDeletedAccounts << account->id();
    endRemoveRows();
    emit accountRemoved(account);
-   emit dataChanged(index(aindex,0), index(d_ptr->m_lAccounts.size()-1,0));
-   emit layoutChanged();
    //delete account;
    d_ptr->m_pRemovedAccounts << account;
 }
