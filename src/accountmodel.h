@@ -62,12 +62,19 @@ public:
    bool                 isPresenceSubscribeSupported(                                      ) const;
    ProtocolModel*       protocolModel               (                                      ) const;
 
+   QItemSelectionModel* selectionModel              (                                      ) const;
+
    //Abstract model accessors
-   virtual QVariant              data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
-   virtual int                   rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
-   virtual Qt::ItemFlags         flags    ( const QModelIndex& index                                 ) const override;
-   virtual bool                  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
-   virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
+   virtual QVariant              data        ( const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
+   virtual int                   rowCount    ( const QModelIndex& parent = QModelIndex()                 ) const override;
+   virtual Qt::ItemFlags         flags       ( const QModelIndex& index                                  ) const override;
+   virtual bool                  setData     ( const QModelIndex& index, const QVariant &value, int role )       override;
+   virtual QHash<int,QByteArray> roleNames   (                                                           ) const override;
+   virtual QMimeData*            mimeData    ( const QModelIndexList &indexes                            ) const override;
+   virtual QStringList           mimeTypes   (                                                           ) const override;
+   virtual bool                  dropMimeData( const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) override;
+   virtual Qt::DropActions       supportedDragActions() const override;
+   virtual Qt::DropActions       supportedDropActions() const override;
 
    //Mutators
    Q_INVOKABLE Account* add      ( const QString& alias, const Account::Protocol protocol = Account::Protocol::SIP);
@@ -75,8 +82,6 @@ public:
    Q_INVOKABLE void     remove   ( Account* account                                                               );
    void                 remove   ( const QModelIndex& index                                                       );
    void                 save     (                                                                                );
-   Q_INVOKABLE bool     moveUp   ( const QModelIndex& idx                                                         );
-   Q_INVOKABLE bool     moveDown ( const QModelIndex& idx                                                         );
    Q_INVOKABLE void     cancel   (                                                                                );
 
    //Operators
@@ -99,6 +104,8 @@ public Q_SLOTS:
    void update             ();
    void updateAccounts     ();
    void registerAllAccounts();
+   bool moveUp             ();
+   bool moveDown           ();
 
 
 Q_SIGNALS:

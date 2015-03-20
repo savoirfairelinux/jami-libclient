@@ -22,12 +22,14 @@
 //Qt
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QItemSelectionModel>
 
 //Ring daemon
 #include <account_const.h>
 
 //Ring library
 #include "account.h"
+#include "mime.h"
 #include "profilemodel.h"
 #include "protocolmodel.h"
 #include "private/account_p.h"
@@ -41,7 +43,7 @@ QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 AccountModel*     AccountModelPrivate::m_spAccountList;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
-m_pIP2IP(nullptr),m_pProtocolModel(nullptr)
+m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT})
 {
 }
 
@@ -159,6 +161,14 @@ AccountModel* AccountModel::instance()
       AccountModelPrivate::m_spAccountList->d_ptr->init();
    }
    return AccountModelPrivate::m_spAccountList;
+}
+
+QItemSelectionModel* AccountModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel)
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<AccountModel*>(this));
+
+   return d_ptr->m_pSelectionModel;
 }
 
 /**
@@ -401,31 +411,27 @@ void AccountModel::save()
 }
 
 ///Move account up
-bool AccountModel::moveUp( const QModelIndex& idx )
+bool AccountModel::moveUp()
 {
-   int row = idx.row();
-   if(row > 0 && row <= rowCount()) {
-      Account* account = d_ptr->m_lAccounts[row];
-      d_ptr->m_lAccounts.remove(row);
-      d_ptr->m_lAccounts.insert(row - 1, account);
-      emit dataChanged(this->index(row - 1, 0, QModelIndex()), this->index(row, 0, QModelIndex()));
-      emit layoutChanged();
-      return true;
+   if (d_ptr->m_pSelectionModel) {
+      const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
+      if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()-1, idx.column(),idx.parent())) {
+         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx.row()-1,idx.column()), QItemSelectionModel::ClearAndSelect);
+         return true;
+      }
    }
    return false;
 }
 
 ///Move account down
-bool AccountModel::moveDown( const QModelIndex& idx )
+bool AccountModel::moveDown()
 {
-   int row = idx.row();
-   if(row >= 0 && row < rowCount()) {
-      Account* account = d_ptr->m_lAccounts[row];
-      d_ptr->m_lAccounts.remove(row);
-      d_ptr->m_lAccounts.insert(row + 1, account);
-      emit dataChanged(this->index(row, 0, QModelIndex()), this->index(row + 1, 0, QModelIndex()));
-      emit layoutChanged();
-      return true;
+   if (d_ptr->m_pSelectionModel) {
+      const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
+      if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()+1, idx.column(),idx.parent())) {
+         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx.row()+1,idx.column()), QItemSelectionModel::ClearAndSelect);
+         return true;
+      }
    }
    return false;
 }
@@ -599,6 +605,11 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
    //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
 
    emit dataChanged(index(d_ptr->m_lAccounts.size()-1,0), index(d_ptr->m_lAccounts.size()-1,0));
+
+   if (d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
+   }
+
    return a;
 }
 
@@ -677,6 +688,88 @@ Account* AccountModel::operator[] (const QByteArray& i) {
 void AccountModel::add(Account* acc)
 {
    d_ptr->m_lAccounts << acc;
+}
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                              Drag and drop                                *
+ *                                                                           *
+ ****************************************************************************/
+
+
+QStringList AccountModel::mimeTypes() const
+{
+   return d_ptr->m_lMimes;
+}
+
+bool AccountModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
+{
+   Q_UNUSED(action)
+   if(parent.isValid() || column > 0) {
+      qDebug() << "column invalid";
+      return false;
+   }
+
+   if (data->hasFormat(RingMimes::ACCOUNT)) {
+      int destinationRow = -1;
+
+      if(row < 0) {
+         //drop on top
+         destinationRow = d_ptr->m_lAccounts.size() - 1;
+      }
+      else if(row >= d_ptr->m_lAccounts.size()) {
+         destinationRow = 0;
+      }
+      else if(data->hasFormat(RingMimes::VIDEO_CODEC) && row >= rowCount()) {
+         destinationRow = 0;
+      }
+      else {
+         destinationRow = row;
+      }
+
+      Account* dest = getById(data->data(RingMimes::ACCOUNT));
+      if (!dest)
+         return false;
+
+      const QModelIndex codecIdx = dest->index();
+
+      beginRemoveRows(QModelIndex(), codecIdx.row(), codecIdx.row());
+      Account* codecInfo = d_ptr->m_lAccounts[codecIdx.row()];
+      d_ptr->m_lAccounts.removeAt(codecIdx.row());
+      endRemoveRows();
+
+      beginInsertRows(QModelIndex(), destinationRow, destinationRow);
+      d_ptr->m_lAccounts.insert(destinationRow,codecInfo);
+      endInsertRows();
+
+      return true;
+   }
+
+   return false;
+}
+
+QMimeData* AccountModel::mimeData(const QModelIndexList& indexes) const
+{
+   QMimeData* mMimeData = new QMimeData();
+
+   for (const QModelIndex& index : indexes) {
+      if (index.isValid()) {
+         mMimeData->setData(RingMimes::ACCOUNT, index.data((int)Account::Role::Id).toByteArray());
+      }
+   }
+
+   return mMimeData;
+}
+
+Qt::DropActions AccountModel::supportedDragActions() const
+{
+   return Qt::MoveAction | Qt::TargetMoveAction;
+}
+
+Qt::DropActions AccountModel::supportedDropActions() const
+{
+   return Qt::MoveAction | Qt::TargetMoveAction;
 }
 
 #include <accountmodel.moc>

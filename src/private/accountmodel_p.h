@@ -24,6 +24,7 @@
 class AccountModel;
 class AccountListColorDelegate;
 class ProtocolModel;
+class QItemSelectionModel;
 
 class AccountModelPrivate : public QObject
 {
@@ -49,6 +50,8 @@ public:
    QList<Account*>          m_pRemovedAccounts;
    static AccountModel*     m_spAccountList   ;
    ProtocolModel*           m_pProtocolModel  ;
+   QItemSelectionModel*     m_pSelectionModel ;
+   QStringList              m_lMimes          ;
 
    //Future account cache
    static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;

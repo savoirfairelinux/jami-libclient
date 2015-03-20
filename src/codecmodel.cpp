@@ -193,25 +193,17 @@ bool CodecModel::setData( const QModelIndex& idx, const QVariant &value, int rol
    return false;
 }
 
-Qt::DropActions CodecModel::supportedDragActions() const
-{
-   return Qt::MoveAction | Qt::TargetMoveAction;
-}
-
-Qt::DropActions CodecModel::supportedDropActions() const
-{
-   return Qt::MoveAction | Qt::TargetMoveAction;
-}
-
 ///Add a new audio codec
-QModelIndex CodecModel::add() {
+QModelIndex CodecModel::add()
+{
    d_ptr->m_lCodecs << new CodecModelPrivate::CodecData;
    emit dataChanged(index(d_ptr->m_lCodecs.size()-1,0), index(d_ptr->m_lCodecs.size()-1,0));
    return index(d_ptr->m_lCodecs.size()-1,0);
 }
 
 ///Remove audio codec at 'idx'
-void CodecModel::remove(const QModelIndex& idx) {
+void CodecModel::remove(const QModelIndex& idx)
+{
    if (idx.isValid()) {
       CodecModelPrivate::CodecData* d = d_ptr->m_lCodecs[idx.row()];
       d_ptr->m_lCodecs.removeAt(idx.row());
@@ -326,17 +318,12 @@ bool CodecModelPrivate::findCodec(int id)
    return false;
 }
 
-
-QSortFilterProxyModel* CodecModel::audioCodecs() const
+///Return valid payload types
+int CodecModel::acceptedPayloadTypes() const
 {
-   if (!d_ptr->m_pAudioProxy) {
-      d_ptr->m_pAudioProxy = new QSortFilterProxyModel(const_cast<CodecModel*>(this));
-      d_ptr->m_pAudioProxy->setSourceModel(const_cast<CodecModel*>(this));
-      d_ptr->m_pAudioProxy->setFilterRole(CodecModel::Role::TYPE);
-      d_ptr->m_pAudioProxy->setFilterFixedString("AUDIO");
-   }
-   return d_ptr->m_pAudioProxy;
+   return CallModel::DropPayloadType::AUDIO_CODEC | CallModel::DropPayloadType::VIDEO_CODEC;
 }
+
 
 QSortFilterProxyModel* CodecModel::videoCodecs() const
 {
@@ -349,6 +336,18 @@ QSortFilterProxyModel* CodecModel::videoCodecs() const
    return d_ptr->m_pVideoProxy;
 }
 
+
+QSortFilterProxyModel* CodecModel::audioCodecs() const
+{
+   if (!d_ptr->m_pAudioProxy) {
+      d_ptr->m_pAudioProxy = new QSortFilterProxyModel(const_cast<CodecModel*>(this));
+      d_ptr->m_pAudioProxy->setSourceModel(const_cast<CodecModel*>(this));
+      d_ptr->m_pAudioProxy->setFilterRole(CodecModel::Role::TYPE);
+      d_ptr->m_pAudioProxy->setFilterFixedString("AUDIO");
+   }
+   return d_ptr->m_pAudioProxy;
+}
+
 // ======== DnD Api =========
 
 QModelIndex CodecModelPrivate::getIndexofCodecByID(int id)
@@ -359,12 +358,6 @@ QModelIndex CodecModelPrivate::getIndexofCodecByID(int id)
          return idx;
    }
    return QModelIndex();
-}
-
-///Return valid payload types
-int CodecModel::acceptedPayloadTypes() const
-{
-   return CallModel::DropPayloadType::AUDIO_CODEC | CallModel::DropPayloadType::VIDEO_CODEC;
 }
 
 QStringList CodecModel::mimeTypes() const
@@ -435,6 +428,16 @@ QMimeData* CodecModel::mimeData(const QModelIndexList& indexes) const
    }
 
    return mMimeData;
+}
+
+Qt::DropActions CodecModel::supportedDragActions() const
+{
+   return Qt::MoveAction | Qt::TargetMoveAction;
+}
+
+Qt::DropActions CodecModel::supportedDropActions() const
+{
+   return Qt::MoveAction | Qt::TargetMoveAction;
 }
 
 #include <codecmodel.moc>

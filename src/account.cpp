@@ -644,7 +644,7 @@ bool Account::isTlsRequireClientCertificate() const
 ///Return the account TLS security is enabled
 bool Account::isTlsEnabled() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
+   return protocol() == Account::Protocol::RING || (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
 }
 
 ///Return the key exchange mechanism
@@ -964,8 +964,8 @@ void AccountPrivate::setAccountProperties(const QHash<QString,QString>& m)
 ///Set a specific detail
 bool AccountPrivate::setAccountProperty(const QString& param, const QString& val)
 {
-   const bool accChanged = m_hAccountDetails[param] != val;
    const QString buf = m_hAccountDetails[param];
+   const bool accChanged = buf != val;
    //Status can be changed regardless of the EditState
    //TODO make this more generic for volatile properties
    if (param == DRing::Account::ConfProperties::Registration::STATUS) {
@@ -975,14 +975,12 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
          emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
    }
-   else {
+   else if (accChanged) {
       q_ptr->performAction(Account::EditAction::MODIFY);
       if (m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW) {
          m_hAccountDetails[param] = val;
-         if (accChanged) {
-            emit q_ptr->changed(q_ptr);
-            emit q_ptr->propertyChanged(q_ptr,param,val,buf);
-         }
+         emit q_ptr->changed(q_ptr);
+         emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
    }
    return m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW;

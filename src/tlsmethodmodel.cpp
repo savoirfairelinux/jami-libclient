@@ -52,6 +52,7 @@ public:
 
    static const char* toDaemonName(TlsMethodModel::Type type);
    static TlsMethodModel::Type fromDaemonName(const QString& name);
+   bool isRing;
 
    mutable QItemSelectionModel* m_pSelectionModel;
    Account* m_pAccount;
@@ -62,9 +63,9 @@ public Q_SLOTS:
 
 const QString TlsMethodModelPrivate::Name::DEFAULT = tr("Default", "Default TLS protocol version");
 
-TlsMethodModelPrivate::TlsMethodModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a)
+TlsMethodModelPrivate::TlsMethodModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a), isRing(false)
 {
-
+   isRing = a->protocol() == Account::Protocol::RING;
 }
 
 TlsMethodModel::TlsMethodModel(Account* a) : QAbstractListModel(QCoreApplication::instance()),
@@ -90,6 +91,10 @@ QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
    if (!index.isValid()) return QVariant();
    TlsMethodModel::Type method = static_cast<TlsMethodModel::Type>(index.row());
    if (role == Qt::DisplayRole) {
+
+      if (d_ptr->isRing)
+         return tr("Automatic");
+
       switch (method) {
          case TlsMethodModel::Type::DEFAULT:
             return TlsMethodModelPrivate::Name::DEFAULT;
@@ -106,7 +111,7 @@ QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
 
 int TlsMethodModel::rowCount( const QModelIndex& parent ) const
 {
-   return parent.isValid()?0:4;
+   return parent.isValid()?0: d_ptr->isRing ? 1 : 4;
 }
 
 Qt::ItemFlags TlsMethodModel::flags( const QModelIndex& index ) const
@@ -137,7 +142,8 @@ QItemSelectionModel* TlsMethodModel::selectionModel() const
       const QModelIndex& idx = toIndex(TlsMethodModelPrivate::fromDaemonName(value));
       d_ptr->m_pSelectionModel->setCurrentIndex(idx,QItemSelectionModel::ClearAndSelect);
 
-      connect(d_ptr->m_pSelectionModel,&QItemSelectionModel::currentChanged,d_ptr,&TlsMethodModelPrivate::slotSelectionChanged);
+      if (!d_ptr->isRing)
+         connect(d_ptr->m_pSelectionModel,&QItemSelectionModel::currentChanged,d_ptr,&TlsMethodModelPrivate::slotSelectionChanged);
    }
 
    return d_ptr->m_pSelectionModel;
@@ -149,7 +155,8 @@ void TlsMethodModelPrivate::slotSelectionChanged(const QModelIndex& idx)
       return;
 
    const char* value = toDaemonName(static_cast<TlsMethodModel::Type>(idx.row()));
-   m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD , value);
+   if (value != m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD))
+      m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD , value);
 }
 
 ///Convert a TlsMethodModel::Type enum to the string expected by the daemon API
