@@ -23,6 +23,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QItemSelectionModel>
+#include <QtCore/QMimeData>
 
 //Ring daemon
 #include <account_const.h>
