@@ -23,8 +23,9 @@
 class ItemBasePrivate
 {
 public:
-   ItemBasePrivate() : m_pBackend(nullptr){}
+   ItemBasePrivate() : m_pBackend(nullptr),m_isActive(true){}
    CollectionInterface* m_pBackend;
+   bool m_isActive;
 };
 
 template<typename Base>
@@ -75,4 +76,10 @@ bool ItemBase<Base>::remove()
 //    }
 //    else
 //       qDebug() << "Cannot save, invalid item type";
+}
+
+template<typename Base>
+bool ItemBase<Base>::isActive()
+{
+   return d_ptr->m_pBackend->isEnabled() && d_ptr->m_isActive;
 }

@@ -52,7 +52,6 @@ public:
       FormattedLastUsed = 104,
       IndexedLastUsed   = 105,
       DatedLastUsed     = 106,
-      Active            = 107,
       Object            = 108,
       Filter            = 200, //All roles, all at once
       DropState         = 300, //State for drag and drop
@@ -96,9 +95,7 @@ public:
    Q_PROPERTY( QString               preferredEmail READ preferredEmail WRITE setPreferredEmail                      )
    Q_PROPERTY( QVariant              photo          READ photo          WRITE setPhoto                               )
    Q_PROPERTY( QString               group          READ group          WRITE setGroup                               )
-   Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )
-   Q_PROPERTY( bool                  active         READ isActive       WRITE setActive         NOTIFY statusChanged )
-   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                                                )
+   Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                                                )
 
    //Mutator
    Q_INVOKABLE void addAddress(Address* addr);
@@ -129,7 +126,6 @@ public:
    const  QVariant photo            () const;
    const  QString& group            () const;
    const  QString& department       () const;
-   bool   isActive                  () const;
    time_t lastUsedTime              () const;
 
    QVariant roleData(int role) const;
@@ -154,7 +150,6 @@ public:
    void setDepartment     ( const QString&    name   );
    void setUid            ( const QByteArray& id     );
    void setPhoto          ( const QVariant&   photo  );
-   void setActive         ( bool              active );
 
    //Operator
    bool operator==(const Person* other) const;

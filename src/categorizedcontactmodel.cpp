@@ -309,8 +309,6 @@ QVariant CategorizedContactModel::data( const QModelIndex& index, int role) cons
             return static_cast<const ContactTreeNode*>(modelItem)->m_Name;
          case (int)Person::Role::IndexedLastUsed:
             return index.child(0,0).data((int)Person::Role::IndexedLastUsed);
-         case (int)Person::Role::Active:
-            return true;
          default:
             break;
       }
@@ -327,10 +325,6 @@ QVariant CategorizedContactModel::data( const QModelIndex& index, int role) cons
       break;
    }
    case ContactTreeNode::NodeType::CONTACTMETHOD: /* && (role == Qt::DisplayRole)) {*/
-      switch (role) {
-         case (int)Person::Role::Active:
-            return true;
-      }
       return modelItem->m_pContactMethod->roleData(role);
    }
    return QVariant();
@@ -402,7 +396,13 @@ Qt::ItemFlags CategorizedContactModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid())
       return Qt::NoItemFlags;
-   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | (index.parent().isValid()?Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled:Qt::ItemIsEnabled);
+
+   const ContactTreeNode* modelNode = static_cast<ContactTreeNode*>(index.internalPointer());
+
+   return (modelNode->m_pContact && modelNode->m_pContact->isActive() ? Qt::NoItemFlags : Qt::ItemIsEnabled)
+      | Qt::ItemIsSelectable
+      | (modelNode->m_pParent? (Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled) : Qt::ItemIsEnabled
+   );
 }
 
 int CategorizedContactModel::columnCount ( const QModelIndex& parent) const

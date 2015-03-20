@@ -135,16 +135,15 @@ QHash<int,QByteArray> PersonModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles[ (int)Person::Role::Organization      ] = "Organization";
-      roles[ (int)Person::Role::Group             ] = "Group";
-      roles[ (int)Person::Role::Department        ] = "Department";
-      roles[ (int)Person::Role::PreferredEmail    ] = "PreferredEmail";
-      roles[ (int)Person::Role::FormattedLastUsed ] = "FormattedLastUsed";
-      roles[ (int)Person::Role::IndexedLastUsed   ] = "IndexedLastUsed";
-      roles[ (int)Person::Role::DatedLastUsed     ] = "DatedLastUsed";
-      roles[ (int)Person::Role::Active            ] = "Active";
-      roles[ (int)Person::Role::Filter            ] = "Filter"; //All roles, all at once
-      roles[ (int)Person::Role::DropState         ] = "DropState"; //State for drag and drop
+      roles[ (int)Person::Role::Organization      ] = "organization";
+      roles[ (int)Person::Role::Group             ] = "group";
+      roles[ (int)Person::Role::Department        ] = "department";
+      roles[ (int)Person::Role::PreferredEmail    ] = "preferredEmail";
+      roles[ (int)Person::Role::FormattedLastUsed ] = "formattedLastUsed";
+      roles[ (int)Person::Role::IndexedLastUsed   ] = "indexedLastUsed";
+      roles[ (int)Person::Role::DatedLastUsed     ] = "datedLastUsed";
+      roles[ (int)Person::Role::Filter            ] = "filter"; //All roles, all at once
+      roles[ (int)Person::Role::DropState         ] = "dropState"; //State for drag and drop
    }
    return roles;
 }
@@ -323,8 +322,9 @@ bool PersonModel::addPerson(Person* c)
 
 void PersonModel::disablePerson(Person* c)
 {
-   if (c)
-      c->setActive(false);
+   Q_UNUSED(c) //TODO re-implement
+//    if (c)
+//       c->setActive(false);
 }
 
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)

@@ -39,6 +39,7 @@ public:
    bool save() const;
    bool edit()      ;
    bool remove()    ;
+   bool isActive()  ;
 
    //Setter
    void setCollection(CollectionInterface* backend);

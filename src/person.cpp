@@ -389,14 +389,6 @@ void Person::setDepartment(const QString& name)
    d_ptr->changed();
 }
 
-///If the contact have been deleted or not yet fully created
-void Person::setActive( bool active)
-{
-   d_ptr->m_Active = active;
-   d_ptr->statusChanged(d_ptr->m_Active);
-   d_ptr->changed();
-}
-
 ///Return if one of the ContactMethod is present
 bool Person::isPresent() const
 {
@@ -415,12 +407,6 @@ bool Person::isTracked() const
          return true;
    }
    return false;
-}
-
-///Have this contact been deleted or doesn't exist yet
-bool Person::isActive() const
-{
-   return d_ptr->m_Active;
 }
 
 /** Get the last time this person was contacted
@@ -473,8 +459,6 @@ QVariant Person::roleData(int role) const
          return QVariant((int)HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime()));
       case (int)Person::Role::Object:
          return QVariant::fromValue(const_cast<Person*>(this));
-      case (int)Person::Role::Active:
-         return isActive();
       case (int)Person::Role::DatedLastUsed:
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));
       case (int)Person::Role::Filter:
