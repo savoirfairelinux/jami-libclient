@@ -111,7 +111,8 @@ Qt::ItemFlags ProtocolModel::flags( const QModelIndex& index ) const
    //Account type cannot be changed, the daemon doesn't support that and crash
    //it was considered a client responsibility to disallow it. It is not worth
    //fixing
-   return Qt::ItemIsEnabled|Qt::ItemIsSelectable;
+   return (static_cast<Account::Protocol>(index.row()) == Account::Protocol::IAX ?
+   Qt::NoItemFlags : (Qt::ItemIsEnabled|Qt::ItemIsSelectable));
 }
 
 bool ProtocolModel::setData( const QModelIndex& index, const QVariant &value, int role)
