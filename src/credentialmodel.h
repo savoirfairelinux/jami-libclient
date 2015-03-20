@@ -24,6 +24,7 @@
 
 
 class CredentialModelPrivate;
+class Account;
 
 ///CredentialModel: A model for account credentials
 class LIB_EXPORT CredentialModel : public QAbstractListModel {
@@ -40,20 +41,22 @@ public:
    };
 
    //Constructor
-   explicit CredentialModel(QObject* parent = nullptr);
+   explicit CredentialModel(Account* acc);
    virtual ~CredentialModel();
 
    //Abstract model member
-   QVariant data(const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-   int rowCount(const QModelIndex& parent = QModelIndex()             ) const override;
-   Qt::ItemFlags flags(const QModelIndex& index                       ) const override;
-   virtual bool setData(const QModelIndex& index, const QVariant &value, int role) override;
-   virtual QHash<int,QByteArray> roleNames() const override;
+   QVariant                      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   int                           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   Qt::ItemFlags                 flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool                  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
 
    //Mutator
    QModelIndex addCredentials();
-   void removeCredentials(QModelIndex idx);
-   void clear();
+   void removeCredentials(const QModelIndex& idx);
+   void clear ();
+   void save  ();
+   void reload();
 
 private:
    QScopedPointer<CredentialModelPrivate> d_ptr;

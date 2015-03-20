@@ -17,8 +17,16 @@
  ***************************************************************************/
 #include "credentialmodel.h"
 
+//Qt
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
+
+//Ring
+#include <account.h>
+
+//Dring
+#include "dbus/configurationmanager.h"
+#include <account_const.h>
 
 class CredentialModelPrivate
 {
@@ -32,13 +40,17 @@ public:
 
    //Attributes
    QList<CredentialData2*> m_lCredentials;
+   Account*                m_pAccount;
 };
 
 ///Constructor
-CredentialModel::CredentialModel(QObject* par) : QAbstractListModel(par?par:QCoreApplication::instance()),
+CredentialModel::CredentialModel(Account* acc) : QAbstractListModel(acc),
 d_ptr(new CredentialModelPrivate())
 {
+   Q_ASSERT(acc);
+   d_ptr->m_pAccount = acc;
    QHash<int, QByteArray> roles = roleNames();
+   reload();
 }
 
 CredentialModel::~CredentialModel()
@@ -123,7 +135,8 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
 }
 
 ///Add a new credential
-QModelIndex CredentialModel::addCredentials() {
+QModelIndex CredentialModel::addCredentials()
+{
    beginInsertRows(QModelIndex(), d_ptr->m_lCredentials.size()-1, d_ptr->m_lCredentials.size()-1);
    d_ptr->m_lCredentials << new CredentialModelPrivate::CredentialData2;
    endInsertRows();
@@ -132,7 +145,8 @@ QModelIndex CredentialModel::addCredentials() {
 }
 
 ///Remove credential at 'idx'
-void CredentialModel::removeCredentials(QModelIndex idx) {
+void CredentialModel::removeCredentials(const QModelIndex& idx)
+{
    if (idx.isValid()) {
       beginRemoveRows(QModelIndex(), idx.row(), idx.row());
       d_ptr->m_lCredentials.removeAt(idx.row());
@@ -151,4 +165,46 @@ void CredentialModel::clear()
       delete data2;
    }
    d_ptr->m_lCredentials.clear();
+}
+
+///Save all credentials
+void CredentialModel::save()
+{
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   VectorMapStringString toReturn;
+   for (int i=0; i < rowCount();i++) {
+      const QModelIndex& idx = index(i,0);
+      MapStringString credentialData;
+      QString user  = data(idx,CredentialModel::Role::NAME).toString();
+      QString realm = data(idx,CredentialModel::Role::REALM).toString();
+      if (user.isEmpty()) {
+         user = d_ptr->m_pAccount->username();
+         setData(idx,user,CredentialModel::Role::NAME);
+      }
+      if (realm.isEmpty()) {
+         realm = '*';
+         setData(idx,realm,CredentialModel::Role::REALM);
+      }
+      credentialData[ DRing::Account::ConfProperties::USERNAME ] = user;
+      credentialData[ DRing::Account::ConfProperties::PASSWORD ] = data(idx,CredentialModel::Role::PASSWORD).toString();
+      credentialData[ DRing::Account::ConfProperties::REALM    ] = realm;
+      toReturn << credentialData;
+   }
+   configurationManager.setCredentials(d_ptr->m_pAccount->id(),toReturn);
+}
+
+///Reload credentials from DBUS
+void CredentialModel::reload()
+{
+   if (!d_ptr->m_pAccount->isNew()) {
+      clear();
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const VectorMapStringString credentials = configurationManager.getCredentials(d_ptr->m_pAccount->id());
+      for (int i=0; i < credentials.size(); i++) {
+         const QModelIndex& idx = addCredentials();
+         setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
+         setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
+         setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
+      }
+   }
 }

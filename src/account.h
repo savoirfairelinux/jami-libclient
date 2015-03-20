@@ -246,7 +246,7 @@ class LIB_EXPORT Account : public QObject {
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
 
-      Q_INVOKABLE CredentialModel*         credentialsModel       () const;
+      Q_INVOKABLE CredentialModel*         credentialModel        () const;
       Q_INVOKABLE CodecModel*              codecModel             () const;
       Q_INVOKABLE RingToneModel*           ringToneModel          () const;
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
@@ -380,13 +380,6 @@ class LIB_EXPORT Account : public QObject {
       //Operators
       bool operator==(const Account&)const;
       Account* operator<<(Account::EditAction& action);
-
-      //Mutator
-      Q_INVOKABLE void saveCredentials  ();
-      Q_INVOKABLE void saveCodecs       ();
-      Q_INVOKABLE void reloadCredentials();
-      Q_INVOKABLE void reloadCodecs     ();
-
 
    public Q_SLOTS:
       void setEnabled(bool checked);

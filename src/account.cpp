@@ -340,18 +340,20 @@ QVariant Account::stateColor() const
 }
 
 ///Create and return the credential model
-CredentialModel* Account::credentialsModel() const
+CredentialModel* Account::credentialModel() const
 {
-   if (!d_ptr->m_pCredentials)
-      const_cast<Account*>(this)->reloadCredentials();
+   if (!d_ptr->m_pCredentials) {
+      d_ptr->m_pCredentials = new CredentialModel(const_cast<Account*>(this));
+   }
    return d_ptr->m_pCredentials;
 }
 
 ///Create and return the audio codec model
 CodecModel* Account::codecModel() const
 {
-   if (!d_ptr->m_pCodecModel)
-      const_cast<Account*>(this)->reloadCodecs();
+   if (!d_ptr->m_pCodecModel) {
+      d_ptr->m_pCodecModel = new CodecModel(const_cast<Account*>(this));
+   }
    return d_ptr->m_pCodecModel;
 }
 
@@ -471,8 +473,8 @@ QString Account::password() const
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialsModel()->rowCount())
-            return credentialsModel()->data(credentialsModel()->index(0,0),CredentialModel::Role::PASSWORD).toString();
+         if (credentialModel()->rowCount())
+            return credentialModel()->data(credentialModel()->index(0,0),CredentialModel::Role::PASSWORD).toString();
          break;
       case Account::Protocol::IAX:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
@@ -1046,11 +1048,11 @@ void Account::setPassword(const QString& detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialsModel()->rowCount())
-            credentialsModel()->setData(credentialsModel()->index(0,0),detail,CredentialModel::Role::PASSWORD);
+         if (credentialModel()->rowCount())
+            credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::PASSWORD);
          else {
-            const QModelIndex idx = credentialsModel()->addCredentials();
-            credentialsModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
+            const QModelIndex idx = credentialModel()->addCredentials();
+            credentialModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
          }
          break;
       case Account::Protocol::IAX:
@@ -1636,10 +1638,10 @@ void AccountPrivate::save()
          m_pCodecModel->setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
          m_pCodecModel->setData(idx, Qt::Checked ,Qt::CheckStateRole);
       }
-      q_ptr->saveCodecs();
+      q_ptr->codecModel()->save();
 
       q_ptr->setId(currentId.toLatin1());
-      q_ptr->saveCredentials();
+      q_ptr->credentialModel()->save();
    } //New account
    else { //Existing account
       MapStringString tmp;
@@ -1664,7 +1666,8 @@ void AccountPrivate::save()
       m_CurrentState = Account::EditState::READY;
    }
 
-   q_ptr->saveCodecs();
+   q_ptr->codecModel()->save();
+
    emit q_ptr->changed(q_ptr);
 }
 
@@ -1709,7 +1712,7 @@ void AccountPrivate::reload()
 
       //If the credential model is loaded, then update it
       if (m_pCredentials)
-         q_ptr->reloadCredentials();
+         m_pCredentials->reload();
       emit q_ptr->changed(q_ptr);
 
       //The registration state is cached, update that cache
@@ -1744,53 +1747,6 @@ void AccountPrivate::outdate() {
    changeState(Account::EditState::OUTDATED);
 }
 
-
-///Reload credentials from DBUS
-void Account::reloadCredentials()
-{
-   if (!d_ptr->m_pCredentials) {
-      d_ptr->m_pCredentials = new CredentialModel(this);
-   }
-   if (!isNew()) {
-      d_ptr->m_pCredentials->clear();
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      VectorMapStringString credentials = configurationManager.getCredentials(id());
-      for (int i=0; i < credentials.size(); i++) {
-         QModelIndex idx = d_ptr->m_pCredentials->addCredentials();
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
-         d_ptr->m_pCredentials->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
-      }
-   }
-}
-
-///Save all credentials
-void Account::saveCredentials() {
-   if (d_ptr->m_pCredentials) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      VectorMapStringString toReturn;
-      for (int i=0; i < d_ptr->m_pCredentials->rowCount();i++) {
-         QModelIndex idx = d_ptr->m_pCredentials->index(i,0);
-         MapStringString credentialData;
-         QString user = d_ptr->m_pCredentials->data(idx,CredentialModel::Role::NAME).toString();
-         QString realm = d_ptr->m_pCredentials->data(idx,CredentialModel::Role::REALM).toString();
-         if (user.isEmpty()) {
-            user = username();
-            d_ptr->m_pCredentials->setData(idx,user,CredentialModel::Role::NAME);
-         }
-         if (realm.isEmpty()) {
-            realm = '*';
-            d_ptr->m_pCredentials->setData(idx,realm,CredentialModel::Role::REALM);
-         }
-         credentialData[ DRing::Account::ConfProperties::USERNAME ] = user;
-         credentialData[ DRing::Account::ConfProperties::PASSWORD ] = d_ptr->m_pCredentials->data(idx,CredentialModel::Role::PASSWORD).toString();
-         credentialData[ DRing::Account::ConfProperties::REALM    ] = realm;
-         toReturn << credentialData;
-      }
-      configurationManager.setCredentials(id(),toReturn);
-   }
-}
-
 void AccountPrivate::regenSecurityValidation()
 {
    if (m_pSecurityValidationModel) {
@@ -1799,21 +1755,6 @@ void AccountPrivate::regenSecurityValidation()
       m_pSecurityValidationModel->setTlsPrivateKeyCertificate(q_ptr->tlsPrivateKeyCertificate());
       m_pSecurityValidationModel->d_ptr->update();
    }
-}
-
-///Reload all audio codecs
-void Account::reloadCodecs()
-{
-   if (!d_ptr->m_pCodecModel) {
-      d_ptr->m_pCodecModel = new CodecModel(this);
-   }
-   d_ptr->m_pCodecModel->reload();
-}
-
-///Save audio codecs
-void Account::saveCodecs() {
-   if (d_ptr->m_pCodecModel)
-      d_ptr->m_pCodecModel->save();
 }
 
 /*****************************************************************************
