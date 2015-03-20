@@ -482,11 +482,24 @@ ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+   QT5_USE_MODULES(ringclient_static Core)
+   TARGET_LINK_LIBRARIES( ringclient_static
+	 -lpthread
+	 ${QT_QTDBUS_LIBRARY}
+	 ${QT_QTCORE_LIBRARY}
+	 )
+   SET_TARGET_PROPERTIES( ringclient_static
+	 PROPERTIES VERSION ${GENERIC_LIB_VERSION}
+	 )
 ENDIF()
 
 QT5_USE_MODULES(ringclient Core)
+
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-   QT5_USE_MODULES(ringclient DBus)
+  QT5_USE_MODULES(ringclient DBus)
+  IF(NOT ${ENABLE_STATIC} MATCHES false)
+	QT5_USE_MODULES(ringclient_static DBus)
+  ENDIF()
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
@@ -499,12 +512,22 @@ TARGET_LINK_LIBRARIES( ringclient
 IF(${ENABLE_LIBWRAP} MATCHES true)
    TARGET_LINK_LIBRARIES( ringclient
     qtwrapper
-    ${ring_BIN})
+    ${ring_BIN}
+	)
+  IF(NOT ${ENABLE_STATIC} MATCHES false)
+	TARGET_LINK_LIBRARIES( ringclient_static
+      qtwrapper
+      ${ring_BIN})
+  ENDIF()
 ENDIF()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-   TARGET_LINK_LIBRARIES( ringclient
+  TARGET_LINK_LIBRARIES( ringclient
     -lrt)
+  IF(NOT ${ENABLE_STATIC} MATCHES false)
+	TARGET_LINK_LIBRARIES( ringclient_static
+      -lrt)
+  ENDIF()
 ENDIF()
 
 SET_TARGET_PROPERTIES( ringclient
@@ -548,6 +571,14 @@ INSTALL( TARGETS ringclient
   LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
   DESTINATION ${SANE_LIBRARY_PATH}
 )
+
+IF(NOT ${ENABLE_STATIC} MATCHES false)
+  INSTALL( TARGETS ringclient_static
+	ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
+	LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
+	DESTINATION ${SANE_LIBRARY_PATH}
+	)
+ENDIF()
 
 # Create a CMake config file
 
