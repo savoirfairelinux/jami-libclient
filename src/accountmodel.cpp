@@ -62,7 +62,7 @@ void AccountModelPrivate::init()
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
    connect(&configurationManager, SIGNAL(registrationStateChanged(QString,QString, unsigned, QString)),this ,
-      SLOT(slotAccountChanged(QString,Qstring, unsigned, QString)));
+      SLOT(slotAccountChanged(QString,QString, unsigned, QString)));
    connect(&configurationManager, SIGNAL(accountsChanged())                               ,q_ptr,
       SLOT(updateAccounts())                  );
    connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
