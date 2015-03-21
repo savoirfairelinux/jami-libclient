@@ -417,7 +417,6 @@ bool AccountModel::moveUp()
    if (d_ptr->m_pSelectionModel) {
       const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
       if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()-1, idx.column(),idx.parent())) {
-         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx.row()-1,idx.column()), QItemSelectionModel::ClearAndSelect);
          return true;
       }
    }
@@ -430,7 +429,6 @@ bool AccountModel::moveDown()
    if (d_ptr->m_pSelectionModel) {
       const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
       if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()+1, idx.column(),idx.parent())) {
-         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx.row()+1,idx.column()), QItemSelectionModel::ClearAndSelect);
          return true;
       }
    }
@@ -720,9 +718,6 @@ bool AccountModel::dropMimeData(const QMimeData* data, Qt::DropAction action, in
       else if(row >= d_ptr->m_lAccounts.size()) {
          destinationRow = 0;
       }
-      else if(data->hasFormat(RingMimes::VIDEO_CODEC) && row >= rowCount()) {
-         destinationRow = 0;
-      }
       else {
          destinationRow = row;
       }
@@ -731,16 +726,18 @@ bool AccountModel::dropMimeData(const QMimeData* data, Qt::DropAction action, in
       if (!dest)
          return false;
 
-      const QModelIndex codecIdx = dest->index();
+      const QModelIndex accIdx = dest->index();
 
-      beginRemoveRows(QModelIndex(), codecIdx.row(), codecIdx.row());
-      Account* codecInfo = d_ptr->m_lAccounts[codecIdx.row()];
-      d_ptr->m_lAccounts.removeAt(codecIdx.row());
+      beginRemoveRows(QModelIndex(), accIdx.row(), accIdx.row());
+      Account* acc = d_ptr->m_lAccounts[accIdx.row()];
+      d_ptr->m_lAccounts.removeAt(accIdx.row());
       endRemoveRows();
 
       beginInsertRows(QModelIndex(), destinationRow, destinationRow);
-      d_ptr->m_lAccounts.insert(destinationRow,codecInfo);
+      d_ptr->m_lAccounts.insert(destinationRow,acc);
       endInsertRows();
+
+      d_ptr->m_pSelectionModel->setCurrentIndex(index(destinationRow), QItemSelectionModel::ClearAndSelect);
 
       return true;
    }
