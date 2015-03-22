@@ -209,7 +209,7 @@ SET( libringclient_LIB_SRCS
   src/accountstatusmodel.cpp
   src/codecmodel.cpp
   src/video/devicemodel.cpp
-  src/video/sourcesmodel.cpp
+  src/video/sourcemodel.cpp
   src/video/channel.cpp
   src/video/resolution.cpp
   src/audio/alsapluginmodel.cpp
@@ -327,7 +327,7 @@ SET( libringclient_LIB_HDRS
 SET(libringclient_video_LIB_HDRS
   src/video/device.h
   src/video/devicemodel.h
-  src/video/sourcesmodel.h
+  src/video/sourcemodel.h
   src/video/renderer.h
   src/video/resolution.h
   src/video/channel.h

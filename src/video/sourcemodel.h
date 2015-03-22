@@ -26,10 +26,10 @@
 namespace Video {
 
 class Device;
-class SourcesModelPrivate;
+class SourceModelPrivate;
 
 //TODO qt5, use QIdentityProxyModel
-class LIB_EXPORT SourcesModel : public QAbstractListModel {
+class LIB_EXPORT SourceModel : public QAbstractListModel {
    Q_OBJECT
 public:
    enum ExtendedDeviceList {
@@ -49,13 +49,13 @@ public:
    int activeIndex() const;
 
    //Singleton
-   static Video::SourcesModel* instance();
+   static Video::SourceModel* instance();
 private:
-   explicit SourcesModel();
-   virtual ~SourcesModel();
+   explicit SourceModel();
+   virtual ~SourceModel();
 
-   Video::SourcesModelPrivate* d_ptr;
-   static Video::SourcesModel* m_spInstance;
+   Video::SourceModelPrivate* d_ptr;
+   static Video::SourceModel* m_spInstance;
 
 public Q_SLOTS:
    void switchTo(const QModelIndex& idx);
