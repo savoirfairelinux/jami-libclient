@@ -151,8 +151,10 @@ void Video::SourcesModel::switchTo(const int idx)
          DBus::VideoManager::instance().switchInput(Video::SourcesModelPrivate::ProtocolPrefix::NONE);
          break;
       case ExtendedDeviceList::SCREEN:
-         DBus::VideoManager::instance().switchInput( QString(Video::SourcesModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1 %2x%3")
+         DBus::VideoManager::instance().switchInput( QString(Video::SourcesModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1+%2,%3 %4x%5")
             .arg(d_ptr->m_Display.index)
+            .arg(d_ptr->m_Display.rect.x())
+            .arg(d_ptr->m_Display.rect.y())
             .arg(d_ptr->m_Display.rect.width())
             .arg(d_ptr->m_Display.rect.height()));
          break;
