@@ -56,6 +56,16 @@ template <class T> bool CollectionEditor<T>::batchSave(const QList<T*> contacts)
    return ret;
 }
 
+///Default batch saving implementation, some collections have better APIs
+template <class T> bool CollectionEditor<T>::batchRemove(const QList<T*> contacts)
+{
+   bool ret = true;
+   foreach(const T* c, contacts) {
+      ret &= remove(c);
+   }
+   return ret;
+}
+
 template <class T>
 bool CollectionEditor<T>::addContactMethod( T*       item , ContactMethod* number )
 {

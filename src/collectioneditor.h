@@ -58,6 +58,7 @@ public:
 
    virtual bool save(const T* item) =0;
    virtual bool batchSave(const QList<T*> contacts);
+   virtual bool batchRemove(const QList<T*> contacts);
    virtual bool remove(const T* item);
 
    ///Edit 'item', the implementation may be a GUI or something else
