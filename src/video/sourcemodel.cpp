@@ -33,7 +33,7 @@ public:
       constexpr static const char* NONE    = ""          ;
       constexpr static const char* DISPLAY = "display://";
       constexpr static const char* FILE    = "file://"   ;
-      constexpr static const char* V4L2    = "v4l2://"   ;
+      constexpr static const char* CAMERA  = "camera://"   ;
    };
 
    struct Display {
@@ -164,7 +164,7 @@ void Video::SourceModel::switchTo(const int idx)
          );
          break;
       default:
-         DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::V4L2 +
+         DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
             Video::DeviceModel::instance()->index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          break;
    };
@@ -173,7 +173,7 @@ void Video::SourceModel::switchTo(const int idx)
 
 void Video::SourceModel::switchTo(Video::Device* device)
 {
-   DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::V4L2 + device->id());
+   DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA + device->id());
 }
 
 Video::Device* Video::SourceModel::deviceAt(const QModelIndex& idx) const
