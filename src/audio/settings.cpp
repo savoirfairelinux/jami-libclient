@@ -212,7 +212,7 @@ bool Audio::Settings::isCaptureMuted() const
 void Audio::Settings::setRecordPath(const QUrl& path)
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   configurationManager.setRecordPath(path.toString());
+   configurationManager.setRecordPath(path.path());
 }
 
 ///Return the path where recordings are going to be saved
