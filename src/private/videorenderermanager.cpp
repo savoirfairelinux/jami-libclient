@@ -42,6 +42,7 @@
 #include "private/shmrenderer.h"
 #endif
 
+constexpr static const char LOCAL_DEVICE[] = "local";
 
 //Static member
 VideoRendererManager* VideoRendererManager::m_spInstance = nullptr;
@@ -108,26 +109,32 @@ Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 ///Get the video preview Renderer
 Video::Renderer* VideoRendererManager::previewRenderer()
 {
-   if (!d_ptr->m_lRenderers["local"]) {
+   if (!d_ptr->m_lRenderers[LOCAL_DEVICE]) {
+      if ((!Video::DeviceModel::instance()->activeDevice()) || (!Video::DeviceModel::instance()->activeDevice()->activeChannel())) {
+         qWarning() << "No device found";
+         return nullptr;
+      }
+
       Video::Resolution* res = Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution();
+
       if (!res) {
          qWarning() << "Misconfigured video device";
          return nullptr;
       }
-#if defined(Q_OS_DARWIN)
-      d_ptr->m_lRenderers["local"] = new Video::DirectRenderer("local", res->size());
 
+#if defined(Q_OS_DARWIN)
+      d_ptr->m_lRenderers[LOCAL_DEVICE] = new Video::DirectRenderer(LOCAL_DEVICE, res->size());
 #else
-      d_ptr->m_lRenderers["local"] = new Video::ShmRenderer("local","",res->size());
+      d_ptr->m_lRenderers[LOCAL_DEVICE] = new Video::ShmRenderer(LOCAL_DEVICE,"",res->size());
 #endif
    }
-   return d_ptr->m_lRenderers["local"];
+   return d_ptr->m_lRenderers[LOCAL_DEVICE];
 }
 
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
-    //d_ptr->stoppedDecoding("local","");
+   //d_ptr->stoppedDecoding(LOCAL_DEVICE,"");
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    interface.stopCamera();
    d_ptr->m_PreviewState = false;
@@ -136,8 +143,7 @@ void VideoRendererManager::stopPreview()
 ///Start video preview
 void VideoRendererManager::startPreview()
 {
-    qWarning() << "STARTING PREVIEW";
-   // d_ptr->startedDecoding("local","",500,500);
+   // d_ptr->startedDecoding(LOCAL_DEVICE,"",500,500);
 
    if (d_ptr->m_PreviewState) return;
    VideoManagerInterface& interface = DBus::VideoManager::instance();
@@ -204,7 +210,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    if (dev) {
       emit dev->renderingStarted(m_lRenderers[rid]);
    }
-   if (id != "local") {
+   if (id != LOCAL_DEVICE) {
       qDebug() << "Starting video for call" << id;
       Call* c = CallModel::instance()->getCall(id);
       if (c)
@@ -232,7 +238,7 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
    if (dev) {
       emit dev->renderingStopped(r);
    }
-   if (id == "local") {
+   if (id == LOCAL_DEVICE) {
       m_PreviewState = false;
       emit q_ptr->previewStateChanged(false);
       emit q_ptr->previewStopped(r);
