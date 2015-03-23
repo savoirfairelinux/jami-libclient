@@ -57,7 +57,7 @@ public:
    static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
 
 public Q_SLOTS:
-   void slotAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
+   void slotDaemonAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
    void slotAccountChanged(Account* a);
    void slotVoiceMailNotify( const QString& accountID , int count );
    void slotAccountPresenceEnabledChanged(bool state);

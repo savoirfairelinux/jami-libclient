@@ -80,8 +80,8 @@ VideoRendererManager::VideoRendererManager():QThread(), d_ptr(new VideoRendererM
 {
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    connect( &interface , SIGNAL(deviceEvent())                           , d_ptr.data(), SLOT(deviceEvent())                           );
-   connect( &interface , SIGNAL(startedDecoding(QString,QString,int,int,bool)), d_ptr.data(), SLOT(startedDecoding(QString,QString,int,int)));
-   connect( &interface , SIGNAL(stoppedDecoding(QString,QString,bool))        , d_ptr.data(), SLOT(stoppedDecoding(QString,QString))        );
+   connect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
+   connect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
 }
 
 

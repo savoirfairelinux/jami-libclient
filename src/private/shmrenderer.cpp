@@ -313,7 +313,12 @@ void Video::ShmRendererPrivate::timedEvents()
 void Video::ShmRenderer::startRendering()
 {
    QMutexLocker locker {mutex()};
-   startShm();
+
+   if (!startShm()) {
+      qDebug() << "Cannot start rendering on " << d_ptr->m_ShmPath;
+      return;
+   }
+
    if (!d_ptr->m_pTimer) {
       d_ptr->m_pTimer = new QTimer(nullptr);
 
