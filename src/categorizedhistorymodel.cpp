@@ -442,7 +442,7 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
          #if QT_VERSION >= 0x050400
          if (parTli->isActive() && !parTli->m_lChildren[idx.row()]->call()->isActive()) {
             QTimer::singleShot(0,[this,idx]() {
-               emit dataChanged(idx,idx);
+               emit const_cast<CategorizedHistoryModel*>(this)->dataChanged(idx,idx);
             });
          }
          #endif
