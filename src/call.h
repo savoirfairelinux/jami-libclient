@@ -70,7 +70,7 @@ class  LIB_EXPORT Call : public ItemBase<QObject>
    #pragma GCC diagnostic pop
 public:
    friend class CallModel            ;
-   friend class CategorizedHistoryModel         ;
+   friend class CategorizedHistoryModel;
    friend class CallModelPrivate     ;
    friend class IMConversationManager;
    friend class VideoRendererManager;

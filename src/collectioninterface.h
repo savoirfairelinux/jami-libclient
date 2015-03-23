@@ -220,9 +220,11 @@ protected:
    void setConfigurator(std::function<CollectionConfigurationInterface*()> getter);
    void addChildren(CollectionInterface* c);
 
-   bool save  (ItemBase<QObject>* base);
-   bool edit  (ItemBase<QObject>* base);
-   bool remove(ItemBase<QObject>* base);
+   bool save      (ItemBase<QObject>* base);
+   bool edit      (ItemBase<QObject>* base);
+   bool remove    (ItemBase<QObject>* base);
+   void activate  (ItemBase<QObject>* base);
+   void deactivate(ItemBase<QObject>* base);
    QMetaObject metaObject();
 
 private:

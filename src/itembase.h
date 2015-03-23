@@ -39,12 +39,11 @@ public:
    bool save() const;
    bool edit()      ;
    bool remove()    ;
-   bool isActive()  ;
+   bool isActive() const ;
 
    //Setter
    void setCollection(CollectionInterface* backend);
 
-protected:
 private:
    ItemBasePrivate* d_ptr;
 };

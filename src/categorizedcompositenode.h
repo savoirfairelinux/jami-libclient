@@ -24,10 +24,7 @@ class QObject;
 
 class CategorizedCompositeNodePrivate;
 /**
- * This class is used internally to store QAbstractModelItems it will eventually
- * need to be made private
- * 
- * @todo remove the export symbol and don't install the file in "make install"
+ * DO NOT USE, DEPRECATED
  */
 class LIB_EXPORT CategorizedCompositeNode {
 public:
@@ -48,6 +45,8 @@ public:
    void setHoverState(const int state);
    CategorizedCompositeNode* parentNode() const;
    void setParentNode(CategorizedCompositeNode* node);
+   bool isActive() const;
+   void setActive(bool active) const;
 private:
    CategorizedCompositeNodePrivate* d_ptr;
 };

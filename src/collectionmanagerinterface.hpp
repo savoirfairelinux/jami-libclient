@@ -224,16 +224,18 @@ void CollectionManagerInterface<T>::collectionAddedCallback(CollectionInterface*
 template<class T>
 bool CollectionManagerInterface<T>::deleteItem(T* item)
 {
-   if (item->collection()->model() == (QAbstractItemModel*) this) {
+   if (item->collection()) {
+      if (item->collection()->model() != (QAbstractItemModel*) this)
+         qWarning() << "Item not deleted by its parent model";
       if (item->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
-         static_cast<CollectionInterface*>(item->collection())->editor<T>()->remove(item);
+         item->collection()->remove(item);
          return true;
       }
       else
          qDebug() << item << "cannot be deleted, the collection doesn't support removing items";
    }
    else
-      qDebug() << item << "cannot be deleted, it is not managed by" << this;
+      qDebug() << item << "cannot be deleted, it has no collection";
    return false;
 }
 

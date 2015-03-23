@@ -102,12 +102,27 @@ bool CollectionInterface::edit(ItemBase<QObject>* base)
 
 bool CollectionInterface::remove(ItemBase<QObject>* base)
 {
-   return d_ptr->m_fRemove(base);
+   if (d_ptr->m_fRemove(base)) {
+      deactivate(base);
+      return true;
+   }
+   return false;
 }
 
 int CollectionInterface::size() const
 {
    return  d_ptr->m_fSize();
+}
+
+
+void CollectionInterface::activate(ItemBase<QObject>* base)
+{
+   base->d_ptr->m_isActive = true;
+}
+
+void CollectionInterface::deactivate(ItemBase<QObject>* base)
+{
+   base->d_ptr->m_isActive = false;
 }
 
 QMetaObject CollectionInterface::metaObject()

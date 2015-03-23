@@ -25,10 +25,11 @@ public:
    char m_DropState;
    int  m_HoverState;
    CategorizedCompositeNode* m_pParent;
+   bool m_IsActive;
 };
 
 CategorizedCompositeNodePrivate::CategorizedCompositeNodePrivate():
-m_DropState(0),m_pParent(nullptr),m_HoverState(0),m_type(CategorizedCompositeNode::Type::CALL)
+m_DropState(0),m_pParent(nullptr),m_HoverState(0),m_type(CategorizedCompositeNode::Type::CALL),m_IsActive(true)
 {
    
 }
@@ -78,4 +79,15 @@ CategorizedCompositeNode* CategorizedCompositeNode::parentNode() const
 void CategorizedCompositeNode::setParentNode(CategorizedCompositeNode* node)
 {
    d_ptr->m_pParent = node;
+}
+
+
+bool CategorizedCompositeNode::isActive() const
+{
+   return d_ptr->m_IsActive;
+}
+
+void CategorizedCompositeNode::setActive(bool active) const
+{
+   d_ptr->m_IsActive = active;
 }

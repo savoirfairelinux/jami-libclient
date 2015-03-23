@@ -43,7 +43,7 @@ bool CollectionMediator<T>::addItem(const T* item)
 template<typename T>
 bool CollectionMediator<T>::removeItem(const T* item)
 {
-   return d_ptr->m_pParent->removeItemCallback(item); //TODO wrong
+   return d_ptr->m_pParent->removeItemCallback(item);
 }
 
 template<typename T>

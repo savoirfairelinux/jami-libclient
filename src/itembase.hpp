@@ -79,7 +79,7 @@ bool ItemBase<Base>::remove()
 }
 
 template<typename Base>
-bool ItemBase<Base>::isActive()
+bool ItemBase<Base>::isActive() const
 {
    return d_ptr->m_pBackend->isEnabled() && d_ptr->m_isActive;
 }

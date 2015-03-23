@@ -306,7 +306,6 @@ void CategorizedHistoryModelPrivate::add(Call* call)
 //    }//TODO implement reordering
 
    emit q_ptr->newHistoryCall(call);
-   emit q_ptr->layoutAboutToBeChanged();
    HistoryTopLevelItem* tl = getCategory(call);
    const QModelIndex& parentIdx = q_ptr->index(tl->modelRow,0);
    q_ptr->beginInsertRows(parentIdx,tl->m_lChildren.size(),tl->m_lChildren.size());
@@ -321,7 +320,6 @@ void CategorizedHistoryModelPrivate::add(Call* call)
    //we don't care
    m_sHistoryCalls[(call->startTimeStamp() << 10)+qrand()%1024] = call;
    q_ptr->endInsertRows();
-   emit q_ptr->layoutChanged();
    LastUsedNumberModel::instance()->addCall(call);
    emit q_ptr->historyChanged();
 
@@ -439,6 +437,16 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
       else {
          const int parRow = idx.parent().row();
          const HistoryTopLevelItem* parTli = d_ptr->m_lCategoryCounter[parRow];
+
+         //HACK force a reload
+         #if QT_VERSION >= 0x050400
+         if (parTli->isActive() && !parTli->m_lChildren[idx.row()]->call()->isActive()) {
+            QTimer::singleShot(0,[this,idx]() {
+               emit dataChanged(idx,idx);
+            });
+         }
+         #endif
+
          if (d_ptr->m_lCategoryCounter.size() > parRow && parRow >= 0 && parTli && parTli->m_lChildren.size() > idx.row())
             return parTli->m_lChildren[idx.row()]->call()->roleData((Call::Role)role);
       }
@@ -486,7 +494,12 @@ Qt::ItemFlags CategorizedHistoryModel::flags( const QModelIndex& idx ) const
 {
    if (!idx.isValid())
       return Qt::NoItemFlags;
-   return Qt::ItemIsEnabled | Qt::ItemIsSelectable | (idx.parent().isValid()?Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled:Qt::ItemIsEnabled);
+
+   CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
+   const bool hasParent = node->type() != CategorizedCompositeNode::Type::TOP_LEVEL;
+   const bool isEnabled = node->type() == CategorizedCompositeNode::Type::CALL && ((Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf())->isActive();
+
+   return (isEnabled?Qt::ItemIsEnabled:Qt::NoItemFlags) | Qt::ItemIsSelectable | (hasParent?Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled:Qt::ItemIsEnabled);
 }
 
 int CategorizedHistoryModel::columnCount ( const QModelIndex& parentIdx) const
@@ -620,6 +633,7 @@ bool CategorizedHistoryModel::addItemCallback(const Call* item)
 bool CategorizedHistoryModel::removeItemCallback(const Call* item)
 {
    Q_UNUSED(item)
+   emit const_cast<Call*>(item)->changed();
    return false;
 }
 
