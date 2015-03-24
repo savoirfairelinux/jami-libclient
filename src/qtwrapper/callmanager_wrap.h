@@ -50,9 +50,9 @@ public:
 
          callHandlers = {
             exportable_callback<CallSignal::StateChange>(
-                [this] (const std::string &callID, const std::string &state) {
-                    QTimer::singleShot(0, [this,callID, state] {
-                        emit this->callStateChanged(QString(callID.c_str()), QString(state.c_str()));
+                [this] (const std::string &callID, const std::string &state, int code) {
+                    QTimer::singleShot(0, [this,callID, state, code] {
+                        emit this->callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
                     });
             }),
             exportable_callback<CallSignal::TransferFailed>(
@@ -126,12 +126,6 @@ public:
                        QTimer::singleShot(0, [this,accountID, callID, to] {
                              printf("EMIT ONNEWCALL\n");
                              emit this->newCallCreated(QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
-                       });
-            }),
-            exportable_callback<CallSignal::SipCallStateChanged>(
-                [this] (const std::string &callID, const std::string &state, int code) {
-                       QTimer::singleShot(0, [this,callID, state, code] {
-                             emit this->sipCallStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
                        });
             }),
             exportable_callback<CallSignal::RecordingStateChanged>(
@@ -420,7 +414,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
-    void callStateChanged(const QString &callID, const QString &state);
+    void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
@@ -433,7 +427,6 @@ Q_SIGNALS: // SIGNALS
     void updatePlaybackScale(const QString &filepath, int position, int size);
     void conferenceRemoved(const QString &confID);
     void newCallCreated(const QString &accountID, const QString &callID, const QString &to);
-    void sipCallStateChanged(const QString &callID, const QString &state, int code);
     void recordingStateChanged(const QString &callID, bool recordingState);
     void secureSdesOn(const QString &callID);
     void secureSdesOff(const QString &callID);
