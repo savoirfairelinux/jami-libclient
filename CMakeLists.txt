@@ -212,6 +212,7 @@ SET( libringclient_LIB_SRCS
   src/video/sourcemodel.cpp
   src/video/channel.cpp
   src/video/resolution.cpp
+  src/video/configurationproxy.cpp
   src/audio/alsapluginmodel.cpp
   src/audio/inputdevicemodel.cpp
   src/audio/managermodel.cpp
@@ -333,6 +334,7 @@ SET(libringclient_video_LIB_HDRS
   src/video/channel.h
   src/video/rate.h
   src/video/previewmanager.h
+  src/video/configurationproxy.h
   #The renderer implementations are not exported on purpose
 )
 

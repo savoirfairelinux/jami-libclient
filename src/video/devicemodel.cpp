@@ -46,7 +46,6 @@ private Q_SLOTS:
 
 Video::DeviceModelPrivate::DeviceModelPrivate() : m_pDummyDevice(nullptr),m_pActiveDevice(nullptr)
 {
-
 }
 
 ///
@@ -61,6 +60,8 @@ d_ptr(new Video::DeviceModelPrivate())
 {
    m_spInstance = this;
    reload();
+   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()));
 }
 
 Video::DeviceModel* Video::DeviceModel::instance()
@@ -84,7 +85,7 @@ QHash<int,QByteArray> Video::DeviceModel::roleNames() const
 ///Get data from the model
 QVariant Video::DeviceModel::data( const QModelIndex& idx, int role) const
 {
-   if(idx.column() == 0 && role == Qt::DisplayRole)
+   if(idx.isValid() && idx.column() == 0 && role == Qt::DisplayRole && d_ptr->m_lDevices.size() > idx.row())
       return QVariant(d_ptr->m_lDevices[idx.row()]->id());
    return QVariant();
 }
@@ -127,7 +128,7 @@ Video::DeviceModel::~DeviceModel()
 ///Save the current model over dbus
 void Video::DeviceModel::setActive(const QModelIndex& idx)
 {
-   if (idx.isValid()) {
+   if (idx.isValid() && d_ptr->m_lDevices.size() > idx.row()) {
       VideoManagerInterface& interface = DBus::VideoManager::instance();
       interface.setDefaultDevice(d_ptr->m_lDevices[idx.row()]->id());
       d_ptr->m_pActiveDevice = d_ptr->m_lDevices[idx.row()];
@@ -173,12 +174,15 @@ void Video::DeviceModel::reload()
    }
    foreach(Video::Device* dev, d_ptr->m_hDevices) {
       if (dev && devicesHash.key(dev).isEmpty()) {
-         delete dev;
+         dev->deleteLater();
       }
    }
+   d_ptr->m_pActiveDevice = nullptr;
    d_ptr->m_hDevices.clear();
    d_ptr->m_hDevices = devicesHash;
+   beginResetModel();
    d_ptr->m_lDevices = d_ptr->m_hDevices.values();
+   endResetModel();
 
    emit layoutChanged();
 //    channelModel   ()->reload();
@@ -211,7 +215,6 @@ Video::Device* Video::DeviceModel::activeDevice() const
    }
    return d_ptr->m_pActiveDevice;
 }
-
 
 int Video::DeviceModel::activeIndex() const
 {
