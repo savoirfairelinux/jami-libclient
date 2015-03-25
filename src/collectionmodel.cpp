@@ -119,7 +119,7 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
                break;
             case Qt::CheckStateRole: {
                if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
-                  return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
+                  return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
             }
             case static_cast<int>(Role::hasManageableChildren):
                return item->manageableCount ? true : false;

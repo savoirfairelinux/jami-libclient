@@ -34,6 +34,7 @@
 #include "contactmethod.h"
 #include "collectioneditor.h"
 #include "delegates/pixmapmanipulationdelegate.h"
+#include "delegates/itemmodelstateserializationdelegate.h"
 
 
 class FallbackPersonBackendEditor : public CollectionEditor<Person>
@@ -70,6 +71,11 @@ public Q_SLOTS:
 
 FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonCollection* parent, CollectionMediator<Person>* mediator, const QString& path) : q_ptr(parent), m_pMediator(mediator), m_Path(path)
 {
+   //Default to somewhere ~/.local/share
+   if (m_Path.isEmpty()) {
+      m_Path = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/vCard/";
+   }
+
    m_Name = path.split('/').last();
    if (m_Name.size())
       m_Name[0] = m_Name[0].toUpper();
@@ -151,6 +157,7 @@ bool FallbackPersonCollection::load()
    bool ok;
    QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok);
    for(Person* p : ret) {
+      qDebug() << "add" << p->formattedName();
       editor<Person>()->addExisting(p);
    }
 
@@ -186,7 +193,7 @@ bool FallbackPersonCollection::clear()
 
 QByteArray FallbackPersonCollection::id() const
 {
-   return "fpc2";
+   return "fpc2"+d_ptr->m_Path.toLatin1();
 }
 
 
@@ -194,7 +201,12 @@ void FallbackPersonCollectionPrivate::loadAsync()
 {
    QDir d(m_Path);
    for (const QString& dir : d.entryList(QDir::AllDirs)) {
-      PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
+      if (dir != QString('.') && dir != "..") {
+         Collection* col = PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
+         if (ItemModelStateSerializationDelegate::instance()->isChecked(col)) {
+            col->load();
+         }
+      }
    }
 }
 

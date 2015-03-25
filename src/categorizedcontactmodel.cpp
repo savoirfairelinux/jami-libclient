@@ -49,7 +49,7 @@ public:
    };
 
    //Constructor
-   ContactTreeNode( Person* ct          , CategorizedContactModel* parent);
+   ContactTreeNode( const Person* ct    , CategorizedContactModel* parent);
    ContactTreeNode( ContactMethod* cm   , CategorizedContactModel* parent);
    ContactTreeNode( const QString& name , CategorizedContactModel* parent);
    virtual ~ContactTreeNode();
@@ -57,14 +57,14 @@ public:
    virtual QObject* getSelf() const override;
 
    //Attributes
-   Person* m_pContact;
+   const Person*             m_pContact      ;
    ContactMethod*            m_pContactMethod;
    uint                      m_Index         ;
    QString                   m_Name          ;
    NodeType                  m_Type          ;
    ContactTreeNode*          m_pParent       ;
    QVector<ContactTreeNode*> m_lChildren     ;
-   CategorizedContactModel*        m_pModel        ;
+   CategorizedContactModel*  m_pModel        ;
 
    //Helpers
    void slotChanged                        (       );
@@ -97,10 +97,10 @@ private:
 
 public Q_SLOTS:
    void reloadCategories();
-   void slotContactAdded(Person* c);
+   void slotContactAdded(const Person* c);
 };
 
-ContactTreeNode::ContactTreeNode(Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent)
 {
    QObject::connect(m_pContact,&Person::changed                      ,[this](            ){ slotChanged                        (   ); });
@@ -130,7 +130,7 @@ QModelIndex CategorizedContactModelPrivate::getIndex(int row, int column, Contac
 
 QObject* ContactTreeNode::getSelf() const
 {
-   return m_pContact;
+   return (QObject*)m_pContact;
 }
 
 void ContactTreeNode::slotChanged()
@@ -186,7 +186,7 @@ CategorizedContactModel::CategorizedContactModel(int role) : QAbstractItemModel(
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
 
-   connect(PersonModel::instance(),SIGNAL(newPersonAdded(Person*)),d_ptr.data(),SLOT(slotContactAdded(Person*)));
+   connect(PersonModel::instance(),&PersonModel::newPersonAdded,d_ptr.data(),&CategorizedContactModelPrivate::slotContactAdded);
 
    for(int i=0; i < PersonModel::instance()->rowCount();i++) {
       Person* p = qvariant_cast<Person*>(PersonModel::instance()->index(i,0).data((int)Person::Role::Object));
@@ -256,9 +256,10 @@ void CategorizedContactModelPrivate::reloadCategories()
    emit q_ptr->layoutChanged();
 }
 
-void CategorizedContactModelPrivate::slotContactAdded(Person* c)
+void CategorizedContactModelPrivate::slotContactAdded(const Person* c)
 {
    if (!c) return;
+
    const QString val = category(c);
    ContactTreeNode* item = getContactTopLevelItem(val);
    ContactTreeNode* contactNode = new ContactTreeNode(c,q_ptr);
