@@ -302,13 +302,15 @@ bool PersonModel::addItemCallback(const Person* c)
          d_ptr->m_hPlaceholders[c->uid()] = nullptr;
       }
    }
+
    return true;
 }
 
 bool PersonModel::removeItemCallback(const Person* item)
 {
-   Q_UNUSED(item)
-   return false;
+   if (item)
+      emit const_cast<Person*>(item)->changed();
+   return item;
 }
 
 bool PersonModel::addPerson(Person* c)
@@ -329,10 +331,20 @@ void PersonModel::disablePerson(Person* c)
 
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
-   if ((!backend) || (!collections().size()))
+   if ((!backend) && (!collections().size()))
       return false;
 
-   return (backend?backend:collections()[0])->editor<Person>()->addNew(c);
+   bool ret = false;
+
+   if (backend) {
+      ret |= backend->editor<Person>()->addNew(c);
+   }
+   else for (Collection* col :collections(CollectionInterface::SupportedFeatures::ADD)) {
+      if (col->id() != "trcb") //Do not add to the transitional contact backend
+         ret |= col->editor<Person>()->addNew(c);
+   }
+
+   return ret;
 }
 
 

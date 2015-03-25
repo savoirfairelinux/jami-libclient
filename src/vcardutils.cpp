@@ -244,7 +244,7 @@ const QByteArray VCardUtils::endVCard()
    return result.toUtf8();
 }
 
-QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok)
+QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok, QHash<const Person*,QString>& paths)
 {
    QList< Person* > ret;
 
@@ -257,6 +257,7 @@ QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok)
          Person* p = new Person();
          mapToPerson(p,QUrl(dir.absoluteFilePath(file)));
          ret << p;
+         paths[p] = dir.absoluteFilePath(file);
       }
    }
 

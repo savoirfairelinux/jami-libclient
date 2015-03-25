@@ -402,7 +402,7 @@ Qt::ItemFlags CategorizedContactModel::flags( const QModelIndex& index ) const
 
    const ContactTreeNode* modelNode = static_cast<ContactTreeNode*>(index.internalPointer());
 
-   return (modelNode->m_pContact && modelNode->m_pContact->isActive() ? Qt::NoItemFlags : Qt::ItemIsEnabled)
+   return (modelNode->m_pContact && modelNode->m_pContact->isActive() ? Qt::ItemIsEnabled : Qt::NoItemFlags )
       | Qt::ItemIsSelectable
       | (modelNode->m_pParent? (Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled) : Qt::ItemIsEnabled
    );

@@ -100,7 +100,7 @@ public:
    //Mutator
    Q_INVOKABLE void addAddress(Address* addr);
    Q_INVOKABLE void addCustomField(const QString& key, const QString& value);
-   Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts) const;
+   Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts = {}) const;
 
 protected:
    //The D-Pointer can be shared if a PlaceHolderPerson is merged with a real one

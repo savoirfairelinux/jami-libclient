@@ -34,10 +34,10 @@ public:
    static ItemModelStateSerializationDelegate* instance();
 
    //Getter
-   virtual bool isChecked(CollectionInterface* backend) const = 0;
+   virtual bool isChecked(const CollectionInterface* backend) const = 0;
 
    //Setter
-   virtual bool setChecked(CollectionInterface* backend, bool enabled) = 0;
+   virtual bool setChecked(const CollectionInterface* backend, bool enabled) = 0;
 
 private:
    static ItemModelStateSerializationDelegate* m_spInstance;

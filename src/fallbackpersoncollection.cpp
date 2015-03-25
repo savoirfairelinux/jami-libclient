@@ -24,6 +24,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
+#include <QtCore/QCryptographicHash>
 #include <QtWidgets/QApplication>
 #include <QtCore/QStandardPaths>
 
@@ -47,8 +48,9 @@ public:
    virtual bool addNew     ( const Person* item ) override;
    virtual bool addExisting( const Person* item ) override;
 
-   QVector<Person*> m_lItems;
-   QString          m_Path  ;
+   QVector<Person*>             m_lItems;
+   QString                      m_Path  ;
+   QHash<const Person*,QString> m_hPaths;
 
 private:
    virtual QVector<Person*> items() const override;
@@ -74,6 +76,7 @@ FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonC
    //Default to somewhere ~/.local/share
    if (m_Path.isEmpty()) {
       m_Path = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/vCard/";
+      static_cast<FallbackPersonBackendEditor*>(q_ptr->editor<Person>())->m_Path = m_Path;
    }
 
    m_Name = path.split('/').last();
@@ -95,6 +98,25 @@ FallbackPersonCollection::~FallbackPersonCollection()
 
 bool FallbackPersonBackendEditor::save(const Person* item)
 {
+   if (!item)
+      return false;
+
+   //An UID is required
+   if (item->uid().isEmpty()) {
+      QCryptographicHash hash(QCryptographicHash::Sha1);
+      for (ContactMethod* n : item->phoneNumbers())
+         hash.addData(n->uri().toLatin1());
+      hash.addData(item->formattedName().toLatin1());
+      QByteArray random;
+
+      for (int i=0;i<5;i++)
+         random.append(QChar((char)(rand()%255)));
+
+      hash.addData(random);
+
+      const_cast<Person*>(item)->setUid(hash.result().toHex());
+   }
+
    QFile file(m_Path+'/'+item->uid()+".vcf");
    file.open(QIODevice::WriteOnly);
    file.write(item->toVCard({}));
@@ -104,8 +126,21 @@ bool FallbackPersonBackendEditor::save(const Person* item)
 
 bool FallbackPersonBackendEditor::remove(const Person* item)
 {
-   Q_UNUSED(item)
-   return false;
+   if (!item)
+      return false;
+
+   QString path = m_hPaths[item];
+
+   if (path.isEmpty())
+      path = m_Path+'/'+item->uid()+".vcf";
+
+   bool ret = QFile::remove(path);
+
+   if (ret) {
+      ret &= mediator()->removeItem(item);
+   }
+
+   return ret;
 }
 
 bool FallbackPersonBackendEditor::edit( Person* item)
@@ -116,8 +151,7 @@ bool FallbackPersonBackendEditor::edit( Person* item)
 
 bool FallbackPersonBackendEditor::addNew(const Person* item)
 {
-   Q_UNUSED(item)
-   return false;
+   return save(item);
 }
 
 bool FallbackPersonBackendEditor::addExisting(const Person* item)
@@ -149,15 +183,15 @@ QVariant FallbackPersonCollection::icon() const
 
 bool FallbackPersonCollection::isEnabled() const
 {
-   return true;
+   return ItemModelStateSerializationDelegate::instance()->isChecked(this);
 }
 
 bool FallbackPersonCollection::load()
 {
    bool ok;
-   QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok);
+   QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok,static_cast<FallbackPersonBackendEditor*>(editor<Person>())->m_hPaths);
    for(Person* p : ret) {
-      qDebug() << "add" << p->formattedName();
+      p->setCollection(this);
       editor<Person>()->addExisting(p);
    }
 
@@ -179,7 +213,7 @@ CollectionInterface::SupportedFeatures FallbackPersonCollection::supportedFeatur
       CollectionInterface::SupportedFeatures::LOAD       |
       CollectionInterface::SupportedFeatures::CLEAR      |
       CollectionInterface::SupportedFeatures::MANAGEABLE |
-//       CollectionInterface::SupportedFeatures::REMOVE|
+      CollectionInterface::SupportedFeatures::REMOVE     |
       CollectionInterface::SupportedFeatures::ADD        );
 }
 

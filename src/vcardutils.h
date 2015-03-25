@@ -79,7 +79,7 @@ public:
    const QByteArray endVCard();
 
    //Loading
-   static QList<Person*> loadDir(const QUrl& path, bool& ok);
+   static QList<Person*> loadDir(const QUrl& path, bool& ok, QHash<const Person*, QString>& paths);
 
    //Mapping
    static bool mapToPerson(Person* p, const QUrl& url, Account** a = nullptr);
