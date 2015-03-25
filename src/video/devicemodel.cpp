@@ -180,6 +180,7 @@ void Video::DeviceModel::reload()
    d_ptr->m_pActiveDevice = nullptr;
    d_ptr->m_hDevices.clear();
    d_ptr->m_hDevices = devicesHash;
+
    beginResetModel();
    d_ptr->m_lDevices = d_ptr->m_hDevices.values();
    endResetModel();

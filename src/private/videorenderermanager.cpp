@@ -101,6 +101,12 @@ VideoRendererManager* VideoRendererManager::instance()
    return m_spInstance;
 }
 
+
+int VideoRendererManager::size() const
+{
+   return d_ptr->m_hRenderers.size();
+}
+
 ///Return the call Renderer or nullptr
 Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 {
@@ -169,7 +175,7 @@ void VideoRendererManager::startPreview()
 }
 
 ///Is the video model fetching preview from a camera
-bool VideoRendererManager::isPreviewing()
+bool VideoRendererManager::isPreviewing() const
 {
    return d_ptr->m_PreviewState;
 }
@@ -270,11 +276,15 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
    Q_UNUSED(shmPath)
    Video::Renderer* r = m_hRenderers[id.toLatin1()];
 
-   if ( r )
-      r->stopRendering();
+   //Quit if for some reasons the renderer is not found
+   if ( !r ) {
+      qWarning() << "Cannot stop renrering, renderer" << id << "not found";
+      return;
+   }
+
+   r->stopRendering();
 
    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << (m_hRenderers[id.toLatin1()] != nullptr);
-//    emit videoStopped();
 
    Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
 
@@ -292,8 +302,11 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
    QThread* t = m_hThreads[r];
    m_hThreads[r] = nullptr;
 
-   t->quit();
-   t->wait();
+   if (t) {
+      t->quit();
+      t->wait();
+   }
+
    delete r;
 
    t->deleteLater();

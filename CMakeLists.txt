@@ -463,6 +463,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h
    src/private/videorenderer_p.h
+   src/private/videodevice_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h
    src/collectioncreationinterface.h

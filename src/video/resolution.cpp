@@ -50,7 +50,6 @@ const QString Video::Resolution::name() const
    return QString::number(width())+'x'+QString::number(height());
 }
 
-
 QVariant Video::Resolution::data( const QModelIndex& index, int role) const
 {
    if (index.isValid() && role == Qt::DisplayRole && index.row() < d_ptr->m_lValidRates.size()) {
@@ -79,22 +78,23 @@ bool Video::Resolution::setData( const QModelIndex& index, const QVariant &value
    return false;
 }
 
-
 const QList<Video::Rate*> Video::Resolution::validRates() const {
    return d_ptr->m_lValidRates;
 }
-
 
 bool Video::Resolution::setActiveRate(Video::Rate* rate) {
    if (!rate || (d_ptr->m_lValidRates.indexOf(rate) == -1)) {
       qWarning() << "Trying to set an invalid rate" << rate;
       return false;
    }
+
+   if (d_ptr->m_pCurrentRate == rate)
+      return false;
+
    d_ptr->m_pCurrentRate = rate;
    d_ptr->m_pChannel->device()->save();
    return true;
 }
-
 
 bool Video::Resolution::setActiveRate(int idx)
 {

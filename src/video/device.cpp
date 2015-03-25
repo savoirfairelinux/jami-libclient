@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "device.h"
 
+//Qt
+#include <QtCore/QTimer>
+
 //Ring
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
@@ -24,20 +27,22 @@
 #include "rate.h"
 #include "channel.h"
 #include "renderer.h"
+#include "previewmanager.h"
 
 //Ring private
 #include "../private/videochannel_p.h"
 #include "../private/videodevice_p.h"
 #include "../private/videorate_p.h"
 #include "../private/videoresolution_p.h"
+#include "../private/videorenderermanager.h"
 
-VideoDevicePrivate::VideoDevicePrivate() : m_pCurrentChannel(nullptr)
+VideoDevicePrivate::VideoDevicePrivate(Video::Device* parent) : QObject(parent),m_pCurrentChannel(nullptr),m_RequireSave(false),q_ptr(parent)
 {
 }
 
 ///Constructor
 Video::Device::Device(const QString &id) : QAbstractListModel(nullptr),
-d_ptr(new VideoDevicePrivate())
+d_ptr(new VideoDevicePrivate(this))
 {
    d_ptr->m_DeviceId = id;
    VideoManagerInterface& interface = DBus::VideoManager::instance();
@@ -73,7 +78,7 @@ Video::Device::~Device()
 
 QVariant Video::Device::data( const QModelIndex& index, int role) const
 {
-   if (index.isValid() && role == Qt::DisplayRole) {
+   if (index.isValid() && role == Qt::DisplayRole && d_ptr->m_lChannels.size() > index.row()) {
       return d_ptr->m_lChannels[index.row()]->name();
    }
    return QVariant();
@@ -112,13 +117,11 @@ QList<Video::Channel*> Video::Device::channelList() const
 ///Save the current settings
 void Video::Device::save()
 {
-   //In case new (unsupported) fields are added, merge with existing
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
-   MapStringString pref = interface.getSettings(d_ptr->m_DeviceId);
-   pref[VideoDevicePrivate::PreferenceNames::CHANNEL] = activeChannel()->name();
-   pref[VideoDevicePrivate::PreferenceNames::SIZE   ] = activeChannel()->activeResolution()->name();
-   pref[VideoDevicePrivate::PreferenceNames::RATE   ] = activeChannel()->activeResolution()->activeRate()->name();
-   interface.applySettings(d_ptr->m_DeviceId,pref);
+   if (!d_ptr->m_RequireSave) {
+      d_ptr->m_RequireSave = true;
+      //A little delay wont hurt
+      QTimer::singleShot(100,d_ptr.data(),SLOT(saveIdle()));
+   }
 }
 
 ///Get the device id
@@ -146,6 +149,10 @@ bool Video::Device::setActiveChannel(Video::Channel* chan)
       qWarning() << "Trying to set an invalid channel" << (chan?chan->name():"NULL") << "for" << id();
       return false;
    }
+
+   if (d_ptr->m_pCurrentChannel == chan)
+      return false;
+
    d_ptr->m_pCurrentChannel = chan;
    save();
    return true;
@@ -173,4 +180,47 @@ Video::Channel* Video::Device::activeChannel() const
       d_ptr->m_pCurrentChannel = d_ptr->m_lChannels[0];
    }
    return d_ptr->m_pCurrentChannel;
+}
+
+
+void VideoDevicePrivate::saveIdle()
+{
+   m_RequireSave = false;
+
+   //In case new (unsupported) fields are added, merge with existing
+   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   MapStringString pref = interface.getSettings(m_DeviceId);
+
+   Video::Channel* chan = q_ptr->activeChannel();
+
+   if (!chan) {
+      qWarning() << "Saving video failed: Invalid channel";
+      return;
+   }
+
+   Video::Resolution* res = chan->activeResolution();
+
+   if (!res) {
+      qWarning() << "Saving video failed: Invalid resolution";
+      return;
+   }
+
+   Video::Rate* rate = res->activeRate();
+
+   if (!rate) {
+      qWarning() << "Saving video failed: Invalid rate";
+      return;
+   }
+
+   pref[VideoDevicePrivate::PreferenceNames::CHANNEL] = chan->name ();
+   pref[VideoDevicePrivate::PreferenceNames::SIZE   ] = res ->name ();
+   pref[VideoDevicePrivate::PreferenceNames::RATE   ] = rate->name ();
+   interface.applySettings(m_DeviceId,pref);
+
+   //If the preview is running, reload it
+   //doing this during a call will cause re-invite, this is unwanted
+   if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
+      Video::PreviewManager::instance()->stopPreview();
+      Video::PreviewManager::instance()->startPreview();
+   }
 }

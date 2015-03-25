@@ -159,7 +159,8 @@ void ConfigurationProxyPrivate::changeRate()
 void ConfigurationProxyPrivate::updateDeviceSelection()
 {
    const QModelIndex& idx = ConfigurationProxyPrivate::m_spDeviceModel->index(Video::DeviceModel::instance()->activeIndex(),0);
-   Video::ConfigurationProxy::deviceSelectionModel()->setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
+   if (idx.row() != Video::ConfigurationProxy::deviceSelectionModel()->currentIndex().row())
+      Video::ConfigurationProxy::deviceSelectionModel()->setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
 }
 
 void ConfigurationProxyPrivate::updateChannelSelection()
@@ -167,8 +168,11 @@ void ConfigurationProxyPrivate::updateChannelSelection()
    Video::Device* dev = ConfigurationProxyPrivate::currentDevice();
    if (dev) {
       Video::Channel* chan = dev->activeChannel();
-      if (chan)
-         Video::ConfigurationProxy::channelSelectionModel()->setCurrentIndex(dev->index(chan->relativeIndex(),0), QItemSelectionModel::ClearAndSelect );
+      if (chan) {
+         const QModelIndex& newIdx = dev->index(chan->relativeIndex(),0);
+         if (newIdx.row() != Video::ConfigurationProxy::channelSelectionModel()->currentIndex().row())
+            Video::ConfigurationProxy::channelSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect );
+      }
    }
 }
 
@@ -177,8 +181,11 @@ void ConfigurationProxyPrivate::updateResolutionSelection()
    Video::Channel* chan = ConfigurationProxyPrivate::currentChannel();
    if (chan) {
       Video::Resolution* res = chan->activeResolution();
-      if (res)
-         Video::ConfigurationProxy::resolutionSelectionModel()->setCurrentIndex(chan->index(res->relativeIndex(),0), QItemSelectionModel::ClearAndSelect);
+      if (res) {
+         const QModelIndex& newIdx = chan->index(res->relativeIndex(),0);
+         if (newIdx.row() != Video::ConfigurationProxy::resolutionSelectionModel()->currentIndex().row())
+            Video::ConfigurationProxy::resolutionSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
+      }
    }
 }
 
@@ -187,8 +194,11 @@ void ConfigurationProxyPrivate::updateRateSelection()
    Video::Resolution* res = ConfigurationProxyPrivate::currentResolution();
    if (res) {
       Video::Rate* rate = res->activeRate();
-      if (rate)
-         Video::ConfigurationProxy::rateSelectionModel()->setCurrentIndex(res->index(rate->relativeIndex(),0), QItemSelectionModel::ClearAndSelect);
+      if (rate) {
+         const QModelIndex& newIdx = res->index(rate->relativeIndex(),0);
+         if (newIdx.row() != Video::ConfigurationProxy::rateSelectionModel()->currentIndex().row())
+            Video::ConfigurationProxy::rateSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
+      }
    }
 }
 
