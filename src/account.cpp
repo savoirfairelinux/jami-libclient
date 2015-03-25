@@ -281,8 +281,13 @@ const QString AccountPrivate::accountDetail(const QString& param) const
       if (param == DRing::Account::ConfProperties::Registration::STATUS) { //If an account is new, then it is unregistered
          return DRing::Account::States::UNREGISTERED;
       }
-      if (q_ptr->protocol() != Account::Protocol::IAX) //IAX accounts lack some fields, be quiet
-         qDebug() << "Account parameter \"" << param << "\" not found";
+      if (q_ptr->protocol() != Account::Protocol::IAX) {//IAX accounts lack some fields, be quiet
+         static QHash<QString,bool> alreadyWarned;
+         if (!alreadyWarned[param]) {
+            alreadyWarned[param] = true;
+            qDebug() << "Account parameter \"" << param << "\" not found";
+         }
+      }
       return QString();
    }
    else {
