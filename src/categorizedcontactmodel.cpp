@@ -87,6 +87,8 @@ public:
    QHash<QString,ContactTreeNode*> m_hCategories      ;
    int                             m_Role             ;
    QStringList                     m_lMimes           ;
+   bool                            m_SortAlphabetical ;
+   QString                         m_DefaultCategory  ;
 
    //Helper
    ContactTreeNode* getContactTopLevelItem(const QString& category);
@@ -173,7 +175,7 @@ void ContactTreeNode::slotContactMethodCountAboutToChange(int count, int oldCoun
 }
 
 CategorizedContactModelPrivate::CategorizedContactModelPrivate(CategorizedContactModel* parent) : QObject(parent), q_ptr(parent),
-m_lCategoryCounter(),m_Role(Qt::DisplayRole)
+m_lCategoryCounter(),m_Role(Qt::DisplayRole),m_SortAlphabetical(true)
 {
 
 }
@@ -502,8 +504,10 @@ QString CategorizedContactModelPrivate::category(const Person* ct) const {
 
    QString cat = ct->roleData(m_Role).toString();
 
-   if (cat.size())
+   if (cat.size() && m_SortAlphabetical)
       cat = cat[0].toUpper();
+   else if (!cat.size())
+      cat = m_DefaultCategory;
 
    return cat;
 }
@@ -514,6 +518,26 @@ void CategorizedContactModel::setRole(int role)
       d_ptr->m_Role = role;
       d_ptr->reloadCategories();
    }
+}
+
+void CategorizedContactModel::setSortAlphabetical(bool alpha)
+{
+   d_ptr->m_SortAlphabetical = alpha;
+}
+
+bool CategorizedContactModel::isSortAlphabetical() const
+{
+   return d_ptr->m_SortAlphabetical;
+}
+
+void CategorizedContactModel::setDefaultCategory(const QString& cat)
+{
+   d_ptr->m_DefaultCategory = cat;
+}
+
+QString CategorizedContactModel::defaultCategory() const
+{
+   return d_ptr->m_DefaultCategory;
 }
 
 #include <categorizedcontactmodel.moc>
