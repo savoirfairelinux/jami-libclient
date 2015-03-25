@@ -16,13 +16,18 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "devicemodel.h"
+
+//Qt
+#include <QtCore/QCoreApplication>
+#include <QtCore/QTimer>
+
+//Ring
 #include "device.h"
 #include <call.h>
 #include <account.h>
+#include <video/previewmanager.h>
 #include "../dbus/videomanager.h"
-
-#include <QtCore/QCoreApplication>
-#include <QtCore/QTimer>
+#include "../private/videorenderermanager.h"
 
 Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
 
@@ -134,6 +139,12 @@ void Video::DeviceModel::setActive(const QModelIndex& idx)
       d_ptr->m_pActiveDevice = d_ptr->m_lDevices[idx.row()];
       emit changed();
       emit currentIndexChanged(idx.row());
+
+      //If the only renderer is the preview, reload it
+      if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
+         Video::PreviewManager::instance()->stopPreview();
+         Video::PreviewManager::instance()->startPreview();
+      }
    }
 }
 

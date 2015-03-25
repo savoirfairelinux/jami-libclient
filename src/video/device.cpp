@@ -145,7 +145,7 @@ bool Video::Device::isActive() const
 
 bool Video::Device::setActiveChannel(Video::Channel* chan)
 {
-   if (!chan || !d_ptr->m_lChannels.indexOf(chan)) {
+   if ((!chan) || (d_ptr->m_lChannels.indexOf(chan) == -1)) {
       qWarning() << "Trying to set an invalid channel" << (chan?chan->name():"NULL") << "for" << id();
       return false;
    }

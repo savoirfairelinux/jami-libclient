@@ -158,9 +158,11 @@ void ConfigurationProxyPrivate::changeRate()
 
 void ConfigurationProxyPrivate::updateDeviceSelection()
 {
-   const QModelIndex& idx = ConfigurationProxyPrivate::m_spDeviceModel->index(Video::DeviceModel::instance()->activeIndex(),0);
-   if (idx.row() != Video::ConfigurationProxy::deviceSelectionModel()->currentIndex().row())
-      Video::ConfigurationProxy::deviceSelectionModel()->setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
+   if (ConfigurationProxyPrivate::m_spDeviceModel) {
+      const QModelIndex& idx = ConfigurationProxyPrivate::m_spDeviceModel->index(Video::DeviceModel::instance()->activeIndex(),0);
+      if (idx.row() != Video::ConfigurationProxy::deviceSelectionModel()->currentIndex().row())
+         Video::ConfigurationProxy::deviceSelectionModel()->setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
+   }
 }
 
 void ConfigurationProxyPrivate::updateChannelSelection()
@@ -239,6 +241,8 @@ QItemSelectionModel* Video::ConfigurationProxy::deviceSelectionModel()
 {
    if (!ConfigurationProxyPrivate::m_spDeviceSelectionModel) {
       ConfigurationProxyPrivate::m_spDeviceSelectionModel = new QItemSelectionModel(ConfigurationProxyPrivate::m_spDeviceModel);
+
+      ConfigurationProxyPrivate::updateDeviceSelection();
 
       //Can happen if a device is removed
       QObject::connect(Video::DeviceModel::instance(), &Video::DeviceModel::currentIndexChanged,[](int idx) {
