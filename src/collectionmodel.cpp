@@ -220,7 +220,7 @@ QModelIndex CollectionModel::parent( const QModelIndex& idx ) const
 
 QModelIndex CollectionModel::index( int row, int column, const QModelIndex& parent ) const
 {
-   if (parent.isValid()) {
+   if (parent.isValid() && parent.model() == this && row < rowCount(parent)) {
       CollectionModelPrivate::ProxyItem* parentItem = static_cast<CollectionModelPrivate::ProxyItem*>(parent.internalPointer());
       CollectionModelPrivate::ProxyItem* item = nullptr;
       if (row < parentItem->m_Children.size())

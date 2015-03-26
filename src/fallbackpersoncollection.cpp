@@ -173,7 +173,7 @@ QString FallbackPersonCollection::name () const
 
 QString FallbackPersonCollection::category () const
 {
-   return QObject::tr("Contacts");
+   return QObject::tr("Contact");
 }
 
 QVariant FallbackPersonCollection::icon() const
