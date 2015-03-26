@@ -151,7 +151,13 @@ bool FallbackPersonBackendEditor::edit( Person* item)
 
 bool FallbackPersonBackendEditor::addNew(const Person* item)
 {
-   return save(item);
+   bool ret = save(item);
+
+   if (ret) {
+      addExisting(item);
+   }
+
+   return ret;
 }
 
 bool FallbackPersonBackendEditor::addExisting(const Person* item)

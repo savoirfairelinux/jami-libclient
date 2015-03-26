@@ -322,13 +322,6 @@ bool PersonModel::addPerson(Person* c)
    return true;
 }
 
-void PersonModel::disablePerson(Person* c)
-{
-   Q_UNUSED(c) //TODO re-implement
-//    if (c)
-//       c->setActive(false);
-}
-
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
    if ((!backend) && (!collections().size()))
