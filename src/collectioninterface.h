@@ -231,9 +231,6 @@ private:
    CollectionInterfacePrivate* d_ptr;
 };
 
-//The end user of don't care it is an abstract type
-typedef CollectionInterface Collection;
-
 #include <collectioninterface.hpp>
 
 #endif

@@ -339,7 +339,7 @@ bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
    if (backend) {
       ret |= backend->editor<Person>()->addNew(c);
    }
-   else for (Collection* col :collections(CollectionInterface::SupportedFeatures::ADD)) {
+   else for (CollectionInterface* col :collections(CollectionInterface::SupportedFeatures::ADD)) {
       if (col->id() != "trcb") //Do not add to the transitional contact backend
          ret |= col->editor<Person>()->addNew(c);
    }
