@@ -43,7 +43,7 @@ public:
     * index have to be implemented.
     */
    struct ProxyItem {
-      ProxyItem() : parent(nullptr),col(1),row(0),collection(nullptr),manageableCount(0){}
+      ProxyItem() : parent(nullptr),col(0),row(0),collection(nullptr),manageableCount(0){}
       int row;
       int col;
       CollectionInterface* collection;

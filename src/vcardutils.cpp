@@ -54,7 +54,7 @@
 
 struct VCardMapper;
 
-typedef void (VCardMapper:: *mapToProperty)(Person*, const QByteArray&);
+typedef void (VCardMapper:: *mapToProperty)(Person*, const QString&, const QByteArray&);
 
 struct VCardMapper {
 
@@ -66,31 +66,34 @@ struct VCardMapper {
       m_hHash[VCardUtils::Property::FORMATTED_NAME] = &VCardMapper::setFormattedName;
       m_hHash[VCardUtils::Property::EMAIL] = &VCardMapper::setEmail;
       m_hHash[VCardUtils::Property::ORGANIZATION] = &VCardMapper::setOrganization;
+      m_hHash[VCardUtils::Property::TELEPHONE] = &VCardMapper::addContactMethod;
+      m_hHash[VCardUtils::Property::ADDRESS] = &VCardMapper::addAddress;
+      m_hHash[VCardUtils::Property::PHOTO] = &VCardMapper::setPhoto;
    }
 
-   void setFormattedName(Person* c, const QByteArray& fn) {
+   void setFormattedName(Person* c,  const QString&, const QByteArray& fn) {
       c->setFormattedName(QString::fromUtf8(fn));
    }
 
-   void setNames(Person* c, const QByteArray& fn) {
+   void setNames(Person* c,  const QString&, const QByteArray& fn) {
       QList<QByteArray> splitted = fn.split(';');
       c->setFamilyName(splitted[0].trimmed());
       c->setFirstName(splitted[1].trimmed());
    }
 
-   void setUid(Person* c, const QByteArray& fn) {
+   void setUid(Person* c,  const QString&, const QByteArray& fn) {
       c->setUid(fn);
    }
 
-   void setEmail(Person* c, const QByteArray& fn) {
+   void setEmail(Person* c,  const QString&, const QByteArray& fn) {
       c->setPreferredEmail(fn);
    }
 
-   void setOrganization(Person* c, const QByteArray& fn) {
+   void setOrganization(Person* c, const QString&,  const QByteArray& fn) {
       c->setOrganization(QString::fromUtf8(fn));
    }
 
-   void setPhoto(Person* c, const QByteArray& fn, const QByteArray& key) {
+   void setPhoto(Person* c, const QString& key, const QByteArray& fn) {
       QByteArray type = "PNG";
 
       QRegExp rx("TYPE=([A-Za-z]*)");
@@ -139,10 +142,11 @@ struct VCardMapper {
    }
 
    bool metacall(Person* c, const QByteArray& key, const QByteArray& value) {
-      if (!m_hHash[key]) {
+      const QStringList settings = QString(key).split(';');
+      if (!m_hHash[settings[0].toLatin1()]) {
          if(key.contains(VCardUtils::Property::PHOTO)) {
             //key must contain additionnal attributes, we don't need them right now (ENCODING, TYPE...)
-            setPhoto(c, value, key);
+            setPhoto(c, key, value);
             return true;
          }
 
@@ -158,7 +162,7 @@ struct VCardMapper {
 
          return false;
       }
-      (this->*(m_hHash[key]))(c,value);
+      (this->*(m_hHash[settings[0].toLatin1()]))(c,key,value);
       return true;
    }
 };
@@ -244,7 +248,7 @@ const QByteArray VCardUtils::endVCard()
    return result.toUtf8();
 }
 
-QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok)
+QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok, QHash<const Person*,QString>& paths)
 {
    QList< Person* > ret;
 
@@ -257,6 +261,7 @@ QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok)
          Person* p = new Person();
          mapToPerson(p,QUrl(dir.absoluteFilePath(file)));
          ret << p;
+         paths[p] = dir.absoluteFilePath(file);
       }
    }
 

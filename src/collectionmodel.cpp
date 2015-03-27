@@ -119,7 +119,7 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
                break;
             case Qt::CheckStateRole: {
                if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
-                  return ItemModelStateSerializationDelegate::instance()->isChecked(item->collection)?Qt::Checked:Qt::Unchecked;
+                  return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
             }
             case static_cast<int>(Role::hasManageableChildren):
                return item->manageableCount ? true : false;
@@ -220,7 +220,7 @@ QModelIndex CollectionModel::parent( const QModelIndex& idx ) const
 
 QModelIndex CollectionModel::index( int row, int column, const QModelIndex& parent ) const
 {
-   if (parent.isValid()) {
+   if (parent.isValid() && parent.model() == this && row < rowCount(parent)) {
       CollectionModelPrivate::ProxyItem* parentItem = static_cast<CollectionModelPrivate::ProxyItem*>(parent.internalPointer());
       CollectionModelPrivate::ProxyItem* item = nullptr;
       if (row < parentItem->m_Children.size())

@@ -18,8 +18,17 @@
 #ifndef VIDEODEVICEPRIVATE_H
 #define VIDEODEVICEPRIVATE_H
 
-class VideoDevicePrivate
+#include <QtCore/QObject>
+#include <QtCore/QList>
+
+namespace Video {
+   class Channel;
+   class Device;
+}
+
+class VideoDevicePrivate : public QObject
 {
+   Q_OBJECT
 public:
    class PreferenceNames {
    public:
@@ -29,12 +38,18 @@ public:
       constexpr static const char* SIZE    = "size"   ;
    };
 
-   explicit VideoDevicePrivate();
+   explicit VideoDevicePrivate(Video::Device* parent = nullptr);
 
    //Attributes
    QString                m_DeviceId       ;
    Video::Channel*        m_pCurrentChannel;
    QList<Video::Channel*> m_lChannels      ;
+   bool                   m_RequireSave    ;
+
+   Video::Device* q_ptr;
+
+public Q_SLOTS:
+   void saveIdle();
 };
 
 #endif

@@ -47,8 +47,9 @@ public:
    static VideoRendererManager* instance();
 
    //Getters
-   bool             isPreviewing   ();
-   Video::Renderer* previewRenderer();
+   bool             isPreviewing   () const;
+   Video::Renderer* previewRenderer()      ;
+   int              size           () const;
 
    //Helpers
    Video::Renderer* getRenderer(const Call* call) const;

@@ -43,7 +43,7 @@ Video::Channel::~Channel()
 
 QVariant Video::Channel::data( const QModelIndex& index, int role) const
 {
-   if (index.isValid() && role == Qt::DisplayRole) {
+   if (index.isValid() && role == Qt::DisplayRole && d_ptr->m_lValidResolutions.size() > index.row()) {
       return d_ptr->m_lValidResolutions[index.row()]->name();
    }
    return QVariant();
@@ -84,6 +84,10 @@ bool Video::Channel::setActiveResolution(Video::Resolution* res) {
       qWarning() << "Invalid active resolution" << (res?res->name():"NULL");
       return false;
    }
+
+   if (d_ptr->m_pCurrentResolution == res)
+      return false;
+
    d_ptr->m_pCurrentResolution = res;
    d_ptr->m_pDevice->save();
    return true;

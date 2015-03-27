@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,32 +15,34 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifndef CONFIGURATIONPROXY_H
+#define CONFIGURATIONPROXY_H
 
-#ifndef ITEMMODELSTATESERIALIZATIONVISITOR_H
-#define ITEMMODELSTATESERIALIZATIONVISITOR_H
 
-#include <typedefs.h>
-class CollectionInterface;
-class Account;
+class QAbstractItemModel;
+class QItemSelectionModel;
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT ItemModelStateSerializationDelegate {
+namespace Video {
+
+/**
+ * This class is used to simplify the configuration process.
+ * Currently, every devices have their own model tree. This
+ * proxy flatten the three to the clients don't have to
+ * implement the managing logic.
+ */
+class ConfigurationProxy {
 public:
-   virtual bool save() = 0;
-   virtual bool load() = 0;
-   virtual ~ItemModelStateSerializationDelegate() {}
+   static QAbstractItemModel* deviceModel    ();
+   static QAbstractItemModel* channelModel   ();
+   static QAbstractItemModel* resolutionModel();
+   static QAbstractItemModel* rateModel      ();
 
-   static void setInstance(ItemModelStateSerializationDelegate* i);
-   static ItemModelStateSerializationDelegate* instance();
-
-   //Getter
-   virtual bool isChecked(const CollectionInterface* backend) const = 0;
-
-   //Setter
-   virtual bool setChecked(const CollectionInterface* backend, bool enabled) = 0;
-
-private:
-   static ItemModelStateSerializationDelegate* m_spInstance;
+   static QItemSelectionModel* deviceSelectionModel    ();
+   static QItemSelectionModel* channelSelectionModel   ();
+   static QItemSelectionModel* resolutionSelectionModel();
+   static QItemSelectionModel* rateSelectionModel      ();
 };
+
+} //namespace Video
 
 #endif

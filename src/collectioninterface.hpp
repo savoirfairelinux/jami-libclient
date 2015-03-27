@@ -22,6 +22,7 @@ template<typename T> class ItemBase;
 
 class CollectionInterfacePrivate {
 public:
+   CollectionInterfacePrivate() : m_pParent(nullptr){}
 
    ///The backend parent of nullptr
    CollectionInterface*          m_pParent    ;

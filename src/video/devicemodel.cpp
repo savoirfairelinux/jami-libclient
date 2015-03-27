@@ -16,13 +16,18 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "devicemodel.h"
+
+//Qt
+#include <QtCore/QCoreApplication>
+#include <QtCore/QTimer>
+
+//Ring
 #include "device.h"
 #include <call.h>
 #include <account.h>
+#include <video/previewmanager.h>
 #include "../dbus/videomanager.h"
-
-#include <QtCore/QCoreApplication>
-#include <QtCore/QTimer>
+#include "../private/videorenderermanager.h"
 
 Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
 
@@ -46,7 +51,6 @@ private Q_SLOTS:
 
 Video::DeviceModelPrivate::DeviceModelPrivate() : m_pDummyDevice(nullptr),m_pActiveDevice(nullptr)
 {
-
 }
 
 ///
@@ -61,6 +65,8 @@ d_ptr(new Video::DeviceModelPrivate())
 {
    m_spInstance = this;
    reload();
+   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()));
 }
 
 Video::DeviceModel* Video::DeviceModel::instance()
@@ -84,7 +90,7 @@ QHash<int,QByteArray> Video::DeviceModel::roleNames() const
 ///Get data from the model
 QVariant Video::DeviceModel::data( const QModelIndex& idx, int role) const
 {
-   if(idx.column() == 0 && role == Qt::DisplayRole)
+   if(idx.isValid() && idx.column() == 0 && role == Qt::DisplayRole && d_ptr->m_lDevices.size() > idx.row())
       return QVariant(d_ptr->m_lDevices[idx.row()]->id());
    return QVariant();
 }
@@ -127,12 +133,18 @@ Video::DeviceModel::~DeviceModel()
 ///Save the current model over dbus
 void Video::DeviceModel::setActive(const QModelIndex& idx)
 {
-   if (idx.isValid()) {
+   if (idx.isValid() && d_ptr->m_lDevices.size() > idx.row()) {
       VideoManagerInterface& interface = DBus::VideoManager::instance();
       interface.setDefaultDevice(d_ptr->m_lDevices[idx.row()]->id());
       d_ptr->m_pActiveDevice = d_ptr->m_lDevices[idx.row()];
       emit changed();
       emit currentIndexChanged(idx.row());
+
+      //If the only renderer is the preview, reload it
+      if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
+         Video::PreviewManager::instance()->stopPreview();
+         Video::PreviewManager::instance()->startPreview();
+      }
    }
 }
 
@@ -173,12 +185,16 @@ void Video::DeviceModel::reload()
    }
    foreach(Video::Device* dev, d_ptr->m_hDevices) {
       if (dev && devicesHash.key(dev).isEmpty()) {
-         delete dev;
+         dev->deleteLater();
       }
    }
+   d_ptr->m_pActiveDevice = nullptr;
    d_ptr->m_hDevices.clear();
    d_ptr->m_hDevices = devicesHash;
+
+   beginResetModel();
    d_ptr->m_lDevices = d_ptr->m_hDevices.values();
+   endResetModel();
 
    emit layoutChanged();
 //    channelModel   ()->reload();
@@ -211,7 +227,6 @@ Video::Device* Video::DeviceModel::activeDevice() const
    }
    return d_ptr->m_pActiveDevice;
 }
-
 
 int Video::DeviceModel::activeIndex() const
 {

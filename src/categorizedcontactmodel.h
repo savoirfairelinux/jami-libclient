@@ -46,6 +46,8 @@ public:
 
    //Setters
    void setRole(int role);
+   void setSortAlphabetical(bool alpha = true);
+   void setDefaultCategory(const QString& cat);
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -62,7 +64,9 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
-   static int acceptedPayloadTypes();
+   static int acceptedPayloadTypes()      ;
+   bool       isSortAlphabetical  () const;
+   QString    defaultCategory     () const;
 
 private:
    QScopedPointer<CategorizedContactModelPrivate> d_ptr;

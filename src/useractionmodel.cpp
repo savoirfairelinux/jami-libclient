@@ -76,7 +76,7 @@ public:
    SelectionState                                                    m_SelectionState     ;
    TypedStateMachine< bool, UserActionModel::Action>                 m_CurrentActions     ;
    TypedStateMachine< Qt::CheckState, UserActionModel::Action>       m_CurrentActionsState;
-   static const TypedStateMachine< QString, UserActionModel::Action> m_ActionNames        ;
+   TypedStateMachine< QString, UserActionModel::Action>              m_ActionNames        ;
    ActiveUserActionModel*                                            m_pActiveModel       ;
 
    //The mute per call, per media is not merged upstream yet, faking it for now
@@ -213,23 +213,23 @@ const TypedStateMachine< TypedStateMachine< UserActionModel::ActionStatfulnessLe
 }};
 #undef ST
 
-const TypedStateMachine< QString, UserActionModel::Action> UserActionModelPrivate::m_ActionNames = {{
-   /* ACCEPT          */ QObject::tr("ACCEPT"          ), //TODO use better (and stateful) names
-   /* HOLD            */ QObject::tr("HOLD"            ),
-   /* MUTE_AUDIO      */ QObject::tr("MUTE_AUDIO"      ),
-   /* MUTE_VIDEO      */ QObject::tr("MUTE_VIDEO"      ),
-   /* SERVER_TRANSFER */ QObject::tr("SERVER_TRANSFER" ),
-   /* RECORD          */ QObject::tr("RECORD"          ),
-   /* HANGUP          */ QObject::tr("HANGUP"          ),
-
-   /* JOIN            */ QObject::tr("JOIN"            ),
-
-   /* JOIN            */ QObject::tr("ADD_NEW"         ),
-}};
-
 UserActionModelPrivate::UserActionModelPrivate(UserActionModel* parent) : QObject(parent),q_ptr(parent),
 m_pCall(nullptr), m_pActiveModel(nullptr)
 {
+   //Init the default names
+   m_ActionNames = {{
+      /* ACCEPT          */ QObject::tr("Accept"          ),
+      /* HOLD            */ QObject::tr("Hold"            ),
+      /* MUTE_AUDIO      */ QObject::tr("Mute audio"      ),
+      /* MUTE_VIDEO      */ QObject::tr("Mute video"      ),
+      /* SERVER_TRANSFER */ QObject::tr("Server transfer" ),
+      /* RECORD          */ QObject::tr("Record"          ),
+      /* HANGUP          */ QObject::tr("Hangup"          ),
+
+      /* JOIN            */ QObject::tr("Join"            ),
+
+      /* JOIN            */ QObject::tr("Add new"         ),
+   }};
 }
 
 /**
@@ -289,7 +289,7 @@ QVariant UserActionModel::data(const QModelIndex& idx, int role ) const
 
    switch(role) {
       case Qt::DisplayRole:
-         return UserActionModelPrivate::m_ActionNames[action];
+         return d_ptr->m_ActionNames[action];
       case Qt::CheckStateRole:
          if (d_ptr->actionStatefulness[action][d_ptr->m_SelectionState] != UserActionModel::ActionStatfulnessLevel::UNISTATE)
             return d_ptr->m_CurrentActionsState[action];
@@ -378,6 +378,61 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::COUNT__:
          break;
    };
+
+   //Avoid the noise
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wswitch-enum"
+   //Update the labels
+   switch (action) {
+      case UserActionModel::Action::ACCEPT          :
+         switch(c->state()) {
+            case Call::State::DIALING        :
+               m_ActionNames[UserActionModel::Action::ACCEPT] = QObject::tr("Call");
+               break;
+            default:
+               m_ActionNames[UserActionModel::Action::ACCEPT] = QObject::tr("Accept");
+               break;
+         }
+         break;
+      case UserActionModel::Action::HOLD            :
+         switch(c->state()) {
+            case Call::State::HOLD           :
+            case Call::State::CONFERENCE_HOLD:
+            case Call::State::TRANSF_HOLD    :
+               m_ActionNames[UserActionModel::Action::HOLD] = QObject::tr("Unhold");
+               break;
+            default:
+               m_ActionNames[UserActionModel::Action::HOLD] = QObject::tr("Hold");
+               break;
+         }
+         break;
+      case UserActionModel::Action::HANGUP          :
+         switch(c->state()) {
+            case Call::State::DIALING        :
+               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Cancel");
+               break;
+            case Call::State::FAILURE        :
+            case Call::State::ERROR          :
+            case Call::State::COUNT__        :
+            case Call::State::INITIALIZATION :
+            case Call::State::BUSY           :
+               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Remove");
+               break;
+            default:
+               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Hangup");
+               break;
+         }
+         break;
+      case UserActionModel::Action::JOIN            :
+      case UserActionModel::Action::ADD_NEW         :
+      case UserActionModel::Action::COUNT__         :
+      case UserActionModel::Action::MUTE_AUDIO      :
+      case UserActionModel::Action::MUTE_VIDEO      :
+      case UserActionModel::Action::SERVER_TRANSFER :
+      case UserActionModel::Action::RECORD          :
+         break;
+   }
+   #pragma GCC diagnostic pop
 }
 
 bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const Call* c)

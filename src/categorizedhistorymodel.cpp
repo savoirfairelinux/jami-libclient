@@ -632,7 +632,6 @@ bool CategorizedHistoryModel::addItemCallback(const Call* item)
 
 bool CategorizedHistoryModel::removeItemCallback(const Call* item)
 {
-   Q_UNUSED(item)
    emit const_cast<Call*>(item)->changed();
    return false;
 }

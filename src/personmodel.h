@@ -56,7 +56,6 @@ public:
 
    //Mutator
    bool addPerson(Person* c);
-   void disablePerson(Person* c);
 
    //Getters
    Person* getPersonByUid   ( const QByteArray& uid );
