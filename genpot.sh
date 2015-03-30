@@ -12,4 +12,3 @@ fi
 cd ..
 mkdir -p po
 IGNORE="/build/" ./build/scripts/extract-messages.sh
-

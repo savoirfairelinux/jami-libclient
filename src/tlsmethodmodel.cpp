@@ -61,7 +61,7 @@ public Q_SLOTS:
    void slotSelectionChanged(const QModelIndex& idx);
 };
 
-const QString TlsMethodModelPrivate::Name::DEFAULT = tr("Default", "Default TLS protocol version");
+const QString TlsMethodModelPrivate::Name::DEFAULT = QObject::tr("Default", "Default TLS protocol version");
 
 TlsMethodModelPrivate::TlsMethodModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a), isRing(false)
 {
