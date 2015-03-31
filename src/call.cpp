@@ -1393,6 +1393,7 @@ void CallPrivate::startStop()
    ::time(&curTime);
    setStartTimeStamp(curTime);
    m_pStopTimeStamp  = curTime;
+   m_Missed = true;
 }
 
 ///Stop the timer
