@@ -103,12 +103,9 @@ public:
       void slotAddPrivateCall     ( Call* call                                        );
       void slotNewRecordingAvail  ( const QString& callId    , const QString& filePath);
       void slotCallChanged        ( Call* call                                        );
+      void slotStateChanged       ( Call::State newState, Call::State previousState   );
       void slotDTMFPlayed         ( const QString& str                                );
       void slotRecordStateChanged ( const QString& callId    , bool state             );
-      #ifdef ENABLE_VIDEO
-      void slotStartedDecoding    ( const QString& callId    , const QString& shmKey  );
-      void slotStoppedDecoding    ( const QString& callId    , const QString& shmKey  );
-      #endif
 };
 
 
@@ -163,10 +160,6 @@ void CallModelPrivate::init()
       /**/connect(&callManager, SIGNAL(conferenceRemoved(QString))              , this , SLOT(slotConferenceRemoved(QString))          );
       /**/connect(&callManager, SIGNAL(recordPlaybackFilepath(QString,QString)) , this , SLOT(slotNewRecordingAvail(QString,QString))  );
       /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this,  SLOT(slotRecordStateChanged(QString,bool)));
-      #ifdef ENABLE_VIDEO
-      /**/connect(&interface  , SIGNAL(startedDecoding(QString,QString,int,int,bool)), this , SLOT(slotStartedDecoding(QString,QString))    );
-      /**/connect(&interface  , SIGNAL(stoppedDecoding(QString,QString,bool))        , this , SLOT(slotStoppedDecoding(QString,QString))    );
-      #endif
       /*                                                                                                                           */
 
       connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
@@ -415,6 +408,7 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
       emit q_ptr->dataChanged(idx, idx);
       connect(call,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
+      connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
       connect(call,&Call::videoStarted,[this,call](Video::Renderer* r){
          emit q_ptr->rendererAdded(call, r);
@@ -430,7 +424,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
    //Having multiple dialing calls could be supported, but for now we decided not to
    //handle this corner case as it will create issues of its own
    foreach (Call* call, getActiveCalls()) {
-      if (call->state() == Call::State::DIALING)
+      if (call->lifeCycleState() == Call::LifeCycleState::CREATION)
          return call;
    }
 
@@ -798,7 +792,7 @@ Qt::ItemFlags CallModel::flags( const QModelIndex& idx ) const
       return Qt::ItemIsEnabled|Qt::ItemIsSelectable 
          | Qt::ItemIsDragEnabled 
          | ((c->type() != Call::Type::CONFERENCE)?(Qt::ItemIsDropEnabled):Qt::ItemIsEnabled)
-         | ((c->state() == Call::State::DIALING)?Qt::ItemIsEditable:Qt::NoItemFlags);
+         | ((c->lifeCycleState() == Call::LifeCycleState::CREATION)?Qt::ItemIsEditable:Qt::NoItemFlags);
    }
    return Qt::NoItemFlags;
 }
@@ -894,6 +888,9 @@ bool CallModelPrivate::isPartOf(const QModelIndex& confIdx, Call* call)
 ///Try to isolate the MIME id from the dringId() to eventually use something else
 QByteArray CallModel::getMime(const Call* call) const
 {
+   if ((!call) || (!call->hasRemote()))
+      return {};
+
    return call->dringId().toLatin1();
 }
 
@@ -1014,11 +1011,12 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
 ///When a call state change
 void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString& stateName, int code)
 {
+
    //This code is part of the CallModel interface too
    qDebug() << "Call State Changed for call  " << callID << " . New state : " << stateName;
    InternalStruct* internal = m_shDringId[callID];
    Call* call = nullptr;
-   Call::State previousState = Call::State::RINGING;
+
    if(!internal) {
       qDebug() << "Call not found" << callID << "new state" << stateName;
       if(stateName == CallPrivate::StateChange::RINGING) {
@@ -1031,7 +1029,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    }
    else {
       call = internal->call_real;
-      previousState = call->state();
+
       qDebug() << "Call found" << call << call->state();
       const Call::LifeCycleState oldLifeCycleState = call->lifeCycleState();
       const Call::State          oldState          = call->state();
@@ -1053,8 +1051,6 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
          }
       }
    }
-
-   emit q_ptr->callStateChanged(call,previousState);
 
 } //slotCallStateChanged
 
@@ -1190,21 +1186,14 @@ void CallModelPrivate::slotNewRecordingAvail( const QString& callId, const QStri
    q_ptr->getCall(callId)->setRecordingPath(filePath);
 }
 
-#ifdef ENABLE_VIDEO
-///Updating call state when video is added
-void CallModelPrivate::slotStartedDecoding(const QString& callId, const QString& shmKey)
+void CallModelPrivate::slotStateChanged(Call::State newState, Call::State previousState)
 {
-   Q_UNUSED(callId)
-   Q_UNUSED(shmKey)
-}
+   Q_UNUSED(newState)
 
-///Updating call state when video is removed
-void CallModelPrivate::slotStoppedDecoding(const QString& callId, const QString& shmKey)
-{
-   Q_UNUSED(callId)
-   Q_UNUSED(shmKey)
+   Call* call = qobject_cast<Call*>(sender());
+   if (call)
+      emit q_ptr->callStateChanged(call, previousState);
 }
-#endif
 
 ///Update model if the data change
 void CallModelPrivate::slotCallChanged(Call* call)
@@ -1221,6 +1210,7 @@ void CallModelPrivate::slotCallChanged(Call* call)
          removeCall(call);
          break;
       //Over can be caused by local events
+      case Call::State::ABORTED:
       case Call::State::OVER:
          removeCall(call);
          break;
@@ -1230,6 +1220,7 @@ void CallModelPrivate::slotCallChanged(Call* call)
       case Call::State::INITIALIZATION:
       case Call::State::CURRENT:
       case Call::State::DIALING:
+      case Call::State::NEW:
       case Call::State::HOLD:
       case Call::State::FAILURE:
       case Call::State::BUSY:

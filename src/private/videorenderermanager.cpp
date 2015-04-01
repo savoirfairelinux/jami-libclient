@@ -110,7 +110,7 @@ int VideoRendererManager::size() const
 ///Return the call Renderer or nullptr
 Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 {
-   if (!call) return nullptr;
+   if ((!call) || (!call->hasRemote())) return nullptr;
 
    return d_ptr->m_hRenderers[call->dringId().toLatin1()];
 }

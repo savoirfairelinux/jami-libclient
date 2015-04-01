@@ -124,20 +124,22 @@ public:
 
    ///Possible call states
    enum class State : unsigned int{
-      INCOMING        = 0, /*!< Ringing incoming call                                                             */
-      RINGING         = 1, /*!< Ringing outgoing call                                                             */
-      CURRENT         = 2, /*!< Call to which the user can speak and hear                                         */
-      DIALING         = 3, /*!< Call which numbers are being added by the user                                    */
-      HOLD            = 4, /*!< Call is on hold                                                                   */
-      FAILURE         = 5, /*!< Call has failed                                                                   */
-      BUSY            = 6, /*!< Call is busy                                                                      */
-      TRANSFERRED     = 7, /*!< Call is being transferred.  During this state, the user can enter the new number. */
-      TRANSF_HOLD     = 8, /*!< Call is on hold for transfer                                                      */
-      OVER            = 9, /*!< Call is over and should not be used                                               */
-      ERROR           = 10,/*!< This state should never be reached                                                */
-      CONFERENCE      = 11,/*!< This call is the current conference                                               */
-      CONFERENCE_HOLD = 12,/*!< This call is a conference on hold                                                 */
-      INITIALIZATION  = 13,/*!< The call have been placed, but the peer hasn't confirmed yet                      */
+      NEW             = 0, /*!< The call has been created, but no dialing number been set                         */
+      INCOMING        = 1, /*!< Ringing incoming call                                                             */
+      RINGING         = 2, /*!< Ringing outgoing call                                                             */
+      CURRENT         = 3, /*!< Call to which the user can speak and hear                                         */
+      DIALING         = 4, /*!< Call which numbers are being added by the user                                    */
+      HOLD            = 5, /*!< Call is on hold                                                                   */
+      FAILURE         = 6, /*!< Call has failed                                                                   */
+      BUSY            = 7, /*!< Call is busy                                                                      */
+      TRANSFERRED     = 8, /*!< Call is being transferred.  During this state, the user can enter the new number. */
+      TRANSF_HOLD     = 9, /*!< Call is on hold for transfer                                                      */
+      OVER            = 10,/*!< Call is over and should not be used                                               */
+      ERROR           = 11,/*!< This state should never be reached                                                */
+      CONFERENCE      = 12,/*!< This call is the current conference                                               */
+      CONFERENCE_HOLD = 13,/*!< This call is a conference on hold                                                 */
+      INITIALIZATION  = 14,/*!< The call have been placed, but the peer hasn't confirmed yet                      */
+      ABORTED         = 15,/*!< The call was dropped before being sent to the daemon                              */
       COUNT__,
    };
    Q_ENUMS(State)
@@ -176,11 +178,13 @@ public:
     *  as BUSY OR FAILURE while also finished
     */
    enum class LifeCycleState {
-      INITIALIZATION = 0, /*!< Anything before the media transfer start   */
-      PROGRESS       = 1, /*!< The peers are in communication (or hold)   */
-      FINISHED       = 2, /*!< Everything is over, there is no going back */
+      CREATION       = 0, /*!< Anything before creating the daemon call   */
+      INITIALIZATION = 1, /*!< Anything before the media transfer start   */
+      PROGRESS       = 2, /*!< The peers are in communication (or hold)   */
+      FINISHED       = 3, /*!< Everything is over, there is no going back */
       COUNT__
    };
+   Q_ENUMS(LifeCycleState)
 
    ///TODO should be deprecated when a better factory system is implemented
    class HistoryMapFields {
@@ -326,7 +330,9 @@ Q_SIGNALS:
    ///Notify that a DTMF have been played
    void dtmfPlayed(const QString& str);
    ///Notify of state change
-   void stateChanged();
+   void stateChanged(Call::State newState, Call::State previousState);
+   ///Notify that the lifeCycleStateChanged
+   void lifeCycleStateChanged(Call::LifeCycleState newState, Call::LifeCycleState previousState);
    ///The call start timestamp changed, this usually indicate the call has started
    void startTimeStampChanged(time_t newTimeStamp);
    ///The dial number has changed

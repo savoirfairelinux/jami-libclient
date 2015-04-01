@@ -104,18 +104,18 @@ public Q_SLOTS:
 
 //Enabled actions
 const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
- /*                   INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION*/
- /*ACCEPT          */ {{ true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false}},
- /*HOLD            */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false}},
- /*MUTE_AUDIO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
- /*MUTE_VIDEO      */ {{ false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
- /*SERVER_TRANSFER */ {{ false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,       false,           false}},
- /*RECORD          */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
- /*HANGUP          */ {{ true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           true }},
+ /*                       NEW    INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
+ /*ACCEPT          */ {{ false  , true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
+ /*HOLD            */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false,       false}},
+ /*MUTE_AUDIO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
+ /*MUTE_VIDEO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
+ /*SERVER_TRANSFER */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,       false,           false,       false}},
+ /*RECORD          */ {{ false  , false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false,       false}},
+ /*HANGUP          */ {{ true   , true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           true ,       false}},
 
- /*JOIN            */ {{ false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false}},
+ /*JOIN            */ {{ false  , false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false,       false}},
 
- /*ADD_NEW         */ {{ false  , false,  false,  false, false, false, false,   false,     false,    false, false,  false,       false,           false}},
+ /*ADD_NEW         */ {{ false  , false  , false,  false,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
 }};
 
 /**
@@ -228,7 +228,7 @@ m_pCall(nullptr), m_pActiveModel(nullptr)
 
       /* JOIN            */ QObject::tr("Join"            ),
 
-      /* JOIN            */ QObject::tr("Add new"         ),
+      /* ADD_NEW         */ QObject::tr("Add new"         ),
    }};
 }
 
@@ -282,7 +282,7 @@ QHash<int,QByteArray> UserActionModel::roleNames() const
 
 QVariant UserActionModel::data(const QModelIndex& idx, int role ) const
 {
-   if (!idx.isValid() && (idx.row()>=0 && idx.row() < enum_class_size<UserActionModel::Action>()))
+   if ((!idx.isValid()) || !(idx.row()>=0 && idx.row() < enum_class_size<UserActionModel::Action>()))
       return QVariant();
 
    UserActionModel::Action action = static_cast<UserActionModel::Action>(idx.row());
@@ -409,6 +409,7 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::HANGUP          :
          switch(c->state()) {
             case Call::State::DIALING        :
+            case Call::State::NEW            :
                m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Cancel");
                break;
             case Call::State::FAILURE        :

@@ -212,7 +212,7 @@ void NumberCompletionModel::setCall(Call* call)
 void NumberCompletionModel::setPrefix(const QString& str)
 {
    d_ptr->m_Prefix = str;
-   const bool e = ((d_ptr->m_pCall && d_ptr->m_pCall->state() == Call::State::DIALING) || (!d_ptr->m_pCall)) && (!str.isEmpty());
+   const bool e = ((d_ptr->m_pCall && d_ptr->m_pCall->lifeCycleState() == Call::LifeCycleState::CREATION) || (!d_ptr->m_pCall)) && (!str.isEmpty());
    if (d_ptr->m_Enabled != e) {
       d_ptr->m_Enabled = e;
       emit enabled(e);

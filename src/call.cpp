@@ -72,6 +72,7 @@
 const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::State> CallPrivate::actionPerformedStateMap =
 {{
 //                           ACCEPT                      REFUSE                  TRANSFER                       HOLD                           RECORD              /**/
+/*NEW          */  {{Call::State::DIALING       , Call::State::ABORTED     , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
 /*INCOMING     */  {{Call::State::INCOMING      , Call::State::INCOMING    , Call::State::ERROR        , Call::State::INCOMING     ,  Call::State::INCOMING     }},/**/
 /*RINGING      */  {{Call::State::ERROR         , Call::State::RINGING     , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::RINGING      }},/**/
 /*CURRENT      */  {{Call::State::ERROR         , Call::State::CURRENT     , Call::State::TRANSFERRED  , Call::State::CURRENT      ,  Call::State::CURRENT      }},/**/
@@ -86,16 +87,18 @@ const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::
 /*CONF         */  {{Call::State::ERROR         , Call::State::CURRENT     , Call::State::TRANSFERRED  , Call::State::CURRENT      ,  Call::State::CURRENT      }},/**/
 /*CONF_HOLD    */  {{Call::State::ERROR         , Call::State::HOLD        , Call::State::TRANSF_HOLD  , Call::State::HOLD         ,  Call::State::HOLD         }},/**/
 /*INIT         */  {{Call::State::INITIALIZATION, Call::State::OVER        , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
+/*ABORTED      */  {{Call::State::ERROR         , Call::State::ERROR       , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
 }};//                                                                                                                                                                */
 
 #define CP &CallPrivate
 const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::State > CallPrivate::actionPerformedFunctionMap =
 {{
 //                      ACCEPT             REFUSE         TRANSFER             HOLD               RECORD            /**/
+/*NEW            */  {{CP::nothing    , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
 /*INCOMING       */  {{CP::accept     , CP::refuse   , CP::acceptTransf   , CP::acceptHold  ,  CP::toggleRecord  }},/**/
 /*RINGING        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::toggleRecord  }},/**/
 /*CURRENT        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleRecord  }},/**/
-/*DIALING        */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
+/*DIALING        */  {{CP::call       , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
 /*HOLD           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleRecord  }},/**/
 /*FAILURE        */  {{CP::nothing    , CP::remove   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
 /*BUSY           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
@@ -106,12 +109,14 @@ const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::St
 /*CONF           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleRecord  }},/**/
 /*CONF_HOLD      */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleRecord  }},/**/
 /*INITIALIZATION */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
+/*ABORTED        */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
 }};//                                                                                                                 */
 
 
 const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
 {{
 //                        RINGING                   CURRENT                   BUSY                  HOLD                        HUNGUP                 FAILURE           /**/
+/*NEW          */ {{Call::State::ERROR       , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
 /*INCOMING     */ {{Call::State::INCOMING    , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*RINGING      */ {{Call::State::RINGING     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*CURRENT      */ {{Call::State::CURRENT     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
@@ -126,11 +131,13 @@ const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonSta
 /*CONF         */ {{Call::State::CURRENT     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*CONF_HOLD    */ {{Call::State::HOLD        , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*INIT         */ {{Call::State::RINGING     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
+/*ABORTED      */ {{Call::State::ERROR       , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
 }};//                                                                                                                                                                        */
 
 const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState > , Call::State > CallPrivate::stateChangedFunctionMap =
 {{
-//                      RINGING                  CURRENT             BUSY              HOLD                    HUNGUP                  FAILURE       /**/
+//                      RINGING          CURRENT            BUSY                 HOLD                HUNGUP            FAILURE     /**/
+/*NEW            */  {{CP::nothing    , CP::nothing   , CP::nothing        , CP::nothing      ,  CP::nothing      , CP::nothing }},/**/
 /*INCOMING       */  {{CP::nothing    , CP::start     , CP::startWeird     , CP::startWeird   ,  CP::startStop    , CP::failure }},/**/
 /*RINGING        */  {{CP::nothing    , CP::start     , CP::start          , CP::start        ,  CP::startStop    , CP::failure }},/**/
 /*CURRENT        */  {{CP::nothing    , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
@@ -145,16 +152,18 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*CONF           */  {{CP::nothing    , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*INIT           */  {{CP::nothing    , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
+/*ABORTED        */  {{CP::error      , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
 }};//                                                                                                                                */
 #undef CP
 
 const TypedStateMachine< Call::LifeCycleState , Call::State > CallPrivate::metaStateMap =
 {{
 /*               *        Life cycle meta-state              **/
+/*NEW            */   Call::LifeCycleState::CREATION       ,/**/
 /*INCOMING       */   Call::LifeCycleState::INITIALIZATION ,/**/
 /*RINGING        */   Call::LifeCycleState::INITIALIZATION ,/**/
 /*CURRENT        */   Call::LifeCycleState::PROGRESS       ,/**/
-/*DIALING        */   Call::LifeCycleState::INITIALIZATION ,/**/
+/*DIALING        */   Call::LifeCycleState::CREATION       ,/**/
 /*HOLD           */   Call::LifeCycleState::PROGRESS       ,/**/
 /*FAILURE        */   Call::LifeCycleState::FINISHED       ,/**/
 /*BUSY           */   Call::LifeCycleState::FINISHED       ,/**/
@@ -165,25 +174,28 @@ const TypedStateMachine< Call::LifeCycleState , Call::State > CallPrivate::metaS
 /*CONF           */   Call::LifeCycleState::PROGRESS       ,/**/
 /*CONF_HOLD      */   Call::LifeCycleState::PROGRESS       ,/**/
 /*INIT           */   Call::LifeCycleState::INITIALIZATION ,/**/
+/*ABORTED        */   Call::LifeCycleState::FINISHED       ,/**/
 }};/*                                                        **/
 
 const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call::State > CallPrivate::metaStateTransitionValidationMap =
 {{
-/*               *     INITIALIZATION    PROGRESS      FINISHED   **/
-/*INCOMING       */  {{     true     ,    false    ,    false }},/**/
-/*RINGING        */  {{     true     ,    false    ,    false }},/**/
-/*CURRENT        */  {{     true     ,    true     ,    false }},/**/
-/*DIALING        */  {{     true     ,    false    ,    false }},/**/
-/*HOLD           */  {{     true     ,    true     ,    false }},/**/
-/*FAILURE        */  {{     true     ,    true     ,    false }},/**/
-/*BUSY           */  {{     true     ,    false    ,    false }},/**/
-/*TRANSFERT      */  {{     false    ,    true     ,    false }},/**/
-/*TRANSFERT_HOLD */  {{     false    ,    true     ,    false }},/**/
-/*OVER           */  {{     true     ,    true     ,    true  }},/**/
-/*ERROR          */  {{     true     ,    true     ,    false }},/**/
-/*CONF           */  {{     true     ,    false    ,    false }},/**/
-/*CONF_HOLD      */  {{     true     ,    false    ,    false }},/**/
-/*INIT           */  {{     true     ,    false    ,    false }},/**/
+/*               *        CREATION    INITIALIZATION    PROGRESS      FINISHED   **/
+/*NEW            */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*INCOMING       */  {{     false    ,     true     ,    false    ,    false }},/**/
+/*RINGING        */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*CURRENT        */  {{     false    ,     true     ,    true     ,    false }},/**/
+/*DIALING        */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*HOLD           */  {{     false    ,     true     ,    true     ,    false }},/**/
+/*FAILURE        */  {{     false    ,     true     ,    true     ,    false }},/**/
+/*BUSY           */  {{     false    ,     true     ,    false    ,    false }},/**/
+/*TRANSFERT      */  {{     false    ,     false    ,    true     ,    false }},/**/
+/*TRANSFERT_HOLD */  {{     false    ,     false    ,    true     ,    false }},/**/
+/*OVER           */  {{     false    ,     true     ,    true     ,    true  }},/**/
+/*ERROR          */  {{     true     ,     true     ,    true     ,    false }},/**/
+/*CONF           */  {{     false    ,     true     ,    false    ,    false }},/**/
+/*CONF_HOLD      */  {{     false    ,     true     ,    false    ,    false }},/**/
+/*INIT           */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*ABORTED        */  {{     true     ,     true     ,    false    ,    false }},/**/
 }};/*                                                             **/
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
@@ -249,8 +261,6 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
    d_ptr->m_PeerName         = peerName;
    d_ptr->m_pPeerContactMethod = number;
 
-   d_ptr->changeCurrentState(startState);
-
    emit changed();
    emit changed(this);
 }
@@ -274,7 +284,7 @@ Call::Call(const QString& confId, const QString& account)
       CallManagerInterface& callManager = DBus::CallManager::instance();
       MapStringString        details    = callManager.getConferenceDetails(dringId())  ;
       d_ptr->m_CurrentState             = d_ptr->confStatetoCallState(details[CallPrivate::ConfDetailsMapFields::CONF_STATE]);
-      emit stateChanged();
+      emit stateChanged(state(),Call::State::NEW);
    }
 }
 
@@ -341,7 +351,7 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 ///Build a call from a dialing call (a call that is about to exist)
 Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
 {
-   Call* call = new Call(Call::State::DIALING, peerName, nullptr, account);
+   Call* call = new Call(Call::State::NEW, peerName, nullptr, account);
    call->d_ptr->m_Direction = Call::Direction::OUTGOING;
    if (Audio::Settings::instance()->isRoomToneEnabled()) {
       Audio::Settings::instance()->playRoomTone();
@@ -560,6 +570,9 @@ Call::State CallPrivate::confStatetoCallState(const QString& stateName)
 const QString Call::toHumanStateName(const Call::State cur)
 {
    switch (cur) {
+      case Call::State::NEW:
+         return tr( "New"               );
+         break;
       case Call::State::INCOMING:
          return tr( "Ringing (in)"      );
          break;
@@ -602,6 +615,8 @@ const QString Call::toHumanStateName(const Call::State cur)
          return tr( "ERROR"             );
       case Call::State::INITIALIZATION:
          return tr( "Initialization"    );
+      case Call::State::ABORTED:
+         return tr( "Initialization"    );
       default:
          return QString::number(static_cast<int>(cur));
    }
@@ -633,7 +648,7 @@ const QString Call::transferNumber() const
 ///Get the call / peer number
 const QString Call::dialNumber() const
 {
-   if (d_ptr->m_CurrentState != Call::State::DIALING) return QString();
+   if (lifeCycleState() != Call::LifeCycleState::CREATION) return QString();
    if (!d_ptr->m_pDialNumber) {
       d_ptr->m_pDialNumber = new TemporaryContactMethod();
    }
@@ -655,7 +670,7 @@ const QString Call::dringId() const
 
 ContactMethod* Call::peerContactMethod() const
 {
-   if (d_ptr->m_CurrentState == Call::State::DIALING) {
+   if (lifeCycleState() == Call::LifeCycleState::CREATION) {
       if (!d_ptr->m_pTransferNumber) {
          d_ptr->m_pTransferNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
       }
@@ -755,12 +770,14 @@ bool Call::hasRemote() const
 bool Call::hasVideo() const
 {
    #ifdef ENABLE_VIDEO
+   if (!hasRemote())
+      return false;
+
    return VideoRendererManager::instance()->getRenderer(this) != nullptr;
    #else
    return false;
    #endif
 }
-
 
 ///Get the current state
 Call::State Call::state() const
@@ -846,10 +863,12 @@ void Call::setTransferNumber(const QString& number)
 void Call::setDialNumber(const QString& number)
 {
    //This is not supposed to happen, but this is not a serious issue if it does
-   if (d_ptr->m_CurrentState != Call::State::DIALING) {
+   if (lifeCycleState() != Call::LifeCycleState::CREATION) {
       qDebug() << "Trying to set a dial number to a non-dialing call, doing nothing";
       return;
    }
+
+   const bool isEmpty  = number.isEmpty();
 
    if (!d_ptr->m_pDialNumber) {
       d_ptr->m_pDialNumber = new TemporaryContactMethod();
@@ -859,12 +878,18 @@ void Call::setDialNumber(const QString& number)
    emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
    emit changed();
    emit changed(this);
+
+   //Make sure the call is now in the right state
+   if ((!isEmpty) && state() == Call::State::NEW)
+      d_ptr->changeCurrentState(Call::State::DIALING);
+   else if (isEmpty && state() == Call::State::DIALING)
+      d_ptr->changeCurrentState(Call::State::NEW);
 }
 
 ///Set the dial number from a full phone number
 void Call::setDialNumber(const ContactMethod* number)
 {
-   if (d_ptr->m_CurrentState == Call::State::DIALING && !d_ptr->m_pDialNumber) {
+   if (lifeCycleState() == Call::LifeCycleState::CREATION && !d_ptr->m_pDialNumber) {
       d_ptr->m_pDialNumber = new TemporaryContactMethod(number);
    }
    if (d_ptr->m_pDialNumber && number)
@@ -897,7 +922,7 @@ void Call::setPeerName(const QString& name)
 ///Set the account (DIALING only, may be ignored)
 void Call::setAccount( Account* account)
 {
-   if (state() == Call::State::DIALING)
+   if (lifeCycleState() == Call::LifeCycleState::CREATION)
       d_ptr->m_Account = account;
 }
 
@@ -981,9 +1006,13 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       //Until now, it does not worth using stateChangedStateMap, conferences are quite simple
       //update 2014: Umm... wrong
       m_CurrentState = confStatetoCallState(newStateName); //TODO don't do this
-      emit q_ptr->stateChanged();
+      emit q_ptr->stateChanged(m_CurrentState,previousState);
+
+      if (CallPrivate::metaStateMap[m_CurrentState] != CallPrivate::metaStateMap[previousState])
+         emit q_ptr->lifeCycleStateChanged(CallPrivate::metaStateMap[m_CurrentState],CallPrivate::metaStateMap[previousState]);
+
    }
-   if (m_CurrentState != Call::State::DIALING && m_pDialNumber) {
+   if (q_ptr->lifeCycleState() != Call::LifeCycleState::CREATION && m_pDialNumber) {
       if (!m_pPeerContactMethod)
          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
       m_pDialNumber->deleteLater();
@@ -1064,9 +1093,21 @@ void CallPrivate::changeCurrentState(Call::State newState)
       throw newState;
    }
 
-   m_CurrentState = newState;
+   if (m_CurrentState == newState) {
+      qDebug() << "Origin and destination states are identical" << m_CurrentState << newState << "doing nothing" << q_ptr;
+      return;
+   }
 
-   emit q_ptr->stateChanged();
+   const Call::State previousState = m_CurrentState;
+
+   m_CurrentState = newState;
+   qDebug() << "State changing from"<<previousState << "to" << m_CurrentState << "on" << q_ptr;
+
+   emit q_ptr->stateChanged(newState, previousState);
+
+   if (CallPrivate::metaStateMap[newState] != CallPrivate::metaStateMap[previousState])
+      emit q_ptr->lifeCycleStateChanged(CallPrivate::metaStateMap[newState],CallPrivate::metaStateMap[previousState]);
+
    emit q_ptr->changed();
    emit q_ptr->changed(q_ptr);
 
@@ -1229,9 +1270,15 @@ void CallPrivate::remove()
       callManager.hangUpConference(q_ptr->dringId());
 
    emit q_ptr->isOver(q_ptr);
-   emit q_ptr->stateChanged();
+   emit q_ptr->stateChanged(m_CurrentState, m_CurrentState);
    emit q_ptr->changed();
    emit q_ptr->changed(q_ptr);
+}
+
+///Abort this call (never notify the daemon there was a call)
+void CallPrivate::abort()
+{
+   
 }
 
 ///Cancel this call
@@ -1284,7 +1331,6 @@ void CallPrivate::call()
          m_pDialNumber = nullptr;
       }
       q_ptr->setPeerName(tr("Failure"));
-      emit q_ptr->stateChanged();
       emit q_ptr->changed();
    }
    //Normal case
@@ -1435,13 +1481,15 @@ void CallPrivate::warning()
       case Call::State::TRANSFERRED    :
       case Call::State::TRANSF_HOLD    :
       case Call::State::DIALING        :
-      case Call::State::INITIALIZATION:
+      case Call::State::NEW            :
+      case Call::State::INITIALIZATION :
       case Call::State::INCOMING       :
       case Call::State::RINGING        :
       case Call::State::CURRENT        :
       case Call::State::HOLD           :
       case Call::State::BUSY           :
       case Call::State::OVER           :
+      case Call::State::ABORTED        :
       case Call::State::CONFERENCE     :
       case Call::State::CONFERENCE_HOLD:
       default:
@@ -1459,14 +1507,20 @@ void CallPrivate::warning()
 void Call::appendText(const QString& str)
 {
    TemporaryContactMethod* editNumber = nullptr;
-
    switch (d_ptr->m_CurrentState) {
    case Call::State::TRANSFERRED :
    case Call::State::TRANSF_HOLD :
       editNumber = d_ptr->m_pTransferNumber;
       break;
    case Call::State::DIALING     :
+   case Call::State::NEW         : {
+      const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
       editNumber = d_ptr->m_pDialNumber;
+      const bool isEmpty  = str.isEmpty();
+
+      if (wasEmpty != isEmpty)
+         d_ptr->changeCurrentState(isEmpty ? Call::State::NEW : Call::State::DIALING);
+   }
       break;
    case Call::State::INITIALIZATION:
    case Call::State::INCOMING:
@@ -1476,6 +1530,7 @@ void Call::appendText(const QString& str)
    case Call::State::FAILURE:
    case Call::State::BUSY:
    case Call::State::OVER:
+   case Call::State::ABORTED:
    case Call::State::ERROR:
    case Call::State::CONFERENCE:
    case Call::State::CONFERENCE_HOLD:
@@ -1487,7 +1542,7 @@ void Call::appendText(const QString& str)
 
    if (editNumber) {
       editNumber->setUri(editNumber->uri()+str);
-      if (state() == Call::State::DIALING)
+      if (lifeCycleState() == Call::LifeCycleState::CREATION)
          emit dialNumberChanged(editNumber->uri());
    }
    else
@@ -1508,8 +1563,16 @@ void Call::backspaceItemText()
       case Call::State::TRANSF_HOLD      :
          editNumber = d_ptr->m_pTransferNumber;
          break;
-      case Call::State::DIALING          :
+      case Call::State::NEW:
+      case Call::State::DIALING          : {
+         const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
          editNumber = d_ptr->m_pDialNumber;
+         const bool isEmpty  = editNumber->uri().isEmpty();
+
+         if (wasEmpty != isEmpty)
+            d_ptr->changeCurrentState(isEmpty ? Call::State::NEW : Call::State::DIALING);
+
+         }
          break;
       case Call::State::INITIALIZATION:
       case Call::State::INCOMING:
@@ -1518,6 +1581,7 @@ void Call::backspaceItemText()
       case Call::State::HOLD:
       case Call::State::FAILURE:
       case Call::State::BUSY:
+      case Call::State::ABORTED:
       case Call::State::OVER:
       case Call::State::ERROR:
       case Call::State::CONFERENCE:
@@ -1536,7 +1600,7 @@ void Call::backspaceItemText()
          emit changed(this);
       }
       else {
-         d_ptr->changeCurrentState(Call::State::OVER);
+         d_ptr->changeCurrentState(Call::State::ABORTED);
       }
    }
    else
@@ -1554,7 +1618,9 @@ void Call::reset()
          editNumber = d_ptr->m_pTransferNumber;
          break;
       case Call::State::DIALING          :
+      case Call::State::NEW              :
          editNumber = d_ptr->m_pDialNumber;
+         d_ptr->changeCurrentState( Call::State::NEW );
          break;
       case Call::State::INITIALIZATION   :
       case Call::State::INCOMING         :
@@ -1564,6 +1630,7 @@ void Call::reset()
       case Call::State::FAILURE          :
       case Call::State::BUSY             :
       case Call::State::OVER             :
+      case Call::State::ABORTED          :
       case Call::State::ERROR            :
       case Call::State::CONFERENCE       :
       case Call::State::CONFERENCE_HOLD  :
@@ -1669,7 +1736,7 @@ QVariant Call::roleData(int role) const
       case Qt::DisplayRole:
          if (type() == Call::Type::CONFERENCE)
             return tr("Conference");
-         else if (state() == Call::State::DIALING)
+         else if (lifeCycleState() == Call::LifeCycleState::CREATION)
             return dialNumber();
          else if (d_ptr->m_PeerName.isEmpty())
             return ct?ct->formattedName():peerContactMethod()?peerContactMethod()->uri():dialNumber();
@@ -1766,7 +1833,7 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::Missed):
          return isMissed();
       case static_cast<int>(Call::Role::LifeCycleState):
-         return static_cast<int>(lifeCycleState()); //TODO Qt5, use the Q_ENUM
+         return QVariant::fromValue(lifeCycleState());
       case static_cast<int>(Call::Role::DTMFAnimState):
          return property("DTMFAnimState");
          break;

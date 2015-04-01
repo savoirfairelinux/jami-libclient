@@ -214,6 +214,7 @@ public:
    void startWeird   ();
    void warning      ();
    void remove       ();
+   void abort        ();
 
    //Helpers
    void changeCurrentState(Call::State newState);
