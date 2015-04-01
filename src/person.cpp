@@ -28,7 +28,7 @@
 #include "collectioninterface.h"
 #include "transitionalpersonbackend.h"
 #include "account.h"
-#include "vcardutils.h"
+#include "private/vcardutils.h"
 #include "personmodel.h"
 #include "historytimecategorymodel.h"
 #include "numbercategorymodel.h"
@@ -223,6 +223,24 @@ Person::Person(CollectionInterface* parent): ItemBase<QObject>(nullptr),
    setCollection(parent?parent:TransitionalPersonBackend::instance());
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
+}
+
+Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionInterface* parent)
+ : ItemBase<QObject>(nullptr), d_ptr(new PersonPrivate(this))
+{
+   setCollection(parent?parent:TransitionalPersonBackend::instance());
+   d_ptr->m_isPlaceHolder = false;
+   d_ptr->m_lParents << this;
+   switch (encoding) {
+      case Person::Encoding::UID:
+         setUid(content);
+         break;
+      case Person::Encoding::vCard:
+         if (!VCardUtils::mapToPerson(this, content)) {
+            qDebug() << "Loading person failed";
+         }
+         break;
+   };
 }
 
 ///Destructor

@@ -31,7 +31,7 @@
 //Ring
 #include "person.h"
 #include "personmodel.h"
-#include "vcardutils.h"
+#include "private/vcardutils.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
 #include "delegates/pixmapmanipulationdelegate.h"

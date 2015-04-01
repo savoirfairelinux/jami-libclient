@@ -34,7 +34,7 @@
 #include "person.h"
 #include "delegates/profilepersisterdelegate.h"
 #include "delegates/pixmapmanipulationdelegate.h"
-#include "vcardutils.h"
+#include "private/vcardutils.h"
 #include "mime.h"
 
 //Qt

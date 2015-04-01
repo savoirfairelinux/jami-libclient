@@ -246,7 +246,7 @@ SET( libringclient_LIB_SRCS
   #Other
   src/categorizedcompositenode.cpp
   src/hookmanager.cpp
-  src/vcardutils.cpp
+  src/private/vcardutils.cpp
   src/private/videorenderermanager.cpp
   src/video/previewmanager.cpp
 
@@ -310,7 +310,6 @@ SET( libringclient_LIB_HDRS
   src/collectionmanagerinterface.h
   src/collectionmanagerinterface.hpp
   src/networkinterfacemodel.h
-  src/vcardutils.h
   src/certificatemodel.h
   src/ciphermodel.h
   src/accountstatusmodel.h

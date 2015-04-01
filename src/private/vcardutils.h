@@ -83,6 +83,7 @@ public:
 
    //Mapping
    static bool mapToPerson(Person* p, const QUrl& url, Account** a = nullptr);
+   static bool mapToPerson(Person* p, const QByteArray& content, Account** a = nullptr);
 
 private:
 

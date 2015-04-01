@@ -57,6 +57,12 @@ public:
       DropState         = 300, //State for drag and drop
    };
 
+   ///@enum Encoding How to decode the person content payload
+   enum class Encoding {
+      UID  , /*!< The bytearray only has an unique identifier      */
+      vCard, /*!< The bytearray contain a RFC 6868 compliant vCard */
+   };
+
    ///Represent the physical address of a contact
    class Address {
       public:
@@ -112,6 +118,7 @@ protected:
 public:
    //Constructors & Destructors
    explicit Person(CollectionInterface* parent = nullptr);
+   Person(const QByteArray& content, Person::Encoding encoding = Encoding::UID, CollectionInterface* parent = nullptr);
    virtual ~Person();
 
    //Getters

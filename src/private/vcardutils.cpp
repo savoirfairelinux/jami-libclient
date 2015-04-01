@@ -268,19 +268,8 @@ QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok, QHash<const Pe
    return ret;
 }
 
-bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
+bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, Account** a)
 {
-
-   qDebug() << "file" << path.toString();
-
-   QFile file(path.toString());
-   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      qDebug() << "Error opening vcard: " << path;
-      return false;
-   }
-
-   const QByteArray all = file.readAll();
-
 //    bool propertyInserted = false;
    QByteArray previousKey,previousValue;
    for (const QByteArray& property : all.split('\n')) {
@@ -326,4 +315,20 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
 
    }
    return true;
+}
+
+bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
+{
+
+   qDebug() << "file" << path.toString();
+
+   QFile file(path.toString());
+   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      qDebug() << "Error opening vcard: " << path;
+      return false;
+   }
+
+   const QByteArray all = file.readAll();
+
+   return mapToPerson(p,all,a);
 }
