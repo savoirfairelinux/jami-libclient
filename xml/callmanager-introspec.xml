@@ -505,10 +505,11 @@
                 </ul>
               </tp:docstring>
             </arg>
-            <arg type="i" name="code" >
+            <arg type="i" name="code">
               <tp:docstring>
-                The SIP or IAX2 message code
+                The optional account-type specific message code. 0 if not set.
               </tp:docstring>
+              <tp:added version="2.0.0" />
             </arg>
         </signal>
 

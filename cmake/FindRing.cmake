@@ -15,9 +15,26 @@ ELSE()
 ENDIF()
 
 SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dylib;.so;.dll")
-FIND_LIBRARY(ring_BIN NAMES ring 
-             PATHS ${RING_BUILD_DIR}/.libs 
-             PATHS ${CMAKE_INSTALL_PREFIX}/libexec )
+
+FIND_LIBRARY(ring_BIN NAMES ring
+   PATHS ${RING_BUILD_DIR}/.libs
+   PATHS ${CMAKE_INSTALL_PREFIX}/lib
+   PATHS ${CMAKE_INSTALL_PREFIX}/libexec
+)
+
+# Try a static version too
+IF(${ring_BIN} MATCHES "")
+   SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib")
+
+   FIND_LIBRARY(ring_BIN NAMES ring
+      PATHS ${RING_BUILD_DIR}/.libs
+      PATHS ${CMAKE_INSTALL_PREFIX}/lib
+      PATHS ${CMAKE_INSTALL_PREFIX}/libexec
+   )
+
+   ADD_DEFINITIONS(-fPIC)
+
+ENDIF()
 
 MESSAGE("Ring daemon header is in " ${ring_INCLUDE_DIRS})
 MESSAGE("Ring library path is " ${ring_BIN})
