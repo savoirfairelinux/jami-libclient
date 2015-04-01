@@ -26,6 +26,19 @@
 
 #define Q_NOREPLY
 
+//Print all call to some signals
+#ifdef VERBOSE_IPC
+ #define LOG_DRING_SIGNAL(name,arg) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg;
+ #define LOG_DRING_SIGNAL2(name,arg,arg2) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2;
+ #define LOG_DRING_SIGNAL3(name,arg,arg2,arg3) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3;
+ #define LOG_DRING_SIGNAL4(name,arg,arg2,arg3,arg4) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3 << arg4;
+#else
+ #define LOG_DRING_SIGNAL(name,args) //Nothing
+ #define LOG_DRING_SIGNAL2(name,arg,arg2)
+ #define LOG_DRING_SIGNAL3(name,arg,arg2,arg3)
+ #define LOG_DRING_SIGNAL4(name,arg,arg2,arg3,arg4)
+#endif
+
 inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
     MapStringString temp;
     for (const auto& x : m) {
