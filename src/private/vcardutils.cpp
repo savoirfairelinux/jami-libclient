@@ -130,13 +130,19 @@ struct VCardMapper {
    void addAddress(Person* c, const QString& key, const QByteArray& fn) {
       Person::Address* addr = new Person::Address();
       QList<QByteArray> fields = fn.split(VCardUtils::Delimiter::SEPARATOR_TOKEN[0]);
+      QStringList keyFields = key.split(VCardUtils::Delimiter::SEPARATOR_TOKEN);
 
-      addr->setType        (key.split(VCardUtils::Delimiter::SEPARATOR_TOKEN)[1] );
-      addr->setAddressLine (QString::fromUtf8(fields[2])                         );
-      addr->setCity        (QString::fromUtf8(fields[3])                         );
-      addr->setState       (QString::fromUtf8(fields[4])                         );
-      addr->setZipCode     (QString::fromUtf8(fields[5])                         );
-      addr->setCountry     (QString::fromUtf8(fields[6])                         );
+      if(keyFields.size() < 2 || fields.size() < 7) {
+          qDebug() << "Malformatted Address";
+          return;
+      }
+
+      addr->setType        (keyFields[1]                   );
+      addr->setAddressLine (QString::fromUtf8(fields[2])   );
+      addr->setCity        (QString::fromUtf8(fields[3])   );
+      addr->setState       (QString::fromUtf8(fields[4])   );
+      addr->setZipCode     (QString::fromUtf8(fields[5])   );
+      addr->setCountry     (QString::fromUtf8(fields[6])   );
 
       c->addAddress(addr);
    }
