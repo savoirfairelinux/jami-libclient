@@ -47,10 +47,15 @@ public:
 
 public Q_SLOTS: // METHODS
    void Register(int pid, const QString &name)
-   {}
+   {
+      Q_UNUSED(pid ) //When directly linked, the PID is always the current process PID
+      Q_UNUSED(name)
+   }
 
    void Unregister(int pid)
-   {}
+   {
+      Q_UNUSED(pid) //When directly linked, the PID is always the current process PID
+   }
 
    bool isConnected();
 

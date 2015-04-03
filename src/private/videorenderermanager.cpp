@@ -189,6 +189,7 @@ void VideoRendererManager::setBufferSize(uint size)
 ///A video is not being rendered
 void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
+   Q_UNUSED(shmPath) //When directly linked, there is no SHM
    const QSize      res = QSize(width,height);
    const QByteArray rid = id.toLatin1();
 
