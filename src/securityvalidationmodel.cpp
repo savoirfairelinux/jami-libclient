@@ -339,6 +339,14 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
 
    const SecurityValidationModel::AccountSecurityFlaw f = static_cast<SecurityValidationModel::AccountSecurityFlaw>(index.row());
 
+   switch(role) {
+      case (int)SecurityValidationModel::Role::Severity:
+         return QVariant::fromValue(
+            m_lCachedResults[f] == Certificate::CheckValues::UNSUPPORTED ?
+               SecurityValidationModel::Severity::UNSUPPORTED : SecurityValidationModelPrivate::flawSeverity[f]
+         );
+   }
+
    switch (index.column()) {
       case 0:
          switch(role) {
@@ -346,16 +354,12 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
                return SecurityValidationModelPrivate::messages[index.row()];
             case Qt::DecorationRole:
                return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
-            case (int)SecurityValidationModel::Role::Severity:
-               return QVariant::fromValue(SecurityValidationModelPrivate::flawSeverity[f]);
          };
          break;
       case 1:
          switch(role) {
             case Qt::DisplayRole:
                return tr("Configuration");
-            case (int)SecurityValidationModel::Role::Severity:
-               return QVariant::fromValue(SecurityValidationModelPrivate::flawSeverity[f]);
          };
          break;
       case 2:
@@ -364,8 +368,6 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
                if (m_lCachedResults[f] != Certificate::CheckValues::UNSUPPORTED)
                   return m_lCachedResults[f] == Certificate::CheckValues::PASSED ? true : false;
                break;
-            case (int)SecurityValidationModel::Role::Severity:
-               return QVariant::fromValue(SecurityValidationModelPrivate::flawSeverity[f]);
          };
          break;
    };
@@ -537,6 +539,14 @@ d_ptr(new SecurityValidationModelPrivate(account,this))
 SecurityValidationModel::~SecurityValidationModel()
 {
 
+}
+
+bool SecurityValidationModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+   const QModelIndex& idx  = sourceModel()->index(source_row,0,source_parent);
+   const QModelIndex& idx2 = sourceModel()->index(source_row,2,source_parent);
+   const Severity     s    = qvariant_cast<Severity>(idx.data((int)SecurityValidationModel::Role::Severity));
+   return s != Severity::UNSUPPORTED && idx2.data(Qt::DisplayRole).toBool() == false;
 }
 
 QHash<int,QByteArray> SecurityValidationModel::roleNames() const

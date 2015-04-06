@@ -112,6 +112,7 @@ public:
 
    //Model functions
    virtual QHash<int,QByteArray> roleNames() const override;
+   virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
    //Getter
    QList<SecurityFlaw*> currentFlaws();
