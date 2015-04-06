@@ -93,27 +93,27 @@ public:
    *
    */
    enum class Checks {
-      HAS_PRIVATE_KEY                   , /** This certificate has a build in private key                          */
-      EXPIRED                           , /** This certificate is past its expiration date                         */
-      STRONG_SIGNING                    , /** This certificate has been signed with a brute-force-able method      */
-      NOT_SELF_SIGNED                   , /** This certificate has been self signed                                */
-      KEY_MATCH                         , /** The public and private keys provided don't match                     */
-      PRIVATE_KEY_STORAGE_PERMISSION    , /** The file hosting the private key isn't correctly secured             */
-      PUBLIC_KEY_STORAGE_PERMISSION     , /** The file hosting the public key isn't correctly secured              */
-      PRIVATE_KEY_DIRECTORY_PERMISSIONS , /** The folder storing the private key isn't correctly secured           */
-      PUBLIC_KEY_DIRECTORY_PERMISSIONS  , /** The folder storing the public key isn't correctly secured            */
-      PRIVATE_KEY_STORAGE_LOCATION      , /** Some operating systems have extra policies for certificate storage   */
-      PUBLIC_KEY_STORAGE_LOCATION       , /** Some operating systems have extra policies for certificate storage   */
-      PRIVATE_KEY_SELINUX_ATTRIBUTES    , /** Some operating systems require keys to have extra attributes         */
-      PUBLIC_KEY_SELINUX_ATTRIBUTES     , /** Some operating systems require keys to have extra attributes         */
-      EXIST                             , /** The certificate file doesn't exist or is not accessible              */
-      VALID                             , /** The file is not a certificate                                        */
-      VALID_AUTHORITY                   , /** The claimed authority did not sign the certificate                   */
-      KNOWN_AUTHORITY                   , /** Some operating systems provide a list of trusted authorities, use it */
-      NOT_REVOKED                       , /** The certificate has been revoked by the authority                    */
-      AUTHORITY_MATCH                   , /** The certificate and authority mismatch                               */
-      EXPECTED_OWNER                    , /** The certificate has an expected owner                                */
-      ACTIVATED                         , /** The certificate has not been activated yet                           */
+      HAS_PRIVATE_KEY                   , /*!< This certificate has a build in private key                          */
+      EXPIRED                           , /*!< This certificate is past its expiration date                         */
+      STRONG_SIGNING                    , /*!< This certificate has been signed with a brute-force-able method      */
+      NOT_SELF_SIGNED                   , /*!< This certificate has been self signed                                */
+      KEY_MATCH                         , /*!< The public and private keys provided don't match                     */
+      PRIVATE_KEY_STORAGE_PERMISSION    , /*!< The file hosting the private key isn't correctly secured             */
+      PUBLIC_KEY_STORAGE_PERMISSION     , /*!< The file hosting the public key isn't correctly secured              */
+      PRIVATE_KEY_DIRECTORY_PERMISSIONS , /*!< The folder storing the private key isn't correctly secured           */
+      PUBLIC_KEY_DIRECTORY_PERMISSIONS  , /*!< The folder storing the public key isn't correctly secured            */
+      PRIVATE_KEY_STORAGE_LOCATION      , /*!< Some operating systems have extra policies for certificate storage   */
+      PUBLIC_KEY_STORAGE_LOCATION       , /*!< Some operating systems have extra policies for certificate storage   */
+      PRIVATE_KEY_SELINUX_ATTRIBUTES    , /*!< Some operating systems require keys to have extra attributes         */
+      PUBLIC_KEY_SELINUX_ATTRIBUTES     , /*!< Some operating systems require keys to have extra attributes         */
+      EXIST                             , /*!< The certificate file doesn't exist or is not accessible              */
+      VALID                             , /*!< The file is not a certificate                                        */
+      VALID_AUTHORITY                   , /*!< The claimed authority did not sign the certificate                   */
+      KNOWN_AUTHORITY                   , /*!< Some operating systems provide a list of trusted authorities, use it */
+      NOT_REVOKED                       , /*!< The certificate has been revoked by the authority                    */
+      AUTHORITY_MATCH                   , /*!< The certificate and authority mismatch                               */
+      EXPECTED_OWNER                    , /*!< The certificate has an expected owner                                */
+      ACTIVATED                         , /*!< The certificate has not been activated yet                           */
       COUNT__,
    };
 
@@ -121,9 +121,9 @@ public:
    * @enum Details Informative fields about a certificate
    */
    enum class Details {
-      EXPIRATION_DATE                , /** The certificate expiration date                                      */
-      ACTIVATION_DATE                , /** The certificate activation date                                      */
-      REQUIRE_PRIVATE_KEY_PASSWORD   , /** Does the private key require a password                              */
+      EXPIRATION_DATE                , /*!< The certificate expiration date                                      */
+      ACTIVATION_DATE                , /*!< The certificate activation date                                      */
+      REQUIRE_PRIVATE_KEY_PASSWORD   , /*!< Does the private key require a password                              */
       PUBLIC_SIGNATURE               ,
       VERSION_NUMBER                 ,
       SERIAL_NUMBER                  ,
@@ -138,7 +138,7 @@ public:
       PUBLIC_KEY_ID                  ,
       ISSUER_DN                      ,
       NEXT_EXPECTED_UPDATE_DATE      ,
-      OUTGOING_SERVER                , /** The hostname/outgoing server used for this certificate               */
+      OUTGOING_SERVER                , /*!< The hostname/outgoing server used for this certificate               */
 
       COUNT__
    };
@@ -165,9 +165,9 @@ public:
    * new validated types are required.
    */
    enum class CheckValues {
-      FAILED     , /** Equivalent of a boolean "false"                                   */
-      PASSED     , /** Equivalent of a boolean "true"                                    */
-      UNSUPPORTED, /** The operating system doesn't support or require the check         */
+      FAILED     , /*!< Equivalent of a boolean "false"                                   */
+      PASSED     , /*!< Equivalent of a boolean "true"                                    */
+      UNSUPPORTED, /*!< The operating system doesn't support or require the check         */
       COUNT__,
    };
    Q_ENUMS(CheckValues)
@@ -244,5 +244,7 @@ Q_SIGNALS:
 };
 Q_DECLARE_METATYPE(Certificate*)
 Q_DECLARE_METATYPE(Certificate::CheckValues)
+Q_DECLARE_METATYPE(Certificate::Checks)
+Q_DECLARE_METATYPE(Certificate::Details)
 
 #endif

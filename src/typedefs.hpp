@@ -59,6 +59,12 @@ typename EnumIterator<EnumClass>::EnumClassIter EnumIterator<EnumClass>::end()
 
 
 template<class Row, typename Value, typename Accessor>
+Matrix1D<Row,Value,Accessor>::Matrix1D()
+{
+   m_lData.resize(enum_class_size<Row>());
+}
+
+template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< std::initializer_list<Value>> s)
 : m_lData(*std::begin(s)) {
    static_assert(std::is_enum<Row>(),"Row has to be an enum class");
@@ -112,4 +118,34 @@ Row Matrix1D<Row,Value,Accessor>::fromValue(const Value& value) const {
       throw value;
     }
     return m_hReverseMapping[value];
+}
+
+template<class Row, typename Value, typename Accessor>
+bool Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator!= (const Matrix1DEnumClassIter& other) const
+{
+   return pos_ != other.pos_;
+}
+
+template<class Row, typename Value, typename Accessor>
+bool Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator== (const Matrix1DEnumClassIter& other) const
+{
+   return pos_ == other.pos_;
+}
+
+template<class Row, typename Value, typename Accessor>
+void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other) const
+{
+   m_lData[pos_] = other;
+}
+
+template<class Row, typename Value, typename Accessor>
+void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other)
+{
+   m_lData[pos_] = other;
+}
+
+template<class Row, typename Value, typename Accessor>
+void Matrix1D<Row,Value,Accessor>::setAt(Row row,Value value)
+{
+   m_lData[(int)row] = value;
 }

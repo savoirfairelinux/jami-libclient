@@ -23,7 +23,7 @@
 #include <QStringList>
 #include "person.h"
 
-class LIB_EXPORT VCardUtils
+class VCardUtils
 {
 public:
 

@@ -61,7 +61,7 @@ public:
    virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true);
    virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
-   virtual QVariant   serurityIssueIcon(const QModelIndex& index);
+   virtual QVariant   securityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);
    virtual QVariant   profilePhoto(const QByteArray& data, const QString& type = "PNG");
    virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;

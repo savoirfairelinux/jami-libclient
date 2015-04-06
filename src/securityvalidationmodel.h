@@ -89,23 +89,15 @@ public:
 
    ///Every supported flaws
    enum class AccountSecurityFlaw {
-      SRTP_DISABLED                  ,
-      TLS_DISABLED                   ,
-      CERTIFICATE_EXPIRED            ,
-      CERTIFICATE_SELF_SIGNED        ,
-      CA_CERTIFICATE_MISSING         ,
-      END_CERTIFICATE_MISSING        ,
-      PRIVATE_KEY_MISSING            ,
-      CERTIFICATE_MISMATCH           ,
-      CERTIFICATE_STORAGE_PERMISSION ,
-      CERTIFICATE_STORAGE_FOLDER     ,
-      CERTIFICATE_STORAGE_LOCATION   ,
-      OUTGOING_SERVER_MISMATCH       ,
-      VERIFY_INCOMING_DISABLED       ,
-      VERIFY_ANSWER_DISABLED         ,
-      REQUIRE_CERTIFICATE_DISABLED   ,
-      MISSING_CERTIFICATE            ,
-      MISSING_AUTHORITY              ,
+      SRTP_ENABLED                ,
+      TLS_ENABLED                 ,
+      CERTIFICATE_MATCH           ,
+      OUTGOING_SERVER_MATCH       ,
+      VERIFY_INCOMING_ENABLED     ,
+      VERIFY_ANSWER_ENABLED       ,
+      REQUIRE_CERTIFICATE_ENABLED ,
+      NOT_MISSING_CERTIFICATE     ,
+      NOT_MISSING_AUTHORITY       ,
       COUNT__
    };
 

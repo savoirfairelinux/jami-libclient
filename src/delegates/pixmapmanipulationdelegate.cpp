@@ -65,7 +65,7 @@ PixmapManipulationDelegate* PixmapManipulationDelegate::instance()
    return m_spInstance;
 }
 
-QVariant PixmapManipulationDelegate::serurityIssueIcon(const QModelIndex& index)
+QVariant PixmapManipulationDelegate::securityIssueIcon(const QModelIndex& index)
 {
    Q_UNUSED(index)
    return QVariant();

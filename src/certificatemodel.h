@@ -35,6 +35,10 @@ public:
 
    enum class Role {
       NodeType       = 100,
+      isDetail       = 101,
+      isCheck        = 102,
+      detail         = 103,
+      check          = 104,
       DetailRoleBase = 1000,
    };
 

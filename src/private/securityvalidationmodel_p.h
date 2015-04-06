@@ -22,6 +22,8 @@ class SecurityFlaw;
 class Account;
 class Certificate;
 
+#include <certificate.h>
+
 class SecurityValidationModelPrivate
 {
 public:
@@ -45,6 +47,9 @@ public:
    //Static mapping
    static const TypedStateMachine< SecurityValidationModel::SecurityLevel , SecurityValidationModel::AccountSecurityFlaw > maximumSecurityLevel;
    static const TypedStateMachine< SecurityValidationModel::Severity      , SecurityValidationModel::AccountSecurityFlaw > flawSeverity        ;
+
+   static const TypedStateMachine< SecurityValidationModel::SecurityLevel , Certificate::Checks > maximumCertificateSecurityLevel;
+   static const TypedStateMachine< SecurityValidationModel::Severity      , Certificate::Checks > certificateFlawSeverity        ;
 
    SecurityValidationModel* q_ptr;
 };

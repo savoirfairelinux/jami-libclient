@@ -92,6 +92,7 @@ struct Matrix1D
 {
 
    Matrix1D(std::initializer_list< std::initializer_list<Value> > s);
+   explicit Matrix1D();
 
    // Row is a built-in type ("int" by default)
    Value operator[](Row v);
@@ -101,15 +102,18 @@ struct Matrix1D
    /**
    * An Iterator for enum classes
    */
-   class EnumClassIter
+   class Matrix1DEnumClassIter
    {
    public:
-      EnumClassIter (const Matrix1D<Row, Value, A>* p_vec, int pos)
+      Matrix1DEnumClassIter (const Matrix1D<Row, Value, A>* p_vec, int pos)
          : pos_( pos ), p_vec_( p_vec ) {}
 
-      bool operator!= (const EnumClassIter& other) const;
-      Row operator* () const;
-      const EnumClassIter& operator++ ();
+      bool operator!= (const Matrix1DEnumClassIter& other) const;
+      bool operator== (const Matrix1DEnumClassIter& other) const;
+      void operator=  (Value& other              )      ;
+      void operator=  (Value& other              ) const;
+      //Row operator* () const;
+      //const Matrix1DEnumClassIter& operator++ ();
 
    private:
       int pos_;
@@ -117,16 +121,19 @@ struct Matrix1D
    };
 
    //Iterators
-   EnumClassIter begin();
-   EnumClassIter end();
+   Matrix1DEnumClassIter begin();
+   Matrix1DEnumClassIter end();
 
    // Only use for single reverse mappable arrays, will ASSERT otherwise
    Row fromValue(const Value& value) const;
 
    static void setReverseMapping(Matrix1D<Row,const char *> names);
 
+   //Setter
+   void setAt(Row,Value);
+
 private:
-   const QVector<Value> m_lData;
+   QVector<Value> m_lData;
    static QMap<A, Row> m_hReverseMapping;
 };
 

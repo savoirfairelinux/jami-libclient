@@ -34,6 +34,13 @@
 #include "account.h"
 #include "delegates/certificateserializationdelegate.h"
 
+enum class DetailType : uchar
+{
+   NONE  ,
+   DETAIL,
+   CHECK ,
+};
+
 struct CertificateNode {
 
    CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert);
@@ -44,7 +51,9 @@ struct CertificateNode {
    CertificateNode*           m_pParent        ;
    Certificate*               m_pCertificate   ;
    CertificateModel::NodeType m_Level          ;
+   DetailType                 m_DetailType     ;
    int                        m_Index          ;
+   int                        m_EnumClassDetail;
    QString                    m_Col1           ;
    QVariant                   m_Col2           ;
    QString                    m_ToolTip        ;
@@ -142,7 +151,8 @@ CertificateModelPrivate::~CertificateModelPrivate()
 }
 
 CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert) :
-   m_pParent(parent), m_pCertificate(cert), m_Level(level), m_Index(index), m_IsLoaded(true)
+   m_pParent(parent), m_pCertificate(cert), m_Level(level), m_Index(index), m_IsLoaded(true),m_DetailType(DetailType::NONE),
+   m_EnumClassDetail(0)
 {
    CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
 }
@@ -213,6 +223,11 @@ QHash<int,QByteArray> CertificateModel::roleNames() const
          }
          roles[static_cast<int>(Role::DetailRoleBase)+static_cast<int>(d)] = name.toLatin1();
       }
+
+      roles[static_cast<int>(Role::isDetail)] = "isDetail";
+      roles[static_cast<int>(Role::isCheck )] = "isCheck" ;
+      roles[static_cast<int>(Role::detail  )] = "detail"  ;
+      roles[static_cast<int>(Role::check   )] = "check"   ;
    }
    return roles;
 }
@@ -316,6 +331,8 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       for (const Certificate::Details detail : EnumIterator<Certificate::Details>()) {
          CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateModel::NodeType::DETAILS, details, nullptr);
          d->setStrings(cert->getName(detail),cert->detailResult(detail),cert->getDescription(detail)       );
+         d->m_DetailType = DetailType::DETAIL;
+         d->m_EnumClassDetail = static_cast<int>(detail);
          details->m_lChildren << d;
       }
       q_ptr->endInsertRows();
@@ -327,6 +344,8 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
          if (cert->checkResult(check) != Certificate::CheckValues::UNSUPPORTED) {
             CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateModel::NodeType::DETAILS, checks, nullptr);
             d->setStrings(cert->getName(check),static_cast<bool>(cert->checkResult(check)),cert->getDescription(check));
+            d->m_DetailType = DetailType::CHECK;
+            d->m_EnumClassDetail = static_cast<int>(check);
             checks->m_lChildren << d;
          }
       }
@@ -353,6 +372,10 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
       return QVariant();
    const CertificateNode* node = static_cast<CertificateNode*>(index.internalPointer());
 
+   if (!node)
+      return QVariant();
+
+
    switch(role) {
       case Qt::DisplayRole:
       case Qt::EditRole:
@@ -364,11 +387,36 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
    };
 
    //Add the details as roles for certificates
-   if (node && node->m_Level == NodeType::CERTIFICATE && role >= static_cast<int>(Role::DetailRoleBase) && role < static_cast<int>(Role::DetailRoleBase)+enum_class_size<Certificate::Details>()) {
+   if (node->m_Level == NodeType::CERTIFICATE && role >= static_cast<int>(Role::DetailRoleBase) && role < static_cast<int>(Role::DetailRoleBase)+enum_class_size<Certificate::Details>()) {
       Certificate* cert = node->m_pCertificate;
       if (cert) {
          return cert->detailResult(static_cast<Certificate::Details>(role - static_cast<int>(Role::DetailRoleBase)));
       }
+   }
+
+   switch (node->m_Level) {
+      case CertificateModel::NodeType::DETAILS         :
+         switch(role) {
+            case (int)Role::isDetail:
+               return node->m_DetailType == DetailType::DETAIL;
+               break;
+            case (int)Role::isCheck:
+               return node->m_DetailType == DetailType::CHECK;
+               break;
+            case (int)Role::detail:
+               if (node->m_DetailType == DetailType::DETAIL)
+                  return QVariant::fromValue(static_cast<Certificate::Details>(node->m_EnumClassDetail));
+               break;
+            case (int)Role::check:
+               if (node->m_DetailType == DetailType::CHECK)
+                  return QVariant::fromValue(static_cast<Certificate::Checks>(node->m_EnumClassDetail));
+               break;
+         }
+         break;
+      case CertificateModel::NodeType::CERTIFICATE     :
+      case CertificateModel::NodeType::DETAILS_CATEGORY:
+      case CertificateModel::NodeType::CATEGORY        :
+         break;
    }
 
    return QVariant();
