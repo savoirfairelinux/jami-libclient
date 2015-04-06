@@ -71,7 +71,6 @@ public:
    void slotContactMethodCountChanged      (int,int);
    void slotContactMethodCountAboutToChange(int,int);
 };
-
 class CategorizedContactModelPrivate : public QObject
 {
    Q_OBJECT
@@ -94,6 +93,9 @@ public:
    ContactTreeNode* getContactTopLevelItem(const QString& category);
    QModelIndex getIndex(int row, int column, ContactTreeNode* parent);
 
+   //Singleton
+   static CategorizedContactModel* m_spInstance;
+
 private:
    CategorizedContactModel* q_ptr;
 
@@ -101,6 +103,8 @@ public Q_SLOTS:
    void reloadCategories();
    void slotContactAdded(const Person* c);
 };
+
+CategorizedContactModel* CategorizedContactModelPrivate::m_spInstance = nullptr;
 
 ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent)
@@ -202,6 +206,13 @@ CategorizedContactModel::~CategorizedContactModel()
    foreach(ContactTreeNode* item,d_ptr->m_lCategoryCounter) {
       delete item;
    }
+}
+
+CategorizedContactModel* CategorizedContactModel::instance()
+{
+   if (!CategorizedContactModelPrivate::m_spInstance)
+      CategorizedContactModelPrivate::m_spInstance = new CategorizedContactModel();
+   return CategorizedContactModelPrivate::m_spInstance;
 }
 
 QHash<int,QByteArray> CategorizedContactModel::roleNames() const

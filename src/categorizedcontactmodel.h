@@ -68,6 +68,9 @@ public:
    bool       isSortAlphabetical  () const;
    QString    defaultCategory     () const;
 
+   //Singleton
+   static CategorizedContactModel* instance();
+
 private:
    QScopedPointer<CategorizedContactModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CategorizedContactModel)
