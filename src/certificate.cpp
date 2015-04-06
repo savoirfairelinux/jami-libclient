@@ -600,7 +600,6 @@ QString Certificate::outgoingServer() const
    return d_ptr->m_pDetailsCache->m_OutgoingServer;
 }
 
-
 Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
 {
    switch (check) {
@@ -668,6 +667,15 @@ QVariant Certificate::detailResult(Certificate::Details detail) const
 QAbstractItemModel* Certificate::model() const
 {
    return CertificateModel::instance()->model(this);
+}
+
+/**
+ * This model furter reduce the data to only return the relevant certificate
+ * checks.
+ */
+QAbstractItemModel* Certificate::checksModel() const
+{
+   return CertificateModel::instance()->checksModel(this);
 }
 
 #include <certificate.moc>

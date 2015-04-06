@@ -66,9 +66,10 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QAbstractItemModel* model(const Certificate* cert) const;
-   QAbstractItemModel* model(const QModelIndex& idx ) const;
-   QAbstractItemModel* model(const Account* a       ) const;
+   QAbstractItemModel* model      (const Certificate* cert) const;
+   QAbstractItemModel* model      (const QModelIndex& idx ) const;
+   QAbstractItemModel* model      (const Account* a       ) const;
+   QAbstractItemModel* checksModel(const Certificate* cert) const;
 
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);

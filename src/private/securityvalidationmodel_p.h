@@ -36,9 +36,6 @@ public:
    Certificate* m_pCert;
    Certificate* m_pPrivateKey;
 
-   //Helpers
-   SecurityFlaw* getFlaw(SecurityValidationModel::AccountSecurityFlaw _se,Certificate::Type _ty);
-
    //Mutator
    void update();
 

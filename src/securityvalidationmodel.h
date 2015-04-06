@@ -17,7 +17,8 @@
  ***************************************************************************/
 #ifndef SECURITYVALIDATIONMODEL_H
 #define SECURITYVALIDATIONMODEL_H
-#include <QAbstractListModel>
+
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring
 #include "certificate.h"
@@ -30,7 +31,17 @@ class SecurityFlaw;
 
 class SecurityValidationModelPrivate;
 
-class LIB_EXPORT SecurityValidationModel : public QAbstractListModel {
+/**
+ * This model provide a real time look at elements security. It aggregate data
+ * from various security related sources, assign a severity and sort them.
+ *
+ * It can also generate a summarized report on the asset security.
+ *
+ * This use a best effort approach. Not all known or possible attacks are handled
+ * by this system. Result should be taken with a grain of salt, but at least some
+ * common problems can be detected.
+ */
+class LIB_EXPORT SecurityValidationModel : public QSortFilterProxyModel {
    Q_OBJECT
    friend class SecurityFlaw;
    friend class AccountPrivate;
@@ -67,12 +78,14 @@ public:
 
    ///The severity of a given flaw
    enum class Severity {
-      INFORMATION  , /* Tip and tricks to have better security                          */
-      WARNING      , /* It is a problem, but it wont have other side effects            */
-      ISSUE        , /* The security is compromised                                     */
-      ERROR        , /* It simply wont work (REGISTER)                                  */
-      FATAL_WARNING, /* Registration may work, but it render everything else useless    */
+      UNSUPPORTED  , /*!< This severity is unsupported, to be ignored                     */
+      INFORMATION  , /*!< Tip and tricks to have better security                          */
+      WARNING      , /*!< It is a problem, but it wont have other side effects            */
+      ISSUE        , /*!< The security is compromised                                     */
+      ERROR        , /*!< It simply wont work (REGISTER)                                  */
+      FATAL_WARNING, /*!< Registration may work, but it render everything else useless    */
    };
+   Q_ENUMS(Severity)
 
    ///Every supported flaws
    enum class AccountSecurityFlaw {
@@ -97,20 +110,15 @@ public:
    };
 
    ///Role for the model
-   enum Role {
-      SeverityRole = 100
+   enum class Role {
+      Severity = 100
    };
 
    //Constructor
    explicit SecurityValidationModel(Account* account);
    virtual ~SecurityValidationModel();
 
-
    //Model functions
-   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
-   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
-   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
-   virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
@@ -127,5 +135,6 @@ private:
    Q_DECLARE_PRIVATE(SecurityValidationModel)
 };
 Q_DECLARE_METATYPE(SecurityValidationModel*)
+Q_DECLARE_METATYPE(SecurityValidationModel::Severity)
 
 #endif

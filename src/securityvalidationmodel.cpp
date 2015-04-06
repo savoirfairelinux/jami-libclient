@@ -16,6 +16,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "securityvalidationmodel.h"
+
+//Qt
+#include <QtCore/QIdentityProxyModel>
+
+//Ring
 #include "account.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "private/securityvalidationmodel_p.h"
@@ -86,21 +91,220 @@ SecurityValidationModelPrivate::flawSeverity = {{
    /* MISSING_AUTHORITY              */ SecurityValidationModel::Severity::ERROR   ,
 }};
 
+/**
+ * This class add a prefix in front of Qt::DisplayRole to add a disambiguation
+ * when there is multiple certificates in the same SecurityValidationModel and
+ * also add new roles such as the severity, BackgroundRole and DecorationRole
+ */
+class PrefixAndSeverityProxyModel : public QIdentityProxyModel
+{
+   Q_OBJECT
+
+public:
+
+   explicit PrefixAndSeverityProxyModel(const QString& prefix,QAbstractItemModel* parent);
+
+   virtual QModelIndex index       ( int row                  , int column, const QModelIndex& parent ) const override;
+   virtual QVariant    data        ( const QModelIndex& index , int role                              ) const override;
+   virtual int         columnCount ( const QModelIndex& parent                                        ) const override;
+
+   //Attributes
+   QString m_Name;
+};
+
+/**
+ * This model take multiple listModels and append them one after the other
+ * 
+ * the trick for high performance is to known at compile time the sizes
+ */
+class CombinaisonProxyModel : public QAbstractTableModel
+{
+   Q_OBJECT
+
+public:
+   explicit CombinaisonProxyModel( QAbstractItemModel* publicCert ,
+                                   QAbstractItemModel* caCert     ,
+                                   QAbstractItemModel* account    ,
+                                   QObject*            parent
+                                 );
+
+   //Model functions
+   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                 ) const override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames() const override;
+
+private:
+   QVector<QAbstractItemModel*> m_lSources;
+
+   //All source model, in order
+   enum Src {
+      CA = 0,
+      PK = 1,
+      AC = 2,
+      ER = 3, //TODO
+   };
+
+   //This model expect a certain size, get each sections size
+   constexpr static const short sizes[] = {
+      enum_class_size< Certificate             :: Checks              > (),
+      enum_class_size< Certificate             :: Checks              > (),
+      enum_class_size< SecurityValidationModel :: AccountSecurityFlaw > (),
+   };
+
+   //Get the combined size
+   constexpr inline static int totalSize() {
+      return sizes[CA] + sizes[PK] + sizes[AC];
+   }
+
+   //Get a modex index from a value
+   constexpr inline static int toModelIdx(const int value) {
+      return (value >= sizes[CA] + sizes[PK] ?  AC : (
+              value >= sizes[PK]             ?  PK :
+                                                CA ) );
+   }
+
+   //Compute the correct index.row() offset
+   constexpr inline static int fromFinal(const int value) {
+      return (value >= sizes[CA] + sizes[PK] ?  value - sizes[CA] - sizes[PK] : (
+              value >= sizes[PK]             ?  value - sizes[CA]             :
+                                                value                         ) );
+   }
+
+};
+
 SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent) : q_ptr(parent),
 m_pAccount(account), m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE)
 {
-   
 }
 
-SecurityValidationModel::SecurityValidationModel(Account* account) : QAbstractListModel(account),
+PrefixAndSeverityProxyModel::PrefixAndSeverityProxyModel(const QString& prefix, QAbstractItemModel* parent) : QIdentityProxyModel(parent),m_Name(prefix)
+{
+   setSourceModel(parent);
+}
+
+///It insert a second column with the source name
+int PrefixAndSeverityProxyModel::columnCount( const QModelIndex& parent) const
+{
+   Q_UNUSED(parent)
+   return parent.isValid() ? 0 : 3;
+}
+
+QModelIndex PrefixAndSeverityProxyModel::index( int row, int column, const QModelIndex& parent) const
+{
+   if (column == 2)
+      return createIndex(row,column);
+   return QIdentityProxyModel::index(row,column,parent);
+}
+
+///Map items and add elements
+QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) const
+{
+   if (index.isValid()) {
+      switch (index.column()) {
+         case 0:
+            switch(role) {
+               case Qt::DecorationRole:
+                  return PixmapManipulationDelegate::instance()->serurityIssueIcon(index);
+               case (int)SecurityValidationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityValidationModel::Severity::WARNING);
+            }
+            break;
+         //
+         case 1: {
+            switch(role) {
+               case Qt::DisplayRole:
+                  return m_Name;
+               case (int)SecurityValidationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityValidationModel::Severity::WARNING);
+            }
+            return QVariant();
+         }
+            break;
+         //Map source column 1 to 2
+         case 2: {
+            switch(role) {
+               case (int)SecurityValidationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityValidationModel::Severity::WARNING);
+            }
+
+            const QModelIndex& srcIdx = sourceModel()->index(index.row(),1);
+            return srcIdx.data(role);
+         }
+      }
+   }
+
+   return QIdentityProxyModel::data(index,role);
+}
+
+CombinaisonProxyModel::CombinaisonProxyModel(QAbstractItemModel* publicCert,
+                                             QAbstractItemModel* caCert    ,
+                                             QAbstractItemModel* account   ,
+                                             QObject*            parent    )
+ : QAbstractTableModel(parent), m_lSources({publicCert,caCert,account})
+{}
+
+QVariant CombinaisonProxyModel::data( const QModelIndex& index, int role) const
+{
+   const QAbstractItemModel* src = m_lSources[toModelIdx(index.row())];
+
+   //Role::Severity will give ::UNSUPPORTED (aka, 0) if a model is missing
+   //this is done on purpose
+
+   //All "groups" will have empty items for unsupported checks
+
+   return index.isValid() && src ? src->index(fromFinal(index.row()),index.column()).data(role) : QVariant();
+}
+
+int CombinaisonProxyModel::rowCount( const QModelIndex& parent) const
+{
+   return parent.isValid() ? 0 : totalSize();
+}
+
+int CombinaisonProxyModel::columnCount( const QModelIndex& parent) const
+{
+   return parent.isValid() ? 0 : 3;
+}
+
+Qt::ItemFlags CombinaisonProxyModel::flags( const QModelIndex& index) const
+{
+   Q_UNUSED(index)
+   return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+bool CombinaisonProxyModel::setData( const QModelIndex& index, const QVariant &value, int role)
+{
+   Q_UNUSED(index)
+   Q_UNUSED(value)
+   Q_UNUSED(role )
+   return false;
+}
+
+QHash<int,QByteArray> CombinaisonProxyModel::roleNames() const
+{
+   return {};
+}
+
+SecurityValidationModel::SecurityValidationModel(Account* account) : QSortFilterProxyModel(account),
 d_ptr(new SecurityValidationModelPrivate(account,this))
 {
+   Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
+   Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
+
    if (account) {
-      d_ptr->m_pCa         = d_ptr->m_pAccount->tlsCaListCertificate    ();
-      d_ptr->m_pCert       = d_ptr->m_pAccount->tlsCertificate          ();
+      d_ptr->m_pCa         = caCert                                       ;
+      d_ptr->m_pCert       = pkCert                                       ;
       d_ptr->m_pPrivateKey = d_ptr->m_pAccount->tlsPrivateKeyCertificate();
-      d_ptr->update();
    }
+
+   PrefixAndSeverityProxyModel* caProxy = caCert ? new PrefixAndSeverityProxyModel(tr("Authority" ),caCert->checksModel()) : nullptr;
+   PrefixAndSeverityProxyModel* pkProxy = pkCert ? new PrefixAndSeverityProxyModel(tr("Public key"),pkCert->checksModel()) : nullptr;
+
+   setSourceModel(new CombinaisonProxyModel(pkProxy,caProxy,nullptr,this));
+
+   setSortRole((int)Role::Severity);
 }
 
 SecurityValidationModel::~SecurityValidationModel()
@@ -114,132 +318,15 @@ QHash<int,QByteArray> SecurityValidationModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles[Role::SeverityRole] = "SeverityRole";
+      roles[(int)Role::Severity] = "Severity";
    }
    return roles;
 }
 
-QVariant SecurityValidationModel::data( const QModelIndex& index, int role) const
-{
-   if (index.isValid())  {
-      if (role == Qt::DisplayRole) {
-         return SecurityValidationModelPrivate::messages[static_cast<int>( d_ptr->m_lCurrentFlaws[index.row()]->flaw() )];
-      }
-      else if (role == Role::SeverityRole) {
-         return static_cast<int>(d_ptr->m_lCurrentFlaws[index.row()]->severity());
-      }
-      else if (role == Qt::DecorationRole) {
-         return PixmapManipulationDelegate::instance()->serurityIssueIcon(index);
-      }
-   }
-   return QVariant();
-}
-
-int SecurityValidationModel::rowCount( const QModelIndex& parent) const
-{
-   Q_UNUSED(parent)
-   return d_ptr->m_lCurrentFlaws.size();
-}
-
-Qt::ItemFlags SecurityValidationModel::flags( const QModelIndex& index) const
-{
-   if (!index.isValid()) return Qt::NoItemFlags;
-   return Qt::ItemIsEnabled|Qt::ItemIsSelectable;
-}
-
-bool SecurityValidationModel::setData( const QModelIndex& index, const QVariant &value, int role)
-{
-   Q_UNUSED(index)
-   Q_UNUSED(value)
-   Q_UNUSED(role )
-   return false;
-}
-
-///Do some unsafe convertions to bypass Qt4 issues with C++11 enum class
-SecurityFlaw* SecurityValidationModelPrivate::getFlaw(SecurityValidationModel::AccountSecurityFlaw _se, Certificate::Type _ty)
-{
-   if (! m_hFlaws[(int)_se][(int)_ty]) {
-      m_hFlaws[(int)_se][(int)_ty] = new SecurityFlaw(_se,_ty);
-   }
-   return m_hFlaws[(int)_se][(int)_ty];
-}
-
-#define _F(_se,_ty) getFlaw(SecurityValidationModel::AccountSecurityFlaw::_se,_ty);
 void SecurityValidationModelPrivate::update()
 {
-   if (!m_pAccount)
-      return; //TODO use the local certificates
-
-   m_lCurrentFlaws.clear();
-
-   /**********************************
-    *     Check general issues       *
-    *********************************/
-
-   /* If TLS is not enabled, everything else is worthless */
-   if (!m_pAccount->isTlsEnabled()) {
-      m_lCurrentFlaws << _F(TLS_DISABLED,Certificate::Type::NONE);
-   }
-
-   /* Check if the media stream is encrypted, it is something users
-    * may care about if they get this far ;) */
-   if (!m_pAccount->isSrtpEnabled()) {
-      m_lCurrentFlaws << _F(SRTP_DISABLED,Certificate::Type::NONE);
-   }
-
-   /* The user certificate need to have a private key, otherwise it wont
-    * be possible to encrypt anything */
-   if (( m_pAccount->tlsCertificate() && m_pAccount->tlsCertificate()->hasPrivateKey() == Certificate::CheckValues::FAILED) && (m_pAccount->tlsPrivateKeyCertificate() && m_pAccount->tlsPrivateKeyCertificate()->exist()  == Certificate::CheckValues::FAILED)) {
-      m_lCurrentFlaws << _F(PRIVATE_KEY_MISSING,m_pAccount->tlsPrivateKeyCertificate()->type());
-   }
-
-   /**********************************
-    *      Certificates issues       *
-    *********************************/
-   QList<Certificate*> certs;
-   if (m_pCa)
-      certs << m_pCa;
-
-   if (m_pCert)
-      certs << m_pCert;
-
-//    if (m_pPrivateKey)
-//       certs << m_pPrivateKey;
-
-   foreach (Certificate* cert, certs) {
-      if (cert->exist() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(END_CERTIFICATE_MISSING,cert->type());
-      }
-      if (cert->isNotExpired() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_EXPIRED,cert->type());
-      }
-      if (cert->isNotSelfSigned() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_SELF_SIGNED,cert->type());
-      }
-      if (cert->arePrivateKeyStoragePermissionOk() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-      }
-      if (cert->arePublicKeyStoragePermissionOk() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_PERMISSION,cert->type());
-      }
-      if (cert->arePrivateKeyDirectoryPermissionsOk() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_FOLDER,cert->type());
-      }
-      if (cert->arePrivateKeyStorageLocationOk() == Certificate::CheckValues::FAILED) {
-         m_lCurrentFlaws << _F(CERTIFICATE_STORAGE_LOCATION,cert->type());
-      }
-   }
-
-   qSort(m_lCurrentFlaws.begin(),m_lCurrentFlaws.end(),[] (const SecurityFlaw* f1, const SecurityFlaw* f2) -> int {
-      return (*f1) < (*f2);
-   });
-   for (int i=0;i<m_lCurrentFlaws.size();i++) {
-      m_lCurrentFlaws[i]->d_ptr->m_Row = i;
-   }
-
-   emit q_ptr->layoutChanged();
+   //TODO
 }
-#undef _F
 
 QModelIndex SecurityValidationModel::getIndex(const SecurityFlaw* flaw)
 {
@@ -265,3 +352,5 @@ void SecurityValidationModel::setTlsPrivateKeyCertificate( Certificate* cert )
 {
    d_ptr->m_pPrivateKey = cert;
 }
+
+#include <securityvalidationmodel.moc>

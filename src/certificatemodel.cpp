@@ -79,12 +79,12 @@ public:
    CertificateProxyModel(CertificateModel* parent, CertificateNode* root);
 
    //Model implementation
-   virtual QModelIndex   mapFromSource( const QModelIndex& sourceIndex                              ) const override;
-   virtual QModelIndex   mapToSource  ( const QModelIndex& proxyIndex                               ) const override;
-   virtual QModelIndex   index        ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
-   virtual QModelIndex   parent       ( const QModelIndex& index                                    ) const override;
-   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                    ) const override;
-   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                    ) const override;
+   virtual QModelIndex mapFromSource( const QModelIndex& sourceIndex                              ) const override;
+   virtual QModelIndex mapToSource  ( const QModelIndex& proxyIndex                               ) const override;
+   virtual QModelIndex index        ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual QModelIndex parent       ( const QModelIndex& index                                    ) const override;
+   virtual int         rowCount     ( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual int         columnCount  ( const QModelIndex& parent = QModelIndex()                   ) const override;
 
 private:
    CertificateNode* m_pRoot;
@@ -219,8 +219,8 @@ QHash<int,QByteArray> CertificateModel::roleNames() const
 
 void CertificateNode::setStrings(const QString& col1, const QVariant& col2, const QString& tooltip)
 {
-   m_Col1    = col1;
-   m_Col2    = col2;
+   m_Col1    = col1   ;
+   m_Col2    = col2   ;
    m_ToolTip = tooltip;
 }
 
@@ -503,6 +503,20 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
 
 CertificateProxyModel::CertificateProxyModel(CertificateModel* parent, CertificateNode* root) : QAbstractProxyModel(parent),m_pRoot(root)
 {
+   //For debugging
+   switch (root->m_Level) {
+      case CertificateModel::NodeType::CERTIFICATE     :
+         setObjectName(root->m_pCertificate->path().path());
+         break;
+      case CertificateModel::NodeType::DETAILS_CATEGORY:
+         setObjectName(root->m_pParent->m_pCertificate->path().path());
+         break;
+      case CertificateModel::NodeType::DETAILS         :
+         setObjectName(root->m_pParent->m_pParent->m_pCertificate->path().path());
+         break;
+      case CertificateModel::NodeType::CATEGORY        :
+         break;
+   }
    setSourceModel(parent);
 }
 
@@ -599,6 +613,28 @@ QAbstractItemModel* CertificateModel::model(const Certificate* cert) const
    if (!cert)
       return nullptr;
    return d_ptr->getModelCommon(d_ptr->m_hNodes[cert]);
+}
+
+/**
+ * Return the list of security checks performed on the certificate as a model
+ */
+QAbstractItemModel* CertificateModel::checksModel(const Certificate* cert) const
+{
+   if (!cert)
+      return nullptr;
+
+   CertificateNode* node = d_ptr->m_hNodes[cert];
+
+   if (!node)
+      return nullptr;
+
+   if (node->m_Level == CertificateModel::NodeType::CERTIFICATE && (!node->m_IsLoaded))
+         node->m_fLoader();
+
+   if (node->m_lChildren.size() < 2)
+      return nullptr;
+
+   return d_ptr->getModelCommon(node->m_lChildren[1]);
 }
 
 /**

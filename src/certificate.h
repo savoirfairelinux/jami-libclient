@@ -173,11 +173,12 @@ public:
    Q_ENUMS(CheckValues)
 
    //Getter
-   QUrl path() const;
-   Certificate::Type type() const;
-   Certificate::CheckValues checkResult (Certificate::Checks check  ) const;
-   QVariant detailResult(Certificate::Details detail) const;
-   QAbstractItemModel* model() const;
+   QUrl path                            (                             ) const;
+   Certificate::Type type               (                             ) const;
+   Certificate::CheckValues checkResult ( Certificate::Checks check   ) const;
+   QVariant detailResult                ( Certificate::Details detail ) const;
+   QAbstractItemModel* model            (                             ) const;
+   QAbstractItemModel* checksModel      (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
