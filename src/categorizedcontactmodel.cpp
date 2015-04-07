@@ -283,16 +283,16 @@ void CategorizedContactModelPrivate::slotContactAdded(const Person* c)
       item->m_lChildren << contactNode;
    } q_ptr->endInsertRows();
 
-   q_ptr->beginInsertRows(q_ptr->createIndex(contactNode->m_Index,0,contactNode),0,c->phoneNumbers().size());
    if (c->phoneNumbers().size() > 1) {
+      q_ptr->beginInsertRows(q_ptr->createIndex(contactNode->m_Index,0,contactNode),0,c->phoneNumbers().size() - 1);
       for (ContactMethod* m : c->phoneNumbers() ) {
          ContactTreeNode* n2 = new ContactTreeNode(m,q_ptr);
          n2->m_Index = contactNode->m_lChildren.size();
          n2->m_pParent = contactNode;
          contactNode->m_lChildren << n2;
       }
+      q_ptr->endInsertRows();
    }
-   q_ptr->endInsertRows();
 
    //emit layoutChanged();
 }
