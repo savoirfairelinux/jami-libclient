@@ -1,7 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2009-2015 by Savoir-Faire Linux                          *
- *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
- *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -135,13 +134,13 @@ bool Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator== (const Matr
 template<class Row, typename Value, typename Accessor>
 void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other) const
 {
-   m_lData[pos_] = other;
+   p_vec_->m_lData[pos_] = other;
 }
 
 template<class Row, typename Value, typename Accessor>
 void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other)
 {
-   m_lData[pos_] = other;
+   p_vec_->m_lData[pos_] = other;
 }
 
 template<class Row, typename Value, typename Accessor>

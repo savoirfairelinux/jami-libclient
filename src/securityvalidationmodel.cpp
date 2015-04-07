@@ -235,8 +235,14 @@ private:
 };
 
 SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent) :
-q_ptr(parent), m_pAccount(account), m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE)
+ QObject(parent),q_ptr(parent), m_pAccount(account),
+ m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE)
 {
+   QObject::connect(parent,&SecurityValidationModel::layoutChanged,this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::dataChanged  ,this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::rowsInserted ,this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::rowsRemoved  ,this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::modelReset   ,this,&SecurityValidationModelPrivate::update);
 }
 
 

@@ -27,10 +27,6 @@
 #include <QtCore/QString>
 #include <QtCore/QDebug>
 
-//libSTDC++
-#include <initializer_list>
-#include <type_traits>
-
 //Typedefs (required to avoid '<' and '>' in the DBus XML)
 typedef QMap<QString, QString>                              MapStringString               ;
 typedef QMap<QString, int>                                  MapStringInt                  ;
@@ -42,139 +38,6 @@ typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVe
 typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
 typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
 typedef QMap< QString, QStringList >                        MapStringStringList           ;
-
-template<class T, class E>
-struct TypedStateMachine
-{
-   // no ctor/dtor and one public member variable for easy initialization
-   T _data[size_t(E::COUNT__)];
-
-   T& operator[](E v) {
-   if (size_t(v) >= size_t(E::COUNT__)) {
-      Q_ASSERT(false);
-      qDebug() << "State Machine Out of Bound" << size_t(v);
-      throw v;
-   }
-   return _data[size_t(v)];
-   }
-
-   const T& operator[](E v) const {
-   if (size_t(v) >= size_t(E::COUNT__)) {
-      Q_ASSERT(false);
-      qDebug() << "State Machine Out of Bound" << size_t(v);
-      throw v;
-   }
-   return _data[size_t(v)];
-   }
-
-   T *begin() {
-   return _data;
-   }
-
-   T *end() {
-   return _data + size_t(E::COUNT__);
-   }
-};
-
-
-/**
- * This generic class represents a multidimensional enum class array.
- * It safely converts them to integers. Each enum class needs a "COUNT__" item
- * at the end."
- *
- * This struct enforces:
- * * That the rows are indexed using enum_classes
- * * That the size of the matrix matches the enum_class size
- * * That the operators are within the matrix boundary
- */
-template<class Row, typename Value, typename A = Value>
-struct Matrix1D
-{
-
-   Matrix1D(std::initializer_list< std::initializer_list<Value> > s);
-   explicit Matrix1D();
-
-   // Row is a built-in type ("int" by default)
-   Value operator[](Row v);
-
-   const Value operator[](Row v) const;
-
-   /**
-   * An Iterator for enum classes
-   */
-   class Matrix1DEnumClassIter
-   {
-   public:
-      Matrix1DEnumClassIter (const Matrix1D<Row, Value, A>* p_vec, int pos)
-         : pos_( pos ), p_vec_( p_vec ) {}
-
-      bool operator!= (const Matrix1DEnumClassIter& other) const;
-      bool operator== (const Matrix1DEnumClassIter& other) const;
-      void operator=  (Value& other              )      ;
-      void operator=  (Value& other              ) const;
-      //Row operator* () const;
-      //const Matrix1DEnumClassIter& operator++ ();
-
-   private:
-      int pos_;
-      const Matrix1D<Row, Value, A> *p_vec_;
-   };
-
-   //Iterators
-   Matrix1DEnumClassIter begin();
-   Matrix1DEnumClassIter end();
-
-   // Only use for single reverse mappable arrays, will ASSERT otherwise
-   Row fromValue(const Value& value) const;
-
-   static void setReverseMapping(Matrix1D<Row,const char *> names);
-
-   //Setter
-   void setAt(Row,Value);
-
-private:
-   QVector<Value> m_lData;
-   static QMap<A, Row> m_hReverseMapping;
-};
-
-
-/**
- * A matrix with no value
- *
- * This is useful to use enum class in C++11 foreach loops
- *
- * @usage
- *   for (const MyEnum& value : EnumIterator<MyEnum>()) {
- *       std::cout << "Name: " << MyEnumNames[value] << std::endl;
- *   }
- */
-template<class EnumClass>
-struct EnumIterator
-{
-   /**
-   * An Iterator for enum classes
-   */
-   class EnumClassIter
-   {
-   public:
-      EnumClassIter (const EnumIterator<EnumClass>* p_vec, int pos)
-         : pos_( pos ), p_vec_( p_vec ) {}
-
-      bool operator!= (const EnumClassIter& other) const;
-      EnumClass operator* () const;
-      const EnumClassIter& operator++ ();
-
-   private:
-      int pos_;
-      const EnumIterator<EnumClass> *p_vec_;
-   };
-
-   EnumIterator();
-
-   //Iterators
-   EnumClassIter begin();
-   EnumClassIter end();
-};
 
 /**
  * This function add a safe way to get an enum class size
@@ -188,12 +51,6 @@ template<typename A> constexpr int enum_class_size() {
 #define LIB_EXPORT Q_DECL_EXPORT
 #define LIB_IMPORT Q_DECL_IMPORT
 
-#if __GNUC__ < 4 || \
-              (__GNUC__ == 5 && (__GNUC_MINOR__ < 5 || \
-                                 (__GNUC_MINOR__ == 5)))
-#define nullptr 0
-#endif
-
 //Doesn't work
 #if ((__GNUC_MINOR__ > 8) || (__GNUC_MINOR__ == 8))
    #define STRINGIFY(x) #x
@@ -203,8 +60,6 @@ template<typename A> constexpr int enum_class_size() {
 #else
    #define IGNORE_NULL(content) content
 #endif //ENABLE_IGNORE_NULL
-
-#include "typedefs.hpp"
 
 #endif //TYPEDEFS_H
 

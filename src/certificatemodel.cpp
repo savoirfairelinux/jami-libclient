@@ -33,6 +33,7 @@
 #include "certificate.h"
 #include "account.h"
 #include "delegates/certificateserializationdelegate.h"
+#include "private/matrixutils.h"
 
 enum class DetailType : uchar
 {

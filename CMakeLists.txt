@@ -368,7 +368,6 @@ SET(libringclient_delegates_LIB_HDRS
 
 SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
-  src/typedefs.hpp
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

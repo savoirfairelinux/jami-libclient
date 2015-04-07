@@ -29,6 +29,7 @@
 #include "availableaccountmodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "private/useractions.h"
+#include "private/matrixutils.h"
 
 class ActiveUserActionModel : public QSortFilterProxyModel
 {

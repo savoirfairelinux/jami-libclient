@@ -22,6 +22,8 @@
 #include <QtCore/QObject>
 #include "call.h"
 
+#include "private/matrixutils.h"
+
 //Qt
 class QTimer;
 

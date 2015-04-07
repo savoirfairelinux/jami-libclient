@@ -20,6 +20,7 @@
 #include <QtCore/QCoreApplication>
 
 #include "account.h"
+#include "private/matrixutils.h"
 
 class KeyExchangeModelPrivate
 {

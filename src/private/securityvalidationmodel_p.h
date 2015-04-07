@@ -23,8 +23,9 @@ class Account;
 class Certificate;
 
 #include <certificate.h>
+#include "private/matrixutils.h"
 
-class SecurityValidationModelPrivate
+class SecurityValidationModelPrivate : public QObject
 {
 public:
    SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent);
@@ -38,8 +39,6 @@ public:
    Certificate* m_pCert;
    Certificate* m_pPrivateKey;
 
-   //Mutator
-   void update();
 
    ///Messages to show to the end user
    static const QString messages[enum_class_size<SecurityValidationModel::AccountSecurityFlaw>()];
@@ -52,6 +51,10 @@ public:
    static const TypedStateMachine< SecurityValidationModel::Severity      , Certificate::Checks > certificateFlawSeverity        ;
 
    SecurityValidationModel* q_ptr;
+
+public Q_SLOTS:
+   void update();
+
 };
 
 #endif

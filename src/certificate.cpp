@@ -27,6 +27,7 @@
 //Ring
 #include "dbus/configurationmanager.h"
 #include <certificatemodel.h>
+#include "private/matrixutils.h"
 
 class DetailsCache {
 public:
