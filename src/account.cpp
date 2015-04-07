@@ -1753,9 +1753,6 @@ void AccountPrivate::outdate() {
 void AccountPrivate::regenSecurityValidation()
 {
    if (m_pSecurityValidationModel) {
-      m_pSecurityValidationModel->setTlsCaListCertificate(q_ptr->tlsCaListCertificate());
-      m_pSecurityValidationModel->setTlsCertificate(q_ptr->tlsCertificate());
-      m_pSecurityValidationModel->setTlsPrivateKeyCertificate(q_ptr->tlsPrivateKeyCertificate());
       m_pSecurityValidationModel->d_ptr->update();
    }
 }

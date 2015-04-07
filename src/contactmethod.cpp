@@ -568,12 +568,12 @@ bool ContactMethod::operator==(const ContactMethod* other) const
 
 bool ContactMethod::operator==(ContactMethod& other)
 {
-   return &other && this->d_ptr== other.d_ptr;
+   return this->d_ptr== other.d_ptr;
 }
 
 bool ContactMethod::operator==(const ContactMethod& other) const
 {
-   return &other && this->d_ptr== other.d_ptr;
+   return this->d_ptr== other.d_ptr;
 }
 
 /************************************************************************************

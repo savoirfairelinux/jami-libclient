@@ -35,9 +35,8 @@ public:
    SecurityValidationModel::SecurityLevel m_CurrentSecurityLevel;
    Account*      m_pAccount            ;
    QHash< int, QHash< int, SecurityFlaw* > > m_hFlaws;
-   Certificate* m_pCa;
-   Certificate* m_pCert;
-   Certificate* m_pPrivateKey;
+   bool         m_isScheduled;
+   int          m_SeverityCount[enum_class_size<SecurityValidationModel::Severity>()];
 
 
    ///Messages to show to the end user
@@ -54,6 +53,7 @@ public:
 
 public Q_SLOTS:
    void update();
+   void updateReal();
 
 };
 

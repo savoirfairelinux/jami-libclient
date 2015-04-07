@@ -50,40 +50,51 @@ public:
     * This class evaluate the overall security of an account.
     * It does so by checking various potential flaws, then create
     * a metric called SecurityLevel. This model should be used to:
-    * 
+    *
     * 1) List all potential flaws
     * 2) Decide if an account can be considered secure
     * 3) Decide if a call can be considered secure
-    * 
+    *
     * End users should not have to be security gurus to setup Ring. It is our
     * job to do as much as we can to make security configuration as transparent as
     * possible.
-    * 
+    *
     * The SecurityLevel is computed by checking all possible flaw. The level cannot be
     * higher than a flaw maximum security level. If there is 2 (or more) flaw in the same
     * maximum level, the maximum level will be decreased by one (recursively).
-    * 
+    *
     * A flaw severity is used by the client to display the right icon ( (i), /!\, [x] ).
     */
 
+   //Properties
+   Q_PROPERTY(int           informationCount  READ informationCount  NOTIFY informationCountChanged  )
+   Q_PROPERTY(int           warningCount      READ warningCount      NOTIFY warningCountChanged      )
+   Q_PROPERTY(int           issueCount        READ issueCount        NOTIFY issueCountChanged        )
+   Q_PROPERTY(int           errorCount        READ errorCount        NOTIFY errorCountChanged        )
+   Q_PROPERTY(int           fatalWarningCount READ fatalWarningCount NOTIFY fatalWarningCountChanged )
+   Q_PROPERTY(SecurityLevel securityLevel     READ securityLevel     NOTIFY securityLevelChanged     )
+
    ///Give the user an overview of the current security state
    enum class SecurityLevel {
-      NONE        = 0, /* Security is not functional or severely defective              */
-      WEAK        = 1, /* There is some security, but way too many flaws                */
-      MEDIUM      = 2, /* The security is probably good enough, but there is issues     */
-      ACCEPTABLE  = 3, /* The security is most probably good enough, only minor issues  */
-      STRONG      = 4, /* All the non-information items are correct                     */
-      COMPLETE    = 5, /* Everything, even the recommendations, are correct             */
+      NONE        = 0, /*!< Security is not functional or severely defective               */
+      WEAK        = 1, /*!< There is some security, but way too many flaws                 */
+      MEDIUM      = 2, /*!< The security is probably good enough, but there is issues      */
+      ACCEPTABLE  = 3, /*!< The security is most probably good enough, only minor issues   */
+      STRONG      = 4, /*!< All the non-information items are correct                      */
+      COMPLETE    = 5, /*!< Everything, even the recommendations, are correct              */
+      COUNT__,
    };
+   Q_ENUMS(SecurityLevel)
 
    ///The severity of a given flaw
    enum class Severity {
-      UNSUPPORTED  , /*!< This severity is unsupported, to be ignored                     */
-      INFORMATION  , /*!< Tip and tricks to have better security                          */
-      WARNING      , /*!< It is a problem, but it wont have other side effects            */
-      ISSUE        , /*!< The security is compromised                                     */
-      ERROR        , /*!< It simply wont work (REGISTER)                                  */
-      FATAL_WARNING, /*!< Registration may work, but it render everything else useless    */
+      UNSUPPORTED   = 0, /*!< This severity is unsupported, to be ignored                  */
+      INFORMATION   = 1, /*!< Tip and tricks to have better security                       */
+      WARNING       = 2, /*!< It is a problem, but it wont have other side effects         */
+      ISSUE         = 3, /*!< The security is compromised                                  */
+      ERROR         = 4, /*!< It simply wont work (REGISTER)                               */
+      FATAL_WARNING = 5, /*!< Registration may work, but it render everything else useless */
+      COUNT__,
    };
    Q_ENUMS(Severity)
 
@@ -103,7 +114,8 @@ public:
 
    ///Role for the model
    enum class Role {
-      Severity = 100
+      Severity      = 100,
+      SecurityLevel = 101,
    };
 
    //Constructor
@@ -117,11 +129,20 @@ public:
    //Getter
    QList<SecurityFlaw*> currentFlaws();
    QModelIndex getIndex(const SecurityFlaw* flaw);
+   int           informationCount () const;
+   int           warningCount     () const;
+   int           issueCount       () const;
+   int           errorCount       () const;
+   int           fatalWarningCount() const;
+   SecurityLevel securityLevel    () const;
 
-   //Setters
-   void setTlsCaListCertificate    ( Certificate* cert );
-   void setTlsCertificate          ( Certificate* cert );
-   void setTlsPrivateKeyCertificate( Certificate* cert );
+Q_SIGNALS:
+   void informationCountChanged ();
+   void warningCountChanged     ();
+   void issueCountChanged       ();
+   void errorCountChanged       ();
+   void fatalWarningCountChanged();
+   void securityLevelChanged    ();
 
 private:
    SecurityValidationModelPrivate* d_ptr;
@@ -129,5 +150,6 @@ private:
 };
 Q_DECLARE_METATYPE(SecurityValidationModel*)
 Q_DECLARE_METATYPE(SecurityValidationModel::Severity)
+Q_DECLARE_METATYPE(SecurityValidationModel::SecurityLevel)
 
 #endif

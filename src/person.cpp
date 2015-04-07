@@ -534,7 +534,7 @@ bool Person::operator==(const Person* other) const
 
 bool Person::operator==(const Person& other) const
 {
-   return &other && this->d_ptr == other.d_ptr;
+   return this->d_ptr == other.d_ptr;
 }
 
 ///Add a new address to this contact

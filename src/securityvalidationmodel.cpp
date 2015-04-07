@@ -1,5 +1,5 @@
 ﻿/****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                           *
+ *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QIdentityProxyModel>
+#include <QtCore/QTimer>
 
 //Ring
 #include "account.h"
@@ -196,29 +197,30 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
 private:
+   //Attributes
    QVector<QAbstractItemModel*> m_lSources;
 
-   //All source model, in order
+   ///All source model, in order
    enum Src {
-      CA = 0,
-      PK = 1,
-      AC = 2,
-      ER = 3, //TODO
+      CA = 0, /*!< Rows allocated for the certificate authority */
+      PK = 1, /*!< Rows allocated for the public certificate    */
+      AC = 2, /*!< Rows allocated for the account settions      */
+      ER = 3, /*!< TODO Rows allocated for runtime error        */
    };
 
-   //This model expect a certain size, get each sections size
+   ///This model expect a certain size, get each sections size
    constexpr static const short sizes[] = {
       enum_class_size< Certificate             :: Checks              > (),
       enum_class_size< Certificate             :: Checks              > (),
       enum_class_size< SecurityValidationModel :: AccountSecurityFlaw > (),
    };
 
-   //Get the combined size
+   ///Get the combined size
    constexpr inline static int totalSize() {
       return sizes[CA] + sizes[PK] + sizes[AC];
    }
 
-   //Get a modex index from a value
+   ///Get a modex index from a value
    constexpr inline static int toModelIdx(const int value) {
       return (value >= sizes[CA] + sizes[PK] ?  AC : (
               value >= sizes[PK]             ?  PK :
@@ -234,15 +236,37 @@ private:
 
 };
 
+constexpr const short CombinaisonProxyModel::sizes[];
+
+///Create a callback map for signals to avoid a large switch(){} in the code
+static const Matrix1D<SecurityValidationModel::Severity, void(SecurityValidationModel::*)()> m_lSignalMap = {{
+   /* UNSUPPORTED   */ nullptr                 ,
+   /* INFORMATION   */ &SecurityValidationModel::informationCountChanged ,
+   /* WARN1NG       */ &SecurityValidationModel::warningCountChanged     ,
+   /* ISSUE         */ &SecurityValidationModel::issueCountChanged       ,
+   /* ERROR         */ &SecurityValidationModel::errorCountChanged       ,
+   /* FATAL_WARNING */ &SecurityValidationModel::fatalWarningCountChanged,
+}};
+
 SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent) :
- QObject(parent),q_ptr(parent), m_pAccount(account),
- m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE)
+ QObject(parent),q_ptr(parent), m_pAccount(account),m_isScheduled(false),
+ m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE),
+ m_SeverityCount{
+      /* UNSUPPORTED   */ 0,
+      /* INFORMATION   */ 0,
+      /* WARN1NG       */ 0,
+      /* ISSUE         */ 0,
+      /* ERROR         */ 0,
+      /* FATAL_WARNING */ 0,
+   }
 {
-   QObject::connect(parent,&SecurityValidationModel::layoutChanged,this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::dataChanged  ,this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::rowsInserted ,this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::rowsRemoved  ,this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::modelReset   ,this,&SecurityValidationModelPrivate::update);
+   //Make sure the security level is updated if something change
+   QObject::connect(parent,&SecurityValidationModel::layoutChanged , this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::dataChanged   , this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::rowsInserted  , this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::rowsRemoved   , this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityValidationModel::modelReset    , this,&SecurityValidationModelPrivate::update);
+   update();
 }
 
 
@@ -527,12 +551,6 @@ d_ptr(new SecurityValidationModelPrivate(account,this))
    Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
    Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
 
-   if (account) {
-      d_ptr->m_pCa         = caCert                                       ;
-      d_ptr->m_pCert       = pkCert                                       ;
-      d_ptr->m_pPrivateKey = d_ptr->m_pAccount->tlsPrivateKeyCertificate();
-   }
-
    PrefixAndSeverityProxyModel* caProxy = caCert ? new PrefixAndSeverityProxyModel(tr("Authority" ),caCert->checksModel()) : nullptr;
    PrefixAndSeverityProxyModel* pkProxy = pkCert ? new PrefixAndSeverityProxyModel(tr("Public key"),pkCert->checksModel()) : nullptr;
    AccountChecksModel* accChecks = new AccountChecksModel(account);
@@ -568,7 +586,67 @@ QHash<int,QByteArray> SecurityValidationModel::roleNames() const
 
 void SecurityValidationModelPrivate::update()
 {
-   //TODO
+   //As this can be called multiple time, only perform the checks once per event loop cycle
+   if (!m_isScheduled) {
+
+#if QT_VERSION >= 0x050400
+      QTimer::singleShot(0,this,&SecurityValidationModelPrivate::updateReal);
+      m_isScheduled = true;
+#else //Too bad for 5.3 users
+      updateReal();
+#endif
+
+   }
+}
+
+void SecurityValidationModelPrivate::updateReal()
+{
+   typedef SecurityValidationModel::Severity      Severity     ;
+   typedef SecurityValidationModel::SecurityLevel SecurityLevel;
+
+   int countCache[enum_class_size<SecurityValidationModel::Severity>()];
+
+   //Reset the counter
+   for (const Severity s : EnumIterator<Severity>()) {
+      countCache     [(int)s] = m_SeverityCount[(int)s];
+      m_SeverityCount[(int)s] = 0                      ;
+   }
+
+   SecurityLevel maxLevel = SecurityLevel::COMPLETE;
+
+   for (int i=0; i < q_ptr->rowCount();i++) {
+      const QModelIndex&  idx      = q_ptr->index(i,0);
+
+      const Severity      severity = qvariant_cast<Severity>(
+         idx.data((int) SecurityValidationModel::Role::Severity)
+      );
+
+      const SecurityLevel level    = qvariant_cast<SecurityLevel>(
+         idx.data((int) SecurityValidationModel::Role::SecurityLevel )
+      );
+
+      //Increment the count
+      m_SeverityCount[static_cast<int>(severity)]++;
+
+      //Update the maximum level
+      maxLevel = level < maxLevel ? level : maxLevel;
+   }
+
+   //Notify
+   for (const Severity s : EnumIterator<Severity>()) {
+      if (countCache[(int)s] != m_SeverityCount[(int)s] && m_lSignalMap[s])
+         (q_ptr->*m_lSignalMap[s])();
+   }
+
+   //Update the security level
+   if (m_CurrentSecurityLevel != maxLevel) {
+
+      emit q_ptr->securityLevelChanged();
+
+      m_CurrentSecurityLevel = maxLevel;
+   }
+
+   m_isScheduled = false;
 }
 
 QModelIndex SecurityValidationModel::getIndex(const SecurityFlaw* flaw)
@@ -581,19 +659,21 @@ QList<SecurityFlaw*> SecurityValidationModel::currentFlaws()
    return d_ptr->m_lCurrentFlaws;
 }
 
-void SecurityValidationModel::setTlsCaListCertificate( Certificate* cert )
+SecurityValidationModel::SecurityLevel SecurityValidationModel::securityLevel() const
 {
-   d_ptr->m_pCa = cert;
+   return d_ptr->m_CurrentSecurityLevel;
 }
 
-void SecurityValidationModel::setTlsCertificate( Certificate* cert )
-{
-   d_ptr->m_pCert = cert;
-}
-
-void SecurityValidationModel::setTlsPrivateKeyCertificate( Certificate* cert )
-{
-   d_ptr->m_pPrivateKey = cert;
-}
+//Map the array to getters
+int SecurityValidationModel::informationCount             () const
+{ return d_ptr->m_SeverityCount[ (int)Severity::INFORMATION   ]; }
+int SecurityValidationModel::warningCount                 () const
+{ return d_ptr->m_SeverityCount[ (int)Severity::WARNING       ]; }
+int SecurityValidationModel::issueCount                   () const
+{ return d_ptr->m_SeverityCount[ (int)Severity::ISSUE         ]; }
+int SecurityValidationModel::errorCount                   () const
+{ return d_ptr->m_SeverityCount[ (int)Severity::ERROR         ]; }
+int SecurityValidationModel::fatalWarningCount            () const
+{ return d_ptr->m_SeverityCount[ (int)Severity::FATAL_WARNING ]; }
 
 #include <securityvalidationmodel.moc>
