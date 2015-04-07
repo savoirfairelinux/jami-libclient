@@ -18,16 +18,16 @@
 #include "securityflaw.h"
 
 //Ring
-#include "private/securityvalidationmodel_p.h"
+#include "private/securityevaluationmodel_p.h"
 #include "private/securityflaw_p.h"
 
-SecurityFlawPrivate::SecurityFlawPrivate(SecurityFlaw* parent, SecurityValidationModel::AccountSecurityFlaw f,Certificate::Type type):m_flaw(f),m_certType(type),m_Row(-1)
-,m_severity(SecurityValidationModelPrivate::flawSeverity[f]),q_ptr(parent)
+SecurityFlawPrivate::SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type):m_flaw(f),m_certType(type),m_Row(-1)
+,m_severity(SecurityEvaluationModelPrivate::flawSeverity[f]),q_ptr(parent)
 {
 
 }
 
-SecurityFlaw::SecurityFlaw(SecurityValidationModel::AccountSecurityFlaw f,Certificate::Type type)
+SecurityFlaw::SecurityFlaw(SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type)
    : QObject(), d_ptr(new SecurityFlawPrivate(this, f, type))
 {
 }
@@ -37,12 +37,12 @@ Certificate::Type SecurityFlaw::type() const
    return d_ptr->m_certType;
 }
 
-SecurityValidationModel::AccountSecurityFlaw SecurityFlaw::flaw() const
+SecurityEvaluationModel::AccountSecurityFlaw SecurityFlaw::flaw() const
 {
    return d_ptr->m_flaw;
 }
 
-SecurityValidationModel::Severity SecurityFlaw::severity() const
+SecurityEvaluationModel::Severity SecurityFlaw::severity() const
 {
    return d_ptr->m_severity;
 }

@@ -34,7 +34,7 @@ class QString;
 class CredentialModel        ;
 class RingToneModel          ;
 class ContactMethod          ;
-class SecurityValidationModel;
+class SecurityEvaluationModel;
 class Certificate            ;
 class CipherModel            ;
 class AccountStatusModel     ;
@@ -252,7 +252,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
       Q_INVOKABLE CipherModel*             cipherModel            () const;
       Q_INVOKABLE AccountStatusModel*      statusModel            () const;
-      Q_INVOKABLE SecurityValidationModel* securityValidationModel() const;
+      Q_INVOKABLE SecurityEvaluationModel* securityValidationModel() const;
       Q_INVOKABLE TlsMethodModel*          tlsMethodModel         () const;
       Q_INVOKABLE ProtocolModel*           protocolModel          () const;
       Q_INVOKABLE BootstrapModel*          bootstrapModel         () const;

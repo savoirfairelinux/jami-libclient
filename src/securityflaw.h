@@ -22,7 +22,7 @@
 
 #include <typedefs.h>
 
-#include <securityvalidationmodel.h>
+#include <securityevaluationmodel.h>
 
 class SecurityFlawPrivate;
 
@@ -30,8 +30,8 @@ class SecurityFlawPrivate;
 class LIB_EXPORT SecurityFlaw : public QObject
 {
    Q_OBJECT
-   friend class SecurityValidationModel;
-   friend class SecurityValidationModelPrivate;
+   friend class SecurityEvaluationModel;
+   friend class SecurityEvaluationModelPrivate;
 public:
 
    //Operators
@@ -40,11 +40,11 @@ public:
 
    //Getter
    Certificate::Type type() const;
-   SecurityValidationModel::AccountSecurityFlaw flaw() const;
-   SecurityValidationModel::Severity severity() const;
+   SecurityEvaluationModel::AccountSecurityFlaw flaw() const;
+   SecurityEvaluationModel::Severity severity() const;
 
 private:
-   explicit SecurityFlaw(SecurityValidationModel::AccountSecurityFlaw f,Certificate::Type type = Certificate::Type::NONE);
+   explicit SecurityFlaw(SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type = Certificate::Type::NONE);
 
    SecurityFlawPrivate* d_ptr;
    Q_DECLARE_PRIVATE(SecurityFlaw)

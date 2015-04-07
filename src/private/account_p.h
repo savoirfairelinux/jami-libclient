@@ -106,7 +106,7 @@ public:
    KeyExchangeModel*         m_pKeyExchangeModel;
    CipherModel*              m_pCipherModel     ;
    AccountStatusModel*       m_pStatusModel     ;
-   SecurityValidationModel*  m_pSecurityValidationModel;
+   SecurityEvaluationModel*  m_pSecurityEvaluationModel;
    TlsMethodModel*           m_pTlsMethodModel  ;
    ProtocolModel*            m_pProtocolModel   ;
    BootstrapModel*           m_pBootstrapModel  ;

@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
  *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "securityvalidationmodel.h"
+#include "securityevaluationmodel.h"
 
 //Qt
 #include <QtCore/QIdentityProxyModel>
@@ -25,13 +25,13 @@
 #include "account.h"
 #include "certificatemodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
-#include "private/securityvalidationmodel_p.h"
+#include "private/securityevaluationmodel_p.h"
 #include "securityflaw.h"
 #include "private/securityflaw_p.h"
 
 #include <QtAlgorithms>
 
-const QString SecurityValidationModelPrivate::messages[enum_class_size<SecurityValidationModel::AccountSecurityFlaw>()] = {
+const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>()] = {
    /*SRTP_ENABLED                */QObject::tr("Your communication negotiation is secured, but not the media stream, please enable ZRTP or SDES"),
    /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to "
                                    "snooping"),
@@ -48,84 +48,84 @@ const QString SecurityValidationModelPrivate::messages[enum_class_size<SecurityV
 static const QString s1 = QObject::tr("Your certificate is expired, please contact your system administrator.");
 static const QString s2 = QObject::tr("Your certificate is self signed. This break the chain of trust.");
 
-const TypedStateMachine< SecurityValidationModel::SecurityLevel , SecurityValidationModel::AccountSecurityFlaw >
-SecurityValidationModelPrivate::maximumSecurityLevel = {{
-   /* SRTP_ENABLED                     */ SecurityValidationModel::SecurityLevel::NONE        ,
-   /* TLS_ENABLED                      */ SecurityValidationModel::SecurityLevel::NONE        ,
-   /* CERTIFICATE_MATCH                */ SecurityValidationModel::SecurityLevel::WEAK        ,
-   /* OUTGOING_SERVER_MATCH            */ SecurityValidationModel::SecurityLevel::MEDIUM      ,
-   /* VERIFY_INCOMING_ENABLED          */ SecurityValidationModel::SecurityLevel::MEDIUM      ,
-   /* VERIFY_ANSWER_ENABLED            */ SecurityValidationModel::SecurityLevel::MEDIUM      ,
-   /* REQUIRE_CERTIFICATE_ENABLED      */ SecurityValidationModel::SecurityLevel::WEAK        ,
-   /* NOT_MISSING_CERTIFICATE          */ SecurityValidationModel::SecurityLevel::WEAK        ,
-   /* NOT_MISSING_AUTHORITY            */ SecurityValidationModel::SecurityLevel::WEAK        ,
+const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityFlaw >
+SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
+   /* SRTP_ENABLED                     */ SecurityEvaluationModel::SecurityLevel::NONE        ,
+   /* TLS_ENABLED                      */ SecurityEvaluationModel::SecurityLevel::NONE        ,
+   /* CERTIFICATE_MATCH                */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
+   /* OUTGOING_SERVER_MATCH            */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
+   /* VERIFY_INCOMING_ENABLED          */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
+   /* VERIFY_ANSWER_ENABLED            */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
+   /* REQUIRE_CERTIFICATE_ENABLED      */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
+   /* NOT_MISSING_CERTIFICATE          */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
+   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
 }};
 
-const TypedStateMachine< SecurityValidationModel::Severity , SecurityValidationModel::AccountSecurityFlaw >
-SecurityValidationModelPrivate::flawSeverity = {{
-   /* SRTP_ENABLED                      */ SecurityValidationModel::Severity::ISSUE           ,
-   /* TLS_ENABLED                       */ SecurityValidationModel::Severity::ISSUE           ,
-   /* CERTIFICATE_MATCH                 */ SecurityValidationModel::Severity::ERROR           ,
-   /* OUTGOING_SERVER_MATCH             */ SecurityValidationModel::Severity::WARNING         ,
-   /* VERIFY_INCOMING_ENABLED           */ SecurityValidationModel::Severity::ISSUE           ,
-   /* VERIFY_ANSWER_ENABLED             */ SecurityValidationModel::Severity::ISSUE           ,
-   /* REQUIRE_CERTIFICATE_ENABLED       */ SecurityValidationModel::Severity::ISSUE           ,
-   /* NOT_MISSING_CERTIFICATE           */ SecurityValidationModel::Severity::WARNING         ,
-   /* NOT_MISSING_AUTHORITY             */ SecurityValidationModel::Severity::ISSUE           ,
+const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityFlaw >
+SecurityEvaluationModelPrivate::flawSeverity = {{
+   /* SRTP_ENABLED                      */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* TLS_ENABLED                       */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* CERTIFICATE_MATCH                 */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* OUTGOING_SERVER_MATCH             */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* VERIFY_INCOMING_ENABLED           */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* VERIFY_ANSWER_ENABLED             */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* REQUIRE_CERTIFICATE_ENABLED       */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* NOT_MISSING_CERTIFICATE           */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* NOT_MISSING_AUTHORITY             */ SecurityEvaluationModel::Severity::ISSUE           ,
 }};
 
-const TypedStateMachine< SecurityValidationModel::SecurityLevel , Certificate::Checks > SecurityValidationModelPrivate::maximumCertificateSecurityLevel = {{
-   /* HAS_PRIVATE_KEY                   */ SecurityValidationModel::SecurityLevel::NONE       ,
-   /* EXPIRED                           */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* STRONG_SIGNING                    */ SecurityValidationModel::SecurityLevel::WEAK       ,
-   /* NOT_SELF_SIGNED                   */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* KEY_MATCH                         */ SecurityValidationModel::SecurityLevel::NONE       ,
-   /* PRIVATE_KEY_STORAGE_PERMISSION    */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* PUBLIC_KEY_STORAGE_PERMISSION     */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* PUBLIC_KEY_DIRECTORY_PERMISSIONS  */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* PRIVATE_KEY_STORAGE_LOCATION      */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
-   /* PUBLIC_KEY_STORAGE_LOCATION       */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
-   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
-   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ SecurityValidationModel::SecurityLevel::ACCEPTABLE ,
-   /* EXIST                             */ SecurityValidationModel::SecurityLevel::NONE       ,
-   /* VALID                             */ SecurityValidationModel::SecurityLevel::NONE       ,
-   /* VALID_AUTHORITY                   */ SecurityValidationModel::SecurityLevel::MEDIUM     ,
-   /* KNOWN_AUTHORITY                   */ SecurityValidationModel::SecurityLevel::ACCEPTABLE , //?
-   /* NOT_REVOKED                       */ SecurityValidationModel::SecurityLevel::WEAK       ,
-   /* AUTHORITY_MATCH                   */ SecurityValidationModel::SecurityLevel::NONE       ,
-   /* EXPECTED_OWNER                    */ SecurityValidationModel::SecurityLevel::MEDIUM     , //?
-   /* ACTIVATED                         */ SecurityValidationModel::SecurityLevel::MEDIUM     , //?
+const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::Checks > SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel = {{
+   /* HAS_PRIVATE_KEY                   */ SecurityEvaluationModel::SecurityLevel::NONE       ,
+   /* EXPIRED                           */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* STRONG_SIGNING                    */ SecurityEvaluationModel::SecurityLevel::WEAK       ,
+   /* NOT_SELF_SIGNED                   */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* KEY_MATCH                         */ SecurityEvaluationModel::SecurityLevel::NONE       ,
+   /* PRIVATE_KEY_STORAGE_PERMISSION    */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* PUBLIC_KEY_STORAGE_PERMISSION     */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* PUBLIC_KEY_DIRECTORY_PERMISSIONS  */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* PRIVATE_KEY_STORAGE_LOCATION      */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE ,
+   /* PUBLIC_KEY_STORAGE_LOCATION       */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE ,
+   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE ,
+   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE ,
+   /* EXIST                             */ SecurityEvaluationModel::SecurityLevel::NONE       ,
+   /* VALID                             */ SecurityEvaluationModel::SecurityLevel::NONE       ,
+   /* VALID_AUTHORITY                   */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
+   /* KNOWN_AUTHORITY                   */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE , //?
+   /* NOT_REVOKED                       */ SecurityEvaluationModel::SecurityLevel::WEAK       ,
+   /* AUTHORITY_MATCH                   */ SecurityEvaluationModel::SecurityLevel::NONE       ,
+   /* EXPECTED_OWNER                    */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //?
+   /* ACTIVATED                         */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //?
 }};
 
-const TypedStateMachine< SecurityValidationModel::Severity      , Certificate::Checks > SecurityValidationModelPrivate::certificateFlawSeverity = {{
-   /* HAS_PRIVATE_KEY                   */ SecurityValidationModel::Severity::ERROR           ,
-   /* EXPIRED                           */ SecurityValidationModel::Severity::WARNING         ,
-   /* STRONG_SIGNING                    */ SecurityValidationModel::Severity::ISSUE           ,
-   /* NOT_SELF_SIGNED                   */ SecurityValidationModel::Severity::WARNING         ,
-   /* KEY_MATCH                         */ SecurityValidationModel::Severity::ERROR           ,
-   /* PRIVATE_KEY_STORAGE_PERMISSION    */ SecurityValidationModel::Severity::WARNING         ,
-   /* PUBLIC_KEY_STORAGE_PERMISSION     */ SecurityValidationModel::Severity::WARNING         ,
-   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ SecurityValidationModel::Severity::WARNING         ,
-   /* PUBLIC_KEY_DIRECTORY_PERMISSIONS  */ SecurityValidationModel::Severity::WARNING         ,
-   /* PRIVATE_KEY_STORAGE_LOCATION      */ SecurityValidationModel::Severity::INFORMATION     ,
-   /* PUBLIC_KEY_STORAGE_LOCATION       */ SecurityValidationModel::Severity::INFORMATION     ,
-   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ SecurityValidationModel::Severity::INFORMATION     ,
-   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ SecurityValidationModel::Severity::INFORMATION     ,
-   /* EXIST                             */ SecurityValidationModel::Severity::ERROR           ,
-   /* VALID                             */ SecurityValidationModel::Severity::ERROR           ,
-   /* VALID_AUTHORITY                   */ SecurityValidationModel::Severity::WARNING         ,
-   /* KNOWN_AUTHORITY                   */ SecurityValidationModel::Severity::WARNING         ,
-   /* NOT_REVOKED                       */ SecurityValidationModel::Severity::ISSUE           ,
-   /* AUTHORITY_MATCH                   */ SecurityValidationModel::Severity::ISSUE           ,
-   /* EXPECTED_OWNER                    */ SecurityValidationModel::Severity::WARNING         ,
-   /* ACTIVATED                         */ SecurityValidationModel::Severity::WARNING         ,
+const TypedStateMachine< SecurityEvaluationModel::Severity      , Certificate::Checks > SecurityEvaluationModelPrivate::certificateFlawSeverity = {{
+   /* HAS_PRIVATE_KEY                   */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* EXPIRED                           */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* STRONG_SIGNING                    */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* NOT_SELF_SIGNED                   */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* KEY_MATCH                         */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* PRIVATE_KEY_STORAGE_PERMISSION    */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* PUBLIC_KEY_STORAGE_PERMISSION     */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* PRIVATE_KEY_DIRECTORY_PERMISSIONS */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* PUBLIC_KEY_DIRECTORY_PERMISSIONS  */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* PRIVATE_KEY_STORAGE_LOCATION      */ SecurityEvaluationModel::Severity::INFORMATION     ,
+   /* PUBLIC_KEY_STORAGE_LOCATION       */ SecurityEvaluationModel::Severity::INFORMATION     ,
+   /* PRIVATE_KEY_SELINUX_ATTRIBUTES    */ SecurityEvaluationModel::Severity::INFORMATION     ,
+   /* PUBLIC_KEY_SELINUX_ATTRIBUTES     */ SecurityEvaluationModel::Severity::INFORMATION     ,
+   /* EXIST                             */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* VALID                             */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* VALID_AUTHORITY                   */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* KNOWN_AUTHORITY                   */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* NOT_REVOKED                       */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* AUTHORITY_MATCH                   */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* EXPECTED_OWNER                    */ SecurityEvaluationModel::Severity::WARNING         ,
+   /* ACTIVATED                         */ SecurityEvaluationModel::Severity::WARNING         ,
 }};
 
 
 /**
  * This class add a prefix in front of Qt::DisplayRole to add a disambiguation
- * when there is multiple certificates in the same SecurityValidationModel and
+ * when there is multiple certificates in the same SecurityEvaluationModel and
  * also add new roles such as the severity, BackgroundRole and DecorationRole
  */
 class PrefixAndSeverityProxyModel : public QIdentityProxyModel
@@ -166,7 +166,7 @@ public:
 private:
    //Attributes
    const Account* m_pAccount;
-   Matrix1D<SecurityValidationModel::AccountSecurityFlaw, Certificate::CheckValues> m_lCachedResults;
+   Matrix1D<SecurityEvaluationModel::AccountSecurityFlaw, Certificate::CheckValues> m_lCachedResults;
 
    //Helpers
    void update();
@@ -212,7 +212,7 @@ private:
    constexpr static const short sizes[] = {
       enum_class_size< Certificate             :: Checks              > (),
       enum_class_size< Certificate             :: Checks              > (),
-      enum_class_size< SecurityValidationModel :: AccountSecurityFlaw > (),
+      enum_class_size< SecurityEvaluationModel :: AccountSecurityFlaw > (),
    };
 
    ///Get the combined size
@@ -239,18 +239,18 @@ private:
 constexpr const short CombinaisonProxyModel::sizes[];
 
 ///Create a callback map for signals to avoid a large switch(){} in the code
-static const Matrix1D<SecurityValidationModel::Severity, void(SecurityValidationModel::*)()> m_lSignalMap = {{
+static const Matrix1D<SecurityEvaluationModel::Severity, void(SecurityEvaluationModel::*)()> m_lSignalMap = {{
    /* UNSUPPORTED   */ nullptr                 ,
-   /* INFORMATION   */ &SecurityValidationModel::informationCountChanged ,
-   /* WARN1NG       */ &SecurityValidationModel::warningCountChanged     ,
-   /* ISSUE         */ &SecurityValidationModel::issueCountChanged       ,
-   /* ERROR         */ &SecurityValidationModel::errorCountChanged       ,
-   /* FATAL_WARNING */ &SecurityValidationModel::fatalWarningCountChanged,
+   /* INFORMATION   */ &SecurityEvaluationModel::informationCountChanged ,
+   /* WARN1NG       */ &SecurityEvaluationModel::warningCountChanged     ,
+   /* ISSUE         */ &SecurityEvaluationModel::issueCountChanged       ,
+   /* ERROR         */ &SecurityEvaluationModel::errorCountChanged       ,
+   /* FATAL_WARNING */ &SecurityEvaluationModel::fatalWarningCountChanged,
 }};
 
-SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent) :
+SecurityEvaluationModelPrivate::SecurityEvaluationModelPrivate(Account* account, SecurityEvaluationModel* parent) :
  QObject(parent),q_ptr(parent), m_pAccount(account),m_isScheduled(false),
- m_CurrentSecurityLevel(SecurityValidationModel::SecurityLevel::NONE),
+ m_CurrentSecurityLevel(SecurityEvaluationModel::SecurityLevel::NONE),
  m_SeverityCount{
       /* UNSUPPORTED   */ 0,
       /* INFORMATION   */ 0,
@@ -261,11 +261,11 @@ SecurityValidationModelPrivate::SecurityValidationModelPrivate(Account* account,
    }
 {
    //Make sure the security level is updated if something change
-   QObject::connect(parent,&SecurityValidationModel::layoutChanged , this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::dataChanged   , this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::rowsInserted  , this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::rowsRemoved   , this,&SecurityValidationModelPrivate::update);
-   QObject::connect(parent,&SecurityValidationModel::modelReset    , this,&SecurityValidationModelPrivate::update);
+   QObject::connect(parent,&SecurityEvaluationModel::layoutChanged , this,&SecurityEvaluationModelPrivate::update);
+   QObject::connect(parent,&SecurityEvaluationModel::dataChanged   , this,&SecurityEvaluationModelPrivate::update);
+   QObject::connect(parent,&SecurityEvaluationModel::rowsInserted  , this,&SecurityEvaluationModelPrivate::update);
+   QObject::connect(parent,&SecurityEvaluationModel::rowsRemoved   , this,&SecurityEvaluationModelPrivate::update);
+   QObject::connect(parent,&SecurityEvaluationModel::modelReset    , this,&SecurityEvaluationModelPrivate::update);
    update();
 }
 
@@ -313,8 +313,8 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
             switch(role) {
                case Qt::DecorationRole:
                   return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
-               case (int)SecurityValidationModel::Role::Severity:
-                  return QVariant::fromValue(SecurityValidationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
             }
             break;
          //
@@ -322,8 +322,8 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
             switch(role) {
                case Qt::DisplayRole:
                   return m_Name;
-               case (int)SecurityValidationModel::Role::Severity:
-                  return QVariant::fromValue(SecurityValidationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
             }
             return QVariant();
          }
@@ -334,8 +334,8 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
             c = qvariant_cast<Certificate::Checks>(srcIdx.data((int)CertificateModel::Role::check));
 
             switch(role) {
-               case (int)SecurityValidationModel::Role::Severity:
-                  return QVariant::fromValue(SecurityValidationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::Severity:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
             }
 
             return srcIdx.data(role);
@@ -363,17 +363,17 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
 {
    if ((!index.isValid())
     || (index.row() < 0)
-    || (index.row() >= enum_class_size<SecurityValidationModel::AccountSecurityFlaw>())
+    || (index.row() >= enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>())
    )
       return QVariant();
 
-   const SecurityValidationModel::AccountSecurityFlaw f = static_cast<SecurityValidationModel::AccountSecurityFlaw>(index.row());
+   const SecurityEvaluationModel::AccountSecurityFlaw f = static_cast<SecurityEvaluationModel::AccountSecurityFlaw>(index.row());
 
    switch(role) {
-      case (int)SecurityValidationModel::Role::Severity:
+      case (int)SecurityEvaluationModel::Role::Severity:
          return QVariant::fromValue(
             m_lCachedResults[f] == Certificate::CheckValues::UNSUPPORTED ?
-               SecurityValidationModel::Severity::UNSUPPORTED : SecurityValidationModelPrivate::flawSeverity[f]
+               SecurityEvaluationModel::Severity::UNSUPPORTED : SecurityEvaluationModelPrivate::flawSeverity[f]
          );
    }
 
@@ -381,7 +381,7 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
       case 0:
          switch(role) {
             case Qt::DisplayRole:
-               return SecurityValidationModelPrivate::messages[index.row()];
+               return SecurityEvaluationModelPrivate::messages[index.row()];
             case Qt::DecorationRole:
                return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
          };
@@ -407,7 +407,7 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
 
 int AccountChecksModel::rowCount( const QModelIndex& parent ) const
 {
-   return parent.isValid() ? 0 : enum_class_size<SecurityValidationModel::AccountSecurityFlaw>();
+   return parent.isValid() ? 0 : enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>();
 }
 
 int AccountChecksModel::columnCount( const QModelIndex& parent ) const
@@ -437,45 +437,45 @@ QHash<int,QByteArray> AccountChecksModel::roleNames() const
 void AccountChecksModel::update()
 {
    // AccountSecurityFlaw::SRTP_DISABLED
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::SRTP_ENABLED                 ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::SRTP_ENABLED                 ,
       m_pAccount->isSrtpEnabled                () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::TLS_DISABLED
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::TLS_ENABLED                  ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::TLS_ENABLED                  ,
       m_pAccount->isTlsEnabled                 () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::CERTIFICATE_MISMATCH
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::CERTIFICATE_MATCH            ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::CERTIFICATE_MATCH            ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
    // AccountSecurityFlaw::OUTGOING_SERVER_MISMATCH
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::OUTGOING_SERVER_MATCH        ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::OUTGOING_SERVER_MATCH        ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
    // AccountSecurityFlaw::VERIFY_INCOMING_DISABLED
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::VERIFY_INCOMING_ENABLED      ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::VERIFY_INCOMING_ENABLED      ,
       m_pAccount->isTlsVerifyServer            () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::VERIFY_ANSWER_DISABLED
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::VERIFY_ANSWER_ENABLED        ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::VERIFY_ANSWER_ENABLED        ,
       m_pAccount->isTlsVerifyClient            () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::REQUIRE_CERTIFICATE_DISABLED
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::REQUIRE_CERTIFICATE_ENABLED  ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::REQUIRE_CERTIFICATE_ENABLED  ,
       m_pAccount->isTlsRequireClientCertificate() ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::MISSING_CERTIFICATE
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::NOT_MISSING_CERTIFICATE      ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::NOT_MISSING_CERTIFICATE      ,
       m_pAccount->tlsCertificate               () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
    // AccountSecurityFlaw::MISSING_AUTHORITY
-   m_lCachedResults.setAt( SecurityValidationModel::AccountSecurityFlaw::NOT_MISSING_AUTHORITY        ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::NOT_MISSING_AUTHORITY        ,
       m_pAccount->tlsCaListCertificate         () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
@@ -541,12 +541,12 @@ QHash<int,QByteArray> CombinaisonProxyModel::roleNames() const
 
 /*******************************************************************************
  *                                                                             *
- *                           SecurityValidationModel                           *
+ *                           SecurityEvaluationModel                           *
  *                                                                             *
  ******************************************************************************/
 
-SecurityValidationModel::SecurityValidationModel(Account* account) : QSortFilterProxyModel(account),
-d_ptr(new SecurityValidationModelPrivate(account,this))
+SecurityEvaluationModel::SecurityEvaluationModel(Account* account) : QSortFilterProxyModel(account),
+d_ptr(new SecurityEvaluationModelPrivate(account,this))
 {
    Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
    Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
@@ -560,20 +560,20 @@ d_ptr(new SecurityValidationModelPrivate(account,this))
    setSortRole((int)Role::Severity);
 }
 
-SecurityValidationModel::~SecurityValidationModel()
+SecurityEvaluationModel::~SecurityEvaluationModel()
 {
 
 }
 
-bool SecurityValidationModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+bool SecurityEvaluationModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
    const QModelIndex& idx  = sourceModel()->index(source_row,0,source_parent);
    const QModelIndex& idx2 = sourceModel()->index(source_row,2,source_parent);
-   const Severity     s    = qvariant_cast<Severity>(idx.data((int)SecurityValidationModel::Role::Severity));
+   const Severity     s    = qvariant_cast<Severity>(idx.data((int)SecurityEvaluationModel::Role::Severity));
    return s != Severity::UNSUPPORTED && idx2.data(Qt::DisplayRole).toBool() == false;
 }
 
-QHash<int,QByteArray> SecurityValidationModel::roleNames() const
+QHash<int,QByteArray> SecurityEvaluationModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
@@ -584,13 +584,13 @@ QHash<int,QByteArray> SecurityValidationModel::roleNames() const
    return roles;
 }
 
-void SecurityValidationModelPrivate::update()
+void SecurityEvaluationModelPrivate::update()
 {
    //As this can be called multiple time, only perform the checks once per event loop cycle
    if (!m_isScheduled) {
 
 #if QT_VERSION >= 0x050400
-      QTimer::singleShot(0,this,&SecurityValidationModelPrivate::updateReal);
+      QTimer::singleShot(0,this,&SecurityEvaluationModelPrivate::updateReal);
       m_isScheduled = true;
 #else //Too bad for 5.3 users
       updateReal();
@@ -599,12 +599,12 @@ void SecurityValidationModelPrivate::update()
    }
 }
 
-void SecurityValidationModelPrivate::updateReal()
+void SecurityEvaluationModelPrivate::updateReal()
 {
-   typedef SecurityValidationModel::Severity      Severity     ;
-   typedef SecurityValidationModel::SecurityLevel SecurityLevel;
+   typedef SecurityEvaluationModel::Severity      Severity     ;
+   typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
 
-   int countCache[enum_class_size<SecurityValidationModel::Severity>()];
+   int countCache[enum_class_size<SecurityEvaluationModel::Severity>()];
 
    //Reset the counter
    for (const Severity s : EnumIterator<Severity>()) {
@@ -618,11 +618,11 @@ void SecurityValidationModelPrivate::updateReal()
       const QModelIndex&  idx      = q_ptr->index(i,0);
 
       const Severity      severity = qvariant_cast<Severity>(
-         idx.data((int) SecurityValidationModel::Role::Severity)
+         idx.data((int) SecurityEvaluationModel::Role::Severity)
       );
 
       const SecurityLevel level    = qvariant_cast<SecurityLevel>(
-         idx.data((int) SecurityValidationModel::Role::SecurityLevel )
+         idx.data((int) SecurityEvaluationModel::Role::SecurityLevel )
       );
 
       //Increment the count
@@ -649,31 +649,31 @@ void SecurityValidationModelPrivate::updateReal()
    m_isScheduled = false;
 }
 
-QModelIndex SecurityValidationModel::getIndex(const SecurityFlaw* flaw)
+QModelIndex SecurityEvaluationModel::getIndex(const SecurityFlaw* flaw)
 {
    return index(flaw->d_ptr->m_Row,0);
 }
 
-QList<SecurityFlaw*> SecurityValidationModel::currentFlaws()
+QList<SecurityFlaw*> SecurityEvaluationModel::currentFlaws()
 {
    return d_ptr->m_lCurrentFlaws;
 }
 
-SecurityValidationModel::SecurityLevel SecurityValidationModel::securityLevel() const
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationModel::securityLevel() const
 {
    return d_ptr->m_CurrentSecurityLevel;
 }
 
 //Map the array to getters
-int SecurityValidationModel::informationCount             () const
+int SecurityEvaluationModel::informationCount             () const
 { return d_ptr->m_SeverityCount[ (int)Severity::INFORMATION   ]; }
-int SecurityValidationModel::warningCount                 () const
+int SecurityEvaluationModel::warningCount                 () const
 { return d_ptr->m_SeverityCount[ (int)Severity::WARNING       ]; }
-int SecurityValidationModel::issueCount                   () const
+int SecurityEvaluationModel::issueCount                   () const
 { return d_ptr->m_SeverityCount[ (int)Severity::ISSUE         ]; }
-int SecurityValidationModel::errorCount                   () const
+int SecurityEvaluationModel::errorCount                   () const
 { return d_ptr->m_SeverityCount[ (int)Severity::ERROR         ]; }
-int SecurityValidationModel::fatalWarningCount            () const
+int SecurityEvaluationModel::fatalWarningCount            () const
 { return d_ptr->m_SeverityCount[ (int)Severity::FATAL_WARNING ]; }
 
-#include <securityvalidationmodel.moc>
+#include <securityevaluationmodel.moc>

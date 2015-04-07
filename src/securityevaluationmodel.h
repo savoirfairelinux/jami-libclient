@@ -29,7 +29,7 @@
 class Account;
 class SecurityFlaw;
 
-class SecurityValidationModelPrivate;
+class SecurityEvaluationModelPrivate;
 
 /**
  * This model provide a real time look at elements security. It aggregate data
@@ -41,7 +41,7 @@ class SecurityValidationModelPrivate;
  * by this system. Result should be taken with a grain of salt, but at least some
  * common problems can be detected.
  */
-class LIB_EXPORT SecurityValidationModel : public QSortFilterProxyModel {
+class LIB_EXPORT SecurityEvaluationModel : public QSortFilterProxyModel {
    Q_OBJECT
    friend class SecurityFlaw;
    friend class AccountPrivate;
@@ -119,8 +119,8 @@ public:
    };
 
    //Constructor
-   explicit SecurityValidationModel(Account* account);
-   virtual ~SecurityValidationModel();
+   explicit SecurityEvaluationModel(Account* account);
+   virtual ~SecurityEvaluationModel();
 
    //Model functions
    virtual QHash<int,QByteArray> roleNames() const override;
@@ -145,11 +145,11 @@ Q_SIGNALS:
    void securityLevelChanged    ();
 
 private:
-   SecurityValidationModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(SecurityValidationModel)
+   SecurityEvaluationModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(SecurityEvaluationModel)
 };
-Q_DECLARE_METATYPE(SecurityValidationModel*)
-Q_DECLARE_METATYPE(SecurityValidationModel::Severity)
-Q_DECLARE_METATYPE(SecurityValidationModel::SecurityLevel)
+Q_DECLARE_METATYPE(SecurityEvaluationModel*)
+Q_DECLARE_METATYPE(SecurityEvaluationModel::Severity)
+Q_DECLARE_METATYPE(SecurityEvaluationModel::SecurityLevel)
 
 #endif

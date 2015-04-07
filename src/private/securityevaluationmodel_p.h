@@ -25,31 +25,31 @@ class Certificate;
 #include <certificate.h>
 #include "private/matrixutils.h"
 
-class SecurityValidationModelPrivate : public QObject
+class SecurityEvaluationModelPrivate : public QObject
 {
 public:
-   SecurityValidationModelPrivate(Account* account, SecurityValidationModel* parent);
+   SecurityEvaluationModelPrivate(Account* account, SecurityEvaluationModel* parent);
 
    //Attributes
    QList<SecurityFlaw*>  m_lCurrentFlaws       ;
-   SecurityValidationModel::SecurityLevel m_CurrentSecurityLevel;
+   SecurityEvaluationModel::SecurityLevel m_CurrentSecurityLevel;
    Account*      m_pAccount            ;
    QHash< int, QHash< int, SecurityFlaw* > > m_hFlaws;
    bool         m_isScheduled;
-   int          m_SeverityCount[enum_class_size<SecurityValidationModel::Severity>()];
+   int          m_SeverityCount[enum_class_size<SecurityEvaluationModel::Severity>()];
 
 
    ///Messages to show to the end user
-   static const QString messages[enum_class_size<SecurityValidationModel::AccountSecurityFlaw>()];
+   static const QString messages[enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>()];
 
    //Static mapping
-   static const TypedStateMachine< SecurityValidationModel::SecurityLevel , SecurityValidationModel::AccountSecurityFlaw > maximumSecurityLevel;
-   static const TypedStateMachine< SecurityValidationModel::Severity      , SecurityValidationModel::AccountSecurityFlaw > flawSeverity        ;
+   static const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityFlaw > maximumSecurityLevel;
+   static const TypedStateMachine< SecurityEvaluationModel::Severity      , SecurityEvaluationModel::AccountSecurityFlaw > flawSeverity        ;
 
-   static const TypedStateMachine< SecurityValidationModel::SecurityLevel , Certificate::Checks > maximumCertificateSecurityLevel;
-   static const TypedStateMachine< SecurityValidationModel::Severity      , Certificate::Checks > certificateFlawSeverity        ;
+   static const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::Checks > maximumCertificateSecurityLevel;
+   static const TypedStateMachine< SecurityEvaluationModel::Severity      , Certificate::Checks > certificateFlawSeverity        ;
 
-   SecurityValidationModel* q_ptr;
+   SecurityEvaluationModel* q_ptr;
 
 public Q_SLOTS:
    void update();

@@ -20,18 +20,18 @@
 
 #include <QtCore/QObject>
 
-#include "securityvalidationmodel.h"
+#include "securityevaluationmodel.h"
 class SecurityFlaw;
 
 class SecurityFlawPrivate : public QObject
 {
    Q_OBJECT
 public:
-   SecurityFlawPrivate(SecurityFlaw* parent, SecurityValidationModel::AccountSecurityFlaw f,Certificate::Type type);
+   SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type);
 
    //Attributes
-   SecurityValidationModel::AccountSecurityFlaw m_flaw;
-   SecurityValidationModel::Severity m_severity;
+   SecurityEvaluationModel::AccountSecurityFlaw m_flaw;
+   SecurityEvaluationModel::Severity m_severity;
    Certificate::Type m_certType;
    int m_Row;
 

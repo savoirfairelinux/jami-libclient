@@ -49,8 +49,8 @@
 #include "phonedirectorymodel.h"
 #include "presencestatusmodel.h"
 #include "uri.h"
-#include "securityvalidationmodel.h"
-#include "private/securityvalidationmodel_p.h"
+#include "securityevaluationmodel.h"
+#include "private/securityevaluationmodel_p.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -70,7 +70,7 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
-m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityValidationModel(nullptr),m_pTlsMethodModel(nullptr),
+m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr)
@@ -393,12 +393,12 @@ AccountStatusModel* Account::statusModel() const
    return d_ptr->m_pStatusModel;
 }
 
-SecurityValidationModel* Account::securityValidationModel() const
+SecurityEvaluationModel* Account::securityValidationModel() const
 {
-   if (!d_ptr->m_pSecurityValidationModel) {
-      d_ptr->m_pSecurityValidationModel = new SecurityValidationModel(const_cast<Account*>(this));
+   if (!d_ptr->m_pSecurityEvaluationModel) {
+      d_ptr->m_pSecurityEvaluationModel = new SecurityEvaluationModel(const_cast<Account*>(this));
    }
-   return d_ptr->m_pSecurityValidationModel;
+   return d_ptr->m_pSecurityEvaluationModel;
 }
 
 TlsMethodModel* Account::tlsMethodModel() const
@@ -1752,8 +1752,8 @@ void AccountPrivate::outdate() {
 
 void AccountPrivate::regenSecurityValidation()
 {
-   if (m_pSecurityValidationModel) {
-      m_pSecurityValidationModel->d_ptr->update();
+   if (m_pSecurityEvaluationModel) {
+      m_pSecurityEvaluationModel->d_ptr->update();
    }
 }
 

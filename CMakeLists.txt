@@ -204,7 +204,7 @@ SET( libringclient_LIB_SRCS
   src/profilemodel.cpp
   src/ringtonemodel.cpp
   src/lastusednumbermodel.cpp
-  src/securityvalidationmodel.cpp
+  src/securityevaluationmodel.cpp
   src/personmodel.cpp
   src/collectionmodel.cpp
   src/collectionmanagerinterface.cpp
@@ -300,7 +300,7 @@ SET( libringclient_LIB_HDRS
   src/numbercategory.h
   src/ringtonemodel.h
   src/lastusednumbermodel.h
-  src/securityvalidationmodel.h
+  src/securityevaluationmodel.h
   src/certificate.h
   src/personmodel.h
   src/transitionalpersonbackend.h
