@@ -48,7 +48,6 @@ class LIB_EXPORT ShmRenderer : public Renderer {
       virtual ~ShmRenderer();
 
       //Mutators
-      bool resizeShm();
       void stopShm  ();
       bool startShm ();
 

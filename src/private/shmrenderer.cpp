@@ -77,7 +77,7 @@ public:
 
    //Attributes
    QString           m_ShmPath    ;
-   int               fd           ;
+   int               m_fd         ;
    SHMHeader*        m_pShmArea   ;
    unsigned          m_ShmAreaLen ;
    uint              m_BufferGen  ;
@@ -99,6 +99,7 @@ public:
    bool     shmLock      ();
    void     shmUnlock    ();
    bool     renderToBitmap();
+   bool     resizeShm();
 
 private:
    Video::ShmRenderer* q_ptr;
@@ -110,7 +111,7 @@ private Q_SLOTS:
 }
 
 Video::ShmRendererPrivate::ShmRendererPrivate(Video::ShmRenderer* parent) : QObject(parent), q_ptr(parent),
-   fd(-1),m_fpsC(0),m_Fps(0),
+   m_fd(-1),m_fpsC(0),m_Fps(0),
    m_pShmArea((SHMHeader*)MAP_FAILED), m_ShmAreaLen(0), m_BufferGen(0),
    m_pTimer(nullptr)
 #ifdef DEBUG_FPS
@@ -134,12 +135,15 @@ Video::ShmRenderer::~ShmRenderer()
 }
 
 ///Get the data from shared memory and transform it into a QByteArray
-bool Video::ShmRendererPrivate::renderToBitmap()
+bool
+Video::ShmRendererPrivate::renderToBitmap()
 {
    QMutexLocker locker {q_ptr->mutex()};
 
 #ifdef Q_OS_LINUX
-   if (!q_ptr->isRendering())
+   auto& renderer = static_cast<Video::Renderer*>(q_ptr)->d_ptr;
+   auto& frame = renderer->otherFrame();
+   if (frame.isEmpty())
       return false;
 
    if (!shmLock())
@@ -161,13 +165,11 @@ bool Video::ShmRendererPrivate::renderToBitmap()
    if (not m_pShmArea->frameSize)
        return false;
 
-   if (!q_ptr->resizeShm()) {
+   if (!resizeShm()) {
       qDebug() << "Could not resize shared memory";
       return false;
    }
 
-   auto& renderer = static_cast<Video::Renderer*>(q_ptr)->d_ptr;
-   auto& frame = renderer->otherFrame();
    if ((unsigned)frame.size() != m_pShmArea->frameSize)
       frame.resize(m_pShmArea->frameSize);
    std::copy_n(m_pShmArea->data + m_pShmArea->readOffset, m_pShmArea->frameSize, frame.data());
@@ -192,16 +194,42 @@ bool Video::ShmRendererPrivate::renderToBitmap()
 #endif
 }
 
+///Resize the shared memory
+bool
+Video::ShmRendererPrivate::resizeShm()
+{
+    const auto areaSize = sizeof(SHMHeader) + 2 * m_pShmArea->frameSize + 15;
+    if (m_ShmAreaLen == areaSize)
+        return true;
+
+    shmUnlock();
+    if (::munmap(m_pShmArea, m_ShmAreaLen)) {
+        qDebug() << "Could not unmap shared area:" << strerror(errno);
+        return false;
+    }
+
+    m_pShmArea = (SHMHeader*) ::mmap(nullptr, areaSize,
+                                     PROT_READ | PROT_WRITE,
+                                     MAP_SHARED, m_fd, 0);
+    if (m_pShmArea == MAP_FAILED) {
+        qDebug() << "Could not remap shared area";
+        return false;
+    }
+
+    m_ShmAreaLen = areaSize;
+    return shmLock();
+}
+
 ///Connect to the shared memory
 bool Video::ShmRenderer::startShm()
 {
-   if (d_ptr->fd != -1) {
+   if (d_ptr->m_fd != -1) {
       qDebug() << "fd must be -1";
       return false;
    }
 
-   d_ptr->fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
-   if (d_ptr->fd < 0) {
+   d_ptr->m_fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
+   if (d_ptr->m_fd < 0) {
       qDebug() << "could not open shm area " << d_ptr->m_ShmPath
                << ", shm_open failed:" << strerror(errno);
       return false;
@@ -210,7 +238,7 @@ bool Video::ShmRenderer::startShm()
    const auto areaSize = sizeof(SHMHeader);
    d_ptr->m_pShmArea = (SHMHeader*) ::mmap(nullptr, areaSize,
                                            PROT_READ | PROT_WRITE,
-                                           MAP_SHARED, d_ptr->fd, 0);
+                                           MAP_SHARED, d_ptr->m_fd, 0);
    if (d_ptr->m_pShmArea == MAP_FAILED) {
        qDebug() << "Could not remap shared area";
        return false;
@@ -225,11 +253,11 @@ bool Video::ShmRenderer::startShm()
 ///Disconnect from the shared memory
 void Video::ShmRenderer::stopShm()
 {
-   if (d_ptr->fd < 0)
+   if (d_ptr->m_fd < 0)
        return;
 
-   ::close(d_ptr->fd);
-   d_ptr->fd = -1;
+   ::close(d_ptr->m_fd);
+   d_ptr->m_fd = -1;
 
    if (d_ptr->m_pShmArea == MAP_FAILED)
        return;
@@ -237,31 +265,6 @@ void Video::ShmRenderer::stopShm()
    ::munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen);
    d_ptr->m_ShmAreaLen = 0;
    d_ptr->m_pShmArea = (SHMHeader*) MAP_FAILED;
-}
-
-///Resize the shared memory
-bool Video::ShmRenderer::resizeShm()
-{
-    const auto areaSize = sizeof(SHMHeader) + 2 * d_ptr->m_pShmArea->frameSize + 15;
-    if (d_ptr->m_ShmAreaLen == areaSize)
-        return true;
-
-    d_ptr->shmUnlock();
-    if (::munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen)) {
-        qDebug() << "Could not unmap shared area:" << strerror(errno);
-        return false;
-    }
-
-    d_ptr->m_pShmArea = (SHMHeader*) ::mmap(nullptr, areaSize,
-                                            PROT_READ | PROT_WRITE,
-                                            MAP_SHARED, d_ptr->fd, 0);
-    if (d_ptr->m_pShmArea == MAP_FAILED) {
-        qDebug() << "Could not remap shared area";
-        return false;
-    }
-
-    d_ptr->m_ShmAreaLen = areaSize;
-    return d_ptr->shmLock();
 }
 
 ///Lock the memory while the copy is being made
@@ -301,7 +304,7 @@ void Video::ShmRendererPrivate::timedEvents()
       }
       m_fpsC++;
 
-      emit q_ptr->frameUpdated();
+      //emit q_ptr->frameUpdated();
    }
    /*else {
       qDebug() << "Frame dropped";
