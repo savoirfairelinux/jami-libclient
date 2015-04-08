@@ -35,13 +35,13 @@ const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityE
    /*SRTP_ENABLED                */QObject::tr("Your communication negotiation is secured, but not the media stream, please enable ZRTP or SDES"),
    /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to "
                                    "snooping"),
-   /*CERTIFICATE_MATCH           */QObject::tr("Your certificate and authority don't match, if your certificate require an authority, it wont work"),
-   /*OUTGOING_SERVER_MATCH       */QObject::tr("The outgoring server specified doesn't match the hostname or the one included in the certificate"),
-   /*VERIFY_INCOMING_ENABLED     */QObject::tr("The \"verify incoming certificate\" option is disabled, this leave you vulnarable to man in the middle attack"),
-   /*VERIFY_ANSWER_ENABLED       */QObject::tr("The \"verify answer certificate\" option is disabled, this leave you vulnarable to man in the middle attack"),
+   /*CERTIFICATE_MATCH           */QObject::tr("Your certificate and authority don't match, if your certificate require an authority, it won't work"),
+   /*OUTGOING_SERVER_MATCH       */QObject::tr("The outgoing server specified doesn't match the hostname or the one included in the certificate"),
+   /*VERIFY_INCOMING_ENABLED     */QObject::tr("The \"verify incoming certificate\" option is disabled, this leave you vulnerable to man in the middle attack"),
+   /*VERIFY_ANSWER_ENABLED       */QObject::tr("The \"verify answer certificate\" option is disabled, this leave you vulnerable to man in the middle attack"),
    /*REQUIRE_CERTIFICATE_ENABLED */QObject::tr("None of your certificate provide a private key, this is required. Please select a private key"
                                        " or use a certificate with one built-in"),
-   /*NOT_MISSING_CERTIFICATE     */QObject::tr("No certificate authority is provided, it wont be possible to validate if the answer certificates are valid. Some account may also not work."),
+   /*NOT_MISSING_CERTIFICATE     */QObject::tr("No certificate authority is provided, it won't be possible to validate if the answer certificates are valid. Some account may also not work."),
    /*NOT_MISSING_CERTIFICATE     */QObject::tr("No certificate has been provided. This is, for now, unsupported by Ring"),
 };
 
