@@ -103,7 +103,7 @@ struct VCardMapper {
          break;
       }
 
-      QVariant photo = PixmapManipulationDelegate::instance()->profilePhoto(fn,type);
+      QVariant photo = PixmapManipulationDelegate::instance()->personPhoto(fn,type);
       c->setPhoto(photo);
    }
 
