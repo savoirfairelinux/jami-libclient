@@ -900,6 +900,12 @@ void Call::setDialNumber(const ContactMethod* number)
 
    emit changed();
    emit changed(this);
+   
+   //Make sure the call is now in the right state
+   if (number && state() == Call::State::NEW)
+      d_ptr->changeCurrentState(Call::State::DIALING);
+   else if (!number && state() == Call::State::DIALING)
+      d_ptr->changeCurrentState(Call::State::NEW);
 }
 
 ///Set the recording path
