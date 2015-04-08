@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -46,18 +47,23 @@
 #endif
 
 ///Shared memory object
-struct SHMHeader {
-   sem_t notification;
-   sem_t mutex;
+// Implementation note: double-buffering
+// Shared memory is divided in two regions, each representing one frame.
+// First byte of each frame is warranted to by aligned on 16 bytes.
+// One region is marked readable: this region can be safely read.
+// The other region is writeable: only the producer can use it.
 
-   unsigned m_BufferGen;
-   int m_BufferSize;
-   /* The header will be aligned on 16-byte boundaries */
-   char padding[8];
+struct SHMHeader {
+    sem_t mutex; // Lock it before any operations on following fields.
+    sem_t frameGenMutex; // unlocked by producer when frameGen modified
+    unsigned frameGen; // monotonically incremented when a producer changes readOffset
+    unsigned frameSize; // size in bytes of 1 frame
+    unsigned readOffset; // offset of readable frame in data
+    unsigned writeOffset; // offset of writable frame in data
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-pedantic"
-   char m_Data[];
+    char data[]; // the whole shared memory
 #pragma GCC diagnostic pop
 };
 
@@ -73,7 +79,7 @@ public:
    QString           m_ShmPath    ;
    int               fd           ;
    SHMHeader*        m_pShmArea   ;
-   signed int        m_ShmAreaLen ;
+   unsigned          m_ShmAreaLen ;
    uint              m_BufferGen  ;
    QTimer*           m_pTimer     ;
    int               m_fpsC       ;
@@ -125,7 +131,6 @@ Video::ShmRenderer::ShmRenderer(const QByteArray& id, const QString& shmPath, co
 Video::ShmRenderer::~ShmRenderer()
 {
    stopShm();
-   //delete m_pShmArea;
 }
 
 ///Get the data from shared memory and transform it into a QByteArray
@@ -140,41 +145,34 @@ bool Video::ShmRendererPrivate::renderToBitmap()
    if (!shmLock())
       return false;
 
-   if (m_BufferGen == m_pShmArea->m_BufferGen) {
-	   // wait for a new buffer
-	   do {
-		   shmUnlock();
-		   auto err = sem_trywait(&m_pShmArea->notification);
-		   if (!err)
-			   break;
+   if (m_BufferGen == m_pShmArea->frameGen) {
+       shmUnlock();
 
-		   // Fatal error?
-		   if (errno != EAGAIN)
-			   return false;
-
-		   // wait a little bit that deamon does its work
-		   usleep(10); // must be less than the maximal framerate possible
-
-           // stopRendering called?
-           if (!q_ptr->isRendering())
-               return false;
-	   } while (m_BufferGen == m_pShmArea->m_BufferGen);
+       // wait for a new frame, max 33ms
+       static const struct timespec timeout = {0, 33000000};
+       if (::sem_timedwait(&m_pShmArea->frameGenMutex, &timeout) < 0)
+           return false;
 
 	   if (!shmLock())
 		   return false;
    }
 
+   // valid frame to render?
+   if (not m_pShmArea->frameSize)
+       return false;
+
    if (!q_ptr->resizeShm()) {
       qDebug() << "Could not resize shared memory";
-	  shmUnlock();
       return false;
    }
 
-   if (static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().size() != m_pShmArea->m_BufferSize)
-      static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().resize(m_pShmArea->m_BufferSize);
-   memcpy(static_cast<Video::Renderer*>(q_ptr)->d_ptr->otherFrame().data(),m_pShmArea->m_Data,m_pShmArea->m_BufferSize);
-   m_BufferGen = m_pShmArea->m_BufferGen;
-   static_cast<Video::Renderer*>(q_ptr)->d_ptr->updateFrameIndex();
+   auto& renderer = static_cast<Video::Renderer*>(q_ptr)->d_ptr;
+   auto& frame = renderer->otherFrame();
+   if ((unsigned)frame.size() != m_pShmArea->frameSize)
+      frame.resize(m_pShmArea->frameSize);
+   std::copy_n(m_pShmArea->data + m_pShmArea->readOffset, m_pShmArea->frameSize, frame.data());
+   m_BufferGen = m_pShmArea->frameGen;
+   renderer->updateFrameIndex();
    shmUnlock();
 
 #ifdef DEBUG_FPS
@@ -202,20 +200,24 @@ bool Video::ShmRenderer::startShm()
       return false;
    }
 
-   d_ptr->fd = shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
+   d_ptr->fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
    if (d_ptr->fd < 0) {
-      qDebug() << "could not open shm area " << d_ptr->m_ShmPath << ", shm_open failed:" << strerror(errno);
+      qDebug() << "could not open shm area " << d_ptr->m_ShmPath
+               << ", shm_open failed:" << strerror(errno);
       return false;
    }
-   d_ptr->m_ShmAreaLen = sizeof(SHMHeader);
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   d_ptr->m_pShmArea = (SHMHeader*) mmap(NULL, d_ptr->m_ShmAreaLen, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->fd, 0);
-   #pragma GCC diagnostic pop
+
+   const auto areaSize = sizeof(SHMHeader);
+   d_ptr->m_pShmArea = (SHMHeader*) ::mmap(nullptr, areaSize,
+                                           PROT_READ | PROT_WRITE,
+                                           MAP_SHARED, d_ptr->fd, 0);
    if (d_ptr->m_pShmArea == MAP_FAILED) {
-      qDebug() << "Could not map shm area, mmap failed";
-      return false;
+       qDebug() << "Could not remap shared area";
+       return false;
    }
+
+   d_ptr->m_ShmAreaLen = areaSize;
+
    emit started();
    return true;
 }
@@ -223,12 +225,16 @@ bool Video::ShmRenderer::startShm()
 ///Disconnect from the shared memory
 void Video::ShmRenderer::stopShm()
 {
-   if (d_ptr->fd >= 0)
-      close(d_ptr->fd);
+   if (d_ptr->fd < 0)
+       return;
+
+   ::close(d_ptr->fd);
    d_ptr->fd = -1;
 
-   if (d_ptr->m_pShmArea != MAP_FAILED)
-      munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen);
+   if (d_ptr->m_pShmArea == MAP_FAILED)
+       return;
+
+   ::munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen);
    d_ptr->m_ShmAreaLen = 0;
    d_ptr->m_pShmArea = (SHMHeader*) MAP_FAILED;
 }
@@ -236,39 +242,33 @@ void Video::ShmRenderer::stopShm()
 ///Resize the shared memory
 bool Video::ShmRenderer::resizeShm()
 {
-   while (( (unsigned int) sizeof(SHMHeader) + (unsigned int) d_ptr->m_pShmArea->m_BufferSize) > (unsigned int) d_ptr->m_ShmAreaLen) {
-      const size_t new_size = sizeof(SHMHeader) + d_ptr->m_pShmArea->m_BufferSize;
+    const auto areaSize = sizeof(SHMHeader) + 2 * d_ptr->m_pShmArea->frameSize + 15;
+    if (d_ptr->m_ShmAreaLen == areaSize)
+        return true;
 
-      d_ptr->shmUnlock();
-      if (munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen)) {
-            qDebug() << "Could not unmap shared area:" << strerror(errno);
-            return false;
-      }
+    d_ptr->shmUnlock();
+    if (::munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen)) {
+        qDebug() << "Could not unmap shared area:" << strerror(errno);
+        return false;
+    }
 
-      #pragma GCC diagnostic push
-      #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-      d_ptr->m_pShmArea = (SHMHeader*) mmap(NULL, new_size, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->fd, 0);
-      #pragma GCC diagnostic pop
-      d_ptr->m_ShmAreaLen = new_size;
+    d_ptr->m_pShmArea = (SHMHeader*) ::mmap(nullptr, areaSize,
+                                            PROT_READ | PROT_WRITE,
+                                            MAP_SHARED, d_ptr->fd, 0);
+    if (d_ptr->m_pShmArea == MAP_FAILED) {
+        qDebug() << "Could not remap shared area";
+        return false;
+    }
 
-      if (!d_ptr->m_pShmArea) {
-            d_ptr->m_pShmArea = nullptr;
-            qDebug() << "Could not remap shared area";
-            return false;
-      }
-
-      d_ptr->m_ShmAreaLen = new_size;
-      if (!d_ptr->shmLock())
-            return true;
-   }
-   return true;
+    d_ptr->m_ShmAreaLen = areaSize;
+    return d_ptr->shmLock();
 }
 
 ///Lock the memory while the copy is being made
 bool Video::ShmRendererPrivate::shmLock()
 {
 #ifdef Q_OS_LINUX
-   return sem_trywait(&m_pShmArea->mutex) >= 0;
+   return sem_wait(&m_pShmArea->mutex) >= 0;
 #else
    return false;
 #endif
