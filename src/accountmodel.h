@@ -43,7 +43,7 @@ public:
    Q_PROPERTY(bool           presenceSubscribeSupported READ isPresenceSubscribeSupported                     )
    Q_PROPERTY(ProtocolModel* protocolModel              READ protocolModel                                    )
    Q_PROPERTY(bool           isSipSupported             READ isSipSupported   NOTIFY supportedProtocolsChanged)
-   Q_PROPERTY(bool           isAixSupported             READ isAixSupported   NOTIFY supportedProtocolsChanged)
+   Q_PROPERTY(bool           isIAXSupported             READ isIAXSupported   NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
 
@@ -66,7 +66,7 @@ public:
    bool                 isPresenceSubscribeSupported(                                      ) const;
    ProtocolModel*       protocolModel               (                                      ) const;
    bool                 isSipSupported              (                                      ) const;
-   bool                 isAixSupported              (                                      ) const;
+   bool                 isIAXSupported              (                                      ) const;
    bool                 isIP2IPSupported            (                                      ) const;
    bool                 isRingSupported             (                                      ) const;
 

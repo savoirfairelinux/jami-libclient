@@ -17,30 +17,45 @@
  ***************************************************************************/
 #include "uri.h"
 
-constexpr const char* URI::schemeNames[];
 
 class URIPrivate
 {
 public:
+   ///Strings associated with SchemeType
+   constexpr static const char* schemeNames[] = {
+      /*NONE = */ ""     ,
+      /*SIP  = */ "sip:" ,
+      /*SIPS = */ "sips:",
+      /*IAX  = */ "iax:" ,
+      /*IAX2 = */ "iax2:",
+      /*RING = */ "ring:",
+   };
+
    URIPrivate(QString* uri);
    //Attributes
-   QString          m_Hostname    ;
-   QString          m_Userinfo    ;
-   QStringList      m_lAttributes ;
-   QString          m_Stripped    ;
-   URI::SchemeType  m_HeaderType  ;
-   bool             m_hasChevrons ;
-   bool             m_Parsed      ;
+   QString           m_Hostname    ;
+   QString           m_Userinfo    ;
+   QStringList       m_lAttributes ;
+   QString           m_Stripped    ;
+   URI::SchemeType   m_HeaderType  ;
+   bool              m_hasChevrons ;
+   bool              m_Parsed      ;
+   bool              m_HasAt       ;
+   URI::ProtocolHint m_ProtocolHint;
+   bool              m_HintParsed  ;
 
    //Helper
    static QString strip(const QString& uri, URI::SchemeType& scheme);
    void parse();
+   static bool checkIp(const QString& str, bool &isHash);
 private:
    QString* q_ptr;
 };
 
+constexpr const char* URIPrivate::schemeNames[];
+
 URIPrivate::URIPrivate(QString* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri),
-m_hasChevrons(false)
+m_hasChevrons(false),m_HasAt(false),m_ProtocolHint(URI::ProtocolHint::SIP_OTHER),m_HintParsed(false)
 {
 }
 
@@ -89,26 +104,50 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
 {
    if (uri.isEmpty())
       return QString();
-   int start(0),end(uri.size()-1); //Other type of comparisons were too slow
-   if (end > 5 && uri[0] == '<' ) {
-      if (uri[4] == ':') {
-         scheme = uri[1] == 's'?URI::SchemeType::SIP : URI::SchemeType::IAX;
-         start = 5;
+
+   int start(uri[0] == '<'?1:0),end(uri.size()-1); //Other type of comparisons were too slow
+   uchar c;
+
+   //Assume the scheme is either iax, sip or ring using the first letter and length, this
+   //is dangerous and can cause undefined behaviour that will cause the call to fail
+   //later on, but this is not really a problem for now
+   if (end > start+3 && (c = uri[start+3].toLatin1()) == ':') {
+      switch (c) {
+         case 'i':
+            scheme = URI::SchemeType::IAX;
+            break;
+         case 's':
+            scheme = URI::SchemeType::SIP;
+            break;
       }
-      else if (uri[5] == ':') {
-         scheme = URI::SchemeType::SIPS;
-         start = 6;
-      }
+      start = 5;
    }
+   else if (end > start+4 && (c = uri[start+4].toLatin1()) == ':') {
+      switch (c) {
+         case 'i':
+            scheme = URI::SchemeType::IAX2;
+            break;
+         case 'r':
+            scheme = URI::SchemeType::RING;
+            break;
+         case 's':
+            scheme = URI::SchemeType::SIPS;
+            break;
+      }
+      start = 6;
+   }
+
    if (end && uri[end] == '>')
       end--;
    else if (start) {
       //TODO there may be a ';' section with arguments, check
    }
+
    return uri.mid(start,end-start+1);
 }
 
-/**Return the domaine of an URI
+/**
+ * Return the domaine of an URI
  *
  * For example, example.com in <sip:12345@example.com>
  */
@@ -141,14 +180,117 @@ URI::SchemeType URI::schemeType() const
    return d_ptr->m_HeaderType;
 }
 
+/**
+ * "Fast" Ipv4 and Ipv6 check, accept 999.999.999.999, :::::::::FF and other
+ * atrocities, but at least perform a O(N) ish check and validate the hash
+ *
+ * @param str an uservalue (faster the scheme and before the "at" sign)
+ * @param [out] isHash if the content is pure hexadecimal ASCII
+ */
+bool URIPrivate::checkIp(const QString& str, bool &isHash)
+{
+   char* raw = str.toLatin1().data();
+   ushort max = str.size();
+
+   if (max < 3 || max > 45)
+      return false;
+
+   uchar dc(0),sc(0),i(0),d(0),hx(1);
+
+   while (i < max) {
+      switch(raw[i]) {
+         case '.':
+            isHash = false;
+            d = 0;
+            dc++;
+            break;
+         case '0':
+         case '1':
+         case '2':
+         case '3':
+         case '4':
+         case '5':
+         case '6':
+         case '7':
+         case '8':
+         case '9':
+            if (++d > 3 && dc)
+               return false;
+            break;
+         case ':':
+            isHash = false;
+            sc++;
+            //No break
+         case 'A':
+         case 'B':
+         case 'C':
+         case 'D':
+         case 'E':
+         case 'F':
+         case 'a':
+         case 'b':
+         case 'c':
+         case 'd':
+         case 'e':
+         case 'f':
+            hx = 0;
+            break;
+         default:
+            return false;
+      };
+      i++;
+   }
+   return (hx && dc == 3 && d < 4) ^ (~(sc < 2 || dc));
+}
+
+/**
+ * This method return an hint to guess the protocol that could be used to call
+ * this URI. It is a quick guess, not something that should be trusted
+ *
+ * @warning, this method is O(N) when called for the first time on an URI
+ */
+URI::ProtocolHint URI::protocolHint() const
+{
+   if (!d_ptr->m_Parsed)
+      const_cast<URI*>(this)->d_ptr->parse();
+
+   if (!d_ptr->m_HintParsed) {
+      bool isHash = d_ptr->m_Userinfo.size() == 40;
+      d_ptr->m_ProtocolHint = \
+        (
+         //Step one    : Check IAX protocol, is has already been detected at this point
+         d_ptr->m_HeaderType == URI::SchemeType::IAX2 || d_ptr->m_HeaderType == URI::SchemeType::IAX
+            ? URI::ProtocolHint::IAX
+
+      : (
+         //Step two  : check IP
+         URIPrivate::checkIp(d_ptr->m_Userinfo,isHash) ? URI::ProtocolHint::IP
+
+      : (
+         //Step three    : Check RING protocol, is has already been detected at this point
+         d_ptr->m_HeaderType == URI::SchemeType::RING && isHash ? URI::ProtocolHint::RING
+
+      : (
+         //Step four   : Differentiate between ***@*** and *** type URIs
+         d_ptr->m_HasAt ? URI::ProtocolHint::SIP_HOST : URI::ProtocolHint::SIP_OTHER
+
+        ))));
+
+        d_ptr->m_HintParsed = true;
+   qDebug() << "ICI" << (int)d_ptr->m_ProtocolHint;
+   }
+   return d_ptr->m_ProtocolHint;
+}
+
 ///Keep a cache of the values to avoid re-parsing them
 void URIPrivate::parse()
 {
-   //TODO DHT hashes have 40 chars or 45 with sips:/ring: is set
+   //FIXME the indexOf is done twice, the second time could be avoided
    if (q_ptr->indexOf('@') != -1) {
       const QStringList split = q_ptr->split('@');
       m_Hostname = split[1];//split[1].left(split[1].size())
       m_Userinfo = split[0];
+      m_HasAt    = split.size();
       m_Parsed = true;
    }
 }
@@ -171,6 +313,28 @@ QString URI::userinfo() const
 QString URI::fullUri() const
 {
    return QString("<%1%2>")
-      .arg(schemeNames[static_cast<int>(d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType)])
+      .arg(URIPrivate::schemeNames[static_cast<int>(d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType)])
       .arg(*this);
+}
+
+QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
+{
+   switch(ph) {
+      case URI::ProtocolHint::SIP_OTHER:
+         stream << "SIP_OTHER";
+         break;
+      case URI::ProtocolHint::IAX      :
+         stream << "IAX";
+         break;
+      case URI::ProtocolHint::RING     :
+         stream << "RING";
+         break;
+      case URI::ProtocolHint::IP       :
+         stream << "IP";
+         break;
+      case URI::ProtocolHint::SIP_HOST :
+         stream << "SIP_HOST";
+         break;
+   }
+   return stream;
 }

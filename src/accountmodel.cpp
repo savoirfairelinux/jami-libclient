@@ -612,7 +612,7 @@ bool AccountModel::isSipSupported() const
    return d_ptr->m_lSupportedProtocols[Account::Protocol::SIP];
 }
 
-bool AccountModel::isAixSupported() const
+bool AccountModel::isIAXSupported() const
 {
    return d_ptr->m_lSupportedProtocols[Account::Protocol::IAX];
 }

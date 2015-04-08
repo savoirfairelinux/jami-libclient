@@ -23,13 +23,14 @@
 #include <QStringList>
 
 class URIPrivate;
+class QDataStream;
 
 /**
     * @class URI A specialized string with multiple attributes
-    * 
-    * Most of Ring-KDE handle uri as strings, but more
+    *
+    * Most of LibRingClient handle uri as strings, but more
     * advanced algorithms need to access the various sections.
-    * 
+    *
     * Here is some example of common numbers/URIs:
     *  * 123
     *  * 123@192.168.123.123
@@ -43,12 +44,12 @@ class URIPrivate;
     *  * iax:example.com/alice
     *  * iax:johnQ@example.com/12022561414
     *  * iax:example.com:4570/alice?friends
-    * 
+    *
     * @ref http://tools.ietf.org/html/rfc5456#page-8
     * @ref http://tools.ietf.org/html/rfc3986
     * @ref http://tools.ietf.org/html/rfc3261
     * @ref http://tools.ietf.org/html/rfc5630
-    * 
+    *
     * From the RFC:
     *    foo://example.com:8042/over/there?name=ferret#nose
     *    \_/   \______________/\_________/ \_________/ \__/
@@ -85,17 +86,10 @@ public:
       SIP  ,
       SIPS ,
       IAX  ,
+      IAX2 ,
       RING ,
    };
-
-   ///Strings associated with SchemeType
-   constexpr static const char* schemeNames[] = {
-      /*NONE = */ ""     ,
-      /*SIP  = */ "sip:" ,
-      /*SIPS = */ "sips:",
-      /*IAX  = */ "iax:" ,
-      /*RING = */ "ring:",
-   };
+   Q_ENUMS(URI::SchemeType)
 
    /**
     * @enum Transport each known valid transport types
@@ -112,18 +106,41 @@ public:
       SCTP   , /*!<                                                       */
       sctp   , /*!<                                                       */
    };
+   Q_ENUMS(URI::Transport)
 
-   QString    hostname    () const;
-   QString    fullUri     () const;
-   QString    userinfo    () const;
-   bool       hasHostname () const;
-   SchemeType schemeType  () const;
+   /**
+    * @enum ProtocolHint Expanded version of Account::Protocol
+    *
+    * This is used to make better choice when it come to choose an account or
+    * guess if the URI can be used with the current set et configured accounts.
+    *
+    * @warning This is an approximation. Those values are guessed using partial
+    * parsing (for performance) and are not definitive.
+    */
+   enum class ProtocolHint {
+      SIP_OTHER = 0, /*!< Anything non empty that doesn't fit in other categories */
+      IAX       = 1, /*!< Start with "iax:" or "iax2:"                            */
+      RING      = 2, /*!< Start with "ring:" and has 45 ASCII characters          */
+      IP        = 3, /*!< Match an IPv4 address                                   */
+      SIP_HOST  = 4, /*!< Has an @ and no "ring:" prefix                          */
+   };
+   Q_ENUMS(URI::ProtocolHint)
+
+   QString    hostname      () const;
+   QString    fullUri       () const;
+   QString    userinfo      () const;
+   bool       hasHostname   () const;
+   SchemeType schemeType    () const;
+   ProtocolHint protocolHint() const;
 
    URI& operator=(const URI&);
 
 private:
    const QScopedPointer<URIPrivate> d_ptr;
 };
-// Q_DECLARE_METATYPE(URI*)
+
+Q_DECLARE_METATYPE(URI::ProtocolHint)
+
+QDataStream& operator<< ( QDataStream& stream, const URI::ProtocolHint& ph );
 
 #endif //URI_H

@@ -939,16 +939,21 @@ bool Account::supportScheme( URI::SchemeType type )
    switch(type) {
       case URI::SchemeType::NONE :
          return true;
+         break;
       case URI::SchemeType::SIP  :
       case URI::SchemeType::SIPS :
          if (protocol() == Account::Protocol::SIP)
             return true;
+         break;
       case URI::SchemeType::IAX  :
+      case URI::SchemeType::IAX2 :
          if (protocol() == Account::Protocol::IAX)
             return true;
+         break;
       case URI::SchemeType::RING :
          if (protocol() == Account::Protocol::RING)
             return true;
+         break;
    }
    return false;
 }
