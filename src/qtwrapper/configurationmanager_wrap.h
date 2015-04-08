@@ -61,25 +61,25 @@ public:
             exportable_callback<ConfigurationSignal::VolumeChanged>(
                 [this] (const std::string &device, double value) {
                        QTimer::singleShot(0, [this,device,value] {
-                             emit this->volumeChanged(QString(device.c_str()), value);
+                             Q_EMIT this->volumeChanged(QString(device.c_str()), value);
                        });
             }),
             exportable_callback<ConfigurationSignal::AccountsChanged>(
                 [this] () {
                        QTimer::singleShot(0, [this] {
-                             emit this->accountsChanged();
+                             Q_EMIT this->accountsChanged();
                        });
              }),
             exportable_callback<ConfigurationSignal::StunStatusFailed>(
                 [this] (const std::string &reason) {
                        QTimer::singleShot(0, [this, reason] {
-                             emit this->stunStatusFailure(QString(reason.c_str()));
+                             Q_EMIT this->stunStatusFailure(QString(reason.c_str()));
                        });
             }),
             exportable_callback<ConfigurationSignal::RegistrationStateChanged>(
                 [this] (const std::string &accountID, const std::string& registration_state, unsigned detail_code, const std::string& detail_str) {
                        QTimer::singleShot(0, [this, accountID, registration_state, detail_code, detail_str] {
-                             emit this->registrationStateChanged(QString(accountID.c_str()),
+                             Q_EMIT this->registrationStateChanged(QString(accountID.c_str()),
                                                                 QString(registration_state.c_str()),
                                                                 detail_code,
                                                                 QString(detail_str.c_str()));
@@ -88,13 +88,13 @@ public:
             exportable_callback<ConfigurationSignal::VolatileDetailsChanged>(
                 [this] (const std::string &accountID, const std::map<std::string, std::string>& details) {
                        QTimer::singleShot(0, [this, accountID, details] {
-                         emit this->volatileAccountDetailsChanged(QString(accountID.c_str()), convertMap(details));
+                         Q_EMIT this->volatileAccountDetailsChanged(QString(accountID.c_str()), convertMap(details));
                        });
             }),
             exportable_callback<ConfigurationSignal::Error>(
                 [this] (int code) {
                        QTimer::singleShot(0, [this,code] {
-                         emit this->errorAlert(code);
+                         Q_EMIT this->errorAlert(code);
                        });
             })
         };

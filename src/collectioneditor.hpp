@@ -50,7 +50,7 @@ QMetaObject metaObject()
 template <class T> bool CollectionEditor<T>::batchSave(const QList<T*> contacts)
 {
    bool ret = true;
-   foreach(const T* c, contacts) {
+   for(const T* c : contacts) {
       ret &= save(c);
    }
    return ret;
@@ -60,7 +60,7 @@ template <class T> bool CollectionEditor<T>::batchSave(const QList<T*> contacts)
 template <class T> bool CollectionEditor<T>::batchRemove(const QList<T*> contacts)
 {
    bool ret = true;
-   foreach(const T* c, contacts) {
+   for(const T* c : contacts) {
       ret &= remove(c);
    }
    return ret;
