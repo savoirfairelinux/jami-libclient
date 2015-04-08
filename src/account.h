@@ -404,6 +404,8 @@ class LIB_EXPORT Account : public QObject {
       void aliasChanged(const QString&);
       ///The presence support changed
       void presenceEnabledChanged(bool);
+      ///The account has been enabled/disabled
+      void enabled(bool);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)

@@ -44,7 +44,12 @@ QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 AccountModel*     AccountModelPrivate::m_spAccountList;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
-m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT})
+m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
+m_lSupportedProtocols {{
+   /* SIP  */ false,
+   /* IAX  */ false,
+   /* RING */ false,
+}}
 {
 }
 
@@ -147,8 +152,12 @@ Account* AccountModel::ip2ip() const
 {
    if (!d_ptr->m_pIP2IP) {
       foreach(Account* a, d_ptr->m_lAccounts) {
-         if (a->id() == DRing::Account::ProtocolNames::IP2IP)
+         if (a->id() == DRing::Account::ProtocolNames::IP2IP) {
             d_ptr->m_pIP2IP = a;
+            connect(a,&Account::enabled,[this]() {
+               emit supportedProtocolsChanged();
+            });
+         }
       }
    }
    return d_ptr->m_pIP2IP;
@@ -234,6 +243,9 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
             connect(acc,SIGNAL(presenceEnabledChanged(bool)),this,SLOT(slotAccountPresenceEnabledChanged(bool)));
             emit q_ptr->dataChanged(q_ptr->index(i,0),q_ptr->index(q_ptr->size()-1));
             emit q_ptr->layoutChanged();
+
+            enabledProtocol(acc->protocol());
+
          }
       }
       foreach (Account* acc, m_lAccounts) {
@@ -354,6 +366,8 @@ void AccountModel::update()
          //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
+
+         d_ptr->enabledProtocol(a->protocol());
       }
    }
 } //update
@@ -376,6 +390,8 @@ void AccountModel::updateAccounts()
          //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
+
+         d_ptr->enabledProtocol(a->protocol());
       }
       else {
          acc->performAction(Account::EditAction::RELOAD);
@@ -449,6 +465,19 @@ void AccountModel::cancel() {
          a->performAction(Account::EditAction::CANCEL);
    }
    d_ptr->m_lDeletedAccounts.clear();
+}
+
+
+void AccountModelPrivate::enabledProtocol(Account::Protocol proto)
+{
+   const bool cache = m_lSupportedProtocols[proto];
+
+   //Set the supported protocol bits, for now, this intentionally ignore account states
+   m_lSupportedProtocols.setAt(proto, true);
+
+   if (!cache) {
+      emit q_ptr->supportedProtocolsChanged();
+   }
 }
 
 
@@ -578,6 +607,27 @@ bool AccountModel::isPresenceSubscribeSupported() const
    return false;
 }
 
+bool AccountModel::isSipSupported() const
+{
+   return d_ptr->m_lSupportedProtocols[Account::Protocol::SIP];
+}
+
+bool AccountModel::isAixSupported() const
+{
+   return d_ptr->m_lSupportedProtocols[Account::Protocol::IAX];
+}
+
+bool AccountModel::isIP2IPSupported() const
+{
+   //When this account isn't enable, it is as it wasn't there at all
+   return ip2ip()->isEnabled();
+}
+
+bool AccountModel::isRingSupported() const
+{
+   return d_ptr->m_lSupportedProtocols[Account::Protocol::RING];
+}
+
 
 ProtocolModel* AccountModel::protocolModel() const
 {
@@ -608,6 +658,8 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
    if (d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
    }
+
+   d_ptr->enabledProtocol(proto);
 
    return a;
 }

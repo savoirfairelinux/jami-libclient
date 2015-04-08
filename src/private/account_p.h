@@ -69,6 +69,7 @@ public:
    Account::RegistrationState m_RegistrationState        ;
    QString                    m_LastSipRegistrationStatus;
    unsigned short             m_UseDefaultPort           ;
+   bool                       m_RemoteEnabledState       ;
 
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );
