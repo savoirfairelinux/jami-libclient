@@ -304,7 +304,7 @@ void Video::ShmRendererPrivate::timedEvents()
       }
       m_fpsC++;
 
-      //emit q_ptr->frameUpdated();
+      emit q_ptr->frameUpdated();
    }
    /*else {
       qDebug() << "Frame dropped";
