@@ -138,44 +138,44 @@ Video::ShmRenderer::~ShmRenderer()
 bool
 Video::ShmRendererPrivate::renderToBitmap()
 {
-   QMutexLocker locker {q_ptr->mutex()};
+    QMutexLocker locker {q_ptr->mutex()};
 
 #ifdef Q_OS_LINUX
-   auto& renderer = static_cast<Video::Renderer*>(q_ptr)->d_ptr;
-   auto& frame = renderer->otherFrame();
-   if (frame.isEmpty())
-      return false;
+    if (!q_ptr->isRendering())
+        return false;
 
-   if (!shmLock())
-      return false;
+    if (!shmLock())
+        return false;
 
-   if (m_BufferGen == m_pShmArea->frameGen) {
-       shmUnlock();
+    if (m_BufferGen == m_pShmArea->frameGen) {
+        shmUnlock();
 
-       // wait for a new frame, max 33ms
-       static const struct timespec timeout = {0, 33000000};
-       if (::sem_timedwait(&m_pShmArea->frameGenMutex, &timeout) < 0)
-           return false;
+        // wait for a new frame, max 33ms
+        static const struct timespec timeout = {0, 33000000};
+        if (::sem_timedwait(&m_pShmArea->frameGenMutex, &timeout) < 0)
+            return false;
 
-	   if (!shmLock())
-		   return false;
-   }
+        if (!shmLock())
+            return false;
+    }
 
-   // valid frame to render?
-   if (not m_pShmArea->frameSize)
-       return false;
+    // valid frame to render?
+    if (not m_pShmArea->frameSize)
+        return false;
 
-   if (!resizeShm()) {
-      qDebug() << "Could not resize shared memory";
-      return false;
-   }
+    if (!resizeShm()) {
+        qDebug() << "Could not resize shared memory";
+        return false;
+    }
 
-   if ((unsigned)frame.size() != m_pShmArea->frameSize)
-      frame.resize(m_pShmArea->frameSize);
-   std::copy_n(m_pShmArea->data + m_pShmArea->readOffset, m_pShmArea->frameSize, frame.data());
-   m_BufferGen = m_pShmArea->frameGen;
-   renderer->updateFrameIndex();
-   shmUnlock();
+    auto& renderer = static_cast<Video::Renderer*>(q_ptr)->d_ptr;
+    auto& frame = renderer->otherFrame();
+    if ((unsigned)frame.size() != m_pShmArea->frameSize)
+        frame.resize(m_pShmArea->frameSize);
+    std::copy_n(m_pShmArea->data + m_pShmArea->readOffset, m_pShmArea->frameSize, frame.data());
+    m_BufferGen = m_pShmArea->frameGen;
+    renderer->updateFrameIndex();
+    shmUnlock();
 
 #ifdef DEBUG_FPS
     auto currentTime = std::chrono::system_clock::now();
@@ -188,9 +188,9 @@ Video::ShmRendererPrivate::renderToBitmap()
     }
 #endif
 
-   return true;
+    return true;
 #else
-   return false;
+    return false;
 #endif
 }
 
