@@ -52,10 +52,11 @@ class LIB_EXPORT ShmRenderer : public Renderer {
       bool startShm ();
 
       //Getters
-      virtual int fps             () const         ;
+      virtual int   fps() const;
+      virtual void* getFramePtr() const;
 
       //Setters
-      void setShmPath   (const QString& path);
+      void setShmPath(const QString& path);
 
    private:
       QScopedPointer<ShmRendererPrivate> d_ptr;
@@ -64,9 +65,6 @@ class LIB_EXPORT ShmRenderer : public Renderer {
    public Q_SLOTS:
       void startRendering();
       void stopRendering ();
-
-
-
 };
 
 }

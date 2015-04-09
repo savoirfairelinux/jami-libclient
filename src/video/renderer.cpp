@@ -23,8 +23,9 @@
 //Qt
 #include <QtCore/QMutex>
 
-Video::RendererPrivate::RendererPrivate(Video::Renderer* parent) : QObject(parent), q_ptr(parent),
-m_pMutex(new QMutex()), m_FrameIdx(false)
+Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
+    : QObject(parent), q_ptr(parent)
+    , m_pMutex(new QMutex())
 {
 }
 
@@ -49,19 +50,6 @@ bool Video::Renderer::isRendering() const
   return d_ptr->m_isRendering;
 }
 
-QByteArray& Video::RendererPrivate::otherFrame()
-{
-  static QByteArray empty;
-  return q_ptr->isRendering()?m_Frame[!m_FrameIdx]:empty;
-}
-
-///Return the current framerate
-const QByteArray& Video::Renderer::currentFrame() const
-{
-  static QByteArray empty;
-  return isRendering()?d_ptr->m_Frame[d_ptr->m_FrameIdx]:empty;
-}
-
 ///Get mutex, in case renderer and views are not in the same thread
 QMutex* Video::Renderer::mutex() const
 {
@@ -72,6 +60,11 @@ QMutex* Video::Renderer::mutex() const
 QSize Video::Renderer::size() const
 {
   return d_ptr->m_pSize;
+}
+
+void* Video::Renderer::getFramePtr() const
+{
+    return d_ptr->m_framePtr;
 }
 
 /*****************************************************************************
@@ -91,9 +84,9 @@ void Video::Renderer::setSize(const QSize& size) const
   d_ptr->m_pSize = size;
 }
 
-void Video::RendererPrivate::updateFrameIndex()
+void Video::Renderer::setFramePtr(void* ptr) const
 {
-   m_FrameIdx = !m_FrameIdx;
+  d_ptr->m_framePtr = ptr;
 }
 
 #include <renderer.moc>

@@ -60,17 +60,17 @@ public:
 
    //Getters
    virtual bool              isRendering     () const;
-   virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
+   virtual void*             getFramePtr     () const;
 
    //Setters
    void setRendering(bool rendering)            const;
    void setSize(const QSize& size)              const;
+   void setFramePtr(void* ptr)                  const;
 
 Q_SIGNALS:
-   ///Emitted when a new frame is ready
-   void frameUpdated();
+   void frameUpdated(); // Emitted when a new frame is ready
    void stopped     ();
    void started     ();
 
