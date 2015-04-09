@@ -208,7 +208,7 @@ class LIB_EXPORT TemporaryContactMethod : public ContactMethod {
    Q_OBJECT
 public:
    explicit TemporaryContactMethod(const ContactMethod* number = nullptr);
-   void setUri(const QString& uri);
+   void setUri(const URI& uri);
 };
 
 #endif

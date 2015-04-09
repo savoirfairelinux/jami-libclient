@@ -588,7 +588,7 @@ bool ContactMethod::operator==(const ContactMethod& other) const
  *                                                                                  *
  ***********************************************************************************/
 
-void TemporaryContactMethod::setUri(const QString& uri)
+void TemporaryContactMethod::setUri(const URI& uri)
 {
    d_ptr->m_Uri = uri;
    d_ptr->changed();
