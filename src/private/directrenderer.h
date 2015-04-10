@@ -42,21 +42,24 @@ class LIB_EXPORT DirectRenderer : public Renderer {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
-   public:
+public:
 
-      //Constructor
-      DirectRenderer (const QByteArray& id, const QSize& res);
-      virtual ~DirectRenderer();
+   //Constructor
+   DirectRenderer (const QByteArray& id, const QSize& res);
+   virtual ~DirectRenderer();
 
-      void onNewFrame(const QByteArray& frame);
+   //Getter
+   virtual ColorSpace colorSpace() const override;
 
-  public Q_SLOTS:
-      virtual void startRendering() override;
-      virtual void stopRendering () override;
+   void onNewFrame(const QByteArray& frame);
 
-  private:
-     QScopedPointer<DirectRendererPrivate> d_ptr;
-     Q_DECLARE_PRIVATE(DirectRenderer)
+public Q_SLOTS:
+   virtual void startRendering() override;
+   virtual void stopRendering () override;
+
+private:
+   QScopedPointer<DirectRendererPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(DirectRenderer)
 
 };
 

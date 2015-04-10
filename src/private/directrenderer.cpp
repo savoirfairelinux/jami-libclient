@@ -40,17 +40,13 @@ class DirectRendererPrivate : public QObject
    Q_OBJECT
 public:
    DirectRendererPrivate(Video::DirectRenderer* parent);
-
-   //Attributes
-
 private:
-   Video::DirectRenderer* q_ptr;
-
+//    Video::DirectRenderer* q_ptr;
 };
 
 }
 
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent), q_ptr(parent)
+Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent)/*, q_ptr(parent)*/
 {
 }
 
@@ -67,26 +63,30 @@ Video::DirectRenderer::~DirectRenderer()
 
 void Video::DirectRenderer::startRendering()
 {
-
-    qWarning() << "STARTING RENDERING";
-    Video::Renderer::d_ptr->m_isRendering = true;
-    emit started();
+   qWarning() << "STARTING RENDERING";
+   Video::Renderer::d_ptr->m_isRendering = true;
+   emit started();
 }
 void Video::DirectRenderer::stopRendering ()
 {
-    qWarning() << "STOPPING RENDERING";
-    Video::Renderer::d_ptr->m_isRendering = false;
-    emit stopped();
+   qWarning() << "STOPPING RENDERING";
+   Video::Renderer::d_ptr->m_isRendering = false;
+   emit stopped();
 }
 
 void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
 {
-    if (!isRendering()) {
-       return;
-    }
+   if (!isRendering()) {
+      return;
+   }
 
-    Video::Renderer::d_ptr->m_pFrame = const_cast<char*>(frame.data());
-    emit frameUpdated();
+   Video::Renderer::d_ptr->m_pFrame = const_cast<char*>(frame.data());
+   emit frameUpdated();
+}
+
+Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
+{
+   return Video::Renderer::ColorSpace::RGBA;
 }
 
 #include <directrenderer.moc>

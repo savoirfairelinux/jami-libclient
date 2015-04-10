@@ -58,6 +58,16 @@ class LIB_EXPORT Renderer : public QObject
    friend class VideoRendererManagerPrivate ;
 
 public:
+
+   /**
+    * Each platform may have its preferred color space. To be able to use a
+    * client on multiple platforms, they need to check the colorspace.
+    */
+   enum class ColorSpace {
+      BGRA , /*!< 32bit BLUE  GREEN RED ALPHA */
+      RGBA , /*!< 32bit ALPHA GREEN RED BLUE  */
+   };
+
    //Constructor
    Renderer (const QByteArray& id,  const QSize& res);
    virtual ~Renderer();
@@ -67,6 +77,7 @@ public:
    virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
+   virtual ColorSpace        colorSpace      () const = 0;
 
    void setSize(const QSize& size) const;
 

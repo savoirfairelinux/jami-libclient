@@ -54,8 +54,9 @@ public:
    bool startShm ();
 
    //Getters
-   virtual int   fps() const;
+   int fps() const;
    virtual const QByteArray& currentFrame() const override;
+   virtual ColorSpace        colorSpace  () const override;
 
    //Setters
    void setShmPath(const QString& path);

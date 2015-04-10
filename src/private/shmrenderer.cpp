@@ -340,6 +340,11 @@ const QByteArray& ShmRenderer::currentFrame() const
    return Renderer::currentFrame();
 }
 
+Video::Renderer::ColorSpace ShmRenderer::colorSpace() const
+{
+   return Video::Renderer::ColorSpace::BGRA;
+}
+
 /*****************************************************************************
  *                                                                           *
  *                                 Setters                                   *
