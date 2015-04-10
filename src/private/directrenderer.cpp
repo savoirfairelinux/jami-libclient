@@ -40,17 +40,13 @@ class DirectRendererPrivate : public QObject
    Q_OBJECT
 public:
    DirectRendererPrivate(Video::DirectRenderer* parent);
-
-   //Attributes
-
 private:
-   Video::DirectRenderer* q_ptr;
-
+//    Video::DirectRenderer* q_ptr;
 };
 
 }
 
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent), q_ptr(parent)
+Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent)/*, q_ptr(parent)*/
 {
 }
 
@@ -67,29 +63,30 @@ Video::DirectRenderer::~DirectRenderer()
 
 void Video::DirectRenderer::startRendering()
 {
-
-    qWarning() << "STARTING RENDERING";
-    setRendering(true);
-    emit started();
+   qWarning() << "STARTING RENDERING";
+   Video::Renderer::d_ptr->m_isRendering = true;
+   emit started();
 }
 void Video::DirectRenderer::stopRendering ()
 {
-    qWarning() << "STOPPING RENDERING";
-    setRendering(false);
-    emit stopped();
+   qWarning() << "STOPPING RENDERING";
+   Video::Renderer::d_ptr->m_isRendering = false;
+   emit stopped();
 }
 
 void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
 {
-//    qDebug("Frame received by DirectRenderer, size: w %d, h %d", size().width(), size().height());
-    if (!isRendering()) {
-       return;
-    }
-    if (static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().size() != (size().height() * size().width()))
-    static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().resize(size().height() * size().width()*4);
-    ::memcpy(static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().data(),frame,static_cast<Video::Renderer*>(this)->d_ptr->otherFrame().size());
-    static_cast<Video::Renderer*>(this)->d_ptr->updateFrameIndex();
-    emit frameUpdated();
+   if (!isRendering()) {
+      return;
+   }
+
+   Video::Renderer::d_ptr->m_pFrame = const_cast<char*>(frame.data());
+   emit frameUpdated();
+}
+
+Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
+{
+   return Video::Renderer::ColorSpace::RGBA;
 }
 
 #include <directrenderer.moc>

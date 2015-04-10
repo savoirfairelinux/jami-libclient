@@ -42,32 +42,32 @@ class LIB_EXPORT ShmRenderer : public Renderer {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
-   public:
-      //Constructor
-      ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
-      virtual ~ShmRenderer();
+   friend class VideoRendererManagerPrivate ;
 
-      //Mutators
-      bool resizeShm();
-      void stopShm  ();
-      bool startShm ();
+public:
+   //Constructor
+   ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
+   virtual ~ShmRenderer();
 
-      //Getters
-      virtual int fps             () const         ;
+   //Mutators
+   void stopShm  ();
+   bool startShm ();
 
-      //Setters
-      void setShmPath   (const QString& path);
+   //Getters
+   int fps() const;
+   virtual const QByteArray& currentFrame() const override;
+   virtual ColorSpace        colorSpace  () const override;
 
-   private:
-      QScopedPointer<ShmRendererPrivate> d_ptr;
-      Q_DECLARE_PRIVATE(ShmRenderer)
+   //Setters
+   void setShmPath(const QString& path);
 
-   public Q_SLOTS:
-      void startRendering();
-      void stopRendering ();
+private:
+   QScopedPointer<ShmRendererPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(ShmRenderer)
 
-
-
+public Q_SLOTS:
+   void startRendering();
+   void stopRendering ();
 };
 
 }

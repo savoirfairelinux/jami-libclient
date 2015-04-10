@@ -33,6 +33,7 @@ namespace Video {
 
 class RendererPrivate;
 class ShmRendererPrivate;
+class ShmRenderer;
 class DirectRendererPrivate;
 class DirectRenderer;
 
@@ -43,17 +44,30 @@ class DirectRenderer;
  *
  * Each platform transparently provide its own implementation.
  */
-class LIB_EXPORT Renderer : public QObject {
+class LIB_EXPORT Renderer : public QObject
+{
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-Q_OBJECT
+   Q_OBJECT
 #pragma GCC diagnostic pop
 
-friend class Video::ShmRendererPrivate;
-friend class Video::DirectRendererPrivate;
-friend class Video::DirectRenderer;
+   friend class Video::ShmRendererPrivate   ;
+   friend class Video::ShmRenderer          ;
+   friend class Video::DirectRendererPrivate;
+   friend class Video::DirectRenderer       ;
+   friend class VideoRendererManagerPrivate ;
 
 public:
+
+   /**
+    * Each platform may have its preferred color space. To be able to use a
+    * client on multiple platforms, they need to check the colorspace.
+    */
+   enum class ColorSpace {
+      BGRA , /*!< 32bit BLUE  GREEN RED ALPHA */
+      RGBA , /*!< 32bit ALPHA GREEN RED BLUE  */
+   };
+
    //Constructor
    Renderer (const QByteArray& id,  const QSize& res);
    virtual ~Renderer();
@@ -63,14 +77,12 @@ public:
    virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
+   virtual ColorSpace        colorSpace      () const = 0;
 
-   //Setters
-   void setRendering(bool rendering)            const;
-   void setSize(const QSize& size)              const;
+   void setSize(const QSize& size) const;
 
 Q_SIGNALS:
-   ///Emitted when a new frame is ready
-   void frameUpdated();
+   void frameUpdated(); // Emitted when a new frame is ready
    void stopped     ();
    void started     ();
 
@@ -78,9 +90,8 @@ public Q_SLOTS:
    virtual void startRendering() = 0;
    virtual void stopRendering () = 0;
 
-
 private:
-   QScopedPointer<RendererPrivate> d_ptr;
+   RendererPrivate* d_ptr;
    Q_DECLARE_PRIVATE(Renderer)
 
 };

@@ -28,6 +28,7 @@ ADD_DEFINITIONS("-std=c++1y")
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
+   -O2
 )
 
 PROJECT(ringclient)

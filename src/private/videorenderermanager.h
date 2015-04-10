@@ -37,7 +37,8 @@ struct SHMHeader;
 class VideoRendererManagerPrivate;
 
 ///VideoModel: Video event dispatcher
-class VideoRendererManager : public QObject {
+class VideoRendererManager : public QObject
+{
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT

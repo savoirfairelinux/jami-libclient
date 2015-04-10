@@ -38,15 +38,12 @@ public:
 
    //Attributes
    std::atomic_bool  m_isRendering;
-   QByteArray        m_Frame[2]   ;
-   bool              m_FrameIdx   ;
    QMutex*           m_pMutex     ;
    QString           m_Id         ;
    QSize             m_pSize      ;
-
-   //Helpers
-   QByteArray& otherFrame       ()      ;
-   void        updateFrameIndex ()      ;
+   char*             m_pFrame     ;
+   QByteArray        m_Content    ;
+   unsigned int      m_FrameSize  ;
 
 private:
    Video::Renderer* q_ptr;

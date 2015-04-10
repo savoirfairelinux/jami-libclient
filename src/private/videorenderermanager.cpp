@@ -36,6 +36,7 @@
 #include <video/resolution.h>
 #include "private/videorate_p.h"
 #include "private/call_p.h"
+#include "private/videorenderer_p.h"
 
 #ifdef ENABLE_LIBWRAP
  #include "private/directrenderer.h"
