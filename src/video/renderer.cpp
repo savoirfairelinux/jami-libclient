@@ -24,8 +24,8 @@
 #include <QtCore/QMutex>
 
 Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
-    : QObject(parent), q_ptr(parent)
-    , m_pMutex(new QMutex()),m_framePtr(nullptr),m_FrameSize(0)
+   : QObject(parent), q_ptr(parent)
+   , m_pMutex(new QMutex()),m_pFrame(nullptr),m_FrameSize(0),m_isRendering(false)
 {
 }
 
@@ -33,8 +33,8 @@ Video::Renderer::Renderer(const QByteArray& id, const QSize& res) : d_ptr(new Re
 {
    setObjectName("Renderer:"+id);
    d_ptr->m_FrameSize = res.width() * res.height() * 4;
-   d_ptr->m_pSize = res;
-   d_ptr->m_Id = id;
+   d_ptr->m_pSize     = res;
+   d_ptr->m_Id        = id;
 }
 
 Video::Renderer::~Renderer()
@@ -68,8 +68,8 @@ QSize Video::Renderer::size() const
 
 const QByteArray& Video::Renderer::currentFrame() const
 {
-   if (d_ptr->m_framePtr && d_ptr->m_FrameSize)
-      d_ptr->m_Content.setRawData(d_ptr->m_framePtr,d_ptr->m_FrameSize);
+   if (d_ptr->m_pFrame && d_ptr->m_FrameSize)
+      d_ptr->m_Content.setRawData(d_ptr->m_pFrame,d_ptr->m_FrameSize);
    return d_ptr->m_Content;
 }
 

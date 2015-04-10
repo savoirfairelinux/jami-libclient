@@ -41,7 +41,7 @@ public:
    QMutex*           m_pMutex     ;
    QString           m_Id         ;
    QSize             m_pSize      ;
-   char*             m_framePtr   ;
+   char*             m_pFrame     ;
    QByteArray        m_Content    ;
    unsigned int      m_FrameSize  ;
 

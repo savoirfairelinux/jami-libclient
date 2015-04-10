@@ -44,29 +44,29 @@ class LIB_EXPORT ShmRenderer : public Renderer {
 
    friend class VideoRendererManagerPrivate ;
 
-   public:
-      //Constructor
-      ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
-      virtual ~ShmRenderer();
+public:
+   //Constructor
+   ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
+   virtual ~ShmRenderer();
 
-      //Mutators
-      void stopShm  ();
-      bool startShm ();
+   //Mutators
+   void stopShm  ();
+   bool startShm ();
 
-      //Getters
-      virtual int   fps() const;
-      virtual const QByteArray& currentFrame() const override;
+   //Getters
+   virtual int   fps() const;
+   virtual const QByteArray& currentFrame() const override;
 
-      //Setters
-      void setShmPath(const QString& path);
+   //Setters
+   void setShmPath(const QString& path);
 
-   private:
-      QScopedPointer<ShmRendererPrivate> d_ptr;
-      Q_DECLARE_PRIVATE(ShmRenderer)
+private:
+   QScopedPointer<ShmRendererPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(ShmRenderer)
 
-   public Q_SLOTS:
-      void startRendering();
-      void stopRendering ();
+public Q_SLOTS:
+   void startRendering();
+   void stopRendering ();
 };
 
 }

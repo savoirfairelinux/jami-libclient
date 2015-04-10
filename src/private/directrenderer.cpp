@@ -85,7 +85,7 @@ void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
        return;
     }
 
-    Video::Renderer::d_ptr->m_framePtr = const_cast<char*>(frame.data());
+    Video::Renderer::d_ptr->m_pFrame = const_cast<char*>(frame.data());
     emit frameUpdated();
 }
 
