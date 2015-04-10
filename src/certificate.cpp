@@ -314,14 +314,14 @@ void CertificatePrivate::loadChecks()
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
    d_ptr->m_Path = path.path();
    d_ptr->m_Type = type;
 }
 
-Certificate::Certificate(const QByteArray& content, Type type): QObject(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
+Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
 {
    d_ptr->m_Content = content;
    d_ptr->m_Type    = type;

@@ -164,7 +164,7 @@ CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_p
 
 }
 
-CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent),
+CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Certificate>(this),
  d_ptr(new CertificateModelPrivate(this))
 {
    setObjectName("CertificateModel");
@@ -714,5 +714,23 @@ QAbstractItemModel* CertificateModel::model(const QModelIndex& idx) const
    CertificateNode* node = static_cast<CertificateNode*>(idx.internalPointer());
    return d_ptr->getModelCommon(node);
 }
+
+void CertificateModel::collectionAddedCallback(CollectionInterface* collection)
+{
+   Q_UNUSED(collection)
+}
+
+bool CertificateModel::addItemCallback(const Certificate* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
+bool CertificateModel::removeItemCallback(const Certificate* item)
+{
+   Q_UNUSED(item)
+   return false;
+}
+
 
 #include <certificatemodel.moc>

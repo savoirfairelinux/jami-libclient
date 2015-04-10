@@ -38,7 +38,8 @@ class AbstractHistoryBackend;
 class CategorizedHistoryModelPrivate;
 //TODO split ASAP
 ///CategorizedHistoryModel: History call manager
-class LIB_EXPORT CategorizedHistoryModel : public QAbstractItemModel, public CollectionManagerInterface<Call> {
+class LIB_EXPORT CategorizedHistoryModel : public QAbstractItemModel, public CollectionManagerInterface<Call>
+{
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -66,7 +67,6 @@ public:
    void setCategoryRole(int role);
    void setHistoryLimited(bool isLimited);
    void setHistoryLimit(int numberOfDays);
-
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;

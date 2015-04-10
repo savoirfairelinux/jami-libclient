@@ -36,10 +36,10 @@ public:
    virtual CollectionInterface* collection() const final;
 
    //Mutator methods
-   bool save() const;
-   bool edit()      ;
-   bool remove()    ;
-   bool isActive() const ;
+   bool save    () const;
+   bool edit    ()      ;
+   bool remove  ()      ;
+   bool isActive() const;
 
    //Setter
    void setCollection(CollectionInterface* backend);

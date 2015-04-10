@@ -26,7 +26,7 @@ class Account;
 
 class CertificateModelPrivate;
 
-class LIB_EXPORT CertificateModel : public QAbstractItemModel
+class LIB_EXPORT CertificateModel : public QAbstractItemModel, public CollectionManagerInterface<Certificate>
 {
    Q_OBJECT
 public:
@@ -84,6 +84,12 @@ public:
    static CertificateModel* instance();
 
 private:
+
+   //Backend interface
+   virtual void collectionAddedCallback(CollectionInterface* collection) override;
+   virtual bool addItemCallback(const Certificate* item) override;
+   virtual bool removeItemCallback(const Certificate* item) override;
+
    CertificateModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CertificateModel)
 };

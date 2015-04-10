@@ -19,6 +19,7 @@
 #define CERTIFICATE_H
 
 #include "typedefs.h"
+#include "itembase.h"
 
 //Qt
 #include <QUrl>
@@ -29,7 +30,8 @@ class CertificatePrivate;
 /**
  * This class represent a conceptual certificate.
  */
-class LIB_EXPORT Certificate : public QObject {
+class LIB_EXPORT Certificate : public ItemBase<QObject>
+{
    Q_OBJECT
 
    friend class CertificateModel;
