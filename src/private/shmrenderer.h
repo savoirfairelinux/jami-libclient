@@ -42,6 +42,8 @@ class LIB_EXPORT ShmRenderer : public Renderer {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
+   friend class VideoRendererManagerPrivate ;
+
    public:
       //Constructor
       ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
@@ -53,7 +55,7 @@ class LIB_EXPORT ShmRenderer : public Renderer {
 
       //Getters
       virtual int   fps() const;
-      virtual void* getFramePtr() const;
+      virtual const QByteArray& currentFrame() const override;
 
       //Setters
       void setShmPath(const QString& path);

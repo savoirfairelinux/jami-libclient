@@ -82,7 +82,7 @@ class ShmRendererPrivate : public QObject
         int               m_fd         ;
         SHMHeader*        m_pShmArea   ;
         unsigned          m_ShmAreaLen ;
-        uint              m_FrameGen  ;
+        uint              m_FrameGen   ;
         QTimer*           m_pTimer     ;
         int               m_fpsC       ;
         int               m_Fps        ;
@@ -137,8 +137,7 @@ ShmRenderer::~ShmRenderer()
 }
 
 /// Wait new frame data from shared memory and save pointer
-bool
-ShmRendererPrivate::getNewFrame(bool wait)
+bool ShmRendererPrivate::getNewFrame(bool wait)
 {
     if (!shmLock())
         return false;
@@ -159,7 +158,7 @@ ShmRendererPrivate::getNewFrame(bool wait)
     }
 
     // valid frame to render (daemon may have stopped)?
-    if (not m_pShmArea->frameSize) {
+    if (! m_pShmArea->frameSize) {
         shmUnlock();
         return false;
     }
@@ -170,8 +169,9 @@ ShmRendererPrivate::getNewFrame(bool wait)
         return false;
     }
 
-    q_ptr->setFramePtr(m_pShmArea->data + m_pShmArea->readOffset);
+    q_ptr->Video::Renderer::d_ptr->m_framePtr = (char*)(m_pShmArea->data + m_pShmArea->readOffset);
     m_FrameGen = m_pShmArea->frameGen;
+    q_ptr->Video::Renderer::d_ptr->m_FrameSize = m_pShmArea->frameSize;
 
     shmUnlock();
 
@@ -195,8 +195,7 @@ ShmRendererPrivate::getNewFrame(bool wait)
 
 /// Remap the shared memory
 /// Shared memory in unlocked state if returns false (resize failed).
-bool
-ShmRendererPrivate::remapShm()
+bool ShmRendererPrivate::remapShm()
 {
     // This loop handles case where deamon resize shared memory
     // during time we unlock it for remapping.
@@ -226,8 +225,7 @@ ShmRendererPrivate::remapShm()
 }
 
 /// Connect to the shared memory
-bool
-ShmRenderer::startShm()
+bool ShmRenderer::startShm()
 {
    if (d_ptr->m_fd != -1) {
       qDebug() << "fd must be -1";
@@ -256,8 +254,7 @@ ShmRenderer::startShm()
 }
 
 /// Disconnect from the shared memory
-void
-ShmRenderer::stopShm()
+void ShmRenderer::stopShm()
 {
    if (d_ptr->m_fd < 0)
        return;
@@ -274,15 +271,13 @@ ShmRenderer::stopShm()
 }
 
 /// Lock the memory while the copy is being made
-bool
-ShmRendererPrivate::shmLock()
+bool ShmRendererPrivate::shmLock()
 {
     return ::sem_wait(&m_pShmArea->mutex) >= 0;
 }
 
 /// Remove the lock, allow a new frame to be drawn
-void
-ShmRendererPrivate::shmUnlock()
+void ShmRendererPrivate::shmUnlock()
 {
     ::sem_post(&m_pShmArea->mutex);
 }
@@ -294,24 +289,22 @@ ShmRendererPrivate::shmUnlock()
  ****************************************************************************/
 
 /// Start the rendering loop
-void
-ShmRenderer::startRendering()
+void ShmRenderer::startRendering()
 {
     QMutexLocker locker {mutex()};
 
     if (!startShm())
         return;
 
-    setRendering(true);
+    Video::Renderer::d_ptr->m_isRendering = true;
     emit started();
 }
 
 /// Stop the rendering loop
-void
-ShmRenderer::stopRendering()
+void ShmRenderer::stopRendering()
 {
     QMutexLocker locker {mutex()};
-    setRendering(false);
+    Video::Renderer::d_ptr->m_isRendering = false;
 
     emit stopped();
     stopShm();
@@ -324,22 +317,20 @@ ShmRenderer::stopRendering()
  ****************************************************************************/
 
 /// Get the current frame rate of this renderer
-int
-ShmRenderer::fps() const
+int ShmRenderer::fps() const
 {
     return d_ptr->m_Fps;
 }
 
 /// Get frame data pointer from shared memory
-void*
-ShmRenderer::getFramePtr() const
+const QByteArray& ShmRenderer::currentFrame() const
 {
     if (!isRendering())
-        return nullptr;
+        return {};
 
     QMutexLocker lk {mutex()};
     d_ptr->getNewFrame(false);
-    return Renderer::getFramePtr();
+    return Renderer::currentFrame();
 }
 
 /*****************************************************************************
@@ -348,8 +339,7 @@ ShmRenderer::getFramePtr() const
  *                                                                           *
  ****************************************************************************/
 
-void
-ShmRenderer::setShmPath(const QString& path)
+void ShmRenderer::setShmPath(const QString& path)
 {
     d_ptr->m_ShmPath = path;
 }

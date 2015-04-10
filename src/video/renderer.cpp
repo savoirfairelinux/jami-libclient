@@ -25,19 +25,22 @@
 
 Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
     : QObject(parent), q_ptr(parent)
-    , m_pMutex(new QMutex())
+    , m_pMutex(new QMutex()),m_framePtr(nullptr),m_FrameSize(0)
 {
 }
 
 Video::Renderer::Renderer(const QByteArray& id, const QSize& res) : d_ptr(new RendererPrivate(this))
 {
    setObjectName("Renderer:"+id);
+   d_ptr->m_FrameSize = res.width() * res.height() * 4;
    d_ptr->m_pSize = res;
    d_ptr->m_Id = id;
 }
 
 Video::Renderer::~Renderer()
-{}
+{
+   delete d_ptr;
+}
 
 /*****************************************************************************
 *                                                                           *
@@ -45,6 +48,7 @@ Video::Renderer::~Renderer()
 *                                                                           *
 ****************************************************************************/
 
+///Return if the rendering is currently active or not
 bool Video::Renderer::isRendering() const
 {
   return d_ptr->m_isRendering;
@@ -62,9 +66,11 @@ QSize Video::Renderer::size() const
   return d_ptr->m_pSize;
 }
 
-void* Video::Renderer::getFramePtr() const
+const QByteArray& Video::Renderer::currentFrame() const
 {
-    return d_ptr->m_framePtr;
+   if (d_ptr->m_framePtr && d_ptr->m_FrameSize)
+      d_ptr->m_Content.setRawData(d_ptr->m_framePtr,d_ptr->m_FrameSize);
+   return d_ptr->m_Content;
 }
 
 /*****************************************************************************
@@ -73,20 +79,9 @@ void* Video::Renderer::getFramePtr() const
  *                                                                           *
  ****************************************************************************/
 
-///Return the current resolution
-void Video::Renderer::setRendering(bool rendering) const
-{
-  d_ptr->m_isRendering = rendering;
-}
-
 void Video::Renderer::setSize(const QSize& size) const
 {
   d_ptr->m_pSize = size;
-}
-
-void Video::Renderer::setFramePtr(void* ptr) const
-{
-  d_ptr->m_framePtr = ptr;
 }
 
 #include <renderer.moc>

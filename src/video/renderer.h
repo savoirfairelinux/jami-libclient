@@ -33,6 +33,7 @@ namespace Video {
 
 class RendererPrivate;
 class ShmRendererPrivate;
+class ShmRenderer;
 class DirectRendererPrivate;
 class DirectRenderer;
 
@@ -43,15 +44,18 @@ class DirectRenderer;
  *
  * Each platform transparently provide its own implementation.
  */
-class LIB_EXPORT Renderer : public QObject {
+class LIB_EXPORT Renderer : public QObject
+{
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-Q_OBJECT
+   Q_OBJECT
 #pragma GCC diagnostic pop
 
-friend class Video::ShmRendererPrivate;
-friend class Video::DirectRendererPrivate;
-friend class Video::DirectRenderer;
+   friend class Video::ShmRendererPrivate   ;
+   friend class Video::ShmRenderer          ;
+   friend class Video::DirectRendererPrivate;
+   friend class Video::DirectRenderer       ;
+   friend class VideoRendererManagerPrivate ;
 
 public:
    //Constructor
@@ -60,14 +64,11 @@ public:
 
    //Getters
    virtual bool              isRendering     () const;
+   virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
-   virtual void*             getFramePtr     () const;
 
-   //Setters
-   void setRendering(bool rendering)            const;
-   void setSize(const QSize& size)              const;
-   void setFramePtr(void* ptr)                  const;
+   void setSize(const QSize& size) const;
 
 Q_SIGNALS:
    void frameUpdated(); // Emitted when a new frame is ready
@@ -78,9 +79,8 @@ public Q_SLOTS:
    virtual void startRendering() = 0;
    virtual void stopRendering () = 0;
 
-
 private:
-   QScopedPointer<RendererPrivate> d_ptr;
+   RendererPrivate* d_ptr;
    Q_DECLARE_PRIVATE(Renderer)
 
 };

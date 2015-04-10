@@ -41,7 +41,9 @@ public:
    QMutex*           m_pMutex     ;
    QString           m_Id         ;
    QSize             m_pSize      ;
-   void*             m_framePtr   ;
+   char*             m_framePtr   ;
+   QByteArray        m_Content    ;
+   unsigned int      m_FrameSize  ;
 
 private:
    Video::Renderer* q_ptr;
