@@ -86,7 +86,6 @@ public:
    SHMHeader* m_pShmArea      ;
    unsigned   m_ShmAreaLen    ;
    uint       m_FrameGen      ;
-   QTimer*    m_pTimer        ;
    int        m_fpsC          ;
    int        m_Fps           ;
    TimePoint  m_lastFrameDebug;
@@ -115,7 +114,6 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
    , m_pShmArea  ( (SHMHeader*)MAP_FAILED              )
    , m_ShmAreaLen( 0                                   )
    , m_FrameGen  ( 0                                   )
-   , m_pTimer    ( nullptr                             )
 #ifdef DEBUG_FPS
    , m_frameCount( 0                                   )
    , m_lastFrameDebug(std::chrono::system_clock::now() )
