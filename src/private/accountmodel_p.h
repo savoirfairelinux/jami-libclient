@@ -65,6 +65,7 @@ public:
 public Q_SLOTS:
    void slotDaemonAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
    void slotAccountChanged(Account* a);
+   void slotSupportedProtocolsChanged();
    void slotVoiceMailNotify( const QString& accountID , int count );
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);

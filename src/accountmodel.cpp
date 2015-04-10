@@ -154,9 +154,7 @@ Account* AccountModel::ip2ip() const
       foreach(Account* a, d_ptr->m_lAccounts) {
          if (a->id() == DRing::Account::ProtocolNames::IP2IP) {
             d_ptr->m_pIP2IP = a;
-            connect(a,&Account::enabled,[this]() {
-               emit supportedProtocolsChanged();
-            });
+            connect(a,SIGNAL(enabled()),this,SLOT(slotSupportedProtocolsChanged()));
          }
       }
    }
@@ -285,6 +283,11 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
       emit q_ptr->accountStateChanged(a,a->registrationState());
    }
 
+}
+
+void AccountModelPrivate::slotSupportedProtocolsChanged()
+{
+    emit q_ptr->supportedProtocolsChanged();
 }
 
 ///Tell the model something changed
