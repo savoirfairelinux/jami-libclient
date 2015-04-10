@@ -25,7 +25,6 @@
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QCryptographicHash>
-#include <QtWidgets/QApplication>
 #include <QtCore/QStandardPaths>
 
 //Ring
