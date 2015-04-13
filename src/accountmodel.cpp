@@ -242,7 +242,8 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
             emit q_ptr->dataChanged(q_ptr->index(i,0),q_ptr->index(q_ptr->size()-1));
             emit q_ptr->layoutChanged();
 
-            enabledProtocol(acc->protocol());
+            if (acc->id() != DRing::Account::ProtocolNames::IP2IP)
+               enableProtocol(acc->protocol());
 
          }
       }
@@ -370,7 +371,8 @@ void AccountModel::update()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
 
-         d_ptr->enabledProtocol(a->protocol());
+         if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+            d_ptr->enableProtocol(a->protocol());
       }
    }
 } //update
@@ -394,7 +396,8 @@ void AccountModel::updateAccounts()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
 
-         d_ptr->enabledProtocol(a->protocol());
+         if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+            d_ptr->enableProtocol(a->protocol());
       }
       else {
          acc->performAction(Account::EditAction::RELOAD);
@@ -471,7 +474,7 @@ void AccountModel::cancel() {
 }
 
 
-void AccountModelPrivate::enabledProtocol(Account::Protocol proto)
+void AccountModelPrivate::enableProtocol(Account::Protocol proto)
 {
    const bool cache = m_lSupportedProtocols[proto];
 
@@ -662,7 +665,8 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
       d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
    }
 
-   d_ptr->enabledProtocol(proto);
+   if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+      d_ptr->enableProtocol(proto);
 
    return a;
 }
