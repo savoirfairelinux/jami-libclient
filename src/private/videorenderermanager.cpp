@@ -36,7 +36,6 @@
 #include <video/resolution.h>
 #include "private/videorate_p.h"
 #include "private/call_p.h"
-#include "private/videorenderer_p.h"
 
 #ifdef ENABLE_LIBWRAP
  #include "private/directrenderer.h"
@@ -205,6 +204,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       r = new Video::DirectRenderer(rid, res);
 
       qWarning() << "Calling registerFrameListener";
+      m_hRenderers[rid] = r;
 
       DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
          static_cast<Video::DirectRenderer*>(m_hRenderers[id.toLatin1()])->onNewFrame(
@@ -215,10 +215,10 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 #else //ENABLE_LIBWRAP
 
       r = new Video::ShmRenderer(rid,shmPath,res);
+      m_hRenderers[rid] = r;
 
 #endif
 
-      m_hRenderers[rid] = r;
 
       QThread* t = new QThread(this);
       m_hThreads[r] = t;
@@ -280,7 +280,7 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
 
    //Quit if for some reasons the renderer is not found
    if ( !r ) {
-      qWarning() << "Cannot stop renrering, renderer" << id << "not found";
+      qWarning() << "Cannot stop rendering, renderer" << id << "not found";
       return;
    }
 
