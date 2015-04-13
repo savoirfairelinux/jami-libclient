@@ -44,7 +44,7 @@ public:
 
    //Helpers
    static Account::RegistrationState fromDaemonName(const QString& st);
-   void enabledProtocol(Account::Protocol proto);
+   void enableProtocol(Account::Protocol proto);
 
    //Attributes
    AccountModel*                     q_ptr                ;
