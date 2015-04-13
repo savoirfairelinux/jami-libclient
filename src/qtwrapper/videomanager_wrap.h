@@ -29,17 +29,20 @@
 #include <QtCore/QThread>
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QSemaphore>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtCore/QTimer>
 
+// Ring
 #include <videomanager_interface.h>
 
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
 
 class VideoManagerInterface;
+class QSemaphore;
 
 class VideoManagerSignalProxy : public QObject
 {
@@ -54,6 +57,7 @@ public Q_SLOTS:
 
 private:
    VideoManagerInterface* m_pParent;
+   QSemaphore*            m_pSem;
 };
 
 class VideoManagerProxySender : public QObject
