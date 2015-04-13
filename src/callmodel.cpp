@@ -443,6 +443,11 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
 Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
    Call* call = addCall2(CallPrivate::buildIncomingCall(callId));
+
+   //The call can already have been invalidated by the daemon, then do nothing
+   if (!call)
+      return nullptr;
+
    //Call without account is not possible
    if (call->account()) {
       if (call->account()->isAutoAnswer()) {
@@ -459,7 +464,12 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
 ///Create a ringing call
 Call* CallModelPrivate::addRingingCall(const QString& callId)
 {
-   return addCall2(CallPrivate::buildRingingCall(callId));
+   Call* c = CallPrivate::buildRingingCall(callId);
+
+   if (!c)
+      return nullptr;
+
+   return addCall2(c);
 }
 
 ///Properly remove an internal from the Qt model
@@ -1021,6 +1031,10 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
       qDebug() << "Call not found" << callID << "new state" << stateName;
       if(stateName == CallPrivate::StateChange::RINGING) {
          call = addRingingCall(callID);
+
+         if (!call)
+            return;
+
       }
       else {
          qDebug() << "Call doesn't exist in this client. Might have been initialized by another client instance before this one started.";
@@ -1059,7 +1073,10 @@ void CallModelPrivate::slotIncomingCall(const QString& accountID, const QString&
 {
    Q_UNUSED(accountID)
    qDebug() << "Signal : Incoming Call ! ID = " << callID;
-   emit q_ptr->incomingCall(addIncomingCall(callID));
+   Call* c = addIncomingCall(callID);
+
+   if (c)
+      emit q_ptr->incomingCall(c);
 }
 
 ///When a new conference is incoming

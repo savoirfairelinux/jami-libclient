@@ -369,6 +369,13 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
+
+   //It may be possible that the call has already been invalidated
+   if (account.isEmpty()) {
+      qWarning() << "Building incoming call" << callId << "failed, it may already have been destroyed by the daemon";
+      return nullptr;
+   }
+
    Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::INCOMING, peerName, nb, acc);
@@ -395,6 +402,13 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
    const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
+
+   //It may be possible that the call has already been invalidated
+   if (account.isEmpty()) {
+      qWarning() << "Building ringing call" << callId << "failed, it may already have been destroyed by the daemon";
+      return nullptr;
+   }
+
    Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
    ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
    Call* call                  = new Call(Call::State::RINGING, peerName, nb, acc);
