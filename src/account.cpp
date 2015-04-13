@@ -73,7 +73,7 @@ m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr)
+m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false)
 {
    Q_Q(Account);
 }
@@ -96,6 +96,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
    Account* a = new Account();
    a->d_ptr->m_AccountId = _accountId;
    a->d_ptr->setObjectName(_accountId);
+   a->d_ptr->m_RemoteEnabledState = true;
 
    a->performAction(Account::EditAction::RELOAD);
 
@@ -139,6 +140,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
    }
    a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
    a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
+   a->d_ptr->m_RemoteEnabledState = a->isEnabled();
    //a->setObjectName(a->id());
    return a;
 }
@@ -937,16 +939,21 @@ bool Account::supportScheme( URI::SchemeType type )
    switch(type) {
       case URI::SchemeType::NONE :
          return true;
+         break;
       case URI::SchemeType::SIP  :
       case URI::SchemeType::SIPS :
          if (protocol() == Account::Protocol::SIP)
             return true;
+         break;
       case URI::SchemeType::IAX  :
+      case URI::SchemeType::IAX2 :
          if (protocol() == Account::Protocol::IAX)
             return true;
+         break;
       case URI::SchemeType::RING :
          if (protocol() == Account::Protocol::RING)
             return true;
+         break;
    }
    return false;
 }
@@ -1655,6 +1662,10 @@ void AccountPrivate::save()
          tmp[iter.key()] = iter.value();
       }
       configurationManager.setAccountDetails(q_ptr->id(), tmp);
+      if (m_RemoteEnabledState != q_ptr->isEnabled()) {
+         m_RemoteEnabledState = q_ptr->isEnabled();
+         emit q_ptr->enabled(m_RemoteEnabledState);
+      }
    }
 
    if (!q_ptr->id().isEmpty()) {
@@ -1696,6 +1707,7 @@ void AccountPrivate::reload()
             m_hAccountDetails[iter.key()] = iter.value();
          }
          q_ptr->setHostname(m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+         m_RemoteEnabledState = q_ptr->isEnabled();
       }
       m_CurrentState = Account::EditState::READY;
 

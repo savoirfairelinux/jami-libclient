@@ -18,9 +18,13 @@
 #ifndef ACCOUNTMODELPRIVATE_H
 #define ACCOUNTMODELPRIVATE_H
 
+//Qt
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
+
+//Ring
 #include <account.h>
+#include "matrixutils.h"
 class AccountModel;
 class AccountListColorDelegate;
 class ProtocolModel;
@@ -40,18 +44,20 @@ public:
 
    //Helpers
    static Account::RegistrationState fromDaemonName(const QString& st);
+   void enabledProtocol(Account::Protocol proto);
 
    //Attributes
-   AccountModel*            q_ptr             ;
-   QVector<Account*>        m_lAccounts       ;
-   AccountListColorDelegate* m_pColorDelegate ;
-   QStringList              m_lDeletedAccounts;
-   Account*                 m_pIP2IP          ;
-   QList<Account*>          m_pRemovedAccounts;
-   static AccountModel*     m_spAccountList   ;
-   ProtocolModel*           m_pProtocolModel  ;
-   QItemSelectionModel*     m_pSelectionModel ;
-   QStringList              m_lMimes          ;
+   AccountModel*                     q_ptr                ;
+   QVector<Account*>                 m_lAccounts          ;
+   AccountListColorDelegate*         m_pColorDelegate     ;
+   QStringList                       m_lDeletedAccounts   ;
+   Account*                          m_pIP2IP             ;
+   QList<Account*>                   m_pRemovedAccounts   ;
+   static AccountModel*              m_spAccountList      ;
+   ProtocolModel*                    m_pProtocolModel     ;
+   QItemSelectionModel*              m_pSelectionModel    ;
+   QStringList                       m_lMimes             ;
+   Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
 
    //Future account cache
    static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
@@ -59,6 +65,7 @@ public:
 public Q_SLOTS:
    void slotDaemonAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
    void slotAccountChanged(Account* a);
+   void slotSupportedProtocolsChanged();
    void slotVoiceMailNotify( const QString& accountID , int count );
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);

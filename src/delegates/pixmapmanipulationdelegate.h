@@ -63,7 +63,7 @@ public:
    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
    virtual QVariant   securityIssueIcon(const QModelIndex& index);
    virtual QByteArray toByteArray(const QVariant& pxm);
-   virtual QVariant   profilePhoto(const QByteArray& data, const QString& type = "PNG");
+   virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG");
    virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
 
    /**

@@ -54,26 +54,27 @@ public:
    };
 
    //Properties
-   Q_PROPERTY(Account*      account          READ account           WRITE setAccount              )
-   Q_PROPERTY(Person*       person           READ contact           WRITE setPerson               )
-   Q_PROPERTY(int           lastUsed         READ lastUsed                                        )
-   Q_PROPERTY(QString       uri              READ uri                                             )
-   Q_PROPERTY(int           callCount        READ callCount                                       )
-   Q_PROPERTY(QList<Call*>  calls            READ calls                                           )
-   Q_PROPERTY(int           popularityIndex  READ popularityIndex                                 )
-   Q_PROPERTY(bool          bookmarked       READ isBookmarked                                    )
-   Q_PROPERTY(QString       uid              READ uid               WRITE setUid                  )
-   Q_PROPERTY(bool          isTracked        READ isTracked         NOTIFY trackedChanged         )
-   Q_PROPERTY(bool          isPresent        READ isPresent         NOTIFY presentChanged         )
-   Q_PROPERTY(bool          supportPresence  READ supportPresence                                 )
-   Q_PROPERTY(QString       presenceMessage  READ presenceMessage   NOTIFY presenceMessageChanged )
-   Q_PROPERTY(uint          weekCount        READ weekCount                                       )
-   Q_PROPERTY(uint          trimCount        READ trimCount                                       )
-   Q_PROPERTY(bool          haveCalled       READ haveCalled                                      )
-   Q_PROPERTY(QString       primaryName      READ primaryName                                     )
-   Q_PROPERTY(bool          isBookmarked     READ isBookmarked                                    )
-   Q_PROPERTY(QVariant      icon             READ icon                                            )
-   Q_PROPERTY(int           totalSpentTime   READ totalSpentTime                                  )
+   Q_PROPERTY(Account*          account          READ account           WRITE setAccount              )
+   Q_PROPERTY(Person*           person           READ contact           WRITE setPerson               )
+   Q_PROPERTY(int               lastUsed         READ lastUsed                                        )
+   Q_PROPERTY(QString           uri              READ uri                                             )
+   Q_PROPERTY(int               callCount        READ callCount                                       )
+   Q_PROPERTY(QList<Call*>      calls            READ calls                                           )
+   Q_PROPERTY(int               popularityIndex  READ popularityIndex                                 )
+   Q_PROPERTY(bool              bookmarked       READ isBookmarked                                    )
+   Q_PROPERTY(QString           uid              READ uid               WRITE setUid                  )
+   Q_PROPERTY(bool              isTracked        READ isTracked         NOTIFY trackedChanged         )
+   Q_PROPERTY(bool              isPresent        READ isPresent         NOTIFY presentChanged         )
+   Q_PROPERTY(bool              supportPresence  READ supportPresence                                 )
+   Q_PROPERTY(QString           presenceMessage  READ presenceMessage   NOTIFY presenceMessageChanged )
+   Q_PROPERTY(uint              weekCount        READ weekCount                                       )
+   Q_PROPERTY(uint              trimCount        READ trimCount                                       )
+   Q_PROPERTY(bool              haveCalled       READ haveCalled                                      )
+   Q_PROPERTY(QString           primaryName      READ primaryName                                     )
+   Q_PROPERTY(bool              isBookmarked     READ isBookmarked                                    )
+   Q_PROPERTY(QVariant          icon             READ icon                                            )
+   Q_PROPERTY(int               totalSpentTime   READ totalSpentTime                                  )
+   Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -110,6 +111,7 @@ public:
    QVariant            icon            () const;
    int                 totalSpentTime  () const;
    QString             uid             () const;
+   URI::ProtocolHint   protocolHint    () const;
 
    QVariant roleData(int role) const;
 
@@ -206,7 +208,7 @@ class LIB_EXPORT TemporaryContactMethod : public ContactMethod {
    Q_OBJECT
 public:
    explicit TemporaryContactMethod(const ContactMethod* number = nullptr);
-   void setUri(const QString& uri);
+   void setUri(const URI& uri);
 };
 
 #endif

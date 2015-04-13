@@ -414,6 +414,12 @@ QString ContactMethod::uid() const
    return d_ptr->m_Uid.isEmpty()?toHash():d_ptr->m_Uid;
 }
 
+///Return the URI protocol hint
+URI::ProtocolHint ContactMethod::protocolHint() const
+{
+   return d_ptr->m_Uri.protocolHint();
+}
+
 ///Return all calls from this number
 QList<Call*> ContactMethod::calls() const
 {
@@ -582,7 +588,7 @@ bool ContactMethod::operator==(const ContactMethod& other) const
  *                                                                                  *
  ***********************************************************************************/
 
-void TemporaryContactMethod::setUri(const QString& uri)
+void TemporaryContactMethod::setUri(const URI& uri)
 {
    d_ptr->m_Uri = uri;
    d_ptr->changed();
@@ -597,3 +603,5 @@ TemporaryContactMethod::TemporaryContactMethod(const ContactMethod* number) :
       setAccount(number->account());
    }
 }
+
+Q_DECLARE_METATYPE(QList<Call*>)

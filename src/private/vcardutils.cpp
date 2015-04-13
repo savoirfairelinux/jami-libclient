@@ -103,7 +103,7 @@ struct VCardMapper {
          break;
       }
 
-      QVariant photo = PixmapManipulationDelegate::instance()->profilePhoto(fn,type);
+      QVariant photo = PixmapManipulationDelegate::instance()->personPhoto(fn,type);
       c->setPhoto(photo);
    }
 
@@ -295,26 +295,23 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, Account** a)
 //                   qDebug() << "Could not extract: " << previousKey;
             }
 
-            const QList<QByteArray> splitted = property.split(':');
-            if(splitted.size() < 2){
-               qDebug() << "Malformed vCard property!" << splitted[0] << property[0] << (property[0] == ' ');
-               continue;
-            }
-
+            //Do not use split, URIs can have : in them
+            const int dblptPos = property.indexOf(':');
+            const QByteArray k(property.left(dblptPos)),v(property.right(property.size()-dblptPos-1));
 
             //Link with accounts
-            if(splitted[0] == VCardUtils::Property::X_RINGACCOUNT) {
+            if(k == VCardUtils::Property::X_RINGACCOUNT) {
                if (a) {
-                  *a = AccountModel::instance()->getById(splitted[1].trimmed(),true);
+                  *a = AccountModel::instance()->getById(v.trimmed(),true);
                   if(!*a) {
-                     qDebug() << "Could not find account: " << splitted[1].trimmed();
+                     qDebug() << "Could not find account: " << v.trimmed();
                      continue;
                   }
                }
             }
 
-            previousKey   = splitted[0];
-            previousValue = splitted[1];
+            previousKey   = k;
+            previousValue = v;
          }
 
       }

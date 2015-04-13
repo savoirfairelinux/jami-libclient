@@ -37,11 +37,15 @@ class LIB_EXPORT AccountModel : public QAbstractListModel {
    #pragma GCC diagnostic pop
 
 public:
-   Q_PROPERTY(Account*       ip2ip                      READ ip2ip                        )
-   Q_PROPERTY(bool           presenceEnabled            READ isPresenceEnabled            )
-   Q_PROPERTY(bool           presencePublishSupported   READ isPresencePublishSupported   )
-   Q_PROPERTY(bool           presenceSubscribeSupported READ isPresenceSubscribeSupported )
-   Q_PROPERTY(ProtocolModel* protocolModel              READ protocolModel                )
+   Q_PROPERTY(Account*       ip2ip                      READ ip2ip                                            )
+   Q_PROPERTY(bool           presenceEnabled            READ isPresenceEnabled                                )
+   Q_PROPERTY(bool           presencePublishSupported   READ isPresencePublishSupported                       )
+   Q_PROPERTY(bool           presenceSubscribeSupported READ isPresenceSubscribeSupported                     )
+   Q_PROPERTY(ProtocolModel* protocolModel              READ protocolModel                                    )
+   Q_PROPERTY(bool           isSipSupported             READ isSipSupported   NOTIFY supportedProtocolsChanged)
+   Q_PROPERTY(bool           isIAXSupported             READ isIAXSupported   NOTIFY supportedProtocolsChanged)
+   Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
+   Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
 
    friend class Account;
    friend class AccountPrivate;
@@ -61,6 +65,10 @@ public:
    bool                 isPresencePublishSupported  (                                      ) const;
    bool                 isPresenceSubscribeSupported(                                      ) const;
    ProtocolModel*       protocolModel               (                                      ) const;
+   bool                 isSipSupported              (                                      ) const;
+   bool                 isIAXSupported              (                                      ) const;
+   bool                 isIP2IPSupported            (                                      ) const;
+   bool                 isRingSupported             (                                      ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
 
@@ -125,6 +133,8 @@ Q_SIGNALS:
    void presenceEnabledChanged(bool isPresent                        );
    ///An account has been removed
    void accountRemoved(Account* account                              );
+   ///Emitted when an account using a previously unsupported protocol is added
+   void supportedProtocolsChanged(                                   );
    ///Emitted when an account state change
    void accountStateChanged  ( Account* account, const Account::RegistrationState state);
 };

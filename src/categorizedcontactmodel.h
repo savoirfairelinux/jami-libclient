@@ -38,35 +38,37 @@ class LIB_EXPORT CategorizedContactModel :  public QAbstractItemModel
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class PersonModel;
-   friend class ContactTreeNode;
+   friend class PersonModel      ;
+   friend class ContactTreeNode  ;
    friend class ContactTreeBinder;
    explicit CategorizedContactModel(int role = Qt::DisplayRole);
    virtual ~CategorizedContactModel();
 
    //Setters
-   void setRole(int role);
-   void setSortAlphabetical(bool alpha = true);
-   void setDefaultCategory(const QString& cat);
+   void setRole             ( int role           );
+   void setSortAlphabetical ( bool alpha = true  );
+   void setDefaultCategory  ( const QString& cat );
+   void setUnreachableHidden( bool value         );
 
    //Model implementation
-   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
-   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
-   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
-   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const override;
-   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const override;
-   virtual QModelIndex   parent      ( const QModelIndex& index                                    ) const override;
-   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role      )       override;
+   virtual bool          dropMimeData( const QMimeData*, Qt::DropAction, int, int, const QModelIndex& )       override;
+   virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole           ) const override;
+   virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                      ) const override;
+   virtual Qt::ItemFlags flags       ( const QModelIndex& index                                       ) const override;
+   virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                      ) const override;
+   virtual QModelIndex   parent      ( const QModelIndex& index                                       ) const override;
+   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()   ) const override;
+   virtual QStringList   mimeTypes   (                                                                ) const override;
+   virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                                 ) const override;
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
-   virtual QStringList   mimeTypes   (                                                             ) const override;
-   virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                              ) const override;
-   virtual bool dropMimeData         ( const QMimeData*, Qt::DropAction, int, int, const QModelIndex& ) override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
    static int acceptedPayloadTypes()      ;
    bool       isSortAlphabetical  () const;
    QString    defaultCategory     () const;
+   bool       areUnreachableHidden() const;
 
    //Singleton
    static CategorizedContactModel* instance();
