@@ -23,39 +23,68 @@
 
 //Ring
 #include <account.h>
+#include <private/matrixutils.h>
 
 //Dring
 #include "dbus/configurationmanager.h"
 #include <account_const.h>
 
+typedef void (CredentialModelPrivate::*CredModelFct)();
+
 class CredentialModelPrivate
 {
 public:
    ///@struct CredentialData store credential information
-   struct CredentialData2 {
-      QString          name    ;
-      QString          password;
-      QString          realm   ;
+   struct CredentialData {
+      QString name    ;
+      QString password;
+      QString realm   ;
    };
 
    //Attributes
-   QList<CredentialData2*> m_lCredentials;
-   Account*                m_pAccount;
+   QList<CredentialData*>     m_lCredentials;
+   Account*                   m_pAccount    ;
+   CredentialModel::EditState m_EditState   ;
+   CredentialModel*           q_ptr         ;
+   static Matrix2D<CredentialModel::EditState, CredentialModel::EditAction,CredModelFct> m_mStateMachine;
+
+   //Callbacks
+   void clear  ();
+   void save   ();
+   void reload ();
+   void nothing();
+   void modify ();
+
+   //Helper
+   inline void performAction(const CredentialModel::EditAction action);
 };
+
+#define CMP &CredentialModelPrivate
+Matrix2D<CredentialModel::EditState, CredentialModel::EditAction,CredModelFct> CredentialModelPrivate::m_mStateMachine ={{
+   /*                    SAVE         MODIFY        RELOAD        CLEAR      */
+   /* LOADING  */ {{ CMP::nothing, CMP::nothing, CMP::reload, CMP::nothing  }},
+   /* READY    */ {{ CMP::nothing, CMP::modify , CMP::reload, CMP::clear    }},
+   /* MODIFIED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
+   /* OUTDATED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
+}};
+#undef CMP
 
 ///Constructor
 CredentialModel::CredentialModel(Account* acc) : QAbstractListModel(acc),
 d_ptr(new CredentialModelPrivate())
 {
    Q_ASSERT(acc);
-   d_ptr->m_pAccount = acc;
+   d_ptr->m_EditState = CredentialModel::EditState::LOADING;
+   d_ptr->m_pAccount  = acc;
+   d_ptr->q_ptr       = this;
    QHash<int, QByteArray> roles = roleNames();
-   reload();
+   this << EditAction::RELOAD;
+   d_ptr->m_EditState = CredentialModel::EditState::READY;
 }
 
 CredentialModel::~CredentialModel()
 {
-   foreach (CredentialModelPrivate::CredentialData2* data, d_ptr->m_lCredentials) {
+   foreach (CredentialModelPrivate::CredentialData* data, d_ptr->m_lCredentials) {
       delete data;
    }
 }
@@ -119,16 +148,21 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
    if (idx.column() == 0 && role == CredentialModel::Role::NAME) {
       d_ptr->m_lCredentials[idx.row()]->name = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CredentialModel::Role::PASSWORD) {
-      d_ptr->m_lCredentials[idx.row()]->password = value.toString();
-      emit dataChanged(idx, idx);
-      return true;
+      if (d_ptr->m_lCredentials[idx.row()]->password != value.toString()) {
+         d_ptr->m_lCredentials[idx.row()]->password = value.toString();
+         emit dataChanged(idx, idx);
+         this << EditAction::MODIFY;
+         return true;
+      }
    }
    else if (idx.column() == 0 && role == CredentialModel::Role::REALM) {
       d_ptr->m_lCredentials[idx.row()]->realm = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    return false;
@@ -138,7 +172,7 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
 QModelIndex CredentialModel::addCredentials()
 {
    beginInsertRows(QModelIndex(), d_ptr->m_lCredentials.size()-1, d_ptr->m_lCredentials.size()-1);
-   d_ptr->m_lCredentials << new CredentialModelPrivate::CredentialData2;
+   d_ptr->m_lCredentials << new CredentialModelPrivate::CredentialData;
    endInsertRows();
    emit dataChanged(index(d_ptr->m_lCredentials.size()-1,0), index(d_ptr->m_lCredentials.size()-1,0));
    return index(d_ptr->m_lCredentials.size()-1,0);
@@ -159,52 +193,92 @@ void CredentialModel::removeCredentials(const QModelIndex& idx)
 }
 
 ///Remove everything
-void CredentialModel::clear()
+void CredentialModelPrivate::clear()
 {
-   foreach(CredentialModelPrivate::CredentialData2* data2, d_ptr->m_lCredentials) {
+   foreach(CredentialModelPrivate::CredentialData* data2, m_lCredentials) {
       delete data2;
    }
-   d_ptr->m_lCredentials.clear();
+   m_lCredentials.clear();
+   m_EditState = CredentialModel::EditState::READY;
 }
 
 ///Save all credentials
-void CredentialModel::save()
+void CredentialModelPrivate::save()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    VectorMapStringString toReturn;
-   for (int i=0; i < rowCount();i++) {
-      const QModelIndex& idx = index(i,0);
+   for (int i=0; i < q_ptr->rowCount();i++) {
+      const QModelIndex& idx = q_ptr->index(i,0);
       MapStringString credentialData;
-      QString user  = data(idx,CredentialModel::Role::NAME).toString();
-      QString realm = data(idx,CredentialModel::Role::REALM).toString();
+      QString user  = q_ptr->data(idx,CredentialModel::Role::NAME).toString();
+      QString realm = q_ptr->data(idx,CredentialModel::Role::REALM).toString();
       if (user.isEmpty()) {
-         user = d_ptr->m_pAccount->username();
-         setData(idx,user,CredentialModel::Role::NAME);
+         user = m_pAccount->username();
+         q_ptr->setData(idx,user,CredentialModel::Role::NAME);
       }
       if (realm.isEmpty()) {
          realm = '*';
-         setData(idx,realm,CredentialModel::Role::REALM);
+         q_ptr->setData(idx,realm,CredentialModel::Role::REALM);
       }
       credentialData[ DRing::Account::ConfProperties::USERNAME ] = user;
-      credentialData[ DRing::Account::ConfProperties::PASSWORD ] = data(idx,CredentialModel::Role::PASSWORD).toString();
+      credentialData[ DRing::Account::ConfProperties::PASSWORD ] = q_ptr->data(idx,CredentialModel::Role::PASSWORD).toString();
       credentialData[ DRing::Account::ConfProperties::REALM    ] = realm;
       toReturn << credentialData;
    }
-   configurationManager.setCredentials(d_ptr->m_pAccount->id(),toReturn);
+   configurationManager.setCredentials(m_pAccount->id(),toReturn);
+   m_EditState = CredentialModel::EditState::READY;
 }
 
 ///Reload credentials from DBUS
-void CredentialModel::reload()
+void CredentialModelPrivate::reload()
 {
-   if (!d_ptr->m_pAccount->isNew()) {
+   if (!m_pAccount->isNew()) {
       clear();
+      m_EditState = CredentialModel::EditState::LOADING;
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-      const VectorMapStringString credentials = configurationManager.getCredentials(d_ptr->m_pAccount->id());
+      const VectorMapStringString credentials = configurationManager.getCredentials(m_pAccount->id());
       for (int i=0; i < credentials.size(); i++) {
-         const QModelIndex& idx = addCredentials();
-         setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
-         setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
-         setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
+         const QModelIndex& idx = q_ptr->addCredentials();
+         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
+         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
+         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
       }
    }
+   m_EditState = CredentialModel::EditState::READY;
+}
+
+void CredentialModelPrivate::nothing()
+{
+   //nothing
+}
+
+void CredentialModelPrivate::modify()
+{
+   m_EditState = CredentialModel::EditState::MODIFIED;
+   m_pAccount << Account::EditAction::MODIFY;
+}
+
+void CredentialModelPrivate::performAction(const CredentialModel::EditAction action)
+{
+   (this->*(m_mStateMachine[m_EditState][action]))();//FIXME don't use integer cast
+}
+
+/// anAccount << Call::EditAction::SAVE
+CredentialModel* CredentialModel::operator<<(CredentialModel::EditAction& action)
+{
+   performAction(action);
+   return this;
+}
+
+CredentialModel* operator<<(CredentialModel* a, CredentialModel::EditAction action)
+{
+   return (!a)?nullptr : (*a) << action;
+}
+
+///Change the current edition state
+bool CredentialModel::performAction(const CredentialModel::EditAction action)
+{
+   CredentialModel::EditState curState = d_ptr->m_EditState;
+   d_ptr->performAction(action);
+   return curState != d_ptr->m_EditState;
 }

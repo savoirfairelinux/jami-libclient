@@ -116,6 +116,17 @@ private:
    static QMap<A, Row> m_hReverseMapping;
 };
 
+/**
+ * Create a matrix type with 2 enum class dimensions M[I,J] = V
+ *                                                     ^ ^    ^
+ *                                                     | |    |
+ *                                          Rows    <--- |    |
+ *                                          Columns <-----    |
+ *                                          Value   <----------
+ */
+template<class Row, class Column, typename Value>
+using Matrix2D = Matrix1D<Row, Matrix1D<Column, Value>>;
+
 
 /**
  * A matrix with no value

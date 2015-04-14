@@ -40,6 +40,24 @@ public:
       REALM    = 102,
    };
 
+   /// @enum CredentialModel::Action Manage a CredentialModel lifecycle
+   enum class EditAction {
+      SAVE   = 0, /*!< Save the model, if there is a conflict, use "ours"          */
+      MODIFY = 1, /*!< Notify the state machine that the data has changed          */
+      RELOAD = 2, /*!< Reload from the daemon, if there is a conflict, use "their" */
+      CLEAR  = 3, /*!< Remove all credentials                                      */
+      COUNT__
+   };
+
+   /// @enum CredentialModel::EditState track the changes from both clients and daemon
+   enum class EditState {
+      LOADING  = 0, /*!< The credentials are being loaded, they are not ready yet  */
+      READY    = 1, /*!< Both side are synchronised                                */
+      MODIFIED = 2, /*!< Our version differ from the remote one                    */
+      OUTDATED = 3, /*!< The remote version differ from ours                       */
+      COUNT__
+   };
+
    //Constructor
    explicit CredentialModel(Account* acc);
    virtual ~CredentialModel();
@@ -54,13 +72,20 @@ public:
    //Mutator
    QModelIndex addCredentials();
    void removeCredentials(const QModelIndex& idx);
-   void clear ();
-   void save  ();
-   void reload();
+   bool performAction(CredentialModel::EditAction action);
+
+   //Getter
+   CredentialModel::EditState editState() const;
+
+   //Operator
+   CredentialModel* operator<<(CredentialModel::EditAction& action);
 
 private:
    QScopedPointer<CredentialModelPrivate> d_ptr;
+   Q_DECLARE_PRIVATE(CredentialModel)
 };
 Q_DECLARE_METATYPE(CredentialModel*)
+
+CredentialModel* operator<<(CredentialModel* a, CredentialModel::EditAction action);
 
 #endif
