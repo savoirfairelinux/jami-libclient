@@ -236,6 +236,8 @@ SET( libringclient_LIB_SRCS
   src/collectioninterface.cpp
   src/collectioneditor.cpp
   src/fallbackpersoncollection.cpp
+  src/daemoncertificatecollection.cpp
+  src/fallbacklocalcertificatecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -251,7 +253,6 @@ SET( libringclient_LIB_SRCS
   src/delegates/presenceserializationdelegate.cpp
   src/delegates/itemmodelstateserializationdelegate.cpp
   src/delegates/profilepersisterdelegate.cpp
-  src/delegates/certificateserializationdelegate.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -328,6 +329,8 @@ SET( libringclient_LIB_HDRS
   src/collectioneditor.h
   src/collectioneditor.hpp
   src/fallbackpersoncollection.h
+  src/daemoncertificatecollection.h
+  src/fallbacklocalcertificatecollection.h
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
@@ -367,7 +370,6 @@ SET(libringclient_delegates_LIB_HDRS
   src/delegates/itemmodelstateserializationdelegate.h
   src/delegates/pixmapmanipulationdelegate.h
   src/delegates/profilepersisterdelegate.h
-  src/delegates/certificateserializationdelegate.h
 )
 
 SET( libringclient_extra_LIB_HDRS

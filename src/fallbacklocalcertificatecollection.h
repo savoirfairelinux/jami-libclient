@@ -15,42 +15,41 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "certificateserializationdelegate.h"
 
-#include <QtCore/QUrl>
+#include <collectioninterface.h>
+#include <typedefs.h>
 
-CertificateSerializationDelegate* CertificateSerializationDelegate::m_spInstance = new CertificateSerializationDelegate();
+class FallbackLocalCertificateCollectionPrivate;
+class Certificate;
 
-CertificateSerializationDelegate* CertificateSerializationDelegate::instance()
+template<typename T> class CollectionMediator;
+
+/**
+ * This class provide a fallback storage container for certificates used
+ * locally by LibRingClient. If the platform have a certificate hosting facility,
+ * it is strongly encourages to use it rather than this.
+ */
+class LIB_EXPORT FallbackLocalCertificateCollection : public CollectionInterface
 {
-   return m_spInstance;
-}
+public:
+   explicit FallbackLocalCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path = QString());
+   virtual ~FallbackLocalCertificateCollection();
 
-void CertificateSerializationDelegate::setInstance(CertificateSerializationDelegate* visitor)
-{
-   m_spInstance = visitor;
-}
+   virtual bool load  () override;
+   virtual bool reload() override;
+   virtual bool clear () override;
 
-QByteArray CertificateSerializationDelegate::loadCertificate(const QByteArray& id)
-{
-   Q_UNUSED(id)
-   return QByteArray();
-}
+   virtual QString        name     () const override;
+   virtual QString        category () const override;
+   virtual QVariant       icon     () const override;
+   virtual bool           isEnabled() const override;
+   virtual QByteArray     id       () const override;
+   virtual QList<Element> listId   () const override;
 
-QUrl CertificateSerializationDelegate::saveCertificate(const QByteArray& id, const QByteArray& content)
-{
-   Q_UNUSED(id)
-   Q_UNUSED(content)
-   return QUrl();
-}
+   virtual SupportedFeatures  supportedFeatures() const override;
 
-QList<QByteArray> CertificateSerializationDelegate::listCertificates()
-{
-   return QList<QByteArray>();
-}
-
-bool CertificateSerializationDelegate::deleteCertificate(const QByteArray& id)
-{
-   Q_UNUSED(id)
-   return false;
-}
+private:
+   FallbackLocalCertificateCollectionPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(FallbackLocalCertificateCollection)
+};
+Q_DECLARE_METATYPE(FallbackLocalCertificateCollection*)

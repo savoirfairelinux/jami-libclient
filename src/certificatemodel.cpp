@@ -32,7 +32,7 @@
 //Ring
 #include "certificate.h"
 #include "account.h"
-#include "delegates/certificateserializationdelegate.h"
+#include "fallbacklocalcertificatecollection.h"
 #include "private/matrixutils.h"
 
 enum class DetailType : uchar
@@ -61,25 +61,6 @@ struct CertificateNode {
    std::function<void()>      m_fLoader        ;
    bool                       m_IsLoaded       ;
    QHash<Account*,CertificateNode*> m_hSiblings;
-};
-
-class BackgroundLoader : public QThread
-{
-   Q_OBJECT
-public:
-
-   //Attributes
-   QList<QByteArray> m_lIdList    ;
-   QMutex            m_LoaderMutex;
-   QList<QByteArray> m_lQueue     ;
-
-   QByteArray        loadCert(const QByteArray& id);
-
-protected:
-   virtual void run() override;
-
-Q_SIGNALS:
-   void listLoaded(const QList<QByteArray>& list);
 };
 
 class CertificateProxyModel : public QAbstractProxyModel
@@ -130,16 +111,8 @@ private:
    CertificateModel* q_ptr;
 };
 
-QByteArray BackgroundLoader::loadCert(const QByteArray& id)
-{
-   if (m_lIdList.isEmpty()) //WARNING potential race
-      QList<QByteArray> m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
-
-   if (m_lIdList.indexOf(id) == -1) //TODO use an hash map for this
-      return QByteArray();
-
-   return CertificateSerializationDelegate::instance()->loadCertificate(id);
-}
+//TODO remove
+static FallbackLocalCertificateCollection* m_pFallbackCollection = nullptr;
 
 CertificateModel* CertificateModelPrivate::m_spInstance = nullptr;
 
@@ -161,24 +134,15 @@ CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, Ce
 CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),
  m_pDefaultCategory(nullptr),m_CertLoader()
 {
-
 }
 
 CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Certificate>(this),
  d_ptr(new CertificateModelPrivate(this))
 {
    setObjectName("CertificateModel");
-
-   //Load the stored certificates
-   BackgroundLoader* loader = new BackgroundLoader();
-   connect(loader, SIGNAL(finished()), loader, SLOT(deleteLater()));
-
-   /*if (!loader->isFinished())
-      connect(loader,&BackgroundLoader::finished,[loader](){
-         delete loader;
-      });*/
-
-   loader->start();
+   //TODO replace with something else
+   m_pFallbackCollection = addCollection<FallbackLocalCertificateCollection>();
+   m_pFallbackCollection->load();
 }
 
 CertificateModel::~CertificateModel()
@@ -191,18 +155,6 @@ CertificateModel* CertificateModel::instance()
    if (!CertificateModelPrivate::m_spInstance)
       CertificateModelPrivate::m_spInstance = new CertificateModel(QCoreApplication::instance());
    return CertificateModelPrivate::m_spInstance;
-}
-
-void BackgroundLoader::run()
-{
-   if (m_lIdList.isEmpty()) //WARNING potential race
-      m_lIdList = CertificateSerializationDelegate::instance()->listCertificates();
-
-   QMutexLocker(&this->m_LoaderMutex);
-   for(const QByteArray& id : m_lIdList) {
-      CertificateModel::instance()->getCertificateFromContent(loadCert(id),nullptr,false);
-   }
-   exit(0);
 }
 
 QHash<int,QByteArray> CertificateModel::roleNames() const
@@ -526,6 +478,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    return cert;
 }
 
+//TODO Make this private
 Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
@@ -542,8 +495,10 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
       d_ptr->addToTree(cert,a);
 
       if (save) {
-         const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
-         cert->setPath(path);
+         //TODO this shouldn't be necessary
+         static_cast< ItemBase<QObject>* >(cert)->save();
+         /*const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
+         cert->setPath(path);*/
       }
    }
 

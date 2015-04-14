@@ -15,24 +15,43 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CERTIFICATESERIALIZATIONDELEGATE_H
-#define CERTIFICATESERIALIZATIONDELEGATE_H
 
+#include <collectioninterface.h>
 #include <typedefs.h>
 
-class LIB_EXPORT CertificateSerializationDelegate
+class Call;
+class Person;
+class DaemonCertificateCollectionPrivate;
+class Certificate;
+
+template<typename T> class CollectionMediator;
+
+/**
+ * This class is used when no other Person collections are available. It will
+ * provide a basic collection to add and use Persons/Contacts. It is also
+ * necessary as some metadata required for elements such as auto completion are
+ * provided by the Person collections.
+ */
+class LIB_EXPORT DaemonCertificateCollection : public CollectionInterface
 {
 public:
-   virtual QByteArray loadCertificate(const QByteArray& id);
-   virtual QUrl      saveCertificate(const QByteArray& id, const QByteArray& content);
-   virtual bool       deleteCertificate(const QByteArray& id);
-   virtual QList<QByteArray> listCertificates();
+   explicit DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path = QString());
+   virtual ~DaemonCertificateCollection();
 
-   static CertificateSerializationDelegate* instance();
-   static void setInstance(CertificateSerializationDelegate* visitor);
-protected:
-   virtual ~CertificateSerializationDelegate(){}
-   static CertificateSerializationDelegate* m_spInstance;
+   virtual bool load  () override;
+   virtual bool reload() override;
+   virtual bool clear () override;
+
+   virtual QString    name     () const override;
+   virtual QString    category () const override;
+   virtual QVariant   icon     () const override;
+   virtual bool       isEnabled() const override;
+   virtual QByteArray id       () const override;
+
+   virtual SupportedFeatures  supportedFeatures() const override;
+
+private:
+   DaemonCertificateCollectionPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(DaemonCertificateCollection)
 };
-
-#endif
+Q_DECLARE_METATYPE(DaemonCertificateCollection*)

@@ -63,20 +63,25 @@ public:
     */
    enum SupportedFeatures {
       NONE        = 0x0      ,
-      LOAD        = 0x1 <<  0, /*!< Load this backend, DO NOT load anything before "load" is called         */
-      SAVE        = 0x1 <<  1, /*!< Save an item                                                            */
-      EDIT        = 0x1 <<  2, /*!< Edit, but **DOT NOT**, save an item)                                    */
+      LOAD        = 0x1 <<  0, /*!< Load this backend, DO NOT load anything before "load" is called            */
+      SAVE        = 0x1 <<  1, /*!< Save an item                                                               */
+      EDIT        = 0x1 <<  2, /*!< Edit, but **DOT NOT**, save an item)                                       */
       PROBE       = 0x1 <<  3, /*!< Check if the backend has new items (some collections do this automagically)*/
-      ADD         = 0x1 <<  4, /*!< Add (and save) a new item to the backend                                */
-      SAVE_ALL    = 0x1 <<  5, /*!< Save all items at once, this may or may not be faster than "add"        */
-      CLEAR       = 0x1 <<  6, /*!< Clear all items from this backend                                       */
-      REMOVE      = 0x1 <<  7, /*!< Remove a single item                                                    */
+      ADD         = 0x1 <<  4, /*!< Add (and save) a new item to the backend                                   */
+      SAVE_ALL    = 0x1 <<  5, /*!< Save all items at once, this may or may not be faster than "add"           */
+      CLEAR       = 0x1 <<  6, /*!< Clear all items from this backend                                          */
+      REMOVE      = 0x1 <<  7, /*!< Remove a single item                                                       */
       EXPORT      = 0x1 <<  8, /*!< Export all items, format and output need to be defined by each collections */
       IMPORT      = 0x1 <<  9, /*!< Import items from an external source, details defined by each collections  */
-      ENABLEABLE  = 0x1 << 10, /*!< Can be enabled, I know, it is not a word, but Java use it too           */
-      DISABLEABLE = 0x1 << 11, /*!< Can be disabled, I know, it is not a word, but Java use it too          */
-      MANAGEABLE  = 0x1 << 12, /*!< Can be managed the config GUI                                           */
+      ENABLEABLE  = 0x1 << 10, /*!< Can be enabled, I know, it is not a word, but Java use it too              */
+      DISABLEABLE = 0x1 << 11, /*!< Can be disabled, I know, it is not a word, but Java use it too             */
+      MANAGEABLE  = 0x1 << 12, /*!< Can be managed the config GUI                                              */
+      LISTABLE    = 0x1 << 13, /*!< List all elements ids from a collection without necessarily loading them   */
+      RELOAD      = 0x1 << 14, /*!< Reload this collection                                                     */
+      FETCH       = 0x1 << 15, /*!< Fetch a single item (when LISTABLE is supported)                           */
    };
+
+   typedef QByteArray Element;
 
    //Constructor
    template<typename T>
@@ -171,6 +176,44 @@ public:
    virtual int size() const;
 
    /**
+    * Return the list of all managed IDs. If the collection support
+    * SupportedFeatures::LISTABLE. This is the synchronous version, use the
+    * asynchronous when possible
+    *
+    * @warning This method is design to be used by threads, implementation \
+    * are responsible to be re-entrant and support multiple concurrent calls
+    */
+   virtual QList<Element> listId() const;
+
+   /**
+    * Return the list of all managed IDs. If the collection support
+    * SupportedFeatures::LISTABLE. This is the asynchronious version.
+    *
+    * @param callback will be called once the list is ready.
+    */
+   virtual bool listId(std::function<void(const QList<Element>)> callback) const;
+
+   /**
+    * Fetch an element whose identifier come from "listId". This should be
+    * implemented in an asynchronous manner.
+    *
+    * @param element
+    * @return if the request already failed
+    */
+   virtual bool fetch( const Element& element);
+
+   /**
+    * Same as "bool fetch( const Element& element);", but with multiple items
+    *
+    * @param elements A list of ids to be fetched
+    *
+    * @see CollectionInterface::fetch
+    *
+    * @return false if the request already failed, true otherwise
+    */
+   virtual bool fetch( const QList<Element>& elements);
+
+   /**
     * Return a pointer to the model implementing the CollectionManager.
     */
    QAbstractItemModel* model() const;
@@ -221,6 +264,7 @@ protected:
    void addChildren(CollectionInterface* c);
 
    bool save      (ItemBase<QObject>* base);
+   bool save      (const ItemBase<QObject>* base);
    bool edit      (ItemBase<QObject>* base);
    bool remove    (ItemBase<QObject>* base);
    void activate  (ItemBase<QObject>* base);

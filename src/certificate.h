@@ -82,6 +82,29 @@ public:
 
 
    //Structures
+
+   /**
+    * Represent a certificate "reason to be" in the system.
+    *
+    * Certificates can be there for multiple reasons, they are flags. It will be
+    * used as hints in other subsystem.
+    */
+   enum class OriginHint {
+      UNKNOWN                = 0x0     , /*!< The origin isn't known                                                            */
+      SYSTEM_AUTHORITY       = 0x1 << 0, /*!< The certificate is part of the system wide store                                  */
+      ROOT_AUTORITY          = 0x1 << 1, /*!< The certificate is part of the system wide root store                             */
+      INTERMEDIATE_AUTHORITY = 0x1 << 2, /*!< The certificate is part of the chain between a system certificate and another one */
+      ACCOUNT_AUTHORITY      = 0x1 << 3, /*!< The certificate is used as CA by an account                                       */
+      ACCOUNT_KEY            = 0x1 << 4, /*!< The certificate is used as a key by an account                                    */
+      PERSON                 = 0x1 << 5, /*!< The certificate is associated with a person                                       */
+      BLACKLIST              = 0x1 << 6, /*!< This certificate is part of an account communication blacklist                    */
+      WHITELIST              = 0x1 << 7, /*!< This certificate is part of an account communication whitelist                    */
+      HISTORY                = 0x1 << 8, /*!< This certificate is used by at least one history call                             */
+      NETWORK_PRESENCE       = 0x1 << 9, /*!< This certificate is exposed by a peer on the local network                        */
+   };
+   Q_FLAGS(OriginHint)
+
+   ///DEPRECATED
    enum class Type {
       AUTHORITY  ,
       USER       ,

@@ -36,8 +36,6 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 
-
-
 ///Destructor
 CollectionInterface::~CollectionInterface()
 {
@@ -95,6 +93,11 @@ bool CollectionInterface::save(ItemBase<QObject>* base)
    return d_ptr->m_fSave(base);
 }
 
+bool CollectionInterface::save(const ItemBase<QObject>* base)
+{
+   return d_ptr->m_fSave(const_cast<ItemBase<QObject>*>(base));
+}
+
 bool CollectionInterface::edit(ItemBase<QObject>* base)
 {
    return d_ptr->m_fEdit(base);
@@ -114,6 +117,28 @@ int CollectionInterface::size() const
    return  d_ptr->m_fSize();
 }
 
+QList<CollectionInterface::Element> CollectionInterface::listId() const
+{
+   return {};
+}
+
+bool CollectionInterface::listId(std::function<void(const QList<CollectionInterface::Element>)> callback) const
+{
+   Q_UNUSED(callback)
+   return false;
+}
+
+bool CollectionInterface::fetch( const CollectionInterface::Element& element)
+{
+   Q_UNUSED(element)
+   return false;
+}
+
+bool CollectionInterface::fetch( const QList<CollectionInterface::Element>& elements)
+{
+   Q_UNUSED(elements)
+   return false;
+}
 
 void CollectionInterface::activate(ItemBase<QObject>* base)
 {
