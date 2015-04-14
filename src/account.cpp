@@ -63,7 +63,7 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 /*NEW      */{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing },/**/
 /*MODIFIED */{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::reload  },/**/
 /*REMOVED  */{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  } /**/
-/*                                                                                                                                                       */
+/*                                                                                                             */
 };
 #undef AP
 
@@ -1651,7 +1651,6 @@ void AccountPrivate::save()
       q_ptr->codecModel()->save();
 
       q_ptr->setId(currentId.toLatin1());
-      q_ptr->credentialModel()->save();
    } //New account
    else { //Existing account
       MapStringString tmp;
@@ -1667,6 +1666,9 @@ void AccountPrivate::save()
          emit q_ptr->enabled(m_RemoteEnabledState);
       }
    }
+
+   //Save the credentials if they changed
+   q_ptr->credentialModel() << CredentialModel::EditAction::SAVE;
 
    if (!q_ptr->id().isEmpty()) {
       Account* acc =  AccountModel::instance()->getById(q_ptr->id());
@@ -1727,7 +1729,7 @@ void AccountPrivate::reload()
 
       //If the credential model is loaded, then update it
       if (m_pCredentials)
-         m_pCredentials->reload();
+         m_pCredentials << CredentialModel::EditAction::RELOAD;
       emit q_ptr->changed(q_ptr);
 
       //The registration state is cached, update that cache
