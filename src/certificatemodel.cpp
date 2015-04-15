@@ -102,6 +102,7 @@ public:
    CertificateNode*                 m_pDefaultCategory ;
    QMutex                           m_CertLoader       ;
    QHash<const Account*,CertificateNode*> m_hAccToCat  ;
+   QHash<const QString&,CertificateNode*> m_hStrToCat  ;
    QHash<const Certificate*,CertificateNode*> m_hNodes ;
 
    //Singleton
@@ -141,7 +142,10 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
 {
    setObjectName("CertificateModel");
    //TODO replace with something else
-   m_pFallbackCollection = addCollection<FolderCertificateCollection>();
+   m_pFallbackCollection = addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>, QString>(QString(),
+      FolderCertificateCollection::Options::FALLBACK | FolderCertificateCollection::Options::READ_WRITE,
+      QObject::tr("Local certificate store")
+   );
    m_pFallbackCollection->load();
 }
 
@@ -202,6 +206,8 @@ CertificateNode* CertificateModelPrivate::createCategory(const QString& name, co
    q_ptr->beginInsertRows(QModelIndex(), idx, idx);
    m_lTopLevelNodes << n;
    q_ptr->endInsertRows();
+
+   m_hStrToCat[name] = n;
 
    return n;
 }
@@ -479,7 +485,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
 }
 
 //TODO Make this private
-Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save)
+Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save, const QString& category)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
    hash.addData(rawContent);
@@ -492,7 +498,17 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
       cert = new Certificate(rawContent);
       d_ptr->m_hCertificates[id] = cert;
 
-      d_ptr->addToTree(cert,a);
+      if ((!a) && (!category.isEmpty())) {
+         CertificateNode* cat = d_ptr->m_hStrToCat[category];
+
+         if (!cat) {
+            cat = d_ptr->createCategory(category, QString(), QString());
+         }
+
+         d_ptr->addToTree(cert,cat);
+      }
+      else
+         d_ptr->addToTree(cert,a);
 
       if (save) {
          //TODO this shouldn't be necessary
@@ -503,6 +519,11 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
    }
 
    return cert;
+}
+
+Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, const QString& category, bool save)
+{
+   return getCertificateFromContent(rawContent,nullptr,save,category);
 }
 
 CertificateProxyModel::CertificateProxyModel(CertificateModel* parent, CertificateNode* root) : QAbstractProxyModel(parent),m_pRoot(root)

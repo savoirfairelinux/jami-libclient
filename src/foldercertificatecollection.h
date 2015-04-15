@@ -33,20 +33,25 @@ template<typename T> class CollectionMediator;
  */
 class LIB_EXPORT FolderCertificateCollection : public CollectionInterface
 {
+   friend class BackgroundLoader;
+
 public:
    ///@enum Options load and behavior parameters for a FolderCertificateCollection
    enum class Options {
-      READ_WRITE = 0 << 0, /*!< Try to add certificates to that store (default)   */
-      READ_ONLY  = 1 << 0, /*!< Do not try to add certificate to that store       */
-      RECURSIVE  = 1 << 1, /*!< Read all sub-folders recursively                  */
-      TOP_LEVEL  = 1 << 2, /*!< Consider those certificates as top-level entities */
+      READ_WRITE = 0 << 0, /*!< Try to add certificates to that store (default)                        */
+      READ_ONLY  = 1 << 0, /*!< Do not try to add certificate to that store                            */
+      RECURSIVE  = 1 << 1, /*!< Read all sub-folders recursively                                       */
+      ROOT       = 1 << 2, /*!< Consider those certificates as top-level entities                      */
+      FALLBACK   = 1 << 3, /*!< Consider this folder the default destination for volatile certificates */
    };
 
    explicit FolderCertificateCollection(CollectionMediator<Certificate>* mediator,
-                                          const QString& path              = QString(),
-                                          const FlagPack<Options>& options = Options::READ_WRITE,
-                                          const QString& name              = QString()
+                                          const QString& path                 = QString(),
+                                          const FlagPack<Options>& options    = Options::READ_WRITE,
+                                          const QString& name                 = QString(),
+                                          FolderCertificateCollection* parent = nullptr
                                        );
+
    virtual ~FolderCertificateCollection();
 
    virtual bool load  () override;

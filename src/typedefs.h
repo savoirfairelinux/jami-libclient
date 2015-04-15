@@ -73,7 +73,9 @@ template<class T>
 class LIB_EXPORT FlagPack
 {
 public:
+   FlagPack() : m_Flags(0) {}
    FlagPack(const T& base) : m_Flags(static_cast<int>(base)) {}
+   FlagPack(const FlagPack<T>& other) : m_Flags(other.m_Flags) {}
 
    //Operator
    FlagPack<T>& operator|(const T& other) {
@@ -92,6 +94,11 @@ public:
 
    FlagPack<T> operator&(const FlagPack<T>& other) {
       return FlagPack<T>(m_Flags & other.m_Flags);
+   }
+
+   FlagPack<T>&operator=(const FlagPack<T>& other) {
+      m_Flags = other.m_Flags;
+      return *this;
    }
 
    bool operator!=(const T& other) {

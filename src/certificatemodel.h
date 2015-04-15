@@ -78,7 +78,8 @@ public:
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
    Certificate* getCertificate(const QUrl& path, Account* a);
-   Certificate* getCertificateFromContent(const QByteArray& rawContent, Account* a = nullptr, bool save = true);
+   Certificate* getCertificateFromContent(const QByteArray& rawContent, Account* a = nullptr, bool save = true, const QString& category = QString());
+   Certificate* getCertificateFromContent(const QByteArray& rawContent, const QString& category, bool save = true);
 
    //Singleton
    static CertificateModel* instance();

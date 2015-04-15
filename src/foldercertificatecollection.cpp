@@ -28,26 +28,7 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
-
-/*
-
-QUrl KDECertificateSerializationDelegate::saveCertificate(const QByteArray& id, const QByteArray& content)
-{
-   
-}
-
-bool KDECertificateSerializationDelegate::deleteCertificate(const QByteArray& id)
-{
-   Q_UNUSED(id)
-   QMutexLocker(&this->m_Mutex);
-   return false;
-}
-
-QList<QByteArray> KDECertificateSerializationDelegate::listCertificates()
-{
-   
-}
- * */
+#include "delegates/pixmapmanipulationdelegate.h"
 
 class FallbackLocalCertificateEditor : public CollectionEditor<Certificate>
 {
@@ -60,7 +41,7 @@ public:
    virtual bool addExisting( const Certificate* item ) override;
 
    QVector<Certificate*>             m_lItems;
-   QString                      m_Path  ;
+   QString                           m_Path  ;
    QHash<const Certificate*,QString> m_hPaths;
 
 private:
@@ -74,10 +55,9 @@ public:
    BackgroundLoader(FolderCertificateCollection* parent);
 
    //Attributes
-   QList<QByteArray> m_lIdList    ;
    QMutex            m_LoaderMutex;
-   QList<QByteArray> m_lQueue     ;
-   FolderCertificateCollection* m_pFallbackCollection;
+   FolderCertificateCollection* m_pCurrentFolder;
+   QList<FolderCertificateCollection*> m_lFolderQueue;
 
    //Helpers
    QByteArray        loadCertificate(const QByteArray& id);
@@ -93,18 +73,53 @@ class FolderCertificateCollectionPrivate
 {
 public:
 
+   //Attributes
+   FlagPack<FolderCertificateCollection::Options> m_Flags;
+   QString                      m_Path             ;
+   QString                      m_Name             ;
+   bool                         m_IsValid          ;
+   FolderCertificateCollection* m_pParent          ;
+   static bool                  m_sHasFallbackStore;
+   FolderCertificateCollection* q_ptr              ;
+   static BackgroundLoader*     m_spLoader         ;
+
    //Helper
    QList<CollectionInterface::Element> getCertificateList();
 };
 
-FolderCertificateCollection::FolderCertificateCollection(CollectionMediator<Certificate>* mediator, 
-  const QString& path              ,
-  const FlagPack<Options>& options ,
-  const QString& name
- ) :
-CollectionInterface(new FallbackLocalCertificateEditor(mediator,path)),d_ptr(new FolderCertificateCollectionPrivate())
-{
+bool FolderCertificateCollectionPrivate::m_sHasFallbackStore = false;
+BackgroundLoader* FolderCertificateCollectionPrivate::m_spLoader = nullptr;
 
+FolderCertificateCollection::FolderCertificateCollection(CollectionMediator<Certificate>* mediator,
+  const QString& path               ,
+  const FlagPack<Options>& options  ,
+  const QString& name               ,
+  FolderCertificateCollection* p
+ ) :
+CollectionInterface(new FallbackLocalCertificateEditor(mediator,path),p),d_ptr(new FolderCertificateCollectionPrivate())
+{
+   d_ptr->q_ptr     = this   ;
+   d_ptr->m_Flags   = options;
+   d_ptr->m_Path    = path   ;
+   d_ptr->m_Name    = name   ;
+   d_ptr->m_pParent = p      ;
+   d_ptr->m_IsValid = true   ;
+
+   if (path.isEmpty()) {
+      d_ptr->m_Path = QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/certs/";
+
+      d_ptr->m_IsValid = !FolderCertificateCollectionPrivate::m_sHasFallbackStore;
+
+      if (!d_ptr->m_IsValid) {
+         qWarning() << "A fallback certificat store already exist, doing nothing";
+      }
+
+      FolderCertificateCollectionPrivate::m_sHasFallbackStore = true;
+   }
+
+   if (name.isEmpty()) {
+      d_ptr->m_Name  = d_ptr->m_Path;
+   }
 }
 
 FolderCertificateCollection::~FolderCertificateCollection()
@@ -115,7 +130,7 @@ FolderCertificateCollection::~FolderCertificateCollection()
 QByteArray BackgroundLoader::loadCertificate(const QByteArray& id)
 {
 //    QMutexLocker(&this->m_Mutex);
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/certs/" + id + ".pem");
+   QFile file(id);
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       qDebug() << "Error opening certificate: " << id;
       return QByteArray();
@@ -126,17 +141,24 @@ QByteArray BackgroundLoader::loadCertificate(const QByteArray& id)
 
 bool FolderCertificateCollection::load()
 {
-   //Load the stored certificates
-   BackgroundLoader* loader = new BackgroundLoader(this);
-   QObject::connect(loader, SIGNAL(finished()), loader, SLOT(deleteLater()));
+   if (d_ptr->m_IsValid) {
+      //Load the stored certificates
+      if (!d_ptr->m_spLoader) {
+         d_ptr->m_spLoader = new BackgroundLoader(this);
+         QObject::connect(d_ptr->m_spLoader, SIGNAL(finished()), d_ptr->m_spLoader, SLOT(deleteLater()));
+      }
 
-   /*if (!loader->isFinished())
-      connect(loader,&BackgroundLoader::finished,[loader](){
-         delete loader;
-      });*/
+      /*if (!loader->isFinished())
+         connect(loader,&BackgroundLoader::finished,[loader](){
+            delete loader;
+         });*/
 
-   loader->start();
-   return true;
+      d_ptr->m_spLoader->m_lFolderQueue << this;
+
+      if (!d_ptr->m_spLoader->isRunning())
+         d_ptr->m_spLoader->start();
+      return true;
+   }
    return false;
 }
 
@@ -157,7 +179,7 @@ bool FolderCertificateCollection::clear()
 
 QString FolderCertificateCollection::name() const
 {
-   return QObject::tr("Local certificate store");
+   return d_ptr->m_Name;
 }
 
 QString FolderCertificateCollection::category() const
@@ -167,7 +189,7 @@ QString FolderCertificateCollection::category() const
 
 QVariant FolderCertificateCollection::icon() const
 {
-   return QVariant();
+   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
 }
 
 bool FolderCertificateCollection::isEnabled() const
@@ -207,7 +229,7 @@ bool FallbackLocalCertificateEditor::save( const Certificate* item)
 {
    Q_UNUSED(item)
    /*QMutexLocker(&this->m_Mutex);
-   QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+   QDir dir(m_Path);
 
    dir.mkdir("certs/");
 
@@ -269,7 +291,7 @@ QVector<Certificate*> FallbackLocalCertificateEditor::items() const
  ******************************************************************************/
 
 BackgroundLoader::BackgroundLoader(FolderCertificateCollection* parent) : QThread(nullptr),
-m_pFallbackCollection(parent)
+m_pCurrentFolder(parent)
 {
 
 }
@@ -277,14 +299,28 @@ m_pFallbackCollection(parent)
 QList<CollectionInterface::Element> FolderCertificateCollectionPrivate::getCertificateList()
 {
 //    QMutexLocker(&this->m_Mutex);
-   QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/certs/");
+   QDir dir(m_Path);
 
    if (!dir.exists())
       return QList<QByteArray>();
 
    QList<QByteArray> ret;
-   for (const QString& str : dir.entryList({"*.pem"}) ) {
-      ret << str.left(str.size()-4).toLatin1();
+   for (const QString& str : dir.entryList({"*.pem","*.crt"}) ) {
+      ret << (m_Path + "/" + str).toLatin1();
+   }
+
+   if (m_Flags & FolderCertificateCollection::Options::RECURSIVE) {
+      for (const QString& d : dir.entryList(QDir::AllDirs)) {
+         if (d != QString('.') && d != "..") {
+            CertificateModel::instance()->addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>,QString,FolderCertificateCollection*>(
+               m_Path+'/'+d              ,
+               m_Flags                   ,
+               d                         ,
+               q_ptr                     ,
+               LoadOptions::FORCE_ENABLED
+            );
+         }
+      }
    }
 
    return ret;
@@ -292,14 +328,16 @@ QList<CollectionInterface::Element> FolderCertificateCollectionPrivate::getCerti
 
 void BackgroundLoader::run()
 {
-   if (m_lIdList.isEmpty()) //WARNING potential race
-      m_lIdList = m_pFallbackCollection->listId();
+   while (m_lFolderQueue.size()) {
+      m_pCurrentFolder = m_lFolderQueue.takeFirst();
 
-   QMutexLocker(&this->m_LoaderMutex);
-   for(const QByteArray& id : m_lIdList) {
-      Certificate* cert = CertificateModel::instance()->getCertificateFromContent(loadCertificate(id),nullptr,false);
-      m_pFallbackCollection->editor<Certificate>()->addExisting(cert);
+      QMutexLocker(&this->m_LoaderMutex);
+      for(const QByteArray& id : m_pCurrentFolder->listId()) {
+         Certificate* cert = CertificateModel::instance()->getCertificateFromContent(loadCertificate(id),m_pCurrentFolder->name(),false);
+         m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
+      }
    }
+   FolderCertificateCollectionPrivate::m_spLoader = nullptr;
    QThread::exit(0);
 }
 
