@@ -61,7 +61,7 @@ public:
     * are implemented anyway, each backend should list what is officially supposed to work and what is
     * not.
     */
-   enum SupportedFeatures {
+   enum class SupportedFeatures {
       NONE        = 0x0      ,
       LOAD        = 0x1 <<  0, /*!< Load this backend, DO NOT load anything before "load" is called            */
       SAVE        = 0x1 <<  1, /*!< Save an item                                                               */
@@ -82,11 +82,6 @@ public:
    };
 
    typedef QByteArray Element;
-
-   //Constructor
-   template<typename T>
-   explicit CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent = nullptr);
-   virtual ~CollectionInterface();
 
    //Generic information getters
 
@@ -132,7 +127,7 @@ public:
     *
     * @see SupportedFeatures
     */
-   virtual SupportedFeatures supportedFeatures() const = 0;
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const = 0;
 
    //Management methods
 
@@ -260,6 +255,12 @@ public:
    CollectionConfigurationInterface* configurator() const;
 
 protected:
+
+   //Constructor
+   template<typename T>
+   explicit CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent = nullptr);
+   virtual ~CollectionInterface();
+
    void setConfigurator(std::function<CollectionConfigurationInterface*()> getter);
    void addChildren(CollectionInterface* c);
 
@@ -274,6 +275,8 @@ protected:
 private:
    CollectionInterfacePrivate* d_ptr;
 };
+
+DECLARE_ENUM_FLAGS(CollectionInterface::SupportedFeatures)
 
 #include <collectioninterface.hpp>
 

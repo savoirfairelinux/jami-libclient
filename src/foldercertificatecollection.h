@@ -15,11 +15,13 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifndef FOLDERCERTIFICATECOLLECTION_H
+#define FOLDERCERTIFICATECOLLECTION_H
 
 #include <collectioninterface.h>
 #include <typedefs.h>
 
-class FallbackLocalCertificateCollectionPrivate;
+class FolderCertificateCollectionPrivate;
 class Certificate;
 
 template<typename T> class CollectionMediator;
@@ -29,11 +31,23 @@ template<typename T> class CollectionMediator;
  * locally by LibRingClient. If the platform have a certificate hosting facility,
  * it is strongly encourages to use it rather than this.
  */
-class LIB_EXPORT FallbackLocalCertificateCollection : public CollectionInterface
+class LIB_EXPORT FolderCertificateCollection : public CollectionInterface
 {
 public:
-   explicit FallbackLocalCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path = QString());
-   virtual ~FallbackLocalCertificateCollection();
+   ///@enum Options load and behavior parameters for a FolderCertificateCollection
+   enum class Options {
+      READ_WRITE = 0 << 0, /*!< Try to add certificates to that store (default)   */
+      READ_ONLY  = 1 << 0, /*!< Do not try to add certificate to that store       */
+      RECURSIVE  = 1 << 1, /*!< Read all sub-folders recursively                  */
+      TOP_LEVEL  = 1 << 2, /*!< Consider those certificates as top-level entities */
+   };
+
+   explicit FolderCertificateCollection(CollectionMediator<Certificate>* mediator,
+                                          const QString& path              = QString(),
+                                          const FlagPack<Options>& options = Options::READ_WRITE,
+                                          const QString& name              = QString()
+                                       );
+   virtual ~FolderCertificateCollection();
 
    virtual bool load  () override;
    virtual bool reload() override;
@@ -46,10 +60,13 @@ public:
    virtual QByteArray     id       () const override;
    virtual QList<Element> listId   () const override;
 
-   virtual SupportedFeatures  supportedFeatures() const override;
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
 private:
-   FallbackLocalCertificateCollectionPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(FallbackLocalCertificateCollection)
+   FolderCertificateCollectionPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(FolderCertificateCollection)
 };
-Q_DECLARE_METATYPE(FallbackLocalCertificateCollection*)
+Q_DECLARE_METATYPE(FolderCertificateCollection*)
+DECLARE_ENUM_FLAGS(FolderCertificateCollection::Options)
+
+#endif

@@ -138,7 +138,7 @@ bool TransitionalPersonBackend::isEnabled() const
    return false;
 }
 
-CollectionInterface::SupportedFeatures TransitionalPersonBackend::supportedFeatures() const
+FlagPack<CollectionInterface::SupportedFeatures> TransitionalPersonBackend::supportedFeatures() const
 {
    return CollectionInterface::SupportedFeatures::NONE;
 }

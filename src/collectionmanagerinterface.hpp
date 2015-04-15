@@ -33,7 +33,7 @@ public:
    CollectionManagerInterface<T>*  i_ptr;
 
    CollectionMediator<T>* itemMediator() const;
-   inline const QVector< CollectionInterface* > filterCollections(QVector< CollectionInterface* > in, CollectionInterface::SupportedFeatures features) const;
+   inline const QVector< CollectionInterface* > filterCollections(QVector< CollectionInterface* > in, FlagPack<CollectionInterface::SupportedFeatures> features) const;
 };
 
 template<class T>
@@ -113,7 +113,7 @@ CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* se
 }
 
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterfacePrivate<T>::filterCollections(QVector< CollectionInterface* > in, CollectionInterface::SupportedFeatures features) const
+const QVector< CollectionInterface* > CollectionManagerInterfacePrivate<T>::filterCollections(QVector< CollectionInterface* > in, FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    QVector< CollectionInterface* > out;
    for (CollectionInterface* col : in) {
@@ -129,7 +129,7 @@ const QVector< CollectionInterface* > CollectionManagerInterfacePrivate<T>::filt
  * @note Please note that this method complexity is O(N) when "features" is set
  */
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections(CollectionInterface::SupportedFeatures features) const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections(FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    if (features != CollectionInterface::SupportedFeatures::NONE)
       return d_ptr->filterCollections(d_ptr->m_lCollections, features);
@@ -143,7 +143,7 @@ const QVector< CollectionInterface* > CollectionManagerInterface<T>::collections
  * @note Please note that this method complexity is O(N) when "features" is set
  */
 template<class T>
-const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledCollections(CollectionInterface::SupportedFeatures features) const
+const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledCollections(FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    if (features != CollectionInterface::SupportedFeatures::NONE)
       return d_ptr->filterCollections(d_ptr->m_lEnabledCollections, features);
@@ -157,7 +157,7 @@ const QVector< CollectionInterface* > CollectionManagerInterface<T>::enabledColl
  * @note Please note that this method complexity is O(N) when "features" is set
  */
 template<class T>
-bool CollectionManagerInterface<T>::hasEnabledCollections(CollectionInterface::SupportedFeatures features) const
+bool CollectionManagerInterface<T>::hasEnabledCollections(FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    if (features != CollectionInterface::SupportedFeatures::NONE)
       return d_ptr->filterCollections(d_ptr->m_lEnabledCollections, features).size();
@@ -171,7 +171,7 @@ bool CollectionManagerInterface<T>::hasEnabledCollections(CollectionInterface::S
  * @note Please note that this method complexity is O(N) when "features" is set
  */
 template<class T>
-bool CollectionManagerInterface<T>::hasCollections(CollectionInterface::SupportedFeatures features) const
+bool CollectionManagerInterface<T>::hasCollections(FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    if (features != CollectionInterface::SupportedFeatures::NONE)
       return d_ptr->filterCollections(d_ptr->m_lCollections, features).size();

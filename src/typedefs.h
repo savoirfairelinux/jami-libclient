@@ -61,5 +61,73 @@ template<typename A> constexpr int enum_class_size() {
    #define IGNORE_NULL(content) content
 #endif //ENABLE_IGNORE_NULL
 
+/**
+ * Create a safe pack of flags from an enum class.
+ *
+ * This class exist to ensure all sources come from the same enum and that it is
+ * never accidentally accidentally into an integer.
+ *
+ * This assume that the enum has been setup as flags.
+ */
+template<class T>
+class LIB_EXPORT FlagPack
+{
+public:
+   FlagPack(const T& base) : m_Flags(static_cast<int>(base)) {}
+
+   //Operator
+   FlagPack<T>& operator|(const T& other) {
+      m_Flags |= static_cast<int>(other);
+      return *this;
+   }
+
+   FlagPack<T>& operator|(const FlagPack<T>& other) {
+      m_Flags |= other.m_Flags;
+      return *this;
+   }
+
+   FlagPack<T> operator&(const T& other) {
+      return FlagPack<T>(m_Flags & static_cast<int>(other));
+   }
+
+   FlagPack<T> operator&(const FlagPack<T>& other) {
+      return FlagPack<T>(m_Flags & other.m_Flags);
+   }
+
+   bool operator!=(const T& other) {
+      return  m_Flags != static_cast<int>(other);
+   }
+
+   bool operator==(const T& other) {
+      return  m_Flags == static_cast<int>(other);
+   }
+
+   bool operator==(const FlagPack<T>& other) {
+      return  m_Flags == other.m_Flags;
+   }
+
+   bool operator!() {
+      return !m_Flags;
+   }
+
+   operator bool() {
+      return m_Flags != 0;
+   }
+
+   int value() const {
+      return m_Flags;
+   }
+
+private:
+   FlagPack(int base) : m_Flags(base) {}
+   int m_Flags;
+};
+
+#define DECLARE_ENUM_FLAGS(T)\
+static FlagPack<T> operator|(const T& first, const T& second) { \
+   FlagPack<T> p (first); \
+   return p | second; \
+}
+
 #endif //TYPEDEFS_H
 

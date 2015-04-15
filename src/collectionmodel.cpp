@@ -128,7 +128,7 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
 
          //Retro-map to the SupportedFeatures //WARNING if SupportedFeatures change, this need to be updated
          if (role > Qt::UserRole && role <= Qt::UserRole+14) {
-            return (bool) (role == Qt::UserRole+1 ? true : item->collection->supportedFeatures() & (0x01 << (role - Qt::UserRole - 2)));
+            return (bool) (role == Qt::UserRole+1 ? true : bool(item->collection->supportedFeatures() & ((CollectionInterface::SupportedFeatures)(0x01 << (role - Qt::UserRole - 2)))));
          }
       }
       else {

@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "fallbacklocalcertificatecollection.h"
+#include "foldercertificatecollection.h"
 
 //Qt
 #include <QtCore/QThread>
@@ -71,13 +71,13 @@ class BackgroundLoader : public QThread
 {
    Q_OBJECT
 public:
-   BackgroundLoader(FallbackLocalCertificateCollection* parent);
+   BackgroundLoader(FolderCertificateCollection* parent);
 
    //Attributes
    QList<QByteArray> m_lIdList    ;
    QMutex            m_LoaderMutex;
    QList<QByteArray> m_lQueue     ;
-   FallbackLocalCertificateCollection* m_pFallbackCollection;
+   FolderCertificateCollection* m_pFallbackCollection;
 
    //Helpers
    QByteArray        loadCertificate(const QByteArray& id);
@@ -89,7 +89,7 @@ Q_SIGNALS:
    void listLoaded(const QList<QByteArray>& list);
 };
 
-class FallbackLocalCertificateCollectionPrivate
+class FolderCertificateCollectionPrivate
 {
 public:
 
@@ -97,13 +97,17 @@ public:
    QList<CollectionInterface::Element> getCertificateList();
 };
 
-FallbackLocalCertificateCollection::FallbackLocalCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
-CollectionInterface(new FallbackLocalCertificateEditor(mediator,path)),d_ptr(new FallbackLocalCertificateCollectionPrivate())
+FolderCertificateCollection::FolderCertificateCollection(CollectionMediator<Certificate>* mediator, 
+  const QString& path              ,
+  const FlagPack<Options>& options ,
+  const QString& name
+ ) :
+CollectionInterface(new FallbackLocalCertificateEditor(mediator,path)),d_ptr(new FolderCertificateCollectionPrivate())
 {
 
 }
 
-FallbackLocalCertificateCollection::~FallbackLocalCertificateCollection()
+FolderCertificateCollection::~FolderCertificateCollection()
 {
    delete d_ptr;
 }
@@ -120,7 +124,7 @@ QByteArray BackgroundLoader::loadCertificate(const QByteArray& id)
    return file.readAll();
 }
 
-bool FallbackLocalCertificateCollection::load()
+bool FolderCertificateCollection::load()
 {
    //Load the stored certificates
    BackgroundLoader* loader = new BackgroundLoader(this);
@@ -136,55 +140,55 @@ bool FallbackLocalCertificateCollection::load()
    return false;
 }
 
-bool FallbackLocalCertificateCollection::reload()
+bool FolderCertificateCollection::reload()
 {
    return false;
 }
 
-QList<CollectionInterface::Element> FallbackLocalCertificateCollection::listId() const
+QList<CollectionInterface::Element> FolderCertificateCollection::listId() const
 {
    return d_ptr->getCertificateList();
 }
 
-bool FallbackLocalCertificateCollection::clear()
+bool FolderCertificateCollection::clear()
 {
    return false;
 }
 
-QString FallbackLocalCertificateCollection::name() const
+QString FolderCertificateCollection::name() const
 {
    return QObject::tr("Local certificate store");
 }
 
-QString FallbackLocalCertificateCollection::category() const
+QString FolderCertificateCollection::category() const
 {
    return QObject::tr("Certificate");
 }
 
-QVariant FallbackLocalCertificateCollection::icon() const
+QVariant FolderCertificateCollection::icon() const
 {
    return QVariant();
 }
 
-bool FallbackLocalCertificateCollection::isEnabled() const
+bool FolderCertificateCollection::isEnabled() const
 {
    return true;
 }
 
-QByteArray FallbackLocalCertificateCollection::id() const
+QByteArray FolderCertificateCollection::id() const
 {
-   return "FallbackLocalCertificateCollection";
+   return "FolderCertificateCollection";
 }
 
-CollectionInterface::SupportedFeatures FallbackLocalCertificateCollection::supportedFeatures() const
+FlagPack<CollectionInterface::SupportedFeatures> FolderCertificateCollection::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures)     (
+   return
       CollectionInterface::SupportedFeatures::NONE     |
       CollectionInterface::SupportedFeatures::LISTABLE |
       CollectionInterface::SupportedFeatures::LOAD     |
       CollectionInterface::SupportedFeatures::CLEAR    |
       CollectionInterface::SupportedFeatures::REMOVE   |
-      CollectionInterface::SupportedFeatures::ADD      );
+      CollectionInterface::SupportedFeatures::ADD      ;
 }
 
 
@@ -264,13 +268,13 @@ QVector<Certificate*> FallbackLocalCertificateEditor::items() const
  *                                                                             *
  ******************************************************************************/
 
-BackgroundLoader::BackgroundLoader(FallbackLocalCertificateCollection* parent) : QThread(nullptr),
+BackgroundLoader::BackgroundLoader(FolderCertificateCollection* parent) : QThread(nullptr),
 m_pFallbackCollection(parent)
 {
 
 }
 
-QList<CollectionInterface::Element> FallbackLocalCertificateCollectionPrivate::getCertificateList()
+QList<CollectionInterface::Element> FolderCertificateCollectionPrivate::getCertificateList()
 {
 //    QMutexLocker(&this->m_Mutex);
    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/certs/");
@@ -299,4 +303,4 @@ void BackgroundLoader::run()
    QThread::exit(0);
 }
 
-#include "fallbacklocalcertificatecollection.moc"
+#include "foldercertificatecollection.moc"

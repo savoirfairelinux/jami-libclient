@@ -96,12 +96,11 @@ int NumberCategory::key() const
    return d_ptr->m_Key;
 }
 
-CollectionInterface::SupportedFeatures NumberCategory::supportedFeatures() const
+FlagPack<CollectionInterface::SupportedFeatures> NumberCategory::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures)         (
-      CollectionInterface::SupportedFeatures::NONE         |
-      CollectionInterface::SupportedFeatures::MANAGEABLE   |
-      CollectionInterface::SupportedFeatures::LOAD         );
+   return CollectionInterface::SupportedFeatures::NONE         |
+          CollectionInterface::SupportedFeatures::MANAGEABLE   |
+          CollectionInterface::SupportedFeatures::LOAD         ;
 }
 
 void NumberCategory::setIcon(const QVariant& pixmap)

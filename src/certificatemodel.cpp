@@ -32,7 +32,7 @@
 //Ring
 #include "certificate.h"
 #include "account.h"
-#include "fallbacklocalcertificatecollection.h"
+#include "foldercertificatecollection.h"
 #include "private/matrixutils.h"
 
 enum class DetailType : uchar
@@ -112,7 +112,7 @@ private:
 };
 
 //TODO remove
-static FallbackLocalCertificateCollection* m_pFallbackCollection = nullptr;
+static FolderCertificateCollection* m_pFallbackCollection = nullptr;
 
 CertificateModel* CertificateModelPrivate::m_spInstance = nullptr;
 
@@ -141,7 +141,7 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
 {
    setObjectName("CertificateModel");
    //TODO replace with something else
-   m_pFallbackCollection = addCollection<FallbackLocalCertificateCollection>();
+   m_pFallbackCollection = addCollection<FolderCertificateCollection>();
    m_pFallbackCollection->load();
 }
 

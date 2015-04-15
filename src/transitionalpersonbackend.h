@@ -55,7 +55,7 @@ public:
    virtual QString         name     () const override;
    virtual QString         category () const override;
    virtual QVariant        icon     () const override;
-   virtual SupportedFeatures supportedFeatures() const override;
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
    //Mutators
    virtual bool load       (                            ) override;

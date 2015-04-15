@@ -48,8 +48,8 @@ class CollectionConfigurationInterface;
  */
 class LIB_EXPORT CollectionManagerInterfaceBase {
 public:
-   virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
-   virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
+   virtual bool hasEnabledCollections (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const = 0;
+   virtual bool hasCollections        (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const = 0;
 
    ///Enable / disable a collection
    virtual bool enableCollection( CollectionInterface*  collection, bool enabled) = 0;
@@ -140,12 +140,12 @@ public:
 
 
    /// Do this manager have active collections
-   virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
-   virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual bool hasEnabledCollections (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual bool hasCollections        (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
 
    /// List all Collections
-   virtual const QVector< CollectionInterface* > collections       (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
-   virtual const QVector< CollectionInterface* > enabledCollections(CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual const QVector< CollectionInterface* > collections       (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
+   virtual const QVector< CollectionInterface* > enabledCollections(FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
 
    ///Enable / disable a collection
    virtual bool enableCollection( CollectionInterface*  collection, bool enabled) final;

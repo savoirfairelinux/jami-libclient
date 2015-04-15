@@ -617,7 +617,7 @@ void CategorizedHistoryModel::collectionAddedCallback(CollectionInterface* backe
 bool CategorizedHistoryModel::clearAllCollections() const
 {
    foreach (CollectionInterface* backend, collections()) { //TODO use the filter API
-      if (backend->supportedFeatures() & CollectionInterface::CLEAR) {
+      if (backend->supportedFeatures() & CollectionInterface::SupportedFeatures::CLEAR) {
          backend->clear();
       }
    }

@@ -237,7 +237,7 @@ SET( libringclient_LIB_SRCS
   src/collectioneditor.cpp
   src/fallbackpersoncollection.cpp
   src/daemoncertificatecollection.cpp
-  src/fallbacklocalcertificatecollection.cpp
+  src/foldercertificatecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -330,7 +330,7 @@ SET( libringclient_LIB_HDRS
   src/collectioneditor.hpp
   src/fallbackpersoncollection.h
   src/daemoncertificatecollection.h
-  src/fallbacklocalcertificatecollection.h
+  src/foldercertificatecollection.h
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h

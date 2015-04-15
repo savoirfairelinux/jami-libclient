@@ -83,7 +83,7 @@ public:
    virtual QByteArray  id             (             ) const override;
    virtual bool     load              (             )       override;
    virtual bool     reload            (             )       override;
-   SupportedFeatures supportedFeatures(             ) const override;
+   FlagPack<SupportedFeatures> supportedFeatures(             ) const override;
 
    //Attributes
    bool m_needSaving;
@@ -395,16 +395,16 @@ bool ProfileContentBackend::saveAll()
    return true;
 }
 
-ProfileContentBackend::SupportedFeatures ProfileContentBackend::supportedFeatures() const
+FlagPack<ProfileContentBackend::SupportedFeatures> ProfileContentBackend::supportedFeatures() const
 {
-   return (ProfileContentBackend::SupportedFeatures)(SupportedFeatures::NONE
-      | SupportedFeatures::LOAD        //= 0x1 <<  0, /* Load this backend, DO NOT load anything before "load" is called         */
-      | SupportedFeatures::EDIT        //= 0x1 <<  2, /* Edit, but **DOT NOT**, save an item)                                    */
-      | SupportedFeatures::ADD         //= 0x1 <<  4, /* Add (and save) a new item to the backend                                */
-      | SupportedFeatures::SAVE_ALL    //= 0x1 <<  5, /* Save all items at once, this may or may not be faster than "add"        */
-      | SupportedFeatures::REMOVE      //= 0x1 <<  7, /* Remove a single item                                                    */
-      | SupportedFeatures::ENABLEABLE  //= 0x1 << 10, /*Can be enabled, I know, it is not a word, but Java use it too            */
-      | SupportedFeatures::MANAGEABLE);  //= 0x1 << 12, /* Can be managed the config GUI                                       */
+   return SupportedFeatures::NONE
+        | SupportedFeatures::LOAD        //= 0x1 <<  0, /* Load this backend, DO NOT load anything before "load" is called         */
+        | SupportedFeatures::EDIT        //= 0x1 <<  2, /* Edit, but **DOT NOT**, save an item)                                    */
+        | SupportedFeatures::ADD         //= 0x1 <<  4, /* Add (and save) a new item to the backend                                */
+        | SupportedFeatures::SAVE_ALL    //= 0x1 <<  5, /* Save all items at once, this may or may not be faster than "add"        */
+        | SupportedFeatures::REMOVE      //= 0x1 <<  7, /* Remove a single item                                                    */
+        | SupportedFeatures::ENABLEABLE  //= 0x1 << 10, /*Can be enabled, I know, it is not a word, but Java use it too            */
+        | SupportedFeatures::MANAGEABLE; //= 0x1 << 12, /* Can be managed the config GUI                                       */
       //TODO ^^ Remove that one once debugging is done
 }
 

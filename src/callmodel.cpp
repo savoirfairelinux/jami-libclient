@@ -1051,7 +1051,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    //Add to history
    if (call->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       if (!call->collection()) {
-         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance()->collections(CollectionInterface::ADD)) {
+         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance()->collections(CollectionInterface::SupportedFeatures::ADD)) {
             if (backend->editor<Call>()->addNew(call))
                call->setCollection(backend);
          }

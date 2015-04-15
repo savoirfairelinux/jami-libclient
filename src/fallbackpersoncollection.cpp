@@ -211,15 +211,15 @@ bool FallbackPersonCollection::reload()
    return false;
 }
 
-CollectionInterface::SupportedFeatures FallbackPersonCollection::supportedFeatures() const
+FlagPack<CollectionInterface::SupportedFeatures> FallbackPersonCollection::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures)       (
+   return
       CollectionInterface::SupportedFeatures::NONE       |
       CollectionInterface::SupportedFeatures::LOAD       |
       CollectionInterface::SupportedFeatures::CLEAR      |
       CollectionInterface::SupportedFeatures::MANAGEABLE |
       CollectionInterface::SupportedFeatures::REMOVE     |
-      CollectionInterface::SupportedFeatures::ADD        );
+      CollectionInterface::SupportedFeatures::ADD        ;
 }
 
 bool FallbackPersonCollection::clear()

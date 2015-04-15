@@ -582,7 +582,7 @@ bool CategorizedBookmarkModel::removeItemCallback(const ContactMethod* item)
 bool CategorizedBookmarkModel::clearAllCollections() const
 {
    foreach (CollectionInterface* backend, collections()) {
-      if (backend->supportedFeatures() & CollectionInterface::ADD) {
+      if (backend->supportedFeatures() & CollectionInterface::SupportedFeatures::ADD) {
          backend->clear();
       }
    }

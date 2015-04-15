@@ -94,15 +94,15 @@ QByteArray DaemonCertificateCollection::id() const
    return "DaemonCertificateCollection";
 }
 
-CollectionInterface::SupportedFeatures DaemonCertificateCollection::supportedFeatures() const
+FlagPack<CollectionInterface::SupportedFeatures> DaemonCertificateCollection::supportedFeatures() const
 {
-   return (CollectionInterface::SupportedFeatures)     (
+   return
       CollectionInterface::SupportedFeatures::NONE     |
       CollectionInterface::SupportedFeatures::LOAD     |
       CollectionInterface::SupportedFeatures::CLEAR    |
       CollectionInterface::SupportedFeatures::REMOVE   |
       CollectionInterface::SupportedFeatures::LISTABLE |
-      CollectionInterface::SupportedFeatures::ADD      );
+      CollectionInterface::SupportedFeatures::ADD      ;
 }
 
 
