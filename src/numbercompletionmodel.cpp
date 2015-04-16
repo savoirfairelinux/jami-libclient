@@ -105,7 +105,9 @@ QHash<int,QByteArray> NumberCompletionModel::roleNames() const
 
 QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
 {
-   if (!index.isValid()) return QVariant();
+   if (!index.isValid())
+      return QVariant();
+
    const QMap<int,ContactMethod*>::iterator i = d_ptr->m_hNumbers.end()-1-index.row();
    const ContactMethod* n = i.value();
    const int weight     = i.key  ();
@@ -220,8 +222,9 @@ void NumberCompletionModel::setPrefix(const QString& str)
    if (d_ptr->m_Enabled)
       d_ptr->updateModel();
    else {
+      beginRemoveRows(QModelIndex(), 0, d_ptr->m_hNumbers.size()-1);
       d_ptr->m_hNumbers.clear();
-      emit layoutChanged();
+      endRemoveRows();
    }
 }
 
@@ -241,20 +244,24 @@ ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
 void NumberCompletionModelPrivate::updateModel()
 {
    QSet<ContactMethod*> numbers;
-   q_ptr->beginResetModel();
+   q_ptr->beginRemoveRows(QModelIndex(), 0, m_hNumbers.size()-1);
    m_hNumbers.clear();
+   q_ptr->endRemoveRows();
    if (!m_Prefix.isEmpty()) {
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
       foreach(ContactMethod* n,numbers) {
          if (m_UseUnregisteredAccount || ((n->account() && n->account()->registrationState() == Account::RegistrationState::READY)
-          || !n->account()))
+          || !n->account())) {
+            q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
             m_hNumbers.insert(getWeight(n),n);
+            q_ptr->endInsertRows();
+            qDebug() << "inserting at" << getWeight(n) << n->primaryName();
+            qDebug() << "rows: " << m_hNumbers.size();
+         }
       }
    }
-   q_ptr->endResetModel();
-   emit q_ptr->layoutChanged();
 }
 
 void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const
