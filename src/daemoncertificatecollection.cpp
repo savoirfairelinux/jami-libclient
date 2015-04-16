@@ -20,6 +20,9 @@
 //Ring
 #include "certificate.h"
 
+//Dring
+#include "dbus/configurationmanager.h"
+
 class DaemonCertificateEditor : public CollectionEditor<Certificate>
 {
 public:
@@ -31,7 +34,7 @@ public:
    virtual bool addExisting( const Certificate* item ) override;
 
    QVector<Certificate*>             m_lItems;
-   QString                      m_Path  ;
+   QString                           m_Path  ;
    QHash<const Certificate*,QString> m_hPaths;
 
 private:
@@ -56,6 +59,8 @@ DaemonCertificateCollection::~DaemonCertificateCollection()
 
 bool DaemonCertificateCollection::load()
 {
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   qDebug() << QStringList(configurationManager.getCertificateList());
    return false;
 }
 

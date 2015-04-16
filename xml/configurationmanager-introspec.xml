@@ -3,7 +3,8 @@
     <interface name="cx.ring.Ring.ConfigurationManager">
 
         <tp:docstring xmlns="http://www.w3.org/1999/xhtml">
-            Used to handle the configuration stuff: accounts settings, account registration, user preferences, ...
+            Used to handle the configuration stuff: accounts settings, user preferences, ...
+            TODO: move runtime account stuff in accountmanager
         </tp:docstring>
 
         <method name="getAccountTemplate" tp:name-for-bindings="getAccountTemplate">
@@ -234,6 +235,28 @@
                </tp:docstring>
            </arg>
        </method>
+
+      <method name="sendTextMessage" tp:name-for-bindings="sendTextMessage">
+          <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="MapStringString"/>
+          <arg type="s" name="accountID" direction="in">
+          </arg>
+          <arg type="s" name="to" direction="in">
+          </arg>
+          <arg type="s" name="message" direction="in">
+          </arg>
+       </method>
+
+       <signal name="incomingMessage" tp:name-for-bindings="incomingMessage">
+            <tp:docstring>
+                Notify clients that a new text message has been received at the account level.
+            </tp:docstring>
+           <arg type="s" name="accountID">
+           </arg>
+           <arg type="s" name="from">
+           </arg>
+           <arg type="s" name="message">
+           </arg>
+       </signal>
 
        <method name="setVolume" tp:name-for-bindings="setVolume">
            <tp:docstring>
@@ -690,6 +713,78 @@
               </tp:docstring>
            </arg>
        </method>
+
+       <method name="getCertificateList" tp:name-for-bindings="getCertificateList">
+           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="VectorString"/>
+           <arg type="as" name="details" direction="out">
+              <tp:docstring>
+               <p>A list of all certificate IDs</p>
+              </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="addCertificate" tp:name-for-bindings="addCertificate">
+           <arg type="ay" name="certificateRaw" direction="in">
+              <tp:docstring>
+               <p>A raw certificate</p>
+              </tp:docstring>
+           </arg>
+           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="String"/>
+           <arg type="s" name="details" direction="out">
+              <tp:docstring>
+               <p>ID of the inserted certificate</p>
+              </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="addCertificateRemote" tp:name-for-bindings="addCertificateRemote">
+           <arg type="s" name="accountId" direction="in">
+              <tp:docstring>
+               <p>An account ID</p>
+              </tp:docstring>
+           </arg>
+           <arg type="s" name="certificateId" direction="in">
+              <tp:docstring>
+               <p>A certificate ID</p>
+              </tp:docstring>
+           </arg>
+           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="Boolean"/>
+           <arg type="b" name="details" direction="out">
+              <tp:docstring>
+               <p>True if the search started</p>
+              </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="banCertificate" tp:name-for-bindings="banCertificate">
+           <arg type="s" name="certificateId" direction="in">
+              <tp:docstring>
+               <p>A certificate ID</p>
+              </tp:docstring>
+           </arg>
+           <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="Boolean"/>
+           <arg type="b" name="details" direction="out">
+              <tp:docstring>
+               <p>True if the certificate was actually banned.</p>
+              </tp:docstring>
+           </arg>
+       </method>
+
+       <signal name="certificateAdded" tp:name-for-bindings="certificateAdded">
+            <tp:docstring>
+                Notify clients that a certificate have been added to the store.
+            </tp:docstring>
+           <arg type="s" name="certId">
+           </arg>
+       </signal>
+
+       <signal name="certificateExpired" tp:name-for-bindings="certificateExpired">
+            <tp:docstring>
+                Notify clients that a certificate expired.
+            </tp:docstring>
+           <arg type="s" name="certId">
+           </arg>
+       </signal>
 
        <method name="getAddrFromInterfaceName" tp:name-for-bindings="getAddrFromInterfaceName">
            <arg type="s" name="interface" direction="in">
