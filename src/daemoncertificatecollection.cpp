@@ -19,6 +19,7 @@
 
 //Ring
 #include "certificate.h"
+#include "certificatemodel.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -41,20 +42,48 @@ private:
    virtual QVector<Certificate*> items() const override;
 };
 
-class DaemonCertificateCollectionPrivate
+class DaemonCertificateCollectionPrivate : public QObject
 {
+   Q_OBJECT
 public:
+   DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent);
+
+   //Attributes
+   DaemonCertificateCollection* q_ptr;
+
+public Q_SLOTS:
+   void slotCertificateAdded(const QString& id);
+   void slotCertificateExpired(const QString& id);
 };
 
-DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
-CollectionInterface(new DaemonCertificateEditor(mediator,path),nullptr),d_ptr(new DaemonCertificateCollectionPrivate())
+DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent) : QObject(), q_ptr(parent)
 {
-   
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   connect(&configurationManager,&ConfigurationManagerInterface::certificateAdded  ,this,&DaemonCertificateCollectionPrivate::slotCertificateAdded  );
+   connect(&configurationManager,&ConfigurationManagerInterface::certificateExpired,this,&DaemonCertificateCollectionPrivate::slotCertificateExpired);
+}
+
+DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
+CollectionInterface(new DaemonCertificateEditor(mediator,path),nullptr),d_ptr(new DaemonCertificateCollectionPrivate(this))
+{
+
 }
 
 DaemonCertificateCollection::~DaemonCertificateCollection()
 {
    delete d_ptr;
+}
+
+void DaemonCertificateCollectionPrivate::slotCertificateAdded(const QString& id)
+{
+   qDebug() << "\n\nCERTIFICATE ADDED" << id;
+   Certificate* cert = CertificateModel::instance()->getCertificateFromId(id);
+   q_ptr->editor<Certificate>()->addExisting(cert);
+}
+
+void DaemonCertificateCollectionPrivate::slotCertificateExpired(const QString& id)
+{
+   qDebug() << "\n\nCERTIFICATE EXPIRED" << id;
 }
 
 bool DaemonCertificateCollection::load()
@@ -76,7 +105,7 @@ bool DaemonCertificateCollection::clear()
 
 QString DaemonCertificateCollection::name() const
 {
-   return QObject::tr("Local certificate store");
+   return QObject::tr("Ring certificate store");
 }
 
 QString DaemonCertificateCollection::category() const
@@ -104,10 +133,8 @@ FlagPack<CollectionInterface::SupportedFeatures> DaemonCertificateCollection::su
    return
       CollectionInterface::SupportedFeatures::NONE     |
       CollectionInterface::SupportedFeatures::LOAD     |
-      CollectionInterface::SupportedFeatures::CLEAR    |
       CollectionInterface::SupportedFeatures::REMOVE   |
-      CollectionInterface::SupportedFeatures::LISTABLE |
-      CollectionInterface::SupportedFeatures::ADD      ;
+      CollectionInterface::SupportedFeatures::LISTABLE ;
 }
 
 
@@ -130,8 +157,7 @@ bool DaemonCertificateEditor::save( const Certificate* item)
 
 bool DaemonCertificateEditor::remove( const Certificate* item)
 {
-   Q_UNUSED(item)
-   return false;
+   return item->unpin();
 }
 
 bool DaemonCertificateEditor::edit( Certificate* item)
@@ -149,6 +175,7 @@ bool DaemonCertificateEditor::addNew( const Certificate* item)
 bool DaemonCertificateEditor::addExisting( const Certificate* item)
 {
    Q_UNUSED(item)
+   m_lItems << const_cast<Certificate*>(item);
    return false;
 }
 
@@ -156,3 +183,5 @@ QVector<Certificate*> DaemonCertificateEditor::items() const
 {
    return m_lItems;
 }
+
+#include <daemoncertificatecollection.moc>

@@ -32,6 +32,7 @@ class LIB_EXPORT CertificateModel : public QAbstractItemModel, public Collection
 public:
    friend class CertificateProxyModel;
    friend class CertificateNode;
+   friend class DaemonCertificateCollectionPrivate;
 
    enum class Role {
       NodeType       = 100,
@@ -85,6 +86,7 @@ public:
    static CertificateModel* instance();
 
 private:
+   Certificate* getCertificateFromId(const QString& id);
 
    //Backend interface
    virtual void collectionAddedCallback(CollectionInterface* collection) override;

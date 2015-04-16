@@ -87,7 +87,8 @@ public:
  */
 enum class LoadingType {
    FROM_PATH,
-   FROM_CONTENT
+   FROM_CONTENT,
+   FROM_ID
 };
 
 class CertificatePrivate
@@ -105,6 +106,7 @@ public:
    Certificate::Type m_Type       ;
    QByteArray        m_Content    ;
    LoadingType       m_LoadingType;
+   QByteArray        m_Id         ;
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
@@ -293,6 +295,9 @@ void CertificatePrivate::loadDetails()
          case LoadingType::FROM_CONTENT:
             d = DBus::ConfigurationManager::instance().getCertificateDetailsRaw(m_Content);
             break;
+         case LoadingType::FROM_ID:
+            d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
+            break;
       }
       m_pDetailsCache = new DetailsCache(d);
    }
@@ -309,6 +314,9 @@ void CertificatePrivate::loadChecks()
          case LoadingType::FROM_CONTENT:
             checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),m_Content);
             break;
+         case LoadingType::FROM_ID:
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id,QString());
+            break;
       }
       m_pCheckCache = new ChecksCache(checks);
    }
@@ -321,6 +329,11 @@ Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : 
    d_ptr->m_Type = type;
 }
 
+Certificate::Certificate(const QString& id) : ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
+{
+   d_ptr->m_Id = id.toLatin1();
+}
+
 Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
 {
    d_ptr->m_Content = content;
@@ -330,6 +343,44 @@ Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject
 Certificate::~Certificate()
 {
 
+}
+
+bool Certificate::hasRemote() const
+{
+   return ! d_ptr->m_Id.isEmpty();
+}
+
+QByteArray Certificate::remoteId() const
+{
+   return d_ptr->m_Id;
+}
+
+/**
+ * Register this certificate in the daemon
+ */
+bool Certificate::pin()
+{
+   if (hasRemote())
+      return true;
+
+   switch(d_ptr->m_LoadingType) {
+      case LoadingType::FROM_PATH:
+         DBus::ConfigurationManager::instance().addCertificate(d_ptr->m_Id); //FIXME wrong function, wait for daemon implementation
+         break;
+      case LoadingType::FROM_CONTENT:
+         DBus::ConfigurationManager::instance().addCertificate(d_ptr->m_Path.toString().toLatin1());
+         break;
+      case LoadingType::FROM_ID:
+//          return DBus::ConfigurationManager::instance().addCertificateRemote(d_ptr->m_Id); //FIXME
+         break;
+   }
+   //TODO use the new pinning API
+   return false;
+}
+
+bool Certificate::unpin() const
+{
+   return false;//TODO
 }
 
 QString Certificate::getName(Certificate::Checks check)

@@ -468,14 +468,30 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
 Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Type type)
 {
    Q_UNUSED(type)
-   const QString p = path.path();
+   const QString id = path.path();
 
-   Certificate* cert = d_ptr->m_hCertificates[p];
+   Certificate* cert = d_ptr->m_hCertificates[id];
 
    //The certificate is not loaded yet
    if (!cert) {
       cert = new Certificate(path);
       d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
+
+      //Add it to the model
+      d_ptr->addToTree(cert);
+   }
+
+   return cert;
+}
+
+Certificate* CertificateModel::getCertificateFromId(const QString& id)
+{
+   Certificate* cert = d_ptr->m_hCertificates[id];
+
+   //The certificate is not loaded yet
+   if (!cert) {
+      cert = new Certificate(id);
+      d_ptr->m_hCertificates[id.toLatin1()] = cert;
 
       //Add it to the model
       d_ptr->addToTree(cert);

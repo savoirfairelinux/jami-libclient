@@ -60,6 +60,9 @@ public:
    Q_PROPERTY(CheckValues authorityMatch                      READ authorityMatch                      )
    Q_PROPERTY(CheckValues hasExpectedOwner                    READ hasExpectedOwner                    )
    Q_PROPERTY(bool        isActivated                         READ isActivated                         )
+   Q_PROPERTY(bool        hasRemote                           READ hasRemote                           )
+   Q_PROPERTY(QByteArray  remoteId                            READ remoteId                            )
+   Q_PROPERTY(QUrl        path                                READ path              WRITE setPath     )
 
    Q_PROPERTY(QDateTime  expirationDate                       READ expirationDate           )
    Q_PROPERTY(QDateTime  activationDate                       READ activationDate           )
@@ -204,6 +207,8 @@ public:
    QVariant detailResult                ( Certificate::Details detail ) const;
    QAbstractItemModel* model            (                             ) const;
    QAbstractItemModel* checksModel      (                             ) const;
+   bool hasRemote                       (                             ) const;
+   QByteArray remoteId                  (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
@@ -257,8 +262,13 @@ public:
    //Setter
    void setPath(const QUrl& path);
 
+   //Mutator
+   Q_INVOKABLE bool pin();
+   Q_INVOKABLE bool unpin() const;
+
 private:
    explicit Certificate(const QUrl& path, Type type = Type::NONE, const QUrl& privateKey = QUrl());
+   Certificate(const QString& id);
    Certificate(const QByteArray& content, Type type = Type::CALL);
    virtual ~Certificate();
    CertificatePrivate* d_ptr;
