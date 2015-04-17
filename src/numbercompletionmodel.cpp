@@ -36,6 +36,7 @@
 #include "availableaccountmodel.h"
 #include "numbercategorymodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
+#include "person.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -145,12 +146,15 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return n->primaryName();
+            case Qt::DecorationRole:
+               if (n->contact())
+                  return n->contact()->photo();
          };
          break;
       case NumberCompletionModelPrivate::Columns::ACCOUNT:
          switch (role) {
             case Qt::DisplayRole:
-               return n->account()?n->account()->id():AvailableAccountModel::currentDefaultAccount()->id();
+               return n->account()?n->account()->alias():AvailableAccountModel::currentDefaultAccount()->alias();
          };
          break;
       case NumberCompletionModelPrivate::Columns::WEIGHT:
@@ -257,8 +261,6 @@ void NumberCompletionModelPrivate::updateModel()
             q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
             m_hNumbers.insert(getWeight(n),n);
             q_ptr->endInsertRows();
-            qDebug() << "inserting at" << getWeight(n) << n->primaryName();
-            qDebug() << "rows: " << m_hNumbers.size();
          }
       }
    }
