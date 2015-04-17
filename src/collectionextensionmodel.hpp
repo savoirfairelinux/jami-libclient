@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,48 +15,36 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ABSTRACTITEMBACKENDMODELEXTENSION_H
-#define ABSTRACTITEMBACKENDMODELEXTENSION_H
 
-#include "typedefs.h"
 
-#include <QtCore/QVariant>
-#include <QtCore/QModelIndex>
-
-class CollectionInterface;
-
-/**
- * This interface can be used to extend the collection system.
- *
- * It is a business logic container. The interface will eventually be extended
- * to allow various callbacks at key ItemBase lifecycle moment.
- * 
- * Subclasses need to call DECLARE_COLLECTION_EXTENSION in the .cpp and
- * include collectionextensionmodel.h
- */
-class LIB_EXPORT CollectionExtensionInterface : public QObject
+class CollectionExtensionModelSpecific
 {
-   Q_OBJECT
-
-   friend class CollectionExtensionModel;
-
 public:
-
-   explicit CollectionExtensionInterface(QObject* parent);
-
-   virtual QVariant data(int role) const = 0;
-
-Q_SIGNALS:
-   void dataChanged(const QModelIndex& idx);
+   static QList<CollectionExtensionInterface*> m_slEntries;
 };
 
-#define DECLARE_COLLECTION_EXTENSION_M1(x, y) x ## y
-#define DECLARE_COLLECTION_EXTENSION_M2(x, y) DECLARE_COLLECTION_EXTENSION_M1(x, y)
+template<class T>
+int CollectionExtensionModel::registerExtension()
+{
+   static bool typeInit = false;
 
-#define DECLARE_COLLECTION_EXTENSION(T) \
-static auto DECLARE_COLLECTION_EXTENSION_M2(val,__COUNTER__) = []{\
-   CollectionExtensionModel::registerExtension<T>();\
-   return 0;\
-}();
+   static int typeId = CollectionExtensionModelSpecific::m_slEntries.size();
 
-#endif
+   if (!typeInit) {
+      CollectionExtensionModelSpecific::m_slEntries << new T(CollectionExtensionModel::instance());
+   }
+
+   return typeId;
+}
+
+template<class T>
+int CollectionExtensionModel::getExtensionId()
+{
+   return registerExtension<T>();
+}
+
+template<class T>
+T* CollectionExtensionModel::getExtension()
+{
+   return CollectionExtensionModelSpecific::m_slEntries[registerExtension<T>()];
+}

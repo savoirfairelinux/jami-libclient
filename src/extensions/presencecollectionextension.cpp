@@ -20,6 +20,9 @@
 #include "contactmethod.h"
 #include "person.h"
 #include "presencestatusmodel.h"
+#include "collectionextensionmodel.h"
+
+DECLARE_COLLECTION_EXTENSION(PresenceCollectionExtension)
 
 PresenceCollectionExtension::PresenceCollectionExtension(QObject* parent) :
    CollectionExtensionInterface(parent)
@@ -27,54 +30,13 @@ PresenceCollectionExtension::PresenceCollectionExtension(QObject* parent) :
 
 }
 
-QVariant PresenceCollectionExtension::data(CollectionInterface* backend, const QModelIndex& index, int role ) const
+QVariant PresenceCollectionExtension::data(int role) const
 {
-   if ((!backend) || (!index.isValid()))
-      return QVariant();
-   switch (role) {
-      case Qt::CheckStateRole:
-         return PresenceStatusModel::instance()->isAutoTracked(backend)?Qt::Checked:Qt::Unchecked;
-   };
-   return QVariant();
-}
+   Q_UNUSED(role)
 
-Qt::ItemFlags PresenceCollectionExtension::flags(CollectionInterface* backend, const QModelIndex& index ) const
-{
-   Q_UNUSED(backend)
-   Q_UNUSED(index)
-   return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
-
-bool PresenceCollectionExtension::setData(CollectionInterface* backend, const QModelIndex& index, const QVariant &value, int role )
-{
-   Q_UNUSED(backend)
-   if (index.isValid() && role == Qt::CheckStateRole) {
-      switch(value.toInt()){
-         case Qt::Checked:
-            foreach(Person* c, backend->items<Person>()) {
-               foreach(ContactMethod* n,c->phoneNumbers()) {
-                  n->setTracked(true);
-               }
-            }
-            PresenceStatusModel::instance()->setAutoTracked(backend,true);
-            emit dataChanged(index);
-            break;
-         case Qt::Unchecked:
-            foreach(Person* c, backend->items<Person>()) {
-               foreach(ContactMethod* n,c->phoneNumbers()) {
-                  n->setTracked(false);
-               }
-            }
-            PresenceStatusModel::instance()->setAutoTracked(backend,false);
-            emit dataChanged(index);
-            break;
-      };
-      return true;
+   if (role == Qt::DisplayRole) {
+      return QObject::tr("Presence tracking");
    }
-   return false;
-}
 
-QString PresenceCollectionExtension::headerName() const
-{
-   return tr("Track presence");
+   return QVariant();
 }

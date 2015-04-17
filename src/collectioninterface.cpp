@@ -1,5 +1,5 @@
 /************************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                                       *
+ *   Copyright (C) 2014-2015 by Savoir-Faire Linux                                  *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>         *
  *                                                                                  *
  *   This library is free software; you can redistribute it and/or                  *
@@ -25,6 +25,7 @@
 #include "call.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
+#include "collectionextensionmodel.h"
 #include "itembase.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
@@ -34,12 +35,82 @@
 //Qt
 #include <QtCore/QHash>
 #include <QtCore/QDebug>
+#include <QtCore/QIdentityProxyModel>
 #include <QtCore/QCoreApplication>
+
+class EnabledExtensionsProxy : public QIdentityProxyModel
+{
+   Q_OBJECT
+
+public:
+   EnabledExtensionsProxy(QAbstractItemModel* parent);
+
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual bool          setData  ( const QModelIndex& index, const QVariant& value,int role )       override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+
+private:
+   QHash<int,bool> m_Disabled;
+};
+
+class CollectionInterfacePrivate
+{
+public:
+   explicit CollectionInterfacePrivate();
+
+   //Attributes
+   EnabledExtensionsProxy* m_pEnabledExtensions;
+};
+
+EnabledExtensionsProxy::EnabledExtensionsProxy(QAbstractItemModel* parent) : QIdentityProxyModel(parent)
+{
+   setSourceModel(parent);
+}
+
+CollectionInterfacePrivate::CollectionInterfacePrivate(): m_pEnabledExtensions(nullptr)
+{
+}
+
+void CollectionInterface::init()
+{
+   d_ptr2 = new CollectionInterfacePrivate();
+}
 
 ///Destructor
 CollectionInterface::~CollectionInterface()
 {
    delete d_ptr;
+}
+
+QVariant EnabledExtensionsProxy::data( const QModelIndex& index, int role) const
+{
+
+   if (index.isValid() && role == Qt::CheckStateRole)
+      return m_Disabled[index.row()] ? Qt::Unchecked : Qt::Checked;
+
+   return QIdentityProxyModel::data(index,role);
+}
+
+bool EnabledExtensionsProxy::setData( const QModelIndex& index, const QVariant& value,int role )
+{
+   if (index.isValid() && role == Qt::CheckStateRole) {
+      m_Disabled[index.row()] = value == Qt::Unchecked;
+      return true;
+   }
+
+   return false;
+}
+
+Qt::ItemFlags EnabledExtensionsProxy::flags( const QModelIndex& index) const
+{
+   return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
+QAbstractItemModel* CollectionInterface::extensionsModel() const
+{
+   if (!d_ptr2->m_pEnabledExtensions)
+      d_ptr2->m_pEnabledExtensions = new EnabledExtensionsProxy(CollectionExtensionModel::instance());
+   return d_ptr2->m_pEnabledExtensions;
 }
 
 CollectionInterface* CollectionInterface::parent  () const
@@ -164,3 +235,5 @@ void CollectionInterface::setConfigurator(std::function<CollectionConfigurationI
 {
    d_ptr->m_fConfigurator = getter;
 }
+
+#include <collectioninterface.moc>

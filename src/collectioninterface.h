@@ -30,7 +30,9 @@
 #include <functional>
 
 //Ring
+class CollectionInterfacePrivateT;
 class CollectionInterfacePrivate;
+class CollectionExtensionInterface;
 class CollectionEditorBase;
 class CollectionConfigurationInterface;
 template<typename T> class CollectionEditor;
@@ -248,11 +250,43 @@ public:
 
    /**
     * Return an object that has been associated with this collection type
-    * 
+    *
     * It can be set using registerConfigarator() available in every collection
     * manager objects such as PersonModel, CategorizedHistoryModel and others.
     */
    CollectionConfigurationInterface* configurator() const;
+
+   /**
+    * Attach or detach an extension to this collection
+    */
+   template<class T>
+   bool attachExtension(bool enable);
+
+   /**
+    * Get a model with all available extensions with possibility to activate
+    * or deactivate them.
+    */
+   QAbstractItemModel* extensionsModel() const;
+
+   /**
+    * Register extensions only to a subset of all collections
+    *
+    * @see template<class T> static bool registerExtension();
+    */
+//    template<class T, typename Ts...>
+//    static bool registerExtension();
+
+   /**
+    * Check if an extension type is active
+    */
+   template<class T>
+   bool isExtensionActive() const;
+
+   /**
+    * Get extension "T"
+    */
+   template<class T>
+   CollectionExtensionInterface* extension() const;
 
 protected:
 
@@ -273,7 +307,9 @@ protected:
    QMetaObject metaObject();
 
 private:
-   CollectionInterfacePrivate* d_ptr;
+   CollectionInterfacePrivateT* d_ptr ;
+   CollectionInterfacePrivate * d_ptr2;
+   void init();
 };
 
 DECLARE_ENUM_FLAGS(CollectionInterface::SupportedFeatures)

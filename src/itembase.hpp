@@ -83,3 +83,17 @@ bool ItemBase<Base>::isActive() const
 {
    return d_ptr->m_pBackend->isEnabled() && d_ptr->m_isActive;
 }
+
+template<typename Base>
+template<typename T2>
+bool ItemBase<Base>::hasExtenstion() const
+{
+   return d_ptr->m_pBackend->isExtensionActive<T2>();
+}
+
+template<typename Base>
+template<typename T2>
+T2* ItemBase<Base>::extenstion() const
+{
+   return d_ptr->m_pBackend->extension<T2>();
+}

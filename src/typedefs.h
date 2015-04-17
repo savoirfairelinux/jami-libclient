@@ -130,11 +130,24 @@ private:
    int m_Flags;
 };
 
+#define DO_PRAGMA(x) _Pragma (#x)
+
+//Globally disable the "-Wunused-function" warning for GCC
+//refs: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
+#if ((__GNUC_MINOR__ > 8) || (__GNUC_MINOR__ == 8))
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+
+
 #define DECLARE_ENUM_FLAGS(T)\
+DO_PRAGMA(GCC diagnostic push)\
+DO_PRAGMA(GCC diagnostic ignored "-Wunused-function")\
 static FlagPack<T> operator|(const T& first, const T& second) { \
    FlagPack<T> p (first); \
    return p | second; \
-}
+} \
+DO_PRAGMA(GCC diagnostic pop)
+
 
 #endif //TYPEDEFS_H
 

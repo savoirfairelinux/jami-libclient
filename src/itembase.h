@@ -35,6 +35,13 @@ public:
    explicit ItemBase(T* parent = nullptr);
    virtual CollectionInterface* collection() const final;
 
+   //Extension system
+   template<typename T2>
+   bool hasExtenstion() const;
+
+   template<typename T2>
+   T2* extenstion() const;
+
    //Mutator methods
    bool save    () const;
    bool edit    ()      ;

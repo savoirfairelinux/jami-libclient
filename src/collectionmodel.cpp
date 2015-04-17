@@ -103,8 +103,8 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
    if (idx.isValid()) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
 
-      if (idx.column() > 0 && item->collection)
-         return d_ptr->m_lExtensions[idx.column()-1]->data(item->collection,idx,role);
+      /*if (idx.column() > 0 && item->collection)
+         return d_ptr->m_lExtensions[idx.column()-1]->data(item->collection,idx,role);*/
 
       if (item->collection) {
          switch(role) {
@@ -172,11 +172,11 @@ Qt::ItemFlags CollectionModel::flags(const QModelIndex& idx) const
    if (!item->collection)
       return Qt::ItemIsEnabled;
 
-   if (idx.column() > 0) {
+   /*if (idx.column() > 0) {
       //Make sure the cell is disabled if the row is
       Qt::ItemFlags f = d_ptr->m_lExtensions[idx.column()-1]->flags(item->collection,idx);
       return  (((f&Qt::ItemIsEnabled)&&(!item->collection->isEnabled()))?f^Qt::ItemIsEnabled:f);
-   }
+   }*/
    const bool checkable = item->collection->supportedFeatures() & (CollectionInterface::SupportedFeatures::ENABLEABLE |
    CollectionInterface::SupportedFeatures::DISABLEABLE | CollectionInterface::SupportedFeatures::MANAGEABLE  );
    return Qt::ItemIsEnabled | Qt::ItemIsSelectable | (checkable?Qt::ItemIsUserCheckable:Qt::NoItemFlags);
@@ -187,10 +187,10 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
    Q_UNUSED(idx)
    Q_UNUSED(value)
    Q_UNUSED(role)
-   if (idx.isValid() && idx.column() > 0) {
+   /*if (idx.isValid() && idx.column() > 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
       return (!item->collection)?false : d_ptr->m_lExtensions[idx.column()-1]->setData(item->collection,idx,value,role);
-   }
+   }*/
 
    if (role == Qt::CheckStateRole && idx.column() == 0) {
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
@@ -254,8 +254,8 @@ QVariant CollectionModel::headerData(int section, Qt::Orientation orientation, i
 {
    Q_UNUSED(section)
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-      if (section > 0)
-         return d_ptr->m_lExtensions[section-1]->headerName();
+      /*if (section > 0)
+         return d_ptr->m_lExtensions[section-1]->headerName();*/
       return QVariant(tr("Name"));
    }
    return QVariant();

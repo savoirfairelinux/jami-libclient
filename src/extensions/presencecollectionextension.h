@@ -19,6 +19,7 @@
 #define PRESENCEITEMBACKENDMODELEXTENSION_H
 
 #include <collectionextensioninterface.h>
+#include <collectionextensionmodel.h>
 
 #include <typedefs.h>
 
@@ -34,10 +35,7 @@ class LIB_EXPORT PresenceCollectionExtension : public CollectionExtensionInterfa
 public:
    explicit PresenceCollectionExtension(QObject* parent);
 
-   virtual QVariant      data    (CollectionInterface* backend, const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
-   virtual Qt::ItemFlags flags   (CollectionInterface* backend, const QModelIndex& index                                  ) const override;
-   virtual bool          setData (CollectionInterface* backend, const QModelIndex& index, const QVariant &value, int role ) override;
-   virtual QString       headerName() const override;
+   virtual QVariant data(int role) const override;
 };
 
 #endif

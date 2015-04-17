@@ -20,9 +20,9 @@
 //TODO don't do this
 template<typename T> class ItemBase;
 
-class CollectionInterfacePrivate {
+class CollectionInterfacePrivateT {
 public:
-   CollectionInterfacePrivate() : m_pParent(nullptr){}
+   CollectionInterfacePrivateT() : m_pParent(nullptr){}
 
    ///The backend parent of nullptr
    CollectionInterface*          m_pParent    ;
@@ -47,8 +47,9 @@ public:
 
 template<typename T>
 CollectionInterface::CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent) :
-d_ptr(new CollectionInterfacePrivate())
+d_ptr(new CollectionInterfacePrivateT())
 {
+   init();
    //Ensure the type is based on QObject (required)
    d_ptr->m_pParent = parent;
 //    d_ptr->m_pEditorType = T::staticMetaObject();

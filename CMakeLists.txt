@@ -212,6 +212,7 @@ SET( libringclient_LIB_SRCS
   src/securityevaluationmodel.cpp
   src/personmodel.cpp
   src/collectionmodel.cpp
+  src/collectionextensionmodel.cpp
   src/collectionmanagerinterface.cpp
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
@@ -263,6 +264,7 @@ SET( libringclient_LIB_SRCS
 
   #Extension
   src/extensions/presencecollectionextension.cpp
+  src/extensions/securityevaluationextension.cpp
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -311,6 +313,8 @@ SET( libringclient_LIB_HDRS
   src/personmodel.h
   src/transitionalpersonbackend.h
   src/collectionmodel.h
+  src/collectionextensionmodel.h
+  src/collectionextensionmodel.hpp
   src/hookmanager.h
   src/uri.h
   src/itembase.h
@@ -361,6 +365,7 @@ SET(libringclient_audio_LIB_HDRS
 
 SET(libringclient_extensions_LIB_HDRS
   src/extensions/presencecollectionextension.h
+  src/extensions/securityevaluationextension.h
 )
 
 SET(libringclient_delegates_LIB_HDRS
