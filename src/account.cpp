@@ -938,6 +938,8 @@ bool Account::supportScheme( URI::SchemeType type )
 {
    switch(type) {
       case URI::SchemeType::NONE :
+         if (protocol() == Account::Protocol::RING)
+            return false;
          return true;
          break;
       case URI::SchemeType::SIP  :

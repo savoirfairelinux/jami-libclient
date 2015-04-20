@@ -428,15 +428,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
          return call;
    }
 
-   //No dialing call found, creating one
-   Account* acc = (account)?account:AvailableAccountModel::currentDefaultAccount();
-
-   if (!acc) {
-      qWarning() << "No account is available, cannot call" << QStringList(DBus::ConfigurationManager::instance().getAccountList());
-      return nullptr;
-   }
-
-   return d_ptr->addCall2(CallPrivate::buildDialingCall(peerName, acc));
+   return d_ptr->addCall2(CallPrivate::buildDialingCall(peerName, account));
 }  //dialingCall
 
 ///Create a new incoming call when the daemon is being called
