@@ -939,6 +939,11 @@ bool Account::supportScheme( URI::SchemeType type )
    switch(type) {
       case URI::SchemeType::NONE :
          if (protocol() == Account::Protocol::RING)
+            /* the URIs which are supported by accounts of type RING are well
+             * defined and should always be identified correctly, thus URIs
+             * which are not identified to be of a specific type cannot possibly
+             * be of type RING and thus should never be used to make a RING call
+             */
             return false;
          return true;
          break;
