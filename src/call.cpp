@@ -1334,7 +1334,7 @@ void CallPrivate::call()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   qDebug() << "account = " << m_Account;
+   qDebug() << "account = " << m_Account << (m_Account? m_Account->alias() : "(no account)");
    if(!m_Account) {
       qDebug() << "Account is not set, taking the first registered.";
       m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber);
