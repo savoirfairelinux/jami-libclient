@@ -39,6 +39,7 @@ public:
    static QVector<QByteArray> m_slSupportedCiphers;
    static QHash<QString,int>  m_shMapping         ;
    static bool                m_sIsLoaded         ;
+   bool                       m_UseDefault        ;
 
    static void loadCiphers();
 };
@@ -47,7 +48,7 @@ bool CipherModelPrivate::m_sIsLoaded = false;
 QVector<QByteArray> CipherModelPrivate::m_slSupportedCiphers;
 QHash<QString,int>  CipherModelPrivate::m_shMapping;
 
-CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent)
+CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_UseDefault(true)
 {
    if (!CipherModelPrivate::m_sIsLoaded) {
       const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers(DRing::Account::ProtocolNames::IP2IP);
@@ -60,6 +61,7 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent)
 
    foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
       m_lChecked[m_shMapping[cipher]] = true;
+      m_UseDefault = false;
    }
 }
 
@@ -132,4 +134,20 @@ bool CipherModel::setData( const QModelIndex& index, const QVariant &value, int 
       return true;
    }
    return false;
+}
+
+bool CipherModel::useDefault() const
+{
+   return d_ptr->m_UseDefault;
+}
+
+void CipherModel::setUseDefault(bool value)
+{
+   d_ptr->m_UseDefault = value;
+   if (value) {
+      for (int i =0; i < d_ptr->m_slSupportedCiphers.size();i++) {
+         d_ptr->m_lChecked[i] = false;
+      }
+      emit dataChanged(index(0,0),index(d_ptr->m_slSupportedCiphers.size()-1,0));
+   }
 }
