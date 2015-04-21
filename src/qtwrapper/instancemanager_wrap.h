@@ -40,7 +40,6 @@ class InstanceInterface: public QObject
    Q_OBJECT
 public:
    InstanceInterface();
-
    ~InstanceInterface();
 
 // TODO: These are not present in dring.h
@@ -58,6 +57,8 @@ public Q_SLOTS: // METHODS
    }
 
    bool isConnected();
+
+   void pollEvents();
 
 private:
    QTimer* m_pTimer;

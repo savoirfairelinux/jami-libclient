@@ -46,7 +46,7 @@ class CollectionConfigurationInterface;
 /**
  * Common elements for each CollectionManagerInterface
  */
-class CollectionManagerInterfaceBase {
+class LIB_EXPORT CollectionManagerInterfaceBase {
 public:
    virtual bool hasEnabledCollections (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;
    virtual bool hasCollections        (CollectionInterface::SupportedFeatures features = CollectionInterface::SupportedFeatures::NONE) const = 0;

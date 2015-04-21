@@ -45,7 +45,7 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 
    m_pTimer = new QTimer(this);
    m_pTimer->setInterval(50);
-   connect(m_pTimer,&QTimer::timeout,this,&pollEvents);
+   connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
    m_pTimer->start();
    ringFlags |= DRing::DRING_FLAG_DEBUG;
    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
@@ -70,7 +70,7 @@ InstanceInterface::~InstanceInterface()
 
 }
 
-void pollEvents()
+void InstanceInterface::pollEvents()
 {
     DRing::pollEvents();
 }

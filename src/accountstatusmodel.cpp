@@ -20,6 +20,24 @@
 //System
 #include <errno.h>
 
+#ifdef _WIN32
+#include <winerror.h>
+#define ESHUTDOWN WSAESHUTDOWN
+#define ENODATA WSANO_DATA
+#define ETIME WSAETIMEDOUT
+#define EPFNOSUPPORT WSAEPROTONOSUPPORT
+#define EHOSTDOWN WSAEHOSTDOWN
+#define ESTALE WSAESTALE
+#define ESOCKTNOSUPPORT WSAESOCKTNOSUPPORT
+#define ETOOMANYREFS WSAETOOMANYREFS
+#define EUSERS WSAEUSERS
+#define EBADMSG 9905
+#define ENOLINK 9918
+#define ENOSR 9922
+#define ENOSTR 9924
+#define EMULTIHOP 2004
+#endif
+
 //Qt
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>

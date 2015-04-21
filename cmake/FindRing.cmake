@@ -20,6 +20,7 @@ FIND_LIBRARY(ring_BIN NAMES ring
    PATHS ${RING_BUILD_DIR}/.libs
    PATHS ${CMAKE_INSTALL_PREFIX}/lib
    PATHS ${CMAKE_INSTALL_PREFIX}/libexec
+   PATHS ${CMAKE_INSTALL_PREFIX}/bin
 )
 
 # Try a static version too
@@ -32,7 +33,9 @@ IF(${ring_BIN} MATCHES "")
       PATHS ${CMAKE_INSTALL_PREFIX}/libexec
    )
 
+IF(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
    ADD_DEFINITIONS(-fPIC)
+ENDIF()
 
 ENDIF()
 
