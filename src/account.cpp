@@ -73,7 +73,8 @@ m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false)
+m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
+m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0)
 {
    Q_Q(Account);
 }
@@ -430,6 +431,39 @@ BootstrapModel* Account::bootstrapModel() const
 
    return d_ptr->m_pBootstrapModel;
 }
+
+bool Account::haveCalled() const
+{
+   return d_ptr->m_HaveCalled;
+}
+
+uint Account::totalCount() const
+{
+   return d_ptr->m_TotalCount;
+}
+
+uint Account::lastWeekCount() const
+{
+   return d_ptr->m_LastWeekCount;
+}
+
+uint Account::lastTrimCount() const
+{
+   return d_ptr->m_LastTrimCount;
+}
+
+time_t Account::lastUsed() const
+{
+   return d_ptr->m_LastUsed;
+}
+
+
+
+/*******************************************************************************
+ *                                                                             *
+ *                                  Setters                                    *
+ *                                                                             *
+ ******************************************************************************/
 
 void Account::setAlias(const QString& detail)
 {
@@ -927,6 +961,16 @@ QVariant Account::roleData(int role) const
          return PresenceStatusModel::instance()->currentMessage();
       case CAST(Account::Role::RegistrationState):
          return QVariant::fromValue(registrationState());
+      case CAST(Account::Role::HaveCalled   ):
+         return haveCalled    ();
+      case CAST(Account::Role::TotalCount   ):
+         return totalCount    ();
+      case CAST(Account::Role::LastWeekCount):
+         return lastWeekCount ();
+      case CAST(Account::Role::LastTrimCount):
+         return lastTrimCount ();
+      case CAST(Account::Role::LastUsed     ):
+         return (int)lastUsed ();
       default:
          return QVariant();
    }

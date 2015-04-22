@@ -81,6 +81,7 @@ class LIB_EXPORT Account : public QObject {
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
+   friend class ContactMethod;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
@@ -140,6 +141,11 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
+   Q_PROPERTY(bool           haveCalled                   READ haveCalled                                                         )
+   Q_PROPERTY(uint           totalCount                   READ totalCount                                                         )
+   Q_PROPERTY(uint           lastWeekCount                READ lastWeekCount                                                      )
+   Q_PROPERTY(uint           lastTrimCount                READ lastTrimCount                                                      )
+   Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
 
    public:
       ///@enum EditState: Manage how and when an account can be reloaded or change state
@@ -219,6 +225,11 @@ class LIB_EXPORT Account : public QObject {
          PresenceMessage             = 143,
          RegistrationState           = 144,
          UseDefaultPort              = 145,
+         HaveCalled                  = 146,
+         TotalCount                  = 147,
+         LastWeekCount               = 148,
+         LastTrimCount               = 149,
+         LastUsed                    = 150,
       };
 
       enum class Protocol {
@@ -316,6 +327,12 @@ class LIB_EXPORT Account : public QObject {
       Protocol               protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
 
+      bool   haveCalled    () const;
+      uint   totalCount    () const;
+      uint   lastWeekCount () const;
+      uint   lastTrimCount () const;
+      time_t lastUsed      () const;
+
       Q_INVOKABLE QVariant roleData ( int role             ) const;
       Q_INVOKABLE bool supportScheme( URI::SchemeType type )      ;
 
@@ -412,6 +429,7 @@ Q_DECLARE_METATYPE(Account*)
 Q_DECLARE_METATYPE(Account::RegistrationState)
 Q_DECLARE_METATYPE(Account::EditAction)
 Q_DECLARE_METATYPE(Account::Protocol)
+Q_DECLARE_METATYPE(DtmfType)
 
 Account* operator<<(Account* a, Account::EditAction action);
 

@@ -54,6 +54,7 @@ public:
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
+   friend class ContactMethod;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
@@ -70,6 +71,13 @@ public:
    QString                    m_LastSipRegistrationStatus;
    unsigned short             m_UseDefaultPort           ;
    bool                       m_RemoteEnabledState       ;
+
+   //Statistic
+   bool   m_HaveCalled    ;
+   uint   m_TotalCount    ;
+   uint   m_LastWeekCount ;
+   uint   m_LastTrimCount ;
+   time_t m_LastUsed      ;
 
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );

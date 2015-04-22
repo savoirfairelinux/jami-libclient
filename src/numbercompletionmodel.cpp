@@ -43,6 +43,7 @@
 
 class NumberCompletionModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
 
    enum class Columns {
@@ -66,10 +67,15 @@ public:
 
    //Attributes
    QMultiMap<int,ContactMethod*> m_hNumbers              ;
-   QString                     m_Prefix                ;
-   Call*                       m_pCall                 ;
-   bool                        m_Enabled               ;
-   bool                        m_UseUnregisteredAccount;
+   QString                       m_Prefix                ;
+   Call*                         m_pCall                 ;
+   bool                          m_Enabled               ;
+   bool                          m_UseUnregisteredAccount;
+
+   QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
+
+public Q_SLOTS:
+   void setPrefix(const QString& str);
 
 private:
    NumberCompletionModel* q_ptr;
@@ -88,19 +94,21 @@ NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(QCoreApplic
 
 NumberCompletionModel::~NumberCompletionModel()
 {
-
+   delete d_ptr;
 }
 
 QHash<int,QByteArray> NumberCompletionModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
+
    if (!initRoles) {
       initRoles = true;
       roles[Role::ALTERNATE_ACCOUNT]= "AlternateAccount";
-      roles[Role::FORCE_ACCOUNT    ]= "ForceAccount";
-      roles[Role::ACCOUNT          ]= "Account";
+      roles[Role::FORCE_ACCOUNT    ]= "ForceAccount"    ;
+      roles[Role::ACCOUNT          ]= "Account"         ;
    }
+
    return roles;
 }
 
@@ -164,6 +172,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
          };
          break;
    };
+
    return QVariant();
 }
 
@@ -171,6 +180,7 @@ int NumberCompletionModel::rowCount(const QModelIndex& parent ) const
 {
    if (parent.isValid())
       return 0;
+
    return d_ptr->m_hNumbers.size();
 }
 
@@ -178,21 +188,26 @@ int NumberCompletionModel::columnCount(const QModelIndex& parent ) const
 {
    if (parent.isValid())
       return 0;
+
    return 4;
 }
 
 Qt::ItemFlags NumberCompletionModel::flags(const QModelIndex& index ) const
 {
-   if (!index.isValid()) return Qt::NoItemFlags;
+   if (!index.isValid())
+      return Qt::NoItemFlags;
+
    return Qt::ItemIsEnabled|Qt::ItemIsSelectable;
 }
 
 QVariant NumberCompletionModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-   Q_UNUSED(section)
    Q_UNUSED(orientation)
    static const QString headers[] = {tr("URI"), tr("Name"), tr("Account"), tr("Weight")};
-   if (role == Qt::DisplayRole) return headers[section];
+
+   if (role == Qt::DisplayRole)
+      return headers[section];
+
    return QVariant();
 }
 
@@ -208,27 +223,32 @@ bool NumberCompletionModel::setData(const QModelIndex& index, const QVariant &va
 void NumberCompletionModel::setCall(Call* call)
 {
    if (d_ptr->m_pCall)
-      disconnect(d_ptr->m_pCall,SIGNAL(dialNumberChanged(QString)),this,SLOT(setPrefix(QString)));
+      disconnect(d_ptr->m_pCall,SIGNAL(dialNumberChanged(QString)),d_ptr,SLOT(setPrefix(QString)));
+
    d_ptr->m_pCall = call;
+
    if (d_ptr->m_pCall)
-      connect(d_ptr->m_pCall,SIGNAL(dialNumberChanged(QString)),this,SLOT(setPrefix(QString)));
-   setPrefix(call?call->dialNumber():QString());
+      connect(d_ptr->m_pCall,SIGNAL(dialNumberChanged(QString)),d_ptr,SLOT(setPrefix(QString)));
+
+   d_ptr->setPrefix(call?call->dialNumber():QString());
 }
 
-void NumberCompletionModel::setPrefix(const QString& str)
+void NumberCompletionModelPrivate::setPrefix(const QString& str)
 {
-   d_ptr->m_Prefix = str;
-   const bool e = ((d_ptr->m_pCall && d_ptr->m_pCall->lifeCycleState() == Call::LifeCycleState::CREATION) || (!d_ptr->m_pCall)) && (!str.isEmpty());
-   if (d_ptr->m_Enabled != e) {
-      d_ptr->m_Enabled = e;
-      emit enabled(e);
+   m_Prefix = str;
+   const bool e = ((m_pCall && m_pCall->lifeCycleState() == Call::LifeCycleState::CREATION) || (!m_pCall)) && (!str.isEmpty());
+
+   if (m_Enabled != e) {
+      m_Enabled = e;
+      emit q_ptr->enabled(e);
    }
-   if (d_ptr->m_Enabled)
-      d_ptr->updateModel();
+
+   if (m_Enabled)
+      updateModel();
    else {
-      beginRemoveRows(QModelIndex(), 0, d_ptr->m_hNumbers.size()-1);
-      d_ptr->m_hNumbers.clear();
-      endRemoveRows();
+      q_ptr->beginRemoveRows(QModelIndex(), 0, m_hNumbers.size()-1);
+      m_hNumbers.clear();
+      q_ptr->endRemoveRows();
    }
 }
 
@@ -242,6 +262,7 @@ ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
    if (idx.isValid()) {
       return (d_ptr->m_hNumbers.end()-1-idx.row()).value();
    }
+
    return nullptr;
 }
 
@@ -251,6 +272,7 @@ void NumberCompletionModelPrivate::updateModel()
    q_ptr->beginRemoveRows(QModelIndex(), 0, m_hNumbers.size()-1);
    m_hNumbers.clear();
    q_ptr->endRemoveRows();
+
    if (!m_Prefix.isEmpty()) {
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
@@ -270,6 +292,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
 {
    if (prefix.isEmpty() || map.isEmpty())
       return;
+
    QMap<QString,NumberWrapper*>::iterator iBeg = map.begin();
    QMap<QString,NumberWrapper*>::iterator iEnd = map.end  ()-1;
 
@@ -278,24 +301,31 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
    const int prefixLen = pref.size();
    int size = map.size()/2;
    bool startOk(false),endOk(false);
+
    while (size > 1 && !(startOk&&endOk)) {
       QMap<QString,NumberWrapper*>::iterator mid;
+
       if (size > 7)
          mid = (iBeg+size);
       else {
          //We have to be careful with "::ceil" it may cause an overflow in some rare case
          int toAdd = size-1;
          mid = iBeg;
+
          while (toAdd && mid != map.end()) {
             ++mid;
             --toAdd;
          }
+
       }
+
       if (mid != map.end() && mid.key().left(prefixLen) == pref && iBeg.key().left(prefixLen) < pref) {
          //Too far, need to go back
          iBeg = mid;
+
          while ((iBeg-1).key().left(prefixLen) == pref && iBeg != map.begin())
             iBeg--;
+
          startOk = true;
       }
       else if ((!startOk) && mid != map.end() && mid.key().left(prefixLen) < pref) {
@@ -321,12 +351,14 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
       iEnd = map.end();
       iBeg = map.end();
    }
+
    while(iBeg != iEnd) {
       foreach(ContactMethod* n,iBeg.value()->numbers) {
          if (n) {
             set << n;
          }
       }
+
       ++iBeg;
    }
 }
@@ -350,6 +382,7 @@ uint NumberCompletionModelPrivate::getWeight(ContactMethod* number)
    weight += (number->callCount()+1)*35 ;
    weight *= (number->uri().indexOf(m_Prefix)!= -1?3:1);
    weight *= (number->isPresent()?2:1);
+
    return weight;
 }
 

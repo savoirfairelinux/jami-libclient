@@ -19,6 +19,7 @@
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
+#include "private/account_p.h"
 #include "call.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
@@ -212,6 +213,18 @@ time_t ContactMethod::lastUsed() const
 ///Set this number default account
 void ContactMethod::setAccount(Account* account)
 {
+
+   //Add the statistics
+   if (account && !d_ptr->m_pAccount) {
+      account->d_ptr->m_HaveCalled    += d_ptr->m_HaveCalled    ;
+      account->d_ptr->m_TotalCount    += callCount()            ;
+      account->d_ptr->m_LastWeekCount += d_ptr->m_LastWeekCount ;
+      account->d_ptr->m_LastTrimCount += d_ptr->m_LastTrimCount ;
+
+      if (d_ptr->m_LastUsed > account->d_ptr->m_LastUsed)
+         account->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
+   }
+
    d_ptr->m_pAccount = account;
    if (d_ptr->m_pAccount)
       connect (d_ptr->m_pAccount,SIGNAL(destroyed(QObject*)),this,SLOT(accountDestroyed(QObject*)));
@@ -456,23 +469,44 @@ QVariant ContactMethod::roleData(int role) const
 void ContactMethod::addCall(Call* call)
 {
    if (!call) return;
+
+   //Update the contact method statistics
    d_ptr->m_Type = ContactMethod::Type::USED;
    d_ptr->m_lCalls << call;
    d_ptr->m_TotalSeconds += call->stopTimeStamp() - call->startTimeStamp();
    time_t now;
    ::time ( &now );
-   if (now - 3600*24*7 < call->stopTimeStamp())
-      d_ptr->m_LastWeekCount++;
-   if (now - 3600*24*7*15 < call->stopTimeStamp())
-      d_ptr->m_LastTrimCount++;
 
-   if (call->direction() == Call::Direction::OUTGOING)
+   if (now - 3600*24*7 < call->stopTimeStamp()) {
+      d_ptr->m_LastWeekCount++;
+      if (d_ptr->m_pAccount)
+         d_ptr->m_pAccount->d_ptr->m_LastWeekCount++;
+   }
+
+   if (now - 3600*24*7*15 < call->stopTimeStamp()) {
+      d_ptr->m_LastTrimCount++;
+      if (d_ptr->m_pAccount)
+         d_ptr->m_pAccount->d_ptr->m_LastTrimCount++;
+   }
+
+   if (call->direction() == Call::Direction::OUTGOING) {
       d_ptr->m_HaveCalled = true;
+      if (d_ptr->m_pAccount)
+         d_ptr->m_pAccount->d_ptr->m_HaveCalled = true;
+   }
 
    d_ptr->callAdded(call);
-   if (call->startTimeStamp() > d_ptr->m_LastUsed)
+
+   if (call->startTimeStamp() > d_ptr->m_LastUsed) {
       d_ptr->m_LastUsed = call->startTimeStamp();
+      if (d_ptr->m_pAccount && d_ptr->m_pAccount->d_ptr->m_LastUsed < d_ptr->m_LastUsed)
+         d_ptr->m_pAccount->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
+   }
+
    d_ptr->changed();
+
+   if (d_ptr->m_pAccount)
+      d_ptr->m_pAccount->d_ptr->m_TotalCount++;
 }
 
 ///Generate an unique representation of this number
@@ -480,8 +514,6 @@ QString ContactMethod::toHash() const
 {
    return QString("%1///%2///%3").arg(uri()).arg(account()?account()->id():QString()).arg(contact()?contact()->uid():QString());
 }
-
-
 
 ///Increment name counter and update indexes
 void ContactMethod::incrementAlternativeName(const QString& name)

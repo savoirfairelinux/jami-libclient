@@ -35,7 +35,7 @@ class LIB_EXPORT NumberCompletionModel : public QAbstractTableModel {
 public:
 
    //Properties
-   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+   Q_PROPERTY(QString prefix READ prefix)
 
    enum Role {
       ALTERNATE_ACCOUNT= 100,
@@ -67,12 +67,8 @@ public:
    QString prefix() const;
 
 private:
-   QScopedPointer<NumberCompletionModelPrivate> d_ptr;
+   NumberCompletionModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(NumberCompletionModel)
-
-
-public Q_SLOTS:
-   void setPrefix(const QString& str);
 
 Q_SIGNALS:
    void enabled(bool);

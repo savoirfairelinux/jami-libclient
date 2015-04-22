@@ -142,6 +142,11 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TypeName                    ) ,QByteArray("typeName"                      ));
       roles.insert(CAST(Account::Role::PresenceStatus              ) ,QByteArray("presenceStatus"                ));
       roles.insert(CAST(Account::Role::PresenceMessage             ) ,QByteArray("presenceMessage"               ));
+      roles.insert(CAST(Account::Role::HaveCalled                  ) ,QByteArray("haveCalled"                    ));
+      roles.insert(CAST(Account::Role::TotalCount                  ) ,QByteArray("totalCount"                    ));
+      roles.insert(CAST(Account::Role::LastWeekCount               ) ,QByteArray("lastWeekCount"                 ));
+      roles.insert(CAST(Account::Role::LastTrimCount               ) ,QByteArray("lastTrimCount"                 ));
+      roles.insert(CAST(Account::Role::LastUsed                    ) ,QByteArray("lastUsed"                      ));
    }
    return roles;
 }
