@@ -24,6 +24,7 @@
 #include <QtCore/QModelIndex>
 
 //Ring
+#include <securityevaluationmodel.h>
 class  Person             ;
 class  ContactMethod      ;
 class  Call               ;
@@ -65,6 +66,7 @@ public:
    virtual QByteArray toByteArray(const QVariant& pxm);
    virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG");
    virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
+   virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const;
 
    /**
     * Return the icons associated with the action and its state

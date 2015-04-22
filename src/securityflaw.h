@@ -40,11 +40,11 @@ public:
 
    //Getter
    Certificate::Type type() const;
-   SecurityEvaluationModel::AccountSecurityFlaw flaw() const;
+   SecurityEvaluationModel::AccountSecurityChecks flaw() const;
    SecurityEvaluationModel::Severity severity() const;
 
 private:
-   explicit SecurityFlaw(SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type = Certificate::Type::NONE);
+   explicit SecurityFlaw(SecurityEvaluationModel::AccountSecurityChecks f,Certificate::Type type = Certificate::Type::NONE);
 
    SecurityFlawPrivate* d_ptr;
    Q_DECLARE_PRIVATE(SecurityFlaw)

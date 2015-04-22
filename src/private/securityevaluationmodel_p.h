@@ -40,11 +40,11 @@ public:
 
 
    ///Messages to show to the end user
-   static const QString messages[enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>()];
+   static const QString messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()];
 
    //Static mapping
-   static const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityFlaw > maximumSecurityLevel;
-   static const TypedStateMachine< SecurityEvaluationModel::Severity      , SecurityEvaluationModel::AccountSecurityFlaw > flawSeverity        ;
+   static const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityChecks > maximumSecurityLevel;
+   static const TypedStateMachine< SecurityEvaluationModel::Severity      , SecurityEvaluationModel::AccountSecurityChecks > flawSeverity        ;
 
    static const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::Checks > maximumCertificateSecurityLevel;
    static const TypedStateMachine< SecurityEvaluationModel::Severity      , Certificate::Checks > certificateFlawSeverity        ;

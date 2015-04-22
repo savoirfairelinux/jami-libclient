@@ -99,23 +99,33 @@ public:
    Q_ENUMS(Severity)
 
    ///Every supported flaws
-   enum class AccountSecurityFlaw {
-      SRTP_ENABLED                ,
-      TLS_ENABLED                 ,
-      CERTIFICATE_MATCH           ,
-      OUTGOING_SERVER_MATCH       ,
-      VERIFY_INCOMING_ENABLED     ,
-      VERIFY_ANSWER_ENABLED       ,
-      REQUIRE_CERTIFICATE_ENABLED ,
-      NOT_MISSING_CERTIFICATE     ,
-      NOT_MISSING_AUTHORITY       ,
+   enum class AccountSecurityChecks {
+      SRTP_ENABLED                , /*!< The account use secure media streams                    */
+      TLS_ENABLED                 , /*!< The account use secure negotiation                      */
+      CERTIFICATE_MATCH           , /*!< The certificate an authority are related                */
+      OUTGOING_SERVER_MATCH       , /*!< The outgoing server match the certificate hostname      */
+      VERIFY_INCOMING_ENABLED     , /*!< The incoming certificates are validated                 */
+      VERIFY_ANSWER_ENABLED       , /*!< The answer certificates are validated                   */
+      REQUIRE_CERTIFICATE_ENABLED , /*!< The account require certificates to operate in TLS mode */
+      NOT_MISSING_CERTIFICATE     , /*!< The certificate is set                                  */
+      NOT_MISSING_AUTHORITY       , /*!< The certificate authority is set                        */
       COUNT__
    };
+   Q_ENUMS(AccountSecurityChecks)
 
    ///Role for the model
    enum class Role {
       Severity      = 100,
       SecurityLevel = 101,
+   };
+
+   ///Source of a security flaw
+   enum class ChecksSource {
+      ACCOUNT_CERTIFICATE  = 0, /*!< The flaw is induced by the account certificate                  */
+      ACCOUNT_AUTHORITY    = 1, /*!< The flaw is induced by the account authority certificate        */
+      ACCOUNT_SETTINGS     = 2, /*!< The flaw is induced by an account misconfiguration              */
+      ACCOUNT_REGISTRATION = 3, /*!< The flaw has been detected by runtime registration checks       */
+      CALL_DETAILS         = 4, /*!< The flaw has been detected by runtime communication negotiation */
    };
 
    //Constructor

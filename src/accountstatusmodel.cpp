@@ -434,6 +434,22 @@ bool AccountStatusModel::setData( const QModelIndex& index, const QVariant &valu
    return false;
 }
 
+QVariant AccountStatusModel::headerData( int section, Qt::Orientation o, int role) const
+{
+   if (o == Qt::Horizontal && role == Qt::DisplayRole) {
+      switch(section) {
+         case 0:
+            return QObject::tr("Message");
+         case 1:
+            return QObject::tr("Code");
+         case 2:
+            return QObject::tr("Time");
+         case 3:
+            return QObject::tr("Counter");
+      }
+   }
+   return QVariant();
+}
 
 void AccountStatusModel::addSipRegistrationEvent(const QString& fallbackMessage, int errorCode)
 {

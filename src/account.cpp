@@ -395,7 +395,7 @@ AccountStatusModel* Account::statusModel() const
    return d_ptr->m_pStatusModel;
 }
 
-SecurityEvaluationModel* Account::securityValidationModel() const
+SecurityEvaluationModel* Account::securityEvaluationModel() const
 {
    if (!d_ptr->m_pSecurityEvaluationModel) {
       d_ptr->m_pSecurityEvaluationModel = new SecurityEvaluationModel(const_cast<Account*>(this));

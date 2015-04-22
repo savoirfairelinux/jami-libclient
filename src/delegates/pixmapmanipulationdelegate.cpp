@@ -97,3 +97,9 @@ QVariant PixmapManipulationDelegate::collectionIcon(const CollectionInterface* i
    return QVariant();
 }
 
+QVariant PixmapManipulationDelegate::securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const
+{
+   Q_UNUSED(level)
+   return QVariant();
+}
+

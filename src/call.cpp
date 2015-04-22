@@ -57,6 +57,10 @@
 #include "personmodel.h"
 #include "imconversationmanager.h"
 
+//TODO remove
+#include "securityevaluationmodel.h"
+#include "delegates/pixmapmanipulationdelegate.h"
+
 //Track where state changes are performed on finished (over, error, failed) calls
 //while not really problematic, it is technically wrong
 #define Q_ASSERT_IS_IN_PROGRESS Q_ASSERT(m_CurrentState != Call::State::OVER);
@@ -1864,12 +1868,17 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::DropPosition):
          return property("dropPosition");
          break;
+      case static_cast<int>(Call::Role::SecurityLevel): //TODO remove
+         return QVariant::fromValue(account()->securityEvaluationModel()->securityLevel());
+         break;
+      case static_cast<int>(Call::Role::SecurityLevelIcon): //TODO remove
+         return PixmapManipulationDelegate::instance()->securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
+         break;
       default:
          break;
    };
    return QVariant();
 }
-
 
 void Call::playDTMF(const QString& str)
 {

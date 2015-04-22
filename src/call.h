@@ -115,6 +115,8 @@ public:
       DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
       LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
       DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop    */
+      SecurityLevel      = 998, //TODO REMOVE use the extensions
+      SecurityLevelIcon  = 999, //TODO REMOVE use the extensions
    };
 
    enum DropAction {

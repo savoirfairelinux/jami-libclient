@@ -31,8 +31,12 @@
 
 #include <QtAlgorithms>
 
-const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>()] = {
-   /*SRTP_ENABLED                */QObject::tr("Your communication negotiation is secured, but not the media stream, please enable ZRTP or SDES"),
+//The private key detection doesn't handle all embedded sources correctly
+//there is many false positive, to be fixed
+#define BYPASS_PRIVATE_KEY_NOT_FOUND 99999
+
+const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()] = {
+   /*SRTP_ENABLED                */QObject::tr("Your media streams are not encrypted, please enable ZRTP or SDES"),
    /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to "
                                    "snooping"),
    /*CERTIFICATE_MATCH           */QObject::tr("Your certificate and authority don't match, if your certificate require an authority, it won't work"),
@@ -48,7 +52,7 @@ const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityE
 static const QString s1 = QObject::tr("Your certificate is expired, please contact your system administrator.");
 static const QString s2 = QObject::tr("Your certificate is self signed. This break the chain of trust.");
 
-const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityFlaw >
+const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , SecurityEvaluationModel::AccountSecurityChecks >
 SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
    /* SRTP_ENABLED                     */ SecurityEvaluationModel::SecurityLevel::NONE        ,
    /* TLS_ENABLED                      */ SecurityEvaluationModel::SecurityLevel::NONE        ,
@@ -61,7 +65,7 @@ SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
    /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
 }};
 
-const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityFlaw >
+const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityChecks >
 SecurityEvaluationModelPrivate::flawSeverity = {{
    /* SRTP_ENABLED                      */ SecurityEvaluationModel::Severity::ISSUE           ,
    /* TLS_ENABLED                       */ SecurityEvaluationModel::Severity::ISSUE           ,
@@ -91,11 +95,11 @@ const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::C
    /* EXIST                             */ SecurityEvaluationModel::SecurityLevel::NONE       ,
    /* VALID                             */ SecurityEvaluationModel::SecurityLevel::NONE       ,
    /* VALID_AUTHORITY                   */ SecurityEvaluationModel::SecurityLevel::MEDIUM     ,
-   /* KNOWN_AUTHORITY                   */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE , //?
+   /* KNOWN_AUTHORITY                   */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE , //TODO figure out of the impact of this
    /* NOT_REVOKED                       */ SecurityEvaluationModel::SecurityLevel::WEAK       ,
    /* AUTHORITY_MATCH                   */ SecurityEvaluationModel::SecurityLevel::NONE       ,
-   /* EXPECTED_OWNER                    */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //?
-   /* ACTIVATED                         */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //?
+   /* EXPECTED_OWNER                    */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //TODO figure out of the impact of this
+   /* ACTIVATED                         */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //TODO figure out of the impact of this
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::Severity      , Certificate::Checks > SecurityEvaluationModelPrivate::certificateFlawSeverity = {{
@@ -153,6 +157,14 @@ class AccountChecksModel : public QAbstractTableModel
    Q_OBJECT
 
 public:
+
+   enum class Columns {
+      MESSAGE ,
+      SOURCE  ,
+      RESULT  ,
+      COUNT__
+   };
+
    AccountChecksModel(const Account* a);
 
    //Model functions
@@ -166,7 +178,7 @@ public:
 private:
    //Attributes
    const Account* m_pAccount;
-   Matrix1D<SecurityEvaluationModel::AccountSecurityFlaw, Certificate::CheckValues> m_lCachedResults;
+   Matrix1D<SecurityEvaluationModel::AccountSecurityChecks, Certificate::CheckValues> m_lCachedResults;
 
    //Helpers
    void update();
@@ -210,9 +222,9 @@ private:
 
    ///This model expect a certain size, get each sections size
    constexpr static const short sizes[] = {
-      enum_class_size< Certificate             :: Checks              > (),
-      enum_class_size< Certificate             :: Checks              > (),
-      enum_class_size< SecurityEvaluationModel :: AccountSecurityFlaw > (),
+      enum_class_size< Certificate             :: Checks                > (),
+      enum_class_size< Certificate             :: Checks                > (),
+      enum_class_size< SecurityEvaluationModel :: AccountSecurityChecks > (),
    };
 
    ///Get the combined size
@@ -220,7 +232,7 @@ private:
       return sizes[CA] + sizes[PK] + sizes[AC];
    }
 
-   ///Get a modex index from a value
+   ///Get a model index from a value
    constexpr inline static int toModelIdx(const int value) {
       return (value >= sizes[CA] + sizes[PK] ?  AC : (
               value >= sizes[PK]             ?  PK :
@@ -302,40 +314,52 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
 {
    if (index.isValid()) {
 
-      Certificate::Checks c;
+      Certificate::Checks c = Certificate::Checks::HAS_PRIVATE_KEY;
       if (QIdentityProxyModel::data(index,(int)CertificateModel::Role::isCheck).toBool() == true)
          c = qvariant_cast<Certificate::Checks>(QIdentityProxyModel::data(index,(int)CertificateModel::Role::check));
       else if (index.column() != 2) //That column doesn't exist in the source, the wont exist
          return QVariant();
 
       switch (index.column()) {
-         case 0:
+         case (int)AccountChecksModel::Columns::MESSAGE:
             switch(role) {
                case Qt::DecorationRole:
                   return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
                case (int)SecurityEvaluationModel::Role::Severity:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::SecurityLevel:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
+               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
+                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
             break;
          //
-         case 1: {
+         case (int)AccountChecksModel::Columns::SOURCE: {
             switch(role) {
                case Qt::DisplayRole:
                   return m_Name;
                case (int)SecurityEvaluationModel::Role::Severity:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::SecurityLevel:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
+               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
+                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
             return QVariant();
          }
             break;
          //Map source column 1 to 2
-         case 2: {
+         case (int)AccountChecksModel::Columns::RESULT: {
             const QModelIndex& srcIdx = sourceModel()->index(index.row(),1);
             c = qvariant_cast<Certificate::Checks>(srcIdx.data((int)CertificateModel::Role::check));
 
             switch(role) {
                case (int)SecurityEvaluationModel::Role::Severity:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
+               case (int)SecurityEvaluationModel::Role::SecurityLevel:
+                  return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
+               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
+                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
 
             return srcIdx.data(role);
@@ -363,11 +387,11 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
 {
    if ((!index.isValid())
     || (index.row() < 0)
-    || (index.row() >= enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>())
+    || (index.row() >= enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>())
    )
       return QVariant();
 
-   const SecurityEvaluationModel::AccountSecurityFlaw f = static_cast<SecurityEvaluationModel::AccountSecurityFlaw>(index.row());
+   const SecurityEvaluationModel::AccountSecurityChecks f = static_cast<SecurityEvaluationModel::AccountSecurityChecks>(index.row());
 
    switch(role) {
       case (int)SecurityEvaluationModel::Role::Severity:
@@ -375,10 +399,17 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
             m_lCachedResults[f] == Certificate::CheckValues::UNSUPPORTED ?
                SecurityEvaluationModel::Severity::UNSUPPORTED : SecurityEvaluationModelPrivate::flawSeverity[f]
          );
+      case (int)SecurityEvaluationModel::Role::SecurityLevel:
+         return QVariant::fromValue(
+            //If the check is unsupported then using "COMPLETE" wont affect the algorithm output
+            // if n < current then n else current end will always be "current" when n == maximum
+            m_lCachedResults[f] == Certificate::CheckValues::UNSUPPORTED ?
+               SecurityEvaluationModel::SecurityLevel::COMPLETE : SecurityEvaluationModelPrivate::maximumSecurityLevel[f]
+         );
    }
 
    switch (index.column()) {
-      case 0:
+      case (int)AccountChecksModel::Columns::MESSAGE:
          switch(role) {
             case Qt::DisplayRole:
                return SecurityEvaluationModelPrivate::messages[index.row()];
@@ -386,13 +417,13 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
                return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
          };
          break;
-      case 1:
+      case (int)AccountChecksModel::Columns::SOURCE:
          switch(role) {
             case Qt::DisplayRole:
                return tr("Configuration");
          };
          break;
-      case 2:
+      case (int)AccountChecksModel::Columns::RESULT:
          switch(role) {
             case Qt::DisplayRole:
                if (m_lCachedResults[f] != Certificate::CheckValues::UNSUPPORTED)
@@ -407,12 +438,12 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
 
 int AccountChecksModel::rowCount( const QModelIndex& parent ) const
 {
-   return parent.isValid() ? 0 : enum_class_size<SecurityEvaluationModel::AccountSecurityFlaw>();
+   return parent.isValid() ? 0 : enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>();
 }
 
 int AccountChecksModel::columnCount( const QModelIndex& parent ) const
 {
-   return parent.isValid() ? 0 : 3;
+   return parent.isValid() ? 0 : enum_class_size<AccountChecksModel::Columns>();
 }
 
 Qt::ItemFlags AccountChecksModel::flags( const QModelIndex& index) const
@@ -436,46 +467,46 @@ QHash<int,QByteArray> AccountChecksModel::roleNames() const
 
 void AccountChecksModel::update()
 {
-   // AccountSecurityFlaw::SRTP_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::SRTP_ENABLED                 ,
-      m_pAccount->isSrtpEnabled                () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   // AccountSecurityChecks::SRTP_DISABLED
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::SRTP_ENABLED                 ,
+//       m_pAccount->isSrtpEnabled                () || m_pAccount->protocol() == Account::Protocol::RING ?
+         Certificate::CheckValues::PASSED /*: Certificate::CheckValues::FAILED*/);
 
-   // AccountSecurityFlaw::TLS_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::TLS_ENABLED                  ,
+   // AccountSecurityChecks::TLS_DISABLED
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::TLS_ENABLED                  ,
       m_pAccount->isTlsEnabled                 () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
-   // AccountSecurityFlaw::CERTIFICATE_MISMATCH
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::CERTIFICATE_MATCH            ,
+   // AccountSecurityChecks::CERTIFICATE_MISMATCH
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::CERTIFICATE_MATCH            ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
-   // AccountSecurityFlaw::OUTGOING_SERVER_MISMATCH
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::OUTGOING_SERVER_MATCH        ,
+   // AccountSecurityChecks::OUTGOING_SERVER_MISMATCH
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::OUTGOING_SERVER_MATCH        ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
-   // AccountSecurityFlaw::VERIFY_INCOMING_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::VERIFY_INCOMING_ENABLED      ,
+   // AccountSecurityChecks::VERIFY_INCOMING_DISABLED
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_INCOMING_ENABLED      ,
       m_pAccount->isTlsVerifyServer            () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
-   // AccountSecurityFlaw::VERIFY_ANSWER_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::VERIFY_ANSWER_ENABLED        ,
+   // AccountSecurityChecks::VERIFY_ANSWER_DISABLED
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_ANSWER_ENABLED        ,
       m_pAccount->isTlsVerifyClient            () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
-   // AccountSecurityFlaw::REQUIRE_CERTIFICATE_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::REQUIRE_CERTIFICATE_ENABLED  ,
+   // AccountSecurityChecks::REQUIRE_CERTIFICATE_DISABLED
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::REQUIRE_CERTIFICATE_ENABLED  ,
       m_pAccount->isTlsRequireClientCertificate() ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
-   // AccountSecurityFlaw::MISSING_CERTIFICATE
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::NOT_MISSING_CERTIFICATE      ,
+   // AccountSecurityChecks::MISSING_CERTIFICATE
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_CERTIFICATE      ,
       m_pAccount->tlsCertificate               () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
-   // AccountSecurityFlaw::MISSING_AUTHORITY
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityFlaw::NOT_MISSING_AUTHORITY        ,
+   // AccountSecurityChecks::MISSING_AUTHORITY
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_AUTHORITY        ,
       m_pAccount->tlsCaListCertificate         () ?
          Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
 
@@ -592,7 +623,7 @@ void SecurityEvaluationModelPrivate::update()
 #if QT_VERSION >= 0x050400
       QTimer::singleShot(0,this,&SecurityEvaluationModelPrivate::updateReal);
       m_isScheduled = true;
-#else //Too bad for 5.3 users
+#else //Too bad for Qt < 5.3 users
       updateReal();
 #endif
 
@@ -621,15 +652,20 @@ void SecurityEvaluationModelPrivate::updateReal()
          idx.data((int) SecurityEvaluationModel::Role::Severity)
       );
 
-      const SecurityLevel level    = qvariant_cast<SecurityLevel>(
-         idx.data((int) SecurityEvaluationModel::Role::SecurityLevel )
-      );
+      //Ignore items without severity
+      const QVariant levelVariant = idx.data((int) SecurityEvaluationModel::Role::SecurityLevel );
+
+      const SecurityLevel level    = levelVariant.canConvert<SecurityLevel>() ? qvariant_cast<SecurityLevel>(
+         levelVariant
+      ) : maxLevel;
 
       //Increment the count
       m_SeverityCount[static_cast<int>(severity)]++;
 
+      const bool forceIgnore = idx.data(BYPASS_PRIVATE_KEY_NOT_FOUND).toBool(); //FIXME this is a hack
+
       //Update the maximum level
-      maxLevel = level < maxLevel ? level : maxLevel;
+      maxLevel = level < maxLevel && !forceIgnore ? level : maxLevel;
    }
 
    //Notify

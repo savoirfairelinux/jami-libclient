@@ -27,10 +27,10 @@ class SecurityFlawPrivate : public QObject
 {
    Q_OBJECT
 public:
-   SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type);
+   SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityChecks f,Certificate::Type type);
 
    //Attributes
-   SecurityEvaluationModel::AccountSecurityFlaw m_flaw;
+   SecurityEvaluationModel::AccountSecurityChecks m_flaw;
    SecurityEvaluationModel::Severity m_severity;
    Certificate::Type m_certType;
    int m_Row;

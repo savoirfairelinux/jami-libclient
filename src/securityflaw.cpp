@@ -21,13 +21,13 @@
 #include "private/securityevaluationmodel_p.h"
 #include "private/securityflaw_p.h"
 
-SecurityFlawPrivate::SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type):m_flaw(f),m_certType(type),m_Row(-1)
+SecurityFlawPrivate::SecurityFlawPrivate(SecurityFlaw* parent, SecurityEvaluationModel::AccountSecurityChecks f,Certificate::Type type):m_flaw(f),m_certType(type),m_Row(-1)
 ,m_severity(SecurityEvaluationModelPrivate::flawSeverity[f]),q_ptr(parent)
 {
 
 }
 
-SecurityFlaw::SecurityFlaw(SecurityEvaluationModel::AccountSecurityFlaw f,Certificate::Type type)
+SecurityFlaw::SecurityFlaw(SecurityEvaluationModel::AccountSecurityChecks f,Certificate::Type type)
    : QObject(), d_ptr(new SecurityFlawPrivate(this, f, type))
 {
 }
@@ -37,7 +37,7 @@ Certificate::Type SecurityFlaw::type() const
    return d_ptr->m_certType;
 }
 
-SecurityEvaluationModel::AccountSecurityFlaw SecurityFlaw::flaw() const
+SecurityEvaluationModel::AccountSecurityChecks SecurityFlaw::flaw() const
 {
    return d_ptr->m_flaw;
 }
