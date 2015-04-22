@@ -1726,7 +1726,8 @@ UserActionModel* Call::userActionModel() const
 ///Check if creating a timer is necessary
 void CallPrivate::initTimer()
 {
-   if (q_ptr->lifeCycleState() == Call::LifeCycleState::PROGRESS) {
+   if (q_ptr->lifeCycleState() == Call::LifeCycleState::PROGRESS
+       || q_ptr->lifeCycleState() == Call::LifeCycleState::INITIALIZATION) {
       if (!m_pTimer) {
          m_pTimer = new QTimer(this);
          m_pTimer->setInterval(1000);
