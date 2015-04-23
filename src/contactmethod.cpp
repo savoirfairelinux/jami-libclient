@@ -415,6 +415,11 @@ QVariant ContactMethod::icon() const
    return category()->icon(isTracked(),isPresent());
 }
 
+QVariant TemporaryContactMethod::icon() const
+{
+   return QVariant(); //TODO use the pixmap delegate to get a better icon
+}
+
 ///The number of seconds spent with the URI (from history)
 int ContactMethod::totalSpentTime() const
 {

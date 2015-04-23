@@ -63,6 +63,7 @@ public:
    void locateNameRange  (const QString& prefix, QSet<ContactMethod*>& set);
    void locateNumberRange(const QString& prefix, QSet<ContactMethod*>& set);
    uint getWeight(ContactMethod* number);
+   uint getWeight(Account* account);
    void getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const;
 
    //Attributes
@@ -77,6 +78,9 @@ public:
 public Q_SLOTS:
    void setPrefix(const QString& str);
 
+   bool accountAdded  (Account* a);
+   void accountRemoved(Account* a);
+
 private:
    NumberCompletionModel* q_ptr;
 };
@@ -85,15 +89,44 @@ private:
 NumberCompletionModelPrivate::NumberCompletionModelPrivate(NumberCompletionModel* parent) : QObject(parent), q_ptr(parent),
 m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true)
 {
+   //Create the temporary number list
+   bool     hasNonIp2Ip = false;
+   Account* ip2ip       = AccountModel::instance()->ip2ip();
+
+   for (int i =0; i < AccountModel::instance()->size();i++) {
+      Account* a = (*AccountModel::instance())[i];
+      if (a != ip2ip) {
+         hasNonIp2Ip |= accountAdded(a);
+      }
+   }
+
+   //If SIP accounts are present, IP2IP is not needed
+   if (!hasNonIp2Ip) {
+      TemporaryContactMethod* cm = new TemporaryContactMethod();
+      cm->setAccount(ip2ip);
+      m_hSipIaxTemporaryNumbers[ip2ip] = cm;
+   }
+
+   connect(AccountModel::instance(), &AccountModel::accountAdded  , this, &NumberCompletionModelPrivate::accountAdded  );
+   connect(AccountModel::instance(), &AccountModel::accountRemoved, this, &NumberCompletionModelPrivate::accountRemoved);
 }
 
-NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(QCoreApplication::instance()), d_ptr(new NumberCompletionModelPrivate(this))
+NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(PhoneDirectoryModel::instance()), d_ptr(new NumberCompletionModelPrivate(this))
 {
    setObjectName("NumberCompletionModel");
 }
 
 NumberCompletionModel::~NumberCompletionModel()
 {
+   QList<TemporaryContactMethod*> l = d_ptr->m_hSipIaxTemporaryNumbers.values();
+
+   d_ptr->m_hSipIaxTemporaryNumbers.clear();
+
+   while(l.size()) {
+      TemporaryContactMethod* cm = l.takeAt(0);
+      delete cm;
+   }
+
    delete d_ptr;
 }
 
@@ -131,7 +164,9 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
                return n->uri();
                break;
             case Qt::ToolTipRole:
-               return QString("<table><tr><td>%1</td></tr><tr><td>%2</td></tr></table>").arg(n->primaryName()).arg(n->category()->name());
+               return QString("<table><tr><td>%1</td></tr><tr><td>%2</td></tr></table>")
+                  .arg(n->primaryName())
+                  .arg(n->category() ? n->category()->name() : QString());
                break;
             case Qt::DecorationRole:
                return n->icon();
@@ -250,6 +285,10 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
       m_hNumbers.clear();
       q_ptr->endRemoveRows();
    }
+
+   for(TemporaryContactMethod* cm : m_hSipIaxTemporaryNumbers) {
+      cm->setUri(str);
+   }
 }
 
 Call* NumberCompletionModel::call() const
@@ -260,7 +299,11 @@ Call* NumberCompletionModel::call() const
 ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
 {
    if (idx.isValid()) {
-      return (d_ptr->m_hNumbers.end()-1-idx.row()).value();
+      //Keep the temporary contact methods private, export a copy
+      ContactMethod* m = (d_ptr->m_hNumbers.end()-1-idx.row()).value();
+      return m->type() == ContactMethod::Type::TEMPORARY ? 
+         PhoneDirectoryModel::instance()->fromTemporary(qobject_cast<TemporaryContactMethod*>(m))
+         : m;
    }
 
    return nullptr;
@@ -277,7 +320,16 @@ void NumberCompletionModelPrivate::updateModel()
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
-      foreach(ContactMethod* n,numbers) {
+      for (TemporaryContactMethod* cm : m_hSipIaxTemporaryNumbers) {
+         const int weight = getWeight(cm->account());
+         if (weight) {
+            q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+            m_hNumbers.insert(weight,cm);
+            q_ptr->endInsertRows();
+         }
+      }
+
+      for (ContactMethod* n : numbers) {
          if (m_UseUnregisteredAccount || ((n->account() && n->account()->registrationState() == Account::RegistrationState::READY)
           || !n->account())) {
             q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
@@ -375,13 +427,28 @@ void NumberCompletionModelPrivate::locateNumberRange(const QString& prefix, QSet
 
 uint NumberCompletionModelPrivate::getWeight(ContactMethod* number)
 {
-   Q_UNUSED(number)
    uint weight = 1;
+
    weight += (number->weekCount()+1)*150;
    weight += (number->trimCount()+1)*75 ;
    weight += (number->callCount()+1)*35 ;
    weight *= (number->uri().indexOf(m_Prefix)!= -1?3:1);
    weight *= (number->isPresent()?2:1);
+
+   return weight;
+}
+
+uint NumberCompletionModelPrivate::getWeight(Account* account)
+{
+   if ((!account) || account->registrationState() != Account::RegistrationState::READY)
+      return 0; //TODO handle the case where the account get registered during dialing
+
+   uint weight = 1;
+
+   weight += (account->weekCallCount         ()+1)*15;
+   weight += (account->trimesterCallCount    ()+1)*7 ;
+   weight += (account->totalCallCount        ()+1)*3 ;
+   weight *= (account->isUsedForOutgogingCall()?3:1 );
 
    return weight;
 }
@@ -399,6 +466,41 @@ void NumberCompletionModel::setUseUnregisteredAccounts(bool value)
 bool NumberCompletionModel::isUsingUnregisteredAccounts()
 {
    return d_ptr->m_UseUnregisteredAccount;
+}
+
+bool NumberCompletionModelPrivate::accountAdded(Account* a)
+{
+   bool hasNonIp2Ip = false;
+
+   switch(a->protocol()) {
+      case Account::Protocol::SIP :
+         hasNonIp2Ip = true;
+         //no break
+      case Account::Protocol::IAX : {
+         TemporaryContactMethod* cm = new TemporaryContactMethod();
+         cm->setAccount(a);
+         m_hSipIaxTemporaryNumbers[a] = cm;
+         }
+         break;
+      case Account::Protocol::RING:
+      case Account::Protocol::COUNT__:
+         break;
+   }
+
+   return hasNonIp2Ip;
+}
+
+void NumberCompletionModelPrivate::accountRemoved(Account* a)
+{
+   TemporaryContactMethod* cm = m_hSipIaxTemporaryNumbers[a];
+
+   m_hSipIaxTemporaryNumbers[a] = nullptr;
+
+   setPrefix(q_ptr->prefix());
+
+   if (cm) {
+      delete cm;
+   }
 }
 
 #include <numbercompletionmodel.moc>

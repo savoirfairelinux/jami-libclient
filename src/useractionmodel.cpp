@@ -439,11 +439,12 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
 
 bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const Call* c)
 {
+   Account* a = c->account() ? c->account() : AvailableAccountModel::instance()->currentDefaultAccount();
    return (!c) ? false : (
-      availableActionMap        [action] [c->state()                       ] &&
-      availableAccountActionMap [action] [c->account()->registrationState()] &&
-      multi_call_options        [action] [m_SelectionState                 ] &&
-      availableProtocolActions  [action] [c->account()->protocol()         ] //
+      availableActionMap        [action] [c->state()             ] &&
+      availableAccountActionMap [action] [a->registrationState() ] &&
+      multi_call_options        [action] [m_SelectionState       ] &&
+      availableProtocolActions  [action] [a->protocol()          ] //
    );
 }
 

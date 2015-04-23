@@ -108,7 +108,7 @@ public:
    QString             primaryName     () const;
    bool                isBookmarked    () const;
    bool                supportPresence () const;
-   QVariant            icon            () const;
+   virtual QVariant    icon            () const;
    int                 totalSpentTime  () const;
    QString             uid             () const;
    URI::ProtocolHint   protocolHint    () const;
@@ -208,7 +208,9 @@ class LIB_EXPORT TemporaryContactMethod : public ContactMethod {
    Q_OBJECT
 public:
    explicit TemporaryContactMethod(const ContactMethod* number = nullptr);
+   virtual QVariant icon() const override;
    void setUri(const URI& uri);
+
 };
 
 #endif

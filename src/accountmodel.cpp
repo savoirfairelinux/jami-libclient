@@ -142,10 +142,10 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TypeName                    ) ,QByteArray("typeName"                      ));
       roles.insert(CAST(Account::Role::PresenceStatus              ) ,QByteArray("presenceStatus"                ));
       roles.insert(CAST(Account::Role::PresenceMessage             ) ,QByteArray("presenceMessage"               ));
-      roles.insert(CAST(Account::Role::HaveCalled                  ) ,QByteArray("haveCalled"                    ));
-      roles.insert(CAST(Account::Role::TotalCount                  ) ,QByteArray("totalCount"                    ));
-      roles.insert(CAST(Account::Role::LastWeekCount               ) ,QByteArray("lastWeekCount"                 ));
-      roles.insert(CAST(Account::Role::LastTrimCount               ) ,QByteArray("lastTrimCount"                 ));
+      roles.insert(CAST(Account::Role::UsedForOutgogingCall        ) ,QByteArray("usedForOutgogingCall"          ));
+      roles.insert(CAST(Account::Role::TotalCallCount              ) ,QByteArray("totalCallCount"                ));
+      roles.insert(CAST(Account::Role::WeekCallCount               ) ,QByteArray("weekCallCount"                 ));
+      roles.insert(CAST(Account::Role::TrimesterCallCount          ) ,QByteArray("trimesterCallCount"            ));
       roles.insert(CAST(Account::Role::LastUsed                    ) ,QByteArray("lastUsed"                      ));
    }
    return roles;
@@ -403,6 +403,8 @@ void AccountModel::updateAccounts()
 
          if (a->id() != DRing::Account::ProtocolNames::IP2IP)
             d_ptr->enableProtocol(a->protocol());
+
+         emit accountAdded(a);
       }
       else {
          acc->performAction(Account::EditAction::RELOAD);
@@ -672,6 +674,8 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 
    if (a->id() != DRing::Account::ProtocolNames::IP2IP)
       d_ptr->enableProtocol(proto);
+
+   emit accountAdded(a);
 
    return a;
 }

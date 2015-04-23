@@ -141,10 +141,10 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
-   Q_PROPERTY(bool           haveCalled                   READ haveCalled                                                         )
-   Q_PROPERTY(uint           totalCount                   READ totalCount                                                         )
-   Q_PROPERTY(uint           lastWeekCount                READ lastWeekCount                                                      )
-   Q_PROPERTY(uint           lastTrimCount                READ lastTrimCount                                                      )
+   Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
+   Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
+   Q_PROPERTY(uint           weekCallCount                READ weekCallCount                                                      )
+   Q_PROPERTY(uint           trimesterCallCount           READ trimesterCallCount                                                 )
    Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
 
    public:
@@ -225,10 +225,10 @@ class LIB_EXPORT Account : public QObject {
          PresenceMessage             = 143,
          RegistrationState           = 144,
          UseDefaultPort              = 145,
-         HaveCalled                  = 146,
-         TotalCount                  = 147,
-         LastWeekCount               = 148,
-         LastTrimCount               = 149,
+         UsedForOutgogingCall        = 146,
+         TotalCallCount              = 147,
+         WeekCallCount               = 148,
+         TrimesterCallCount          = 149,
          LastUsed                    = 150,
       };
 
@@ -327,11 +327,11 @@ class LIB_EXPORT Account : public QObject {
       Protocol               protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
 
-      bool   haveCalled    () const;
-      uint   totalCount    () const;
-      uint   lastWeekCount () const;
-      uint   lastTrimCount () const;
-      time_t lastUsed      () const;
+      bool   isUsedForOutgogingCall () const;
+      uint   totalCallCount         () const;
+      uint   weekCallCount          () const;
+      uint   trimesterCallCount     () const;
+      time_t lastUsed               () const;
 
       Q_INVOKABLE QVariant roleData ( int role             ) const;
       Q_INVOKABLE bool supportScheme( URI::SchemeType type )      ;

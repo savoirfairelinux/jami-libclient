@@ -133,6 +133,8 @@ Q_SIGNALS:
    void presenceEnabledChanged(bool isPresent                        );
    ///An account has been removed
    void accountRemoved(Account* account                              );
+   ///An account has been added
+   void accountAdded(Account* account                                );
    ///Emitted when an account using a previously unsupported protocol is added
    void supportedProtocolsChanged(                                   );
    ///Emitted when an account state change

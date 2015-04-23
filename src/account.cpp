@@ -432,22 +432,22 @@ BootstrapModel* Account::bootstrapModel() const
    return d_ptr->m_pBootstrapModel;
 }
 
-bool Account::haveCalled() const
+bool Account::isUsedForOutgogingCall() const
 {
    return d_ptr->m_HaveCalled;
 }
 
-uint Account::totalCount() const
+uint Account::totalCallCount() const
 {
    return d_ptr->m_TotalCount;
 }
 
-uint Account::lastWeekCount() const
+uint Account::weekCallCount() const
 {
    return d_ptr->m_LastWeekCount;
 }
 
-uint Account::lastTrimCount() const
+uint Account::trimesterCallCount() const
 {
    return d_ptr->m_LastTrimCount;
 }
@@ -961,16 +961,16 @@ QVariant Account::roleData(int role) const
          return PresenceStatusModel::instance()->currentMessage();
       case CAST(Account::Role::RegistrationState):
          return QVariant::fromValue(registrationState());
-      case CAST(Account::Role::HaveCalled   ):
-         return haveCalled    ();
-      case CAST(Account::Role::TotalCount   ):
-         return totalCount    ();
-      case CAST(Account::Role::LastWeekCount):
-         return lastWeekCount ();
-      case CAST(Account::Role::LastTrimCount):
-         return lastTrimCount ();
-      case CAST(Account::Role::LastUsed     ):
-         return (int)lastUsed ();
+      case CAST(Account::Role::UsedForOutgogingCall):
+         return isUsedForOutgogingCall();
+      case CAST(Account::Role::TotalCallCount):
+         return totalCallCount();
+      case CAST(Account::Role::WeekCallCount):
+         return weekCallCount();
+      case CAST(Account::Role::TrimesterCallCount):
+         return trimesterCallCount();
+      case CAST(Account::Role::LastUsed):
+         return (int)lastUsed();
       default:
          return QVariant();
    }
