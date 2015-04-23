@@ -97,18 +97,33 @@ public:
                         Q_EMIT this->errorAlert(code);
                      });
          }),
-         exportable_callback<ConfigurationSignal::CertificateAdded>(
-               [this] (const std::string &certId) {
-                     QTimer::singleShot(0, [this, certId] {
-                           Q_EMIT this->certificateAdded(QString(certId.c_str()));
-                     });
-         }),
          exportable_callback<ConfigurationSignal::CertificateExpired>(
                [this] (const std::string &certId) {
                      QTimer::singleShot(0, [this, certId] {
                            Q_EMIT this->certificateExpired(QString(certId.c_str()));
                      });
-         })
+         }),
+
+         exportable_callback<ConfigurationSignal::CertificatePinned>(
+               [this] (const std::string &certId) {
+                     QTimer::singleShot(0, [this, certId] {
+                           Q_EMIT this->certificatePinned(QString(certId.c_str()));
+                     });
+         }),
+
+         exportable_callback<ConfigurationSignal::CertificatePathPinned>(
+               [this] (const std::string &certPath, const std::vector<std::string>& list) {
+                     QTimer::singleShot(0, [this, certPath, list] {
+                           Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
+                     });
+         }),
+
+         exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
+               [this] (const std::string &accountId, const std::string &certId, time_t timestamp) {
+                     QTimer::singleShot(0, [this, certId,accountId,timestamp] {
+                           Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), timestamp);
+                     });
+         }),
       };
    }
 
@@ -298,13 +313,6 @@ public Q_SLOTS: // METHODS
    {
       QStringList temp =
          convertStringList(DRing::getSupportedTlsMethod());
-      return temp;
-   }
-
-   MapStringString getTlsSettings()
-   {
-      MapStringString temp =
-         convertMap(DRing::getTlsSettings());
       return temp;
    }
 
@@ -501,11 +509,6 @@ public Q_SLOTS: // METHODS
       DRing::setShortcuts(convertMap(shortcutsMap));
    }
 
-   void setTlsSettings(MapStringString details)
-   {
-      DRing::setTlsSettings(convertMap(details));
-   }
-
    void setVolume(const QString &device, double value)
    {
       DRing::setVolume(device.toStdString(), value);
@@ -517,26 +520,69 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   QStringList getCertificateList()
+   QStringList getPinnedCertificates()
    {
-      return convertStringList(DRing::getCertificateList());
+      QStringList temp =
+         convertStringList(DRing::getPinnedCertificates());
+      return temp;
    }
 
-   QString addCertificate(const QByteArray& raw)
+   QString pinCertificate(const QByteArray& content, bool local)
    {
-      const std::vector<unsigned char> r(raw.begin(), raw.end());
-      return DRing::addCertificate(r).c_str();
+      std::vector<unsigned char> raw(content.begin(), content.end());
+      return QString(DRing::pinCertificate(raw,local).c_str());
    }
 
-   bool addCertificateRemote(const QString& accountId, const QString& certificateId)
+   bool unpinCertificate(const QString& certId)
    {
-      return DRing::addCertificateRemote(accountId.toStdString(), certificateId.toStdString());
+      return DRing::unpinCertificate(certId.toStdString());
    }
 
-   bool banCertificate(const QString& id)
+   void pinCertificatePath(const QString& certPath)
    {
-      return DRing::banCertificate(id.toStdString());
+      DRing::pinCertificatePath(certPath.toStdString());
    }
+
+   uint unpinCertificatePath(const QString& certPath)
+   {
+      return DRing::unpinCertificatePath(certPath.toStdString());
+   }
+
+   bool pinRemoteCertificate(const QString& accountId, const QString& certPath)
+   {
+      return DRing::pinRemoteCertificate(accountId.toStdString(), certPath.toStdString());
+   }
+
+   bool setCertificateStatus(const QString& accountId, const QString& certPath, const QString& status)
+   {
+      return DRing::setCertificateStatus(accountId.toStdString(), certPath.toStdString(), status.toStdString());
+   }
+
+   QStringList getCertificatesByStatus(const QString& accountId, const QString& certPath)
+   {
+      return convertStringList(DRing::getCertificatesByStatus(accountId.toStdString(), certPath.toStdString()));
+   }
+
+   MapStringString getTrustRequests(const QString& accountId)
+   {
+      return convertMap(DRing::getTrustRequests(accountId.toStdString()));
+   }
+
+   bool acceptTrustRequest(const QString& accountId, const QString& from)
+   {
+      return DRing::acceptTrustRequest(accountId.toStdString(), from.toStdString());
+   }
+
+   bool discardTrustRequest(const QString& accountId, const QString& from)
+   {
+      return DRing::discardTrustRequest(accountId.toStdString(), from.toStdString());
+   }
+
+   void sendTrustRequest(const QString& accountId, const QString& from)
+   {
+      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString());
+   }
+
 
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString &device, double value);
@@ -547,8 +593,10 @@ Q_SIGNALS: // SIGNALS
    void stunStatusSuccess(const QString &message);
    void errorAlert(int code);
    void volatileAccountDetailsChanged(const QString &accountID, MapStringString details);
-   void certificateAdded(const QString& cert);
-   void certificateExpired(const QString& cert);
+   void certificatePinned(const QString& certId);
+   void certificatePathPinned(const QString& path, const QStringList& certIds);
+   void certificateExpired(const QString& certId);
+   void incomingTrustRequest(const QString& accountId, const QString& from, qulonglong timeStamp);
 
 };
 
