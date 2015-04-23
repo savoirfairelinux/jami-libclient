@@ -266,7 +266,8 @@ URI::ProtocolHint URI::protocolHint() const
 
       : (
          //Step three    : Check RING protocol, is has already been detected at this point
-         d_ptr->m_HeaderType == URI::SchemeType::RING && isHash ? URI::ProtocolHint::RING
+         (d_ptr->m_HeaderType == URI::SchemeType::RING && isHash) || (isHash && d_ptr->m_Userinfo.size() == 40)
+            ? URI::ProtocolHint::RING
 
       : (
          //Step four   : Differentiate between ***@*** and *** type URIs
