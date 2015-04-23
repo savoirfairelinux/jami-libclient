@@ -363,7 +363,7 @@ bool Certificate::pin()
    if (hasRemote())
       return true;
 
-   switch(d_ptr->m_LoadingType) {
+   /*switch(d_ptr->m_LoadingType) {
       case LoadingType::FROM_PATH:
          DBus::ConfigurationManager::instance().addCertificate(d_ptr->m_Id); //FIXME wrong function, wait for daemon implementation
          break;
@@ -374,7 +374,7 @@ bool Certificate::pin()
 //          return DBus::ConfigurationManager::instance().addCertificateRemote(d_ptr->m_Id); //FIXME
          break;
    }
-   //TODO use the new pinning API
+   //TODO use the new pinning API*/
    return false;
 }
 

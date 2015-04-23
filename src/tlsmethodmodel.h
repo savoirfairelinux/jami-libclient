@@ -43,10 +43,11 @@ class LIB_EXPORT TlsMethodModel : public QAbstractListModel {
 public:
    ///@enum Type Every supported encryption types
    enum class Type {
-      DEFAULT = 0,
-      TLSv1   = 1,
-      SSLv3   = 2,
-      SSLv23  = 3,
+      DEFAULT   = 0,
+      TLSv1_0   = 1,
+      TLSv1_1   = 2,
+      TLSv1_2   = 3,
+      SSLv3     = 4,
    };
 
    //Private constructor, can only be called by 'Account'

@@ -38,16 +38,19 @@ public:
    public:
       static const QString         DEFAULT            ;
       constexpr static const char* TLSv1   = "TLSv1"  ;
+      constexpr static const char* TLSv1_1 = "TLSv1.1";
+      constexpr static const char* TLSv1_2 = "TLSv1.2";
       constexpr static const char* SSLv3   = "SSLv3"  ;
-      constexpr static const char* SSLv23  = "SSLv23" ;
    };
+
 
    class DaemonName {
    public:
       constexpr static const char* DEFAULT = "Default";
       constexpr static const char* TLSv1   = "TLSv1"  ;
+      constexpr static const char* TLSv1_1 = "TLSv1.1";
+      constexpr static const char* TLSv1_2 = "TLSv1.2";
       constexpr static const char* SSLv3   = "SSLv3"  ;
-      constexpr static const char* SSLv23  = "SSLv23" ;
    };
 
    static const char* toDaemonName(TlsMethodModel::Type type);
@@ -98,12 +101,14 @@ QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
       switch (method) {
          case TlsMethodModel::Type::DEFAULT:
             return TlsMethodModelPrivate::Name::DEFAULT;
-         case TlsMethodModel::Type::TLSv1:
+         case TlsMethodModel::Type::TLSv1_0:
             return TlsMethodModelPrivate::Name::TLSv1;
+         case TlsMethodModel::Type::TLSv1_1:
+            return TlsMethodModelPrivate::Name::TLSv1_1;
+         case TlsMethodModel::Type::TLSv1_2:
+            return TlsMethodModelPrivate::Name::TLSv1_2;
          case TlsMethodModel::Type::SSLv3:
             return TlsMethodModelPrivate::Name::SSLv3;
-         case TlsMethodModel::Type::SSLv23:
-            return TlsMethodModelPrivate::Name::SSLv23;
       };
    }
    return QVariant();
@@ -165,12 +170,14 @@ const char* TlsMethodModelPrivate::toDaemonName(TlsMethodModel::Type type)
    switch (type) {
       case TlsMethodModel::Type::DEFAULT:
          return TlsMethodModelPrivate::DaemonName::DEFAULT;
-      case TlsMethodModel::Type::TLSv1:
+      case TlsMethodModel::Type::TLSv1_0:
          return TlsMethodModelPrivate::DaemonName::TLSv1;
+      case TlsMethodModel::Type::TLSv1_1:
+         return TlsMethodModelPrivate::DaemonName::TLSv1_1;
+      case TlsMethodModel::Type::TLSv1_2:
+         return TlsMethodModelPrivate::DaemonName::TLSv1_2;
       case TlsMethodModel::Type::SSLv3:
          return TlsMethodModelPrivate::DaemonName::SSLv3;
-      case TlsMethodModel::Type::SSLv23:
-         return TlsMethodModelPrivate::DaemonName::SSLv23;
    };
    return TlsMethodModelPrivate::DaemonName::DEFAULT;
 }
@@ -181,11 +188,13 @@ TlsMethodModel::Type TlsMethodModelPrivate::fromDaemonName(const QString& name)
    if (name.isEmpty() || name == TlsMethodModelPrivate::DaemonName::DEFAULT)
       return TlsMethodModel::Type::DEFAULT;
    else if (name == TlsMethodModelPrivate::DaemonName::TLSv1)
-      return TlsMethodModel::Type::TLSv1;
+      return TlsMethodModel::Type::TLSv1_0;
+   else if (name == TlsMethodModelPrivate::DaemonName::TLSv1_1)
+      return TlsMethodModel::Type::TLSv1_1;
+   else if (name == TlsMethodModelPrivate::DaemonName::TLSv1_2)
+      return TlsMethodModel::Type::TLSv1_2;
    else if (name == TlsMethodModelPrivate::DaemonName::SSLv3)
       return TlsMethodModel::Type::SSLv3;
-   else if (name == TlsMethodModelPrivate::DaemonName::SSLv23)
-      return TlsMethodModel::Type::SSLv23;
    qDebug() << "Unknown TLS method" << name;
    return TlsMethodModel::Type::DEFAULT;
 }

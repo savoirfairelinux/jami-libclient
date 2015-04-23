@@ -59,8 +59,8 @@ public Q_SLOTS:
 DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent) : QObject(), q_ptr(parent)
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   connect(&configurationManager,&ConfigurationManagerInterface::certificateAdded  ,this,&DaemonCertificateCollectionPrivate::slotCertificateAdded  );
-   connect(&configurationManager,&ConfigurationManagerInterface::certificateExpired,this,&DaemonCertificateCollectionPrivate::slotCertificateExpired);
+//   connect(&configurationManager,&ConfigurationManagerInterface::certificateAdded  ,this,&DaemonCertificateCollectionPrivate::slotCertificateAdded  );
+//   connect(&configurationManager,&ConfigurationManagerInterface::certificateExpired,this,&DaemonCertificateCollectionPrivate::slotCertificateExpired);
 }
 
 DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
@@ -88,8 +88,8 @@ void DaemonCertificateCollectionPrivate::slotCertificateExpired(const QString& i
 
 bool DaemonCertificateCollection::load()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   qDebug() << QStringList(configurationManager.getCertificateList());
+//   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+//   qDebug() << QStringList(configurationManager.getCertificateList());
    return false;
 }
 
