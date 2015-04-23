@@ -858,6 +858,16 @@ bool Account::useDefaultPort() const
    return d_ptr->m_UseDefaultPort;
 }
 
+bool Account::isTurnEnabled() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::ENABLED) IS_TRUE;
+}
+
+QString Account::turnServer() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER);
+}
+
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
 {
@@ -971,6 +981,10 @@ QVariant Account::roleData(int role) const
          return trimesterCallCount();
       case CAST(Account::Role::LastUsed):
          return (int)lastUsed();
+      case CAST(Account::Role::SipTurnServer):
+         return turnServer();
+      case CAST(Account::Role::SipTurnEnabled):
+         return isTurnEnabled();
       default:
          return QVariant();
    }
@@ -1467,7 +1481,7 @@ void Account::setUseDefaultPort(bool value)
       switch (protocol()) {
          case Account::Protocol::SIP:
          case Account::Protocol::IAX:
-            setLocalPort(5060);
+            setLocalPort(5060); //FIXME check is TLS is used
             break;
          case Account::Protocol::RING:
             setLocalPort(5061);
@@ -1477,6 +1491,16 @@ void Account::setUseDefaultPort(bool value)
       };
    }
    d_ptr->m_UseDefaultPort = value;
+}
+
+void Account::setTurnEnabled(bool value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::ENABLED, (value)TO_BOOL);
+}
+
+void Account::setTurnServer(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER, value);
 }
 
 ///Set the DTMF type

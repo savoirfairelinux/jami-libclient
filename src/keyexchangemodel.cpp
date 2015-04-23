@@ -96,7 +96,7 @@ int KeyExchangeModel::rowCount( const QModelIndex& parent ) const
 Qt::ItemFlags KeyExchangeModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid()) return Qt::NoItemFlags;
-   return Qt::ItemIsEnabled|Qt::ItemIsSelectable;
+   return index.row()!=(int)KeyExchangeModel::Type::ZRTP?(Qt::ItemIsEnabled|Qt::ItemIsSelectable):Qt::NoItemFlags;
 }
 
 bool KeyExchangeModel::setData( const QModelIndex& index, const QVariant &value, int role)

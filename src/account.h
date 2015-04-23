@@ -230,6 +230,8 @@ class LIB_EXPORT Account : public QObject {
          WeekCallCount               = 148,
          TrimesterCallCount          = 149,
          LastUsed                    = 150,
+         SipTurnServer               = 151,
+         SipTurnEnabled              = 152,
       };
 
       enum class Protocol {
@@ -323,6 +325,8 @@ class LIB_EXPORT Account : public QObject {
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
       bool    useDefaultPort               () const;
+      bool    isTurnEnabled                () const;
+      QString turnServer                   () const;
       RegistrationState  registrationState () const;
       Protocol               protocol      () const;
       KeyExchangeModel::Type keyExchange   () const;
@@ -358,6 +362,7 @@ class LIB_EXPORT Account : public QObject {
       void setLocalInterface                (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
       void setLastErrorMessage              (const QString& message );
+      void setTurnServer                    (const QString& value   );
       void setKeyExchange                   (KeyExchangeModel::Type detail);
       void setLastErrorCode                 (int  code  );
       void setVoiceMailCount                (int  count );
@@ -391,6 +396,7 @@ class LIB_EXPORT Account : public QObject {
       void setUpnpEnabled                   (bool enable);
       void setHasCustomUserAgent            (bool enable);
       void setUseDefaultPort                (bool value );
+      void setTurnEnabled                   (bool value );
 
       void setRoleData(int role, const QVariant& value);
 
