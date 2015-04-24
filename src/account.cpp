@@ -1046,6 +1046,21 @@ void Account::setHostname(const QString& detail)
 void Account::setUsername(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::USERNAME, detail);
+   switch (protocol()) {
+      case Account::Protocol::IAX:
+      case Account::Protocol::RING:
+      case Account::Protocol::COUNT__:
+         //nothing to do
+         break;
+      case Account::Protocol::SIP:
+         if (credentialModel()->rowCount())
+            credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::NAME);
+         else {
+            const QModelIndex idx = credentialModel()->addCredentials();
+            credentialModel()->setData(idx,detail,CredentialModel::Role::NAME);
+         }
+         break;
+   };
 }
 
 ///Set the account mailbox, usually a number, but can be anything
