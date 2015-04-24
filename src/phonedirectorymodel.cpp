@@ -166,8 +166,10 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
             case Qt::ToolTipRole: {
                QString out = "<table>";
                QHashIterator<QString, int> iter(number->alternativeNames());
-               while (iter.hasNext())
+               while (iter.hasNext()) {
+                  iter.next();
                   out += QString("<tr><td>%1</td><td>%2</td></tr>").arg(iter.value()).arg(iter.key());
+               }
                out += "</table>";
                return out;
             }
