@@ -36,6 +36,7 @@
 #include "certificate.h"
 #include "certificatemodel.h"
 #include "accountmodel.h"
+#include "private/certificatemodel_p.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "credentialmodel.h"
@@ -67,6 +68,10 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 };
 #undef AP
 
+//Host the current highest interal identifier. The internal id is used for some bitmasks
+//when objects have a different status for each account
+static uint p_sAutoIncrementId = 0;
+
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
@@ -74,7 +79,8 @@ m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationMode
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
-m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0)
+m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
+m_pBlacklistedCertificates(nullptr), m_pTrustedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId)
 {
    Q_Q(Account);
 }
@@ -430,6 +436,33 @@ BootstrapModel* Account::bootstrapModel() const
    }
 
    return d_ptr->m_pBootstrapModel;
+}
+
+QAbstractItemModel* Account::knownCertificateModel() const
+{
+   if (!d_ptr->m_pKnownCertificates) {
+      d_ptr->m_pKnownCertificates = CertificateModel::instance()->d_ptr->createKnownList(this);
+   }
+
+   return d_ptr->m_pKnownCertificates;
+}
+
+QAbstractItemModel* Account::backlistedCertificatesModel() const
+{
+   if (!d_ptr->m_pBlacklistedCertificates) {
+      d_ptr->m_pBlacklistedCertificates = CertificateModel::instance()->d_ptr->createBlockList(this);
+   }
+
+   return d_ptr->m_pBlacklistedCertificates;
+}
+
+QAbstractItemModel* Account::trustedCertificatesModel() const
+{
+   if (!d_ptr->m_pTrustedCertificates) {
+      d_ptr->m_pTrustedCertificates = CertificateModel::instance()->d_ptr->createTrustList(this);
+   }
+
+   return d_ptr->m_pTrustedCertificates;
 }
 
 bool Account::isUsedForOutgogingCall() const
@@ -1023,6 +1056,10 @@ bool Account::supportScheme( URI::SchemeType type )
    return false;
 }
 
+uint AccountPrivate::internalId() const
+{
+   return m_InternalId;
+}
 
 /*****************************************************************************
  *                                                                           *

@@ -20,6 +20,7 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
+#include "delegates/pixmapmanipulationdelegate.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -52,15 +53,23 @@ public:
    DaemonCertificateCollection* q_ptr;
 
 public Q_SLOTS:
-   void slotCertificateAdded(const QString& id);
+   void slotCertificatePinned(const QString& id);
    void slotCertificateExpired(const QString& id);
+   void slotCertificatePathPinned(const QString& path, const QStringList& certIds);
 };
 
 DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent) : QObject(), q_ptr(parent)
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-//   connect(&configurationManager,&ConfigurationManagerInterface::certificateAdded  ,this,&DaemonCertificateCollectionPrivate::slotCertificateAdded  );
-//   connect(&configurationManager,&ConfigurationManagerInterface::certificateExpired,this,&DaemonCertificateCollectionPrivate::slotCertificateExpired);
+
+   connect(&configurationManager, &ConfigurationManagerInterface::certificatePinned     , this, &DaemonCertificateCollectionPrivate::slotCertificatePinned    );
+
+   connect(&configurationManager, &ConfigurationManagerInterface::certificateExpired    , this, &DaemonCertificateCollectionPrivate::slotCertificateExpired   );
+
+   connect(&configurationManager, &ConfigurationManagerInterface::certificatePathPinned , this, &DaemonCertificateCollectionPrivate::slotCertificatePathPinned);
+
+   //    connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest  , this, &DaemonCertificateCollectionPrivate::);
+
 }
 
 DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
@@ -74,7 +83,7 @@ DaemonCertificateCollection::~DaemonCertificateCollection()
    delete d_ptr;
 }
 
-void DaemonCertificateCollectionPrivate::slotCertificateAdded(const QString& id)
+void DaemonCertificateCollectionPrivate::slotCertificatePinned(const QString& id)
 {
    qDebug() << "\n\nCERTIFICATE ADDED" << id;
    Certificate* cert = CertificateModel::instance()->getCertificateFromId(id);
@@ -86,10 +95,16 @@ void DaemonCertificateCollectionPrivate::slotCertificateExpired(const QString& i
    qDebug() << "\n\nCERTIFICATE EXPIRED" << id;
 }
 
+void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString& path, const QStringList& certIds)
+{
+   //Create a new collection if it is a directory or size > 1
+   qDebug() << "\n\nCERTIFICATE PATH PINNING" << path << certIds;
+}
+
 bool DaemonCertificateCollection::load()
 {
-//   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-//   qDebug() << QStringList(configurationManager.getCertificateList());
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   qDebug() << "\n\nLOADING CERTS" << QStringList(configurationManager.getPinnedCertificates());
    return false;
 }
 
@@ -115,7 +130,7 @@ QString DaemonCertificateCollection::category() const
 
 QVariant DaemonCertificateCollection::icon() const
 {
-   return QVariant();
+   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
 }
 
 bool DaemonCertificateCollection::isEnabled() const

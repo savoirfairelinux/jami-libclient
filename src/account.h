@@ -82,6 +82,7 @@ class LIB_EXPORT Account : public QObject {
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
    friend class ContactMethod;
+   friend class Certificate;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
@@ -259,16 +260,19 @@ class LIB_EXPORT Account : public QObject {
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
 
-      Q_INVOKABLE CredentialModel*         credentialModel        () const;
-      Q_INVOKABLE CodecModel*              codecModel             () const;
-      Q_INVOKABLE RingToneModel*           ringToneModel          () const;
-      Q_INVOKABLE KeyExchangeModel*        keyExchangeModel       () const;
-      Q_INVOKABLE CipherModel*             cipherModel            () const;
-      Q_INVOKABLE AccountStatusModel*      statusModel            () const;
-      Q_INVOKABLE SecurityEvaluationModel* securityEvaluationModel() const;
-      Q_INVOKABLE TlsMethodModel*          tlsMethodModel         () const;
-      Q_INVOKABLE ProtocolModel*           protocolModel          () const;
-      Q_INVOKABLE BootstrapModel*          bootstrapModel         () const;
+      Q_INVOKABLE CredentialModel*         credentialModel            () const;
+      Q_INVOKABLE CodecModel*              codecModel                 () const;
+      Q_INVOKABLE RingToneModel*           ringToneModel              () const;
+      Q_INVOKABLE KeyExchangeModel*        keyExchangeModel           () const;
+      Q_INVOKABLE CipherModel*             cipherModel                () const;
+      Q_INVOKABLE AccountStatusModel*      statusModel                () const;
+      Q_INVOKABLE SecurityEvaluationModel* securityEvaluationModel    () const;
+      Q_INVOKABLE TlsMethodModel*          tlsMethodModel             () const;
+      Q_INVOKABLE ProtocolModel*           protocolModel              () const;
+      Q_INVOKABLE BootstrapModel*          bootstrapModel             () const;
+      Q_INVOKABLE QAbstractItemModel*      knownCertificateModel      () const;
+      Q_INVOKABLE QAbstractItemModel*      backlistedCertificatesModel() const;
+      Q_INVOKABLE QAbstractItemModel*      trustedCertificatesModel   () const;
 
       //Getters
       QString hostname                     () const;

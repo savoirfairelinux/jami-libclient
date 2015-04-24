@@ -34,6 +34,7 @@ template<typename T> class CollectionMediator;
  */
 class LIB_EXPORT DaemonCertificateCollection : public CollectionInterface
 {
+
 public:
    explicit DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path = QString());
    virtual ~DaemonCertificateCollection();

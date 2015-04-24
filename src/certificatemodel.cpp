@@ -29,11 +29,17 @@
 //LibSTDC++
 #include <functional>
 
+//Dring
+#include "dbus/configurationmanager.h"
+#include "security_const.h"
+
 //Ring
 #include "certificate.h"
 #include "account.h"
 #include "foldercertificatecollection.h"
+#include "daemoncertificatecollection.h"
 #include "private/matrixutils.h"
+#include "private/certificatemodel_p.h"
 
 enum class DetailType : uchar
 {
@@ -41,6 +47,7 @@ enum class DetailType : uchar
    DETAIL,
    CHECK ,
 };
+
 
 struct CertificateNode {
 
@@ -81,39 +88,16 @@ private:
    CertificateNode* m_pRoot;
 };
 
-class CertificateModelPrivate
-{
-public:
-   CertificateModelPrivate(CertificateModel* parent);
-   virtual ~CertificateModelPrivate();
-
-   //Helper
-   CertificateNode* defaultCategory();
-   CertificateNode* createCategory(const QString& name, const QString& col2, const QString& tooltip);
-   CertificateNode* createCategory(const Account* a);
-   CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
-   CertificateNode* addToTree(Certificate* cert, Account* a);
-   QModelIndex      createIndex(int r ,int c , void* p);
-   QAbstractItemModel* getModelCommon(CertificateNode* node);
-
-   //Attributes
-   QVector<CertificateNode*>        m_lTopLevelNodes   ;
-   QHash<QString,Certificate*>      m_hCertificates    ;
-   CertificateNode*                 m_pDefaultCategory ;
-   QMutex                           m_CertLoader       ;
-   QHash<const Account*,CertificateNode*> m_hAccToCat  ;
-   QHash<const QString&,CertificateNode*> m_hStrToCat  ;
-   QHash<const Certificate*,CertificateNode*> m_hNodes ;
-
-   //Singleton
-   static CertificateModel* m_spInstance;
-
-private:
-   CertificateModel* q_ptr;
-};
-
 //TODO remove
 static FolderCertificateCollection* m_pFallbackCollection = nullptr;
+
+const Matrix1D<Certificate::Status, const char*> CertificateModelPrivate::m_StatusMap = {{
+/* Certificate::Status::UNDEFINED      */ DRing::Certificate::Status::UNDEFINED,
+/* Certificate::Status::ALLOWED        */ DRing::Certificate::Status::ALLOWED  ,
+/* Certificate::Status::BANNED         */ DRing::Certificate::Status::BANNED   ,
+/* Certificate::Status::REVOKED        */ ""                                   ,
+/* Certificate::Status::REVOKED_ALLOWED*/ DRing::Certificate::Status::ALLOWED  ,
+}};
 
 CertificateModel* CertificateModelPrivate::m_spInstance = nullptr;
 
@@ -146,6 +130,11 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
       FolderCertificateCollection::Options::FALLBACK | FolderCertificateCollection::Options::READ_WRITE,
       QObject::tr("Local certificate store")
    );
+
+   //Load the daemon certificate store
+   DaemonCertificateCollection* dcol = addCollection<DaemonCertificateCollection>();
+   dcol->load();
+
    m_pFallbackCollection->load();
 }
 
@@ -633,38 +622,27 @@ QAbstractItemModel* CertificateModelPrivate::getModelCommon(CertificateNode* nod
 }
 
 /**
- * Create a view of the CertificateModel with only the certificates
- * associated with an account. This doesn't contain the account
- * own certificates.
- */
-QAbstractItemModel* CertificateModel::model(const Account* a ) const
-{
-   CertificateNode* cat = d_ptr->createCategory(a);
-   return new CertificateProxyModel(const_cast<CertificateModel*>(this),cat);
-}
-
-/**
  * This model is a proxy of CertificateModel with only the current certificate
  *
  * Please note that the object ownership will be transferred. To avoid memory
  * leaks, the users of this object must delete it once they are done with it.
  */
-QAbstractItemModel* CertificateModel::model(const Certificate* cert) const
+QAbstractItemModel* CertificateModelPrivate::model(const Certificate* cert) const
 {
    if (!cert)
       return nullptr;
-   return d_ptr->getModelCommon(d_ptr->m_hNodes[cert]);
+   return const_cast<CertificateModelPrivate*>(this)->getModelCommon(m_hNodes[cert]);
 }
 
 /**
  * Return the list of security checks performed on the certificate as a model
  */
-QAbstractItemModel* CertificateModel::checksModel(const Certificate* cert) const
+QAbstractItemModel* CertificateModelPrivate::checksModel(const Certificate* cert) const
 {
    if (!cert)
       return nullptr;
 
-   CertificateNode* node = d_ptr->m_hNodes[cert];
+   CertificateNode* node = m_hNodes[cert];
 
    if (!node)
       return nullptr;
@@ -675,7 +653,7 @@ QAbstractItemModel* CertificateModel::checksModel(const Certificate* cert) const
    if (node->m_lChildren.size() < 2)
       return nullptr;
 
-   return d_ptr->getModelCommon(node->m_lChildren[1]);
+   return const_cast<CertificateModelPrivate*>(this)->getModelCommon(node->m_lChildren[1]);
 }
 
 /**
@@ -686,7 +664,7 @@ QAbstractItemModel* CertificateModel::checksModel(const Certificate* cert) const
  * Please note that the object ownership will be transferred. To avoid memory
  * leaks, the users of this object must delete it once they are done with it.
  */
-QAbstractItemModel* CertificateModel::model(const QModelIndex& idx) const
+QAbstractItemModel* CertificateModel::singleCertificateModel(const QModelIndex& idx) const
 {
    if ((!idx.isValid()))
       return nullptr;
@@ -705,6 +683,34 @@ QAbstractItemModel* CertificateModel::model(const QModelIndex& idx) const
 
    CertificateNode* node = static_cast<CertificateNode*>(idx.internalPointer());
    return d_ptr->getModelCommon(node);
+}
+
+/**
+ * Create a view of the CertificateModel with only the certificates
+ * associated with an account. This doesn't contain the account
+ * own certificates.
+ */
+QAbstractItemModel* CertificateModelPrivate::createKnownList(const Account* a) const
+{
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a);
+   return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+}
+
+QAbstractItemModel* CertificateModelPrivate::createBlockList(const Account* a) const
+{
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"block",QString(),QString());
+
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+//    const QStringList ids = configurationManager.setCertificateStatus(a->id(), );
+
+   return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+}
+
+QAbstractItemModel* CertificateModelPrivate::createTrustList(const Account* a) const
+{
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"trust",QString(),QString());
+   return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
 }
 
 void CertificateModel::collectionAddedCallback(CollectionInterface* collection)

@@ -32,6 +32,8 @@ class LIB_EXPORT CertificateModel : public QAbstractItemModel, public Collection
 public:
    friend class CertificateProxyModel;
    friend class CertificateNode;
+   friend class Certificate;
+   friend class Account;
    friend class DaemonCertificateCollectionPrivate;
 
    enum class Role {
@@ -70,11 +72,8 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   //Getters
-   QAbstractItemModel* model      (const Certificate* cert) const;
-   QAbstractItemModel* model      (const QModelIndex& idx ) const;
-   QAbstractItemModel* model      (const Account* a       ) const;
-   QAbstractItemModel* checksModel(const Certificate* cert) const;
+   //Getter
+   QAbstractItemModel* singleCertificateModel(const QModelIndex& idx) const;
 
    //Mutator
    Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);

@@ -55,6 +55,7 @@ public:
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
    friend class ContactMethod;
+   friend class Certificate;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
@@ -71,6 +72,7 @@ public:
    QString                    m_LastSipRegistrationStatus;
    unsigned short             m_UseDefaultPort           ;
    bool                       m_RemoteEnabledState       ;
+   uint                       m_InternalId               ;
 
    //Statistic
    bool   m_HaveCalled    ;
@@ -85,6 +87,7 @@ public:
 
    //Getters
    const QString accountDetail(const QString& param) const;
+   uint internalId() const;
 
    //Mutator
    bool merge(Account* account);
@@ -109,16 +112,19 @@ public:
    void save   ();
    void reloadMod() {reload();modify();};
 
-   CredentialModel*          m_pCredentials     ;
-   CodecModel*               m_pCodecModel      ;
-   RingToneModel*            m_pRingToneModel   ;
-   KeyExchangeModel*         m_pKeyExchangeModel;
-   CipherModel*              m_pCipherModel     ;
-   AccountStatusModel*       m_pStatusModel     ;
+   CredentialModel*          m_pCredentials            ;
+   CodecModel*               m_pCodecModel             ;
+   RingToneModel*            m_pRingToneModel          ;
+   KeyExchangeModel*         m_pKeyExchangeModel       ;
+   CipherModel*              m_pCipherModel            ;
+   AccountStatusModel*       m_pStatusModel            ;
    SecurityEvaluationModel*  m_pSecurityEvaluationModel;
-   TlsMethodModel*           m_pTlsMethodModel  ;
-   ProtocolModel*            m_pProtocolModel   ;
-   BootstrapModel*           m_pBootstrapModel  ;
+   TlsMethodModel*           m_pTlsMethodModel         ;
+   ProtocolModel*            m_pProtocolModel          ;
+   BootstrapModel*           m_pBootstrapModel         ;
+   QAbstractItemModel*       m_pKnownCertificates      ;
+   QAbstractItemModel*       m_pBlacklistedCertificates;
+   QAbstractItemModel*       m_pTrustedCertificates    ;
    Account::EditState m_CurrentState;
 
    // State machines

@@ -26,6 +26,7 @@
 class QAbstractItemModel;
 
 class CertificatePrivate;
+class Account;
 
 /**
  * This class represent a conceptual certificate.
@@ -200,6 +201,21 @@ public:
    };
    Q_ENUMS(CheckValues)
 
+   /**
+    * A certificate local status. A single certificate can have multiple status
+    * at once depending on the context. For example, one account may block a
+    * certificate while another one trust it.
+    */
+   enum class Status {
+      UNDEFINED      ,
+      ALLOWED        ,
+      BANNED         ,
+      REVOKED        ,
+      REVOKED_ALLOWED,
+      COUNT__
+   };
+   Q_ENUMS(Status)
+
    //Getter
    QUrl path                            (                             ) const;
    Certificate::Type type               (                             ) const;
@@ -209,6 +225,7 @@ public:
    QAbstractItemModel* checksModel      (                             ) const;
    bool hasRemote                       (                             ) const;
    QByteArray remoteId                  (                             ) const;
+   Status     status                    ( const Account* a            ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
@@ -258,9 +275,9 @@ public:
    QDateTime  nextExpectedUpdateDate               () const;
    QString    outgoingServer                       () const;
 
-
    //Setter
    void setPath(const QUrl& path);
+   bool setStatus(const Account* a, Status s);
 
    //Mutator
    Q_INVOKABLE bool pin();
@@ -281,5 +298,6 @@ Q_DECLARE_METATYPE(Certificate*)
 Q_DECLARE_METATYPE(Certificate::CheckValues)
 Q_DECLARE_METATYPE(Certificate::Checks)
 Q_DECLARE_METATYPE(Certificate::Details)
+Q_DECLARE_METATYPE(Certificate::Status)
 
 #endif

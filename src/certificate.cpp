@@ -21,6 +21,9 @@
 #include <QtCore/QFile>
 #include <QtCore/QDateTime>
 
+//STD
+#include <stdint.h>
+
 //Ring daemon
 #include <security_const.h>
 
@@ -28,6 +31,9 @@
 #include "dbus/configurationmanager.h"
 #include <certificatemodel.h>
 #include "private/matrixutils.h"
+#include "private/account_p.h"
+#include "private/certificatemodel_p.h"
+#include <account.h>
 
 class DetailsCache {
 public:
@@ -102,11 +108,12 @@ public:
    ~CertificatePrivate();
 
    //Attributes
-   QUrl              m_Path       ;
-   Certificate::Type m_Type       ;
-   QByteArray        m_Content    ;
-   LoadingType       m_LoadingType;
-   QByteArray        m_Id         ;
+   QUrl              m_Path        ;
+   Certificate::Type m_Type        ;
+   QByteArray        m_Content     ;
+   LoadingType       m_LoadingType ;
+   QByteArray        m_Id          ;
+   quint64           m_Statuses [3];
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
@@ -217,7 +224,7 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 
 
 CertificatePrivate::CertificatePrivate(LoadingType _type) :
-m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type)
+m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),m_Statuses{0,0,0}
 {
 }
 
@@ -630,7 +637,6 @@ bool Certificate::isActivated() const {
    return d_ptr->m_pCheckCache->m_NotActivated == Certificate::CheckValues::PASSED;
 }
 
-
 void Certificate::setPath(const QUrl& path)
 {
    d_ptr->m_Path = path;
@@ -718,16 +724,63 @@ QVariant Certificate::detailResult(Certificate::Details detail) const
  */
 QAbstractItemModel* Certificate::model() const
 {
-   return CertificateModel::instance()->model(this);
+   return CertificateModel::instance()->d_ptr->model(this);
 }
 
 /**
- * This model furter reduce the data to only return the relevant certificate
+ * This model further reduce the data to only return the relevant certificate
  * checks.
  */
 QAbstractItemModel* Certificate::checksModel() const
 {
-   return CertificateModel::instance()->checksModel(this);
+   return CertificateModel::instance()->d_ptr->checksModel(this);
+}
+
+bool Certificate::setStatus(const Account* a, Status s)
+{
+   if (!a)
+      return false;
+
+   //This status is stored as a 3bit bitmask in 3 64bit integers
+
+   const int maskId = a->d_ptr->internalId();
+   const int position = (maskId*3)/64;
+   const int offset   = (maskId*3)%64;
+
+   //Only 63 accounts are currently supported
+   if (position > 3)
+      return false;
+
+   d_ptr->m_Statuses[position] = static_cast<int>(s) << offset;
+
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+   //Notify the daemon
+   if (hasRemote()) {
+      configurationManager.setCertificateStatus(a->id(),d_ptr->m_Id,CertificateModelPrivate::m_StatusMap[s]);
+   }
+   else {
+      //d_ptr->m_Id = configurationManager.pinCertificatePath(path());
+      //TODO register the certificate in the daemon
+   }
+
+   return true;
+}
+
+Certificate::Status Certificate::status(const Account* a) const
+{
+   const int maskId = a->d_ptr->internalId();
+   const int position = (maskId*3)/64;
+   const int offset   = (maskId*3)%64;
+
+   if (position >= 3)
+      return Certificate::Status::UNDEFINED;
+
+   const int raw = (d_ptr->m_Statuses[position] >> offset) & 0b111;
+
+   Q_ASSERT(raw < enum_class_size<Certificate::Status>());
+
+   return static_cast<Certificate::Status>(raw);
 }
 
 #include <certificate.moc>

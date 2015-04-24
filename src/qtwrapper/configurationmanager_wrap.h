@@ -558,9 +558,9 @@ public Q_SLOTS: // METHODS
       return DRing::setCertificateStatus(accountId.toStdString(), certPath.toStdString(), status.toStdString());
    }
 
-   QStringList getCertificatesByStatus(const QString& accountId, const QString& certPath)
+   QStringList getCertificatesByStatus(const QString& accountId, const QString& status)
    {
-      return convertStringList(DRing::getCertificatesByStatus(accountId.toStdString(), certPath.toStdString()));
+      return convertStringList(DRing::getCertificatesByStatus(accountId.toStdString(), status.toStdString()));
    }
 
    MapStringString getTrustRequests(const QString& accountId)
