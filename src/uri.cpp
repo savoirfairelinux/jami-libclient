@@ -70,13 +70,14 @@ URI::URI(const QString& other):QString(), d_ptr(new URIPrivate(this))
 URI::URI(const URI& o):QString(), d_ptr(new URIPrivate(this))
 {
    //TODO see if a copy on write kind of algo could be used for this
-   d_ptr->m_Parsed     = o.d_ptr->m_Parsed    ;
-   d_ptr->m_HintParsed = o.d_ptr->m_HintParsed;
-   d_ptr->m_Hostname   = o.d_ptr->m_Hostname  ;
-   d_ptr->m_HasAt      = o.d_ptr->m_HasAt     ;
-   d_ptr->m_HeaderType = o.d_ptr->m_HeaderType;
-   d_ptr->m_Userinfo   = o.d_ptr->m_Userinfo  ;
-   d_ptr->m_Stripped   = o.d_ptr->m_Stripped  ;
+   d_ptr->m_Parsed       = o.d_ptr->m_Parsed      ;
+   d_ptr->m_HintParsed   = o.d_ptr->m_HintParsed  ;
+   d_ptr->m_Hostname     = o.d_ptr->m_Hostname    ;
+   d_ptr->m_HasAt        = o.d_ptr->m_HasAt       ;
+   d_ptr->m_ProtocolHint = o.d_ptr->m_ProtocolHint;
+   d_ptr->m_HeaderType   = o.d_ptr->m_HeaderType  ;
+   d_ptr->m_Userinfo     = o.d_ptr->m_Userinfo    ;
+   d_ptr->m_Stripped     = o.d_ptr->m_Stripped    ;
 
    (*static_cast<QString*>(this)) = o.d_ptr->m_Stripped;
 }
@@ -92,13 +93,14 @@ URI::~URI()
 /// Copy operator, make sure the cache is also copied
 URI& URI::operator=(const URI& o)
 {
-   d_ptr->m_Parsed     = o.d_ptr->m_Parsed    ;
-   d_ptr->m_HintParsed = o.d_ptr->m_HintParsed;
-   d_ptr->m_Hostname   = o.d_ptr->m_Hostname  ;
-   d_ptr->m_HasAt      = o.d_ptr->m_HasAt     ;
-   d_ptr->m_HeaderType = o.d_ptr->m_HeaderType;
-   d_ptr->m_Userinfo   = o.d_ptr->m_Userinfo  ;
-   d_ptr->m_Stripped   = o.d_ptr->m_Stripped  ;
+   d_ptr->m_Parsed       = o.d_ptr->m_Parsed      ;
+   d_ptr->m_HintParsed   = o.d_ptr->m_HintParsed  ;
+   d_ptr->m_Hostname     = o.d_ptr->m_Hostname    ;
+   d_ptr->m_HasAt        = o.d_ptr->m_HasAt       ;
+   d_ptr->m_ProtocolHint = o.d_ptr->m_ProtocolHint;
+   d_ptr->m_HeaderType   = o.d_ptr->m_HeaderType  ;
+   d_ptr->m_Userinfo     = o.d_ptr->m_Userinfo    ;
+   d_ptr->m_Stripped     = o.d_ptr->m_Stripped    ;
 
    (*static_cast<QString*>(this)) = o.d_ptr->m_Stripped;
    return (*this);
