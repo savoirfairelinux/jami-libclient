@@ -108,13 +108,6 @@ public:
    explicit CollectionManagerInterface(QAbstractItemModel* self);
    virtual ~CollectionManagerInterface() {};
 
-#ifdef Q_OS_DARWIN
-   /*
-    * Issue with LLVM 3.5svn shipped in Mac OSX with variadic template
-    */
-   template <class T2>
-   T2* addCollection(const LoadOptions options = LoadOptions::NONE);
-#endif
    /**
     * This method is used to add a collection to a model. The LoadOptions
     * can be used to enforce some parameters. Please note this function is
