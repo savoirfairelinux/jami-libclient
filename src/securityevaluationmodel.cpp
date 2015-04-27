@@ -252,7 +252,7 @@ constexpr const short CombinaisonProxyModel::sizes[];
 
 ///Create a callback map for signals to avoid a large switch(){} in the code
 static const Matrix1D<SecurityEvaluationModel::Severity, void(SecurityEvaluationModel::*)()> m_lSignalMap = {{
-   /* UNSUPPORTED   */ nullptr                 ,
+   /* UNSUPPORTED   */ nullptr                                           ,
    /* INFORMATION   */ &SecurityEvaluationModel::informationCountChanged ,
    /* WARN1NG       */ &SecurityEvaluationModel::warningCountChanged     ,
    /* ISSUE         */ &SecurityEvaluationModel::issueCountChanged       ,

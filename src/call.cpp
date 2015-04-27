@@ -93,6 +93,7 @@ const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::
 /*CONF_HOLD    */  {{Call::State::ERROR         , Call::State::HOLD        , Call::State::TRANSF_HOLD  , Call::State::HOLD         ,  Call::State::HOLD         }},/**/
 /*INIT         */  {{Call::State::INITIALIZATION, Call::State::OVER        , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
 /*ABORTED      */  {{Call::State::ERROR         , Call::State::ERROR       , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
+/*CONNECTED    */  {{Call::State::ERROR         , Call::State::OVER        , Call::State::ERROR        , Call::State::ERROR        ,  Call::State::ERROR        }},/**/
 }};//                                                                                                                                                                */
 
 #define CP &CallPrivate
@@ -114,7 +115,8 @@ const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::St
 /*CONF           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleRecord  }},/**/
 /*CONF_HOLD      */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleRecord  }},/**/
 /*INITIALIZATION */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*ABORTED        */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
+/*ABORTED        */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
+/*CONNECTED      */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
 }};//                                                                                                                 */
 
 
@@ -137,6 +139,7 @@ const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonSta
 /*CONF_HOLD    */ {{Call::State::HOLD        , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*INIT         */ {{Call::State::RINGING     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*ABORTED      */ {{Call::State::ERROR       , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
+/*CONNECTED    */ {{Call::State::RINGING     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 }};//                                                                                                                                                                        */
 
 const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState > , Call::State > CallPrivate::stateChangedFunctionMap =
@@ -158,6 +161,7 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*INIT           */  {{CP::nothing    , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
+/*CONNECTED      */  {{CP::nothing    , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 }};//                                                                                                                                */
 #undef CP
 
@@ -180,6 +184,7 @@ const TypedStateMachine< Call::LifeCycleState , Call::State > CallPrivate::metaS
 /*CONF_HOLD      */   Call::LifeCycleState::PROGRESS       ,/**/
 /*INIT           */   Call::LifeCycleState::INITIALIZATION ,/**/
 /*ABORTED        */   Call::LifeCycleState::FINISHED       ,/**/
+/*CONNECTED      */   Call::LifeCycleState::INITIALIZATION ,/**/
 }};/*                                                        **/
 
 const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call::State > CallPrivate::metaStateTransitionValidationMap =
@@ -201,6 +206,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 /*CONF_HOLD      */  {{     false    ,     true     ,    false    ,    false }},/**/
 /*INIT           */  {{     true     ,     true     ,    false    ,    false }},/**/
 /*ABORTED        */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*INITIALIZATION */  {{     true     ,     true     ,    false    ,    false }},/**/
 }};/*                                                             **/
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
@@ -636,6 +642,8 @@ const QString Call::toHumanStateName(const Call::State cur)
          return tr( "Initialization"    );
       case Call::State::ABORTED:
          return tr( "Initialization"    );
+      case Call::State::CONNECTED:
+         return tr( "Connected"    );
       default:
          return QString::number(static_cast<int>(cur));
    }
@@ -1515,6 +1523,7 @@ void CallPrivate::warning()
       case Call::State::BUSY           :
       case Call::State::OVER           :
       case Call::State::ABORTED        :
+      case Call::State::CONNECTED      :
       case Call::State::CONFERENCE     :
       case Call::State::CONFERENCE_HOLD:
       default:
@@ -1548,6 +1557,7 @@ void Call::appendText(const QString& str)
    }
       break;
    case Call::State::INITIALIZATION:
+   case Call::State::CONNECTED:
    case Call::State::INCOMING:
    case Call::State::RINGING:
    case Call::State::CURRENT:
@@ -1600,6 +1610,7 @@ void Call::backspaceItemText()
          }
          break;
       case Call::State::INITIALIZATION:
+      case Call::State::CONNECTED:
       case Call::State::INCOMING:
       case Call::State::RINGING:
       case Call::State::CURRENT:
@@ -1648,6 +1659,7 @@ void Call::reset()
          d_ptr->changeCurrentState( Call::State::NEW );
          break;
       case Call::State::INITIALIZATION   :
+      case Call::State::CONNECTED        :
       case Call::State::INCOMING         :
       case Call::State::RINGING          :
       case Call::State::CURRENT          :

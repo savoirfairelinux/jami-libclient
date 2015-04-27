@@ -23,6 +23,7 @@
 struct CertificateNode;
 class Account;
 class Certificate;
+class DaemonCertificateCollection;
 
 class CertificateModelPrivate
 {
@@ -47,6 +48,7 @@ public:
    QHash<const Account*,CertificateNode*> m_hAccToCat  ;
    QHash<const QString&,CertificateNode*> m_hStrToCat  ;
    QHash<const Certificate*,CertificateNode*> m_hNodes ;
+   DaemonCertificateCollection* m_pDaemonCertificateStore;
    static const Matrix1D<Certificate::Status, const char*> m_StatusMap;
 
    //Getters

@@ -1227,6 +1227,7 @@ void CallModelPrivate::slotCallChanged(Call* call)
       case Call::State::INCOMING:
       case Call::State::RINGING:
       case Call::State::INITIALIZATION:
+      case Call::State::CONNECTED:
       case Call::State::CURRENT:
       case Call::State::DIALING:
       case Call::State::NEW:

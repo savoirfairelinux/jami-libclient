@@ -329,20 +329,26 @@ void CertificatePrivate::loadChecks()
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
+   moveToThread(CertificateModel::instance()->thread());
+   setParent(CertificateModel::instance());
    d_ptr->m_Path = path.path();
    d_ptr->m_Type = type;
 }
 
-Certificate::Certificate(const QString& id) : ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
+Certificate::Certificate(const QString& id) : ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
 {
+   moveToThread(CertificateModel::instance()->thread());
+   setParent(CertificateModel::instance());
    d_ptr->m_Id = id.toLatin1();
 }
 
-Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject>(CertificateModel::instance()),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
+Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
 {
+   moveToThread(CertificateModel::instance()->thread());
+   setParent(CertificateModel::instance());
    d_ptr->m_Content = content;
    d_ptr->m_Type    = type;
 }

@@ -132,8 +132,8 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
    );
 
    //Load the daemon certificate store
-   DaemonCertificateCollection* dcol = addCollection<DaemonCertificateCollection>();
-   dcol->load();
+   d_ptr->m_pDaemonCertificateStore = addCollection<DaemonCertificateCollection>();
+   d_ptr->m_pDaemonCertificateStore->load();
 
    m_pFallbackCollection->load();
 }
@@ -517,7 +517,7 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
 
       if (save) {
          //TODO this shouldn't be necessary
-         static_cast< ItemBase<QObject>* >(cert)->save();
+//          static_cast< ItemBase<QObject>* >(cert)->save();
          /*const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
          cert->setPath(path);*/
       }

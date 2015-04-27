@@ -142,6 +142,7 @@ public:
       CONFERENCE_HOLD = 13,/*!< This call is a conference on hold                                                 */
       INITIALIZATION  = 14,/*!< The call have been placed, but the peer hasn't confirmed yet                      */
       ABORTED         = 15,/*!< The call was dropped before being sent to the daemon                              */
+      CONNECTED       = 16,/*!< The peer has been found, attempting negotiation                                   */
       COUNT__,
    };
    Q_ENUMS(State)
