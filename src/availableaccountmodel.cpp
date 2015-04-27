@@ -100,6 +100,26 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
    Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
    URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
+
+   /* if the scheme type could not be strictly determinded, try using the
+    * protocol hint
+    */
+   if (type == URI::SchemeType::NONE && method) {
+      switch (method->protocolHint()) {
+         case URI::ProtocolHint::SIP_OTHER:
+         case URI::ProtocolHint::SIP_HOST:
+            type = URI::SchemeType::SIP;
+            break;
+         case URI::ProtocolHint::IAX:
+            type = URI::SchemeType::IAX;
+            break;
+         case URI::ProtocolHint::IP:
+            break;
+         case URI::ProtocolHint::RING:
+            type = URI::SchemeType::RING;
+            break;
+       }
+   }
    if(priorAccount
      && priorAccount->registrationState() == Account::RegistrationState::READY
      && priorAccount->isEnabled()

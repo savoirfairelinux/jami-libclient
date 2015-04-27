@@ -120,7 +120,7 @@ public:
    enum class ProtocolHint {
       SIP_OTHER = 0, /*!< Anything non empty that doesn't fit in other categories */
       IAX       = 1, /*!< Start with "iax:" or "iax2:"                            */
-      RING      = 2, /*!< Start with "ring:" and has 45 ASCII characters          */
+      RING      = 2, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars */
       IP        = 3, /*!< Match an IPv4 address                                   */
       SIP_HOST  = 4, /*!< Has an @ and no "ring:" prefix                          */
    };
