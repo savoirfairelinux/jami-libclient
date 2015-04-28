@@ -68,12 +68,13 @@ public:
 
    //Attributes
    QMultiMap<int,ContactMethod*> m_hNumbers              ;
-   QString                       m_Prefix                ;
+   URI                           m_Prefix                ;
    Call*                         m_pCall                 ;
    bool                          m_Enabled               ;
    bool                          m_UseUnregisteredAccount;
 
    QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
+   QHash<Account*,TemporaryContactMethod*> m_hRingTemporaryNumbers;
 
 public Q_SLOTS:
    void setPrefix(const QString& str);
@@ -87,7 +88,7 @@ private:
 
 
 NumberCompletionModelPrivate::NumberCompletionModelPrivate(NumberCompletionModel* parent) : QObject(parent), q_ptr(parent),
-m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true)
+m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true), m_Prefix(QString())
 {
    //Create the temporary number list
    bool     hasNonIp2Ip = false;
@@ -121,6 +122,14 @@ NumberCompletionModel::~NumberCompletionModel()
    QList<TemporaryContactMethod*> l = d_ptr->m_hSipIaxTemporaryNumbers.values();
 
    d_ptr->m_hSipIaxTemporaryNumbers.clear();
+
+   while(l.size()) {
+      TemporaryContactMethod* cm = l.takeAt(0);
+      delete cm;
+   }
+
+   l = d_ptr->m_hRingTemporaryNumbers.values();
+   d_ptr->m_hRingTemporaryNumbers.clear();
 
    while(l.size()) {
       TemporaryContactMethod* cm = l.takeAt(0);
@@ -287,7 +296,13 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
    }
 
    for(TemporaryContactMethod* cm : m_hSipIaxTemporaryNumbers) {
-      cm->setUri(str);
+      cm->setUri(m_Prefix);
+   }
+
+   if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
+      for(TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
+         cm->setUri(m_Prefix);
+      }
    }
 }
 
@@ -326,6 +341,17 @@ void NumberCompletionModelPrivate::updateModel()
             q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
             m_hNumbers.insert(weight,cm);
             q_ptr->endInsertRows();
+         }
+      }
+
+      if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
+         for (TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
+            const int weight = getWeight(cm->account());
+            if (weight) {
+               q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+               m_hNumbers.insert(weight,cm);
+               q_ptr->endInsertRows();
+            }
          }
       }
 
@@ -482,7 +508,12 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
          m_hSipIaxTemporaryNumbers[a] = cm;
          }
          break;
-      case Account::Protocol::RING:
+      case Account::Protocol::RING: {
+         TemporaryContactMethod* cm = new TemporaryContactMethod();
+         cm->setAccount(a);
+         m_hRingTemporaryNumbers[a] = cm;
+         }
+         break;
       case Account::Protocol::COUNT__:
          break;
    }
@@ -494,7 +525,11 @@ void NumberCompletionModelPrivate::accountRemoved(Account* a)
 {
    TemporaryContactMethod* cm = m_hSipIaxTemporaryNumbers[a];
 
+   if (!cm)
+      cm = m_hRingTemporaryNumbers[a];
+
    m_hSipIaxTemporaryNumbers[a] = nullptr;
+   m_hRingTemporaryNumbers  [a] = nullptr;
 
    setPrefix(q_ptr->prefix());
 
