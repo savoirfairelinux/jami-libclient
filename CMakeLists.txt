@@ -374,7 +374,10 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
 )
 
-IF(NOT ${ENABLE_LIBWRAP} MATCHES true)
+IF(${ENABLE_LIBWRAP} MATCHES false)
+   # done this way because of bug in cmake 2.8
+   # (not necessary in 3.0+)
+ELSE()
    # presence manager interface
    SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
 
@@ -458,7 +461,7 @@ IF(NOT ${ENABLE_LIBWRAP} MATCHES true)
       instance_dbus_interface
    )
 
-ENDIF(NOT ${ENABLE_LIBWRAP} MATCHES true)
+ENDIF()
 
 # Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
