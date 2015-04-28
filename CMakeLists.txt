@@ -375,9 +375,7 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
 )
 
-IF(${ENABLE_LIBWRAP} MATCHES true)
-
-ELSE()
+IF(NOT ${ENABLE_LIBWRAP} MATCHES true)
    # presence manager interface
    SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
 
@@ -508,41 +506,53 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    )
 ENDIF()
 
-QT5_USE_MODULES(ringclient Core Concurrent)
+QT5_USE_MODULES(ringclient Core)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   QT5_USE_MODULES(ringclient DBus)
   IF(NOT ${ENABLE_STATIC} MATCHES false)
       QT5_USE_MODULES(ringclient_static DBus)
   ENDIF()
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+   FIND_PACKAGE(Qt5Concurrent)
+
+   #For some reason, QSemaphore wont compile on Windows without QtConcurrent
+   QT5_USE_MODULES(ringclient_static Concurrent)
+ENDIF()
 
 
 TARGET_LINK_LIBRARIES( ringclient
-  -lpthread
-  ${QT_QTDBUS_LIBRARY}
-  ${QT_QTCORE_LIBRARY}
+   -lpthread
+   ${QT_QTCORE_LIBRARY}
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
    TARGET_LINK_LIBRARIES( ringclient
-    qtwrapper
-    ${ring_BIN}
-   )
-  IF(NOT ${ENABLE_STATIC} MATCHES false)
-      TARGET_LINK_LIBRARIES( ringclient_static
       qtwrapper
-      ${ring_BIN})
-  ENDIF()
+      ${ring_BIN}
+   )
+   IF(NOT ${ENABLE_STATIC} MATCHES false)
+      TARGET_LINK_LIBRARIES( ringclient_static
+         qtwrapper
+         ${ring_BIN}
+      )
+   ENDIF()
+ELSE()
+   TARGET_LINK_LIBRARIES( ringclient
+      ${QT_QTDBUS_LIBRARY}
+   )
 ENDIF()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  TARGET_LINK_LIBRARIES( ringclient
-    -lrt)
-  IF(NOT ${ENABLE_STATIC} MATCHES false)
+   TARGET_LINK_LIBRARIES( ringclient
+      -lrt
+   )
+
+   IF(NOT ${ENABLE_STATIC} MATCHES false)
       TARGET_LINK_LIBRARIES( ringclient_static
-      -lrt)
-  ENDIF()
+         -lrt
+      )
+   ENDIF()
 ENDIF()
 
 SET_TARGET_PROPERTIES( ringclient

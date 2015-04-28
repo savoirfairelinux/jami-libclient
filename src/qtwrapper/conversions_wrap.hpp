@@ -40,51 +40,51 @@
 #endif
 
 inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
-    MapStringString temp;
-    for (const auto& x : m) {
-        temp[QString(x.first.c_str())] = QString(x.second.c_str());
-    }
-    return temp;
+   MapStringString temp;
+   for (const auto& x : m) {
+      temp[QString(x.first.c_str())] = QString(x.second.c_str());
+   }
+   return temp;
 }
 
 inline std::map<std::string, std::string> convertMap(const MapStringString& m) {
-    std::map<std::string, std::string> temp;
-    for (const auto& x : m.toStdMap()) {
-        temp[x.first.toStdString()] = x.second.toStdString();
-    }
-    return temp;
+   std::map<std::string, std::string> temp;
+   for (const auto& x : m.toStdMap()) {
+      temp[x.first.toStdString()] = x.second.toStdString();
+   }
+   return temp;
 }
 
 inline QStringList convertStringList(const std::vector<std::string>& v) {
-    QStringList temp;
-    for (const auto& x : v) {
-        temp.push_back(QString(x.c_str()));
-    }
-    return temp;
+   QStringList temp;
+   for (const auto& x : v) {
+      temp.push_back(QString(x.c_str()));
+   }
+   return temp;
 }
 
 inline VectorString convertVectorString(const std::vector<std::string>& v) {
-    VectorString temp;
-    for (const auto& x : v) {
-        temp.push_back(QString(x.c_str()));
-    }
-    return temp;
+   VectorString temp;
+   for (const auto& x : v) {
+      temp.push_back(QString(x.c_str()));
+   }
+   return temp;
 }
 
 inline std::vector<std::string> convertStringList(const QStringList& v) {
-    std::vector<std::string> temp;
-    for (const auto& x : v) {
-        temp.push_back(x.toStdString());
-    }
-    return temp;
+   std::vector<std::string> temp;
+   for (const auto& x : v) {
+      temp.push_back(x.toStdString());
+   }
+   return temp;
 }
 
 inline MapStringInt  convertStringInt(const std::map<std::string, int>& m) {
-    MapStringInt temp;
-    for (const auto& x : m) {
-        temp[QString(x.first.c_str())] = x.second;
-    }
-    return temp;
+   MapStringInt temp;
+   for (const auto& x : m) {
+      temp[QString(x.first.c_str())] = x.second;
+   }
+   return temp;
 }
 
 #endif //CONVERSIONS_WRAP_H

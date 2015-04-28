@@ -31,38 +31,42 @@ void pollEvents();
 
 InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 {
-    using namespace std::placeholders;
+   using namespace std::placeholders;
 
-    using std::bind;
-    using DRing::exportable_callback;
-    using DRing::CallSignal;
-    using DRing::ConfigurationSignal;
-    using DRing::PresenceSignal;
+   using std::bind;
+   using DRing::exportable_callback;
+   using DRing::CallSignal;
+   using DRing::ConfigurationSignal;
+   using DRing::PresenceSignal;
 
 #ifdef ENABLE_VIDEO
-    using DRing::VideoSignal;
+   using DRing::VideoSignal;
 #endif
 
    m_pTimer = new QTimer(this);
    m_pTimer->setInterval(50);
+#ifdef Q_OS_WIN
    connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
+#else
+   connect(m_pTimer,&QTimer:timeout,this,&InstanceInterface::pollEvents);
+#endif
    m_pTimer->start();
    ringFlags |= DRing::DRING_FLAG_DEBUG;
    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
 
-    DRing::init(static_cast<DRing::InitFlag>(ringFlags));
+   DRing::init(static_cast<DRing::InitFlag>(ringFlags));
 
-    registerCallHandlers(DBus::CallManager::instance().callHandlers);
-    registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
-    registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
+   registerCallHandlers(DBus::CallManager::instance().callHandlers);
+   registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
+   registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
 #ifdef ENABLE_VIDEO
-    registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
+   registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
 #endif
 
-    if (!DRing::start())
-        printf("Error initializing daemon\n");
-    else
-        printf("Daemon is running\n");
+   if (!DRing::start())
+      printf("Error initializing daemon\n");
+   else
+      printf("Daemon is running\n");
 }
 
 InstanceInterface::~InstanceInterface()
@@ -72,7 +76,7 @@ InstanceInterface::~InstanceInterface()
 
 void InstanceInterface::pollEvents()
 {
-    DRing::pollEvents();
+   DRing::pollEvents();
 }
 
 bool InstanceInterface::isConnected()

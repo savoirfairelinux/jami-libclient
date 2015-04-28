@@ -74,7 +74,6 @@ public:
 
    //Properties
    Q_PROPERTY(int              size            READ size            )
-   Q_PROPERTY(bool             hasConference   READ hasConference   )
    Q_PROPERTY(int              callCount       READ rowCount        )
    Q_PROPERTY(bool             isValid         READ isValid         )
    Q_PROPERTY(bool             hasConference   READ hasConference   )

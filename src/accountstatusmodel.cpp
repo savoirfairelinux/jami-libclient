@@ -20,7 +20,7 @@
 //System
 #include <errno.h>
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 #include <winerror.h>
 #define ESHUTDOWN WSAESHUTDOWN
 #define ENODATA WSANO_DATA
