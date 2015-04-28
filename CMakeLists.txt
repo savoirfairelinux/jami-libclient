@@ -265,13 +265,13 @@ SET( libringclient_LIB_SRCS
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
-SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
-  src/private/directrenderer.cpp
-)
+   SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
+      src/private/directrenderer.cpp
+   )
 ELSE()
-SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
-  src/private/shmrenderer.cpp
-)
+   SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
+      src/private/shmrenderer.cpp
+   )
 ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
 # Public API
@@ -331,7 +331,6 @@ SET( libringclient_LIB_HDRS
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
-
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -459,7 +458,7 @@ IF(NOT ${ENABLE_LIBWRAP} MATCHES true)
       instance_dbus_interface
    )
 
-ENDIF(${ENABLE_LIBWRAP} MATCHES true)
+ENDIF(NOT ${ENABLE_LIBWRAP} MATCHES true)
 
 # Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
