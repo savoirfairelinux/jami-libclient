@@ -55,6 +55,7 @@ public:
    class StateChange {
    public:
       constexpr static const char* HUNG_UP        = "HUNGUP" ;
+      constexpr static const char* CONNECTING     = "CONNECTING";
       constexpr static const char* RINGING        = "RINGING";
       constexpr static const char* CURRENT        = "CURRENT";
       constexpr static const char* HOLD           = "HOLD"   ;
@@ -105,11 +106,12 @@ public:
    enum class DaemonState : unsigned int
    {
       RINGING = 0, /*!< Ringing outgoing or incoming call         */
-      CURRENT = 1, /*!< Call to which the user can speak and hear */
-      BUSY    = 2, /*!< Call is busy                              */
-      HOLD    = 3, /*!< Call is on hold                           */
-      HUNG_UP = 4, /*!< Call is over                              */
-      FAILURE = 5, /*!< Call has failed                           */
+      CONNECTING,  /*!< Call connection progressing               */
+      CURRENT,     /*!< Call to which the user can speak and hear */
+      BUSY,        /*!< Call is busy                              */
+      HOLD,        /*!< Call is on hold                           */
+      HUNG_UP,     /*!< Call is over                              */
+      FAILURE,     /*!< Call has failed                           */
       COUNT__,
    };
 
