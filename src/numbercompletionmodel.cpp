@@ -72,6 +72,7 @@ public:
    Call*                         m_pCall                 ;
    bool                          m_Enabled               ;
    bool                          m_UseUnregisteredAccount;
+   bool                          m_DisplayMostUsedNumbers;
 
    QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
    QHash<Account*,TemporaryContactMethod*> m_hRingTemporaryNumbers;
@@ -88,7 +89,7 @@ private:
 
 
 NumberCompletionModelPrivate::NumberCompletionModelPrivate(NumberCompletionModel* parent) : QObject(parent), q_ptr(parent),
-m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true), m_Prefix(QString())
+m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true), m_Prefix(QString()),m_DisplayMostUsedNumbers(false)
 {
    //Create the temporary number list
    bool     hasNonIp2Ip = false;
@@ -163,7 +164,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
    const ContactMethod* n = i.value();
    const int weight     = i.key  ();
 
-   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() && n->account() != AvailableAccountModel::currentDefaultAccount()
+   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() /*&& n->account() != AvailableAccountModel::currentDefaultAccount()*/
                   && n->account()->alias() != DRing::Account::ProtocolNames::IP2IP;
 
    switch (static_cast<NumberCompletionModelPrivate::Columns>(index.column())) {
@@ -280,7 +281,7 @@ void NumberCompletionModel::setCall(Call* call)
 void NumberCompletionModelPrivate::setPrefix(const QString& str)
 {
    m_Prefix = str;
-   const bool e = ((m_pCall && m_pCall->lifeCycleState() == Call::LifeCycleState::CREATION) || (!m_pCall)) && (!str.isEmpty());
+   const bool e = ((m_pCall && m_pCall->lifeCycleState() == Call::LifeCycleState::CREATION) || (!m_pCall)) && ((m_DisplayMostUsedNumbers || !str.isEmpty()));
 
    if (m_Enabled != e) {
       m_Enabled = e;
@@ -362,6 +363,17 @@ void NumberCompletionModelPrivate::updateModel()
             m_hNumbers.insert(getWeight(n),n);
             q_ptr->endInsertRows();
          }
+      }
+   }
+   else if (m_DisplayMostUsedNumbers) {
+      //If enabled, display the most probable entries
+      const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance()->getNumbersByPopularity();
+
+      for (int i=0;i<((cl.size()>=10)?10:cl.size());i++) {
+         ContactMethod* n = cl[i];
+         q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+         m_hNumbers.insert(getWeight(n),n);
+         q_ptr->endInsertRows();
       }
    }
 }
@@ -492,6 +504,17 @@ void NumberCompletionModel::setUseUnregisteredAccounts(bool value)
 bool NumberCompletionModel::isUsingUnregisteredAccounts()
 {
    return d_ptr->m_UseUnregisteredAccount;
+}
+
+
+void NumberCompletionModel::setDisplayMostUsedNumbers(bool value)
+{
+   d_ptr->m_DisplayMostUsedNumbers = value;
+}
+
+bool NumberCompletionModel::displayMostUsedNumbers() const
+{
+   return d_ptr->m_DisplayMostUsedNumbers;
 }
 
 bool NumberCompletionModelPrivate::accountAdded(Account* a)

@@ -36,6 +36,7 @@ public:
 
    //Properties
    Q_PROPERTY(QString prefix READ prefix)
+   Q_PROPERTY(bool displayMostUsedNumbers READ displayMostUsedNumbers WRITE setDisplayMostUsedNumbers)
 
    enum Role {
       ALTERNATE_ACCOUNT= 100,
@@ -59,12 +60,14 @@ public:
    //Setters
    void setCall(Call* call);
    void setUseUnregisteredAccounts(bool value);
+   void setDisplayMostUsedNumbers(bool value);
 
    //Getters
    Call* call() const;
    ContactMethod* number(const QModelIndex& idx) const;
    bool isUsingUnregisteredAccounts();
    QString prefix() const;
+   bool displayMostUsedNumbers() const;
 
 private:
    NumberCompletionModelPrivate* d_ptr;
