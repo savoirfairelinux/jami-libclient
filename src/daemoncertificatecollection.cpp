@@ -85,26 +85,26 @@ DaemonCertificateCollection::~DaemonCertificateCollection()
 
 void DaemonCertificateCollectionPrivate::slotCertificatePinned(const QString& id)
 {
-   qDebug() << "\n\nCERTIFICATE ADDED" << id;
+   //qDebug() << "\n\nCERTIFICATE ADDED" << id;
    Certificate* cert = CertificateModel::instance()->getCertificateFromId(id);
    q_ptr->editor<Certificate>()->addExisting(cert);
 }
 
 void DaemonCertificateCollectionPrivate::slotCertificateExpired(const QString& id)
 {
-   qDebug() << "\n\nCERTIFICATE EXPIRED" << id;
+   //qDebug() << "\n\nCERTIFICATE EXPIRED" << id;
 }
 
 void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString& path, const QStringList& certIds)
 {
    //Create a new collection if it is a directory or size > 1
-   qDebug() << "\n\nCERTIFICATE PATH PINNING" << path << certIds;
+   //qDebug() << "\n\nSIGNAL CERTIFICATE PATH PINNING" << path << certIds;
 }
 
 bool DaemonCertificateCollection::load()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   qDebug() << "\n\nLOADING CERTS" << QStringList(configurationManager.getPinnedCertificates());
+   //qDebug() << "\n\nLOADING CERTS" << QStringList(configurationManager.getPinnedCertificates());
    return false;
 }
 

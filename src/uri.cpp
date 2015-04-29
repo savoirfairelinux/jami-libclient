@@ -200,7 +200,7 @@ URI::SchemeType URI::schemeType() const
  */
 bool URIPrivate::checkIp(const QString& str, bool &isHash, const URI::SchemeType& scheme)
 {
-   char* raw = str.toLatin1().data();
+   const QByteArray raw = str.toLatin1();
    ushort max = str.size();
 
    if (max < 3 || max > 45 || (!isHash && scheme == URI::SchemeType::RING))

@@ -30,6 +30,9 @@
 #include "certificatemodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
+//Dring
+#include "dbus/configurationmanager.h"
+
 class FallbackLocalCertificateEditor : public CollectionEditor<Certificate>
 {
 public:
@@ -214,6 +217,12 @@ FlagPack<CollectionInterface::SupportedFeatures> FolderCertificateCollection::su
 }
 
 
+QUrl FolderCertificateCollection::path() const
+{
+   return QUrl(d_ptr->m_Path);
+}
+
+
 /*******************************************************************************
  *                                                                             *
  *                                   Editor                                    *
@@ -336,6 +345,10 @@ void BackgroundLoader::run()
          Certificate* cert = CertificateModel::instance()->getCertificateFromContent(loadCertificate(id),m_pCurrentFolder->name(),false);
          m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
       }
+
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      //qDebug() << "\n\nPINING PATH TODO remove extra /" << m_pCurrentFolder->path();
+      configurationManager.pinCertificatePath(m_pCurrentFolder->path().path()+'/');
    }
    FolderCertificateCollectionPrivate::m_spLoader = nullptr;
    QThread::exit(0);

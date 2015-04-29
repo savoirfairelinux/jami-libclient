@@ -48,7 +48,7 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 #ifdef Q_OS_WIN
    connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
 #else
-   connect(m_pTimer,&QTimer:timeout,this,&InstanceInterface::pollEvents);
+   connect(m_pTimer,&QTimer::timeout,this,&InstanceInterface::pollEvents);
 #endif
    m_pTimer->start();
    ringFlags |= DRing::DRING_FLAG_DEBUG;

@@ -828,6 +828,18 @@
           </arg>
        </method>
 
+       <signal name="certificateStateChanged" tp:name-for-bindings="certificateStateChanged">
+            <tp:docstring>
+                Notify clients that a certificate status have changed.
+            </tp:docstring>
+           <arg type="s" name="accountId">
+           </arg>
+           <arg type="s" name="certId">
+           </arg>
+           <arg type="s" name="state">
+           </arg>
+       </signal>
+
        <signal name="certificatePinned" tp:name-for-bindings="certificatePinned">
             <tp:docstring>
                 Notify clients that a certificate have been added to the store.
@@ -835,6 +847,7 @@
            <arg type="s" name="certId">
            </arg>
        </signal>
+
        <signal name="certificatePathPinned" tp:name-for-bindings="certificatePathPinned">
             <tp:docstring>
                 Notify clients that a certificate path have been added to the store.

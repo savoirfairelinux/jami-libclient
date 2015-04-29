@@ -54,6 +54,7 @@ public:
 
    virtual ~FolderCertificateCollection();
 
+   //Re-implementation
    virtual bool load  () override;
    virtual bool reload() override;
    virtual bool clear () override;
@@ -64,8 +65,10 @@ public:
    virtual bool           isEnabled() const override;
    virtual QByteArray     id       () const override;
    virtual QList<Element> listId   () const override;
-
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
+
+   //Getter
+   QUrl path() const;
 
 private:
    FolderCertificateCollectionPrivate* d_ptr;

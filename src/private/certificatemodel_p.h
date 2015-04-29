@@ -20,6 +20,7 @@
 
 #include "matrixutils.h"
 
+#include <QtCore/QMutex>
 struct CertificateNode;
 class Account;
 class Certificate;
