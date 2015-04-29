@@ -381,7 +381,7 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
 )
 
-IF(${ENABLE_LIBWRAP} MATCHES false)
+IF(${ENABLE_LIBWRAP} MATCHES true)
    # done this way because of bug in cmake 2.8
    # (not necessary in 3.0+)
 ELSE()
