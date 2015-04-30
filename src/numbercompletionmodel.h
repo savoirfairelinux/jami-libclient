@@ -42,6 +42,7 @@ public:
       ALTERNATE_ACCOUNT= 100,
       FORCE_ACCOUNT    = 101,
       ACCOUNT          = 102,
+      PEER_NAME        = 103,
    };
 
    NumberCompletionModel();

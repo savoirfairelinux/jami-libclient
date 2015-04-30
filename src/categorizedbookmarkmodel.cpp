@@ -504,7 +504,7 @@ void CategorizedBookmarkModel::addBookmark(ContactMethod* number)
 
 void CategorizedBookmarkModel::removeBookmark(ContactMethod* number)
 {
-   Q_UNUSED(number)
+   collections()[0]->editor<ContactMethod>()->remove(number);
 }
 
 void CategorizedBookmarkModel::remove(const QModelIndex& idx)
@@ -517,6 +517,7 @@ void CategorizedBookmarkModel::remove(const QModelIndex& idx)
 //       emit layoutAboutToBeChanged();
 //       emit layoutChanged();
 //    }
+   collections()[0]->editor<ContactMethod>()->remove(getNumber(idx));
 }
 
 ContactMethod* CategorizedBookmarkModel::getNumber(const QModelIndex& idx)
@@ -607,6 +608,7 @@ bool CategorizedBookmarkModel::clearAllCollections() const
 void CategorizedBookmarkModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
+   reloadCategories();
 }
 
 // QString CategorizedBookmarkModel::backendCategoryName() const

@@ -1464,6 +1464,7 @@ void CallPrivate::start()
       m_pDialNumber = nullptr;
    }
    setStartTimeStamp(curTime);
+   initTimer();
 }
 
 ///Toggle the timer

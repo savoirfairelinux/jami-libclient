@@ -63,13 +63,11 @@ Video::DirectRenderer::~DirectRenderer()
 
 void Video::DirectRenderer::startRendering()
 {
-   qWarning() << "STARTING RENDERING";
    Video::Renderer::d_ptr->m_isRendering = true;
    emit started();
 }
 void Video::DirectRenderer::stopRendering ()
 {
-   qWarning() << "STOPPING RENDERING";
    Video::Renderer::d_ptr->m_isRendering = false;
    emit stopped();
 }

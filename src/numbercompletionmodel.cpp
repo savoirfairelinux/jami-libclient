@@ -189,6 +189,8 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
                   return QString();
             case NumberCompletionModel::Role::FORCE_ACCOUNT:
                return needAcc;
+            case NumberCompletionModel::Role::PEER_NAME:
+               return n->primaryName();
             case NumberCompletionModel::Role::ACCOUNT:
                if (needAcc)
                   return QVariant::fromValue(n->account());
