@@ -296,8 +296,9 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
       q_ptr->endRemoveRows();
    }
 
-   for(TemporaryContactMethod* cm : m_hSipIaxTemporaryNumbers) {
-      cm->setUri(m_Prefix);
+   for(auto cm : m_hSipIaxTemporaryNumbers) {
+      if (cm)
+         cm->setUri(m_Prefix);
    }
 
    if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
@@ -336,7 +337,8 @@ void NumberCompletionModelPrivate::updateModel()
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
-      for (TemporaryContactMethod* cm : m_hSipIaxTemporaryNumbers) {
+      for (auto cm : m_hSipIaxTemporaryNumbers) {
+         if (!cm) continue;
          const int weight = getWeight(cm->account());
          if (weight) {
             q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
