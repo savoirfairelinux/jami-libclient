@@ -225,6 +225,7 @@ public:
    void setStartTimeStamp(time_t stamp);
    void initTimer();
    void registerRenderer(Video::Renderer* renderer);
+   void removeRenderer(Video::Renderer* renderer);
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );

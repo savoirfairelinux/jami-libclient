@@ -342,6 +342,8 @@ Q_SIGNALS:
    void dialNumberChanged(const QString& number);
    ///Announce a new video renderer
    void videoStarted(Video::Renderer* renderer);
+   ///Remove a new video renderer
+   void videoStopped(Video::Renderer* renderer);
 };
 
 Q_DECLARE_METATYPE(Call*)

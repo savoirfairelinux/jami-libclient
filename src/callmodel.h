@@ -154,6 +154,8 @@ Q_SIGNALS:
    void callAdded               ( Call* call               , Call* parent );
    ///Emitted when a new Video::Renderer is available
    void rendererAdded           ( Call* call, Video::Renderer* renderer   );
+   ///Emitted when a new Video::Renderer is available
+   void rendererRemoved         ( Call* call, Video::Renderer* renderer   );
 };
 Q_DECLARE_METATYPE(CallModel*)
 

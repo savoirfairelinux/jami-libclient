@@ -413,6 +413,9 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       connect(call,&Call::videoStarted,[this,call](Video::Renderer* r){
          emit q_ptr->rendererAdded(call, r);
       });
+      connect(call,&Call::videoStopped,[this,call](Video::Renderer* r){
+         emit q_ptr->rendererRemoved(call, r);
+      });
       emit q_ptr->layoutChanged();
    }
    return call;
@@ -434,6 +437,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
 ///Create a new incoming call when the daemon is being called
 Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
+   qDebug() << "New incoming call:" << callId;
    Call* call = addCall2(CallPrivate::buildIncomingCall(callId));
 
    //The call can already have been invalidated by the daemon, then do nothing

@@ -872,6 +872,15 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
    #endif
 }
 
+void CallPrivate::removeRenderer(Video::Renderer* renderer)
+{
+   #ifdef ENABLE_VIDEO
+   emit q_ptr->videoStopped(renderer);
+   #else
+   return;
+   #endif
+}
+
 
 /*****************************************************************************
  *                                                                           *

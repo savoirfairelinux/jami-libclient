@@ -284,6 +284,12 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
       return;
    }
 
+   Call* c = CallModel::instance()->getCall(id);
+
+   if (c) {
+      c->d_ptr->removeRenderer(r);
+   }
+
    r->stopRendering();
 
    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << (m_hRenderers[id.toLatin1()] != nullptr);
