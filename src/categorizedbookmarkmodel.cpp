@@ -336,7 +336,7 @@ QModelIndex CategorizedBookmarkModel::parent( const QModelIndex& idx) const
 ///Get the index
 QModelIndex CategorizedBookmarkModel::index(int row, int column, const QModelIndex& parent) const
 {
-   if (parent.isValid() && !column)
+   if (parent.isValid() && (!column) && d_ptr->m_lCategoryCounter.size() > parent.row() && d_ptr->m_lCategoryCounter[parent.row()]->m_lChildren.size() > row)
       return createIndex(row,column,(void*) static_cast<CategorizedCompositeNode*>(d_ptr->m_lCategoryCounter[parent.row()]->m_lChildren[row]));
    else if (row >= 0 && row < d_ptr->m_lCategoryCounter.size() && !column) {
       return createIndex(row,column,(void*) static_cast<CategorizedCompositeNode*>(d_ptr->m_lCategoryCounter[row]));
