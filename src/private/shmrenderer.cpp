@@ -89,6 +89,7 @@ public:
    int        m_fpsC          ;
    int        m_Fps           ;
    TimePoint  m_lastFrameDebug;
+   QTimer*    m_pTimer        ;
 
    // Constants
    constexpr static const int FPS_RATE_SEC        = 1  ;
@@ -114,6 +115,7 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
    , m_pShmArea  ( (SHMHeader*)MAP_FAILED              )
    , m_ShmAreaLen( 0                                   )
    , m_FrameGen  ( 0                                   )
+   , m_pTimer    ( nullptr                             )
 #ifdef DEBUG_FPS
    , m_frameCount( 0                                   )
    , m_lastFrameDebug(std::chrono::system_clock::now() )
@@ -133,6 +135,10 @@ ShmRenderer::ShmRenderer(const QByteArray& id, const QString& shmPath, const QSi
 /// Destructor
 ShmRenderer::~ShmRenderer()
 {
+   if (d_ptr->m_pTimer) {
+      d_ptr->m_pTimer->stop();
+      d_ptr->m_pTimer = nullptr;
+   }
    stopShm();
 }
 
@@ -190,7 +196,6 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
 #endif
    }
 
-   emit q_ptr->frameUpdated();
    return true;
 }
 
@@ -264,6 +269,15 @@ void ShmRenderer::stopShm()
    if (d_ptr->m_fd < 0)
       return;
 
+   if (d_ptr->m_pTimer) {
+      d_ptr->m_pTimer->stop();
+      d_ptr->m_pTimer = nullptr;
+   }
+
+   //Emit the signal before closing the file, this lower the risk of invalid
+   //memory access
+   emit stopped();
+
    ::close(d_ptr->m_fd);
    d_ptr->m_fd = -1;
 
@@ -302,6 +316,17 @@ void ShmRenderer::startRendering()
       return;
 
    Video::Renderer::d_ptr->m_isRendering = true;
+
+   if (!d_ptr->m_pTimer) {
+      d_ptr->m_pTimer = new QTimer(this);
+      d_ptr->m_pTimer->setInterval(33);
+      connect(d_ptr->m_pTimer,&QTimer::timeout,[this]() {
+         emit this->frameUpdated();
+      });
+   }
+   //FIXME This is a temporary hack as frameUpdated() is no longer emitted
+   d_ptr->m_pTimer->start();
+
    emit started();
 }
 
@@ -311,7 +336,11 @@ void ShmRenderer::stopRendering()
    QMutexLocker locker {mutex()};
    Video::Renderer::d_ptr->m_isRendering = false;
 
-   emit stopped();
+   if (d_ptr->m_pTimer) {
+      d_ptr->m_pTimer->stop();
+      d_ptr->m_pTimer = nullptr;
+   }
+
    stopShm();
 }
 

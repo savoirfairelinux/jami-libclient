@@ -867,6 +867,9 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
 {
    #ifdef ENABLE_VIDEO
    emit q_ptr->videoStarted(renderer);
+   connect(renderer,&Video::Renderer::stopped,[this,renderer]() {
+      emit q_ptr->videoStopped(renderer);
+   });
    #else
    return;
    #endif
@@ -874,11 +877,8 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
 
 void CallPrivate::removeRenderer(Video::Renderer* renderer)
 {
-   #ifdef ENABLE_VIDEO
-   emit q_ptr->videoStopped(renderer);
-   #else
+   //TODO handle removing the renderer during the call
    return;
-   #endif
 }
 
 
