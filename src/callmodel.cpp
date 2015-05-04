@@ -438,7 +438,13 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
 Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
    qDebug() << "New incoming call:" << callId;
-   Call* call = addCall2(CallPrivate::buildIncomingCall(callId));
+   Call* call = CallPrivate::buildIncomingCall(callId);
+
+   //The call can already have been invalidated by the daemon, then do nothing
+   if (!call)
+      return nullptr;
+
+   call = addCall2(call);
 
    //The call can already have been invalidated by the daemon, then do nothing
    if (!call)
