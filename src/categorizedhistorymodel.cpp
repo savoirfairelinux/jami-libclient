@@ -300,40 +300,33 @@ void CategorizedHistoryModelPrivate::add(Call* call)
       return;
    }
 
-//    if (!m_HavePersonModel && call->contactBackend()) {
-//       connect(((QObject*)call->contactBackend()),SIGNAL(collectionChanged()),this,SLOT(reloadCategories()));
-//       m_HavePersonModel = true;
-//    }//TODO implement reordering
-
    emit q_ptr->newHistoryCall(call);
    HistoryTopLevelItem* tl = getCategory(call);
    const QModelIndex& parentIdx = q_ptr->index(tl->modelRow,0);
+
    q_ptr->beginInsertRows(parentIdx,tl->m_lChildren.size(),tl->m_lChildren.size());
    CategorizedHistoryModelPrivate::HistoryItem* item = new CategorizedHistoryModelPrivate::HistoryItem(call);
    item->m_pParent = tl;
    item->m_pNode = new HistoryItemNode(q_ptr,call,item);
    connect(item->m_pNode,SIGNAL(changed(QModelIndex)),this,SLOT(slotChanged(QModelIndex)));
-   item->m_Index = tl->m_lChildren.size();
+   const int size = tl->m_lChildren.size();
+   item->m_Index = size;
    tl->m_lChildren << item;
 
    //Try to prevent startTimeStamp() collisions, it technically doesn't work as time_t are signed
    //we don't care
    m_sHistoryCalls[(call->startTimeStamp() << 10)+qrand()%1024] = call;
    q_ptr->endInsertRows();
+
    LastUsedNumberModel::instance()->addCall(call);
    emit q_ptr->historyChanged();
 
-   /*
-   // Loop until it find a compatible backend
-   //HACK only support a single active history backend
-   if (!call->collection()) {
-      foreach (CollectionInterface* backend, q_ptr->collections(CollectionInterface::ADD)) {
-         if (backend->editor<Call>()->addNew(call)) {
-            call->setCollection(backend);
-            break;
-         }
-      }
-   }*/
+   //When the categories goes from 0 items to many, its conceptual state change
+   //therefore the clients may want to act on this, notify them
+   if (!size) {
+      const QModelIndex idx = q_ptr->index(item->m_Index,0);
+      emit q_ptr->dataChanged(idx,idx);
+   }
 }
 
 ///Set if the history has a limit
