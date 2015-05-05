@@ -42,6 +42,7 @@ class LIB_EXPORT CipherModel : public QAbstractListModel {
 
 public:
 
+   //Property
    Q_PROPERTY(bool useDefault READ useDefault WRITE setUseDefault)
 
    //Model functions
@@ -65,6 +66,9 @@ private:
 
    CipherModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CipherModel)
+
+Q_SIGNALS:
+   void modified();
 
 };
 Q_DECLARE_METATYPE(CipherModel*)
