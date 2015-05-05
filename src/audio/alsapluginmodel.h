@@ -27,6 +27,7 @@
 #include <typedefs.h>
 
 class AlsaPluginModelPrivate;
+class QItemSelectionModel;
 
 namespace Audio {
 
@@ -45,10 +46,7 @@ public:
 
    //Getters
    QModelIndex currentPlugin() const;
-
-   //Setters
-   void setCurrentPlugin(const QModelIndex& idx);
-   void setCurrentPlugin(int idx);
+   QItemSelectionModel* selectionModel() const;
 
    //Mutator
    void reload();

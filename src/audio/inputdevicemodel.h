@@ -47,10 +47,6 @@ public:
    //Getters
    QItemSelectionModel* selectionModel() const;
 
-   //Setters
-   void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
-
    //Mutator
    void reload();
 

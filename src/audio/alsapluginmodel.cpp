@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "alsapluginmodel.h"
 
+//Qt
+#include <QtCore/QItemSelectionModel>
+
 //Ring
 #include "dbus/configurationmanager.h"
 
@@ -26,12 +29,18 @@ class AlsaPluginModelPrivate : public QObject
 public:
    AlsaPluginModelPrivate(Audio::AlsaPluginModel* parent);
    QStringList m_lDeviceList;
+   mutable QItemSelectionModel* m_pSelectionModel;
 
 private:
    Audio::AlsaPluginModel* q_ptr;
+
+public Q_SLOTS:
+   void setCurrentPlugin(const QModelIndex& idx);
+   void setCurrentPlugin(int idx);
 };
 
-AlsaPluginModelPrivate::AlsaPluginModelPrivate(Audio::AlsaPluginModel* parent) : q_ptr(parent)
+AlsaPluginModelPrivate::AlsaPluginModelPrivate(Audio::AlsaPluginModel* parent) : q_ptr(parent),
+m_pSelectionModel(nullptr)
 {
 
 }
@@ -97,6 +106,19 @@ bool Audio::AlsaPluginModel::setData( const QModelIndex& index, const QVariant &
    return false;
 }
 
+QItemSelectionModel* Audio::AlsaPluginModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::AlsaPluginModel*>(this));
+
+      d_ptr->m_pSelectionModel->setCurrentIndex(currentPlugin(), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentPlugin(QModelIndex)));
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
 ///Return the current index
 QModelIndex Audio::AlsaPluginModel::currentPlugin() const
 {
@@ -110,18 +132,19 @@ QModelIndex Audio::AlsaPluginModel::currentPlugin() const
 }
 
 ///Set the current index
-void Audio::AlsaPluginModel::setCurrentPlugin(const QModelIndex& idx)
+void AlsaPluginModelPrivate::setCurrentPlugin(const QModelIndex& idx)
 {
    if (!idx.isValid())
       return;
+
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   configurationManager.setAudioPlugin(d_ptr->m_lDeviceList[idx.row()]);
+   configurationManager.setAudioPlugin(m_lDeviceList[idx.row()]);
 }
 
 ///Set the current index (qcombobox compatibility shim)
-void Audio::AlsaPluginModel::setCurrentPlugin(int idx)
+void AlsaPluginModelPrivate::setCurrentPlugin(int idx)
 {
-   setCurrentPlugin(index(idx,0));
+   setCurrentPlugin(q_ptr->index(idx,0));
 }
 
 ///Reload to current daemon state

@@ -35,6 +35,10 @@ public:
 
 private:
    Audio::OutputDeviceModel* q_ptr;
+
+public Q_SLOTS:
+   void setCurrentDevice(const QModelIndex& index);
+   void setCurrentDevice(int idx);
 };
 
 
@@ -112,14 +116,18 @@ QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
       const int idx = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
+
       if (!(idx >= d_ptr->m_lDeviceList.size()))
          d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentDevice(QModelIndex)));
    }
+
    return d_ptr->m_pSelectionModel;
 }
 
 ///Set the current output device
-void Audio::OutputDeviceModel::setCurrentDevice(const QModelIndex& index)
+void OutputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
    if (index.isValid()) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
@@ -128,9 +136,9 @@ void Audio::OutputDeviceModel::setCurrentDevice(const QModelIndex& index)
 }
 
 ///QCombobox index -> QModelIndex shim
-void Audio::OutputDeviceModel::setCurrentDevice(int idx)
+void OutputDeviceModelPrivate::setCurrentDevice(int idx)
 {
-   setCurrentDevice(index(idx,0));
+   setCurrentDevice(q_ptr->index(idx,0));
 }
 
 ///reload output devices list

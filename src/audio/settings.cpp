@@ -139,11 +139,10 @@ bool Audio::Settings::isRoomToneEnabled()
 ///Reload everything
 void Audio::Settings::reload()
 {
-   d_ptr->m_pAlsaPluginModel->reload();
-   d_ptr->m_pInputDeviceModel->reload();
-   d_ptr->m_pOutputDeviceModel->reload();
-//    m_pAudioManagerModel->reload();
-   d_ptr->m_pRingtoneDeviceModel->reload();
+   alsaPluginModel    ()->reload();
+   inputDeviceModel   ()->reload();
+   outputDeviceModel  ()->reload();
+   ringtoneDeviceModel()->reload();
 }
 
 ///Play room tone

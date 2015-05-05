@@ -27,6 +27,7 @@
 #include <typedefs.h>
 
 class RingtoneDeviceModelPrivate;
+class QItemSelectionModel;
 
 namespace Audio {
 
@@ -45,10 +46,7 @@ public:
 
    //Getters
    QModelIndex currentDevice() const;
-
-   //Setters
-   void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
+   QItemSelectionModel* selectionModel() const;
 
    //Mutator
    void reload();

@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "ringtonedevicemodel.h"
 
+//Qt
+#include <QtCore/QItemSelectionModel>
+
 //Ring
 #include "dbus/configurationmanager.h"
 #include "settings.h"
@@ -27,14 +30,20 @@ class RingtoneDeviceModelPrivate : public QObject
 public:
    RingtoneDeviceModelPrivate(Audio::RingtoneDeviceModel* parent);
    QStringList m_lDeviceList;
+   mutable QItemSelectionModel* m_pSelectionModel;
 
 private:
    Audio::RingtoneDeviceModel* q_ptr;
+
+public Q_SLOTS:
+   void setCurrentDevice(const QModelIndex& index);
+   void setCurrentDevice(int idx);
 };
 
-RingtoneDeviceModelPrivate::RingtoneDeviceModelPrivate(Audio::RingtoneDeviceModel* parent) : q_ptr(parent)
+RingtoneDeviceModelPrivate::RingtoneDeviceModelPrivate(Audio::RingtoneDeviceModel* parent) : q_ptr(parent),
+m_pSelectionModel(nullptr)
 {
-   
+
 }
 
 ///Constructor
@@ -98,6 +107,23 @@ bool Audio::RingtoneDeviceModel::setData( const QModelIndex& index, const QVaria
    return false;
 }
 
+QItemSelectionModel* Audio::RingtoneDeviceModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::RingtoneDeviceModel*>(this));
+
+      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
+      const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::RINGTONE)].toInt();
+      if (!(idx >= d_ptr->m_lDeviceList.size()))
+         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentDevice(QModelIndex)));
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
 ///Return the current ringtone device
 QModelIndex Audio::RingtoneDeviceModel::currentDevice() const
 {
@@ -110,7 +136,7 @@ QModelIndex Audio::RingtoneDeviceModel::currentDevice() const
 }
 
 ///Set the current ringtone device
-void Audio::RingtoneDeviceModel::setCurrentDevice(const QModelIndex& index)
+void RingtoneDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
    if (index.isValid()) {
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
@@ -119,9 +145,9 @@ void Audio::RingtoneDeviceModel::setCurrentDevice(const QModelIndex& index)
 }
 
 ///QCombobox -> QModelIndex shim
-void Audio::RingtoneDeviceModel::setCurrentDevice(int idx)
+void RingtoneDeviceModelPrivate::setCurrentDevice(int idx)
 {
-   setCurrentDevice(index(idx,0));
+   setCurrentDevice(q_ptr->index(idx,0));
 }
 
 ///Reload ringtone device list
