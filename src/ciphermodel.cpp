@@ -60,8 +60,10 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_U
    m_lChecked = new bool[m_slSupportedCiphers.size()]{};
 
    foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
-      m_lChecked[m_shMapping[cipher]] = true;
-      m_UseDefault = false;
+      if (!cipher.trimmed().isEmpty()) {
+         m_lChecked[m_shMapping[cipher]] = true;
+         m_UseDefault = false;
+      }
    }
 }
 
@@ -131,6 +133,9 @@ bool CipherModel::setData( const QModelIndex& index, const QVariant &value, int 
             ciphers << d_ptr->m_slSupportedCiphers[i];
       }
       d_ptr->m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CIPHERS,ciphers.join(QString(' ')));
+
+      emit modified();
+
       return true;
    }
    return false;
