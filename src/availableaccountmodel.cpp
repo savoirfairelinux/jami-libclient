@@ -98,10 +98,18 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
 ///Return the current account
 Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
+
+   static Account* ip2ip = AccountModel::instance()->getById(DRing::Account::ProtocolNames::IP2IP);
+
    Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
+
+   //Ip2Ip is a bad prior account, using it cause issues down in this code
+   if (priorAccount && priorAccount == ip2ip)
+      priorAccount = nullptr;
+
    URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
 
-   /* if the scheme type could not be strictly determinded, try using the
+   /* if the scheme type could not be strictly determined, try using the
     * protocol hint
     */
    if (type == URI::SchemeType::NONE && method) {
@@ -129,8 +137,9 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
    }
    else {
       Account* a = AvailableAccountModelPrivate::firstRegisteredAccount(type);
+
       if (!a)
-         a = AccountModel::instance()->getById(DRing::Account::ProtocolNames::IP2IP);
+         a = ip2ip;
 
       AvailableAccountModelPrivate::setPriorAccount(a);
       return a;
