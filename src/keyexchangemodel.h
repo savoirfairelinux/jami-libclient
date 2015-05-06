@@ -21,8 +21,11 @@
 #include "typedefs.h"
 #include <QtCore/QAbstractListModel>
 
-class Account;
+//Qt
+class QItemSelectionModel;
 
+//Ring
+class Account;
 class KeyExchangeModelPrivate;
 
 ///Static model for handling encryption types
@@ -52,20 +55,6 @@ public:
       COUNT__,
    };
 
-   class Name {
-   public:
-      constexpr static const char* NONE = "None";
-      constexpr static const char* ZRTP = "ZRTP";
-      constexpr static const char* SDES = "SDES";
-   };
-
-   class DaemonName {
-   public:
-      constexpr static const char* NONE = ""    ;
-      constexpr static const char* ZRTP = "zrtp";
-      constexpr static const char* SDES = "sdes";
-   };
-
    //Private constructor, can only be called by 'Account'
    explicit KeyExchangeModel(Account* account);
    virtual ~KeyExchangeModel();
@@ -78,15 +67,12 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QModelIndex                   toIndex       (KeyExchangeModel::Type type) const;
-   static const char*            toDaemonName  (KeyExchangeModel::Type type)      ;
-   static KeyExchangeModel::Type fromDaemonName(const QString& name        )      ;
-
    bool isRtpFallbackEnabled() const;
    bool isDisplaySASEnabled () const;
    bool isDisplaySasOnce    () const;
    bool areWarningSupressed () const;
    bool isHelloHashEnabled  () const;
+   QItemSelectionModel* selectionModel() const;
 
 
 private:

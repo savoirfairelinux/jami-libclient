@@ -55,6 +55,7 @@ public:
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
+   friend class KeyExchangeModelPrivate;
    friend class ContactMethod;
    friend class Certificate;
    friend class NetworkInterfaceModelPrivate;

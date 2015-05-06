@@ -17,17 +17,59 @@
  ***************************************************************************/
 #include "keyexchangemodel.h"
 
+//Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QItemSelectionModel>
 
+//Ring daemon
+#include <account_const.h>
+
+//Ring
 #include "account.h"
+#include "private/account_p.h"
 #include "private/matrixutils.h"
 
-class KeyExchangeModelPrivate
+class KeyExchangeModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
-   KeyExchangeModelPrivate();
+
+   class Name {
+   public:
+      constexpr static const char* NONE = "None";
+      constexpr static const char* ZRTP = "ZRTP";
+      constexpr static const char* SDES = "SDES";
+   };
+
+   class DaemonName {
+   public:
+      constexpr static const char* NONE = ""    ;
+      constexpr static const char* ZRTP = "zrtp";
+      constexpr static const char* SDES = "sdes";
+   };
+
+   KeyExchangeModelPrivate(KeyExchangeModel* parent);
+
+   //Attributes
    Account* m_pAccount;
    static const TypedStateMachine< TypedStateMachine< bool , KeyExchangeModel::Type > , KeyExchangeModel::Options > availableOptions;
+   QItemSelectionModel* m_pSelectionModel;
+
+   //Getters
+   QModelIndex                   toIndex       (KeyExchangeModel::Type type) const;
+   static const char*            toDaemonName  (KeyExchangeModel::Type type)      ;
+   static KeyExchangeModel::Type fromDaemonName(const QString& name        )      ;
+
+
+   //Helper
+   void setKeyExchange(KeyExchangeModel::Type detail);
+   KeyExchangeModel::Type keyExchange() const;
+
+public Q_SLOTS:
+   void slotCurrentIndexChanged(const QModelIndex& idx, const QModelIndex& prev);
+
+private:
+   KeyExchangeModel* q_ptr;
 };
 
 const TypedStateMachine< TypedStateMachine< bool , KeyExchangeModel::Type > , KeyExchangeModel::Options > KeyExchangeModelPrivate::availableOptions = {{
@@ -39,12 +81,11 @@ const TypedStateMachine< TypedStateMachine< bool , KeyExchangeModel::Type > , Ke
    /* DISPLAY_SAS_ONCE */ {{ true     , false    , false   }},
 }};
 
-KeyExchangeModelPrivate::KeyExchangeModelPrivate() : m_pAccount(nullptr)
+KeyExchangeModelPrivate::KeyExchangeModelPrivate(KeyExchangeModel* parent) : QObject(parent), q_ptr(parent),m_pAccount(nullptr), m_pSelectionModel(nullptr)
 {
 }
 
-
-KeyExchangeModel::KeyExchangeModel(Account* account) : QAbstractListModel(account),d_ptr(new KeyExchangeModelPrivate())
+KeyExchangeModel::KeyExchangeModel(Account* account) : QAbstractListModel(account),d_ptr(new KeyExchangeModelPrivate(this))
 {
    d_ptr->m_pAccount = account;
 }
@@ -73,13 +114,13 @@ QVariant KeyExchangeModel::data( const QModelIndex& index, int role) const
    if (role == Qt::DisplayRole) {
       switch (method) {
          case KeyExchangeModel::Type::NONE:
-            return KeyExchangeModel::Name::NONE;
+            return KeyExchangeModelPrivate::Name::NONE;
             break;
          case KeyExchangeModel::Type::ZRTP:
-            return KeyExchangeModel::Name::ZRTP;
+            return KeyExchangeModelPrivate::Name::ZRTP;
             break;
          case KeyExchangeModel::Type::SDES:
-            return KeyExchangeModel::Name::SDES;
+            return KeyExchangeModelPrivate::Name::SDES;
             break;
          case KeyExchangeModel::Type::COUNT__:
             break;
@@ -108,23 +149,23 @@ bool KeyExchangeModel::setData( const QModelIndex& index, const QVariant &value,
 }
 
 ///Translate enum type to QModelIndex
-QModelIndex KeyExchangeModel::toIndex(KeyExchangeModel::Type type) const
+QModelIndex KeyExchangeModelPrivate::toIndex(KeyExchangeModel::Type type) const
 {
-   return index(static_cast<int>(type),0,QModelIndex());
+   return q_ptr->index(static_cast<int>(type),0,QModelIndex());
 }
 
 ///Translate enum to daemon name
-const char* KeyExchangeModel::toDaemonName(KeyExchangeModel::Type type)
+const char* KeyExchangeModelPrivate::toDaemonName(KeyExchangeModel::Type type)
 {
    switch (type) {
       case KeyExchangeModel::Type::NONE:
-         return KeyExchangeModel::DaemonName::NONE;
+         return KeyExchangeModelPrivate::DaemonName::NONE;
          break;
       case KeyExchangeModel::Type::ZRTP:
-         return KeyExchangeModel::DaemonName::ZRTP;
+         return KeyExchangeModelPrivate::DaemonName::ZRTP;
          break;
       case KeyExchangeModel::Type::SDES:
-         return KeyExchangeModel::DaemonName::SDES;
+         return KeyExchangeModelPrivate::DaemonName::SDES;
          break;
       case KeyExchangeModel::Type::COUNT__:
          break;
@@ -132,13 +173,13 @@ const char* KeyExchangeModel::toDaemonName(KeyExchangeModel::Type type)
    return nullptr; //Cannot heppen
 }
 
-KeyExchangeModel::Type KeyExchangeModel::fromDaemonName(const QString& name)
+KeyExchangeModel::Type KeyExchangeModelPrivate::fromDaemonName(const QString& name)
 {
    if (name.isEmpty())
       return KeyExchangeModel::Type::NONE;
-   else if (name == KeyExchangeModel::DaemonName::SDES)
+   else if (name == KeyExchangeModelPrivate::DaemonName::SDES)
       return KeyExchangeModel::Type::SDES;
-   else if (name == KeyExchangeModel::DaemonName::ZRTP)
+   else if (name == KeyExchangeModelPrivate::DaemonName::ZRTP)
       return KeyExchangeModel::Type::ZRTP;
    qDebug() << "Undefined Key exchange mechanism" << name;
    return KeyExchangeModel::Type::NONE;
@@ -146,35 +187,75 @@ KeyExchangeModel::Type KeyExchangeModel::fromDaemonName(const QString& name)
 
 void KeyExchangeModel::enableSRTP(bool enable)
 {
-   if (enable && d_ptr->m_pAccount->keyExchange() == KeyExchangeModel::Type::NONE) {
-      d_ptr->m_pAccount->setKeyExchange(KeyExchangeModel::Type::SDES);
+   if (enable && d_ptr->keyExchange() == KeyExchangeModel::Type::NONE) {
+      d_ptr->setKeyExchange(KeyExchangeModel::Type::SDES);
    }
    else if (!enable) {
-      d_ptr->m_pAccount->setKeyExchange(KeyExchangeModel::Type::NONE);
+      d_ptr->setKeyExchange(KeyExchangeModel::Type::NONE);
    }
 }
 
+QItemSelectionModel* KeyExchangeModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<KeyExchangeModel*>(this));
+      const KeyExchangeModel::Type current = d_ptr->keyExchange();
+      d_ptr->m_pSelectionModel->setCurrentIndex(d_ptr->toIndex(current), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr.data(), &KeyExchangeModelPrivate::slotCurrentIndexChanged);
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
+void KeyExchangeModelPrivate::slotCurrentIndexChanged(const QModelIndex& idx, const QModelIndex& prev)
+{
+   Q_UNUSED(prev)
+
+   if (!idx.isValid())
+      return;
+
+   const KeyExchangeModel::Type t = static_cast<KeyExchangeModel::Type>(idx.row());
+   setKeyExchange(t);
+}
+
+///Return the key exchange mechanism
+KeyExchangeModel::Type KeyExchangeModelPrivate::keyExchange() const
+{
+   return KeyExchangeModelPrivate::fromDaemonName(m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE));
+}
+
+///Set the Tls method
+void KeyExchangeModelPrivate::setKeyExchange(KeyExchangeModel::Type detail)
+{
+   m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE ,KeyExchangeModelPrivate::toDaemonName(detail));
+   m_pAccount->d_ptr->regenSecurityValidation();
+}
+
+///Return if the RtpFallback setting is available
 bool KeyExchangeModel::isRtpFallbackEnabled() const
 {
-   return d_ptr->availableOptions[Options::RTP_FALLBACK][d_ptr->m_pAccount->keyExchange()];
+   return d_ptr->availableOptions[Options::RTP_FALLBACK][d_ptr->keyExchange()];
 }
 
 bool KeyExchangeModel::isDisplaySASEnabled() const
 {
-   return d_ptr->availableOptions[Options::DISPLAY_SAS][d_ptr->m_pAccount->keyExchange()];
+   return d_ptr->availableOptions[Options::DISPLAY_SAS][d_ptr->keyExchange()];
 }
 
 bool KeyExchangeModel::isDisplaySasOnce() const
 {
-   return d_ptr->availableOptions[Options::DISPLAY_SAS_ONCE][d_ptr->m_pAccount->keyExchange()];
+   return d_ptr->availableOptions[Options::DISPLAY_SAS_ONCE][d_ptr->keyExchange()];
 }
 
 bool KeyExchangeModel::areWarningSupressed() const
 {
-   return d_ptr->availableOptions[Options::NOT_SUPP_WARNING][d_ptr->m_pAccount->keyExchange()];
+   return d_ptr->availableOptions[Options::NOT_SUPP_WARNING][d_ptr->keyExchange()];
 }
 
 bool KeyExchangeModel::isHelloHashEnabled() const
 {
-   return d_ptr->availableOptions[Options::HELLO_HASH][d_ptr->m_pAccount->keyExchange()];
+   return d_ptr->availableOptions[Options::HELLO_HASH][d_ptr->keyExchange()];
 }
+
+#include <keyexchangemodel.moc>
