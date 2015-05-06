@@ -147,7 +147,7 @@ KeyExchangeModel::Type KeyExchangeModel::fromDaemonName(const QString& name)
 void KeyExchangeModel::enableSRTP(bool enable)
 {
    if (enable && d_ptr->m_pAccount->keyExchange() == KeyExchangeModel::Type::NONE) {
-      d_ptr->m_pAccount->setKeyExchange(KeyExchangeModel::Type::ZRTP);
+      d_ptr->m_pAccount->setKeyExchange(KeyExchangeModel::Type::SDES);
    }
    else if (!enable) {
       d_ptr->m_pAccount->setKeyExchange(KeyExchangeModel::Type::NONE);
