@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ITEM_BACKEND_MEDIATOR_H
-#define ITEM_BACKEND_MEDIATOR_H
+#ifndef COLLECTIONMEDIATOR_H
+#define COLLECTIONMEDIATOR_H
 
 #include <typedefs.h>
 

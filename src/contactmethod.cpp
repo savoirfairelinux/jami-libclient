@@ -627,13 +627,13 @@ bool ContactMethod::operator==(const ContactMethod& other) const
 
 void TemporaryContactMethod::setUri(const URI& uri)
 {
-   d_ptr->m_Uri = uri;
-   d_ptr->changed();
+   ContactMethod::d_ptr->m_Uri = uri;
+   ContactMethod::d_ptr->changed();
 }
 
 ///Constructor
 TemporaryContactMethod::TemporaryContactMethod(const ContactMethod* number) :
-   ContactMethod(QString(),NumberCategoryModel::other(),ContactMethod::Type::TEMPORARY)
+   ContactMethod(QString(),NumberCategoryModel::other(),ContactMethod::Type::TEMPORARY),d_ptr(nullptr)
 {
    if (number) {
       setPerson(number->contact());

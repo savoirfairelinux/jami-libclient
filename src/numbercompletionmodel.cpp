@@ -536,7 +536,7 @@ void NumberCompletionModelPrivate::resetSelectionModel()
    if (!m_pSelectionModel)
       return;
 
-   const Account* preferredAccount = AvailableAccountModel::currentDefaultAccount();
+   //const Account* preferredAccount = AvailableAccountModel::currentDefaultAccount();
 
    //m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
 
@@ -545,6 +545,8 @@ void NumberCompletionModelPrivate::resetSelectionModel()
 
 void NumberCompletionModelPrivate::slotSelectionChanged(const QModelIndex& sel, const QModelIndex& prev)
 {
+   Q_UNUSED(sel)
+   Q_UNUSED(prev)
    m_HasCustomSelection = true;
 }
 

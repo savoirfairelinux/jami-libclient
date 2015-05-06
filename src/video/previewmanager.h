@@ -15,8 +15,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef PREVIEWMANGER_H
-#define PREVIEWMANGER_H
+#ifndef PREVIEWMANAGER_H
+#define PREVIEWMANAGER_H
 
 #include <QtCore/QObject>
 

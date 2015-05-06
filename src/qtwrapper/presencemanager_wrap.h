@@ -16,8 +16,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef PRESENCEMANAGER_DBUS_INTERFACE_H
-#define PRESENCEMANAGER_DBUS_INTERFACE_H
+#ifndef PRESENCEMANAGERINTERFACE_H
+#define PRESENCEMANAGERINTERFACE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

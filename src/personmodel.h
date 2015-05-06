@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONTACTMODEL_H
-#define CONTACTMODEL_H
+#ifndef PERSONMODEL_H
+#define PERSONMODEL_H
 
 #include <QObject>
 #include <QHash>

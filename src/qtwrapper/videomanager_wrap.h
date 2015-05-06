@@ -16,8 +16,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef VIDEO_DBUS_INTERFACE_H
-#define VIDEO_DBUS_INTERFACE_H
+#ifndef VIDEOMANAGERINTERFACE_H
+#define VIDEOMANAGERINTERFACE_H
 
 // libstdc++
 #include <functional>

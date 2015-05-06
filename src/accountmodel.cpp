@@ -214,7 +214,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
       return Account::RegistrationState::ERROR;
 
    else {
-      qWarning() << "Unkown registration state" << st;
+      qWarning() << "Unknown registration state" << st;
       return Account::RegistrationState::ERROR;
    }
 

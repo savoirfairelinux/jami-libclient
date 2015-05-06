@@ -131,7 +131,7 @@ bool Audio::ManagerModel::setData( const QModelIndex& index, const QVariant &val
 }
 
 /**
- * This model allow automatic synchronisation of the audio manager
+ * This model allow automatic synchronization of the audio manager
  */
 QItemSelectionModel* Audio::ManagerModel::selectionModel() const
 {

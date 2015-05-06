@@ -301,9 +301,9 @@ public:
    Call* operator<<( Call::Action& c);
 
 private:
-   explicit Call(const QString& confId, const QString& account);
+   Call(const QString& confId, const QString& account);
    ~Call();
-   Call(Call::State startState, const QString& peerName = QString(), ContactMethod* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
+   explicit Call(Call::State startState, const QString& peerName = QString(), ContactMethod* number = nullptr, Account* account = nullptr); //TODO MOVE TO PRIVATE
 
    //Friend API
    const QString dringId() const;

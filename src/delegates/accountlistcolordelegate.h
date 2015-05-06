@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTLISTCOLORVISITOR_H
-#define ACCOUNTLISTCOLORVISITOR_H
+#ifndef ACCOUNTLISTCOLORDELEGATE_H
+#define ACCOUNTLISTCOLORDELEGATE_H
 
 #include <typedefs.h>
 class Account;

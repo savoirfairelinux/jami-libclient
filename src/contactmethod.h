@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PHONENUMBER_H
-#define PHONENUMBER_H
+#ifndef CONTACTMETHOD_H
+#define CONTACTMETHOD_H
 
 #include "typedefs.h"
 #include <time.h>
@@ -36,6 +36,7 @@ class Call;
 class ContactMethodPrivate;
 class TemporaryContactMethod;
 class NumberCategory;
+class TemporaryContactMethodPrivate;
 
 
 ///ContactMethod: represent a phone number
@@ -211,6 +212,9 @@ public:
    virtual QVariant icon() const override;
    void setUri(const URI& uri);
 
+private:
+   TemporaryContactMethodPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(TemporaryContactMethod)
 };
 
 #endif

@@ -877,6 +877,7 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
 
 void CallPrivate::removeRenderer(Video::Renderer* renderer)
 {
+   Q_UNUSED(renderer)
    //TODO handle removing the renderer during the call
    return;
 }

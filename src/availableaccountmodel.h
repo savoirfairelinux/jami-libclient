@@ -40,7 +40,6 @@ class LIB_EXPORT AvailableAccountModel : public QSortFilterProxyModel
 {
    Q_OBJECT
 public:
-   AvailableAccountModel(QObject* parent = nullptr);
 
    virtual QVariant      data            (const QModelIndex& index,int role = Qt::DisplayRole       ) const override;
    virtual Qt::ItemFlags flags           (const QModelIndex& index                                  ) const override;
@@ -59,6 +58,8 @@ Q_SIGNALS:
    void currentDefaultAccountChanged(Account*);
 
 private:
+   explicit AvailableAccountModel(QObject* parent = nullptr);
+
    AvailableAccountModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AvailableAccountModel)
 };

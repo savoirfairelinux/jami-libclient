@@ -124,10 +124,10 @@ struct Node {
 bool ProfileEditor::save(const Person* contact)
 {
    QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
-   qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
+   qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+'/'+contact->uid()+".vcf";
    const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
 
-   QFile file(profilesDir.absolutePath()+"/"+contact->uid()+".vcf");
+   QFile file(profilesDir.absolutePath()+'/'+contact->uid()+".vcf");
    file.open(QIODevice::WriteOnly);
    file.write(result);
    file.close();

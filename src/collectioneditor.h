@@ -15,22 +15,28 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ITEMBACKENDEDITOR_H
-#define ITEMBACKENDEDITOR_H
+#ifndef COLLECTIONEDITOR_H
+#define COLLECTIONEDITOR_H
 #include <QtCore/QAbstractItemModel>
 
 #include <typedefs.h>
 
 //Ring
 class ContactMethod;
+class CollectionEditorBasePrivate;
 
-class LIB_EXPORT CollectionEditorBase {
+class LIB_EXPORT CollectionEditorBase
+{
 public:
-   CollectionEditorBase(QAbstractItemModel* m);
+   explicit CollectionEditorBase(QAbstractItemModel* m);
    QAbstractItemModel* model() const;
 
 protected:
    QAbstractItemModel* m_pModel;
+
+private:
+   CollectionEditorBasePrivate* d_ptr;
+   Q_DECLARE_PRIVATE(CollectionEditorBase)
 };
 
 template<typename T> class CollectionMediator;

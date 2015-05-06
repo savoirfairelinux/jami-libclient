@@ -15,6 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifndef DAEMONCERTIFICATECOLLECTION_H
+#define DAEMONCERTIFICATECOLLECTION_H
 
 #include <collectioninterface.h>
 #include <typedefs.h>
@@ -56,3 +58,5 @@ private:
    Q_DECLARE_PRIVATE(DaemonCertificateCollection)
 };
 Q_DECLARE_METATYPE(DaemonCertificateCollection*)
+
+#endif

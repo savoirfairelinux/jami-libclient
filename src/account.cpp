@@ -111,7 +111,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 
    //If a placeholder exist for this account, upgrade it
    if (AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]) {
-      AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]->d_ptr->merge(a);
+      AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
    }
 
    return a;
@@ -1911,22 +1911,23 @@ bool Account::operator==(const Account& a)const
  ****************************************************************************/
 
 ///Constructor
-AccountPlaceHolder::AccountPlaceHolder(const QByteArray& uid) : Account()
+AccountPlaceHolder::AccountPlaceHolder(const QByteArray& uid) : Account(),
+d_ptr(nullptr)
 {
-   d_ptr->m_AccountId = uid  ;
-   d_ptr->m_isLoaded  = false;
+   Account::d_ptr->m_AccountId = uid  ;
+   Account::d_ptr->m_isLoaded  = false;
 }
 
 ///Merge an existing account into this temporary one
 bool AccountPrivate::merge(Account* account)
 {
-   if ((!account) || this == account->d_ptr.data())
+   if ((!account) || this == account->Account::d_ptr.data())
       return false;
 
-   AccountPrivate* p = (AccountPrivate*) d_ptr.take();
-   delete p;
+   /*AccountPrivate* p = (AccountPrivate*) (q_ptr->Account::d_ptr.take());
+   delete p;*/ //FIXME memory leak
 
-   q_ptr->d_ptr = account->d_ptr;
+   q_ptr->Account::d_ptr = account->Account::d_ptr;
    emit q_ptr->changed(q_ptr);
 
    return true;

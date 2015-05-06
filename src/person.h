@@ -16,9 +16,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef CONTACT_H
-#define CONTACT_H
+#ifndef PERSON_H
+#define PERSON_H
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
@@ -31,6 +30,7 @@ class PersonPrivate;
 class AddressPrivate;
 class Account;
 class CollectionInterface;
+class PersonPlaceHolderPrivate;
 
 #include "typedefs.h"
 #include "categorizedcompositenode.h"
@@ -184,6 +184,9 @@ class LIB_EXPORT PersonPlaceHolder : public Person {
 public:
    explicit PersonPlaceHolder(const QByteArray& uid);
    bool merge(Person* contact);
+private:
+   PersonPlaceHolderPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(PersonPlaceHolder)
 };
 
 

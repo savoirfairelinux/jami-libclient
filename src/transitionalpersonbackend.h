@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef TRANSITIONAL_CONTACT_BACKEND
-#define TRANSITIONAL_CONTACT_BACKEND
+#ifndef TRANSITIONALPERSONBACKEND_H
+#define TRANSITIONALPERSONBACKEND_H
 
 #include "collectioninterface.h"
 

@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef BOOTSTTRAP_MODEL_H
-#define BOOTSTTRAP_MODEL_H
+#ifndef BOOTSTRAPMODEL_H
+#define BOOTSTRAPMODEL_H
 
 #include <QtCore/QAbstractTableModel>
 
@@ -47,7 +47,7 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
 private:
-   BootstrapModel(Account* a);
+   explicit BootstrapModel(Account* a);
    virtual ~BootstrapModel();
 
    BootstrapModelPrivate* d_ptr;

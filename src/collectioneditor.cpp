@@ -17,7 +17,8 @@
  ***************************************************************************/
 #include "collectioneditor.h"
 
-CollectionEditorBase::CollectionEditorBase(QAbstractItemModel* m) : m_pModel(m)
+CollectionEditorBase::CollectionEditorBase(QAbstractItemModel* m) : m_pModel(m),
+d_ptr(nullptr)
 {}
 
 QAbstractItemModel* CollectionEditorBase::model() const

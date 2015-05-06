@@ -52,7 +52,7 @@ public:
    /// @enum CredentialModel::EditState track the changes from both clients and daemon
    enum class EditState {
       LOADING  = 0, /*!< The credentials are being loaded, they are not ready yet  */
-      READY    = 1, /*!< Both side are synchronised                                */
+      READY    = 1, /*!< Both side are synchronized                                */
       MODIFIED = 2, /*!< Our version differ from the remote one                    */
       OUTDATED = 3, /*!< The remote version differ from ours                       */
       COUNT__

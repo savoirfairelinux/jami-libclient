@@ -533,10 +533,10 @@ void Person::slotPresenceChanged()
 }
 
 ///Create a placeholder contact, it will eventually be replaced when the real one is loaded
-PersonPlaceHolder::PersonPlaceHolder(const QByteArray& uid)
+PersonPlaceHolder::PersonPlaceHolder(const QByteArray& uid):d_ptr(nullptr)
 {
    setUid(uid);
-   d_ptr->m_isPlaceHolder = true;
+   Person::d_ptr->m_isPlaceHolder = true;
 }
 
 /**
@@ -549,7 +549,7 @@ bool PersonPlaceHolder::merge(Person* contact)
    if ((!contact) || ((*contact) == this))
       return false;
 
-   PersonPrivate* currentD = d_ptr;
+   PersonPrivate* currentD = Person::d_ptr;
    replaceDPointer(contact);
    currentD->m_lParents.removeAll(this);
    if (!currentD->m_lParents.size())

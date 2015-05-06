@@ -151,7 +151,7 @@ struct VCardMapper {
       const QStringList settings = QString(key).split(';');
       if (!m_hHash[settings[0].toLatin1()]) {
          if(key.contains(VCardUtils::Property::PHOTO)) {
-            //key must contain additionnal attributes, we don't need them right now (ENCODING, TYPE...)
+            //key must contain additional attributes, we don't need them right now (ENCODING, TYPE...)
             setPhoto(c, key, value);
             return true;
          }

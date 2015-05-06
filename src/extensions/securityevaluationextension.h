@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PRESENCECOLLECTIONEXTENSION_H
-#define PRESENCECOLLECTIONEXTENSION_H
+#ifndef SECURITYEVALUATIONEXTENSION_H
+#define SECURITYEVALUATIONEXTENSION_H
 
 #include <collectionextensioninterface.h>
 #include <collectionextensionmodel.h>

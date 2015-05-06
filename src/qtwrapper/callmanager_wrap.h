@@ -16,8 +16,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef CALLMANAGER_DBUS_INTERFACE_H
-#define CALLMANAGER_DBUS_INTERFACE_H
+#ifndef CALLMANAGERINTERFACE_H
+#define CALLMANAGERINTERFACE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

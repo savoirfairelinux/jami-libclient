@@ -203,7 +203,7 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
 /// Shared memory in unlocked state if returns false (resize failed).
 bool ShmRendererPrivate::remapShm()
 {
-   // This loop handles case where deamon resize shared memory
+   // This loop handles case where daemon resize shared memory
    // during time we unlock it for remapping.
    while (m_ShmAreaLen != m_pShmArea->mapSize) {
       auto mapSize = m_pShmArea->mapSize;

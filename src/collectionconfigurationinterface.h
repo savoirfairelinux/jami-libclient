@@ -29,7 +29,7 @@ class LIB_EXPORT CollectionConfigurationInterface : public QObject
    Q_OBJECT
 public:
 
-   CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
 
    //Getter
    virtual QByteArray id  () const = 0;

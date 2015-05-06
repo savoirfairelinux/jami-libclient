@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ABSTRACTITEMBACKENDMODELEXTENSION_H
-#define ABSTRACTITEMBACKENDMODELEXTENSION_H
+#ifndef COLLECTIONEXTENSIONINTERFACE_H
+#define COLLECTIONEXTENSIONINTERFACE_H
 
 #include "typedefs.h"
 

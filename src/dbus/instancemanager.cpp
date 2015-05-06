@@ -34,10 +34,10 @@ InstanceInterface& DBus::InstanceManager::instance()
    if(!interface->connection().isConnected()) {
       throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
    }
-   static bool registred = false;
-   if (!registred) {
+   static bool registered = false;
+   if (!registered) {
       QDBusPendingReply<QString> reply = interface->Register(getpid(), "");
-      registred = true;
+      registered = true;
       reply.waitForFinished();
    }
 #endif

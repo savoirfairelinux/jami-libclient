@@ -16,8 +16,8 @@
 *   You should have received a copy of the Lesser GNU General Public License *
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
 *****************************************************************************/
-#ifndef CONFIGURATIONMANAGER_STATIC_INTERFACE_H
-#define CONFIGURATIONMANAGER_STATIC_INTERFACE_H
+#ifndef CONFIGURATIONMANAGERINTERFACE_H
+#define CONFIGURATIONMANAGERINTERFACE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

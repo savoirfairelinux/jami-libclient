@@ -24,9 +24,11 @@ class Certificate;
 
 #include <certificate.h>
 #include "private/matrixutils.h"
+#include <securityevaluationmodel.h>
 
 class SecurityEvaluationModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
    SecurityEvaluationModelPrivate(Account* account, SecurityEvaluationModel* parent);
 

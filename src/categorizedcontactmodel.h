@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONTACT_PROXY_MODEL_H
-#define CONTACT_PROXY_MODEL_H
+#ifndef CATEGORIZEDCONTACTMODEL_H
+#define CATEGORIZEDCONTACTMODEL_H
 
 #include <QtCore/QHash>
 #include <QtCore/QStringList>

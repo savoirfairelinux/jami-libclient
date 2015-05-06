@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ITEMBACKENDINTERFACE_H
-#define ITEMBACKENDINTERFACE_H
+#ifndef COLLECTIONINTERFACE_H
+#define COLLECTIONINTERFACE_H
 
 #include <QObject>
 #include <QHash>
@@ -217,7 +217,7 @@ public:
 
    /**
     * Return the items stored in the backend for a given type. The type
-    * usually is the one managed the the CollectionManager.
+    * usually is the one managed the CollectionManager.
     */
    template<typename T>
    QVector<T*> items() const;

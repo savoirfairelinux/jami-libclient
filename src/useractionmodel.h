@@ -66,7 +66,7 @@ public:
       MUTE_VIDEO      , /*!< [Stateful] Stop sending video to call(s)               */
       SERVER_TRANSFER , /*!< [Stateful] Perform an unattended transfer              */
       RECORD          , /*!< [Stateful] Record the call(s) to .wav file(s)          */
-      HANGUP          , /*!< Resuse an incomming call or hang up an in progress one */
+      HANGUP          , /*!< Resuse an incoming call or hang up an in progress one  */
 
       //Multi selection
       JOIN            , /*!< [Stateful] Join all seclect calls into a conference    */
