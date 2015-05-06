@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QItemSelectionModel>
 
 //System
 #include <cmath>
@@ -73,9 +74,12 @@ public:
    bool                          m_Enabled               ;
    bool                          m_UseUnregisteredAccount;
    bool                          m_DisplayMostUsedNumbers;
+   QItemSelectionModel*          m_pSelectionModel       ;
+   bool                          m_HasCustomSelection    ;
 
    QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
    QHash<Account*,TemporaryContactMethod*> m_hRingTemporaryNumbers;
+   QHash<int, TemporaryContactMethod*> m_pPreferredTemporaryNumbers;
 
 public Q_SLOTS:
    void setPrefix(const QString& str);
@@ -83,13 +87,17 @@ public Q_SLOTS:
    bool accountAdded  (Account* a);
    void accountRemoved(Account* a);
 
+   void resetSelectionModel();
+   void slotSelectionChanged(const QModelIndex& sel, const QModelIndex& prev);
+
 private:
    NumberCompletionModel* q_ptr;
 };
 
 
 NumberCompletionModelPrivate::NumberCompletionModelPrivate(NumberCompletionModel* parent) : QObject(parent), q_ptr(parent),
-m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true), m_Prefix(QString()),m_DisplayMostUsedNumbers(false)
+m_pCall(nullptr),m_Enabled(false),m_UseUnregisteredAccount(true), m_Prefix(QString()),m_DisplayMostUsedNumbers(false),
+m_pSelectionModel(nullptr),m_HasCustomSelection(false)
 {
    //Create the temporary number list
    bool     hasNonIp2Ip = false;
@@ -269,6 +277,8 @@ bool NumberCompletionModel::setData(const QModelIndex& index, const QVariant &va
 //Set the current call
 void NumberCompletionModel::setCall(Call* call)
 {
+   d_ptr->resetSelectionModel();
+
    if (d_ptr->m_pCall)
       disconnect(d_ptr->m_pCall,SIGNAL(dialNumberChanged(QString)),d_ptr,SLOT(setPrefix(QString)));
 
@@ -521,6 +531,63 @@ bool NumberCompletionModel::displayMostUsedNumbers() const
    return d_ptr->m_DisplayMostUsedNumbers;
 }
 
+void NumberCompletionModelPrivate::resetSelectionModel()
+{
+   if (!m_pSelectionModel)
+      return;
+
+   const Account* preferredAccount = AvailableAccountModel::currentDefaultAccount();
+
+   //m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+
+   m_HasCustomSelection = false;
+}
+
+void NumberCompletionModelPrivate::slotSelectionChanged(const QModelIndex& sel, const QModelIndex& prev)
+{
+   m_HasCustomSelection = true;
+}
+
+bool NumberCompletionModel::callSelectedNumber()
+{
+   if (!d_ptr->m_pSelectionModel || !d_ptr->m_pCall)
+      return false;
+
+   const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
+
+   if (!idx.isValid())
+      return false;
+
+   ContactMethod* nb = number(idx);
+
+   if (!nb)
+      return false;
+
+   if (d_ptr->m_pCall->lifeCycleState() != Call::LifeCycleState::CREATION)
+      return false;
+
+   d_ptr->m_pCall->setDialNumber(nb);
+   d_ptr->m_pCall->setAccount(nb->account());
+
+   d_ptr->resetSelectionModel();
+
+   d_ptr->m_pCall->performAction(Call::Action::ACCEPT);
+
+   setCall(nullptr);
+
+   return true;
+}
+
+QItemSelectionModel* NumberCompletionModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<NumberCompletionModel*>(this));
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr, &NumberCompletionModelPrivate::slotSelectionChanged);
+   }
+
+   return d_ptr->m_pSelectionModel;
+}
+
 bool NumberCompletionModelPrivate::accountAdded(Account* a)
 {
    bool hasNonIp2Ip = false;
@@ -531,6 +598,10 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
          //no break
       case Account::Protocol::IAX : {
          TemporaryContactMethod* cm = new TemporaryContactMethod();
+
+         if (!m_pPreferredTemporaryNumbers[(int)a->protocol()])
+            m_pPreferredTemporaryNumbers[(int)a->protocol()] = cm;
+
          cm->setAccount(a);
          m_hSipIaxTemporaryNumbers[a] = cm;
          }
@@ -539,6 +610,10 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
          TemporaryContactMethod* cm = new TemporaryContactMethod();
          cm->setAccount(a);
          m_hRingTemporaryNumbers[a] = cm;
+
+         if (!m_pPreferredTemporaryNumbers[(int)Account::Protocol::RING])
+            m_pPreferredTemporaryNumbers[(int)Account::Protocol::RING] = cm;
+
          }
          break;
       case Account::Protocol::COUNT__:

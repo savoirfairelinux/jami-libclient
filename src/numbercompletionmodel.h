@@ -22,6 +22,9 @@
 #include "typedefs.h"
 #include "phonedirectorymodel.h"
 
+//Qt
+class QItemSelectionModel;
+
 //Ring
 class ContactMethod;
 class Call;
@@ -69,10 +72,14 @@ public:
    bool isUsingUnregisteredAccounts();
    QString prefix() const;
    bool displayMostUsedNumbers() const;
+   QItemSelectionModel* selectionModel() const;
 
 private:
    NumberCompletionModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(NumberCompletionModel)
+
+public Q_SLOTS:
+   bool callSelectedNumber();
 
 Q_SIGNALS:
    void enabled(bool);

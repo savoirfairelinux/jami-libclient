@@ -137,6 +137,11 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
    }
 } //getCurrentAccount
 
+Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
+{
+   return AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+}
+
 ///Set the previous account used
 void AvailableAccountModelPrivate::setPriorAccount(const Account* account) {
    const bool changed = (account && m_spPriorAccount != account) || (!account && m_spPriorAccount);

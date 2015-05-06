@@ -50,6 +50,7 @@ public:
 
    //Getter
    static Account* currentDefaultAccount(ContactMethod* method = nullptr);
+   static Account* currentDefaultAccount(URI::SchemeType schemeType);
 
    //Singleton
    static AvailableAccountModel* instance();
