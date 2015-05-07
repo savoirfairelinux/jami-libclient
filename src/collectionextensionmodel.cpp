@@ -19,13 +19,18 @@
 
 #include "collectionextensioninterface.h"
 
-QList<CollectionExtensionInterface*> CollectionExtensionModelSpecific::m_slEntries;
-
 class CollectionExtensionModelPrivate
 {
 public:
    static CollectionExtensionModel* m_spInstance;
 };
+
+QList<CollectionExtensionInterface*>& CollectionExtensionModelSpecific::entries()
+{
+   static QList<CollectionExtensionInterface*> m_slEntries;
+
+   return m_slEntries;
+}
 
 CollectionExtensionModel* CollectionExtensionModelPrivate::m_spInstance = nullptr;
 
@@ -42,12 +47,12 @@ QVariant CollectionExtensionModel::data( const QModelIndex& index, int role ) co
    if (!index.isValid())
       return QVariant();
 
-   return CollectionExtensionModelSpecific::m_slEntries[index.row()]->data(role);
+   return CollectionExtensionModelSpecific::entries()[index.row()]->data(role);
 }
 
 int CollectionExtensionModel::rowCount( const QModelIndex& parent) const
 {
-   return parent.isValid() ? 0 : CollectionExtensionModelSpecific::m_slEntries.size();
+   return parent.isValid() ? 0 : CollectionExtensionModelSpecific::entries().size();
 }
 
 Qt::ItemFlags CollectionExtensionModel::flags( const QModelIndex& index) const

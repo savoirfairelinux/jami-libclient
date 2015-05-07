@@ -20,7 +20,7 @@
 class CollectionExtensionModelSpecific
 {
 public:
-   static QList<CollectionExtensionInterface*> m_slEntries;
+   static QList<CollectionExtensionInterface*>& entries();
 };
 
 template<class T>
@@ -28,10 +28,10 @@ int CollectionExtensionModel::registerExtension()
 {
    static bool typeInit = false;
 
-   static int typeId = CollectionExtensionModelSpecific::m_slEntries.size();
+   static int typeId = CollectionExtensionModelSpecific::entries().size();
 
    if (!typeInit) {
-      CollectionExtensionModelSpecific::m_slEntries << new T(CollectionExtensionModel::instance());
+      CollectionExtensionModelSpecific::entries() << new T(CollectionExtensionModel::instance());
    }
 
    return typeId;
@@ -46,5 +46,5 @@ int CollectionExtensionModel::getExtensionId()
 template<class T>
 T* CollectionExtensionModel::getExtension()
 {
-   return CollectionExtensionModelSpecific::m_slEntries[registerExtension<T>()];
+   return CollectionExtensionModelSpecific::entries()[registerExtension<T>()];
 }
