@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QItemSelectionModel>
 
 //Ring daemon
 #include <account_const.h>
