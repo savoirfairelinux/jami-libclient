@@ -347,10 +347,8 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
          switch(role) {
             case (int)Role::isDetail:
                return node->m_DetailType == DetailType::DETAIL;
-               break;
             case (int)Role::isCheck:
                return node->m_DetailType == DetailType::CHECK;
-               break;
             case (int)Role::detail:
                if (node->m_DetailType == DetailType::DETAIL)
                   return QVariant::fromValue(static_cast<Certificate::Details>(node->m_EnumClassDetail));
@@ -700,7 +698,7 @@ QAbstractItemModel* CertificateModelPrivate::createBlockList(const Account* a) c
 {
    CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"block",QString(),QString());
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
 //    const QStringList ids = configurationManager.setCertificateStatus(a->id(), );
 

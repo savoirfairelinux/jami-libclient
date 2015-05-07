@@ -447,7 +447,6 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
    case CategorizedCompositeNode::Type::NUMBER:
    case CategorizedCompositeNode::Type::BOOKMARK:
    case CategorizedCompositeNode::Type::CONTACT:
-   default:
       break;
    };
    return QVariant();
@@ -477,7 +476,6 @@ int CategorizedHistoryModel::rowCount( const QModelIndex& parentIdx ) const
          case CategorizedCompositeNode::Type::NUMBER:
          case CategorizedCompositeNode::Type::BOOKMARK:
          case CategorizedCompositeNode::Type::CONTACT:
-         default:
             return 0;
       };
    }

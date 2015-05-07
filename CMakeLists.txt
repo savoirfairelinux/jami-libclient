@@ -78,6 +78,7 @@ ADD_DEFINITIONS(
 
    #See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
    -Wno-unused-function
+   -Wno-attributes
 )
 
 #Add more warnings for compilers that support it. I used this command:
@@ -117,6 +118,22 @@ IF (CMAKE_COMPILER_IS_GNUCC)
    ENDIF()
 
 ENDIF()
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+   ADD_DEFINITIONS(
+      -Wno-c++98-compat
+      -Wno-c++98-compat-pedantic
+      -Wno-unknown-pragmas
+      -Wno-documentation-unknown-command
+      -Wno-padded
+      -Wno-old-style-cast
+      -Wno-sign-conversion
+      -Wno-exit-time-destructors
+      -Wno-global-constructors
+      -Wno-shorten-64-to-32
+      #-Weverything
+   )
+endif()
 
 # OS X
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

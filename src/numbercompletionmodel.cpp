@@ -180,15 +180,12 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return n->uri();
-               break;
             case Qt::ToolTipRole:
                return QString("<table><tr><td>%1</td></tr><tr><td>%2</td></tr></table>")
                   .arg(n->primaryName())
                   .arg(n->category() ? n->category()->name() : QString());
-               break;
             case Qt::DecorationRole:
                return n->icon();
-               break;
             case NumberCompletionModel::Role::ALTERNATE_ACCOUNT:
             case Qt::UserRole:
                if (needAcc)
@@ -598,6 +595,7 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
       case Account::Protocol::SIP :
          hasNonIp2Ip = true;
          //no break
+         [[clang::fallthrough]];
       case Account::Protocol::IAX : {
          TemporaryContactMethod* cm = new TemporaryContactMethod();
 

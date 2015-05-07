@@ -63,16 +63,12 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
       switch (role) {
          case Qt::DisplayRole:
             return QVariant(d_ptr->m_lMessages[idx.row()].message);
-            break;
          case InstantMessagingModel::Role::TYPE:
             return QVariant(d_ptr->m_lMessages[idx.row()].message);
-            break;
          case InstantMessagingModel::Role::FROM:
             return QVariant(d_ptr->m_lMessages[idx.row()].from);
-            break;
          case InstantMessagingModel::Role::TEXT:
             return static_cast<int>(MessageRole::INCOMMING_IM);
-            break;
          case InstantMessagingModel::Role::CONTACT:
             if (d_ptr->m_pCall->peerContactMethod()->contact()) {
                return QVariant();
@@ -86,7 +82,6 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                return c->photo();
             }
             return QVariant();
-            break;
          }
          default:
             break;

@@ -195,7 +195,7 @@ template<class T>
 bool CollectionManagerInterface<T>::deleteItem(T* item)
 {
    if (item->collection()) {
-      if (item->collection()->model() != (QAbstractItemModel*) this)
+      if (item->collection()->model() != reinterpret_cast<QAbstractItemModel*>(this))
          qWarning() << "Item not deleted by its parent model";
       if (item->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
          item->collection()->remove(item);

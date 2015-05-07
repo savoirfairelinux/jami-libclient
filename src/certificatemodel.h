@@ -31,7 +31,7 @@ class LIB_EXPORT CertificateModel : public QAbstractItemModel, public Collection
    Q_OBJECT
 public:
    friend class CertificateProxyModel;
-   friend class CertificateNode;
+   friend struct CertificateNode;
    friend class Certificate;
    friend class Account;
    friend class DaemonCertificateCollectionPrivate;

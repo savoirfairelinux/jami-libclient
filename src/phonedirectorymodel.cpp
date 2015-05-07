@@ -108,17 +108,14 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return number->uri();
-               break;
             case Qt::DecorationRole :
                return PixmapManipulationDelegate::instance()->callPhoto(number,QSize(16,16));
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::TYPE:
          switch (role) {
             case Qt::DisplayRole:
                return number->category()->name();
-               break;
             case Qt::DecorationRole:
                return number->icon();
          }
@@ -127,35 +124,30 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return number->contact()?number->contact()->formattedName():QVariant();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::ACCOUNT:
          switch (role) {
             case Qt::DisplayRole:
                return number->account()?number->account()->id():QVariant();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::STATE:
          switch (role) {
             case Qt::DisplayRole:
                return (int)number->type();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::CALL_COUNT:
          switch (role) {
             case Qt::DisplayRole:
                return number->callCount();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::LAST_USED:
          switch (role) {
             case Qt::DisplayRole:
                return (int)number->lastUsed();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::NAME_COUNT:
@@ -179,42 +171,36 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return number->totalSpentTime();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::WEEK_COUNT:
          switch (role) {
             case Qt::DisplayRole:
                return number->weekCount();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::TRIM_COUNT:
          switch (role) {
             case Qt::DisplayRole:
                return number->trimCount();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::HAVE_CALLED:
          switch (role) {
             case Qt::DisplayRole:
                return number->haveCalled();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::POPULARITY_INDEX:
          switch (role) {
             case Qt::DisplayRole:
                return number->popularityIndex();
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::BOOKMARED:
          switch (role) {
             case Qt::CheckStateRole:
                return number->isBookmarked()?Qt::Checked:Qt::Unchecked;
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::TRACKED:
@@ -222,14 +208,12 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
             case Qt::CheckStateRole:
                if (number->account() && number->account()->supportPresenceSubscribe())
                   return number->isTracked()?Qt::Checked:Qt::Unchecked;
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::PRESENT:
          switch (role) {
             case Qt::CheckStateRole:
                return number->isPresent()?Qt::Checked:Qt::Unchecked;
-               break;
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::PRESENCE_MESSAGE:
@@ -244,7 +228,7 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                   return tr("No associated account");
                else
                   return number->presenceMessage();
-            } break;
+            }
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::UID:
@@ -252,7 +236,6 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
             case Qt::DisplayRole:
             case Qt::ToolTipRole:
                return number->uid();
-               break;
          }
          break;
    }

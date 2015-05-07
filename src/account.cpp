@@ -84,11 +84,9 @@ m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_Last
 m_pBlacklistedCertificates(nullptr), m_pTrustedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
 m_pNetworkInterfaceModel(nullptr)
 {
-   Q_Q(Account);
 }
 
 void AccountPrivate::changeState(Account::EditState state) {
-   Q_Q(Account);
    m_CurrentState = state;
    emit q_ptr->changed(q_ptr);
 }
@@ -139,7 +137,6 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::RING);
          break;
       case Account::Protocol::COUNT__:
-      default:
          break;
    }
    QMutableMapIterator<QString, QString> iter(tmp);
@@ -563,10 +560,8 @@ QString Account::password() const
          break;
       case Account::Protocol::IAX:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
-         break;
       case Account::Protocol::RING:
          return tlsPassword();
-         break;
       case Account::Protocol::COUNT__:
          break;
    };
@@ -1184,6 +1179,7 @@ void Account::setPassword(const QString& detail)
          break;
       case Account::Protocol::RING:
          setTlsPassword(detail);
+         break;
       case Account::Protocol::COUNT__:
          break;
    };
@@ -1308,6 +1304,7 @@ void Account::setLocalPort(unsigned short detail)
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
       case Account::Protocol::RING:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
+         break;
       case Account::Protocol::COUNT__:
          break;
    };

@@ -54,7 +54,6 @@ m_lSupportedProtocols {{
 }
 
 ///Constructors
-///@param fill Whether to fill the list with accounts from configurationManager or not.
 AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
 ,d_ptr(new AccountModelPrivate(this))
 {

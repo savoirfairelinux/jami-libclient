@@ -194,7 +194,7 @@ public:
     * Fetch an element whose identifier come from "listId". This should be
     * implemented in an asynchronous manner.
     *
-    * @param element
+    * @param element The element to fetch from the external source
     * @return if the request already failed
     */
    virtual bool fetch( const Element& element);

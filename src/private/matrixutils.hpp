@@ -67,7 +67,7 @@ template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< std::initializer_list<Value>> s)
 : m_lData(*std::begin(s)) {
    static_assert(std::is_enum<Row>(),"Row has to be an enum class");
-   static_assert((int)Row::COUNT__ > 0,"Row need a COUNT__ element");
+   static_assert(static_cast<int>(Row::COUNT__) > 0,"Row need a COUNT__ element");
 
    // FIXME C++14, use static_assert and make the ctor constexpr
    Q_ASSERT(std::begin(s)->size() == enum_class_size<Row>());//,"Matrix row have to match the enum class size");
@@ -81,7 +81,7 @@ Value Matrix1D<Row,Value,Accessor>::operator[](Row v) {
       Q_ASSERT(false);
       throw v;
    }
-   return m_lData[size_t(v)];
+   return m_lData[static_cast<int>(v)];
 }
 
 template<class Row, typename Value, typename Accessor>
@@ -92,7 +92,7 @@ const Value Matrix1D<Row,Value,Accessor>::operator[](Row v) const {
       Q_ASSERT(false);
       throw v;
    }
-   return m_lData[size_t(v)];
+   return m_lData[static_cast<int>(v)];
 }
 
 template <class E, class T, class A> QMap<A,E> Matrix1D<E,T,A>::m_hReverseMapping;

@@ -48,6 +48,8 @@ class CollectionConfigurationInterface;
  */
 class LIB_EXPORT CollectionManagerInterfaceBase {
 public:
+   virtual ~CollectionManagerInterfaceBase(){}
+
    virtual bool hasEnabledCollections (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const = 0;
    virtual bool hasCollections        (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const = 0;
 
@@ -103,10 +105,10 @@ public:
     *
     * This interface need to be used on a QAbstractItemModel derived class
     *
-    * @param in self: "this"
+    * @param self "this"
     */
    explicit CollectionManagerInterface(QAbstractItemModel* self);
-   virtual ~CollectionManagerInterface() {};
+   virtual ~CollectionManagerInterface() {}
 
    /**
     * This method is used to add a collection to a model. The LoadOptions

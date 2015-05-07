@@ -115,13 +115,10 @@ QVariant KeyExchangeModel::data( const QModelIndex& index, int role) const
       switch (method) {
          case KeyExchangeModel::Type::NONE:
             return KeyExchangeModelPrivate::Name::NONE;
-            break;
          case KeyExchangeModel::Type::ZRTP:
             return KeyExchangeModelPrivate::Name::ZRTP;
-            break;
          case KeyExchangeModel::Type::SDES:
             return KeyExchangeModelPrivate::Name::SDES;
-            break;
          case KeyExchangeModel::Type::COUNT__:
             break;
       };
@@ -160,13 +157,10 @@ const char* KeyExchangeModelPrivate::toDaemonName(KeyExchangeModel::Type type)
    switch (type) {
       case KeyExchangeModel::Type::NONE:
          return KeyExchangeModelPrivate::DaemonName::NONE;
-         break;
       case KeyExchangeModel::Type::ZRTP:
          return KeyExchangeModelPrivate::DaemonName::ZRTP;
-         break;
       case KeyExchangeModel::Type::SDES:
          return KeyExchangeModelPrivate::DaemonName::SDES;
-         break;
       case KeyExchangeModel::Type::COUNT__:
          break;
    };

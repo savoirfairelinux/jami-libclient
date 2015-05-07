@@ -599,43 +599,30 @@ const QString Call::toHumanStateName(const Call::State cur)
    switch (cur) {
       case Call::State::NEW:
          return tr( "New"               );
-         break;
       case Call::State::INCOMING:
          return tr( "Ringing (in)"      );
-         break;
       case Call::State::RINGING:
          return tr( "Ringing (out)"     );
-         break;
       case Call::State::CURRENT:
          return tr( "Talking"           );
-         break;
       case Call::State::DIALING:
          return tr( "Dialing"           );
-         break;
       case Call::State::HOLD:
          return tr( "Hold"              );
-         break;
       case Call::State::FAILURE:
          return tr( "Failed"            );
-         break;
       case Call::State::BUSY:
          return tr( "Busy"              );
-         break;
       case Call::State::TRANSFERRED:
          return tr( "Transfer"          );
-         break;
       case Call::State::TRANSF_HOLD:
          return tr( "Transfer hold"     );
-         break;
       case Call::State::OVER:
          return tr( "Over"              );
-         break;
       case Call::State::ERROR:
          return tr( "Error"             );
-         break;
       case Call::State::CONFERENCE:
          return tr( "Conference"        );
-         break;
       case Call::State::CONFERENCE_HOLD:
          return tr( "Conference (hold)" );
       case Call::State::COUNT__:
@@ -646,9 +633,8 @@ const QString Call::toHumanStateName(const Call::State cur)
          return tr( "Initialization"    );
       case Call::State::CONNECTED:
          return tr( "Connected"    );
-      default:
-         return QString::number(static_cast<int>(cur));
    }
+   return QString::number(static_cast<int>(cur));
 }
 
 QString Call::toHumanStateName() const
@@ -1539,7 +1525,6 @@ void CallPrivate::warning()
       case Call::State::CONNECTED      :
       case Call::State::CONFERENCE     :
       case Call::State::CONFERENCE_HOLD:
-      default:
          break;
    }
 }
@@ -1583,7 +1568,6 @@ void Call::appendText(const QString& str)
    case Call::State::CONFERENCE:
    case Call::State::CONFERENCE_HOLD:
    case Call::State::COUNT__:
-   default:
       qDebug() << "Backspace on call not editable. Doing nothing.";
       return;
    }
@@ -1636,7 +1620,6 @@ void Call::backspaceItemText()
       case Call::State::CONFERENCE:
       case Call::State::CONFERENCE_HOLD:
       case Call::State::COUNT__:
-      default                          :
          qDebug() << "Backspace on call not editable. Doing nothing.";
          return;
    }
@@ -1685,7 +1668,6 @@ void Call::reset()
       case Call::State::CONFERENCE       :
       case Call::State::CONFERENCE_HOLD  :
       case Call::State::COUNT__:
-      default                            :
          qDebug() << "Cannot reset" << d_ptr->m_CurrentState << "calls";
          return;
    }
@@ -1793,30 +1775,22 @@ QVariant Call::roleData(int role) const
             return ct?ct->formattedName():peerContactMethod()?peerContactMethod()->uri():dialNumber();
          else
             return formattedName();
-         break;
       case Qt::ToolTipRole:
          return tr("Account: ") + (account()?account()->alias():QString());
-         break;
       case Qt::EditRole:
          return dialNumber();
       case static_cast<int>(Call::Role::Number):
          return peerContactMethod()->uri();
-         break;
       case static_cast<int>(Call::Role::Direction):
          return QVariant::fromValue(d_ptr->m_Direction);
-         break;
       case static_cast<int>(Call::Role::Date):
          return (int)startTimeStamp();
-         break;
       case static_cast<int>(Call::Role::Length):
          return length();
-         break;
       case static_cast<int>(Call::Role::FormattedDate):
          return QDateTime::fromTime_t(startTimeStamp()).toString();
-         break;
       case static_cast<int>(Call::Role::HasRecording):
          return hasRecording();
-         break;
       case static_cast<int>(Call::Role::Filter): {
          QString normStripppedC;
          foreach(QChar char2,(static_cast<int>(direction())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
@@ -1826,37 +1800,26 @@ QVariant Call::roleData(int role) const
          }
          return normStripppedC;
          }
-         break;
       case static_cast<int>(Call::Role::FuzzyDate):
          return QVariant::fromValue(d_ptr->m_HistoryConst);
-         break;
       case static_cast<int>(Call::Role::IsBookmark):
          return false;
-         break;
       case static_cast<int>(Call::Role::Security):
          return isSecure();
-         break;
       case static_cast<int>(Call::Role::Department):
          return ct?ct->department():QVariant();
-         break;
       case static_cast<int>(Call::Role::Email):
          return ct?ct->preferredEmail():QVariant();
-         break;
       case static_cast<int>(Call::Role::Organisation):
          return ct?ct->organization():QVariant();
-         break;
       case static_cast<int>(Call::Role::Object):
          return QVariant::fromValue(const_cast<Call*>(this));
-         break;
       case static_cast<int>(Call::Role::ContactMethod):
          return QVariant::fromValue(peerContactMethod());
-         break;
       case static_cast<int>(Call::Role::Photo):
          return ct?ct->photo():QVariant();
-         break;
       case static_cast<int>(Call::Role::State):
          return QVariant::fromValue(state());
-         break;
       case static_cast<int>(Call::Role::StartTime):
          return (int) d_ptr->m_pStartTimeStamp;
       case static_cast<int>(Call::Role::StopTime):
@@ -1877,29 +1840,22 @@ QVariant Call::roleData(int role) const
          return peerContactMethod()->totalSpentTime();
       case static_cast<int>(Call::Role::Certificate):
          return QVariant::fromValue(certificate());
-         break;
       case static_cast<int>(Call::Role::DropState):
          return property("dropState");
-         break;
       case static_cast<int>(Call::Role::Missed):
          return isMissed();
       case static_cast<int>(Call::Role::LifeCycleState):
          return QVariant::fromValue(lifeCycleState());
       case static_cast<int>(Call::Role::DTMFAnimState):
          return property("DTMFAnimState");
-         break;
       case static_cast<int>(Call::Role::LastDTMFidx):
          return property("latestDtmfIdx");
-         break;
       case static_cast<int>(Call::Role::DropPosition):
          return property("dropPosition");
-         break;
       case static_cast<int>(Call::Role::SecurityLevel): //TODO remove
          return QVariant::fromValue(account()->securityEvaluationModel()->securityLevel());
-         break;
       case static_cast<int>(Call::Role::SecurityLevelIcon): //TODO remove
          return PixmapManipulationDelegate::instance()->securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
-         break;
       default:
          break;
    };

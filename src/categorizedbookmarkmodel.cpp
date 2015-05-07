@@ -101,7 +101,6 @@ class BookmarkItemNode : public QObject //TODO remove this once Qt4 support is d
 public:
    BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend);
 private:
-   ContactMethod* m_pNumber;
    NumberTreeBackend* m_pBackend;
    CategorizedBookmarkModel* m_pModel;
 private Q_SLOTS:
@@ -125,7 +124,7 @@ NumberTreeBackend::~NumberTreeBackend() {
 }
 
 BookmarkItemNode::BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend) :
-m_pNumber(n),m_pBackend(backend),m_pModel(m){
+m_pBackend(backend),m_pModel(m){
    connect(n,SIGNAL(changed()),this,SLOT(slotNumberChanged()));
 }
 

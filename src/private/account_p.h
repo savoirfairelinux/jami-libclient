@@ -113,7 +113,7 @@ public:
    void outdate();
    void reload ();
    void save   ();
-   void reloadMod() {reload();modify();};
+   void reloadMod() {reload();modify();}
 
    CredentialModel*          m_pCredentials            ;
    CodecModel*               m_pCodecModel             ;

@@ -342,7 +342,6 @@ QVariant CategorizedContactModel::data( const QModelIndex& index, int role) cons
             break;
       }
       return c->roleData(role);
-      break;
    }
    case ContactTreeNode::NodeType::CONTACTMETHOD: /* && (role == Qt::DisplayRole)) {*/
       return modelItem->m_pContactMethod->roleData(role);
@@ -480,7 +479,7 @@ QMimeData* CategorizedContactModel::mimeData(const QModelIndexList &indexes) con
                   mimeData->setData(RingMimes::CONTACT , ct->uid());
                }
                return mimeData;
-               } break;
+               }
             case ContactTreeNode::NodeType::CONTACTMETHOD: {
                //Phone number
                const QString text = data(index, Qt::DisplayRole).toString();

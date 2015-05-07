@@ -53,7 +53,7 @@ d_ptr(new CollectionInterfacePrivateT())
    //Ensure the type is based on QObject (required)
    d_ptr->m_pParent = parent;
 //    d_ptr->m_pEditorType = T::staticMetaObject();
-   d_ptr->m_pEditor = (void*) editor;
+   d_ptr->m_pEditor = reinterpret_cast<void*>(editor);
 
    //The cast is safe because the metatype is checked earlier
    d_ptr->m_fAdd = [editor](ItemBase<QObject>* item)->bool {

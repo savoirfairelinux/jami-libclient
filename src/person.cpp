@@ -471,6 +471,7 @@ bool Person::isReachable() const
             if (hasIP2IP)
                return true;
             //no break
+            [[clang::fallthrough]];
          case URI::ProtocolHint::SIP_OTHER:
             if (hasSip)
                return true;
@@ -501,23 +502,23 @@ QVariant Person::roleData(int role) const
       case Qt::DisplayRole:
       case Qt::EditRole:
          return QVariant(formattedName());
-      case (int)Person::Role::Organization:
+      case static_cast<int>(Person::Role::Organization):
          return QVariant(organization());
-      case (int)Person::Role::Group:
+      case static_cast<int>(Person::Role::Group):
          return QVariant(group());
-      case (int)Person::Role::Department:
+      case static_cast<int>(Person::Role::Department):
          return QVariant(department());
-      case (int)Person::Role::PreferredEmail:
+      case static_cast<int>(Person::Role::PreferredEmail):
          return QVariant(preferredEmail());
-      case (int)Person::Role::FormattedLastUsed:
+      case static_cast<int>(Person::Role::FormattedLastUsed):
          return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(lastUsedTime()));
-      case (int)Person::Role::IndexedLastUsed:
-         return QVariant((int)HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime()));
-      case (int)Person::Role::Object:
+      case static_cast<int>(Person::Role::IndexedLastUsed):
+         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime())));
+      case static_cast<int>(Person::Role::Object):
          return QVariant::fromValue(const_cast<Person*>(this));
-      case (int)Person::Role::DatedLastUsed:
+      case static_cast<int>(Person::Role::DatedLastUsed):
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));
-      case (int)Person::Role::Filter:
+      case static_cast<int>(Person::Role::Filter):
          return filterString();
       default:
          break;

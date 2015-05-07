@@ -111,16 +111,12 @@ QVariant CredentialModel::data(const QModelIndex& idx, int role) const {
       switch (role) {
          case Qt::DisplayRole:
             return QVariant(d_ptr->m_lCredentials[idx.row()]->name);
-            break;
          case CredentialModel::Role::NAME:
             return d_ptr->m_lCredentials[idx.row()]->name;
-            break;
          case CredentialModel::Role::PASSWORD:
             return d_ptr->m_lCredentials[idx.row()]->password;
-            break;
          case CredentialModel::Role::REALM:
             return d_ptr->m_lCredentials[idx.row()]->realm;
-            break;
          default:
             break;
       }

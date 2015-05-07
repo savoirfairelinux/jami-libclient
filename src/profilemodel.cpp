@@ -48,7 +48,7 @@ struct Node;
 class ProfileEditor : public CollectionEditor<Person>
 {
 public:
-   ProfileEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {};
+   ProfileEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
    ~ProfileEditor();
    virtual bool save       ( const Person* item ) override;
    virtual bool remove     ( const Person* item ) override;

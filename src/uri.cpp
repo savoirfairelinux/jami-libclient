@@ -117,7 +117,7 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
    if (start == end+1)
       return {};
 
-   const uchar c = uri[start].toLatin1();
+   const char c = uri[start].toLatin1();
 
    //Assume the scheme is either iax, sip or ring using the first letter and length, this
    //is dangerous and can cause undefined behaviour that will cause the call to fail
@@ -201,7 +201,7 @@ URI::SchemeType URI::schemeType() const
 bool URIPrivate::checkIp(const QString& str, bool &isHash, const URI::SchemeType& scheme)
 {
    const QByteArray raw = str.toLatin1();
-   ushort max = str.size();
+   int max = str.size();
 
    if (max < 3 || max > 45 || (!isHash && scheme == URI::SchemeType::RING))
       return false;
@@ -226,6 +226,7 @@ bool URIPrivate::checkIp(const QString& str, bool &isHash, const URI::SchemeType
             isHash = false;
             sc++;
             //No break
+            [[clang::fallthrough]];
          case 'A': case 'B': case 'C':
          case 'D': case 'E': case 'F':
          case 'a': case 'b': case 'c':

@@ -204,9 +204,9 @@ void AvailableAccountModelPrivate::selectionChanged(const QModelIndex& idx, cons
 void AvailableAccountModelPrivate::checkRemovedAccount(Account* a)
 {
    if (a == m_spPriorAccount) {
-      Account* a = firstRegisteredAccount();
-      qDebug() << "The current default account has been removed, now defaulting to" << a;
-      setPriorAccount(a);
+      Account* a2 = firstRegisteredAccount();
+      qDebug() << "The current default account has been removed, now defaulting to" << a2;
+      setPriorAccount(a2);
    }
 }
 

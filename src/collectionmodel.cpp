@@ -110,20 +110,17 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
          switch(role) {
             case Qt::DisplayRole:
                return item->collection->name();
-               break;
             case Qt::DecorationRole:
                return item->collection->icon();
-               break;
             case Qt::UserRole: // and Role::count
                return 'x'+QString::number(item->collection->size());
-               break;
             case Qt::CheckStateRole: {
                if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
                   return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
+               break;
             }
             case static_cast<int>(Role::hasManageableChildren):
                return item->manageableCount ? true : false;
-               break;
          };
 
          //Retro-map to the SupportedFeatures //WARNING if SupportedFeatures change, this need to be updated
@@ -135,10 +132,8 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
          switch(role) {
             case Qt::DisplayRole:
                return item->m_AltName;
-               break;
             case static_cast<int>(Role::hasManageableChildren):
                return item->manageableCount ? true : false;
-               break;
          }
       }
    }
