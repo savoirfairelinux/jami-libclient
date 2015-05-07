@@ -59,7 +59,11 @@ public:
    bool                               m_PreviewState;
    uint                               m_BufferSize  ;
    QHash<QByteArray,Video::Renderer*> m_hRenderers  ;
+   QHash<Video::Renderer*,QByteArray> m_hRendererIds;
    QHash<Video::Renderer*, QThread*>  m_hThreads    ;
+
+   //Helper
+   void removeRenderer(Video::Renderer* r);
 
 
 private:
@@ -110,7 +114,8 @@ int VideoRendererManager::size() const
 ///Return the call Renderer or nullptr
 Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 {
-   if ((!call) || (!call->hasRemote())) return nullptr;
+   if ((!call) || (!call->hasRemote()) || !d_ptr->m_hRenderers.contains(call->dringId().toLatin1()))
+      return nullptr;
 
    return d_ptr->m_hRenderers[call->dringId().toLatin1()];
 }
@@ -118,7 +123,7 @@ Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 ///Get the video preview Renderer
 Video::Renderer* VideoRendererManager::previewRenderer()
 {
-   if (!d_ptr->m_hRenderers[PREVIEW_RENDERER_ID]) {
+   if (!d_ptr->m_hRenderers.contains(PREVIEW_RENDERER_ID)) {
 
       if ((!Video::DeviceModel::instance()->activeDevice()) || (!Video::DeviceModel::instance()->activeDevice()->activeChannel())) {
          qWarning() << "No device found";
@@ -146,6 +151,7 @@ Video::Renderer* VideoRendererManager::previewRenderer()
       r->moveToThread(t);
 
       d_ptr->m_hRenderers[PREVIEW_RENDERER_ID] = r;
+      d_ptr->m_hRendererIds[r] = PREVIEW_RENDERER_ID;
 
    }
    return d_ptr->m_hRenderers[PREVIEW_RENDERER_ID];
@@ -195,9 +201,9 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
    qWarning() << "startedDecoding for sink id: " << id;
 
-   Video::Renderer* r = m_hRenderers[rid];
+   Video::Renderer* r = nullptr;
 
-   if (r == nullptr ) {
+   if (!m_hRenderers.contains(rid)) {
 
 #ifdef ENABLE_LIBWRAP
 
@@ -205,6 +211,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
       qWarning() << "Calling registerFrameListener";
       m_hRenderers[rid] = r;
+      m_hRendererIds[r]=rid;
 
       DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
          static_cast<Video::DirectRenderer*>(m_hRenderers[id.toLatin1()])->onNewFrame(
@@ -216,6 +223,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
       r = new Video::ShmRenderer(rid,shmPath,res);
       m_hRenderers[rid] = r;
+      m_hRendererIds[r]=rid;
 
 #endif
 
@@ -230,6 +238,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
    }
    else {
+      r = m_hRenderers[rid];
 
       r->setSize(res);
 
@@ -272,11 +281,15 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    }
 }
 
-///A video stopped being rendered
-void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
+/**
+ * @warning This method can be called multiple time for the same renderer
+ */
+void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 {
-   Q_UNUSED(shmPath)
-   Video::Renderer* r = m_hRenderers[id.toLatin1()];
+   if (!r || !m_hRenderers.contains(m_hRendererIds[r]))
+      return;
+
+   const QByteArray id = m_hRendererIds[r];
 
    //Quit if for some reasons the renderer is not found
    if ( !r ) {
@@ -292,7 +305,7 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
 
    r->stopRendering();
 
-   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << (m_hRenderers[id.toLatin1()] != nullptr);
+   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
 
    Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
 
@@ -305,7 +318,8 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
       emit q_ptr->previewStopped(r);
    }
 
-   m_hRenderers[id.toLatin1()] = nullptr;
+   m_hRendererIds.remove(r);
+   m_hRenderers.remove(id);
 
    QThread* t = m_hThreads[r];
    m_hThreads[r] = nullptr;
@@ -318,6 +332,16 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
    delete r;
 
    t->deleteLater();
+}
+
+///A video stopped being rendered
+void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
+{
+   Q_UNUSED(shmPath)
+
+   if (m_hRenderers.contains(id.toLatin1())) {
+      removeRenderer(m_hRenderers[id.toLatin1()]);
+   }
 }
 
 void VideoRendererManager::switchDevice(const Video::Device* device) const
