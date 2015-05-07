@@ -21,7 +21,12 @@
 #include "typedefs.h"
 #include <QtCore/QAbstractListModel>
 
+//Qt
+class QItemSelectionModel;
+
+//Ring
 class NetworkInterfaceModelPrivate;
+class Account;
 
 ///Static model for handling encryption types
 class LIB_EXPORT NetworkInterfaceModel : public QAbstractListModel {
@@ -30,10 +35,9 @@ class LIB_EXPORT NetworkInterfaceModel : public QAbstractListModel {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
-public:
+   friend class Account;
 
-   //Private constructor, can only be called by 'Account'
-   explicit NetworkInterfaceModel();
+public:
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -42,11 +46,13 @@ public:
    virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   //Singleton
-   static NetworkInterfaceModel* instance();
+   //Getter
+   QItemSelectionModel* selectionModel() const;
 
 private:
-   static NetworkInterfaceModel* m_spInstance;
+
+   //Private constructor, can only be called by 'Account'
+   explicit NetworkInterfaceModel(Account* a);
 
    NetworkInterfaceModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(NetworkInterfaceModel)

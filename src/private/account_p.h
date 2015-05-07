@@ -28,6 +28,7 @@ class CipherModel;
 class AccountStatusModel;
 class TlsMethodModel;
 class ProtocolModel;
+class NetworkInterfaceModel;
 class BootstrapModel;
 
 typedef void (AccountPrivate::*account_function)();
@@ -56,6 +57,7 @@ public:
    friend class BootstrapModelPrivate;
    friend class ContactMethod;
    friend class Certificate;
+   friend class NetworkInterfaceModelPrivate;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
@@ -125,6 +127,7 @@ public:
    QAbstractItemModel*       m_pKnownCertificates      ;
    QAbstractItemModel*       m_pBlacklistedCertificates;
    QAbstractItemModel*       m_pTrustedCertificates    ;
+   NetworkInterfaceModel*    m_pNetworkInterfaceModel  ;
    Account::EditState m_CurrentState;
 
    // State machines

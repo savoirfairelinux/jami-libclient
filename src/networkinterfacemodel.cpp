@@ -20,21 +20,42 @@
 //Qt
 #include <QtCore/QCoreApplication>
 
+//Ring daemon
+#include <account_const.h>
+
 //Ring
 #include "dbus/configurationmanager.h"
-
-NetworkInterfaceModel* NetworkInterfaceModel::m_spInstance = nullptr;
+#include <account.h>
+#include <private/account_p.h>
 
 class NetworkInterfaceModelPrivate : public QObject {
    Q_OBJECT
 public:
+   NetworkInterfaceModelPrivate(NetworkInterfaceModel*);
    QStringList m_Interfaces;
+   QItemSelectionModel* m_pSelectionModel;
+   Account* m_pAccount;
+
+   //Helper
+   QString localInterface() const;
+   void setLocalInterface(const QString& detail);
+
+public Q_SLOTS:
+   void slotSelectionChanged(const QModelIndex& idx, const QModelIndex& prev);
+
+private:
+   NetworkInterfaceModel* q_ptr;
 };
 
-NetworkInterfaceModel::NetworkInterfaceModel() : QAbstractListModel(QCoreApplication::instance()),
-d_ptr(new NetworkInterfaceModelPrivate())
+NetworkInterfaceModelPrivate::NetworkInterfaceModelPrivate(NetworkInterfaceModel* parent): QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),m_pAccount(nullptr)
+{
+}
+
+NetworkInterfaceModel::NetworkInterfaceModel(Account* a) : QAbstractListModel(QCoreApplication::instance()),
+d_ptr(new NetworkInterfaceModelPrivate(this))
 {
    //TODO get updates from the daemon
+   d_ptr->m_pAccount = a;
    d_ptr->m_Interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
 }
 
@@ -47,6 +68,18 @@ QHash<int,QByteArray> NetworkInterfaceModel::roleNames() const
 
    }*/
    return roles;
+}
+
+///Return the account local interface
+QString NetworkInterfaceModelPrivate::localInterface() const
+{
+   return m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_INTERFACE);
+}
+
+///Set the local interface
+void NetworkInterfaceModelPrivate::setLocalInterface(const QString& detail)
+{
+   m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_INTERFACE, detail);
 }
 
 //Model functions
@@ -76,11 +109,34 @@ bool NetworkInterfaceModel::setData( const QModelIndex& index, const QVariant &v
    return false;
 }
 
-NetworkInterfaceModel* NetworkInterfaceModel::instance()
+void NetworkInterfaceModelPrivate::slotSelectionChanged(const QModelIndex& idx, const QModelIndex& prev)
 {
-   if (!m_spInstance)
-      m_spInstance = new NetworkInterfaceModel();
-   return m_spInstance;
+   Q_UNUSED(prev)
+   setLocalInterface(idx.data(Qt::DisplayRole).toString());
+}
+
+QItemSelectionModel* NetworkInterfaceModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<NetworkInterfaceModel*>(this));
+
+      const QString currentInterface = d_ptr->localInterface();
+      int idx = d_ptr->m_Interfaces.indexOf(currentInterface);
+
+      //Some interfaces could be currently disconnected
+      if (idx == -1) {
+         idx = d_ptr->m_Interfaces.size();
+
+         const_cast<NetworkInterfaceModel*>(this)->beginInsertRows(QModelIndex(), idx, idx);
+         d_ptr->m_Interfaces << currentInterface;
+         const_cast<NetworkInterfaceModel*>(this)->endInsertRows();
+      }
+      d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr, &NetworkInterfaceModelPrivate::slotSelectionChanged);
+   }
+
+   return d_ptr->m_pSelectionModel;
 }
 
 ///Translate enum type to QModelIndex

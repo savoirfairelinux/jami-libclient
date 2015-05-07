@@ -41,6 +41,7 @@ class AccountStatusModel     ;
 class ProtocolModel          ;
 class CodecModel             ;
 class BootstrapModel         ;
+class NetworkInterfaceModel  ;
 
 //Private
 class AccountPrivate;
@@ -83,6 +84,7 @@ class LIB_EXPORT Account : public QObject {
    friend class BootstrapModelPrivate;
    friend class ContactMethod;
    friend class Certificate;
+   friend class NetworkInterfaceModelPrivate;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
@@ -99,7 +101,6 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
-   Q_PROPERTY(QString        localInterface               READ localInterface                WRITE setLocalInterface              )
    Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
    Q_PROPERTY(QString        lastErrorMessage             READ lastErrorMessage              WRITE setLastErrorMessage            )
    Q_PROPERTY(KeyExchangeModel::Type keyExchange          READ keyExchange                   WRITE setKeyExchange                 )
@@ -195,7 +196,6 @@ class LIB_EXPORT Account : public QObject {
          TlsServerName               = 112,
          SipStunServer               = 113,
          PublishedAddress            = 114,
-         LocalInterface              = 115,
          RingtonePath                = 116,
          KeyExchange                 = 190,
          RegistrationExpire          = 118,
@@ -270,6 +270,7 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE TlsMethodModel*          tlsMethodModel             () const;
       Q_INVOKABLE ProtocolModel*           protocolModel              () const;
       Q_INVOKABLE BootstrapModel*          bootstrapModel             () const;
+      Q_INVOKABLE NetworkInterfaceModel*   networkInterfaceModel      () const;
       Q_INVOKABLE QAbstractItemModel*      knownCertificateModel      () const;
       Q_INVOKABLE QAbstractItemModel*      backlistedCertificatesModel() const;
       Q_INVOKABLE QAbstractItemModel*      trustedCertificatesModel   () const;
@@ -311,7 +312,6 @@ class LIB_EXPORT Account : public QObject {
       int     lastErrorCode                () const;
       int     localPort                    () const;
       int     voiceMailCount               () const;
-      QString localInterface               () const;
       DtmfType DTMFType                    () const;
       bool    presenceStatus               () const;
       QString presenceMessage              () const;
@@ -363,7 +363,6 @@ class LIB_EXPORT Account : public QObject {
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
-      void setLocalInterface                (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
       void setLastErrorMessage              (const QString& message );
       void setTurnServer                    (const QString& value   );

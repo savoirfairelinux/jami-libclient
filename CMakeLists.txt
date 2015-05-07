@@ -75,6 +75,9 @@ ADD_DEFINITIONS(
    -Wsizeof-pointer-memaccess
    #-Wuseless-cast
    -Wvarargs
+
+   #See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
+   -Wno-unused-function
 )
 
 #Add more warnings for compilers that support it. I used this command:

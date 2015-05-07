@@ -114,7 +114,6 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TlsServerName               ) ,QByteArray("tlsServerName"                 ));
       roles.insert(CAST(Account::Role::SipStunServer               ) ,QByteArray("sipStunServer"                 ));
       roles.insert(CAST(Account::Role::PublishedAddress            ) ,QByteArray("publishedAddress"              ));
-      roles.insert(CAST(Account::Role::LocalInterface              ) ,QByteArray("localInterface"                ));
       roles.insert(CAST(Account::Role::RingtonePath                ) ,QByteArray("ringtonePath"                  ));
       roles.insert(CAST(Account::Role::RegistrationExpire          ) ,QByteArray("registrationExpire"            ));
       roles.insert(CAST(Account::Role::TlsNegotiationTimeoutSec    ) ,QByteArray("tlsNegotiationTimeoutSec"      ));

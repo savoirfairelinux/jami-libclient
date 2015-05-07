@@ -45,6 +45,7 @@
 #include "bootstrapmodel.h"
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
+#include "networkinterfacemodel.h"
 #include "ringtonemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
@@ -80,7 +81,8 @@ m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
-m_pBlacklistedCertificates(nullptr), m_pTrustedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId)
+m_pBlacklistedCertificates(nullptr), m_pTrustedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
+m_pNetworkInterfaceModel(nullptr)
 {
    Q_Q(Account);
 }
@@ -465,6 +467,15 @@ QAbstractItemModel* Account::trustedCertificatesModel() const
    return d_ptr->m_pTrustedCertificates;
 }
 
+NetworkInterfaceModel* Account::networkInterfaceModel() const
+{
+   if (!d_ptr->m_pNetworkInterfaceModel) {
+      d_ptr->m_pNetworkInterfaceModel = new NetworkInterfaceModel(const_cast<Account*>(this));
+   }
+
+   return d_ptr->m_pNetworkInterfaceModel;
+}
+
 bool Account::isUsedForOutgogingCall() const
 {
    return d_ptr->m_HaveCalled;
@@ -787,12 +798,6 @@ int Account::voiceMailCount() const
    return d_ptr->m_VoiceMailCount;
 }
 
-///Return the account local interface
-QString Account::localInterface() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_INTERFACE);
-}
-
 ///Return the account registration status
 Account::RegistrationState Account::registrationState() const
 {
@@ -945,8 +950,6 @@ QVariant Account::roleData(int role) const
          return sipStunServer();
       case CAST(Account::Role::PublishedAddress):
          return publishedAddress();
-      case CAST(Account::Role::LocalInterface):
-         return localInterface();
       case CAST(Account::Role::RingtonePath):
          return ringtonePath();
       case CAST(Account::Role::RegistrationExpire):
@@ -1261,12 +1264,6 @@ void Account::setSipStunServer(const QString& detail)
 void Account::setPublishedAddress(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_ADDRESS, detail);
-}
-
-///Set the local interface
-void Account::setLocalInterface(const QString& detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_INTERFACE, detail);
 }
 
 ///Set the ringtone path, it have to be a valid absolute path
@@ -1603,9 +1600,6 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::PublishedAddress):
          setPublishedAddress(value.toString());
-         break;
-      case CAST(Account::Role::LocalInterface):
-         setLocalInterface(value.toString());
          break;
       case CAST(Account::Role::RingtonePath):
          setRingtonePath(value.toString());
