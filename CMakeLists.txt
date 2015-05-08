@@ -205,6 +205,11 @@ SET( libringclient_LIB_SRCS
   src/video/renderer.cpp
   src/certificate.cpp
   src/securityflaw.cpp
+  src/media/media.cpp
+  src/media/audio.cpp
+  src/media/video.cpp
+  src/media/text.cpp
+  src/media/file.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -386,6 +391,14 @@ SET(libringclient_audio_LIB_HDRS
 SET(libringclient_extensions_LIB_HDRS
   src/extensions/presencecollectionextension.h
   src/extensions/securityevaluationextension.h
+)
+
+SET(libringclient_media_LIB_HDRS
+  src/media/media.h
+  src/media/audio.h
+  src/media/video.h
+  src/media/text.h
+  src/media/file.h
 )
 
 SET(libringclient_delegates_LIB_HDRS
@@ -603,6 +616,11 @@ INSTALL( FILES ${libringclient_video_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_audio_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/audio
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_media_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/media
   COMPONENT Devel
 )
 

@@ -45,6 +45,13 @@ namespace Video {
    class ManagerPrivate;
 }
 
+namespace Media {
+   class Media;
+   class Audio;
+   class Video;
+   class Text;
+}
+
 class Call;
 
 //Private
@@ -75,6 +82,10 @@ public:
    friend class IMConversationManager;
    friend class VideoRendererManager;
    friend class VideoRendererManagerPrivate;
+   friend class Media::Media;
+   friend class Media::Audio;
+   friend class Media::Video;
+   friend class Media::Text;
 
    //Enum
 
