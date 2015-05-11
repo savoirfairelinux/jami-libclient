@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_TEXT_H
-#define MEDIA_TEXT_H
+#ifndef MEDIA_FILE_H
+#define MEDIA_FILE_H
 
 #include <media/media.h>
 #include <typedefs.h>
@@ -26,14 +26,15 @@ class Call;
 
 namespace Media {
 
-class LIB_EXPORT File : Media::Media
+class LIB_EXPORT File : public Media::Media
 {
+   friend class CallPrivate;
 public:
 
    virtual Media::Type type() override;
 
+   File(Call* parent, const Media::Direction direction);
 private:
-   File(Call* parent);
    virtual ~File();
 
    MediaFilePrivate* d_ptr;

@@ -31,6 +31,7 @@ class QTimer;
 //Ring
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
+#include "media/media.h"
 class Account               ;
 class InstantMessagingModel ;
 class UserActionModel       ;
@@ -291,6 +292,11 @@ public:
    QVariant                 roleData         (int role) const;
    QVariant                 roleData         (Role role) const;
 
+   template<typename T>
+   T* firstMedia(Media::Media::Direction direction) const;
+   QList<Media::Media*>     media   (Media::Media::Type type, Media::Media::Direction direction) const;
+   bool                     hasMedia(Media::Media::Type type, Media::Media::Direction direction) const;
+
    //Automated function
    Call::State performAction(Call::Action action);
 
@@ -355,6 +361,10 @@ Q_SIGNALS:
    void videoStarted(Video::Renderer* renderer);
    ///Remove a new video renderer
    void videoStopped(Video::Renderer* renderer);
+   ///Notify when a media is added
+   void mediaAdded(Media::Media* media);
+   ///Notify when a media state change
+   void mediaStateChanged(Media::Media* media, const Media::Media::State s, const Media::Media::State m);
 };
 
 Q_DECLARE_METATYPE(Call*)

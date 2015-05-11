@@ -28,7 +28,7 @@ class MediaTextPrivate
 {
 };
 
-Media::Text::Text(Call* parent) : Media::Media(parent), d_ptr(new MediaTextPrivate())
+Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate())
 {
    Q_ASSERT(parent);
 }

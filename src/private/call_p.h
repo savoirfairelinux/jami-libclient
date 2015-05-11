@@ -38,6 +38,10 @@ class Certificate;
 class CallPrivate;
 typedef  void (CallPrivate::*function)();
 
+namespace Media {
+   class Media;
+}
+
 class CallPrivate : public QObject
 {
    Q_OBJECT
@@ -186,6 +190,10 @@ public:
     */
    static const TypedStateMachine< Call::LifeCycleState , Call::State > metaStateMap;
 
+   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Media*>* > m_mMedias;
+
+   static const Matrix1D<Call::LifeCycleState,function> m_mLifeCycleStateChanges;
+
    static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
 
    static DaemonState toDaemonCallState   (const QString& stateName);
@@ -219,6 +227,10 @@ public:
    void warning      ();
    void remove       ();
    void abort        ();
+
+   //LifeCycleState change callback
+   void initMedia();
+   void terminateMedia();
 
    //Helpers
    void changeCurrentState(Call::State newState);

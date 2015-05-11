@@ -28,7 +28,7 @@ class MediaAudioPrivate
 {
 };
 
-Media::Audio::Audio(Call* parent) : Media::Media(parent), d_ptr(new MediaAudioPrivate())
+Media::Audio::Audio(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaAudioPrivate())
 {
    Q_ASSERT(parent);
 }

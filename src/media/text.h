@@ -26,14 +26,15 @@ class Call;
 
 namespace Media {
 
-class LIB_EXPORT Text : Media::Media
+class LIB_EXPORT Text : public Media::Media
 {
+   friend class CallPrivate;
 public:
 
    virtual Media::Type type() override;
 
+   Text(Call* parent, const Media::Direction direction);
 private:
-   Text(Call* parent);
    virtual ~Text();
 
    MediaTextPrivate* d_ptr;

@@ -28,7 +28,7 @@ class MediaVideoPrivate
 {
 };
 
-Media::Video::Video(Call* parent) : Media::Media(parent), d_ptr(new MediaVideoPrivate())
+Media::Video::Video(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaVideoPrivate())
 {
    Q_ASSERT(parent);
 }

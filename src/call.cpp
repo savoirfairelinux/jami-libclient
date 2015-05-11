@@ -58,6 +58,11 @@
 #include "personmodel.h"
 #include "imconversationmanager.h"
 
+#include "media/audio.h"
+#include "media/video.h"
+#include "media/text.h"
+#include "media/file.h"
+
 //TODO remove
 #include "securityevaluationmodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
@@ -163,6 +168,14 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
 /*CONNECTED      */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 }};//                                                                                                                                */
+
+//There is no point to have a 2D matrix, only one transition per state is possible
+const Matrix1D<Call::LifeCycleState,function> CallPrivate::m_mLifeCycleStateChanges = {{
+/* CREATION       */ CP::nothing       ,
+/* INITIALIZATION */ CP::nothing       ,
+/* PROGRESS       */ CP::initMedia     ,
+/* FINISHED       */ CP::terminateMedia,
+}};
 #undef CP
 
 const TypedStateMachine< Call::LifeCycleState , Call::State > CallPrivate::metaStateMap =
@@ -211,6 +224,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
 
+
 QDebug LIB_EXPORT operator<<(QDebug dbg, const CallPrivate::DaemonState& c );
 
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c)
@@ -258,7 +272,13 @@ m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr)
+m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
+   /*                            IN                                     OUT                     */
+   /* AUDIO */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
+   /* VIDEO */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
+   /* TEXT  */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
+   /* FILE  */ {{ new QList<Media::Media*>() /*Not implemented              */, new QList<Media::Media*>() /*Not implemented              */}},
+}})
 {
 }
 
@@ -308,6 +328,14 @@ Call::~Call()
    //m_pTransferNumber and m_pDialNumber are temporary, they are owned by the call
    if ( d_ptr->m_pTransferNumber ) delete d_ptr->m_pTransferNumber;
    if ( d_ptr->m_pDialNumber     ) delete d_ptr->m_pDialNumber;
+
+   d_ptr->terminateMedia();
+
+   for (const Media::Media::Type t : EnumIterator<Media::Media::Type>() ) {
+      for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>() ) {
+         delete d_ptr->m_mMedias[t][d];
+      }
+   }
 
    delete d_ptr;
 }
@@ -368,6 +396,7 @@ Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
       Audio::Settings::instance()->playRoomTone();
    }
    qDebug() << "Created dialing call" << call;
+
    return call;
 }
 
@@ -630,7 +659,7 @@ const QString Call::toHumanStateName(const Call::State cur)
       case Call::State::INITIALIZATION:
          return tr( "Initialization"    );
       case Call::State::ABORTED:
-         return tr( "Initialization"    );
+         return tr( "Aborted"           );
       case Call::State::CONNECTED:
          return tr( "Connected"    );
    }
@@ -868,6 +897,68 @@ void CallPrivate::removeRenderer(Video::Renderer* renderer)
    return;
 }
 
+QList<Media::Media*> Call::media(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   return *(d_ptr->m_mMedias[type][direction]);
+}
+
+bool Call::hasMedia(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   return d_ptr->m_mMedias[type][direction]->size();
+}
+
+
+/**
+ * Custom type generator, avoid RTTI
+ */
+namespace MediaTypeGenerator
+{
+   int genId();
+   int genId() {
+      static int currentId = 0;
+      return ++currentId;
+   }
+
+   template<typename T>
+   int getId() {
+      static int id = genId();
+      return id;
+   }
+}
+
+/**
+ * Perform a safe cast of the first media of "T" type
+ * @example Media::Audio* audio = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+ * @return nullptr if none, the media otherwise.
+ */
+template<typename T>
+T* Call::firstMedia(Media::Media::Direction direction) const
+{
+   static bool isInit = false;
+   //Try to map T to Media::Media::Type then use this to retrieve and cast the media
+   static QHash<int, Media::Media::Type> sTypeMap;
+   if (!isInit) {
+      isInit = true;
+      sTypeMap[MediaTypeGenerator::getId<Media::Audio>()] = Media::Media::Type::AUDIO;
+      sTypeMap[MediaTypeGenerator::getId<Media::Video>()] = Media::Media::Type::VIDEO;
+      sTypeMap[MediaTypeGenerator::getId<Media::Text >()] = Media::Media::Type::TEXT ;
+      sTypeMap[MediaTypeGenerator::getId<Media::File >()] = Media::Media::Type::FILE ;
+   }
+   Q_ASSERT(sTypeMap.contains(MediaTypeGenerator::getId<T>()));
+
+   const Media::Media::Type t = sTypeMap[MediaTypeGenerator::getId<T>()];
+
+   QList<Media::Media*> ms = media(t, direction);
+
+   if (!ms.isEmpty()) {
+      Media::Media* m = ms[0];
+      Q_ASSERT(m->type() == t);
+
+      return reinterpret_cast<T*>(m);
+   }
+
+   return nullptr;
+}
 
 /*****************************************************************************
  *                                                                           *
@@ -1039,6 +1130,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       m_CurrentState = confStatetoCallState(newStateName); //TODO don't do this
       emit q_ptr->stateChanged(m_CurrentState,previousState);
 
+      //TODO find a way to handle media for conferences to rewrite them as communication group
       if (CallPrivate::metaStateMap[m_CurrentState] != CallPrivate::metaStateMap[previousState])
          emit q_ptr->lifeCycleStateChanged(CallPrivate::metaStateMap[m_CurrentState],CallPrivate::metaStateMap[previousState]);
 
@@ -1136,8 +1228,15 @@ void CallPrivate::changeCurrentState(Call::State newState)
 
    emit q_ptr->stateChanged(newState, previousState);
 
-   if (CallPrivate::metaStateMap[newState] != CallPrivate::metaStateMap[previousState])
-      emit q_ptr->lifeCycleStateChanged(CallPrivate::metaStateMap[newState],CallPrivate::metaStateMap[previousState]);
+   if (CallPrivate::metaStateMap[newState] != CallPrivate::metaStateMap[previousState]) {
+      const Call::LifeCycleState oldLCS = CallPrivate::metaStateMap[ previousState ];
+      const Call::LifeCycleState newLCS = CallPrivate::metaStateMap[ newState      ];
+
+      //Call the LifeCycleState callback
+      (this->*m_mLifeCycleStateChanges[newLCS])();
+
+      emit q_ptr->lifeCycleStateChanged(newLCS, oldLCS);
+   }
 
    emit q_ptr->changed();
    emit q_ptr->changed(q_ptr);
@@ -1146,6 +1245,51 @@ void CallPrivate::changeCurrentState(Call::State newState)
 
    if (q_ptr->lifeCycleState() == Call::LifeCycleState::FINISHED)
       emit q_ptr->isOver(q_ptr);
+
+}
+
+void CallPrivate::initMedia()
+{
+   Call* c = q_ptr;
+   const auto cb = [c,this](const Media::Media::State s, const Media::Media::State p) {
+      Media::Media* m = qobject_cast<Media::Media*>(q_ptr->sender());
+      if (m) {
+         emit q_ptr->mediaStateChanged(m,s,p);
+      }
+      else
+         Q_ASSERT(false);
+   };
+
+   //Always assume there is an audio and text media, even if this is untrue
+   for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>()) {
+      //Audio
+      Media::Media* m = new Media::Audio(q_ptr, d);
+      (*m_mMedias[Media::Media::Type::AUDIO][d]) << m;
+      connect(m, &Media::Media::stateChanged, cb);
+      emit q_ptr->mediaAdded(m);
+
+      //Text
+      m = new Media::Text(q_ptr, d);
+      (*m_mMedias[Media::Media::Type::TEXT ][d]) << m;
+      connect(m, &Media::Media::stateChanged, cb);
+      emit q_ptr->mediaAdded(m);
+   }
+
+}
+
+void CallPrivate::terminateMedia()
+{
+   //Delete remaining media
+   for (const Media::Media::Type t : EnumIterator<Media::Media::Type>() ) {
+      for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>() ) {
+         for (Media::Media* m : q_ptr->media(t,d) ) {
+            m << Media::Media::Action::TERMINATE;
+            m_mMedias[t][d]->removeAll(m);
+            //TODO keep the media for history visualization purpose if it has a recording
+            delete m;
+         }
+      }
+   }
 }
 
 ///Set the start timestamp and update the cache

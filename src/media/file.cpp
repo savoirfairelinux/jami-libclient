@@ -28,7 +28,7 @@ class MediaFilePrivate
 {
 };
 
-Media::File::File(Call* parent) : Media::Media(parent), d_ptr(new MediaFilePrivate())
+Media::File::File(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaFilePrivate())
 {
    Q_ASSERT(parent);
 }

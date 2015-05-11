@@ -50,6 +50,7 @@ private:
    //Attributes
    Media::Media::State m_State;
    Call* m_pCall;
+   Media::Media::Direction m_Direction;
 
    Media* q_ptr;
 };

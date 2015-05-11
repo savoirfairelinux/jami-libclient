@@ -20,22 +20,25 @@
 
 #include <media/media.h>
 #include <typedefs.h>
+#include "private/call_p.h"
 
 class MediaAudioPrivate;
 class Call;
 
+
 namespace Media {
 
-class LIB_EXPORT Audio : Media::Media
+class LIB_EXPORT Audio : public Media::Media
 {
+   friend class CallPrivate;
 public:
 
    virtual Media::Type type() override;
    virtual bool mute() override;
    virtual bool unmute() override;
 
+   Audio(Call* parent, const Media::Direction direction);
 private:
-   Audio(Call* parent);
    virtual ~Audio();
 
    MediaAudioPrivate* d_ptr;

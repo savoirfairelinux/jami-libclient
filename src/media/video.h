@@ -26,16 +26,17 @@ class Call;
 
 namespace Media {
 
-class LIB_EXPORT Video : Media::Media
+class LIB_EXPORT Video : public Media::Media
 {
+   friend class CallPrivate;
 public:
 
    virtual Media::Type type() override;
    virtual bool mute() override;
    virtual bool unmute() override;
 
+   Video(Call* parent, const Media::Direction direction);
 private:
-   Video(Call* parent);
    virtual ~Video();
 
    MediaVideoPrivate* d_ptr;

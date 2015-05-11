@@ -18,6 +18,7 @@
 #include "media.h"
 
 #include "../private/media_p.h"
+#include <call.h>
 
 const Matrix2D<Media::Media::State, Media::Media::Action, bool> Media::MediaPrivate::m_mValidTransitions ={{
    /*                MUTE   UNMUTE  TERMINATE */
@@ -41,15 +42,21 @@ const Matrix2D<Media::Media::State, Media::Media::Action, Media::MediaTransition
 namespace Media {
 
 MediaPrivate::MediaPrivate(Media* parent) :
- m_State(Media::Media::State::ACTIVE),m_pCall(nullptr),q_ptr(parent)
+ m_State(Media::Media::State::ACTIVE),m_pCall(nullptr),q_ptr(parent),m_Direction(Media::Direction::OUT)
 {
 
 }
 
-Media::Media(Call* parent) : d_ptr(new MediaPrivate(this))
+Media::Media(Call* parent, const Direction dir) : QObject(parent), d_ptr(new MediaPrivate(this))
 {
    Q_ASSERT(parent);
    d_ptr->m_pCall = parent;
+   d_ptr->m_Direction = dir;
+}
+
+Media::~Media()
+{
+
 }
 
 }
@@ -106,11 +113,24 @@ Media::Media::State Media::Media::state() const
    return d_ptr->m_State;
 }
 
-bool Media::Media::performAction(const Media::Media::Action)
+bool Media::Media::performAction(const Media::Media::Action action)
 {
-   //TODO implement a state machine
+   const Media::Media::State s = d_ptr->m_State;
 
-   return false;
+   //TODO implement a state machine
+   const bool ret = (d_ptr->*(d_ptr->m_mCallbacks)[d_ptr->m_State][action])();
+
+   if (d_ptr->m_State != s && ret) {
+      emit stateChanged(d_ptr->m_State, s);
+   }
+
+   return ret;
+}
+
+Media::Media* operator<<(Media::Media* m, Media::Media::Action a)
+{
+   m->performAction(a);
+   return m;
 }
 
 void Media::MediaPrivate::muteConfirmed()
@@ -125,7 +145,11 @@ void Media::MediaPrivate::unmuteConfirmed()
       case Media::Media::Type::VIDEO:
       case Media::Media::Type::FILE:
          m_State = Media::Media::State::ACTIVE;
+         break;
       case Media::Media::Type::TEXT:
          m_State = Media::Media::State::IDLE;
+         break;
+      case Media::Media::Type::COUNT__:
+         break;
    };
 }

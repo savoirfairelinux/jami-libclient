@@ -18,6 +18,8 @@
 #ifndef MEDIA_H
 #define MEDIA_H
 
+#include <QtCore/QObject>
+
 #include "typedefs.h"
 
 class Call;
@@ -28,15 +30,16 @@ namespace Media {
 
 namespace Media {
 
-class LIB_EXPORT Media
+class LIB_EXPORT Media : public QObject
 {
-
+   Q_OBJECT
 public:
    enum class Type {
       AUDIO = 0, /*!< */
       VIDEO = 1, /*!< */
       TEXT  = 2, /*!< */
       FILE  = 3, /*!< */
+      COUNT__
    };
 
    enum class State {
@@ -50,6 +53,7 @@ public:
    enum class Direction {
       IN , /*!< The media is coming from the peer */
       OUT, /*!< The media is going to the peer    */
+      COUNT__
    };
 
    enum class Action {
@@ -67,6 +71,10 @@ public:
    Media::Media::State state() const;
    bool performAction(const Media::Action);
 
+   //TODO add an abstract history getter with specialisation per media
+
+   virtual ~Media();
+
 protected:
 
    //Protected mutators
@@ -74,7 +82,10 @@ protected:
    virtual bool unmute();
    virtual bool terminate();
 
-   Media(Call* parent);
+   Media(Call* parent, const Direction direction);
+
+Q_SIGNALS:
+   void stateChanged(const Media::State state, const Media::State previous);
 
 private:
    MediaPrivate* d_ptr;
@@ -82,5 +93,7 @@ private:
 };
 
 }
+
+Media::Media* operator<<(Media::Media* m, Media::Media::Action a);
 
 #endif
