@@ -143,7 +143,9 @@ void InputDeviceModelPrivate::setCurrentDevice(int idx)
 void Audio::InputDeviceModel::reload()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
+   endResetModel();
    emit layoutChanged();
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
 }
