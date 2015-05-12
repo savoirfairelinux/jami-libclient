@@ -43,6 +43,7 @@
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
 #include "private/videorenderermanager.h"
+#include "private/localrecordingcollection.h"
 #include "categorizedhistorymodel.h"
 #include "instantmessagingmodel.h"
 #include "useractionmodel.h"
@@ -273,11 +274,17 @@ m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryMod
 m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
-   /*                            IN                                     OUT                     */
+   /*                                            IN                                                            OUT                           */
    /* AUDIO */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
    /* VIDEO */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
    /* TEXT  */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
    /* FILE  */ {{ new QList<Media::Media*>() /*Not implemented              */, new QList<Media::Media*>() /*Not implemented              */}},
+}}), m_mRecordings({{
+   /*                           IN                            OUT                */
+   /* AUDIO */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
+   /* VIDEO */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
+   /* TEXT  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
+   /* FILE  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
 }})
 {
 }
@@ -960,6 +967,14 @@ T* Call::firstMedia(Media::Media::Direction direction) const
    return nullptr;
 }
 
+QList<Media::Recording*> Call::recordings(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   //Note that the recording are not Media attributes to avoid keeping "terminated" media
+   //for history call.
+   return *d_ptr->m_mRecordings[type][direction];
+}
+
+
 /*****************************************************************************
  *                                                                           *
  *                                  Setters                                  *
@@ -1016,7 +1031,7 @@ void Call::setDialNumber(const ContactMethod* number)
 
    emit changed();
    emit changed(this);
-   
+
    //Make sure the call is now in the right state
    if (number && state() == Call::State::NEW)
       d_ptr->changeCurrentState(Call::State::DIALING);
@@ -1027,12 +1042,20 @@ void Call::setDialNumber(const ContactMethod* number)
 ///Set the recording path
 void Call::setRecordingPath(const QString& path)
 {
-   d_ptr->m_RecordingPath = path;
+   d_ptr->m_RecordingPath = path; //TODO remove the old code
    if (!d_ptr->m_RecordingPath.isEmpty()) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
       connect(&callManager,SIGNAL(recordPlaybackStopped(QString)), d_ptr, SLOT(stopPlayback(QString))  );
       connect(&callManager,SIGNAL(updatePlaybackScale(QString,int,int))  , d_ptr, SLOT(updatePlayback(QString,int,int)));
+
+      Media::Recording* rec = LocalRecordingCollection::instance()->addFromPath(path);
+      (*d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN ]) << rec;
+      (*d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::OUT]) << rec;
    }
+
+   //TODO add a media type attribute to this method
+   /*(*d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN ]
+   (*d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::OUT]*/
 }
 
 ///Set peer name

@@ -40,6 +40,7 @@ typedef  void (CallPrivate::*function)();
 
 namespace Media {
    class Media;
+   class Recording;
 }
 
 class CallPrivate : public QObject
@@ -191,6 +192,8 @@ public:
    static const TypedStateMachine< Call::LifeCycleState , Call::State > metaStateMap;
 
    Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Media*>* > m_mMedias;
+
+   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Recording*>* > m_mRecordings;
 
    static const Matrix1D<Call::LifeCycleState,function> m_mLifeCycleStateChanges;
 

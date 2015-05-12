@@ -479,6 +479,7 @@ int CategorizedHistoryModel::rowCount( const QModelIndex& parentIdx ) const
             return 0;
       };
    }
+   return 0;
 }
 
 Qt::ItemFlags CategorizedHistoryModel::flags( const QModelIndex& idx ) const

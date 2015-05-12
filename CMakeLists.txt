@@ -210,6 +210,7 @@ SET( libringclient_LIB_SRCS
   src/media/video.cpp
   src/media/text.cpp
   src/media/file.cpp
+  src/media/recording.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -255,7 +256,7 @@ SET( libringclient_LIB_SRCS
   src/audio/outputdevicemodel.cpp
   src/audio/ringtonedevicemodel.cpp
   src/audio/settings.cpp
-
+  src/media/recordingmodel.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -264,6 +265,7 @@ SET( libringclient_LIB_SRCS
   src/fallbackpersoncollection.cpp
   src/daemoncertificatecollection.cpp
   src/foldercertificatecollection.cpp
+  src/private/localrecordingcollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -399,6 +401,8 @@ SET(libringclient_media_LIB_HDRS
   src/media/video.h
   src/media/text.h
   src/media/file.h
+  src/media/recording.h
+  src/media/recordingmodel.h
 )
 
 SET(libringclient_delegates_LIB_HDRS

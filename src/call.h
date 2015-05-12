@@ -51,6 +51,7 @@ namespace Media {
    class Audio;
    class Video;
    class Text;
+   class Recording;
 }
 
 class Call;
@@ -289,13 +290,14 @@ public:
    Call::Type               type             () const;
    bool                     hasRemote        () const;
    Certificate*             certificate      () const;
-   QVariant                 roleData         (int role) const;
+   QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
 
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;
-   QList<Media::Media*>     media   (Media::Media::Type type, Media::Media::Direction direction) const;
-   bool                     hasMedia(Media::Media::Type type, Media::Media::Direction direction) const;
+   QList<Media::Recording*> recordings(Media::Media::Type type, Media::Media::Direction direction) const;
+   QList<Media::Media*>     media     (Media::Media::Type type, Media::Media::Direction direction) const;
+   bool                     hasMedia  (Media::Media::Type type, Media::Media::Direction direction) const;
 
    //Automated function
    Call::State performAction(Call::Action action);
