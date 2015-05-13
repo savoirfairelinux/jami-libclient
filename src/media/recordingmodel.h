@@ -68,6 +68,14 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Getter
+   bool isAlwaysRecording() const;
+   QUrl recordPath       () const;
+
+   //Setter
+   void setAlwaysRecording( bool        record );
+   void setRecordPath     ( const QUrl& path   );
+
    //Singleton
    static RecordingModel* instance();
 
