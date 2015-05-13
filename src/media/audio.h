@@ -24,21 +24,21 @@
 
 class MediaAudioPrivate;
 class Call;
-
+class CallPrivate;
 
 namespace Media {
 
 class LIB_EXPORT Audio : public Media::Media
 {
-   friend class CallPrivate;
+   friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
    virtual bool mute() override;
    virtual bool unmute() override;
 
-   Audio(Call* parent, const Media::Direction direction);
 private:
+   Audio(Call* parent, const Media::Direction direction);
    virtual ~Audio();
 
    MediaAudioPrivate* d_ptr;

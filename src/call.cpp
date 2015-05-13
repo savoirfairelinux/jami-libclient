@@ -105,25 +105,25 @@ const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::
 #define CP &CallPrivate
 const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::State > CallPrivate::actionPerformedFunctionMap =
 {{
-//                      ACCEPT             REFUSE         TRANSFER             HOLD               RECORD            /**/
-/*NEW            */  {{CP::nothing    , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*INCOMING       */  {{CP::accept     , CP::refuse   , CP::acceptTransf   , CP::acceptHold  ,  CP::toggleRecord  }},/**/
-/*RINGING        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::toggleRecord  }},/**/
-/*CURRENT        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleRecord  }},/**/
-/*DIALING        */  {{CP::call       , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*HOLD           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleRecord  }},/**/
-/*FAILURE        */  {{CP::nothing    , CP::remove   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*BUSY           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*TRANSFERT      */  {{CP::transfer   , CP::hangUp   , CP::transfer       , CP::hold        ,  CP::toggleRecord  }},/**/
-/*TRANSFERT_HOLD */  {{CP::transfer   , CP::hangUp   , CP::transfer       , CP::unhold      ,  CP::toggleRecord  }},/**/
-/*OVER           */  {{CP::nothing    , CP::nothing  , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*ERROR          */  {{CP::nothing    , CP::remove   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*CONF           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleRecord  }},/**/
-/*CONF_HOLD      */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleRecord  }},/**/
-/*INITIALIZATION */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*ABORTED        */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-/*CONNECTED      */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing       }},/**/
-}};//                                                                                                                 */
+//                      ACCEPT             REFUSE         TRANSFER             HOLD                  AUDIO_RECORD              VIDEO_RECORD        TEXT_RECORD     /**/
+/*NEW            */  {{CP::nothing    , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*INCOMING       */  {{CP::accept     , CP::refuse   , CP::acceptTransf   , CP::acceptHold  ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*RINGING        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*CURRENT        */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*DIALING        */  {{CP::call       , CP::abort    , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*HOLD           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*FAILURE        */  {{CP::nothing    , CP::remove   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*BUSY           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*TRANSFERT      */  {{CP::transfer   , CP::hangUp   , CP::transfer       , CP::hold        ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*TRANSFERT_HOLD */  {{CP::transfer   , CP::hangUp   , CP::transfer       , CP::unhold      ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*OVER           */  {{CP::nothing    , CP::nothing  , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*ERROR          */  {{CP::nothing    , CP::remove   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*CONF           */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::hold        ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*CONF_HOLD      */  {{CP::nothing    , CP::hangUp   , CP::nothing        , CP::unhold      ,  CP::toggleAudioRecord  ,  CP::toggleVideoRecord  ,  CP::nothing  }},/**/
+/*INITIALIZATION */  {{CP::call       , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*ABORTED        */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+/*CONNECTED      */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
+}};//                                                                                                                                                                */
 
 
 const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
@@ -168,7 +168,7 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*INIT           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
 /*CONNECTED      */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
-}};//                                                                                                                                */
+}};//                                                                                                                                                */
 
 //There is no point to have a 2D matrix, only one transition per state is possible
 const Matrix1D<Call::LifeCycleState,function> CallPrivate::m_mLifeCycleStateChanges = {{
@@ -221,7 +221,7 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 /*INIT           */  {{     true     ,     true     ,    false    ,    false }},/**/
 /*ABORTED        */  {{     true     ,     true     ,    false    ,    false }},/**/
 /*INITIALIZATION */  {{     true     ,     true     ,    false    ,    false }},/**/
-}};/*                                                             **/
+}};/*                                                                            **/
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
 
@@ -255,8 +255,14 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
       case Call::Action::HOLD:
          dbg.nospace() << "HOLD";
          break;
-      case Call::Action::RECORD:
-         dbg.nospace() << "RECORD";
+      case Call::Action::RECORD_AUDIO:
+         dbg.nospace() << "RECORD_AUDIO";
+         break;
+      case Call::Action::RECORD_VIDEO:
+         dbg.nospace() << "RECORD_VIDEO";
+         break;
+      case Call::Action::RECORD_TEXT:
+         dbg.nospace() << "RECORD_TEXT";
          break;
       case Call::Action::COUNT__:
          dbg.nospace() << "COUNT";
@@ -269,7 +275,7 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
 
 CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
 m_pStopTimeStamp(0),
-m_pImModel(nullptr),m_pTimer(nullptr),m_Recording(false),m_Account(nullptr),
+m_pImModel(nullptr),m_pTimer(nullptr),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
@@ -285,6 +291,12 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
    /* VIDEO */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
    /* TEXT  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
    /* FILE  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
+}}), m_mIsRecording({{
+   /*              IN     OUT   */
+   /* AUDIO */ {{ false, false }},
+   /* VIDEO */ {{ false, false }},
+   /* TEXT  */ {{ false, false }},
+   /* FILE  */ {{ false, false }},
 }})
 {
 }
@@ -370,7 +382,15 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
    ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
    Call*         call          = new Call(startState, peerName, nb, acc);
    call->d_ptr->m_DringId      = callId;
-   call->d_ptr->m_Recording    = callManager.getIsRecording(callId);
+   bool avRecordState          = callManager.getIsRecording(callId);
+
+   //Set the recording state
+   if (avRecordState) {
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , true);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , true);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , true);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , true);
+   }
 
    if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
       call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
@@ -489,6 +509,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    const QString& number          = hc[ Call::HistoryMapFields::PEER_NUMBER     ]          ;
    //const QString& type            = hc[ Call::HistoryMapFields::STATE           ]          ;
    const QString& direction       = hc[ Call::HistoryMapFields::DIRECTION       ]          ;
+   const QString& rec_path        = hc[ Call::HistoryMapFields::RECORDING_PATH  ]          ;
    const QString& cert_path       = hc[ Call::HistoryMapFields::CERT_PATH       ]          ;
    const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1"   ;
    time_t         startTimeStamp  = hc[ Call::HistoryMapFields::TIMESTAMP_START ].toUInt() ;
@@ -505,6 +526,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 //    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
    const QString& contactUid     = hc[ Call::HistoryMapFields::CONTACT_UID  ];
 
+
    Person* ct = nullptr;
    if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
@@ -517,6 +539,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    call->d_ptr->m_pStopTimeStamp  = stopTimeStamp ;
    call->d_ptr->setStartTimeStamp(startTimeStamp);
+   call->d_ptr->setRecordingPath (rec_path);
    call->d_ptr->m_History         = true;
    call->d_ptr->m_Account         = AccountModel::instance()->getById(accId);
 
@@ -755,12 +778,6 @@ const QString Call::formattedName() const
       return tr("Unknown");
 }
 
-///If the call have a valid record
-bool Call::hasRecording() const
-{
-   return !recordingPath().isEmpty() && QFile::exists(recordingPath());
-}
-
 ///If this call is encrypted, return the certificate associated with it
 Certificate* Call::certificate() const
 {
@@ -842,22 +859,20 @@ Call::LifeCycleState Call::lifeCycleState() const
    return d_ptr->metaStateMap[d_ptr->m_CurrentState];
 }
 
-///Get the call recording
-bool Call::isRecording() const
+///Get is the call is currently recording audio or video
+bool Call::isAVRecording() const
 {
-   return d_ptr->m_Recording;
+   return lifeCycleState() == Call::LifeCycleState::PROGRESS
+      && (d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ][ Media::Media::Direction::IN  ]
+      ||  d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ][ Media::Media::Direction::OUT ]
+      ||  d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ][ Media::Media::Direction::IN  ]
+      ||  d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ][ Media::Media::Direction::OUT ]);
 }
 
 ///Get the call account id
 Account* Call::account() const
 {
    return d_ptr->m_Account;
-}
-
-///Get the recording path
-const QString Call::recordingPath() const
-{
-   return d_ptr->m_RecordingPath;
 }
 
 ///This function could also be called mayBeSecure or haveChancesToBeEncryptedButWeCantTell.
@@ -912,6 +927,16 @@ QList<Media::Media*> Call::media(Media::Media::Type type, Media::Media::Directio
 bool Call::hasMedia(Media::Media::Type type, Media::Media::Direction direction) const
 {
    return d_ptr->m_mMedias[type][direction]->size();
+}
+
+bool Call::hasRecording(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   return d_ptr->m_mRecordings[type][direction]->size();
+}
+
+bool Call::isRecording(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   return d_ptr->m_mIsRecording[type][direction];
 }
 
 
@@ -1040,22 +1065,20 @@ void Call::setDialNumber(const ContactMethod* number)
 }
 
 ///Set the recording path
-void Call::setRecordingPath(const QString& path)
+void CallPrivate::setRecordingPath(const QString& path)
 {
-   d_ptr->m_RecordingPath = path; //TODO remove the old code
-   if (!d_ptr->m_RecordingPath.isEmpty()) {
+
+   if (!path.isEmpty() && QFile::exists(path)) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
-      connect(&callManager,SIGNAL(recordPlaybackStopped(QString)), d_ptr, SLOT(stopPlayback(QString))  );
-      connect(&callManager,SIGNAL(updatePlaybackScale(QString,int,int))  , d_ptr, SLOT(updatePlayback(QString,int,int)));
 
       Media::Recording* rec = LocalRecordingCollection::instance()->addFromPath(path);
-      (*d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN ]) << rec;
-      (*d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::OUT]) << rec;
+      (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN ]) << rec;
+      (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::OUT]) << rec;
    }
 
    //TODO add a media type attribute to this method
-   /*(*d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN ]
-   (*d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::OUT]*/
+   /*(*m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN ]
+   (*m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::OUT]*/
 }
 
 ///Set peer name
@@ -1604,12 +1627,30 @@ void CallPrivate::unhold()
 }
 
 ///Record the call
-void CallPrivate::toggleRecord()
+void CallPrivate::toggleAudioRecord()
 {
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Setting record " << !m_Recording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+   const bool wasRecording = m_mIsRecording[ Media::Media::Type::AUDIO ][Media::Media::Direction::IN];
+   qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
-   callManager.toggleRecording(q_ptr->dringId());
+   const bool isRec = callManager.toggleRecording(q_ptr->dringId());
+
+   m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , isRec);
+   m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , isRec);
+}
+
+///Record the call
+void CallPrivate::toggleVideoRecord()
+{
+   //TODO upgrade once the video recording is implemented
+   CallManagerInterface & callManager = DBus::CallManager::instance();
+   const bool wasRecording = m_mIsRecording[ Media::Media::Type::VIDEO ][Media::Media::Direction::IN];
+   qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+
+   const bool isRec = callManager.toggleRecording(q_ptr->dringId());
+
+   m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , isRec);
+   m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , isRec);
 }
 
 ///Start the timer
@@ -1855,46 +1896,6 @@ void CallPrivate::updated()
    emit q_ptr->changed(q_ptr);
 }
 
-///Play the record, if any
-void Call::playRecording()
-{
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   const bool retval = callManager.startRecordedFilePlayback(recordingPath());
-   if (retval)
-      emit playbackStarted();
-}
-
-///Stop the record, if any
-void Call::stopRecording()
-{
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.stopRecordedFilePlayback(recordingPath());
-   emit playbackStopped(); //TODO remove this, it is a workaround for bug #11942
-}
-
-///seek the record, if any
-void Call::seekRecording(double position)
-{
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.recordPlaybackSeek(position);
-}
-
-///Daemon record playback stopped
-void CallPrivate::stopPlayback(const QString& filePath)
-{
-   if (filePath == q_ptr->recordingPath()) {
-      emit q_ptr->playbackStopped();
-   }
-}
-
-///Daemon playback position chnaged
-void CallPrivate::updatePlayback(const QString& path, int position,int size)
-{
-   if (path == m_RecordingPath) {
-      emit q_ptr->playbackPositionChanged(position,size);
-   }
-}
-
 UserActionModel* Call::userActionModel() const
 {
    if (!d_ptr->m_pUserActionModel)
@@ -1956,8 +1957,12 @@ QVariant Call::roleData(int role) const
          return length();
       case static_cast<int>(Call::Role::FormattedDate):
          return QDateTime::fromTime_t(startTimeStamp()).toString();
-      case static_cast<int>(Call::Role::HasRecording):
-         return hasRecording();
+      case static_cast<int>(Call::Role::HasAVRecording):
+         return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size()
+            + d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
+      case static_cast<int>(Call::Role::IsAVRecording):
+         return d_ptr->m_mIsRecording[Media::Media::Type::AUDIO][Media::Media::Direction::IN]
+            || d_ptr->m_mIsRecording[Media::Media::Type::AUDIO][Media::Media::Direction::IN];
       case static_cast<int>(Call::Role::Filter): {
          QString normStripppedC;
          foreach(QChar char2,(static_cast<int>(direction())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
@@ -1991,8 +1996,6 @@ QVariant Call::roleData(int role) const
          return (int) d_ptr->m_pStartTimeStamp;
       case static_cast<int>(Call::Role::StopTime):
          return (int) d_ptr->m_pStopTimeStamp;
-      case static_cast<int>(Call::Role::IsRecording):
-         return isRecording();
       case static_cast<int>(Call::Role::IsPresent):
          return peerContactMethod()->isPresent();
       case static_cast<int>(Call::Role::IsTracked):
@@ -2007,6 +2010,10 @@ QVariant Call::roleData(int role) const
          return peerContactMethod()->totalSpentTime();
       case static_cast<int>(Call::Role::Certificate):
          return QVariant::fromValue(certificate());
+      case static_cast<int>(Call::Role::HasAudioRecording):
+         return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
+      case static_cast<int>(Call::Role::HasVideoRecording):
+         return d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Call::Role::DropState):
          return property("dropState");
       case static_cast<int>(Call::Role::Missed):

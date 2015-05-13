@@ -23,18 +23,19 @@
 
 class MediaFilePrivate;
 class Call;
+class CallPrivate;
 
 namespace Media {
 
 class LIB_EXPORT File : public Media::Media
 {
-   friend class CallPrivate;
+   friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
 
-   File(Call* parent, const Media::Direction direction);
 private:
+   File(Call* parent, const Media::Direction direction);
    virtual ~File();
 
    MediaFilePrivate* d_ptr;

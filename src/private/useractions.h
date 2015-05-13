@@ -33,7 +33,9 @@ bool refuse(const QList<Call*> calls);
 bool hold(const QList<Call*> calls);
 bool unhold(const QList<Call*> calls);
 bool transfer(const QList<Call*> calls);
-bool record(const QList<Call*> calls);
+bool recordAudio(const QList<Call*> calls);
+bool recordVideo(const QList<Call*> calls);
+bool recordText(const QList<Call*> calls);
 
 bool addNew()
 {
@@ -171,7 +173,7 @@ bool transfer(const QList<Call*> calls)
 }
 
 ///Record a call
-bool record(const QList<Call*> calls)
+bool recordAudio(const QList<Call*> calls)
 {
    bool ret = true;
    for (Call* call : calls) {
@@ -180,7 +182,47 @@ bool record(const QList<Call*> calls)
       }
       else {
          try {
-            call->performAction(Call::Action::RECORD);
+            call->performAction(Call::Action::RECORD_AUDIO);
+         }
+         catch(const char * msg) {
+//             KMessageBox::error(Ring::app(),i18n(msg));
+         }
+      }
+   }
+   return ret;
+}
+
+///Record a call
+bool recordVideo(const QList<Call*> calls)
+{
+   bool ret = true;
+   for (Call* call : calls) {
+      if(!call) {
+         qDebug() << "Error : Recording when no item selected. Should not happen.";
+      }
+      else {
+         try {
+            call->performAction(Call::Action::RECORD_VIDEO);
+         }
+         catch(const char * msg) {
+//             KMessageBox::error(Ring::app(),i18n(msg));
+         }
+      }
+   }
+   return ret;
+}
+
+///Record a call
+bool recordText(const QList<Call*> calls)
+{
+   bool ret = true;
+   for (Call* call : calls) {
+      if(!call) {
+         qDebug() << "Error : Recording when no item selected. Should not happen.";
+      }
+      else {
+         try {
+            call->performAction(Call::Action::RECORD_TEXT);
          }
          catch(const char * msg) {
 //             KMessageBox::error(Ring::app(),i18n(msg));
