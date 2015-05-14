@@ -29,16 +29,24 @@ namespace Media {
 
 class LIB_EXPORT Text : public Media::Media
 {
+   Q_OBJECT
    friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
+
+   //Mutator
+   void send(const QString& message);
 
 private:
    Text(Call* parent, const Media::Direction direction);
    virtual ~Text();
 
    MediaTextPrivate* d_ptr;
+
+Q_SIGNALS:
+   void messageSent    (const QString& m);
+   void messageReceived(const QString& m);
 };
 
 }

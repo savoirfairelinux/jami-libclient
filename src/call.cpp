@@ -274,8 +274,7 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
 }
 
 CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
-m_pStopTimeStamp(0),
-m_pImModel(nullptr),m_pTimer(nullptr),m_Account(nullptr),
+m_pStopTimeStamp(0),m_pTimer(nullptr),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
 m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
@@ -283,7 +282,7 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
    /*                                            IN                                                            OUT                           */
    /* AUDIO */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
    /* VIDEO */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
-   /* TEXT  */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
+   /* TEXT  */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
    /* FILE  */ {{ new QList<Media::Media*>() /*Not implemented              */, new QList<Media::Media*>() /*Not implemented              */}},
 }}), m_mRecordings({{
    /*                           IN                            OUT                */
@@ -939,64 +938,95 @@ bool Call::isRecording(Media::Media::Type type, Media::Media::Direction directio
    return d_ptr->m_mIsRecording[type][direction];
 }
 
-
-/**
- * Custom type generator, avoid RTTI
- */
-namespace MediaTypeGenerator
-{
-   int genId();
-   int genId() {
-      static int currentId = 0;
-      return ++currentId;
-   }
-
-   template<typename T>
-   int getId() {
-      static int id = genId();
-      return id;
-   }
-}
-
-/**
- * Perform a safe cast of the first media of "T" type
- * @example Media::Audio* audio = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
- * @return nullptr if none, the media otherwise.
- */
-template<typename T>
-T* Call::firstMedia(Media::Media::Direction direction) const
-{
-   static bool isInit = false;
-   //Try to map T to Media::Media::Type then use this to retrieve and cast the media
-   static QHash<int, Media::Media::Type> sTypeMap;
-   if (!isInit) {
-      isInit = true;
-      sTypeMap[MediaTypeGenerator::getId<Media::Audio>()] = Media::Media::Type::AUDIO;
-      sTypeMap[MediaTypeGenerator::getId<Media::Video>()] = Media::Media::Type::VIDEO;
-      sTypeMap[MediaTypeGenerator::getId<Media::Text >()] = Media::Media::Type::TEXT ;
-      sTypeMap[MediaTypeGenerator::getId<Media::File >()] = Media::Media::Type::FILE ;
-   }
-   Q_ASSERT(sTypeMap.contains(MediaTypeGenerator::getId<T>()));
-
-   const Media::Media::Type t = sTypeMap[MediaTypeGenerator::getId<T>()];
-
-   QList<Media::Media*> ms = media(t, direction);
-
-   if (!ms.isEmpty()) {
-      Media::Media* m = ms[0];
-      Q_ASSERT(m->type() == t);
-
-      return reinterpret_cast<T*>(m);
-   }
-
-   return nullptr;
-}
-
 QList<Media::Recording*> Call::recordings(Media::Media::Type type, Media::Media::Direction direction) const
 {
    //Note that the recording are not Media attributes to avoid keeping "terminated" media
    //for history call.
    return *d_ptr->m_mRecordings[type][direction];
+}
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                        Media type inference utils                         *
+ *                                                                           *
+ ****************************************************************************/
+
+/**
+ * This function is used to map template type to media type
+ * it generate unique type identifier
+ */
+int MediaTypeInference::genId() {
+   static int currentId = 0;
+   return ++currentId;
+}
+
+/**
+ * Everytime new ids are generated (that can be done some time), this map is
+ * updated to map those type ids to Media::Type
+ * 
+ * It could be extended to store some operations into lambdas too, but for
+ * now the safeMediaCreator switch is the only place where this would be useful,
+ * so there is very little point to do that.
+ */
+QHash<int, Media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
+   static bool isInit = false;
+   //Try to map T to Media::Media::Type then use this to retrieve and cast the media
+   static QHash<int, Media::Media::Type> sTypeMap;
+   if (!isInit || regen) {
+      isInit = true;
+      sTypeMap[MediaTypeInference::getId<Media::Audio>()] = Media::Media::Type::AUDIO;
+      sTypeMap[MediaTypeInference::getId<Media::Video>()] = Media::Media::Type::VIDEO;
+      sTypeMap[MediaTypeInference::getId<Media::Text >()] = Media::Media::Type::TEXT ;
+      sTypeMap[MediaTypeInference::getId<Media::File >()] = Media::Media::Type::FILE ;
+   }
+   return sTypeMap;
+}
+
+/**
+ * Create, register and connect new media to a call.
+ */
+template<typename T>
+T* CallPrivate::mediaFactory(Media::Media::Direction dir)
+{
+   Call* c = q_ptr;
+   const auto cb = [c,this](const Media::Media::State s, const Media::Media::State p) {
+      Media::Media* m = qobject_cast<Media::Media*>(q_ptr->sender());
+      if (m) {
+         emit q_ptr->mediaStateChanged(m,s,p);
+      }
+      else
+         Q_ASSERT(false);
+   };
+
+   T* m = new T(q_ptr, dir);
+   (*m_mMedias[MediaTypeInference::getType<T>()][dir]) << m;
+   connect(m, &Media::Media::stateChanged, cb);
+   emit q_ptr->mediaAdded(m);
+
+   return m;
+}
+
+/**
+ * As mediaFactory is private, expose this proxy and let the template methods
+ * do a static cast to re-create the right type. Given how it is using
+ * MediaTypeInference, it is safe-ish.
+ */
+Media::Media* MediaTypeInference::safeMediaCreator(Call* c, Media::Media::Type t, Media::Media::Direction d)
+{
+   switch(t) {
+      case Media::Media::Type::AUDIO:
+         return c->d_ptr->mediaFactory<Media::Audio>(d);
+      case Media::Media::Type::VIDEO:
+         return c->d_ptr->mediaFactory<Media::Video>(d);
+      case Media::Media::Type::TEXT :
+         return c->d_ptr->mediaFactory<Media::Text>(d);
+      case Media::Media::Type::FILE :
+         return c->d_ptr->mediaFactory<Media::File>(d);
+      case Media::Media::Type::COUNT__:
+         break;
+   }
+   return nullptr;
 }
 
 
@@ -1296,31 +1326,9 @@ void CallPrivate::changeCurrentState(Call::State newState)
 
 void CallPrivate::initMedia()
 {
-   Call* c = q_ptr;
-   const auto cb = [c,this](const Media::Media::State s, const Media::Media::State p) {
-      Media::Media* m = qobject_cast<Media::Media*>(q_ptr->sender());
-      if (m) {
-         emit q_ptr->mediaStateChanged(m,s,p);
-      }
-      else
-         Q_ASSERT(false);
-   };
-
-   //Always assume there is an audio and text media, even if this is untrue
-   for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>()) {
-      //Audio
-      Media::Media* m = new Media::Audio(q_ptr, d);
-      (*m_mMedias[Media::Media::Type::AUDIO][d]) << m;
-      connect(m, &Media::Media::stateChanged, cb);
-      emit q_ptr->mediaAdded(m);
-
-      //Text
-      m = new Media::Text(q_ptr, d);
-      (*m_mMedias[Media::Media::Type::TEXT ][d]) << m;
-      connect(m, &Media::Media::stateChanged, cb);
-      emit q_ptr->mediaAdded(m);
-   }
-
+   //Always assume there is an audio media, even if this is untrue
+   for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>())
+      mediaFactory<Media::Audio>(d);
 }
 
 void CallPrivate::terminateMedia()
@@ -1345,17 +1353,6 @@ void CallPrivate::setStartTimeStamp(time_t stamp)
    //While the HistoryConst is not directly related to the call concept,
    //It is called to often to ignore
    m_HistoryConst = HistoryTimeCategoryModel::timeToHistoryConst(m_pStartTimeStamp);
-}
-
-///Send a text message
-void Call::sendTextMessage(const QString& message)
-{
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.sendTextMessage(d_ptr->m_DringId,message);
-   if (!d_ptr->m_pImModel) {
-      d_ptr->m_pImModel = IMConversationManager::instance()->getModel(this);
-   }
-   d_ptr->m_pImModel->d_ptr->addOutgoingMessage(message);
 }
 
 

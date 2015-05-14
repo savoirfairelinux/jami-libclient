@@ -108,6 +108,11 @@ Call* Media::Media::call() const
    return d_ptr->m_pCall;
 }
 
+Media::Media::Direction Media::Media::direction() const
+{
+   return d_ptr->m_Direction;
+}
+
 Media::Media::State Media::Media::state() const
 {
    return d_ptr->m_State;

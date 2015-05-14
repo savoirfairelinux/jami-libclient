@@ -66,6 +66,7 @@ public:
    //Getter
    virtual Media::Type type() = 0;
    Call* call() const;
+   Direction direction() const;
 
    //Getters
    Media::Media::State state() const;

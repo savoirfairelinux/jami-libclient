@@ -130,7 +130,6 @@ public:
    time_t                   m_pStartTimeStamp   ;
    time_t                   m_pStopTimeStamp    ;
    Call::State              m_CurrentState      ;
-   InstantMessagingModel*   m_pImModel          ;
    QTimer*                  m_pTimer            ;
    UserActionModel*         m_pUserActionModel  ;
    bool                     m_History           ;
@@ -242,6 +241,8 @@ public:
    void registerRenderer(Video::Renderer* renderer);
    void removeRenderer(Video::Renderer* renderer);
    void setRecordingPath(const QString& path);
+   template<typename T>
+   T* mediaFactory(Media::Media::Direction dir);
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );

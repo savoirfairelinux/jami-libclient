@@ -86,13 +86,17 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 }
 
 ///Singleton
-InstantMessagingModel* IMConversationManager::getModel(Call* call) {
-   const QString key = call->dringId();
-   if (!d_ptr->m_lModels[key]) {
-      d_ptr->m_lModels[key] = new InstantMessagingModel(call);
-      emit newMessagingModel(call,d_ptr->m_lModels[key]);
+InstantMessagingModel* IMConversationManager::getModel(Call* call)
+{
+   if (call->hasRemote()) {
+      const QString key = call->dringId();
+      if (!d_ptr->m_lModels[key]) {
+         d_ptr->m_lModels[key] = new InstantMessagingModel(call);
+         emit newMessagingModel(call,d_ptr->m_lModels[key]);
+      }
+      return d_ptr->m_lModels[key];
    }
-   return d_ptr->m_lModels[key];
+   return nullptr;
 }
 
 #include <imconversationmanager.moc>

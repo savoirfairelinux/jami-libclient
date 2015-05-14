@@ -27,6 +27,10 @@ class InstantMessagingModelPrivate;
 
 class Call;
 
+namespace Media {
+   class Text;
+}
+
 ///Qt model for the Instant Messaging (IM) features
 class LIB_EXPORT InstantMessagingModel : public QAbstractListModel
 {
@@ -37,6 +41,7 @@ class LIB_EXPORT InstantMessagingModel : public QAbstractListModel
    friend class Call;
    friend class IMConversationManager;
    friend class IMConversationManagerPrivate;
+   friend class Media::Text;
 
 public:
    //Role const

@@ -23,12 +23,29 @@
 
 //Ring
 #include <call.h>
+#include <imconversationmanager.h>
+#include <instantmessagingmodel.h>
+#include <private/call_p.h>
+#include <private/instantmessagingmodel_p.h>
 
 class MediaTextPrivate
 {
+public:
+   MediaTextPrivate(Media::Text* parent);
+
+   //Attributes
+   InstantMessagingModel* m_pImModel;
+
+private:
+   Media::Text* q_ptr;
 };
 
-Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate())
+MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pImModel(nullptr)
+{
+
+}
+
+Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate(this))
 {
    Q_ASSERT(parent);
 }
@@ -41,4 +58,17 @@ Media::Media::Type Media::Text::type()
 Media::Text::~Text()
 {
 
+}
+
+///Send a text message
+void Media::Text::send(const QString& message)
+{
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   Q_NOREPLY callManager.sendTextMessage(call()->dringId(),message);
+   if (!d_ptr->m_pImModel) {
+      d_ptr->m_pImModel = IMConversationManager::instance()->getModel(call());
+   }
+   d_ptr->m_pImModel->d_ptr->addOutgoingMessage(message);
+
+   emit messageSent(message);
 }

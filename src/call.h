@@ -88,6 +88,7 @@ public:
    friend class Media::Audio;
    friend class Media::Video;
    friend class Media::Text;
+   friend class MediaTypeInference;
 
    //Enum
 
@@ -312,10 +313,11 @@ public:
    void setAccount        ( Account*           account    );
 
    //Mutators
+   template<typename T>
+   T* addOutgoingMedia(bool useExisting = true);
    void appendText(const QString& str);
    void backspaceItemText();
    void reset();
-   void sendTextMessage(const QString& message);
 
    //syntactic sugar
    Call* operator<<( Call::Action& c);
@@ -371,5 +373,7 @@ Q_DECLARE_METATYPE(Call::LifeCycleState)
 Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
+
+#include <call.hpp>
 
 #endif

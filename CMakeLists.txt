@@ -310,6 +310,7 @@ SET( libringclient_LIB_HDRS
   src/accountmodel.h
   src/availableaccountmodel.h
   src/call.h
+  src/call.hpp
   src/callmodel.h
   src/categorizedhistorymodel.h
   src/person.h
