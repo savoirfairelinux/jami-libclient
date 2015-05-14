@@ -363,13 +363,15 @@ int CategorizedHistoryModel::historyLimit() const
 
 void CategorizedHistoryModelPrivate::reloadCategories()
 {
-   q_ptr->beginResetModel();
    m_hCategories.clear();
    m_hCategoryByName.clear();
+   q_ptr->beginRemoveRows(QModelIndex(),0,m_lCategoryCounter.size()-1);
    foreach(HistoryTopLevelItem* item, m_lCategoryCounter) {
       delete item;
    }
+   q_ptr->endRemoveRows();
    m_lCategoryCounter.clear();
+
    foreach(Call* call, m_sHistoryCalls) {
       HistoryTopLevelItem* category = getCategory(call);
       if (category) {
@@ -378,12 +380,13 @@ void CategorizedHistoryModelPrivate::reloadCategories()
          item->m_pNode = new HistoryItemNode(q_ptr,call,item);
          connect(item->m_pNode,SIGNAL(changed(QModelIndex)),this,SLOT(slotChanged(QModelIndex)));
          item->m_pParent = category;
-         category->m_lChildren << item;
+         q_ptr->beginInsertRows(q_ptr->index(category->modelRow,0), item->m_Index, item->m_Index); {
+            category->m_lChildren << item;
+         } q_ptr->endInsertRows();
       }
       else
          qDebug() << "ERROR count";
    }
-   q_ptr->endResetModel();
    emit q_ptr->layoutAboutToBeChanged();
    emit q_ptr->layoutChanged();
    emit q_ptr->dataChanged(q_ptr->index(0,0),q_ptr->index(q_ptr->rowCount()-1,0));

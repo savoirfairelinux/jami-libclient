@@ -259,7 +259,6 @@ ContactTreeNode* CategorizedContactModelPrivate::getContactTopLevelItem(const QS
 void CategorizedContactModelPrivate::reloadCategories()
 {
    emit q_ptr->layoutAboutToBeChanged(); //FIXME far from optimal
-   q_ptr->beginResetModel();
    m_hCategories.clear();
    q_ptr->beginRemoveRows(QModelIndex(),0,m_lCategoryCounter.size()-1);
    foreach(ContactTreeNode* item,m_lCategoryCounter) {
@@ -271,7 +270,6 @@ void CategorizedContactModelPrivate::reloadCategories()
       Person* cont = qvariant_cast<Person*>(PersonModel::instance()->index(i,0).data((int)Person::Role::Object));
       slotContactAdded(cont);
    }
-   q_ptr->endResetModel();
    emit q_ptr->layoutChanged();
 }
 
