@@ -126,8 +126,8 @@ void sortContact(QSortFilterProxyModel* p, int roleIdx)
       case CategorizedContactModel::SortedProxy::Categories::NAME:
          m->setSortAlphabetical(true);
          m->setDefaultCategory(QObject::tr("Empty"));
-         m->setRole(Qt::DisplayRole);
          p->setSortRole(Qt::DisplayRole);
+         m->setRole(Qt::DisplayRole);
          break;
       case CategorizedContactModel::SortedProxy::Categories::ORGANIZATION:
          m->setSortAlphabetical(false);
@@ -138,20 +138,20 @@ void sortContact(QSortFilterProxyModel* p, int roleIdx)
       case CategorizedContactModel::SortedProxy::Categories::RECENTLYUSED:
          m->setSortAlphabetical(false);
          m->setDefaultCategory(QObject::tr("Never"));
-         m->setRole((int)Person::Role::FormattedLastUsed);
          p->setSortRole((int)Person::Role::IndexedLastUsed);
+         m->setRole((int)Person::Role::FormattedLastUsed);
          break;
       case CategorizedContactModel::SortedProxy::Categories::GROUP:
          m->setSortAlphabetical(false);
          m->setDefaultCategory(QObject::tr("Other"));
-         m->setRole((int)Person::Role::Group);
          p->setSortRole((int)Person::Role::Group);
+         m->setRole((int)Person::Role::Group);
          break;
       case CategorizedContactModel::SortedProxy::Categories::DEPARTMENT:
          m->setSortAlphabetical(false);
          m->setDefaultCategory(QObject::tr("Unknown"));
-         m->setRole((int)Person::Role::Department);
          p->setSortRole((int)Person::Role::Department);
+         m->setRole((int)Person::Role::Department);
          break;
       case CategorizedContactModel::SortedProxy::Categories::COUNT__:
          break;
