@@ -89,6 +89,7 @@ public:
    friend class Media::Video;
    friend class Media::Text;
    friend class MediaTypeInference;
+   friend class IMConversationManagerPrivate;
 
    //Enum
 

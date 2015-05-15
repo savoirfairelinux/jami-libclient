@@ -35,6 +35,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
 #include "private/videorenderermanager.h"
+#include "private/imconversationmanagerprivate.h"
 #include "mime.h"
 #include "typedefs.h"
 #include "collectioninterface.h"
@@ -139,6 +140,10 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
    #ifdef ENABLE_VIDEO
    VideoRendererManager::instance();
    #endif
+
+   //Necessary to receive text message
+   IMConversationManagerPrivate::instance();
+
 } //CallModel
 
 ///Constructor (there fix an initializationn loop)
@@ -410,12 +415,19 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       connect(call,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
       connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
-      connect(call,&Call::videoStarted,[this,call](Video::Renderer* r){
+      connect(call,&Call::videoStarted,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererAdded(call, r);
       });
-      connect(call,&Call::videoStopped,[this,call](Video::Renderer* r){
+      connect(call,&Call::videoStopped,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererRemoved(call, r);
       });
+      connect(call,&Call::mediaAdded, [this,call](Media::Media* media) {
+         emit q_ptr->mediaAdded(call,media);
+      });
+      connect(call,&Call::mediaStateChanged, [this,call](Media::Media* media, const Media::Media::State s, const Media::Media::State m) {
+         emit q_ptr->mediaStateChanged(call,media,s,m);
+      });
+
       emit q_ptr->layoutChanged();
    }
    return call;

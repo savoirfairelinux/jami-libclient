@@ -57,7 +57,6 @@
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
 #include "personmodel.h"
-#include "imconversationmanager.h"
 
 #include "media/audio.h"
 #include "media/video.h"

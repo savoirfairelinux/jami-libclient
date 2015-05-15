@@ -24,6 +24,7 @@
 class MediaTextPrivate;
 class Call;
 class CallPrivate;
+class InstantMessagingModel;
 
 namespace Media {
 
@@ -34,6 +35,9 @@ class LIB_EXPORT Text : public Media::Media
 public:
 
    virtual Media::Type type() override;
+
+   //Getter
+   InstantMessagingModel* instantMessagingModel() const;
 
    //Mutator
    void send(const QString& message);

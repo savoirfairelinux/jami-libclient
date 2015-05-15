@@ -221,7 +221,6 @@ SET( libringclient_LIB_SRCS
   src/categorizedbookmarkmodel.cpp
   src/credentialmodel.cpp
   src/instantmessagingmodel.cpp
-  src/imconversationmanager.cpp
   src/categorizedcontactmodel.cpp
   src/useractionmodel.cpp
   src/presencestatusmodel.cpp
@@ -320,7 +319,6 @@ SET( libringclient_LIB_HDRS
   src/categorizedbookmarkmodel.h
   src/credentialmodel.h
   src/instantmessagingmodel.h
-  src/imconversationmanager.h
   src/categorizedcontactmodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
@@ -523,6 +521,7 @@ SET(libringclient_PRIVATE_HDRS
    src/collectioncreationinterface.h
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
+   src/private/imconversationmanagerprivate.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

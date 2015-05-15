@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,46 +15,42 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef IMCONVERSATIONMANAGER_H
-#define IMCONVERSATIONMANAGER_H
+#ifndef IMCONVERSATIONMANAGERPRIVATE_H
+#define IMCONVERSATIONMANAGERPRIVATE_H
+
 #include <QtCore/QObject>
+#include <QtCore/QHash>
 
-#include "typedefs.h"
-
-//Ring
-class Call;
 class InstantMessagingModel;
-class IMConversationManagerPrivate;
+class Account;
+class Call;
+class ContactMethod;
 
-///Manager for all IM conversations
-class LIB_EXPORT IMConversationManager : public QObject
+namespace Media {
+   class Text;
+}
+
+class IMConversationManagerPrivate : public QObject
 {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
-   #pragma GCC diagnostic pop
 public:
+   friend class Call;
+   IMConversationManagerPrivate(QObject* parent);
 
-   //Singleton
-   static IMConversationManager* instance();
+   //Attributes
+   QHash<QString       , InstantMessagingModel*> m_lModels          ;
+   QHash<Call*         , InstantMessagingModel*> m_lNewCallModels   ;
+   QHash<ContactMethod*, InstantMessagingModel*> m_lOutOfCallsModels;
 
-   //Getter
-   InstantMessagingModel* getModel(Call* call);
-private:
-   //Constructor
-   explicit IMConversationManager();
-   virtual ~IMConversationManager();
+   //Mutator
+   InstantMessagingModel* createModel( Media::Text* t, Account* a = nullptr, const QString& peerNumber = QString());
 
-   const QScopedPointer<IMConversationManagerPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(IMConversationManager)
+   static IMConversationManagerPrivate* instance();
 
-   //Static attributes
-   static IMConversationManager* m_spInstance;
+private Q_SLOTS:
+   void newMessage       (const QString& callId   , const QString& from, const QString& message);
+   void newAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
-
-Q_SIGNALS:
-   ///Emitted when a new message is available
-   void newMessagingModel(Call*,InstantMessagingModel*);
 };
 
 #endif
