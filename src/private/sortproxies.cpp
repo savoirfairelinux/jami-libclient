@@ -56,8 +56,8 @@ namespace CategoryModelCommon {
       QObject::tr("Date"       ),
       QObject::tr("Name"       ),
       QObject::tr("Popularity" ),
-      QObject::tr("Length"     ),
-      QObject::tr("Spent time" ),
+      QObject::tr("Duration"   ),
+      QObject::tr("Total time" ),
    }};
 
 }
