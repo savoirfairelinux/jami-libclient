@@ -281,6 +281,7 @@ SET( libringclient_LIB_SRCS
   src/private/vcardutils.cpp
   src/private/videorenderermanager.cpp
   src/video/previewmanager.cpp
+  src/private/sortproxies.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
@@ -494,6 +495,7 @@ ENDIF()
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
    src/private/account_p.h
+   src/private/sortproxies.h
    src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
    src/private/instantmessagingmodel_p.h

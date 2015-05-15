@@ -25,6 +25,8 @@
 
 //Ring
 #include <securityevaluationmodel.h>
+#include <categorizedcontactmodel.h>
+#include <categorizedhistorymodel.h>
 class  Person             ;
 class  ContactMethod      ;
 class  Call               ;
@@ -67,6 +69,8 @@ public:
    virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG");
    virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
    virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const;
+   virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const;
+   virtual QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const;
 
    /**
     * Return the icons associated with the action and its state

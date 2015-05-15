@@ -22,6 +22,9 @@
 #include <initializer_list>
 #include <type_traits>
 
+//Ring
+#include <typedefs.h>
+
 template<class T, class E>
 struct TypedStateMachine
 {

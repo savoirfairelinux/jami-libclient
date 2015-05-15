@@ -36,6 +36,9 @@ typedef QList<Call*>       CallList;
 class HistoryItemNode;
 class AbstractHistoryBackend;
 class CategorizedHistoryModelPrivate;
+class QSortFilterProxyModel;
+class QItemSelectionModel;
+
 //TODO split ASAP
 ///CategorizedHistoryModel: History call manager
 class LIB_EXPORT CategorizedHistoryModel : public QAbstractItemModel, public CollectionManagerInterface<Call>
@@ -82,6 +85,22 @@ public:
    virtual bool          dropMimeData( const QMimeData*, Qt::DropAction, int, int, const QModelIndex& ) override;
    virtual bool          insertRows  ( int row, int count, const QModelIndex & parent = QModelIndex() ) override;
    virtual QHash<int,QByteArray> roleNames() const override;
+
+   struct SortedProxy {
+      enum class Categories {
+         DATE      ,
+         NAME      ,
+         POPULARITY,
+         LENGTH    ,
+         SPENT_TIME,
+         COUNT__
+      };
+
+      QSortFilterProxyModel* model                 () const;
+      QAbstractItemModel   * categoryModel         () const;
+      QItemSelectionModel  * categorySelectionModel() const;
+      static CategorizedHistoryModel::SortedProxy* instance();
+   };
 
 private:
    //Constructor

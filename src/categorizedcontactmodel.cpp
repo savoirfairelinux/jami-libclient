@@ -33,6 +33,7 @@
 #include "uri.h"
 #include "mime.h"
 #include "personmodel.h"
+#include "private/sortproxies.h"
 
 class ContactTreeNode;
 
@@ -82,14 +83,16 @@ public:
    QString category(const Person* ct) const;
 
    //Attributes
-   QHash<Person*, time_t>          m_hContactByDate   ;
-   QVector<ContactTreeNode*>       m_lCategoryCounter ;
-   QHash<QString,ContactTreeNode*> m_hCategories      ;
-   int                             m_Role             ;
-   QStringList                     m_lMimes           ;
-   bool                            m_SortAlphabetical ;
-   QString                         m_DefaultCategory  ;
-   bool                            m_UnreachableHidden;
+   QHash<Person*, time_t>               m_hContactByDate   ;
+   QVector<ContactTreeNode*>            m_lCategoryCounter ;
+   QHash<QString,ContactTreeNode*>      m_hCategories      ;
+   int                                  m_Role             ;
+   QStringList                          m_lMimes           ;
+   bool                                 m_SortAlphabetical ;
+   QString                              m_DefaultCategory  ;
+   bool                                 m_UnreachableHidden;
+   SortingCategory::ModelTuple*         m_pSortedProxy     ;
+   CategorizedContactModel::SortedProxy m_pProxies         ;
 
    //Helper
    ContactTreeNode* getContactTopLevelItem(const QString& category);
@@ -185,7 +188,7 @@ void ContactTreeNode::slotContactMethodCountAboutToChange(int count, int oldCoun
 }
 
 CategorizedContactModelPrivate::CategorizedContactModelPrivate(CategorizedContactModel* parent) : QObject(parent), q_ptr(parent),
-m_lCategoryCounter(),m_Role(Qt::DisplayRole),m_SortAlphabetical(true),m_UnreachableHidden(false)
+m_lCategoryCounter(),m_Role(Qt::DisplayRole),m_SortAlphabetical(true),m_UnreachableHidden(false),m_pSortedProxy(nullptr)
 {
 
 }
@@ -593,6 +596,35 @@ void CategorizedContactModelPrivate::reloadTreeVisibility( ContactTreeNode* node
             reloadTreeVisibility(n);
          break;
    };
+}
+
+QSortFilterProxyModel* CategorizedContactModel::SortedProxy::model() const
+{
+   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+
+   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->model;
+}
+
+QAbstractItemModel* CategorizedContactModel::SortedProxy::categoryModel() const
+{
+   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+
+   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->categories;
+}
+
+QItemSelectionModel* CategorizedContactModel::SortedProxy::categorySelectionModel() const
+{
+   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+
+   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->selectionModel;
+}
+
+CategorizedContactModel::SortedProxy* CategorizedContactModel::SortedProxy::instance()
+{
+   return &CategorizedContactModel::instance()->d_ptr->m_pProxies;
 }
 
 #include <categorizedcontactmodel.moc>

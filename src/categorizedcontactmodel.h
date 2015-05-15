@@ -30,6 +30,8 @@ class ContactTreeNode;
 class TopLevelItem;
 class ContactTreeBinder;
 class CategorizedContactModelPrivate;
+class QSortFilterProxyModel;
+class QItemSelectionModel;
 
 class LIB_EXPORT CategorizedContactModel :  public QAbstractItemModel
 {
@@ -41,7 +43,8 @@ public:
    friend class PersonModel      ;
    friend class ContactTreeNode  ;
    friend class ContactTreeBinder;
-   explicit CategorizedContactModel(int role = Qt::DisplayRole);
+   friend class SortedProxy      ;
+
    virtual ~CategorizedContactModel();
 
    //Setters
@@ -70,10 +73,28 @@ public:
    QString    defaultCategory     () const;
    bool       areUnreachableHidden() const;
 
+   struct SortedProxy {
+      enum class Categories {
+         NAME        ,
+         ORGANIZATION,
+         RECENTLYUSED,
+         GROUP       ,
+         DEPARTMENT  ,
+         COUNT__
+      };
+
+      QSortFilterProxyModel* model                 () const;
+      QAbstractItemModel   * categoryModel         () const;
+      QItemSelectionModel  * categorySelectionModel() const;
+      static CategorizedContactModel::SortedProxy* instance();
+   };
+
    //Singleton
    static CategorizedContactModel* instance();
 
 private:
+   explicit CategorizedContactModel(int role = Qt::DisplayRole);
+
    QScopedPointer<CategorizedContactModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CategorizedContactModel)
 };

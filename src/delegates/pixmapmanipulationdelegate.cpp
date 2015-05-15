@@ -103,3 +103,14 @@ QVariant PixmapManipulationDelegate::securityLevelIcon(const SecurityEvaluationM
    return QVariant();
 }
 
+QVariant PixmapManipulationDelegate::historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const
+{
+   Q_UNUSED(cat)
+   return QVariant();
+}
+
+QVariant PixmapManipulationDelegate::contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const
+{
+   Q_UNUSED(cat)
+   return QVariant();
+}

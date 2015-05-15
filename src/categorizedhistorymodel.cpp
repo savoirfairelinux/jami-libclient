@@ -25,6 +25,7 @@
 #include <QCoreApplication>
 
 //Ring lib
+#include "private/sortproxies.h"
 #include "mime.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
@@ -76,8 +77,10 @@ public:
    QVector<HistoryTopLevelItem*>       m_lCategoryCounter ;
    QHash<int,HistoryTopLevelItem*>     m_hCategories      ;
    QHash<QString,HistoryTopLevelItem*> m_hCategoryByName  ;
+   SortingCategory::ModelTuple*        m_pSortedProxy     ;
    int                          m_Role             ;
    QStringList                  m_lMimes           ;
+   CategorizedHistoryModel::SortedProxy m_pProxies;
 
 private:
    CategorizedHistoryModel* q_ptr;
@@ -182,7 +185,7 @@ Call* CategorizedHistoryModelPrivate::HistoryItem::call() const
  ****************************************************************************/
 
 CategorizedHistoryModelPrivate::CategorizedHistoryModelPrivate(CategorizedHistoryModel* parent) : QObject(parent), q_ptr(parent),
-m_Role(static_cast<int>(Call::Role::FuzzyDate))
+m_Role(static_cast<int>(Call::Role::FuzzyDate)),m_pSortedProxy(nullptr)
 {
 }
 
@@ -482,6 +485,7 @@ int CategorizedHistoryModel::rowCount( const QModelIndex& parentIdx ) const
             return 0;
       };
    }
+   return 0;
 }
 
 Qt::ItemFlags CategorizedHistoryModel::flags( const QModelIndex& idx ) const
@@ -642,6 +646,35 @@ void CategorizedHistoryModel::setCategoryRole(int role)
       d_ptr->m_Role = role;
       d_ptr->reloadCategories();
    }
+}
+
+QSortFilterProxyModel* CategorizedHistoryModel::SortedProxy::model() const
+{
+   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+
+   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->model;
+}
+
+QAbstractItemModel* CategorizedHistoryModel::SortedProxy::categoryModel() const
+{
+   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+
+   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->categories;
+}
+
+QItemSelectionModel* CategorizedHistoryModel::SortedProxy::categorySelectionModel() const
+{
+   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+
+   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->selectionModel;
+}
+
+CategorizedHistoryModel::SortedProxy* CategorizedHistoryModel::SortedProxy::instance()
+{
+   return &CategorizedHistoryModel::instance()->d_ptr->m_pProxies;
 }
 
 #include <categorizedhistorymodel.moc>
