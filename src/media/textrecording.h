@@ -15,43 +15,35 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "recording.h"
+#ifndef MEDIA_TEXTRECORDING_H
+#define MEDIA_TEXTRECORDING_H
+
+#include <media/recording.h>
 
 namespace Media {
 
-class RecordingPrivate {
-public:
-   RecordingPrivate(Recording* r);
+class TextRecordingPrivate;
 
-   //Attributes
-   Recording::Type       m_Type    ;
-   InstantMessagingModel* m_pImModel;
+class LIB_EXPORT TextRecording : public Recording
+{
+   Q_OBJECT
+
+   //InstantMessagingModel is a view on top of TextRecording data
+   friend class ::InstantMessagingModel;
+
+public:
+   //Constructor
+   explicit TextRecording(const Recording::Type type);
+   virtual ~TextRecording();
+
+   //Getter
+   InstantMessagingModel* instantMessagingModel() const;
 
 private:
-   Recording* q_ptr;
+   TextRecordingPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(TextRecording)
 };
 
-RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pImModel(nullptr)
-{
-
 }
 
-Recording::Recording(const Recording::Type type) : ItemBase<QObject>(nullptr), d_ptr(new RecordingPrivate(this))
-{
-   d_ptr->m_Type = type;
-}
-
-Recording::~Recording()
-{
-   delete d_ptr;
-}
-
-} //Media::
-
-///Return this Recording type
-Media::Recording::Type Media::Recording::type() const
-{
-   return d_ptr->m_Type;
-}
-
-#include <recording.moc>
+#endif

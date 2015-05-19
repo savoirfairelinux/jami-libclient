@@ -23,6 +23,7 @@
 
 //Ring
 #include "recording.h"
+#include "localtextrecordingcollection.h"
 
 //DRing
 #include "dbus/configurationmanager.h"
@@ -54,10 +55,11 @@ public:
    RecordingModelPrivate(Media::RecordingModel* parent);
 
    //Attributes
-   QVector<RecordingNode*>        m_lCategories;
-   static Media::RecordingModel*  m_spInstance ;
-   RecordingNode*                 m_pText      ;
-   RecordingNode*                 m_pAudioVideo;
+   QVector<RecordingNode*>        m_lCategories             ;
+   static Media::RecordingModel*  m_spInstance              ;
+   RecordingNode*                 m_pText                   ;
+   RecordingNode*                 m_pAudioVideo             ;
+   LocalTextRecordingCollection*  m_pTextRecordingCollection;
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
 
 private:
@@ -82,6 +84,12 @@ Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(pare
 d_ptr(new RecordingModelPrivate(this))
 {
    setObjectName("RecordingModel");
+
+   d_ptr->m_pTextRecordingCollection = addCollection<LocalTextRecordingCollection>();
+
+   d_ptr->m_pTextRecordingCollection->listId([](const QList<CollectionInterface::Element>& e) {
+      qDebug() << "\n\n\nLOADED!!!!" << e;
+   });
 }
 
 Media::RecordingModel* Media::RecordingModel::instance()
@@ -291,4 +299,12 @@ void Media::RecordingModel::setAlwaysRecording(bool record)
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    configurationManager.setIsAlwaysRecording   ( record );
+}
+
+///Create or load the recording associated with the ContactMethod cm
+Media::Recording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
+{
+   Media::Recording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
+
+   return r;
 }

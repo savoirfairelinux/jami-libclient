@@ -20,6 +20,7 @@
 #include <delegates/pixmapmanipulationdelegate.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>
+#include <media/avrecording.h>
 
 class LocalRecordingEditor : public CollectionEditor<Media::Recording>
 {
@@ -37,8 +38,7 @@ private:
    QVector<Media::Recording*> m_lNumbers;
 };
 
-template<typename T>
-LocalRecordingCollection::LocalRecordingCollection(CollectionMediator<T>* mediator) :
+LocalRecordingCollection::LocalRecordingCollection(CollectionMediator<Media::Recording>* mediator) :
    CollectionInterface(new LocalRecordingEditor(mediator))
 {
    load();
@@ -129,10 +129,11 @@ bool LocalRecordingCollection::reload()
 FlagPack<CollectionInterface::SupportedFeatures> LocalRecordingCollection::supportedFeatures() const
 {
    return
-      CollectionInterface::SupportedFeatures::NONE   |
-      CollectionInterface::SupportedFeatures::LOAD   |
-      CollectionInterface::SupportedFeatures::ADD    |
-      CollectionInterface::SupportedFeatures::REMOVE ;
+      CollectionInterface::SupportedFeatures::NONE      |
+      CollectionInterface::SupportedFeatures::LOAD      |
+      CollectionInterface::SupportedFeatures::ADD       |
+      CollectionInterface::SupportedFeatures::MANAGEABLE|
+      CollectionInterface::SupportedFeatures::REMOVE    ;
 }
 
 bool LocalRecordingCollection::clear()
@@ -147,7 +148,7 @@ QByteArray LocalRecordingCollection::id() const
 
 Media::Recording* LocalRecordingCollection::addFromPath(const QString& path)
 {
-   Media::Recording* rec = new Media::Recording(Media::Recording::Type::AUDIO_VIDEO);
+   Media::AVRecording* rec = new Media::AVRecording(Media::Recording::Type::AUDIO_VIDEO);
    rec->setPath(path);
 
    editor<Media::Recording>()->addExisting(rec);

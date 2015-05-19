@@ -211,6 +211,8 @@ SET( libringclient_LIB_SRCS
   src/media/text.cpp
   src/media/file.cpp
   src/media/recording.cpp
+  src/media/avrecording.cpp
+  src/media/textrecording.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -265,6 +267,7 @@ SET( libringclient_LIB_SRCS
   src/daemoncertificatecollection.cpp
   src/foldercertificatecollection.cpp
   src/localrecordingcollection.cpp
+  src/localtextrecordingcollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -334,6 +337,7 @@ SET( libringclient_LIB_HDRS
   src/numbercategory.h
   src/ringtonemodel.h
   src/localrecordingcollection.h
+  src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
@@ -402,6 +406,8 @@ SET(libringclient_media_LIB_HDRS
   src/media/text.h
   src/media/file.h
   src/media/recording.h
+  src/media/avrecording.h
+  src/media/textrecording.h
   src/media/recordingmodel.h
 )
 

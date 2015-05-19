@@ -29,6 +29,7 @@
 #include "contactmethod.h"
 
 class RecordingModelPrivate;
+class ContactMethod;
 
 namespace Media {
    class Recording;
@@ -75,6 +76,9 @@ public:
    //Setter
    void setAlwaysRecording( bool        record );
    void setRecordPath     ( const QUrl& path   );
+
+   //Mutator
+   Recording* createTextRecording(const ContactMethod* cm);
 
    //Singleton
    static RecordingModel* instance();

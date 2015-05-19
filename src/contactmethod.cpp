@@ -16,6 +16,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "contactmethod.h"
+
+//Qt
+#include <QtCore/QCryptographicHash>
+
+//Ring
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
@@ -59,6 +64,7 @@ public:
    URI                m_Uri              ;
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
+   InstantMessagingModel* m_pImModel     ;
 
    //Parents
    QList<ContactMethod*> m_lParents;
@@ -129,7 +135,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1),m_hasType(false)
+   m_Index(-1),m_hasType(false),m_pImModel(nullptr)
 {}
 
 ///Constructor
@@ -438,6 +444,17 @@ URI::ProtocolHint ContactMethod::protocolHint() const
    return d_ptr->m_Uri.protocolHint();
 }
 
+///Create a SHA1 hash identifying this contact method
+QByteArray ContactMethod::sha1() const
+{
+   QCryptographicHash hash(QCryptographicHash::Sha1);
+   hash.addData(toHash().toLatin1());
+
+   //Create a reproducible key for this file
+   const QByteArray id = hash.result().toHex();
+   return id;
+}
+
 ///Return all calls from this number
 QList<Call*> ContactMethod::calls() const
 {
@@ -617,6 +634,16 @@ bool ContactMethod::operator==(ContactMethod& other)
 bool ContactMethod::operator==(const ContactMethod& other) const
 {
    return this->d_ptr== other.d_ptr;
+}
+
+InstantMessagingModel* ContactMethod::imModel() const
+{
+   return d_ptr->m_pImModel;
+}
+
+void ContactMethod::setImModel(InstantMessagingModel* m)
+{
+   d_ptr->m_pImModel = m;
 }
 
 /************************************************************************************

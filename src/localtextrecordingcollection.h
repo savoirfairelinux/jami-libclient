@@ -15,43 +15,42 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "recording.h"
+#ifndef LOCALTEXTRECORDINGCOLLECTION_H
+#define LOCALTEXTRECORDINGCOLLECTION_H
+
+#include <collectioninterface.h>
+#include <collectioneditor.h>
+
+#include <typedefs.h>
 
 namespace Media {
+   class Recording;
+}
 
-class RecordingPrivate {
+class LIB_EXPORT LocalTextRecordingCollection : public CollectionInterface
+{
 public:
-   RecordingPrivate(Recording* r);
+   explicit LocalTextRecordingCollection(CollectionMediator<Media::Recording>* mediator);
+   virtual ~LocalTextRecordingCollection();
 
-   //Attributes
-   Recording::Type       m_Type    ;
-   InstantMessagingModel* m_pImModel;
+   virtual bool load  () override;
+   virtual bool reload() override;
+   virtual bool clear () override;
 
-private:
-   Recording* q_ptr;
+   virtual QString    name     () const override;
+   virtual QString    category () const override;
+   virtual QVariant   icon     () const override;
+   virtual bool       isEnabled() const override;
+   virtual QByteArray id       () const override;
+   virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
+
+   Media::Recording* fetchFor (const ContactMethod* cm);
+   Media::Recording* createFor(const ContactMethod* cm);
+
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
+
+   static LocalTextRecordingCollection* instance();
+
 };
 
-RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pImModel(nullptr)
-{
-
-}
-
-Recording::Recording(const Recording::Type type) : ItemBase<QObject>(nullptr), d_ptr(new RecordingPrivate(this))
-{
-   d_ptr->m_Type = type;
-}
-
-Recording::~Recording()
-{
-   delete d_ptr;
-}
-
-} //Media::
-
-///Return this Recording type
-Media::Recording::Type Media::Recording::type() const
-{
-   return d_ptr->m_Type;
-}
-
-#include <recording.moc>
+#endif

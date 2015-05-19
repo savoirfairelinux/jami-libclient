@@ -19,17 +19,17 @@
 #define LOCALRECORDINGCOLLECTON_H
 
 #include <collectioninterface.h>
+#include <typedefs.h>
 #include <collectioneditor.h>
 
 namespace Media {
    class Recording;
 }
 
-class LocalRecordingCollection : public CollectionInterface
+class LIB_EXPORT LocalRecordingCollection : public CollectionInterface
 {
 public:
-   template<typename T>
-   explicit LocalRecordingCollection(CollectionMediator<T>* mediator);
+   explicit LocalRecordingCollection(CollectionMediator<Media::Recording>* mediator);
    virtual ~LocalRecordingCollection();
 
    virtual bool load  () override;
@@ -49,8 +49,6 @@ public:
 
    static LocalRecordingCollection* instance();
 
-private:
-   CollectionMediator<Media::Recording>* m_pMediator;
 };
 
 #endif
