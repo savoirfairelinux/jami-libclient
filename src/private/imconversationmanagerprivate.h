@@ -21,13 +21,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QHash>
 
-class InstantMessagingModel;
 class Account;
 class Call;
 class ContactMethod;
 
 namespace Media {
    class Text;
+   class TextRecording;
 }
 
 class IMConversationManagerPrivate : public QObject
@@ -36,14 +36,6 @@ class IMConversationManagerPrivate : public QObject
 public:
    friend class Call;
    IMConversationManagerPrivate(QObject* parent);
-
-   //Attributes
-   QHash<QString       , InstantMessagingModel*> m_lModels          ;
-   QHash<Call*         , InstantMessagingModel*> m_lNewCallModels   ;
-   QHash<ContactMethod*, InstantMessagingModel*> m_lOutOfCallsModels;
-
-   //Mutator
-   InstantMessagingModel* createModel( Media::Text* t, Account* a = nullptr, const QString& peerNumber = QString());
 
    static IMConversationManagerPrivate* instance();
 

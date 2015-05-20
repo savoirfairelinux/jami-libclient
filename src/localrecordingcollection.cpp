@@ -148,7 +148,7 @@ QByteArray LocalRecordingCollection::id() const
 
 Media::Recording* LocalRecordingCollection::addFromPath(const QString& path)
 {
-   Media::AVRecording* rec = new Media::AVRecording(Media::Recording::Type::AUDIO_VIDEO);
+   Media::AVRecording* rec = new Media::AVRecording();
    rec->setPath(path);
 
    editor<Media::Recording>()->addExisting(rec);

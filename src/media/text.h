@@ -28,6 +28,8 @@ class InstantMessagingModel;
 
 namespace Media {
 
+class TextRecording;
+
 class LIB_EXPORT Text : public Media::Media
 {
    Q_OBJECT
@@ -37,7 +39,7 @@ public:
    virtual Media::Type type() override;
 
    //Getter
-   InstantMessagingModel* instantMessagingModel() const;
+   TextRecording* recording() const;
 
    //Mutator
    void send(const QString& message);

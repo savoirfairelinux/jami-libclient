@@ -112,7 +112,7 @@ m_Elapsed(0),m_Left(0)
 
 }
 
-Media::AVRecording::AVRecording(const Recording::Type type) : Recording(type), d_ptr(new AVRecordingPrivate(this))
+Media::AVRecording::AVRecording() : Recording(Recording::Type::AUDIO_VIDEO), d_ptr(new AVRecordingPrivate(this))
 {
 }
 

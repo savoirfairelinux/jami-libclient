@@ -17,23 +17,25 @@
  ***************************************************************************/
 #include "instantmessagingmodel.h"
 
-#include "callmodel.h"
+#include <callmodel.h>
 #include "dbus/callmanager.h"
-#include "call.h"
-#include "person.h"
-#include "contactmethod.h"
+#include <call.h>
+#include <media/textrecording.h>
+#include <person.h>
+#include <contactmethod.h>
 #include "private/instantmessagingmodel_p.h"
+#include "private/textrecording_p.h"
 
 InstantMessagingModelPrivate::InstantMessagingModelPrivate(InstantMessagingModel* parent) : QObject(parent), q_ptr(parent),
-m_pCall(nullptr)
+m_pRecording(nullptr)
 {
 
 }
 
 ///Constructor
-InstantMessagingModel::InstantMessagingModel(Call* call, QObject* par) : QAbstractListModel(par), d_ptr(new InstantMessagingModelPrivate(this))
+InstantMessagingModel::InstantMessagingModel(Media::TextRecording* recording) : QAbstractListModel(recording), d_ptr(new InstantMessagingModelPrivate(this))
 {
-   d_ptr->m_pCall = call;
+   d_ptr->m_pRecording = recording;
 }
 
 InstantMessagingModel::~InstantMessagingModel()
@@ -62,25 +64,16 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
    if (idx.column() == 0) {
       switch (role) {
          case Qt::DisplayRole:
-            return QVariant(d_ptr->m_lMessages[idx.row()].message);
+            return QVariant(d_ptr->m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
          case InstantMessagingModel::Role::TYPE:
-            return QVariant(d_ptr->m_lMessages[idx.row()].message);
+            return QVariant(d_ptr->m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
          case InstantMessagingModel::Role::FROM:
-            return QVariant(d_ptr->m_lMessages[idx.row()].from);
+            return QVariant();//d_ptr->m_pRecording->d_ptr->m_lNodes[idx.row()]->from);
          case InstantMessagingModel::Role::TEXT:
             return static_cast<int>(MessageRole::INCOMMING_IM);
          case InstantMessagingModel::Role::CONTACT:
-            if (d_ptr->m_pCall->peerContactMethod()->contact()) {
-               return QVariant();
-            }
-            break;
+            return QVariant();
          case InstantMessagingModel::Role::IMAGE: {
-            if (d_ptr->m_lImages.find(idx) != d_ptr->m_lImages.end())
-               return d_ptr->m_lImages[idx];
-            const Person* c = d_ptr->m_pCall->peerContactMethod()->contact();
-            if (c && c->photo().isValid()) {
-               return c->photo();
-            }
             return QVariant();
          }
          default:
@@ -94,7 +87,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
 int InstantMessagingModel::rowCount(const QModelIndex& parentIdx) const
 {
    Q_UNUSED(parentIdx)
-   return d_ptr->m_lMessages.size();
+   return d_ptr->m_pRecording->d_ptr->m_lNodes.size();
 }
 
 ///Model flags
@@ -110,28 +103,16 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
    Q_UNUSED(idx)
    Q_UNUSED(value)
    Q_UNUSED(role)
-   if (idx.column() == 0 && role == InstantMessagingModel::Role::IMAGE   ) {
-      d_ptr->m_lImages[idx] = value;
-   }
    return false;
 }
 
-///Add new incoming message (to be used internally)
-void InstantMessagingModelPrivate::addIncommingMessage(const QString& from, const QString& message)
+void InstantMessagingModelPrivate::addRowBegin()
 {
-   InternalIM im;
-   im.from    = from;
-   im.message = message;
-   m_lMessages << im;
-   emit q_ptr->dataChanged(q_ptr->index(m_lMessages.size() -1,0), q_ptr->index(m_lMessages.size()-1,0));
+   const int rc = q_ptr->rowCount();
+   q_ptr->beginInsertRows(QModelIndex(),rc,rc);
 }
 
-///Add new outgoing message (to be used internally and externally)
-void InstantMessagingModelPrivate::addOutgoingMessage(const QString& message)
+void InstantMessagingModelPrivate::addRowEnd()
 {
-   InternalIM im;
-   im.from    = tr("Me");
-   im.message = message;
-   m_lMessages << im;
-   emit q_ptr->dataChanged(q_ptr->index(m_lMessages.size() -1,0), q_ptr->index(m_lMessages.size()-1,0));
+   q_ptr->endInsertRows();
 }

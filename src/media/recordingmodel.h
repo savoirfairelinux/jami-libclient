@@ -33,6 +33,8 @@ class ContactMethod;
 
 namespace Media {
    class Recording;
+   class TextRecording;
+   class AVRecording;
 
 /**
  * This model host the Ring recordings. Recording sessions span one or
@@ -78,7 +80,7 @@ public:
    void setRecordPath     ( const QUrl& path   );
 
    //Mutator
-   Recording* createTextRecording(const ContactMethod* cm);
+   TextRecording* createTextRecording(const ContactMethod* cm);
 
    //Singleton
    static RecordingModel* instance();

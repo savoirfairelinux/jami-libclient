@@ -23,26 +23,22 @@
 class InstantMessagingModel;
 class Call;
 
+namespace Media {
+   class TextRecording;
+}
+
 class InstantMessagingModelPrivate : public QObject
 {
    Q_OBJECT
 public:
    explicit InstantMessagingModelPrivate(InstantMessagingModel* parent);
 
-   //Private members
-   void addIncommingMessage(const QString& from, const QString& message);
-   void addOutgoingMessage(const QString& message);
-
-   //Interal struct
-   struct InternalIM {
-      QString from;
-      QString message;
-   };
-
    //Attributes
-   QList<InternalIM>           m_lMessages;
-   QHash<QModelIndex,QVariant> m_lImages  ;
-   Call*                       m_pCall    ;
+   Media::TextRecording*             m_pRecording;
+
+   //Helper
+   void addRowBegin();
+   void addRowEnd();
 private:
    InstantMessagingModel* q_ptr;
 };

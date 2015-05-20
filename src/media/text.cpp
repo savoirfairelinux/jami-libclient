@@ -25,9 +25,13 @@
 //Ring
 #include <call.h>
 #include <callmodel.h>
+#include <account.h>
+#include <media/textrecording.h>
+#include <media/recordingmodel.h>
 #include <phonedirectorymodel.h>
 #include <instantmessagingmodel.h>
 #include <private/call_p.h>
+#include <private/textrecording_p.h>
 #include <private/instantmessagingmodel_p.h>
 #include <private/imconversationmanagerprivate.h>
 
@@ -54,7 +58,7 @@ public:
    MediaTextPrivate(Media::Text* parent);
 
    //Attributes
-   InstantMessagingModel* m_pImModel;
+   Media::TextRecording* m_pRecording;
 
 private:
    Media::Text* q_ptr;
@@ -80,17 +84,20 @@ IMConversationManagerPrivate* IMConversationManagerPrivate::instance()
 ///Called when a new message is incoming
 void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QString& message)
 {
-   if (!m_lModels[callId] && CallModel::instance()) {
-      Call* call = CallModel::instance()->getCall(callId);
-      if (call) {
-         qDebug() << "Creating messaging model for call" << callId;
-         m_lModels[callId] = new InstantMessagingModel(call);
-         m_lModels[callId]->d_ptr->addIncommingMessage(from,message);
-      }
+   Q_UNUSED(from)
+
+   Call* call = CallModel::instance()->getCall(callId);
+
+   Q_ASSERT(call);
+
+   qDebug() << "Creating messaging model for call" << callId;
+   Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
+
+   if (!media) {
+      media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
    }
-   else if (m_lModels[callId]) {
-      m_lModels[callId]->d_ptr->addIncommingMessage(from,message);
-   }
+
+   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
 }
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
@@ -98,35 +105,8 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
    qDebug() << "GOT MESSAGE" << accountId << from << message;
 }
 
-InstantMessagingModel* IMConversationManagerPrivate::createModel(Media::Text* t, Account* a, const QString& peerNumber)
+MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr)
 {
-   InstantMessagingModel* imm = new InstantMessagingModel(t->call(), this);
-
-   if (t) {
-      if (t->call()->hasRemote()) {
-         m_lModels[t->call()->dringId()] = imm;
-      }
-      else {
-         m_lNewCallModels[t->call()] = imm;
-      }
-      m_lOutOfCallsModels[t->call()->peerContactMethod()] = imm;
-   }
-   else if (a && !peerNumber.isEmpty()) {
-      ContactMethod* n = PhoneDirectoryModel::instance()->getNumber(peerNumber, a);
-      m_lOutOfCallsModels[n] = imm;
-   }
-   else {
-      delete imm;
-
-      return nullptr;
-   }
-
-   return imm;
-}
-
-MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pImModel(nullptr)
-{
-
 }
 
 Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate(this))
@@ -144,24 +124,35 @@ Media::Text::~Text()
 
 }
 
-InstantMessagingModel* Media::Text::instantMessagingModel() const
+Media::TextRecording* Media::Text::recording() const
 {
-   if (!d_ptr->m_pImModel) {
-      d_ptr->m_pImModel = IMConversationManagerPrivate::instance()->createModel(const_cast<Text*>(this));
+   if (!d_ptr->m_pRecording) {
+      Text* other = call()->firstMedia<Text>(direction() == Media::Direction::OUT ? 
+         Media::Direction::IN
+      :  Media::Direction::OUT
+      );
+
+      if (other && other->recording())
+         d_ptr->m_pRecording = other->recording();
    }
-   return d_ptr->m_pImModel;
+
+   if (!d_ptr->m_pRecording) {
+      d_ptr->m_pRecording = RecordingModel::instance()->createTextRecording(call()->peerContactMethod());
+   }
+
+   return d_ptr->m_pRecording;
 }
 
 ///Send a text message
 void Media::Text::send(const QString& message)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.sendTextMessage(call()->dringId(),message);
+   Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message);
 
-   //Make sure it exist
-   instantMessagingModel();
+   //Make sure the recording exist
+   recording();
 
-   d_ptr->m_pImModel->d_ptr->addOutgoingMessage(message);
+   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->account()->contactMethod(),Media::Direction::OUT);
 
    emit messageSent(message);
 }

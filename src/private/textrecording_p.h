@@ -21,6 +21,11 @@
 class SerializableEntityManager;
 
 //BEGIN Those classes are serializable to JSon
+/**
+ * Those classes map 1:1 to the json stored on the disk. References are then
+ * extracted, the conversation reconstructed and placed into a TextMessageNode
+ * vector.
+ */
 namespace Serializable {
 
 class Message {
@@ -53,7 +58,7 @@ public:
    ///The group ID (necessary to untangle the graph
    int id;
    ///All messages from this chunk
-   QList<Message> messages;
+   QList<Message*> messages;
    ///If the conversion add new participants, a new file will be created
    QString nextGroupSha1;
    ///This is the group identifier in the file described by `nextGroupSha1`
@@ -66,33 +71,47 @@ public:
 class Peers {
    friend class ::SerializableEntityManager;
 public:
+
    ///The sha1(s) of each participants. If there is onlt one, it should match the filename
    QList<QString> sha1s;
    ///Every message groups associated with this ContactMethod (or ContactMethodGroup)
-   QList<Group> groups;
+   QList<Group*> groups;
+
+   ///This attribute store if the file has changed
+   bool hasChanged;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
 
 private:
-   Peers() {}
+   Peers() : hasChanged(false) {}
 };
 
 }
 //END Those classes are serializable to JSon
 
-namespace Media {
-
 struct TextMessageNode;
 
+namespace Media {
+
+/**
+ * The Media::Recording private class. This is where the reconstructed
+ * conversation is stored. This class is also used as backend for the
+ * IM Model. The messages themselves are added by the Media::Text.
+ */
 class TextRecordingPrivate {
 public:
    TextRecordingPrivate(TextRecording* r);
 
    //Attributes
-   InstantMessagingModel*    m_pImModel     ;
-   QVector<TextMessageNode*> m_lNodes       ;
-   Serializable::Group*      m_pCurrentGroup;
+   InstantMessagingModel*      m_pImModel        ;
+   QVector<::TextMessageNode*> m_lNodes          ;
+   Serializable::Group*        m_pCurrentGroup   ;
+   QList<Serializable::Peers*> m_lAssociatedPeers;
+
+   //Helper
+   void insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction);
+   void save();
 
 private:
    TextRecording* q_ptr;
@@ -107,12 +126,18 @@ private:
  */
 class SerializableEntityManager
 {
-   static Serializable::Peers* peer(ContactMethod* cm);
-   static Serializable::Peers* peers(QList<ContactMethod*> cms);
+public:
+   static Serializable::Peers* peer(const ContactMethod* cm);
+   static Serializable::Peers* peers(QList<const ContactMethod*> cms);
 private:
    static QHash<QByteArray,Serializable::Peers*> m_hPeers;
 };
 
+/**
+ * This is the structure used internally to create the text conversation
+ * frontend. It will be stored as a vector by the IM Model but also implement
+ * a chained list for convenience
+ */
 struct TextMessageNode
 {
    TextMessageNode() : m_pNext(nullptr),m_pContactMethod(nullptr)

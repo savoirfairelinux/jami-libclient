@@ -26,6 +26,7 @@
 #include <delegates/pixmapmanipulationdelegate.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>
+#include <media/textrecording.h>
 #include <media/media.h>
 
 /*
@@ -197,19 +198,19 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
    return true;
 }
 
-Media::Recording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
+Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
 {
    const QByteArray& sha1 = cm->sha1();
    const QByteArray content = static_cast<LocalTextRecordingEditor*>(editor<Media::Recording>())->fetch(sha1);
 
-   Media::Recording* r = new Media::Recording(Media::Recording::Type::TEXT);
+   Media::TextRecording* r = new Media::TextRecording();
 
    return r;
 }
 
-Media::Recording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
+Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
 {
-   Media::Recording* r = fetchFor(cm);
+   Media::TextRecording* r = fetchFor(cm);
    return r;
 }
 

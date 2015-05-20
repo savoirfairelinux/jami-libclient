@@ -17,6 +17,8 @@
  ***************************************************************************/
 #include "recording.h"
 
+#include <instantmessagingmodel.h>
+
 namespace Media {
 
 class RecordingPrivate {

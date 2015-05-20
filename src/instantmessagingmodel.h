@@ -29,6 +29,8 @@ class Call;
 
 namespace Media {
    class Text;
+   class TextRecordingPrivate;
+   class TextRecording;
 }
 
 ///Qt model for the Instant Messaging (IM) features
@@ -42,6 +44,7 @@ class LIB_EXPORT InstantMessagingModel : public QAbstractListModel
    friend class IMConversationManager;
    friend class IMConversationManagerPrivate;
    friend class Media::Text;
+   friend class Media::TextRecordingPrivate;
 
 public:
    //Role const
@@ -61,7 +64,7 @@ public:
    };
 
    //Constructor
-   explicit InstantMessagingModel(Call* call, QObject* parent = nullptr);
+   explicit InstantMessagingModel(Media::TextRecording*);
    virtual ~InstantMessagingModel();
 
    //Abstract model function

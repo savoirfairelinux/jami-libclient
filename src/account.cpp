@@ -808,6 +808,12 @@ Account::Protocol Account::protocol() const
    return Account::Protocol::SIP;
 }
 
+///Return the contact method associated with this account
+ContactMethod* Account::contactMethod() const
+{
+   return d_ptr->m_pAccountNumber;
+}
+
 ///Return the DTMF type
 DtmfType Account::DTMFType() const
 {

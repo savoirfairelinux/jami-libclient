@@ -25,6 +25,7 @@
 
 namespace Media {
    class Recording;
+   class TextRecording;
 }
 
 class LIB_EXPORT LocalTextRecordingCollection : public CollectionInterface
@@ -44,8 +45,8 @@ public:
    virtual QByteArray id       () const override;
    virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
 
-   Media::Recording* fetchFor (const ContactMethod* cm);
-   Media::Recording* createFor(const ContactMethod* cm);
+   Media::TextRecording* fetchFor (const ContactMethod* cm);
+   Media::TextRecording* createFor(const ContactMethod* cm);
 
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 

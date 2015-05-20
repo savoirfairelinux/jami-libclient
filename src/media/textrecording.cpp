@@ -28,11 +28,15 @@
 #include <contactmethod.h>
 #include <instantmessagingmodel.h>
 #include <private/textrecording_p.h>
+#include <private/instantmessagingmodel_p.h>
+
+//Std
+#include <ctime>
 
 QHash<QByteArray, Serializable::Peers*> SerializableEntityManager::m_hPeers;
 
 
-Serializable::Peers* SerializableEntityManager::peer(ContactMethod* cm)
+Serializable::Peers* SerializableEntityManager::peer(const ContactMethod* cm)
 {
    const QByteArray sha1 = cm->sha1();
    Serializable::Peers* p = m_hPeers[sha1];
@@ -45,7 +49,7 @@ Serializable::Peers* SerializableEntityManager::peer(ContactMethod* cm)
    return p;
 }
 
-Serializable::Peers* SerializableEntityManager::peers(QList<ContactMethod*> cms)
+Serializable::Peers* SerializableEntityManager::peers(QList<const ContactMethod*> cms)
 {
    QByteArray ps;
 
@@ -69,12 +73,12 @@ Serializable::Peers* SerializableEntityManager::peers(QList<ContactMethod*> cms)
    return p;
 }
 
-Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr)
+Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr)
 {
 
 }
 
-Media::TextRecording::TextRecording(const Recording::Type type) : Recording(type), d_ptr(new TextRecordingPrivate(this))
+Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
 {
 }
 
@@ -87,10 +91,53 @@ Media::TextRecording::~TextRecording()
 InstantMessagingModel* Media::TextRecording::instantMessagingModel() const
 {
    if (!d_ptr->m_pImModel) {
-      
+      d_ptr->m_pImModel = new InstantMessagingModel(const_cast<TextRecording*>(this));
    }
 
    return d_ptr->m_pImModel;
+}
+
+void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction)
+{
+
+   //Only create it if none was found on the disk
+   if (!m_pCurrentGroup) {
+      m_pCurrentGroup = new Serializable::Group();
+      Serializable::Peers* p = SerializableEntityManager::peer(cm);
+      p->groups << m_pCurrentGroup;
+   }
+
+   //Create the message
+   time_t currentTime;
+   ::time(&currentTime);
+   Serializable::Message* m = new Serializable::Message();
+
+   m->timestamp = currentTime                      ;
+   m->payload   = message                          ;
+   m->mimeType  = "text/plain"                     ;
+   m->direction = direction                        ;
+   m->type      = Serializable::Message::Type::CHAT;
+   m_pCurrentGroup->messages << m;
+
+   //Make sure the model exist
+   q_ptr->instantMessagingModel();
+
+   //Update the reconstructed conversation
+   ::TextMessageNode* n  = new ::TextMessageNode()       ;
+   n->m_pMessage         = m                             ;
+   n->m_pContactMethod   = const_cast<ContactMethod*>(cm);
+   m_pImModel->d_ptr->addRowBegin();
+   m_lNodes << n;
+   m_pImModel->d_ptr->addRowEnd();
+}
+
+void Media::TextRecordingPrivate::save()
+{
+   for (Serializable::Peers* p : m_lAssociatedPeers) {
+      if (p->hasChanged) {
+         p->hasChanged = false;
+      }
+   }
 }
 
 void Serializable::Message::read (const QJsonObject &json)
@@ -122,8 +169,8 @@ void Serializable::Group::read (const QJsonObject &json)
    QJsonArray a = json["messages"].toArray();
    for (int i = 0; i < a.size(); ++i) {
       QJsonObject o = a[i].toObject();
-      Message message;
-      message.read(o);
+      Message* message = new Message();
+      message->read(o);
       messages.append(message);
    }
 }
@@ -135,9 +182,9 @@ void Serializable::Group::write(QJsonObject &json) const
    json["nextGroupId"   ] = nextGroupId  ;
 
    QJsonArray a;
-   for (const Message& m : messages) {
+   for (const Message* m : messages) {
       QJsonObject o;
-      m.write(o);
+      m->write(o);
       a.append(o);
    }
    json["messages"] = a;
@@ -154,8 +201,8 @@ void Serializable::Peers::read (const QJsonObject &json)
    QJsonArray a = json["groups"].toArray();
    for (int i = 0; i < a.size(); ++i) {
       QJsonObject o = a[i].toObject();
-      Group group;
-      group.read(o);
+      Group* group = new Group();
+      group->read(o);
       groups.append(group);
    }
 }
@@ -169,9 +216,9 @@ void Serializable::Peers::write(QJsonObject &json) const
    json["sha1s"] = a2;
 
    QJsonArray a;
-   for (const Group& g : groups) {
+   for (const Group* g : groups) {
       QJsonObject o;
-      g.write(o);
+      g->write(o);
       a.append(o);
    }
    json["groups"] = a;

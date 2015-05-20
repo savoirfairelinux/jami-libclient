@@ -302,9 +302,9 @@ void Media::RecordingModel::setAlwaysRecording(bool record)
 }
 
 ///Create or load the recording associated with the ContactMethod cm
-Media::Recording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
+Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
 {
-   Media::Recording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
+   Media::TextRecording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
 
    return r;
 }

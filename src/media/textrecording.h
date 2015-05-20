@@ -20,9 +20,14 @@
 
 #include <media/recording.h>
 
+class InstantMessagingModel;
+
+class IMConversationManagerPrivate;
+
 namespace Media {
 
 class TextRecordingPrivate;
+class Text;
 
 class LIB_EXPORT TextRecording : public Recording
 {
@@ -30,10 +35,11 @@ class LIB_EXPORT TextRecording : public Recording
 
    //InstantMessagingModel is a view on top of TextRecording data
    friend class ::InstantMessagingModel;
-
+   friend class ::IMConversationManagerPrivate;
+   friend class Text;
 public:
    //Constructor
-   explicit TextRecording(const Recording::Type type);
+   explicit TextRecording();
    virtual ~TextRecording();
 
    //Getter

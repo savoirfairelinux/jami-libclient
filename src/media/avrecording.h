@@ -42,7 +42,7 @@ public:
    Q_PROPERTY( QString               formattedTimeLeft    READ formattedTimeLeft    NOTIFY formattedTimeLeftChanged   )
 
    //Constructor
-   explicit AVRecording(const Recording::Type type);
+   explicit AVRecording();
    virtual ~AVRecording();
 
    //Getter
