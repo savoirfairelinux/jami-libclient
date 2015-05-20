@@ -18,6 +18,8 @@
 #ifndef TEXTRECORDING_P_H
 #define TEXTRECORDING_P_H
 
+#include <media/media.h>
+
 class SerializableEntityManager;
 
 //BEGIN Those classes are serializable to JSon
@@ -111,7 +113,7 @@ public:
 
    //Helper
    void insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction);
-   void save();
+   QHash<QByteArray,QByteArray> toJsons() const;
 
 private:
    TextRecording* q_ptr;
@@ -129,6 +131,8 @@ class SerializableEntityManager
 public:
    static Serializable::Peers* peer(const ContactMethod* cm);
    static Serializable::Peers* peers(QList<const ContactMethod*> cms);
+   static Serializable::Peers* fromSha1(const QByteArray& sha1);
+   static Serializable::Peers* fromJson(const QJsonObject& obj);
 private:
    static QHash<QByteArray,Serializable::Peers*> m_hPeers;
 };

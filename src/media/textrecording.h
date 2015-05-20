@@ -20,9 +20,13 @@
 
 #include <media/recording.h>
 
-class InstantMessagingModel;
+//Qt
+class QJsonObject;
 
+//Ring
+class InstantMessagingModel;
 class IMConversationManagerPrivate;
+class LocalTextRecordingEditor;
 
 namespace Media {
 
@@ -36,11 +40,13 @@ class LIB_EXPORT TextRecording : public Recording
    //InstantMessagingModel is a view on top of TextRecording data
    friend class ::InstantMessagingModel;
    friend class ::IMConversationManagerPrivate;
+   friend class ::LocalTextRecordingEditor;
    friend class Text;
 public:
    //Constructor
    explicit TextRecording();
    virtual ~TextRecording();
+   static TextRecording* fromJson(const QList<QJsonObject>& items);
 
    //Getter
    InstantMessagingModel* instantMessagingModel() const;

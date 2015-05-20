@@ -98,6 +98,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    }
 
    media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
+   media->recording()->setCall(call);
 }
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
@@ -152,6 +153,7 @@ void Media::Text::send(const QString& message)
    //Make sure the recording exist
    recording();
 
+   d_ptr->m_pRecording->setCall(call());
    d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->account()->contactMethod(),Media::Direction::OUT);
 
    emit messageSent(message);

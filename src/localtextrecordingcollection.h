@@ -43,6 +43,7 @@ public:
    virtual QVariant   icon     () const override;
    virtual bool       isEnabled() const override;
    virtual QByteArray id       () const override;
+   virtual bool fetch(const Element& e) override;
    virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
 
    Media::TextRecording* fetchFor (const ContactMethod* cm);

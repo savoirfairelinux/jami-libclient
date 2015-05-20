@@ -21,11 +21,13 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonValue>
+#include <QtCore/QJsonDocument>
 #include <QtCore/QCryptographicHash>
 
 //Ring
 #include <callmodel.h>
 #include <contactmethod.h>
+#include <account.h>
 #include <instantmessagingmodel.h>
 #include <private/textrecording_p.h>
 #include <private/instantmessagingmodel_p.h>
@@ -43,32 +45,81 @@ Serializable::Peers* SerializableEntityManager::peer(const ContactMethod* cm)
 
    if (!p) {
       p = new Serializable::Peers();
+      p->sha1s << sha1;
       m_hPeers[sha1] = p;
    }
 
    return p;
 }
 
-Serializable::Peers* SerializableEntityManager::peers(QList<const ContactMethod*> cms)
+QByteArray mashSha1s(QList<QString> sha1s)
 {
+   QCryptographicHash hash(QCryptographicHash::Sha1);
+
    QByteArray ps;
 
-   for(const ContactMethod* cm : cms) {
-      ps += cm->sha1();
+   for (const QString& sha1 : sha1s) {
+      ps += sha1.toLatin1();
    }
 
-   QCryptographicHash hash(QCryptographicHash::Sha1);
    hash.addData(ps);
 
    //Create a reproducible key for this file
-   const QByteArray sha1 = hash.result().toHex();
+   return hash.result().toHex();
+}
+
+Serializable::Peers* SerializableEntityManager::peers(QList<const ContactMethod*> cms)
+{
+   QList<QString> sha1s;
+
+   for(const ContactMethod* cm : cms) {
+      const QByteArray sha1 = cm->sha1();
+      sha1s << sha1;
+   }
+
+   const QByteArray sha1 = ::mashSha1s(sha1s);
 
    Serializable::Peers* p = m_hPeers[sha1];
 
    if (!p) {
       p = new Serializable::Peers();
+      p->sha1s = sha1s;
       m_hPeers[sha1] = p;
    }
+
+   return p;
+}
+
+Serializable::Peers* SerializableEntityManager::fromSha1(const QByteArray& sha1)
+{
+   return m_hPeers[sha1];
+}
+
+Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json)
+{
+   //Check if the object is already loaded
+   QStringList sha1List;
+   QJsonArray as = json["sha1s"].toArray();
+   for (int i = 0; i < as.size(); ++i) {
+      sha1List.append(as[i].toString());
+   }
+
+   if (sha1List.isEmpty())
+      return nullptr;
+
+   QByteArray sha1 = sha1List[0].toLatin1();
+
+   if (sha1List.size() > 1) {
+      sha1 = mashSha1s(sha1List);
+   }
+
+   if (m_hPeers[sha1])
+      return m_hPeers[sha1];
+
+   //Load from json
+   Serializable::Peers* p = new Serializable::Peers();
+   p->read(json);
+   m_hPeers[sha1] = p;
 
    return p;
 }
@@ -97,13 +148,68 @@ InstantMessagingModel* Media::TextRecording::instantMessagingModel() const
    return d_ptr->m_pImModel;
 }
 
+QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
+{
+   QHash<QByteArray,QByteArray> ret;
+   for (Serializable::Peers* p : m_lAssociatedPeers) {
+//       if (p->hasChanged) {
+         p->hasChanged = false;
+
+         QJsonObject output;
+         p->write(output);
+
+         QJsonDocument doc(output);
+         ret[p->sha1s[0].toLatin1()] = doc.toJson();
+//       }
+   }
+
+   return ret;
+}
+
+Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items)
+{
+   TextRecording* t = new TextRecording();
+
+   //Load the history data
+   for (const QJsonObject& obj : items) {
+      Serializable::Peers* p = SerializableEntityManager::fromJson(obj);
+      t->d_ptr->m_lAssociatedPeers << p;
+   }
+
+   //Create the model
+   t->instantMessagingModel();
+
+   //Reconstruct the conversation
+   //TODO do it right, right now it flatten the graph
+   for (const Serializable::Peers* p : t->d_ptr->m_lAssociatedPeers) {
+      for (const Serializable::Group* g : p->groups) {
+         for (Serializable::Message* m : g->messages) {
+            ::TextMessageNode* n  = new ::TextMessageNode()       ;
+            n->m_pMessage         = m                             ;
+            //n->m_pContactMethod   = const_cast<ContactMethod*>(cm); //FIXME add more details in the file
+            t->d_ptr->m_pImModel->d_ptr->addRowBegin();
+            t->d_ptr->m_lNodes << n;
+            t->d_ptr->m_pImModel->d_ptr->addRowEnd();
+         }
+      }
+   }
+
+   return t;
+}
+
 void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction)
 {
 
    //Only create it if none was found on the disk
    if (!m_pCurrentGroup) {
       m_pCurrentGroup = new Serializable::Group();
-      Serializable::Peers* p = SerializableEntityManager::peer(cm);
+      Q_ASSERT(q_ptr->call());
+      Serializable::Peers* p = SerializableEntityManager::peer(q_ptr->call()->peerContactMethod());
+
+      if (m_lAssociatedPeers.indexOf(p) == -1) {
+         m_lAssociatedPeers << p;
+      }
+
       p->groups << m_pCurrentGroup;
    }
 
@@ -129,15 +235,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
    m_pImModel->d_ptr->addRowBegin();
    m_lNodes << n;
    m_pImModel->d_ptr->addRowEnd();
-}
 
-void Media::TextRecordingPrivate::save()
-{
-   for (Serializable::Peers* p : m_lAssociatedPeers) {
-      if (p->hasChanged) {
-         p->hasChanged = false;
-      }
-   }
+   //Save the conversation
+   q_ptr->save();
 }
 
 void Serializable::Message::read (const QJsonObject &json)

@@ -26,14 +26,15 @@ public:
    RecordingPrivate(Recording* r);
 
    //Attributes
-   Recording::Type       m_Type    ;
+   Recording::Type        m_Type    ;
    InstantMessagingModel* m_pImModel;
+   Call*                  m_pCall   ;
 
 private:
    Recording* q_ptr;
 };
 
-RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pImModel(nullptr)
+RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pImModel(nullptr),m_pCall(nullptr)
 {
 
 }
@@ -54,6 +55,16 @@ Recording::~Recording()
 Media::Recording::Type Media::Recording::type() const
 {
    return d_ptr->m_Type;
+}
+
+Call* Media::Recording::call() const
+{
+   return d_ptr->m_pCall;
+}
+
+void Media::Recording::setCall(Call* call)
+{
+   d_ptr->m_pCall = call;
 }
 
 #include <recording.moc>

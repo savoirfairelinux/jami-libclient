@@ -24,6 +24,7 @@
 #include <typedefs.h>
 
 class RecordingPlaybackManager;
+class Call;
 
 namespace Media {
 
@@ -53,6 +54,10 @@ public:
 
    //Getter
    Recording::Type type() const;
+   Call* call() const;
+
+   //Setter
+   void setCall(Call* call);
 
 private:
    RecordingPrivate* d_ptr;

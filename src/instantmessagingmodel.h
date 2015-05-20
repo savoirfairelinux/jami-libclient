@@ -45,6 +45,7 @@ class LIB_EXPORT InstantMessagingModel : public QAbstractListModel
    friend class IMConversationManagerPrivate;
    friend class Media::Text;
    friend class Media::TextRecordingPrivate;
+   friend class Media::TextRecording;
 
 public:
    //Role const

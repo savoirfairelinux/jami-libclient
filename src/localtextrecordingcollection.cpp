@@ -21,12 +21,15 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 
 //Ring
 #include <delegates/pixmapmanipulationdelegate.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>
 #include <media/textrecording.h>
+#include <private/textrecording_p.h>
 #include <media/media.h>
 
 /*
@@ -79,6 +82,25 @@ LocalTextRecordingCollection* LocalTextRecordingCollection::instance()
 bool LocalTextRecordingEditor::save(const Media::Recording* recording)
 {
    Q_UNUSED(recording)
+   QHash<QByteArray,QByteArray> ret = static_cast<const Media::TextRecording*>(recording)->d_ptr->toJsons();
+
+   QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+
+   //Make sure the directory exist
+   dir.mkdir("text/");
+
+   //Save each file
+   for (QHash<QByteArray,QByteArray>::const_iterator i = ret.begin(); i != ret.end(); ++i) {
+      QFile file(QString("%1/text/%2.json").arg(dir.path()).arg(QString(i.key())));
+
+      if ( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+         QTextStream streamFileOut(&file);
+         streamFileOut << i.value();
+         streamFileOut.flush();
+         file.close();
+      }
+   }
+
    return true;
 }
 
@@ -114,7 +136,7 @@ QByteArray LocalTextRecordingEditor::fetch(const QByteArray& sha1)
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/" + sha1 + ".json");
 
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      qDebug() << "Conversation not found" << sha1;
+      qDebug() << "Conversation not found" << sha1 << (QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/" + sha1 + ".json");
       return QByteArray();
    }
 
@@ -198,12 +220,24 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
    return true;
 }
 
+bool LocalTextRecordingCollection::fetch(const Element& e)
+{
+
+}
+
 Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
 {
    const QByteArray& sha1 = cm->sha1();
    const QByteArray content = static_cast<LocalTextRecordingEditor*>(editor<Media::Recording>())->fetch(sha1);
 
-   Media::TextRecording* r = new Media::TextRecording();
+   if (content.isEmpty())
+      return nullptr;
+
+   QJsonDocument loadDoc = QJsonDocument::fromJson(content);
+
+   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()});
+
+   r->setCollection(this);
 
    return r;
 }
@@ -211,6 +245,12 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
 Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
 {
    Media::TextRecording* r = fetchFor(cm);
+
+   if (!r) {
+      r = new Media::TextRecording();
+      r->setCollection(this);
+   }
+
    return r;
 }
 
