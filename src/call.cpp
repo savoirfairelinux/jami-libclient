@@ -655,41 +655,41 @@ const QString Call::toHumanStateName(const Call::State cur)
 {
    switch (cur) {
       case Call::State::NEW:
-         return tr( "New"               );
+         return tr( "New"                       );
       case Call::State::INCOMING:
-         return tr( "Ringing (in)"      );
+         return tr( "Ringing (in)"              );
       case Call::State::RINGING:
-         return tr( "Ringing (out)"     );
+         return tr( "Ringing (out)"             );
       case Call::State::CURRENT:
-         return tr( "Talking"           );
+         return tr( "Talking"                   );
       case Call::State::DIALING:
-         return tr( "Dialing"           );
+         return tr( "Dialing"                   );
       case Call::State::HOLD:
-         return tr( "Hold"              );
+         return tr( "Hold"                      );
       case Call::State::FAILURE:
-         return tr( "Failed"            );
+         return tr( "Failed"                    );
       case Call::State::BUSY:
-         return tr( "Busy"              );
+         return tr( "Busy"                      );
       case Call::State::TRANSFERRED:
-         return tr( "Transfer"          );
+         return tr( "Transfer"                  );
       case Call::State::TRANSF_HOLD:
-         return tr( "Transfer hold"     );
+         return tr( "Transfer hold"             );
       case Call::State::OVER:
-         return tr( "Over"              );
+         return tr( "Over"                      );
       case Call::State::ERROR:
-         return tr( "Error"             );
+         return tr( "Error"                     );
       case Call::State::CONFERENCE:
-         return tr( "Conference"        );
+         return tr( "Conference"                );
       case Call::State::CONFERENCE_HOLD:
-         return tr( "Conference (hold)" );
+         return tr( "Conference (hold)"         );
       case Call::State::COUNT__:
-         return tr( "ERROR"             );
+         return tr( "ERROR"                     );
       case Call::State::INITIALIZATION:
-         return tr( "Initialization"    );
+         return tr( "Searching for"             );
       case Call::State::ABORTED:
-         return tr( "Aborted"           );
+         return tr( "Aborted"                   );
       case Call::State::CONNECTED:
-         return tr( "Connected"    );
+         return tr( "Communication established" );
    }
    return QString::number(static_cast<int>(cur));
 }
