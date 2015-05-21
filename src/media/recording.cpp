@@ -17,8 +17,6 @@
  ***************************************************************************/
 #include "recording.h"
 
-#include <instantmessagingmodel.h>
-
 namespace Media {
 
 class RecordingPrivate {
@@ -27,14 +25,13 @@ public:
 
    //Attributes
    Recording::Type        m_Type    ;
-   InstantMessagingModel* m_pImModel;
    Call*                  m_pCall   ;
 
 private:
    Recording* q_ptr;
 };
 
-RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pImModel(nullptr),m_pCall(nullptr)
+RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pCall(nullptr)
 {
 
 }

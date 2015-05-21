@@ -18,9 +18,20 @@
 #ifndef TEXTRECORDING_P_H
 #define TEXTRECORDING_P_H
 
+//Qt
+#include <QtCore/QAbstractListModel>
+
+//Ring
 #include <media/media.h>
 
 class SerializableEntityManager;
+struct TextMessageNode;
+class InstantMessagingModel;
+class ContactMethod;
+
+namespace Media {
+   class TextRecording;
+}
 
 //BEGIN Those classes are serializable to JSon
 /**
@@ -92,8 +103,6 @@ private:
 }
 //END Those classes are serializable to JSon
 
-struct TextMessageNode;
-
 namespace Media {
 
 /**
@@ -150,6 +159,35 @@ struct TextMessageNode
    Serializable::Message* m_pMessage      ;
    ContactMethod*         m_pContactMethod;
    TextMessageNode*       m_pNext         ;
+};
+
+///Model for the Instant Messaging (IM) features
+class InstantMessagingModel : public QAbstractListModel
+{
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+   Q_OBJECT
+   #pragma GCC diagnostic pop
+
+public:
+
+   //Constructor
+   explicit InstantMessagingModel(Media::TextRecording*);
+   virtual ~InstantMessagingModel();
+
+   //Abstract model function
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
+   virtual QHash<int,QByteArray> roleNames() const override;
+
+   //Attributes
+   Media::TextRecording*             m_pRecording;
+
+   //Helper
+   void addRowBegin();
+   void addRowEnd();
 };
 
 #endif

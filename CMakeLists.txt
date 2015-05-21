@@ -222,7 +222,6 @@ SET( libringclient_LIB_SRCS
   src/categorizedhistorymodel.cpp
   src/categorizedbookmarkmodel.cpp
   src/credentialmodel.cpp
-  src/instantmessagingmodel.cpp
   src/categorizedcontactmodel.cpp
   src/useractionmodel.cpp
   src/presencestatusmodel.cpp
@@ -321,7 +320,6 @@ SET( libringclient_LIB_HDRS
   src/collectioninterface.hpp
   src/categorizedbookmarkmodel.h
   src/credentialmodel.h
-  src/instantmessagingmodel.h
   src/categorizedcontactmodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
@@ -519,8 +517,8 @@ SET(libringclient_PRIVATE_HDRS
    src/private/account_p.h
    src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
-   src/private/instantmessagingmodel_p.h
    src/private/videorenderer_p.h
+   src/private/textrecording_p.h
    src/private/videodevice_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h

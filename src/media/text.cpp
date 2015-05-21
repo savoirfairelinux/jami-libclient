@@ -29,10 +29,8 @@
 #include <media/textrecording.h>
 #include <media/recordingmodel.h>
 #include <phonedirectorymodel.h>
-#include <instantmessagingmodel.h>
 #include <private/call_p.h>
 #include <private/textrecording_p.h>
-#include <private/instantmessagingmodel_p.h>
 #include <private/imconversationmanagerprivate.h>
 
 /*

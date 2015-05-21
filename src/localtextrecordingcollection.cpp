@@ -222,7 +222,7 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
 
 bool LocalTextRecordingCollection::fetch(const Element& e)
 {
-
+   return false;
 }
 
 Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)

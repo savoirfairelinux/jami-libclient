@@ -22,11 +22,12 @@
 
 //Qt
 class QJsonObject;
+class QAbstractListModel;
 
 //Ring
-class InstantMessagingModel;
 class IMConversationManagerPrivate;
 class LocalTextRecordingEditor;
+class InstantMessagingModel;
 
 namespace Media {
 
@@ -49,7 +50,7 @@ public:
    static TextRecording* fromJson(const QList<QJsonObject>& items);
 
    //Getter
-   InstantMessagingModel* instantMessagingModel() const;
+   QAbstractListModel* instantMessagingModel() const;
 
 private:
    TextRecordingPrivate* d_ptr;

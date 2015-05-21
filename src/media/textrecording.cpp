@@ -28,9 +28,7 @@
 #include <callmodel.h>
 #include <contactmethod.h>
 #include <account.h>
-#include <instantmessagingmodel.h>
 #include <private/textrecording_p.h>
-#include <private/instantmessagingmodel_p.h>
 
 //Std
 #include <ctime>
@@ -52,6 +50,7 @@ Serializable::Peers* SerializableEntityManager::peer(const ContactMethod* cm)
    return p;
 }
 
+QByteArray mashSha1s(QList<QString> sha1s);
 QByteArray mashSha1s(QList<QString> sha1s)
 {
    QCryptographicHash hash(QCryptographicHash::Sha1);
@@ -139,7 +138,7 @@ Media::TextRecording::~TextRecording()
 }
 
 ///Get the instant messaging model associated with this recording
-InstantMessagingModel* Media::TextRecording::instantMessagingModel() const
+QAbstractListModel* Media::TextRecording::instantMessagingModel() const
 {
    if (!d_ptr->m_pImModel) {
       d_ptr->m_pImModel = new InstantMessagingModel(const_cast<TextRecording*>(this));
@@ -187,9 +186,9 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
             ::TextMessageNode* n  = new ::TextMessageNode()       ;
             n->m_pMessage         = m                             ;
             //n->m_pContactMethod   = const_cast<ContactMethod*>(cm); //FIXME add more details in the file
-            t->d_ptr->m_pImModel->d_ptr->addRowBegin();
+            t->d_ptr->m_pImModel->addRowBegin();
             t->d_ptr->m_lNodes << n;
-            t->d_ptr->m_pImModel->d_ptr->addRowEnd();
+            t->d_ptr->m_pImModel->addRowEnd();
          }
       }
    }
@@ -232,9 +231,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
    ::TextMessageNode* n  = new ::TextMessageNode()       ;
    n->m_pMessage         = m                             ;
    n->m_pContactMethod   = const_cast<ContactMethod*>(cm);
-   m_pImModel->d_ptr->addRowBegin();
+   m_pImModel->addRowBegin();
    m_lNodes << n;
-   m_pImModel->d_ptr->addRowEnd();
+   m_pImModel->addRowEnd();
 
    //Save the conversation
    q_ptr->save();
@@ -322,4 +321,89 @@ void Serializable::Peers::write(QJsonObject &json) const
       a.append(o);
    }
    json["groups"] = a;
+}
+
+
+///Constructor
+InstantMessagingModel::InstantMessagingModel(Media::TextRecording* recording) : QAbstractListModel(recording),m_pRecording(recording)
+{
+}
+
+InstantMessagingModel::~InstantMessagingModel()
+{
+//    delete d_ptr;
+}
+
+QHash<int,QByteArray> InstantMessagingModel::roleNames() const
+{
+   static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+   static bool initRoles = false;
+   if (!initRoles) {
+      initRoles = true;
+      /*roles.insert(InstantMessagingModel::Role::TYPE    ,QByteArray( "type"    ));
+      roles.insert(InstantMessagingModel::Role::FROM    ,QByteArray( "from"    ));
+      roles.insert(InstantMessagingModel::Role::TEXT    ,QByteArray( "text"    ));
+      roles.insert(InstantMessagingModel::Role::IMAGE   ,QByteArray( "image"   ));
+      roles.insert(InstantMessagingModel::Role::CONTACT ,QByteArray( "contact" ));*/
+   }
+   return roles;
+}
+
+///Get data from the model
+QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
+{
+   if (idx.column() == 0) {
+      switch (role) {
+         case Qt::DisplayRole:
+            return QVariant(m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
+         /*case InstantMessagingModel::Role::TYPE:
+            return QVariant(m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
+         case InstantMessagingModel::Role::FROM:
+            return QVariant();//d_ptr->m_pRecording->d_ptr->m_lNodes[idx.row()]->from);
+         case InstantMessagingModel::Role::TEXT:
+            return static_cast<int>(MessageRole::INCOMMING_IM);
+         case InstantMessagingModel::Role::CONTACT:
+            return QVariant();
+         case InstantMessagingModel::Role::IMAGE: {
+            return QVariant();
+         }*/
+         default:
+            break;
+      }
+   }
+   return QVariant();
+}
+
+///Number of row
+int InstantMessagingModel::rowCount(const QModelIndex& parentIdx) const
+{
+   Q_UNUSED(parentIdx)
+   return m_pRecording->d_ptr->m_lNodes.size();
+}
+
+///Model flags
+Qt::ItemFlags InstantMessagingModel::flags(const QModelIndex& idx) const
+{
+   Q_UNUSED(idx)
+   return Qt::ItemIsEnabled;
+}
+
+///Set model data
+bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &value, int role)
+{
+   Q_UNUSED(idx)
+   Q_UNUSED(value)
+   Q_UNUSED(role)
+   return false;
+}
+
+void InstantMessagingModel::addRowBegin()
+{
+   const int rc = rowCount();
+   beginInsertRows(QModelIndex(),rc,rc);
+}
+
+void InstantMessagingModel::addRowEnd()
+{
+   endInsertRows();
 }

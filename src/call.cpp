@@ -45,7 +45,6 @@
 #include "private/videorenderermanager.h"
 #include "localrecordingcollection.h"
 #include "categorizedhistorymodel.h"
-#include "instantmessagingmodel.h"
 #include "useractionmodel.h"
 #include "callmodel.h"
 #include "certificate.h"
@@ -77,7 +76,7 @@
    changeCurrentState(Call::State::ERROR);}
 
 #include "private/call_p.h"
-#include "private/instantmessagingmodel_p.h"
+#include "private/textrecording_p.h"
 
 const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::State> CallPrivate::actionPerformedStateMap =
 {{
