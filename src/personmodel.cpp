@@ -54,8 +54,6 @@ public:
    QVector<PersonItemNode*> m_lChildren;
    PersonItemNode* m_pParent;
    NodeType m_Type;
-private:
-   PersonModel* m_pModel;
 
 };
 

@@ -17,45 +17,85 @@
  ***************************************************************************/
 #include "uri.h"
 
+#include "private/matrixutils.h"
 
 class URIPrivate
 {
 public:
    ///Strings associated with SchemeType
-   constexpr static const char* schemeNames[] = {
-      /*NONE = */ ""     ,
-      /*SIP  = */ "sip:" ,
-      /*SIPS = */ "sips:",
-      /*IAX  = */ "iax:" ,
-      /*IAX2 = */ "iax2:",
-      /*RING = */ "ring:",
+   static const Matrix1D<URI::SchemeType, const char*> schemeNames;
+
+   ///String associated with the transport name
+   static const Matrix1D<URI::Transport, const char*> transportNames;
+
+   ///Attributes names
+   struct Constants {
+      constexpr static const char TRANSPORT[] = "transport";
+      constexpr static const char TAG      [] = "tag"      ;
    };
 
-   URIPrivate(QString* uri);
+   //Constructor
+   URIPrivate(URI* uri);
+   void commonCopyConstructor(const URI& o);
+
    //Attributes
-   QString           m_Hostname    ;
+   QString           m_ExtHostname ;
    QString           m_Userinfo    ;
    QStringList       m_lAttributes ;
    QString           m_Stripped    ;
+   QString           m_Hostname2   ;
+   QByteArray        m_Tag         ;
    URI::SchemeType   m_HeaderType  ;
+   URI::Transport    m_Transport   ;
    bool              m_hasChevrons ;
    bool              m_Parsed      ;
    bool              m_HasAt       ;
    URI::ProtocolHint m_ProtocolHint;
    bool              m_HintParsed  ;
+   bool              m_IsHNParsed  ;
+   int               m_Port        ;
 
    //Helper
    static QString strip(const QString& uri, URI::SchemeType& scheme);
    void parse();
+   void parseHostname();
    static bool checkIp(const QString& str, bool &isHash, const URI::SchemeType& scheme);
+   URI::Transport nameToTransport(const QByteArray& name);
+   void parseAttribute(const QByteArray& extHn, const int start, const int pos);
 private:
-   QString* q_ptr;
+   URI* q_ptr;
 };
 
-constexpr const char* URIPrivate::schemeNames[];
+constexpr const char  URIPrivate::Constants::TRANSPORT[];
+constexpr const char  URIPrivate::Constants::TAG      [];
 
-URIPrivate::URIPrivate(QString* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri),
-m_hasChevrons(false),m_HasAt(false),m_ProtocolHint(URI::ProtocolHint::SIP_OTHER),m_HintParsed(false)
+const Matrix1D<URI::Transport, const char*> URIPrivate::transportNames = {{
+   /*NOT_SET*/ "NOT_SET",
+   /*TLS    */ "TLS"    ,
+   /*tls    */ "tls"    ,
+   /*TCP    */ "TCP"    ,
+   /*tcp    */ "tcp"    ,
+   /*UDP    */ "UDP"    ,
+   /*udp    */ "udp"    ,
+   /*SCTP   */ "SCTP"   ,
+   /*sctp   */ "sctp"   ,
+   /*DTLS   */ "DTLS"   ,
+   /*dtls   */ "dtls"   ,
+}};
+
+const Matrix1D<URI::SchemeType, const char*> URIPrivate::schemeNames = {{
+   /*NONE = */ ""     ,
+   /*SIP  = */ "sip:" ,
+   /*SIPS = */ "sips:",
+   /*IAX  = */ "iax:" ,
+   /*IAX2 = */ "iax2:",
+   /*RING = */ "ring:",
+}};
+
+
+URIPrivate::URIPrivate(URI* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri),
+m_hasChevrons(false),m_HasAt(false),m_ProtocolHint(URI::ProtocolHint::SIP_OTHER),m_HintParsed(false),
+m_IsHNParsed(false),m_Port(-1),m_Transport(URI::Transport::NOT_SET)
 {
 }
 
@@ -66,20 +106,29 @@ URI::URI(const QString& other):QString(), d_ptr(new URIPrivate(this))
    (*static_cast<QString*>(this)) = d_ptr->m_Stripped                           ;
 }
 
+void URIPrivate::commonCopyConstructor(const URI& o)
+{
+   //TODO see if a copy on write kind of algo could be used for this
+   m_Parsed       = o.d_ptr->m_Parsed      ;
+   m_HintParsed   = o.d_ptr->m_HintParsed  ;
+   m_ExtHostname  = o.d_ptr->m_ExtHostname ;
+   m_HasAt        = o.d_ptr->m_HasAt       ;
+   m_ProtocolHint = o.d_ptr->m_ProtocolHint;
+   m_HeaderType   = o.d_ptr->m_HeaderType  ;
+   m_Userinfo     = o.d_ptr->m_Userinfo    ;
+   m_Stripped     = o.d_ptr->m_Stripped    ;
+   m_IsHNParsed   = o.d_ptr->m_IsHNParsed  ;
+   m_Port         = o.d_ptr->m_Port        ;
+   m_Transport    = o.d_ptr->m_Transport   ;
+   m_Tag          = o.d_ptr->m_Tag         ;
+
+   (*static_cast<QString*>(q_ptr)) = o.d_ptr->m_Stripped;
+}
+
 ///Copy constructor
 URI::URI(const URI& o):QString(), d_ptr(new URIPrivate(this))
 {
-   //TODO see if a copy on write kind of algo could be used for this
-   d_ptr->m_Parsed       = o.d_ptr->m_Parsed      ;
-   d_ptr->m_HintParsed   = o.d_ptr->m_HintParsed  ;
-   d_ptr->m_Hostname     = o.d_ptr->m_Hostname    ;
-   d_ptr->m_HasAt        = o.d_ptr->m_HasAt       ;
-   d_ptr->m_ProtocolHint = o.d_ptr->m_ProtocolHint;
-   d_ptr->m_HeaderType   = o.d_ptr->m_HeaderType  ;
-   d_ptr->m_Userinfo     = o.d_ptr->m_Userinfo    ;
-   d_ptr->m_Stripped     = o.d_ptr->m_Stripped    ;
-
-   (*static_cast<QString*>(this)) = o.d_ptr->m_Stripped;
+   d_ptr->commonCopyConstructor(o);
 }
 
 ///Destructor
@@ -93,16 +142,7 @@ URI::~URI()
 /// Copy operator, make sure the cache is also copied
 URI& URI::operator=(const URI& o)
 {
-   d_ptr->m_Parsed       = o.d_ptr->m_Parsed      ;
-   d_ptr->m_HintParsed   = o.d_ptr->m_HintParsed  ;
-   d_ptr->m_Hostname     = o.d_ptr->m_Hostname    ;
-   d_ptr->m_HasAt        = o.d_ptr->m_HasAt       ;
-   d_ptr->m_ProtocolHint = o.d_ptr->m_ProtocolHint;
-   d_ptr->m_HeaderType   = o.d_ptr->m_HeaderType  ;
-   d_ptr->m_Userinfo     = o.d_ptr->m_Userinfo    ;
-   d_ptr->m_Stripped     = o.d_ptr->m_Stripped    ;
-
-   (*static_cast<QString*>(this)) = o.d_ptr->m_Stripped;
+   d_ptr->commonCopyConstructor(o);
    return (*this);
 }
 
@@ -166,7 +206,7 @@ QString URI::hostname() const
 {
    if (!d_ptr->m_Parsed)
       const_cast<URI*>(this)->d_ptr->parse();
-   return d_ptr->m_Hostname;
+   return d_ptr->m_ExtHostname;
 }
 
 /**
@@ -178,7 +218,30 @@ bool URI::hasHostname() const
 {
    if (!d_ptr->m_Parsed)
       const_cast<URI*>(this)->d_ptr->parse();
-   return !d_ptr->m_Hostname.isEmpty();
+   return !d_ptr->m_ExtHostname.isEmpty();
+}
+
+/**
+ * If hasHostname() is true, this does a second parsing of the hostname to
+ * extract the port.
+ */
+bool URI::hasPort() const
+{
+   if (!d_ptr->m_IsHNParsed) {
+      d_ptr->parseHostname();
+   }
+   return d_ptr->m_Port != -1;
+}
+
+/**
+ * Return the port, -1 is none is set
+ */
+int  URI::port() const
+{
+   if (!d_ptr->m_IsHNParsed) {
+      d_ptr->parseHostname();
+   }
+   return d_ptr->m_Port;
 }
 
 /**
@@ -281,19 +344,131 @@ URI::ProtocolHint URI::protocolHint() const
    return d_ptr->m_ProtocolHint;
 }
 
+///Convert the transport name to a string
+URI::Transport URIPrivate::nameToTransport(const QByteArray& name)
+{
+   if (name == transportNames[URI::Transport::NOT_SET  ])
+      return URI::Transport::NOT_SET;
+   else if (name == transportNames[URI::Transport::TLS ])
+      return URI::Transport::TLS    ;
+   else if (name == transportNames[URI::Transport::tls ])
+      return URI::Transport::tls    ;
+   else if (name == transportNames[URI::Transport::TCP ])
+      return URI::Transport::TCP    ;
+   else if (name == transportNames[URI::Transport::tcp ])
+      return URI::Transport::tcp    ;
+   else if (name == transportNames[URI::Transport::UDP ])
+      return URI::Transport::UDP    ;
+   else if (name == transportNames[URI::Transport::udp ])
+      return URI::Transport::udp    ;
+   else if (name == transportNames[URI::Transport::SCTP])
+      return URI::Transport::SCTP   ;
+   else if (name == transportNames[URI::Transport::sctp])
+      return URI::Transport::sctp   ;
+   else if (name == transportNames[URI::Transport::DTLS])
+      return URI::Transport::DTLS   ;
+   else if (name == transportNames[URI::Transport::dtls])
+      return URI::Transport::dtls   ;
+   return URI::Transport::NOT_SET   ;
+}
+
 ///Keep a cache of the values to avoid re-parsing them
 void URIPrivate::parse()
 {
    //FIXME the indexOf is done twice, the second time could be avoided
    if (q_ptr->indexOf('@') != -1) {
       const QStringList split = q_ptr->split('@');
-      m_HasAt    = true;
-      m_Hostname = split[1];
-      m_Userinfo = split[0];
-      m_Parsed   = true;
+      m_HasAt       = true;
+      m_ExtHostname = split[1];
+      m_Userinfo    = split[0];
+      m_Parsed      = true;
    }
    else
       m_Userinfo = (*q_ptr);
+}
+
+void URIPrivate::parseAttribute(const QByteArray& extHn, const int start, const int pos)
+{
+   const QList<QByteArray> parts = extHn.mid(start+1,pos-start).split('=');
+
+   if (parts.size() == 2) {
+      if (parts[0].toLower() == Constants::TRANSPORT) {
+         m_Transport = nameToTransport(parts[1]);
+      }
+      else if (parts[0].toLower() == Constants::TAG) {
+         m_Tag = parts[1];
+      }
+   }
+}
+
+///Extract the hostname, port and attributes
+void URIPrivate::parseHostname()
+{
+   if (!m_Parsed)
+      parse();
+
+   const QByteArray extHn = q_ptr->hostname().toLatin1();
+   int length(extHn.size()), start(0);
+   bool inAttributes = false;
+
+   URI::Section section = URI::Section::HOSTNAME;
+
+   for (int i = 0; i < length; i++) {
+      const char c = extHn[i];
+      switch (c) {
+         case ':': //Begin port
+            switch(section) {
+               case URI::Section::HOSTNAME:
+                  m_Hostname2 = extHn.mid(start,i);
+                  start = i;
+                  section = URI::Section::PORT;
+                  break;
+               case URI::Section::USER_INFO:
+               case URI::Section::CHEVRONS :
+               case URI::Section::SCHEME   :
+               case URI::Section::TRANSPORT:
+               case URI::Section::TAG      :
+               case URI::Section::PORT     :
+                  break;
+            }
+            break;
+         case ';': //Begin attributes
+
+            if (inAttributes) {
+               parseAttribute(extHn, start, i);
+            }
+            else {
+               switch(section) {
+                  case URI::Section::HOSTNAME:
+                     m_Hostname2 = extHn.mid(start+1,i-start);
+                     break;
+                  case URI::Section::PORT:
+                     m_Port = extHn.mid(start+1,i-start-1).toInt();
+                     break;
+                  case URI::Section::USER_INFO:
+                  case URI::Section::CHEVRONS :
+                  case URI::Section::SCHEME   :
+                  case URI::Section::TRANSPORT:
+                  case URI::Section::TAG      :
+                     break;
+               }
+               inAttributes = true;
+            }
+
+            start = i;
+            break;
+         case '#': //Begin fragments
+            //TODO handle fragments to comply to the RFC
+            break;
+         default:
+            break;
+      }
+   }
+
+   ///Get the remaining attribute
+   parseAttribute(extHn, start, length-1);
+
+   m_IsHNParsed = true;
 }
 
 /**
@@ -314,8 +489,49 @@ QString URI::userinfo() const
 QString URI::fullUri() const
 {
    return QString("<%1%2>")
-      .arg(URIPrivate::schemeNames[static_cast<int>(d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType)])
+      .arg(URIPrivate::schemeNames[d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType])
       .arg(*this);
+}
+
+/**
+ * Generate a new URI formatted with the sections passed in `sections`
+ *
+ * It is kept as a QString to avoid the URI class to start reformatting
+ * it right away.
+ */
+QString URI::format(FlagPack<URI::Section> sections) const
+{
+   if (!d_ptr->m_IsHNParsed) {
+      d_ptr->parseHostname();
+   }
+
+   QString ret;
+
+   if (sections & URI::Section::CHEVRONS)
+      ret += '<';
+
+   if (sections & URI::Section::SCHEME)
+      ret += URIPrivate::schemeNames[d_ptr->m_HeaderType];
+
+   if (sections & URI::Section::USER_INFO)
+      ret += d_ptr->m_Userinfo;
+
+   if (sections & URI::Section::HOSTNAME)
+      ret += '@' + d_ptr->m_Hostname2;
+
+   if (sections & URI::Section::PORT && d_ptr->m_Port != -1)
+      ret += ':' + QString::number(d_ptr->m_Port);
+
+   if (sections & URI::Section::CHEVRONS)
+      ret += '>';
+
+   if (sections & URI::Section::TRANSPORT && d_ptr->m_Transport != URI::Transport::NOT_SET)
+      ret += ";transport=" + QString(URIPrivate::transportNames[d_ptr->m_Transport]);
+
+   if (sections & URI::Section::TAG && !d_ptr->m_Tag.isEmpty())
+      ret += ";tag=" + d_ptr->m_Tag;
+
+   return ret;
 }
 
 QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )

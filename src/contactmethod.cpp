@@ -534,7 +534,37 @@ void ContactMethod::addCall(Call* call)
 ///Generate an unique representation of this number
 QString ContactMethod::toHash() const
 {
-   return QString("%1///%2///%3").arg(uri()).arg(account()?account()->id():QString()).arg(contact()?contact()->uid():QString());
+   QString uristr;
+
+   switch(uri().protocolHint()) {
+      case URI::ProtocolHint::RING     :
+         //There is no point in keeping the full URI, a Ring hash is unique
+         uristr = uri().userinfo();
+         break;
+      case URI::ProtocolHint::SIP_OTHER:
+      case URI::ProtocolHint::IAX      :
+      case URI::ProtocolHint::IP       :
+      case URI::ProtocolHint::SIP_HOST :
+         //Some URI have port number in them. They have to be stripped prior to the hash creation
+         uristr = uri().format(
+            URI::Section::CHEVRONS  |
+            URI::Section::SCHEME    |
+            URI::Section::USER_INFO |
+            URI::Section::HOSTNAME
+         );
+         break;
+   }
+
+   return QString("%1///%2///%3")
+      .arg(
+         uristr
+      )
+      .arg(
+         account()?account()->id():QString()
+      )
+      .arg(
+         contact()?contact()->uid():QString()
+      );
 }
 
 ///Increment name counter and update indexes

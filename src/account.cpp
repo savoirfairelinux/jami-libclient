@@ -1050,6 +1050,8 @@ bool Account::supportScheme( URI::SchemeType type )
          if (protocol() == Account::Protocol::RING)
             return true;
          break;
+      case URI::SchemeType::COUNT__:
+         break;
    }
    return false;
 }

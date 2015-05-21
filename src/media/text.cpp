@@ -97,8 +97,8 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
       media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
    }
 
-   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
    media->recording()->setCall(call);
+   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
 }
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)

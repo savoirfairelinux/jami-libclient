@@ -88,7 +88,7 @@ d_ptr(new RecordingModelPrivate(this))
    d_ptr->m_pTextRecordingCollection = addCollection<LocalTextRecordingCollection>();
 
    d_ptr->m_pTextRecordingCollection->listId([](const QList<CollectionInterface::Element>& e) {
-      qDebug() << "\n\n\nLOADED!!!!" << e;
+      //TODO
    });
 }
 
