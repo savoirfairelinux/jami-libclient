@@ -26,10 +26,12 @@
 //Ring
 class MacroModel;
 #include "typedefs.h"
+#include "itembase.h"
 
 class MacroPrivate;
 
-class LIB_EXPORT Macro : public QObject {
+class LIB_EXPORT Macro : public ItemBase<QObject>
+{
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT

@@ -33,6 +33,7 @@
 #include <accountmodel.h>
 #include <personmodel.h>
 #include <phonedirectorymodel.h>
+#include <collectioneditor.h>
 #include <delegates/pixmapmanipulationdelegate.h>
 
 namespace Serializable {
@@ -57,7 +58,6 @@ public:
    virtual bool remove     ( const ContactMethod* item ) override;
    virtual bool addNew     ( const ContactMethod* item ) override;
    virtual bool addExisting( const ContactMethod* item ) override;
-   void saveHelper(QTextStream& streamFileOut, const ContactMethod* number);
 
    //Attributes
    QVector<ContactMethod*> m_lNumbers;
