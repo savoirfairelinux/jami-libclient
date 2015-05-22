@@ -199,6 +199,7 @@ SET( libringclient_LIB_SRCS
   src/person.cpp
   src/contactmethod.cpp
   src/numbercategory.cpp
+  src/macro.cpp
   src/collectionextensioninterface.cpp
   src/video/rate.cpp
   src/video/device.cpp
@@ -228,6 +229,7 @@ SET( libringclient_LIB_SRCS
   src/phonedirectorymodel.cpp
   src/historytimecategorymodel.cpp
   src/numbercategorymodel.cpp
+  src/macromodel.cpp
   src/keyexchangemodel.cpp
   src/tlsmethodmodel.cpp
   src/protocolmodel.cpp
@@ -283,6 +285,7 @@ SET( libringclient_LIB_SRCS
   src/delegates/presenceserializationdelegate.cpp
   src/delegates/itemmodelstateserializationdelegate.cpp
   src/delegates/profilepersisterdelegate.cpp
+  src/delegates/shortcutdelegate.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -346,8 +349,10 @@ SET( libringclient_LIB_HDRS
   src/collectionmodel.h
   src/collectionextensionmodel.h
   src/collectionextensionmodel.hpp
+  src/macromodel.h
   src/hookmanager.h
   src/uri.h
+  src/macro.h
   src/itembase.h
   src/itembase.hpp
   src/mime.h
@@ -418,6 +423,7 @@ SET(libringclient_delegates_LIB_HDRS
   src/delegates/itemmodelstateserializationdelegate.h
   src/delegates/pixmapmanipulationdelegate.h
   src/delegates/profilepersisterdelegate.h
+  src/delegates/shortcutdelegate.h
 )
 
 SET( libringclient_extra_LIB_HDRS
@@ -524,6 +530,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/videodevice_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h
+   src/private/macromodel_p.h
    src/collectioncreationinterface.h
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
