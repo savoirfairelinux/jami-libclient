@@ -481,7 +481,7 @@ QVector<ContactMethod*> CategorizedBookmarkModelPrivate::bookmarkList() const
    return (q_ptr->collections().size() > 0) ? q_ptr->collections()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
 }
 
-BookmarkTopLevelItem::BookmarkTopLevelItem(QString name) 
+BookmarkTopLevelItem::BookmarkTopLevelItem(QString name)
    : CategorizedCompositeNode(CategorizedCompositeNode::Type::TOP_LEVEL),m_Name(name),
       m_MostPopular(false),m_Row(-1)
 {
