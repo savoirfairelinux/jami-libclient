@@ -273,6 +273,7 @@ HistoryTopLevelItem* CategorizedHistoryModelPrivate::getCategory(const Call* cal
    }
    else {
       name = call->roleData(m_Role).toString();
+
       category = m_hCategoryByName[name];
    }
    if (!category) {
@@ -439,7 +440,7 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
 
          //HACK force a reload
          #if QT_VERSION >= 0x050400
-         if (parTli->isActive() && !parTli->m_lChildren[idx.row()]->call()->isActive()) {
+         if (parTli->isActive() && parTli->m_lChildren.size() > idx.row() && !parTli->m_lChildren[idx.row()]->call()->isActive()) {
             QTimer::singleShot(0,[this,idx]() {
                emit const_cast<CategorizedHistoryModel*>(this)->dataChanged(idx,idx);
             });

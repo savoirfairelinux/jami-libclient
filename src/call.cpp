@@ -464,6 +464,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       accId = DRing::Account::ProtocolNames::IP2IP;
    }
 
+   //This corruption has been fixed a while back, but invalid items may still exist
+   if (stopTimeStamp <= 0)
+      stopTimeStamp = startTimeStamp;
+
    //Try to assiciate a contact now, the real contact object is probably not
    //loaded yet, but we can get a placeholder for now
 //    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
