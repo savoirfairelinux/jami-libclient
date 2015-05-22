@@ -373,7 +373,7 @@ QString ContactMethod::primaryName() const
       if (d_ptr->m_hNames.size() == 1)
          ret =  d_ptr->m_hNames.constBegin().key();
       else {
-         QString toReturn = tr("Unknown");
+         QString toReturn = tr("Unknown"); //FIXME maybe the fallback should be the URI
          int max = 0;
          for (QHash<QString,int>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
             if (i.value() > max) {
@@ -622,6 +622,8 @@ bool ContactMethod::merge(ContactMethod* other)
 
    //TODO Handle presence
 
+   const QString oldName = primaryName();
+
    QSharedPointer<ContactMethodPrivate> currentD = d_ptr;
 
    //Replace the D-Pointer
@@ -639,6 +641,9 @@ bool ContactMethod::merge(ContactMethod* other)
 
    emit changed();
    emit rebased(other);
+
+   if (oldName != primaryName())
+      d_ptr->primaryNameChanged(primaryName());
 
    currentD->m_lParents.removeAll(this);
 //    if (!currentD->m_lParents.size())

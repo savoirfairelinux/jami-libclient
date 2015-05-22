@@ -68,7 +68,7 @@ public:
    virtual bool remove(const T* item);
 
    ///Edit 'item', the implementation may be a GUI or something else
-   virtual bool edit       ( T*       item     ) = 0;
+   virtual bool edit       ( T*       item     );
 
    ///Add a new item to the backend
    virtual bool addNew     (const  T*       item     ) = 0;

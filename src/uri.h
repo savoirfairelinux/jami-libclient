@@ -82,7 +82,7 @@ class LIB_EXPORT URI : public QString
 public:
 
    /**
-    * Default constructor
+    * Default copy constructor
     * @param other an URI string
     */
    URI(const QString& other);
