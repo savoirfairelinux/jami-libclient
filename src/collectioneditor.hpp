@@ -80,3 +80,10 @@ bool CollectionEditor<T>::remove(const T* item)
    Q_UNUSED(item)
    return false;
 }
+
+template <class T>
+bool CollectionEditor<T>::edit(T* item)
+{
+   Q_UNUSED(item)
+   return false;
+}

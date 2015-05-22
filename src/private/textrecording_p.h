@@ -183,7 +183,7 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Attributes
-   Media::TextRecording*             m_pRecording;
+   Media::TextRecording* m_pRecording;
 
    //Helper
    void addRowBegin();
