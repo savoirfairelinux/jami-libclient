@@ -20,10 +20,8 @@
 #define LOCALBOOKMARKCOLLECTION_H
 
 #include <collectioninterface.h>
-#include <collectioneditor.h>
 
 class ContactMethod;
-class QTextStream;
 
 class LocalBookmarkCollectionPrivate;
 
