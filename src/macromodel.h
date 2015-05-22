@@ -19,16 +19,20 @@
 #ifndef MACRO_MODEL_H
 #define MACRO_MODEL_H
 
+//Qt
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QHash>
+
+//Ring
 #include "typedefs.h"
+#include "collectionmanagerinterface.h"
 
 //Ring
 class Macro;
 class MacroModelPrivate;
 
 ///MacroModel: DTMF emulators model
-class LIB_EXPORT MacroModel : public QAbstractItemModel
+class LIB_EXPORT MacroModel : public QAbstractItemModel, public CollectionManagerInterface<Macro>
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
@@ -62,8 +66,6 @@ public:
       Sequence    = 104
    };
 
-   void initMacros();
-
    //Getters
    Macro* getCurrentMacro(); //TODO replace with a selection model
 
@@ -83,6 +85,11 @@ private:
 
    MacroModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(MacroModel)
+
+   //Collection interface
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback        (const Macro* item           ) override;
+   virtual bool removeItemCallback     (const Macro* item           ) override;
 
 public Q_SLOTS:
    Macro* newMacro(const QString& id = QString());
