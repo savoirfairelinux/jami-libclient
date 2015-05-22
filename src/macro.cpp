@@ -32,12 +32,11 @@ m_pModel(nullptr)
 
 }
 
-Macro::Macro(QObject* parent) : QObject(parent), d_ptr(new MacroPrivate())
+Macro::Macro(QObject* parent) : ItemBase<QObject>(parent), d_ptr(new MacroPrivate())
 {
 }
 
-Macro::Macro(const Macro* macro) :
-QObject(0), d_ptr(new MacroPrivate())
+Macro::Macro(const Macro* macro) : ItemBase<QObject>(nullptr), d_ptr(new MacroPrivate())
 {
    d_ptr->m_Position    = macro->d_ptr->m_Position   ;
    d_ptr->m_Name        = macro->d_ptr->m_Name       ;

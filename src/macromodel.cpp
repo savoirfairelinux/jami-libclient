@@ -40,7 +40,7 @@ m_pCurrentMacro(nullptr),m_pCurrentMacroMemento(nullptr)
 
 }
 
-MacroModel::MacroModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new MacroModelPrivate(this))
+MacroModel::MacroModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new MacroModelPrivate(this)), CollectionManagerInterface<Macro>(this)
 {
 
 }
@@ -52,27 +52,6 @@ MacroModel* MacroModel::instance()
       MacroModelPrivate::m_pInstance = new MacroModel(0);
    }
    return MacroModelPrivate::m_pInstance;
-}
-
-void MacroModel::initMacros()
-{
-   if (QFile::exists(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + "")+"macros.txt") {
-      QFile serialized(QStandardPaths::locate(QStandardPaths::DataLocation, "macros.txt" ));
-      if (serialized.open(QIODevice::ReadOnly)) {
-         QDataStream in(&serialized);
-         QList< QMap<QString, QString> > unserialized;
-         in >> unserialized;
-         serialized.close();
-         foreach(const MapStringString& aMacro,unserialized) {
-            Macro* nMac = newMacro(aMacro["ID"]);
-            nMac->setName(aMacro["Name"]);
-            nMac->setSequence(aMacro["Seq"]);
-            nMac->setCategory(aMacro["Cat"]);
-            nMac->setDelay(aMacro[ "Delay" ].toInt());
-            nMac->setDescription(aMacro["Desc"]);
-         }
-      }
-    }
 }
 
 void MacroModel::addListener(MacroListener* interface)
@@ -117,6 +96,7 @@ bool MacroModel::removeMacro(const QModelIndex& idx)
    MacroModelPrivate::IndexPointer* modelItem = (MacroModelPrivate::IndexPointer*)idx.internalPointer();
    if (modelItem && modelItem->type == MacroModelPrivate::IndexType::MacroIndex) {
       Macro* macro = static_cast<Macro*>(modelItem->data);
+      macro->remove();
       MacroModelPrivate::MacroCategory* cat = macro->d_ptr->m_pCat;
       cat->m_lContent.removeAll(macro);
       emit layoutChanged();
@@ -141,28 +121,11 @@ void MacroModel::setCurrent(const QModelIndex& current, const QModelIndex& previ
 
 void MacroModel::save()
 {
-   QFile macros(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"macros.txt");
-   if (macros.open(QIODevice::WriteOnly)) {
-      QDataStream out(&macros);
-      QList< QMap<QString, QString> > serialized;
-      foreach (MacroModelPrivate::MacroCategory* cat, d_ptr->m_lCategories) {
-         QMap<QString, QString> serializedMacro;
-         foreach(Macro* macro,cat->m_lContent) {
-            serializedMacro[ "Name"  ] = macro->d_ptr->m_Name;
-            serializedMacro[ "Seq"   ] = macro->d_ptr->m_Sequence;
-            serializedMacro[ "Cat"   ] = macro->d_ptr->m_pCat->m_Name;
-            serializedMacro[ "Delay" ] = QString::number(macro->d_ptr->m_Delay);
-            serializedMacro[ "Desc"  ] = macro->d_ptr->m_Description;
-            serializedMacro[ "ID"    ] = macro->d_ptr->m_Id;
-            serialized << serializedMacro;
-         }
+   foreach (MacroModelPrivate::MacroCategory* cat, d_ptr->m_lCategories) {
+      foreach(Macro* macro,cat->m_lContent) {
+         macro->save();
+         return;
       }
-      out << serialized;
-      macros.close();
-      qDebug() << "Macros correctly saved";
-   }
-   else {
-      qDebug() << "Error saving macros";
    }
 }
 
@@ -293,6 +256,7 @@ void MacroModelPrivate::changed(Macro* macro)
 Macro* MacroModel::newMacro(const QString& id)
 {
    d_ptr->m_pCurrentMacro = new Macro(this);
+
    d_ptr->m_pCurrentMacro->d_ptr->m_Name = tr("New");
    d_ptr->m_pCurrentMacro->d_ptr->m_Category = tr("Other");
    d_ptr->m_pCurrentMacro->d_ptr->m_pModel = this;
@@ -307,6 +271,14 @@ Macro* MacroModel::newMacro(const QString& id)
    else
       d_ptr->m_pCurrentMacro->d_ptr->m_Id += id;
    d_ptr->m_hMacros[d_ptr->m_pCurrentMacro->d_ptr->m_Id] = d_ptr->m_pCurrentMacro;
+
+   if (collections().size()) {
+      collections()[0]->add(d_ptr->m_pCurrentMacro);
+   }
+   else {
+      qWarning() << "No macro collection are enabled";
+   }
+
    d_ptr->updateTreeModel(d_ptr->m_pCurrentMacro);
    connect(d_ptr->m_pCurrentMacro,SIGNAL(changed(Macro*)),d_ptr,SLOT(changed(Macro*)));
    emit dataChanged(index(0,0),index(d_ptr->m_lCategories.size()-1,0));
@@ -322,4 +294,22 @@ Macro* MacroModel::newMacro(const QString& id)
 Macro* MacroModel::getCurrentMacro()
 {
    return d_ptr->m_pCurrentMacro;
+}
+
+
+void MacroModel::collectionAddedCallback(CollectionInterface* item)
+{
+   Q_UNUSED(item)
+}
+
+bool MacroModel::addItemCallback(const Macro* item)
+{
+   Q_UNUSED(item)
+   return true;
+}
+
+bool MacroModel::removeItemCallback(const Macro* item)
+{
+   Q_UNUSED(item)
+   return true;
 }
