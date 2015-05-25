@@ -206,6 +206,7 @@ SET( libringclient_LIB_SRCS
   src/video/renderer.cpp
   src/certificate.cpp
   src/securityflaw.cpp
+  src/ringtone.cpp
   src/media/media.cpp
   src/media/audio.cpp
   src/media/video.cpp
@@ -271,6 +272,7 @@ SET( libringclient_LIB_SRCS
   src/localtextrecordingcollection.cpp
   src/localmacrocollection.cpp
   src/localbookmarkcollection.cpp
+  src/localringtonecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -341,6 +343,7 @@ SET( libringclient_LIB_HDRS
   src/ringtonemodel.h
   src/localrecordingcollection.h
   src/localbookmarkcollection.h
+  src/localringtonecollection.cpp
   src/localmacrocollection.h
   src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
@@ -355,6 +358,7 @@ SET( libringclient_LIB_HDRS
   src/hookmanager.h
   src/uri.h
   src/macro.h
+  src/ringtone.h
   src/itembase.h
   src/itembase.hpp
   src/mime.h
