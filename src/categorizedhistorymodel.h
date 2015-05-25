@@ -86,7 +86,7 @@ public:
    virtual bool          insertRows  ( int row, int count, const QModelIndex & parent = QModelIndex() ) override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   struct SortedProxy {
+   struct LIB_EXPORT SortedProxy {
       enum class Categories {
          DATE      ,
          NAME      ,
