@@ -35,6 +35,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
 #include "private/videorenderermanager.h"
+#include "private/imconversationmanagerprivate.h"
 #include "mime.h"
 #include "typedefs.h"
 #include "collectioninterface.h"
@@ -139,6 +140,10 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
    #ifdef ENABLE_VIDEO
    VideoRendererManager::instance();
    #endif
+
+   //Necessary to receive text message
+   IMConversationManagerPrivate::instance();
+
 } //CallModel
 
 ///Constructor (there fix an initializationn loop)
@@ -216,31 +221,31 @@ QHash<int,QByteArray> CallModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert(static_cast<int>(Call::Role::Name          ) ,QByteArray("name"));
-      roles.insert(static_cast<int>(Call::Role::Number        ) ,QByteArray("number"));
-      roles.insert(static_cast<int>(Call::Role::Direction     ) ,QByteArray("direction"));
-      roles.insert(static_cast<int>(Call::Role::Date          ) ,QByteArray("date"));
-      roles.insert(static_cast<int>(Call::Role::Length        ) ,QByteArray("length"));
-      roles.insert(static_cast<int>(Call::Role::FormattedDate ) ,QByteArray("formattedDate"));
-      roles.insert(static_cast<int>(Call::Role::HasRecording  ) ,QByteArray("hasRecording"));
-      roles.insert(static_cast<int>(Call::Role::Historystate  ) ,QByteArray("historyState"));
-      roles.insert(static_cast<int>(Call::Role::Filter        ) ,QByteArray("filter"));
-      roles.insert(static_cast<int>(Call::Role::FuzzyDate     ) ,QByteArray("fuzzyDate"));
-      roles.insert(static_cast<int>(Call::Role::IsBookmark    ) ,QByteArray("isBookmark"));
-      roles.insert(static_cast<int>(Call::Role::Security      ) ,QByteArray("security"));
-      roles.insert(static_cast<int>(Call::Role::Department    ) ,QByteArray("department"));
-      roles.insert(static_cast<int>(Call::Role::Email         ) ,QByteArray("email"));
-      roles.insert(static_cast<int>(Call::Role::Organisation  ) ,QByteArray("organisation"));
-      roles.insert(static_cast<int>(Call::Role::Object        ) ,QByteArray("object"));
-      roles.insert(static_cast<int>(Call::Role::Photo         ) ,QByteArray("photo"));
-      roles.insert(static_cast<int>(Call::Role::State         ) ,QByteArray("state"));
-      roles.insert(static_cast<int>(Call::Role::StartTime     ) ,QByteArray("startTime"));
-      roles.insert(static_cast<int>(Call::Role::StopTime      ) ,QByteArray("stopTime"));
-      roles.insert(static_cast<int>(Call::Role::DropState     ) ,QByteArray("dropState"));
-      roles.insert(static_cast<int>(Call::Role::DTMFAnimState ) ,QByteArray("dTMFAnimState"));
-      roles.insert(static_cast<int>(Call::Role::LastDTMFidx   ) ,QByteArray("lastDTMFidx"));
-      roles.insert(static_cast<int>(Call::Role::IsRecording   ) ,QByteArray("isRecording"));
-      roles.insert(static_cast<int>(Call::Role::LifeCycleState) ,QByteArray("lifeCycleState"));
+      roles.insert(static_cast<int>(Call::Role::Name            ) ,QByteArray("name")            );
+      roles.insert(static_cast<int>(Call::Role::Number          ) ,QByteArray("number")          );
+      roles.insert(static_cast<int>(Call::Role::Direction       ) ,QByteArray("direction")       );
+      roles.insert(static_cast<int>(Call::Role::Date            ) ,QByteArray("date")            );
+      roles.insert(static_cast<int>(Call::Role::Length          ) ,QByteArray("length")          );
+      roles.insert(static_cast<int>(Call::Role::FormattedDate   ) ,QByteArray("formattedDate")   );
+      roles.insert(static_cast<int>(Call::Role::HasAVRecording  ) ,QByteArray("hasAVRecording")  );
+      roles.insert(static_cast<int>(Call::Role::Historystate    ) ,QByteArray("historyState")    );
+      roles.insert(static_cast<int>(Call::Role::Filter          ) ,QByteArray("filter")          );
+      roles.insert(static_cast<int>(Call::Role::FuzzyDate       ) ,QByteArray("fuzzyDate")       );
+      roles.insert(static_cast<int>(Call::Role::IsBookmark      ) ,QByteArray("isBookmark")      );
+      roles.insert(static_cast<int>(Call::Role::Security        ) ,QByteArray("security")        );
+      roles.insert(static_cast<int>(Call::Role::Department      ) ,QByteArray("department")      );
+      roles.insert(static_cast<int>(Call::Role::Email           ) ,QByteArray("email")           );
+      roles.insert(static_cast<int>(Call::Role::Organisation    ) ,QByteArray("organisation")    );
+      roles.insert(static_cast<int>(Call::Role::Object          ) ,QByteArray("object")          );
+      roles.insert(static_cast<int>(Call::Role::Photo           ) ,QByteArray("photo")           );
+      roles.insert(static_cast<int>(Call::Role::State           ) ,QByteArray("state")           );
+      roles.insert(static_cast<int>(Call::Role::StartTime       ) ,QByteArray("startTime")       );
+      roles.insert(static_cast<int>(Call::Role::StopTime        ) ,QByteArray("stopTime")        );
+      roles.insert(static_cast<int>(Call::Role::DropState       ) ,QByteArray("dropState")       );
+      roles.insert(static_cast<int>(Call::Role::DTMFAnimState   ) ,QByteArray("dTMFAnimState")   );
+      roles.insert(static_cast<int>(Call::Role::LastDTMFidx     ) ,QByteArray("lastDTMFidx")     );
+      roles.insert(static_cast<int>(Call::Role::IsAVRecording   ) ,QByteArray("isAVRecording")   );
+      roles.insert(static_cast<int>(Call::Role::LifeCycleState  ) ,QByteArray("lifeCycleState")  );
    }
    return roles;
 }
@@ -410,12 +415,19 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       connect(call,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
       connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
-      connect(call,&Call::videoStarted,[this,call](Video::Renderer* r){
+      connect(call,&Call::videoStarted,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererAdded(call, r);
       });
-      connect(call,&Call::videoStopped,[this,call](Video::Renderer* r){
+      connect(call,&Call::videoStopped,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererRemoved(call, r);
       });
+      connect(call,&Call::mediaAdded, [this,call](Media::Media* media) {
+         emit q_ptr->mediaAdded(call,media);
+      });
+      connect(call,&Call::mediaStateChanged, [this,call](Media::Media* media, const Media::Media::State s, const Media::Media::State m) {
+         emit q_ptr->mediaStateChanged(call,media,s,m);
+      });
+
       emit q_ptr->layoutChanged();
    }
    return call;
@@ -1202,7 +1214,9 @@ void CallModelPrivate::slotConferenceRemoved(const QString &confId)
 ///Make the call aware it has a recording
 void CallModelPrivate::slotNewRecordingAvail( const QString& callId, const QString& filePath)
 {
-   q_ptr->getCall(callId)->setRecordingPath(filePath);
+   Call* c = q_ptr->getCall(callId);
+   if (c)
+      c->d_ptr->setRecordingPath(filePath);
 }
 
 void CallModelPrivate::slotStateChanged(Call::State newState, Call::State previousState)
@@ -1290,7 +1304,12 @@ void CallModelPrivate::slotRecordStateChanged (const QString& callId, bool state
 {
    Call* call = q_ptr->getCall(callId);
    if (call) {
-      call->d_ptr->m_Recording = state;
+
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , state);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , state);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , state);
+      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , state);
+
       emit call->changed();
       emit call->changed(call);
    }

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,36 +15,46 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef INSTANTMESSAGINGMODELPRIVATE_H
-#define INSTANTMESSAGINGMODELPRIVATE_H
+#ifndef MEDIA_TEXT_H
+#define MEDIA_TEXT_H
 
-#include <QtCore/QAbstractItemModel>
+#include <media/media.h>
+#include <typedefs.h>
 
-class InstantMessagingModel;
+class MediaTextPrivate;
 class Call;
+class CallPrivate;
+class InstantMessagingModel;
 
-class InstantMessagingModelPrivate : public QObject
+namespace Media {
+
+class TextRecording;
+
+class LIB_EXPORT Text : public Media::Media
 {
    Q_OBJECT
+   friend class ::CallPrivate;
 public:
-   explicit InstantMessagingModelPrivate(InstantMessagingModel* parent);
 
-   //Private members
-   void addIncommingMessage(const QString& from, const QString& message);
-   void addOutgoingMessage(const QString& message);
+   virtual Media::Type type() override;
 
-   //Interal struct
-   struct InternalIM {
-      QString from;
-      QString message;
-   };
+   //Getter
+   TextRecording* recording() const;
 
-   //Attributes
-   QList<InternalIM>           m_lMessages;
-   QHash<QModelIndex,QVariant> m_lImages  ;
-   Call*                       m_pCall    ;
+   //Mutator
+   void send(const QString& message);
+
 private:
-   InstantMessagingModel* q_ptr;
+   Text(Call* parent, const Media::Direction direction);
+   virtual ~Text();
+
+   MediaTextPrivate* d_ptr;
+
+Q_SIGNALS:
+   void messageSent    (const QString& m);
+   void messageReceived(const QString& m);
 };
+
+}
 
 #endif

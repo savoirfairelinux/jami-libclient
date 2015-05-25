@@ -15,44 +15,44 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef LOCALTEXTRECORDINGCOLLECTION_H
+#define LOCALTEXTRECORDINGCOLLECTION_H
 
-#include <QtCore/QObject>
+#include <collectioninterface.h>
+#include <collectioneditor.h>
 
-#include "typedefs.h"
+#include <typedefs.h>
 
-class CollectionInterface;
+namespace Media {
+   class Recording;
+   class TextRecording;
+}
 
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class LIB_EXPORT LocalTextRecordingCollection : public CollectionInterface
 {
-   Q_OBJECT
 public:
+   explicit LocalTextRecordingCollection(CollectionMediator<Media::Recording>* mediator);
+   virtual ~LocalTextRecordingCollection();
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   virtual bool load  () override;
+   virtual bool reload() override;
+   virtual bool clear () override;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
+   virtual QString    name     () const override;
+   virtual QString    category () const override;
+   virtual QVariant   icon     () const override;
+   virtual bool       isEnabled() const override;
+   virtual QByteArray id       () const override;
+   virtual bool fetch(const Element& e) override;
+   virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
 
-   //Mutator
+   Media::TextRecording* fetchFor (const ContactMethod* cm);
+   Media::TextRecording* createFor(const ContactMethod* cm);
 
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
+   static LocalTextRecordingCollection* instance();
 
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 
 #endif

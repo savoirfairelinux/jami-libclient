@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,46 +15,48 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef IMCONVERSATIONMANAGER_H
-#define IMCONVERSATIONMANAGER_H
-#include <QtCore/QObject>
+#ifndef MEDIA_TEXTRECORDING_H
+#define MEDIA_TEXTRECORDING_H
 
-#include "typedefs.h"
+#include <media/recording.h>
+
+//Qt
+class QJsonObject;
+class QAbstractListModel;
 
 //Ring
-class Call;
-class InstantMessagingModel;
 class IMConversationManagerPrivate;
+class LocalTextRecordingEditor;
+class InstantMessagingModel;
 
-///Manager for all IM conversations
-class LIB_EXPORT IMConversationManager : public QObject
+namespace Media {
+
+class TextRecordingPrivate;
+class Text;
+
+class LIB_EXPORT TextRecording : public Recording
 {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
-   #pragma GCC diagnostic pop
-public:
 
-   //Singleton
-   static IMConversationManager* instance();
+   //InstantMessagingModel is a view on top of TextRecording data
+   friend class ::InstantMessagingModel;
+   friend class ::IMConversationManagerPrivate;
+   friend class ::LocalTextRecordingEditor;
+   friend class Text;
+public:
+   //Constructor
+   explicit TextRecording();
+   virtual ~TextRecording();
+   static TextRecording* fromJson(const QList<QJsonObject>& items);
 
    //Getter
-   InstantMessagingModel* getModel(Call* call);
+   QAbstractListModel* instantMessagingModel() const;
+
 private:
-   //Constructor
-   explicit IMConversationManager();
-   virtual ~IMConversationManager();
-
-   const QScopedPointer<IMConversationManagerPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(IMConversationManager)
-
-   //Static attributes
-   static IMConversationManager* m_spInstance;
-
-
-Q_SIGNALS:
-   ///Emitted when a new message is available
-   void newMessagingModel(Call*,InstantMessagingModel*);
+   TextRecordingPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(TextRecording)
 };
+
+}
 
 #endif

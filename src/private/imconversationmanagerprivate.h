@@ -15,44 +15,34 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef IMCONVERSATIONMANAGERPRIVATE_H
+#define IMCONVERSATIONMANAGERPRIVATE_H
 
 #include <QtCore/QObject>
+#include <QtCore/QHash>
 
-#include "typedefs.h"
+class Account;
+class Call;
+class ContactMethod;
 
-class CollectionInterface;
+namespace Media {
+   class Text;
+   class TextRecording;
+}
 
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class IMConversationManagerPrivate : public QObject
 {
    Q_OBJECT
 public:
+   friend class Call;
+   IMConversationManagerPrivate(QObject* parent);
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   static IMConversationManagerPrivate* instance();
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
-
-   //Mutator
-
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
+private Q_SLOTS:
+   void newMessage       (const QString& callId   , const QString& from, const QString& message);
+   void newAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 
 #endif
