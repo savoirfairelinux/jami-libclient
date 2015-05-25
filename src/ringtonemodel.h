@@ -22,6 +22,7 @@
 //Qt
 #include <QtCore/QAbstractTableModel>
 class QTimer;
+class QItemSelectionModel;
 
 //Ring
 #include "collectionmanagerinterface.h"
@@ -40,7 +41,6 @@ public:
       FullPath  = 101,
    };
 
-   explicit RingtoneModel(Account* a);
    virtual ~RingtoneModel();
 
    //Model functions
@@ -52,20 +52,16 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QString     currentRingTone() const;
-   QModelIndex currentIndex   () const;
-
-//    Ringtone*            currentRingTone(Account* a) const;
-   //QItemSelectionModel* selectionModel(Account* a) const;
-
-
-   //Setter
-   void setCurrentIndex(const QModelIndex& idx);
+   Ringtone* currentRingTone(Account* a) const;
+   QItemSelectionModel* selectionModel(Account* a) const;
 
    //Mutator
    void play(const QModelIndex& index);
 
+   static RingtoneModel* instance();
+
 private:
+   explicit RingtoneModel(QObject* parent = nullptr);
 
    RingtoneModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(RingtoneModel)
