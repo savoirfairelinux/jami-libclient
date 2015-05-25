@@ -37,6 +37,7 @@ class ContactMethodPrivate;
 class TemporaryContactMethod;
 class NumberCategory;
 class TemporaryContactMethodPrivate;
+class InstantMessagingModel;
 
 
 ///ContactMethod: represent a phone number
@@ -113,6 +114,8 @@ public:
    int                 totalSpentTime  () const;
    QString             uid             () const;
    URI::ProtocolHint   protocolHint    () const;
+   QByteArray          sha1            () const;
+   InstantMessagingModel* imModel      () const;
 
    QVariant roleData(int role) const;
 
@@ -124,6 +127,7 @@ public:
    void             setBookmarked(bool                bookmarked);
    void             setUid       (const QString&      uri       );
    bool             setType      (ContactMethod::Type t         );
+   void             setImModel   (InstantMessagingModel* m      );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);

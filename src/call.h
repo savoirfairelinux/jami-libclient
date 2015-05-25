@@ -31,6 +31,7 @@ class QTimer;
 //Ring
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
+#include "media/media.h"
 class Account               ;
 class InstantMessagingModel ;
 class UserActionModel       ;
@@ -43,6 +44,14 @@ namespace Video {
    class Manager;
    class Renderer;
    class ManagerPrivate;
+}
+
+namespace Media {
+   class Media;
+   class Audio;
+   class Video;
+   class Text;
+   class Recording;
 }
 
 class Call;
@@ -75,6 +84,12 @@ public:
    friend class IMConversationManager;
    friend class VideoRendererManager;
    friend class VideoRendererManagerPrivate;
+   friend class Media::Media;
+   friend class Media::Audio;
+   friend class Media::Video;
+   friend class Media::Text;
+   friend class MediaTypeInference;
+   friend class IMConversationManagerPrivate;
 
    //Enum
 
@@ -86,7 +101,6 @@ public:
       Date               = 103, /*!< The date when the call started                                      */
       Length             = 104, /*!< The current length of the call                                      */
       FormattedDate      = 105, /*!< An human readable starting date                                     */
-      HasRecording       = 106, /*!< If the call has a recording attached                                */
       Historystate       = 107, /*!<                                                                     */
       Filter             = 108, /*!<                                                                     */
       FuzzyDate          = 109, /*!<                                                                     */
@@ -95,12 +109,13 @@ public:
       Department         = 112, /*!<                                                                     */
       Email              = 113, /*!<                                                                     */
       Organisation       = 114, /*!<                                                                     */
+      HasAVRecording     = 115, /*!<                                                                     */
       Object             = 117, /*!<                                                                     */
       Photo              = 118, /*!<                                                                     */
       State              = 119, /*!<                                                                     */
       StartTime          = 121, /*!<                                                                     */
       StopTime           = 122, /*!<                                                                     */
-      IsRecording        = 123, /*!<                                                                     */
+      IsAVRecording      = 123, /*!<                                                                     */
       ContactMethod      = 124, /*!<                                                                     */
       IsPresent          = 125, /*!<                                                                     */
       SupportPresence    = 126, /*!<                                                                     */
@@ -111,6 +126,8 @@ public:
       Missed             = 131, /*!< This call has been missed                                           */
       LifeCycleState     = 132, /*!<                                                                     */
       Certificate        = 133, /*!< The certificate (for encrypted calls)                               */
+      HasAudioRecording  = 134, /*!<                                                                     */
+      HasVideoRecording  = 135, /*!<                                                                     */
       DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop    */
       DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
       LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
@@ -166,11 +183,13 @@ public:
    */
    enum class Action : unsigned int
    {
-      ACCEPT   = 0, /*!< Accept, create or place call or place transfer */
-      REFUSE   = 1, /*!< Red button, refuse or hang up                  */
-      TRANSFER = 2, /*!< Put into or out of transfer mode               */
-      HOLD     = 3, /*!< Hold or unhold the call                        */
-      RECORD   = 4, /*!< Enable or disable recording                    */
+      ACCEPT       = 0, /*!< Accept, create or place call or place transfer */
+      REFUSE       = 1, /*!< Red button, refuse or hang up                  */
+      TRANSFER     = 2, /*!< Put into or out of transfer mode               */
+      HOLD         = 3, /*!< Hold or unhold the call                        */
+      RECORD_AUDIO = 4, /*!< Enable or disable audio recording              */
+      RECORD_VIDEO = 5, /*!< Enable or disable video recording              */
+      RECORD_TEXT  = 6, /*!< Enable or disable text  recording              */
       COUNT__,
    };
 
@@ -228,8 +247,7 @@ public:
    Q_PROPERTY( Video::Renderer*   videoRenderer      READ videoRenderer                             )
    Q_PROPERTY( QString            formattedName      READ formattedName                             )
    Q_PROPERTY( QString            length             READ length                                    )
-   Q_PROPERTY( bool               hasRecording       READ hasRecording                              )
-   Q_PROPERTY( bool               recording          READ isRecording                               )
+   Q_PROPERTY( bool               recordingAV        READ isAVRecording                             )
    Q_PROPERTY( UserActionModel*   userActionModel    READ userActionModel   CONSTANT                )
    Q_PROPERTY( QString            toHumanStateName   READ toHumanStateName                          )
    Q_PROPERTY( bool               missed             READ isMissed                                  )
@@ -241,7 +259,6 @@ public:
    Q_PROPERTY( ContactMethod*     peerContactMethod  READ peerContactMethod                         )
    Q_PROPERTY( QString            peerName           READ peerName          WRITE setPeerName       )
    Q_PROPERTY( QString            transferNumber     READ transferNumber    WRITE setTransferNumber )
-   Q_PROPERTY( QString            recordingPath      READ recordingPath     WRITE setRecordingPath  )
    Q_PROPERTY( QString            dialNumber         READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
 
    //Constructors & Destructors
@@ -255,7 +272,7 @@ public:
    const QString            historyId        () const;
    ContactMethod*           peerContactMethod() const;
    const QString            peerName         () const;
-   bool                     isRecording      () const;
+   bool                     isAVRecording    () const;
    Account*                 account          () const;
    bool                     isHistory        () const;
    time_t                   stopTimeStamp    () const;
@@ -263,10 +280,8 @@ public:
    bool                     isSecure         () const;
    const QString            transferNumber   () const;
    const QString            dialNumber       () const;
-   const QString            recordingPath    () const;
    Video::Renderer*         videoRenderer    () const;
    const QString            formattedName    () const;
-   bool                     hasRecording     () const;
    QString                  length           () const;
    UserActionModel*         userActionModel  () const;
    QString                  toHumanStateName () const;
@@ -277,8 +292,16 @@ public:
    Call::Type               type             () const;
    bool                     hasRemote        () const;
    Certificate*             certificate      () const;
-   QVariant                 roleData         (int role) const;
+   QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
+
+   template<typename T>
+   T* firstMedia(Media::Media::Direction direction) const;
+   QList<Media::Recording*> recordings  (Media::Media::Type type, Media::Media::Direction direction) const;
+   QList<Media::Media*>     media       (Media::Media::Type type, Media::Media::Direction direction) const;
+   bool                     hasMedia    (Media::Media::Type type, Media::Media::Direction direction) const;
+   bool                     hasRecording(Media::Media::Type type, Media::Media::Direction direction) const;
+   bool                     isRecording (Media::Media::Type type, Media::Media::Direction direction) const;
 
    //Automated function
    Call::State performAction(Call::Action action);
@@ -287,15 +310,15 @@ public:
    void setTransferNumber ( const QString&     number     );
    void setDialNumber     ( const QString&     number     );
    void setDialNumber     ( const ContactMethod* number   );
-   void setRecordingPath  ( const QString&     path       );
    void setPeerName       ( const QString&     name       );
    void setAccount        ( Account*           account    );
 
    //Mutators
+   template<typename T>
+   T* addOutgoingMedia(bool useExisting = true);
    void appendText(const QString& str);
    void backspaceItemText();
    void reset();
-   void sendTextMessage(const QString& message);
 
    //syntactic sugar
    Call* operator<<( Call::Action& c);
@@ -312,9 +335,6 @@ private:
    Q_DECLARE_PRIVATE(Call)
 
 public Q_SLOTS:
-   void playRecording();
-   void stopRecording();
-   void seekRecording(double position);
    void playDTMF(const QString& str);
 
 Q_SIGNALS:
@@ -324,12 +344,6 @@ Q_SIGNALS:
    void changed(Call* self);
    ///Emitted when the call is over //TODO remove the argument
    void isOver(Call*);
-   ///The recording playback position changed
-   void playbackPositionChanged(int,int);
-   ///The recording playback has stopped
-   void playbackStopped();
-   ///The recording playback has started
-   void playbackStarted();
    ///Notify that a DTMF have been played
    void dtmfPlayed(const QString& str);
    ///Notify of state change
@@ -341,9 +355,13 @@ Q_SIGNALS:
    ///The dial number has changed
    void dialNumberChanged(const QString& number);
    ///Announce a new video renderer
-   void videoStarted(Video::Renderer* renderer);
+   void videoStarted(Video::Renderer* renderer); //TODO remove, use the media signals
    ///Remove a new video renderer
-   void videoStopped(Video::Renderer* renderer);
+   void videoStopped(Video::Renderer* renderer); //TODO remove, use the media signals
+   ///Notify when a media is added
+   void mediaAdded(Media::Media* media);
+   ///Notify when a media state change
+   void mediaStateChanged(Media::Media* media, const Media::Media::State s, const Media::Media::State m);
 };
 
 Q_DECLARE_METATYPE(Call*)
@@ -356,5 +374,7 @@ Q_DECLARE_METATYPE(Call::LifeCycleState)
 Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
+
+#include <call.hpp>
 
 #endif

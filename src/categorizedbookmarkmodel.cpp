@@ -399,7 +399,7 @@ QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* numb
       case static_cast<int>(Call::Role::FormattedDate):
          cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
          break;
-      case static_cast<int>(Call::Role::HasRecording):
+      case static_cast<int>(Call::Role::HasAVRecording):
          cat = false;//call->hasRecording();
          break;
       case static_cast<int>(Call::Role::FuzzyDate):

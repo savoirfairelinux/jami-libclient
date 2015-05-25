@@ -15,44 +15,42 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#include "audio.h"
 
-#include <QtCore/QObject>
+//Dring
+#include <media_const.h>
+#include "dbus/callmanager.h"
 
-#include "typedefs.h"
+//Ring
+#include <call.h>
 
-class CollectionInterface;
-
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class MediaAudioPrivate
 {
-   Q_OBJECT
-public:
-
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
-
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
-
-   //Mutator
-
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
-
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 
-#endif
+Media::Audio::Audio(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaAudioPrivate())
+{
+   Q_ASSERT(parent);
+}
+
+Media::Media::Type Media::Audio::type()
+{
+   return Media::Media::Type::AUDIO;
+}
+
+bool Media::Audio::mute()
+{
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,true);
+}
+
+bool Media::Audio::unmute()
+{
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,false);
+}
+
+Media::Audio::~Audio()
+{
+
+}

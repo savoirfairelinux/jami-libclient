@@ -334,7 +334,8 @@ class LIB_EXPORT Account : public QObject {
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
       RegistrationState  registrationState () const;
-      Protocol               protocol      () const;
+      Protocol           protocol          () const;
+      ContactMethod*     contactMethod     () const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
