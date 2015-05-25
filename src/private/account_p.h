@@ -18,9 +18,13 @@
 #ifndef ACCOUNTPRIVATE_H
 #define ACCOUNTPRIVATE_H
 
+//Qt
 #include <QtCore/QObject>
 #include <QtCore/QHash>
+
+//Ring
 #include <account.h>
+#include <private/matrixutils.h>
 
 class AccountPrivate;
 class ContactMethod;
@@ -129,10 +133,10 @@ public:
    QAbstractItemModel*       m_pBlacklistedCertificates;
    QAbstractItemModel*       m_pTrustedCertificates    ;
    NetworkInterfaceModel*    m_pNetworkInterfaceModel  ;
-   Account::EditState m_CurrentState;
+   Account::EditState        m_CurrentState            ;
 
    // State machines
-   static const account_function stateMachineActionsOnState[6][7];
+   static const Matrix2D<Account::EditState, Account::EditAction, account_function> stateMachineActionsOnState;
 
    //Cached account details (as they are called too often for the hash)
    mutable QString      m_HostName;

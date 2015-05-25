@@ -57,16 +57,17 @@
 #define IS_TRUE == "true"
 
 #define AP &AccountPrivate
-const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
-/*               NOTHING        EDIT         RELOAD        SAVE        REMOVE      MODIFY         CANCEL       */
-/*READY    */{ AP::nothing, AP::edit   , AP::reload , AP::nothing, AP::remove , AP::modify   , AP::nothing },/**/
-/*EDITING  */{ AP::nothing, AP::nothing, AP::outdate, AP::nothing, AP::remove , AP::modify   , AP::cancel  },/**/
-/*OUTDATED */{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::remove , AP::reloadMod, AP::reload  },/**/
-/*NEW      */{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing },/**/
-/*MODIFIED */{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::reload  },/**/
-/*REMOVED  */{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  } /**/
-/*                                                                                                             */
-};
+const Matrix2D<Account::EditState, Account::EditAction, account_function> AccountPrivate::stateMachineActionsOnState = {{
+/*                           NOTHING        EDIT        RELOAD        SAVE        REMOVE      MODIFY         CANCEL         */
+/*READY               */{{ AP::nothing, AP::edit   , AP::reload , AP::nothing, AP::remove , AP::modify   , AP::nothing }},/**/
+/*EDITING             */{{ AP::nothing, AP::nothing, AP::outdate, AP::nothing, AP::remove , AP::modify   , AP::cancel  }},/**/
+/*OUTDATED            */{{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::remove , AP::reloadMod, AP::reload  }},/**/
+/*NEW                 */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing }},/**/
+/*MODIFIED_INCOMPLETE */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }},/**/
+/*MODIFIED_COMPLETE   */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }},/**/
+/*REMOVED             */{{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  }} /**/
+/*                                                                                                                          */
+}};
 #undef AP
 
 //Host the current highest interal identifier. The internal id is used for some bitmasks
@@ -1083,13 +1084,19 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
    }
    else if (accChanged) {
       q_ptr->performAction(Account::EditAction::MODIFY);
-      if (m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW) {
+
+      if (m_CurrentState == Account::EditState::MODIFIED_COMPLETE
+       || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
+       || m_CurrentState == Account::EditState::NEW
+      ) {
          m_hAccountDetails[param] = val;
          emit q_ptr->changed(q_ptr);
          emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
    }
-   return m_CurrentState == Account::EditState::MODIFIED || m_CurrentState == Account::EditState::NEW;
+   return m_CurrentState == Account::EditState::MODIFIED_COMPLETE
+    || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
+    || m_CurrentState == Account::EditState::NEW;
 }
 
 ///Set the account id
@@ -1663,7 +1670,7 @@ void Account::setRoleData(int role, const QVariant& value)
 
 void AccountPrivate::performAction(const Account::EditAction action)
 {
-   (this->*(stateMachineActionsOnState[(int)m_CurrentState][(int)action]))();//FIXME don't use integer cast
+   (this->*(stateMachineActionsOnState[m_CurrentState][action]))();
 }
 
 /// anAccount << Call::EditAction::SAVE
@@ -1931,7 +1938,69 @@ void AccountPrivate::edit()    {
 }
 
 void AccountPrivate::modify()  {
-   changeState(Account::EditState::MODIFIED);
+   //This check if the account can be saved or it would produce an invalid result
+
+   //Future checks that could be implemented:
+   // * 2 accounts with the same alias
+   // * Weak password (will require a new COMPLETE_WARNING edit state)
+   // * Invalid hostname
+   // * Unreachable hostname (will require a new COMPLETE_WARNING edit state)
+   // * Invalid username
+   // * Non hash username for  Ring accounts
+
+
+   enum Fields {
+      ALIAS   , /* While valid, an account without one cause usability issues */
+      HOSTNAME, /* Without hostname, an account cannot be "READY"             */
+      USERNAME, /* All protocols but IP2IP require an username                */
+      PASSWORD, /* SIP and IAX accounts require a password                    */
+      COUNT__
+   };
+
+   //TODO At some point more complex validations could be implemented
+   bool invalidFields[Fields::COUNT__] = {
+      /*ALIAS   */ q_ptr->alias   ().isEmpty(),
+      /*HOSTNAME*/ q_ptr->hostname().isEmpty(),
+      /*USERNAME*/ q_ptr->username().isEmpty(),
+      /*PASSWORD*/ q_ptr->password().isEmpty()
+   };
+
+   //Apply some filters per protocol
+   switch (q_ptr->protocol()) {
+      case Account::Protocol::SIP:
+         //IP2IP is very permissive about missing fields
+         if (q_ptr->alias() == DRing::Account::ProtocolNames::IP2IP) {
+            invalidFields[Fields::ALIAS   ] = false;
+            invalidFields[Fields::USERNAME] = false;
+            invalidFields[Fields::HOSTNAME] = false;
+            invalidFields[Fields::PASSWORD] = false;
+         }
+         break;
+      case Account::Protocol::RING:
+         //Only the alias is necessary, the username cannot be removed
+         invalidFields[Fields::USERNAME] &= q_ptr->isNew();
+         invalidFields[Fields::HOSTNAME]  = false         ;
+         invalidFields[Fields::PASSWORD]  = false         ;
+         break;
+      case Account::Protocol::IAX:
+      case Account::Protocol::COUNT__:
+         //No changes needed
+         break;
+   }
+
+   const bool isIncomplete = (
+        invalidFields[ Fields::ALIAS    ]
+      | invalidFields[ Fields::HOSTNAME ]
+      | invalidFields[ Fields::USERNAME ]
+      | invalidFields[ Fields::PASSWORD ]
+   );
+
+   const Account::EditState newState = isIncomplete ?
+      Account::EditState::MODIFIED_INCOMPLETE :
+      Account::EditState::MODIFIED_COMPLETE   ;
+
+   if (newState != q_ptr->editState())
+      changeState(newState);
 }
 
 void AccountPrivate::remove()  {
