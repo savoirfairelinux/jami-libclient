@@ -117,7 +117,7 @@ public:
 
    CredentialModel*          m_pCredentials            ;
    CodecModel*               m_pCodecModel             ;
-   RingToneModel*            m_pRingToneModel          ;
+   RingtoneModel*            m_pRingtoneModel          ;
    KeyExchangeModel*         m_pKeyExchangeModel       ;
    CipherModel*              m_pCipherModel            ;
    AccountStatusModel*       m_pStatusModel            ;
