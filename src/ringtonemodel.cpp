@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
+#include <QtCore/QItemSelectionModel>
 
 //Ring
 #include "dbus/configurationmanager.h"
@@ -36,10 +37,14 @@ public:
    RingtoneModelPrivate(RingtoneModel*);
 
    //Attributes
-   QVector<Ringtone*> m_lRingtone;
-   Account*           m_pAccount ;
-   QTimer*            m_pTimer   ;
-   Ringtone*          m_pCurrent ;
+   QVector<Ringtone*>                   m_lRingtone       ;
+   QTimer*                              m_pTimer          ;
+   Ringtone*                            m_pCurrent        ;
+   QHash<Account*,int>                  m_hCurrent        ;
+   QHash<Account*,QItemSelectionModel*> m_hSelectionModels;
+
+   //Helpers
+   int currentIndex(Account* a) const;
 
 private:
    RingtoneModel* q_ptr;
@@ -49,17 +54,22 @@ public Q_SLOTS:
 
 };
 
-RingtoneModelPrivate::RingtoneModelPrivate(RingtoneModel* parent) : q_ptr(parent),m_pAccount(nullptr),m_pTimer(nullptr), m_pCurrent(nullptr)
+RingtoneModelPrivate::RingtoneModelPrivate(RingtoneModel* parent) : q_ptr(parent),m_pTimer(nullptr), m_pCurrent(nullptr)
 {
 
 }
 
-RingtoneModel::RingtoneModel(Account* a) : QAbstractTableModel(a), CollectionManagerInterface<Ringtone>(this),d_ptr(new RingtoneModelPrivate(this))
+RingtoneModel::RingtoneModel(QObject* parent) : QAbstractTableModel(parent), CollectionManagerInterface<Ringtone>(this),d_ptr(new RingtoneModelPrivate(this))
 {
-   d_ptr->m_pAccount = a;
 //    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
    addCollection<LocalRingtoneCollection>();
+}
+
+RingtoneModel* RingtoneModel::instance()
+{
+   static RingtoneModel* ins = new RingtoneModel(QCoreApplication::instance());
+   return ins;
 }
 
 RingtoneModel::~RingtoneModel()
@@ -139,20 +149,42 @@ bool RingtoneModel::setData( const QModelIndex& index, const QVariant &value, in
    return false;
 }
 
-QString RingtoneModel::currentRingTone() const
+Ringtone* RingtoneModel::currentRingTone(Account* a) const
 {
-   return QFileInfo(d_ptr->m_pAccount->ringtonePath()).absoluteFilePath();
+   if ((!a) || (!d_ptr->m_hSelectionModels[a]))
+      return nullptr;
+
+   const QModelIndex& idx = d_ptr->m_hSelectionModels[a]->currentIndex();
+
+   return idx.isValid() ? d_ptr->m_lRingtone[idx.row()] : nullptr;
 }
 
-QModelIndex RingtoneModel::currentIndex() const
+int RingtoneModelPrivate::currentIndex(Account* a) const
 {
-   const QString rt = currentRingTone();
-   for (int i=0;i<d_ptr->m_lRingtone.size();i++) {
-      Ringtone* info = d_ptr->m_lRingtone[i];
+   const QString rt = a->ringtonePath();
+   for (int i=0;i<m_lRingtone.size();i++) {
+      Ringtone* info = m_lRingtone[i];
       if (info->path().path() == rt)
-         return index(i,0);
+         return i;
    }
-   return QModelIndex();
+   return -1;
+}
+
+QItemSelectionModel* RingtoneModel::selectionModel(Account* a) const
+{
+   if (!d_ptr->m_hSelectionModels[a]) {
+      d_ptr->m_hSelectionModels[a] = new QItemSelectionModel(const_cast<RingtoneModel*>(this));
+      d_ptr->m_hSelectionModels[a]->setCurrentIndex(index(d_ptr->currentIndex(a),0), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_hSelectionModels[a],&QItemSelectionModel::currentChanged, [a,this](const QModelIndex& idx) {
+         if (idx.isValid()) {
+            a->setRingtonePath(d_ptr->m_lRingtone[idx.row()]->path().path());
+         }
+      });
+
+   }
+
+   return d_ptr->m_hSelectionModels[a];
 }
 
 void RingtoneModel::play(const QModelIndex& idx)
