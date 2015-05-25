@@ -1692,6 +1692,89 @@ Account::EditState Account::editState() const
    return d_ptr->m_CurrentState;
 }
 
+/**
+ * This method can be used to query if a field is available or not in current
+ * context. This could be extended over time. For now, it only handle the fields
+ * related to SDES and ZRTP.
+ *
+ * @todo Support of the private key password is necessary
+ *
+ * @param role An sdes or zrtp related Account::Role
+ * @return if the field is available in the current context
+ */
+Account::RoleState Account::roleState(Account::Role role) const
+{
+
+   //Supported fields
+   enum class Fields {
+      SDES_FALLBACK_RTP  ,
+      ZRTP_SAS_ONCE      ,
+      ZRTP_DISPLAY_SAS   ,
+      ZRTP_WARN_SUPPORTED,
+      ZTRP_SEND_HELLO    ,
+      COUNT__
+   };
+
+   //Mapping between the roles and the fields
+   Fields f = Fields::COUNT__;
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wswitch-enum"
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wswitch"
+   switch(role) {
+      case Account::Role::DisplaySasOnce    :
+         f = Fields::ZRTP_SAS_ONCE      ;
+         break;
+      case Account::Role::SrtpRtpFallback   :
+         f = Fields::SDES_FALLBACK_RTP  ;
+         break;
+      case Account::Role::ZrtpDisplaySas    :
+         f = Fields::ZRTP_DISPLAY_SAS   ;
+         break;
+      case Account::Role::ZrtpNotSuppWarning:
+         f = Fields::ZRTP_WARN_SUPPORTED;
+         break;
+      case Account::Role::ZrtpHelloHash     :
+         f = Fields::ZTRP_SEND_HELLO    ;
+         break;
+   }
+   #pragma GCC diagnostic pop
+   #pragma GCC diagnostic pop
+
+   //The field is not possible to disable
+   if (f == Fields::COUNT__)
+      return Account::RoleState::READ_WRITE;
+
+   constexpr static const Account::RoleState rw = Account::RoleState::READ_WRITE ;
+   constexpr static const Account::RoleState un = Account::RoleState::UNAVAILABLE;
+
+   //Matrix used to define if a field is enabled
+   static const Matrix2D<KeyExchangeModel::Type, Fields, Account::RoleState>
+   enabledFields={{
+      /*                     ______________________> SDES_FALLBACK_RTP        */
+      /*                    /      ________________> ZRTP_ASK_USER            */
+      /*                   /      /     ___________> ZRTP_DISPLAY_SAS         */
+      /*                  /      /     /     ______> ZRTP_WARN_SUPPORTED      */
+      /*                 /      /     /     /     _> ZTRP_SEND_HELLO          */
+      /*                /      /     /     /     /                            */
+      /*               \/     \/    \/    \/    \/                            */
+      /*Type::ZRTP*/ {{un   ,rw   ,rw   ,rw   ,rw   }},
+      /*Type::SDES*/ {{rw   ,un   ,un   ,un   ,un   }},
+      /*Type::NONE*/ {{un   ,un   ,un   ,un   ,un   }},
+   }};
+
+   const QModelIndex idx = keyExchangeModel()->selectionModel()->currentIndex();
+
+   if (!idx.isValid())
+      return Account::RoleState::UNAVAILABLE;
+
+   const KeyExchangeModel::Type type = qvariant_cast<KeyExchangeModel::Type>(
+      idx.data(static_cast<int>(KeyExchangeModel::Role::TYPE))
+   );
+
+   return enabledFields[type][f];
+}
+
 /**Update the account
  * @return if the state changed
  */
