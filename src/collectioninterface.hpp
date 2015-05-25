@@ -60,7 +60,7 @@ d_ptr(new CollectionInterfacePrivateT())
       return editor?editor->addNew(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fSave = [editor](ItemBase<QObject>* item)->bool {
-      return editor?editor->edit(static_cast<T*>(item)) : false;
+      return editor?editor->save(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fEdit = [editor](ItemBase<QObject>* item)->bool {
       return editor?editor->edit(static_cast<T*>(item)) : false;

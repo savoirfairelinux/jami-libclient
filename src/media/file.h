@@ -15,44 +15,32 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef MEDIA_FILE_H
+#define MEDIA_FILE_H
 
-#include <QtCore/QObject>
+#include <media/media.h>
+#include <typedefs.h>
 
-#include "typedefs.h"
+class MediaFilePrivate;
+class Call;
+class CallPrivate;
 
-class CollectionInterface;
+namespace Media {
 
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class LIB_EXPORT File : public Media::Media
 {
-   Q_OBJECT
+   friend class ::CallPrivate;
 public:
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   virtual Media::Type type() override;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
+private:
+   File(Call* parent, const Media::Direction direction);
+   virtual ~File();
 
-   //Mutator
-
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
-
+   MediaFilePrivate* d_ptr;
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
+
+}
 
 #endif

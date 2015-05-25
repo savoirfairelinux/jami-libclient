@@ -15,44 +15,34 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef MEDIA_VIDEO_H
+#define MEDIA_VIDEO_H
 
-#include <QtCore/QObject>
+#include <media/media.h>
+#include <typedefs.h>
 
-#include "typedefs.h"
+class MediaVideoPrivate;
+class Call;
+class CallPrivate;
 
-class CollectionInterface;
+namespace Media {
 
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class LIB_EXPORT Video : public Media::Media
 {
-   Q_OBJECT
+   friend class ::CallPrivate;
 public:
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   virtual Media::Type type() override;
+   virtual bool mute() override;
+   virtual bool unmute() override;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
+private:
+   Video(Call* parent, const Media::Direction direction);
+   virtual ~Video();
 
-   //Mutator
-
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
-
+   MediaVideoPrivate* d_ptr;
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
+
+}
 
 #endif

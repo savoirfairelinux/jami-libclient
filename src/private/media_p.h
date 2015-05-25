@@ -15,44 +15,46 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef MEDIA_PRIVATE_H
+#define MEDIA_PRIVATE_H
 
-#include <QtCore/QObject>
+#include <media/media.h>
+#include "private/matrixutils.h"
 
-#include "typedefs.h"
 
-class CollectionInterface;
+namespace Media {
+class MediaPrivate;
 
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+typedef bool (MediaPrivate::*MediaTransitionFct)();
+
+class MediaPrivate
 {
-   Q_OBJECT
+   friend class Media::Media;
 public:
+   MediaPrivate(Media* parent);
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   static const Matrix2D<Media::Media::State, Media::Media::Action, bool> m_mValidTransitions;
+   static const Matrix2D<Media::Media::State, Media::Media::Action, MediaTransitionFct> m_mCallbacks;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
+   //Actions
+   bool mute     ();
+   bool unmute   ();
+   bool terminate();
+   bool nothing  ();
 
-   //Mutator
+   //Server changes callbacks
+   void muteConfirmed();
+   void unmuteConfirmed();
 
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
+private:
+   //Attributes
+   Media::Media::State m_State;
+   Call* m_pCall;
+   Media::Media::Direction m_Direction;
 
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
-
+   Media* q_ptr;
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
+
+}
 
 #endif

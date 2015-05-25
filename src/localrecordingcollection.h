@@ -15,44 +15,40 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#ifndef LOCALRECORDINGCOLLECTON_H
+#define LOCALRECORDINGCOLLECTON_H
 
-#include <QtCore/QObject>
+#include <collectioninterface.h>
+#include <typedefs.h>
+#include <collectioneditor.h>
 
-#include "typedefs.h"
+namespace Media {
+   class Recording;
+}
 
-class CollectionInterface;
-
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
+class LIB_EXPORT LocalRecordingCollection : public CollectionInterface
 {
-   Q_OBJECT
 public:
+   explicit LocalRecordingCollection(CollectionMediator<Media::Recording>* mediator);
+   virtual ~LocalRecordingCollection();
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   virtual bool load  () override;
+   virtual bool reload() override;
+   virtual bool clear () override;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
+   virtual QString    name     () const override;
+   virtual QString    category () const override;
+   virtual QVariant   icon     () const override;
+   virtual bool       isEnabled() const override;
+   virtual QByteArray id       () const override;
+
+   virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
    //Mutator
+   Media::Recording* addFromPath(const QString& path);
 
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
+   static LocalRecordingCollection* instance();
 
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 
 #endif

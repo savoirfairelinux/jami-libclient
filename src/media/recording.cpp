@@ -15,44 +15,53 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCONFIGURATIONINTERFACE_H
-#define COLLECTIONCONFIGURATIONINTERFACE_H
+#include "recording.h"
 
-#include <QtCore/QObject>
+namespace Media {
 
-#include "typedefs.h"
-
-class CollectionInterface;
-
-class LIB_EXPORT CollectionConfigurationInterface : public QObject
-{
-   Q_OBJECT
+class RecordingPrivate {
 public:
+   RecordingPrivate(Recording* r);
 
-   explicit CollectionConfigurationInterface(QObject* parent = nullptr) : QObject(parent) {}
+   //Attributes
+   Recording::Type        m_Type    ;
+   Call*                  m_pCall   ;
 
-   //Getter
-   virtual QByteArray id  () const = 0;
-   virtual QString    name() const = 0;
-   virtual QVariant   icon() const = 0;
-
-   //Mutator
-
-   /**
-    * This function will be called when a collection request to be configured
-    * 
-    * @param col The collection to be edited. It can casted
-    * @param parent can be used for layout information.
-    */
-   virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
-
-   virtual void save(){}
-   virtual bool hasChanged() {return false;}
-
-Q_SIGNALS:
-   void changed();
-
+private:
+   Recording* q_ptr;
 };
-Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 
-#endif
+RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pCall(nullptr)
+{
+
+}
+
+Recording::Recording(const Recording::Type type) : ItemBase<QObject>(nullptr), d_ptr(new RecordingPrivate(this))
+{
+   d_ptr->m_Type = type;
+}
+
+Recording::~Recording()
+{
+   delete d_ptr;
+}
+
+} //Media::
+
+///Return this Recording type
+Media::Recording::Type Media::Recording::type() const
+{
+   return d_ptr->m_Type;
+}
+
+Call* Media::Recording::call() const
+{
+   return d_ptr->m_pCall;
+}
+
+void Media::Recording::setCall(Call* call)
+{
+   d_ptr->m_pCall = call;
+}
+
+#include <recording.moc>

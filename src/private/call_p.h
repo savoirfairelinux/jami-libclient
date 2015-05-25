@@ -38,6 +38,11 @@ class Certificate;
 class CallPrivate;
 typedef  void (CallPrivate::*function)();
 
+namespace Media {
+   class Media;
+   class Recording;
+}
+
 class CallPrivate : public QObject
 {
    Q_OBJECT
@@ -122,12 +127,9 @@ public:
    QString                  m_DringId           ;
    ContactMethod*           m_pPeerContactMethod;
    QString                  m_PeerName          ;
-   QString                  m_RecordingPath     ;
    time_t                   m_pStartTimeStamp   ;
    time_t                   m_pStopTimeStamp    ;
    Call::State              m_CurrentState      ;
-   bool                     m_Recording         ;
-   InstantMessagingModel*   m_pImModel          ;
    QTimer*                  m_pTimer            ;
    UserActionModel*         m_pUserActionModel  ;
    bool                     m_History           ;
@@ -186,6 +188,14 @@ public:
     */
    static const TypedStateMachine< Call::LifeCycleState , Call::State > metaStateMap;
 
+   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Media*>* > m_mMedias;
+
+   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Recording*>* > m_mRecordings;
+
+   Matrix2D<Media::Media::Type, Media::Media::Direction, bool > m_mIsRecording;
+
+   static const Matrix1D<Call::LifeCycleState,function> m_mLifeCycleStateChanges;
+
    static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
 
    static DaemonState toDaemonCallState   (const QString& stateName);
@@ -197,28 +207,32 @@ public:
    //Automate functions
    // See actionPerformedFunctionMap and stateChangedFunctionMap
    // to know when it is called.
-   void nothing      () __attribute__ ((const));
-   void error        () __attribute__ ((noreturn));
-   void failure      ();
-   void accept       ();
-   void refuse       ();
-   void acceptTransf ();
-   void acceptHold   ();
-   void hangUp       ();
-   void cancel       ();
-   void hold         ();
-   void call         ();
-   void transfer     ();
-   void unhold       ();
-   void switchRecord ();
-   void toggleRecord ();
-   void start        ();
-   void startStop    ();
-   void stop         ();
-   void startWeird   ();
-   void warning      ();
-   void remove       ();
-   void abort        ();
+   void nothing           () __attribute__ ((const));
+   void error             () __attribute__ ((noreturn));
+   void failure           ();
+   void accept            ();
+   void refuse            ();
+   void acceptTransf      ();
+   void acceptHold        ();
+   void hangUp            ();
+   void cancel            ();
+   void hold              ();
+   void call              ();
+   void transfer          ();
+   void unhold            ();
+   void toggleAudioRecord ();
+   void toggleVideoRecord ();
+   void start             ();
+   void startStop         ();
+   void stop              ();
+   void startWeird        ();
+   void warning           ();
+   void remove            ();
+   void abort             ();
+
+   //LifeCycleState change callback
+   void initMedia();
+   void terminateMedia();
 
    //Helpers
    void changeCurrentState(Call::State newState);
@@ -226,6 +240,9 @@ public:
    void initTimer();
    void registerRenderer(Video::Renderer* renderer);
    void removeRenderer(Video::Renderer* renderer);
+   void setRecordingPath(const QString& path);
+   template<typename T>
+   T* mediaFactory(Media::Media::Direction dir);
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );
@@ -240,8 +257,6 @@ private:
    Call* q_ptr;
 
 private Q_SLOTS:
-   void stopPlayback(const QString& filePath);
-   void updatePlayback(const QString& path,int position,int size);
    void updated();
 };
 
