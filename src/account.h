@@ -153,35 +153,39 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
 
    public:
+
       ///@enum EditState: Manage how and when an account can be reloaded or change state
       enum class EditState {
-         READY    = 0,
-         EDITING  = 1,
-         OUTDATED = 2,
-         NEW      = 3,
-         MODIFIED = 4,
-         REMOVED  = 5
+         READY               = 0, /*!< The account is synchronized                                       */
+         EDITING             = 1, /*!< The account is "locked" by the client for edition                 */
+         OUTDATED            = 2, /*!< The remote and local details are out of sync                      */
+         NEW                 = 3, /*!< The account is new, there is no remote                            */
+         MODIFIED_INCOMPLETE = 4, /*!< The account has modified, but required fields are missing/invalid */
+         MODIFIED_COMPLETE   = 5, /*!< The account has modified and can be saved                         */
+         REMOVED             = 6, /*!< The account remote has been deleted                               */
+         COUNT__
       };
 
       ///@enum EditAction Actions that can be performed on the Account state
       enum class EditAction {
-         NOTHING = 0,
-         EDIT    = 1,
-         RELOAD  = 2,
-         SAVE    = 3,
-         REMOVE  = 4,
-         MODIFY  = 5,
-         CANCEL  = 6
+         NOTHING = 0, /*!< Do nothing                                        */
+         EDIT    = 1, /*!< Lock the current details for edition              */
+         RELOAD  = 2, /*!< Override the local details with the remote ones   */
+         SAVE    = 3, /*!< Override the remote details with the local ones   */
+         REMOVE  = 4, /*!< Remove this account                               */
+         MODIFY  = 5, /*!< Change the account details                        */
+         CANCEL  = 6, /*!< Cancel the modification, override with the remote */
+         COUNT__
       };
       Q_ENUMS(EditAction)
 
       ///@enum RegistrationState The account state from a client point of view
       enum class RegistrationState {
-         READY        = 0,
-         UNREGISTERED = 1,
-         TRYING       = 2,
-         ERROR        = 3,
-         COUNT__,
+         READY        = 0, /*!< The account can be used to pass a call   */
+         UNREGISTERED = 1, /*!< The account isn't functional voluntarily */
+         TRYING       = 2, /*!< The account is trying to become ready    */
+         ERROR        = 3, /*!< The account failed to become ready       */
+         COUNT__
       };
       Q_ENUMS(RegistrationState)
 
@@ -238,9 +242,9 @@ class LIB_EXPORT Account : public QObject {
       };
 
       enum class Protocol {
-         SIP  = 0,
-         IAX  = 1,
-         RING = 2,
+         SIP  = 0, /*!< Used for both SIP and IP2IP calls */
+         IAX  = 1, /*!< Inter Asterisk exchange protocol  */
+         RING = 2, /*!< Used for RING-DHT calls           */
          COUNT__,
       };
       Q_ENUMS(Protocol)

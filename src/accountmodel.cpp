@@ -360,7 +360,8 @@ void AccountModel::update()
    for (int i = 0; i < tmp.size(); i++) {
       Account* current = tmp[i];
       if (!current->isNew() && (current->editState() != Account::EditState::NEW
-         && current->editState() != Account::EditState::MODIFIED
+         && current->editState() != Account::EditState::MODIFIED_COMPLETE
+         && current->editState() != Account::EditState::MODIFIED_INCOMPLETE
          && current->editState() != Account::EditState::OUTDATED))
          remove(current);
    }
@@ -474,7 +475,10 @@ void AccountModel::registerAllAccounts()
 ///Cancel all modifications
 void AccountModel::cancel() {
    foreach (Account* a, d_ptr->m_lAccounts) {
-      if (a->editState() == Account::EditState::MODIFIED || a->editState() == Account::EditState::OUTDATED)
+      if (a->editState() == Account::EditState::MODIFIED_COMPLETE
+       || a->editState() == Account::EditState::MODIFIED_INCOMPLETE
+       || a->editState() == Account::EditState::OUTDATED
+      )
          a->performAction(Account::EditAction::CANCEL);
    }
    d_ptr->m_lDeletedAccounts.clear();
