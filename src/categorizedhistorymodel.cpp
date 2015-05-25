@@ -134,7 +134,7 @@ void HistoryItemNode::slotNumberChanged()
 CategorizedHistoryModel* CategorizedHistoryModel::m_spInstance    = nullptr;
 CallMap       CategorizedHistoryModelPrivate::m_sHistoryCalls          ;
 
-HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) : 
+HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) :
    CategorizedCompositeNode(CategorizedCompositeNode::Type::TOP_LEVEL),QObject(nullptr),m_Index(index),m_NameStr(name),
    m_AbsoluteIndex(-1),modelRow(-1)
 {}
@@ -158,7 +158,7 @@ QObject* HistoryTopLevelItem::getSelf() const
 CategorizedHistoryModelPrivate::HistoryItem::HistoryItem(Call* call) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CALL),m_pCall(call),
 m_Index(0),m_pParent(nullptr),m_pNode(nullptr)
 {
-   
+
 }
 
 CategorizedHistoryModelPrivate::HistoryItem::~HistoryItem()
@@ -367,6 +367,7 @@ int CategorizedHistoryModel::historyLimit() const
 
 void CategorizedHistoryModelPrivate::reloadCategories()
 {
+   emit q_ptr->layoutAboutToBeChanged();
    m_hCategories.clear();
    m_hCategoryByName.clear();
    q_ptr->beginRemoveRows(QModelIndex(),0,m_lCategoryCounter.size()-1);
@@ -391,7 +392,7 @@ void CategorizedHistoryModelPrivate::reloadCategories()
       else
          qDebug() << "ERROR count";
    }
-   emit q_ptr->layoutAboutToBeChanged();
+
    emit q_ptr->layoutChanged();
    emit q_ptr->dataChanged(q_ptr->index(0,0),q_ptr->index(q_ptr->rowCount()-1,0));
 }
