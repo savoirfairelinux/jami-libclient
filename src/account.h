@@ -237,6 +237,13 @@ class LIB_EXPORT Account : public QObject {
          SipTurnEnabled              = 152,
       };
 
+      ///@enum RoleState Whether a role can be used in a certain context
+      enum class RoleState {
+         READ_WRITE ,
+         READ_ONLY  ,
+         UNAVAILABLE,
+      };
+
       enum class Protocol {
          SIP  = 0,
          IAX  = 1,
@@ -276,6 +283,8 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE QAbstractItemModel*      knownCertificateModel      () const;
       Q_INVOKABLE QAbstractItemModel*      backlistedCertificatesModel() const;
       Q_INVOKABLE QAbstractItemModel*      trustedCertificatesModel   () const;
+
+      Q_INVOKABLE RoleState roleState(Account::Role role) const;
 
       //Getters
       QString hostname                     () const;

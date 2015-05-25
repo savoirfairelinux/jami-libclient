@@ -37,6 +37,11 @@ class LIB_EXPORT KeyExchangeModel : public QAbstractListModel {
    friend class Account;
 
 public:
+
+   enum class Role {
+      TYPE = 100
+   };
+
    ///@enum Type Every supported encryption types
    enum class Type {
       ZRTP = 0,
@@ -66,14 +71,7 @@ public:
    virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   //Getters
-   bool isRtpFallbackEnabled() const;
-   bool isDisplaySASEnabled () const;
-   bool isDisplaySasOnce    () const;
-   bool areWarningSupressed () const;
-   bool isHelloHashEnabled  () const;
    QItemSelectionModel* selectionModel() const;
-
 
 private:
    QScopedPointer<KeyExchangeModelPrivate> d_ptr;
@@ -85,4 +83,5 @@ Q_SIGNALS:
    void srtpEnabled(bool);
 };
 Q_DECLARE_METATYPE(KeyExchangeModel*)
+Q_DECLARE_METATYPE(KeyExchangeModel::Type)
 #endif

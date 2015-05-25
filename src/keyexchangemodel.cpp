@@ -52,7 +52,6 @@ public:
 
    //Attributes
    Account* m_pAccount;
-   static const TypedStateMachine< TypedStateMachine< bool , KeyExchangeModel::Type > , KeyExchangeModel::Options > availableOptions;
    QItemSelectionModel* m_pSelectionModel;
 
    //Getters
@@ -72,15 +71,6 @@ private:
    KeyExchangeModel* q_ptr;
 };
 
-const TypedStateMachine< TypedStateMachine< bool , KeyExchangeModel::Type > , KeyExchangeModel::Options > KeyExchangeModelPrivate::availableOptions = {{
-   /*                  */  /* ZRTP */ /* SDES */ /* NONE */
-   /* RTP_FALLBACK     */ {{ false    , true     , false   }},
-   /* DISPLAY_SAS      */ {{ true     , false    , false   }},
-   /* NOT_SUPP_WARNING */ {{ true     , false    , false   }},
-   /* HELLO_HASH       */ {{ true     , false    , false   }},
-   /* DISPLAY_SAS_ONCE */ {{ true     , false    , false   }},
-}};
-
 KeyExchangeModelPrivate::KeyExchangeModelPrivate(KeyExchangeModel* parent) : QObject(parent), q_ptr(parent),m_pAccount(nullptr), m_pSelectionModel(nullptr)
 {
 }
@@ -98,11 +88,12 @@ KeyExchangeModel::~KeyExchangeModel()
 QHash<int,QByteArray> KeyExchangeModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-   /*static bool initRoles = false;
+   static bool initRoles = false;
    if (!initRoles) {
+      roles[static_cast<int>(KeyExchangeModel::Role::TYPE)] = "type";
       initRoles = true;
 
-   }*/
+   }
    return roles;
 }
 
@@ -123,6 +114,9 @@ QVariant KeyExchangeModel::data( const QModelIndex& index, int role) const
             break;
       };
    }
+   else if (role == static_cast<int>(KeyExchangeModel::Role::TYPE))
+      return QVariant::fromValue(method);
+
    return QVariant();
 }
 
@@ -224,32 +218,6 @@ void KeyExchangeModelPrivate::setKeyExchange(KeyExchangeModel::Type detail)
 {
    m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::KEY_EXCHANGE ,KeyExchangeModelPrivate::toDaemonName(detail));
    m_pAccount->d_ptr->regenSecurityValidation();
-}
-
-///Return if the RtpFallback setting is available
-bool KeyExchangeModel::isRtpFallbackEnabled() const
-{
-   return d_ptr->availableOptions[Options::RTP_FALLBACK][d_ptr->keyExchange()];
-}
-
-bool KeyExchangeModel::isDisplaySASEnabled() const
-{
-   return d_ptr->availableOptions[Options::DISPLAY_SAS][d_ptr->keyExchange()];
-}
-
-bool KeyExchangeModel::isDisplaySasOnce() const
-{
-   return d_ptr->availableOptions[Options::DISPLAY_SAS_ONCE][d_ptr->keyExchange()];
-}
-
-bool KeyExchangeModel::areWarningSupressed() const
-{
-   return d_ptr->availableOptions[Options::NOT_SUPP_WARNING][d_ptr->keyExchange()];
-}
-
-bool KeyExchangeModel::isHelloHashEnabled() const
-{
-   return d_ptr->availableOptions[Options::HELLO_HASH][d_ptr->keyExchange()];
 }
 
 #include <keyexchangemodel.moc>
