@@ -74,7 +74,7 @@ const account_function AccountPrivate::stateMachineActionsOnState[6][7] = {
 static uint p_sAutoIncrementId = 0;
 
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
-m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
+m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingtoneModel(nullptr),
 m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
@@ -370,11 +370,11 @@ CodecModel* Account::codecModel() const
    return d_ptr->m_pCodecModel;
 }
 
-RingToneModel* Account::ringToneModel() const
+RingtoneModel* Account::ringToneModel() const
 {
-   if (!d_ptr->m_pRingToneModel)
-      d_ptr->m_pRingToneModel = new RingToneModel(const_cast<Account*>(this));
-   return d_ptr->m_pRingToneModel;
+   if (!d_ptr->m_pRingtoneModel)
+      d_ptr->m_pRingtoneModel = new RingtoneModel(const_cast<Account*>(this));
+   return d_ptr->m_pRingtoneModel;
 }
 
 KeyExchangeModel* Account::keyExchangeModel() const
