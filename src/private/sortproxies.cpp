@@ -281,16 +281,20 @@ SortingCategory::ModelTuple* createModels(QAbstractItemModel* src, int role, std
 SortingCategory::ModelTuple* SortingCategory::getContactProxy()
 {
    return createModels<ContactSortingCategoryModel>(CategorizedContactModel::instance(),(int)Person::Role::Filter, [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
-      qDebug() << "Selection changed" << idx.row();
-      sortContact(proxy,idx.row());
+      if (idx.isValid()) {
+         qDebug() << "Selection changed" << idx.row();
+         sortContact(proxy,idx.row());
+      }
    });
 }
 
 SortingCategory::ModelTuple* SortingCategory::getHistoryProxy()
 {
    return createModels<HistorySortingCategoryModel>(CategorizedHistoryModel::instance(),static_cast<int>(Call::Role::Date), [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
-      qDebug() << "Selection changed" << idx.row();
-      sortHistory(proxy,idx.row());
+     if (idx.isValid()) {
+         qDebug() << "Selection changed" << idx.row();
+         sortHistory(proxy,idx.row());
+      }
    });
 }
 
