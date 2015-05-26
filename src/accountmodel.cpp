@@ -241,7 +241,7 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
       for (int i = 0; i < accountIds.size(); ++i) {
          if ((!q_ptr->getById(accountIds[i].toLatin1())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
             Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
-            m_lAccounts.insert(i, acc);
+            insertAccount(acc,i);
             connect(acc,SIGNAL(changed(Account*)),this,SLOT(slotAccountChanged(Account*)));
             connect(acc,SIGNAL(presenceEnabledChanged(bool)),this,SLOT(slotAccountPresenceEnabledChanged(bool)));
             emit q_ptr->dataChanged(q_ptr->index(i,0),q_ptr->index(q_ptr->size()-1));
@@ -370,7 +370,7 @@ void AccountModel::update()
    for (int i = 0; i < accountIds.size(); ++i) {
       if (d_ptr->m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
          Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
-         d_ptr->m_lAccounts.insert(i, a);
+         d_ptr->insertAccount(a,i);
          emit dataChanged(index(i,0),index(size()-1,0));
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
          //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
@@ -394,9 +394,7 @@ void AccountModel::updateAccounts()
       Account* acc = getById(accountIds[i].toLatin1());
       if (!acc) {
          Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
-         beginInsertRows(QModelIndex(),d_ptr->m_lAccounts.size(),d_ptr->m_lAccounts.size());
-         d_ptr->m_lAccounts += a;
-         endInsertRows();
+         d_ptr->insertAccount(a,d_ptr->m_lAccounts.size());
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
          //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -495,6 +493,81 @@ void AccountModelPrivate::enableProtocol(Account::Protocol proto)
    if (!cache) {
       emit q_ptr->supportedProtocolsChanged();
    }
+}
+
+AccountModel::EditState AccountModelPrivate::convertAccountEditState(const Account::EditState s)
+{
+   AccountModel::EditState ams = AccountModel::EditState::INVALID;
+
+   switch (s) {
+      case Account::EditState::READY              :
+      case Account::EditState::OUTDATED           :
+      case Account::EditState::EDITING            :
+      case Account::EditState::COUNT__            :
+         ams = AccountModel::EditState::SAVED;
+         break;
+      case Account::EditState::MODIFIED_INCOMPLETE:
+         ams = AccountModel::EditState::INVALID;
+         break;
+      case Account::EditState::NEW                :
+      case Account::EditState::REMOVED            :
+      case Account::EditState::MODIFIED_COMPLETE  :
+         ams = AccountModel::EditState::UNSAVED;
+         break;
+   }
+
+   return ams;
+}
+
+///Check if the AccountModel need/can be saved as a whole
+AccountModel::EditState AccountModel::editState() const
+{
+   typedef AccountModel::EditState  ES ;
+   typedef const Account::EditState AES;
+
+   static ES s_CurrentState = ES::INVALID;
+
+   //This class is a singleton, so using static variables is ok
+   static Matrix1D<ES,int> estates = {{
+      /* SAVED   */ 0,
+      /* UNSAVED */ 0,
+      /* INVALID */ 0,
+   }};
+
+   auto genState = [this]( const Account* a, AES s, AES p ) {
+      Q_UNUSED(a)
+
+      const ES newState = d_ptr->convertAccountEditState(s);
+      const ES oldState = d_ptr->convertAccountEditState(p);
+
+      if (newState != oldState)
+         estates.setAt(oldState,estates[oldState]-1);
+
+      estates.setAt(newState,estates[newState]+1);
+
+      const ES oldGlobalState = s_CurrentState;
+
+      s_CurrentState = estates[ES::INVALID] ? ES::INVALID:
+                       estates[ES::UNSAVED] ? ES::UNSAVED:
+                                              ES::SAVED  ;
+
+      if (s_CurrentState != oldGlobalState)
+         emit editStateChanged(s_CurrentState, oldGlobalState);
+
+   };
+
+   static bool isInit = false;
+   if (!isInit) {
+      isInit = true;
+
+      for (const Account* a : d_ptr->m_lAccounts)
+         genState(a,a->editState(),a->editState());
+
+      connect(this, &AccountModel::accountEditStateChanged, genState);
+   }
+
+
+   return s_CurrentState;
 }
 
 
@@ -660,13 +733,23 @@ ProtocolModel* AccountModel::protocolModel() const
  *                                                                           *
  ****************************************************************************/
 
+///Have a single place where m_lAccounts receive inserts
+void AccountModelPrivate::insertAccount(Account* a, int idx)
+{
+   q_ptr->beginInsertRows(QModelIndex(), idx, idx);
+   m_lAccounts.insert(idx,a);
+   q_ptr->endInsertRows();
+
+   connect(a,&Account::editStateChanged, [a,this](const Account::EditState state, const Account::EditState previous) {
+      emit q_ptr->accountEditStateChanged(a, state, previous);
+   });
+}
+
 Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 {
    Account* a = AccountPrivate::buildNewAccountFromAlias(proto,alias);
    connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
-   beginInsertRows(QModelIndex(),d_ptr->m_lAccounts.size(),d_ptr->m_lAccounts.size());
-   d_ptr->m_lAccounts += a;
-   endInsertRows();
+   d_ptr->insertAccount(a,d_ptr->m_lAccounts.size());
    connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
    //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
 
@@ -756,7 +839,7 @@ Account* AccountModel::operator[] (const QByteArray& i) {
 
 void AccountModel::add(Account* acc)
 {
-   d_ptr->m_lAccounts << acc;
+   d_ptr->insertAccount(acc,d_ptr->m_lAccounts.size());
 }
 
 
@@ -805,9 +888,7 @@ bool AccountModel::dropMimeData(const QMimeData* data, Qt::DropAction action, in
       d_ptr->m_lAccounts.removeAt(accIdx.row());
       endRemoveRows();
 
-      beginInsertRows(QModelIndex(), destinationRow, destinationRow);
-      d_ptr->m_lAccounts.insert(destinationRow,acc);
-      endInsertRows();
+      d_ptr->insertAccount(acc,destinationRow);
 
       d_ptr->m_pSelectionModel->setCurrentIndex(index(destinationRow), QItemSelectionModel::ClearAndSelect);
 
