@@ -88,7 +88,12 @@ m_pNetworkInterfaceModel(nullptr)
 }
 
 void AccountPrivate::changeState(Account::EditState state) {
+   const Account::EditState previous = m_CurrentState;
    m_CurrentState = state;
+
+   if (state != previous)
+      emit q_ptr->editStateChanged(state, previous);
+
    emit q_ptr->changed(q_ptr);
 }
 
@@ -511,6 +516,7 @@ void Account::setAlias(const QString& detail)
 {
    const bool accChanged = detail != alias();
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,detail);
+
    if (accChanged)
       emit aliasChanged(detail);
 }
@@ -1083,7 +1089,6 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
       }
    }
    else if (accChanged) {
-      q_ptr->performAction(Account::EditAction::MODIFY);
 
       if (m_CurrentState == Account::EditState::MODIFIED_COMPLETE
        || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
@@ -1093,6 +1098,8 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
          emit q_ptr->changed(q_ptr);
          emit q_ptr->propertyChanged(q_ptr,param,val,buf);
       }
+
+      q_ptr->performAction(Account::EditAction::MODIFY);
    }
    return m_CurrentState == Account::EditState::MODIFIED_COMPLETE
     || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
@@ -1868,7 +1875,8 @@ void AccountPrivate::save()
 
       q_ptr->performAction(Account::EditAction::RELOAD);
       updateState();
-      m_CurrentState = Account::EditState::READY;
+
+      changeState(Account::EditState::READY);
    }
 
    q_ptr->codecModel()->save();
@@ -1900,7 +1908,8 @@ void AccountPrivate::reload()
          q_ptr->setHostname(m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
          m_RemoteEnabledState = q_ptr->isEnabled();
       }
-      m_CurrentState = Account::EditState::READY;
+
+      changeState(Account::EditState::READY);
 
       //TODO port this to the URI class helpers, this doesn't cover all corner cases
       const QString currentUri = QString("%1@%2").arg(q_ptr->username()).arg(m_HostName);

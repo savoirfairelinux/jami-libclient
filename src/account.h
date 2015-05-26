@@ -445,6 +445,8 @@ class LIB_EXPORT Account : public QObject {
       void presenceEnabledChanged(bool);
       ///The account has been enabled/disabled
       void enabled(bool);
+      ///The account edit state changed
+      void editStateChanged(const EditState state, const EditState previous);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)

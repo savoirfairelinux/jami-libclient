@@ -52,6 +52,14 @@ public:
    friend class AvailableAccountModel;
    friend class AvailableAccountModelPrivate;
 
+   /// @enum Global saving state to be used when using a single saving mechanism for all accounts at once
+   enum class EditState {
+      SAVED   = 0, /*!< Everything is ok, nothing has changed                    */
+      UNSAVED = 1, /*!< There is changes ready to be saved                       */
+      INVALID = 2, /*!< There is changes, but they would create an invalid state */
+      COUNT__
+   };
+
    //Static getter and destructor
    static AccountModel* instance();
 
@@ -69,6 +77,7 @@ public:
    bool                 isIAXSupported              (                                      ) const;
    bool                 isIP2IPSupported            (                                      ) const;
    bool                 isRingSupported             (                                      ) const;
+   EditState            editState                   (                                      ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
 
@@ -139,6 +148,9 @@ Q_SIGNALS:
    void supportedProtocolsChanged(                                   );
    ///Emitted when an account state change
    void accountStateChanged  ( Account* account, const Account::RegistrationState state);
+   ///Emitted when an account edit state change
+   void accountEditStateChanged(Account* account, const Account::EditState state, const Account::EditState prev);
+   void editStateChanged(const EditState state, const EditState previous);
 };
 Q_DECLARE_METATYPE(AccountModel*)
 
