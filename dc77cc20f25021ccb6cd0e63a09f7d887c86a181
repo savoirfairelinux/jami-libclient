@@ -22,6 +22,30 @@
       "revId": "dc77cc20f25021ccb6cd0e63a09f7d887c86a181",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba57610f_af45bab4",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-05-26T15:59:45Z",
+      "side": 1,
+      "message": "account.cpp:1766:64: error: invalid use of incomplete type \u0027class QItemSelectionModel\u0027\nkeyexchangemodel.h:25:7: error: forward declaration of \u0027class QItemSelectionModel\u0027",
+      "parentUuid": "ba57610f_ef3bb236",
+      "range": {
+        "startLine": 1766,
+        "startChar": 27,
+        "endLine": 1766,
+        "endChar": 43
+      },
+      "revId": "dc77cc20f25021ccb6cd0e63a09f7d887c86a181",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
