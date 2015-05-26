@@ -24,6 +24,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QItemSelectionModel>
 
 //Ring daemon
 #include <account_const.h>
