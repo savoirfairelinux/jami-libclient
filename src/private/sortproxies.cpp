@@ -196,7 +196,7 @@ void sortHistory(QSortFilterProxyModel* p, int role)
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::NAME:
          CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::Name));
-         p->setSortRole(static_cast<int>(Call::Role::Name));
+         p->setSortRole(Qt::DisplayRole);
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::POPULARITY:
          CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::CallCount));
