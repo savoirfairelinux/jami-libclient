@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba57610f_ef3bb236",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-05-26T15:58:32Z",
+      "side": 1,
+      "message": "Forward declaration breaks compilation on mingw",
+      "range": {
+        "startLine": 1766,
+        "startChar": 27,
+        "endLine": 1766,
+        "endChar": 43
+      },
+      "revId": "dc77cc20f25021ccb6cd0e63a09f7d887c86a181",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
