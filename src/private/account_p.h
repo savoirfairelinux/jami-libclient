@@ -121,7 +121,6 @@ public:
 
    CredentialModel*          m_pCredentials            ;
    CodecModel*               m_pCodecModel             ;
-   RingToneModel*            m_pRingToneModel          ;
    KeyExchangeModel*         m_pKeyExchangeModel       ;
    CipherModel*              m_pCipherModel            ;
    AccountStatusModel*       m_pStatusModel            ;

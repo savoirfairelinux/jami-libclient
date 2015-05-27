@@ -49,33 +49,30 @@ void ItemBase<Base>::setCollection(CollectionInterface* backend)
 template<typename Base>
 bool ItemBase<Base>::save() const
 {
-//    if (((QObject*) this)->staticMetaObject() == d_ptr->m_pBackend->metaObject()){
-      return d_ptr->m_pBackend->save(this);
-//    }
-//    else
-//       qDebug() << "Cannot save, invalid item type";
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->save(this);
 }
 
 ///Show an implementation dependant dialog to edit the contact
 template<typename Base>
 bool ItemBase<Base>::edit()
 {
-//    if (((QObject*) this)->staticMetaObject() == d_ptr->m_pBackend->metaObject()){
-      return d_ptr->m_pBackend->edit(this);
-//    }
-//    else
-//       qDebug() << "Cannot save, invalid item type";
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->edit(this);
 }
 
 ///Remove the contact from the backend
 template<typename Base>
 bool ItemBase<Base>::remove()
 {
-//    if (((QObject*) this)->staticMetaObject() == d_ptr->m_pBackend->metaObject()){
-      return d_ptr->m_pBackend->remove(this);
-//    }
-//    else
-//       qDebug() << "Cannot save, invalid item type";
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->remove(this);
 }
 
 template<typename Base>
@@ -88,6 +85,9 @@ template<typename Base>
 template<typename T2>
 bool ItemBase<Base>::hasExtenstion() const
 {
+   if (!d_ptr->m_pBackend)
+      return false;
+
    return d_ptr->m_pBackend->isExtensionActive<T2>();
 }
 
@@ -95,5 +95,8 @@ template<typename Base>
 template<typename T2>
 T2* ItemBase<Base>::extenstion() const
 {
+   if (!d_ptr->m_pBackend)
+      return nullptr;
+
    return d_ptr->m_pBackend->extension<T2>();
 }

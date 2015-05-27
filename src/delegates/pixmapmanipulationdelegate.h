@@ -56,6 +56,8 @@ public:
       PROFILE,
       CERTIFICATE,
       ACCOUNT,
+      RECORDING,
+      MACRO,
    };
 
    PixmapManipulationDelegate();

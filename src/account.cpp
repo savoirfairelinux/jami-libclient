@@ -47,7 +47,6 @@
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
 #include "networkinterfacemodel.h"
-#include "ringtonemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "presencestatusmodel.h"
@@ -76,8 +75,7 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 static uint p_sAutoIncrementId = 0;
 
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
-m_LastErrorCode(-1),m_VoiceMailCount(0),m_pRingToneModel(nullptr),
-m_CurrentState(Account::EditState::READY),
+m_LastErrorCode(-1),m_VoiceMailCount(0),m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
@@ -375,13 +373,6 @@ CodecModel* Account::codecModel() const
       d_ptr->m_pCodecModel = new CodecModel(const_cast<Account*>(this));
    }
    return d_ptr->m_pCodecModel;
-}
-
-RingToneModel* Account::ringToneModel() const
-{
-   if (!d_ptr->m_pRingToneModel)
-      d_ptr->m_pRingToneModel = new RingToneModel(const_cast<Account*>(this));
-   return d_ptr->m_pRingToneModel;
 }
 
 KeyExchangeModel* Account::keyExchangeModel() const
@@ -816,6 +807,12 @@ Account::Protocol Account::protocol() const
    return Account::Protocol::SIP;
 }
 
+///Return the contact method associated with this account
+ContactMethod* Account::contactMethod() const
+{
+   return d_ptr->m_pAccountNumber;
+}
+
 ///Return the DTMF type
 DtmfType Account::DTMFType() const
 {
@@ -1051,6 +1048,8 @@ bool Account::supportScheme( URI::SchemeType type )
       case URI::SchemeType::RING :
          if (protocol() == Account::Protocol::RING)
             return true;
+         break;
+      case URI::SchemeType::COUNT__:
          break;
    }
    return false;

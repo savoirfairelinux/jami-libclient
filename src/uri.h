@@ -30,6 +30,11 @@ class QDataStream;
     *
     * Most of LibRingClient handle uri as strings, but more
     * advanced algorithms need to access the various sections.
+    * This class implement a centralized and progressive URI
+    * parser to avoid having custom implementation peppered
+    * everywhere. This class doesn't attempt to produce perfect
+    * output. It has multiple tradeoff to be faster when
+    * accuracy has little value in the context of LibRingClient.
     *
     * Here is some example of common numbers/URIs:
     *  * 123
@@ -50,6 +55,7 @@ class QDataStream;
     * @ref http://tools.ietf.org/html/rfc3261
     * @ref http://tools.ietf.org/html/rfc5630
     *
+    * <code>
     * From the RFC:
     *    foo://example.com:8042/over/there?name=ferret#nose
     *    \_/   \______________/\_________/ \_________/ \__/
@@ -60,6 +66,7 @@ class QDataStream;
     *    urn:example:animal:ferret:nose
     *
     *    authority   = [ userinfo "@" ] host [ ":" port ]
+    * </code>
     *
     *    "For example, the semicolon (";") and equals ("=") reserved characters are
     *    often used to delimit parameters and parameter values applicable to
@@ -69,11 +76,13 @@ class QDataStream;
     *    "name", whereas another might use a segment such as "name,1.1" to
     *    indicate the same. "
     */
-class LIB_EXPORT URI : public QString {
+class LIB_EXPORT URI : public QString
+{
+   friend class URIPrivate;
 public:
 
    /**
-    * Default constructor
+    * Default copy constructor
     * @param other an URI string
     */
    URI(const QString& other);
@@ -88,6 +97,7 @@ public:
       IAX  ,
       IAX2 ,
       RING ,
+      COUNT__
    };
    Q_ENUMS(URI::SchemeType)
 
@@ -105,8 +115,43 @@ public:
       udp    , /*!<  Without a connection                                 */
       SCTP   , /*!<                                                       */
       sctp   , /*!<                                                       */
+      DTLS   , /*!<                                                       */
+      dtls   , /*!<                                                       */
+      COUNT__
    };
    Q_ENUMS(URI::Transport)
+
+   /**
+    * @enum Section flags associated with each logical sections of the URI
+    *
+    * Those sections can be packed into a block to be used to define the
+    * expected URI syntax
+    *
+    */
+   enum class Section {
+      CHEVRONS  = 0x1 << 0, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \_/                                              \_/
+                                 |_________________Chevrons_______________________|
+                                                                             </code>*/
+      SCHEME    = 0x1 << 1, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                       \___/
+                                         |______Scheme|</code>                      */
+      USER_INFO = 0x1 << 2, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                            \___/
+                                              |_________Userinfo</code>             */
+      HOSTNAME  = 0x1 << 3, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                                \______________/
+                                                       |_________Hostname</code>    */
+      PORT      = 0x1 << 4, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                                               \____/
+                                                                 |_____Port</code>  */
+      TRANSPORT = 0x1 << 5, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                                                    \_____________/
+                                                          Transport________|</code> */
+      TAG       = 0x1 << 6, /*!< <code><sips:888@192.168.48.213:5060;tag=b5c73d9ef>
+                                                                    \_____________/
+                                                               Tag_________|</code> */
+   };
 
    /**
     * @enum ProtocolHint Expanded version of Account::Protocol
@@ -126,12 +171,18 @@ public:
    };
    Q_ENUMS(URI::ProtocolHint)
 
+   //Getter
    QString    hostname      () const;
    QString    fullUri       () const;
    QString    userinfo      () const;
    bool       hasHostname   () const;
+   bool       hasPort       () const;
+   int        port          () const;
    SchemeType schemeType    () const;
    ProtocolHint protocolHint() const;
+
+   //Converter
+   QString format(FlagPack<URI::Section> sections) const;
 
    URI& operator=(const URI&);
 
@@ -140,6 +191,8 @@ private:
 };
 
 Q_DECLARE_METATYPE(URI::ProtocolHint)
+
+DECLARE_ENUM_FLAGS(URI::Section)
 
 QDataStream& operator<< ( QDataStream& stream, const URI::ProtocolHint& ph );
 
