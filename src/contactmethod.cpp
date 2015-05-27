@@ -16,6 +16,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "contactmethod.h"
+
+//Qt
+#include <QtCore/QCryptographicHash>
+
+//Ring
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
@@ -59,6 +64,7 @@ public:
    URI                m_Uri              ;
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
+   InstantMessagingModel* m_pImModel     ;
 
    //Parents
    QList<ContactMethod*> m_lParents;
@@ -129,7 +135,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1),m_hasType(false)
+   m_Index(-1),m_hasType(false),m_pImModel(nullptr)
 {}
 
 ///Constructor
@@ -367,7 +373,7 @@ QString ContactMethod::primaryName() const
       if (d_ptr->m_hNames.size() == 1)
          ret =  d_ptr->m_hNames.constBegin().key();
       else {
-         QString toReturn = tr("Unknown");
+         QString toReturn = tr("Unknown"); //FIXME maybe the fallback should be the URI
          int max = 0;
          for (QHash<QString,int>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
             if (i.value() > max) {
@@ -436,6 +442,17 @@ QString ContactMethod::uid() const
 URI::ProtocolHint ContactMethod::protocolHint() const
 {
    return d_ptr->m_Uri.protocolHint();
+}
+
+///Create a SHA1 hash identifying this contact method
+QByteArray ContactMethod::sha1() const
+{
+   QCryptographicHash hash(QCryptographicHash::Sha1);
+   hash.addData(toHash().toLatin1());
+
+   //Create a reproducible key for this file
+   const QByteArray id = hash.result().toHex();
+   return id;
 }
 
 ///Return all calls from this number
@@ -517,7 +534,37 @@ void ContactMethod::addCall(Call* call)
 ///Generate an unique representation of this number
 QString ContactMethod::toHash() const
 {
-   return QString("%1///%2///%3").arg(uri()).arg(account()?account()->id():QString()).arg(contact()?contact()->uid():QString());
+   QString uristr;
+
+   switch(uri().protocolHint()) {
+      case URI::ProtocolHint::RING     :
+         //There is no point in keeping the full URI, a Ring hash is unique
+         uristr = uri().userinfo();
+         break;
+      case URI::ProtocolHint::SIP_OTHER:
+      case URI::ProtocolHint::IAX      :
+      case URI::ProtocolHint::IP       :
+      case URI::ProtocolHint::SIP_HOST :
+         //Some URI have port number in them. They have to be stripped prior to the hash creation
+         uristr = uri().format(
+            URI::Section::CHEVRONS  |
+            URI::Section::SCHEME    |
+            URI::Section::USER_INFO |
+            URI::Section::HOSTNAME
+         );
+         break;
+   }
+
+   return QString("%1///%2///%3")
+      .arg(
+         uristr
+      )
+      .arg(
+         account()?account()->id():QString()
+      )
+      .arg(
+         contact()?contact()->uid():QString()
+      );
 }
 
 ///Increment name counter and update indexes
@@ -575,6 +622,8 @@ bool ContactMethod::merge(ContactMethod* other)
 
    //TODO Handle presence
 
+   const QString oldName = primaryName();
+
    QSharedPointer<ContactMethodPrivate> currentD = d_ptr;
 
    //Replace the D-Pointer
@@ -592,6 +641,9 @@ bool ContactMethod::merge(ContactMethod* other)
 
    emit changed();
    emit rebased(other);
+
+   if (oldName != primaryName())
+      d_ptr->primaryNameChanged(primaryName());
 
    currentD->m_lParents.removeAll(this);
 //    if (!currentD->m_lParents.size())
@@ -617,6 +669,16 @@ bool ContactMethod::operator==(ContactMethod& other)
 bool ContactMethod::operator==(const ContactMethod& other) const
 {
    return this->d_ptr== other.d_ptr;
+}
+
+InstantMessagingModel* ContactMethod::imModel() const
+{
+   return d_ptr->m_pImModel;
+}
+
+void ContactMethod::setImModel(InstantMessagingModel* m)
+{
+   d_ptr->m_pImModel = m;
 }
 
 /************************************************************************************

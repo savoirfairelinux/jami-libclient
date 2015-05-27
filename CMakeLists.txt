@@ -199,12 +199,22 @@ SET( libringclient_LIB_SRCS
   src/person.cpp
   src/contactmethod.cpp
   src/numbercategory.cpp
+  src/macro.cpp
   src/collectionextensioninterface.cpp
   src/video/rate.cpp
   src/video/device.cpp
   src/video/renderer.cpp
   src/certificate.cpp
   src/securityflaw.cpp
+  src/ringtone.cpp
+  src/media/media.cpp
+  src/media/audio.cpp
+  src/media/video.cpp
+  src/media/text.cpp
+  src/media/file.cpp
+  src/media/recording.cpp
+  src/media/avrecording.cpp
+  src/media/textrecording.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -214,14 +224,13 @@ SET( libringclient_LIB_SRCS
   src/categorizedhistorymodel.cpp
   src/categorizedbookmarkmodel.cpp
   src/credentialmodel.cpp
-  src/instantmessagingmodel.cpp
-  src/imconversationmanager.cpp
   src/categorizedcontactmodel.cpp
   src/useractionmodel.cpp
   src/presencestatusmodel.cpp
   src/phonedirectorymodel.cpp
   src/historytimecategorymodel.cpp
   src/numbercategorymodel.cpp
+  src/macromodel.cpp
   src/keyexchangemodel.cpp
   src/tlsmethodmodel.cpp
   src/protocolmodel.cpp
@@ -250,7 +259,7 @@ SET( libringclient_LIB_SRCS
   src/audio/outputdevicemodel.cpp
   src/audio/ringtonedevicemodel.cpp
   src/audio/settings.cpp
-
+  src/media/recordingmodel.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -259,6 +268,11 @@ SET( libringclient_LIB_SRCS
   src/fallbackpersoncollection.cpp
   src/daemoncertificatecollection.cpp
   src/foldercertificatecollection.cpp
+  src/localrecordingcollection.cpp
+  src/localtextrecordingcollection.cpp
+  src/localmacrocollection.cpp
+  src/localbookmarkcollection.cpp
+  src/localringtonecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -274,6 +288,7 @@ SET( libringclient_LIB_SRCS
   src/delegates/presenceserializationdelegate.cpp
   src/delegates/itemmodelstateserializationdelegate.cpp
   src/delegates/profilepersisterdelegate.cpp
+  src/delegates/shortcutdelegate.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -304,6 +319,7 @@ SET( libringclient_LIB_HDRS
   src/accountmodel.h
   src/availableaccountmodel.h
   src/call.h
+  src/call.hpp
   src/callmodel.h
   src/categorizedhistorymodel.h
   src/person.h
@@ -312,8 +328,6 @@ SET( libringclient_LIB_HDRS
   src/collectioninterface.hpp
   src/categorizedbookmarkmodel.h
   src/credentialmodel.h
-  src/instantmessagingmodel.h
-  src/imconversationmanager.h
   src/categorizedcontactmodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
@@ -328,6 +342,11 @@ SET( libringclient_LIB_HDRS
   src/profilemodel.h
   src/numbercategory.h
   src/ringtonemodel.h
+  src/localrecordingcollection.h
+  src/localbookmarkcollection.h
+  src/localringtonecollection.cpp
+  src/localmacrocollection.h
+  src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
@@ -336,8 +355,11 @@ SET( libringclient_LIB_HDRS
   src/collectionmodel.h
   src/collectionextensionmodel.h
   src/collectionextensionmodel.hpp
+  src/macromodel.h
   src/hookmanager.h
   src/uri.h
+  src/macro.h
+  src/ringtone.h
   src/itembase.h
   src/itembase.hpp
   src/mime.h
@@ -389,6 +411,18 @@ SET(libringclient_extensions_LIB_HDRS
   src/extensions/securityevaluationextension.h
 )
 
+SET(libringclient_media_LIB_HDRS
+  src/media/media.h
+  src/media/audio.h
+  src/media/video.h
+  src/media/text.h
+  src/media/file.h
+  src/media/recording.h
+  src/media/avrecording.h
+  src/media/textrecording.h
+  src/media/recordingmodel.h
+)
+
 SET(libringclient_delegates_LIB_HDRS
   src/delegates/accountlistcolordelegate.h
   src/delegates/phonenumberselectordelegate.h
@@ -396,6 +430,7 @@ SET(libringclient_delegates_LIB_HDRS
   src/delegates/itemmodelstateserializationdelegate.h
   src/delegates/pixmapmanipulationdelegate.h
   src/delegates/profilepersisterdelegate.h
+  src/delegates/shortcutdelegate.h
 )
 
 SET( libringclient_extra_LIB_HDRS
@@ -498,14 +533,16 @@ SET(libringclient_PRIVATE_HDRS
    src/private/sortproxies.h
    src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
-   src/private/instantmessagingmodel_p.h
    src/private/videorenderer_p.h
+   src/private/textrecording_p.h
    src/private/videodevice_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h
+   src/private/macromodel_p.h
    src/collectioncreationinterface.h
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
+   src/private/imconversationmanagerprivate.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -605,6 +642,11 @@ INSTALL( FILES ${libringclient_video_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_audio_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/audio
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_media_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/media
   COMPONENT Devel
 )
 

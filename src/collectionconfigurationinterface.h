@@ -45,6 +45,13 @@ public:
     * @param parent can be used for layout information.
     */
    virtual void loadCollection(CollectionInterface* col, QObject* parent = nullptr) =0;
+
+   virtual void save(){}
+   virtual bool hasChanged() {return false;}
+
+Q_SIGNALS:
+   void changed();
+
 };
 Q_DECLARE_METATYPE(CollectionConfigurationInterface*)
 

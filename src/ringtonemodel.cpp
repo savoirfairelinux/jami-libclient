@@ -20,38 +20,68 @@
 //Qt
 #include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
+#include <QtCore/QItemSelectionModel>
 
 //Ring
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "account.h"
+#include "ringtone.h"
+#include <localringtonecollection.h>
 
-RingToneModel::RingToneModel(Account* a) : QAbstractTableModel(a),m_pAccount(a),m_pTimer(nullptr),
-m_pCurrent(nullptr)
+class RingtoneModelPrivate : public QObject
 {
-//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   QMap<QString,QString> m_hRingtonePath ;//= configurationManager.getRingtoneList();
-   QMutableMapIterator<QString, QString> iter(m_hRingtonePath);
-   while (iter.hasNext()) {
-      iter.next();
-      QFileInfo fileinfo(iter.key());
-      RingToneInfo* info = new RingToneInfo();
-      info->name = iter.value();
-      info->path = fileinfo.absoluteFilePath();
-      m_lRingTone << info;
-   }
+   Q_OBJECT
+public:
+
+   RingtoneModelPrivate(RingtoneModel*);
+
+   //Attributes
+   QVector<Ringtone*>                   m_lRingtone       ;
+   QTimer*                              m_pTimer          ;
+   Ringtone*                            m_pCurrent        ;
+   QHash<Account*,int>                  m_hCurrent        ;
+   QHash<Account*,QItemSelectionModel*> m_hSelectionModels;
+
+   //Helpers
+   int currentIndex(Account* a) const;
+
+private:
+   RingtoneModel* q_ptr;
+
+public Q_SLOTS:
+   void slotStopTimer();
+
+};
+
+RingtoneModelPrivate::RingtoneModelPrivate(RingtoneModel* parent) : q_ptr(parent),m_pTimer(nullptr), m_pCurrent(nullptr)
+{
+
 }
 
-RingToneModel::~RingToneModel()
+RingtoneModel::RingtoneModel(QObject* parent) : QAbstractTableModel(parent), CollectionManagerInterface<Ringtone>(this),d_ptr(new RingtoneModelPrivate(this))
 {
-   while (m_lRingTone.size()) {
-      RingToneInfo* ringtone = m_lRingTone[0];
-      m_lRingTone.removeAt(0);
+//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+   addCollection<LocalRingtoneCollection>();
+}
+
+RingtoneModel* RingtoneModel::instance()
+{
+   static RingtoneModel* ins = new RingtoneModel(QCoreApplication::instance());
+   return ins;
+}
+
+RingtoneModel::~RingtoneModel()
+{
+   while (d_ptr->m_lRingtone.size()) {
+      Ringtone* ringtone = d_ptr->m_lRingtone[0];
+      d_ptr->m_lRingtone.removeAt(0);
       delete ringtone;
    }
 }
 
-QHash<int,QByteArray> RingToneModel::roleNames() const
+QHash<int,QByteArray> RingtoneModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    static bool initRoles = false;
@@ -63,47 +93,47 @@ QHash<int,QByteArray> RingToneModel::roleNames() const
    return roles;
 }
 
-QVariant RingToneModel::data( const QModelIndex& index, int role ) const
+QVariant RingtoneModel::data( const QModelIndex& index, int role ) const
 {
    if (!index.isValid())
       return QVariant();
-   RingToneInfo* info = m_lRingTone[index.row()];
+   const Ringtone* info = d_ptr->m_lRingtone[index.row()];
    switch (index.column()) {
       case 0:
          switch (role) {
             case Qt::DisplayRole:
-               return info->name;
+               return info->name();
             case Role::IsPlaying:
-               return info->isPlaying;
+               return info->isPlaying();
             case Role::FullPath:
-               return info->path;
+               return info->path();
          };
          break;
       case 1:
          switch (role) {
             case Role::FullPath:
-               return info->path;
+               return info->path();
          };
          break;
    };
    return QVariant();
 }
 
-int RingToneModel::rowCount( const QModelIndex& parent ) const
+int RingtoneModel::rowCount( const QModelIndex& parent ) const
 {
    if (!parent.isValid())
-      return m_lRingTone.size();
+      return d_ptr->m_lRingtone.size();
    return 0;
 }
 
-int RingToneModel::columnCount( const QModelIndex& parent ) const
+int RingtoneModel::columnCount( const QModelIndex& parent ) const
 {
    if (parent.isValid())
       return 0;
    return 2; //Name, then an empty one for widgets
 }
 
-Qt::ItemFlags RingToneModel::flags( const QModelIndex& index ) const
+Qt::ItemFlags RingtoneModel::flags( const QModelIndex& index ) const
 {
    if (index.isValid() && !index.parent().isValid())
       return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -111,7 +141,7 @@ Qt::ItemFlags RingToneModel::flags( const QModelIndex& index ) const
 }
 
 ///This is a read only model
-bool RingToneModel::setData( const QModelIndex& index, const QVariant &value, int role)
+bool RingtoneModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
    Q_UNUSED(index)
    Q_UNUSED(value)
@@ -119,56 +149,100 @@ bool RingToneModel::setData( const QModelIndex& index, const QVariant &value, in
    return false;
 }
 
-QString RingToneModel::currentRingTone() const
+Ringtone* RingtoneModel::currentRingTone(Account* a) const
 {
-   return QFileInfo(m_pAccount->ringtonePath()).absoluteFilePath();
+   if ((!a) || (!d_ptr->m_hSelectionModels[a]))
+      return nullptr;
+
+   const QModelIndex& idx = d_ptr->m_hSelectionModels[a]->currentIndex();
+
+   return idx.isValid() ? d_ptr->m_lRingtone[idx.row()] : nullptr;
 }
 
-QModelIndex RingToneModel::currentIndex() const
+int RingtoneModelPrivate::currentIndex(Account* a) const
 {
-   const QString rt = currentRingTone();
-   for (int i=0;i<m_lRingTone.size();i++) {
-      RingToneInfo* info = m_lRingTone[i];
-      if (info->path == rt)
-         return index(i,0);
+   const QString rt = a->ringtonePath();
+   for (int i=0;i<m_lRingtone.size();i++) {
+      Ringtone* info = m_lRingtone[i];
+      if (info->path().path() == rt)
+         return i;
    }
-   return QModelIndex();
+   return -1;
 }
 
-void RingToneModel::play(const QModelIndex& idx)
+QItemSelectionModel* RingtoneModel::selectionModel(Account* a) const
+{
+   if (!d_ptr->m_hSelectionModels[a]) {
+      d_ptr->m_hSelectionModels[a] = new QItemSelectionModel(const_cast<RingtoneModel*>(this));
+      d_ptr->m_hSelectionModels[a]->setCurrentIndex(index(d_ptr->currentIndex(a),0), QItemSelectionModel::ClearAndSelect);
+
+      connect(d_ptr->m_hSelectionModels[a],&QItemSelectionModel::currentChanged, [a,this](const QModelIndex& idx) {
+         if (idx.isValid()) {
+            a->setRingtonePath(d_ptr->m_lRingtone[idx.row()]->path().path());
+         }
+      });
+
+   }
+
+   return d_ptr->m_hSelectionModels[a];
+}
+
+void RingtoneModel::play(const QModelIndex& idx)
 {
    if (idx.isValid()) {
-      RingToneInfo* info = m_lRingTone[idx.row()];
-      if (m_pCurrent && info == m_pCurrent) {
-         slotStopTimer();
+      Ringtone* info = d_ptr->m_lRingtone[idx.row()];
+      if (d_ptr->m_pCurrent && info == d_ptr->m_pCurrent) {
+         d_ptr->slotStopTimer();
          return;
       }
       CallManagerInterface& callManager = DBus::CallManager::instance();
-      Q_NOREPLY callManager.startRecordedFilePlayback(info->path);
-      if (!m_pTimer) {
-         m_pTimer = new QTimer(this);
-         m_pTimer->setInterval(10000);
-         connect(m_pTimer,SIGNAL(timeout()),this,SLOT(slotStopTimer()));
+      Q_NOREPLY callManager.startRecordedFilePlayback(info->path().path());
+      if (!d_ptr->m_pTimer) {
+         d_ptr->m_pTimer = new QTimer(this);
+         d_ptr->m_pTimer->setInterval(10000);
+         connect(d_ptr->m_pTimer,SIGNAL(timeout()),d_ptr,SLOT(slotStopTimer()));
       }
-      else if (m_pTimer->isActive()) {
-         m_pTimer->stop();
+      else if (d_ptr->m_pTimer->isActive()) {
+         d_ptr->m_pTimer->stop();
       }
-      m_pTimer->start();
-      info->isPlaying = true;
+      d_ptr->m_pTimer->start();
+      info->setIsPlaying(true);
       emit dataChanged(index(idx.row(),0),index(idx.row(),1));
-      m_pCurrent = info;
+      d_ptr->m_pCurrent = info;
    }
 }
 
-void RingToneModel::slotStopTimer()
+void RingtoneModelPrivate::slotStopTimer()
 {
    if (m_pCurrent) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
-      callManager.stopRecordedFilePlayback(m_pCurrent->path);
-      m_pCurrent->isPlaying = false;
-      const QModelIndex& idx = index(m_lRingTone.indexOf(m_pCurrent),0);
-      emit dataChanged(idx,index(idx.row(),1));
+      callManager.stopRecordedFilePlayback(m_pCurrent->path().path());
+      m_pCurrent->setIsPlaying(false);
+      const QModelIndex& idx = q_ptr->index(m_lRingtone.indexOf(m_pCurrent),0);
+      emit q_ptr->dataChanged(idx,q_ptr->index(idx.row(),1));
       m_pCurrent = nullptr;
       m_pTimer->stop();
    }
 }
+
+void RingtoneModel::collectionAddedCallback(CollectionInterface* backend)
+{
+   Q_UNUSED(backend)
+}
+
+bool RingtoneModel::addItemCallback(const Ringtone* item)
+{
+   Q_UNUSED(item)
+   beginInsertRows(QModelIndex(),d_ptr->m_lRingtone.size(),d_ptr->m_lRingtone.size());
+   d_ptr->m_lRingtone << const_cast<Ringtone*>(item);
+   endInsertRows();
+   return true;
+}
+
+bool RingtoneModel::removeItemCallback(const Ringtone* item)
+{
+   Q_UNUSED(item)
+   return true;
+}
+
+#include <ringtonemodel.moc>

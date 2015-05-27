@@ -59,6 +59,7 @@ public:
    QList<BookmarkTopLevelItem*>         m_lCategoryCounter ;
    QHash<QString,BookmarkTopLevelItem*> m_hCategories      ;
    QStringList                          m_lMimes           ;
+   QHash<ContactMethod*,QMetaObject::Connection> m_Tracked ;
 
    //Helpers
    QVariant commonCallInfo(NumberTreeBackend* call, int role = Qt::DisplayRole) const;
@@ -180,10 +181,15 @@ void CategorizedBookmarkModel::reloadCategories()
       //TODO this is not efficient, nor necessary
       foreach(BookmarkTopLevelItem* item, d_ptr->m_lCategoryCounter) {
          foreach (NumberTreeBackend* child, item->m_lChildren) {
+            auto l = d_ptr->m_Tracked[child->m_pNumber];
+            if (l) {
+               disconnect(l);
+            }
             delete child;
          }
          delete item;
       }
+      d_ptr->m_Tracked.clear();
       d_ptr->m_lCategoryCounter.clear();
 
       //Load most used contacts
@@ -224,6 +230,19 @@ void CategorizedBookmarkModel::reloadCategories()
             bm->m_pNode = new BookmarkItemNode(this,bookmark,bm);
             connect(bm->m_pNode,SIGNAL(changed(QModelIndex)),d_ptr,SLOT(slotIndexChanged(QModelIndex)));
             item->m_lChildren << bm;
+
+            if (!d_ptr->m_Tracked[bookmark]) {
+               const QString displayName = d_ptr->commonCallInfo(bm).toString();
+
+               QMetaObject::Connection conn = connect(bookmark, &ContactMethod::primaryNameChanged, [this,displayName,bm]() {
+                  //If a contact arrive later, reload
+                  if (displayName != d_ptr->commonCallInfo(bm)) {
+                     reloadCategories();
+                  }
+               });
+
+               d_ptr->m_Tracked[bookmark] = conn;
+            }
          }
          else
             qDebug() << "ERROR count";
@@ -399,7 +418,7 @@ QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* numb
       case static_cast<int>(Call::Role::FormattedDate):
          cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
          break;
-      case static_cast<int>(Call::Role::HasRecording):
+      case static_cast<int>(Call::Role::HasAVRecording):
          cat = false;//call->hasRecording();
          break;
       case static_cast<int>(Call::Role::FuzzyDate):
@@ -438,8 +457,6 @@ void CategorizedBookmarkModelPrivate::slotRequest(const QString& uri)
    //DBus::PresenceManager::instance().answerServerRequest(uri,true); //FIXME turn on after 1.3.0
 }
 
-
-
 QVector<ContactMethod*> CategorizedBookmarkModelPrivate::serialisedToList(const QStringList& list)
 {
    QVector<ContactMethod*> numbers;
@@ -464,7 +481,7 @@ QVector<ContactMethod*> CategorizedBookmarkModelPrivate::bookmarkList() const
    return (q_ptr->collections().size() > 0) ? q_ptr->collections()[0]->items<ContactMethod>() : QVector<ContactMethod*>();
 }
 
-BookmarkTopLevelItem::BookmarkTopLevelItem(QString name) 
+BookmarkTopLevelItem::BookmarkTopLevelItem(QString name)
    : CategorizedCompositeNode(CategorizedCompositeNode::Type::TOP_LEVEL),m_Name(name),
       m_MostPopular(false),m_Row(-1)
 {
@@ -535,27 +552,6 @@ void CategorizedBookmarkModelPrivate::slotIndexChanged(const QModelIndex& idx)
    emit q_ptr->dataChanged(idx,idx);
 }
 
-
-// bool CategorizedBookmarkModel::hasCollections() const
-// {
-//    return d_ptr->m_lBackends.size();
-// }
-
-// bool CategorizedBookmarkModel::hasEnabledCollections() const
-// {
-//    foreach(CollectionInterface* b, d_ptr->m_lBackends) {
-//       if (b->isEnabled())
-//          return true;
-//    }
-//    return false;
-// }
-
-// const QVector<CollectionInterface*> CategorizedBookmarkModel::collections() const
-// {
-//    return d_ptr->m_lBackends;
-// }
-
-
 bool CategorizedBookmarkModel::addItemCallback(const ContactMethod* item)
 {
    Q_UNUSED(item)
@@ -569,16 +565,6 @@ bool CategorizedBookmarkModel::removeItemCallback(const ContactMethod* item)
    return false;
 }
 
-// const QVector<CollectionInterface*> CategorizedBookmarkModel::enabledCollections() const
-// {
-//    return d_ptr->m_lBackends; //TODO filter them
-// }
-
-// CommonCollectionModel* CategorizedBookmarkModel::backendModel() const
-// {
-//    return nullptr; //TODO
-// }
-
 bool CategorizedBookmarkModel::clearAllCollections() const
 {
    foreach (CollectionInterface* backend, collections()) {
@@ -589,30 +575,10 @@ bool CategorizedBookmarkModel::clearAllCollections() const
    return true;
 }
 
-// bool CategorizedBookmarkModel::enableBackend(CollectionInterface* backend, bool enable)
-// {
-//    Q_UNUSED(backend)
-//    Q_UNUSED(enable)
-//    return false; //TODO
-// }
-
-// void CategorizedBookmarkModel::addBackend(CollectionInterface* backend, LoadOptions options)
-// {
-//    d_ptr->m_lBackends << backend;
-//    connect(backend,SIGNAL(newBookmarkAdded(ContactMethod*)),this,SLOT(reloadCategories()));
-//    if (options & LoadOptions::FORCE_ENABLED)
-//       backend->load();
-// }
-
 void CategorizedBookmarkModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
    reloadCategories();
 }
-
-// QString CategorizedBookmarkModel::backendCategoryName() const
-// {
-//    return tr("Bookmarks");
-// }
 
 #include <categorizedbookmarkmodel.moc>
