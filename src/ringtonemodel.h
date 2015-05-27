@@ -20,15 +20,19 @@
 #include "typedefs.h"
 
 //Qt
-#include <QtCore/QString>
 #include <QtCore/QAbstractTableModel>
 class QTimer;
+class QItemSelectionModel;
 
 //Ring
+#include "collectionmanagerinterface.h"
 class Account;
+class RingtoneModelPrivate;
+class Ringtone;
 
 ///CredentialModel: A model for account credentials
-class LIB_EXPORT RingToneModel : public QAbstractTableModel {
+class LIB_EXPORT RingtoneModel : public QAbstractTableModel, public CollectionManagerInterface<Ringtone>
+{
    Q_OBJECT
 public:
 
@@ -37,8 +41,7 @@ public:
       FullPath  = 101,
    };
 
-   explicit RingToneModel(Account* a);
-   virtual ~RingToneModel();
+   virtual ~RingtoneModel();
 
    //Model functions
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -49,30 +52,25 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QString     currentRingTone() const;
-   QModelIndex currentIndex   () const;
-
-   //Setter
-   void setCurrentIndex(const QModelIndex& idx);
+   Ringtone* currentRingTone(Account* a) const;
+   QItemSelectionModel* selectionModel(Account* a) const;
 
    //Mutator
    void play(const QModelIndex& index);
 
-private:
-   struct RingToneInfo {
-      explicit RingToneInfo() : isPlaying(false),isCurrent(false){}
-      QString name;
-      QString path;
-      bool isPlaying;
-      bool isCurrent;
-   };
-   QList<RingToneInfo*> m_lRingTone;
-   Account* m_pAccount;
-   QTimer* m_pTimer;
-   RingToneInfo* m_pCurrent;
+   static RingtoneModel* instance();
 
-private Q_SLOTS:
-   void slotStopTimer();
+private:
+   explicit RingtoneModel(QObject* parent = nullptr);
+
+   RingtoneModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(RingtoneModel)
+
+   //Collection interface
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback        (const Ringtone* item        ) override;
+   virtual bool removeItemCallback     (const Ringtone* item        ) override;
+
 };
 
 #endif //RINGTONEMODEL_H

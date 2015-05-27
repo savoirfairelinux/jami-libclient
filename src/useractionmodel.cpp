@@ -365,7 +365,7 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
          ret += c->state() == Call::State::TRANSFERRED? 100 : 1;
          break;
       case UserActionModel::Action::RECORD          :
-         ret += c->isRecording() ? 100 : 1;
+         ret += c->isRecording(Media::Media::Type::AUDIO,Media::Media::Direction::OUT) ? 100 : 1;
          break;
       case UserActionModel::Action::HANGUP          :
          ret += 0;
@@ -560,7 +560,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          UserActions::transfer(selected);
          break;
       case UserActionModel::Action::RECORD          :
-         if (UserActions::record(selected))
+         if (UserActions::recordAudio(selected)) //TODO handle other recording types
             d_ptr->updateActions();
          break;
       case UserActionModel::Action::HANGUP          :

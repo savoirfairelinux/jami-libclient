@@ -60,17 +60,13 @@ public:
    bool                 isNoiseSuppressEnabled () const;
    bool                 isPlaybackMuted  () const;
    bool                 isCaptureMuted   () const;
-   bool                 isAlwaysRecording() const;
    bool                 areDTMFMuted     () const;
    int                  playbackVolume   () const;
    int                  captureVolume    () const;
-   QUrl                 recordPath       () const;
 
    //Setters
    void setEnableRoomTone    ( bool        enable  );
    void setNoiseSuppressState( bool        enabled );
-   void setRecordPath        ( const QUrl& path    );
-   void setAlwaysRecording   ( bool        record  );
 
    //Room tone type
    enum class ToneType {

@@ -124,6 +124,13 @@ public:
                            Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), timestamp);
                      });
          }),
+
+         exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
+               [this] (const std::string& account_id, const std::string& from, const std::string& message) {
+                     QTimer::singleShot(0, [this, account_id,from,message] {
+                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), QString(message.c_str()));
+                     });
+         }),
       };
    }
 
@@ -597,6 +604,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
    void incomingTrustRequest(const QString& accountId, const QString& from, qulonglong timeStamp);
+   void incomingAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
 };
 

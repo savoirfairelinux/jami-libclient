@@ -32,7 +32,6 @@ class QString;
 #include "uri.h"
 #include "typedefs.h"
 class CredentialModel        ;
-class RingToneModel          ;
 class ContactMethod          ;
 class SecurityEvaluationModel;
 class Certificate            ;
@@ -275,7 +274,6 @@ class LIB_EXPORT Account : public QObject {
 
       Q_INVOKABLE CredentialModel*         credentialModel            () const;
       Q_INVOKABLE CodecModel*              codecModel                 () const;
-      Q_INVOKABLE RingToneModel*           ringToneModel              () const;
       Q_INVOKABLE KeyExchangeModel*        keyExchangeModel           () const;
       Q_INVOKABLE CipherModel*             cipherModel                () const;
       Q_INVOKABLE AccountStatusModel*      statusModel                () const;
@@ -347,7 +345,8 @@ class LIB_EXPORT Account : public QObject {
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
       RegistrationState  registrationState () const;
-      Protocol               protocol      () const;
+      Protocol           protocol          () const;
+      ContactMethod*     contactMethod     () const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
