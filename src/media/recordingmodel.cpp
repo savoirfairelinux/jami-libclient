@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QMimeData>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QUrl>
 
 //Ring
 #include "recording.h"

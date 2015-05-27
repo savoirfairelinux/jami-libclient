@@ -21,6 +21,8 @@
 #include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
 #include <QtCore/QItemSelectionModel>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QUrl>
 
 //Ring
 #include "dbus/configurationmanager.h"

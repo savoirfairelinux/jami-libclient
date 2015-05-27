@@ -433,6 +433,11 @@ public Q_SLOTS: // METHODS
         return DRing::unholdConference(confID.toStdString());
     }
 
+    bool muteLocalMedia(const QString& callid, const QString& mediaType, bool mute)
+    {
+        return DRing::muteLocalMedia(callid.toStdString(), mediaType.toStdString(), mute);
+    }
+
 Q_SIGNALS: // SIGNALS
     void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();

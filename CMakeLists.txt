@@ -270,6 +270,7 @@ SET( libringclient_LIB_SRCS
   src/foldercertificatecollection.cpp
   src/localrecordingcollection.cpp
   src/localtextrecordingcollection.cpp
+  src/localhistorycollection.cpp
   src/localmacrocollection.cpp
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
@@ -344,8 +345,9 @@ SET( libringclient_LIB_HDRS
   src/ringtonemodel.h
   src/localrecordingcollection.h
   src/localbookmarkcollection.h
-  src/localringtonecollection.cpp
+  src/localringtonecollection.h
   src/localmacrocollection.h
+  src/localhistorycollection.h
   src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
