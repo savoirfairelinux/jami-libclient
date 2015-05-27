@@ -70,7 +70,7 @@ struct CertificateNode {
    QHash<Account*,CertificateNode*> m_hSiblings;
 };
 
-class CertificateProxyModel : public QAbstractProxyModel
+class CertificateProxyModel final : public QAbstractProxyModel
 {
    Q_OBJECT
 public:

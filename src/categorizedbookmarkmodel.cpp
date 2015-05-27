@@ -35,10 +35,10 @@
 #include "collectioninterface.h"
 
 ///Top level bookmark item
-class BookmarkTopLevelItem : public CategorizedCompositeNode {
+class BookmarkTopLevelItem final : public CategorizedCompositeNode {
    friend class CategorizedBookmarkModel;
    public:
-      virtual QObject* getSelf() const;
+      virtual QObject* getSelf() const override;
       int m_Row;
    private:
       explicit BookmarkTopLevelItem(QString name);
@@ -47,7 +47,7 @@ class BookmarkTopLevelItem : public CategorizedCompositeNode {
       bool m_MostPopular;
 };
 
-class CategorizedBookmarkModelPrivate : public QObject
+class CategorizedBookmarkModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
@@ -82,13 +82,13 @@ class BookmarkItemNode;
 
 static bool test = false;
 //Model item/index
-class NumberTreeBackend : public CategorizedCompositeNode
+class NumberTreeBackend final : public CategorizedCompositeNode
 {
    friend class CategorizedBookmarkModel;
    public:
       NumberTreeBackend(ContactMethod* number);
       virtual ~NumberTreeBackend();
-      virtual QObject* getSelf() const { return nullptr; }
+      virtual QObject* getSelf() const override { return nullptr; }
 
       ContactMethod* m_pNumber;
       BookmarkTopLevelItem* m_pParent;
@@ -96,7 +96,7 @@ class NumberTreeBackend : public CategorizedCompositeNode
       BookmarkItemNode* m_pNode;
 };
 
-class BookmarkItemNode : public QObject //TODO remove this once Qt4 support is dropped
+class BookmarkItemNode final : public QObject //TODO remove this once Qt4 support is dropped
 {
    Q_OBJECT
 public:

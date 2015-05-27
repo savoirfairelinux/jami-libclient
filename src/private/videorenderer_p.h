@@ -30,7 +30,7 @@ namespace Video {
 
 class Renderer;
 
-class RendererPrivate : public QObject
+class RendererPrivate final : public QObject
 {
 Q_OBJECT
 public:

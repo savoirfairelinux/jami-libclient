@@ -37,7 +37,7 @@
 
 class ContactTreeNode;
 
-class ContactTreeNode : public CategorizedCompositeNode {
+class ContactTreeNode final : public CategorizedCompositeNode {
 public:
    friend class CategorizedContactModel;
    friend class CategorizedContactModelPrivate;
@@ -73,7 +73,7 @@ public:
    void slotContactMethodCountChanged      (int,int         );
    void slotContactMethodCountAboutToChange(int,int         );
 };
-class CategorizedContactModelPrivate : public QObject
+class CategorizedContactModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

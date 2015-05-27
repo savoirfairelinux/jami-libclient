@@ -29,7 +29,7 @@
 #include "private/account_p.h"
 #include "private/matrixutils.h"
 
-class KeyExchangeModelPrivate : public QObject
+class KeyExchangeModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

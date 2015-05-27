@@ -162,7 +162,7 @@ struct TextMessageNode
 };
 
 ///Model for the Instant Messaging (IM) features
-class InstantMessagingModel : public QAbstractListModel
+class InstantMessagingModel final : public QAbstractListModel
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"

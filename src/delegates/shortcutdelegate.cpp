@@ -36,5 +36,6 @@ void ShortcutDelegate::setInstance(ShortcutDelegate* i)
 
 QVariant ShortcutDelegate::createAction(Macro* macro)
 {
+   Q_UNUSED(macro)
    return QVariant();
 }

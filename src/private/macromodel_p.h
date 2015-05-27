@@ -20,7 +20,7 @@
 
 #include <macromodel.h>
 
-class MacroModelPrivate : public QObject
+class MacroModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

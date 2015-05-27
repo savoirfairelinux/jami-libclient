@@ -29,7 +29,7 @@
 #include <account.h>
 #include <private/account_p.h>
 
-class NetworkInterfaceModelPrivate : public QObject {
+class NetworkInterfaceModelPrivate final : public QObject {
    Q_OBJECT
 public:
    NetworkInterfaceModelPrivate(NetworkInterfaceModel*);

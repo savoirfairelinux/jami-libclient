@@ -42,7 +42,7 @@ namespace Serializable {
    };
 }
 
-class LocalMacroEditor : public CollectionEditor<Macro>
+class LocalMacroEditor final : public CollectionEditor<Macro>
 {
 public:
    LocalMacroEditor(CollectionMediator<Macro>* m) : CollectionEditor<Macro>(m),m_Tracked(false) {}

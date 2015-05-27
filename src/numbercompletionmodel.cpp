@@ -42,7 +42,7 @@
 //Private
 #include "private/phonedirectorymodel_p.h"
 
-class NumberCompletionModelPrivate : public QObject
+class NumberCompletionModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
@@ -442,7 +442,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
 
       endOk = (iEnd.key().left(prefixLen) == pref);
 
-      size = ::ceil(size/2.0f);
+      size = ::ceil((static_cast<double>(size))/2.0f);
    }
 
    while (iBeg.key().left(prefixLen) != pref && iBeg != map.end() && iBeg != iEnd)

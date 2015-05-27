@@ -27,7 +27,7 @@ class TransitionalPersonBackendPrivate
 
 };
 
-class TransitionalPersonEditor : public CollectionEditor<Person>
+class TransitionalPersonEditor final : public CollectionEditor<Person>
 {
 public:
    TransitionalPersonEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}

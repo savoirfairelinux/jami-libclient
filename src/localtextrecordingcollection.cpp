@@ -44,7 +44,7 @@
  * concatenated then hashed in sha1 again.
  */
 
-class LocalTextRecordingEditor : public CollectionEditor<Media::Recording>
+class LocalTextRecordingEditor final : public CollectionEditor<Media::Recording>
 {
 public:
    LocalTextRecordingEditor(CollectionMediator<Media::Recording>* m) : CollectionEditor<Media::Recording>(m) {}

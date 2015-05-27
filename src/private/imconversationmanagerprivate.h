@@ -30,7 +30,7 @@ namespace Media {
    class TextRecording;
 }
 
-class IMConversationManagerPrivate : public QObject
+class IMConversationManagerPrivate final : public QObject
 {
    Q_OBJECT
 public:

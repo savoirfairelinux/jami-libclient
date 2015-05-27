@@ -24,7 +24,7 @@
 #include "dbus/configurationmanager.h"
 #include "settings.h"
 
-class ManagerModelPrivate : public QObject
+class ManagerModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

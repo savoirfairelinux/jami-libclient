@@ -37,7 +37,7 @@ class BootstrapModel;
 
 typedef void (AccountPrivate::*account_function)();
 
-class AccountPrivate : public QObject
+class AccountPrivate final : public QObject
 {
 public:
    Q_OBJECT
