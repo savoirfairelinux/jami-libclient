@@ -344,7 +344,7 @@ SET( libringclient_LIB_HDRS
   src/ringtonemodel.h
   src/localrecordingcollection.h
   src/localbookmarkcollection.h
-  src/localringtonecollection.cpp
+  src/localringtonecollection.h
   src/localmacrocollection.h
   src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
