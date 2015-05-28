@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_e71f6208",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-05-28T15:30:46Z",
+      "side": 1,
+      "message": "why we requiere gcc 4.9 now (was 4.8)?\nYou kill Fedora 20 support with that (and maybe some other ones)\nMoreover you missed that into commit message",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 7
+      },
+      "revId": "b81a009cb5b4a88741102b9ee1fe7f6024630940",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_a7196a24",
+        "filename": "src/numbercompletionmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-05-28T15:30:46Z",
+      "side": 1,
+      "message": "consistancy: change also  2.0f by 2.0 if you need double, or keep it but cast to float if double is not needed",
+      "range": {
+        "startLine": 445,
+        "startChar": 19,
+        "endLine": 445,
+        "endChar": 53
+      },
+      "revId": "b81a009cb5b4a88741102b9ee1fe7f6024630940",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
