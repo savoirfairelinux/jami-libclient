@@ -81,12 +81,15 @@ public:
    Q_PROPERTY(UserActionModel* userActionModel READ userActionModel )
 
    //Call related
-   Q_INVOKABLE Call*       dialingCall      ( const QString& peerName=QString(), Account* account=nullptr );
-   Q_INVOKABLE void        attendedTransfer ( Call* toTransfer , Call* target                             );
-   Q_INVOKABLE void        transfer         ( Call* toTransfer , const ContactMethod* target              );
-   Q_INVOKABLE QByteArray  getMime          ( const Call* call                                            ) const;
-   Q_INVOKABLE QModelIndex getIndex         ( Call* call                                                  ) const;
-   Q_INVOKABLE Call*       fromMime         ( const QByteArray& fromMime                                  ) const;
+   Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr );
+   Q_INVOKABLE void        attendedTransfer  ( Call* toTransfer , Call* target                             );
+   Q_INVOKABLE void        transfer          ( Call* toTransfer , const ContactMethod* target              );
+   Q_INVOKABLE QByteArray  getMime           ( const Call* call                                            ) const;
+   Q_INVOKABLE QModelIndex getIndex          ( Call* call                                                  ) const;
+   Q_INVOKABLE Call*       fromMime          ( const QByteArray& fromMime                                  ) const;
+   Q_INVOKABLE Call*       selectedCall      (                                                             ) const;
+   Q_INVOKABLE void        selectCall        ( Call* call                                                  ) const;
+   Q_INVOKABLE Call*       selectDialingCall ( const QString& peerName=QString(), Account* account=nullptr );
 
    //Conference related
    Q_INVOKABLE bool createConferenceFromCall ( Call* call1, Call* call2      );
