@@ -250,13 +250,49 @@ QHash<int,QByteArray> CallModel::roleNames() const
    return roles;
 }
 
-
 QItemSelectionModel* CallModel::selectionModel() const
 {
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<CallModel*>(this));
    }
    return d_ptr->m_pSelectionModel;
+}
+
+/**
+ * Use the selection model to extract the current Call
+ *
+ * @return The selection call or nullptr
+ */
+Call* CallModel::selectedCall() const
+{
+   return getCall(selectionModel()->currentIndex());
+}
+
+/**
+ * Select a call or remove the selection if the call is invalid
+ *
+ * @param call the call to select
+ */
+void CallModel::selectCall(Call* call) const
+{
+   const QModelIndex idx = getIndex(call);
+
+   selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent);
+}
+
+/**
+ * Select and return the dialing call. If there is none, one will be added
+ *
+ * @see CallModel::dialingCall
+ * @return the dialing call
+ */
+Call* CallModel::selectDialingCall(const QString& peerName, Account* account)
+{
+   Call* c = dialingCall(peerName,account);
+
+   selectCall(c);
+
+   return c;
 }
 
 /*****************************************************************************
@@ -558,6 +594,9 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
 
 QModelIndex CallModel::getIndex(Call* call) const
 {
+   if (!call)
+      return QModelIndex();
+
    InternalStruct* internal = d_ptr->m_shInternalMapping[call];
    int idx = d_ptr->m_lInternalModel.indexOf(internal);
    if (idx != -1) {
@@ -863,8 +902,7 @@ QModelIndex CallModel::index( int row, int column, const QModelIndex& parentIdx)
    else if (row >= 0 && parentIdx.isValid() && d_ptr->m_lInternalModel[parentIdx.row()]->m_lChildren.size() > row) {
       return createIndex(row,column,d_ptr->m_lInternalModel[parentIdx.row()]->m_lChildren[row]);
    }
-//    if (!parentIdx.isValid())
-//       qWarning() << "Invalid index" << row << column << "model size" << m_lInternalModel.size();
+
    return QModelIndex();
 }
 
@@ -1133,7 +1171,6 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
             q_ptr->beginInsertRows(QModelIndex(),m_lInternalModel.size(),m_lInternalModel.size());
             m_lInternalModel << child;
             q_ptr->endInsertRows();
-//             const QModelIndex idx = q_ptr->getIndex(child->call_real);
          }
       }
       confInt->m_lChildren.clear();
