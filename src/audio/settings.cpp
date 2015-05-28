@@ -30,7 +30,7 @@
 #include "inputdevicemodel.h"
 
 namespace Audio {
-class SettingsPrivate : public QObject
+class SettingsPrivate final : public QObject
 {
    Q_OBJECT
 public:
@@ -210,13 +210,13 @@ bool Audio::Settings::isCaptureMuted() const
 int Audio::Settings::playbackVolume() const
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   return configurationManager.getVolume(DeviceKey::PLAYBACK)*100;
+   return static_cast<int>(configurationManager.getVolume(DeviceKey::PLAYBACK)*100);
 }
 
 int Audio::Settings::captureVolume() const
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   return configurationManager.getVolume(DeviceKey::CAPTURE)*100;
+   return static_cast<int>(configurationManager.getVolume(DeviceKey::CAPTURE)*100);
 }
 
 void Audio::Settings::setPlaybackVolume(int volume)

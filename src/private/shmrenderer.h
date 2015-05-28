@@ -36,7 +36,7 @@ namespace Video {
 class ShmRendererPrivate;
 
 ///Manage shared memory and convert it to QByteArray
-class LIB_EXPORT ShmRenderer : public Renderer {
+class LIB_EXPORT ShmRenderer final : public Renderer {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -66,8 +66,8 @@ private:
    Q_DECLARE_PRIVATE(ShmRenderer)
 
 public Q_SLOTS:
-   void startRendering();
-   void stopRendering ();
+   void startRendering() override;
+   void stopRendering () override;
 };
 
 }

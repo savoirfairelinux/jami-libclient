@@ -22,7 +22,7 @@
 #include <media/recording.h>
 #include <media/avrecording.h>
 
-class LocalRecordingEditor : public CollectionEditor<Media::Recording>
+class LocalRecordingEditor final : public CollectionEditor<Media::Recording>
 {
 public:
    LocalRecordingEditor(CollectionMediator<Media::Recording>* m) : CollectionEditor<Media::Recording>(m) {}

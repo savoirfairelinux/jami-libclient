@@ -70,7 +70,7 @@ struct SHMHeader {
 
 namespace Video {
 
-class ShmRendererPrivate : public QObject
+class ShmRendererPrivate final : public QObject
 {
    Q_OBJECT
 

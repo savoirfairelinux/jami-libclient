@@ -25,7 +25,7 @@
 //Dring
 #include "dbus/configurationmanager.h"
 
-class DaemonCertificateEditor : public CollectionEditor<Certificate>
+class DaemonCertificateEditor final : public CollectionEditor<Certificate>
 {
 public:
    DaemonCertificateEditor(CollectionMediator<Certificate>* m, const QString& path);

@@ -28,7 +28,7 @@
 #include <account.h>
 #include <private/account_p.h>
 
-class TlsMethodModelPrivate : public QObject {
+class TlsMethodModelPrivate final : public QObject {
    Q_OBJECT
 public:
 

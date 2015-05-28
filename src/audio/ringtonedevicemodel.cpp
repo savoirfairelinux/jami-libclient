@@ -24,7 +24,7 @@
 #include "dbus/configurationmanager.h"
 #include "settings.h"
 
-class RingtoneDeviceModelPrivate : public QObject
+class RingtoneDeviceModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

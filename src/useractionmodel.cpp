@@ -41,7 +41,7 @@ public:
    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 };
 
-class UserActionModelPrivate : public QObject
+class UserActionModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

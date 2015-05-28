@@ -23,7 +23,7 @@
 //Ring
 #include "dbus/configurationmanager.h"
 
-class AlsaPluginModelPrivate : public QObject
+class AlsaPluginModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

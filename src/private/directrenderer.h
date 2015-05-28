@@ -36,7 +36,7 @@ namespace Video {
 class DirectRendererPrivate;
 
 ///Manage shared memory and convert it to QByteArray
-class LIB_EXPORT DirectRenderer : public Renderer {
+class LIB_EXPORT DirectRenderer final : public Renderer {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT

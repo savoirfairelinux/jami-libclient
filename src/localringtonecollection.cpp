@@ -44,7 +44,7 @@ namespace Serializable {
    };
 }
 
-class LocalRingtoneEditor : public CollectionEditor<Ringtone>
+class LocalRingtoneEditor final : public CollectionEditor<Ringtone>
 {
 public:
    LocalRingtoneEditor(CollectionMediator<Ringtone>* m)

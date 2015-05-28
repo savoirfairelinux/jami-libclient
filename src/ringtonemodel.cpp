@@ -31,7 +31,7 @@
 #include "ringtone.h"
 #include <localringtonecollection.h>
 
-class RingtoneModelPrivate : public QObject
+class RingtoneModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

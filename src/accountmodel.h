@@ -150,7 +150,7 @@ Q_SIGNALS:
    void accountStateChanged  ( Account* account, const Account::RegistrationState state);
    ///Emitted when an account edit state change
    void accountEditStateChanged(Account* account, const Account::EditState state, const Account::EditState prev);
-   void editStateChanged(const EditState state, const EditState previous);
+   void editStateChanged(const EditState state, const EditState previous) const;
 };
 Q_DECLARE_METATYPE(AccountModel*)
 

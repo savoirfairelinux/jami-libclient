@@ -12,20 +12,10 @@ IF(POLICY CMP0020)
    CMAKE_POLICY(SET CMP0020 NEW)
 ENDIF(POLICY CMP0020)
 
-# First, check is the compiler is new enough, most version of Clang are fine
-# until problems arise, checking for GCC is enough
-IF (CMAKE_COMPILER_IS_GNUCC)
-   EXECUTE_PROCESS(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-   IF (GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
-      MESSAGE(STATUS "Found GCC version >= 4.8: " ${GCC_VERSION})
-   ELSE()
-      MESSAGE(FATAL_ERROR "Your version of GCC is too old, please install GCC 4.8 or later")
-   ENDIF()
-ENDIF()
-
 INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
+
 
 ADD_DEFINITIONS("-std=c++1y")
 
@@ -37,6 +27,17 @@ ADD_DEFINITIONS(
 
 PROJECT(ringclient)
 
+# First, check is the compiler is new enough, most version of Clang are fine
+# until problems arise, checking for GCC is enough
+IF (CMAKE_COMPILER_IS_GNUCC)
+   EXECUTE_PROCESS(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+   IF (GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
+      MESSAGE(STATUS "Found GCC version >= 4.8: " ${GCC_VERSION})
+   ELSE()
+      MESSAGE(FATAL_ERROR "Your version of GCC is too old, please install GCC 4.8 or later")
+   ENDIF()
+ENDIF()
+
 SET(CMAKE_AUTOMOC TRUE)
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
@@ -45,6 +46,7 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
+
 
 
 # Enable some useful warnings
@@ -92,7 +94,7 @@ IF (CMAKE_COMPILER_IS_GNUCC)
       ADD_DEFINITIONS(
          -Wunused-but-set-parameter
          -Wconditionally-supported
-         -Wsuggest-attribute=const
+         #-Wsuggest-attribute=const
          -Wno-cpp
          -Wdouble-promotion
          -Wdate-time
@@ -101,11 +103,11 @@ IF (CMAKE_COMPILER_IS_GNUCC)
       )
    ENDIF()
 
-   IF (GCC_VERSION VERSION_GREATER 5.0 OR GCC_VERSION VERSION_EQUAL 5.0)
+   if (GCC_VERSION VERSION_GREATER 5.1 OR GCC_VERSION VERSION_EQUAL 5.1)
       ADD_DEFINITIONS(
-         -Wsuggest-override
-         -Wsuggest-final-types
-         -Wsuggest-final-methods
+         #-Wsuggest-override
+         #-Wsuggest-final-types
+         #-Wsuggest-final-methods
          -Wbool-compare
          -Wformat-signedness
          -Wlogical-not-parentheses

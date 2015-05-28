@@ -45,7 +45,7 @@ class Person;
 class Account;
 struct Node;
 
-class ProfileEditor : public CollectionEditor<Person>
+class ProfileEditor final : public CollectionEditor<Person>
 {
 public:
    ProfileEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m) {}
@@ -67,7 +67,7 @@ private:
 };
 
 ///ProfileContentBackend: Implement a backend for Profiles
-class ProfileContentBackend : public QObject, public CollectionInterface {
+class ProfileContentBackend final : public QObject, public CollectionInterface {
    Q_OBJECT
 public:
    template<typename T>
@@ -479,7 +479,7 @@ ProfileModel* ProfileModel::instance()
    return m_spInstance;
 }
 
-class ProfileModelPrivate : public QObject {
+class ProfileModelPrivate final : public QObject {
    Q_OBJECT
 public:
    ProfileModelPrivate(ProfileModel* parent);
