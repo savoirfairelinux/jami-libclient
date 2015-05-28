@@ -23,7 +23,7 @@
 #include "securityevaluationmodel.h"
 class SecurityFlaw;
 
-class SecurityFlawPrivate : public QObject
+class SecurityFlawPrivate final : public QObject
 {
    Q_OBJECT
 public:

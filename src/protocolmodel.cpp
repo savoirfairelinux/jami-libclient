@@ -28,7 +28,8 @@
 #include <account.h>
 #include <private/account_p.h>
 
-class ProtocolModelPrivate : public QObject {
+class ProtocolModelPrivate final : public QObject
+{
    Q_OBJECT
 public:
 

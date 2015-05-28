@@ -49,7 +49,7 @@ namespace Serializable {
    };
 }
 
-class LocalBookmarkEditor : public CollectionEditor<ContactMethod>
+class LocalBookmarkEditor final : public CollectionEditor<ContactMethod>
 {
 public:
    LocalBookmarkEditor(CollectionMediator<ContactMethod>* m)

@@ -38,7 +38,7 @@
 #include <QtCore/QIdentityProxyModel>
 #include <QtCore/QCoreApplication>
 
-class EnabledExtensionsProxy : public QIdentityProxyModel
+class EnabledExtensionsProxy final : public QIdentityProxyModel
 {
    Q_OBJECT
 

@@ -25,7 +25,7 @@
 #include "dbus/callmanager.h"
 #include "settings.h"
 
-class OutputDeviceModelPrivate : public QObject
+class OutputDeviceModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

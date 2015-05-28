@@ -29,7 +29,7 @@ struct NumberWrapper {
    QVector<ContactMethod*> numbers;
 };
 
-class PhoneDirectoryModelPrivate : public QObject
+class PhoneDirectoryModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

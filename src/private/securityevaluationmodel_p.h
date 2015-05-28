@@ -26,7 +26,7 @@ class Certificate;
 #include "private/matrixutils.h"
 #include <securityevaluationmodel.h>
 
-class SecurityEvaluationModelPrivate : public QObject
+class SecurityEvaluationModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

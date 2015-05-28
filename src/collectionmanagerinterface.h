@@ -142,15 +142,15 @@ public:
 
 
    /// Do this manager have active collections
-   virtual bool hasEnabledCollections (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
-   virtual bool hasCollections        (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
+   bool hasEnabledCollections (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const;
+   bool hasCollections        (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const;
 
    /// List all Collections
-   virtual const QVector< CollectionInterface* > collections       (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
-   virtual const QVector< CollectionInterface* > enabledCollections(FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const final;
+   const QVector< CollectionInterface* > collections       (FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const;
+   const QVector< CollectionInterface* > enabledCollections(FlagPack<CollectionInterface::SupportedFeatures> features = CollectionInterface::SupportedFeatures::NONE) const;
 
    ///Enable / disable a collection
-   virtual bool enableCollection( CollectionInterface*  collection, bool enabled) final;
+   bool enableCollection( CollectionInterface*  collection, bool enabled);
 
    virtual bool clearAllCollections() const;
 

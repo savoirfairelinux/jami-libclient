@@ -31,7 +31,7 @@ class CollectionExtensionInterface;
 class CollectionConfigurationInterface;
 class CollectionCreationInterface;
 
-class CollectionModelPrivate : public QObject
+class CollectionModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

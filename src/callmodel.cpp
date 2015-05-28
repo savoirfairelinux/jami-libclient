@@ -66,7 +66,7 @@ struct InternalStruct {
 //Static member
 CallModel*   CallModel::m_spInstance = nullptr;
 
-class CallModelPrivate : public QObject
+class CallModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
@@ -153,7 +153,7 @@ void CallModelPrivate::init()
    if (!dbusInit) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
       #ifdef ENABLE_VIDEO
-      VideoManagerInterface& interface = DBus::VideoManager::instance();
+      DBus::VideoManager::instance();
       #endif
 
       //SLOTS

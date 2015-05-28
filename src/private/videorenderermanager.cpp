@@ -48,7 +48,7 @@ constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 //Static member
 VideoRendererManager* VideoRendererManager::m_spInstance = nullptr;
 
-class VideoRendererManagerPrivate : public QObject
+class VideoRendererManagerPrivate final : public QObject
 {
    Q_OBJECT
 

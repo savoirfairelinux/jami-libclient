@@ -24,7 +24,7 @@
 #include "dbus/configurationmanager.h"
 #include "settings.h"
 
-class InputDeviceModelPrivate : public QObject
+class InputDeviceModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
