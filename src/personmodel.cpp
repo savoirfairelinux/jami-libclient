@@ -57,7 +57,7 @@ public:
 
 };
 
-class PersonModelPrivate : public QObject
+class PersonModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

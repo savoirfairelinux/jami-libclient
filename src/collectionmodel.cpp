@@ -29,7 +29,7 @@
 
 CollectionModel* CollectionModelPrivate::m_spInstance = nullptr;
 
-class ManageableCollectionProxy : public QSortFilterProxyModel
+class ManageableCollectionProxy final : public QSortFilterProxyModel
 {
 public:
    ManageableCollectionProxy(QAbstractItemModel* parent) : QSortFilterProxyModel(parent)

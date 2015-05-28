@@ -26,7 +26,7 @@ namespace Video {
    class Device;
 }
 
-class VideoDevicePrivate : public QObject
+class VideoDevicePrivate final : public QObject
 {
    Q_OBJECT
 public:

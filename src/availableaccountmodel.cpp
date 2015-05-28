@@ -29,7 +29,7 @@
 #include "contactmethod.h"
 #include "uri.h"
 
-class AvailableAccountModelPrivate : public QObject
+class AvailableAccountModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

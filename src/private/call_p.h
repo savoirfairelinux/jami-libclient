@@ -43,7 +43,7 @@ namespace Media {
    class Recording;
 }
 
-class CallPrivate : public QObject
+class CallPrivate final : public QObject
 {
    Q_OBJECT
 public:

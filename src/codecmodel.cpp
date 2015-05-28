@@ -33,7 +33,7 @@
 #include "mime.h"
 #include "callmodel.h"
 
-class CodecModelPrivate : public QObject
+class CodecModelPrivate final : public QObject
 {
    Q_OBJECT
 public:

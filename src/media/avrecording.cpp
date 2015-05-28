@@ -242,7 +242,7 @@ void Media::AVRecordingPrivate::notifySeek(int position, int size)
    //Update the metadata
    m_Duration = size/1000;
    m_Position = ((double)position)/((double)size);
-   m_Elapsed  = m_Duration * m_Position;
+   m_Elapsed  = m_Duration * static_cast<int>(m_Position);
    m_Left     = m_Duration - m_Elapsed ;
 
    if (oldDuration != m_Duration)

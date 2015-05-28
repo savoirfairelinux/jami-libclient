@@ -47,18 +47,18 @@
 
 class HistoryTopLevelItem;
 
-class CategorizedHistoryModelPrivate : public QObject
+class CategorizedHistoryModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
    CategorizedHistoryModelPrivate(CategorizedHistoryModel* parent);
 
    //Model
-   class HistoryItem : public CategorizedCompositeNode {
+   class HistoryItem final : public CategorizedCompositeNode {
    public:
       explicit HistoryItem(Call* call);
       virtual ~HistoryItem();
-      virtual QObject* getSelf() const;
+      virtual QObject* getSelf() const override;
       Call* call() const;
       int m_Index;
       HistoryTopLevelItem* m_pParent;
@@ -91,11 +91,12 @@ public Q_SLOTS:
    void slotChanged(const QModelIndex& idx);
 };
 
-class HistoryTopLevelItem : public CategorizedCompositeNode,public QObject {
+class HistoryTopLevelItem final : public CategorizedCompositeNode, public QObject
+{
    friend class CategorizedHistoryModel;
    friend class CategorizedHistoryModelPrivate;
 public:
-   virtual QObject* getSelf() const;
+   virtual QObject* getSelf() const override final;
    virtual ~HistoryTopLevelItem();
    int m_Index;
    int m_AbsoluteIndex;
@@ -106,7 +107,7 @@ private:
    int modelRow;
 };
 
-class HistoryItemNode : public QObject //TODO remove this once Qt4 support is dropped
+class HistoryItemNode final : public QObject //TODO remove this once Qt4 support is dropped, use lambdas
 {
    Q_OBJECT
 public:

@@ -33,7 +33,7 @@
 //Dring
 #include "dbus/configurationmanager.h"
 
-class FallbackLocalCertificateEditor : public CollectionEditor<Certificate>
+class FallbackLocalCertificateEditor final : public CollectionEditor<Certificate>
 {
 public:
    FallbackLocalCertificateEditor(CollectionMediator<Certificate>* m, const QString& path);
@@ -51,7 +51,7 @@ private:
    virtual QVector<Certificate*> items() const override;
 };
 
-class BackgroundLoader : public QThread
+class BackgroundLoader final : public QThread
 {
    Q_OBJECT
 public:

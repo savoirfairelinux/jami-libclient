@@ -37,7 +37,7 @@
 #include "delegates/itemmodelstateserializationdelegate.h"
 
 
-class FallbackPersonBackendEditor : public CollectionEditor<Person>
+class FallbackPersonBackendEditor final : public CollectionEditor<Person>
 {
 public:
    FallbackPersonBackendEditor(CollectionMediator<Person>* m, const QString& path) : CollectionEditor<Person>(m),m_Path(path) {}
@@ -55,7 +55,7 @@ private:
    virtual QVector<Person*> items() const override;
 };
 
-class FallbackPersonCollectionPrivate : public QObject
+class FallbackPersonCollectionPrivate final : public QObject
 {
    Q_OBJECT
 public:

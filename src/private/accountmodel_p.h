@@ -31,7 +31,7 @@ class AccountListColorDelegate;
 class ProtocolModel;
 class QItemSelectionModel;
 
-class AccountModelPrivate : public QObject
+class AccountModelPrivate final : public QObject
 {
    Q_OBJECT
    Q_DECLARE_PUBLIC(AccountModel)
