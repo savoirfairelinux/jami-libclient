@@ -20,7 +20,6 @@
 
 #include <media/media.h>
 #include <typedefs.h>
-#include "private/call_p.h"
 
 class MediaAudioPrivate;
 class Call;
