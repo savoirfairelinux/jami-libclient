@@ -45,7 +45,7 @@ public:
    void send(const QString& message);
 
 private:
-   Text(Call* parent, const Media::Direction direction);
+   explicit Text(Call* parent, const Media::Direction direction);
    virtual ~Text();
 
    MediaTextPrivate* d_ptr;
