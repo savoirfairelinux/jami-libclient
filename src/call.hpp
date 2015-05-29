@@ -16,7 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-class MediaTypeInference {
+class LIB_EXPORT MediaTypeInference {
 public:
    static Media::Media* safeMediaCreator(Call* c, Media::Media::Type t, Media::Media::Direction d);
 
@@ -26,14 +26,14 @@ public:
       return MediaTypeInference::typeMap(!MediaTypeInference::typeMap().contains(id))[id];
    }
 
-private:
    template<typename T>
    static int getId() {
       static int id = genId();
       return id;
    }
-   static int genId();
    static QHash<int, Media::Media::Type>& typeMap(bool regen = false);
+private:
+   static int genId();
 };
 
 /**
@@ -44,7 +44,6 @@ private:
 template<typename T>
 T* Call::firstMedia(Media::Media::Direction direction) const
 {
-
    const Media::Media::Type t = MediaTypeInference::getType<T>();
 
    QList<Media::Media*> ms = media(t, direction);
@@ -71,3 +70,12 @@ T* Call::addOutgoingMedia(bool useExisting)
 
    return static_cast<T*>(MediaTypeInference::safeMediaCreator(this,t,Media::Media::Direction::OUT));
 }
+
+#define REGISTER_MEDIA() static auto forceType = [] {\
+  QHash<int,::Media::Media::Type>& sTypeMap = MediaTypeInference::typeMap(0);\
+  sTypeMap[MediaTypeInference::getId<Media::Audio>()] = ::Media::Media::Type::AUDIO;\
+  sTypeMap[MediaTypeInference::getId<Media::Video>()] = ::Media::Media::Type::VIDEO;\
+  sTypeMap[MediaTypeInference::getId<Media::Text >()] = ::Media::Media::Type::TEXT ;\
+  sTypeMap[MediaTypeInference::getId<Media::File >()] = ::Media::Media::Type::FILE ;\
+  return 0;\
+}();
