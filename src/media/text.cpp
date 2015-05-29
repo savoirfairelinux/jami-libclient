@@ -57,6 +57,7 @@ public:
 
    //Attributes
    Media::TextRecording* m_pRecording;
+   bool m_HasChecked;
 
 private:
    Media::Text* q_ptr;
@@ -97,6 +98,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
    media->recording()->setCall(call);
    media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
+   emit media->messageReceived(message);
 }
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
@@ -104,7 +106,7 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
    qDebug() << "GOT MESSAGE" << accountId << from << message;
 }
 
-MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr)
+MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
 {
 }
 
@@ -125,17 +127,21 @@ Media::Text::~Text()
 
 Media::TextRecording* Media::Text::recording() const
 {
-   if (!d_ptr->m_pRecording) {
-      Text* other = call()->firstMedia<Text>(direction() == Media::Direction::OUT ? 
+   const bool wasChecked = d_ptr->m_HasChecked;
+   d_ptr->m_HasChecked = true;
+
+   if ((!wasChecked) && !d_ptr->m_pRecording) {
+      Text* other = call()->firstMedia<Text>(direction() == Media::Direction::OUT ?
          Media::Direction::IN
       :  Media::Direction::OUT
       );
 
       if (other && other->recording())
          d_ptr->m_pRecording = other->recording();
+
    }
 
-   if (!d_ptr->m_pRecording) {
+   if ((!wasChecked) && !d_ptr->m_pRecording) {
       d_ptr->m_pRecording = RecordingModel::instance()->createTextRecording(call()->peerContactMethod());
    }
 
