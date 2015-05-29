@@ -106,6 +106,7 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
 
 MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr)
 {
+
 }
 
 Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate(this))

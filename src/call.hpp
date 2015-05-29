@@ -16,14 +16,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-class MediaTypeInference {
+#include <media/media.h>
+#include <media/file.h>
+#include <media/audio.h>
+#include <media/video.h>
+#include <media/text.h>
+
+class LIB_EXPORT MediaTypeInference {
 public:
    static Media::Media* safeMediaCreator(Call* c, Media::Media::Type t, Media::Media::Direction d);
 
    template<typename T>
    static inline Media::Media::Type getType() {
       const int id = MediaTypeInference::getId<T>();
-      return MediaTypeInference::typeMap(!MediaTypeInference::typeMap().contains(id))[id];
+
+      static bool isInit = false;
+
+      //Try to map T to Media::Media::Type then use this to retrieve and cast the media
+      if ((!isInit) || MediaTypeInference::typeMap().contains(id)) {
+         isInit = true;
+         MediaTypeInference::typeMap()[MediaTypeInference::getId<Media::Audio>()] = ::Media::Media::Type::AUDIO;
+         MediaTypeInference::typeMap()[MediaTypeInference::getId<Media::Video>()] = ::Media::Media::Type::VIDEO;
+         MediaTypeInference::typeMap()[MediaTypeInference::getId<Media::Text >()] = ::Media::Media::Type::TEXT ;
+         MediaTypeInference::typeMap()[MediaTypeInference::getId<Media::File >()] = ::Media::Media::Type::FILE ;
+      }
+
+      return MediaTypeInference::typeMap()[id];
    }
 
 private:
@@ -33,7 +51,7 @@ private:
       return id;
    }
    static int genId();
-   static QHash<int, Media::Media::Type>& typeMap(bool regen = false);
+   static QHash<int, Media::Media::Type>& typeMap();
 };
 
 /**
