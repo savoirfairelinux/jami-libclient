@@ -971,17 +971,9 @@ int MediaTypeInference::genId() {
  * now the safeMediaCreator switch is the only place where this would be useful,
  * so there is very little point to do that.
  */
-QHash<int, Media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
-   static bool isInit = false;
-   //Try to map T to Media::Media::Type then use this to retrieve and cast the media
+QHash<int, Media::Media::Type>& MediaTypeInference::typeMap() {
    static QHash<int, Media::Media::Type> sTypeMap;
-   if (!isInit || regen) {
-      isInit = true;
-      sTypeMap[MediaTypeInference::getId<Media::Audio>()] = Media::Media::Type::AUDIO;
-      sTypeMap[MediaTypeInference::getId<Media::Video>()] = Media::Media::Type::VIDEO;
-      sTypeMap[MediaTypeInference::getId<Media::Text >()] = Media::Media::Type::TEXT ;
-      sTypeMap[MediaTypeInference::getId<Media::File >()] = Media::Media::Type::FILE ;
-   }
+
    return sTypeMap;
 }
 
