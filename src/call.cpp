@@ -977,10 +977,7 @@ QHash<int, Media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
    static QHash<int, Media::Media::Type> sTypeMap;
    if (!isInit || regen) {
       isInit = true;
-      sTypeMap[MediaTypeInference::getId<Media::Audio>()] = Media::Media::Type::AUDIO;
-      sTypeMap[MediaTypeInference::getId<Media::Video>()] = Media::Media::Type::VIDEO;
-      sTypeMap[MediaTypeInference::getId<Media::Text >()] = Media::Media::Type::TEXT ;
-      sTypeMap[MediaTypeInference::getId<Media::File >()] = Media::Media::Type::FILE ;
+      REGISTER_MEDIA()
    }
    return sTypeMap;
 }
