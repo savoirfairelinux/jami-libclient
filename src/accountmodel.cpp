@@ -528,11 +528,11 @@ AccountModel::EditState AccountModel::editState() const
    static ES s_CurrentState = ES::INVALID;
 
    //This class is a singleton, so using static variables is ok
-   static Matrix1D<ES,int> estates = {{
-      /* SAVED   */ 0,
-      /* UNSAVED */ 0,
-      /* INVALID */ 0,
-   }};
+   static Matrix1D<ES,int> estates = {
+      { ES::SAVED   , 0},
+      { ES::UNSAVED , 0},
+      { ES::INVALID , 0},
+   };
 
    auto genState = [this]( const Account* a, AES s, AES p ) {
       Q_UNUSED(a)
