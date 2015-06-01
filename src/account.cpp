@@ -56,18 +56,25 @@
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
+
 #define AP &AccountPrivate
-const Matrix2D<Account::EditState, Account::EditAction, account_function> AccountPrivate::stateMachineActionsOnState = {{
-/*                           NOTHING        EDIT        RELOAD        SAVE        REMOVE      MODIFY         CANCEL         */
-/*READY               */{{ AP::nothing, AP::edit   , AP::reload , AP::nothing, AP::remove , AP::modify   , AP::nothing }},/**/
-/*EDITING             */{{ AP::nothing, AP::nothing, AP::outdate, AP::nothing, AP::remove , AP::modify   , AP::cancel  }},/**/
-/*OUTDATED            */{{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::remove , AP::reloadMod, AP::reload  }},/**/
-/*NEW                 */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing }},/**/
-/*MODIFIED_INCOMPLETE */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }},/**/
-/*MODIFIED_COMPLETE   */{{ AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }},/**/
-/*REMOVED             */{{ AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  }} /**/
-/*                                                                                                                          */
-}};
+#define EA Account::EditAction
+#define ES Account::EditState
+
+static EnumClassReordering<Account::EditAction> co =
+{                                 EA::NOTHING,  EA::EDIT  , EA::RELOAD ,  EA::SAVE  , EA::REMOVE , EA::MODIFY   , EA::CANCEL     };
+const Matrix2D<Account::EditState, Account::EditAction, account_function> AccountPrivate::stateMachineActionsOnState = {
+{ES::READY               ,{{co, { AP::nothing, AP::edit   , AP::reload , AP::nothing, AP::remove , AP::modify   , AP::nothing }}}},
+{ES::EDITING             ,{{co, { AP::nothing, AP::nothing, AP::outdate, AP::nothing, AP::remove , AP::modify   , AP::cancel  }}}},
+{ES::OUTDATED            ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::remove , AP::reloadMod, AP::reload  }}}},
+{ES::NEW                 ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing }}}},
+{ES::MODIFIED_INCOMPLETE ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }}}},
+{ES::MODIFIED_COMPLETE   ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }}}},
+{ES::REMOVED             ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  }}}} 
+};
+
+#undef ES
+#undef EA
 #undef AP
 
 //Host the current highest interal identifier. The internal id is used for some bitmasks
