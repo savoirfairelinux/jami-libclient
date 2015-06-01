@@ -58,6 +58,14 @@ struct TypedStateMachine
    }
 };
 
+template<typename Enum>
+class EnumClassReordering {
+public:
+   EnumClassReordering(std::initializer_list<Enum> s);
+// private:
+   Enum m_lData[enum_class_size<Enum>()];
+};
+
 
 /**
  * This generic class represents a multidimensional enum class array.
@@ -78,8 +86,14 @@ struct Matrix1D
       Value value;
    };
 
+   struct Order {
+      const EnumClassReordering<Row>     order;
+      std::initializer_list<Value> vs   ;
+   };
+
    Matrix1D(std::initializer_list< std::initializer_list<Value> > s);
    Matrix1D(std::initializer_list< Pairs > s);
+   Matrix1D(std::initializer_list<Order> s);
    explicit Matrix1D();
    ~Matrix1D();
 
