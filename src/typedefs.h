@@ -88,11 +88,11 @@ public:
       return *this;
    }
 
-   FlagPack<T> operator&(const T& other) {
+   FlagPack<T> operator&(const T& other) const {
       return FlagPack<T>(m_Flags & static_cast<int>(other));
    }
 
-   FlagPack<T> operator&(const FlagPack<T>& other) {
+   FlagPack<T> operator&(const FlagPack<T>& other) const {
       return FlagPack<T>(m_Flags & other.m_Flags);
    }
 
@@ -101,23 +101,23 @@ public:
       return *this;
    }
 
-   bool operator!=(const T& other) {
+   bool operator!=(const T& other) const {
       return  m_Flags != static_cast<int>(other);
    }
 
-   bool operator==(const T& other) {
+   bool operator==(const T& other) const {
       return  m_Flags == static_cast<int>(other);
    }
 
-   bool operator==(const FlagPack<T>& other) {
+   bool operator==(const FlagPack<T>& other) const {
       return  m_Flags == other.m_Flags;
    }
 
-   bool operator!() {
+   bool operator!() const {
       return !m_Flags;
    }
 
-   operator bool() {
+   operator bool() const {
       return m_Flags != 0;
    }
 
