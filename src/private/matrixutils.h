@@ -100,6 +100,8 @@ struct Matrix1D
 
    // Row is a built-in type ("int" by default)
    Value operator[](Row v);
+   void operator=(Matrix1D<Row,Value,A>& other);
+   void operator=(std::initializer_list< Pairs > s);
 
    const Value operator[](Row v) const;
 
