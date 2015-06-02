@@ -200,6 +200,21 @@ const Value Matrix1D<Row,Value,Accessor>::operator[](Row v) const {
    return *(m_lData[static_cast<int>(v)]);
 }
 
+template<class Row, typename Value, typename Accessor>
+void Matrix1D<Row,Value,Accessor>::operator=(Matrix1D<Row,Value,Accessor>& other)
+{
+   for (int i = 0; i < enum_class_size<Row>(); i++) {
+      m_lData[i] = new Value(*other.m_lData[i]);
+   }
+}
+
+template<class Row, typename Value, typename Accessor>
+void Matrix1D<Row,Value,Accessor>::operator=(std::initializer_list< Pairs > s)
+{
+   Matrix1D<Row,Value,Accessor> m(s);
+   (*this) = m;
+}
+
 template <class E, class T, class A> QMap<A,E> Matrix1D<E,T,A>::m_hReverseMapping;
 
 template<class Row, typename Value, typename Accessor>
