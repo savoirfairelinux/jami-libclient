@@ -373,7 +373,7 @@ QString ContactMethod::primaryName() const
       if (d_ptr->m_hNames.size() == 1)
          ret =  d_ptr->m_hNames.constBegin().key();
       else {
-         QString toReturn = tr("Unknown"); //FIXME maybe the fallback should be the URI
+         QString toReturn = uri();
          int max = 0;
          for (QHash<QString,int>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
             if (i.value() > max) {
