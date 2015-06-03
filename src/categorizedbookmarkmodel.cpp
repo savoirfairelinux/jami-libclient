@@ -33,6 +33,7 @@
 #include "mime.h"
 #include "collectioneditor.h"
 #include "collectioninterface.h"
+#include "private/phonedirectorymodel_p.h"
 
 ///Top level bookmark item
 class BookmarkTopLevelItem final : public CategorizedCompositeNode {
@@ -99,6 +100,8 @@ class NumberTreeBackend final : public CategorizedCompositeNode
       Type m_Type;
       int m_PopularIdx;
       QMetaObject::Connection m_Conn;
+
+      inline ContactMethod* number();
 };
 
 CategorizedBookmarkModelPrivate::CategorizedBookmarkModelPrivate(CategorizedBookmarkModel* parent) : QObject(parent), q_ptr(parent)
@@ -114,6 +117,11 @@ NumberTreeBackend::NumberTreeBackend(ContactMethod* number): CategorizedComposit
 NumberTreeBackend::~NumberTreeBackend()
 {
    QObject::disconnect(m_Conn);
+}
+
+ContactMethod* NumberTreeBackend::number()
+{
+   return m_Type==NumberTreeBackend::Type::POPULAR ? PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex[m_PopularIdx] : m_pNumber;
 }
 
 QObject* BookmarkTopLevelItem::getSelf() const
@@ -163,7 +171,7 @@ void CategorizedBookmarkModel::reloadCategories()
       //TODO this is not efficient, nor necessary
       foreach(BookmarkTopLevelItem* item, d_ptr->m_lCategoryCounter) {
          foreach (NumberTreeBackend* child, item->m_lChildren) {
-            auto l = d_ptr->m_Tracked[child->m_pNumber];
+            auto l = d_ptr->m_Tracked[child->number()];
             if (l) {
                disconnect(l);
             }
@@ -378,21 +386,22 @@ int CategorizedBookmarkModel::acceptedPayloadTypes()
 }
 
 ///Get call info TODO use Call:: one
-QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* number, int role) const
+QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* n, int role) const
 {
-   if (!number)
+   if (!n)
       return QVariant();
    QVariant cat;
+   ContactMethod* m = n->number();
    switch (role) {
       case Qt::DisplayRole:
       case static_cast<int>(Call::Role::Name):
-         cat = number->m_pNumber->contact()?number->m_pNumber->contact()->formattedName():number->m_pNumber->primaryName();
+         cat = m->contact()?m->contact()->formattedName():m->primaryName();
          break;
       case Qt::ToolTipRole:
-         cat = number->m_pNumber->presenceMessage();
+         cat = m->presenceMessage();
          break;
       case static_cast<int>(Call::Role::Number):
-         cat = number->m_pNumber->uri();//call->getPeerContactMethod();
+         cat = m->uri();//call->getPeerContactMethod();
          break;
       case static_cast<int>(Call::Role::Direction):
          cat = 4;//call->getHistoryState();
@@ -413,16 +422,16 @@ QVariant CategorizedBookmarkModelPrivate::commonCallInfo(NumberTreeBackend* numb
          cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
          break;
       case static_cast<int>(Call::Role::ContactMethod):
-         return QVariant::fromValue(number->m_pNumber);
+         return QVariant::fromValue(m);
       case static_cast<int>(Call::Role::IsBookmark):
          return true;
       case static_cast<int>(Call::Role::Filter):
-         return number->m_pNumber->uri()+number->m_pNumber->primaryName();
+         return m->uri()+m->primaryName();
       case static_cast<int>(Call::Role::IsPresent):
-         return number->m_pNumber->isPresent();
+         return m->isPresent();
       case static_cast<int>(Call::Role::Photo):
-         if (number->m_pNumber->contact())
-            return number->m_pNumber->contact()->photo();
+         if (m->contact())
+            return m->contact()->photo();
          cat = true;
          break;
    }
@@ -528,7 +537,8 @@ ContactMethod* CategorizedBookmarkModel::getNumber(const QModelIndex& idx)
 {
    if (idx.isValid()) {
       if (idx.parent().isValid() && idx.parent().row() < d_ptr->m_lCategoryCounter.size()) {
-         return d_ptr->m_lCategoryCounter[idx.parent().row()]->m_lChildren[idx.row()]->m_pNumber;
+         NumberTreeBackend* bm = d_ptr->m_lCategoryCounter[idx.parent().row()]->m_lChildren[idx.row()];
+         return bm->number();
       }
    }
    return nullptr;
