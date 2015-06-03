@@ -30,6 +30,7 @@ class Person              ;
 class Account             ;
 class Call                ;
 class TemporaryContactMethod;
+class NumberTreeBackend;
 
 //Private
 class PhoneDirectoryModelPrivate;
@@ -40,6 +41,7 @@ class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
    //NumberCompletionModel need direct access to the indexes
    friend class NumberCompletionModel;
    friend class NumberCompletionModelPrivate;
+   friend class NumberTreeBackend;
 
    //Friend unit test class
    friend class AutoCompletionTest;
