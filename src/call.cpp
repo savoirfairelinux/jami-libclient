@@ -366,7 +366,7 @@ Call::~Call()
 Call* CallPrivate::buildExistingCall(const QString& callId)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString       details     = callManager.getCallDetails(callId);
+   MapStringString       details     = getCallDetailsCommon(callId);
 
    //Too noisy
    //qDebug() << "Constructing existing call with details : " << details;
@@ -424,11 +424,41 @@ Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
    return call;
 }
 
+MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
+{
+
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+
+   MapStringString details = callManager.getCallDetails(callId);
+
+   const QString account = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID ];
+
+   if (account.isEmpty())
+      return details;
+
+   Account* acc = AccountModel::instance()->getById(account.toLatin1());
+
+   //Only keep the useful part of the URI
+   if (acc && acc->protocol() == Account::Protocol::RING)
+      details[DetailsMapFields::PEER_NUMBER] = URI(details[DetailsMapFields::PEER_NUMBER]).format(
+         URI::Section::SCHEME    |
+         URI::Section::USER_INFO
+      );
+   else
+      details[DetailsMapFields::PEER_NUMBER] = URI(details[DetailsMapFields::PEER_NUMBER]).format(
+         URI::Section::SCHEME    |
+         URI::Section::USER_INFO |
+         URI::Section::HOSTNAME
+      );
+
+   return details;
+}
+
 ///Build a call from a dbus event
 Call* CallPrivate::buildIncomingCall(const QString& callId)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString details = callManager.getCallDetails(callId);
+   MapStringString details = getCallDetailsCommon(callId);
 
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
@@ -460,8 +490,7 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
 ///Build a ringing call (from dbus)
 Call* CallPrivate::buildRingingCall(const QString & callId)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString details = callManager.getCallDetails(callId);
+   MapStringString details = getCallDetailsCommon(callId);
 
    const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
    const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
@@ -1169,8 +1198,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
          return m_CurrentState;
       }
 
-      CallManagerInterface & callManager = DBus::CallManager::instance();
-      MapStringString details = callManager.getCallDetails(m_DringId);
+      MapStringString details = getCallDetailsCommon(m_DringId);
       if (details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName)
          m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
 

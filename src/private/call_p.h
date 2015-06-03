@@ -241,6 +241,7 @@ public:
    void registerRenderer(Video::Renderer* renderer);
    void removeRenderer(Video::Renderer* renderer);
    void setRecordingPath(const QString& path);
+   static MapStringString getCallDetailsCommon(const QString& callId);
    template<typename T>
    T* mediaFactory(Media::Media::Direction dir);
 
