@@ -31,7 +31,11 @@ public:
    class ProtocolPrefix {
    public:
       constexpr static const char* NONE    = ""          ;
+      #ifdef _WIN32
+      constexpr static const char* DISPLAY = "windisplay://";
+      #else
       constexpr static const char* DISPLAY = "display://";
+      #endif
       constexpr static const char* FILE    = "file://"   ;
       constexpr static const char* CAMERA  = "camera://"   ;
    };
