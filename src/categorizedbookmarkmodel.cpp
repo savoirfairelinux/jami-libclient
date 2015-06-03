@@ -68,7 +68,7 @@ public:
    QVector<ContactMethod*>   bookmarkList         () const;
    static QVector<ContactMethod*> serialisedToList(const QStringList& list);
 
-private Q_SLOTS:
+public Q_SLOTS:
    void slotRequest(const QString& uri);
    void slotIndexChanged(const QModelIndex& idx);
 
@@ -78,14 +78,17 @@ private:
 
 CategorizedBookmarkModel* CategorizedBookmarkModel::m_spInstance = nullptr;
 
-class BookmarkItemNode;
-
 static bool test = false;
 //Model item/index
 class NumberTreeBackend final : public CategorizedCompositeNode
 {
    friend class CategorizedBookmarkModel;
    public:
+      enum class Type {
+         BOOKMARK,
+         POPULAR,
+      };
+
       NumberTreeBackend(ContactMethod* number);
       virtual ~NumberTreeBackend();
       virtual QObject* getSelf() const override { return nullptr; }
@@ -93,45 +96,24 @@ class NumberTreeBackend final : public CategorizedCompositeNode
       ContactMethod* m_pNumber;
       BookmarkTopLevelItem* m_pParent;
       int m_Index;
-      BookmarkItemNode* m_pNode;
-};
-
-class BookmarkItemNode final : public QObject //TODO remove this once Qt4 support is dropped
-{
-   Q_OBJECT
-public:
-   BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend);
-private:
-   NumberTreeBackend* m_pBackend;
-   CategorizedBookmarkModel* m_pModel;
-private Q_SLOTS:
-   void slotNumberChanged();
-Q_SIGNALS:
-   void changed(const QModelIndex& idx);
+      Type m_Type;
+      int m_PopularIdx;
+      QMetaObject::Connection m_Conn;
 };
 
 CategorizedBookmarkModelPrivate::CategorizedBookmarkModelPrivate(CategorizedBookmarkModel* parent) : QObject(parent), q_ptr(parent)
 {
-   
+
 }
 
 NumberTreeBackend::NumberTreeBackend(ContactMethod* number): CategorizedCompositeNode(CategorizedCompositeNode::Type::BOOKMARK),
-   m_pNumber(number),m_pParent(nullptr),m_pNode(nullptr),m_Index(-1){
+   m_pNumber(number),m_pParent(nullptr),m_Index(-1), m_Type(NumberTreeBackend::Type::BOOKMARK), m_PopularIdx(-1){
    Q_ASSERT(number != nullptr);
 }
 
-NumberTreeBackend::~NumberTreeBackend() {
-   if (m_pNode) delete m_pNode;
-}
-
-BookmarkItemNode::BookmarkItemNode(CategorizedBookmarkModel* m, ContactMethod* n, NumberTreeBackend* backend) :
-m_pBackend(backend),m_pModel(m){
-   connect(n,SIGNAL(changed()),this,SLOT(slotNumberChanged()));
-}
-
-void BookmarkItemNode::slotNumberChanged()
+NumberTreeBackend::~NumberTreeBackend()
 {
-   emit changed(m_pModel->index(m_pBackend->m_Index,0,m_pModel->index(m_pBackend->m_pParent->m_Row,0)));
+   QObject::disconnect(m_Conn);
 }
 
 QObject* BookmarkTopLevelItem::getSelf() const
@@ -204,10 +186,15 @@ void CategorizedBookmarkModel::reloadCategories()
          for (int i=0;i<((cl.size()>=10)?10:cl.size());i++) {
             ContactMethod* n = cl[i];
             NumberTreeBackend* bm = new NumberTreeBackend(n);
-            bm->m_pParent = item;
-            bm->m_Index = item->m_lChildren.size();
-            bm->m_pNode = new BookmarkItemNode(this,n,bm);
-            connect(bm->m_pNode,SIGNAL(changed(QModelIndex)),d_ptr,SLOT(slotIndexChanged(QModelIndex)));
+            bm->m_pParent    = item;
+            bm->m_Type       = NumberTreeBackend::Type::POPULAR;
+            bm->m_PopularIdx = i;
+            bm->m_Index      = item->m_lChildren.size();
+
+            bm->m_Conn = connect(n, &ContactMethod::changed, [this,bm]() {
+               d_ptr->slotIndexChanged(index(bm->m_Index,0,index(bm->m_pParent->m_Row,0)));
+            });
+
             item->m_lChildren << bm;
          }
 
@@ -227,8 +214,9 @@ void CategorizedBookmarkModel::reloadCategories()
             bookmark->setBookmarked(true);
             bm->m_pParent = item;
             bm->m_Index = item->m_lChildren.size();
-            bm->m_pNode = new BookmarkItemNode(this,bookmark,bm);
-            connect(bm->m_pNode,SIGNAL(changed(QModelIndex)),d_ptr,SLOT(slotIndexChanged(QModelIndex)));
+            bm->m_Conn = connect(bookmark, &ContactMethod::changed, [this,bm]() {
+               d_ptr->slotIndexChanged(index(bm->m_Index,0,index(bm->m_pParent->m_Row,0)));
+            });
             item->m_lChildren << bm;
 
             if (!d_ptr->m_Tracked[bookmark]) {
