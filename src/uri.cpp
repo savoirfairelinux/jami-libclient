@@ -516,7 +516,7 @@ QString URI::format(FlagPack<URI::Section> sections) const
    if (sections & URI::Section::USER_INFO)
       ret += d_ptr->m_Userinfo;
 
-   if (sections & URI::Section::HOSTNAME)
+   if (sections & URI::Section::HOSTNAME && !d_ptr->m_Hostname2.isEmpty())
       ret += '@' + d_ptr->m_Hostname2;
 
    if (sections & URI::Section::PORT && d_ptr->m_Port != -1)
