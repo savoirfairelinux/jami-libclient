@@ -900,6 +900,11 @@ QString Account::turnServer() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER);
 }
 
+bool Account::hasProxy() const
+{
+   return proxy().size();
+}
+
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
 {
@@ -1015,6 +1020,38 @@ QVariant Account::roleData(int role) const
          return turnServer();
       case CAST(Account::Role::SipTurnEnabled):
          return isTurnEnabled();
+      case CAST(Account::Role::UserAgent):
+         return userAgent();
+      case CAST(Account::Role::Password):
+         return password();
+      case CAST(Account::Role::SupportPresencePublish   ):
+         return supportPresencePublish();
+      case CAST(Account::Role::SupportPresenceSubscribe ):
+         return supportPresenceSubscribe();
+      case CAST(Account::Role::PresenceEnabled          ):
+         return presenceEnabled();
+      case CAST(Account::Role::IsVideoEnabled           ):
+         return isVideoEnabled();
+      case CAST(Account::Role::VideoPortMax             ):
+         return videoPortMax();
+      case CAST(Account::Role::VideoPortMin             ):
+         return videoPortMin();
+      case CAST(Account::Role::AudioPortMin             ):
+         return audioPortMin();
+      case CAST(Account::Role::AudioPortMax             ):
+         return audioPortMax();
+      case CAST(Account::Role::IsUpnpEnabled            ):
+         return isUpnpEnabled();
+      case CAST(Account::Role::HasCustomUserAgent       ):
+         return hasCustomUserAgent();
+      case CAST(Account::Role::LastTransportErrorCode   ):
+         return lastTransportErrorCode();
+      case CAST(Account::Role::LastTransportErrorMessage):
+         return lastTransportErrorMessage();
+      case CAST(Account::Role::TurnServer               ):
+         return turnServer();
+      case CAST(Account::Role::HasProxy                 ):
+         return hasProxy();
       default:
          return QVariant();
    }
@@ -1663,6 +1700,49 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::Id):
          setId(value.toByteArray());
+         break;
+      case CAST(Account::Role::UserAgent):
+         setUserAgent(value.toString());
+         break;
+      case CAST(Account::Role::Password):
+         setPassword(value.toString());
+         break;
+      case CAST(Account::Role::SupportPresencePublish   ):
+         break;
+      case CAST(Account::Role::SupportPresenceSubscribe ):
+         break;
+      case CAST(Account::Role::PresenceEnabled          ):
+         setPresenceEnabled(value.toBool());
+         break;
+      case CAST(Account::Role::IsVideoEnabled           ):
+         break;
+      case CAST(Account::Role::VideoPortMax             ):
+         setVideoPortMax(value.toInt());
+         break;
+      case CAST(Account::Role::VideoPortMin             ):
+         setVideoPortMin(value.toInt());
+         break;
+      case CAST(Account::Role::AudioPortMin             ):
+         setAudioPortMin(value.toInt());
+         break;
+      case CAST(Account::Role::AudioPortMax             ):
+         setAudioPortMax(value.toInt());
+         break;
+      case CAST(Account::Role::IsUpnpEnabled            ):
+         setUpnpEnabled(value.toBool());
+         break;
+      case CAST(Account::Role::HasCustomUserAgent       ):
+         setHasCustomUserAgent(value.toBool());
+         break;
+      case CAST(Account::Role::LastTransportErrorCode   ):
+         break;
+      case CAST(Account::Role::LastTransportErrorMessage):
+         break;
+      case CAST(Account::Role::SipTurnEnabled           ):
+         setTurnEnabled(value.toBool());
+         break;
+      case CAST(Account::Role::TurnServer               ):
+         setTurnServer(value.toString());
          break;
    }
 }

@@ -238,6 +238,22 @@ class LIB_EXPORT Account : public QObject {
          LastUsed                    = 150,
          SipTurnServer               = 151,
          SipTurnEnabled              = 152,
+         UserAgent                   = 153,
+         Password                    = 154,
+         SupportPresencePublish      = 155,
+         SupportPresenceSubscribe    = 156,
+         PresenceEnabled             = 165,
+         IsVideoEnabled              = 169,
+         VideoPortMax                = 157,
+         VideoPortMin                = 158,
+         AudioPortMin                = 159,
+         AudioPortMax                = 160,
+         IsUpnpEnabled               = 161,
+         HasCustomUserAgent          = 162,
+         LastTransportErrorCode      = 163,
+         LastTransportErrorMessage   = 164,
+         TurnServer                  = 168,
+         HasProxy                    = 170,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
@@ -344,6 +360,7 @@ class LIB_EXPORT Account : public QObject {
       bool    useDefaultPort               () const;
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
+      bool    hasProxy                     () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
