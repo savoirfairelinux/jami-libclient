@@ -146,7 +146,25 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TrimesterCallCount          ) ,QByteArray("trimesterCallCount"            ));
       roles.insert(CAST(Account::Role::LastUsed                    ) ,QByteArray("lastUsed"                      ));
       roles.insert(CAST(Account::Role::SipTurnServer               ) ,QByteArray("sipTurnServer"                 ));
-      roles.insert(CAST(Account::Role::SipTurnEnabled              ) ,QByteArray("sipTurnEnabled"                ));
+      roles.insert(CAST(Account::Role::SipTurnEnabled              ) ,QByteArray("turnEnabled"                   ));
+      roles.insert(CAST(Account::Role::UserAgent                   ) ,QByteArray("userAgent"                     ));
+      roles.insert(CAST(Account::Role::Password                    ) ,QByteArray("password"                      ));
+      roles.insert(CAST(Account::Role::SupportPresencePublish      ) ,QByteArray("supportPresencePublish"        ));
+      roles.insert(CAST(Account::Role::SupportPresenceSubscribe    ) ,QByteArray("supportPresenceSubscribe"      ));
+      roles.insert(CAST(Account::Role::PresenceEnabled             ) ,QByteArray("presenceEnabled"               ));
+      roles.insert(CAST(Account::Role::IsVideoEnabled              ) ,QByteArray("isVideoEnabled"                ));
+      roles.insert(CAST(Account::Role::VideoPortMax                ) ,QByteArray("videoPortMax"                  ));
+      roles.insert(CAST(Account::Role::VideoPortMin                ) ,QByteArray("videoPortMin"                  ));
+      roles.insert(CAST(Account::Role::AudioPortMin                ) ,QByteArray("audioPortMin"                  ));
+      roles.insert(CAST(Account::Role::AudioPortMax                ) ,QByteArray("audioPortMax"                  ));
+      roles.insert(CAST(Account::Role::IsUpnpEnabled               ) ,QByteArray("upnpEnabled"                   ));
+      roles.insert(CAST(Account::Role::HasCustomUserAgent          ) ,QByteArray("hasCustomUserAgent"            ));
+      roles.insert(CAST(Account::Role::LastTransportErrorCode      ) ,QByteArray("lastTransportErrorCode"        ));
+      roles.insert(CAST(Account::Role::LastTransportErrorMessage   ) ,QByteArray("lastTransportErrorMessage"     ));
+      roles.insert(CAST(Account::Role::UserAgent                   ) ,QByteArray("userAgent"                     ));
+      roles.insert(CAST(Account::Role::UseDefaultPort              ) ,QByteArray("useDefaultPort"                ));
+      roles.insert(CAST(Account::Role::TurnServer                  ) ,QByteArray("turnServer"                    ));
+      roles.insert(CAST(Account::Role::HasProxy                    ) ,QByteArray("hasProxy"                      ));
    }
    return roles;
 }
