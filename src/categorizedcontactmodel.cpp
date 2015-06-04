@@ -63,16 +63,24 @@ public:
    uint                      m_Index         ;
    QString                   m_Name          ;
    NodeType                  m_Type          ;
-   ContactTreeNode*          m_pParent       ;
    QVector<ContactTreeNode*> m_lChildren     ;
    CategorizedContactModel*  m_pModel        ;
-   bool                      m_Visible       ;
+
+   //Setter
+   inline void setParent (ContactTreeNode* n);
+   inline void setVisible( bool visible     );
 
    //Helpers
-   void slotChanged                        (                );
-   void slotContactMethodCountChanged      (int,int         );
-   void slotContactMethodCountAboutToChange(int,int         );
+   void slotChanged                        (       );
+   void slotContactMethodCountChanged      (int,int);
+   void slotContactMethodCountAboutToChange(int,int);
+
+private:
+   ContactTreeNode* m_pParent       ;
+   bool             m_Visible       ;
+   uint             m_VisibleCounter;
 };
+
 class CategorizedContactModelPrivate final : public QObject
 {
    Q_OBJECT
@@ -113,7 +121,8 @@ public Q_SLOTS:
 CategorizedContactModel* CategorizedContactModelPrivate::m_spInstance = nullptr;
 
 ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
-   m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent),m_Visible(true)
+   m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent),m_Visible(true),
+   m_VisibleCounter(0)
 {
    m_Visible = m_pContact->isActive() && ((!parent->d_ptr->m_UnreachableHidden) || m_pContact->isReachable());
    QObject::connect(m_pContact,&Person::changed                      ,[this](            ){ slotChanged                        (   ); });
@@ -123,14 +132,14 @@ ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* pare
 
 ContactTreeNode::ContactTreeNode(ContactMethod* cm, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
    m_pContactMethod(cm),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CONTACTMETHOD),m_pParent(nullptr),m_pModel(parent),
-   m_Visible(true)
+   m_Visible(true),m_VisibleCounter(0)
 {
    QObject::connect(m_pContactMethod,&ContactMethod::changed,[this](){ slotChanged(); });
 }
 
 ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
    m_pContactMethod(nullptr),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CATEGORY),m_Name(name),m_pParent(nullptr),
-   m_pModel(parent),m_Visible(true)
+   m_pModel(parent),m_Visible(false),m_VisibleCounter(0)
 {
 }
 
@@ -168,7 +177,7 @@ void ContactTreeNode::slotContactMethodCountChanged(int count, int oldCount)
       for (int i = count; i < oldCount; i++) {
          ContactTreeNode* n2 = new ContactTreeNode(m_pContact->phoneNumbers()[i],m_pModel);
          n2->m_Index = m_lChildren.size();
-         n2->m_pParent = this;
+         n2->setParent(this);
          m_lChildren << n2;
       }
       m_pModel->endInsertRows();
@@ -184,6 +193,30 @@ void ContactTreeNode::slotContactMethodCountAboutToChange(int count, int oldCoun
       m_pModel->beginRemoveRows(idx,count == 1?0:count,oldCount-1);
       //FIXME memory leak
       m_pModel->endRemoveRows();
+   }
+}
+
+void ContactTreeNode::setParent(ContactTreeNode* p)
+{
+   m_pParent = p;
+   if (p && p->m_Type == NodeType::CATEGORY) {
+      p->m_VisibleCounter += m_Visible ? 1 : 0;
+      p->setVisible(p->m_VisibleCounter > 0);
+   }
+}
+
+void ContactTreeNode::setVisible(bool v)
+{
+   if (v != m_Visible) {
+      if (m_pParent) {
+         m_pParent->m_VisibleCounter += m_Visible ? 1 : 0;
+         m_pParent->m_Visible = m_pParent->m_VisibleCounter > 0;
+      }
+      m_Visible = v;
+      const QModelIndex idx = m_pModel->index(m_Index,0,m_pParent ?
+         m_pModel->index(m_pParent->m_Index,0) : QModelIndex()
+      );
+      emit m_pModel->dataChanged(idx,idx);
    }
 }
 
@@ -283,19 +316,20 @@ void CategorizedContactModelPrivate::slotContactAdded(const Person* c)
    const QString val = category(c);
    ContactTreeNode* item = getContactTopLevelItem(val);
    ContactTreeNode* contactNode = new ContactTreeNode(c,q_ptr);
-   contactNode->m_pParent = item;
+   contactNode->setParent(item);
    contactNode->m_Index = item->m_lChildren.size();
    //emit layoutAboutToBeChanged();
    q_ptr->beginInsertRows(q_ptr->index(item->m_Index,0,QModelIndex()),item->m_lChildren.size(),item->m_lChildren.size()); {
       item->m_lChildren << contactNode;
    } q_ptr->endInsertRows();
+   reloadTreeVisibility(item);
 
    if (c->phoneNumbers().size() > 1) {
       q_ptr->beginInsertRows(q_ptr->createIndex(contactNode->m_Index,0,contactNode),0,c->phoneNumbers().size() - 1);
-      for (ContactMethod* m : c->phoneNumbers() ) {
+      for (ContactMethod* m : c->phoneNumbers() ) { //TODO check if this can be merged with slotContactMethodCountChanged
          ContactTreeNode* n2 = new ContactTreeNode(m,q_ptr);
          n2->m_Index = contactNode->m_lChildren.size();
-         n2->m_pParent = contactNode;
+         n2->setParent(contactNode);
          contactNode->m_lChildren << n2;
       }
       q_ptr->endInsertRows();
@@ -419,10 +453,9 @@ Qt::ItemFlags CategorizedContactModel::flags( const QModelIndex& index ) const
 
    const ContactTreeNode* modelNode = static_cast<ContactTreeNode*>(index.internalPointer());
 
-   return ((modelNode->m_Visible) ? Qt::ItemIsEnabled : Qt::NoItemFlags )
-      | Qt::ItemIsSelectable
-      | (modelNode->m_pParent? (Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled) : Qt::ItemIsEnabled
-   );
+   return (modelNode->m_Visible) ? Qt::ItemIsEnabled  | Qt::ItemIsSelectable | (
+      modelNode->m_pParent? (Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled) : Qt::NoItemFlags
+   ) : Qt::NoItemFlags ;
 }
 
 int CategorizedContactModel::columnCount ( const QModelIndex& parent) const
@@ -586,7 +619,7 @@ void CategorizedContactModelPrivate::reloadTreeVisibility( ContactTreeNode* node
 
    switch(node->m_Type) {
       case ContactTreeNode::NodeType::PERSON       :
-         node->m_Visible = node->m_pContact->isActive() && ((!m_UnreachableHidden) || node->m_pContact->isReachable());
+         node->setVisible(node->m_pContact->isActive() && ((!m_UnreachableHidden) || node->m_pContact->isReachable()));
          break;
       case ContactTreeNode::NodeType::CONTACTMETHOD:
          //Nothing to do
