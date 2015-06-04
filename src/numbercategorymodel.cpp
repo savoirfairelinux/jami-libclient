@@ -97,7 +97,7 @@ NumberCategory* NumberCategoryModel::addCategory(const QString& name, const QVar
       rep = new NumberCategoryModelPrivate::InternalTypeRepresentation();
       rep->counter = 0      ;
    }
-   NumberCategory* cat = addCollection<NumberCategory,QString>(name,LoadOptions::NONE);
+   NumberCategory* cat = addCollection<NumberCategory,QString>(name.size() ? name : tr("Other"), LoadOptions::NONE);
    cat->setKey ( key  );
    cat->setIcon( icon );
 
