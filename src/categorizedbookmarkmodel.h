@@ -52,9 +52,6 @@ public:
    void setRole(int role);
    void setShowAll(bool showAll);
 
-   //Backend model implementation
-   virtual bool clearAllCollections() const override;
-
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
    virtual bool          removeRows  ( int row, int count, const QModelIndex& parent=QModelIndex() )       override;
