@@ -42,10 +42,8 @@
 
 PhoneDirectoryModel* PhoneDirectoryModel::m_spInstance = nullptr;
 
-
-
 PhoneDirectoryModelPrivate::PhoneDirectoryModelPrivate(PhoneDirectoryModel* parent) : QObject(parent), q_ptr(parent),
-m_CallWithAccount(false)
+m_CallWithAccount(false),m_pPopularModel(nullptr)
 {
 }
 
@@ -610,10 +608,14 @@ void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
          } while (currentIndex && m_lPopularityIndex[currentIndex-1]->callCount() < number->callCount());
          number->setPopularityIndex(currentIndex);
          emit q_ptr->layoutChanged();
+         if (m_pPopularModel)
+            m_pPopularModel->reload();
       }
       //The top 10 is not complete, a call count of "1" is enough to make it
       else if (m_lPopularityIndex.size() < 10 && currentIndex == -1) {
          m_lPopularityIndex << number;
+         if (m_pPopularModel)
+            m_pPopularModel->addRow();
          number->setPopularityIndex(m_lPopularityIndex.size()-1);
          emit q_ptr->layoutChanged();
       }
@@ -625,6 +627,8 @@ void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
          number->setPopularityIndex(9);
          emit tmp->changed();
          emit number->changed();
+         if (m_pPopularModel)
+            m_pPopularModel->reload();
       }
 
       //Now check for new peer names
@@ -697,6 +701,58 @@ bool PhoneDirectoryModel::callWithAccount() const {
 //Setters
 void PhoneDirectoryModel::setCallWithAccount(bool value) {
    d_ptr->m_CallWithAccount = value;
+}
+
+///Popular number model related code
+
+MostPopularNumberModel::MostPopularNumberModel() : QAbstractListModel(PhoneDirectoryModel::instance()) {
+   setObjectName("MostPopularNumberModel");
+}
+
+QVariant MostPopularNumberModel::data( const QModelIndex& index, int role ) const
+{
+   if (!index.isValid())
+      return QVariant();
+
+   return PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex[index.row()]->roleData(role);
+}
+
+int MostPopularNumberModel::rowCount( const QModelIndex& parent ) const
+{
+   return parent.isValid() ? 0 : PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex.size();
+}
+
+Qt::ItemFlags MostPopularNumberModel::flags( const QModelIndex& index ) const
+{
+   return index.isValid() ? Qt::ItemIsEnabled | Qt::ItemIsSelectable : Qt::NoItemFlags;
+}
+
+bool MostPopularNumberModel::setData( const QModelIndex& index, const QVariant &value, int role)
+{
+   Q_UNUSED(index)
+   Q_UNUSED(value)
+   Q_UNUSED(role)
+   return false;
+}
+
+void MostPopularNumberModel::addRow()
+{
+   const int oldSize = PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex.size()-1;
+   beginInsertRows(QModelIndex(),oldSize,oldSize);
+   endInsertRows();
+}
+
+void MostPopularNumberModel::reload()
+{
+   emit dataChanged(index(0,0),index(rowCount(),0));
+}
+
+QAbstractListModel* PhoneDirectoryModel::mostPopularNumberModel() const
+{
+   if (!d_ptr->m_pPopularModel)
+      d_ptr->m_pPopularModel = new MostPopularNumberModel();
+
+   return d_ptr->m_pPopularModel;
 }
 
 #include <phonedirectorymodel.moc>
