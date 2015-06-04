@@ -29,6 +29,22 @@ struct NumberWrapper {
    QVector<ContactMethod*> numbers;
 };
 
+class MostPopularNumberModel final : public QAbstractListModel
+{
+   Q_OBJECT
+public:
+   MostPopularNumberModel();
+
+   //Model functions
+   virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
+   virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
+   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
+   virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
+
+   void addRow();
+   void reload();
+};
+
 class PhoneDirectoryModelPrivate final : public QObject
 {
    Q_OBJECT
@@ -72,6 +88,7 @@ public:
    QMap<QString,NumberWrapper*>  m_hSortedNumbers   ;
    QHash<QString,NumberWrapper*> m_hNumbersByNames  ;
    bool                          m_CallWithAccount  ;
+   MostPopularNumberModel*       m_pPopularModel    ;
 
 private:
    PhoneDirectoryModel* q_ptr;
