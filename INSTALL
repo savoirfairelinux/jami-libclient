@@ -49,14 +49,16 @@ OS X Install
 ============
 
 # Install necessary tools:
-brew install dbus cmake
+brew install cmake
 brew install qt5
-export CMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.3.2/
+export CMAKE_PREFIX_PATH=<path_to_qt5>
+
+hint: default install location with HomeBrew is /usr/local/Cellar/qt5
 
 # First make sure you have built ring daemon for OS X.
 
 mkdir build && cd build
-cmake .. [-DCMAKE_BUILD_TYPE=Debug for compiling with debug symbols]
+cmake .. -DCMAKE_INSTALL_PREFIX=<install_dir_of_daemon> [-DCMAKE_BUILD_TYPE=Debug for compiling with debug symbols]
 make
 
 install_name_tool -change @rpath/libring.0.dylib @executable_path/libring.0.dylib libringclient.1.4.1.dylib
