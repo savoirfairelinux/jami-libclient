@@ -30,6 +30,7 @@ class Person              ;
 class Account             ;
 class Call                ;
 class TemporaryContactMethod;
+class NumberTreeBackend;
 
 //Private
 class PhoneDirectoryModelPrivate;
@@ -40,6 +41,8 @@ class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
    //NumberCompletionModel need direct access to the indexes
    friend class NumberCompletionModel;
    friend class NumberCompletionModelPrivate;
+   friend class MostPopularNumberModel;
+   friend class CategorizedBookmarkModel;
 
    //Friend unit test class
    friend class AutoCompletionTest;
@@ -78,6 +81,7 @@ public:
    //Getter
    int count() const;
    bool callWithAccount() const;
+   QAbstractListModel* mostPopularNumberModel() const;
 
    //Setters
    void setCallWithAccount(bool value);
