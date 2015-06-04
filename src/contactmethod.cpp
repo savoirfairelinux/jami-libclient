@@ -474,17 +474,52 @@ QHash<QString,int> ContactMethod::alternativeNames() const
 
 QVariant ContactMethod::roleData(int role) const
 {
-   switch(role) {
+   QVariant cat;
+   switch (role) {
+      case static_cast<int>(Call::Role::Name):
+         cat = contact()?contact()->formattedName():primaryName();
+         break;
+      case Qt::ToolTipRole:
+         cat = presenceMessage();
+         break;
       case Qt::DisplayRole:
-      case Qt::EditRole:
-      case static_cast<int>(Role::Uri):
-         return uri();
-      case static_cast<int>(Role::Object):
+      case static_cast<int>(Call::Role::Number):
+         cat = uri();//call->getPeerContactMethod();
+         break;
+      case static_cast<int>(Call::Role::Direction):
+         cat = 4;//call->getHistoryState();
+         break;
+      case static_cast<int>(Call::Role::Date):
+         cat = tr("N/A");//call->getStartTimeStamp();
+         break;
+      case static_cast<int>(Call::Role::Length):
+         cat = tr("N/A");//call->getLength();
+         break;
+      case static_cast<int>(Call::Role::FormattedDate):
+         cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
+         break;
+      case static_cast<int>(Call::Role::HasAVRecording):
+         cat = false;//call->hasRecording();
+         break;
+      case static_cast<int>(Call::Role::FuzzyDate):
+         cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
+         break;
+      case static_cast<int>(Call::Role::ContactMethod):
+      case static_cast<int>(Call::Role::Object):
          return QVariant::fromValue(const_cast<ContactMethod*>(this));
-      case static_cast<int>(Role::CategoryIcon):
-         return category()? d_ptr->m_pCategory->icon(isTracked(), isPresent()) : QVariant();
+      case static_cast<int>(Call::Role::IsBookmark):
+         return true;
+      case static_cast<int>(Call::Role::Filter):
+         return uri()+primaryName();
+      case static_cast<int>(Call::Role::IsPresent):
+         return isPresent();
+      case static_cast<int>(Call::Role::Photo):
+         if (contact())
+            return contact()->photo();
+         cat = true;
+         break;
    }
-   return QVariant();
+   return cat;
 }
 
 ///Add a call to the call list, notify listener
