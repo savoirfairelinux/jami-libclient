@@ -177,7 +177,7 @@ Account* AccountModel::ip2ip() const
       foreach(Account* a, d_ptr->m_lAccounts) {
          if (a->id() == DRing::Account::ProtocolNames::IP2IP) {
             d_ptr->m_pIP2IP = a;
-            connect(a,SIGNAL(enabled()),this,SLOT(slotSupportedProtocolsChanged()));
+            connect(a, &Account::enabled, d_ptr, &AccountModelPrivate::slotSupportedProtocolsChanged);
          }
       }
    }
