@@ -527,6 +527,8 @@ QVariant ContactMethod::roleData(int role) const
          if (category())
             cat = d_ptr->m_pCategory->icon(isTracked(), isPresent());
          break;
+      case static_cast<int>(Call::Role::LifeCycleState):
+         return QVariant::fromValue(Call::LifeCycleState::FINISHED);
    }
    return cat;
 }
