@@ -175,10 +175,8 @@ Account* AccountModel::ip2ip() const
 {
    if (!d_ptr->m_pIP2IP) {
       foreach(Account* a, d_ptr->m_lAccounts) {
-         if (a->id() == DRing::Account::ProtocolNames::IP2IP) {
+         if (a->id() == DRing::Account::ProtocolNames::IP2IP)
             d_ptr->m_pIP2IP = a;
-            connect(a, &Account::enabled, d_ptr, &AccountModelPrivate::slotSupportedProtocolsChanged);
-         }
       }
    }
    return d_ptr->m_pIP2IP;
@@ -260,8 +258,9 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
          if ((!q_ptr->getById(accountIds[i].toLatin1())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
             Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
             insertAccount(acc,i);
-            connect(acc,SIGNAL(changed(Account*)),this,SLOT(slotAccountChanged(Account*)));
-            connect(acc,SIGNAL(presenceEnabledChanged(bool)),this,SLOT(slotAccountPresenceEnabledChanged(bool)));
+            connect(acc, &Account::changed                , this, &AccountModelPrivate::slotAccountChanged                );
+            connect(acc, &Account::presenceEnabledChanged , this, &AccountModelPrivate::slotAccountPresenceEnabledChanged );
+            connect(acc, &Account::enabled                , this, &AccountModelPrivate::slotSupportedProtocolsChanged     );
             emit q_ptr->dataChanged(q_ptr->index(i,0),q_ptr->index(q_ptr->size()-1));
             emit q_ptr->layoutChanged();
 
