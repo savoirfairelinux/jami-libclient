@@ -60,6 +60,9 @@ PresenceSerializationDelegate* PresenceSerializationDelegate::instance()
 
 void PresenceSerializationDelegate::setInstance(PresenceSerializationDelegate* ins)
 {
-   m_spInstance = ins;
-   ins->load();
+   if (ins) {
+      delete m_spInstance;
+      m_spInstance = ins;
+      ins->load();
+   }
 }

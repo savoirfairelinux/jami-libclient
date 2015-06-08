@@ -60,6 +60,11 @@ d_ptr(new NetworkInterfaceModelPrivate(this))
    d_ptr->m_Interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
 }
 
+NetworkInterfaceModel::~NetworkInterfaceModel()
+{
+   delete d_ptr;
+}
+
 QHash<int,QByteArray> NetworkInterfaceModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();

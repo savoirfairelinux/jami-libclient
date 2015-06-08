@@ -45,7 +45,7 @@ class LIB_EXPORT CategorizedBookmarkModel :  public QAbstractItemModel, public C
 public:
    friend class NumberTreeBackend;
    //Constructor
-   virtual ~CategorizedBookmarkModel() {}
+   virtual ~CategorizedBookmarkModel();
    explicit CategorizedBookmarkModel(QObject* parent);
 
    //Setters

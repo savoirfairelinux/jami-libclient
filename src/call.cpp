@@ -356,6 +356,18 @@ Call::~Call()
    delete d_ptr;
 }
 
+CallPrivate::~CallPrivate()
+{
+   for ( const Media::Media::Type t : EnumIterator<Media::Media::Type>()) {
+      delete m_mMedias[t][Media::Media::Direction::IN  ];
+      delete m_mMedias[t][Media::Media::Direction::OUT ];
+
+      delete m_mRecordings[t][Media::Media::Direction::IN  ];
+      delete m_mRecordings[t][Media::Media::Direction::OUT ];
+   }
+
+}
+
 /*****************************************************************************
  *                                                                           *
  *                               Call builder                                *

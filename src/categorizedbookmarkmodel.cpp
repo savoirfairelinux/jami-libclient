@@ -123,6 +123,21 @@ d_ptr(new CategorizedBookmarkModelPrivate(this))
    }
 }
 
+CategorizedBookmarkModel::~CategorizedBookmarkModel()
+{
+   foreach(NumberTreeBackend* item, d_ptr->m_lCategoryCounter) {
+      foreach (NumberTreeBackend* child, item->m_lChildren) {
+         auto l = d_ptr->m_Tracked[child->m_pNumber];
+         if (l) {
+            disconnect(l);
+         }
+         delete child;
+      }
+      delete item;
+   }
+   delete d_ptr;
+}
+
 CategorizedBookmarkModel* CategorizedBookmarkModel::instance()
 {
    if (! m_spInstance )

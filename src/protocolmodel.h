@@ -46,6 +46,7 @@ public:
 
    //Private constructor, can only be called by 'Account'
    explicit ProtocolModel(Account* a = nullptr);
+   virtual ~ProtocolModel();
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;

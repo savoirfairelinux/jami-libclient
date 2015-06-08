@@ -25,6 +25,11 @@ public:
    static CollectionExtensionModel* m_spInstance;
 };
 
+CollectionExtensionModel::~CollectionExtensionModel()
+{
+   delete d_ptr;
+}
+
 QList<CollectionExtensionInterface*>& CollectionExtensionModelSpecific::entries()
 {
    static QList<CollectionExtensionInterface*> m_slEntries;

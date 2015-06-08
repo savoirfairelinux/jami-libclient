@@ -78,9 +78,6 @@ public:
    static QString      timeToHistoryCategory(const time_t time);
 
 private:
-   static QVector<QString> m_lCategories;
-   static HistoryTimeCategoryModel* m_spInstance;
-
    HistoryTimeCategoryModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(HistoryTimeCategoryModel)
 };

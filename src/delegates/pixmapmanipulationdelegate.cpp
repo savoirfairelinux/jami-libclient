@@ -24,6 +24,9 @@
 PixmapManipulationDelegate* PixmapManipulationDelegate::m_spInstance = new PixmapManipulationDelegate();
 
 PixmapManipulationDelegate::PixmapManipulationDelegate() {
+   if (m_spInstance)
+      delete m_spInstance;
+
    m_spInstance = this;
 }
 

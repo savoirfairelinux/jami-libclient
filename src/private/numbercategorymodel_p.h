@@ -39,6 +39,8 @@ public:
    void registerNumber  ( ContactMethod* number     ); //FIXME this should be private
    void unregisterNumber( ContactMethod* number     );
    int  getSize         ( const NumberCategory* cat ) const;
+
+   virtual ~NumberCategoryModelPrivate();
 };
 
 #endif

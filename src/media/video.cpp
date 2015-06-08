@@ -52,5 +52,5 @@ bool Media::Video::unmute()
 
 Media::Video::~Video()
 {
-
+   delete d_ptr;
 }

@@ -87,6 +87,7 @@ RingtoneModel::~RingtoneModel()
       d_ptr->m_lRingtone.removeAt(0);
       delete ringtone;
    }
+   delete d_ptr;
 }
 
 QHash<int,QByteArray> RingtoneModel::roleNames() const

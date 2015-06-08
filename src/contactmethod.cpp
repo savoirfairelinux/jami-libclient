@@ -153,8 +153,8 @@ d_ptr(new ContactMethodPrivate(number,cat,st))
 ContactMethod::~ContactMethod()
 {
    d_ptr->m_lParents.removeAll(this);
-//    if (!d_ptr->m_lParents.size())
-//       delete d_ptr;
+   if (!d_ptr->m_lParents.size())
+      delete d_ptr;
 }
 
 ///Return if this number presence is being tracked
@@ -670,7 +670,7 @@ bool ContactMethod::merge(ContactMethod* other)
 
    const QString oldName = primaryName();
 
-   QSharedPointer<ContactMethodPrivate> currentD = d_ptr;
+   ContactMethodPrivate* currentD = d_ptr;
 
    //Replace the D-Pointer
    this->d_ptr= other->d_ptr;
@@ -692,8 +692,8 @@ bool ContactMethod::merge(ContactMethod* other)
       d_ptr->primaryNameChanged(primaryName());
 
    currentD->m_lParents.removeAll(this);
-//    if (!currentD->m_lParents.size())
-//       delete currentD;
+   if (!currentD->m_lParents.size())
+      delete currentD;
    return true;
 }
 
