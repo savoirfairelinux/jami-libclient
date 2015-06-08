@@ -51,8 +51,11 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
    connect(m_pTimer,&QTimer::timeout,this,&InstanceInterface::pollEvents);
 #endif
    m_pTimer->start();
+
+#ifndef MUTE_DRING
    ringFlags |= DRing::DRING_FLAG_DEBUG;
    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
+#endif
 
    DRing::init(static_cast<DRing::InitFlag>(ringFlags));
 
