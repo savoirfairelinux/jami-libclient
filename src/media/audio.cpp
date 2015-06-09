@@ -52,5 +52,5 @@ bool Media::Audio::unmute()
 
 Media::Audio::~Audio()
 {
-
+   delete d_ptr;
 }

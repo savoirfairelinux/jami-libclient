@@ -79,7 +79,7 @@ LocalMacroCollection::LocalMacroCollection(CollectionMediator<Macro>* mediator) 
 
 LocalMacroCollection::~LocalMacroCollection()
 {
-
+   delete d_ptr;
 }
 
 bool LocalMacroCollection::load()

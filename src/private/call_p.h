@@ -121,6 +121,7 @@ public:
    };
 
    explicit CallPrivate(Call* parent);
+   virtual ~CallPrivate();
 
    //Attributes
    Account*                 m_Account           ;

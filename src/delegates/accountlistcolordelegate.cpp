@@ -45,5 +45,8 @@ AccountListColorDelegate* AccountListColorDelegate::instance()
 
 void AccountListColorDelegate::setInstance(AccountListColorDelegate* visitor)
 {
-   m_spInstance = visitor;
+   if (visitor) {
+      delete m_spInstance;
+      m_spInstance = visitor;
+   }
 }

@@ -30,7 +30,13 @@ NumberCategoryModel::NumberCategoryModel(QObject* parent) : QAbstractListModel(p
 
 NumberCategoryModel::~NumberCategoryModel()
 {
-//    delete d_ptr;
+   delete d_ptr;
+}
+
+NumberCategoryModelPrivate::~NumberCategoryModelPrivate()
+{
+   for (InternalTypeRepresentation* rep : m_lCategories)
+      delete rep;
 }
 
 QHash<int,QByteArray> NumberCategoryModel::roleNames() const

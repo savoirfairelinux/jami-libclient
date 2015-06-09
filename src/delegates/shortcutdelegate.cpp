@@ -31,7 +31,10 @@ ShortcutDelegate* ShortcutDelegate::instance()
 
 void ShortcutDelegate::setInstance(ShortcutDelegate* i)
 {
-   ShortcutDelegatePrivate::m_spInstance = i;
+   if (i) {
+      delete ShortcutDelegatePrivate::m_spInstance;
+      ShortcutDelegatePrivate::m_spInstance = i;
+   }
 }
 
 QVariant ShortcutDelegate::createAction(Macro* macro)

@@ -122,7 +122,7 @@ Media::Media::Type Media::Text::type()
 
 Media::Text::~Text()
 {
-
+   delete d_ptr;
 }
 
 Media::TextRecording* Media::Text::recording() const

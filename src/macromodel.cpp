@@ -45,6 +45,11 @@ MacroModel::MacroModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new 
 
 }
 
+MacroModel::~MacroModel()
+{
+   delete d_ptr;
+}
+
 ///Singleton
 MacroModel* MacroModel::instance()
 {

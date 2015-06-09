@@ -82,7 +82,7 @@ LocalRingtoneCollection::LocalRingtoneCollection(CollectionMediator<Ringtone>* m
 
 LocalRingtoneCollection::~LocalRingtoneCollection()
 {
-
+   delete d_ptr;
 }
 
 bool LocalRingtoneCollection::load()

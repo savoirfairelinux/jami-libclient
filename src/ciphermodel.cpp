@@ -85,7 +85,9 @@ d_ptr(new CipherModelPrivate(parent))
 {}
 
 CipherModel::~CipherModel()
-{}
+{
+   delete d_ptr;
+}
 
 QHash<int,QByteArray> CipherModel::roleNames() const
 {

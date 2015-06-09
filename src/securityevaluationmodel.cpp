@@ -593,7 +593,7 @@ d_ptr(new SecurityEvaluationModelPrivate(account,this))
 
 SecurityEvaluationModel::~SecurityEvaluationModel()
 {
-
+   delete d_ptr;
 }
 
 bool SecurityEvaluationModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const

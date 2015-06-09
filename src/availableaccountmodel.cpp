@@ -65,6 +65,11 @@ d_ptr(new AvailableAccountModelPrivate(this))
    setSourceModel(AccountModel::instance());
 }
 
+AvailableAccountModel::~AvailableAccountModel()
+{
+   delete d_ptr;
+}
+
 AvailableAccountModel* AvailableAccountModel::instance()
 {
    if (!AvailableAccountModelPrivate::m_spInstance)

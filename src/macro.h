@@ -42,6 +42,7 @@ class LIB_EXPORT Macro : public ItemBase<QObject>
 
 public:
    explicit Macro(const Macro* macro);
+   virtual ~Macro();
 
    //Getters
    QString  name        () const;

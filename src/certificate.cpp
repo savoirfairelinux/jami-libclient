@@ -355,7 +355,7 @@ Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject
 
 Certificate::~Certificate()
 {
-
+   delete d_ptr;
 }
 
 bool Certificate::hasRemote() const

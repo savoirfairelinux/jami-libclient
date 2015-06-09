@@ -77,6 +77,11 @@ d_ptr(new TlsMethodModelPrivate(a))
 
 }
 
+TlsMethodModel::~TlsMethodModel()
+{
+   delete d_ptr;
+}
+
 QHash<int,QByteArray> TlsMethodModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();

@@ -33,6 +33,7 @@ class LIB_EXPORT ItemBase : public T {
 public:
    //Constructor
    explicit ItemBase(T* parent = nullptr);
+   virtual ~ItemBase();
    virtual CollectionInterface* collection() const final;
 
    //Extension system

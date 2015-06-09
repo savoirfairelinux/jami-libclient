@@ -67,7 +67,7 @@ private:
    explicit NumberCategoryModel(QObject* parent = nullptr);
    ~NumberCategoryModel();
 
-   QScopedPointer<NumberCategoryModelPrivate> d_ptr;
+   NumberCategoryModelPrivate* d_ptr;
 
    //Re-implementation
    virtual void collectionAddedCallback(CollectionInterface* collection) override;

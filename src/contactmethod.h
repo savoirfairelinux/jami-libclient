@@ -167,7 +167,7 @@ protected:
    void setPopularityIndex(int value);
 
    //Many phone numbers can have the same "d" if they were merged
-   QSharedPointer<ContactMethodPrivate> d_ptr;
+   ContactMethodPrivate* d_ptr;
 
 private:
    friend class ContactMethodPrivate;
