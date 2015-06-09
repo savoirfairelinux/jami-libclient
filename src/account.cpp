@@ -1127,14 +1127,9 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
    }
    else if (accChanged) {
 
-      if (m_CurrentState == Account::EditState::MODIFIED_COMPLETE
-       || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
-       || m_CurrentState == Account::EditState::NEW
-      ) {
-         m_hAccountDetails[param] = val;
-         emit q_ptr->changed(q_ptr);
-         emit q_ptr->propertyChanged(q_ptr,param,val,buf);
-      }
+      m_hAccountDetails[param] = val;
+      emit q_ptr->changed(q_ptr);
+      emit q_ptr->propertyChanged(q_ptr,param,val,buf);
 
       q_ptr->performAction(Account::EditAction::MODIFY);
    }
