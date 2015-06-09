@@ -41,7 +41,7 @@ Ringtone::Ringtone(QObject* parent) : ItemBase<QObject>(parent), d_ptr(new Ringt
 
 Ringtone::~Ringtone()
 {
-
+   delete d_ptr;
 }
 
 QUrl Ringtone::path() const

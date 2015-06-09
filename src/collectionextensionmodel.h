@@ -69,6 +69,8 @@ public:
 
 
 private:
+   virtual ~CollectionExtensionModel();
+
    CollectionExtensionModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CollectionExtensionModel)
 };

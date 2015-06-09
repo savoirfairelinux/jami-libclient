@@ -53,6 +53,7 @@ private:
 
    //Private constructor, can only be called by 'Account'
    explicit NetworkInterfaceModel(Account* a);
+   virtual ~NetworkInterfaceModel();
 
    NetworkInterfaceModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(NetworkInterfaceModel)

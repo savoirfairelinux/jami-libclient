@@ -41,6 +41,7 @@ public:
    //Constructor
    Resolution(const QString& size, Video::Channel* chan);
    explicit Resolution();
+   virtual ~Resolution();
 
    //Getter
    const QString             name          () const;

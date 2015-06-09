@@ -56,7 +56,7 @@ Media::Media(Call* parent, const Direction dir) : QObject(parent), d_ptr(new Med
 
 Media::~Media()
 {
-
+   delete d_ptr;
 }
 
 }

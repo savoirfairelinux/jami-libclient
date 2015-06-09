@@ -347,13 +347,22 @@ Call::~Call()
 
    d_ptr->terminateMedia();
 
-   for (const Media::Media::Type t : EnumIterator<Media::Media::Type>() ) {
-      for (const Media::Media::Direction d : EnumIterator<Media::Media::Direction>() ) {
-         delete d_ptr->m_mMedias[t][d];
-      }
-   }
-
    delete d_ptr;
+}
+
+CallPrivate::~CallPrivate()
+{
+   for ( const Media::Media::Type t : EnumIterator<Media::Media::Type>()) {
+      if (m_mMedias[t][Media::Media::Direction::IN  ])
+         delete m_mMedias[t][Media::Media::Direction::IN  ];
+      if (m_mMedias[t][Media::Media::Direction::OUT ])
+         delete m_mMedias[t][Media::Media::Direction::OUT ];
+
+      if (m_mRecordings[t][Media::Media::Direction::IN  ])
+         delete m_mRecordings[t][Media::Media::Direction::IN  ];
+      if (m_mRecordings[t][Media::Media::Direction::OUT ])
+         delete m_mRecordings[t][Media::Media::Direction::OUT ];
+   }
 }
 
 /*****************************************************************************

@@ -52,6 +52,11 @@ Macro::Macro(const Macro* macro) : ItemBase<QObject>(nullptr), d_ptr(new MacroPr
    d_ptr->m_pPointer    = macro->d_ptr->m_pPointer   ;
 }
 
+Macro::~Macro()
+{
+   delete d_ptr;
+}
+
 void Macro::execute() {
    d_ptr->m_Escaped = d_ptr->m_Sequence;
    while (d_ptr->m_Escaped.indexOf("\\n") != -1) {

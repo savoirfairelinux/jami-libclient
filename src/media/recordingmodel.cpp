@@ -81,6 +81,11 @@ m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 
 }
 
+Media::RecordingModel::~RecordingModel()
+{
+   delete d_ptr;
+}
+
 Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Media::Recording>(this),
 d_ptr(new RecordingModelPrivate(this))
 {

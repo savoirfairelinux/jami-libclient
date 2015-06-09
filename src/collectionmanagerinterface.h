@@ -108,7 +108,7 @@ public:
     * @param self "this"
     */
    explicit CollectionManagerInterface(QAbstractItemModel* self);
-   virtual ~CollectionManagerInterface() {}
+   virtual ~CollectionManagerInterface();
 
    /**
     * This method is used to add a collection to a model. The LoadOptions

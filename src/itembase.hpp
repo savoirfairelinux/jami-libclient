@@ -34,6 +34,12 @@ ItemBase<Base>::ItemBase(Base* parent) :Base(parent), d_ptr(new ItemBasePrivate(
 }
 
 template<typename Base>
+ItemBase<Base>::~ItemBase()
+{
+   delete d_ptr;
+}
+
+template<typename Base>
 CollectionInterface* ItemBase<Base>::collection() const
 {
    return d_ptr->m_pBackend;

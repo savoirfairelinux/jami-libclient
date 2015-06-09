@@ -82,6 +82,7 @@ public:
 private:
    //Singleton constructor
    explicit MacroModel(QObject* parent = nullptr);
+   virtual ~MacroModel();
 
    MacroModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(MacroModel)

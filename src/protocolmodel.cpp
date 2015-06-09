@@ -65,6 +65,11 @@ d_ptr(new ProtocolModelPrivate(a))
 
 }
 
+ProtocolModel::~ProtocolModel()
+{
+   delete d_ptr;
+}
+
 QHash<int,QByteArray> ProtocolModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();

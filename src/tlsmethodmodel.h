@@ -52,6 +52,7 @@ public:
 
    //Private constructor, can only be called by 'Account'
    explicit TlsMethodModel(Account* a);
+   virtual ~TlsMethodModel();
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
