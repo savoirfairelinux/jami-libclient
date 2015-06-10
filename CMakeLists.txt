@@ -250,6 +250,7 @@ SET( libringclient_LIB_SRCS
   src/ciphermodel.cpp
   src/accountstatusmodel.cpp
   src/codecmodel.cpp
+  src/recentmodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcemodel.cpp
   src/video/channel.cpp
@@ -385,6 +386,7 @@ SET( libringclient_LIB_HDRS
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
+  src/recentmodel.h
 )
 
 SET(libringclient_video_LIB_HDRS
