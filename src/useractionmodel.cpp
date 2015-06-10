@@ -105,7 +105,8 @@ public Q_SLOTS:
 
 //Enabled actions
 const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
- /*                       NEW    INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
+ /*                       NEW    INCOMING  RINGING CURRENT DIALING
+   FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
  /*ACCEPT          */ {{ false  , true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
  /*HOLD            */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false,       false}},
  /*MUTE_AUDIO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
@@ -548,13 +549,18 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          };
          break;
       case UserActionModel::Action::MUTE_AUDIO      :
-         d_ptr->m_MuteAudio_TO_REMOVE != d_ptr->m_MuteAudio_TO_REMOVE; //FIXME evil fake property
-         d_ptr->updateActions();
+         {
+            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_AUDIO] == Qt::Checked;
+            UserActions::muteAudio(selected, mute);
+            d_ptr->updateActions();
+         }
          break;
       case UserActionModel::Action::MUTE_VIDEO      :
-         d_ptr->m_MuteVideo_TO_REMOVE != d_ptr->m_MuteVideo_TO_REMOVE; //FIXME evil fake property
-         d_ptr->updateActions();
-         UserActions::accept(selected);
+         {
+            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_VIDEO] == Qt::Checked;
+            UserActions::muteVideo(selected, mute);
+            d_ptr->updateActions();
+         }
          break;
       case UserActionModel::Action::SERVER_TRANSFER :
          UserActions::transfer(selected);
