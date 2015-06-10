@@ -12,21 +12,23 @@ Basic Installation
 
 These are generic installation instructions.
 
-
 To install the appplication, type the following commands in a console, while in the root directory of this application:
 
 	mkdir -p build
 	cd build
-	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr # Add -DENABLE_VIDEO=true if you want experimental video support
+	cmake ..
+        	The following options are often usefull to append to the cmake line:
+                -DRING_BUILD_DIR=<daemon install location>
+                -DCMAKE_INSTALL_PREFIX=<install location>
+                -DCMAKE_BUILD_TYPE=<Debug to compile with debug symbols>
+                -DENABLE_VIDEO=<False to disable video support>
 	make -j3
-	sudo make install
+	make install
 
-To generate a source tarball (ring-cliend-kde.tar.xz), just execute release.sh
-
-Explaination
+Explanation
 ==================
 
-This script will configure and prepare the compilation and installation of the program.
+This script will configure and prepare the compilation and installation of the program and correctly link it against Ring daemon.
 
 All needed files will be built in "build" directory.
 So you have to go to this directory:
@@ -39,11 +41,10 @@ Then execute the Makefile, to compile the application (src, doc...)
 
 Then install it all using:
 
-	sudo make install
+	make install
 
 You have to use "sudo" to be able to install the program in a protected directory (which is the case by default and most of the time).
 Therefore it will ask for your system password.
-If you don't have this password or for any reason you want to install the program in a non-protected directory, refer to the Options below.
 
 OS X Install
 ============
@@ -59,11 +60,6 @@ hint: default install location with HomeBrew is /usr/local/Cellar/qt5
 
 mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=<install_dir_of_daemon> [-DCMAKE_BUILD_TYPE=Debug for compiling with debug symbols]
-make
+make install
 
-install_name_tool -change @rpath/libring.0.dylib @executable_path/libring.0.dylib libringclient.1.4.1.dylib
-install_name_tool -id @executable_path/libringclient.1.4.1.dylib libringclient.1.4.1.dylib
-
-# You can now use thes libraries in a QtCreator project. Don't forget to copy both dylibs inside
-# your .app/Contents/MacOS/
-
+You can now link and build the OSX client with Ring daemon and LRC library
