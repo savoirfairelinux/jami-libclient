@@ -93,6 +93,8 @@ public Q_SLOTS:
 Q_SIGNALS:
    void newPersonAdded(const Person* c);
    void newBackendAdded(CollectionInterface* backend);
+   ///The last time there was an interaction with this person changed
+   void lastUsedTimeChanged(Person* p, ::time_t) const;
 };
 
 

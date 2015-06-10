@@ -25,6 +25,7 @@
 #include "person.h"
 #include "account.h"
 #include "private/account_p.h"
+#include "private/person_p.h"
 #include "call.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
@@ -240,7 +241,13 @@ void ContactMethod::setAccount(Account* account)
 ///Set this number contact
 void ContactMethod::setPerson(Person* contact)
 {
+   if (d_ptr->m_pPerson == contact)
+      return;
+
    d_ptr->m_pPerson = contact;
+
+   contact->d_ptr->registerContactMethod(this);
+
    if (contact && d_ptr->m_Type != ContactMethod::Type::TEMPORARY) {
       PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+QStringList(contact->formattedName()));
       d_ptr->m_PrimaryName_cache = contact->formattedName();
@@ -567,6 +574,12 @@ void ContactMethod::addCall(Call* call)
 
    if (call->startTimeStamp() > d_ptr->m_LastUsed) {
       d_ptr->m_LastUsed = call->startTimeStamp();
+
+      if (d_ptr->m_LastUsed)
+         emit lastUsedChanged(d_ptr->m_LastUsed);
+
+      //Notify the account directly. This avoid having to track all contact
+      //methods from there
       if (d_ptr->m_pAccount && d_ptr->m_pAccount->d_ptr->m_LastUsed < d_ptr->m_LastUsed)
          d_ptr->m_pAccount->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
    }
