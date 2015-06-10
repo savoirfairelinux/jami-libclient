@@ -35,6 +35,7 @@
 #include "numbercategorymodel.h"
 #include "numbercategory.h"
 #include "delegates/pixmapmanipulationdelegate.h"
+#include "private/person_p.h"
 
 
 class AddressPrivate
@@ -113,45 +114,6 @@ void Person::Address::setType(const QString& value)
    d_ptr->type = value;
 }
 
-class PersonPrivate {
-public:
-   PersonPrivate(Person* contact);
-   ~PersonPrivate();
-   QString                  m_FirstName        ;
-   QString                  m_SecondName       ;
-   QString                  m_NickName         ;
-   QVariant                 m_vPhoto           ;
-   QString                  m_FormattedName    ;
-   QString                  m_PreferredEmail   ;
-   QString                  m_Organization     ;
-   QByteArray               m_Uid              ;
-   QString                  m_Group            ;
-   QString                  m_Department       ;
-   bool                     m_DisplayPhoto     ;
-   Person::ContactMethods    m_Numbers          ;
-   bool                     m_Active           ;
-   bool                     m_isPlaceHolder    ;
-   QList<Person::Address*> m_lAddresses       ;
-   QHash<QString, QString>  m_lCustomAttributes;
-
-   //Cache
-   QString m_CachedFilterString;
-
-   QString filterString();
-
-   //Helper code to help handle multiple parents
-   QList<Person*> m_lParents;
-   Person* q_ptr;
-
-   //As a single D-Pointer can have multiple parent (when merged), all emit need
-   //to use a proxy to make sure everybody is notified
-   void presenceChanged( ContactMethod* );
-   void statusChanged  ( bool         );
-   void changed        (              );
-   void phoneNumberCountChanged(int,int);
-   void phoneNumberCountAboutToChange(int,int);
-};
-
 QString PersonPrivate::filterString()
 {
    if (m_CachedFilterString.size())
@@ -208,8 +170,18 @@ void PersonPrivate::phoneNumberCountAboutToChange(int n,int o)
    }
 }
 
-PersonPrivate::PersonPrivate(Person* contact) :
-   m_Numbers(),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false),q_ptr(contact)
+void PersonPrivate::registerContactMethod(ContactMethod* m)
+{
+   m_HiddenContactMethods << m;
+   connect(m, &ContactMethod::lastUsedChanged, this, &PersonPrivate::slotLastUsedTimeChanged);
+
+   if (m->lastUsed() > m_LastUsed)
+      slotLastUsedTimeChanged(m->lastUsed());
+}
+
+PersonPrivate::PersonPrivate(Person* contact) : QObject(contact),
+   m_Numbers(),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false),
+   m_LastUsed(0),m_LastUsedInit(false), q_ptr(contact)
 {
 }
 
@@ -324,13 +296,19 @@ const QString& Person::department() const
 void Person::setContactMethods(ContactMethods numbers)
 {
    const int oldCount(d_ptr->m_Numbers.size()),newCount(numbers.size());
-   foreach(ContactMethod* n, d_ptr->m_Numbers)
+   for (ContactMethod* n : d_ptr->m_Numbers) {
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
+      disconnect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
+   }
    d_ptr->m_Numbers = numbers;
    if (newCount < oldCount) //Rows need to be removed from models first
       d_ptr->phoneNumberCountAboutToChange(newCount,oldCount);
-   foreach(ContactMethod* n, d_ptr->m_Numbers)
+
+   for (ContactMethod* n : d_ptr->m_Numbers) {
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
+      connect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
+   }
+
    if (newCount > oldCount) //Need to be updated after the data to prevent invalid memory access
       d_ptr->phoneNumberCountChanged(newCount,oldCount);
    d_ptr->changed();
@@ -433,12 +411,16 @@ bool Person::isTracked() const
  */
 time_t Person::lastUsedTime() const
 {
-   time_t t = 0;
-   for (int i=0;i<phoneNumbers().size();i++) {
-      if (phoneNumbers().at(i)->lastUsed() > t)
-         t = phoneNumbers().at(i)->lastUsed();
+   if (!d_ptr->m_LastUsedInit) {
+      for (int i=0;i<phoneNumbers().size();i++) {
+         if (phoneNumbers().at(i)->lastUsed() > d_ptr->m_LastUsed)
+            d_ptr->m_LastUsed = phoneNumbers().at(i)->lastUsed();
+      }
+      d_ptr->m_LastUsedInit = true;
+      if (d_ptr->m_LastUsed)
+         emit lastUsedTimeChanged(d_ptr->m_LastUsed);
    }
-   return t;
+   return d_ptr->m_LastUsed;
 }
 
 ///Return if one of the ContactMethod support presence
@@ -553,6 +535,7 @@ bool PersonPlaceHolder::merge(Person* contact)
    PersonPrivate* currentD = Person::d_ptr;
    replaceDPointer(contact);
    currentD->m_lParents.removeAll(this);
+
    if (!currentD->m_lParents.size())
       delete currentD;
    return true;
@@ -560,6 +543,12 @@ bool PersonPlaceHolder::merge(Person* contact)
 
 void Person::replaceDPointer(Person* c)
 {
+
+   if (d_ptr->m_LastUsed > c->lastUsedTime()) {
+      c->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
+      emit c->lastUsedTimeChanged(d_ptr->m_LastUsed);
+   }
+
    this->d_ptr = c->d_ptr;
    d_ptr->m_lParents << this;
    emit changed();
@@ -620,4 +609,13 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
 
    maker->addPhoto(PixmapManipulationDelegate::instance()->toByteArray(photo()).simplified());
    return maker->endVCard();
+}
+
+void PersonPrivate::slotLastUsedTimeChanged(::time_t t)
+{
+   m_LastUsed = t;
+
+   foreach (Person* c,m_lParents) {
+      emit c->lastUsedTimeChanged(t);
+   }
 }

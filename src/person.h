@@ -42,6 +42,9 @@ class LIB_EXPORT Person : public ItemBase<QObject>
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
    #pragma GCC diagnostic pop
+
+   friend class ContactMethod;
+
 public:
 
    enum class Role {
@@ -167,12 +170,20 @@ private Q_SLOTS:
    void slotPresenceChanged(); //TODO remove
 
 Q_SIGNALS:
-   void presenceChanged( ContactMethod* );
-   void statusChanged  ( bool         );
-   void changed        (              );
-   void phoneNumberCountChanged(int,int);
-   void phoneNumberCountAboutToChange(int,int);
-   void rebased        ( Person*     );
+   ///The presence status of a contact method changed
+   void presenceChanged              ( ContactMethod* );
+   ///The person presence status changed
+   void statusChanged                ( bool           );
+   ///The person properties changed
+   void changed                      (                );
+   ///The number of contact method changed
+   void phoneNumberCountChanged      ( int, int       );
+   ///The number of contact method is about to change
+   void phoneNumberCountAboutToChange( int, int       );
+   ///The person data were merged from another source
+   void rebased                      ( Person*        );
+   ///The last time there was an interaction with this person changed
+   void lastUsedTimeChanged          ( ::time_t         ) const;
 
 protected:
    //Presence secret methods

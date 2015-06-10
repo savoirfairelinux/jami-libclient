@@ -204,6 +204,8 @@ Q_SIGNALS:
     * with previously ambiguous data
     */
    void rebased               ( ContactMethod* other  );
+   ///The most recent time there was an interaction with this CM changed
+   void lastUsedChanged(time_t t);
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)

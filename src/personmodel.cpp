@@ -74,6 +74,9 @@ public:
 private:
    PersonModel* q_ptr;
 //    void slotPersonAdded(Person* c);
+
+public Q_SLOTS:
+   void slotLastUsedTimeChanged(time_t t) const;
 };
 
 PersonItemNode::PersonItemNode(Person* p, const NodeType type) :
@@ -301,6 +304,11 @@ bool PersonModel::addItemCallback(const Person* c)
       }
    }
 
+   connect(c, &Person::lastUsedTimeChanged, d_ptr.data(), &PersonModelPrivate::slotLastUsedTimeChanged);
+
+   if (c->lastUsedTime())
+      emit lastUsedTimeChanged(const_cast<Person*>(c), c->lastUsedTime());
+
    return true;
 }
 
@@ -320,6 +328,7 @@ bool PersonModel::addPerson(Person* c)
    return true;
 }
 
+///@deprecated
 bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
 {
    if ((!backend) && (!collections().size()))
@@ -336,6 +345,11 @@ bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
    }
 
    return ret;
+}
+
+void PersonModelPrivate::slotLastUsedTimeChanged(time_t t) const
+{
+   emit q_ptr->lastUsedTimeChanged(static_cast<Person*>(QObject::sender()), t);
 }
 
 
