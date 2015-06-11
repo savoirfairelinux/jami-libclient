@@ -45,6 +45,9 @@
 #include "personmodel.h"
 #include "useractionmodel.h"
 #include "video/renderer.h"
+#include "media/audio.h"
+#include "media/video.h"
+#include "private/media_p.h"
 
 //Other
 #include <unistd.h>
@@ -107,6 +110,8 @@ public:
       void slotStateChanged       ( Call::State newState, Call::State previousState   );
       void slotDTMFPlayed         ( const QString& str                                );
       void slotRecordStateChanged ( const QString& callId    , bool state             );
+      void slotAudioMuted         ( const QString& callId    , bool state             );
+      void slotVideoMutex         ( const QString& callId    , bool state             );
 };
 
 
@@ -164,7 +169,9 @@ void CallModelPrivate::init()
       /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)) );
       /**/connect(&callManager, SIGNAL(conferenceRemoved(QString))              , this , SLOT(slotConferenceRemoved(QString))          );
       /**/connect(&callManager, SIGNAL(recordPlaybackFilepath(QString,QString)) , this , SLOT(slotNewRecordingAvail(QString,QString))  );
-      /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this,  SLOT(slotRecordStateChanged(QString,bool)));
+      /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this , SLOT(slotRecordStateChanged(QString,bool)));
+      /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)));
+      /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)));
       /*                                                                                                                           */
 
       connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
@@ -1339,8 +1346,7 @@ void CallModelPrivate::slotDTMFPlayed( const QString& str )
 ///Called when a recording state change
 void CallModelPrivate::slotRecordStateChanged (const QString& callId, bool state)
 {
-   Call* call = q_ptr->getCall(callId);
-   if (call) {
+   if (auto call = q_ptr->getCall(callId)) {
 
       call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , state);
       call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , state);
@@ -1349,6 +1355,32 @@ void CallModelPrivate::slotRecordStateChanged (const QString& callId, bool state
 
       emit call->changed();
       emit call->changed(call);
+   }
+}
+
+void CallModelPrivate::slotAudioMuted( const QString& callId, bool state)
+{
+   Call* call = q_ptr->getCall(callId);
+
+   if (call) {
+      auto a = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+      if (state)
+         a->Media::d_ptr->muteConfirmed();
+      else
+         a->Media::d_ptr->unmuteConfirmed();
+   }
+}
+
+void CallModelPrivate::slotVideoMutex( const QString& callId, bool state)
+{
+   Call* call = q_ptr->getCall(callId);
+
+   if (call) {
+      auto v = call->firstMedia<Media::Video>(Media::Media::Direction::OUT);
+      if (state)
+         v->Media::d_ptr->muteConfirmed();
+      else
+         v->Media::d_ptr->unmuteConfirmed();
    }
 }
 
