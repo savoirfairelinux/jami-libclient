@@ -53,153 +53,167 @@ public:
                 [this] (const std::string &callID, const std::string &state, int code) {
                     QTimer::singleShot(0, [this,callID, state, code] {
                         LOG_DRING_SIGNAL3("callStateChanged",QString(callID.c_str()) , QString(state.c_str()) , code);
-                        Q_EMIT this->callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
+                        Q_EMIT callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
                     });
             }),
             exportable_callback<CallSignal::TransferFailed>(
                 [this] () {
                        QTimer::singleShot(0, [this] {
                              LOG_DRING_SIGNAL("transferFailed","");
-                             Q_EMIT this->transferFailed();
+                             Q_EMIT transferFailed();
                        });
             }),
             exportable_callback<CallSignal::TransferSucceeded>(
                 [this] () {
                        QTimer::singleShot(0, [this] {
                              LOG_DRING_SIGNAL("transferSucceeded","");
-                             Q_EMIT this->transferSucceeded();
+                             Q_EMIT transferSucceeded();
                        });
             }),
             exportable_callback<CallSignal::RecordPlaybackStopped>(
                 [this] (const std::string &filepath) {
                        QTimer::singleShot(0, [this,filepath] {
                              LOG_DRING_SIGNAL("recordPlaybackStopped",QString(filepath.c_str()));
-                             Q_EMIT this->recordPlaybackStopped(QString(filepath.c_str()));
+                             Q_EMIT recordPlaybackStopped(QString(filepath.c_str()));
                        });
             }),
             exportable_callback<CallSignal::VoiceMailNotify>(
                 [this] (const std::string &accountID, int count) {
                        QTimer::singleShot(0, [this,accountID, count] {
                              LOG_DRING_SIGNAL2("voiceMailNotify",QString(accountID.c_str()), count);
-                             Q_EMIT this->voiceMailNotify(QString(accountID.c_str()), count);
+                             Q_EMIT voiceMailNotify(QString(accountID.c_str()), count);
                        });
             }),
             exportable_callback<CallSignal::IncomingMessage>(
                 [this] (const std::string &callID, const std::string &from, const std::string &message) {
                        QTimer::singleShot(0, [this,callID, from, message] {
                              LOG_DRING_SIGNAL3("incomingMessage",QString(callID.c_str()),QString(from.c_str()),QString(message.c_str()));
-                             Q_EMIT this->incomingMessage(QString(callID.c_str()), QString(from.c_str()), QString(message.c_str()));
+                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), QString(message.c_str()));
                        });
             }),
             exportable_callback<CallSignal::IncomingCall>(
                 [this] (const std::string &accountID, const std::string &callID, const std::string &from) {
                        QTimer::singleShot(0, [this,accountID, callID, from] {
                              LOG_DRING_SIGNAL3("incomingCall",QString(accountID.c_str()), QString(callID.c_str()), QString(from.c_str()));
-                             Q_EMIT this->incomingCall(QString(accountID.c_str()), QString(callID.c_str()), QString(from.c_str()));
+                             Q_EMIT incomingCall(QString(accountID.c_str()), QString(callID.c_str()), QString(from.c_str()));
                        });
             }),
             exportable_callback<CallSignal::RecordPlaybackFilepath>(
                 [this] (const std::string &callID, const std::string &filepath) {
                        QTimer::singleShot(0, [this,callID, filepath] {
                              LOG_DRING_SIGNAL2("recordPlaybackFilepath",QString(callID.c_str()), QString(filepath.c_str()));
-                             Q_EMIT this->recordPlaybackFilepath(QString(callID.c_str()), QString(filepath.c_str()));
+                             Q_EMIT recordPlaybackFilepath(QString(callID.c_str()), QString(filepath.c_str()));
                        });
             }),
             exportable_callback<CallSignal::ConferenceCreated>(
                 [this] (const std::string &confID) {
                        QTimer::singleShot(0, [this,confID] {
                              LOG_DRING_SIGNAL("conferenceCreated",QString(confID.c_str()));
-                             Q_EMIT this->conferenceCreated(QString(confID.c_str()));
+                             Q_EMIT conferenceCreated(QString(confID.c_str()));
                        });
             }),
             exportable_callback<CallSignal::ConferenceChanged>(
                 [this] (const std::string &confID, const std::string &state) {
                        QTimer::singleShot(0, [this,confID, state] {
                              LOG_DRING_SIGNAL2("conferenceChanged",QString(confID.c_str()), QString(state.c_str()));
-                             Q_EMIT this->conferenceChanged(QString(confID.c_str()), QString(state.c_str()));
+                             Q_EMIT conferenceChanged(QString(confID.c_str()), QString(state.c_str()));
                        });
             }),
             exportable_callback<CallSignal::UpdatePlaybackScale>(
                 [this] (const std::string &filepath, int position, int size) {
                        QTimer::singleShot(0, [this,filepath, position, size] {
                              LOG_DRING_SIGNAL3("updatePlaybackScale",QString(filepath.c_str()), position, size);
-                             Q_EMIT this->updatePlaybackScale(QString(filepath.c_str()), position, size);
+                             Q_EMIT updatePlaybackScale(QString(filepath.c_str()), position, size);
                        });
             }),
             exportable_callback<CallSignal::ConferenceRemoved>(
                 [this] (const std::string &confID) {
                        QTimer::singleShot(0, [this,confID] {
                              LOG_DRING_SIGNAL("conferenceRemoved",QString(confID.c_str()));
-                             Q_EMIT this->conferenceRemoved(QString(confID.c_str()));
+                             Q_EMIT conferenceRemoved(QString(confID.c_str()));
                        });
             }),
             exportable_callback<CallSignal::NewCallCreated>(
                 [this] (const std::string &accountID, const std::string &callID, const std::string &to) {
                        QTimer::singleShot(0, [this,accountID, callID, to] {
                              LOG_DRING_SIGNAL3("newCallCreated",QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
-                             Q_EMIT this->newCallCreated(QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
+                             Q_EMIT newCallCreated(QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
                        });
             }),
             exportable_callback<CallSignal::RecordingStateChanged>(
                 [this] (const std::string &callID, bool recordingState) {
                        QTimer::singleShot(0, [this,callID, recordingState] {
                              LOG_DRING_SIGNAL2("recordingStateChanged",QString(callID.c_str()), recordingState);
-                             Q_EMIT this->recordingStateChanged(QString(callID.c_str()), recordingState);
+                             Q_EMIT recordingStateChanged(QString(callID.c_str()), recordingState);
                        });
             }),
             exportable_callback<CallSignal::SecureSdesOn>(
                 [this] (const std::string &callID) {
                        QTimer::singleShot(0, [this,callID] {
                              LOG_DRING_SIGNAL("secureSdesOn",QString(callID.c_str()));
-                             Q_EMIT this->secureSdesOn(QString(callID.c_str()));
+                             Q_EMIT secureSdesOn(QString(callID.c_str()));
                        });
             }),
             exportable_callback<CallSignal::SecureSdesOff>(
                 [this] (const std::string &callID) {
                        QTimer::singleShot(0, [this,callID] {
                              LOG_DRING_SIGNAL("secureSdesOff",QString(callID.c_str()));
-                             Q_EMIT this->secureSdesOff(QString(callID.c_str()));
+                             Q_EMIT secureSdesOff(QString(callID.c_str()));
                        });
             }),
             exportable_callback<CallSignal::SecureZrtpOn>(
                 [this] (const std::string &callID, const std::string &cipher) {
                        QTimer::singleShot(0, [this,callID,cipher] {
                              LOG_DRING_SIGNAL2("secureZrtpOn",QString(callID.c_str()), QString(cipher.c_str()));
-                             Q_EMIT this->secureZrtpOn(QString(callID.c_str()), QString(cipher.c_str()));
+                             Q_EMIT secureZrtpOn(QString(callID.c_str()), QString(cipher.c_str()));
                        });
             }),
             exportable_callback<CallSignal::SecureZrtpOff>(
                 [this] (const std::string &callID) {
                        QTimer::singleShot(0, [this,callID] {
-                             Q_EMIT this->secureZrtpOff(QString(callID.c_str()));
+                             Q_EMIT secureZrtpOff(QString(callID.c_str()));
                        });
             }),
             exportable_callback<CallSignal::ShowSAS>(
                 [this] (const std::string &callID, const std::string &sas, bool verified) {
                        QTimer::singleShot(0, [this,callID, sas, verified] {
                              LOG_DRING_SIGNAL3("showSAS",QString(callID.c_str()), QString(sas.c_str()), verified);
-                             Q_EMIT this->showSAS(QString(callID.c_str()), QString(sas.c_str()), verified);
+                             Q_EMIT showSAS(QString(callID.c_str()), QString(sas.c_str()), verified);
                        });
             }),
             exportable_callback<CallSignal::ZrtpNotSuppOther>(
                 [this] (const std::string &callID) {
                        QTimer::singleShot(0, [this,callID] {
                              LOG_DRING_SIGNAL("zrtpNotSuppOther",QString(callID.c_str()));
-                             Q_EMIT this->zrtpNotSuppOther(QString(callID.c_str()));
+                             Q_EMIT zrtpNotSuppOther(QString(callID.c_str()));
                        });
              }),
              exportable_callback<CallSignal::ZrtpNegotiationFailed>(
                  [this] (const std::string &callID, const std::string &reason, const std::string &severity) {
                        QTimer::singleShot(0, [this,callID, reason, severity] {
                              LOG_DRING_SIGNAL3("zrtpNegotiationFailed",QString(callID.c_str()), QString(reason.c_str()), QString(severity.c_str()));
-                             Q_EMIT this->zrtpNegotiationFailed(QString(callID.c_str()), QString(reason.c_str()), QString(severity.c_str()));
+                             Q_EMIT zrtpNegotiationFailed(QString(callID.c_str()), QString(reason.c_str()), QString(severity.c_str()));
                        });
              }),
              exportable_callback<CallSignal::RtcpReportReceived>(
                  [this] (const std::string &callID, const std::map<std::string, int>& report) {
                        QTimer::singleShot(0, [this,callID, report] {
                              LOG_DRING_SIGNAL2("onRtcpReportReceived",QString(callID.c_str()), convertStringInt(report));
-                             Q_EMIT this->onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
+                             Q_EMIT onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
+                       });
+             }),
+             exportable_callback<CallSignal::AudioMuted>(
+                 [this] (const std::string &callID, bool state) {
+                       QTimer::singleShot(0, [this,callID, state] {
+                             LOG_DRING_SIGNAL2("audioMuted",QString(callID.c_str()), state);
+                             Q_EMIT audioMuted(QString(callID.c_str()), state);
+                       });
+             }),
+             exportable_callback<CallSignal::VideoMuted>(
+                 [this] (const std::string &callID, bool state) {
+                       QTimer::singleShot(0, [this,callID, state] {
+                             LOG_DRING_SIGNAL2("videoMuted",QString(callID.c_str()), state);
+                             Q_EMIT videoMuted(QString(callID.c_str()), state);
                        });
              })
          };
@@ -462,7 +476,8 @@ Q_SIGNALS: // SIGNALS
     void zrtpNegotiationFailed(const QString &callID, const QString &reason, const QString &severity);
     void onRtcpReportReceived(const QString &callID, MapStringInt report);
     void confirmGoClear(const QString &callID);
-
+    void audioMuted(const QString &callID, bool state);
+    void videoMuted(const QString &callID, bool state);
 };
 
 namespace org {
