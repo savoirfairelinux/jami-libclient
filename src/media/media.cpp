@@ -140,19 +140,24 @@ Media::Media* operator<<(Media::Media* m, Media::Media::Action a)
 
 void Media::MediaPrivate::muteConfirmed()
 {
+   auto ll = m_State;
    m_State = Media::Media::State::MUTED;
+   emit q_ptr->stateChanged(m_State, ll);
 }
 
 void Media::MediaPrivate::unmuteConfirmed()
 {
+   auto ll = m_State;
    switch(q_ptr->type()) {
       case Media::Media::Type::AUDIO:
       case Media::Media::Type::VIDEO:
       case Media::Media::Type::FILE:
          m_State = Media::Media::State::ACTIVE;
+         emit q_ptr->stateChanged(m_State, ll);
          break;
       case Media::Media::Type::TEXT:
          m_State = Media::Media::State::IDLE;
+         emit q_ptr->stateChanged(m_State, ll);
          break;
       case Media::Media::Type::COUNT__:
          break;
