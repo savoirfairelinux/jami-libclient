@@ -1018,8 +1018,9 @@ template<typename T>
 T* CallPrivate::mediaFactory(Media::Media::Direction dir)
 {
    Call* c = q_ptr;
-   const auto cb = [c,this](const Media::Media::State s, const Media::Media::State p) {
-      Media::Media* m = qobject_cast<Media::Media*>(q_ptr->sender());
+   T* m = new T(q_ptr, dir);
+   (*m_mMedias[MediaTypeInference::getType<T>()][dir]) << m;
+   const auto cb = [c,this,m](const Media::Media::State s, const Media::Media::State p) {
       if (m) {
          emit q_ptr->mediaStateChanged(m,s,p);
       }
@@ -1027,8 +1028,6 @@ T* CallPrivate::mediaFactory(Media::Media::Direction dir)
          Q_ASSERT(false);
    };
 
-   T* m = new T(q_ptr, dir);
-   (*m_mMedias[MediaTypeInference::getType<T>()][dir]) << m;
    connect(m, &Media::Media::stateChanged, cb);
    emit q_ptr->mediaAdded(m);
 

@@ -80,12 +80,6 @@ public:
    TypedStateMachine< QString, UserActionModel::Action>              m_ActionNames        ;
    ActiveUserActionModel*                                            m_pActiveModel       ;
 
-   //The mute per call, per media is not merged upstream yet, faking it for now
-   //BEGIN HACK
-   bool m_MuteAudio_TO_REMOVE;
-   bool m_MuteVideo_TO_REMOVE;
-   //END HACK
-
 private:
    UserActionModel* q_ptr;
 
@@ -105,7 +99,7 @@ public Q_SLOTS:
 
 //Enabled actions
 const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
- /*                       NEW    INCOMING  RINGING CURRENT DIALING  HOLD  FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
+ /*                       NEW    INCOMING  RINGING CURRENT DIALING HOLD FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
  /*ACCEPT          */ {{ false  , true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
  /*HOLD            */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false,       false}},
  /*MUTE_AUDIO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
@@ -231,6 +225,20 @@ m_pCall(nullptr), m_pActiveModel(nullptr)
 
       /* ADD_NEW         */ QObject::tr("Add new"         ),
    }};
+
+    m_CurrentActionsState = {{
+        /* ACCEPT          */ Qt::Unchecked,
+        /* HOLD            */ Qt::Unchecked,
+        /* MUTE_AUDIO      */ Qt::Unchecked,
+        /* MUTE_VIDEO      */ Qt::Unchecked,
+        /* SERVER_TRANSFER */ Qt::Unchecked,
+        /* RECORD          */ Qt::Unchecked,
+        /* HANGUP          */ Qt::Unchecked,
+
+        /* JOIN            */ Qt::Unchecked,
+
+        /* ADD_NEW         */ Qt::Unchecked,
+    }};
 }
 
 /**
@@ -258,10 +266,11 @@ UserActionModel::UserActionModel(CallModel* parent) : QAbstractListModel(parent)
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALLMODEL;
    d_ptr->m_SelectionState = UserActionModelPrivate::SelectionState::UNIQUE;
 
-   connect(parent->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex))             , d_ptr.data(), SLOT(updateActions()));
-   connect(parent->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection))        , d_ptr.data(), SLOT(updateActions()));
-   connect(parent,                   SIGNAL(callStateChanged(Call*,Call::State))                    , d_ptr.data(), SLOT(updateActions()));
-   connect(AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(updateActions()));
+   connect(parent->selectionModel(), &QItemSelectionModel::currentRowChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent->selectionModel(), &QItemSelectionModel::selectionChanged  , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent,                   &CallModel::callStateChanged            , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent,                   &CallModel::mediaStateChanged           , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
    d_ptr->updateActions();
 }
 
@@ -355,11 +364,15 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::HOLD            :
          ret += c->state() == Call::State::HOLD? 100 : 1;
          break;
-      case UserActionModel::Action::MUTE_AUDIO      :
-         ret += m_MuteAudio_TO_REMOVE ? 100 : 1;
+      case UserActionModel::Action::MUTE_AUDIO      : {
+         Media::Audio* a = c->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+         ret += a && a->state() == Media::Media::State::MUTED ? 100 : 1;
+         }
          break;
-      case UserActionModel::Action::MUTE_VIDEO      :
-         ret += m_MuteVideo_TO_REMOVE ? 100 : 1;
+      case UserActionModel::Action::MUTE_VIDEO      : {
+         Media::Video* v = c->firstMedia<Media::Video>(Media::Media::Direction::OUT);
+         ret += v && v->state() == Media::Media::State::MUTED ? 100 : 1;
+         }
          break;
       case UserActionModel::Action::SERVER_TRANSFER :
          ret += c->state() == Call::State::TRANSFERRED? 100 : 1;
@@ -548,13 +561,18 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          };
          break;
       case UserActionModel::Action::MUTE_AUDIO      :
-         d_ptr->m_MuteAudio_TO_REMOVE != d_ptr->m_MuteAudio_TO_REMOVE; //FIXME evil fake property
-         d_ptr->updateActions();
+         {
+            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_AUDIO] != Qt::Checked;
+            UserActions::muteAudio(selected, mute);
+            d_ptr->updateActions();
+         }
          break;
       case UserActionModel::Action::MUTE_VIDEO      :
-         d_ptr->m_MuteVideo_TO_REMOVE != d_ptr->m_MuteVideo_TO_REMOVE; //FIXME evil fake property
-         d_ptr->updateActions();
-         UserActions::accept(selected);
+         {
+            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_VIDEO] != Qt::Checked;
+            UserActions::muteVideo(selected, mute);
+            d_ptr->updateActions();
+         }
          break;
       case UserActionModel::Action::SERVER_TRANSFER :
          UserActions::transfer(selected);

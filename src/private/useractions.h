@@ -18,6 +18,10 @@
 #ifndef USERACTIONS_H
 #define USERACTIONS_H
 
+#include "media/media.h"
+#include "media/audio.h"
+#include "media/video.h"
+
 /**
  * This code used to be in the KDE client. It doesn't really fit well in well
  * in what libringclient is supposed to do, but as it has to be replicated for
@@ -36,6 +40,8 @@ bool transfer(const QList<Call*> calls);
 bool recordAudio(const QList<Call*> calls);
 bool recordVideo(const QList<Call*> calls);
 bool recordText(const QList<Call*> calls);
+bool muteAudio(const QList<Call*> calls, bool state);
+bool muteVideo(const QList<Call*> calls, bool state);
 
 bool addNew()
 {
@@ -226,6 +232,48 @@ bool recordText(const QList<Call*> calls)
          }
          catch(const char * msg) {
 //             KMessageBox::error(Ring::app(),i18n(msg));
+         }
+      }
+   }
+   return ret;
+}
+
+///Mute call audio
+bool muteAudio(const QList<Call*> calls, bool state)
+{
+   bool ret = true;
+   for (Call* call : calls) {
+      if(!call) {
+         qDebug() << "Error : Muting audio when no item selected. Should not happen.";
+      }
+      else {
+         if (state) {
+            if (!call->firstMedia<Media::Audio>(Media::Media::Direction::OUT)->mute())
+               qDebug() << "Error : Could not mute audio of selected call";
+         } else {
+            if (!call->firstMedia<Media::Audio>(Media::Media::Direction::OUT)->unmute())
+               qDebug() << "Error : Could not un-mute audio of selected call";
+         }
+      }
+   }
+   return ret;
+}
+
+///Mute call video
+bool muteVideo(const QList<Call*> calls, bool state)
+{
+   bool ret = true;
+   for (Call* call : calls) {
+      if(!call) {
+         qDebug() << "Error : Muting video when no item selected. Should not happen.";
+      }
+      else {
+         if (state) {
+            if (!call->firstMedia<Media::Video>(Media::Media::Direction::OUT)->mute())
+               qDebug() << "Error : Could not mute video of selected call";
+         } else {
+            if (!call->firstMedia<Media::Video>(Media::Media::Direction::OUT)->unmute())
+               qDebug() << "Error : Could not un-mute video of selected call";
          }
       }
    }

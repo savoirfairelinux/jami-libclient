@@ -201,6 +201,20 @@ public:
                              LOG_DRING_SIGNAL2("onRtcpReportReceived",QString(callID.c_str()), convertStringInt(report));
                              Q_EMIT this->onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
                        });
+             }),
+             exportable_callback<CallSignal::AudioMuted>(
+                 [this] (const std::string &callID, bool state) {
+                       QTimer::singleShot(0, [this,callID, state] {
+                             LOG_DRING_SIGNAL2("audioMuted",QString(callID.c_str()), state);
+                             Q_EMIT this->audioMuted(QString(callID.c_str()), state);
+                       });
+             }),
+             exportable_callback<CallSignal::VideoMuted>(
+                 [this] (const std::string &callID, bool state) {
+                       QTimer::singleShot(0, [this,callID, state] {
+                             LOG_DRING_SIGNAL2("videoMuted",QString(callID.c_str()), state);
+                             Q_EMIT this->videoMuted(QString(callID.c_str()), state);
+                       });
              })
          };
      }
@@ -462,7 +476,8 @@ Q_SIGNALS: // SIGNALS
     void zrtpNegotiationFailed(const QString &callID, const QString &reason, const QString &severity);
     void onRtcpReportReceived(const QString &callID, MapStringInt report);
     void confirmGoClear(const QString &callID);
-
+    void audioMuted(const QString &callID, bool state);
+    void videoMuted(const QString &callID, bool state);
 };
 
 namespace org {
