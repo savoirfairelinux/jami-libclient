@@ -24,6 +24,7 @@
 //Ring
 #include <call.h>
 #include <person.h>
+#include <personmodel.h>
 #include <contactmethod.h>
 
 struct CallGroup
@@ -31,6 +32,7 @@ struct CallGroup
    QVector<Call*>  m_lCalls   ;
    Call::Direction m_Direction;
    bool            m_Missed   ;
+   time_t          m_LastUsed ;
 };
 
 struct RecentViewNode
@@ -50,7 +52,7 @@ struct RecentViewNode
    virtual ~RecentViewNode();
 
    //Attributes
-   int                    m_Index    ;
+   long int               m_Index    ;
    Type                   m_Type     ;
    RecentViewNode*        m_pParent  ;
    QList<RecentViewNode*> m_lChildren;
@@ -62,22 +64,55 @@ struct RecentViewNode
       //ImConversationIterator; //TODO
       //ImConversationIterator;
    } m_uContent;
+
+   //Helpers
+   inline time_t lastUsed() const;
 };
 
-class RecentModelPrivate
+class RecentModelPrivate : public QObject
 {
 public:
-   QVector<RecentViewNode*> m_lTopLevel;
+   RecentModelPrivate(RecentModel* p);
+
+   /*
+    * m_lTopLevelReverted hold the elements in the reverse order of
+    * QAbstractItemModel::index. This cause most of the energy to be
+    * in the bottom half of the vector, preventing std::move every time
+    * someone is contacted
+    */
+   QList<RecentViewNode*>         m_lTopLevelReverted;
+   QHash<Person*,RecentViewNode*> m_hPersonsToNodes  ;
+
+private:
+   RecentModel* q_ptr;
+
+public Q_SLOTS:
+   void slotLastUsedTimeChanged(Person* p, time_t t);
 };
 
-RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate())
+RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 {
+}
 
+RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
+{
+   connect(PersonModel::instance(), &PersonModel::lastUsedTimeChanged, d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
+
+   //Fill the data
+   for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
+      Person* p = qvariant_cast<Person*>(PersonModel::instance()->data(
+         PersonModel::instance()->index(i,0),
+         static_cast<int>(Person::Role::Object)
+      ));
+
+      if (p && p->lastUsedTime())
+         d_ptr->slotLastUsedTimeChanged(p, p->lastUsedTime());
+   }
 }
 
 RecentModel::~RecentModel()
 {
-   for (RecentViewNode* n : d_ptr->m_lTopLevel)
+   for (RecentViewNode* n : d_ptr->m_lTopLevelReverted)
       delete n;
 
    delete d_ptr;
@@ -93,6 +128,25 @@ RecentViewNode::~RecentViewNode()
    for (RecentViewNode* n : m_lChildren) {
       delete n;
    }
+}
+
+time_t RecentViewNode::lastUsed() const
+{
+   switch(m_Type) {
+      case Type::PERSON            :
+         return m_uContent.m_pPerson->lastUsedTime();
+      case Type::CONTACT_METHOD    :
+         return m_uContent.m_pContactMethod->lastUsed();
+      case Type::CALL              :
+         return m_uContent.m_pCall->stopTimeStamp();
+      case Type::CALL_GROUP        :
+         return m_uContent.m_pCallGroup->m_LastUsed;
+      case Type::TEXT_MESSAGE      :
+      case Type::TEXT_MESSAGE_GROUP:
+         //TODO
+         break;
+   }
+   return {};
 }
 
 RecentModel* RecentModel::instance()
@@ -148,7 +202,7 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
 int RecentModel::rowCount( const QModelIndex& parent ) const
 {
    if (!parent.isValid())
-      return d_ptr->m_lTopLevel.size();
+      return d_ptr->m_lTopLevelReverted.size();
 
    RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
 
@@ -181,8 +235,8 @@ QModelIndex RecentModel::parent( const QModelIndex& index ) const
 
 QModelIndex RecentModel::index( int row, int column, const QModelIndex& parent) const
 {
-   if (!parent.isValid() && row >= 0 && row < d_ptr->m_lTopLevel.size() && !column)
-      return createIndex(row, 0, d_ptr->m_lTopLevel[row]);
+   if (!parent.isValid() && row >= 0 && row < d_ptr->m_lTopLevelReverted.size() && !column)
+      return createIndex(row, 0, d_ptr->m_lTopLevelReverted[d_ptr->m_lTopLevelReverted.size() - 1 - row]);
 
    RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
 
@@ -199,3 +253,93 @@ QVariant RecentModel::headerData( int section, Qt::Orientation orientation, int 
 
    return QVariant();
 }
+
+/*
+ * Move rows around to keep the person/contactmethods ordered
+ *
+ * Further optimization:
+ *  * Invert m_Index to avoid the O(N) loop when adding an item
+ */
+void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
+{
+   RecentViewNode* n = m_hPersonsToNodes[p];
+   const bool isNew = !n;
+
+   if (isNew) {
+      n = new RecentViewNode();
+      n->m_Type               = RecentViewNode::Type::PERSON;
+      n->m_uContent.m_pPerson = p                           ;
+      n->m_pParent            = nullptr                     ;
+      n->m_Index              = 0                           ;
+      m_hPersonsToNodes[p]    = n                           ;
+   }
+
+   //Don't bother with the sorted insertion and indexes housekeeping
+   if (m_lTopLevelReverted.isEmpty()) {
+      q_ptr->beginInsertRows(QModelIndex(),0,0);
+      m_lTopLevelReverted << n;
+      q_ptr->endInsertRows();
+      return;
+   }
+
+   //Compute the bounds, this is needed to use beginMoveRows
+   int newPos = 0;
+
+   if (m_lTopLevelReverted.last()->lastUsed() > t) {
+      //NOTE std::lower_bound need the "value" argument to be the same type as the iterator
+      //this use the m_Index field to hold the time_t
+      static RecentViewNode fake;
+      fake.m_Index = static_cast<long int>(t);
+
+      //NOTE Using std::lower_bound is officially supported on QList on all platforms
+      auto lower = std::lower_bound(m_lTopLevelReverted.begin(), m_lTopLevelReverted.end(), &fake,
+      [t](const RecentViewNode* a, const RecentViewNode* t2) -> bool {
+         return a->lastUsed() < t2->m_Index;
+      });
+
+      newPos = (*lower)->m_Index+1;
+   }
+
+   //Begin the transaction
+   if (!isNew) {
+
+      if (newPos == n->m_Index)
+         return; //Nothing to do
+
+      q_ptr->beginMoveRows(QModelIndex(), n->m_Index, n->m_Index, QModelIndex(), newPos ? newPos+1 : newPos );
+      m_lTopLevelReverted.removeAt(m_lTopLevelReverted.size()-1-n->m_Index);
+   }
+   else
+      q_ptr->beginInsertRows(QModelIndex(),newPos,newPos);
+
+   //Apply the transaction
+   const int updateBound = n->m_Index;
+   if (m_lTopLevelReverted.last()->lastUsed() <= t) {
+
+      //TODO this happen often and is O(N), inverting m_Index would "fix" this
+      for (int i = m_lTopLevelReverted.size()-1; i >= updateBound; i--)
+         m_lTopLevelReverted[m_lTopLevelReverted.size()-1-i]->m_Index = i+1;
+
+      m_lTopLevelReverted << n;
+   }
+   else {
+      m_lTopLevelReverted.insert(newPos,n);
+      n->m_Index = newPos;
+
+      for (int i = m_lTopLevelReverted.size()-1; i >= updateBound; i--)
+         m_lTopLevelReverted[m_lTopLevelReverted.size()-1-i]->m_Index = i;
+   }
+
+   //Notify that the transaction is complete
+   if (!isNew)
+      q_ptr->endMoveRows();
+   else
+      q_ptr->endInsertRows();
+
+
+   //Uncomment if there is issues
+   //qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << p->formattedName() << isNew;
+   //for (int i = 0; i<m_lTopLevelReverted.size();i++)
+   //   qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index  << m_lTopLevelReverted[i]->lastUsed();
+}
+
