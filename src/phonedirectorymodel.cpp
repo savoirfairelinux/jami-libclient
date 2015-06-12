@@ -108,6 +108,8 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                return number->uri();
             case Qt::DecorationRole :
                return PixmapManipulationDelegate::instance()->callPhoto(number,QSize(16,16));
+            case (int) Role::Object:
+               return QVariant::fromValue(const_cast<ContactMethod*>(number));
          }
          break;
       case PhoneDirectoryModelPrivate::Columns::TYPE:
@@ -429,6 +431,8 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString&
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
+   connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
+   connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged);
 
    const QString hn = number->uri().hostname();
 
@@ -538,6 +542,8 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
+   connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
+   connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged );
    if (!wrap) {
       wrap = new NumberWrapper();
       d_ptr->m_hDirectory    [strippedUri] = wrap;
@@ -649,6 +655,22 @@ void PhoneDirectoryModelPrivate::slotChanged()
 #endif
       emit q_ptr->dataChanged(q_ptr->index(idx,0),q_ptr->index(idx,static_cast<int>(Columns::UID)));
    }
+}
+
+void PhoneDirectoryModelPrivate::slotLastUsedChanged(time_t t)
+{
+   ContactMethod* cm = qobject_cast<ContactMethod*>(QObject::sender());
+
+   if (cm)
+      emit q_ptr->lastUsedChanged(cm, t);
+}
+
+void PhoneDirectoryModelPrivate::slotContactChanged(Person* newContact, Person* oldContact)
+{
+   ContactMethod* cm = qobject_cast<ContactMethod*>(QObject::sender());
+
+   if (cm)
+      emit q_ptr->contactChanged(cm, newContact, oldContact);
 }
 
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)

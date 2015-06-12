@@ -57,6 +57,10 @@ class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
 public:
    Q_PROPERTY(int count READ count )
 
+   enum class Role {
+      Object = 100,
+   };
+
    virtual ~PhoneDirectoryModel();
 
    //Abstract model members
@@ -99,6 +103,10 @@ private:
 
    //Singleton
    static PhoneDirectoryModel* m_spInstance;
+
+Q_SIGNALS:
+   void lastUsedChanged(ContactMethod* cm, time_t t);
+   void contactChanged(ContactMethod* cm, Person* newContact, Person* oldContact);
 };
 Q_DECLARE_METATYPE(PhoneDirectoryModel*)
 

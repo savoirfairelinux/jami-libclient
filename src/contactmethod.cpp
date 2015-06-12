@@ -79,6 +79,7 @@ public:
    void trackedChanged(bool);
    void primaryNameChanged(const QString& name);
    void rebased(ContactMethod* other);
+
 };
 
 void ContactMethodPrivate::callAdded(Call* call)
@@ -246,6 +247,7 @@ void ContactMethod::setAccount(Account* account)
 ///Set this number contact
 void ContactMethod::setPerson(Person* contact)
 {
+   Person* old = d_ptr->m_pPerson;
    if (d_ptr->m_pPerson == contact)
       return;
 
@@ -263,6 +265,8 @@ void ContactMethod::setPerson(Person* contact)
       connect(contact,SIGNAL(rebased(Person*)),this,SLOT(contactRebased(Person*)));
    }
    d_ptr->changed();
+
+   emit contactChanged(contact, old);
 }
 
 ///Protected setter to set if there is a type
