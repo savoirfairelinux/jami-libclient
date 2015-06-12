@@ -162,7 +162,13 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account) {
       emit self->currentDefaultAccountChanged(a);
 
       if (self->d_ptr->m_pSelectionModel) {
-         self->d_ptr->m_pSelectionModel->setCurrentIndex(self->mapFromSource(a->index()), QItemSelectionModel::ClearAndSelect);
+
+         const QModelIndex idx = self->mapFromSource(a->index());
+
+         if (idx.isValid())
+            self->d_ptr->m_pSelectionModel->setCurrentIndex(self->mapFromSource(a->index()), QItemSelectionModel::ClearAndSelect);
+         else
+            self->d_ptr->m_pSelectionModel->clearSelection();
       }
    }
 }
