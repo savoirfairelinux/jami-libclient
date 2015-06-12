@@ -33,7 +33,7 @@ class MostPopularNumberModel final : public QAbstractListModel
 {
    Q_OBJECT
 public:
-   MostPopularNumberModel();
+   explicit MostPopularNumberModel();
 
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -90,12 +90,16 @@ public:
    bool                          m_CallWithAccount  ;
    MostPopularNumberModel*       m_pPopularModel    ;
 
+   Q_DECLARE_PUBLIC(PhoneDirectoryModel)
+
 private:
    PhoneDirectoryModel* q_ptr;
 
 private Q_SLOTS:
    void slotCallAdded(Call* call);
    void slotChanged();
+   void slotLastUsedChanged(time_t t);
+   void slotContactChanged(Person* newContact, Person* oldContact);
 
    //From DBus
    void slotNewBuddySubscription(const QString& uri, const QString& accountId, bool status, const QString& message);

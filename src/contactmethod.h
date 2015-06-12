@@ -206,6 +206,8 @@ Q_SIGNALS:
    void rebased               ( ContactMethod* other  );
    ///The most recent time there was an interaction with this CM changed
    void lastUsedChanged(time_t t);
+   ///The person attached to this CM has changed
+   void contactChanged(Person* newContact, Person* oldContact);
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)
