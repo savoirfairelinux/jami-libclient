@@ -209,9 +209,13 @@ bool LocalHistoryCollection::load()
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
       QMap<QString,QString> hc;
-      while (!file.atEnd()) {
-         QByteArray line = file.readLine().trimmed();
+      QStringList lines;
 
+      while (!file.atEnd())
+         lines << file.readLine().trimmed();
+      file.close();
+
+      for (const QString& line : lines) {
          //The item is complete
          if ((line.isEmpty() || !line.size()) && hc.size()) {
             Call* pastCall = Call::buildHistoryCall(hc);
