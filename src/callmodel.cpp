@@ -382,9 +382,9 @@ UserActionModel* CallModel::userActionModel() const
  ****************************************************************************/
 
 ///Get the call associated with this index
-Call* CallModel::getCall( const QModelIndex& idx              ) const
+Call* CallModel::getCall( const QModelIndex& idx ) const
 {
-   if (idx.isValid() && rowCount(idx.parent()) > idx.row() && idx.data(static_cast<int>(Call::Role::Object)).canConvert<Call*>())
+   if (idx.isValid() && idx.data(static_cast<int>(Call::Role::Object)).canConvert<Call*>())
       return qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
    return nullptr;
 }
