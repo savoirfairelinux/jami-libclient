@@ -60,17 +60,68 @@ typename EnumIterator<EnumClass>::EnumClassIter EnumIterator<EnumClass>::end()
 template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::Matrix1D()
 {
-   m_lData.resize(enum_class_size<Row>());
 }
 
 template<class Row, typename Value, typename Accessor>
+Matrix1D<Row,Value,Accessor>::~Matrix1D()
+{
+}
+
+//DEPRECATED
+template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< std::initializer_list<Value>> s)
-: m_lData(*std::begin(s)) {
+: m_lData{} {
    static_assert(std::is_enum<Row>(),"Row has to be an enum class");
    static_assert(static_cast<int>(Row::COUNT__) > 0,"Row need a COUNT__ element");
 
+   //This version assume the rows are valid, use the one below where possible
+   for (auto& rows : s) {
+      int row = 0;
+      for (auto& value : rows) {
+         m_lData[row] = value;
+         row++;
+      }
+   }
+
    // FIXME C++14, use static_assert and make the ctor constexpr
    Q_ASSERT(std::begin(s)->size() == enum_class_size<Row>());//,"Matrix row have to match the enum class size");
+}
+
+/**
+ * Safest version of the constructor, checks that all values are present, that
+ * they are present only once and support re-ordering
+ */
+template<class Row, typename Value, typename Accessor>
+Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< Matrix1D<Row,Value,Accessor>::Pairs> s)
+: m_lData{} {
+   static_assert(std::is_enum<Row>(),"Row has to be an enum class");
+   static_assert(static_cast<int>(Row::COUNT__) > 0,"Row need a COUNT__ element");
+
+   static const int longSize = sizeof(unsigned long long)*8;
+
+   //FIXME the code below isn't correct, this isn't a problem until the limit
+   //is reached. This is private API, so it can wait
+   Q_ASSERT(enum_class_size<Row>() < longSize -1);
+
+   unsigned long long usedElements[enum_class_size<Row>()] = {};
+
+   int counter = 0;
+   for (auto& pair : s) {
+      //Avoid a value being here twice
+      const int val = static_cast<int>(pair.key);
+      const bool isNotPresent = !(usedElements[val/longSize] & (0x1 << (val%longSize)));
+
+      Q_ASSERT(isNotPresent);
+
+      usedElements[val/longSize] |= (0x1 << (val%longSize));
+
+
+      m_lData[val] = pair.value;
+      counter++;
+   }
+
+   // FIXME C++14, use static_assert and make the ctor constexpr
+   Q_ASSERT(counter == enum_class_size<Row>());//,"Matrix row have to match the enum class size");
 }
 
 template<class Row, typename Value, typename Accessor>
