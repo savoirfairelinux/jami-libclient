@@ -31,6 +31,8 @@
 #include "private/useractions.h"
 #include "private/matrixutils.h"
 
+#define UAM UserActionModel
+
 class ActiveUserActionModel : public QSortFilterProxyModel
 {
 public:
@@ -58,27 +60,31 @@ public:
    };
 
    //Availability matrices
-   UserActionModelPrivate(UserActionModel* parent);
-   static const TypedStateMachine< TypedStateMachine< bool                                    , Call::State                > , UserActionModel::Action > availableActionMap        ;
-   static const TypedStateMachine< TypedStateMachine< bool                                    , Account::RegistrationState > , UserActionModel::Action > availableAccountActionMap ;
-   static const TypedStateMachine< TypedStateMachine< bool                                    , SelectionState             > , UserActionModel::Action > multi_call_options        ;
-   static const TypedStateMachine< bool                                                                                      , UserActionModel::Action > heterogenous_call_options ;
-   static const TypedStateMachine< TypedStateMachine< bool                                    , Account::Protocol          > , UserActionModel::Action > availableProtocolActions  ;
-   static const TypedStateMachine< TypedStateMachine< UserActionModel::ActionStatfulnessLevel , SelectionState             > , UserActionModel::Action > actionStatefulness        ;
+   UserActionModelPrivate(UserActionModel* parent, const FlagPack<UAM::Context>& c);
+   static const Matrix1D< UAM::Action                            , bool  > heterogenous_call_options ;
+   static const Matrix2D< UAM::Action, Call::State               , bool  > availableActionMap        ;
+   static const Matrix2D< UAM::Action, Account::RegistrationState, bool  > availableAccountActionMap ;
+   static const Matrix2D< UAM::Action, SelectionState            , bool  > multi_call_options        ;
+   static const Matrix2D< UAM::Action, Account::Protocol         , bool  > availableProtocolActions  ;
+   static const Matrix1D< UAM::Action, FlagPack<UAM::Context>> actionContext             ;
+   static const Matrix1D< UAM::Action, FlagPack<UAM::Asset>  > availableByAsset          ;
+
+   static const Matrix2D< UAM::Action, SelectionState, UAM::ActionStatfulnessLevel > actionStatefulness;
 
    //Helpers
-   bool updateAction   (UserActionModel::Action action                          );
-   bool updateByCall   (UserActionModel::Action action, const Call* c           );
-   void updateCheckMask(int& ret, UserActionModel::Action action, const Call* c );
+   bool updateAction   (UAM::Action action                          );
+   bool updateByCall   (UAM::Action action, const Call* c           );
+   void updateCheckMask(int& ret, UAM::Action action, const Call* c );
 
-   //Attribues
+   //Attributes
    Call*                                                             m_pCall              ;
    UserActionModelMode                                               m_Mode               ;
    SelectionState                                                    m_SelectionState     ;
-   TypedStateMachine< bool, UserActionModel::Action>                 m_CurrentActions     ;
-   TypedStateMachine< Qt::CheckState, UserActionModel::Action>       m_CurrentActionsState;
-   TypedStateMachine< QString, UserActionModel::Action>              m_ActionNames        ;
+   TypedStateMachine< bool, UAM::Action>                 m_CurrentActions     ;
+   Matrix1D< UAM::Action, Qt::CheckState>                m_CurrentActionsState;
+   Matrix1D< UAM::Action, QString>                       m_ActionNames        ;
    ActiveUserActionModel*                                            m_pActiveModel       ;
+   FlagPack<UAM::Context>                                m_fContext           ;
 
 private:
    UserActionModel* q_ptr;
@@ -97,93 +103,169 @@ public Q_SLOTS:
  * The result of the multiplication indicate is the option is enabled in a given scenario.
  */
 
+#define UAMA UserActionModel::Action
+#define CS Call::State
 //Enabled actions
-const TypedStateMachine< TypedStateMachine< bool , Call::State > , UserActionModel::Action > UserActionModelPrivate::availableActionMap = {{
- /*                       NEW    INCOMING  RINGING CURRENT DIALING HOLD FAILURE BUSY  TRANSFERRED TRANSF_HOLD  OVER  ERROR CONFERENCE CONFERENCE_HOLD  INITIALIZATION ABORTED*/
- /*ACCEPT          */ {{ false  , true   , false,  false,  true , false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
- /*HOLD            */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  true ,       false,           false,       false}},
- /*MUTE_AUDIO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
- /*MUTE_VIDEO      */ {{ false  , false  , true ,  true ,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
- /*SERVER_TRANSFER */ {{ false  , false  , false,  true ,  false, true , false, false,   false,     false,    false, false,  false,       false,           false,       false}},
- /*RECORD          */ {{ false  , false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false,       false}},
- /*HANGUP          */ {{ true   , true   , true ,  true ,  true , true , true , true ,   true ,     true ,    false, true ,  true ,       true ,           true ,       false}},
-
- /*JOIN            */ {{ false  , false  , true ,  true ,  false, true , false, false,   true ,     true ,    false, false,  true ,       true ,           false,       false}},
-
- /*ADD_NEW         */ {{ false  , false  , false,  false,  false, false, false, false,   false,     false,    false, false,  false,       false,           false,       false}},
-}};
+static EnumClassReordering<Call::State> co = {
+   CS::NEW            , /* >----------|                                                                                                                       */
+   CS::INCOMING       , /* -----------|-------|                                                                                                               */
+   CS::RINGING        , /* -----------|-------|-------|                                                                                                       */
+   CS::CURRENT        , /* -----------|-------|-------|------|                                                                                                */
+   CS::DIALING        , /* -----------|-------|-------|------|-----|                                                                                          */
+   CS::HOLD           , /* -----------|-------|-------|------|-----|-------|                                                                                  */
+   CS::FAILURE        , /* -----------|-------|-------|------|-----|-------|------|                                                                           */
+   CS::BUSY           , /* -----------|-------|-------|------|-----|-------|------|------|                                                                    */
+   CS::TRANSFERRED    , /* -----------|-------|-------|------|-----|-------|------|------|-----|                                                              */
+   CS::TRANSF_HOLD    , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|                                                      */
+   CS::OVER           , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|                                               */
+   CS::ERROR          , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|                                         */
+   CS::CONFERENCE     , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|------|                                  */
+   CS::CONFERENCE_HOLD, /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|------|------|                           */
+   CS::INITIALIZATION , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|------|------|-------|                   */
+   CS::ABORTED        , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|------|------|-------|------|            */
+   CS::CONNECTED      , /* -----------|-------|-------|------|-----|-------|------|------|-----|-------|------|-----|------|------|-------|------|-----|      */
+};                      /*            |       |       |      |     |       |      |      |     |       |      |     |      |      |       |      |     |      */
+                        /*            \/      \/      \/     \/    \/      \/     \/     \/    \/      \/     \/    \/     \/     \/      \/     \/    \/     */
+const Matrix2D< UAM::Action, Call::State, bool > UserActionModelPrivate::availableActionMap = {
+ { UAMA::ACCEPT            , {{co, { false, true  , false, false, true , false, false, false, false, false, false, false, false, false, false, false, false }}}},
+ { UAMA::HOLD              , {{co, { false, false , false, true , false, true , false, false, false, false, false, false, true , false, false, false, false }}}},
+ { UAMA::MUTE_AUDIO        , {{co, { false, false , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false }}}},
+ { UAMA::MUTE_VIDEO        , {{co, { false, false , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false }}}},
+ { UAMA::SERVER_TRANSFER   , {{co, { false, false , false, true , false, true , false, false, false, false, false, false, false, false, false, false, false }}}},
+ { UAMA::RECORD            , {{co, { false, false , true , true , false, true , false, false, true , true , false, false, true , true , false, false, false }}}},
+ { UAMA::HANGUP            , {{co, { true , true  , true , true , true , true , true , true , true , true , false, true , true , true , true , false, true  }}}},
+ { UAMA::JOIN              , {{co, { false, false , true , true , false, true , false, false, true , true , false, false, true , true , false, false, false }}}},
+ { UAMA::ADD_NEW           , {{co, { false, false , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }}}},
+ { UAMA::TOGGLE_VIDEO      , {{co, { false, false , false, true , false, true , false, false, false, false, false, false, true , false, false, false, false }}}},
+ { UAMA::ADD_CONTACT       , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::ADD_TO_CONTACT    , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::DELETE_CONTACT    , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::EMAIL_CONTACT     , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::COPY_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::BOOKMARK          , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::VIEW_CHAT_HISTORY , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::ADD_CONTACT_METHOD, {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::CALL_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::REMOVE_HISTORY    , {{co, { false, false , false, false, false, false, true , true , false, false, true , false, false, false, false, false, false }}}},
+};
+#undef CS
 
 /**
  * Assuming a call is in progress, the communication can still be valid if the account is down, however,
  * this will impact the available actions
  */
-const TypedStateMachine< TypedStateMachine< bool , Account::RegistrationState > , UserActionModel::Action > UserActionModelPrivate::availableAccountActionMap = {{
-   /*                       READY  UNREGISTERED  TRYING    ERROR  */
-   /* ACCEPT          */ {{ true ,    false,     false,    false  }},
-   /* HOLD            */ {{ true ,    false,     false,    false  }},
-   /* MUTE_AUDIO      */ {{ true ,    true ,     true ,    true   }},
-   /* MUTE_VIDEO      */ {{ true ,    true ,     true ,    true   }},
-   /* SERVER_TRANSFER */ {{ true ,    false,     false,    false  }},
-   /* RECORD          */ {{ true ,    true ,     true ,    true   }},
-   /* HANGUP          */ {{ true ,    true ,     true ,    true   }},
+const Matrix2D< UAMA, Account::RegistrationState, bool > UserActionModelPrivate::availableAccountActionMap = {
+   /*                             READY  UNREGISTERED  TRYING    ERROR   */
+   { UAMA::ACCEPT            , {{ true ,    false,     false,    false  }}},
+   { UAMA::HOLD              , {{ true ,    false,     false,    false  }}},
+   { UAMA::MUTE_AUDIO        , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::MUTE_VIDEO        , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::SERVER_TRANSFER   , {{ true ,    false,     false,    false  }}},
+   { UAMA::RECORD            , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::HANGUP            , {{ true ,    true ,     true ,    true   }}},
 
-   /* JOIN            */ {{ true ,    true ,     true ,    true   }},
+   { UAMA::JOIN              , {{ true ,    true ,     true ,    true   }}},
 
-   /* ADD_NEW         */ {{ true ,    false,     true ,    true   }},
-}};
+   { UAMA::ADD_NEW           , {{ true ,    false,     true ,    true   }}},
+   { UAMA::TOGGLE_VIDEO      , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::ADD_CONTACT       , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::ADD_TO_CONTACT    , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::BOOKMARK          , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,    true   }}},
+   { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,    true   }}},
+};
 
 /**
  * This matrix define if an option is available depending on the number of selection elements
  */
-const TypedStateMachine< TypedStateMachine< bool , UserActionModelPrivate::SelectionState > , UserActionModel::Action > UserActionModelPrivate::multi_call_options = {{
-   /*                       NONE   UNIQUE   MULTI  */
-   /* ACCEPT          */ {{ false,  true ,  true  }},
-   /* HOLD            */ {{ false,  true ,  false }},
-   /* MUTE_AUDIO      */ {{ false,  true ,  true  }},
-   /* MUTE_VIDEO      */ {{ false,  true ,  true  }},
-   /* SERVER_TRANSFER */ {{ false,  true ,  true  }},
-   /* RECORD          */ {{ false,  true ,  true  }},
-   /* HANGUP          */ {{ false,  true ,  true  }},
+const Matrix2D< UAMA, UserActionModelPrivate::SelectionState, bool > UserActionModelPrivate::multi_call_options = {
+   /*                             NONE   UNIQUE   MULTI  */
+   { UAMA::ACCEPT            , {{ false,  true ,  true  }}},
+   { UAMA::HOLD              , {{ false,  true ,  false }}},
+   { UAMA::MUTE_AUDIO        , {{ false,  true ,  true  }}},
+   { UAMA::MUTE_VIDEO        , {{ false,  true ,  true  }}},
+   { UAMA::SERVER_TRANSFER   , {{ false,  true ,  true  }}},
+   { UAMA::RECORD            , {{ false,  true ,  true  }}},
+   { UAMA::HANGUP            , {{ false,  true ,  true  }}},
 
-   /* JOIN            */ {{ false,  false,  true  }},
+   { UAMA::JOIN              , {{ false,  false,  true  }}},
 
-   /* ADD_NEW         */ {{ true ,  false,  false }},
-}};
+   { UAMA::ADD_NEW           , {{ true ,  false,  false }}},
+   { UAMA::TOGGLE_VIDEO      , {{ false,  true ,  false }}},
+   { UAMA::ADD_CONTACT       , {{ false,  true ,  false }}},
+   { UAMA::ADD_TO_CONTACT    , {{ false,  true ,  false }}},
+   { UAMA::DELETE_CONTACT    , {{ false,  true ,  false }}},
+   { UAMA::EMAIL_CONTACT     , {{ false,  true ,  false }}},
+   { UAMA::COPY_CONTACT      , {{ false,  true ,  false }}},
+   { UAMA::BOOKMARK          , {{ false,  true ,  false }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ false,  true ,  false }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ false,  true ,  false }}},
+   { UAMA::CALL_CONTACT      , {{ false,  true ,  false }}},
+   { UAMA::REMOVE_HISTORY    , {{ false,  true ,  true  }}},
+};
 
 /**
  * This matrix define if an option is available when multiple elements with mismatching CheckState are selected
  */
-const TypedStateMachine< bool, UserActionModel::Action > UserActionModelPrivate::heterogenous_call_options = {{
-   /* ACCEPT          */ true  , /* N/A                                       */
-   /* HOLD            */ false , /* Do not allow to set a state               */
-   /* MUTE_AUDIO      */ true  , /* Force mute on all calls                   */
-   /* MUTE_VIDEO      */ true  , /* Mute all calls                            */
-   /* SERVER_TRANSFER */ false , /* It make no sense to let the user set this */
-   /* RECORD          */ true  , /* Force "record" on all calls               */
-   /* HANGUP          */ true  , /* N/A                                       */
+const Matrix1D< UAMA, bool > UserActionModelPrivate::heterogenous_call_options = {
+   { UAMA::ACCEPT            , true  }, /* N/A                                       */
+   { UAMA::HOLD              , false }, /* Do not allow to set a state               */
+   { UAMA::MUTE_AUDIO        , true  }, /* Force mute on all calls                   */
+   { UAMA::MUTE_VIDEO        , true  }, /* Mute all calls                            */
+   { UAMA::SERVER_TRANSFER   , false }, /* It make no sense to let the user set this */
+   { UAMA::RECORD            , true  }, /* Force "record" on all calls               */
+   { UAMA::HANGUP            , true  }, /* N/A                                       */
 
-   /* JOIN            */ true  , /* N/A                                       */
+   { UAMA::JOIN              , true  }, /* N/A                                       */
 
-   /* ADD_NEW         */ false , /* N/A                                       */
-}};
+   { UAMA::ADD_NEW           , false }, /* N/A                                       */
+   { UAMA::TOGGLE_VIDEO      , false },
+   { UAMA::ADD_CONTACT       , false },
+   { UAMA::ADD_TO_CONTACT    , false },
+   { UAMA::DELETE_CONTACT    , false },
+   { UAMA::EMAIL_CONTACT     , false },
+   { UAMA::COPY_CONTACT      , false },
+   { UAMA::BOOKMARK          , false },
+   { UAMA::VIEW_CHAT_HISTORY , false },
+   { UAMA::ADD_CONTACT_METHOD, false },
+   { UAMA::CALL_CONTACT      , false },
+   { UAMA::REMOVE_HISTORY    , false },
+};
 
 /**
  * This matrix allow to enable/disable actions depending on the call protocol
  */
-const TypedStateMachine< TypedStateMachine< bool , Account::Protocol > , UserActionModel::Action > UserActionModelPrivate::availableProtocolActions = {{
-   /*                        SIP   IAX    DHT    */
-   /* ACCEPT          */ {{ true , true , true  }},
-   /* HOLD            */ {{ true , true , true  }},
-   /* MUTE_AUDIO      */ {{ true , true , true  }},
-   /* MUTE_VIDEO      */ {{ true , true , true  }},
-   /* SERVER_TRANSFER */ {{ true , false, false }},
-   /* RECORD          */ {{ true , true , true  }},
-   /* HANGUP          */ {{ true , true , true  }},
+const Matrix2D< UAMA, Account::Protocol, bool > UserActionModelPrivate::availableProtocolActions = {
+   /*                              SIP    IAX    DHT   */
+   { UAMA::ACCEPT            , {{ true , true , true  }}},
+   { UAMA::HOLD              , {{ true , true , true  }}},
+   { UAMA::MUTE_AUDIO        , {{ true , true , true  }}},
+   { UAMA::MUTE_VIDEO        , {{ true , true , true  }}},
+   { UAMA::SERVER_TRANSFER   , {{ true , false, false }}},
+   { UAMA::RECORD            , {{ true , true , true  }}},
+   { UAMA::HANGUP            , {{ true , true , true  }}},
 
-   /* JOIN            */ {{ true , true , true  }},
+   { UAMA::JOIN              , {{ true , true , true  }}},
 
-   /* ADD_NEW         */ {{ true , true , true  }},
-}};
+   { UAMA::ADD_NEW           , {{ true , true , true  }}},
+
+   { UAMA::TOGGLE_VIDEO      , {{ true,  true , true  }}},
+   { UAMA::ADD_CONTACT       , {{ true,  true , true  }}},
+   { UAMA::ADD_TO_CONTACT    , {{ true,  true , true  }}},
+   { UAMA::DELETE_CONTACT    , {{ true,  true , true  }}},
+   { UAMA::EMAIL_CONTACT     , {{ true,  true , true  }}},
+   { UAMA::COPY_CONTACT      , {{ true,  true , true  }}},
+   { UAMA::BOOKMARK          , {{ true,  true , true  }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true,  true , true  }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true,  true , true  }}},
+   { UAMA::CALL_CONTACT      , {{ true,  true , true  }}},
+   { UAMA::REMOVE_HISTORY    , {{ true,  true , true  }}},
+};
 
 /**
  * This matrix define if an action is stateless or stateful. The only state
@@ -192,60 +274,158 @@ const TypedStateMachine< TypedStateMachine< bool , Account::Protocol > , UserAct
  * called "TRISTATE".
  */
 #define ST UserActionModel::ActionStatfulnessLevel::
-const TypedStateMachine< TypedStateMachine< UserActionModel::ActionStatfulnessLevel , UserActionModelPrivate::SelectionState > , UserActionModel::Action > UserActionModelPrivate::actionStatefulness = {{
-   /*                           NONE         UNIQUE             MULTI     */
-   /* ACCEPT          */ {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }},
-   /* HOLD            */ {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }},
-   /* MUTE_AUDIO      */ {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }},
-   /* MUTE_VIDEO      */ {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }},
-   /* SERVER_TRANSFER */ {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }},
-   /* RECORD          */ {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }},
-   /* HANGUP          */ {{ ST UNISTATE,  ST UNISTATE     ,  ST TRISTATE  }},
+const Matrix2D< UAMA, UserActionModelPrivate::SelectionState, UserActionModel::ActionStatfulnessLevel > UserActionModelPrivate::actionStatefulness = {
+   /*                                NONE          UNIQUE             MULTI       */
+   { UAMA::ACCEPT            , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::HOLD              , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::MUTE_AUDIO        , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::MUTE_VIDEO        , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::SERVER_TRANSFER   , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::RECORD            , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::HANGUP            , {{ ST UNISTATE,  ST UNISTATE     ,  ST TRISTATE  }}},
 
-   /* JOIN            */ {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }},
+   { UAMA::JOIN              , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
 
-   /* ADD_NEW         */ {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }},
-}};
+   { UAMA::ADD_NEW           , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::TOGGLE_VIDEO      , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::ADD_CONTACT       , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::ADD_TO_CONTACT    , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::DELETE_CONTACT    , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::EMAIL_CONTACT     , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::COPY_CONTACT      , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::BOOKMARK          , {{ ST UNISTATE,  ST CHECKABLE    ,  ST TRISTATE  }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::CALL_CONTACT      , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::REMOVE_HISTORY    , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+};
 #undef ST
 
-UserActionModelPrivate::UserActionModelPrivate(UserActionModel* parent) : QObject(parent),q_ptr(parent),
-m_pCall(nullptr), m_pActiveModel(nullptr)
+/**
+ * This matrix categorize each actions. Action can be enabled in a given context
+ * while being hidden in another. This allow, for example, to use the
+ * UserActionModel to fill context menu.
+ */
+const Matrix1D< UAMA, FlagPack<UAM::Context>> UserActionModelPrivate::actionContext = {
+   { UAMA::ACCEPT            , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::HOLD              , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::MUTE_AUDIO        , UAM::Context::RECOMMANDED },
+
+   { UAMA::MUTE_VIDEO        , UAM::Context::RECOMMANDED },
+
+   { UAMA::SERVER_TRANSFER   , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::RECORD            , UAM::Context::RECOMMANDED },
+
+   { UAMA::HANGUP            , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::JOIN              , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::ADD_NEW           , UAM::Context::MINIMAL     |
+                               UAM::Context::RECOMMANDED },
+
+   { UAMA::TOGGLE_VIDEO      , UAM::Context::ADVANCED    },
+   { UAMA::ADD_CONTACT       , UAM::Context::MANAGMENT   },
+   { UAMA::ADD_TO_CONTACT    , UAM::Context::MANAGMENT   },
+   { UAMA::DELETE_CONTACT    , UAM::Context::MANAGMENT   },
+   { UAMA::EMAIL_CONTACT     , UAM::Context::CONTACT     },
+   { UAMA::COPY_CONTACT      , UAM::Context::MANAGMENT   },
+   { UAMA::BOOKMARK          , UAM::Context::MANAGMENT   },
+   { UAMA::VIEW_CHAT_HISTORY , UAM::Context::MANAGMENT   },
+   { UAMA::ADD_CONTACT_METHOD, UAM::Context::MANAGMENT   },
+   { UAMA::CALL_CONTACT      , UAM::Context::CONTACT     },
+   { UAMA::REMOVE_HISTORY    , UAM::Context::MANAGMENT   },
+};
+
+const Matrix1D< UAMA, FlagPack<UAM::Asset>> UserActionModelPrivate::availableByAsset = {
+   { UAMA::ACCEPT            , UAM::Asset::CALL           },
+   { UAMA::HOLD              , UAM::Asset::CALL           },
+   { UAMA::MUTE_AUDIO        , UAM::Asset::CALL           },
+   { UAMA::MUTE_VIDEO        , UAM::Asset::CALL           },
+   { UAMA::SERVER_TRANSFER   , UAM::Asset::CALL           },
+   { UAMA::RECORD            , UAM::Asset::CALL           },
+   { UAMA::HANGUP            , UAM::Asset::CALL           },
+   { UAMA::JOIN              , UAM::Asset::CALL           },
+   { UAMA::ADD_NEW           , UAM::Asset::CALL           },
+   { UAMA::TOGGLE_VIDEO      , UAM::Asset::CALL           },
+   { UAMA::ADD_CONTACT       , UAM::Asset::PERSON         },
+   { UAMA::ADD_TO_CONTACT    , UAM::Asset::CONTACT_METHOD },
+   { UAMA::DELETE_CONTACT    , UAM::Asset::PERSON         },
+   { UAMA::EMAIL_CONTACT     , UAM::Asset::PERSON         },
+   { UAMA::COPY_CONTACT      , UAM::Asset::PERSON         },
+   { UAMA::BOOKMARK          , UAM::Asset::CONTACT_METHOD },
+   { UAMA::VIEW_CHAT_HISTORY , UAM::Asset::CONTACT_METHOD },
+   { UAMA::ADD_CONTACT_METHOD, UAM::Asset::PERSON         },
+   { UAMA::CALL_CONTACT      , UAM::Asset::PERSON         },
+   { UAMA::REMOVE_HISTORY    , UAM::Asset::CALL           },
+};
+
+UserActionModelPrivate::UserActionModelPrivate(UserActionModel* parent, const FlagPack<UAM::Context>& c) : QObject(parent),q_ptr(parent),
+m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
 {
    //Init the default names
-   m_ActionNames = {{
-      /* ACCEPT          */ QObject::tr("Accept"          ),
-      /* HOLD            */ QObject::tr("Hold"            ),
-      /* MUTE_AUDIO      */ QObject::tr("Mute audio"      ),
-      /* MUTE_VIDEO      */ QObject::tr("Mute video"      ),
-      /* SERVER_TRANSFER */ QObject::tr("Server transfer" ),
-      /* RECORD          */ QObject::tr("Record"          ),
-      /* HANGUP          */ QObject::tr("Hangup"          ),
+   m_ActionNames = {
+      { UAMA::ACCEPT            , QObject::tr("Accept"                 )},
+      { UAMA::HOLD              , QObject::tr("Hold"                   )},
+      { UAMA::MUTE_AUDIO        , QObject::tr("Mute audio"             )},
+      { UAMA::MUTE_VIDEO        , QObject::tr("Mute video"             )},
+      { UAMA::SERVER_TRANSFER   , QObject::tr("Server transfer"        )},
+      { UAMA::RECORD            , QObject::tr("Record"                 )},
+      { UAMA::HANGUP            , QObject::tr("Hangup"                 )},
+      { UAMA::JOIN              , QObject::tr("Join"                   )},
+      { UAMA::ADD_NEW           , QObject::tr("Add new"                )},
+      { UAMA::TOGGLE_VIDEO      , QObject::tr("Toggle video"           )},
+      { UAMA::ADD_CONTACT       , QObject::tr("Add a contact"          )},
+      { UAMA::ADD_TO_CONTACT    , QObject::tr("Add to existing contact")},
+      { UAMA::DELETE_CONTACT    , QObject::tr("Delete contact"         )},
+      { UAMA::EMAIL_CONTACT     , QObject::tr("Email contact"          )},
+      { UAMA::COPY_CONTACT      , QObject::tr("Copy contact"           )},
+      { UAMA::BOOKMARK          , QObject::tr("Add bookmark"           )},
+      { UAMA::VIEW_CHAT_HISTORY , QObject::tr("View chat history"      )},
+      { UAMA::ADD_CONTACT_METHOD, QObject::tr("Add phone number"       )},
+      { UAMA::CALL_CONTACT      , QObject::tr("Call again"             )},
+      { UAMA::REMOVE_HISTORY    , QObject::tr("Remove"                 )},
+   };
 
-      /* JOIN            */ QObject::tr("Join"            ),
-
-      /* ADD_NEW         */ QObject::tr("Add new"         ),
-   }};
-
-    m_CurrentActionsState = {{
-        /* ACCEPT          */ Qt::Unchecked,
-        /* HOLD            */ Qt::Unchecked,
-        /* MUTE_AUDIO      */ Qt::Unchecked,
-        /* MUTE_VIDEO      */ Qt::Unchecked,
-        /* SERVER_TRANSFER */ Qt::Unchecked,
-        /* RECORD          */ Qt::Unchecked,
-        /* HANGUP          */ Qt::Unchecked,
-
-        /* JOIN            */ Qt::Unchecked,
-
-        /* ADD_NEW         */ Qt::Unchecked,
-    }};
+   m_CurrentActionsState = {
+      { UAMA::ACCEPT            , Qt::Unchecked},
+      { UAMA::HOLD              , Qt::Unchecked},
+      { UAMA::MUTE_AUDIO        , Qt::Unchecked},
+      { UAMA::MUTE_VIDEO        , Qt::Unchecked},
+      { UAMA::SERVER_TRANSFER   , Qt::Unchecked},
+      { UAMA::RECORD            , Qt::Unchecked},
+      { UAMA::HANGUP            , Qt::Unchecked},
+      { UAMA::JOIN              , Qt::Unchecked},
+      { UAMA::ADD_NEW           , Qt::Unchecked},
+      { UAMA::TOGGLE_VIDEO      , Qt::Unchecked},
+      { UAMA::ADD_CONTACT       , Qt::Unchecked},
+      { UAMA::ADD_TO_CONTACT    , Qt::Unchecked},
+      { UAMA::DELETE_CONTACT    , Qt::Unchecked},
+      { UAMA::EMAIL_CONTACT     , Qt::Unchecked},
+      { UAMA::COPY_CONTACT      , Qt::Unchecked},
+      { UAMA::BOOKMARK          , Qt::Unchecked},
+      { UAMA::VIEW_CHAT_HISTORY , Qt::Unchecked},
+      { UAMA::ADD_CONTACT_METHOD, Qt::Unchecked},
+      { UAMA::CALL_CONTACT      , Qt::Unchecked},
+      { UAMA::REMOVE_HISTORY    , Qt::Unchecked},
+   };
 }
+
+#undef UAMA
+#undef UAM
 
 /**
  * Create an UserActionModel around a single call. This wont take advantage
  * of the multiselection feature.
  */
-UserActionModel::UserActionModel(Call* parent) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this))
+UserActionModel::UserActionModel(Call* parent, const FlagPack<UserActionModel::Context> c) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this,c))
 {
    Q_ASSERT(parent != nullptr);
    Q_ASSERT(parent->state() != Call::State::OVER);
@@ -260,7 +440,7 @@ UserActionModel::UserActionModel(Call* parent) : QAbstractListModel(parent),d_pt
 /**
  * Create an UserActionModel around the CallModel selected call(s)
  */
-UserActionModel::UserActionModel(CallModel* parent) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this))
+UserActionModel::UserActionModel(CallModel* parent, const FlagPack<UserActionModel::Context> c) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this,c))
 {
    Q_ASSERT(parent != nullptr);
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALLMODEL;
@@ -389,6 +569,17 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::ADD_NEW         :
          ret += 0;
          break;
+      case UserActionModel::Action::TOGGLE_VIDEO      :
+      case UserActionModel::Action::ADD_CONTACT       :
+      case UserActionModel::Action::ADD_TO_CONTACT    :
+      case UserActionModel::Action::DELETE_CONTACT    :
+      case UserActionModel::Action::EMAIL_CONTACT     :
+      case UserActionModel::Action::COPY_CONTACT      :
+      case UserActionModel::Action::BOOKMARK          :
+      case UserActionModel::Action::VIEW_CHAT_HISTORY :
+      case UserActionModel::Action::ADD_CONTACT_METHOD:
+      case UserActionModel::Action::CALL_CONTACT      :
+      case UserActionModel::Action::REMOVE_HISTORY    :
       case UserActionModel::Action::COUNT__:
          break;
    };
@@ -401,10 +592,10 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::ACCEPT          :
          switch(c->state()) {
             case Call::State::DIALING        :
-               m_ActionNames[UserActionModel::Action::ACCEPT] = QObject::tr("Call");
+               m_ActionNames.setAt(UserActionModel::Action::ACCEPT, QObject::tr("Call"));
                break;
             default:
-               m_ActionNames[UserActionModel::Action::ACCEPT] = QObject::tr("Accept");
+               m_ActionNames.setAt(UserActionModel::Action::ACCEPT,  QObject::tr("Accept"));
                break;
          }
          break;
@@ -413,10 +604,10 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
             case Call::State::HOLD           :
             case Call::State::CONFERENCE_HOLD:
             case Call::State::TRANSF_HOLD    :
-               m_ActionNames[UserActionModel::Action::HOLD] = QObject::tr("Unhold");
+               m_ActionNames.setAt(UserActionModel::Action::HOLD, QObject::tr("Unhold"));
                break;
             default:
-               m_ActionNames[UserActionModel::Action::HOLD] = QObject::tr("Hold");
+               m_ActionNames.setAt(UserActionModel::Action::HOLD, QObject::tr("Hold"));
                break;
          }
          break;
@@ -424,17 +615,17 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
          switch(c->state()) {
             case Call::State::DIALING        :
             case Call::State::NEW            :
-               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Cancel");
+               m_ActionNames.setAt(UserActionModel::Action::HANGUP, QObject::tr("Cancel"));
                break;
             case Call::State::FAILURE        :
             case Call::State::ERROR          :
             case Call::State::COUNT__        :
             case Call::State::INITIALIZATION :
             case Call::State::BUSY           :
-               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Remove");
+               m_ActionNames.setAt(UserActionModel::Action::HANGUP, QObject::tr("Remove"));
                break;
             default:
-               m_ActionNames[UserActionModel::Action::HANGUP] = QObject::tr("Hangup");
+               m_ActionNames.setAt(UserActionModel::Action::HANGUP, QObject::tr("Hangup"));
                break;
          }
          break;
@@ -445,6 +636,17 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::MUTE_VIDEO      :
       case UserActionModel::Action::SERVER_TRANSFER :
       case UserActionModel::Action::RECORD          :
+      case UserActionModel::Action::TOGGLE_VIDEO      :
+      case UserActionModel::Action::ADD_CONTACT       :
+      case UserActionModel::Action::ADD_TO_CONTACT    :
+      case UserActionModel::Action::DELETE_CONTACT    :
+      case UserActionModel::Action::EMAIL_CONTACT     :
+      case UserActionModel::Action::COPY_CONTACT      :
+      case UserActionModel::Action::BOOKMARK          :
+      case UserActionModel::Action::VIEW_CHAT_HISTORY :
+      case UserActionModel::Action::ADD_CONTACT_METHOD:
+      case UserActionModel::Action::CALL_CONTACT      :
+      case UserActionModel::Action::REMOVE_HISTORY    :
          break;
    }
    #pragma GCC diagnostic pop
@@ -457,7 +659,8 @@ bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const 
       availableActionMap        [action] [c->state()             ] &&
       availableAccountActionMap [action] [a->registrationState() ] &&
       multi_call_options        [action] [m_SelectionState       ] &&
-      availableProtocolActions  [action] [a->protocol()          ] //
+      availableProtocolActions  [action] [a->protocol()          ] &&
+      actionContext             [action] & m_fContext              //
    );
 }
 
@@ -467,7 +670,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
    switch(m_Mode) {
       case UserActionModelMode::CALL:
          updateCheckMask(state,action,m_pCall);
-         m_CurrentActionsState[action] = state / 100 ? Qt::Checked : Qt::Unchecked;
+         m_CurrentActionsState.setAt(action,  state / 100 ? Qt::Checked : Qt::Unchecked);
 
          return updateByCall(action, m_pCall);
       case UserActionModelMode::CALLMODEL: {
@@ -490,7 +693,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
          }
 
          //Detect if the multiple selection has mismatching item states, disable it if necessary
-         m_CurrentActionsState[action] = (state % 100 && state / 100) ? Qt::PartiallyChecked : (state / 100 ? Qt::Checked : Qt::Unchecked);
+         m_CurrentActionsState.setAt(action, (state % 100 && state / 100) ? Qt::PartiallyChecked : (state / 100 ? Qt::Checked : Qt::Unchecked));
          return ret && (m_CurrentActionsState[action] != Qt::PartiallyChecked || heterogenous_call_options[action]);
       }
    };
@@ -592,6 +795,17 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          if (UserActions::addNew())
             d_ptr->updateActions();
          break;
+      case UserActionModel::Action::TOGGLE_VIDEO      :
+      case UserActionModel::Action::ADD_CONTACT       :
+      case UserActionModel::Action::ADD_TO_CONTACT    :
+      case UserActionModel::Action::DELETE_CONTACT    :
+      case UserActionModel::Action::EMAIL_CONTACT     :
+      case UserActionModel::Action::COPY_CONTACT      :
+      case UserActionModel::Action::BOOKMARK          :
+      case UserActionModel::Action::VIEW_CHAT_HISTORY :
+      case UserActionModel::Action::ADD_CONTACT_METHOD:
+      case UserActionModel::Action::CALL_CONTACT      :
+      case UserActionModel::Action::REMOVE_HISTORY    :
       case UserActionModel::Action::COUNT__:
          break;
    };
