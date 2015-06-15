@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_5c795992",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-06-15T21:33:42Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9a5c5d37_9c19117c",
+      "revId": "ba9ce825539f5b59c2c05ade8527281db9f625b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_7c265dbc",
         "filename": "src/private/matrixutils.hpp",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_7c741d9c",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-06-15T21:33:42Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9a5c5d37_7c265dbc",
+      "revId": "ba9ce825539f5b59c2c05ade8527281db9f625b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_3c09052d",
         "filename": "src/private/matrixutils.hpp",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2015-06-15T21:12:28Z",
       "side": 1,
       "message": "Could you use more detailed names? By using auto we rely on the var names to help us understand their types",
+      "revId": "ba9ce825539f5b59c2c05ade8527281db9f625b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_9c47d14b",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-06-15T21:33:42Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9a5c5d37_3c09052d",
       "revId": "ba9ce825539f5b59c2c05ade8527281db9f625b8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
