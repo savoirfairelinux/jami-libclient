@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_0177fed5",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-06-15T18:58:30Z",
+      "side": 1,
+      "message": "left over from copy paste?",
+      "range": {
+        "startLine": 130,
+        "startChar": 6,
+        "endLine": 130,
+        "endChar": 67
+      },
+      "revId": "9d01d8cecb63913fc21da79d7ed8d6f13e5b0720",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
