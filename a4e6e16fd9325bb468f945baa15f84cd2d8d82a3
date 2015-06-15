@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_0195be3f",
+        "filename": "src/private/useractions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-06-15T13:54:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_a1e39232",
+      "range": {
+        "startLine": 250,
+        "startChar": 35,
+        "endLine": 250,
+        "endChar": 40
+      },
+      "revId": "a4e6e16fd9325bb468f945baa15f84cd2d8d82a3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_81d08e54",
         "filename": "src/private/useractions.h",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2015-06-13T00:59:55Z",
       "side": 1,
       "message": "less code is better (for maintenance and debugging): put that in a var right after the for\nand use it everywhere.\ndo it also in muteVideo",
+      "range": {
+        "startLine": 255,
+        "startChar": 14,
+        "endLine": 255,
+        "endChar": 74
+      },
+      "revId": "a4e6e16fd9325bb468f945baa15f84cd2d8d82a3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_e1918a53",
+        "filename": "src/private/useractions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-06-15T13:54:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_81d08e54",
       "range": {
         "startLine": 255,
         "startChar": 14,
