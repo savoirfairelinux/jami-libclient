@@ -2040,6 +2040,8 @@ QVariant Call::roleData(int role) const
          return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Call::Role::HasVideoRecording):
          return d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN]->size() > 0;
+      case static_cast<int>(Call::Role::HumanStateName):
+         return toHumanStateName(state());
       case static_cast<int>(Call::Role::DropState):
          return property("dropState");
       case static_cast<int>(Call::Role::Missed):
