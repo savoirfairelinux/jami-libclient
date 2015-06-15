@@ -1816,8 +1816,27 @@ Account::EditState Account::editState() const
  */
 Account::RoleState Account::roleState(Account::Role role) const
 {
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wswitch-enum"
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wswitch"
 
-   //Supported fields
+   //Hide unsupported IP2IP fields
+   if (id() == DRing::Account::ProtocolNames::IP2IP) {
+      switch(role) {
+         case Account::Role::Password:
+         case Account::Role::RegistrationExpire:
+         case Account::Role::Hostname:
+         case Account::Role::Mailbox:
+         case Account::Role::Username:
+         case Account::Role::Alias:
+            return Account::RoleState::UNAVAILABLE;
+         default:
+            break;
+      }
+   }
+
+   //Supported security fields
    enum class Fields {
       SDES_FALLBACK_RTP  ,
       ZRTP_SAS_ONCE      ,
@@ -1829,10 +1848,6 @@ Account::RoleState Account::roleState(Account::Role role) const
 
    //Mapping between the roles and the fields
    Fields f = Fields::COUNT__;
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wswitch-enum"
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wswitch"
    switch(role) {
       case Account::Role::DisplaySasOnce    :
          f = Fields::ZRTP_SAS_ONCE      ;
