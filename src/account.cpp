@@ -905,6 +905,12 @@ bool Account::hasProxy() const
    return proxy().size();
 }
 
+QString Account::displayName() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
+}
+
+
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
 {
@@ -1052,6 +1058,8 @@ QVariant Account::roleData(int role) const
          return turnServer();
       case CAST(Account::Role::HasProxy                 ):
          return hasProxy();
+      case CAST(Account::Role::DisplayName              ):
+         return displayName();
       default:
          return QVariant();
    }
@@ -1566,6 +1574,11 @@ void Account::setTurnServer(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER, value);
 }
 
+void Account::setDisplayName(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
+}
+
 ///Set the DTMF type
 void Account::setDTMFType(DtmfType type)
 {
@@ -1738,6 +1751,9 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::TurnServer               ):
          setTurnServer(value.toString());
+         break;
+      case CAST(Account::Role::DisplayName              ):
+         setDisplayName(value.toString());
          break;
    }
 }

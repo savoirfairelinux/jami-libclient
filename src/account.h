@@ -144,6 +144,7 @@ class LIB_EXPORT Account : public QObject {
 
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
+   Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
@@ -254,6 +255,7 @@ class LIB_EXPORT Account : public QObject {
          LastTransportErrorMessage   = 164,
          TurnServer                  = 168,
          HasProxy                    = 170,
+         DisplayName                 = 171,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
@@ -361,6 +363,7 @@ class LIB_EXPORT Account : public QObject {
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
       bool    hasProxy                     () const;
+      QString displayName                  () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
@@ -396,6 +399,7 @@ class LIB_EXPORT Account : public QObject {
       void setRingtonePath                  (const QString& detail  );
       void setLastErrorMessage              (const QString& message );
       void setTurnServer                    (const QString& value   );
+      void setDisplayName                   (const QString& value   );
       void setLastErrorCode                 (int  code  );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);

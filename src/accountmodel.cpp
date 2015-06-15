@@ -165,6 +165,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::UseDefaultPort              ) ,QByteArray("useDefaultPort"                ));
       roles.insert(CAST(Account::Role::TurnServer                  ) ,QByteArray("turnServer"                    ));
       roles.insert(CAST(Account::Role::HasProxy                    ) ,QByteArray("hasProxy"                      ));
+      roles.insert(CAST(Account::Role::DisplayName                 ) ,QByteArray("displayName"                   ));
    }
    return roles;
 }
