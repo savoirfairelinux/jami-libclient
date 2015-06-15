@@ -73,8 +73,15 @@ template<class Row, typename Value, typename A = Value>
 struct Matrix1D
 {
 
+   struct Pairs {
+      Row   key;
+      Value value;
+   };
+
    Matrix1D(std::initializer_list< std::initializer_list<Value> > s);
+   Matrix1D(std::initializer_list< Pairs > s);
    explicit Matrix1D();
+   ~Matrix1D();
 
    // Row is a built-in type ("int" by default)
    Value operator[](Row v);
@@ -115,7 +122,7 @@ struct Matrix1D
    void setAt(Row,Value);
 
 private:
-   QVector<Value> m_lData;
+   Value m_lData[enum_class_size<Row>()];
    static QMap<A, Row> m_hReverseMapping;
 };
 
