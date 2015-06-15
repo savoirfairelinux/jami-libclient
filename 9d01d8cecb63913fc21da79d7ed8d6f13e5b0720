@@ -46,6 +46,30 @@
       "revId": "9d01d8cecb63913fc21da79d7ed8d6f13e5b0720",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_9c30f1e9",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-06-15T21:21:03Z",
+      "side": 1,
+      "message": "Yeah but this comment does not seem to be linked to a specific line here",
+      "parentUuid": "9a5c5d37_fc124d57",
+      "range": {
+        "startLine": 130,
+        "startChar": 6,
+        "endLine": 130,
+        "endChar": 67
+      },
+      "revId": "9d01d8cecb63913fc21da79d7ed8d6f13e5b0720",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
