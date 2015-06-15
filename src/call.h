@@ -128,6 +128,7 @@ public:
       Certificate        = 133, /*!< The certificate (for encrypted calls)                               */
       HasAudioRecording  = 134, /*!<                                                                     */
       HasVideoRecording  = 135, /*!<                                                                     */
+      HumanStateName     = 136, /*!<                                                                     */
       DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop    */
       DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
       LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
