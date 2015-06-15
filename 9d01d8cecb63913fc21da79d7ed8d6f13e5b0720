@@ -22,6 +22,30 @@
       "revId": "9d01d8cecb63913fc21da79d7ed8d6f13e5b0720",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_fc124d57",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-06-15T21:12:53Z",
+      "side": 1,
+      "message": "No, the ctor is still not constexpr, this is unsupported by C++11, GCC and LLVM don\u0027t supported relaxed constexpr yet. See\nhttps://isocpp.org/files/papers/N3652.html",
+      "parentUuid": "9a5c5d37_0177fed5",
+      "range": {
+        "startLine": 130,
+        "startChar": 6,
+        "endLine": 130,
+        "endChar": 67
+      },
+      "revId": "9d01d8cecb63913fc21da79d7ed8d6f13e5b0720",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
