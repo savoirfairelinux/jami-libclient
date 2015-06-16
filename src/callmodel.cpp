@@ -94,6 +94,7 @@ public:
       bool isPartOf(const QModelIndex& confIdx, Call* call);
       void removeConference       ( Call* conf                    );
       void removeInternal(InternalStruct* internal);
+      static QStringList getCallList();
 
    private:
       CallModel* q_ptr;
@@ -186,7 +187,7 @@ void CallModelPrivate::init()
    m_sInstanceInit = true;
 
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   const QStringList callList = callManager.getCallList();
+   const QStringList callList = getCallList();
    foreach (const QString& callId, callList) {
       Call* tmpCall = CallPrivate::buildExistingCall(callId);
       addCall2(tmpCall);
@@ -545,6 +546,28 @@ void CallModelPrivate::removeInternal(InternalStruct* internal)
    q_ptr->beginRemoveRows(QModelIndex(),idx,idx);
    m_lInternalModel.removeAt(idx);
    q_ptr->endRemoveRows();
+}
+
+/**
+ * LibRingClient doesn't [need to] handle INACTIVE calls
+ * This method make sure they never get into the system.
+ *
+ * It's not very efficient, but do the job. This method isn't
+ * called very often anyway.
+ */
+QStringList CallModelPrivate::getCallList()
+{
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   const QStringList callList = callManager.getCallList();
+   QStringList ret;
+
+   for (const QString& callId : callList) {
+      QMap<QString, QString> details = callManager.getCallDetails(callId);
+      if (details[CallPrivate::DetailsMapFields::STATE] != CallPrivate::DaemonStateInit::INACTIVE)
+         ret << callId;
+   }
+
+   return ret;
 }
 
 ///Remove a call and update the internal structure
@@ -1203,7 +1226,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
       }
 
       //Test if there is no inconsistencies between the daemon and the client
-      const QStringList deamonCallList = callManager.getCallList();
+      const QStringList deamonCallList = getCallList();
       foreach(const QString& callId, deamonCallList) {
          const QMap<QString,QString> callDetails = callManager.getCallDetails(callId);
          InternalStruct* callInt = m_shDringId[callId];
