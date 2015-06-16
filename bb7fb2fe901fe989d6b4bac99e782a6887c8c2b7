@@ -16,6 +16,24 @@
       "revId": "bb7fb2fe901fe989d6b4bac99e782a6887c8c2b7",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_507c9d72",
+        "filename": "src/private/matrixutils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-06-16T21:41:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_3c20e59a",
+      "revId": "bb7fb2fe901fe989d6b4bac99e782a6887c8c2b7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
