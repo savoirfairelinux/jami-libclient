@@ -95,6 +95,7 @@ struct Matrix1D
    Matrix1D(std::initializer_list< Pairs > s);
    Matrix1D(std::initializer_list<Order> s);
    explicit Matrix1D();
+   Matrix1D(const Matrix1D<Row,Value,A>& copy);
    ~Matrix1D();
 
    // Row is a built-in type ("int" by default)
@@ -136,7 +137,7 @@ struct Matrix1D
    void setAt(Row,Value);
 
 private:
-   Value m_lData[enum_class_size<Row>()];
+   Value* m_lData[enum_class_size<Row>()];
    static QMap<A, Row> m_hReverseMapping;
 };
 

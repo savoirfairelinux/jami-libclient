@@ -53,24 +53,30 @@ typename EnumIterator<EnumClass>::EnumClassIter EnumIterator<EnumClass>::end()
    return EnumIterator<EnumClass>::EnumClassIter( this, enum_class_size<EnumClass>() );
 }
 
-
-
-
+template<class Row, typename Value, typename Accessor>
+Matrix1D<Row,Value,Accessor>::Matrix1D() : m_lData{nullptr}
+{
+}
 
 template<class Row, typename Value, typename Accessor>
-Matrix1D<Row,Value,Accessor>::Matrix1D()
+Matrix1D<Row,Value,Accessor>::Matrix1D(const Matrix1D<Row,Value,Accessor>& copy) : m_lData{nullptr}
 {
+   for (int i = 0; i < enum_class_size<Row>(); i++) {
+      m_lData[i] = new Value(*copy.m_lData[i]);
+   }
 }
 
 template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::~Matrix1D()
 {
+   for (auto v : m_lData)
+      delete v;
 }
 
 //DEPRECATED
 template<class Row, typename Value, typename Accessor>
 Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< std::initializer_list<Value>> s)
-: m_lData{} {
+: m_lData{nullptr} {
    static_assert(std::is_enum<Row>(),"Row has to be an enum class");
    static_assert(static_cast<int>(Row::COUNT__) > 0,"Row need a COUNT__ element");
 
@@ -78,7 +84,7 @@ Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< std::initializer_l
    for (auto& rows : s) {
       int row = 0;
       for (auto& value : rows) {
-         m_lData[row] = value;
+         m_lData[row] = new Value(value);
          row++;
       }
    }
@@ -127,7 +133,7 @@ Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< Matrix1D<Row,Value
 
       i = 0;
       for (auto& r : p.vs)
-         m_lData[reOredered[i++]] = r;
+         m_lData[reOredered[i++]] = new Value(r);
 
    }
 
@@ -162,7 +168,7 @@ Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< Matrix1D<Row,Value
       usedElements[val/longSize] |= (0x1 << (val%longSize));
 
 
-      m_lData[val] = pair.value;
+      m_lData[val] = new Value(pair.value);
       counter++;
    }
 
@@ -178,7 +184,7 @@ Value Matrix1D<Row,Value,Accessor>::operator[](Row v) {
       Q_ASSERT(false);
       throw v;
    }
-   return m_lData[static_cast<int>(v)];
+   return *m_lData[static_cast<int>(v)];
 }
 
 template<class Row, typename Value, typename Accessor>
@@ -189,7 +195,9 @@ const Value Matrix1D<Row,Value,Accessor>::operator[](Row v) const {
       Q_ASSERT(false);
       throw v;
    }
-   return m_lData[static_cast<int>(v)];
+   Q_ASSERT(m_lData[static_cast<int>(v)]);
+
+   return *(m_lData[static_cast<int>(v)]);
 }
 
 template <class E, class T, class A> QMap<A,E> Matrix1D<E,T,A>::m_hReverseMapping;
@@ -231,17 +239,20 @@ bool Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator== (const Matr
 template<class Row, typename Value, typename Accessor>
 void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other) const
 {
-   p_vec_->m_lData[pos_] = other;
+   p_vec_->m_lData[pos_] = &other;
 }
 
 template<class Row, typename Value, typename Accessor>
 void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& other)
 {
-   p_vec_->m_lData[pos_] = other;
+   p_vec_->m_lData[pos_] = &other;
 }
 
 template<class Row, typename Value, typename Accessor>
 void Matrix1D<Row,Value,Accessor>::setAt(Row row,Value value)
 {
-   m_lData[(int)row] = value;
+   if (m_lData[(int)row])
+      delete m_lData[(int)row];
+
+   m_lData[(int)row] = new Value(value);
 }
