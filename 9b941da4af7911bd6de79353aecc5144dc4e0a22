@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_d019ad23",
+        "filename": "src/account.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1825,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2015-06-16T23:32:51Z",
+      "side": 1,
+      "message": "In the future, multiple accounts may be \"IP2IP\". They are not identified by their id but by an empty \"hostname\" field.",
+      "range": {
+        "startLine": 1825,
+        "startChar": 7,
+        "endLine": 1825,
+        "endChar": 9
+      },
+      "revId": "9b941da4af7911bd6de79353aecc5144dc4e0a22",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
