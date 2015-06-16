@@ -951,11 +951,11 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::TlsPassword):
          return tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return tlsCaListCertificate()?tlsCaListCertificate()->path().toLocalFile():QVariant();
+         return tlsCaListCertificate()?tlsCaListCertificate()->path().path():QVariant();
       case CAST(Account::Role::TlsCertificate):
-         return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
+         return tlsCertificate()?tlsCertificate()->path().path():QVariant();
       case CAST(Account::Role::TlsPrivateKeyCertificate):
-         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
+         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().path():QVariant();
       case CAST(Account::Role::TlsServerName):
          return tlsServerName();
       case CAST(Account::Role::SipStunServer):
@@ -1067,6 +1067,12 @@ QVariant Account::roleData(int role) const
          return hasProxy();
       case CAST(Account::Role::DisplayName              ):
          return displayName();
+      case CAST(Account::Role::SrtpEnabled              ):
+         return isSrtpEnabled();
+      case CAST(Account::Role::HasCustomBootstrap       ):
+         //Do not create the model for nothing
+         return protocol() == Account::Protocol::RING ? bootstrapModel()->isCustom() : false;
+         break;
       default:
          return QVariant();
    }
@@ -1730,6 +1736,7 @@ void Account::setRoleData(int role, const QVariant& value)
          setPresenceEnabled(value.toBool());
          break;
       case CAST(Account::Role::IsVideoEnabled           ):
+         setVideoEnabled(value.toBool());
          break;
       case CAST(Account::Role::VideoPortMax             ):
          setVideoPortMax(value.toInt());
@@ -1761,6 +1768,14 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::DisplayName              ):
          setDisplayName(value.toString());
+         break;
+      case CAST(Account::Role::SrtpEnabled              ):
+         setSrtpEnabled(value.toBool());
+         break;
+      case CAST(Account::Role::HasCustomBootstrap       ):
+         //Do not create the model for nothing
+         if (protocol() == Account::Protocol::RING && value.toBool())
+            bootstrapModel()->reset();
          break;
    }
 }
@@ -1834,6 +1849,33 @@ Account::RoleState Account::roleState(Account::Role role) const
          default:
             break;
       }
+   }
+
+   //Hide unsupported fields by protocol
+   switch(protocol()) {
+      case Account::Protocol::RING:
+         switch(role) {
+            case Account::Role::Password          :
+            case Account::Role::RegistrationExpire:
+            case Account::Role::Mailbox           :
+            case Account::Role::Hostname          :
+            case Account::Role::UserAgent         :
+            case Account::Role::HasCustomUserAgent:
+               return Account::RoleState::UNAVAILABLE;
+            case Account::Role::Username          :
+               return Account::RoleState::READ_ONLY;
+            default:
+               break;
+         }
+         break;
+      case Account::Protocol::SIP     :
+      case Account::Protocol::IAX     :
+      case Account::Protocol::COUNT__ :
+         switch(role) {
+            case Account::Role::HasCustomBootstrap:
+               return Account::RoleState::UNAVAILABLE;
+         }
+         break;
    }
 
    //Supported security fields

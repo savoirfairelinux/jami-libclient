@@ -46,6 +46,12 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Getter
+   bool isCustom() const;
+
+   //Mutator
+   void reset();
+
 private:
    explicit BootstrapModel(Account* a);
    virtual ~BootstrapModel();
