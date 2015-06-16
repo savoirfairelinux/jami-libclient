@@ -256,6 +256,7 @@ class LIB_EXPORT Account : public QObject {
          TurnServer                  = 168,
          HasProxy                    = 170,
          DisplayName                 = 171,
+         SrtpEnabled                 = 172,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
