@@ -49,6 +49,21 @@ public:
       ACTION        = 102,
    };
 
+   /**
+    * All assets currently available for the item. An item can have multiple
+    * assets. For example, a Call as a call, a contact method and probably a
+    * contact.
+    */
+   enum class Asset {
+      NONE           = 0x0 << 0, /*!< No assets                                    */
+      CALL           = 0x1 << 0, /*!< A single live or history call                */
+      CALL_MODEL     = 0x1 << 1, /*!< The current selected call from the CallModel */
+      PERSON         = 0x1 << 2, /*!< A person, contact or profile                 */
+      CONTACT_METHOD = 0x1 << 3, /*!< A contact method or a bookmark               */
+      COUNT__
+   };
+   Q_FLAGS(Asset)
+
    ///If options are checkable or not
    enum class ActionStatfulnessLevel {
       UNISTATE  = 0, /*!< The action has no state beside being available or not                              */
@@ -59,29 +74,57 @@ public:
 
    ///(End)user action, all possibility, not only state aware ones like "Action"
    enum class Action {
-      //Uni selection
-      ACCEPT          , /*!< Pickup incoming call(s) or send                        */
-      HOLD            , /*!< [Stateful] Hold (check) or Unhold (uncheck) call(s)    */
-      MUTE_AUDIO      , /*!< [Stateful] Stop sending audio to call(s)               */
-      MUTE_VIDEO      , /*!< [Stateful] Stop sending video to call(s)               */
-      SERVER_TRANSFER , /*!< [Stateful] Perform an unattended transfer              */
-      RECORD          , /*!< [Stateful] Record the call(s) to .wav file(s)          */
-      HANGUP          , /*!< Resuse an incoming call or hang up an in progress one  */
+      //Call
+      ACCEPT            , /*!< Pickup incoming call(s) or send                        */
+      HOLD              , /*!< [Stateful] Hold (check) or Unhold (uncheck) call(s)    */
+      MUTE_AUDIO        , /*!< [Stateful] Stop sending audio to call(s)               */
+      MUTE_VIDEO        , /*!< [Stateful] Stop sending video to call(s)               */
+      SERVER_TRANSFER   , /*!< [Stateful] Perform an unattended transfer              */
+      RECORD            , /*!< [Stateful] Record the call(s) to .wav file(s)          */
+      HANGUP            , /*!< Refuse an incoming call or hang up an in progress one  */
+      JOIN              , /*!< [Stateful] Join all seclect calls into a conference    */
+      TOGGLE_VIDEO      , /*!< Toggle the video media on that asset                   */
+
+      //Contact
+      ADD_CONTACT       , /*!< Add a new contact for that asset contact method        */
+      ADD_TO_CONTACT    , /*!< Add the asset contact method to an existing  contact   */
+      DELETE_CONTACT    , /*!< Delete the contact attached to the asset               */
+      EMAIL_CONTACT     , /*!< Email the contact attached to the asset                */
+      COPY_CONTACT      , /*!< Copy the vCard/HTML/Plain text contact data            */
+      BOOKMARK          , /*!< Toogle the bookmarked state of that contact [method]   */
+      VIEW_CHAT_HISTORY , /*!< View the text recording associated with the CM         */
+      ADD_CONTACT_METHOD, /*!< Add a contact method to a contact                      */
+      CALL_CONTACT      , /*!< Call this contact [method]                             */
+
+      //Call model
+      ADD_NEW           , /*!< Add a new call                                         */
+
+      //History
+      REMOVE_HISTORY    , /*!< Remove this asset from the history                     */
 
       //Multi selection
-      JOIN            , /*!< [Stateful] Join all seclect calls into a conference    */
 
       //No selection
-      ADD_NEW         , /*!< Add a new call                                         */
       COUNT__,
    };
    Q_ENUMS(Action)
 
+   enum class Context {
+      NONE          = 0x0 << 0, /*!< Nothing                                                    */
+      MINIMAL       = 0x1 << 0, /*!< The bare minimum required to work with the asset           */
+      RECOMMANDED   = 0x1 << 1, /*!< Commonly useful actions related to an asset                */
+      ADVANCED      = 0x1 << 2, /*!< Uncommon actions that can be performed on the asset        */
+      MANAGEMENT    = 0x1 << 3, /*!< Manage the data related to this (bookmark, add contact...) */
+      CONTACT       = 0x1 << 4, /*!< Actions related to contacting this person (email, call...) */
+      TREE_ELEMENTS = 0x1 << 5, /*!< All actions that require a second dimension to manage      */
+   };
+   Q_FLAGS(Context)
+
    Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel)
 
    //Constructor
-   explicit UserActionModel(Call* parent);
-   UserActionModel(CallModel* parent);
+   explicit UserActionModel(Call* parent, const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
+   UserActionModel(CallModel* parent    , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
    virtual ~UserActionModel();
 
    //Abstract model members
@@ -113,6 +156,7 @@ Q_SIGNALS:
 };
 Q_DECLARE_METATYPE(UserActionModel*)
 Q_DECLARE_METATYPE(UserActionModel::Action)
+DECLARE_ENUM_FLAGS(UserActionModel::Context)
 
 
 UserActionModel* operator<<(UserActionModel* m,UserActionModel::Action action);
