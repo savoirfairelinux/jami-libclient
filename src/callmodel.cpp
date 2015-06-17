@@ -286,7 +286,7 @@ void CallModel::selectCall(Call* call) const
 {
    const QModelIndex idx = getIndex(call);
 
-   selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent);
+   selectionModel()->setCurrentIndex(idx, QItemSelectionModel::ClearAndSelect);
 }
 
 /**
