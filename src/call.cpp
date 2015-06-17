@@ -151,7 +151,7 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 //                      RINGING          CONNECTING      CURRENT            BUSY                 HOLD                HUNGUP            FAILURE     /**/
 /*NEW            */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing        , CP::nothing      ,  CP::nothing      , CP::nothing }},/**/
 /*INCOMING       */  {{CP::nothing    , CP::nothing   , CP::start     , CP::startWeird     , CP::startWeird   ,  CP::startStop    , CP::failure }},/**/
-/*RINGING        */  {{CP::nothing    , CP::nothing   , CP::start     , CP::start          , CP::start        ,  CP::startStop    , CP::failure }},/**/
+/*RINGING        */  {{CP::nothing    , CP::nothing   , CP::start     , CP::failure        , CP::start        ,  CP::startStop    , CP::failure }},/**/
 /*CURRENT        */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*DIALING        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 /*HOLD           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
