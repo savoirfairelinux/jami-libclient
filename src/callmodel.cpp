@@ -49,8 +49,9 @@
 #include "media/video.h"
 #include "private/media_p.h"
 
-//Other
+//System
 #include <unistd.h>
+#include <errno.h>
 
 //Private
 #include "private/call_p.h"
@@ -1126,12 +1127,22 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    else {
       call = internal->call_real;
 
+      QString sn = stateName;
+
+      //Ring account handle "busy" differently from other types
+      if (call->account()
+       && call->account()->protocol() == Account::Protocol::RING
+       && sn == CallPrivate::StateChange::HUNG_UP
+       && code == ECONNREFUSED
+      )
+         sn = CallPrivate::StateChange::BUSY;
+
       qDebug() << "Call found" << call << call->state();
       const Call::LifeCycleState oldLifeCycleState = call->lifeCycleState();
       const Call::State          oldState          = call->state();
-      call->d_ptr->stateChanged(stateName);
+      call->d_ptr->stateChanged(sn);
       //Remove call when they end normally, keep errors and failure one
-      if ((stateName == CallPrivate::StateChange::HUNG_UP)
+      if ((sn == CallPrivate::StateChange::HUNG_UP)
          || ((oldState == Call::State::OVER) && (call->state() == Call::State::OVER))
          || (oldLifeCycleState != Call::LifeCycleState::FINISHED && call->state() == Call::State::OVER)) {
          removeCall(call);
