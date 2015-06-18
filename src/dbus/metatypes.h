@@ -21,7 +21,7 @@
 
 #include <QtCore/QMetaType>
 #include <QtCore/QMap>
-#include <QVector>
+#include <QtCore/QVector>
 #include <QtCore/QString>
 
 #include "../typedefs.h"
@@ -41,9 +41,9 @@ Q_DECLARE_METATYPE(VectorUInt)
 Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 
-#ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
 inline void registerCommTypes() {
+#ifndef ENABLE_LIBWRAP
    qDBusRegisterMetaType<MapStringString>               ();
    qDBusRegisterMetaType<MapStringInt>                  ();
    qDBusRegisterMetaType<VectorMapStringString>         ();
@@ -53,12 +53,8 @@ inline void registerCommTypes() {
    qDBusRegisterMetaType<VectorString>                  ();
    qDBusRegisterMetaType<MapStringVectorString>         ();
    dbus_metaTypeInit = true;
-}
-#else
-inline void registerCommTypes() {
-
-}
 #endif
+}
 
 #pragma GCC diagnostic pop
 
