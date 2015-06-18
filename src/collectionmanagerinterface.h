@@ -22,6 +22,7 @@
 
 //Qt
 #include <QtCore/QString>
+#include <QtCore/QMutexLocker>
 
 //libstdc++
 #include <type_traits>
@@ -195,6 +196,7 @@ private:
    virtual bool removeItemCallback(const T* item) = 0;
 
    CollectionManagerInterfacePrivate<T>* d_ptr;
+   QMutex m_InsertionMutex;
 };
 
 #include "collectionmanagerinterface.hpp"
