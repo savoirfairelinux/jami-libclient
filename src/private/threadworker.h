@@ -15,41 +15,25 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifndef THREADWORKER_H
+#define THREADWORKER_H
 
-#include <collectionmanagerinterface.h>
+#include <QtCore/QObject>
 
-template<class T>
-class CollectionMediatorPrivate
+namespace std {
+   template<typename T>
+   class function;
+}
+
+/**
+ * Small utility to avoid the Qt4/C++03 boiler plate code for workers. There
+ * doesn't seem to be a Qt5/C++11 way yet.
+ */
+class ThreadWorker : public QObject
 {
+   Q_OBJECT
 public:
-   CollectionManagerInterface<T>* m_pParent;
-   QAbstractItemModel* m_pModel;
+   ThreadWorker(std::function<void()> f);
 };
 
-template<typename T>
-CollectionMediator<T>::CollectionMediator(CollectionManagerInterface<T>* parentManager, QAbstractItemModel* m) :
-   d_ptr(new CollectionMediatorPrivate<T>())
-{
-   d_ptr->m_pParent = parentManager;
-   d_ptr->m_pModel  = m;
-}
-
-template<typename T>
-bool CollectionMediator<T>::addItem(const T* item)
-{
-   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
-   return d_ptr->m_pParent->addItemCallback(item);
-}
-
-template<typename T>
-bool CollectionMediator<T>::removeItem(const T* item)
-{
-   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
-   return d_ptr->m_pParent->removeItemCallback(item);
-}
-
-template<typename T>
-QAbstractItemModel* CollectionMediator<T>::model() const
-{
-   return d_ptr->m_pModel;
-}
+#endif

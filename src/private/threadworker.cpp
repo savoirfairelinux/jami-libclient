@@ -15,41 +15,34 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#include "threadworker.h"
 
-#include <collectionmanagerinterface.h>
+//Qt
+#include <QtCore/QThread>
+#include <QtCore/QDebug>
+#include <QtCore/QCoreApplication>
 
-template<class T>
-class CollectionMediatorPrivate
+//LibStdC++
+#include <functional>
+
+ThreadWorker::ThreadWorker(std::function<void()> f) : QObject(nullptr)
 {
-public:
-   CollectionManagerInterface<T>* m_pParent;
-   QAbstractItemModel* m_pModel;
-};
+   QThread* t = new QThread();
 
-template<typename T>
-CollectionMediator<T>::CollectionMediator(CollectionManagerInterface<T>* parentManager, QAbstractItemModel* m) :
-   d_ptr(new CollectionMediatorPrivate<T>())
-{
-   d_ptr->m_pParent = parentManager;
-   d_ptr->m_pModel  = m;
-}
+   connect(t, &QThread::finished, t, &QObject::deleteLater);
 
-template<typename T>
-bool CollectionMediator<T>::addItem(const T* item)
-{
-   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
-   return d_ptr->m_pParent->addItemCallback(item);
-}
+   moveToThread(t);
 
-template<typename T>
-bool CollectionMediator<T>::removeItem(const T* item)
-{
-   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
-   return d_ptr->m_pParent->removeItemCallback(item);
-}
+   QObject::connect(t, &QThread::started, [this,f]() {
 
-template<typename T>
-QAbstractItemModel* CollectionMediator<T>::model() const
-{
-   return d_ptr->m_pModel;
+      f();
+
+      thread()->exit();
+
+      moveToThread(QCoreApplication::instance()->thread());
+
+      delete this;
+   });
+
+   t->start();
 }
