@@ -183,7 +183,7 @@ Q_SIGNALS:
    ///The person data were merged from another source
    void rebased                      ( Person*        );
    ///The last time there was an interaction with this person changed
-   void lastUsedTimeChanged          ( ::time_t         ) const;
+   void lastUsedTimeChanged          ( long long      ) const;
 
 protected:
    //Presence secret methods
@@ -199,7 +199,6 @@ private:
    PersonPlaceHolderPrivate* d_ptr;
    Q_DECLARE_PRIVATE(PersonPlaceHolder)
 };
-
 
 Q_DECLARE_METATYPE(Person*)
 

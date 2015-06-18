@@ -19,6 +19,7 @@
 #include "collectioneditor.h"
 #include <QtCore/QObject>
 #include <QtCore/QMetaObject>
+#include <QtCore/QCoreApplication>
 
 class ItemBasePrivate
 {
@@ -29,8 +30,10 @@ public:
 };
 
 template<typename Base>
-ItemBase<Base>::ItemBase(Base* parent) :Base(parent), d_ptr(new ItemBasePrivate())
+ItemBase<Base>::ItemBase(Base* parent) :Base(nullptr), d_ptr(new ItemBasePrivate())
 {
+   QObject::moveToThread(QCoreApplication::instance()->thread());
+   QObject::setParent(parent);
 }
 
 template<typename Base>

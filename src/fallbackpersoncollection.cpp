@@ -35,7 +35,7 @@
 #include "collectioneditor.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "delegates/itemmodelstateserializationdelegate.h"
-
+#include "private/threadworker.h"
 
 class FallbackPersonBackendEditor final : public CollectionEditor<Person>
 {
@@ -190,15 +190,18 @@ bool FallbackPersonCollection::isEnabled() const
 {
    return ItemModelStateSerializationDelegate::instance()->isChecked(this);
 }
-
+#include <unistd.h>
 bool FallbackPersonCollection::load()
 {
-   bool ok;
-   QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok,static_cast<FallbackPersonBackendEditor*>(editor<Person>())->m_hPaths);
-   for(Person* p : ret) {
-      p->setCollection(this);
-      editor<Person>()->addExisting(p);
-   }
+   new ThreadWorker([this]() {
+      bool ok;
+      Q_UNUSED(ok)
+      QList< Person* > ret =  VCardUtils::loadDir(QUrl(d_ptr->m_Path),ok,static_cast<FallbackPersonBackendEditor*>(editor<Person>())->m_hPaths);
+      for(Person* p : ret) {
+         p->setCollection(this);
+         editor<Person>()->addExisting(p);
+      }
+   });
 
    //Add all sub directories as new backends
    QTimer::singleShot(0,d_ptr,SLOT(loadAsync()));

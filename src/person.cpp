@@ -179,10 +179,12 @@ void PersonPrivate::registerContactMethod(ContactMethod* m)
       slotLastUsedTimeChanged(m->lastUsed());
 }
 
-PersonPrivate::PersonPrivate(Person* contact) : QObject(contact),
+PersonPrivate::PersonPrivate(Person* contact) : QObject(nullptr),
    m_Numbers(),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false),
    m_LastUsed(0),m_LastUsedInit(false), q_ptr(contact)
 {
+   moveToThread(QCoreApplication::instance()->thread());
+   setParent(contact);
 }
 
 PersonPrivate::~PersonPrivate()
