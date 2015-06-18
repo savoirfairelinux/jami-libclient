@@ -37,12 +37,14 @@ CollectionMediator<T>::CollectionMediator(CollectionManagerInterface<T>* parentM
 template<typename T>
 bool CollectionMediator<T>::addItem(const T* item)
 {
+   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
    return d_ptr->m_pParent->addItemCallback(item);
 }
 
 template<typename T>
 bool CollectionMediator<T>::removeItem(const T* item)
 {
+   QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);
    return d_ptr->m_pParent->removeItemCallback(item);
 }
 
