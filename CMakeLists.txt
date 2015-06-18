@@ -301,6 +301,7 @@ SET( libringclient_LIB_SRCS
   src/private/videorenderermanager.cpp
   src/video/previewmanager.cpp
   src/private/sortproxies.cpp
+  src/private/threadworker.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
