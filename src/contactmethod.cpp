@@ -63,6 +63,7 @@ public:
    QString            m_Uid              ;
    QString            m_PrimaryName_cache;
    URI                m_Uri              ;
+   QByteArray         m_Sha1             ;
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
    InstantMessagingModel* m_pImModel     ;
@@ -233,6 +234,10 @@ void ContactMethod::setAccount(Account* account)
    }
 
    d_ptr->m_pAccount = account;
+
+   //The sha1 is no longer valid
+   d_ptr->m_Sha1.clear();
+
    if (d_ptr->m_pAccount)
       connect (d_ptr->m_pAccount,SIGNAL(destroyed(QObject*)),this,SLOT(accountDestroyed(QObject*)));
    d_ptr->changed();
@@ -245,6 +250,9 @@ void ContactMethod::setPerson(Person* contact)
       return;
 
    d_ptr->m_pPerson = contact;
+
+   //The sha1 is no longer valid
+   d_ptr->m_Sha1.clear();
 
    contact->d_ptr->registerContactMethod(this);
 
@@ -454,12 +462,14 @@ URI::ProtocolHint ContactMethod::protocolHint() const
 ///Create a SHA1 hash identifying this contact method
 QByteArray ContactMethod::sha1() const
 {
-   QCryptographicHash hash(QCryptographicHash::Sha1);
-   hash.addData(toHash().toLatin1());
+   if (d_ptr->m_Sha1.isEmpty()) {
+      QCryptographicHash hash(QCryptographicHash::Sha1);
+      hash.addData(toHash().toLatin1());
 
-   //Create a reproducible key for this file
-   const QByteArray id = hash.result().toHex();
-   return id;
+      //Create a reproducible key for this file
+      d_ptr->m_Sha1 = hash.result().toHex();
+   }
+   return d_ptr->m_Sha1;
 }
 
 ///Return all calls from this number
@@ -749,6 +759,10 @@ void ContactMethod::setImModel(InstantMessagingModel* m)
 void TemporaryContactMethod::setUri(const URI& uri)
 {
    ContactMethod::d_ptr->m_Uri = uri;
+
+   //The sha1 is no longer valid
+   ContactMethod::d_ptr->m_Sha1.clear();
+
    ContactMethod::d_ptr->changed();
 }
 
