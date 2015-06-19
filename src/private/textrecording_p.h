@@ -49,17 +49,37 @@ public:
    };
 
    ///The time associated with this message
-   time_t                  timestamp;
+   time_t                  timestamp ;
    ///The payload. It will usually be UTF8 text
-   QString                 payload  ;
+   QString                 payload   ;
    ///The mimetype associated with the payload
-   QString                 mimeType ;
+   QString                 mimeType  ;
    ///The author display name
-   QString                 author   ;
+   QString                 authorSha1;
    ///The direction
-   Media::Media::Direction direction;
+   Media::Media::Direction direction ;
    ///The message Type
-   Type type;
+   Type type                         ;
+   ///If the message have been read
+   bool isRead                       ;
+   ///The contact method (incoming messages only)
+   ContactMethod* contactMethod      ;
+
+   void read (const QJsonObject &json);
+   void write(QJsonObject       &json) const;
+};
+
+class Peer {
+public:
+   QString accountId;
+   ///The peer URI
+   QString uri;
+   ///The peer contact UID
+   QString personUID;
+   ///The ContactMethod hash
+   QString sha1;
+
+   ContactMethod* m_pContactMethod;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
@@ -76,8 +96,9 @@ public:
    QString nextGroupSha1;
    ///This is the group identifier in the file described by `nextGroupSha1`
    int nextGroupId;
+   ///The account used for this conversation
 
-   void read (const QJsonObject &json);
+   void read (const QJsonObject &json, const QHash<QString,ContactMethod*> sha1s);
    void write(QJsonObject       &json) const;
 };
 
@@ -89,9 +110,14 @@ public:
    QList<QString> sha1s;
    ///Every message groups associated with this ContactMethod (or ContactMethodGroup)
    QList<Group*> groups;
+   ///Information about every (non self) peer involved in this group
+   QList<Peer*> peers;
 
    ///This attribute store if the file has changed
    bool hasChanged;
+
+   ///Keep a cache of the peers sha1
+   QHash<QString,ContactMethod*> m_hSha1;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
@@ -141,7 +167,7 @@ public:
    static Serializable::Peers* peer(const ContactMethod* cm);
    static Serializable::Peers* peers(QList<const ContactMethod*> cms);
    static Serializable::Peers* fromSha1(const QByteArray& sha1);
-   static Serializable::Peers* fromJson(const QJsonObject& obj);
+   static Serializable::Peers* fromJson(const QJsonObject& obj, const ContactMethod* cm = nullptr);
 private:
    static QHash<QByteArray,Serializable::Peers*> m_hPeers;
 };
