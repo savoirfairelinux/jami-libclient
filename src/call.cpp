@@ -775,9 +775,6 @@ const QString Call::dringId() const
 ContactMethod* Call::peerContactMethod() const
 {
    if (lifeCycleState() == Call::LifeCycleState::CREATION) {
-      if (!d_ptr->m_pTransferNumber) {
-         d_ptr->m_pTransferNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
-      }
       if (!d_ptr->m_pDialNumber)
          d_ptr->m_pDialNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
       return d_ptr->m_pDialNumber;
