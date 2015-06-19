@@ -22,19 +22,34 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonValue>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QDateTime>
 #include <QtCore/QCryptographicHash>
 
 //Ring
 #include <callmodel.h>
 #include <contactmethod.h>
 #include <account.h>
+#include <phonedirectorymodel.h>
+#include <accountmodel.h>
+#include <personmodel.h>
 #include <private/textrecording_p.h>
+#include "delegates/pixmapmanipulationdelegate.h"
 
 //Std
 #include <ctime>
 
 QHash<QByteArray, Serializable::Peers*> SerializableEntityManager::m_hPeers;
 
+void addPeer(Serializable::Peers* p,  const ContactMethod* cm);
+void addPeer(Serializable::Peers* p,  const ContactMethod* cm)
+{
+   Serializable::Peer* peer = new Serializable::Peer();
+   peer->sha1      = cm->sha1();
+   peer->uri       = cm->uri();
+   peer->accountId = cm->account() ? cm->account()->id () : QString();
+   peer->personUID = cm->contact() ? cm->contact()->uid() : QString();
+   p->peers << peer;
+}
 
 Serializable::Peers* SerializableEntityManager::peer(const ContactMethod* cm)
 {
@@ -44,6 +59,9 @@ Serializable::Peers* SerializableEntityManager::peer(const ContactMethod* cm)
    if (!p) {
       p = new Serializable::Peers();
       p->sha1s << sha1;
+
+      addPeer(p,cm);
+
       m_hPeers[sha1] = p;
    }
 
@@ -94,7 +112,7 @@ Serializable::Peers* SerializableEntityManager::fromSha1(const QByteArray& sha1)
    return m_hPeers[sha1];
 }
 
-Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json)
+Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json, const ContactMethod* cm)
 {
    //Check if the object is already loaded
    QStringList sha1List;
@@ -119,6 +137,11 @@ Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json
    Serializable::Peers* p = new Serializable::Peers();
    p->read(json);
    m_hPeers[sha1] = p;
+
+   //TODO Remove in 2016
+   //Some older versions of the file don't store necessary values, fix that
+   if (cm && p->peers.isEmpty())
+      addPeer(p,cm);
 
    return p;
 }
@@ -165,13 +188,13 @@ QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
    return ret;
 }
 
-Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items)
+Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items, const ContactMethod* cm)
 {
    TextRecording* t = new TextRecording();
 
    //Load the history data
    for (const QJsonObject& obj : items) {
-      Serializable::Peers* p = SerializableEntityManager::fromJson(obj);
+      Serializable::Peers* p = SerializableEntityManager::fromJson(obj,cm);
       t->d_ptr->m_lAssociatedPeers << p;
    }
 
@@ -183,9 +206,16 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
    for (const Serializable::Peers* p : t->d_ptr->m_lAssociatedPeers) {
       for (const Serializable::Group* g : p->groups) {
          for (Serializable::Message* m : g->messages) {
-            ::TextMessageNode* n  = new ::TextMessageNode()       ;
-            n->m_pMessage         = m                             ;
-            //n->m_pContactMethod   = const_cast<ContactMethod*>(cm); //FIXME add more details in the file
+            ::TextMessageNode* n  = new ::TextMessageNode();
+            n->m_pMessage         = m                      ;
+            if (!n->m_pMessage->contactMethod) {
+               n->m_pMessage->contactMethod = const_cast<ContactMethod*>(cm); //TODO remove in 2016
+               n->m_pMessage->authorSha1 = cm->sha1();
+
+               if (p->peers.isEmpty())
+                  addPeer(const_cast<Serializable::Peers*>(p), cm);
+            }
+            n->m_pContactMethod   = m->contactMethod;
             t->d_ptr->m_pImModel->addRowBegin();
             t->d_ptr->m_lNodes << n;
             t->d_ptr->m_pImModel->addRowEnd();
@@ -222,6 +252,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
    m->mimeType  = "text/plain"                     ;
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
+   m->authorSha1= cm->sha1()                       ;
    m_pCurrentGroup->messages << m;
 
    //Make sure the model exist
@@ -241,25 +272,27 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
 
 void Serializable::Message::read (const QJsonObject &json)
 {
-   timestamp = json["timestamp"].toInt                 (                           );
-   payload   = json["payload"  ].toString              (                           );
-   mimeType  = json["mimeType" ].toString              (                           );
-   author    = json["author"   ].toString              (                           );
-   direction = static_cast<Media::Media::Direction>    ( json["direction"].toInt() );
-   type      = static_cast<Serializable::Message::Type>( json["type"     ].toInt() );
+   timestamp  = json["timestamp" ].toInt                (                           );
+   payload    = json["payload"   ].toString             (                           );
+   mimeType   = json["mimeType"  ].toString             (                           );
+   authorSha1 = json["authorSha1"].toString             (                           );
+   isRead     = json["isRead"    ].toBool               (                           );
+   direction  = static_cast<Media::Media::Direction>    ( json["direction"].toInt() );
+   type       = static_cast<Serializable::Message::Type>( json["type"     ].toInt() );
 }
 
 void Serializable::Message::write(QJsonObject &json) const
 {
-   json["timestamp"] = static_cast<int>(timestamp);
-   json["payload"  ] = payload                    ;
-   json["mimeType" ] = mimeType                   ;
-   json["author"   ] = author                     ;
-   json["direction"] = static_cast<int>(direction);
-   json["type"     ] = static_cast<int>(type)     ;
+   json["timestamp"  ] = static_cast<int>(timestamp);
+   json["payload"    ] = payload                    ;
+   json["mimeType"   ] = mimeType                   ;
+   json["authorSha1" ] = authorSha1                 ;
+   json["direction"  ] = static_cast<int>(direction);
+   json["type"       ] = static_cast<int>(type)     ;
+   json["isRead"     ] = isRead                     ;
 }
 
-void Serializable::Group::read (const QJsonObject &json)
+void Serializable::Group::read (const QJsonObject &json, const QHash<QString,ContactMethod*> sha1s)
 {
    id            = json["id"           ].toInt   ();
    nextGroupSha1 = json["nextGroupSha1"].toString();
@@ -269,6 +302,7 @@ void Serializable::Group::read (const QJsonObject &json)
    for (int i = 0; i < a.size(); ++i) {
       QJsonObject o = a[i].toObject();
       Message* message = new Message();
+      message->contactMethod = sha1s[message->authorSha1];
       message->read(o);
       messages.append(message);
    }
@@ -289,6 +323,28 @@ void Serializable::Group::write(QJsonObject &json) const
    json["messages"] = a;
 }
 
+void Serializable::Peer::read (const QJsonObject &json)
+{
+   accountId = json["accountId"].toString();
+   uri       = json["uri"      ].toString();
+   personUID = json["personUID"].toString();
+   sha1      = json["sha1"     ].toString();
+
+   Account* a     = AccountModel::instance()->getById(accountId.toLatin1());
+   Person* person = personUID.isEmpty() ?
+      nullptr : PersonModel::instance()->getPersonByUid(personUID.toLatin1());
+
+   m_pContactMethod = PhoneDirectoryModel::instance()->getNumber(uri,person,a);
+}
+
+void Serializable::Peer::write(QJsonObject &json) const
+{
+   json["accountId"] = accountId ;
+   json["uri"      ] = uri       ;
+   json["personUID"] = personUID ;
+   json["sha1"     ] = sha1      ;
+}
+
 void Serializable::Peers::read (const QJsonObject &json)
 {
 
@@ -297,11 +353,20 @@ void Serializable::Peers::read (const QJsonObject &json)
       sha1s.append(as[i].toString());
    }
 
+   QJsonArray a2 = json["peers"].toArray();
+   for (int i = 0; i < a2.size(); ++i) {
+      QJsonObject o = a2[i].toObject();
+      Peer* peer = new Peer();
+      m_hSha1[peer->sha1] = peer->m_pContactMethod;
+      peer->read(o);
+      peers.append(peer);
+   }
+
    QJsonArray a = json["groups"].toArray();
    for (int i = 0; i < a.size(); ++i) {
       QJsonObject o = a[i].toObject();
       Group* group = new Group();
-      group->read(o);
+      group->read(o,m_hSha1);
       groups.append(group);
    }
 }
@@ -321,6 +386,14 @@ void Serializable::Peers::write(QJsonObject &json) const
       a.append(o);
    }
    json["groups"] = a;
+
+   QJsonArray a3;
+   for (const Peer* p : peers) {
+      QJsonObject o;
+      p->write(o);
+      a3.append(o);
+   }
+   json["peers"] = a3;
 }
 
 
@@ -340,11 +413,13 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      /*roles.insert(InstantMessagingModel::Role::TYPE    ,QByteArray( "type"    ));
-      roles.insert(InstantMessagingModel::Role::FROM    ,QByteArray( "from"    ));
-      roles.insert(InstantMessagingModel::Role::TEXT    ,QByteArray( "text"    ));
-      roles.insert(InstantMessagingModel::Role::IMAGE   ,QByteArray( "image"   ));
-      roles.insert(InstantMessagingModel::Role::CONTACT ,QByteArray( "contact" ));*/
+      roles.insert((int)Media::TextRecording::Role::Direction           , "direction"           );
+      roles.insert((int)Media::TextRecording::Role::AuthorDisplayname   , "authorDisplayname"   );
+      roles.insert((int)Media::TextRecording::Role::AuthorUri           , "authorUri"           );
+      roles.insert((int)Media::TextRecording::Role::AuthorPresenceStatus, "authorPresenceStatus");
+      roles.insert((int)Media::TextRecording::Role::Timestamp           , "timestamp"           );
+      roles.insert((int)Media::TextRecording::Role::FormattedDate       , "formattedDate"       );
+      roles.insert((int)Media::TextRecording::Role::IsStatus            , "isStatus"            );
    }
    return roles;
 }
@@ -353,20 +428,30 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
 QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
 {
    if (idx.column() == 0) {
+      ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
       switch (role) {
          case Qt::DisplayRole:
-            return QVariant(m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
-         /*case InstantMessagingModel::Role::TYPE:
-            return QVariant(m_pRecording->d_ptr->m_lNodes[idx.row()]->m_pMessage->payload);
-         case InstantMessagingModel::Role::FROM:
-            return QVariant();//d_ptr->m_pRecording->d_ptr->m_lNodes[idx.row()]->from);
-         case InstantMessagingModel::Role::TEXT:
-            return static_cast<int>(MessageRole::INCOMMING_IM);
-         case InstantMessagingModel::Role::CONTACT:
-            return QVariant();
-         case InstantMessagingModel::Role::IMAGE: {
-            return QVariant();
-         }*/
+            return QVariant(n->m_pMessage->payload);
+         case Qt::DecorationRole         :
+            if (n->m_pMessage->direction == Media::Media::Direction::IN)
+               return PixmapManipulationDelegate::instance()->callPhoto(n->m_pContactMethod,QSize(48,48));
+            break;
+         case (int)Media::TextRecording::Role::Direction            :
+            return QVariant::fromValue(n->m_pMessage->direction);
+         case (int)Media::TextRecording::Role::AuthorDisplayname    :
+            return n->m_pMessage->direction == Media::Media::Direction::IN ?
+               n->m_pContactMethod->primaryName() : tr("Me");
+         case (int)Media::TextRecording::Role::AuthorUri            :
+            return n->m_pContactMethod->uri();
+         case (int)Media::TextRecording::Role::AuthorPresenceStatus :
+            return n->m_pContactMethod->contact() ?
+               n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
+         case (int)Media::TextRecording::Role::Timestamp            :
+            return (int)n->m_pMessage->timestamp;
+         case (int)Media::TextRecording::Role::FormattedDate        :
+            return QDateTime::fromTime_t(n->m_pMessage->timestamp).toString();
+         case (int)Media::TextRecording::Role::IsStatus             :
+            return n->m_pMessage->type == Serializable::Message::Type::STATUS;
          default:
             break;
       }

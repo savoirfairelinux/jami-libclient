@@ -96,6 +96,7 @@ private:
 };
 
 }
+Q_DECLARE_METATYPE(Media::Media::Direction)
 
 Media::Media* operator<<(Media::Media* m, Media::Media::Action a);
 

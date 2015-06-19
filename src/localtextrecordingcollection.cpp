@@ -235,7 +235,7 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
 
    QJsonDocument loadDoc = QJsonDocument::fromJson(content);
 
-   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()});
+   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm);
 
    r->setCollection(this);
 

@@ -27,6 +27,7 @@ class QAbstractListModel;
 //Ring
 class IMConversationManagerPrivate;
 class LocalTextRecordingEditor;
+class ContactMethod;
 class InstantMessagingModel;
 
 namespace Media {
@@ -44,10 +45,21 @@ class LIB_EXPORT TextRecording : public Recording
    friend class ::LocalTextRecordingEditor;
    friend class Text;
 public:
+
+   enum class Role {
+      Direction            = Qt::UserRole +1,
+      AuthorDisplayname                     ,
+      AuthorUri                             ,
+      AuthorPresenceStatus                  ,
+      Timestamp                             ,
+      FormattedDate                         ,
+      IsStatus                              ,
+   };
+
    //Constructor
    explicit TextRecording();
    virtual ~TextRecording();
-   static TextRecording* fromJson(const QList<QJsonObject>& items);
+   static TextRecording* fromJson(const QList<QJsonObject>& items, const ContactMethod* cm = nullptr);
 
    //Getter
    QAbstractListModel* instantMessagingModel() const;
