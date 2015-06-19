@@ -119,20 +119,22 @@ public:
    void save   ();
    void reloadMod() {reload();modify();}
 
-   CredentialModel*          m_pCredentials            ;
-   CodecModel*               m_pCodecModel             ;
-   KeyExchangeModel*         m_pKeyExchangeModel       ;
-   CipherModel*              m_pCipherModel            ;
-   AccountStatusModel*       m_pStatusModel            ;
-   SecurityEvaluationModel*  m_pSecurityEvaluationModel;
-   TlsMethodModel*           m_pTlsMethodModel         ;
-   ProtocolModel*            m_pProtocolModel          ;
-   BootstrapModel*           m_pBootstrapModel         ;
-   QAbstractItemModel*       m_pKnownCertificates      ;
-   QAbstractItemModel*       m_pBlacklistedCertificates;
-   QAbstractItemModel*       m_pTrustedCertificates    ;
-   NetworkInterfaceModel*    m_pNetworkInterfaceModel  ;
-   Account::EditState        m_CurrentState            ;
+   CredentialModel*         m_pCredentials            ;
+   CodecModel*              m_pCodecModel             ;
+   KeyExchangeModel*        m_pKeyExchangeModel       ;
+   CipherModel*             m_pCipherModel            ;
+   AccountStatusModel*      m_pStatusModel            ;
+   SecurityEvaluationModel* m_pSecurityEvaluationModel;
+   TlsMethodModel*          m_pTlsMethodModel         ;
+   ProtocolModel*           m_pProtocolModel          ;
+   BootstrapModel*          m_pBootstrapModel         ;
+   QAbstractItemModel*      m_pKnownCertificates      ;
+   QAbstractItemModel*      m_pBlacklistedCertificates;
+   QAbstractItemModel*      m_pTrustedCertificates    ;
+   NetworkInterfaceModel*   m_pNetworkInterfaceModel  ;
+   Account::EditState       m_CurrentState            ;
+
+   QHash<int, Account::RoleStatus> m_hRoleStatus;
 
    // State machines
    static const Matrix2D<Account::EditState, Account::EditAction, account_function> stateMachineActionsOnState;
