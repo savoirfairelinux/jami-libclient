@@ -1869,6 +1869,12 @@ Account::RoleState Account::roleState(Account::Role role) const
          }
          break;
       case Account::Protocol::SIP     :
+         switch(role) {
+            case Account::Role::PresenceEnabled:
+               return supportPresenceSubscribe() || supportPresencePublish() ?
+                  Account::RoleState::READ_WRITE : Account::RoleState::UNAVAILABLE;
+         }
+         [[clang::fallthrough]];
       case Account::Protocol::IAX     :
       case Account::Protocol::COUNT__ :
          switch(role) {
