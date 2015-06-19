@@ -1944,6 +1944,17 @@ Account::RoleState Account::roleState(Account::Role role) const
    return enabledFields[type][f];
 }
 
+/**
+ * Get the **current** status of the role based on its content. ::roleState
+ * check the field state based on protocol and context with ::roleStatus check
+ * the content.
+ */
+Account::RoleStatus Account::roleStatus(Account::Role role) const
+{
+   //The validations are currently performed by the state machine
+   return d_ptr->m_hRoleStatus[(int)role];
+}
+
 /**Update the account
  * @return if the state changed
  */
@@ -2102,6 +2113,8 @@ void AccountPrivate::edit()    {
 }
 
 void AccountPrivate::modify()  {
+   typedef Account::RoleStatus ST;
+   typedef Account::Role       R ;
    //This check if the account can be saved or it would produce an invalid result
 
    //Future checks that could be implemented:
@@ -2113,38 +2126,33 @@ void AccountPrivate::modify()  {
    // * Non hash username for  Ring accounts
 
 
-   enum Fields {
-      ALIAS   , /* While valid, an account without one cause usability issues */
-      HOSTNAME, /* Without hostname, an account cannot be "READY"             */
-      USERNAME, /* All protocols but IP2IP require an username                */
-      PASSWORD, /* SIP and IAX accounts require a password                    */
-      COUNT__
-   };
+   /* ALIAS   : While valid, an account without one cause usability issues */
+   /* HOSTNAME: Without hostname, an account cannot be "READY"             */
+   /* USERNAME: All protocols but IP2IP require an username                */
+   /* PASSWORD: SIP and IAX accounts require a password                    */
 
-   //TODO At some point more complex validations could be implemented
-   bool invalidFields[Fields::COUNT__] = {
-      /*ALIAS   */ q_ptr->alias   ().isEmpty(),
-      /*HOSTNAME*/ q_ptr->hostname().isEmpty(),
-      /*USERNAME*/ q_ptr->username().isEmpty(),
-      /*PASSWORD*/ q_ptr->password().isEmpty()
-   };
+   m_hRoleStatus[(int)R::Alias   ] = q_ptr->alias   ().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
+   m_hRoleStatus[(int)R::Hostname] = q_ptr->hostname().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
+   m_hRoleStatus[(int)R::Username] = q_ptr->username().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
+   m_hRoleStatus[(int)R::Password] = q_ptr->password().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
 
    //Apply some filters per protocol
    switch (q_ptr->protocol()) {
       case Account::Protocol::SIP:
          //IP2IP is very permissive about missing fields
          if (q_ptr->alias() == DRing::Account::ProtocolNames::IP2IP) {
-            invalidFields[Fields::ALIAS   ] = false;
-            invalidFields[Fields::USERNAME] = false;
-            invalidFields[Fields::HOSTNAME] = false;
-            invalidFields[Fields::PASSWORD] = false;
+            m_hRoleStatus[(int)R::Alias   ] = ST::OK;
+            m_hRoleStatus[(int)R::Username] = ST::OK;
+            m_hRoleStatus[(int)R::Hostname] = ST::OK;
+            m_hRoleStatus[(int)R::Password] = ST::OK;
          }
          break;
       case Account::Protocol::RING:
          //Only the alias is necessary, the username cannot be removed
-         invalidFields[Fields::USERNAME] &= q_ptr->isNew();
-         invalidFields[Fields::HOSTNAME]  = false         ;
-         invalidFields[Fields::PASSWORD]  = false         ;
+         m_hRoleStatus[(int)R::Username] = m_hRoleStatus[(int)R::Username] != ST::OK && q_ptr->isNew() ?
+            ST::OK : m_hRoleStatus[(int)R::Username];
+         m_hRoleStatus[(int)R::Hostname] = ST::OK;
+         m_hRoleStatus[(int)R::Password] = ST::OK;
          break;
       case Account::Protocol::IAX:
       case Account::Protocol::COUNT__:
@@ -2153,10 +2161,10 @@ void AccountPrivate::modify()  {
    }
 
    const bool isIncomplete = (
-        invalidFields[ Fields::ALIAS    ]
-      | invalidFields[ Fields::HOSTNAME ]
-      | invalidFields[ Fields::USERNAME ]
-      | invalidFields[ Fields::PASSWORD ]
+        (m_hRoleStatus[(int) R::Alias    ] != ST::OK)
+      | (m_hRoleStatus[(int) R::Hostname ] != ST::OK)
+      | (m_hRoleStatus[(int) R::Username ] != ST::OK)
+      | (m_hRoleStatus[(int) R::Password ] != ST::OK)
    );
 
    const Account::EditState newState = isIncomplete ?

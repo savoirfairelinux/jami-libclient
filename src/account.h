@@ -267,6 +267,15 @@ class LIB_EXPORT Account : public QObject {
          UNAVAILABLE,
       };
 
+      ///@enum RoleStatus The current status of the role based on its value
+      enum class RoleStatus {
+         OK            , /*!< The field is ok (the default)                      */
+         UNTESTED      , /*!< A test is in progress, no results yet (ex: network)*/
+         INVALID       , /*!< The content is invalid                             */
+         REQUIRED_EMPTY, /*!< The field is empty but is required                 */
+         OUT_OF_RANGE  , /*!< The value is out of range                          */
+      };
+
       enum class Protocol {
          SIP  = 0, /*!< Used for both SIP and IP2IP calls */
          IAX  = 1, /*!< Inter Asterisk exchange protocol  */
@@ -306,7 +315,8 @@ class LIB_EXPORT Account : public QObject {
       Q_INVOKABLE QAbstractItemModel*      backlistedCertificatesModel() const;
       Q_INVOKABLE QAbstractItemModel*      trustedCertificatesModel   () const;
 
-      Q_INVOKABLE RoleState roleState(Account::Role role) const;
+      Q_INVOKABLE RoleState  roleState (Account::Role role) const;
+      Q_INVOKABLE RoleStatus roleStatus(Account::Role role) const;
 
       //Getters
       QString hostname                     () const;
