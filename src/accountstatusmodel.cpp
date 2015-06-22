@@ -474,3 +474,19 @@ void AccountStatusModel::addTransportEvent(const QString& fallbackMessage, int e
    else
       d_ptr->m_lRows.last()->counter++;
 }
+
+QString AccountStatusModel::lastErrorMessage() const
+{
+   if (d_ptr->m_lRows.isEmpty())
+      return QString();
+
+   return d_ptr->m_lRows.last()->description;
+}
+
+int AccountStatusModel::lastErrorCode() const
+{
+   if (d_ptr->m_lRows.isEmpty())
+      return -1;
+
+   return d_ptr->m_lRows.last()->code;
+}

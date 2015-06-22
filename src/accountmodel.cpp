@@ -298,10 +298,6 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
       //Send the messages to AccountStatusModel for processing
       a->statusModel()->addSipRegistrationEvent(status,code);
 
-      //Keep the error message
-      a->setLastErrorMessage(status);
-      a->setLastErrorCode(code);
-
       //Make sure volatile details get reloaded
       //TODO eventually remove this call and trust the signal
       slotVolatileAccountDetailsChange(account,configurationManager.getVolatileAccountDetails(account));
