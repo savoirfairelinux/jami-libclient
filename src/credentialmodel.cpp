@@ -171,6 +171,7 @@ QModelIndex CredentialModel::addCredentials()
    d_ptr->m_lCredentials << new CredentialModelPrivate::CredentialData;
    endInsertRows();
    emit dataChanged(index(d_ptr->m_lCredentials.size()-1,0), index(d_ptr->m_lCredentials.size()-1,0));
+   this << EditAction::MODIFY;
    return index(d_ptr->m_lCredentials.size()-1,0);
 }
 
@@ -182,6 +183,7 @@ void CredentialModel::removeCredentials(const QModelIndex& idx)
       d_ptr->m_lCredentials.removeAt(idx.row());
       endRemoveRows();
       emit dataChanged(idx, index(d_ptr->m_lCredentials.size()-1,0));
+      this << EditAction::MODIFY;
    }
    else {
       qDebug() << "Failed to remove an invalid credential";
