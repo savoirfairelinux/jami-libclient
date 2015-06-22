@@ -105,8 +105,6 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
    Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
-   Q_PROPERTY(QString        lastErrorMessage             READ lastErrorMessage              WRITE setLastErrorMessage            )
-   Q_PROPERTY(int            lastErrorCode                READ lastErrorCode                 WRITE setLastErrorCode               )
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
    Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
    Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
@@ -129,6 +127,8 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(DtmfType       dTMFType                     READ DTMFType                      WRITE setDTMFType                    )
    Q_PROPERTY(int            voiceMailCount               READ voiceMailCount                WRITE setVoiceMailCount              )
 //    Q_PROPERTY(QString        typeName                     READ type                          WRITE setType                        )
+   Q_PROPERTY(QString        lastErrorMessage             READ lastErrorMessage                                                   )
+   Q_PROPERTY(int            lastErrorCode                READ lastErrorCode                                                      )
    Q_PROPERTY(bool           presenceStatus               READ presenceStatus                                                     )
    Q_PROPERTY(QString        presenceMessage              READ presenceMessage                                                    )
    Q_PROPERTY(bool           supportPresencePublish       READ supportPresencePublish                                             )
@@ -409,10 +409,8 @@ class LIB_EXPORT Account : public QObject {
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
-      void setLastErrorMessage              (const QString& message );
       void setTurnServer                    (const QString& value   );
       void setDisplayName                   (const QString& value   );
-      void setLastErrorCode                 (int  code  );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
       void setTlsNegotiationTimeoutSec      (int  detail);

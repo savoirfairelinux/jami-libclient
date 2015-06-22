@@ -63,6 +63,10 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Getter
+   QString lastErrorMessage() const;
+   int     lastErrorCode   () const;
+
 private:
    //Private mutators
    void addSipRegistrationEvent(const QString& fallbackMessage, int errorCode);
@@ -74,7 +78,6 @@ private:
 
    AccountStatusModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountStatusModel)
-
 };
 Q_DECLARE_METATYPE(AccountStatusModel*)
 #endif
