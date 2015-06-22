@@ -748,13 +748,13 @@ QString Account::ringtonePath() const
 ///Return the last error message received
 QString Account::lastErrorMessage() const
 {
-   return d_ptr->m_LastErrorMessage;
+   return statusModel()->lastErrorMessage();
 }
 
 ///Return the last error code (useful for debugging)
 int Account::lastErrorCode() const
 {
-   return d_ptr->m_LastErrorCode;
+   return statusModel()->lastErrorCode();
 }
 
 ///Get the last transport error code, this is used to debug why registration failed
@@ -1335,17 +1335,6 @@ void Account::setVoiceMailCount(int count)
    d_ptr->m_VoiceMailCount = count;
 }
 
-///Set the last error message to be displayed as status instead of "Error"
-void Account::setLastErrorMessage(const QString& message)
-{
-   d_ptr->m_LastErrorMessage = message;
-}
-
-///Set the last error code
-void Account::setLastErrorCode(int code)
-{
-   d_ptr->m_LastErrorCode = code;
-}
 ///Set the account timeout, it will be renegotiated when that timeout occur
 void Account::setRegistrationExpire(int detail)
 {
