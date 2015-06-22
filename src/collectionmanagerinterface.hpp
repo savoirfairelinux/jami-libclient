@@ -107,7 +107,8 @@ CollectionConfigurationInterface* CollectionManagerInterface<T>::registerConfiga
 }
 
 template<class T>
-CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* self) : d_ptr(new CollectionManagerInterfacePrivate<T>(self,this))
+CollectionManagerInterface<T>::CollectionManagerInterface(QAbstractItemModel* self) : d_ptr(new CollectionManagerInterfacePrivate<T>(self,this)),
+m_InsertionMutex(QMutex::Recursive)
 {
 
 }
