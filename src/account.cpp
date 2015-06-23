@@ -1630,20 +1630,26 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::TlsCaListCertificate): {
          const QString path = value.toString();
-         if ((tlsCaListCertificate() && tlsCaListCertificate()->path() != QUrl(path)) || !tlsCaListCertificate()) {
+         if (!tlsCaListCertificate())
+            setTlsCaListCertificate(path);
+         else if ((tlsCaListCertificate() && tlsCaListCertificate()->path() != QUrl(path))) {
             tlsCaListCertificate()->setPath(path);
          }
          break;
       }
       case CAST(Account::Role::TlsCertificate): {
          const QString path = value.toString();
-         if ((tlsCertificate() && tlsCertificate()->path() != QUrl(path)) || !tlsCertificate())
+         if (!tlsCertificate())
+            setTlsCertificate(path);
+         else if ((tlsCertificate() && tlsCertificate()->path() != QUrl(path)))
             tlsCertificate()->setPath(path);
       }
          break;
       case CAST(Account::Role::TlsPrivateKeyCertificate): {
          const QString path = value.toString();
-         if ((tlsPrivateKeyCertificate() && tlsPrivateKeyCertificate()->path() != QUrl(path)) || !tlsPrivateKeyCertificate())
+         if (!tlsPrivateKeyCertificate())
+            setTlsPrivateKeyCertificate(path);
+         else if ((tlsPrivateKeyCertificate() && tlsPrivateKeyCertificate()->path() != QUrl(path)))
             tlsPrivateKeyCertificate()->setPath(path);
       }
          break;
