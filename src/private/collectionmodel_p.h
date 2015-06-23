@@ -22,6 +22,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 #include <QtCore/QHash>
+#include <QtCore/QMutex>
 class QAbstractItemModel;
 
 //Ring
@@ -61,6 +62,7 @@ public:
    QAbstractItemModel*                      m_pManageableProxy;
    QList<CollectionConfigurationInterface*> m_lConfigurator;
    QList<CollectionCreationInterface*>      m_lCreator;
+   QMutex                                   m_NewCollectionMutex;
 
    //Helper
    void registerNew(CollectionInterface* col);

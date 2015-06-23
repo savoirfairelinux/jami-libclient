@@ -39,7 +39,8 @@ public:
    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 };
 
-CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObject(parent),q_ptr(parent),m_pManageableProxy(nullptr)
+CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObject(parent),q_ptr(parent),
+m_pManageableProxy(nullptr),m_NewCollectionMutex(QMutex::Recursive)
 {}
 
 CollectionModel::CollectionModel(QObject* parent) : QAbstractTableModel(parent), d_ptr(new CollectionModelPrivate(this))
@@ -323,6 +324,8 @@ void CollectionModelPrivate::registerNew(CollectionInterface* col)
 {
    if (!col)
       return;
+
+   QMutexLocker l(&m_NewCollectionMutex);
 
    ProxyItem* cat = m_hCategories[col->category()];
    if (col->category().isEmpty()){
