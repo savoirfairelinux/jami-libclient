@@ -160,7 +160,7 @@ void Video::SourceModel::switchTo(const int idx)
          break;
       case ExtendedDeviceList::FILE:
          DBus::VideoManager::instance().switchInput(
-            !d_ptr->m_CurrentFile.isEmpty()?+Video::SourceModelPrivate::ProtocolPrefix::FILE+d_ptr->m_CurrentFile.path():Video::SourceModelPrivate::ProtocolPrefix::NONE
+            !d_ptr->m_CurrentFile.isEmpty()?+Video::SourceModelPrivate::ProtocolPrefix::FILE+d_ptr->m_CurrentFile.toLocalFile():Video::SourceModelPrivate::ProtocolPrefix::NONE
          );
          break;
       default:
