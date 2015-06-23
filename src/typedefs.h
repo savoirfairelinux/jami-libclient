@@ -74,12 +74,12 @@ class LIB_EXPORT FlagPack
 {
 public:
    FlagPack() : m_Flags(0) {}
-   FlagPack(const T& base) : m_Flags(static_cast<int>(base)) {}
+   FlagPack(const T& base) : m_Flags(static_cast<uint>(base)) {}
    FlagPack(const FlagPack<T>& other) : m_Flags(other.m_Flags) {}
 
    //Operator
    FlagPack<T>& operator|(const T& other) {
-      m_Flags |= static_cast<int>(other);
+      m_Flags |= static_cast<uint>(other);
       return *this;
    }
 
@@ -88,8 +88,28 @@ public:
       return *this;
    }
 
+   FlagPack<T>& operator|=(const T& other) {
+      m_Flags |= static_cast<uint>(other);
+      return *this;
+   }
+
+   FlagPack<T>& operator|=(const FlagPack<T>& other) {
+      m_Flags |= other.m_Flags;
+      return *this;
+   }
+
+   FlagPack<T>& operator^=(const T& other) {
+      m_Flags ^= static_cast<uint>(other);
+      return *this;
+   }
+
+   FlagPack<T>& operator^=(const FlagPack<T>& other) {
+      m_Flags ^= other.m_Flags;
+      return *this;
+   }
+
    FlagPack<T> operator&(const T& other) const {
-      return FlagPack<T>(m_Flags & static_cast<int>(other));
+      return FlagPack<T>(m_Flags & static_cast<uint>(other));
    }
 
    FlagPack<T> operator&(const FlagPack<T>& other) const {
@@ -102,11 +122,11 @@ public:
    }
 
    bool operator!=(const T& other) const {
-      return  m_Flags != static_cast<int>(other);
+      return  m_Flags != static_cast<uint>(other);
    }
 
    bool operator==(const T& other) const {
-      return  m_Flags == static_cast<int>(other);
+      return  m_Flags == static_cast<uint>(other);
    }
 
    bool operator==(const FlagPack<T>& other) const {
@@ -121,13 +141,13 @@ public:
       return m_Flags != 0;
    }
 
-   int value() const {
+   uint value() const {
       return m_Flags;
    }
 
 private:
-   FlagPack(int base) : m_Flags(base) {}
-   int m_Flags;
+   FlagPack(uint base) : m_Flags(base) {}
+   uint m_Flags;
 };
 
 #define DO_PRAGMA(x) _Pragma (#x)
