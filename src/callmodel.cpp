@@ -114,6 +114,7 @@ public:
       void slotRecordStateChanged ( const QString& callId    , bool state             );
       void slotAudioMuted         ( const QString& callId    , bool state             );
       void slotVideoMutex         ( const QString& callId    , bool state             );
+      void slotPeerHold           ( const QString& callId    , bool state             );
 };
 
 
@@ -174,6 +175,7 @@ void CallModelPrivate::init()
       /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this , SLOT(slotRecordStateChanged(QString,bool)));
       /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)));
       /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)));
+      /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)));
       /*                                                                                                                           */
 
       connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
@@ -1416,6 +1418,14 @@ void CallModelPrivate::slotVideoMutex( const QString& callId, bool state)
       else
          v->Media::d_ptr->unmuteConfirmed();
    }
+}
+
+void CallModelPrivate::slotPeerHold( const QString& callId, bool state)
+{
+   Call* call = q_ptr->getCall(callId);
+
+   if (call)
+      call->d_ptr->peerHoldChanged(state);
 }
 
 #include <callmodel.moc>
