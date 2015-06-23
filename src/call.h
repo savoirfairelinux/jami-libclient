@@ -149,7 +149,7 @@ public:
       RINGING         = 2, /*!< Ringing outgoing call                                                             */
       CURRENT         = 3, /*!< Call to which the user can speak and hear                                         */
       DIALING         = 4, /*!< Call which numbers are being added by the user                                    */
-      HOLD            = 5, /*!< Call is on hold                                                                   */
+      HOLD            = 5, /*!< Call is on hold by this side of the communication, @see Call::HoldFlags           */
       FAILURE         = 6, /*!< Call has failed                                                                   */
       BUSY            = 7, /*!< Call is busy                                                                      */
       TRANSFERRED     = 8, /*!< Call is being transferred.  During this state, the user can enter the new number. */
@@ -208,6 +208,18 @@ public:
       COUNT__
    };
    Q_ENUMS(LifeCycleState)
+
+   /** @enum Call::HoldFlags
+    * Those flags help track the holding state of a call. Call::State::HOLD is
+    * only used for outgoing holding.
+    */
+   enum class HoldFlags {
+      NONE = 0x0 << 0, /*!< The call is not on hold        */
+      OUT  = 0x1 << 0, /*!< This side put the peer on hold */
+      IN   = 0x1 << 1, /*!< The peer put this side on hold */
+      COUNT__
+   };
+   Q_FLAGS(HoldFlags)
 
    ///TODO should be deprecated when a better factory system is implemented
    class HistoryMapFields {
@@ -293,6 +305,7 @@ public:
    Call::Type               type             () const;
    bool                     hasRemote        () const;
    Certificate*             certificate      () const;
+   FlagPack<HoldFlags>      holdFlags        () const;
    QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
 
@@ -363,6 +376,8 @@ Q_SIGNALS:
    void mediaAdded(Media::Media* media);
    ///Notify when a media state change
    void mediaStateChanged(Media::Media* media, const Media::Media::State s, const Media::Media::State m);
+   ///The holding combination has changed
+   void holdFlagsChanged(const FlagPack<HoldFlags>& current, const FlagPack<HoldFlags>& previous);
 };
 
 Q_DECLARE_METATYPE(Call*)
@@ -371,6 +386,8 @@ Q_DECLARE_METATYPE(Call::Type)
 Q_DECLARE_METATYPE(Call::Action)
 Q_DECLARE_METATYPE(Call::Direction)
 Q_DECLARE_METATYPE(Call::LifeCycleState)
+
+DECLARE_ENUM_FLAGS(Call::HoldFlags)
 
 Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
