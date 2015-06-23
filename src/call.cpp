@@ -811,6 +811,12 @@ Certificate* Call::certificate() const
    return d_ptr->m_pCertificate;
 }
 
+
+FlagPack<Call::HoldFlags> Call::holdFlags() const
+{
+   return m_fHoldFlags;
+}
+
 ///Generate an human readable string from the difference between StartTimeStamp and StopTimeStamp (or 'now')
 QString Call::length() const
 {
@@ -1522,7 +1528,7 @@ void CallPrivate::remove()
 ///Abort this call (never notify the daemon there was a call)
 void CallPrivate::abort()
 {
-   
+
 }
 
 ///Cancel this call
@@ -1546,6 +1552,17 @@ void CallPrivate::hold()
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Holding call. callId : " << q_ptr << "ConfId:" << q_ptr;
+
+   //If the hold flag is set, something went wrong
+
+   Q_ASSERT(!(m_fHoldFlags & Call::HoldFlags::OUT));
+
+   const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
+
+   m_fHoldFlags |= Call::HoldFlags::OUT;
+
+   emit q_ptr->holdFlagsChanged(m_fHoldFlags, old);
+
    if (q_ptr->type() != Call::Type::CONFERENCE)
       Q_NOREPLY callManager.hold(q_ptr->dringId());
    else
@@ -1643,10 +1660,31 @@ void CallPrivate::unhold()
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Unholding call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+
+   //If the hold flag isn't set, something went wrong
+   Q_ASSERT(m_fHoldFlags & Call::HoldFlags::OUT);
+
+   const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
+
+   m_fHoldFlags ^= Call::HoldFlags::OUT;
+
+   emit q_ptr->holdFlagsChanged(m_fHoldFlags, old);
+
    if (q_ptr->type() != Call::Type::CONFERENCE)
       Q_NOREPLY callManager.unhold(q_ptr->dringId());
    else
       Q_NOREPLY callManager.unholdConference(q_ptr->dringId());
+}
+
+///React where a peer hold event happen
+void CallPrivate::peerHoldChanged(bool onPeerHold)
+{
+   if (((m_fHoldFlags & Call::HoldFlags::IN).value() > 0) == onPeerHold)
+      return;
+
+   m_fHoldFlags ^= Call::HoldFlags::IN;
+
+   emit q_ptr->changed(q_ptr);
 }
 
 ///Record the call

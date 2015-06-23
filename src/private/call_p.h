@@ -123,20 +123,21 @@ public:
    explicit CallPrivate(Call* parent);
 
    //Attributes
-   Account*                 m_Account           ;
-   QString                  m_DringId           ;
-   ContactMethod*           m_pPeerContactMethod;
-   QString                  m_PeerName          ;
-   time_t                   m_pStartTimeStamp   ;
-   time_t                   m_pStopTimeStamp    ;
-   Call::State              m_CurrentState      ;
-   QTimer*                  m_pTimer            ;
-   UserActionModel*         m_pUserActionModel  ;
-   bool                     m_History           ;
-   bool                     m_Missed            ;
-   Call::Direction          m_Direction         ;
-   Call::Type               m_Type              ;
-   Certificate*             m_pCertificate      ;
+   Account*                  m_Account           ;
+   QString                   m_DringId           ;
+   ContactMethod*            m_pPeerContactMethod;
+   QString                   m_PeerName          ;
+   time_t                    m_pStartTimeStamp   ;
+   time_t                    m_pStopTimeStamp    ;
+   Call::State               m_CurrentState      ;
+   QTimer*                   m_pTimer            ;
+   UserActionModel*          m_pUserActionModel  ;
+   bool                      m_History           ;
+   bool                      m_Missed            ;
+   Call::Direction           m_Direction         ;
+   Call::Type                m_Type              ;
+   Certificate*              m_pCertificate      ;
+   FlagPack<Call::HoldFlags> m_fHoldFlags        ;
 
    mutable TemporaryContactMethod* m_pTransferNumber ;
    mutable TemporaryContactMethod* m_pDialNumber     ;
@@ -242,6 +243,7 @@ public:
    void removeRenderer(Video::Renderer* renderer);
    void setRecordingPath(const QString& path);
    static MapStringString getCallDetailsCommon(const QString& callId);
+   void peerHoldChanged(bool onPeerHold);
    template<typename T>
    T* mediaFactory(Media::Media::Direction dir);
 
