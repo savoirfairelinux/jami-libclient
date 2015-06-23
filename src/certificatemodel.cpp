@@ -240,7 +240,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Account* 
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
 {
-   QMutexLocker(&this->m_CertLoader);
+   QMutexLocker locker(&m_CertLoader);
 
    if (!category)
       category = defaultCategory();
