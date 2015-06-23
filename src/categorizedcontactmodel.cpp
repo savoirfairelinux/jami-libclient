@@ -145,6 +145,9 @@ ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* p
 
 ContactTreeNode::~ContactTreeNode()
 {
+   for (ContactTreeNode* c : m_lChildren) {
+      delete c;
+   }
 }
 
 QModelIndex CategorizedContactModelPrivate::getIndex(int row, int column, ContactTreeNode* parent)

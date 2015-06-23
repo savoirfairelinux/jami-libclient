@@ -363,7 +363,9 @@ d_ptr(new AccountStatusModelPrivate(parent))
 {}
 
 AccountStatusModel::~AccountStatusModel()
-{}
+{
+   delete d_ptr;
+}
 
 QHash<int,QByteArray> AccountStatusModel::roleNames() const
 {

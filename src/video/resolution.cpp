@@ -45,6 +45,11 @@ Video::Resolution::Resolution(const QString& size, Video::Channel* chan)
    }
 }
 
+Video::Resolution::~Resolution()
+{
+   delete d_ptr;
+}
+
 const QString Video::Resolution::name() const
 {
    return QString::number(width())+'x'+QString::number(height());

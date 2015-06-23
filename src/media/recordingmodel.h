@@ -55,7 +55,7 @@ class LIB_EXPORT RecordingModel :  public QAbstractItemModel, public CollectionM
 public:
 
    //Constructor
-   virtual ~RecordingModel() {}
+   virtual ~RecordingModel();
    explicit RecordingModel(QObject* parent);
 
    virtual bool clearAllCollections() const override;

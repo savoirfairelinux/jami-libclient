@@ -21,40 +21,45 @@
 
 class HistoryTimeCategoryModelPrivate
 {
-
+public:
+   QVector<QString> m_lCategories;
+   static HistoryTimeCategoryModel* instance();
 };
 
-QVector<QString> HistoryTimeCategoryModel::m_lCategories;
-HistoryTimeCategoryModel* HistoryTimeCategoryModel::m_spInstance = new HistoryTimeCategoryModel();
+HistoryTimeCategoryModel* HistoryTimeCategoryModelPrivate::instance()
+{
+   static HistoryTimeCategoryModel* m_spInstance = new HistoryTimeCategoryModel();
+   return m_spInstance;
+}
 
 HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractListModel(parent),
 d_ptr(new HistoryTimeCategoryModelPrivate)
 {
-   m_lCategories << tr("Today")                                 ;//0
-   m_lCategories << tr("Yesterday")                             ;//1
-   m_lCategories << QDate::currentDate().addDays(-2).toString("dddd");//2
-   m_lCategories << QDate::currentDate().addDays(-3).toString("dddd");//3
-   m_lCategories << QDate::currentDate().addDays(-4).toString("dddd");//4
-   m_lCategories << QDate::currentDate().addDays(-5).toString("dddd");//5
-   m_lCategories << QDate::currentDate().addDays(-6).toString("dddd");//6
-   m_lCategories << tr("Last week")                             ;//7
-   m_lCategories << tr("Two weeks ago")                         ;//8
-   m_lCategories << tr("Three weeks ago")                       ;//9
-   m_lCategories << tr("Last month")                            ;//10
-   m_lCategories << tr("Two months ago")                        ;//11
-   m_lCategories << tr("Three months ago")                      ;//12
-   m_lCategories << tr("Four months ago")                       ;//13
-   m_lCategories << tr("Five months ago")                       ;//14
-   m_lCategories << tr("Six months ago")                        ;//15
-   m_lCategories << tr("Seven months ago")                      ;//16
-   m_lCategories << tr("Eight months ago")                      ;//17
-   m_lCategories << tr("Nine months ago")                       ;//18
-   m_lCategories << tr("Ten months ago")                        ;//19
-   m_lCategories << tr("Eleven months ago")                     ;//20
-   m_lCategories << tr("Twelve months ago")                     ;//21
-   m_lCategories << tr("Last year")                             ;//22
-   m_lCategories << tr("Very long time ago")                    ;//23
-   m_lCategories << tr("Never")                                 ;//24
+   d_ptr->m_lCategories << tr("Today")                                 ;//0
+   d_ptr->m_lCategories << tr("Yesterday")                             ;//1
+   d_ptr->m_lCategories << QDate::currentDate().addDays(-2).toString("dddd");//2
+   d_ptr->m_lCategories << QDate::currentDate().addDays(-3).toString("dddd");//3
+   d_ptr->m_lCategories << QDate::currentDate().addDays(-4).toString("dddd");//4
+   d_ptr->m_lCategories << QDate::currentDate().addDays(-5).toString("dddd");//5
+   d_ptr->m_lCategories << QDate::currentDate().addDays(-6).toString("dddd");//6
+   d_ptr->m_lCategories << tr("Last week")                             ;//7
+   d_ptr->m_lCategories << tr("Two weeks ago")                         ;//8
+   d_ptr->m_lCategories << tr("Three weeks ago")                       ;//9
+   d_ptr->m_lCategories << tr("Last month")                            ;//10
+   d_ptr->m_lCategories << tr("Two months ago")                        ;//11
+   d_ptr->m_lCategories << tr("Three months ago")                      ;//12
+   d_ptr->m_lCategories << tr("Four months ago")                       ;//13
+   d_ptr->m_lCategories << tr("Five months ago")                       ;//14
+   d_ptr->m_lCategories << tr("Six months ago")                        ;//15
+   d_ptr->m_lCategories << tr("Seven months ago")                      ;//16
+   d_ptr->m_lCategories << tr("Eight months ago")                      ;//17
+   d_ptr->m_lCategories << tr("Nine months ago")                       ;//18
+   d_ptr->m_lCategories << tr("Ten months ago")                        ;//19
+   d_ptr->m_lCategories << tr("Eleven months ago")                     ;//20
+   d_ptr->m_lCategories << tr("Twelve months ago")                     ;//21
+   d_ptr->m_lCategories << tr("Last year")                             ;//22
+   d_ptr->m_lCategories << tr("Very long time ago")                    ;//23
+   d_ptr->m_lCategories << tr("Never")                                 ;//24
 }
 
 HistoryTimeCategoryModel::~HistoryTimeCategoryModel()
@@ -79,7 +84,7 @@ QVariant HistoryTimeCategoryModel::data(const QModelIndex& index, int role ) con
    if (!index.isValid()) return QVariant();
    switch (role) {
       case Qt::DisplayRole:
-         return m_lCategories[index.row()];
+         return d_ptr->m_lCategories[index.row()];
    }
    return QVariant();
 }
@@ -87,7 +92,7 @@ QVariant HistoryTimeCategoryModel::data(const QModelIndex& index, int role ) con
 int HistoryTimeCategoryModel::rowCount(const QModelIndex& parent ) const
 {
    if (parent.isValid()) return 0;
-   return m_lCategories.size();
+   return d_ptr->m_lCategories.size();
 }
 
 Qt::ItemFlags HistoryTimeCategoryModel::flags(const QModelIndex& index ) const
@@ -109,9 +114,9 @@ QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
 {
    int period = (int)HistoryTimeCategoryModel::timeToHistoryConst(time);
    if (period >= 0 && period <= 24)
-      return m_lCategories[period];
+      return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[period];
    else
-      return m_lCategories[24];
+      return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[24];
 }
 
 HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
@@ -159,6 +164,6 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
 QString HistoryTimeCategoryModel::indexToName(int idx)
 {
-   if (idx > 24) return m_lCategories[24];
-   return m_lCategories[idx];
+   if (idx > 24) return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[24];
+   return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[idx];
 }

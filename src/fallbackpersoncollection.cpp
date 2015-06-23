@@ -92,7 +92,7 @@ CollectionInterface(new FallbackPersonBackendEditor(mediator,path),parent),d_ptr
 
 FallbackPersonCollection::~FallbackPersonCollection()
 {
-
+   delete d_ptr;
 }
 
 bool FallbackPersonBackendEditor::save(const Person* item)

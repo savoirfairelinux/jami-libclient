@@ -114,6 +114,12 @@ m_InsertionMutex(QMutex::Recursive)
 }
 
 template<class T>
+CollectionManagerInterface<T>::~CollectionManagerInterface()
+{
+   delete d_ptr;
+}
+
+template<class T>
 const QVector< CollectionInterface* > CollectionManagerInterfacePrivate<T>::filterCollections(QVector< CollectionInterface* > in, FlagPack<CollectionInterface::SupportedFeatures> features) const
 {
    QVector< CollectionInterface* > out;

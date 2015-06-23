@@ -119,6 +119,7 @@ Media::AVRecording::AVRecording() : Recording(Recording::Type::AUDIO_VIDEO), d_p
 
 Media::AVRecording::~AVRecording()
 {
+   delete d_ptr;
 }
 
 ///Return this recording path, if any

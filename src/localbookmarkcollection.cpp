@@ -87,7 +87,7 @@ LocalBookmarkCollection::LocalBookmarkCollection(CollectionMediator<ContactMetho
 
 LocalBookmarkCollection::~LocalBookmarkCollection()
 {
-
+   delete d_ptr;
 }
 
 bool LocalBookmarkCollection::load()

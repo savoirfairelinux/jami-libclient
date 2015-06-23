@@ -52,6 +52,7 @@ enum class DetailType : uchar
 struct CertificateNode {
 
    CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert);
+   ~CertificateNode();
    void setStrings(const QString& col1, const QVariant& col2, const QString& tooltip);
 
    //Attributes
@@ -114,6 +115,12 @@ CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, Ce
    m_EnumClassDetail(0)
 {
    CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
+}
+
+CertificateNode::~CertificateNode()
+{
+   for (CertificateNode* c : m_lChildren)
+      delete c;
 }
 
 CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),

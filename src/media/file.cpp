@@ -40,5 +40,5 @@ Media::Media::Type Media::File::type()
 
 Media::File::~File()
 {
-
+   delete d_ptr;
 }

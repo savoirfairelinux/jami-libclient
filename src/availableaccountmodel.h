@@ -58,6 +58,7 @@ Q_SIGNALS:
    void currentDefaultAccountChanged(Account*);
 
 private:
+   virtual ~AvailableAccountModel();
    explicit AvailableAccountModel(QObject* parent = nullptr);
 
    AvailableAccountModelPrivate* d_ptr;
