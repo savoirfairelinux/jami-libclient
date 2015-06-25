@@ -90,7 +90,8 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr), m_AllowIncomingFromHistory(true),
+m_AllowIncomingFromContact(false)
 {
 }
 
@@ -940,6 +941,21 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
+bool Account::allowIncomingFromUnknown() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
+}
+
+bool Account::allowIncomingFromHistory() const
+{
+   return d_ptr->m_AllowIncomingFromHistory;
+}
+
+bool Account::allowIncomingFromContact() const
+{
+   return d_ptr->m_AllowIncomingFromContact;
+}
+
 
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
@@ -1638,6 +1654,23 @@ void Account::setTurnServer(const QString& value)
 void Account::setDisplayName(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
+}
+
+void Account::setAllowIncomingFromUnknown(bool value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS, (value)TO_BOOL);
+}
+
+void Account::setAllowIncomingFromHistory(bool value)
+{
+   d_ptr->m_AllowIncomingFromHistory = value;
+   emit changed();
+}
+
+void Account::setAllowIncomingFromContact(bool value)
+{
+   d_ptr->m_AllowIncomingFromContact = value;
+   emit changed();
 }
 
 ///Set the DTMF type

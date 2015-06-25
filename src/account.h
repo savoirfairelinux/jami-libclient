@@ -406,6 +406,9 @@ class LIB_EXPORT Account : public QObject {
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
+      bool    allowIncomingFromUnknown     () const;
+      bool    allowIncomingFromHistory     () const;
+      bool    allowIncomingFromContact     () const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -472,6 +475,9 @@ class LIB_EXPORT Account : public QObject {
       void setHasCustomUserAgent            (bool enable);
       void setUseDefaultPort                (bool value );
       void setTurnEnabled                   (bool value );
+      void setAllowIncomingFromHistory      (bool value );
+      void setAllowIncomingFromContact      (bool value );
+      void setAllowIncomingFromUnknown      (bool value );
 
       void setRoleData(int role, const QVariant& value);
 
