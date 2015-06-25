@@ -138,10 +138,6 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
       QObject::tr("Local certificate store")
    );
 
-   //Load the daemon certificate store
-   d_ptr->m_pDaemonCertificateStore = addCollection<DaemonCertificateCollection>();
-   d_ptr->m_pDaemonCertificateStore->load();
-
    m_pFallbackCollection->load();
 }
 
@@ -478,7 +474,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    return cert;
 }
 
-Certificate* CertificateModel::getCertificateFromId(const QString& id)
+Certificate* CertificateModel::getCertificateFromId(const QString& id, Account* a, const QString& category)
 {
    Certificate* cert = d_ptr->m_hCertificates[id];
 
@@ -487,8 +483,19 @@ Certificate* CertificateModel::getCertificateFromId(const QString& id)
       cert = new Certificate(id);
       d_ptr->m_hCertificates[id.toLatin1()] = cert;
 
-      //Add it to the model
-      d_ptr->addToTree(cert);
+      if ((!a) && (!category.isEmpty())) {
+         CertificateNode* cat = d_ptr->m_hStrToCat[category];
+
+         if (!cat) {
+            cat = d_ptr->createCategory(category, a?QString("%1 certificates").arg(a->alias()):QString(), QString());
+         }
+
+         d_ptr->addToTree(cert,cat);
+      }
+      else {
+         //Add it to the model
+         d_ptr->addToTree(cert, a);
+      }
    }
 
    return cert;
@@ -701,9 +708,9 @@ QAbstractItemModel* CertificateModelPrivate::createKnownList(const Account* a) c
    return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
 }
 
-QAbstractItemModel* CertificateModelPrivate::createBlockList(const Account* a) const
+QAbstractItemModel* CertificateModelPrivate::createBannedList(const Account* a) const
 {
-   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"block",QString(),QString());
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_banned",QString(),QString());
 
 //    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
@@ -712,9 +719,9 @@ QAbstractItemModel* CertificateModelPrivate::createBlockList(const Account* a) c
    return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
 }
 
-QAbstractItemModel* CertificateModelPrivate::createTrustList(const Account* a) const
+QAbstractItemModel* CertificateModelPrivate::createAllowedList(const Account* a) const
 {
-   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"trust",QString(),QString());
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_allowed",QString(),QString());
    return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
 }
 
