@@ -152,6 +152,20 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(uint           trimesterCallCount           READ trimesterCallCount                                                 )
    Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
 
+   Q_PROPERTY(CredentialModel*         credentialModel             READ credentialModel                                           )
+   Q_PROPERTY(CodecModel*              codecModel                  READ codecModel                                                )
+   Q_PROPERTY(KeyExchangeModel*        keyExchangeModel            READ keyExchangeModel                                          )
+   Q_PROPERTY(CipherModel*             cipherModel                 READ cipherModel                                               )
+   Q_PROPERTY(AccountStatusModel*      statusModel                 READ statusModel                                               )
+   Q_PROPERTY(SecurityEvaluationModel* securityEvaluationModel     READ securityEvaluationModel                                   )
+   Q_PROPERTY(TlsMethodModel*          tlsMethodModel              READ tlsMethodModel                                            )
+   Q_PROPERTY(ProtocolModel*           protocolModel               READ protocolModel                                             )
+   Q_PROPERTY(BootstrapModel*          bootstrapModel              READ bootstrapModel                                            )
+   Q_PROPERTY(NetworkInterfaceModel*   networkInterfaceModel       READ networkInterfaceModel                                     )
+   Q_PROPERTY(QAbstractItemModel*      knownCertificateModel       READ knownCertificateModel                                     )
+   Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
+   Q_PROPERTY(QAbstractItemModel*      allowedCertificatesModel    READ allowedCertificatesModel                                  )
+
    public:
 
       ///@enum EditState: Manage how and when an account can be reloaded or change state
@@ -258,6 +272,19 @@ class LIB_EXPORT Account : public QObject {
          DisplayName                 = 171,
          SrtpEnabled                 = 172,
          HasCustomBootstrap          = 173,
+         CredentialModel             = 174,
+         CodecModel                  = 175,
+         KeyExchangeModel            = 176,
+         CipherModel                 = 177,
+         StatusModel                 = 178,
+         SecurityEvaluationModel     = 179,
+         TlsMethodModel              = 180,
+         ProtocolModel               = 181,
+         BootstrapModel              = 182,
+         NetworkInterfaceModel       = 183,
+         KnownCertificateModel       = 184,
+         BannedCertificatesModel     = 185,
+         AllowedCertificatesModel    = 186,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
@@ -301,19 +328,19 @@ class LIB_EXPORT Account : public QObject {
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
 
-      Q_INVOKABLE CredentialModel*         credentialModel            () const;
-      Q_INVOKABLE CodecModel*              codecModel                 () const;
-      Q_INVOKABLE KeyExchangeModel*        keyExchangeModel           () const;
-      Q_INVOKABLE CipherModel*             cipherModel                () const;
-      Q_INVOKABLE AccountStatusModel*      statusModel                () const;
-      Q_INVOKABLE SecurityEvaluationModel* securityEvaluationModel    () const;
-      Q_INVOKABLE TlsMethodModel*          tlsMethodModel             () const;
-      Q_INVOKABLE ProtocolModel*           protocolModel              () const;
-      Q_INVOKABLE BootstrapModel*          bootstrapModel             () const;
-      Q_INVOKABLE NetworkInterfaceModel*   networkInterfaceModel      () const;
-      Q_INVOKABLE QAbstractItemModel*      knownCertificateModel      () const;
-      Q_INVOKABLE QAbstractItemModel*      backlistedCertificatesModel() const;
-      Q_INVOKABLE QAbstractItemModel*      trustedCertificatesModel   () const;
+      CredentialModel*         credentialModel            () const;
+      CodecModel*              codecModel                 () const;
+      KeyExchangeModel*        keyExchangeModel           () const;
+      CipherModel*             cipherModel                () const;
+      AccountStatusModel*      statusModel                () const;
+      SecurityEvaluationModel* securityEvaluationModel    () const;
+      TlsMethodModel*          tlsMethodModel             () const;
+      ProtocolModel*           protocolModel              () const;
+      BootstrapModel*          bootstrapModel             () const;
+      NetworkInterfaceModel*   networkInterfaceModel      () const;
+      QAbstractItemModel*      knownCertificateModel      () const;
+      QAbstractItemModel*      bannedCertificatesModel    () const;
+      QAbstractItemModel*      allowedCertificatesModel   () const;
 
       Q_INVOKABLE RoleState  roleState (Account::Role role) const;
       Q_INVOKABLE RoleStatus roleStatus(Account::Role role) const;
