@@ -52,6 +52,7 @@
 #include "presencestatusmodel.h"
 #include "uri.h"
 #include "securityevaluationmodel.h"
+#include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
@@ -88,8 +89,8 @@ m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
-m_pBlacklistedCertificates(nullptr), m_pTrustedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr)
+m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
 {
 }
 
@@ -451,22 +452,44 @@ QAbstractItemModel* Account::knownCertificateModel() const
    return d_ptr->m_pKnownCertificates;
 }
 
-QAbstractItemModel* Account::backlistedCertificatesModel() const
+QAbstractItemModel* Account::bannedCertificatesModel() const
 {
-   if (!d_ptr->m_pBlacklistedCertificates) {
-      d_ptr->m_pBlacklistedCertificates = CertificateModel::instance()->d_ptr->createBlockList(this);
+   if (protocol() != Account::Protocol::RING)
+      return nullptr;
+
+   if (!d_ptr->m_pBannedCerts) {
+      d_ptr->m_pBannedCerts = CertificateModel::instance()->addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
+         const_cast<Account*>(this),
+         DaemonCertificateCollection::Mode::BANNED
+      );
+      d_ptr->m_pBannedCerts->load();
    }
 
-   return d_ptr->m_pBlacklistedCertificates;
+   if (!d_ptr->m_pBannedCertificates) {
+      d_ptr->m_pBannedCertificates = CertificateModel::instance()->d_ptr->createBannedList(this);
+   }
+
+   return d_ptr->m_pBannedCertificates;
 }
 
-QAbstractItemModel* Account::trustedCertificatesModel() const
+QAbstractItemModel* Account::allowedCertificatesModel() const
 {
-   if (!d_ptr->m_pTrustedCertificates) {
-      d_ptr->m_pTrustedCertificates = CertificateModel::instance()->d_ptr->createTrustList(this);
+   if (protocol() != Account::Protocol::RING)
+      return nullptr;
+
+   if (!d_ptr->m_pAllowedCerts) {
+      d_ptr->m_pAllowedCerts = CertificateModel::instance()->addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
+         const_cast<Account*>(this),
+         DaemonCertificateCollection::Mode::ALLOWED
+      );
+      d_ptr->m_pAllowedCerts->load();
    }
 
-   return d_ptr->m_pTrustedCertificates;
+   if (!d_ptr->m_pAllowedCertificates) {
+      d_ptr->m_pAllowedCertificates = CertificateModel::instance()->d_ptr->createAllowedList(this);
+   }
+
+   return d_ptr->m_pAllowedCertificates;
 }
 
 NetworkInterfaceModel* Account::networkInterfaceModel() const
@@ -1072,7 +1095,32 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::HasCustomBootstrap       ):
          //Do not create the model for nothing
          return protocol() == Account::Protocol::RING ? bootstrapModel()->isCustom() : false;
-         break;
+      case CAST(Account::Role::CredentialModel            ):
+         return QVariant::fromValue(credentialModel());
+      case CAST(Account::Role::CodecModel                 ):
+         return QVariant::fromValue(codecModel());
+      case CAST(Account::Role::KeyExchangeModel           ):
+         return QVariant::fromValue(keyExchangeModel());
+      case CAST(Account::Role::CipherModel                ):
+         return QVariant::fromValue(cipherModel());
+      case CAST(Account::Role::StatusModel                ):
+         return QVariant::fromValue(statusModel());
+      case CAST(Account::Role::SecurityEvaluationModel    ):
+         return QVariant::fromValue(securityEvaluationModel());
+      case CAST(Account::Role::TlsMethodModel             ):
+         return QVariant::fromValue(tlsMethodModel());
+      case CAST(Account::Role::ProtocolModel              ):
+         return QVariant::fromValue(protocolModel());
+      case CAST(Account::Role::BootstrapModel             ):
+         return QVariant::fromValue(bootstrapModel());
+      case CAST(Account::Role::NetworkInterfaceModel      ):
+         return QVariant::fromValue(networkInterfaceModel());
+      case CAST(Account::Role::KnownCertificateModel      ):
+         return QVariant::fromValue(knownCertificateModel());
+      case CAST(Account::Role::BannedCertificatesModel    ):
+         return QVariant::fromValue(bannedCertificatesModel());
+      case CAST(Account::Role::AllowedCertificatesModel   ):
+         return QVariant::fromValue(allowedCertificatesModel());
       default:
          return QVariant();
    }
@@ -1772,6 +1820,21 @@ void Account::setRoleData(int role, const QVariant& value)
          if (protocol() == Account::Protocol::RING && value.toBool())
             bootstrapModel()->reset();
          break;
+      //Read-only
+      case CAST(Account::Role::CredentialModel          ):
+      case CAST(Account::Role::CodecModel               ):
+      case CAST(Account::Role::KeyExchangeModel         ):
+      case CAST(Account::Role::CipherModel              ):
+      case CAST(Account::Role::StatusModel              ):
+      case CAST(Account::Role::SecurityEvaluationModel  ):
+      case CAST(Account::Role::TlsMethodModel           ):
+      case CAST(Account::Role::ProtocolModel            ):
+      case CAST(Account::Role::BootstrapModel           ):
+      case CAST(Account::Role::NetworkInterfaceModel    ):
+      case CAST(Account::Role::KnownCertificateModel    ):
+      case CAST(Account::Role::BannedCertificatesModel  ):
+      case CAST(Account::Role::AllowedCertificatesModel ):
+         break;
    }
 }
 #undef CAST
@@ -1873,7 +1936,9 @@ Account::RoleState Account::roleState(Account::Role role) const
       case Account::Protocol::IAX     :
       case Account::Protocol::COUNT__ :
          switch(role) {
-            case Account::Role::HasCustomBootstrap:
+            case Account::Role::BannedCertificatesModel :
+            case Account::Role::AllowedCertificatesModel:
+            case Account::Role::HasCustomBootstrap      :
                return Account::RoleState::UNAVAILABLE;
          }
          break;
