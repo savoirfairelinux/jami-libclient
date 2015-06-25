@@ -25,6 +25,7 @@ class Call;
 class Person;
 class DaemonCertificateCollectionPrivate;
 class Certificate;
+class Account;
 
 template<typename T> class CollectionMediator;
 
@@ -38,7 +39,13 @@ class LIB_EXPORT DaemonCertificateCollection : public CollectionInterface
 {
 
 public:
-   explicit DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path = QString());
+
+   enum class Mode {
+      ALLOWED,
+      BANNED
+   };
+
+   explicit DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, Account* a, Mode mode);
    virtual ~DaemonCertificateCollection();
 
    virtual bool load  () override;

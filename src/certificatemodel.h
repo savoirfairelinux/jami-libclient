@@ -35,6 +35,7 @@ public:
    friend class Certificate;
    friend class Account;
    friend class DaemonCertificateCollectionPrivate;
+   friend class DaemonCertificateCollection;
 
    enum class Role {
       NodeType       = 100,
@@ -85,7 +86,7 @@ public:
    static CertificateModel* instance();
 
 private:
-   Certificate* getCertificateFromId(const QString& id);
+   Certificate* getCertificateFromId(const QString& id, Account* a = nullptr, const QString& category = QString());
 
    //Backend interface
    virtual void collectionAddedCallback(CollectionInterface* collection) override;

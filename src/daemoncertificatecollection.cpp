@@ -19,11 +19,13 @@
 
 //Ring
 #include "certificate.h"
+#include "account.h"
 #include "certificatemodel.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
+#include "security_const.h"
 
 class DaemonCertificateEditor final : public CollectionEditor<Certificate>
 {
@@ -47,10 +49,12 @@ class DaemonCertificateCollectionPrivate : public QObject
 {
    Q_OBJECT
 public:
-   DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent);
+   DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent, Account* a, DaemonCertificateCollection::Mode mode);
 
    //Attributes
    DaemonCertificateCollection* q_ptr;
+   Account* m_pAccount;
+   DaemonCertificateCollection::Mode m_Mode;
 
 public Q_SLOTS:
    void slotCertificatePinned(const QString& id);
@@ -58,8 +62,10 @@ public Q_SLOTS:
    void slotCertificatePathPinned(const QString& path, const QStringList& certIds);
 };
 
-DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent) : QObject(), q_ptr(parent)
+DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent, Account* a, DaemonCertificateCollection::Mode mode) : QObject(), q_ptr(parent),
+m_pAccount(a), m_Mode(mode)
 {
+   Q_ASSERT(a);
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
    connect(&configurationManager, &ConfigurationManagerInterface::certificatePinned     , this, &DaemonCertificateCollectionPrivate::slotCertificatePinned    );
@@ -69,11 +75,10 @@ DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCer
    connect(&configurationManager, &ConfigurationManagerInterface::certificatePathPinned , this, &DaemonCertificateCollectionPrivate::slotCertificatePathPinned);
 
    //    connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest  , this, &DaemonCertificateCollectionPrivate::);
-
 }
 
-DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, const QString& path) :
-CollectionInterface(new DaemonCertificateEditor(mediator,path),nullptr),d_ptr(new DaemonCertificateCollectionPrivate(this))
+DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, Account* a, DaemonCertificateCollection::Mode mode) :
+CollectionInterface(new DaemonCertificateEditor(mediator,QString()),nullptr),d_ptr(new DaemonCertificateCollectionPrivate(this,a,mode))
 {
 
 }
@@ -104,8 +109,17 @@ void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString
 bool DaemonCertificateCollection::load()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   //qDebug() << "\n\nLOADING CERTS" << QStringList(configurationManager.getPinnedCertificates());
-   return false;
+   const QStringList allowed = configurationManager.getCertificatesByStatus(
+      d_ptr->m_pAccount->id(), d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
+      DRing::Certificate::Status::ALLOWED : DRing::Certificate::Status::BANNED
+   );
+   //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << allowed;
+
+   for (const QString& id : allowed) {
+      Certificate* cert = CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_banned");
+   }
+
+   return true;
 }
 
 bool DaemonCertificateCollection::reload()
@@ -120,7 +134,12 @@ bool DaemonCertificateCollection::clear()
 
 QString DaemonCertificateCollection::name() const
 {
-   return QObject::tr("Ring certificate store");
+   return QObject::tr("%1 %2 list")
+      .arg(d_ptr->m_pAccount->alias())
+      .arg(d_ptr->m_Mode == Mode::BANNED ?
+         QObject::tr( "banned"  ) :
+         QObject::tr( "allowed" )
+      );
 }
 
 QString DaemonCertificateCollection::category() const
