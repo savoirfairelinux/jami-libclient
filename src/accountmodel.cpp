@@ -168,6 +168,19 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::DisplayName                 ) ,QByteArray("displayName"                   ));
       roles.insert(CAST(Account::Role::SrtpEnabled                 ) ,QByteArray("srtpEnabled"                   ));
       roles.insert(CAST(Account::Role::HasCustomBootstrap          ) ,QByteArray("hasCustomBootstrap"            ));
+      roles.insert(CAST(Account::Role::CredentialModel             ) ,QByteArray("credentialModel"               ));
+      roles.insert(CAST(Account::Role::CodecModel                  ) ,QByteArray("codecModel"                    ));
+      roles.insert(CAST(Account::Role::KeyExchangeModel            ) ,QByteArray("keyExchangeModel"              ));
+      roles.insert(CAST(Account::Role::CipherModel                 ) ,QByteArray("cipherModel"                   ));
+      roles.insert(CAST(Account::Role::StatusModel                 ) ,QByteArray("statusModel"                   ));
+      roles.insert(CAST(Account::Role::SecurityEvaluationModel     ) ,QByteArray("securityEvaluationModel"       ));
+      roles.insert(CAST(Account::Role::TlsMethodModel              ) ,QByteArray("tlsMethodModel"                ));
+      roles.insert(CAST(Account::Role::ProtocolModel               ) ,QByteArray("protocolModel"                 ));
+      roles.insert(CAST(Account::Role::BootstrapModel              ) ,QByteArray("bootstrapModel"                ));
+      roles.insert(CAST(Account::Role::NetworkInterfaceModel       ) ,QByteArray("networkInterfaceModel"         ));
+      roles.insert(CAST(Account::Role::KnownCertificateModel       ) ,QByteArray("knownCertificateModel"         ));
+      roles.insert(CAST(Account::Role::BannedCertificatesModel     ) ,QByteArray("bannedCertificatesModel"       ));
+      roles.insert(CAST(Account::Role::AllowedCertificatesModel    ) ,QByteArray("allowedCertificatesModel"      ));
    }
    return roles;
 }

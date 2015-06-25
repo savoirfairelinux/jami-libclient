@@ -49,15 +49,14 @@ public:
    QHash<const Account*,CertificateNode*> m_hAccToCat  ;
    QHash<const QString&,CertificateNode*> m_hStrToCat  ;
    QHash<const Certificate*,CertificateNode*> m_hNodes ;
-   DaemonCertificateCollection* m_pDaemonCertificateStore;
    static const Matrix1D<Certificate::Status, const char*> m_StatusMap;
 
    //Getters
-   QAbstractItemModel* model           (const Certificate* cert) const;
-   QAbstractItemModel* checksModel     (const Certificate* cert) const;
-   QAbstractItemModel* createKnownList (const Account* a       ) const;
-   QAbstractItemModel* createBlockList (const Account* a       ) const;
-   QAbstractItemModel* createTrustList (const Account* a       ) const;
+   QAbstractItemModel* model             (const Certificate* cert) const;
+   QAbstractItemModel* checksModel       (const Certificate* cert) const;
+   QAbstractItemModel* createKnownList   (const Account* a       ) const;
+   QAbstractItemModel* createBannedList  (const Account* a       ) const;
+   QAbstractItemModel* createAllowedList (const Account* a       ) const;
 
    //Singleton
    static CertificateModel* m_spInstance;
