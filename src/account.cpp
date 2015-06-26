@@ -90,7 +90,8 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr), m_AllowIncomingFromHistory(true),
+m_AllowIncomingFromContact(false)
 {
 }
 
@@ -940,6 +941,21 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
+bool Account::allowIncomingFromUnknown() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
+}
+
+bool Account::allowIncomingFromHistory() const
+{
+   return d_ptr->m_AllowIncomingFromHistory;
+}
+
+bool Account::allowIncomingFromContact() const
+{
+   return d_ptr->m_AllowIncomingFromContact;
+}
+
 
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const
@@ -1121,6 +1137,12 @@ QVariant Account::roleData(int role) const
          return QVariant::fromValue(bannedCertificatesModel());
       case CAST(Account::Role::AllowedCertificatesModel   ):
          return QVariant::fromValue(allowedCertificatesModel());
+      case CAST(Account::Role::AllowIncomingFromHistory ):
+         return allowIncomingFromHistory();
+      case CAST(Account::Role::AllowIncomingFromContact ):
+         return allowIncomingFromContact();
+      case CAST(Account::Role::AllowIncomingFromUnknown ):
+         return allowIncomingFromUnknown();
       default:
          return QVariant();
    }
@@ -1640,6 +1662,23 @@ void Account::setDisplayName(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
 }
 
+void Account::setAllowIncomingFromUnknown(bool value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS, (value)TO_BOOL);
+}
+
+void Account::setAllowIncomingFromHistory(bool value)
+{
+   d_ptr->m_AllowIncomingFromHistory = value;
+   emit changed(this);
+}
+
+void Account::setAllowIncomingFromContact(bool value)
+{
+   d_ptr->m_AllowIncomingFromContact = value;
+   emit changed(this);
+}
+
 ///Set the DTMF type
 void Account::setDTMFType(DtmfType type)
 {
@@ -1840,6 +1879,15 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::BannedCertificatesModel  ):
       case CAST(Account::Role::AllowedCertificatesModel ):
          break;
+      case CAST(Account::Role::AllowIncomingFromHistory ):
+         setAllowIncomingFromHistory(value.toBool());
+         break;
+      case CAST(Account::Role::AllowIncomingFromContact ):
+         setAllowIncomingFromContact(value.toBool());
+         break;
+      case CAST(Account::Role::AllowIncomingFromUnknown ):
+         setAllowIncomingFromUnknown(value.toBool());
+         break;
    }
 }
 #undef CAST
@@ -1924,6 +1972,8 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::Hostname          :
             case Account::Role::UserAgent         :
             case Account::Role::HasCustomUserAgent:
+            case Account::Role::HasProxy          :
+            case Account::Role::Proxy             :
                return Account::RoleState::UNAVAILABLE;
             case Account::Role::Username          :
                return Account::RoleState::READ_ONLY;
