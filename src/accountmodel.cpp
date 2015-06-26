@@ -181,6 +181,9 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::KnownCertificateModel       ) ,QByteArray("knownCertificateModel"         ));
       roles.insert(CAST(Account::Role::BannedCertificatesModel     ) ,QByteArray("bannedCertificatesModel"       ));
       roles.insert(CAST(Account::Role::AllowedCertificatesModel    ) ,QByteArray("allowedCertificatesModel"      ));
+      roles.insert(CAST(Account::Role::AllowIncomingFromHistory    ) ,QByteArray("allowIncomingFromHistory"      ));
+      roles.insert(CAST(Account::Role::AllowIncomingFromContact    ) ,QByteArray("allowIncomingFromContact"      ));
+      roles.insert(CAST(Account::Role::AllowIncomingFromUnknown    ) ,QByteArray("allowIncomingFromUnknown"      ));
    }
    return roles;
 }
