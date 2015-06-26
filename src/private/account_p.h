@@ -136,6 +136,8 @@ public:
    DaemonCertificateCollection* m_pAllowedCerts           ;
    DaemonCertificateCollection* m_pBannedCerts            ;
    Account::EditState           m_CurrentState            ;
+   bool                         m_AllowIncomingFromHistory;
+   bool                         m_AllowIncomingFromContact;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 
