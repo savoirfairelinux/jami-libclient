@@ -1183,6 +1183,16 @@ bool Account::supportScheme( URI::SchemeType type )
    return false;
 }
 
+bool Account::allowCertificate(Certificate* c)
+{
+   return CertificateModel::instance()->d_ptr->allowCertificate(c, this);
+}
+
+bool Account::banCertificate(Certificate* c)
+{
+   return CertificateModel::instance()->d_ptr->banCertificate(c, this);
+}
+
 uint AccountPrivate::internalId() const
 {
    return m_InternalId;
