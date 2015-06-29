@@ -108,16 +108,18 @@ void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString
 
 bool DaemonCertificateCollection::load()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   const QStringList allowed = configurationManager.getCertificatesByStatus(
-      d_ptr->m_pAccount->id(), d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
-      DRing::Certificate::Status::ALLOWED : DRing::Certificate::Status::BANNED
-   );
-   //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << allowed;
+   const QString mode = d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
+      DRing::Certificate::Status::ALLOWED : DRing::Certificate::Status::BANNED;
 
-   for (const QString& id : allowed) {
-      Certificate* cert = CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_banned");
-   }
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+   const QStringList certs = configurationManager.getCertificatesByStatus(
+      d_ptr->m_pAccount->id(), mode
+   );
+   //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << certs;
+
+   for (const QString& id : certs)
+      Certificate* cert = CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);
 
    return true;
 }

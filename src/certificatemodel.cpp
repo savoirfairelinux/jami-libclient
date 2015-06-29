@@ -41,6 +41,36 @@
 #include "private/matrixutils.h"
 #include "private/certificatemodel_p.h"
 
+/*
+ * This data structure is a graph wrapping the certificates in different contexts.
+ *
+ * For example, a single certificate can be allowed for an account and banned for
+ * another. Then, there is also the notion of "known" certificates for an account
+ * that's independent from the certificate state.
+ *
+ * This class store bunch of "groups" associated with accounts. Each certificate
+ * can be part of multiple groups.
+ *
+ * Levels:
+ * 1: Root (tree)
+ * 2: Groups (tree)
+ * 3: Certificate (graph)
+ * 4: Certificate elements
+ * 5.1: Certificate details
+ * 5.2: Certificate security checks
+ *
+ * Structures:
+ * CertificateNode: metadata associated with the certificate
+ * CertificateNodeWrapper: A single path in the graph
+ *
+ * It is a graph, but it's usually handled as a tree. The only layer of the tree
+ * with graph characteristic is the certificate level.
+ *
+ * The purpose of this is to be able to create model proxies for various type
+ * of information based on the same memory tree.
+ *
+ */
+
 enum class DetailType : uchar
 {
    NONE  ,
@@ -68,6 +98,8 @@ struct CertificateNode {
    QString                    m_ToolTip        ;
    std::function<void()>      m_fLoader        ;
    bool                       m_IsLoaded       ;
+   int                        m_CatIdx         ;
+   unsigned long long         m_fIsPartOf      ;
    QHash<Account*,CertificateNode*> m_hSiblings;
 };
 
@@ -112,9 +144,17 @@ CertificateModelPrivate::~CertificateModelPrivate()
 
 CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, CertificateNode* parent, Certificate* cert) :
    m_pParent(parent), m_pCertificate(cert), m_Level(level), m_Index(index), m_IsLoaded(true),m_DetailType(DetailType::NONE),
-   m_EnumClassDetail(0)
+   m_EnumClassDetail(0),m_CatIdx(-1),m_fIsPartOf(0)
 {
-   CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
+   CertificateNode* sibling = CertificateModel::instance()->d_ptr->m_hNodes[cert];
+
+   if (parent && sibling)
+      sibling->m_fIsPartOf |= (0x01 << parent->m_CatIdx);
+   else
+      CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
+
+   if (parent && parent->m_Level == CertificateModel::NodeType::CATEGORY)
+      m_fIsPartOf |= (0x01 << parent->m_CatIdx);
 }
 
 CertificateNode::~CertificateNode()
@@ -218,7 +258,7 @@ QModelIndex CertificateModelPrivate::createIndex(int r ,int c , void* p)
    return q_ptr->createIndex(r,c,p);
 }
 
-CertificateNode* CertificateModelPrivate::createCategory(const Account* a)
+CertificateNode* CertificateModelPrivate::getCategory(const Account* a)
 {
    CertificateNode* cat = m_hAccToCat[a];
 
@@ -233,10 +273,11 @@ CertificateNode* CertificateModelPrivate::createCategory(const Account* a)
 //For convenience
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Account* a)
 {
+
    if (!a)
       return addToTree(cert);
 
-   CertificateNode* cat = createCategory(a);
+   CertificateNode* cat = getCategory(a);
 
    return addToTree(cert,cat);
 }
@@ -248,11 +289,16 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
    if (!category)
       category = defaultCategory();
 
+   //Do not add it twice
+   CertificateNode* node = CertificateModel::instance()->d_ptr->m_hNodes[cert];
+
+   if (node && node->m_fIsPartOf & (0x01 << category->m_CatIdx))
+      return node;
+
    const int idx = category->m_lChildren.size();
 
-   CertificateNode* node = new CertificateNode(idx, CertificateModel::NodeType::CERTIFICATE, category, cert);
+   node = new CertificateNode(idx, CertificateModel::NodeType::CERTIFICATE, category, cert);
    node->setStrings(QObject::tr("A certificate"),QObject::tr("An organisation"),QString());
-
 
    const QModelIndex parent = q_ptr->createIndex(category->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),category);
    q_ptr->beginInsertRows(parent, idx, idx);
@@ -432,7 +478,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
    if (!a)
       return getCertificate(path,Certificate::Type::CALL);
 
-   CertificateNode* cat  = d_ptr->createCategory(a);
+   CertificateNode* cat  = d_ptr->getCategory(a);
 
    Certificate* cert = d_ptr->m_hCertificates[path.path()];
 
@@ -704,25 +750,96 @@ QAbstractItemModel* CertificateModel::singleCertificateModel(const QModelIndex& 
  */
 QAbstractItemModel* CertificateModelPrivate::createKnownList(const Account* a) const
 {
-   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a);
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->getCategory(a);
    return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
 }
 
 QAbstractItemModel* CertificateModelPrivate::createBannedList(const Account* a) const
 {
-   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_banned",QString(),QString());
+   QAbstractItemModel* m = m_hAccBan[a];
 
-//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   if (m)
+      return m;
 
-//    const QStringList ids = configurationManager.setCertificateStatus(a->id(), );
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_"+DRing::Certificate::Status::BANNED,QString(),QString());
 
-   return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+   m = new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+
+   m_hAccBan[a] = m;
+   m_hAccBanCat[a] = cat;
+
+   return m;
 }
 
 QAbstractItemModel* CertificateModelPrivate::createAllowedList(const Account* a) const
 {
-   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_allowed",QString(),QString());
-   return new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+   QAbstractItemModel* m = m_hAccAllow[a];
+
+   if (m)
+      return m;
+
+   CertificateNode* cat = const_cast<CertificateModelPrivate*>(this)->createCategory(a->id()+"_"+DRing::Certificate::Status::ALLOWED,QString(),QString());
+
+   m = new CertificateProxyModel(const_cast<CertificateModel*>(q_ptr),cat);
+
+   m_hAccAllow[a] = m;
+   m_hAccAllowCat[a] = cat;
+
+   return m;
+}
+
+bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
+{
+   if (!a)
+      return false;
+
+   //Make sure the lists exist
+   createAllowedList(a);
+   createBannedList(a);
+
+   CertificateNode* allow   = m_hAccAllowCat [ a ];
+   CertificateNode* ban     = m_hAccBanCat   [ a ];
+   CertificateNode* sibling = m_hNodes       [ c ];
+
+   //Check if it's already there
+   if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
+      return true;
+
+   //Check if the certificate isn't banned
+   if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
+      return false;
+
+   //Add it
+   addToTree(c, allow);
+
+   return true;
+}
+
+bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
+{
+   if (!a)
+      return false;
+
+   //Make sure the lists exist
+   createAllowedList(a);
+   createBannedList(a);
+
+   CertificateNode* allow   = m_hAccAllowCat [ a ];
+   CertificateNode* ban     = m_hAccBanCat   [ a ];
+   CertificateNode* sibling = m_hNodes       [ c ];
+
+   //Check if it's already there
+   if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
+      return true;
+
+   //Check if the certificate isn't banned
+   if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
+      return false;
+
+   //Add it
+   addToTree(c, ban);
+
+   return true;
 }
 
 void CertificateModel::collectionAddedCallback(CollectionInterface* collection)
