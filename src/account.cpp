@@ -90,8 +90,7 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr), m_AllowIncomingFromHistory(true),
-m_AllowIncomingFromContact(true)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
 {
 }
 
@@ -948,12 +947,28 @@ bool Account::allowIncomingFromUnknown() const
 
 bool Account::allowIncomingFromHistory() const
 {
-   return d_ptr->m_AllowIncomingFromHistory;
+   if (protocol() != Account::Protocol::RING)
+      return false;
+
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ALLOW_CERT_FROM_HISTORY) IS_TRUE;
 }
 
 bool Account::allowIncomingFromContact() const
 {
-   return d_ptr->m_AllowIncomingFromContact;
+   if (protocol() != Account::Protocol::RING)
+      return false;
+
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ALLOW_CERT_FROM_CONTACT) IS_TRUE;
+}
+
+int Account::activeCallLimit() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ACTIVE_CALL_LIMIT).toInt();
+}
+
+bool Account::hasActiveCallLimit() const
+{
+   return activeCallLimit() > -1;
 }
 
 
@@ -1143,6 +1158,10 @@ QVariant Account::roleData(int role) const
          return allowIncomingFromContact();
       case CAST(Account::Role::AllowIncomingFromUnknown ):
          return allowIncomingFromUnknown();
+      case CAST(Account::Role::ActiveCallLimit):
+         return activeCallLimit();
+      case CAST(Account::Role::HasActiveCallLimit):
+         return hasActiveCallLimit();
       default:
          return QVariant();
    }
@@ -1185,11 +1204,17 @@ bool Account::supportScheme( URI::SchemeType type )
 
 bool Account::allowCertificate(Certificate* c)
 {
+   if (protocol() != Account::Protocol::RING)
+      return false;
+
    return CertificateModel::instance()->d_ptr->allowCertificate(c, this);
 }
 
 bool Account::banCertificate(Certificate* c)
 {
+   if (protocol() != Account::Protocol::RING)
+      return false;
+
    return CertificateModel::instance()->d_ptr->banCertificate(c, this);
 }
 
@@ -1679,14 +1704,33 @@ void Account::setAllowIncomingFromUnknown(bool value)
 
 void Account::setAllowIncomingFromHistory(bool value)
 {
-   d_ptr->m_AllowIncomingFromHistory = value;
+   if (protocol() != Account::Protocol::RING)
+      return;
+
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALLOW_CERT_FROM_HISTORY, value TO_BOOL);
    performAction(Account::EditAction::MODIFY);
 }
 
 void Account::setAllowIncomingFromContact(bool value)
 {
-   d_ptr->m_AllowIncomingFromContact = value;
+   if (protocol() != Account::Protocol::RING)
+      return;
+
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALLOW_CERT_FROM_CONTACT, value TO_BOOL);
    performAction(Account::EditAction::MODIFY);
+}
+
+void Account::setActiveCallLimit(int value )
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ACTIVE_CALL_LIMIT, QString::number(value));
+}
+
+void Account::setHasActiveCallLimit(bool value )
+{
+   if ((!value) && activeCallLimit() != -1)
+      return;
+
+   setActiveCallLimit(value?1:-1);
 }
 
 ///Set the DTMF type
@@ -1903,6 +1947,12 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::AllowIncomingFromUnknown ):
          setAllowIncomingFromUnknown(value.toBool());
+         break;
+      case CAST(Account::Role::ActiveCallLimit):
+         return setActiveCallLimit(value.toInt());
+         break;
+      case CAST(Account::Role::HasActiveCallLimit):
+         return setHasActiveCallLimit(value.toBool());
          break;
    }
 }
