@@ -419,8 +419,10 @@ class LIB_EXPORT Account : public QObject {
       uint   trimesterCallCount     () const;
       time_t lastUsed               () const;
 
-      Q_INVOKABLE QVariant roleData ( int role             ) const;
-      Q_INVOKABLE bool supportScheme( URI::SchemeType type )      ;
+      Q_INVOKABLE QVariant roleData    ( int role             ) const;
+      Q_INVOKABLE bool supportScheme   ( URI::SchemeType type )      ;
+      Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
+      Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
 
       //Setters
       void setId                            (const QByteArray& id   );

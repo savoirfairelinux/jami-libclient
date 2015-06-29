@@ -35,21 +35,27 @@ public:
    //Helper
    CertificateNode* defaultCategory();
    CertificateNode* createCategory(const QString& name, const QString& col2, const QString& tooltip);
-   CertificateNode* createCategory(const Account* a);
+   CertificateNode* getCategory(const Account* a);
    CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
    CertificateNode* addToTree(Certificate* cert, Account* a);
    QModelIndex      createIndex(int r ,int c , void* p);
    QAbstractItemModel* getModelCommon(CertificateNode* node);
+   bool allowCertificate(Certificate* c, Account* a);
+   bool banCertificate(Certificate* c, Account* a);
 
    //Attributes
-   QVector<CertificateNode*>        m_lTopLevelNodes   ;
-   QHash<QString,Certificate*>      m_hCertificates    ;
-   CertificateNode*                 m_pDefaultCategory ;
-   QMutex                           m_CertLoader       ;
-   QHash<const Account*,CertificateNode*> m_hAccToCat  ;
-   QHash<const QString&,CertificateNode*> m_hStrToCat  ;
-   QHash<const Certificate*,CertificateNode*> m_hNodes ;
+   QVector<CertificateNode*>        m_lTopLevelNodes    ;
+   QHash<QString,Certificate*>      m_hCertificates     ;
+   CertificateNode*                 m_pDefaultCategory  ;
+   QMutex                           m_CertLoader        ;
+   QHash<const Account*,CertificateNode*> m_hAccToCat   ;
+   QHash<const QString&,CertificateNode*> m_hStrToCat   ;
+   QHash<const Certificate*,CertificateNode*> m_hNodes  ;
    static const Matrix1D<Certificate::Status, const char*> m_StatusMap;
+   mutable QHash<const Account*,QAbstractItemModel*> m_hAccAllow;
+   mutable QHash<const Account*,QAbstractItemModel*> m_hAccBan  ;
+   mutable QHash<const Account*,CertificateNode*> m_hAccAllowCat;
+   mutable QHash<const Account*,CertificateNode*> m_hAccBanCat  ;
 
    //Getters
    QAbstractItemModel* model             (const Certificate* cert) const;
