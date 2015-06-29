@@ -38,6 +38,8 @@ public:
    CertificateNode* getCategory(const Account* a);
    CertificateNode* addToTree(Certificate* cert, CertificateNode* category = nullptr);
    CertificateNode* addToTree(Certificate* cert, Account* a);
+   void             removeFromTree(CertificateNode* node);
+   void             removeFromTree(Certificate* c, CertificateNode* category);
    QModelIndex      createIndex(int r ,int c , void* p);
    QAbstractItemModel* getModelCommon(CertificateNode* node);
    bool allowCertificate(Certificate* c, Account* a);
@@ -48,6 +50,7 @@ public:
    QHash<QString,Certificate*>      m_hCertificates     ;
    CertificateNode*                 m_pDefaultCategory  ;
    QMutex                           m_CertLoader        ;
+   int                              m_GroupCounter      ;
    QHash<const Account*,CertificateNode*> m_hAccToCat   ;
    QHash<const QString&,CertificateNode*> m_hStrToCat   ;
    QHash<const Certificate*,CertificateNode*> m_hNodes  ;

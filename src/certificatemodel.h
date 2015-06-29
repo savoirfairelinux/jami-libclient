@@ -81,12 +81,12 @@ public:
    Certificate* getCertificate(const QUrl& path, Account* a);
    Certificate* getCertificateFromContent(const QByteArray& rawContent, Account* a = nullptr, bool save = true, const QString& category = QString());
    Certificate* getCertificateFromContent(const QByteArray& rawContent, const QString& category, bool save = true);
+   Certificate* getCertificateFromId(const QString& id, Account* a = nullptr, const QString& category = QString());
 
    //Singleton
    static CertificateModel* instance();
 
 private:
-   Certificate* getCertificateFromId(const QString& id, Account* a = nullptr, const QString& category = QString());
 
    //Backend interface
    virtual void collectionAddedCallback(CollectionInterface* collection) override;

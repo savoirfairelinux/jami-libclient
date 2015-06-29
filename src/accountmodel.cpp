@@ -708,6 +708,22 @@ QString AccountModel::getSimilarAliasIndex(const QString& alias)
    return QString();
 }
 
+QList<Account*> AccountModel::getAccountsByProtocol( const Account::Protocol protocol ) const
+{
+   switch(protocol) {
+      case Account::Protocol::SIP:
+         return d_ptr->m_lSipAccounts;
+      case Account::Protocol::IAX:
+         return d_ptr->m_lIAXAccounts;
+      case Account::Protocol::RING:
+         return d_ptr->m_lRingAccounts;
+      case Account::Protocol::COUNT__:
+         break;
+   }
+
+   return {};
+}
+
 bool AccountModel::isPresenceEnabled() const
 {
    foreach(Account* a, d_ptr->m_lAccounts) {
@@ -781,6 +797,20 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
    connect(a,&Account::editStateChanged, [a,this](const Account::EditState state, const Account::EditState previous) {
       emit q_ptr->accountEditStateChanged(a, state, previous);
    });
+
+   switch(a->protocol()) {
+      case Account::Protocol::SIP:
+         m_lSipAccounts  << a;
+         break;
+      case Account::Protocol::IAX:
+         m_lIAXAccounts  << a;
+         break;
+      case Account::Protocol::RING:
+         m_lRingAccounts << a;
+         break;
+      case Account::Protocol::COUNT__:
+         break;
+   }
 }
 
 Account* AccountModel::add(const QString& alias, const Account::Protocol proto)

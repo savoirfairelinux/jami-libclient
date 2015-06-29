@@ -26,6 +26,7 @@
 //Ring library
 #include "contactmethod.h"
 #include "accountmodel.h"
+#include "certificatemodel.h"
 #include "collectioninterface.h"
 #include "transitionalpersonbackend.h"
 #include "account.h"
@@ -314,6 +315,24 @@ void Person::setContactMethods(ContactMethods numbers)
    if (newCount > oldCount) //Need to be updated after the data to prevent invalid memory access
       d_ptr->phoneNumberCountChanged(newCount,oldCount);
    d_ptr->changed();
+
+   //Allow incoming calls from those numbers
+   const QList<Account*> ringAccounts = AccountModel::instance()->getAccountsByProtocol(Account::Protocol::RING);
+   QStringList ringUris;
+   for (ContactMethod* n : d_ptr->m_Numbers) {
+      if (n->uri().protocolHint() == URI::ProtocolHint::RING)
+         ringUris << n->uri();
+   }
+
+   foreach(const QString& hash , ringUris) {
+      Certificate* cert = CertificateModel::instance()->getCertificateFromId(hash);
+      if (cert) {
+         for (Account* a : ringAccounts) {
+            if (a->allowIncomingFromContact())
+               a->allowCertificate(cert);
+         }
+      }
+   }
 }
 
 ///Set the nickname
