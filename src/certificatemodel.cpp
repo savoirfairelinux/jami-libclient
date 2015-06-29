@@ -146,9 +146,12 @@ CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, Ce
    m_pParent(parent), m_pCertificate(cert), m_Level(level), m_Index(index), m_IsLoaded(true),m_DetailType(DetailType::NONE),
    m_EnumClassDetail(0),m_CatIdx(-1),m_fIsPartOf(0)
 {
+   if (level == CertificateModel::NodeType::CATEGORY )
+      m_CatIdx = ++(CertificateModel::instance()->d_ptr->m_GroupCounter);
+
    CertificateNode* sibling = CertificateModel::instance()->d_ptr->m_hNodes[cert];
 
-   if (parent && sibling)
+   if (parent && sibling && parent->m_Level == CertificateModel::NodeType::CATEGORY)
       sibling->m_fIsPartOf |= (0x01 << parent->m_CatIdx);
    else
       CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
@@ -164,7 +167,7 @@ CertificateNode::~CertificateNode()
 }
 
 CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),
- m_pDefaultCategory(nullptr),m_CertLoader()
+ m_pDefaultCategory(nullptr),m_CertLoader(),m_GroupCounter(-1)
 {
 }
 
@@ -256,6 +259,36 @@ CertificateNode* CertificateModelPrivate::defaultCategory()
 QModelIndex CertificateModelPrivate::createIndex(int r ,int c , void* p)
 {
    return q_ptr->createIndex(r,c,p);
+}
+
+void CertificateModelPrivate::removeFromTree(CertificateNode* node)
+{
+   CertificateNode* parent = node->m_pParent;
+   const QModelIndex parentIdx = q_ptr->createIndex(parent->m_Index,0,parent);
+
+   q_ptr->beginRemoveRows(parentIdx, node->m_Index, node->m_Index);
+   parent->m_lChildren.removeAt(node->m_Index);
+
+   for(int i = node->m_Index; i < parent->m_lChildren.size(); i++)
+      parent->m_lChildren[i]->m_Index--;
+
+   q_ptr->endRemoveRows();
+
+   //FIXME Those nodes are indexed in a few hashes, clear them
+   delete node;
+}
+
+void CertificateModelPrivate::removeFromTree(Certificate* c, CertificateNode* category)
+{
+   if ((!c) || (!category))
+      return;
+
+   const QVector<CertificateNode*> nodes = category->m_lChildren;
+
+   for (CertificateNode* n : nodes) {
+      if (n->m_pCertificate == c)
+         removeFromTree(n);
+   }
 }
 
 CertificateNode* CertificateModelPrivate::getCategory(const Account* a)
@@ -790,7 +823,7 @@ QAbstractItemModel* CertificateModelPrivate::createAllowedList(const Account* a)
 
 bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
 {
-   if (!a)
+   if ((!a) || (!c))
       return false;
 
    //Make sure the lists exist
@@ -805,9 +838,16 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
    if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
       return true;
 
+   //Notify the daemon
+   DBus::ConfigurationManager::instance().setCertificateStatus(
+      a->id      (),
+      c->remoteId(),
+      DRing::Certificate::Status::ALLOWED
+   );
+
    //Check if the certificate isn't banned
    if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
-      return false;
+      removeFromTree(c, ban);
 
    //Add it
    addToTree(c, allow);
@@ -815,9 +855,14 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
    return true;
 }
 
+/**
+ * Ban a certificate
+ * @warning This method have a O(N) complexity where N is the number of
+ * allowed certificate for account a
+ */
 bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
 {
-   if (!a)
+   if ((!a) || (!c))
       return false;
 
    //Make sure the lists exist
@@ -832,9 +877,16 @@ bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
    if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
       return true;
 
-   //Check if the certificate isn't banned
+   //Notify the daemon
+   DBus::ConfigurationManager::instance().setCertificateStatus(
+      a->id      (),
+      c->remoteId(),
+      DRing::Certificate::Status::BANNED
+   );
+
+   //Check if the certificate isn't allowed
    if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
-      return false;
+      removeFromTree(c, allow);
 
    //Add it
    addToTree(c, ban);

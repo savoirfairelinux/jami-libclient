@@ -60,6 +60,9 @@ public:
    ProtocolModel*                    m_pProtocolModel     ;
    QItemSelectionModel*              m_pSelectionModel    ;
    QStringList                       m_lMimes             ;
+   QList<Account*>                   m_lSipAccounts       ;
+   QList<Account*>                   m_lIAXAccounts       ;
+   QList<Account*>                   m_lRingAccounts      ;
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
 
    //Future account cache

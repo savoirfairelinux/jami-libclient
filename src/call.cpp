@@ -613,6 +613,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificate(QUrl(cert_path),acc);
    }
 
+   //Allow the certificate
+   if (acc && acc->allowIncomingFromHistory() && acc->protocol() == Account::Protocol::RING)
+      acc->allowCertificate(CertificateModel::instance()->getCertificateFromId(number, acc));
+
    return call;
 }
 
