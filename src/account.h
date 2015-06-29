@@ -287,7 +287,9 @@ class LIB_EXPORT Account : public QObject {
          AllowedCertificatesModel    = 186,
          AllowIncomingFromHistory    = 187,
          AllowIncomingFromContact    = 188,
-         AllowIncomingFromUnknown    = 189
+         AllowIncomingFromUnknown    = 189,
+         ActiveCallLimit             = 190,
+         HasActiveCallLimit          = 191
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
@@ -412,6 +414,8 @@ class LIB_EXPORT Account : public QObject {
       bool    allowIncomingFromUnknown     () const;
       bool    allowIncomingFromHistory     () const;
       bool    allowIncomingFromContact     () const;
+      int     activeCallLimit              () const;
+      bool    hasActiveCallLimit           () const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -474,6 +478,7 @@ class LIB_EXPORT Account : public QObject {
       void setAudioPortMin                  (int port   );
       void setVideoPortMax                  (int port   );
       void setVideoPortMin                  (int port   );
+      void setActiveCallLimit               (int value  );
       void setDTMFType                      (DtmfType type);
       void setUserAgent                     (const QString& agent);
       void setUpnpEnabled                   (bool enable);
@@ -483,6 +488,7 @@ class LIB_EXPORT Account : public QObject {
       void setAllowIncomingFromHistory      (bool value );
       void setAllowIncomingFromContact      (bool value );
       void setAllowIncomingFromUnknown      (bool value );
+      void setHasActiveCallLimit            (bool value );
 
       void setRoleData(int role, const QVariant& value);
 
