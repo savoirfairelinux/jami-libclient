@@ -1404,6 +1404,14 @@ void Account::setTlsPrivateKeyCertificate(const QString& path)
 ///Set the certificate authority list file
 void Account::setTlsCaListCertificate(Certificate* cert)
 {
+   //FIXME it can be a list of multiple certificates
+   //this code currently only handle the case where is there is exactly one
+
+   cert->setRequireStrictPermission(false);
+
+   //All calls from the same top level CA are always accepted
+   allowCertificate(cert);
+
    d_ptr->m_pCaCert = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().path():QString());
    d_ptr->regenSecurityValidation();
@@ -1412,8 +1420,15 @@ void Account::setTlsCaListCertificate(Certificate* cert)
 ///Set the certificate
 void Account::setTlsCertificate(Certificate* cert)
 {
+   //The private key will be required for this certificate
+   cert->setRequirePrivateKey(true);
+
    d_ptr->m_pTlsCert = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().path():QString());
+
+   if (cert && d_ptr->m_pPrivateKey)
+      d_ptr->m_pTlsCert->setPrivateKeyPath(d_ptr->m_pPrivateKey->path());
+
    d_ptr->regenSecurityValidation();
 }
 
@@ -1422,6 +1437,10 @@ void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().path():QString());
+
+   if (d_ptr->m_pTlsCert)
+      d_ptr->m_pTlsCert->setPrivateKeyPath(cert->path());
+
    d_ptr->regenSecurityValidation();
 }
 
@@ -2236,12 +2255,25 @@ void AccountPrivate::reload()
       }
       else {
          m_hAccountDetails.clear();
+         //In case not all elements match, it is better to do a "merge"
          QMutableMapIterator<QString, QString> iter(aDetails);
          while (iter.hasNext()) {
             iter.next();
             m_hAccountDetails[iter.key()] = iter.value();
          }
+
+         //Manually re-set elements that need extra business logic or caching
          q_ptr->setHostname(m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+
+         const QString cert(m_hAccountDetails[DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE]);
+         const QString key (m_hAccountDetails[DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE]);
+
+         if (!cert.isEmpty())
+            q_ptr->setTlsCertificate(cert);
+
+         if (!key.isEmpty())
+            q_ptr->setTlsPrivateKeyCertificate(key);
+
          m_RemoteEnabledState = q_ptr->isEnabled();
       }
 

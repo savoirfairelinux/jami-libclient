@@ -108,19 +108,22 @@ public:
    ~CertificatePrivate();
 
    //Attributes
-   QUrl              m_Path        ;
-   Certificate::Type m_Type        ;
-   QByteArray        m_Content     ;
-   LoadingType       m_LoadingType ;
-   QByteArray        m_Id          ;
-   quint64           m_Statuses [3];
+   QUrl              m_Path                    ;
+   Certificate::Type m_Type                    ;
+   QByteArray        m_Content                 ;
+   LoadingType       m_LoadingType             ;
+   QByteArray        m_Id                      ;
+   quint64           m_Statuses             [3];
+   QUrl              m_PrivateKey              ;
+   bool              m_RequirePrivateKey       ;
+   bool              m_RequireStrictPermissions;
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
 
    //Helpers
    void loadDetails();
-   void loadChecks ();
+   void loadChecks (bool loadChecks = false);
 
    static Matrix1D<Certificate::Checks ,QString> m_slChecksName;
    static Matrix1D<Certificate::Checks ,QString> m_slChecksDescription;
@@ -224,7 +227,8 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 
 
 CertificatePrivate::CertificatePrivate(LoadingType _type) :
-m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),m_Statuses{0,0,0}
+m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),
+m_Statuses{0,0,0},m_RequirePrivateKey(false),m_RequireStrictPermissions(true)
 {
 }
 
@@ -310,13 +314,13 @@ void CertificatePrivate::loadDetails()
    }
 }
 
-void CertificatePrivate::loadChecks()
+void CertificatePrivate::loadChecks(bool reload)
 {
-   if (!m_pCheckCache) {
+   if ((!m_pCheckCache) || reload) {
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),QString());
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),m_PrivateKey.toString());
             break;
          case LoadingType::FROM_CONTENT:
             checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),m_Content);
@@ -325,6 +329,8 @@ void CertificatePrivate::loadChecks()
             checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id,QString());
             break;
       }
+      if (reload && m_pCheckCache)
+         delete m_pCheckCache;
       m_pCheckCache = new ChecksCache(checks);
    }
 }
@@ -368,34 +374,6 @@ QByteArray Certificate::remoteId() const
    return d_ptr->m_Id;
 }
 
-/**
- * Register this certificate in the daemon
- */
-bool Certificate::pin()
-{
-   if (hasRemote())
-      return true;
-
-   /*switch(d_ptr->m_LoadingType) {
-      case LoadingType::FROM_PATH:
-         DBus::ConfigurationManager::instance().addCertificate(d_ptr->m_Id); //FIXME wrong function, wait for daemon implementation
-         break;
-      case LoadingType::FROM_CONTENT:
-         DBus::ConfigurationManager::instance().addCertificate(d_ptr->m_Path.toString().toLatin1());
-         break;
-      case LoadingType::FROM_ID:
-//          return DBus::ConfigurationManager::instance().addCertificateRemote(d_ptr->m_Id); //FIXME
-         break;
-   }
-   //TODO use the new pinning API*/
-   return false;
-}
-
-bool Certificate::unpin() const
-{
-   return false;//TODO
-}
-
 QString Certificate::getName(Certificate::Checks check)
 {
    return CertificatePrivate::m_slChecksName[check];
@@ -419,6 +397,13 @@ QString Certificate::getDescription(Certificate::Details detail)
 Certificate::CheckValues Certificate::hasPrivateKey() const
 {
    d_ptr->loadChecks();
+
+   if (!d_ptr->m_RequirePrivateKey)
+      return Certificate::CheckValues::UNSUPPORTED;
+
+   if (!d_ptr->m_PrivateKey.isEmpty())
+      return Certificate::CheckValues::PASSED;
+
    return d_ptr->m_pCheckCache->m_HasPrivateKey;
 }
 
@@ -448,24 +433,36 @@ Certificate::CheckValues Certificate::privateKeyMatch() const
 
 Certificate::CheckValues Certificate::arePrivateKeyStoragePermissionOk() const
 {
+   if ((!d_ptr->m_RequirePrivateKey) || !d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePrivateKeyStoragePermissionOk;
 }
 
 Certificate::CheckValues Certificate::arePublicKeyStoragePermissionOk() const
 {
+   if (!d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePublicKeyStoragePermissionOk;
 }
 
 Certificate::CheckValues Certificate::arePrivateKeyDirectoryPermissionsOk() const
 {
+   if ((!d_ptr->m_RequirePrivateKey) || !d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePrivateKeyDirectoryPermissionsOk;
 }
 
 Certificate::CheckValues Certificate::arePublicKeyDirectoryPermissionsOk() const
 {
+   if (!d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePublicKeyDirectoryPermissionsOk;
 }
@@ -478,18 +475,27 @@ Certificate::CheckValues Certificate::arePrivateKeyStorageLocationOk() const
 
 Certificate::CheckValues Certificate::arePublicKeyStorageLocationOk() const
 {
+   if (!d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePublicKeyStorageLocationOk;
 }
 
 Certificate::CheckValues Certificate::arePrivateKeySelinuxAttributesOk() const
 {
+   if ((!d_ptr->m_RequirePrivateKey) || !d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePrivateKeySelinuxAttributesOk;
 }
 
 Certificate::CheckValues Certificate::arePublicKeySelinuxAttributesOk() const
 {
+   if (!d_ptr->m_RequireStrictPermissions)
+      return Certificate::CheckValues::UNSUPPORTED;
+
    d_ptr->loadChecks();
    return d_ptr->m_pCheckCache->m_ArePublicKeySelinuxAttributesOk;
 }
@@ -550,6 +556,9 @@ QDateTime Certificate::activationDate() const
 
 bool Certificate::requirePrivateKeyPassword() const
 {
+   if (!d_ptr->m_RequirePrivateKey)
+      return false;
+
    d_ptr->loadDetails();
    return d_ptr->m_pDetailsCache->m_RequirePrivateKeyPassword;
 }
@@ -653,6 +662,21 @@ QUrl Certificate::path() const
    return d_ptr->m_Path;
 }
 
+void Certificate::setPrivateKeyPath(const QUrl& path)
+{
+   d_ptr->m_PrivateKey = path;
+   d_ptr->m_RequirePrivateKey = true;
+
+   //Reload the checks if necessary
+   if (d_ptr->m_pCheckCache)
+      d_ptr->loadChecks(true);
+}
+
+QUrl Certificate::privateKeyPath() const
+{
+   return d_ptr->m_PrivateKey;
+}
+
 Certificate::Type Certificate::type() const
 {
    return d_ptr->m_Type;
@@ -662,6 +686,28 @@ QString Certificate::outgoingServer() const
 {
    d_ptr->loadChecks();
    return d_ptr->m_pDetailsCache->m_OutgoingServer;
+}
+
+///This attribute can be set if the private key will be required at some point
+void Certificate::setRequirePrivateKey(bool value)
+{
+   d_ptr->m_RequirePrivateKey = value;
+}
+
+///This attribute can be set if the private key will be required at some point
+bool Certificate::requirePrivateKey() const
+{
+   return d_ptr->m_RequirePrivateKey;
+}
+
+void Certificate::setRequireStrictPermission(bool value)
+{
+   d_ptr->m_RequireStrictPermissions = value;
+}
+
+bool Certificate::requireStrictPermission() const
+{
+   return d_ptr->m_RequireStrictPermissions;
 }
 
 Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
@@ -742,6 +788,7 @@ QAbstractItemModel* Certificate::checksModel() const
    return CertificateModel::instance()->d_ptr->checksModel(this);
 }
 
+///DEPRECATED
 bool Certificate::setStatus(const Account* a, Status s)
 {
    if (!a)
@@ -773,6 +820,7 @@ bool Certificate::setStatus(const Account* a, Status s)
    return true;
 }
 
+///DEPRECATED
 Certificate::Status Certificate::status(const Account* a) const
 {
    const int maskId = a->d_ptr->internalId();
@@ -787,6 +835,101 @@ Certificate::Status Certificate::status(const Account* a) const
    Q_ASSERT(raw < enum_class_size<Certificate::Status>());
 
    return static_cast<Certificate::Status>(raw);
+}
+
+bool Certificate::fixPermissions() const
+{
+#ifndef Q_OS_WIN
+   if (d_ptr->m_LoadingType != LoadingType::FROM_PATH)
+      return false;
+
+   bool ret = true;
+
+   QFile publicKey(d_ptr->m_Path.path());
+
+   if (!publicKey.exists()) {
+      qWarning() << "The public key" << d_ptr->m_Path.path() << "doesn't exist";
+      ret &= false;
+   }
+
+   const bool publicperm = publicKey.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+   ret &= publicperm;
+
+   if (!publicperm)
+      qWarning() << "Setting the public key" << d_ptr->m_Path.path() << "permissions failed";
+
+   if (!d_ptr->m_PrivateKey.isEmpty()) {
+      QFile privateKey(d_ptr->m_PrivateKey.path());
+
+      if (!privateKey.exists()) {
+         qWarning() << "The private key" << d_ptr->m_PrivateKey.path() << "doesn't exist";
+         ret &= false;
+      }
+
+      const bool privperm = privateKey.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+      ret &= privperm;
+
+      if (!privperm)
+         qWarning() << "Setting the private key" << d_ptr->m_PrivateKey.path() << "permissions failed";
+   }
+
+   return ret;
+
+#else
+   return false;
+#endif
+}
+
+bool Certificate::moveToDotCert() const
+{
+//TODO implement for OSX and Windows
+#ifdef Q_OS_LINUX
+   if (d_ptr->m_LoadingType != LoadingType::FROM_PATH)
+      return false;
+
+   bool ret = true;
+
+   QFile publicKey(d_ptr->m_Path.path());
+
+   if (!publicKey.exists()) {
+      qWarning() << "The public key" << d_ptr->m_Path.path() << "doesn't exist";
+      ret &= false;
+   }
+
+   QDir certDir(QDir::homePath()+".cert");
+
+   if (!certDir.exists()) {
+      const bool mk = QDir(QDir::homePath()).mkdir(".cert");
+      if (!mk)
+         qWarning() << "Creating" << (QDir::homePath()+"/.cert") << "failed";
+
+      ret &= mk;
+   }
+
+   ret &= publicKey.rename(QString("/home/%1/.cert/%2/")
+      .arg( QDir::homePath     () )
+      .arg( publicKey.fileName () )
+   );
+
+   if (!d_ptr->m_PrivateKey.isEmpty()) {
+      QFile privateKey(d_ptr->m_PrivateKey.path());
+
+      if (!privateKey.exists()) {
+         qWarning() << "The private key" << d_ptr->m_Path.path() << "doesn't exist";
+         ret &= false;
+      }
+
+      ret &= privateKey.rename(QString("/home/%1/.cert/%2/")
+         .arg( QDir::homePath      () )
+         .arg( privateKey.fileName () )
+      );
+   }
+
+   return ret;
+
+#else
+   return false;
+#endif
 }
 
 #include <certificate.moc>
