@@ -197,7 +197,8 @@ bool DaemonCertificateEditor::save( const Certificate* item)
 
 bool DaemonCertificateEditor::remove( const Certificate* item)
 {
-   return item->unpin();
+   //TODO
+   return false;
 }
 
 bool DaemonCertificateEditor::edit( Certificate* item)
