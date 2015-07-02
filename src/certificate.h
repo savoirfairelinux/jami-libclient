@@ -218,6 +218,7 @@ public:
 
    //Getter
    QUrl path                            (                             ) const;
+   QUrl privateKeyPath                  (                             ) const;
    Certificate::Type type               (                             ) const;
    Certificate::CheckValues checkResult ( Certificate::Checks check   ) const;
    QVariant detailResult                ( Certificate::Details detail ) const;
@@ -226,6 +227,7 @@ public:
    bool hasRemote                       (                             ) const;
    QByteArray remoteId                  (                             ) const;
    Status     status                    ( const Account* a            ) const;
+   bool       requireStrictPermission   (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
@@ -259,6 +261,7 @@ public:
    QDateTime  expirationDate                       () const;
    QDateTime  activationDate                       () const;
    bool       requirePrivateKeyPassword            () const;
+   bool       requirePrivateKey                    () const;
    QByteArray publicSignature                      () const;
    int        versionNumber                        () const;
    QByteArray serialNumber                         () const;
@@ -278,10 +281,13 @@ public:
    //Setter
    void setPath(const QUrl& path);
    bool setStatus(const Account* a, Status s);
+   void setPrivateKeyPath(const QUrl& path);
+   void setRequirePrivateKey(bool value);
+   void setRequireStrictPermission(bool value);
 
    //Mutator
-   Q_INVOKABLE bool pin();
-   Q_INVOKABLE bool unpin() const;
+   Q_INVOKABLE bool fixPermissions() const;
+   Q_INVOKABLE bool moveToDotCert () const;
 
 private:
    explicit Certificate(const QUrl& path, Type type = Type::NONE, const QUrl& privateKey = QUrl());
