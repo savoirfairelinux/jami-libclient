@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_3c721b7d",
+        "filename": "src/daemoncertificatecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-07-03T14:15:27Z",
+      "side": 1,
+      "message": "remove unnecessary comment",
+      "revId": "598706a10dd48bf3742669d9a02f6963724a2eeb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
