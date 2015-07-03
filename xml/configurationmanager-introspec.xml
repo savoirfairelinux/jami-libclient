@@ -936,8 +936,6 @@
            </arg>
            <arg type="s" name="from">
            </arg>
-           <arg type="ay" name="payload">
-           </arg>
            <arg type="t" name="receiveTime">
            </arg>
        </signal>
