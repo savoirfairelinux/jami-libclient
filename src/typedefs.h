@@ -38,6 +38,7 @@ typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVe
 typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
 typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
 typedef QMap< QString, QStringList >                        MapStringStringList           ;
+typedef QVector< QByteArray >                               VectorVectorByte              ;
 
 /**
  * This function add a safe way to get an enum class size
