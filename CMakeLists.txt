@@ -209,6 +209,7 @@ SET( libringclient_LIB_SRCS
   src/certificate.cpp
   src/securityflaw.cpp
   src/ringtone.cpp
+  src/trustrequest.cpp
   src/media/media.cpp
   src/media/audio.cpp
   src/media/video.cpp
@@ -251,6 +252,7 @@ SET( libringclient_LIB_SRCS
   src/accountstatusmodel.cpp
   src/codecmodel.cpp
   src/recentmodel.cpp
+  src/pendingtrustrequestmodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcemodel.cpp
   src/video/channel.cpp
@@ -388,6 +390,8 @@ SET( libringclient_LIB_HDRS
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
   src/recentmodel.h
+  src/pendingtrustrequestmodel.h
+  src/trustrequest.h
 )
 
 SET(libringclient_video_LIB_HDRS
