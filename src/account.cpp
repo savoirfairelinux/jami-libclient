@@ -1998,8 +1998,12 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::HasCustomUserAgent:
             case Account::Role::HasProxy          :
             case Account::Role::Proxy             :
+            case Account::Role::CipherModel       :
                return Account::RoleState::UNAVAILABLE;
-            case Account::Role::Username          :
+            case Account::Role::Username                :
+            case Account::Role::TlsCaListCertificate    :
+            case Account::Role::TlsCertificate          :
+            case Account::Role::TlsPrivateKeyCertificate:
                return Account::RoleState::READ_ONLY;
             default:
                break;

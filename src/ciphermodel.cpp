@@ -34,26 +34,28 @@ public:
    ~CipherModelPrivate();
 
    //Attributes
-   bool*                      m_lChecked          ;
-   Account*                   m_pAccount          ;
-   static QVector<QByteArray> m_slSupportedCiphers;
-   static QHash<QString,int>  m_shMapping         ;
-   static bool                m_sIsLoaded         ;
-   bool                       m_UseDefault        ;
+   bool*                            m_lChecked          ;
+   Account*                         m_pAccount          ;
+   static QVector<QByteArray>       m_slSupportedCiphers;
+   static QHash<const QString,int>  m_shMapping         ;
+   static bool                      m_sIsLoaded         ;
+   bool                             m_UseDefault        ;
 
    static void loadCiphers();
 };
 
 bool CipherModelPrivate::m_sIsLoaded = false;
 QVector<QByteArray> CipherModelPrivate::m_slSupportedCiphers;
-QHash<QString,int>  CipherModelPrivate::m_shMapping;
+QHash<const QString,int>  CipherModelPrivate::m_shMapping;
 
 CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_UseDefault(true)
 {
    if (!CipherModelPrivate::m_sIsLoaded) {
       const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers(DRing::Account::ProtocolNames::IP2IP);
-      foreach(const QString& c, cs)
+      foreach(const QString& c, cs) {
+         m_shMapping[c] = m_slSupportedCiphers.size();
          m_slSupportedCiphers << c.toLatin1();
+      }
       m_sIsLoaded = true;
    }
 
