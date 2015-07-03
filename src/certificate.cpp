@@ -324,13 +324,13 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),m_PrivateKey.toString());
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),m_PrivateKey.toString(), {});
             break;
          case LoadingType::FROM_CONTENT:
-            checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),m_Content);
+            checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),{m_Content});
             break;
          case LoadingType::FROM_ID:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id,QString());
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id,QString(), {});
             break;
       }
       if (reload && m_pCheckCache)
