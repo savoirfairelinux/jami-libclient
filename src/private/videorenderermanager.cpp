@@ -213,9 +213,9 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       m_hRenderers[rid] = r;
       m_hRendererIds[r]=rid;
 
-      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
+      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h) {
          static_cast<Video::DirectRenderer*>(m_hRenderers[id.toLatin1()])->onNewFrame(
-            QByteArray::fromRawData(reinterpret_cast<const char *>(frame), width*height)
+            frame, w, h
          );
       });
 
@@ -244,9 +244,9 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
 #ifdef ENABLE_LIBWRAP
 
-      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (const unsigned char* frame) {
+      DBus::VideoManager::instance().registerSinkTarget(id, [this, id, width, height] (std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h) {
          static_cast<Video::DirectRenderer*>(m_hRenderers[id.toLatin1()])->onNewFrame(
-            QByteArray::fromRawData(reinterpret_cast<const char *>(frame), width*height)
+            frame, w, h
          );
       });
 
