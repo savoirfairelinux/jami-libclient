@@ -62,7 +62,7 @@ SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
    /* VERIFY_ANSWER_ENABLED            */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
    /* REQUIRE_CERTIFICATE_ENABLED      */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
    /* NOT_MISSING_CERTIFICATE          */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
-   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
+   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::NONE        , //This wont work
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityChecks >
@@ -75,7 +75,7 @@ SecurityEvaluationModelPrivate::flawSeverity = {{
    /* VERIFY_ANSWER_ENABLED             */ SecurityEvaluationModel::Severity::ISSUE           ,
    /* REQUIRE_CERTIFICATE_ENABLED       */ SecurityEvaluationModel::Severity::ISSUE           ,
    /* NOT_MISSING_CERTIFICATE           */ SecurityEvaluationModel::Severity::WARNING         ,
-   /* NOT_MISSING_AUTHORITY             */ SecurityEvaluationModel::Severity::ISSUE           ,
+   /* NOT_MISSING_AUTHORITY             */ SecurityEvaluationModel::Severity::ERROR           ,
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::Checks > SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel = {{
@@ -229,7 +229,7 @@ private:
 
    ///Get the combined size
    constexpr inline static int totalSize() {
-      return sizes[CA] + sizes[PK] + sizes[AC];
+      return sizes[CA] + sizes[PK] + sizes[AC]+1;
    }
 
    ///Get a model index from a value
@@ -537,15 +537,17 @@ CombinaisonProxyModel::CombinaisonProxyModel(QAbstractItemModel* publicCert,
 {
    for (int i = 0; i < m_lSources.size(); i++) {
       const QAbstractItemModel* m = m_lSources[i];
-      connect(m, &QAbstractItemModel::dataChanged, [this,i](const QModelIndex& tl, const QModelIndex& br) {
+      if (m) {
+         connect(m, &QAbstractItemModel::dataChanged, [this,i](const QModelIndex& tl, const QModelIndex& br) {
 
-         int offset =0;
-         for (int j = 0; j < i;j++)
-            offset += sizes[j];
+            int offset =0;
+            for (int j = 0; j < i;j++)
+               offset += sizes[j];
 
 
-         emit this->dataChanged(this->index(offset+tl.row(), br.column()), this->index(offset+br.row(), br.column()));
-      });
+            emit this->dataChanged(this->index(offset+tl.row(), br.column()), this->index(offset+br.row(), br.column()));
+         });
+      }
    }
 }
 
@@ -691,6 +693,7 @@ void SecurityEvaluationModelPrivate::updateReal()
 
       //Update the maximum level
       maxLevel = level < maxLevel && !forceIgnore ? level : maxLevel;
+      qDebug() << "ICI" << q_ptr->data(q_ptr->index(i,0),Qt::DisplayRole);
    }
 
    //Notify
@@ -701,10 +704,9 @@ void SecurityEvaluationModelPrivate::updateReal()
 
    //Update the security level
    if (m_CurrentSecurityLevel != maxLevel) {
+      m_CurrentSecurityLevel = maxLevel;
 
       emit q_ptr->securityLevelChanged();
-
-      m_CurrentSecurityLevel = maxLevel;
    }
 
    m_isScheduled = false;
