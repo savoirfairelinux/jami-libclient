@@ -1734,28 +1734,15 @@ void Account::setRoleData(int role, const QVariant& value)
          setTlsPassword(value.toString());
          break;
       case CAST(Account::Role::TlsCaListCertificate): {
-         const QString path = value.toString();
-         if (!tlsCaListCertificate())
-            setTlsCaListCertificate(path);
-         else if ((tlsCaListCertificate() && tlsCaListCertificate()->path() != QUrl(path))) {
-            tlsCaListCertificate()->setPath(path);
-         }
+         setTlsCaListCertificate(value.toString());
          break;
       }
       case CAST(Account::Role::TlsCertificate): {
-         const QString path = value.toString();
-         if (!tlsCertificate())
-            setTlsCertificate(path);
-         else if ((tlsCertificate() && tlsCertificate()->path() != QUrl(path)))
-            tlsCertificate()->setPath(path);
+         setTlsCertificate(value.toString());
       }
          break;
       case CAST(Account::Role::TlsPrivateKeyCertificate): {
-         const QString path = value.toString();
-         if (!tlsPrivateKeyCertificate())
-            setTlsPrivateKeyCertificate(path);
-         else if ((tlsPrivateKeyCertificate() && tlsPrivateKeyCertificate()->path() != QUrl(path)))
-            tlsPrivateKeyCertificate()->setPath(path);
+         setTlsPrivateKeyCertificate(value.toString());
       }
          break;
       case CAST(Account::Role::TlsServerName):
