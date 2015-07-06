@@ -796,6 +796,9 @@ bool Certificate::fixPermissions() const
          qWarning() << "Setting the private key" << d_ptr->m_PrivateKey.path() << "permissions failed";
    }
 
+   d_ptr->loadChecks(true);
+   emit changed();
+
    return ret;
 
 #else
@@ -847,6 +850,9 @@ bool Certificate::moveToDotCert() const
          .arg( privateKey.fileName () )
       );
    }
+
+   d_ptr->loadChecks(true);
+   emit changed();
 
    return ret;
 

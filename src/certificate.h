@@ -305,7 +305,7 @@ private:
 
 Q_SIGNALS:
    ///This certificate changed, all users need to reload it
-   void changed();
+   void changed() const;
 };
 Q_DECLARE_METATYPE(Certificate*)
 Q_DECLARE_METATYPE(Certificate::CheckValues)
