@@ -21,6 +21,8 @@
 class SecurityFlaw;
 class Account;
 class Certificate;
+class PrefixAndSeverityProxyModel;
+class AccountChecksModel;
 
 #include <certificate.h>
 #include "private/matrixutils.h"
@@ -39,6 +41,10 @@ public:
    QHash< int, QHash< int, SecurityFlaw* > > m_hFlaws;
    bool         m_isScheduled;
    int          m_SeverityCount[enum_class_size<SecurityEvaluationModel::Severity>()];
+
+   PrefixAndSeverityProxyModel* m_pCaProxy  ;
+   PrefixAndSeverityProxyModel* m_pPkProxy  ;
+   AccountChecksModel*          m_pAccChecks;
 
 
    ///Messages to show to the end user

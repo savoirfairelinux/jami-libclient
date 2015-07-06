@@ -175,13 +175,13 @@ public:
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Helpers
+   void update();
+
 private:
    //Attributes
    const Account* m_pAccount;
    Matrix1D<SecurityEvaluationModel::AccountSecurityChecks, Certificate::CheckValues> m_lCachedResults;
-
-   //Helpers
-   void update();
 };
 
 /**
@@ -262,8 +262,8 @@ static const Matrix1D<SecurityEvaluationModel::Severity, void(SecurityEvaluation
 
 SecurityEvaluationModelPrivate::SecurityEvaluationModelPrivate(Account* account, SecurityEvaluationModel* parent) :
  QObject(parent),q_ptr(parent), m_pAccount(account),m_isScheduled(false),
- m_CurrentSecurityLevel(SecurityEvaluationModel::SecurityLevel::NONE),
- m_SeverityCount{
+ m_CurrentSecurityLevel(SecurityEvaluationModel::SecurityLevel::NONE),m_pCaProxy(nullptr),m_pPkProxy(nullptr),
+ m_pAccChecks(nullptr), m_SeverityCount{
       /* UNSUPPORTED   */ 0,
       /* INFORMATION   */ 0,
       /* WARN1NG       */ 0,
@@ -278,7 +278,6 @@ SecurityEvaluationModelPrivate::SecurityEvaluationModelPrivate(Account* account,
    QObject::connect(parent,&SecurityEvaluationModel::rowsInserted  , this,&SecurityEvaluationModelPrivate::update);
    QObject::connect(parent,&SecurityEvaluationModel::rowsRemoved   , this,&SecurityEvaluationModelPrivate::update);
    QObject::connect(parent,&SecurityEvaluationModel::modelReset    , this,&SecurityEvaluationModelPrivate::update);
-   update();
 }
 
 
@@ -465,53 +464,63 @@ QHash<int,QByteArray> AccountChecksModel::roleNames() const
    return {};
 }
 
+//This could have been an inlined function too
+#define SET_CHECK_VALUE(check,condition) {Certificate::CheckValues c = Certificate::CheckValues::UNSUPPORTED;\
+   bool isSet = m_lCachedResults.isSet(check); if (isSet) c = m_lCachedResults[check]; m_lCachedResults.setAt( check ,\
+   condition? Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);\
+   changed |= (!isSet) || c != m_lCachedResults[check];}
+
 void AccountChecksModel::update()
 {
+   bool changed = false;
+
    // AccountSecurityChecks::SRTP_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::SRTP_ENABLED                 ,
-//       m_pAccount->isSrtpEnabled                () || m_pAccount->protocol() == Account::Protocol::RING ?
-         Certificate::CheckValues::PASSED /*: Certificate::CheckValues::FAILED*/);
+   SET_CHECK_VALUE(SecurityEvaluationModel::AccountSecurityChecks::SRTP_ENABLED                  ,
+      m_pAccount->isSrtpEnabled                () || m_pAccount->protocol() == Account::Protocol::RING
+   );
 
    // AccountSecurityChecks::TLS_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::TLS_ENABLED                  ,
-      m_pAccount->isTlsEnabled                 () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::TLS_ENABLED                  ,
+      m_pAccount->isTlsEnabled                 ()
+   );
 
    // AccountSecurityChecks::CERTIFICATE_MISMATCH
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::CERTIFICATE_MATCH            ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::CERTIFICATE_MATCH     ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
    // AccountSecurityChecks::OUTGOING_SERVER_MISMATCH
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::OUTGOING_SERVER_MATCH        ,
+   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::OUTGOING_SERVER_MATCH ,
       Certificate::CheckValues::UNSUPPORTED); //TODO
 
    // AccountSecurityChecks::VERIFY_INCOMING_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_INCOMING_ENABLED      ,
-      m_pAccount->isTlsVerifyServer            () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_INCOMING_ENABLED      ,
+      m_pAccount->isTlsVerifyServer            ()
+   );
 
    // AccountSecurityChecks::VERIFY_ANSWER_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_ANSWER_ENABLED        ,
-      m_pAccount->isTlsVerifyClient            () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_ANSWER_ENABLED        ,
+      m_pAccount->isTlsVerifyClient            ()
+   );
 
    // AccountSecurityChecks::REQUIRE_CERTIFICATE_DISABLED
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::REQUIRE_CERTIFICATE_ENABLED  ,
-      m_pAccount->isTlsRequireClientCertificate() ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::REQUIRE_CERTIFICATE_ENABLED  ,
+      m_pAccount->isTlsRequireClientCertificate()
+   );
 
    // AccountSecurityChecks::MISSING_CERTIFICATE
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_CERTIFICATE      ,
-      m_pAccount->tlsCertificate               () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_CERTIFICATE      ,
+      m_pAccount->tlsCertificate               ()
+   );
 
    // AccountSecurityChecks::MISSING_AUTHORITY
-   m_lCachedResults.setAt( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_AUTHORITY        ,
-      m_pAccount->tlsCaListCertificate         () ?
-         Certificate::CheckValues::PASSED : Certificate::CheckValues::FAILED);
+   SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_AUTHORITY        ,
+      m_pAccount->tlsCaListCertificate         ()
+   );
 
+   if (changed)
+      emit dataChanged(index(0,2),index(rowCount()-1,2));
 }
-
+#undef SET_CHECK_VALUE
 
 
 /*******************************************************************************
@@ -525,7 +534,20 @@ CombinaisonProxyModel::CombinaisonProxyModel(QAbstractItemModel* publicCert,
                                              QAbstractItemModel* account   ,
                                              QObject*            parent    )
  : QAbstractTableModel(parent), m_lSources({publicCert,caCert,account})
-{}
+{
+   for (int i = 0; i < m_lSources.size(); i++) {
+      const QAbstractItemModel* m = m_lSources[i];
+      connect(m, &QAbstractItemModel::dataChanged, [this,i](const QModelIndex& tl, const QModelIndex& br) {
+
+         int offset =0;
+         for (int j = 0; j < i;j++)
+            offset += sizes[j];
+
+
+         emit this->dataChanged(this->index(offset+tl.row(), br.column()), this->index(offset+br.row(), br.column()));
+      });
+   }
+}
 
 QVariant CombinaisonProxyModel::data( const QModelIndex& index, int role) const
 {
@@ -582,11 +604,13 @@ d_ptr(new SecurityEvaluationModelPrivate(account,this))
    Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
    Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
 
-   PrefixAndSeverityProxyModel* caProxy = caCert ? new PrefixAndSeverityProxyModel(tr("Authority" ),caCert->checksModel()) : nullptr;
-   PrefixAndSeverityProxyModel* pkProxy = pkCert ? new PrefixAndSeverityProxyModel(tr("Public key"),pkCert->checksModel()) : nullptr;
-   AccountChecksModel* accChecks = new AccountChecksModel(account);
+   d_ptr->m_pCaProxy = caCert ? new PrefixAndSeverityProxyModel(tr("Authority" ),caCert->checksModel()) : nullptr;
+   d_ptr->m_pPkProxy = pkCert ? new PrefixAndSeverityProxyModel(tr("Public key"),pkCert->checksModel()) : nullptr;
+   d_ptr->m_pAccChecks = new AccountChecksModel(account);
 
-   setSourceModel(new CombinaisonProxyModel(pkProxy,caProxy,accChecks,this));
+   d_ptr->update();
+
+   setSourceModel(new CombinaisonProxyModel(d_ptr->m_pPkProxy,d_ptr->m_pCaProxy,d_ptr->m_pAccChecks,this));
 
    setSortRole((int)Role::Severity);
 }
@@ -619,6 +643,7 @@ void SecurityEvaluationModelPrivate::update()
 {
    //As this can be called multiple time, only perform the checks once per event loop cycle
    if (!m_isScheduled) {
+      m_pAccChecks->update();
 
 #if QT_VERSION >= 0x050400
       QTimer::singleShot(0,this,&SecurityEvaluationModelPrivate::updateReal);
