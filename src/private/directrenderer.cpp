@@ -72,13 +72,15 @@ void Video::DirectRenderer::stopRendering ()
    emit stopped();
 }
 
-void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
+void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h)
 {
    if (!isRendering()) {
       return;
    }
 
-   Video::Renderer::d_ptr->m_pFrame = const_cast<char*>(frame.data());
+   Video::Renderer::d_ptr->m_pSize.setWidth(w);
+   Video::Renderer::d_ptr->m_pSize.setHeight(h);
+   Video::Renderer::d_ptr->m_iFrame = frame;
    emit frameUpdated();
 }
 
