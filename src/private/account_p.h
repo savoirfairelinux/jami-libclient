@@ -136,6 +136,9 @@ public:
    DaemonCertificateCollection* m_pAllowedCerts           ;
    DaemonCertificateCollection* m_pBannedCerts            ;
    Account::EditState           m_CurrentState            ;
+   QMetaObject::Connection      m_cTlsCert                ;
+   QMetaObject::Connection      m_cTlsCaCert              ;
+   QMetaObject::Connection      m_cTlsPrivateKeyCert      ;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 

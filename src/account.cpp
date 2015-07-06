@@ -1413,6 +1413,16 @@ void Account::setTlsCaListCertificate(Certificate* cert)
    d_ptr->m_pCaCert = cert;
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().path():QString());
    d_ptr->regenSecurityValidation();
+
+   if (d_ptr->m_cTlsCaCert)
+      disconnect(d_ptr->m_cTlsCaCert);
+
+   if (cert) {
+      d_ptr->m_cTlsCaCert = connect(cert, &Certificate::changed,[this]() {
+         d_ptr->regenSecurityValidation();
+      });
+   }
+
 }
 
 ///Set the certificate
@@ -1428,6 +1438,15 @@ void Account::setTlsCertificate(Certificate* cert)
       d_ptr->m_pTlsCert->setPrivateKeyPath(d_ptr->m_pPrivateKey->path());
 
    d_ptr->regenSecurityValidation();
+
+   if (d_ptr->m_cTlsPrivateKeyCert)
+      disconnect(d_ptr->m_cTlsPrivateKeyCert);
+
+   if (cert) {
+      d_ptr->m_cTlsPrivateKeyCert = connect(cert, &Certificate::changed,[this]() {
+         d_ptr->regenSecurityValidation();
+      });
+   }
 }
 
 ///Set the private key
@@ -1440,6 +1459,15 @@ void Account::setTlsPrivateKeyCertificate(Certificate* cert)
       d_ptr->m_pTlsCert->setPrivateKeyPath(cert->path());
 
    d_ptr->regenSecurityValidation();
+
+   if (d_ptr->m_cTlsCert)
+      disconnect(d_ptr->m_cTlsCert);
+
+   if (cert) {
+      d_ptr->m_cTlsCert = connect(cert, &Certificate::changed,[this]() {
+         d_ptr->regenSecurityValidation();
+      });
+   }
 }
 
 ///Set the TLS server
@@ -2059,6 +2087,8 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::TlsCaListCertificate    :
             case Account::Role::TlsCertificate          :
             case Account::Role::TlsPrivateKeyCertificate:
+            case Account::Role::SrtpEnabled             :
+            case Account::Role::TlsEnabled              :
                return Account::RoleState::READ_ONLY;
             default:
                break;

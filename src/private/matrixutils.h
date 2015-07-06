@@ -136,7 +136,10 @@ struct Matrix1D
    static void setReverseMapping(Matrix1D<Row,const char *> names);
 
    //Setter
-   void setAt(Row,Value);
+   bool setAt(Row,Value);
+
+   //Getter
+   bool isSet(Row);
 
 private:
    Value* m_lData[enum_class_size<Row>()];
