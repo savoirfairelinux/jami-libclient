@@ -344,6 +344,9 @@ void BackgroundLoader::run()
       for(const QByteArray& id : m_pCurrentFolder->listId()) {
          Certificate* cert = CertificateModel::instance()->getCertificateFromPath(QUrl(id));
          m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
+
+         if (m_pCurrentFolder->d_ptr->m_Flags & FolderCertificateCollection::Options::ROOT)
+            cert->addOrigin(Certificate::OriginHint::ROOT_AUTORITY);
       }
 
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
