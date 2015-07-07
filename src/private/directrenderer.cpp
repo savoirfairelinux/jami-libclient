@@ -86,7 +86,11 @@ void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigne
 
 Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
 {
+#ifdef Q_OS_DARWIN
    return Video::Renderer::ColorSpace::RGBA;
+#else
+   return Video::Renderer::ColorSpace::BGRA;
+#endif
 }
 
 #include <directrenderer.moc>
