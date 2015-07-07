@@ -27,6 +27,7 @@ class QAbstractItemModel;
 
 class CertificatePrivate;
 class Account;
+class ChainOfTrustModel;
 
 /**
  * This class represent a conceptual certificate.
@@ -228,6 +229,8 @@ public:
    QByteArray remoteId                  (                             ) const;
    Status     status                    ( const Account* a            ) const;
    bool       requireStrictPermission   (                             ) const;
+   Certificate* signedBy                (                             ) const;
+   ChainOfTrustModel* chainOfTrustModel (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
