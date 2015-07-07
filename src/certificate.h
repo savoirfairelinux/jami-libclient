@@ -231,6 +231,7 @@ public:
    bool       requireStrictPermission   (                             ) const;
    Certificate* signedBy                (                             ) const;
    ChainOfTrustModel* chainOfTrustModel (                             ) const;
+   FlagPack<OriginHint> originHint      (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
@@ -287,6 +288,7 @@ public:
    void setPrivateKeyPath(const QUrl& path);
    void setRequirePrivateKey(bool value);
    void setRequireStrictPermission(bool value);
+   void addOrigin(const FlagPack<OriginHint>& hints);
 
    //Mutator
    Q_INVOKABLE bool fixPermissions() const;
