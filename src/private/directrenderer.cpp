@@ -84,7 +84,11 @@ void Video::DirectRenderer::onNewFrame(const QByteArray& frame)
 
 Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
 {
+#ifdef Q_OS_DARWIN
    return Video::Renderer::ColorSpace::RGBA;
+#else
+   return Video::Renderer::ColorSpace::BGRA;
+#endif
 }
 
 #include <directrenderer.moc>
