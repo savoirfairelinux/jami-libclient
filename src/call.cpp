@@ -531,7 +531,7 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
 
 
 /*****************************************************************************
- *                                                                           *
+ *                                                                           *qWarning() << "\n\nAppying hold flags from daemon\n\n";
  *                                  History                                  *
  *                                                                           *
  ****************************************************************************/
@@ -1200,6 +1200,23 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
             Q_ASSERT(false);
          }
          changeCurrentState(stateChangedStateMap[m_CurrentState][dcs]);
+
+         // TODO: this is a hack as the flags should be set in functions specified
+         // in the state transition matrix, not here
+         if (m_CurrentState == Call::State::HOLD) {
+            if ( !(m_fHoldFlags & Call::HoldFlags::OUT) ) {
+               const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
+               m_fHoldFlags |= Call::HoldFlags::OUT;
+               emit q_ptr->holdFlagsChanged(m_fHoldFlags, old);
+            }
+         } else {
+            // not hold, make sure to take away the flag
+            if (m_fHoldFlags & Call::HoldFlags::OUT) {
+               const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
+               m_fHoldFlags ^= Call::HoldFlags::OUT;
+               emit q_ptr->holdFlagsChanged(m_fHoldFlags, old);
+            }
+         }
       }
       catch(Call::State& state) {
          qDebug() << "State change failed (stateChangedStateMap)" << state;
@@ -1566,8 +1583,7 @@ void CallPrivate::hold()
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Holding call. callId : " << q_ptr << "ConfId:" << q_ptr;
 
-   //If the hold flag is set, something went wrong
-
+   // If the hold flag is set, something went wrong
    Q_ASSERT(!(m_fHoldFlags & Call::HoldFlags::OUT));
 
    const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
@@ -1672,9 +1688,9 @@ void CallPrivate::unhold()
    Q_ASSERT_IS_IN_PROGRESS
 
    CallManagerInterface & callManager = DBus::CallManager::instance();
-   qDebug() << "Unholding call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+   qDebug() << "Unholding call. callId: " << q_ptr  << " ConfId: " << q_ptr;
 
-   //If the hold flag isn't set, something went wrong
+   // If the hold flag isn't set, something went wrong
    Q_ASSERT(m_fHoldFlags & Call::HoldFlags::OUT);
 
    const FlagPack<Call::HoldFlags> old = m_fHoldFlags;
