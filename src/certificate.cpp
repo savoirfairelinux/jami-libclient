@@ -120,6 +120,7 @@ public:
    bool               m_RequireStrictPermissions;
    Certificate*       m_pSignedBy               ;
    ChainOfTrustModel* m_pChainOfTrust           ;
+   FlagPack<Certificate::OriginHint> m_fHints   ;
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
@@ -719,6 +720,16 @@ ChainOfTrustModel* Certificate::chainOfTrustModel() const
       d_ptr->m_pChainOfTrust = new ChainOfTrustModel(const_cast<Certificate*>(this));
 
    return d_ptr->m_pChainOfTrust;
+}
+
+FlagPack<Certificate::OriginHint> Certificate::originHint() const
+{
+   return d_ptr->m_fHints;
+}
+
+void Certificate::addOrigin(const FlagPack<OriginHint>& hints)
+{
+   d_ptr->m_fHints |= hints;
 }
 
 Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
