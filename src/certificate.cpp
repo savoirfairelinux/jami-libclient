@@ -34,6 +34,7 @@
 #include "private/account_p.h"
 #include "private/certificatemodel_p.h"
 #include <account.h>
+#include <chainoftrustmodel.h>
 
 class DetailsCache {
 public:
@@ -108,15 +109,17 @@ public:
    ~CertificatePrivate();
 
    //Attributes
-   QUrl              m_Path                    ;
-   Certificate::Type m_Type                    ;
-   QByteArray        m_Content                 ;
-   LoadingType       m_LoadingType             ;
-   QByteArray        m_Id                      ;
-   quint64           m_Statuses             [3];
-   QUrl              m_PrivateKey              ;
-   bool              m_RequirePrivateKey       ;
-   bool              m_RequireStrictPermissions;
+   QUrl               m_Path                    ;
+   Certificate::Type  m_Type                    ;
+   QByteArray         m_Content                 ;
+   LoadingType        m_LoadingType             ;
+   QByteArray         m_Id                      ;
+   quint64            m_Statuses             [3];
+   QUrl               m_PrivateKey              ;
+   bool               m_RequirePrivateKey       ;
+   bool               m_RequireStrictPermissions;
+   Certificate*       m_pSignedBy               ;
+   ChainOfTrustModel* m_pChainOfTrust           ;
 
    mutable DetailsCache* m_pDetailsCache;
    mutable ChecksCache*  m_pCheckCache  ;
@@ -228,7 +231,8 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 
 CertificatePrivate::CertificatePrivate(LoadingType _type) :
 m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),
-m_Statuses{0,0,0},m_RequirePrivateKey(false),m_RequireStrictPermissions(true)
+m_Statuses{0,0,0},m_RequirePrivateKey(false),m_RequireStrictPermissions(true),
+m_pSignedBy(nullptr),m_pChainOfTrust(nullptr)
 {
 }
 
@@ -584,6 +588,10 @@ QByteArray Certificate::serialNumber() const
 QString Certificate::issuer() const
 {
    d_ptr->loadDetails();
+
+   if (d_ptr->m_pDetailsCache->m_Issuer == DRing::Certificate::CheckValuesNames::UNSUPPORTED)
+      d_ptr->m_pDetailsCache->m_Issuer.clear();
+
    return d_ptr->m_pDetailsCache->m_Issuer;
 }
 
@@ -708,6 +716,23 @@ void Certificate::setRequireStrictPermission(bool value)
 bool Certificate::requireStrictPermission() const
 {
    return d_ptr->m_RequireStrictPermissions;
+}
+
+Certificate* Certificate::signedBy() const
+{
+   if ((!d_ptr->m_pSignedBy) && (!issuer().isEmpty())) {
+      d_ptr->m_pSignedBy = CertificateModel::instance()->getCertificateFromId(issuer());
+   }
+
+   return d_ptr->m_pSignedBy;
+}
+
+ChainOfTrustModel* Certificate::chainOfTrustModel() const
+{
+   if (!d_ptr->m_pChainOfTrust)
+      d_ptr->m_pChainOfTrust = new ChainOfTrustModel(const_cast<Certificate*>(this));
+
+   return d_ptr->m_pChainOfTrust;
 }
 
 Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
