@@ -202,6 +202,13 @@ public:
                              Q_EMIT onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
                        });
              }),
+             exportable_callback<CallSignal::PeerHold>(
+                 [this] (const std::string &callID, bool state) {
+                       QTimer::singleShot(0, [this,callID, state] {
+                             LOG_DRING_SIGNAL2("peerHold",QString(callID.c_str()), state);
+                             Q_EMIT peerHold(QString(callID.c_str()), state);
+                       });
+             }),
              exportable_callback<CallSignal::AudioMuted>(
                  [this] (const std::string &callID, bool state) {
                        QTimer::singleShot(0, [this,callID, state] {
@@ -478,6 +485,7 @@ Q_SIGNALS: // SIGNALS
     void confirmGoClear(const QString &callID);
     void audioMuted(const QString &callID, bool state);
     void videoMuted(const QString &callID, bool state);
+    void peerHold(const QString &callID, bool state);
 };
 
 namespace org {
