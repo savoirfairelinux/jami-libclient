@@ -18,8 +18,6 @@
 #ifndef VIDEO_ABSTRACT_RENDERER_H
 #define VIDEO_ABSTRACT_RENDERER_H
 
-#include <memory>
-
 //Base
 #include <QtCore/QObject>
 #include <typedefs.h>
@@ -76,7 +74,7 @@ public:
 
    //Getters
    virtual bool              isRendering     () const;
-   virtual const std::shared_ptr<std::vector<unsigned char> >& currentFrame () const;
+   virtual const QByteArray& currentFrame    () const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
    virtual ColorSpace        colorSpace      () const = 0;

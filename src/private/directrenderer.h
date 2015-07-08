@@ -18,8 +18,6 @@
 #ifndef VIDEO_DIRECT_RENDERER_H
 #define VIDEO_DIRECT_RENDERER_H
 
-#include <memory>
-
 //Base
 #include <QtCore/QObject>
 #include "typedefs.h"
@@ -53,7 +51,7 @@ public:
    //Getter
    virtual ColorSpace colorSpace() const override;
 
-   void onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h);
+   void onNewFrame(const QByteArray& frame);
 
 public Q_SLOTS:
    virtual void startRendering() override;

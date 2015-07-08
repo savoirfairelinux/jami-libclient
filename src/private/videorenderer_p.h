@@ -23,7 +23,6 @@
 #include <QtCore/QSize>
 
 #include <atomic>
-#include <memory>
 
 class QMutex;
 
@@ -45,7 +44,6 @@ public:
    char*             m_pFrame     ;
    QByteArray        m_Content    ;
    unsigned int      m_FrameSize  ;
-   std::shared_ptr<std::vector<unsigned char> > m_iFrame;
 
 private:
    Video::Renderer* q_ptr;

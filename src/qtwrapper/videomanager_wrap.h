@@ -196,14 +196,14 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void registerSinkTarget(const QString &sinkID, std::function<void(std::shared_ptr<std::vector<unsigned char> >&, int, int)>&& cb)
+    void registerSinkTarget(const QString &sinkID, std::function<void(uint8_t*)>&& cb)
     {
 #ifdef ENABLE_VIDEO
         DRing::registerSinkTarget(sinkID.toStdString(), std::move(cb));
 #endif
     }
 
-    void registerSinkTarget(const QString &sinkID, std::function<void(std::shared_ptr<std::vector<unsigned char> >&, int, int)>& cb)
+    void registerSinkTarget(const QString &sinkID, std::function<void(uint8_t*)>& cb)
     {
 #ifdef ENABLE_VIDEO
         DRing::registerSinkTarget(sinkID.toStdString(), std::move(cb));
