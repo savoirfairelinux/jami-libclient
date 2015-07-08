@@ -33,6 +33,7 @@ class QThread;
 //Ring
 #include "video/device.h"
 
+Q_DECLARE_METATYPE(std::shared_ptr<std::vector<unsigned char> >);
 
 namespace Video {
 class DirectRendererPrivate;
@@ -52,6 +53,7 @@ public:
 
    //Getter
    virtual ColorSpace colorSpace() const override;
+   virtual const QVariant          currentFrame    () const override;
 
    void onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h);
 

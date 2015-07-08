@@ -66,11 +66,6 @@ QSize Video::Renderer::size() const
   return d_ptr->m_pSize;
 }
 
-const std::shared_ptr<std::vector<unsigned char> >& Video::Renderer::currentFrame() const
-{
-   return d_ptr->m_iFrame;
-}
-
 /*****************************************************************************
  *                                                                           *
  *                                 Setters                                   *

@@ -76,7 +76,7 @@ public:
 
    //Getters
    virtual bool              isRendering     () const;
-   virtual const std::shared_ptr<std::vector<unsigned char> >& currentFrame () const;
+   virtual const QVariant          currentFrame    () const = 0;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
    virtual ColorSpace        colorSpace      () const = 0;

@@ -55,7 +55,7 @@ public:
 
    //Getters
    int fps() const;
-   virtual const QByteArray& currentFrame() const override;
+   virtual const QVariant currentFrame() const override;
    virtual ColorSpace        colorSpace  () const override;
 
    //Setters

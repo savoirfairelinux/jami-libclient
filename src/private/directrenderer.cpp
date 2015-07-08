@@ -72,6 +72,11 @@ void Video::DirectRenderer::stopRendering ()
    emit stopped();
 }
 
+QVariant currentFrame    () const
+{
+   return QVariant::fromValue(d_ptr->m_iFrame);
+}
+
 void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h)
 {
    if (!isRendering()) {
