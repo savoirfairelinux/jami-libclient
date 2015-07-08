@@ -20,12 +20,17 @@
 //Qt
 #include <QtCore/QCryptographicHash>
 
+//Ring daemon
+#include "dbus/configurationmanager.h"
+
 //Ring
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
+#include "media/recordingmodel.h"
 #include "private/account_p.h"
 #include "private/person_p.h"
+#include "private/contactmethod_p.h"
 #include "call.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
@@ -38,48 +43,6 @@
 QHash<int,Call*> ContactMethod::m_shMostUsed = QHash<int,Call*>();
 
 const ContactMethod* ContactMethod::m_spBlank = nullptr;
-
-class ContactMethodPrivate {
-public:
-   ContactMethodPrivate(const URI& number, NumberCategory* cat, ContactMethod::Type st);
-   NumberCategory*    m_pCategory        ;
-   bool               m_Present          ;
-   QString            m_PresentMessage   ;
-   bool               m_Tracked          ;
-   Person*            m_pPerson          ;
-   Account*           m_pAccount         ;
-   time_t             m_LastUsed         ;
-   QList<Call*>       m_lCalls           ;
-   int                m_PopularityIndex  ;
-   QString            m_MostCommonName   ;
-   QHash<QString,int> m_hNames           ;
-   bool               m_hasType          ;
-   uint               m_LastWeekCount    ;
-   uint               m_LastTrimCount    ;
-   bool               m_HaveCalled       ;
-   int                m_Index            ;
-   bool               m_IsBookmark       ;
-   int                m_TotalSeconds     ;
-   QString            m_Uid              ;
-   QString            m_PrimaryName_cache;
-   URI                m_Uri              ;
-   QByteArray         m_Sha1             ;
-   ContactMethod::Type  m_Type           ;
-   QList<URI>         m_lOtherURIs       ;
-   InstantMessagingModel* m_pImModel     ;
-
-   //Parents
-   QList<ContactMethod*> m_lParents;
-
-   //Emit proxies
-   void callAdded(Call* call);
-   void changed  (          );
-   void presentChanged(bool);
-   void presenceMessageChanged(const QString&);
-   void trackedChanged(bool);
-   void primaryNameChanged(const QString& name);
-   void rebased(ContactMethod* other);
-};
 
 void ContactMethodPrivate::callAdded(Call* call)
 {
@@ -137,7 +100,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1),m_hasType(false),m_pImModel(nullptr)
+   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr)
 {}
 
 ///Constructor
@@ -740,15 +703,30 @@ bool ContactMethod::operator==(const ContactMethod& other) const
    return this->d_ptr== other.d_ptr;
 }
 
-InstantMessagingModel* ContactMethod::imModel() const
+Media::TextRecording* ContactMethod::textRecording() const
 {
-   return d_ptr->m_pImModel;
+   if ((!d_ptr->m_hasTriedTextRec) && (!d_ptr->m_pTextRecording)) {
+      d_ptr->m_pTextRecording = Media::RecordingModel::instance()->createTextRecording(this);
+      d_ptr->m_hasTriedTextRec = true;
+   }
+
+   return d_ptr->m_pTextRecording;
 }
 
-void ContactMethod::setImModel(InstantMessagingModel* m)
+void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
 {
-   d_ptr->m_pImModel = m;
+   m_pTextRecording = r;
 }
+
+bool ContactMethod::sendOfflineTextMessage(const QString& text)
+{
+   if (!account())
+      return false;
+
+   DBus::ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
+   return true;
+}
+
 
 /************************************************************************************
  *                                                                                  *
