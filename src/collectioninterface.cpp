@@ -221,9 +221,9 @@ void CollectionInterface::deactivate(ItemBase* base)
    base->d_ptr->m_isActive = false;
 }
 
-QMetaObject CollectionInterface::metaObject()
+const QMetaObject* CollectionInterface::metaObject()
 {
-   return d_ptr->m_pEditorType;
+   return &d_ptr->m_pEditorType;
 }
 
 CollectionConfigurationInterface* CollectionInterface::configurator() const

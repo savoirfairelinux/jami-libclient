@@ -35,6 +35,7 @@ CollectionInterface* ItemBase::collection() const
 
 void ItemBase::setCollection(CollectionInterface* backend)
 {
+   Q_ASSERT(backend->metaObject()->className() == this->metaObject()->className());
    d_ptr->m_pBackend = backend;
 }
 
