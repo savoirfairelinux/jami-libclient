@@ -39,6 +39,10 @@ class NumberCategory;
 class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
 
+namespace Media {
+   class TextRecording;
+}
+
 
 ///ContactMethod: represent a phone number
 class LIB_EXPORT ContactMethod : public ItemBase
@@ -47,6 +51,7 @@ class LIB_EXPORT ContactMethod : public ItemBase
 public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
+   friend class LocalTextRecordingCollection;
 
    enum class Role {
       Uri          = 1000,
@@ -91,31 +96,31 @@ public:
    Q_ENUMS(Type)
 
    //Getters
-   URI                 uri             () const;
-   NumberCategory*     category        () const;
-   bool                isTracked       () const;
-   bool                isPresent       () const;
-   QString             presenceMessage () const;
-   Account*            account         () const;
-   Person*             contact         () const;
-   time_t              lastUsed        () const;
-   ContactMethod::Type type            () const;
-   int                 callCount       () const;
-   uint                weekCount       () const;
-   uint                trimCount       () const;
-   bool                haveCalled      () const;
-   QList<Call*>        calls           () const;
-   int                 popularityIndex () const;
-   QHash<QString,int>  alternativeNames() const;
-   QString             primaryName     () const;
-   bool                isBookmarked    () const;
-   bool                supportPresence () const;
-   virtual QVariant    icon            () const;
-   int                 totalSpentTime  () const;
-   QString             uid             () const;
-   URI::ProtocolHint   protocolHint    () const;
-   QByteArray          sha1            () const;
-   InstantMessagingModel* imModel      () const;
+   URI                   uri             () const;
+   NumberCategory*       category        () const;
+   bool                  isTracked       () const;
+   bool                  isPresent       () const;
+   QString               presenceMessage () const;
+   Account*              account         () const;
+   Person*               contact         () const;
+   time_t                lastUsed        () const;
+   ContactMethod::Type   type            () const;
+   int                   callCount       () const;
+   uint                  weekCount       () const;
+   uint                  trimCount       () const;
+   bool                  haveCalled      () const;
+   QList<Call*>          calls           () const;
+   int                   popularityIndex () const;
+   QHash<QString,int>    alternativeNames() const;
+   QString               primaryName     () const;
+   bool                  isBookmarked    () const;
+   bool                  supportPresence () const;
+   virtual QVariant      icon            () const;
+   int                   totalSpentTime  () const;
+   QString               uid             () const;
+   URI::ProtocolHint     protocolHint    () const;
+   QByteArray            sha1            () const;
+   Media::TextRecording* textRecording   () const;
 
    QVariant roleData(int role) const;
 
@@ -127,7 +132,6 @@ public:
    void             setBookmarked(bool                bookmarked);
    void             setUid       (const QString&      uri       );
    bool             setType      (ContactMethod::Type t         );
-   void             setImModel   (InstantMessagingModel* m      );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
@@ -179,6 +183,9 @@ private:
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);
+
+public Q_SLOTS:
+   bool sendOfflineTextMessage(const QString& text);
 
 Q_SIGNALS:
    ///A new call have used this ContactMethod
