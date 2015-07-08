@@ -65,7 +65,6 @@ public Q_SLOTS:
 DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent, Account* a, DaemonCertificateCollection::Mode mode) : QObject(), q_ptr(parent),
 m_pAccount(a), m_Mode(mode)
 {
-   Q_ASSERT(a);
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
    connect(&configurationManager, &ConfigurationManagerInterface::certificatePinned     , this, &DaemonCertificateCollectionPrivate::slotCertificatePinned    );
@@ -92,6 +91,10 @@ void DaemonCertificateCollectionPrivate::slotCertificatePinned(const QString& id
 {
    //qDebug() << "\n\nCERTIFICATE ADDED" << id;
    Certificate* cert = CertificateModel::instance()->getCertificateFromId(id);
+
+   if (!cert->collection())
+      cert->setCollection(q_ptr);
+
    q_ptr->editor<Certificate>()->addExisting(cert);
 }
 
@@ -108,6 +111,9 @@ void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString
 
 bool DaemonCertificateCollection::load()
 {
+   if (!d_ptr->m_pAccount)
+      return false;
+
    const QString mode = d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
       DRing::Certificate::Status::ALLOWED : DRing::Certificate::Status::BANNED;
 
@@ -137,7 +143,7 @@ bool DaemonCertificateCollection::clear()
 QString DaemonCertificateCollection::name() const
 {
    return QObject::tr("%1 %2 list")
-      .arg(d_ptr->m_pAccount->alias())
+      .arg(d_ptr->m_pAccount ? d_ptr->m_pAccount->alias() : QObject::tr("Daemon certificate store"))
       .arg(d_ptr->m_Mode == Mode::BANNED ?
          QObject::tr( "banned"  ) :
          QObject::tr( "allowed" )

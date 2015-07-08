@@ -18,6 +18,8 @@
 #include "chainoftrustmodel.h"
 
 #include <certificate.h>
+#include <extensions/securityevaluationextension.h>
+#include <securityevaluationmodel.h>
 
 struct ChainedCertificateNode
 {
@@ -85,8 +87,20 @@ QVariant ChainOfTrustModel::data( const QModelIndex& index, int role ) const
    switch(role) {
       case Qt::DisplayRole:
          return c->m_pCertificate->publicKeyId();
+      case Qt::DecorationRole:
+         if (c->m_pCertificate->extension<SecurityEvaluationExtension>()) {
+            return c->m_pCertificate->extension<SecurityEvaluationExtension>()->securityLevelIcon(c->m_pCertificate);
+         }
+         break;
       case (int) Role::OBJECT:
          return QVariant::fromValue(c->m_pCertificate);
+      case (int) Role::SECURITY_LEVEL:
+         if (c->m_pCertificate->extension<SecurityEvaluationExtension>()) {
+            return QVariant::fromValue(
+               c->m_pCertificate->extension<SecurityEvaluationExtension>()->securityLevel(c->m_pCertificate)
+            );
+         }
+         break;
    }
 
    return QVariant();

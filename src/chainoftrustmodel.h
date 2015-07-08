@@ -33,6 +33,7 @@ public:
 
    enum class Role {
       OBJECT = Qt::UserRole+1,
+      SECURITY_LEVEL,
    };
 
    //Model implementation

@@ -123,6 +123,7 @@ private:
 
 //TODO remove
 static FolderCertificateCollection* m_pFallbackCollection = nullptr;
+static DaemonCertificateCollection* m_pFallbackDaemonCollection = nullptr;
 
 const Matrix1D<Certificate::Status, const char*> CertificateModelPrivate::m_StatusMap = {{
 /* Certificate::Status::UNDEFINED      */ DRing::Certificate::Status::UNDEFINED,
@@ -179,6 +180,10 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
    m_pFallbackCollection = addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>, QString>(QString(),
       FolderCertificateCollection::Options::FALLBACK | FolderCertificateCollection::Options::READ_WRITE,
       QObject::tr("Local certificate store")
+   );
+   m_pFallbackDaemonCollection = addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
+      nullptr,
+      DaemonCertificateCollection::Mode::ALLOWED
    );
 
    m_pFallbackCollection->load();
@@ -517,6 +522,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
 
    if (!cert) {
       cert = new Certificate(path);
+      cert->setCollection(m_pFallbackDaemonCollection);
       d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
 
       //Add it to the model
@@ -544,6 +550,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Typ
    //The certificate is not loaded yet
    if (!cert) {
       cert = new Certificate(path);
+      cert->setCollection(m_pFallbackDaemonCollection);
       d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
 
       //Add it to the model
@@ -592,6 +599,7 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
    Certificate* cert = d_ptr->m_hCertificates[id];
    if (!cert) {
       cert = new Certificate(rawContent);
+      cert->setCollection(m_pFallbackDaemonCollection);
       d_ptr->m_hCertificates[id] = cert;
 
       if ((!a) && (!category.isEmpty())) {
