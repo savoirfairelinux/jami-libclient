@@ -29,70 +29,8 @@ public:
    bool m_isActive;
 };
 
-template<typename Base>
-ItemBase<Base>::ItemBase(Base* parent) :Base(nullptr), d_ptr(new ItemBasePrivate())
-{
-   QObject::moveToThread(QCoreApplication::instance()->thread());
-   QObject::setParent(parent);
-}
-
-template<typename Base>
-ItemBase<Base>::~ItemBase()
-{
-   delete d_ptr;
-}
-
-template<typename Base>
-CollectionInterface* ItemBase<Base>::collection() const
-{
-   return d_ptr->m_pBackend;
-}
-
-template<typename Base>
-void ItemBase<Base>::setCollection(CollectionInterface* backend)
-{
-   d_ptr->m_pBackend = backend;
-}
-
-///Save the contact
-template<typename Base>
-bool ItemBase<Base>::save() const
-{
-   if (!d_ptr->m_pBackend)
-      return false;
-
-   return d_ptr->m_pBackend->save(this);
-}
-
-///Show an implementation dependant dialog to edit the contact
-template<typename Base>
-bool ItemBase<Base>::edit()
-{
-   if (!d_ptr->m_pBackend)
-      return false;
-
-   return d_ptr->m_pBackend->edit(this);
-}
-
-///Remove the contact from the backend
-template<typename Base>
-bool ItemBase<Base>::remove()
-{
-   if (!d_ptr->m_pBackend)
-      return false;
-
-   return d_ptr->m_pBackend->remove(this);
-}
-
-template<typename Base>
-bool ItemBase<Base>::isActive() const
-{
-   return d_ptr->m_pBackend->isEnabled() && d_ptr->m_isActive;
-}
-
-template<typename Base>
 template<typename T2>
-bool ItemBase<Base>::hasExtenstion() const
+bool ItemBase::hasExtenstion() const
 {
    if (!d_ptr->m_pBackend)
       return false;
@@ -100,9 +38,8 @@ bool ItemBase<Base>::hasExtenstion() const
    return d_ptr->m_pBackend->isExtensionActive<T2>();
 }
 
-template<typename Base>
 template<typename T2>
-T2* ItemBase<Base>::extenstion() const
+T2* ItemBase::extension() const
 {
    if (!d_ptr->m_pBackend)
       return nullptr;

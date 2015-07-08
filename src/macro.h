@@ -30,7 +30,7 @@ class MacroModel;
 
 class MacroPrivate;
 
-class LIB_EXPORT Macro : public ItemBase<QObject>
+class LIB_EXPORT Macro : public ItemBase
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
