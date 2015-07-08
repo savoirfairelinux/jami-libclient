@@ -298,6 +298,7 @@ SET( libringclient_LIB_SRCS
   #Other
   src/categorizedcompositenode.cpp
   src/hookmanager.cpp
+  src/itembase.cpp
   src/private/vcardutils.cpp
   src/private/videorenderermanager.cpp
   src/video/previewmanager.cpp

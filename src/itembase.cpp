@@ -15,55 +15,57 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_RECORDING_H
-#define MEDIA_RECORDING_H
+#include "itembase.h"
 
-#include <QtCore/QObject>
-#include <itembase.h>
-
-#include <typedefs.h>
-
-class RecordingPlaybackManager;
-class Call;
-
-namespace Media {
-
-class RecordingPrivate;
-
-/**
- * @class Recording a representation of one or more media recording
- */
-class LIB_EXPORT Recording : public ItemBase
+ItemBase::ItemBase(QObject* parent) :QObject(nullptr), d_ptr(new ItemBasePrivate())
 {
-   Q_OBJECT
-
-public:
-
-   //Properties
-   Q_PROPERTY( Recording::Type     type                 READ type                                                   )
-
-   enum class Type {
-      AUDIO_VIDEO, /*!< The recording is a single file, playable by the daemon */
-      TEXT       , /*!< The recording is an encoded text stream and a position */
-      /*FILE*/
-   };
-
-   //Constructor
-   explicit Recording(const Recording::Type type);
-   virtual ~Recording();
-
-   //Getter
-   Recording::Type type() const;
-   Call* call() const;
-
-   //Setter
-   void setCall(Call* call);
-
-private:
-   RecordingPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(Recording)
-};
-
+   QObject::moveToThread(QCoreApplication::instance()->thread());
+   QObject::setParent(parent);
 }
 
-#endif
+ItemBase::~ItemBase()
+{
+   delete d_ptr;
+}
+
+CollectionInterface* ItemBase::collection() const
+{
+   return d_ptr->m_pBackend;
+}
+
+void ItemBase::setCollection(CollectionInterface* backend)
+{
+   d_ptr->m_pBackend = backend;
+}
+
+///Save the contact
+bool ItemBase::save() const
+{
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->save(this);
+}
+
+///Show an implementation dependant dialog to edit the contact
+bool ItemBase::edit()
+{
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->edit(this);
+}
+
+///Remove the contact from the backend
+bool ItemBase::remove()
+{
+   if (!d_ptr->m_pBackend)
+      return false;
+
+   return d_ptr->m_pBackend->remove(this);
+}
+
+bool ItemBase::isActive() const
+{
+   return d_ptr->m_pBackend->isEnabled() && d_ptr->m_isActive;
+}

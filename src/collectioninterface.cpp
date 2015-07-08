@@ -154,27 +154,27 @@ void CollectionInterface::addChildren(CollectionInterface* c)
 }
 
 
-bool CollectionInterface::add(ItemBase<QObject>* base)
+bool CollectionInterface::add(ItemBase* base)
 {
    return d_ptr->m_fAdd(base);
 }
 
-bool CollectionInterface::save(ItemBase<QObject>* base)
+bool CollectionInterface::save(ItemBase* base)
 {
    return d_ptr->m_fSave(base);
 }
 
-bool CollectionInterface::save(const ItemBase<QObject>* base)
+bool CollectionInterface::save(const ItemBase* base)
 {
-   return d_ptr->m_fSave(const_cast<ItemBase<QObject>*>(base));
+   return d_ptr->m_fSave(const_cast<ItemBase*>(base));
 }
 
-bool CollectionInterface::edit(ItemBase<QObject>* base)
+bool CollectionInterface::edit(ItemBase* base)
 {
    return d_ptr->m_fEdit(base);
 }
 
-bool CollectionInterface::remove(ItemBase<QObject>* base)
+bool CollectionInterface::remove(ItemBase* base)
 {
    if (d_ptr->m_fRemove(base)) {
       deactivate(base);
@@ -211,12 +211,12 @@ bool CollectionInterface::fetch( const QList<CollectionInterface::Element>& elem
    return false;
 }
 
-void CollectionInterface::activate(ItemBase<QObject>* base)
+void CollectionInterface::activate(ItemBase* base)
 {
    base->d_ptr->m_isActive = true;
 }
 
-void CollectionInterface::deactivate(ItemBase<QObject>* base)
+void CollectionInterface::deactivate(ItemBase* base)
 {
    base->d_ptr->m_isActive = false;
 }

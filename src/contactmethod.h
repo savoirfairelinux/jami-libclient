@@ -41,7 +41,7 @@ class InstantMessagingModel;
 
 
 ///ContactMethod: represent a phone number
-class LIB_EXPORT ContactMethod : public ItemBase<QObject>
+class LIB_EXPORT ContactMethod : public ItemBase
 {
    Q_OBJECT
 public:

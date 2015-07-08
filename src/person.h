@@ -36,7 +36,7 @@ class PersonPlaceHolderPrivate;
 #include "categorizedcompositenode.h"
 
 ///Person: Abstract version of a contact
-class LIB_EXPORT Person : public ItemBase<QObject>
+class LIB_EXPORT Person : public ItemBase
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"

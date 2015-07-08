@@ -36,7 +36,7 @@ RecordingPrivate::RecordingPrivate(Recording* r) : q_ptr(r),m_pCall(nullptr)
 
 }
 
-Recording::Recording(const Recording::Type type) : ItemBase<QObject>(nullptr), d_ptr(new RecordingPrivate(this))
+Recording::Recording(const Recording::Type type) : ItemBase(nullptr), d_ptr(new RecordingPrivate(this))
 {
    d_ptr->m_Type = type;
 }

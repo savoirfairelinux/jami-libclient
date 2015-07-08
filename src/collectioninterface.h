@@ -37,7 +37,7 @@ class CollectionEditorBase;
 class CollectionConfigurationInterface;
 template<typename T> class CollectionEditor;
 template<typename T> class CollectionMediator;
-template<typename T> class ItemBase;
+class ItemBase;
 
 /**
  * This is the interface that must be implemented by each item collections to
@@ -55,7 +55,7 @@ class LIB_EXPORT CollectionInterface
    template<typename T> friend class CollectionMediator;
    template<typename T> friend class CollectionManagerInterface;
    friend class CollectionManagerInterfaceBase;
-   friend class ItemBase<QObject>;
+   friend class ItemBase;
 public:
 
    /**
@@ -246,7 +246,7 @@ public:
    /**
     * Add a new element to the backend
     */
-   bool add   (ItemBase<QObject>* base);
+   bool add   (ItemBase* base);
 
    /**
     * Return an object that has been associated with this collection type
@@ -298,12 +298,12 @@ protected:
    void setConfigurator(std::function<CollectionConfigurationInterface*()> getter);
    void addChildren(CollectionInterface* c);
 
-   bool save      (ItemBase<QObject>* base);
-   bool save      (const ItemBase<QObject>* base);
-   bool edit      (ItemBase<QObject>* base);
-   bool remove    (ItemBase<QObject>* base);
-   void activate  (ItemBase<QObject>* base);
-   void deactivate(ItemBase<QObject>* base);
+   bool save      (ItemBase* base);
+   bool save      (const ItemBase* base);
+   bool edit      (ItemBase* base);
+   bool remove    (ItemBase* base);
+   void activate  (ItemBase* base);
+   void deactivate(ItemBase* base);
    QMetaObject metaObject();
 
 private:

@@ -71,7 +71,7 @@ class CallPrivate;
  * lifecycle and should be used instead of "if"/"switch" on individual states
  * when possible. This will avoid accidentally forgetting a state.
 **/
-class  LIB_EXPORT Call : public ItemBase<QObject>
+class  LIB_EXPORT Call : public ItemBase
 {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"

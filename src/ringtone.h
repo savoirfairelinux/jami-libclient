@@ -23,7 +23,7 @@
 
 class RingtonePrivate;
 
-class LIB_EXPORT Ringtone : public ItemBase<QObject>
+class LIB_EXPORT Ringtone : public ItemBase
 {
    Q_OBJECT
 public:
