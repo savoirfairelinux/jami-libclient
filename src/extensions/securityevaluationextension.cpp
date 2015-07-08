@@ -18,9 +18,19 @@
 #include "securityevaluationextension.h"
 #include "collectioninterface.h"
 #include "contactmethod.h"
+#include "certificate.h"
 #include "person.h"
+#include "account.h"
+#include "call.h"
 #include "presencestatusmodel.h"
 #include "collectionextensionmodel.h"
+#include <delegates/pixmapmanipulationdelegate.h>
+
+//Qt
+#include <QtCore/QMetaObject>
+
+//LibStdC++
+#include <utility>
 
 DECLARE_COLLECTION_EXTENSION(SecurityEvaluationExtension)
 
@@ -39,4 +49,49 @@ QVariant SecurityEvaluationExtension::data(int role) const
    }
 
    return QVariant();
+}
+
+QVariant SecurityEvaluationExtension::securityLevelIcon(ItemBase* item) const
+{
+   const SecurityEvaluationModel::SecurityLevel sl = securityLevel(item);
+
+   return PixmapManipulationDelegate::instance()->securityLevelIcon(sl);
+}
+
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLevel(ItemBase* item) const
+{
+   enum Types {
+      OTHER         ,
+      ACCOUNT       ,
+      CALL          ,
+      CERTIFICATE   ,
+      CONTACT_METHOD,
+      PERSON        ,
+   };
+
+   static QHash<const QMetaObject*, Types> types {
+      { &Account       :: staticMetaObject , ACCOUNT        },
+      { &Call          :: staticMetaObject , CALL           },
+      { &Certificate   :: staticMetaObject , CERTIFICATE    },
+      { &ContactMethod :: staticMetaObject , CONTACT_METHOD },
+      { &Person        :: staticMetaObject , PERSON         },
+   };
+
+   switch(types[item->metaObject()]) {
+      case Types::ACCOUNT       :
+         break;
+      case Types::CALL          :
+         break;
+      case Types::CERTIFICATE   :
+         return SecurityEvaluationModel::SecurityLevel::ACCEPTABLE;
+      case Types::CONTACT_METHOD:
+         break;
+      case Types::PERSON        :
+         break;
+      case Types::OTHER         :
+      default:
+         return SecurityEvaluationModel::SecurityLevel::NONE;
+   }
+
+   return SecurityEvaluationModel::SecurityLevel::NONE;
 }

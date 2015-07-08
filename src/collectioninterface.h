@@ -269,14 +269,6 @@ public:
    QAbstractItemModel* extensionsModel() const;
 
    /**
-    * Register extensions only to a subset of all collections
-    *
-    * @see template<class T> static bool registerExtension();
-    */
-//    template<class T, typename Ts...>
-//    static bool registerExtension();
-
-   /**
     * Check if an extension type is active
     */
    template<class T>
@@ -286,7 +278,7 @@ public:
     * Get extension "T"
     */
    template<class T>
-   CollectionExtensionInterface* extension() const;
+   T* extension() const;
 
 protected:
 

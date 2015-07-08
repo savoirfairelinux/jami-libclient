@@ -20,6 +20,7 @@
 
 #include <collectionextensioninterface.h>
 #include <collectionextensionmodel.h>
+#include <securityevaluationmodel.h>
 
 #include <typedefs.h>
 
@@ -27,8 +28,9 @@
 #include <QtCore/QModelIndex>
 
 class CollectionInterface;
+class ItemBase;
 
-class LIB_EXPORT SecurityEvaluationExtension : public CollectionExtensionInterface
+class LIB_EXPORT SecurityEvaluationExtension final : public CollectionExtensionInterface
 {
    Q_OBJECT
 
@@ -36,6 +38,9 @@ public:
    explicit SecurityEvaluationExtension(QObject* parent);
 
    virtual QVariant data(int role) const override;
+
+   SecurityEvaluationModel::SecurityLevel securityLevel(ItemBase* item) const;
+   QVariant securityLevelIcon(ItemBase* item) const;
 };
 
 #endif

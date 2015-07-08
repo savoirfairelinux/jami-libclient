@@ -28,7 +28,7 @@
 
 class CollectionInterface;
 
-class LIB_EXPORT PresenceCollectionExtension : public CollectionExtensionInterface
+class LIB_EXPORT PresenceCollectionExtension final : public CollectionExtensionInterface
 {
    Q_OBJECT
 
