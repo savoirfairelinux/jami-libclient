@@ -27,12 +27,12 @@ class ItemBasePrivate;
 /**
  * Base class for all items to be managed in CollectionInterface
  */
-template<typename T>
-class LIB_EXPORT ItemBase : public T {
+class LIB_EXPORT ItemBase : public QObject
+{
    friend class CollectionInterface;
 public:
    //Constructor
-   explicit ItemBase(T* parent = nullptr);
+   explicit ItemBase(QObject* parent = nullptr);
    virtual ~ItemBase();
    virtual CollectionInterface* collection() const final;
 
@@ -41,7 +41,7 @@ public:
    bool hasExtenstion() const;
 
    template<typename T2>
-   T2* extenstion() const;
+   T2* extension() const;
 
    //Mutator methods
    bool save    () const;

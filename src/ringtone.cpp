@@ -34,7 +34,7 @@ RingtonePrivate::RingtonePrivate() : m_IsPlaying(false)
 
 }
 
-Ringtone::Ringtone(QObject* parent) : ItemBase<QObject>(parent), d_ptr(new RingtonePrivate())
+Ringtone::Ringtone(QObject* parent) : ItemBase(parent), d_ptr(new RingtonePrivate())
 {
 
 }

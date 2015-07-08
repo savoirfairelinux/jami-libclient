@@ -193,7 +193,7 @@ PersonPrivate::~PersonPrivate()
 }
 
 ///Constructor
-Person::Person(CollectionInterface* parent): ItemBase<QObject>(nullptr),
+Person::Person(CollectionInterface* parent): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
    setCollection(parent?parent:TransitionalPersonBackend::instance());
@@ -202,7 +202,7 @@ Person::Person(CollectionInterface* parent): ItemBase<QObject>(nullptr),
 }
 
 Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionInterface* parent)
- : ItemBase<QObject>(nullptr), d_ptr(new PersonPrivate(this))
+ : ItemBase(nullptr), d_ptr(new PersonPrivate(this))
 {
    setCollection(parent?parent:TransitionalPersonBackend::instance());
    d_ptr->m_isPlaceHolder = false;

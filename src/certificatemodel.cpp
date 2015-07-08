@@ -608,7 +608,7 @@ Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawCo
 
       if (save) {
          //TODO this shouldn't be necessary
-//          static_cast< ItemBase<QObject>* >(cert)->save();
+//          static_cast< ItemBase* >(cert)->save();
          /*const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
          cert->setPath(path);*/
       }

@@ -300,7 +300,7 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
 
 ///Constructor
 Call::Call(Call::State startState, const QString& peerName, ContactMethod* number, Account* account)
-   : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState     = startState;
    d_ptr->m_Type             = Call::Type::CALL;
@@ -314,7 +314,7 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
 
 ///Constructor
 Call::Call(const QString& confId, const QString& account)
-   : ItemBase<QObject>(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
    d_ptr->m_Account      = AccountModel::instance()->getById(account.toLatin1());
