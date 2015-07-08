@@ -23,6 +23,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
 
+class ItemBase;
 class CollectionInterface;
 
 /**

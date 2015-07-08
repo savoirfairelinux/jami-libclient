@@ -142,7 +142,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
 {}
 
 ///Constructor
-ContactMethod::ContactMethod(const URI& number, NumberCategory* cat, Type st) : ItemBase<QObject>(PhoneDirectoryModel::instance()),
+ContactMethod::ContactMethod(const URI& number, NumberCategory* cat, Type st) : ItemBase(PhoneDirectoryModel::instance()),
 d_ptr(new ContactMethodPrivate(number,cat,st))
 {
    setObjectName(d_ptr->m_Uri);

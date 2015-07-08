@@ -32,7 +32,7 @@ class ChainOfTrustModel;
 /**
  * This class represent a conceptual certificate.
  */
-class LIB_EXPORT Certificate : public ItemBase<QObject>
+class LIB_EXPORT Certificate : public ItemBase
 {
    Q_OBJECT
 

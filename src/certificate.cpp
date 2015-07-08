@@ -334,7 +334,7 @@ void CertificatePrivate::loadChecks(bool reload)
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
    moveToThread(CertificateModel::instance()->thread());
@@ -343,7 +343,7 @@ Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : 
    d_ptr->m_Type = type;
 }
 
-Certificate::Certificate(const QString& id) : ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
+Certificate::Certificate(const QString& id) : ItemBase(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
 {
    moveToThread(CertificateModel::instance()->thread());
    setParent(CertificateModel::instance());

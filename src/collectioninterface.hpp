@@ -18,7 +18,7 @@
 
 
 //TODO don't do this
-template<typename T> class ItemBase;
+class ItemBase;
 
 class CollectionInterfacePrivateT {
 public:
@@ -36,10 +36,10 @@ public:
    ///Use Qt introspection to make sure casting is valid
    QMetaObject                    m_pEditorType;
 
-   std::function<bool(ItemBase<QObject>*)>  m_fAdd       ;
-   std::function<bool(ItemBase<QObject>*)>  m_fSave      ;
-   std::function<bool(ItemBase<QObject>*)>  m_fEdit      ;
-   std::function<bool(ItemBase<QObject>*)>  m_fRemove    ;
+   std::function<bool(ItemBase*)>  m_fAdd       ;
+   std::function<bool(ItemBase*)>  m_fSave      ;
+   std::function<bool(ItemBase*)>  m_fEdit      ;
+   std::function<bool(ItemBase*)>  m_fRemove    ;
    std::function<int()                   >  m_fSize      ;
 
    std::function<CollectionConfigurationInterface*()> m_fConfigurator;
@@ -56,16 +56,16 @@ d_ptr(new CollectionInterfacePrivateT())
    d_ptr->m_pEditor = reinterpret_cast<void*>(editor);
 
    //The cast is safe because the metatype is checked earlier
-   d_ptr->m_fAdd = [editor](ItemBase<QObject>* item)->bool {
+   d_ptr->m_fAdd = [editor](ItemBase* item)->bool {
       return editor?editor->addNew(static_cast<T*>(item)) : false;
    };
-   d_ptr->m_fSave = [editor](ItemBase<QObject>* item)->bool {
+   d_ptr->m_fSave = [editor](ItemBase* item)->bool {
       return editor?editor->save(static_cast<T*>(item)) : false;
    };
-   d_ptr->m_fEdit = [editor](ItemBase<QObject>* item)->bool {
+   d_ptr->m_fEdit = [editor](ItemBase* item)->bool {
       return editor?editor->edit(static_cast<T*>(item)) : false;
    };
-   d_ptr->m_fRemove = [editor](ItemBase<QObject>* item)->bool {
+   d_ptr->m_fRemove = [editor](ItemBase* item)->bool {
       return editor?editor->remove(static_cast<T*>(item)) : false;
    };
    d_ptr->m_fSize = [editor]()->int {
