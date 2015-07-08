@@ -203,7 +203,7 @@ void ContactTreeNode::setParent(ContactTreeNode* p)
 {
    if (p && p != m_pParent && p->m_Type == NodeType::CATEGORY) {
       p->m_VisibleCounter += m_Visible ? 1 : 0;
-      const bool hasChanged = p->m_Visible != p->m_VisibleCounter > 0;
+      const bool hasChanged = p->m_Visible != (p->m_VisibleCounter > 0);
       p->m_Visible = p->m_VisibleCounter > 0;
       if (hasChanged) {
          const QModelIndex idx = m_pModel->index(p->m_Index,0);

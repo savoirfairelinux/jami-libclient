@@ -304,7 +304,7 @@ protected:
    bool remove    (ItemBase* base);
    void activate  (ItemBase* base);
    void deactivate(ItemBase* base);
-   QMetaObject metaObject();
+   const QMetaObject* metaObject();
 
 private:
    CollectionInterfacePrivateT* d_ptr ;

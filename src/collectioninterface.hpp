@@ -52,7 +52,7 @@ d_ptr(new CollectionInterfacePrivateT())
    init();
    //Ensure the type is based on QObject (required)
    d_ptr->m_pParent = parent;
-//    d_ptr->m_pEditorType = T::staticMetaObject();
+   d_ptr->m_pEditorType = T::staticMetaObject;
    d_ptr->m_pEditor = reinterpret_cast<void*>(editor);
 
    //The cast is safe because the metatype is checked earlier
@@ -83,6 +83,6 @@ QVector<T*> CollectionInterface::items() const
 template<typename T>
 CollectionEditor<T>* CollectionInterface::editor() const
 {
-//    Q_ASSERT(T::staticMetaObject() == d_ptr->m_pEditorType);
+   Q_ASSERT(T::staticMetaObject.className() == d_ptr->m_pEditorType.className());
    return static_cast<CollectionEditor<T>*>(d_ptr->m_pEditor);
 }
