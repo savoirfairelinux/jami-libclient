@@ -46,5 +46,5 @@ int CollectionExtensionModel::getExtensionId()
 template<class T>
 T* CollectionExtensionModel::getExtension()
 {
-   return CollectionExtensionModelSpecific::entries()[registerExtension<T>()];
+   return (T*)CollectionExtensionModelSpecific::entries()[registerExtension<T>()];
 }

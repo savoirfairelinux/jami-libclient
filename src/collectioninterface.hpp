@@ -16,6 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
+#include <collectionextensionmodel.h>
 
 //TODO don't do this
 class ItemBase;
@@ -85,4 +86,23 @@ CollectionEditor<T>* CollectionInterface::editor() const
 {
    Q_ASSERT(T::staticMetaObject.className() == d_ptr->m_pEditorType.className());
    return static_cast<CollectionEditor<T>*>(d_ptr->m_pEditor);
+}
+
+template<class T>
+bool CollectionInterface::attachExtension(bool enable)
+{
+   //FIXME for now all extensions are considered active
+   return true;
+}
+
+template<class T>
+bool CollectionInterface::isExtensionActive() const
+{
+   return true;
+}
+
+template<class T>
+T* CollectionInterface::extension() const
+{
+   return CollectionExtensionModel::getExtension<T>();
 }
