@@ -25,6 +25,7 @@
 #include "presencestatusmodel.h"
 #include "collectionextensionmodel.h"
 #include <delegates/pixmapmanipulationdelegate.h>
+#include <private/securityevaluationmodel_p.h>
 
 //Qt
 #include <QtCore/QMetaObject>
@@ -34,10 +35,22 @@
 
 DECLARE_COLLECTION_EXTENSION(SecurityEvaluationExtension)
 
+class SecurityEvaluationExtensionPrivate
+{
+public:
+   //Helpers
+   SecurityEvaluationModel::SecurityLevel checkCertificate(ItemBase* i);
+};
+
 SecurityEvaluationExtension::SecurityEvaluationExtension(QObject* parent) :
-   CollectionExtensionInterface(parent)
+   CollectionExtensionInterface(parent), d_ptr(new SecurityEvaluationExtensionPrivate())
 {
 
+}
+
+SecurityEvaluationExtension::~SecurityEvaluationExtension()
+{
+   delete d_ptr;
 }
 
 QVariant SecurityEvaluationExtension::data(int role) const
@@ -83,7 +96,7 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLeve
       case Types::CALL          :
          break;
       case Types::CERTIFICATE   :
-         return SecurityEvaluationModel::SecurityLevel::ACCEPTABLE;
+         return d_ptr->checkCertificate(item);
       case Types::CONTACT_METHOD:
          break;
       case Types::PERSON        :
@@ -94,4 +107,19 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLeve
    }
 
    return SecurityEvaluationModel::SecurityLevel::NONE;
+}
+
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtensionPrivate::checkCertificate(ItemBase* i)
+{
+   Certificate* c = qobject_cast<Certificate*>(i);
+
+   if (!c)
+      return SecurityEvaluationModel::SecurityLevel::NONE;
+
+   const bool reqPriv = c->requirePrivateKey();
+
+   const SecurityEvaluationModel::SecurityLevel l = SecurityEvaluationModelPrivate::certificateSecurityLevel(c,true);
+
+
+   return l;
 }

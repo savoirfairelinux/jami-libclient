@@ -38,6 +38,8 @@ class LIB_EXPORT Certificate : public ItemBase
 
    friend class CertificateModel;
    friend class CertificateModelPrivate;
+   friend class SecurityEvaluationModel;
+   friend class SecurityEvaluationModelPrivate;
 public:
 
    //Properties

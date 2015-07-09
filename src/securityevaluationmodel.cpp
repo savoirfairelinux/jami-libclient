@@ -28,12 +28,9 @@
 #include "private/securityevaluationmodel_p.h"
 #include "securityflaw.h"
 #include "private/securityflaw_p.h"
+#include "private/certificate_p.h"
 
 #include <QtAlgorithms>
-
-//The private key detection doesn't handle all embedded sources correctly
-//there is many false positive, to be fixed
-#define BYPASS_PRIVATE_KEY_NOT_FOUND 99999
 
 const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()] = {
    /*SRTP_ENABLED                */QObject::tr("Your media streams are not encrypted, please enable ZRTP or SDES"),
@@ -101,6 +98,30 @@ const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::C
    /* EXPECTED_OWNER                    */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //TODO figure out of the impact of this
    /* ACTIVATED                         */ SecurityEvaluationModel::SecurityLevel::MEDIUM     , //TODO figure out of the impact of this
 }};
+
+static const Matrix1D<Certificate::Checks, bool> relevantWithoutPrivateKey = {
+   { Certificate::Checks::HAS_PRIVATE_KEY                  , false },
+   { Certificate::Checks::EXPIRED                          , true  },
+   { Certificate::Checks::STRONG_SIGNING                   , true  },
+   { Certificate::Checks::NOT_SELF_SIGNED                  , true  },
+   { Certificate::Checks::KEY_MATCH                        , false },
+   { Certificate::Checks::PRIVATE_KEY_STORAGE_PERMISSION   , true  },
+   { Certificate::Checks::PUBLIC_KEY_STORAGE_PERMISSION    , true  },
+   { Certificate::Checks::PRIVATE_KEY_DIRECTORY_PERMISSIONS, true  },
+   { Certificate::Checks::PUBLIC_KEY_DIRECTORY_PERMISSIONS , true  },
+   { Certificate::Checks::PRIVATE_KEY_STORAGE_LOCATION     , true  },
+   { Certificate::Checks::PUBLIC_KEY_STORAGE_LOCATION      , true  },
+   { Certificate::Checks::PRIVATE_KEY_SELINUX_ATTRIBUTES   , true  },
+   { Certificate::Checks::PUBLIC_KEY_SELINUX_ATTRIBUTES    , true  },
+   { Certificate::Checks::EXIST                            , true  },
+   { Certificate::Checks::VALID                            , true  },
+   { Certificate::Checks::VALID_AUTHORITY                  , true  },
+   { Certificate::Checks::KNOWN_AUTHORITY                  , true  },
+   { Certificate::Checks::NOT_REVOKED                      , true  },
+   { Certificate::Checks::AUTHORITY_MATCH                  , true  },
+   { Certificate::Checks::EXPECTED_OWNER                   , true  },
+   { Certificate::Checks::ACTIVATED                        , true  },
+};
 
 const TypedStateMachine< SecurityEvaluationModel::Severity      , Certificate::Checks > SecurityEvaluationModelPrivate::certificateFlawSeverity = {{
    /* HAS_PRIVATE_KEY                   */ SecurityEvaluationModel::Severity::ERROR           ,
@@ -262,8 +283,8 @@ static const Matrix1D<SecurityEvaluationModel::Severity, void(SecurityEvaluation
 
 SecurityEvaluationModelPrivate::SecurityEvaluationModelPrivate(Account* account, SecurityEvaluationModel* parent) :
  QObject(parent),q_ptr(parent), m_pAccount(account),m_isScheduled(false),
- m_CurrentSecurityLevel(SecurityEvaluationModel::SecurityLevel::NONE),m_pCaProxy(nullptr),m_pPkProxy(nullptr),
- m_pAccChecks(nullptr), m_SeverityCount{
+ m_CurrentSecurityLevel(SecurityEvaluationModel::SecurityLevel::NONE),m_pAccChecks(nullptr),
+ m_SeverityCount{
       /* UNSUPPORTED   */ 0,
       /* INFORMATION   */ 0,
       /* WARN1NG       */ 0,
@@ -328,8 +349,6 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
                case (int)SecurityEvaluationModel::Role::SecurityLevel:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
-               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
-                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
             break;
          //
@@ -341,8 +360,6 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
                case (int)SecurityEvaluationModel::Role::SecurityLevel:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
-               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
-                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
             return QVariant();
          }
@@ -357,8 +374,6 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
                case (int)SecurityEvaluationModel::Role::SecurityLevel:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel[c]);
-               case BYPASS_PRIVATE_KEY_NOT_FOUND: //TODO remove this once the issue is fixed
-                  return c == Certificate::Checks::HAS_PRIVATE_KEY;
             }
 
             return srcIdx.data(role);
@@ -606,13 +621,14 @@ d_ptr(new SecurityEvaluationModelPrivate(account,this))
    Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
    Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
 
-   d_ptr->m_pCaProxy = caCert ? new PrefixAndSeverityProxyModel(tr("Authority" ),caCert->checksModel()) : nullptr;
-   d_ptr->m_pPkProxy = pkCert ? new PrefixAndSeverityProxyModel(tr("Public key"),pkCert->checksModel()) : nullptr;
+   SecurityEvaluationModelPrivate::getCertificateSeverityProxy(caCert);
+   SecurityEvaluationModelPrivate::getCertificateSeverityProxy(pkCert);
+
    d_ptr->m_pAccChecks = new AccountChecksModel(account);
 
    d_ptr->update();
 
-   setSourceModel(new CombinaisonProxyModel(d_ptr->m_pPkProxy,d_ptr->m_pCaProxy,d_ptr->m_pAccChecks,this));
+   setSourceModel(new CombinaisonProxyModel(pkCert ? pkCert->d_ptr->m_pSeverityProxy : nullptr, caCert ? caCert->d_ptr->m_pSeverityProxy : nullptr, d_ptr->m_pAccChecks,this));
 
    setSortRole((int)Role::Severity);
 }
@@ -657,23 +673,26 @@ void SecurityEvaluationModelPrivate::update()
    }
 }
 
-void SecurityEvaluationModelPrivate::updateReal()
+QAbstractItemModel* SecurityEvaluationModelPrivate::getCertificateSeverityProxy(Certificate* c)
+{
+   if (!c)
+      return nullptr;
+
+   if (!c->d_ptr->m_pSeverityProxy)
+      c->d_ptr->m_pSeverityProxy = new PrefixAndSeverityProxyModel(tr("Authority" ),c->checksModel());
+
+   return c->d_ptr->m_pSeverityProxy;
+}
+
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationModelPrivate::maxSecurityLevel(QAbstractItemModel* m, int* counter)
 {
    typedef SecurityEvaluationModel::Severity      Severity     ;
    typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
 
-   int countCache[enum_class_size<SecurityEvaluationModel::Severity>()];
-
-   //Reset the counter
-   for (const Severity s : EnumIterator<Severity>()) {
-      countCache     [(int)s] = m_SeverityCount[(int)s];
-      m_SeverityCount[(int)s] = 0                      ;
-   }
-
    SecurityLevel maxLevel = SecurityLevel::COMPLETE;
 
-   for (int i=0; i < q_ptr->rowCount();i++) {
-      const QModelIndex&  idx      = q_ptr->index(i,0);
+   for (int i=0; i < m->rowCount();i++) {
+      const QModelIndex&  idx      = m->index(i,0);
 
       const Severity      severity = qvariant_cast<Severity>(
          idx.data((int) SecurityEvaluationModel::Role::Severity)
@@ -687,13 +706,32 @@ void SecurityEvaluationModelPrivate::updateReal()
       ) : maxLevel;
 
       //Increment the count
-      m_SeverityCount[static_cast<int>(severity)]++;
+      if (counter)
+         counter[static_cast<int>(severity)]++;
 
-      const bool forceIgnore = idx.data(BYPASS_PRIVATE_KEY_NOT_FOUND).toBool(); //FIXME this is a hack
+      const bool forceIgnore = idx.data((int)CertificateModel::Role::requirePrivateKey).toBool();
 
       //Update the maximum level
       maxLevel = level < maxLevel && !forceIgnore ? level : maxLevel;
    }
+
+   return maxLevel;
+}
+
+void SecurityEvaluationModelPrivate::updateReal()
+{
+   typedef SecurityEvaluationModel::Severity      Severity     ;
+   typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
+
+   int countCache[enum_class_size<SecurityEvaluationModel::Severity>()];
+
+   //Reset the counter
+   for (const Severity s : EnumIterator<Severity>()) {
+      countCache     [(int)s] = m_SeverityCount[(int)s];
+      m_SeverityCount[(int)s] = 0                      ;
+   }
+
+   SecurityLevel maxLevel = maxSecurityLevel(q_ptr, m_SeverityCount);
 
    //Notify
    for (const Severity s : EnumIterator<Severity>()) {
@@ -724,6 +762,41 @@ QList<SecurityFlaw*> SecurityEvaluationModel::currentFlaws()
 SecurityEvaluationModel::SecurityLevel SecurityEvaluationModel::securityLevel() const
 {
    return d_ptr->m_CurrentSecurityLevel;
+}
+
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationModelPrivate::certificateSecurityLevel(Certificate* c, bool forceIgnorePrivateKey)
+{
+   typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
+
+   SecurityLevel maxLevelWithPriv    = SecurityLevel::COMPLETE;
+   SecurityLevel maxLevelWithoutPriv = SecurityLevel::COMPLETE;
+
+   const bool ignorePrivateKey = forceIgnorePrivateKey || (c->requirePrivateKey() == false);
+
+   if (c->d_ptr->m_hasLoadedSecurityLevel) {
+      if (ignorePrivateKey)
+         return c->d_ptr->m_SecurityLevelWithoutPriv;
+      else
+         return c->d_ptr->m_SecurityLevelWithPriv;
+   }
+
+   for (const Certificate::Checks check : EnumIterator<Certificate::Checks>()) {
+      const bool relevant = relevantWithoutPrivateKey[check];
+      if (c->checkResult(check) == Certificate::CheckValues::FAILED) {
+         if (relevant) {
+            const SecurityLevel checkLevel = maximumCertificateSecurityLevel[check];
+            maxLevelWithoutPriv = checkLevel < maxLevelWithoutPriv ? checkLevel : maxLevelWithoutPriv;
+         }
+         const SecurityLevel checkLevel = maximumCertificateSecurityLevel[check];
+         maxLevelWithPriv = checkLevel < maxLevelWithPriv ? checkLevel : maxLevelWithPriv;
+      }
+   }
+
+   c->d_ptr->m_hasLoadedSecurityLevel   = true;
+   c->d_ptr->m_SecurityLevelWithoutPriv = maxLevelWithoutPriv;
+   c->d_ptr->m_SecurityLevelWithPriv    = maxLevelWithPriv;
+
+   return ignorePrivateKey ? c->d_ptr->m_SecurityLevelWithoutPriv : c->d_ptr->m_SecurityLevelWithPriv;
 }
 
 //Map the array to getters

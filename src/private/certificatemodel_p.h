@@ -44,6 +44,8 @@ public:
    QAbstractItemModel* getModelCommon(CertificateNode* node);
    bool allowCertificate(Certificate* c, Account* a);
    bool banCertificate(Certificate* c, Account* a);
+   void loadChecks(CertificateNode* checks, Certificate* cert);
+   void regenChecks(Certificate* cert);
 
    //Attributes
    QVector<CertificateNode*>        m_lTopLevelNodes    ;
