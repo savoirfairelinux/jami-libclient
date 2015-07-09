@@ -764,7 +764,7 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationModel::securityLevel() 
    return d_ptr->m_CurrentSecurityLevel;
 }
 
-SecurityEvaluationModel::SecurityLevel SecurityEvaluationModelPrivate::certificateSecurityLevel(Certificate* c, bool forceIgnorePrivateKey)
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationModelPrivate::certificateSecurityLevel(const Certificate* c, bool forceIgnorePrivateKey)
 {
    typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
 

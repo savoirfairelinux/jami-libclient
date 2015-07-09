@@ -27,6 +27,7 @@
 class QString;
 
 //Ring
+#include "itembase.h"
 #include "keyexchangemodel.h"
 #include "tlsmethodmodel.h"
 #include "uri.h"
@@ -66,7 +67,7 @@ Q_ENUMS(DtmfType)
  * Similarly, the Account::EditAction::RELOAD action will reset the changes to match the
  * current properties used by daemon.
  */
-class LIB_EXPORT Account : public QObject {
+class LIB_EXPORT Account : public ItemBase {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -289,7 +290,9 @@ class LIB_EXPORT Account : public QObject {
          AllowIncomingFromContact    = 188,
          AllowIncomingFromUnknown    = 189,
          ActiveCallLimit             = 190,
-         HasActiveCallLimit          = 191
+         HasActiveCallLimit          = 191,
+         SecurityLevel               = 192,
+         SecurityLevelIcon           = 193,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context

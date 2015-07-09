@@ -42,7 +42,7 @@ template<typename T2>
 T2* ItemBase::extension() const
 {
    if (!d_ptr->m_pBackend)
-      return nullptr;
+      return CollectionExtensionModel::getExtension<T2>();;
 
    return d_ptr->m_pBackend->extension<T2>();
 }

@@ -47,7 +47,7 @@ public:
    //Helper
    static SecurityEvaluationModel::SecurityLevel maxSecurityLevel(QAbstractItemModel* m, int* counter = nullptr);
    static QAbstractItemModel* getCertificateSeverityProxy(Certificate* c);
-   static SecurityEvaluationModel::SecurityLevel certificateSecurityLevel(Certificate* c, bool forceIgnorePrivateKey = false);
+   static SecurityEvaluationModel::SecurityLevel certificateSecurityLevel(const Certificate* c, bool forceIgnorePrivateKey = false);
 
    ///Messages to show to the end user
    static const QString messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()];

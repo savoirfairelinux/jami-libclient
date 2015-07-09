@@ -39,7 +39,8 @@ class SecurityEvaluationExtensionPrivate
 {
 public:
    //Helpers
-   SecurityEvaluationModel::SecurityLevel checkCertificate(ItemBase* i);
+   SecurityEvaluationModel::SecurityLevel checkCertificate(const ItemBase* i);
+   SecurityEvaluationModel::SecurityLevel checkAccount    (const ItemBase* i);
 };
 
 SecurityEvaluationExtension::SecurityEvaluationExtension(QObject* parent) :
@@ -64,14 +65,14 @@ QVariant SecurityEvaluationExtension::data(int role) const
    return QVariant();
 }
 
-QVariant SecurityEvaluationExtension::securityLevelIcon(ItemBase* item) const
+QVariant SecurityEvaluationExtension::securityLevelIcon(const ItemBase* item) const
 {
    const SecurityEvaluationModel::SecurityLevel sl = securityLevel(item);
 
    return PixmapManipulationDelegate::instance()->securityLevelIcon(sl);
 }
 
-SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLevel(ItemBase* item) const
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLevel(const ItemBase* item) const
 {
    enum Types {
       OTHER         ,
@@ -92,8 +93,11 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLeve
 
    switch(types[item->metaObject()]) {
       case Types::ACCOUNT       :
-         break;
+         return d_ptr->checkAccount(item);
       case Types::CALL          :
+         //TODO check the "live" certificate chain of trust
+         //TODO check call details IS_SECURE
+         //TODO mix with the account SecurityLevel
          break;
       case Types::CERTIFICATE   :
          return d_ptr->checkCertificate(item);
@@ -109,17 +113,25 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLeve
    return SecurityEvaluationModel::SecurityLevel::NONE;
 }
 
-SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtensionPrivate::checkCertificate(ItemBase* i)
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtensionPrivate::checkCertificate(const ItemBase* i)
 {
-   Certificate* c = qobject_cast<Certificate*>(i);
+   const Certificate* c = qobject_cast<const Certificate*>(i);
 
    if (!c)
       return SecurityEvaluationModel::SecurityLevel::NONE;
-
-   const bool reqPriv = c->requirePrivateKey();
 
    const SecurityEvaluationModel::SecurityLevel l = SecurityEvaluationModelPrivate::certificateSecurityLevel(c,true);
 
 
    return l;
+}
+
+SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtensionPrivate::checkAccount(const ItemBase* i)
+{
+   const Account* a = qobject_cast<const Account*>(i);
+
+   if (!a)
+      return SecurityEvaluationModel::SecurityLevel::NONE;
+
+   return a->securityEvaluationModel()->securityLevel();
 }
