@@ -506,10 +506,15 @@ QVariant CertificateModel::headerData( int section, Qt::Orientation orientation,
    return QVariant();
 }
 
-Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
+/**
+ *Create a certificate. It will later be registerer in the daemon
+ *
+ * @note The path has to be a file, but can contain multiple certificates
+ */
+Certificate* CertificateModel::getCertificateFromPath(const QUrl& path, Account* a)
 {
    if (!a)
-      return getCertificate(path,Certificate::Type::CALL);
+      return getCertificateFromPath(path,Certificate::Type::CALL);
 
    CertificateNode* cat  = d_ptr->getCategory(a);
 
@@ -534,7 +539,7 @@ Certificate* CertificateModel::getCertificate(const QUrl& path, Account* a)
    return cert;
 }
 
-Certificate* CertificateModel::getCertificate(const QUrl& path, Certificate::Type type)
+Certificate* CertificateModel::getCertificateFromPath(const QUrl& path, Certificate::Type type)
 {
    Q_UNUSED(type)
    const QString id = path.path();
@@ -578,48 +583,6 @@ Certificate* CertificateModel::getCertificateFromId(const QString& id, Account* 
    }
 
    return cert;
-}
-
-//TODO Make this private
-Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, Account* a, bool save, const QString& category)
-{
-   QCryptographicHash hash(QCryptographicHash::Sha1);
-   hash.addData(rawContent);
-
-   //Create a reproducible key for this file
-   QByteArray id = hash.result().toHex();
-
-   Certificate* cert = d_ptr->m_hCertificates[id];
-   if (!cert) {
-      cert = new Certificate(rawContent);
-      d_ptr->m_hCertificates[id] = cert;
-
-      if ((!a) && (!category.isEmpty())) {
-         CertificateNode* cat = d_ptr->m_hStrToCat[category];
-
-         if (!cat) {
-            cat = d_ptr->createCategory(category, QString(), QString());
-         }
-
-         d_ptr->addToTree(cert,cat);
-      }
-      else
-         d_ptr->addToTree(cert,a);
-
-      if (save) {
-         //TODO this shouldn't be necessary
-//          static_cast< ItemBase<QObject>* >(cert)->save();
-         /*const QUrl path = CertificateSerializationDelegate::instance()->saveCertificate(id,rawContent);
-         cert->setPath(path);*/
-      }
-   }
-
-   return cert;
-}
-
-Certificate* CertificateModel::getCertificateFromContent(const QByteArray& rawContent, const QString& category, bool save)
-{
-   return getCertificateFromContent(rawContent,nullptr,save,category);
 }
 
 CertificateProxyModel::CertificateProxyModel(CertificateModel* parent, CertificateNode* root) : QAbstractProxyModel(parent),m_pRoot(root)

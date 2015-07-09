@@ -688,7 +688,7 @@ Certificate* Account::tlsCaListCertificate() const
       const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pCaCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::AUTHORITY);
+      d_ptr->m_pCaCert = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::AUTHORITY);
       connect(d_ptr->m_pCaCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pCaCert;
@@ -701,7 +701,7 @@ Certificate* Account::tlsCertificate() const
       const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pTlsCert = CertificateModel::instance()->getCertificate(path,Certificate::Type::USER);
+      d_ptr->m_pTlsCert = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::USER);
       connect(d_ptr->m_pTlsCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pTlsCert;
@@ -714,7 +714,7 @@ Certificate* Account::tlsPrivateKeyCertificate() const
       const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pPrivateKey = CertificateModel::instance()->getCertificate(path,Certificate::Type::PRIVATE_KEY);
+      d_ptr->m_pPrivateKey = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::PRIVATE_KEY);
       connect(d_ptr->m_pPrivateKey,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pPrivateKey;
@@ -1367,21 +1367,21 @@ void Account::setTlsPassword(const QString& detail)
 ///Set the certificate authority list file
 void Account::setTlsCaListCertificate(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
    setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
 void Account::setTlsCertificate(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
    setTlsCertificate(cert);
 }
 
 ///Set the private key
 void Account::setTlsPrivateKeyCertificate(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificate(path);
+   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
    setTlsPrivateKeyCertificate(cert);
 }
 
