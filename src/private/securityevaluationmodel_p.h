@@ -21,6 +21,7 @@
 class SecurityFlaw;
 class Account;
 class Certificate;
+class AccountChecksModel;
 
 #include <certificate.h>
 #include "private/matrixutils.h"
@@ -40,6 +41,12 @@ public:
    bool         m_isScheduled;
    int          m_SeverityCount[enum_class_size<SecurityEvaluationModel::Severity>()];
 
+   AccountChecksModel*          m_pAccChecks;
+
+   //Helper
+   static SecurityEvaluationModel::SecurityLevel maxSecurityLevel(QAbstractItemModel* m, int* counter = nullptr);
+   static QAbstractItemModel* getCertificateSeverityProxy(Certificate* c);
+   static SecurityEvaluationModel::SecurityLevel certificateSecurityLevel(Certificate* c, bool forceIgnorePrivateKey = false);
 
    ///Messages to show to the end user
    static const QString messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()];
