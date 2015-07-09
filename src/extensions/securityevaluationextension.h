@@ -41,8 +41,8 @@ public:
 
    virtual QVariant data(int role) const override;
 
-   SecurityEvaluationModel::SecurityLevel securityLevel(ItemBase* item) const;
-   QVariant securityLevelIcon(ItemBase* item) const;
+   SecurityEvaluationModel::SecurityLevel securityLevel(const ItemBase* item) const;
+   QVariant securityLevelIcon(const ItemBase* item) const;
 
 private:
    SecurityEvaluationExtensionPrivate* d_ptr;

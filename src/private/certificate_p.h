@@ -116,8 +116,8 @@ public:
     * somewhere or it will be recomputed every time ::data() is called on
     * a model.
     */
-   SecurityEvaluationModel::SecurityLevel m_SecurityLevelWithPriv    {SecurityEvaluationModel::SecurityLevel::NONE};
-   SecurityEvaluationModel::SecurityLevel m_SecurityLevelWithoutPriv {SecurityEvaluationModel::SecurityLevel::NONE};
+   mutable SecurityEvaluationModel::SecurityLevel m_SecurityLevelWithPriv    {SecurityEvaluationModel::SecurityLevel::NONE};
+   mutable SecurityEvaluationModel::SecurityLevel m_SecurityLevelWithoutPriv {SecurityEvaluationModel::SecurityLevel::NONE};
    bool m_hasLoadedSecurityLevel {false};
 
    mutable DetailsCache* m_pDetailsCache;
