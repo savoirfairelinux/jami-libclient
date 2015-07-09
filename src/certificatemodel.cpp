@@ -320,6 +320,53 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Account* 
    return addToTree(cert,cat);
 }
 
+void CertificateModelPrivate::regenChecks(Certificate* cert)
+{
+   CertificateNode* n = m_hNodes[cert];
+
+   if (!n)
+      return;
+
+   //There could be a loading race condition
+   if (n->m_lChildren.size() >= 2)
+      loadChecks(n->m_lChildren[1], cert);
+}
+
+//[Re]generate the checks
+void CertificateModelPrivate::loadChecks(CertificateNode* checks, Certificate* cert)
+{
+   static const int checksC(enum_class_size<Certificate::Checks>());
+
+   const QModelIndex checksI(q_ptr->createIndex(checks->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),checks));
+
+   //Clear the existing nodes
+   if (checks->m_lChildren.size()) {
+      q_ptr->beginRemoveRows(checksI, 0, checks->m_lChildren.size());
+      const QList<CertificateNode*> nodes;
+
+      for (CertificateNode* n : nodes)
+         delete n;
+
+      checks->m_lChildren.clear();
+
+      q_ptr->endRemoveRows();
+   }
+
+   //Add the new ones
+   q_ptr->beginInsertRows(checksI, static_cast<int>(CertificateModel::Columns::NAME ), checksC);
+   for (const Certificate::Checks check : EnumIterator<Certificate::Checks>()) {
+      if (cert->checkResult(check) != Certificate::CheckValues::UNSUPPORTED) {
+         CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateModel::NodeType::DETAILS, checks, nullptr);
+         d->setStrings(cert->getName(check),static_cast<bool>(cert->checkResult(check)),cert->getDescription(check));
+         d->m_DetailType = DetailType::CHECK;
+         d->m_pCertificate = cert;
+         d->m_EnumClassDetail = static_cast<int>(check);
+         checks->m_lChildren << d;
+      }
+   }
+   q_ptr->endInsertRows();
+}
+
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
 {
    QMutexLocker locker(&m_CertLoader);
@@ -358,7 +405,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       node->m_lChildren << details; node->m_lChildren << checks;
       q_ptr->endInsertRows();
 
-      const int detailsC(enum_class_size<Certificate::Details>()), checksC(enum_class_size<Certificate::Checks>());
+      static const int detailsC(enum_class_size<Certificate::Details>());
 
       //Insert the details
       const QModelIndex detailsI(q_ptr->createIndex(details->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),details));
@@ -367,24 +414,14 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
          CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateModel::NodeType::DETAILS, details, nullptr);
          d->setStrings(cert->getName(detail),cert->detailResult(detail),cert->getDescription(detail)       );
          d->m_DetailType = DetailType::DETAIL;
+         d->m_pCertificate = cert;
          d->m_EnumClassDetail = static_cast<int>(detail);
          details->m_lChildren << d;
       }
       q_ptr->endInsertRows();
 
       //Insert the checks
-      const QModelIndex checksI(q_ptr->createIndex(checks->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),checks));
-      q_ptr->beginInsertRows(checksI, static_cast<int>(CertificateModel::Columns::NAME ), checksC);
-      for (const Certificate::Checks check : EnumIterator<Certificate::Checks>()) {
-         if (cert->checkResult(check) != Certificate::CheckValues::UNSUPPORTED) {
-            CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateModel::NodeType::DETAILS, checks, nullptr);
-            d->setStrings(cert->getName(check),static_cast<bool>(cert->checkResult(check)),cert->getDescription(check));
-            d->m_DetailType = DetailType::CHECK;
-            d->m_EnumClassDetail = static_cast<int>(check);
-            checks->m_lChildren << d;
-         }
-      }
-      q_ptr->endInsertRows();
+      this->loadChecks(checks, cert);
    };
    node->m_IsLoaded = false;
 
@@ -444,6 +481,8 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
                if (node->m_DetailType == DetailType::CHECK)
                   return QVariant::fromValue(static_cast<Certificate::Checks>(node->m_EnumClassDetail));
                break;
+            case (int)Role::requirePrivateKey:
+               return node->m_pCertificate ? node->m_pCertificate->requirePrivateKey() : false;
          }
          break;
       case CertificateModel::NodeType::CERTIFICATE     :

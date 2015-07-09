@@ -30,6 +30,8 @@
 class CollectionInterface;
 class ItemBase;
 
+class SecurityEvaluationExtensionPrivate;
+
 class LIB_EXPORT SecurityEvaluationExtension final : public CollectionExtensionInterface
 {
    Q_OBJECT
@@ -41,6 +43,11 @@ public:
 
    SecurityEvaluationModel::SecurityLevel securityLevel(ItemBase* item) const;
    QVariant securityLevelIcon(ItemBase* item) const;
+
+private:
+   SecurityEvaluationExtensionPrivate* d_ptr;
+   virtual ~SecurityEvaluationExtension();
+   Q_DECLARE_PRIVATE(SecurityEvaluationExtension)
 };
 
 #endif

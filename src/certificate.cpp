@@ -19,7 +19,6 @@
 
 //Qt
 #include <QtCore/QFile>
-#include <QtCore/QDateTime>
 
 //STD
 #include <stdint.h>
@@ -33,108 +32,9 @@
 #include "private/matrixutils.h"
 #include "private/account_p.h"
 #include "private/certificatemodel_p.h"
+#include "private/certificate_p.h"
 #include <account.h>
 #include <chainoftrustmodel.h>
-
-class DetailsCache {
-public:
-   DetailsCache(const MapStringString& details);
-
-   QDateTime  m_ExpirationDate            ;
-   QDateTime  m_ActivationDate            ;
-   bool       m_RequirePrivateKeyPassword ;
-   QByteArray m_PublicSignature           ;
-   int        m_VersionNumber             ;
-   QByteArray m_SerialNumber              ;
-   QString    m_Issuer                    ;
-   QByteArray m_SubjectKeyAlgorithm       ;
-   QString    m_Cn                        ;
-   QString    m_N                         ;
-   QString    m_O                         ;
-   QByteArray m_SignatureAlgorithm        ;
-   QByteArray m_Md5Fingerprint            ;
-   QByteArray m_Sha1Fingerprint           ;
-   QByteArray m_PublicKeyId               ;
-   QByteArray m_IssuerDn                  ;
-   QDateTime  m_NextExpectedUpdateDate    ;
-   QString    m_OutgoingServer            ;
-
-};
-
-class ChecksCache {
-public:
-   ChecksCache(const MapStringString& checks);
-
-   Certificate::CheckValues m_HasPrivateKey                       ;
-   Certificate::CheckValues m_IsExpired                           ;
-   Certificate::CheckValues m_HasStrongSigning                    ;
-   Certificate::CheckValues m_IsSelfSigned                        ;
-   Certificate::CheckValues m_PrivateKeyMatch                     ;
-   Certificate::CheckValues m_ArePrivateKeyStoragePermissionOk    ;
-   Certificate::CheckValues m_ArePublicKeyStoragePermissionOk     ;
-   Certificate::CheckValues m_ArePrivateKeyDirectoryPermissionsOk ;
-   Certificate::CheckValues m_ArePublicKeyDirectoryPermissionsOk  ;
-   Certificate::CheckValues m_ArePrivateKeyStorageLocationOk      ;
-   Certificate::CheckValues m_ArePublicKeyStorageLocationOk       ;
-   Certificate::CheckValues m_ArePrivateKeySelinuxAttributesOk    ;
-   Certificate::CheckValues m_ArePublicKeySelinuxAttributesOk     ;
-   Certificate::CheckValues m_Exist                               ;
-   Certificate::CheckValues m_IsValid                             ;
-   Certificate::CheckValues m_ValidAuthority                      ;
-   Certificate::CheckValues m_HasKnownAuthority                   ;
-   Certificate::CheckValues m_IsNotRevoked                        ;
-   Certificate::CheckValues m_AuthorityMismatch                   ;
-   Certificate::CheckValues m_UnexpectedOwner                     ;
-   Certificate::CheckValues m_NotActivated                        ;
-};
-
-/**
- * Certificates can be loaded either from disk or directly from the
- * network sockets. In that case, they don't (always) need to be saved
- */
-enum class LoadingType {
-   FROM_PATH,
-   FROM_ID
-};
-
-class CertificatePrivate
-{
-public:
-   //Types
-   typedef Certificate::CheckValues (Certificate::*accessor)();
-
-   //Constructor
-   CertificatePrivate(LoadingType _ltype);
-   ~CertificatePrivate();
-
-   //Attributes
-   QUrl               m_Path                    ;
-   Certificate::Type  m_Type                    ;
-   QByteArray         m_Content                 ;
-   LoadingType        m_LoadingType             ;
-   QByteArray         m_Id                      ;
-   quint64            m_Statuses             [3];
-   QUrl               m_PrivateKey              ;
-   bool               m_RequirePrivateKey       ;
-   bool               m_RequireStrictPermissions;
-   Certificate*       m_pSignedBy               ;
-   ChainOfTrustModel* m_pChainOfTrust           ;
-   FlagPack<Certificate::OriginHint> m_fHints   ;
-
-   mutable DetailsCache* m_pDetailsCache;
-   mutable ChecksCache*  m_pCheckCache  ;
-
-   //Helpers
-   void loadDetails();
-   void loadChecks (bool loadChecks = false);
-
-   static Matrix1D<Certificate::Checks ,QString> m_slChecksName;
-   static Matrix1D<Certificate::Checks ,QString> m_slChecksDescription;
-   static Matrix1D<Certificate::Details,QString> m_slDetailssName;
-   static Matrix1D<Certificate::Details,QString> m_slDetailssDescription;
-
-   static Certificate::CheckValues toBool(const QString& string);
-};
 
 Matrix1D<Certificate::Checks ,QString> CertificatePrivate::m_slChecksName = {{
    /* HAS_PRIVATE_KEY                   */ QObject::tr("Has a private key"                               ),
@@ -229,17 +129,18 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 }};
 
 
-CertificatePrivate::CertificatePrivate(LoadingType _type) :
-m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),
+CertificatePrivate::CertificatePrivate(Certificate* p, LoadingType _type) :
+q_ptr(p), m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),
 m_Statuses{0,0,0},m_RequirePrivateKey(false),m_RequireStrictPermissions(true),
-m_pSignedBy(nullptr),m_pChainOfTrust(nullptr)
+m_pSignedBy(nullptr),m_pChainOfTrust(nullptr),m_pSeverityProxy(nullptr)
 {
 }
 
 CertificatePrivate::~CertificatePrivate()
 {
-   if (m_pDetailsCache) delete m_pDetailsCache;
-   if (m_pCheckCache  ) delete m_pCheckCache  ;
+   if (m_pDetailsCache ) delete m_pDetailsCache ;
+   if (m_pCheckCache   ) delete m_pCheckCache   ;
+   if (m_pSeverityProxy) delete m_pSeverityProxy;
 }
 
 Certificate::CheckValues CertificatePrivate::toBool(const QString& string)
@@ -330,10 +231,11 @@ void CertificatePrivate::loadChecks(bool reload)
       if (reload && m_pCheckCache)
          delete m_pCheckCache;
       m_pCheckCache = new ChecksCache(checks);
+      CertificateModel::instance()->d_ptr->regenChecks(q_ptr);
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_PATH))
+Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
    moveToThread(CertificateModel::instance()->thread());
@@ -342,7 +244,7 @@ Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : 
    d_ptr->m_Type = type;
 }
 
-Certificate::Certificate(const QString& id) : ItemBase(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_ID))
+Certificate::Certificate(const QString& id) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_ID))
 {
    moveToThread(CertificateModel::instance()->thread());
    setParent(CertificateModel::instance());
