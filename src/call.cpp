@@ -414,7 +414,7 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 
    //Load the certificate if it's now available
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::TlsTransport::TLS_PEER_CERT].toLatin1(),call->account());
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
    }
 
    return call;
@@ -490,7 +490,7 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
 
    //Load the certificate if it's now available
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::TlsTransport::TLS_PEER_CERT].toLatin1(),call->account());
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
    }
 
    return call;
@@ -523,7 +523,7 @@ Call* CallPrivate::buildRingingCall(const QString & callId)
 
    //Load the certificate if it's now available
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::TlsTransport::TLS_PEER_CERT].toLatin1(),call->account());
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
    }
 
    return call;
@@ -610,7 +610,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Check the certificate
    if (!cert_path.isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificate(QUrl(cert_path),acc);
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromPath(QUrl(cert_path),acc);
    }
 
    //Allow the certificate
@@ -1240,7 +1240,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
 
       //Load the certificate if it's now available
       if (!q_ptr->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-         m_pCertificate = CertificateModel::instance()->getCertificateFromContent(details[DRing::TlsTransport::TLS_PEER_CERT].toLatin1(),q_ptr->account());
+         m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], q_ptr->account());
       }
 
       try {
