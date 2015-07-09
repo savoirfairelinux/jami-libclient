@@ -33,17 +33,19 @@ public:
    friend class CertificateProxyModel;
    friend struct CertificateNode;
    friend class Certificate;
+   friend class CertificatePrivate;
    friend class Account;
    friend class DaemonCertificateCollectionPrivate;
    friend class DaemonCertificateCollection;
 
    enum class Role {
-      NodeType       = 100,
-      isDetail       = 101,
-      isCheck        = 102,
-      detail         = 103,
-      check          = 104,
-      DetailRoleBase = 1000,
+      NodeType          = 100,
+      isDetail          = 101,
+      isCheck           = 102,
+      detail            = 103,
+      check             = 104,
+      requirePrivateKey = 105,
+      DetailRoleBase    = 1000,
    };
 
    enum class Columns {
