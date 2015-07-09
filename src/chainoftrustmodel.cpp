@@ -53,7 +53,10 @@ ChainOfTrustModel::ChainOfTrustModel(Certificate* c) : QAbstractItemModel(c), d_
       if (prev)
          prev->m_pParent = n                          ;
 
-      cn = cn->signedBy();
+      Certificate* next = cn->signedBy();
+
+      //Prevent infinite loop of self signed certificates
+      cn = next == cn ? nullptr : next;
    }
 
    d_ptr->m_pRoot = n;
