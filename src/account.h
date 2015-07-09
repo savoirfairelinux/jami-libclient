@@ -152,6 +152,10 @@ class LIB_EXPORT Account : public QObject {
    Q_PROPERTY(uint           trimesterCallCount           READ trimesterCallCount                                                 )
    Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
 
+   Q_PROPERTY(bool           allowIncomingFromHistory     READ allowIncomingFromHistory      WRITE setAllowIncomingFromHistory    )
+   Q_PROPERTY(bool           allowIncomingFromContact     READ allowIncomingFromContact      WRITE setAllowIncomingFromContact    )
+   Q_PROPERTY(bool           allowIncomingFromUnknown     READ allowIncomingFromUnknown      WRITE setAllowIncomingFromUnknown    )
+
    Q_PROPERTY(CredentialModel*         credentialModel             READ credentialModel                                           )
    Q_PROPERTY(CodecModel*              codecModel                  READ codecModel                                                )
    Q_PROPERTY(KeyExchangeModel*        keyExchangeModel            READ keyExchangeModel                                          )
