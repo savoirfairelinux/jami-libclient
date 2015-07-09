@@ -186,6 +186,8 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::AllowIncomingFromUnknown    ) ,QByteArray("allowIncomingFromUnknown"      ));
       roles.insert(CAST(Account::Role::ActiveCallLimit             ) ,QByteArray("activeCallLimit"               ));
       roles.insert(CAST(Account::Role::HasActiveCallLimit          ) ,QByteArray("hasActiveCallLimit"            ));
+      roles.insert(CAST(Account::Role::SecurityLevel               ) ,QByteArray("securityLevel"                 ));
+      roles.insert(CAST(Account::Role::SecurityLevelIcon           ) ,QByteArray("securityLevelIcon"             ));
    }
    return roles;
 }

@@ -54,6 +54,7 @@
 #include "securityevaluationmodel.h"
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
+#include "extensions/securityevaluationextension.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -105,7 +106,7 @@ void AccountPrivate::changeState(Account::EditState state) {
 }
 
 ///Constructors
-Account::Account():QObject(AccountModel::instance()),d_ptr(new AccountPrivate(this))
+Account::Account():ItemBase(AccountModel::instance()),d_ptr(new AccountPrivate(this))
 {
 }
 
@@ -1162,9 +1163,22 @@ QVariant Account::roleData(int role) const
          return activeCallLimit();
       case CAST(Account::Role::HasActiveCallLimit):
          return hasActiveCallLimit();
+      case CAST(Account::Role::SecurityLevel):
+         if (extension<SecurityEvaluationExtension>()) {
+            return QVariant::fromValue(
+               extension<SecurityEvaluationExtension>()->securityLevel(this)
+            );
+         };
+         break;
+      case CAST(Account::Role::SecurityLevelIcon):
+         if (extension<SecurityEvaluationExtension>()) {
+            return extension<SecurityEvaluationExtension>()->securityLevelIcon(this);
+         }
+         break;
       default:
          return QVariant();
    }
+   return QVariant();
 }
 #undef CAST
 
@@ -1948,6 +1962,10 @@ void Account::setRoleData(int role, const QVariant& value)
          break;
       case CAST(Account::Role::HasActiveCallLimit):
          return setHasActiveCallLimit(value.toBool());
+         break;
+      //Read-only
+      case CAST(Account::Role::SecurityLevel):
+      case CAST(Account::Role::SecurityLevelIcon):
          break;
    }
 }
