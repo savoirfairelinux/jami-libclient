@@ -93,7 +93,6 @@ public:
  */
 enum class LoadingType {
    FROM_PATH,
-   FROM_CONTENT,
    FROM_ID
 };
 
@@ -303,9 +302,6 @@ void CertificatePrivate::loadDetails()
          case LoadingType::FROM_PATH:
             d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Path.toString());
             break;
-         case LoadingType::FROM_CONTENT:
-            d = DBus::ConfigurationManager::instance().getCertificateDetailsRaw(m_Content);
-            break;
          case LoadingType::FROM_ID:
             d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
             break;
@@ -320,13 +316,10 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Path.toString(),m_PrivateKey.toString());
-            break;
-         case LoadingType::FROM_CONTENT:
-            checks = DBus::ConfigurationManager::instance().validateCertificateRaw(QString(),m_Content);
+            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), {});
             break;
          case LoadingType::FROM_ID:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id,QString());
+            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id);
             break;
       }
       if (reload && m_pCheckCache)
@@ -349,14 +342,6 @@ Certificate::Certificate(const QString& id) : ItemBase<QObject>(nullptr),d_ptr(n
    moveToThread(CertificateModel::instance()->thread());
    setParent(CertificateModel::instance());
    d_ptr->m_Id = id.toLatin1();
-}
-
-Certificate::Certificate(const QByteArray& content, Type type): ItemBase<QObject>(nullptr),d_ptr(new CertificatePrivate(LoadingType::FROM_CONTENT))
-{
-   moveToThread(CertificateModel::instance()->thread());
-   setParent(CertificateModel::instance());
-   d_ptr->m_Content = content;
-   d_ptr->m_Type    = type;
 }
 
 Certificate::~Certificate()
