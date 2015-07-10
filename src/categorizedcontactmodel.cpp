@@ -170,6 +170,9 @@ void ContactTreeNode::slotChanged()
    n->m_Visible = n->m_pContact && n->m_pContact->isActive();
    emit m_pModel->dataChanged(self,self);
 
+   const QModelIndex& tl = m_pModel->index(0,0,self);
+   const QModelIndex& br = m_pModel->index(0,m_pModel->rowCount(self),self);
+   emit m_pModel->dataChanged(tl, br);
 }
 
 void ContactTreeNode::slotContactMethodCountChanged(int count, int oldCount)
