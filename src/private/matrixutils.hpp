@@ -265,16 +265,12 @@ void Matrix1D<Row,Value,Accessor>::Matrix1DEnumClassIter::operator= (Value& othe
 
 ///@return if the value was changed (return false for identical values)
 template<class Row, typename Value, typename Accessor>
-bool Matrix1D<Row,Value,Accessor>::setAt(Row row,Value value)
+void Matrix1D<Row,Value,Accessor>::setAt(Row row,Value value)
 {
    if (m_lData[(int)row])
       delete m_lData[(int)row];
 
-   const bool ret = (!m_lData[static_cast<int>(row)]) || ((*m_lData[static_cast<int>(row)]) != value);
-
    m_lData[(int)row] = new Value(value);
-
-   return ret;
 }
 
 template<class Row, typename Value, typename Accessor>
