@@ -144,7 +144,7 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString getAccountDetails(const QString &accountID)
+   MapStringString getAccountDetails(const QString& accountID)
    {
       MapStringString temp =
          convertMap(DRing::getAccountDetails(accountID.toStdString()));
@@ -166,13 +166,13 @@ public Q_SLOTS: // METHODS
    }
 
    // TODO: works?
-   VectorUInt getActiveCodecList(const QString &accountID)
+   VectorUInt getActiveCodecList(const QString& accountID)
    {
       return QVector<unsigned int>::fromStdVector(
          DRing::getActiveCodecList(accountID.toStdString()));
    }
 
-   QString getAddrFromInterfaceName(const QString &interface)
+   QString getAddrFromInterfaceName(const QString& interface)
    {
       QString temp(
          DRing::getAddrFromInterfaceName(interface.toStdString()).c_str());
@@ -193,7 +193,7 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString getCodecDetails(const QString accountID, int payload)
+   MapStringString getCodecDetails(const QString& accountID, int payload)
    {
       MapStringString temp =
          convertMap(DRing::getCodecDetails(
@@ -206,7 +206,7 @@ public Q_SLOTS: // METHODS
       return QVector<unsigned int>::fromStdVector(DRing::getCodecList());
    }
 
-   int getAudioInputDeviceIndex(const QString &devname)
+   int getAudioInputDeviceIndex(const QString& devname)
    {
       return DRing::getAudioInputDeviceIndex(devname.toStdString());
    }
@@ -225,7 +225,7 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   int getAudioOutputDeviceIndex(const QString &devname)
+   int getAudioOutputDeviceIndex(const QString& devname)
    {
       return DRing::getAudioOutputDeviceIndex(devname.toStdString());
    }
@@ -244,7 +244,7 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   VectorMapStringString getCredentials(const QString &accountID)
+   VectorMapStringString getCredentials(const QString& accountID)
    {
       VectorMapStringString temp;
       for(auto x : DRing::getCredentials(accountID.toStdString())) {
@@ -323,20 +323,21 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString validateCertificate(const QString& unused, const QString certificate, const QString& privateKey)
+   MapStringString validateCertificate(const QString& unused, const QString& certificate)
    {
       MapStringString temp =
          convertMap(DRing::validateCertificate(unused.toStdString(),
-                                             certificate.toStdString(),
-                                             privateKey.toStdString()));
+                                             certificate.toStdString()));
       return temp;
    }
 
-   MapStringString validateCertificateRaw(const QString& unused, const QByteArray& content)
+   MapStringString validateCertificatePath(const QString& unused, const QString& certificate, const QString& privateKey, const QString& caListPath)
    {
-      std::vector<unsigned char> raw(content.begin(), content.end());
       MapStringString temp =
-         convertMap(DRing::validateCertificateRaw(unused.toStdString(), raw));
+         convertMap(DRing::validateCertificatePath(unused.toStdString(),
+                                             certificate.toStdString(),
+                                             privateKey.toStdString(),
+                                             caListPath.toStdString()));
       return temp;
    }
 
@@ -347,11 +348,10 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString getCertificateDetailsRaw(const QByteArray& content)
+   MapStringString getCertificateDetailsPath(const QString& certificate)
    {
-      std::vector<unsigned char> raw(content.begin(), content.end());
       MapStringString temp =
-         convertMap(DRing::getCertificateDetailsRaw(raw));
+         convertMap(DRing::getCertificateDetailsPath(certificate.toStdString()));
       return temp;
    }
 
@@ -419,28 +419,28 @@ public Q_SLOTS: // METHODS
       DRing::registerAllAccounts();
    }
 
-   void removeAccount(const QString &accountID)
+   void removeAccount(const QString& accountID)
    {
       DRing::removeAccount(accountID.toStdString());
    }
 
-   void sendRegister(const QString &accountID, bool enable)
+   void sendRegister(const QString& accountID, bool enable)
    {
       DRing::sendRegister(accountID.toStdString(), enable);
    }
 
-   void setAccountDetails(const QString &accountID, MapStringString details)
+   void setAccountDetails(const QString& accountID, MapStringString details)
    {
       DRing::setAccountDetails(accountID.toStdString(),
          convertMap(details));
    }
 
-   void setAccountsOrder(const QString &order)
+   void setAccountsOrder(const QString& order)
    {
       DRing::setAccountsOrder(order.toStdString());
    }
 
-   void setActiveCodecList(const QString &accountID, VectorUInt &list)
+   void setActiveCodecList(const QString& accountID, VectorUInt &list)
    {
       //const std::vector<unsigned int> converted = convertStringList(list);
       DRing::setActiveCodecList(accountID.toStdString(),
@@ -457,7 +457,7 @@ public Q_SLOTS: // METHODS
       DRing::setAudioInputDevice(index);
    }
 
-   bool setAudioManager(const QString &api)
+   bool setAudioManager(const QString& api)
    {
       return DRing::setAudioManager(api.toStdString());
    }
@@ -467,7 +467,7 @@ public Q_SLOTS: // METHODS
       DRing::setAudioOutputDevice(index);
    }
 
-   void setAudioPlugin(const QString &audioPlugin)
+   void setAudioPlugin(const QString& audioPlugin)
    {
       DRing::setAudioPlugin(audioPlugin.toStdString());
    }
@@ -477,7 +477,7 @@ public Q_SLOTS: // METHODS
       DRing::setAudioRingtoneDevice(index);
    }
 
-   void setCredentials(const QString &accountID, VectorMapStringString credentialInformation)
+   void setCredentials(const QString& accountID, VectorMapStringString credentialInformation)
    {
       std::vector<std::map<std::string, std::string> > temp;
       for (auto x : credentialInformation) {
@@ -506,7 +506,7 @@ public Q_SLOTS: // METHODS
       DRing::setNoiseSuppressState(state);
    }
 
-   void setRecordPath(const QString &rec)
+   void setRecordPath(const QString& rec)
    {
       DRing::setRecordPath(rec.toStdString());
    }
@@ -516,12 +516,12 @@ public Q_SLOTS: // METHODS
       DRing::setShortcuts(convertMap(shortcutsMap));
    }
 
-   void setVolume(const QString &device, double value)
+   void setVolume(const QString& device, double value)
    {
       DRing::setVolume(device.toStdString(), value);
    }
 
-   MapStringString getVolatileAccountDetails(const QString &accountID)
+   MapStringString getVolatileAccountDetails(const QString& accountID)
    {
       MapStringString temp = convertMap(DRing::getVolatileAccountDetails(accountID.toStdString()));
       return temp;
@@ -534,10 +534,10 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   QString pinCertificate(const QByteArray& content, bool local)
+   QStringList pinCertificate(const QByteArray& content, bool local)
    {
       std::vector<unsigned char> raw(content.begin(), content.end());
-      return QString(DRing::pinCertificate(raw,local).c_str());
+      return convertStringList(DRing::pinCertificate(raw,local));
    }
 
    bool unpinCertificate(const QString& certId)
@@ -592,14 +592,14 @@ public Q_SLOTS: // METHODS
 
 
 Q_SIGNALS: // SIGNALS
-   void volumeChanged(const QString &device, double value);
+   void volumeChanged(const QString& device, double value);
    void accountsChanged();
    void historyChanged();
-   void stunStatusFailure(const QString &reason);
+   void stunStatusFailure(const QString& reason);
    void registrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
-   void stunStatusSuccess(const QString &message);
+   void stunStatusSuccess(const QString& message);
    void errorAlert(int code);
-   void volatileAccountDetailsChanged(const QString &accountID, MapStringString details);
+   void volatileAccountDetailsChanged(const QString& accountID, MapStringString details);
    void certificatePinned(const QString& certId);
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
