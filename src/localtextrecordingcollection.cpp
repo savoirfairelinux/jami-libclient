@@ -30,6 +30,7 @@
 #include <media/recording.h>
 #include <media/textrecording.h>
 #include <private/textrecording_p.h>
+#include <private/contactmethod_p.h>
 #include <media/media.h>
 
 /*
@@ -249,6 +250,7 @@ Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMetho
    if (!r) {
       r = new Media::TextRecording();
       r->setCollection(this);
+      cm->d_ptr->setTextRecording(r);
    }
 
    return r;

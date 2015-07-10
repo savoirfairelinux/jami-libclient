@@ -590,6 +590,10 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString());
    }
 
+   void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
+   {
+      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message.toStdString());
+   }
 
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
