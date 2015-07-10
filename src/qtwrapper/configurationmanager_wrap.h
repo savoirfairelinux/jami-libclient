@@ -119,7 +119,7 @@ public:
          }),
 
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
-               [this] (const std::string &accountId, const std::string &certId, time_t timestamp) {
+               [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
                      QTimer::singleShot(0, [this, certId,accountId,timestamp] {
                            Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), timestamp);
                      });
