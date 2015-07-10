@@ -29,6 +29,7 @@ class ProfileContentBackend;
 class ProfilePersisterDelegate;
 class VCardMapper;
 class ProfileModelPrivate;
+class QItemSelectionModel;
 
 template<typename T> class CollectionMediator;
 
@@ -58,6 +59,7 @@ public:
    QModelIndex mapToSource  (const QModelIndex& idx) const;
    QModelIndex mapFromSource(const QModelIndex& idx) const;
    int acceptedPayloadTypes() const;
+   QItemSelectionModel* selectionModel() const;
 
 private:
    ProfileModelPrivate* d_ptr;

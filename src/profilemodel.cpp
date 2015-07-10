@@ -24,6 +24,7 @@
 #include <QMimeData>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPointer>
+#include <QtCore/QItemSelectionModel>
 
 //SFLPhone library
 #include "accountmodel.h"
@@ -486,6 +487,7 @@ public:
    ProfileContentBackend*                 m_pProfileBackend;
    ProfilePersisterDelegate*               m_pDelegate   ;
    QStringList m_lMimes;
+   QItemSelectionModel* m_pSelectionModel {nullptr};
 
    //Helpers
    void updateIndexes();
@@ -680,6 +682,20 @@ QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
 int ProfileModel::acceptedPayloadTypes() const
 {
    return CallModel::DropPayloadType::ACCOUNT;
+}
+
+QItemSelectionModel* ProfileModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<ProfileModel*>(this));
+
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, [this](const QModelIndex& i) {
+         const QModelIndex& accIdx = mapToSource(i);
+         AccountModel::instance()->selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
+      });
+   }
+
+   return d_ptr->m_pSelectionModel;
 }
 
 void ProfileModelPrivate::updateIndexes()
