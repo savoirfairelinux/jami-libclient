@@ -77,10 +77,8 @@ public:
    QAbstractItemModel* singleCertificateModel(const QModelIndex& idx) const;
 
    //Mutator
-   Certificate* getCertificate(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
-   Certificate* getCertificate(const QUrl& path, Account* a);
-   Certificate* getCertificateFromContent(const QByteArray& rawContent, Account* a = nullptr, bool save = true, const QString& category = QString());
-   Certificate* getCertificateFromContent(const QByteArray& rawContent, const QString& category, bool save = true);
+   Certificate* getCertificateFromPath(const QUrl& path, Certificate::Type type = Certificate::Type::NONE);
+   Certificate* getCertificateFromPath(const QUrl& path, Account* a);
    Certificate* getCertificateFromId(const QString& id, Account* a = nullptr, const QString& category = QString());
 
    //Singleton

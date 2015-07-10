@@ -342,7 +342,7 @@ void BackgroundLoader::run()
 
       QMutexLocker(&this->m_LoaderMutex);
       for(const QByteArray& id : m_pCurrentFolder->listId()) {
-         Certificate* cert = CertificateModel::instance()->getCertificateFromContent(loadCertificate(id),m_pCurrentFolder->name(),false);
+         Certificate* cert = CertificateModel::instance()->getCertificateFromPath(QUrl(id));
          m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
       }
 
