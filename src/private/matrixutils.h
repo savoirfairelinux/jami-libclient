@@ -136,7 +136,7 @@ struct Matrix1D
    static void setReverseMapping(Matrix1D<Row,const char *> names);
 
    //Setter
-   bool setAt(Row,Value);
+   void setAt(Row,Value);
 
    //Getter
    bool isSet(Row);
