@@ -480,6 +480,10 @@ bool AccountModel::moveUp()
 {
    if (d_ptr->m_pSelectionModel) {
       const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
+
+      if (!idx.isValid())
+         return false;
+
       if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()-1, idx.column(),idx.parent())) {
          return true;
       }
@@ -492,6 +496,10 @@ bool AccountModel::moveDown()
 {
    if (d_ptr->m_pSelectionModel) {
       const QModelIndex& idx = d_ptr->m_pSelectionModel->currentIndex();
+
+      if (!idx.isValid())
+         return false;
+
       if (dropMimeData(mimeData({idx}), Qt::MoveAction, idx.row()+1, idx.column(),idx.parent())) {
          return true;
       }
