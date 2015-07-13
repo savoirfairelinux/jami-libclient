@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_88f30173",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-07-13T14:25:13Z",
+      "side": 1,
+      "message": "Should\u0027t this be if (not idx.IsValid()) return false; ?",
+      "range": {
+        "startLine": 484,
+        "startChar": 10,
+        "endLine": 484,
+        "endChar": 23
+      },
+      "revId": "9b087f8a4d71a20fe3f7e859797550779bffbf0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_68e8cd7c",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-07-13T14:25:13Z",
+      "side": 1,
+      "message": "Same",
+      "range": {
+        "startLine": 500,
+        "startChar": 10,
+        "endLine": 500,
+        "endChar": 23
+      },
+      "revId": "9b087f8a4d71a20fe3f7e859797550779bffbf0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
