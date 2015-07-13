@@ -120,7 +120,7 @@ protected:
 
 public:
    //Constructors & Destructors
-   explicit Person(CollectionInterface* parent = nullptr);
+   explicit Person(CollectionInterface* parent = nullptr, const QByteArray& uid = QByteArray());
    Person(const QByteArray& content, Person::Encoding encoding = Encoding::UID, CollectionInterface* parent = nullptr);
    virtual ~Person();
 

@@ -20,6 +20,7 @@
 //Qt
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtCore/QDateTime>
 #include <QtCore/QUrl>
 #include <QMimeData>
 #include <QtCore/QCoreApplication>
@@ -84,6 +85,7 @@ public:
    virtual QByteArray  id             (             ) const override;
    virtual bool     load              (             )       override;
    virtual bool     reload            (             )       override;
+   virtual int      size              (             ) const override;
    FlagPack<SupportedFeatures> supportedFeatures(             ) const override;
 
    //Attributes
@@ -179,7 +181,10 @@ QVector<Person*> ProfileEditor::items() const
    return m_lProfilePersons;
 }
 
-
+int ProfileContentBackend::size() const
+{
+   return m_pEditor->m_lProfiles.size();
+}
 
 ProfileModel* ProfileModel::m_spInstance = nullptr;
 
@@ -287,7 +292,7 @@ void ProfileContentBackend::setupDefaultProfile()
 
    if (orphans.size() && (!m_pDefault)) {
       qDebug() << "No profile found, creating one";
-      Person* profile = new Person(this);
+      Person* profile = new Person(this,QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8());
       m_pEditor->addNew(profile);
       profile->setFormattedName(tr("Default"));
 
@@ -308,7 +313,6 @@ void ProfileContentBackend::setupDefaultProfile()
 
 void ProfileContentBackend::addAccount(Node* parent, Account* acc)
 {
-   qDebug() << "ADDING ACCOUNT" << acc->id();
    Node* account_pro = new Node;
    account_pro->type    = Node::Type::ACCOUNT;
    account_pro->contact = parent->contact;
@@ -322,7 +326,6 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
 }
 
-
 void ProfileContentBackend::loadProfiles()
 {
    if (ProfilePersisterDelegate::instance()) {
@@ -332,7 +335,7 @@ void ProfileContentBackend::loadProfiles()
 
       qDebug() << "Loading vcf from:" << profilesDir;
 
-      QStringList entries = profilesDir.entryList({"*.vcf"}, QDir::Files);
+      const QStringList entries = profilesDir.entryList({"*.vcf"}, QDir::Files);
 
       foreach (const QString& item , entries) {
 
@@ -343,10 +346,10 @@ void ProfileContentBackend::loadProfiles()
          pro->contact = profile            ;
          pro->m_Index = m_pEditor->m_lProfiles.size() ;
 
-         Account* acc = nullptr;
-         VCardUtils::mapToPerson(profile,QUrl(item),&acc);
-         if (acc)
-            addAccount(pro,acc);
+         QList<Account*> accs;
+         VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
+         foreach(Account* a, accs)
+            addAccount(pro,a);
 
          ProfileModel::instance()->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
          m_pEditor->m_lProfiles << pro;
@@ -404,9 +407,7 @@ FlagPack<ProfileContentBackend::SupportedFeatures> ProfileContentBackend::suppor
         | SupportedFeatures::ADD         //= 0x1 <<  4, /* Add (and save) a new item to the backend                                */
         | SupportedFeatures::SAVE_ALL    //= 0x1 <<  5, /* Save all items at once, this may or may not be faster than "add"        */
         | SupportedFeatures::REMOVE      //= 0x1 <<  7, /* Remove a single item                                                    */
-        | SupportedFeatures::ENABLEABLE  //= 0x1 << 10, /*Can be enabled, I know, it is not a word, but Java use it too            */
-        | SupportedFeatures::MANAGEABLE; //= 0x1 << 12, /* Can be managed the config GUI                                       */
-      //TODO ^^ Remove that one once debugging is done
+   ;
 }
 
 // bool ProfileContentBackend::addContactMethod( Person* contact , ContactMethod* number)
@@ -584,7 +585,7 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
    else {
       switch (role) {
          case Qt::DisplayRole:
-            return d_ptr->m_pProfileBackend->items<Person>()[index.row()]->formattedName();
+            return d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles[index.row()]->contact->formattedName();
       };
    }
    return QVariant();
@@ -596,7 +597,7 @@ int ProfileModel::rowCount(const QModelIndex& parent ) const
       Node* account_node = static_cast<Node*>(parent.internalPointer());
       return (account_node->account)?0:account_node->children.size();
    }
-   return d_ptr->m_pProfileBackend->items<Person>().size();
+   return d_ptr->m_pProfileBackend->size();
 }
 
 int ProfileModel::columnCount(const QModelIndex& parent ) const

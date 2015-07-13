@@ -274,7 +274,7 @@ QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok, QHash<const Pe
    return ret;
 }
 
-bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, Account** a)
+bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* accounts)
 {
 //    bool propertyInserted = false;
    QByteArray previousKey,previousValue;
@@ -301,12 +301,14 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, Account** a)
 
             //Link with accounts
             if(k == VCardUtils::Property::X_RINGACCOUNT) {
-               if (a) {
-                  *a = AccountModel::instance()->getById(v.trimmed(),true);
-                  if(!*a) {
+                  if (accounts) {
+                  Account* a = AccountModel::instance()->getById(v.trimmed(),true);
+                  if(!a) {
                      qDebug() << "Could not find account: " << v.trimmed();
                      continue;
                   }
+
+                  (*accounts) << a;
                }
             }
 
@@ -320,7 +322,7 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, Account** a)
    return true;
 }
 
-bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
+bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accounts)
 {
 
    qDebug() << "file" << path.toString();
@@ -333,5 +335,5 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, Account** a)
 
    const QByteArray all = file.readAll();
 
-   return mapToPerson(p,all,a);
+   return mapToPerson(p,all,accounts);
 }

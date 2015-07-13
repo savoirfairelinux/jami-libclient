@@ -2313,8 +2313,12 @@ void AccountPrivate::reload()
          //Manually re-set elements that need extra business logic or caching
          q_ptr->setHostname(m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
 
+         const QString ca  (m_hAccountDetails[DRing::Account::ConfProperties::TLS::CA_LIST_FILE    ]);
          const QString cert(m_hAccountDetails[DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE]);
          const QString key (m_hAccountDetails[DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE]);
+
+         if (!ca.isEmpty())
+            q_ptr->setTlsCaListCertificate(ca);
 
          if (!cert.isEmpty())
             q_ptr->setTlsCertificate(cert);

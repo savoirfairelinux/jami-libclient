@@ -82,8 +82,8 @@ public:
    static QList<Person*> loadDir(const QUrl& path, bool& ok, QHash<const Person*, QString>& paths);
 
    //Mapping
-   static bool mapToPerson(Person* p, const QUrl& url, Account** a = nullptr);
-   static bool mapToPerson(Person* p, const QByteArray& content, Account** a = nullptr);
+   static bool mapToPerson(Person* p, const QUrl& url, QList<Account*>* accounts = nullptr);
+   static bool mapToPerson(Person* p, const QByteArray& content, QList<Account*>* accounts = nullptr);
 
 private:
 
