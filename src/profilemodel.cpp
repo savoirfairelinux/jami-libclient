@@ -835,4 +835,17 @@ void ProfileModelPrivate::slotLayoutchanged()
    emit q_ptr->layoutChanged();
 }
 
+Person* ProfileModel::getPerson(const QModelIndex& idx)
+{
+   if ((!idx.isValid()) || (idx.model() != this))
+      return nullptr;
+
+   const Node* account_node = static_cast<Node*>(idx.internalPointer());
+
+   if (account_node->account)
+      return nullptr;
+
+   return account_node->contact;
+}
+
 #include "profilemodel.moc"

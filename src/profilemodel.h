@@ -60,6 +60,7 @@ public:
    QModelIndex mapFromSource(const QModelIndex& idx) const;
    int acceptedPayloadTypes() const;
    QItemSelectionModel* selectionModel() const;
+   Person* getPerson(const QModelIndex& idx);
 
 private:
    ProfileModelPrivate* d_ptr;
