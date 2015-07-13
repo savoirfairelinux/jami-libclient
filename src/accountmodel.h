@@ -26,6 +26,8 @@
 #include "account.h"
 #include "typedefs.h"
 
+class TrustRequest;
+
 //Private
 class AccountModelPrivate;
 
@@ -151,6 +153,7 @@ Q_SIGNALS:
    void accountStateChanged  ( Account* account, const Account::RegistrationState state);
    ///Emitted when an account edit state change
    void accountEditStateChanged(Account* account, const Account::EditState state, const Account::EditState prev);
+   ///The global AccountModel edit state changed
    void editStateChanged(const EditState state, const EditState previous) const;
 };
 Q_DECLARE_METATYPE(AccountModel*)

@@ -23,6 +23,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
+#include <QtCore/QMimeData>
 
 //Ring
 #include "phonedirectorymodel.h"
@@ -336,4 +337,19 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
    const QByteArray all = file.readAll();
 
    return mapToPerson(p,all,accounts);
+}
+
+QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& payload)
+{
+   QByteArray a;
+   a += "MIME-Version: 1.0\n";
+   a += "Content-Type: multipart/mixed; boundary=content\n";
+   a += "\n";
+   a += "--content\n";
+   a += "Content-Type: "+mimeType+"\n";
+   a += "\n";
+   a += payload+"\n";
+   a += "--content--\0";
+
+   return a;
 }

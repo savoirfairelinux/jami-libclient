@@ -32,17 +32,18 @@ class QString;
 #include "tlsmethodmodel.h"
 #include "uri.h"
 #include "typedefs.h"
-class CredentialModel        ;
-class ContactMethod          ;
-class SecurityEvaluationModel;
-class Certificate            ;
-class CipherModel            ;
-class AccountStatusModel     ;
-class ProtocolModel          ;
-class CodecModel             ;
-class BootstrapModel         ;
-class NetworkInterfaceModel  ;
-class KeyExchangeModelPrivate;
+class CredentialModel         ;
+class ContactMethod           ;
+class SecurityEvaluationModel ;
+class Certificate             ;
+class CipherModel             ;
+class AccountStatusModel      ;
+class ProtocolModel           ;
+class CodecModel              ;
+class BootstrapModel          ;
+class NetworkInterfaceModel   ;
+class KeyExchangeModelPrivate ;
+class PendingTrustRequestModel;
 
 //Private
 class AccountPrivate;
@@ -340,19 +341,20 @@ class LIB_EXPORT Account : public ItemBase {
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
 
-      CredentialModel*         credentialModel            () const;
-      CodecModel*              codecModel                 () const;
-      KeyExchangeModel*        keyExchangeModel           () const;
-      CipherModel*             cipherModel                () const;
-      AccountStatusModel*      statusModel                () const;
-      SecurityEvaluationModel* securityEvaluationModel    () const;
-      TlsMethodModel*          tlsMethodModel             () const;
-      ProtocolModel*           protocolModel              () const;
-      BootstrapModel*          bootstrapModel             () const;
-      NetworkInterfaceModel*   networkInterfaceModel      () const;
-      QAbstractItemModel*      knownCertificateModel      () const;
-      QAbstractItemModel*      bannedCertificatesModel    () const;
-      QAbstractItemModel*      allowedCertificatesModel   () const;
+      CredentialModel*          credentialModel            () const;
+      CodecModel*               codecModel                 () const;
+      KeyExchangeModel*         keyExchangeModel           () const;
+      CipherModel*              cipherModel                () const;
+      AccountStatusModel*       statusModel                () const;
+      SecurityEvaluationModel*  securityEvaluationModel    () const;
+      TlsMethodModel*           tlsMethodModel             () const;
+      ProtocolModel*            protocolModel              () const;
+      BootstrapModel*           bootstrapModel             () const;
+      NetworkInterfaceModel*    networkInterfaceModel      () const;
+      QAbstractItemModel*       knownCertificateModel      () const;
+      QAbstractItemModel*       bannedCertificatesModel    () const;
+      QAbstractItemModel*       allowedCertificatesModel   () const;
+      PendingTrustRequestModel* pendingTrustRequestModel   () const;
 
       Q_INVOKABLE RoleState  roleState (Account::Role role) const;
       Q_INVOKABLE RoleStatus roleStatus(Account::Role role) const;
@@ -434,6 +436,7 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool supportScheme   ( URI::SchemeType type )      ;
       Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
       Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
+      Q_INVOKABLE bool requestTrust    ( Certificate* c       )      ;
 
       //Setters
       void setId                            (const QByteArray& id   );
