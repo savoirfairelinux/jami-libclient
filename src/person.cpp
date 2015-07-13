@@ -193,10 +193,14 @@ PersonPrivate::~PersonPrivate()
 }
 
 ///Constructor
-Person::Person(CollectionInterface* parent): ItemBase(nullptr),
+Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
+   if (!uid.isEmpty())
+      d_ptr->m_Uid = uid;
+
    setCollection(parent?parent:TransitionalPersonBackend::instance());
+
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
 }

@@ -18,6 +18,7 @@
 
 #include "profilepersisterdelegate.h"
 #include <QtCore/QSize>
+#include <QtCore/QStandardPaths>
 
 ProfilePersisterDelegate* ProfilePersisterDelegate::m_spInstance = nullptr;
 
@@ -44,5 +45,6 @@ bool ProfilePersisterDelegate::save(const Person* c)
 
 QDir ProfilePersisterDelegate::getProfilesDir()
 {
-   return QDir();
+   static QDir d = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+   return d;
 }
