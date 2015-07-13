@@ -164,10 +164,11 @@ void ContactTreeNode::slotChanged()
 {
    const QModelIndex& self = m_pModel->d_ptr->getIndex(m_Index,0,this);
 
-   if (!self.isValid()) return;
-
-   ContactTreeNode *n = static_cast<ContactTreeNode*>(self.internalPointer());
-   n->m_Visible = n->m_pContact && n->m_pContact->isActive();
+   if (self.isValid()) {
+      ContactTreeNode *n = static_cast<ContactTreeNode*>(self.internalPointer());
+      if (n->m_Type == ContactTreeNode::NodeType::PERSON)
+         n->m_Visible = n->m_pContact && n->m_pContact->isActive();
+   }
    emit m_pModel->dataChanged(self,self);
 
    const QModelIndex& tl = m_pModel->index(0,0,self);
