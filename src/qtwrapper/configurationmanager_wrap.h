@@ -585,9 +585,10 @@ public Q_SLOTS: // METHODS
       return DRing::discardTrustRequest(accountId.toStdString(), from.toStdString());
    }
 
-   void sendTrustRequest(const QString& accountId, const QString& from)
+   void sendTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload)
    {
-      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString());
+      std::vector<unsigned char> raw(payload.begin(), payload.end());
+      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
    void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
@@ -607,7 +608,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePinned(const QString& certId);
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
-   void incomingTrustRequest(const QString& accountId, const QString& from, qulonglong timeStamp);
+   void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
 };
