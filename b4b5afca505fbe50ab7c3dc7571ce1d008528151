@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9a5c5d37_8e52e911",
+        "filename": "src/certificate.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-07-14T19:26:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_4e2511aa",
+      "revId": "b4b5afca505fbe50ab7c3dc7571ce1d008528151",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a5c5d37_2e3addcd",
         "filename": "src/contactmethod.h",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2015-07-14T19:04:49Z",
       "side": 1,
       "message": "same",
+      "revId": "b4b5afca505fbe50ab7c3dc7571ce1d008528151",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_6e57b503",
+        "filename": "src/contactmethod.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-07-14T19:26:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5c5d37_2e3addcd",
       "revId": "b4b5afca505fbe50ab7c3dc7571ce1d008528151",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
