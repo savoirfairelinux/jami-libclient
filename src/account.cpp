@@ -72,7 +72,7 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 {ES::NEW                 ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::nothing  , AP::nothing }}}},
 {ES::MODIFIED_INCOMPLETE ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }}}},
 {ES::MODIFIED_COMPLETE   ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::save   , AP::remove , AP::modify   , AP::reload  }}}},
-{ES::REMOVED             ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  }}}} 
+{ES::REMOVED             ,{{co, { AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing, AP::nothing  , AP::cancel  }}}}
 };
 
 #undef ES
@@ -2230,24 +2230,24 @@ void AccountPrivate::save()
 
       const QString currentId = configurationManager.addAccount(details);
 
-      //Be sure there is audio codec enabled to avoid obscure error messages for the user
-      const QVector<uint> codecIdList = configurationManager.getCodecList();
-      foreach (const int aCodec, codecIdList) {
-         const QMap<QString,QString> codec = configurationManager.getCodecDetails(q_ptr->id(),aCodec);
-         const QModelIndex idx = q_ptr->codecModel()->add();
-         /*Ring::Account::ConfProperties::CodecInfo::NAME          ; //TODO move this to CodecModel
-         Ring::Account::ConfProperties::CodecInfo::TYPE          ;
-         Ring::Account::ConfProperties::CodecInfo::SAMPLE_RATE   ;
-         Ring::Account::ConfProperties::CodecInfo::FRAME_RATE    ;
-         Ring::Account::ConfProperties::CodecInfo::BITRATE       ;
-         Ring::Account::ConfProperties::CodecInfo::CHANNEL_NUMBER;*/
-         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-         m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-         m_pCodecModel->setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
-         m_pCodecModel->setData(idx, Qt::Checked ,Qt::CheckStateRole);
-      }
-      q_ptr->codecModel()->save();
+      // //Be sure there is audio codec enabled to avoid obscure error messages for the user
+      // const QVector<uint> codecIdList = configurationManager.getCodecList();
+      // foreach (const int aCodec, codecIdList) {
+      //    const QMap<QString,QString> codec = configurationManager.getCodecDetails(q_ptr->id(),aCodec);
+      //    const QModelIndex idx = q_ptr->codecModel()->add();
+      //    /*Ring::Account::ConfProperties::CodecInfo::NAME          ; //TODO move this to CodecModel
+      //    Ring::Account::ConfProperties::CodecInfo::TYPE          ;
+      //    Ring::Account::ConfProperties::CodecInfo::SAMPLE_RATE   ;
+      //    Ring::Account::ConfProperties::CodecInfo::FRAME_RATE    ;
+      //    Ring::Account::ConfProperties::CodecInfo::BITRATE       ;
+      //    Ring::Account::ConfProperties::CodecInfo::CHANNEL_NUMBER;*/
+      //    m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+      //    m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+      //    m_pCodecModel->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      //    m_pCodecModel->setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
+      //    m_pCodecModel->setData(idx, Qt::Checked ,Qt::CheckStateRole);
+      // }
+      // q_ptr->codecModel()->save();
 
       q_ptr->setId(currentId.toLatin1());
    } //New account
@@ -2282,7 +2282,7 @@ void AccountPrivate::save()
       changeState(Account::EditState::READY);
    }
 
-   q_ptr->codecModel()->save();
+   q_ptr->codecModel() << CodecModel::EditAction::SAVE;
 
    emit q_ptr->changed(q_ptr);
 }
