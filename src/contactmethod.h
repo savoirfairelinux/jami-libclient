@@ -38,6 +38,7 @@ class TemporaryContactMethod;
 class NumberCategory;
 class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
+class Certificate;
 
 namespace Media {
    class TextRecording;
@@ -52,6 +53,7 @@ public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
    friend class LocalTextRecordingCollection;
+   friend class CallPrivate;
 
    enum class Role {
       Uri          = 1000,
@@ -82,6 +84,7 @@ public:
    Q_PROPERTY(QVariant          icon             READ icon                                            )
    Q_PROPERTY(int               totalSpentTime   READ totalSpentTime                                  )
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
+   Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -121,6 +124,8 @@ public:
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
    Media::TextRecording* textRecording   () const;
+   Certificate*          certificate  () const;
+
 
    QVariant roleData(int role) const;
 
