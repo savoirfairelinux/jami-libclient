@@ -91,6 +91,7 @@ public:
    friend class MediaTypeInference;
    friend class IMConversationManagerPrivate;
 
+
    //Enum
 
    ///Model roles
