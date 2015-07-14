@@ -38,6 +38,7 @@ class TemporaryContactMethod;
 class NumberCategory;
 class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
+class Certificate;
 
 namespace Media {
    class TextRecording;
@@ -82,6 +83,7 @@ public:
    Q_PROPERTY(QVariant          icon             READ icon                                            )
    Q_PROPERTY(int               totalSpentTime   READ totalSpentTime                                  )
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
+   Q_PROPERTY(Certificate*      certificate      READ certificate   WRITE setCertificate           )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -121,6 +123,8 @@ public:
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
    Media::TextRecording* textRecording   () const;
+   Certificate*          certificate  () const;
+
 
    QVariant roleData(int role) const;
 
@@ -132,6 +136,7 @@ public:
    void             setBookmarked(bool                bookmarked);
    void             setUid       (const QString&      uri       );
    bool             setType      (ContactMethod::Type t         );
+   void             setCertificate (Certificate*                );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);

@@ -414,7 +414,9 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 
    //Load the certificate if it's now available
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+      auto cert = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+      call->d_ptr->m_pCertificate = cert;
+      nb->setCertificate(cert);
    }
 
    return call;
