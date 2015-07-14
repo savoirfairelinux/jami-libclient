@@ -66,7 +66,7 @@ public:
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
 
    //Future account cache
-   static  QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
+   static QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
 
 public Q_SLOTS:
    void slotDaemonAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
@@ -76,6 +76,7 @@ public Q_SLOTS:
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);
    void slotMediaParametersChanged(const QString& accountId);
+   void slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
 };
 
 #endif

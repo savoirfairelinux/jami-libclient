@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,22 +15,28 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MIME_H
-#define MIME_H
+#ifndef PENDINGTRUSTREQUESTMODELPRIVATE_H
+#define PENDINGTRUSTREQUESTMODELPRIVATE_H
 
-namespace RingMimes {
-   constexpr static const char* CALLID      = "text/ring.call.id"        ;
-   constexpr static const char* CONTACT     = "text/ring.contact"        ;
-   constexpr static const char* HISTORYID   = "text/ring.history.id"     ;
-   constexpr static const char* PHONENUMBER = "text/ring.phone.number"   ;
-   constexpr static const char* PLAIN_TEXT  = "text/plain"               ;
-   constexpr static const char* HTML_TEXT   = "text/html"                ;
-   constexpr static const char* PROFILE     = "text/ring.profile.id"     ;
-   constexpr static const char* ACCOUNT     = "text/sflphone.account.id" ;
-   constexpr static const char* AUDIO_CODEC = "text/ring.codec.audio"    ;
-   constexpr static const char* VIDEO_CODEC = "text/ring.codec.video"    ;
-   constexpr static const char* PROFILE_VCF = "x-ring/ring.profile.vcard";
-}
+class PendingTrustRequestModel;
+class TrustRequest;
+
+class PendingTrustRequestModelPrivate
+{
+public:
+   //Constructor
+   PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+
+   //Attributes
+   QVector<TrustRequest*> m_lRequests;
+   Account*               m_pAccount ;
+
+   //Helper
+   void addRequest   (TrustRequest* r);
+   void removeRequest(TrustRequest* r);
+
+private:
+   PendingTrustRequestModel* q_ptr;
+};
 
 #endif
-

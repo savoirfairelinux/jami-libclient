@@ -24,6 +24,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QMimeData>
 #include <QtCore/QItemSelectionModel>
 
 //Ring daemon
@@ -44,6 +45,10 @@
 #include "ciphermodel.h"
 #include "protocolmodel.h"
 #include "bootstrapmodel.h"
+#include "trustrequest.h"
+#include "person.h"
+#include "pendingtrustrequestmodel.h"
+#include "private/pendingtrustrequestmodel_p.h"
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
 #include "networkinterfacemodel.h"
@@ -51,6 +56,8 @@
 #include "phonedirectorymodel.h"
 #include "presencestatusmodel.h"
 #include "uri.h"
+#include "private/vcardutils.h"
+#include "mime.h"
 #include "securityevaluationmodel.h"
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
@@ -91,7 +98,7 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr)
 {
 }
 
@@ -124,6 +131,19 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
    //If a placeholder exist for this account, upgrade it
    if (AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]) {
       AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
+   }
+
+   //Load the pending trust requests
+   if (a->protocol() == Account::Protocol::RING) {
+      const QMap<QString,QString> requests = DBus::ConfigurationManager::instance().getTrustRequests(a->id());
+
+      QMapIterator<QString, QString> iter(requests);
+      while (iter.hasNext()) {
+         iter.next();
+         qDebug() << "REQUEST" << iter.key() << iter.value();
+         TrustRequest* r = new TrustRequest(a, iter.key(), 0);
+         a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+      }
    }
 
    return a;
@@ -491,6 +511,14 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
    }
 
    return d_ptr->m_pAllowedCertificates;
+}
+
+PendingTrustRequestModel* Account::pendingTrustRequestModel() const
+{
+   if (!d_ptr->m_pPendingTrustRequestModel)
+      d_ptr->m_pPendingTrustRequestModel = new PendingTrustRequestModel(const_cast<Account*>(this));
+
+   return d_ptr->m_pPendingTrustRequestModel;
 }
 
 NetworkInterfaceModel* Account::networkInterfaceModel() const
@@ -1230,6 +1258,23 @@ bool Account::banCertificate(Certificate* c)
       return false;
 
    return CertificateModel::instance()->d_ptr->banCertificate(c, this);
+}
+
+///Ask the certificate owner (peer) to trust you
+bool Account::requestTrust( Certificate* c )
+{
+   if ((!c) || (c->remoteId().isEmpty()))
+      return false;
+
+   QByteArray payload;
+
+   if (contactMethod() && contactMethod()->contact()) {
+      payload = contactMethod()->contact()->toVCard();
+   }
+
+   DBus::ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
+
+   return true;
 }
 
 uint AccountPrivate::internalId() const

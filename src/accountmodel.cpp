@@ -33,6 +33,8 @@
 #include "mime.h"
 #include "profilemodel.h"
 #include "protocolmodel.h"
+#include "trustrequest.h"
+#include "pendingtrustrequestmodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "accountstatusmodel.h"
@@ -40,6 +42,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
+#include "private/pendingtrustrequestmodel_p.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 AccountModel*     AccountModelPrivate::m_spAccountList;
@@ -77,8 +80,13 @@ void AccountModelPrivate::init()
       SLOT(slotVoiceMailNotify(QString,int))  );
    connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
       SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
+<<<<<<< HEAD
    connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
       SLOT(slotMediaParametersChanged(QString)));
+=======
+   connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
+           &AccountModelPrivate::slotIncomingTrustRequest);
+>>>>>>> 51ffc94... security: Implement the trust requests
 
 }
 
@@ -386,6 +394,21 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
       const Account::RegistrationState state = fromDaemonName(a->d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
       a->d_ptr->m_RegistrationState = state;
    }
+}
+
+///When a Ring-DHT trust request arrive
+void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
+{
+   qDebug() << "INCOMING REQUEST" << accountId << hash << time;
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+      qWarning() << "Incoming trust request for unknown account" << accountId;
+      return;
+   }
+
+   TrustRequest* r = new TrustRequest(a, hash, time);
+   a->pendingTrustRequestModel()->d_ptr->addRequest(r);
 }
 
 ///Update accounts
