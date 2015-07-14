@@ -57,6 +57,7 @@
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
 #include "personmodel.h"
+#include "private/contactmethod_p.h"
 
 #include "media/audio.h"
 #include "media/video.h"
@@ -447,7 +448,9 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     //Load the certificate if it's now available
     if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-        call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+        auto cert = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+        call->d_ptr->m_pCertificate = cert;
+        nb->d_ptr->setCertificate(cert);
     }
 
     return call.release();

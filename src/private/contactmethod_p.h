@@ -20,7 +20,8 @@
 
 class ContactMethodPrivate {
 public:
-   ContactMethodPrivate(const URI& number, NumberCategory* cat, ContactMethod::Type st);
+   ContactMethodPrivate(const URI& number, NumberCategory* cat, ContactMethod::Type st,
+                        ContactMethod* q);
    NumberCategory*    m_pCategory        ;
    bool               m_Present          ;
    QString            m_PresentMessage   ;
@@ -47,6 +48,7 @@ public:
    QList<URI>         m_lOtherURIs       ;
    bool               m_hasTriedTextRec  ;
    Media::TextRecording* m_pTextRecording;
+   Certificate*       m_pCertificate;
 
    //Parents
    QList<ContactMethod*> m_lParents;
@@ -62,6 +64,10 @@ public:
 
    //Helpers
    void setTextRecording(Media::TextRecording* r);
+   void setCertificate (Certificate*);
+
+ private:
+   ContactMethod* q_ptr;
 };
 
 #endif
