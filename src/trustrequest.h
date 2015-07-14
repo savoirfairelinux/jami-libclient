@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2015 by Savoir-Faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,22 +15,48 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MIME_H
-#define MIME_H
+#ifndef TRUSTREQUEST_H
+#define TRUSTREQUEST_H
 
-namespace RingMimes {
-   constexpr static const char* CALLID      = "text/ring.call.id"        ;
-   constexpr static const char* CONTACT     = "text/ring.contact"        ;
-   constexpr static const char* HISTORYID   = "text/ring.history.id"     ;
-   constexpr static const char* PHONENUMBER = "text/ring.phone.number"   ;
-   constexpr static const char* PLAIN_TEXT  = "text/plain"               ;
-   constexpr static const char* HTML_TEXT   = "text/html"                ;
-   constexpr static const char* PROFILE     = "text/ring.profile.id"     ;
-   constexpr static const char* ACCOUNT     = "text/sflphone.account.id" ;
-   constexpr static const char* AUDIO_CODEC = "text/ring.codec.audio"    ;
-   constexpr static const char* VIDEO_CODEC = "text/ring.codec.video"    ;
-   constexpr static const char* PROFILE_VCF = "x-ring/ring.profile.vcard";
-}
+#include <QtCore/QObject>
+#include <typedefs.h>
+
+class TrustRequestPrivate;
+class AccountModel;
+class AccountModelPrivate;
+class Certificate;
+class Account;
+class AccountPrivate;
+
+class LIB_EXPORT TrustRequest : public QObject
+{
+   Q_OBJECT
+
+friend class AccountModel;
+friend class AccountModelPrivate;
+friend class AccountPrivate;
+
+public:
+
+   //Getter
+   Certificate* certificate() const;
+   QDateTime    date       () const;
+   Account*     account    () const;
+
+   //Mutator
+   Q_INVOKABLE bool accept ();
+   Q_INVOKABLE bool discard();
+
+private:
+   explicit TrustRequest(Account* a, const QString& id, time_t time);
+   virtual ~TrustRequest();
+
+   TrustRequestPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(TrustRequest)
+
+Q_SIGNALS:
+   void requestAccepted ();
+   void requestDiscarded();
+};
 
 #endif
-

@@ -85,6 +85,9 @@ public:
    static bool mapToPerson(Person* p, const QUrl& url, QList<Account*>* accounts = nullptr);
    static bool mapToPerson(Person* p, const QByteArray& content, QList<Account*>* accounts = nullptr);
 
+   //Serialization
+   static QByteArray wrapInMime(const QString& mimeType, const QByteArray& payload);
+
 private:
 
    //Attributes
