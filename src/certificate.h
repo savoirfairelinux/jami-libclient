@@ -28,6 +28,7 @@ class QAbstractItemModel;
 class CertificatePrivate;
 class Account;
 class ChainOfTrustModel;
+class ContactMethod;
 
 /**
  * This class represent a conceptual certificate.
@@ -86,6 +87,7 @@ public:
    Q_PROPERTY(QByteArray issuerDn                             READ issuerDn                 )
    Q_PROPERTY(QDateTime  nextExpectedUpdateDate               READ nextExpectedUpdateDate   )
    Q_PROPERTY(QString    outgoingServer                       READ outgoingServer           )
+   Q_PROPERTY(ContactMethod* contactMethod                    READ getContactMethod  WRITE setContactMethod)
 
 
    //Structures
@@ -234,6 +236,7 @@ public:
    Certificate* signedBy                (                             ) const;
    ChainOfTrustModel* chainOfTrustModel (                             ) const;
    FlagPack<OriginHint> originHint      (                             ) const;
+   ContactMethod* getContactMethod      (                             ) const;
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
@@ -291,6 +294,7 @@ public:
    void setRequirePrivateKey(bool value);
    void setRequireStrictPermission(bool value);
    void addOrigin(const FlagPack<OriginHint>& hints);
+   void setContactMethod(ContactMethod* contactMethod);
 
    //Mutator
    Q_INVOKABLE bool fixPermissions() const;

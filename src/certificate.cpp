@@ -37,6 +37,7 @@
 #include "private/certificate_p.h"
 #include <account.h>
 #include <chainoftrustmodel.h>
+#include "contactmethod.h"
 
 Matrix1D<Certificate::Checks ,QString> CertificatePrivate::m_slChecksName = {{
    /* HAS_PRIVATE_KEY                   */ QObject::tr("Has a private key"                               ),
@@ -633,6 +634,16 @@ FlagPack<Certificate::OriginHint> Certificate::originHint() const
 void Certificate::addOrigin(const FlagPack<OriginHint>& hints)
 {
    d_ptr->m_fHints |= hints;
+}
+
+ContactMethod* Certificate::getContactMethod() const
+{
+  return d_ptr->m_pContactMethod;
+}
+
+void Certificate::setContactMethod(ContactMethod* contactMethod)
+{
+  d_ptr->m_pContactMethod = contactMethod;
 }
 
 Certificate::CheckValues Certificate::checkResult(Certificate::Checks check) const
