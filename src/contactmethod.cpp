@@ -36,6 +36,8 @@
 #include "numbercategorymodel.h"
 #include "private/numbercategorymodel_p.h"
 #include "numbercategory.h"
+#include "certificate.h"
+#include "certificatemodel.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -96,16 +98,16 @@ const ContactMethod* ContactMethod::BLANK()
    return m_spBlank;
 }
 
-ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, ContactMethod::Type st) :
+ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, ContactMethod::Type st, ContactMethod* q) :
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr)
+   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q)
 {}
 
 ///Constructor
 ContactMethod::ContactMethod(const URI& number, NumberCategory* cat, Type st) : ItemBase(PhoneDirectoryModel::instance()),
-d_ptr(new ContactMethodPrivate(number,cat,st))
+d_ptr(new ContactMethodPrivate(number,cat,st,this))
 {
    setObjectName(d_ptr->m_Uri);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
@@ -714,6 +716,21 @@ Media::TextRecording* ContactMethod::textRecording() const
    }
 
    return d_ptr->m_pTextRecording;
+}
+
+Certificate*  ContactMethod::certificate() const
+{
+   if (protocolHint() == URI::ProtocolHint::RING) {
+       d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(uid(), account());
+   }
+   return d_ptr->m_pCertificate;
+}
+
+void ContactMethodPrivate::setCertificate(Certificate* certificate)
+{
+    m_pCertificate = certificate;
+    if (!certificate->contactMethod())
+      certificate->setContactMethod(q_ptr);
 }
 
 void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
