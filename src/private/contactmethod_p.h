@@ -47,6 +47,7 @@ public:
    QList<URI>         m_lOtherURIs       ;
    bool               m_hasTriedTextRec  ;
    Media::TextRecording* m_pTextRecording;
+   Certificate*       m_pCertificate     ;
 
    //Parents
    QList<ContactMethod*> m_lParents;
