@@ -232,38 +232,52 @@ void CodecModel::reload()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    QVector<uint> codecIdList = configurationManager.getCodecList();
-      QVector<uint> activeCodecList = configurationManager.getActiveCodecList(d_ptr->m_pAccount->id());
-      QStringList tmpNameList;
+   QVector<uint> activeCodecList = configurationManager.getActiveCodecList(d_ptr->m_pAccount->id());
+   QStringList tmpNameList;
 
-  foreach (const int aCodec, activeCodecList) {
-     if (!d_ptr->findCodec(aCodec)) {
+   //TODO: the following method cannot update the order of the codecs if it
+   //      changes in the daemon after it has been initially loaded in the client
 
-        const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+   // load the active codecs first to get the correct order
+   foreach (const int aCodec, activeCodecList) {
 
-        QModelIndex idx = add();
-        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
-        setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
-        setData(idx, Qt::Checked ,Qt::CheckStateRole               );
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
 
-        if (codecIdList.indexOf(aCodec)!=-1)
-           codecIdList.remove(codecIdList.indexOf(aCodec));
-     }
-  }
-
-   foreach (const int aCodec, codecIdList) {
       if (!d_ptr->findCodec(aCodec)) {
-         const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
          const QModelIndex& idx = add();
-         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
-         setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
-         setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
+         setData(idx,QString::number(aCodec), CodecModel::Role::ID);
       }
+
+      // update the codec
+      const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      setData(idx, Qt::Checked ,Qt::CheckStateRole);
+
+      // remove from list of all codecs, since we have already updated it
+      if (codecIdList.indexOf(aCodec)!=-1)
+         codecIdList.remove(codecIdList.indexOf(aCodec));
+   }
+
+   // now add add/update remaining (inactive) codecs
+   foreach (const int aCodec, codecIdList) {
+
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+
+      if (!d_ptr->findCodec(aCodec)) {
+         const QModelIndex& idx = add();
+         setData(idx,QString::number(aCodec), CodecModel::Role::ID);
+      }
+
+      // update the codec
+      const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
    }
 }
 
