@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_2e41bd39",
+        "filename": "src/contactmethod.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-14T19:27:12Z",
+      "side": 1,
+      "message": "sorry to have forgotten this in the previous review, but unless you have an idea why it should be, I think setCertificate should be part of CertificatePrivate:: with a firend class rather than Certificate::.",
+      "revId": "8691725041ab0102b05eecf0cb471c9e2fec2f31",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
