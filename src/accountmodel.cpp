@@ -624,7 +624,7 @@ void AccountModelPrivate::slotMediaParametersChanged(const QString& accountId)
    if (a) {
       if (auto codecModel = a->codecModel()) {
          qDebug() << "reloading codecs";
-         codecModel->reload();
+         codecModel << CodecModel::EditAction::RELOAD;
       }
    }
 }
