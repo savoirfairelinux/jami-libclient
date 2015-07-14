@@ -32,6 +32,9 @@
 #include "dbus/configurationmanager.h"
 #include "mime.h"
 #include "callmodel.h"
+#include <private/matrixutils.h>
+
+typedef void (CodecModelPrivate::*CodecModelFct)();
 
 class CodecModelPrivate final : public QObject
 {
@@ -55,14 +58,36 @@ public:
    QSortFilterProxyModel* m_pVideoProxy    ;
    QStringList            m_lMimes         ;
    QItemSelectionModel*   m_pSelectionModel;
+   CodecModel::EditState  m_EditState      ;
+   static Matrix2D<CodecModel::EditState, CodecModel::EditAction,CodecModelFct> m_mStateMachine;
+
+   //Callbacks
+   QModelIndex add         (                        );
+   void        remove      ( const QModelIndex& idx );
+   void        clear       (                        );
+   void        reload      (                        );
+   void        save        (                        );
+   void        nothing     (                        );
+   void        modify      (                        );
 
    //Helpers
    bool findCodec(int id);
    QModelIndex getIndexofCodecByID(int id);
+   inline void performAction(const CodecModel::EditAction action);
 
 private:
    CodecModel* q_ptr;
 };
+
+#define CMP &CodecModelPrivate
+Matrix2D<CodecModel::EditState, CodecModel::EditAction,CodecModelFct> CodecModelPrivate::m_mStateMachine ={{
+   /*                    SAVE         MODIFY        RELOAD        CLEAR      */
+   /* LOADING  */ {{ CMP::nothing, CMP::nothing, CMP::reload, CMP::nothing  }},
+   /* READY    */ {{ CMP::nothing, CMP::modify , CMP::reload, CMP::clear    }},
+   /* MODIFIED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
+   /* OUTDATED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
+}};
+#undef CMP
 
 CodecModelPrivate::CodecModelPrivate(CodecModel* parent) : q_ptr(parent),
 m_pAudioProxy(nullptr),m_pVideoProxy(nullptr),m_pSelectionModel(nullptr)
@@ -74,10 +99,13 @@ m_pAudioProxy(nullptr),m_pVideoProxy(nullptr),m_pSelectionModel(nullptr)
 CodecModel::CodecModel(Account* account) :
 QAbstractListModel(account?(QObject*)account:(QObject*)QCoreApplication::instance()), d_ptr(new CodecModelPrivate(this))
 {
+   Q_ASSERT(account);
+   d_ptr->m_EditState = CodecModel::EditState::LOADING;
    d_ptr->m_pAccount = account;
    setObjectName("CodecModel: "+(account?account->id():"Unknown"));
    d_ptr->m_lMimes << RingMimes::AUDIO_CODEC << RingMimes::VIDEO_CODEC;
-   reload();
+   this << EditAction::RELOAD;
+   d_ptr->m_EditState = CodecModel::EditState::READY;
 }
 
 CodecModel::~CodecModel()
@@ -163,52 +191,64 @@ bool CodecModel::setData( const QModelIndex& idx, const QVariant &value, int rol
    if (idx.column() == 0 && role == CodecModel::NAME) {
       d_ptr->m_lCodecs[idx.row()]->name = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CodecModel::BITRATE) {
       d_ptr->m_lCodecs[idx.row()]->bitrate = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if(idx.column() == 0 && role == Qt::CheckStateRole) {
       d_ptr->m_lEnabledCodecs[d_ptr->m_lCodecs[idx.row()]->id] = value.toBool();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CodecModel::SAMPLERATE) {
       d_ptr->m_lCodecs[idx.row()]->samplerate = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CodecModel::ID) {
       d_ptr->m_lCodecs[idx.row()]->id = value.toInt();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CodecModel::TYPE) {
       d_ptr->m_lCodecs[idx.row()]->type = value.toString();
       emit dataChanged(idx, idx);
+      this << EditAction::MODIFY;
       return true;
    }
    return false;
 }
 
 ///Add a new audio codec
-QModelIndex CodecModel::add()
+QModelIndex CodecModelPrivate::add()
 {
-   d_ptr->m_lCodecs << new CodecModelPrivate::CodecData;
-   emit dataChanged(index(d_ptr->m_lCodecs.size()-1,0), index(d_ptr->m_lCodecs.size()-1,0));
-   return index(d_ptr->m_lCodecs.size()-1,0);
+   q_ptr->beginInsertRows(QModelIndex(), m_lCodecs.size()-1, m_lCodecs.size()-1);
+   m_lCodecs << new CodecModelPrivate::CodecData;
+   q_ptr->endInsertRows();
+   emit q_ptr->dataChanged(q_ptr->index(m_lCodecs.size()-1,0), q_ptr->index(m_lCodecs.size()-1,0));
+   q_ptr << CodecModel::EditAction::MODIFY;
+   return q_ptr->index(m_lCodecs.size()-1,0);
 }
 
 ///Remove audio codec at 'idx'
-void CodecModel::remove(const QModelIndex& idx)
+void CodecModelPrivate::remove(const QModelIndex& idx)
 {
    if (idx.isValid()) {
-      CodecModelPrivate::CodecData* d = d_ptr->m_lCodecs[idx.row()];
-      d_ptr->m_lCodecs.removeAt(idx.row());
+      q_ptr->beginRemoveRows(QModelIndex(), idx.row(), idx.row());
+      CodecModelPrivate::CodecData* d = m_lCodecs[idx.row()];
+      m_lCodecs.removeAt(idx.row());
       delete d;
-      emit dataChanged(idx, index(d_ptr->m_lCodecs.size()-1,0));
+      q_ptr->endRemoveRows();
+      emit q_ptr->dataChanged(idx, q_ptr->index(m_lCodecs.size()-1,0));
+      q_ptr << CodecModel::EditAction::MODIFY;
    }
    else {
       qDebug() << "Failed to remove an invalid audio codec";
@@ -216,23 +256,24 @@ void CodecModel::remove(const QModelIndex& idx)
 }
 
 ///Remove everything
-void CodecModel::clear()
+void CodecModelPrivate::clear()
 {
-   while(d_ptr->m_lCodecs.size()) {
-      CodecModelPrivate::CodecData* d = d_ptr->m_lCodecs[0];
-      d_ptr->m_lCodecs.removeAt(0);
+   while(m_lCodecs.size()) {
+      CodecModelPrivate::CodecData* d = m_lCodecs[0];
+      m_lCodecs.removeAt(0);
       delete d;
    }
-   d_ptr->m_lCodecs.clear();
-   d_ptr->m_lEnabledCodecs.clear();
+   m_lCodecs.clear();
+   m_lEnabledCodecs.clear();
+   m_EditState = CodecModel::EditState::READY;
 }
 
 ///Reload the codeclist
-void CodecModel::reload()
+void CodecModelPrivate::reload()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    QVector<uint> codecIdList = configurationManager.getCodecList();
-   QVector<uint> activeCodecList = configurationManager.getActiveCodecList(d_ptr->m_pAccount->id());
+   QVector<uint> activeCodecList = configurationManager.getActiveCodecList(m_pAccount->id());
    QStringList tmpNameList;
 
    //TODO: the following method cannot update the order of the codecs if it
@@ -241,20 +282,21 @@ void CodecModel::reload()
    // load the active codecs first to get the correct order
    foreach (const int aCodec, activeCodecList) {
 
-      const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(m_pAccount->id(),aCodec);
 
-      if (!d_ptr->findCodec(aCodec)) {
+      if (!findCodec(aCodec)) {
          const QModelIndex& idx = add();
-         setData(idx,QString::number(aCodec), CodecModel::Role::ID);
+         q_ptr->setData(idx,QString::number(aCodec), CodecModel::Role::ID);
       }
 
       // update the codec
-      const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
-      setData(idx, Qt::Checked ,Qt::CheckStateRole);
+
+      const auto& idx = getIndexofCodecByID(aCodec);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      q_ptr->setData(idx, Qt::Checked ,Qt::CheckStateRole);
 
       // remove from list of all codecs, since we have already updated it
       if (codecIdList.indexOf(aCodec)!=-1)
@@ -264,36 +306,74 @@ void CodecModel::reload()
    // now add add/update remaining (inactive) codecs
    foreach (const int aCodec, codecIdList) {
 
-      const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(m_pAccount->id(),aCodec);
 
-      if (!d_ptr->findCodec(aCodec)) {
+      if (!findCodec(aCodec)) {
          const QModelIndex& idx = add();
-         setData(idx,QString::number(aCodec), CodecModel::Role::ID);
+         q_ptr->setData(idx,QString::number(aCodec), CodecModel::Role::ID);
       }
 
       // update the codec
-      const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
-      setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
-      setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
+      const auto& idx = getIndexofCodecByID(aCodec);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      q_ptr->setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
    }
+   m_EditState = CodecModel::EditState::READY;
 }
 
 ///Save details
-void CodecModel::save()
+void CodecModelPrivate::save()
 {
    VectorUInt _codecList;
-   for (int i = 0; i < rowCount();i++) {
-      const QModelIndex& idx = index(i,0);
-      if (data(idx,Qt::CheckStateRole) == Qt::Checked) {
-         _codecList << data(idx,CodecModel::Role::ID).toInt();
+   for (int i = 0; i < q_ptr->rowCount();i++) {
+      const QModelIndex& idx = q_ptr->index(i,0);
+      if (q_ptr->data(idx,Qt::CheckStateRole) == Qt::Checked) {
+         _codecList << q_ptr->data(idx,CodecModel::Role::ID).toInt();
       }
    }
 
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   configurationManager.setActiveCodecList(d_ptr->m_pAccount->id(), _codecList);
+   configurationManager.setActiveCodecList(m_pAccount->id(), _codecList);
+
+   m_EditState = CodecModel::EditState::READY;
+}
+
+void CodecModelPrivate::nothing()
+{
+   //nothing
+}
+
+void CodecModelPrivate::modify()
+{
+   m_EditState = CodecModel::EditState::MODIFIED;
+   m_pAccount << Account::EditAction::MODIFY;
+}
+
+void CodecModelPrivate::performAction(const CodecModel::EditAction action)
+{
+   (this->*(m_mStateMachine[m_EditState][action]))();//FIXME don't use integer cast
+}
+
+CodecModel* CodecModel::operator<<(CodecModel::EditAction& action)
+{
+   performAction(action);
+   return this;
+}
+
+CodecModel* operator<<(CodecModel* a, CodecModel::EditAction action)
+{
+   return (!a)?nullptr : (*a) << action;
+}
+
+///Change the current edition state
+bool CodecModel::performAction(const CodecModel::EditAction action)
+{
+   CodecModel::EditState curState = d_ptr->m_EditState;
+   d_ptr->performAction(action);
+   return curState != d_ptr->m_EditState;
 }
 
 ///Move a codec up in the priority list (using the selectionModel)
@@ -418,6 +498,8 @@ bool CodecModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int 
       beginInsertRows(QModelIndex(), destinationRow, destinationRow);
       d_ptr->m_lCodecs.insert(destinationRow,codecInfo);
       endInsertRows();
+
+      this << EditAction::MODIFY;
 
       return true;
    }

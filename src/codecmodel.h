@@ -52,6 +52,24 @@ public:
       TYPE       = 104,
    };
 
+   /// @enum CodecModel::Action Manage a CodecModel lifecycle
+   enum class EditAction {
+      SAVE   = 0, /*!< Save the model, if there is a conflict, use "ours"          */
+      MODIFY = 1, /*!< Notify the state machine that the data has changed          */
+      RELOAD = 2, /*!< Reload from the daemon, if there is a conflict, use "their" */
+      CLEAR  = 3, /*!< Remove all codecs                                           */
+      COUNT__
+   };
+
+   /// @enum CodecModel::EditState track the changes from both clients and daemon
+   enum class EditState {
+      LOADING  = 0, /*!< The codecs are being loaded, they are not ready yet       */
+      READY    = 1, /*!< Both side are synchronized                                */
+      MODIFIED = 2, /*!< Our version differ from the remote one                    */
+      OUTDATED = 3, /*!< The remote version differ from ours                       */
+      COUNT__
+   };
+
    //Properties
    Q_PROPERTY(QSortFilterProxyModel* audioCodecs    READ audioCodecs    )
    Q_PROPERTY(QSortFilterProxyModel* videoCodecs    READ videoCodecs    )
@@ -73,16 +91,18 @@ public:
    QSortFilterProxyModel* audioCodecs() const;
    QSortFilterProxyModel* videoCodecs() const;
 
+   //Mutator
+   bool performAction(CodecModel::EditAction action);
+
    //Getter
-   int                  acceptedPayloadTypes() const;
-   QItemSelectionModel* selectionModel      () const;
+   int                   acceptedPayloadTypes() const;
+   QItemSelectionModel*  selectionModel      () const;
+   CodecModel::EditState editState           () const;
+
+   //Operator
+   CodecModel* operator<<(CodecModel::EditAction& action);
 
 public Q_SLOTS:
-   QModelIndex add         (                        );
-   void        remove      ( const QModelIndex& idx );
-   void        clear       (                        );
-   void        reload      (                        );
-   void        save        (                        );
    bool        moveUp      (                        );
    bool        moveDown    (                        );
 
@@ -97,5 +117,7 @@ private:
 };
 
 Q_DECLARE_METATYPE(CodecModel*)
+
+CodecModel* operator<<(CodecModel* a, CodecModel::EditAction action);
 
 #endif
