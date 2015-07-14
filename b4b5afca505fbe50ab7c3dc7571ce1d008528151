@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_4e2511aa",
+        "filename": "src/certificate.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-14T19:04:49Z",
+      "side": 1,
+      "message": "It should be \"ContactMethod* contactMethod(     ) const\" to match Qt/LRC naming scheme (defined in the lrc wiki)",
+      "revId": "b4b5afca505fbe50ab7c3dc7571ce1d008528151",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_2e3addcd",
+        "filename": "src/contactmethod.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-14T19:04:49Z",
+      "side": 1,
+      "message": "same",
+      "revId": "b4b5afca505fbe50ab7c3dc7571ce1d008528151",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
