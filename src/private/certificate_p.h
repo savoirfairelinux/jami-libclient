@@ -109,6 +109,7 @@ public:
    QAbstractItemModel* m_pSeverityProxy          ;
    ChainOfTrustModel*  m_pChainOfTrust           ;
    FlagPack<Certificate::OriginHint> m_fHints    ;
+   ContactMethod*      m_pContactMethod          ;
 
    //Caching
    /* The certificate doesn't handle the security evaluation. This is
