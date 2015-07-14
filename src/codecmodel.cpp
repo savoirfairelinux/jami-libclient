@@ -236,10 +236,10 @@ void CodecModel::reload()
       QStringList tmpNameList;
 
   foreach (const int aCodec, activeCodecList) {
+
+     const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+
      if (!d_ptr->findCodec(aCodec)) {
-
-        const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
-
         QModelIndex idx = add();
         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
         setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
@@ -250,12 +250,22 @@ void CodecModel::reload()
 
         if (codecIdList.indexOf(aCodec)!=-1)
            codecIdList.remove(codecIdList.indexOf(aCodec));
+     } else {
+        // update the codec
+        const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+        setData(idx, Qt::Checked ,Qt::CheckStateRole);
      }
   }
 
    foreach (const int aCodec, codecIdList) {
+
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
+
       if (!d_ptr->findCodec(aCodec)) {
-         const QMap<QString,QString> codec = configurationManager.getCodecDetails(d_ptr->m_pAccount->id(),aCodec);
          const QModelIndex& idx = add();
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
@@ -263,7 +273,15 @@ void CodecModel::reload()
          setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
          setData(idx,QString::number(aCodec)  ,CodecModel::Role::ID         );
          setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
-      }
+      }  else {
+        // update the codec
+        const auto& idx = d_ptr->getIndexofCodecByID(aCodec);
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+        setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+        setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
+     }
    }
 }
 

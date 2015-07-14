@@ -39,6 +39,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
+#include "codecmodel.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 AccountModel*     AccountModelPrivate::m_spAccountList;
@@ -76,6 +77,8 @@ void AccountModelPrivate::init()
       SLOT(slotVoiceMailNotify(QString,int))  );
    connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
       SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
+   connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
+      SLOT(slotMediaParametersChanged(QString)));
 
 }
 
@@ -606,6 +609,17 @@ AccountModel::EditState AccountModel::editState() const
    return s_CurrentState;
 }
 
+///Called when codec bitrate changes
+void AccountModelPrivate::slotMediaParametersChanged(const QString& accountId)
+{
+   Account* a = q_ptr->getById(accountId.toLatin1());
+   if (a) {
+      if (auto codecModel = a->codecModel()) {
+         qDebug() << "reloading codecs";
+         codecModel->reload();
+      }
+   }
+}
 
 /*****************************************************************************
  *                                                                           *

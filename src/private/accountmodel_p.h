@@ -75,6 +75,7 @@ public Q_SLOTS:
    void slotVoiceMailNotify( const QString& accountID , int count );
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);
+   void slotMediaParametersChanged(const QString& accountId);
 };
 
 #endif

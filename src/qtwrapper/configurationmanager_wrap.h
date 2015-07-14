@@ -131,6 +131,13 @@ public:
                            Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), QString(message.c_str()));
                      });
          }),
+
+         exportable_callback<ConfigurationSignal::MediaParametersChanged>(
+               [this] (const std::string& account_id) {
+                     QTimer::singleShot(0, [this, account_id] {
+                           Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
+                     });
+         }),
       };
    }
 
@@ -609,6 +616,7 @@ Q_SIGNALS: // SIGNALS
    void certificateExpired(const QString& certId);
    void incomingTrustRequest(const QString& accountId, const QString& from, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const QString& message);
+   void mediaParametersChanged(const QString& accountId);
 
 };
 
