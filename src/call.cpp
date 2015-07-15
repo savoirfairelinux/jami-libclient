@@ -39,6 +39,7 @@
 #include "collectioninterface.h"
 #include "person.h"
 #include "uri.h"
+#include <mime.h>
 #include "account.h"
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
@@ -165,7 +166,7 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*INIT           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
-/*CONNECTED      */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
+/*CONNECTED      */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 }};//                                                                                                                                                */
 
 //There is no point to have a 2D matrix, only one transition per state is possible
@@ -492,6 +493,8 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
       call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
    }
+
+   call->d_ptr->sendProfile();
 
    return call;
 } //buildIncomingCall
@@ -1559,6 +1562,15 @@ void CallPrivate::remove()
 void CallPrivate::abort()
 {
 
+}
+
+///Send your profile to the peer
+void CallPrivate::sendProfile()
+{
+   if (q_ptr->account()->contactMethod()->contact()) {
+      Media::Text* t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
+      t->send({{RingMimes::PROFILE_VCF, q_ptr->account()->contactMethod()->contact()->toVCard()}});
+   }
 }
 
 ///Cancel this call
