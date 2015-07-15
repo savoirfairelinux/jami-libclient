@@ -180,7 +180,9 @@ void CredentialModel::removeCredentials(const QModelIndex& idx)
 {
    if (idx.isValid()) {
       beginRemoveRows(QModelIndex(), idx.row(), idx.row());
+      CredentialModelPrivate::CredentialData* d = m_lCredentials[idx.row()];
       d_ptr->m_lCredentials.removeAt(idx.row());
+      delete d;
       endRemoveRows();
       emit dataChanged(idx, index(d_ptr->m_lCredentials.size()-1,0));
       this << EditAction::MODIFY;
