@@ -85,10 +85,10 @@ public:
                        });
             }),
             exportable_callback<CallSignal::IncomingMessage>(
-                [this] (const std::string &callID, const std::string &from, const std::string &message) {
+                [this] (const std::string &callID, const std::string &from, const std::map<std::string,std::string> &message) {
                        QTimer::singleShot(0, [this,callID, from, message] {
-                             LOG_DRING_SIGNAL3("incomingMessage",QString(callID.c_str()),QString(from.c_str()),QString(message.c_str()));
-                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), QString(message.c_str()));
+                             LOG_DRING_SIGNAL3("incomingMessage",QString(callID.c_str()),QString(from.c_str()),convertMap(message));
+                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), convertMap(message));
                        });
             }),
             exportable_callback<CallSignal::IncomingCall>(
@@ -401,10 +401,11 @@ public Q_SLOTS: // METHODS
         DRing::resetSASVerified(callID.toStdString());
     }
 
-    void sendTextMessage(const QString &callID, const QString &message)
+    void sendTextMessage(const QString &callID, const QMap<QString,QString> &message)
     {
         DRing::sendTextMessage(
-            callID.toStdString(), message.toStdString());
+            callID.toStdString(), convertMap(message), QObject::tr("Me").toStdString()
+        );
     }
 
     void setConfirmGoClear(const QString &callID)
@@ -465,7 +466,7 @@ Q_SIGNALS: // SIGNALS
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
     void voiceMailNotify(const QString &accountID, int count);
-    void incomingMessage(const QString &callID, const QString &from, const QString &message);
+    void incomingMessage(const QString &callID, const QString &from, const MapStringString &message);
     void incomingCall(const QString &accountID, const QString &callID, const QString &from);
     void recordPlaybackFilepath(const QString &callID, const QString &filepath);
     void conferenceCreated(const QString &confID);

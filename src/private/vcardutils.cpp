@@ -353,3 +353,4 @@ QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& pay
 
    return a;
 }
+

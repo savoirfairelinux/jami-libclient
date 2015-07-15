@@ -40,7 +40,7 @@ public:
    static IMConversationManagerPrivate* instance();
 
 private Q_SLOTS:
-   void newMessage       (const QString& callId   , const QString& from, const QString& message);
+   void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& message);
    void newAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
 };
