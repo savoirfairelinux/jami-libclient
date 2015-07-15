@@ -602,6 +602,11 @@ public Q_SLOTS: // METHODS
       DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message.toStdString());
    }
 
+   bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
+   {
+      DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
+   }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();

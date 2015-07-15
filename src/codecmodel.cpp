@@ -327,6 +327,7 @@ void CodecModelPrivate::reload()
 ///Save details
 void CodecModelPrivate::save()
 {
+   //Update active codec list
    VectorUInt _codecList;
    for (int i = 0; i < q_ptr->rowCount();i++) {
       const QModelIndex& idx = q_ptr->index(i,0);
@@ -338,6 +339,19 @@ void CodecModelPrivate::save()
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
    configurationManager.setActiveCodecList(m_pAccount->id(), _codecList);
 
+   //Update codec details
+   for (int i=0; i < q_ptr->rowCount();i++) {
+      const QModelIndex& idx = q_ptr->index(i,0);
+      MapStringString codecDetails;
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::NAME        ] = q_ptr->data(idx,CodecModel::Role::NAME).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] = q_ptr->data(idx,CodecModel::Role::SAMPLERATE).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] = q_ptr->data(idx,CodecModel::Role::BITRATE).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] = q_ptr->data(idx,CodecModel::Role::TYPE).toString();
+
+      qDebug() << "setting codec details for " << q_ptr->data(idx,CodecModel::Role::NAME).toString();
+
+      configurationManager.setCodecDetails(m_pAccount->id(), q_ptr->data(idx,CodecModel::Role::ID).toUInt(), codecDetails);
+   }
    m_EditState = CodecModel::EditState::READY;
 }
 
