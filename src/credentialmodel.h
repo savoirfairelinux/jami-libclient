@@ -86,6 +86,6 @@ private:
 };
 Q_DECLARE_METATYPE(CredentialModel*)
 
-CredentialModel* operator<<(CredentialModel* a, CredentialModel::EditAction action);
+CredentialModel* LIB_EXPORT operator<<(CredentialModel* a, CredentialModel::EditAction action);
 
 #endif
