@@ -81,7 +81,7 @@ IMConversationManagerPrivate* IMConversationManagerPrivate::instance()
 }
 
 ///Called when a new message is incoming
-void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QString& message)
+void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QMap<QString,QString>& message)
 {
    Q_UNUSED(from)
 
@@ -148,8 +148,22 @@ Media::TextRecording* Media::Text::recording() const
    return d_ptr->m_pRecording;
 }
 
-///Send a text message
-void Media::Text::send(const QString& message)
+/**
+ * Send a message to the peer.
+ *
+ * @param message A messages encoded in various alternate payloads
+ *
+ * The send a single messages. Just as e-mails, the message can be
+ * encoded differently. The peer client will interpret the richest
+ * payload it support and then fallback to lesser ones.
+ * 
+ * Suggested payloads include:
+ *
+ * "text/plain"    : The most common plain UTF-8 text
+ * "text/enriched" : (RTF) The rich text format used by older applications (like WordPad and OS X TextEdit)
+ * "text/html"     : The format used by web browsers
+ */
+void Media::Text::send(const QMap<QString,QString>& message)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
    Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message);

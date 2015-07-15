@@ -337,3 +337,19 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
 
    return mapToPerson(p,all,accounts);
 }
+
+QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& payload)
+{
+   QByteArray a;
+   a += "MIME-Version: 1.0\n";
+   a += "Content-Type: multipart/mixed; boundary=boundary\n";
+   a += "\n";
+   a += "--boundary\n";
+   a += "Content-Type: "+mimeType+"\n";
+   a += "\n";
+   a += payload+"\n";
+   a += "--boundary--\0";
+
+   return a;
+}
+

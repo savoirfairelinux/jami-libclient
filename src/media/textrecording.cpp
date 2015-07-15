@@ -226,7 +226,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
    return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction)
 {
 
    //Only create it if none was found on the disk
@@ -248,11 +248,25 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
    Serializable::Message* m = new Serializable::Message();
 
    m->timestamp = currentTime                      ;
-   m->payload   = message                          ;
-   m->mimeType  = "text/plain"                     ;
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
+
+   QMapIterator<QString, QString> iter(message);
+   while (iter.hasNext()) {
+      iter.next();
+      if (iter.value() != "application/resource-lists+xml") { //This one is useless
+         Serializable::Payload* p = new Serializable::Payload();
+         p->mimeType = iter.key  ();
+         p->payload  = iter.value();
+         m->payloads << p;
+
+         if (p->mimeType == "text/plain")
+            m->m_PlainText = p->payload;
+         else if (p->mimeType == "text/html")
+            m->m_HTML = p->payload;
+      }
+   }
    m_pCurrentGroup->messages << m;
 
    //Make sure the model exist
@@ -270,26 +284,64 @@ void Media::TextRecordingPrivate::insertNewMessage(const QString& message, const
    q_ptr->save();
 }
 
+void Serializable::Payload::read(const QJsonObject &json)
+{
+   payload  = json["payload" ].toString();
+   mimeType = json["mimeType"].toString();
+}
+
+void Serializable::Payload::write(QJsonObject& json) const
+{
+   json["payload" ] = payload ;
+   json["mimeType"] = mimeType;
+}
+
 void Serializable::Message::read (const QJsonObject &json)
 {
    timestamp  = json["timestamp" ].toInt                (                           );
-   payload    = json["payload"   ].toString             (                           );
-   mimeType   = json["mimeType"  ].toString             (                           );
    authorSha1 = json["authorSha1"].toString             (                           );
    isRead     = json["isRead"    ].toBool               (                           );
    direction  = static_cast<Media::Media::Direction>    ( json["direction"].toInt() );
    type       = static_cast<Serializable::Message::Type>( json["type"     ].toInt() );
+
+   QJsonArray a = json["payloads"].toArray();
+   for (int i = 0; i < a.size(); ++i) {
+      QJsonObject o = a[i].toObject();
+      Payload* p = new Payload();
+      p->read(o);
+      payloads << p;
+
+      if (p->mimeType == "text/plain")
+         m_PlainText = p->payload;
+      else if (p->mimeType == "text/html")
+         m_HTML = p->payload;
+   }
+
+   //Load older conversation from a time when only 1 mime/payload pair was supported
+   if (!json["payload"   ].toString().isEmpty()) {
+      Payload* p  = new Payload();
+      p->payload  = json["payload"  ].toString();
+      p->mimeType = json["mimeType" ].toString();
+      payloads << p;
+      m_PlainText = p->payload;
+   }
 }
 
 void Serializable::Message::write(QJsonObject &json) const
 {
    json["timestamp"  ] = static_cast<int>(timestamp);
-   json["payload"    ] = payload                    ;
-   json["mimeType"   ] = mimeType                   ;
    json["authorSha1" ] = authorSha1                 ;
    json["direction"  ] = static_cast<int>(direction);
    json["type"       ] = static_cast<int>(type)     ;
    json["isRead"     ] = isRead                     ;
+
+   QJsonArray a;
+   foreach (const Payload* p, payloads) {
+      QJsonObject o;
+      p->write(o);
+      a.append(o);
+   }
+   json["payloads"] = a;
 }
 
 void Serializable::Group::read (const QJsonObject &json, const QHash<QString,ContactMethod*> sha1s)
@@ -431,7 +483,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
       ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
       switch (role) {
          case Qt::DisplayRole:
-            return QVariant(n->m_pMessage->payload);
+            return QVariant(n->m_pMessage->m_PlainText);
          case Qt::DecorationRole         :
             if (n->m_pMessage->direction == Media::Media::Direction::IN)
                return PixmapManipulationDelegate::instance()->callPhoto(n->m_pContactMethod,QSize(48,48));
@@ -452,6 +504,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return QDateTime::fromTime_t(n->m_pMessage->timestamp).toString();
          case (int)Media::TextRecording::Role::IsStatus             :
             return n->m_pMessage->type == Serializable::Message::Type::STATUS;
+         case (int)Media::TextRecording::Role::HTML                 :
+            return QVariant(n->m_pMessage->m_HTML);
          default:
             break;
       }
