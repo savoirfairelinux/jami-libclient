@@ -343,13 +343,13 @@ QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& pay
 {
    QByteArray a;
    a += "MIME-Version: 1.0\n";
-   a += "Content-Type: multipart/mixed; boundary=content\n";
+   a += "Content-Type: multipart/mixed; boundary=boundary\n";
    a += "\n";
-   a += "--content\n";
+   a += "--boundary\n";
    a += "Content-Type: "+mimeType+"\n";
    a += "\n";
    a += payload+"\n";
-   a += "--content--\0";
+   a += "--boundary--\0";
 
    return a;
 }

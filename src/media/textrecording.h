@@ -54,6 +54,7 @@ public:
       Timestamp                             ,
       FormattedDate                         ,
       IsStatus                              ,
+      HTML                                  ,
    };
 
    //Constructor
