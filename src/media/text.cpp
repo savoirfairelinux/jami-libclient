@@ -26,6 +26,9 @@
 #include <call.h>
 #include <callmodel.h>
 #include <account.h>
+#include <person.h>
+#include <contactmethod.h>
+#include <mime.h>
 #include <media/textrecording.h>
 #include <media/recordingmodel.h>
 #include <phonedirectorymodel.h>
@@ -94,6 +97,22 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
    if (!media) {
       media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
+   }
+
+   //Intercept some messages early, those are intended for internal Ring usage
+   QMapIterator<QString, QString> iter(message);
+   while (iter.hasNext()) {
+      iter.next();
+      if (iter.key() == RingMimes::PROFILE_VCF) {
+         //For now only add the profile for the CM without person.
+         //Eventually this should be upgraded to save the vCards in the folder and
+         //update them.
+         if (!call->peerContactMethod()->contact()) {
+            Person* p = new Person(iter.value().toLatin1());
+            call->peerContactMethod()->setPerson(p);
+         }
+         return;
+      }
    }
 
    media->recording()->setCall(call);

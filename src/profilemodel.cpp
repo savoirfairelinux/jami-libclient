@@ -33,6 +33,7 @@
 #include "collectioneditor.h"
 #include "personmodel.h"
 #include "callmodel.h"
+#include "contactmethod.h"
 #include "person.h"
 #include "delegates/profilepersisterdelegate.h"
 #include "delegates/pixmapmanipulationdelegate.h"
@@ -324,6 +325,9 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    parent->children << account_pro;
    ProfileModel::instance()->endInsertRows();
    m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
+
+   if (parent->contact)
+      acc->contactMethod()->setPerson(parent->contact);
 }
 
 void ProfileContentBackend::loadProfiles()
