@@ -231,6 +231,7 @@ public:
    void warning           ();
    void remove            ();
    void abort             ();
+   void sendProfile       ();
 
    //LifeCycleState change callback
    void initMedia();
