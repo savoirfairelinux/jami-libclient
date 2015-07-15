@@ -42,7 +42,7 @@ public:
    TextRecording* recording() const;
 
    //Mutator
-   void send(const QString& message);
+   void send(const QMap<QString,QString>& message);
 
 private:
    Text(Call* parent, const Media::Direction direction);
@@ -51,8 +51,8 @@ private:
    MediaTextPrivate* d_ptr;
 
 Q_SIGNALS:
-   void messageSent    (const QString& m);
-   void messageReceived(const QString& m);
+   void messageSent    (const QMap<QString,QString>& m);
+   void messageReceived(const QMap<QString,QString>& m);
 };
 
 }

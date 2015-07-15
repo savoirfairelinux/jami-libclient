@@ -41,6 +41,15 @@ namespace Media {
  */
 namespace Serializable {
 
+class Payload {
+public:
+   QString payload;
+   QString mimeType;
+
+   void read (const QJsonObject &json);
+   void write(QJsonObject       &json) const;
+};
+
 class Message {
 public:
    enum class Type {
@@ -50,10 +59,8 @@ public:
 
    ///The time associated with this message
    time_t                  timestamp ;
-   ///The payload. It will usually be UTF8 text
-   QString                 payload   ;
-   ///The mimetype associated with the payload
-   QString                 mimeType  ;
+   ///A group of alternate payloads (mimetype as key)
+   QList<Payload*>         payloads  ;
    ///The author display name
    QString                 authorSha1;
    ///The direction
@@ -64,6 +71,10 @@ public:
    bool isRead                       ;
    ///The contact method (incoming messages only)
    ContactMethod* contactMethod      ;
+
+   //Cache the most common payload to avoid lookup
+   QString m_PlainText;
+   QString m_HTML;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
@@ -147,7 +158,7 @@ public:
    QList<Serializable::Peers*> m_lAssociatedPeers;
 
    //Helper
-   void insertNewMessage(const QString& message, const ContactMethod* cm, Media::Media::Direction direction);
+   void insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction);
    QHash<QByteArray,QByteArray> toJsons() const;
 
 private:
