@@ -120,8 +120,8 @@ public:
 
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
-                     QTimer::singleShot(0, [this, certId,accountId,timestamp] {
-                           Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), timestamp);
+                     QTimer::singleShot(0, [this, certId,accountId,payload,timestamp] {
+                           Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
                      });
          }),
 
@@ -592,9 +592,10 @@ public Q_SLOTS: // METHODS
       return DRing::discardTrustRequest(accountId.toStdString(), from.toStdString());
    }
 
-   void sendTrustRequest(const QString& accountId, const QString& from)
+   void sendTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload)
    {
-      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString());
+      std::vector<unsigned char> raw(payload.begin(), payload.end());
+      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
    void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
@@ -619,7 +620,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePinned(const QString& certId);
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
-   void incomingTrustRequest(const QString& accountId, const QString& from, qulonglong timeStamp);
+   void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const QString& message);
    void mediaParametersChanged(const QString& accountId);
 
