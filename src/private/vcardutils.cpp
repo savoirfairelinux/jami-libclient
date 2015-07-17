@@ -244,8 +244,15 @@ void VCardUtils::addPhoto(const QByteArray img)
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
                "ENCODING=BASE64" +
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-               "TYPE=PNG:" +
-               img.toBase64());
+               "TYPE=JPEG:");
+   const QByteArray content = img.toBase64().trimmed();
+
+//    m_vCard += " " + content;
+//    int start(0) , end(content.size() < 79 : content.size() : 79);
+//    m_vCard << " " <<
+//    do {
+//       start = end+1;
+//    } while(true);
 }
 
 const QByteArray VCardUtils::endVCard()
@@ -339,6 +346,7 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
    return mapToPerson(p,all,accounts);
 }
 
+//TODO get the daemon implementation, port it to Qt
 QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& payload)
 {
    QByteArray a;
@@ -352,5 +360,24 @@ QByteArray VCardUtils::wrapInMime(const QString& mimeType, const QByteArray& pay
    a += "--content--\0";
 
    return a;
+}
+
+QMap<QString,QString> VCardUtils::parseMimeAttributes(const QString& mimeType)
+{
+   QMap<QString,QString> ret;
+
+   const QStringList l = mimeType.split(';');
+
+   if (l.size() < 2)
+      return {};
+
+   const QStringList pairs = l[1].split(',');
+
+   for(const QString& p : pairs) {
+      const QStringList kv = p.split('=');
+      ret[kv[0]] = kv[1];
+   }
+
+   return ret;
 }
 

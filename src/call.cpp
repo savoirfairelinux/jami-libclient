@@ -39,6 +39,7 @@
 #include "collectioninterface.h"
 #include "person.h"
 #include "uri.h"
+#include <mime.h>
 #include "account.h"
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
@@ -163,9 +164,9 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*ERROR          */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::stop         , CP::error   }},/**/
 /*CONF           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
 /*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*INIT           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
+/*INIT           */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
-/*CONNECTED      */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
+/*CONNECTED      */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
 }};//                                                                                                                                                */
 
 //There is no point to have a 2D matrix, only one transition per state is possible
@@ -492,6 +493,8 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
       call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
    }
+
+   call->d_ptr->sendProfile();
 
    return call;
 } //buildIncomingCall
@@ -1559,6 +1562,48 @@ void CallPrivate::remove()
 void CallPrivate::abort()
 {
 
+}
+
+/**Send your profile to the peer, assume the other use RING
+ *
+ * If he doesn't then an "unsupported media" error will be
+ * sent by the peer.
+ *
+ * @todo Do not try to re-send profiles to that CM (save in history?)
+ */
+void CallPrivate::sendProfile()
+{
+   if (q_ptr->account()->contactMethod()->contact()) {
+      /*
+       * SIP messages need to be very small ( < 2kB ) not to hit some hardcoded
+       * buffer size in the PJ_SIP. As profile photo tend to hover around 10kB,
+       * the profile need to be sent in parts and re-assembled. To do this, the
+       * most simple way is to add MIME type metadata intended for the peer. Of
+       * course, this is an ugly hack is while vCard is a standard, using it
+       * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
+       */
+      Media::Text* t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
+      QString vCard = q_ptr->account()->contactMethod()->contact()->toVCard();
+
+      QMap<QString,QString> chunks;
+
+      const QString key = QString::number(qrand());
+
+      int i(0),total(vCard.size()/1000 + (vCard.size()%1000?1:0));
+      while(vCard.size()) {
+         const QString chunk = vCard.left(1000);
+         chunks[QString("%1; id=%2,part=%3,of=%4")
+            .arg( RingMimes::PROFILE_VCF     )
+            .arg( key                        )
+            .arg( QString::number( i     )+1 )
+            .arg( QString::number( total )   )
+         ] = chunk;
+         vCard = vCard.remove(0,1000);
+         i++;
+      }
+
+      t->send(chunks);
+   }
 }
 
 ///Cancel this call
