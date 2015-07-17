@@ -26,10 +26,14 @@
 #include <call.h>
 #include <callmodel.h>
 #include <account.h>
+#include <person.h>
+#include <contactmethod.h>
+#include <mime.h>
 #include <media/textrecording.h>
 #include <media/recordingmodel.h>
 #include <phonedirectorymodel.h>
 #include <private/call_p.h>
+#include <private/vcardutils.h>
 #include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
 
@@ -63,6 +67,20 @@ private:
    Media::Text* q_ptr;
 };
 
+class ProfileChunk
+{
+public:
+   //Helper
+   static Person* addChunk( const QMap<QString,QString>& args, const QString& payload);
+
+private:
+   //Attributes
+   QHash<int, QString> m_hParts     {       };
+   int                 m_PartsCount { 0     };
+   static QHash<QString, ProfileChunk*> m_hRequest;
+};
+
+QHash<QString, ProfileChunk*> ProfileChunk::m_hRequest;
 
 IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QObject(parent)
 {
@@ -80,6 +98,38 @@ IMConversationManagerPrivate* IMConversationManagerPrivate::instance()
    return ins;
 }
 
+Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload)
+{
+    const int total  = args[ "of"   ].toInt();
+    const int part   = args[ "part" ].toInt();
+    const QString id = args[ "id"   ];
+
+    auto c = m_hRequest[id];
+    if (!c) {
+        c = new ProfileChunk();
+        c->m_PartsCount = total;
+        m_hRequest[id] = c;
+    }
+
+    if (part < 1 and part > total)
+        return nullptr;
+
+    c->m_hParts[part] = payload;
+
+    if (c->m_hParts.size() != c->m_PartsCount)
+        return nullptr;
+
+    QByteArray cv;
+    for (int i=0; i < c->m_PartsCount; ++i) {
+        cv += c->m_hParts[i+1];
+    }
+
+    m_hRequest[id] = nullptr;
+    delete c;
+
+    return new Person(cv);
+}
+
 ///Called when a new message is incoming
 void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QMap<QString,QString>& message)
 {
@@ -94,6 +144,25 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
    if (!media) {
       media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
+   }
+
+   static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
+
+   //Intercept some messages early, those are intended for internal Ring usage
+   QMapIterator<QString, QString> iter(message);
+   while (iter.hasNext()) {
+      iter.next();
+      if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
+         //For now only add the profile for the CM without person.
+         //Eventually this should be upgraded to save the vCards in the folder and
+         //update them.
+         if (!call->peerContactMethod()->contact()) {
+            const auto& args = VCardUtils::parseMimeAttributes(iter.key());
+            if (auto person = ProfileChunk::addChunk(args, iter.value()))
+               call->peerContactMethod()->setPerson(person);
+         }
+         return;
+      }
    }
 
    media->recording()->setCall(call);
@@ -156,17 +225,17 @@ Media::TextRecording* Media::Text::recording() const
  * The send a single messages. Just as e-mails, the message can be
  * encoded differently. The peer client will interpret the richest
  * payload it support and then fallback to lesser ones.
- * 
+ *
  * Suggested payloads include:
  *
  * "text/plain"    : The most common plain UTF-8 text
  * "text/enriched" : (RTF) The rich text format used by older applications (like WordPad and OS X TextEdit)
  * "text/html"     : The format used by web browsers
  */
-void Media::Text::send(const QMap<QString,QString>& message)
+void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
-   Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message);
+   Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message, isMixed);
 
    //Make sure the recording exist
    recording();
