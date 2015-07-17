@@ -87,6 +87,7 @@ public:
 
    //Serialization
    static QByteArray wrapInMime(const QString& mimeType, const QByteArray& payload);
+   static QMap<QString,QString> parseMimeAttributes(const QString& mimeType);
 
 private:
 
