@@ -401,10 +401,10 @@ public Q_SLOTS: // METHODS
         DRing::resetSASVerified(callID.toStdString());
     }
 
-    void sendTextMessage(const QString &callID, const QMap<QString,QString> &message)
+    void sendTextMessage(const QString &callID, const QMap<QString,QString> &message, bool isMixed)
     {
         DRing::sendTextMessage(
-            callID.toStdString(), convertMap(message), QObject::tr("Me").toStdString()
+            callID.toStdString(), convertMap(message), QObject::tr("Me").toStdString(), isMixed
         );
     }
 

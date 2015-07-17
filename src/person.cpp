@@ -644,7 +644,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
       maker->addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
    }
 
-   maker->addPhoto(PixmapManipulationDelegate::instance()->toByteArray(photo()).simplified());
+   maker->addPhoto(PixmapManipulationDelegate::instance()->toByteArray(photo()));
    return maker->endVCard();
 }
 
