@@ -42,7 +42,7 @@ public:
    TextRecording* recording() const;
 
    //Mutator
-   void send(const QMap<QString,QString>& message);
+   void send(const QMap<QString,QString>& message, const bool isMixed = false);
 
 private:
    Text(Call* parent, const Media::Direction direction);

@@ -33,6 +33,7 @@
 #include "collectioneditor.h"
 #include "personmodel.h"
 #include "callmodel.h"
+#include "contactmethod.h"
 #include "person.h"
 #include "delegates/profilepersisterdelegate.h"
 #include "delegates/pixmapmanipulationdelegate.h"
@@ -90,6 +91,7 @@ public:
 
    //Attributes
    bool m_needSaving;
+   bool m_DelayedLoading {false};
 
    QList<Person*> m_bSaveBuffer;
    bool saveAll();
@@ -126,15 +128,28 @@ struct Node {
 
 bool ProfileEditor::save(const Person* contact)
 {
-   QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
-   qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+'/'+contact->uid()+".vcf";
-   const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
+#if QT_VERSION >= 0x050400
+    if (!contact->property("delayedSaving").toBool()) {
+        const_cast<Person*>(contact)->setProperty("delayedSaving", true);
 
-   QFile file(profilesDir.absolutePath()+'/'+contact->uid()+".vcf");
-   file.open(QIODevice::WriteOnly);
-   file.write(result);
-   file.close();
-   return true;
+        QTimer::singleShot(0,[this,contact]() {
+                const_cast<Person*>(contact)->setProperty("delayedSaving", false);
+#endif
+                const auto& profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
+                const auto& filename = profilesDir.absolutePath() + '/' + contact->uid() + ".vcf";
+                qDebug() << "Saving vcf in:" << filename;
+                const auto& result = contact->toVCard(getAccountsForProfile(contact->uid()));
+
+                QFile file {filename};
+                file.open(QIODevice::WriteOnly);
+                file.write(result);
+                file.close();
+#if QT_VERSION >= 0x050400
+            });
+
+    }
+#endif
+    return true;
 }
 
 ProfileEditor::~ProfileEditor()
@@ -324,6 +339,9 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    parent->children << account_pro;
    ProfileModel::instance()->endInsertRows();
    m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
+
+   if (parent->contact)
+      acc->contactMethod()->setPerson(parent->contact);
 }
 
 void ProfileContentBackend::loadProfiles()
@@ -347,7 +365,9 @@ void ProfileContentBackend::loadProfiles()
          pro->m_Index = m_pEditor->m_lProfiles.size() ;
 
          QList<Account*> accs;
+         qDebug() << "\n\n\nMAPPING!!!";
          VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
+         qDebug() << "\n\nEND MAP";
          foreach(Account* a, accs)
             addAccount(pro,a);
 
@@ -369,27 +389,17 @@ void ProfileContentBackend::loadProfiles()
 
 bool ProfileContentBackend::load()
 {
-   QTimer::singleShot(0,this,SLOT(loadProfiles()));
-   return true;
+    if (!m_DelayedLoading) {
+        m_DelayedLoading = true;
+        QTimer::singleShot(0, this, SLOT(loadProfiles()));
+    }
+    return true;
 }
 
 bool ProfileContentBackend::reload()
 {
    return false;
 }
-
-// bool ProfileContentBackend::save(const Person* contact)
-// {
-//    QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
-//    qDebug() << "Saving vcf in:" << profilesDir.absolutePath()+"/"+contact->uid()+".vcf";
-//    const QByteArray result = contact->toVCard(getAccountsForProfile(contact->uid()));
-// 
-//    QFile file(profilesDir.absolutePath()+"/"+contact->uid()+".vcf");
-//    file.open(QIODevice::WriteOnly);
-//    file.write(result);
-//    file.close();
-//    return true;
-// }
 
 bool ProfileContentBackend::saveAll()
 {
