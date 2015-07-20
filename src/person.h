@@ -162,6 +162,9 @@ public:
    void setUid            ( const QByteArray& id     );
    void setPhoto          ( const QVariant&   photo  );
 
+   //Updates an existing contact from vCard info
+   void updateFromVCard(const QByteArray& content);
+
    //Operator
    bool operator==(const Person* other) const;
    bool operator==(const Person& other) const;
@@ -171,19 +174,19 @@ private Q_SLOTS:
 
 Q_SIGNALS:
    ///The presence status of a contact method changed
-   void presenceChanged              ( ContactMethod* );
+   void presenceChanged           ( ContactMethod* );
    ///The person presence status changed
-   void statusChanged                ( bool           );
+   void statusChanged             ( bool           );
    ///The person properties changed
-   void changed                      (                );
-   ///The number of contact method changed
-   void phoneNumberCountChanged      ( int, int       );
-   ///The number of contact method is about to change
-   void phoneNumberCountAboutToChange( int, int       );
+   void changed                   (                );
+   ///The number of and/or the contact methods themselves have changed
+   void phoneNumbersChanged       (                );
+   ///The number of and/or the contact methods themselvesd are about to change
+   void phoneNumbersAboutToChange (                );
    ///The person data were merged from another source
-   void rebased                      ( Person*        );
+   void rebased                   ( Person*        );
    ///The last time there was an interaction with this person changed
-   void lastUsedTimeChanged          ( long long      ) const;
+   void lastUsedTimeChanged       ( long long      ) const;
 
 protected:
    //Presence secret methods

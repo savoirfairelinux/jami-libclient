@@ -66,11 +66,11 @@ public:
 
    //As a single D-Pointer can have multiple parent (when merged), all emit need
    //to use a proxy to make sure everybody is notified
-   void presenceChanged( ContactMethod* );
-   void statusChanged  ( bool         );
-   void changed        (              );
-   void phoneNumberCountChanged(int,int);
-   void phoneNumberCountAboutToChange(int,int);
+   void presenceChanged          ( ContactMethod* );
+   void statusChanged            ( bool           );
+   void changed                  (                );
+   void phoneNumbersChanged      (                );
+   void phoneNumbersAboutToChange(                );
 
    //Helper
    void registerContactMethod(ContactMethod* m);

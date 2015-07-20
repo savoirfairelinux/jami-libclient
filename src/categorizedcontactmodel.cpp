@@ -71,14 +71,15 @@ public:
    inline void setVisible( bool visible     );
 
    //Helpers
-   void slotChanged                        (       );
-   void slotContactMethodCountChanged      (int,int);
-   void slotContactMethodCountAboutToChange(int,int);
+   void slotChanged                    ();
+   void slotContactMethodsChanged      ();
+   void slotContactMethodsAboutToChange();
 
 private:
-   ContactTreeNode* m_pParent       ;
-   bool             m_Visible       ;
-   uint             m_VisibleCounter;
+   ContactTreeNode*                 m_pParent       ;
+   bool                             m_Visible       ;
+   uint                             m_VisibleCounter;
+   QVector<QMetaObject::Connection> m_lConections   ;
 };
 
 class CategorizedContactModelPrivate final : public QObject
@@ -125,16 +126,16 @@ ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* pare
    m_VisibleCounter(0)
 {
    m_Visible = m_pContact->isActive() && ((!parent->d_ptr->m_UnreachableHidden) || m_pContact->isReachable());
-   QObject::connect(m_pContact,&Person::changed                      ,[this](            ){ slotChanged                        (   ); });
-   QObject::connect(m_pContact,&Person::phoneNumberCountChanged      ,[this](int n, int o){ slotContactMethodCountChanged      (n,o); });
-   QObject::connect(m_pContact,&Person::phoneNumberCountAboutToChange,[this](int n, int o){ slotContactMethodCountAboutToChange(n,o); });
+   m_lConections << QObject::connect(m_pContact,&Person::changed                  ,[this](){ slotChanged                    (); });
+   m_lConections << QObject::connect(m_pContact,&Person::phoneNumbersChanged      ,[this](){ slotContactMethodsChanged      (); });
+   m_lConections << QObject::connect(m_pContact,&Person::phoneNumbersAboutToChange,[this](){ slotContactMethodsAboutToChange(); });
 }
 
 ContactTreeNode::ContactTreeNode(ContactMethod* cm, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
    m_pContactMethod(cm),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CONTACTMETHOD),m_pParent(nullptr),m_pModel(parent),
    m_Visible(true),m_VisibleCounter(0)
 {
-   QObject::connect(m_pContactMethod,&ContactMethod::changed,[this](){ slotChanged(); });
+   m_lConections << QObject::connect(m_pContactMethod,&ContactMethod::changed,[this](){ slotChanged(); });
 }
 
 ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
@@ -145,6 +146,9 @@ ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* p
 
 ContactTreeNode::~ContactTreeNode()
 {
+   for (auto c : m_lConections) {
+      QObject::disconnect(c);
+   }
    for (ContactTreeNode* c : m_lChildren) {
       delete c;
    }
@@ -176,18 +180,15 @@ void ContactTreeNode::slotChanged()
    emit m_pModel->dataChanged(tl, br);
 }
 
-void ContactTreeNode::slotContactMethodCountChanged(int count, int oldCount)
+void ContactTreeNode::slotContactMethodsChanged()
 {
    const QModelIndex idx = m_pModel->d_ptr->getIndex(m_Index,0,this);
-   if (count > oldCount) {
 
-      //After discussion, it was decided that contacts with only 1 phone number should
-      //be handled differently and the additional complexity isn't worth it
-      if (oldCount == 1)
-         oldCount = 0;
-
-      m_pModel->beginInsertRows(idx,oldCount,count-1);
-      for (int i = count; i < oldCount; i++) {
+   //After discussion, it was decided that contacts with only 1 phone number should
+   //be handled differently and the additional complexity isn't worth it
+   if (m_pContact->phoneNumbers().size() > 1) {
+      m_pModel->beginInsertRows(idx,0,m_pContact->phoneNumbers().size()-1);
+      for (int i = 0; i < m_pContact->phoneNumbers().size(); ++i) {
          ContactTreeNode* n2 = new ContactTreeNode(m_pContact->phoneNumbers()[i],m_pModel);
          n2->m_Index = m_lChildren.size();
          n2->setParent(this);
@@ -198,13 +199,17 @@ void ContactTreeNode::slotContactMethodCountChanged(int count, int oldCount)
    emit m_pModel->dataChanged(idx,idx);
 }
 
-void ContactTreeNode::slotContactMethodCountAboutToChange(int count, int oldCount)
+void ContactTreeNode::slotContactMethodsAboutToChange()
 {
    const QModelIndex idx = m_pModel->d_ptr->getIndex(m_Index,0,this);
-   if (count < oldCount) {
-      //If count == 1, disable all children
-      m_pModel->beginRemoveRows(idx,count == 1?0:count,oldCount-1);
-      //FIXME memory leak
+
+   if (m_lChildren.size() > 0) {
+      m_pModel->beginRemoveRows(idx,0,m_lChildren.size()-1);
+      while (m_lChildren.size()) {
+         auto node = m_lChildren.at(0);
+         m_lChildren.removeAt(0);
+         delete node;
+      }
       m_pModel->endRemoveRows();
    }
 }

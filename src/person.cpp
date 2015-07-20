@@ -157,17 +157,17 @@ void PersonPrivate::statusChanged  ( bool s )
    }
 }
 
-void PersonPrivate::phoneNumberCountChanged(int n,int o)
+void PersonPrivate::phoneNumbersChanged()
 {
    foreach (Person* c,m_lParents) {
-      emit c->phoneNumberCountChanged(n,o);
+      emit c->phoneNumbersChanged();
    }
 }
 
-void PersonPrivate::phoneNumberCountAboutToChange(int n,int o)
+void PersonPrivate::phoneNumbersAboutToChange()
 {
    foreach (Person* c,m_lParents) {
-      emit c->phoneNumberCountAboutToChange(n,o);
+      emit c->phoneNumbersAboutToChange();
    }
 }
 
@@ -221,6 +221,16 @@ Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionI
          }
          break;
    };
+}
+
+///Updates an existing contact from vCard info
+void Person::updateFromVCard(const QByteArray& content)
+{
+   // empty existing contact methods first
+   setContactMethods(ContactMethods());
+   if (!VCardUtils::mapToPerson(this, content)) {
+      qWarning() << "Updating person failed";
+   }
 }
 
 ///Destructor
@@ -282,7 +292,7 @@ const QString& Person::preferredEmail()  const
    return d_ptr->m_PreferredEmail;
 }
 
-///Get the unique identifier (used for drag and drop) 
+///Get the unique identifier (used for drag and drop)
 const QByteArray& Person::uid() const
 {
    return d_ptr->m_Uid;
@@ -302,22 +312,19 @@ const QString& Person::department() const
 ///Set the phone number (type and number)
 void Person::setContactMethods(ContactMethods numbers)
 {
-   const int oldCount(d_ptr->m_Numbers.size()),newCount(numbers.size());
+   d_ptr->phoneNumbersAboutToChange();
    for (ContactMethod* n : d_ptr->m_Numbers) {
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       disconnect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
    }
    d_ptr->m_Numbers = numbers;
-   if (newCount < oldCount) //Rows need to be removed from models first
-      d_ptr->phoneNumberCountAboutToChange(newCount,oldCount);
 
    for (ContactMethod* n : d_ptr->m_Numbers) {
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       connect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
    }
 
-   if (newCount > oldCount) //Need to be updated after the data to prevent invalid memory access
-      d_ptr->phoneNumberCountChanged(newCount,oldCount);
+   d_ptr->phoneNumbersChanged();
    d_ptr->changed();
 
    //Allow incoming calls from those numbers
