@@ -230,12 +230,8 @@ void VCardUtils::addAddress(const Person::Address* addr)
 
 void VCardUtils::addContactMethod(const QString& type, const QString& num)
 {
-   // This will need some formatting
-   addProperty(Property::TELEPHONE, type + num);
-//   char* prop = VCProperty::VC_TELEPHONE;
-//   strcat(prop, VCDelimiter::VC_SEPARATOR_TOKEN);
-//   strcat(prop, "TYPE=" + type);
-//   strcat(prop, ",VOICE");
+   QString prop = QString(Property::TELEPHONE) + QString(Delimiter::SEPARATOR_TOKEN) + type;
+   addProperty(prop, num);
 }
 
 void VCardUtils::addPhoto(const QByteArray img)
