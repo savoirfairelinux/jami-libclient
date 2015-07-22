@@ -217,16 +217,16 @@ void AccountPrivate::slotUpdateCertificate()
    if (cert) {
       switch (cert->type()) {
          case Certificate::Type::AUTHORITY:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE) != cert->path().toString())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE) != cert->path().toLocalFile())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert->path().toLocalFile());
             break;
          case Certificate::Type::USER:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE) != cert->path().toString())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE) != cert->path().toLocalFile())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert->path().toLocalFile());
             break;
          case Certificate::Type::PRIVATE_KEY:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE) != cert->path().toString())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path().toString());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE) != cert->path().toLocalFile())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path().toLocalFile());
             break;
          case Certificate::Type::NONE:
          case Certificate::Type::CALL:
@@ -1034,11 +1034,11 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::TlsPassword):
          return tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return tlsCaListCertificate()?tlsCaListCertificate()->path().path():QVariant();
+         return tlsCaListCertificate()?tlsCaListCertificate()->path().toLocalFile():QVariant();
       case CAST(Account::Role::TlsCertificate):
-         return tlsCertificate()?tlsCertificate()->path().path():QVariant();
+         return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
       case CAST(Account::Role::TlsPrivateKeyCertificate):
-         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().path():QVariant();
+         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
       case CAST(Account::Role::TlsServerName):
          return tlsServerName();
       case CAST(Account::Role::SipStunServer):
@@ -1456,7 +1456,7 @@ void Account::setTlsCaListCertificate(Certificate* cert)
    allowCertificate(cert);
 
    d_ptr->m_pCaCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().path():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
    d_ptr->regenSecurityValidation();
 
    if (d_ptr->m_cTlsCaCert)
@@ -1477,7 +1477,7 @@ void Account::setTlsCertificate(Certificate* cert)
    cert->setRequirePrivateKey(true);
 
    d_ptr->m_pTlsCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().path():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
 
    if (cert && d_ptr->m_pPrivateKey)
       d_ptr->m_pTlsCert->setPrivateKeyPath(d_ptr->m_pPrivateKey->path());
@@ -1498,7 +1498,7 @@ void Account::setTlsCertificate(Certificate* cert)
 void Account::setTlsPrivateKeyCertificate(Certificate* cert)
 {
    d_ptr->m_pPrivateKey = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().path():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
 
    if (d_ptr->m_pTlsCert)
       d_ptr->m_pTlsCert->setPrivateKeyPath(cert->path());
