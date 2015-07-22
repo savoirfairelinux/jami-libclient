@@ -565,7 +565,6 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 //    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
    const QString& contactUid     = hc[ Call::HistoryMapFields::CONTACT_UID  ];
 
-
    Person* ct = nullptr;
    if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
