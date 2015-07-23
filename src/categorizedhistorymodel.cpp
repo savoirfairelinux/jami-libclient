@@ -37,7 +37,6 @@
 #include "historytimecategorymodel.h"
 #include "lastusednumbermodel.h"
 #include "collectioninterface.h"
-#include "delegates/itemmodelstateserializationdelegate.h"
 
 /*****************************************************************************
  *                                                                           *

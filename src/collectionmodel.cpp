@@ -192,12 +192,14 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
       if (item && item->collection) {
          const bool old = item->collection->isEnabled();
-         ItemModelStateSerializationDelegate::instance()->setChecked(item->collection,value==Qt::Checked);
-         emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
-         if (old != (value==Qt::Checked)) {
-            emit checkStateChanged();
+         if (ItemModelStateSerializationDelegate::instance()) {
+            ItemModelStateSerializationDelegate::instance()->setChecked(item->collection,value==Qt::Checked);
+            emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
+            if (old != (value==Qt::Checked)) {
+               emit checkStateChanged();
+            }
+            return true;
          }
-         return true;
       }
    }
    return false;
