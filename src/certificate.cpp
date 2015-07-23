@@ -208,7 +208,8 @@ void CertificatePrivate::loadDetails()
       MapStringString d;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path.toString());
+         //TODO: Implement private key pass
+            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path.toString(), m_PrivateKey.toString(), QString());
             break;
          case LoadingType::FROM_ID:
             d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
@@ -224,7 +225,8 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), {});
+         //TODO: Implement private key pass
+            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), {}, {});
             break;
          case LoadingType::FROM_ID:
             checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id);
