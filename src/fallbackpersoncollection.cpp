@@ -188,7 +188,11 @@ QVariant FallbackPersonCollection::icon() const
 
 bool FallbackPersonCollection::isEnabled() const
 {
-   return ItemModelStateSerializationDelegate::instance()->isChecked(this);
+   /* if delegate exists, check if collectin is enabled, else assume it is */
+   if (auto delegate = ItemModelStateSerializationDelegate::instance())
+      return delegate->isChecked(this);
+   else
+      return true;
 }
 
 bool FallbackPersonCollection::load()
@@ -245,7 +249,7 @@ void FallbackPersonCollectionPrivate::loadAsync()
    for (const QString& dir : d.entryList(QDir::AllDirs)) {
       if (dir != QString('.') && dir != "..") {
          CollectionInterface* col = PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
-         if (ItemModelStateSerializationDelegate::instance()->isChecked(col)) {
+         if (col->isEnabled()) {
             col->load();
          }
       }
