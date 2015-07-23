@@ -67,6 +67,7 @@ public:
       constexpr static const char* BUSY           = "BUSY"   ;
       constexpr static const char* FAILURE        = "FAILURE";
       constexpr static const char* UNHOLD_CURRENT = "UNHOLD" ;
+      constexpr static const char* INACTIVE       = "INACTIVE";
    };
 
    class DaemonStateInit {
@@ -149,21 +150,21 @@ public:
    //State machine
    /**
     *  actionPerformedStateMap[orig_state][action]
-    *  Map of the states to go to when the action action is 
+    *  Map of the states to go to when the action action is
     *  performed on a call in state orig_state.
    **/
    static const TypedStateMachine< TypedStateMachine< Call::State , Call::Action > , Call::State > actionPerformedStateMap;
 
    /**
     *  actionPerformedFunctionMap[orig_state][action]
-    *  Map of the functions to call when the action action is 
+    *  Map of the functions to call when the action action is
     *  performed on a call in state orig_state.
    **/
    static const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::State > actionPerformedFunctionMap;
 
    /**
     *  stateChangedStateMap[orig_state][daemon_new_state]
-    *  Map of the states to go to when the daemon sends the signal 
+    *  Map of the states to go to when the daemon sends the signal
     *  callStateChanged with arg daemon_new_state
     *  on a call in state orig_state.
    **/
@@ -171,7 +172,7 @@ public:
 
    /**
     *  stateChangedFunctionMap[orig_state][daemon_new_state]
-    *  Map of the functions to call when the daemon sends the signal 
+    *  Map of the functions to call when the daemon sends the signal
     *  callStateChanged with arg daemon_new_state
     *  on a call in state orig_state.
    **/
