@@ -338,12 +338,13 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString validateCertificatePath(const QString& unused, const QString& certificate, const QString& privateKey, const QString& caListPath)
+   MapStringString validateCertificatePath(const QString& unused, const QString& certificate, const QString& privateKey, const QString& privateKeyPass, const QString& caListPath)
    {
       MapStringString temp =
          convertMap(DRing::validateCertificatePath(unused.toStdString(),
                                              certificate.toStdString(),
                                              privateKey.toStdString(),
+                                             privateKeyPass.toStdString(),
                                              caListPath.toStdString()));
       return temp;
    }
@@ -355,10 +356,12 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString getCertificateDetailsPath(const QString& certificate)
+   MapStringString getCertificateDetailsPath(const QString& certificate, const QString& privateKey, const QString& privateKeyPass)
    {
       MapStringString temp =
-         convertMap(DRing::getCertificateDetailsPath(certificate.toStdString()));
+         convertMap(DRing::getCertificateDetailsPath(certificate.toStdString(),
+                                                     privateKey.toStdString(),
+                                                     privateKeyPass.toStdString()));
       return temp;
    }
 
