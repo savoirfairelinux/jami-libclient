@@ -240,6 +240,7 @@ public:
    //Helpers
    void changeCurrentState(Call::State newState);
    void setStartTimeStamp(time_t stamp);
+   void setStartTimeStamp(); // this version set stamp to current time
    void initTimer();
    void registerRenderer(Video::Renderer* renderer);
    void removeRenderer(Video::Renderer* renderer);

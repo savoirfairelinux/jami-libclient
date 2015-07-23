@@ -324,9 +324,7 @@ Call::Call(const QString& confId, const QString& account)
    setObjectName("Conf:"+confId);
 
    if (type() == Call::Type::CONFERENCE) {
-      time_t curTime;
-      ::time(&curTime);
-      d_ptr->setStartTimeStamp(curTime);
+      d_ptr->setStartTimeStamp();
       d_ptr->initTimer();
       CallManagerInterface& callManager = DBus::CallManager::instance();
       MapStringString        details    = callManager.getConferenceDetails(dringId())  ;
@@ -400,11 +398,8 @@ Call* CallPrivate::buildExistingCall(const QString& callId)
 
    if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
       call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
-   else {
-      time_t curTime;
-      ::time(&curTime);
-      call->d_ptr->setStartTimeStamp(curTime);
-   }
+   else
+      call->d_ptr->setStartTimeStamp();
 
    call->d_ptr->initTimer();
 
@@ -1419,6 +1414,13 @@ void CallPrivate::setStartTimeStamp(time_t stamp)
    m_HistoryConst = HistoryTimeCategoryModel::timeToHistoryConst(m_pStartTimeStamp);
 }
 
+void CallPrivate::setStartTimeStamp()
+{
+   time_t curTime;
+   ::time(&curTime);
+   setStartTimeStamp(curTime);
+}
+
 
 /*****************************************************************************
  *                                                                           *
@@ -1461,9 +1463,7 @@ void CallPrivate::accept()
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Accepting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    Q_NOREPLY callManager.accept(m_DringId);
-   time_t curTime;
-   ::time(&curTime);
-   setStartTimeStamp(curTime);
+   setStartTimeStamp();
    m_Direction = Call::Direction::INCOMING;
 }
 
@@ -1473,9 +1473,7 @@ void CallPrivate::refuse()
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Refusing call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    const bool ret = callManager.refuse(m_DringId);
-   time_t curTime;
-   ::time(&curTime);
-   setStartTimeStamp(curTime);
+   setStartTimeStamp();
    m_Missed = true;
 
    //If the daemon crashed then re-spawned when a call is ringing, this happen.
@@ -1649,9 +1647,7 @@ void CallPrivate::call()
             m_PeerName = q_ptr->peerContactMethod()->contact()->formattedName();
       }
       connect(q_ptr->peerContactMethod(),SIGNAL(presentChanged(bool)),this,SLOT(updated()));
-      time_t curTime;
-      ::time(&curTime);
-      setStartTimeStamp(curTime);
+      setStartTimeStamp();
       m_Direction = Call::Direction::OUTGOING;
       if (q_ptr->peerContactMethod()) {
          q_ptr->peerContactMethod()->addCall(q_ptr);
@@ -1769,10 +1765,8 @@ void CallPrivate::start()
 void CallPrivate::startStop()
 {
    qDebug() << "Starting and stoping call. callId : " << q_ptr  << "ConfId:" << q_ptr;
-   time_t curTime;
-   ::time(&curTime);
-   setStartTimeStamp(curTime);
-   m_pStopTimeStamp  = curTime;
+   setStartTimeStamp();
+   m_pStopTimeStamp  = m_pStartTimeStamp;
    m_Missed = true;
 }
 
@@ -1792,9 +1786,7 @@ void CallPrivate::stop()
 void CallPrivate::startWeird()
 {
    qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
-   time_t curTime;
-   ::time(&curTime);
-   setStartTimeStamp(curTime);
+   setStartTimeStamp();
    qDebug() << "Warning : call " << q_ptr << " had an unexpected transition of state at its start.";
 }
 
