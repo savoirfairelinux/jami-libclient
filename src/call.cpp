@@ -679,8 +679,10 @@ CallPrivate::DaemonState CallPrivate::toDaemonCallState(const QString& stateName
       return CallPrivate::DaemonState::BUSY    ;
    if(stateName == CallPrivate::StateChange::FAILURE        )
       return CallPrivate::DaemonState::FAILURE ;
+   if(stateName == CallPrivate::StateChange::INACTIVE       )
+      return CallPrivate::DaemonState::HUNG_UP ;
 
-   qDebug() << "stateChanged signal received with unknown state.";
+   qDebug() << "stateChanged signal received with unknown state: " << stateName;
    return CallPrivate::DaemonState::FAILURE    ;
 } //toDaemonCallState
 
