@@ -77,6 +77,9 @@ FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonC
       m_Path = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/vCard/";
       static_cast<FallbackPersonBackendEditor*>(q_ptr->editor<Person>())->m_Path = m_Path;
    }
+   //Make sure the directory exists so that saving new contacts there doesn't fail
+   if (!QDir().mkpath(m_Path))
+      qWarning() << "cannot create path for fallbackcollection: " << m_Path;
 
    m_Name = path.split('/').last();
    if (m_Name.size())
