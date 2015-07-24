@@ -20,8 +20,9 @@
 //Parent
 #include "call.h"
 
-//C include
+//Std include
 #include <time.h>
+#include <memory>
 
 //Qt
 #include <QtCore/QFile>
@@ -369,68 +370,13 @@ CallPrivate::~CallPrivate()
  *                                                                           *
  ****************************************************************************/
 
-///Build a call from its ID
-Call* CallPrivate::buildExistingCall(const QString& callId)
+void CallPrivate::deleteCall(Call* call)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString       details     = getCallDetailsCommon(callId);
-
-   //Too noisy
-   //qDebug() << "Constructing existing call with details : " << details;
-
-   const QString peerNumber    = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
-   const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-   const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
-   Call::State   startState    = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE], details[CallPrivate::DetailsMapFields::TYPE]);
-   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
-   ContactMethod*  nb            = PhoneDirectoryModel::instance()->getNumber(peerNumber,acc);
-   Call*         call          = new Call(startState, peerName, nb, acc);
-   call->d_ptr->m_DringId      = callId;
-   bool avRecordState          = callManager.getIsRecording(callId);
-
-   //Set the recording state
-   if (avRecordState) {
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , true);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , true);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , true);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , true);
-   }
-
-   if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
-      call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
-   else
-      call->d_ptr->setStartTimeStamp();
-
-   call->d_ptr->initTimer();
-
-   if (call->peerContactMethod()) {
-      call->peerContactMethod()->addCall(call);
-   }
-
-   //Load the certificate if it's now available
-   if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
-   }
-
-   return call;
-} //buildExistingCall
-
-///Build a call from a dialing call (a call that is about to exist)
-Call* CallPrivate::buildDialingCall(const QString & peerName, Account* account)
-{
-   Call* call = new Call(Call::State::NEW, peerName, nullptr, account);
-   call->d_ptr->m_Direction = Call::Direction::OUTGOING;
-   if (Audio::Settings::instance()->isRoomToneEnabled()) {
-      Audio::Settings::instance()->playRoomTone();
-   }
-   qDebug() << "Created dialing call" << call;
-
-   return call;
+    delete call;
 }
 
 MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 {
-
    CallManagerInterface& callManager = DBus::CallManager::instance();
 
    MapStringString details = callManager.getCallDetails(callId);
@@ -459,71 +405,89 @@ MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 }
 
 ///Build a call from a dbus event
+Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirection, Call::State startState)
+{
+    const auto& details = getCallDetailsCommon(callId);
+
+    const auto& peerNumber    = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
+    const auto& peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
+    const auto& account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
+
+    //It may be possible that the call has already been invalidated
+    if (account.isEmpty()) {
+        qWarning() << "Building call" << callId << "failed, it may already have been destroyed by the daemon";
+        return nullptr;
+    }
+
+    const auto& acc = AccountModel::instance()->getById(account.toLatin1());
+    const auto& nb  = PhoneDirectoryModel::instance()->getNumber(peerNumber, acc);
+
+    auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
+                                                             deleteCall );
+
+    call->d_ptr->m_DringId      = callId;
+    call->d_ptr->m_Direction    = callDirection;
+
+    //Set the recording state
+    if (DBus::CallManager::instance().getIsRecording(callId)) {
+        call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , true);
+        call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , true);
+        call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , true);
+        call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , true);
+    }
+
+    if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
+        call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
+    else
+        call->d_ptr->setStartTimeStamp();
+
+    call->d_ptr->initTimer();
+
+    if (call->peerContactMethod())
+        call->peerContactMethod()->addCall(call.get());
+
+    //Load the certificate if it's now available
+    if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
+        call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+    }
+
+    return call.release();
+} //buildCall
+
+///Build a call from its ID
+Call* CallPrivate::buildExistingCall(const QString& callId)
+{
+    const auto& details = getCallDetailsCommon(callId);
+    auto startState = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE],
+                                                    details[CallPrivate::DetailsMapFields::TYPE]);
+    return buildCall(callId, Call::Direction::INCOMING, startState);
+}
+
+///Build a call from a dbus event
 Call* CallPrivate::buildIncomingCall(const QString& callId)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   MapStringString details = getCallDetailsCommon(callId);
-
-   const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
-   const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
-   const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-
-   //It may be possible that the call has already been invalidated
-   if (account.isEmpty()) {
-      qWarning() << "Building incoming call" << callId << "failed, it may already have been destroyed by the daemon";
-      return nullptr;
-   }
-
-   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
-   ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
-   Call* call                  = new Call(Call::State::INCOMING, peerName, nb, acc);
-   call->d_ptr->m_DringId      = callId;
-   call->d_ptr->m_Direction    = Call::Direction::INCOMING;
-   if (call->peerContactMethod()) {
-      call->peerContactMethod()->addCall(call);
-   }
-
-   //Load the certificate if it's now available
-   if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
-   }
-
-   return call;
+    return buildCall(callId, Call::Direction::INCOMING, Call::State::INCOMING);
 } //buildIncomingCall
 
 ///Build a ringing call (from dbus)
-Call* CallPrivate::buildRingingCall(const QString & callId)
+Call* CallPrivate::buildRingingCall(const QString& callId)
 {
-   MapStringString details = getCallDetailsCommon(callId);
-
-   const QString from          = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
-   const QString account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
-   const QString peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-
-   //It may be possible that the call has already been invalidated
-   if (account.isEmpty()) {
-      qWarning() << "Building ringing call" << callId << "failed, it may already have been destroyed by the daemon";
-      return nullptr;
-   }
-
-   Account*      acc           = AccountModel::instance()->getById(account.toLatin1());
-   ContactMethod*  nb          = PhoneDirectoryModel::instance()->getNumber(from,acc);
-   Call* call                  = new Call(Call::State::RINGING, peerName, nb, acc);
-   call->d_ptr->m_DringId      = callId;
-   call->d_ptr->m_Direction    = Call::Direction::OUTGOING;
-
-   if (call->peerContactMethod()) {
-      call->peerContactMethod()->addCall(call);
-   }
-
-   //Load the certificate if it's now available
-   if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT],call->account());
-   }
-
-   return call;
+    return buildCall(callId, Call::Direction::OUTGOING, Call::State::RINGING);
 } //buildRingingCall
 
+///Build a call from a dialing call (a call that is about to exist, not existing on daemon yet)
+Call* CallPrivate::buildDialingCall(const QString& peerName, Account* account)
+{
+    auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(Call::State::NEW,
+                                                                      peerName, nullptr, account),
+                                                             deleteCall );
+    call->d_ptr->m_Direction = Call::Direction::OUTGOING;
+    if (Audio::Settings::instance()->isRoomToneEnabled()) {
+        Audio::Settings::instance()->playRoomTone();
+    }
+
+    return call.release();
+}
 
 /*****************************************************************************
  *                                                                           *

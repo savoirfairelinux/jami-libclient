@@ -262,6 +262,12 @@ public:
 private:
    Call* q_ptr;
 
+    //Constructor helper
+    static Call* buildCall(const QString& callId, Call::Direction callDirection, Call::State startState);
+
+    //Destructor helper (~Call is private, CallPrivate is a friend class)
+    static void deleteCall(Call* call);
+
 private Q_SLOTS:
    void updated();
 };
