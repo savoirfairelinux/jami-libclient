@@ -153,7 +153,7 @@ Media::TextRecording* Media::Text::recording() const
  *
  * @param message A messages encoded in various alternate payloads
  *
- * The send a single messages. Just as e-mails, the message can be
+ * This send a single message. Just as e-mails, the message can be
  * encoded differently. The peer client will interpret the richest
  * payload it support and then fallback to lesser ones.
  * 
