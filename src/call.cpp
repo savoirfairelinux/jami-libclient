@@ -1338,7 +1338,7 @@ void CallPrivate::changeCurrentState(Call::State newState)
    initTimer();
 
    if (q_ptr->lifeCycleState() == Call::LifeCycleState::FINISHED)
-      emit q_ptr->isOver(q_ptr);
+      emit q_ptr->isOver();
 
 }
 
@@ -1508,7 +1508,7 @@ void CallPrivate::remove()
    else
       callManager.hangUpConference(q_ptr->dringId());
 
-   emit q_ptr->isOver(q_ptr);
+   emit q_ptr->isOver();
    emit q_ptr->stateChanged(m_CurrentState, m_CurrentState);
    emit q_ptr->changed();
 }

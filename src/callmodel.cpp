@@ -665,7 +665,7 @@ void CallModel::transfer(Call* toTransfer, const ContactMethod* target)
    toTransfer->d_ptr->changeCurrentState( Call::State::TRANSFERRED );
    toTransfer->performAction            ( Call::Action::ACCEPT     );
    toTransfer->d_ptr->changeCurrentState( Call::State::OVER        );
-   emit toTransfer->isOver(toTransfer);
+   emit toTransfer->isOver();
 } //transfer
 
 /*****************************************************************************

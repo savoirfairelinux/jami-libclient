@@ -354,8 +354,8 @@ public Q_SLOTS:
 Q_SIGNALS:
    ///Emitted when a call change (state or details)
    void changed();
-   ///Emitted when the call is over //TODO remove the argument
-   void isOver(Call*);
+   ///Emitted when the call is over
+   void isOver();
    ///Notify that a DTMF have been played
    void dtmfPlayed(const QString& str);
    ///Notify of state change
