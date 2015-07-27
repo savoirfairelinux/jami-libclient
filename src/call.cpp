@@ -1558,68 +1558,71 @@ void CallPrivate::hold()
 ///Start the call
 void CallPrivate::call()
 {
-   Q_ASSERT_IS_IN_PROGRESS
+    Q_ASSERT_IS_IN_PROGRESS;
 
-   CallManagerInterface& callManager = DBus::CallManager::instance();
-   qDebug() << "account = " << m_Account << (m_Account? m_Account->alias() : "(no account)");
-   if(!m_Account) {
-      qDebug() << "Account is not set, taking the first registered.";
-      m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber);
-   }
-   //Calls to empty URI should not be allowed, dring will go crazy
-   if ((!m_pDialNumber) || m_pDialNumber->uri().isEmpty()) {
-      qDebug() << "Trying to call an empty URI";
-      changeCurrentState(Call::State::FAILURE);
-      if (!m_pDialNumber) {
-         emit q_ptr->dialNumberChanged(QString());
-      }
-      else {
-         m_pDialNumber->deleteLater();
-         m_pDialNumber = nullptr;
-      }
-      q_ptr->setPeerName(tr("Failure"));
-      emit q_ptr->changed();
-   }
-   //Normal case
-   else if(m_Account) {
-      qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account << ". callId : " << q_ptr  << "ConfId:" << q_ptr;
+    // Calls to empty URI should not be allowed, dring will go crazy
+    if (!m_pDialNumber || m_pDialNumber->uri().isEmpty()) {
+        qDebug() << "Trying to call an empty URI";
+        changeCurrentState(Call::State::FAILURE);
+        if (!m_pDialNumber) {
+            emit q_ptr->dialNumberChanged(QString());
+        } else {
+            m_pDialNumber->deleteLater();
+            m_pDialNumber = nullptr;
+        }
+        q_ptr->setPeerName(tr("Failure"));
+        emit q_ptr->changed();
+        return;
+    }
 
-      this->m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(m_pDialNumber->uri(),q_ptr->account());
+    // Trying to find a valid account
+    if (!m_Account) {
+        qDebug() << "Account is not set, taking the first registered.";
+        m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber);
+        if (!m_Account) {
+            qDebug() << "Trying to call "
+                     << (m_pTransferNumber ? QString(m_pTransferNumber->uri()) : "ERROR")
+                     << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
+            throw tr("No account registered!");
+        }
+    }
+    qDebug() << "account = " << m_Account << " " << m_Account->alias();
 
-      //Warning: m_pDialNumber can become nullptr when linking directly
-      m_DringId = callManager.placeCall(m_Account->id(), m_pDialNumber->uri());
+    // Normal case
+    qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account
+             << ", CallId: " << q_ptr
+             << ", ConfId: " << q_ptr;
+    m_Direction = Call::Direction::OUTGOING;
 
-      //This can happen when the daemon cannot allocate memory
-      if (m_DringId.isEmpty()) {
-         changeCurrentState(Call::State::FAILURE);
-         qWarning() << "Creating the call to" << m_pDialNumber->uri() << "failed";
-         m_DringId = "FAILED"; //TODO once the ABORTED state is implemented, use it
-         return;
-      }
+    // Warning: m_pDialNumber can become nullptr when linking directly
+    const auto& uri = m_pDialNumber->uri();
+    m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+    m_DringId = DBus::CallManager::instance().placeCall(m_Account->id(), uri);
 
-      CallModel::instance()->registerCall(q_ptr);
-      setObjectName("Call:"+m_DringId);
+    // This can happen when the daemon cannot allocate memory
+    if (m_DringId.isEmpty()) {
+        changeCurrentState(Call::State::FAILURE);
+        qWarning() << "Creating the call to " << m_pDialNumber->uri() << " failed";
+        m_DringId = "FAILED"; // TODO once the ABORTED state is implemented, use it
+        return;
+    }
+    setObjectName("Call:"+m_DringId);
 
-      if (PersonModel::instance()->hasCollections()) {
-         if (q_ptr->peerContactMethod()->contact())
-            m_PeerName = q_ptr->peerContactMethod()->contact()->formattedName();
-      }
-      connect(q_ptr->peerContactMethod(),SIGNAL(presentChanged(bool)),this,SLOT(updated()));
-      setStartTimeStamp();
-      m_Direction = Call::Direction::OUTGOING;
-      if (q_ptr->peerContactMethod()) {
-         q_ptr->peerContactMethod()->addCall(q_ptr);
-      }
-      if (m_pDialNumber)
-         emit q_ptr->dialNumberChanged(QString());
-      m_pDialNumber->deleteLater();
-      m_pDialNumber = nullptr;
-   }
-   else {
-      qDebug() << "Trying to call " << (m_pTransferNumber?QString(m_pTransferNumber->uri()):"ERROR")
-         << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
-      throw tr("No account registered!");
-   }
+    if (PersonModel::instance()->hasCollections()) {
+        if (auto contact = m_pPeerContactMethod->contact())
+            m_PeerName = contact->formattedName();
+    }
+
+    CallModel::instance()->registerCall(q_ptr);
+
+    connect(m_pPeerContactMethod, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
+    m_pPeerContactMethod->addCall(q_ptr);
+    setStartTimeStamp();
+
+    // m_pDialNumber is now deprecated by m_pPeerContactMethod
+    emit q_ptr->dialNumberChanged(QString());
+    m_pDialNumber->deleteLater();
+    m_pDialNumber = nullptr;
 }
 
 ///Trnasfer the call
