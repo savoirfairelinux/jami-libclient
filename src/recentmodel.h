@@ -41,6 +41,8 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    static RecentModel* instance();
+
+   bool hasActiveCall(const QModelIndex& parent);
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();

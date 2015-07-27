@@ -1,0 +1,258 @@
+From b8a2f872bad7f60b8a8a5ada20efee600da8c4df Mon Sep 17 00:00:00 2001
+From: Alexandre Lision <alexandre.lision@savoirfairelinux.com>
+Date: Tue, 18 Aug 2015 12:40:08 -0400
+Subject: [PATCH] testing
+
+Change-Id: I99c12e2c1e36757aad52d4291a3cf6ea2c505546
+---
+ src/call.cpp        | 23 ++++++++++++++++++-----
+ src/call.h          |  3 ++-
+ src/callmodel.cpp   | 10 ++++------
+ src/recentmodel.cpp | 38 ++++++++++++++++++++++++++++----------
+ 4 files changed, 52 insertions(+), 22 deletions(-)
+
+diff --git a/src/call.cpp b/src/call.cpp
+index 7959c65..eb1634f 100644
+--- a/src/call.cpp
++++ b/src/call.cpp
+@@ -791,7 +791,9 @@ FlagPack<Call::HoldFlags> Call::holdFlags() const
+ ///Generate an human readable string from the difference between StartTimeStamp and StopTimeStamp (or 'now')
+ QString Call::length() const
+ {
+-   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp) return QString(); //Invalid
++   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp)
++      return QString(); //Invalid
++
+    int nsec =0;
+    if (d_ptr->m_pStopTimeStamp)
+       nsec = stopTimeStamp() - startTimeStamp();//If the call is over
+@@ -1079,6 +1081,13 @@ void Call::setDialNumber(const ContactMethod* number)
+     setDialNumber(number->uri());
+ }
+ 
++void Call::setPeerContactMethod(ContactMethod* cm)
++{
++    if (!cm)
++        return;
++    d_ptr->m_pPeerContactMethod = cm;
++}
++
+ ///Set the recording path
+ void CallPrivate::setRecordingPath(const QString& path)
+ {
+@@ -1550,7 +1559,6 @@ void CallPrivate::cancel()
+    CallManagerInterface & callManager = DBus::CallManager::instance();
+    qDebug() << "Canceling call. callId : " << q_ptr  << "ConfId:" << q_ptr;
+    emit q_ptr->dialNumberChanged(QString());
+-//    Q_NOREPLY callManager.hangUp(m_DringId);
+    if (!callManager.hangUp(m_DringId)) {
+       qWarning() << "HangUp failed, the call was probably already over";
+       changeCurrentState(Call::State::OVER);
+@@ -1617,8 +1625,14 @@ void CallPrivate::call()
+     m_Direction = Call::Direction::OUTGOING;
+ 
+     // Warning: m_pDialNumber can become nullptr when linking directly
+-    const auto& uri = m_pDialNumber->uri();
+-    m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
++    URI uri = URI(m_pDialNumber->uri());
++    if (!m_pPeerContactMethod) {
++        uri = m_pDialNumber->uri();
++        m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
++    } else
++        uri = m_pPeerContactMethod->uri();
++
++
+     m_DringId = DBus::CallManager::instance().placeCall(m_Account->id(), uri);
+ 
+     // This can happen when the daemon cannot allocate memory
+@@ -1640,7 +1654,6 @@ void CallPrivate::call()
+ 
+     connect(m_pPeerContactMethod, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
+     m_pPeerContactMethod->addCall(q_ptr);
+-    setStartTimeStamp();
+ 
+     // m_pDialNumber is now deprecated by m_pPeerContactMethod
+     emit q_ptr->dialNumberChanged(QString());
+diff --git a/src/call.h b/src/call.h
+index dba5b7b..f8d8abd 100644
+--- a/src/call.h
++++ b/src/call.h
+@@ -269,7 +269,7 @@ public:
+    Q_PROPERTY( Certificate*       certificate        READ certificate                               )
+ 
+    //Read/write properties
+-   Q_PROPERTY( ContactMethod*     peerContactMethod  READ peerContactMethod                         )
++   Q_PROPERTY( ContactMethod*     peerContactMethod  READ peerContactMethod WRITE setPeerContactMethod)
+    Q_PROPERTY( QString            peerName           READ peerName          WRITE setPeerName       )
+    Q_PROPERTY( QString            transferNumber     READ transferNumber    WRITE setTransferNumber )
+    Q_PROPERTY( QString            dialNumber         READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
+@@ -324,6 +324,7 @@ public:
+    void setTransferNumber ( const QString&     number     );
+    void setDialNumber     ( const QString&     number     );
+    void setDialNumber     ( const ContactMethod* number   );
++   void setPeerContactMethod( ContactMethod* cm     );
+    void setPeerName       ( const QString&     name       );
+    void setAccount        ( Account*           account    );
+ 
+diff --git a/src/callmodel.cpp b/src/callmodel.cpp
+index 1e2d346..39f31df 100644
+--- a/src/callmodel.cpp
++++ b/src/callmodel.cpp
+@@ -453,9 +453,9 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
+    if (call->hasRemote())
+       m_shDringId[ call->dringId() ] = aNewStruct;
+ 
++   emit q_ptr->callAdded(call,parentCall);
+    //If the call is already finished, there is no point to track it here
+    if (call->lifeCycleState() != Call::LifeCycleState::FINISHED) {
+-      emit q_ptr->callAdded(call,parentCall);
+       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
+       emit q_ptr->dataChanged(idx, idx);
+       connect(call, &Call::changed, [this, call]{ slotCallChanged(call); });
+@@ -572,8 +572,8 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
+       return;
+    }
+ 
+-   if (m_shInternalMapping[call] != nullptr) {
+-      removeInternal(m_shInternalMapping[call]);
++   if (internal != nullptr) {
++      removeInternal(internal);
+       //NOTE Do not free the memory, it can still be used elsewhere or in modelindexes
+    }
+ 
+@@ -582,8 +582,6 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
+       m_shDringId.remove(m_shDringId.key(internal));
+    }
+ 
+-   removeInternal(internal);
+-
+    //Restore calls to the main list if they are not really over
+    if (internal->m_lChildren.size()) {
+       foreach(InternalStruct* child,internal->m_lChildren) {
+@@ -1341,7 +1339,7 @@ void CallModelPrivate::slotCallChanged(Call* call)
+       const QModelIndex idx = q_ptr->getIndex(call);
+       if (idx.isValid())
+          emit q_ptr->dataChanged(idx,idx);
+-   }
++    }
+ }
+ 
+ ///Add call slot
+diff --git a/src/recentmodel.cpp b/src/recentmodel.cpp
+index 26cda47..82bb5ba 100644
+--- a/src/recentmodel.cpp
++++ b/src/recentmodel.cpp
+@@ -116,6 +116,7 @@ public:
+     QList<RecentViewNode*>                m_lTopLevelReverted;
+     QHash<Person*,RecentViewNode*>        m_hPersonsToNodes  ;
+     QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
++    QList<Call*>                          m_lCallBucket      ;
+     static RecentModel*                   m_spInstance       ;
+ 
+    //Helper
+@@ -132,6 +133,7 @@ public Q_SLOTS:
+     void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
+     void slotCallAdded          (Call* call       , Call* parent          );
+     void slotCallStateChanged   (Call* call       , Call::State previousState);
++    void slotUpdate             (                                         );
+ };
+ 
+ RecentModel* RecentModelPrivate::m_spInstance = nullptr;
+@@ -230,10 +232,11 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
+         return false;
+ 
+     RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+-    qDebug() << "SIZE:" << node->m_lChildren.size();
+     for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
+-        if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL)
+-            return  !(node->m_lChildren.at(i)->m_uContent.m_pCall->isHistory());
++        if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
++            QModelIndex qIdx = CallModel::instance()->getIndex(node->m_lChildren.at(i)->m_uContent.m_pCall);
++            return  qIdx.isValid();
++        }
+     }
+     return false;
+ }
+@@ -244,12 +247,10 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
+         return nullptr;
+ 
+     RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+-    qDebug() << "SIZE:" << node->m_lChildren.size();
+     for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
+         if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
+-            // if last interaction is of type call and is not in history it is an ongoing call
+             auto call = node->m_lChildren.at(i)->m_uContent.m_pCall;
+-            return  call->isHistory()?nullptr:call;
++            return call;
+         }
+     }
+     return nullptr;
+@@ -457,6 +458,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
+                 q_ptr->endInsertRows();
+             }
+         }
++         slotUpdate();
+     }
+     insertNode(n, t, isNew);
+ }
+@@ -475,6 +477,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
+             n->m_pParent                   = nullptr                             ;
+             n->m_Index                     = 0                                   ;
+             m_hCMsToNodes[cm]              = n                                   ;
++            slotUpdate();
+         }
+         insertNode(n, t, isNew);
+     }
+@@ -494,7 +497,7 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
+ 
+ void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
+ {
+-    qDebug() << call->peerContactMethod();
++    qDebug() << "STATE CHANGED:" << call->peerContactMethod();
+     RecentViewNode* n;
+     if (auto p = call->peerContactMethod()->contact()) {
+         n = m_hPersonsToNodes[p];
+@@ -514,15 +517,24 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
+ 
+     RecentViewNode* n = nullptr;
+ 
+-    qDebug() << call->peerContactMethod();
+-
+     if (auto p = call->peerContactMethod()->contact()) {
+         n = m_hPersonsToNodes[p];
+     } else {
+         n = m_hCMsToNodes[call->peerContactMethod()];
+     }
+-    if (!n)
++    if (!n && !m_lCallBucket.contains(call)) {
++        m_lCallBucket.append(call);
++        connect(call, &Call::lifeCycleStateChanged, [=](Call::LifeCycleState newState, Call::LifeCycleState oldState) {
++                slotUpdate();
++        });
++        return;
++    } else if (n && m_lCallBucket.contains(call)) {
++            m_lCallBucket.removeOne(call);
++            //TODO: remove the connection store callbucket as a map key = call value = metaconnection
++    } else if (!n && m_lCallBucket.contains(call)) {
+         return;
++    }
++
+     auto callNode = new RecentViewNode();
+     callNode->m_Type = RecentViewNode::Type::CALL;
+     callNode->m_uContent.m_pCall = call;
+@@ -534,6 +546,12 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
+     q_ptr->endInsertRows();
+ }
+ 
++void RecentModelPrivate::slotUpdate()
++{
++    Q_FOREACH(auto call, m_lCallBucket)
++        slotCallAdded(call, nullptr);
++}
++
+ QModelIndex RecentModelPrivate::createIndex(RecentViewNode* n)
+ {
+    return q_ptr->createIndex(n->m_Index, 0, n);
+-- 
+2.4.6
+
