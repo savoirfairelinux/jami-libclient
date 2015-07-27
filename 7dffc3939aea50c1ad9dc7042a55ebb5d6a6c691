@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_f619377a",
+        "filename": "src/numbercategorymodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-07-27T19:40:25Z",
+      "side": 1,
+      "message": "should be added to the end:\nbeginInsertRows(this-\u003enameToIndex(name),d_ptr-\u003em_lCategories.size(), d_ptr-\u003em_lCategories.size());",
+      "range": {
+        "startLine": 119,
+        "startChar": 49,
+        "endLine": 119,
+        "endChar": 52
+      },
+      "revId": "7dffc3939aea50c1ad9dc7042a55ebb5d6a6c691",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
