@@ -420,7 +420,6 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     const auto& acc = AccountModel::instance()->getById(account.toLatin1());
     const auto& nb  = PhoneDirectoryModel::instance()->getNumber(peerNumber, acc);
-
     auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
                                                              deleteCall );
 
@@ -518,12 +517,9 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Try to assiciate a contact now, the real contact object is probably not
    //loaded yet, but we can get a placeholder for now
-//    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
-   const QString& contactUid     = hc[ Call::HistoryMapFields::CONTACT_UID  ];
-
-
+   const QString& contactUid = hc[ Call::HistoryMapFields::CONTACT_UID ];
    Person* ct = nullptr;
-   if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
+   if (!contactUid.isEmpty())
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
 
    Account*        acc            = AccountModel::instance()->getById(accId);
@@ -792,7 +788,9 @@ FlagPack<Call::HoldFlags> Call::holdFlags() const
 ///Generate an human readable string from the difference between StartTimeStamp and StopTimeStamp (or 'now')
 QString Call::length() const
 {
-   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp) return QString(); //Invalid
+   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp)
+      return QString(); //Invalid
+
    int nsec =0;
    if (d_ptr->m_pStopTimeStamp)
       nsec = stopTimeStamp() - startTimeStamp();//If the call is over
@@ -1078,6 +1076,13 @@ void Call::setDialNumber(const ContactMethod* number)
     if (!number)
         return;
     setDialNumber(number->uri());
+}
+
+void Call::setPeerContactMethod(ContactMethod* cm)
+{
+    if (!cm)
+        return;
+    d_ptr->m_pPeerContactMethod = cm;
 }
 
 ///Set the recording path
@@ -1552,7 +1557,6 @@ void CallPrivate::cancel()
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Canceling call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->dialNumberChanged(QString());
-//    Q_NOREPLY callManager.hangUp(m_DringId);
    if (!callManager.hangUp(m_DringId)) {
       qWarning() << "HangUp failed, the call was probably already over";
       changeCurrentState(Call::State::OVER);
@@ -1619,8 +1623,14 @@ void CallPrivate::call()
     m_Direction = Call::Direction::OUTGOING;
 
     // Warning: m_pDialNumber can become nullptr when linking directly
-    const auto& uri = m_pDialNumber->uri();
-    m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+    URI uri = URI(m_pDialNumber->uri());
+    if (!m_pPeerContactMethod) {
+        uri = m_pDialNumber->uri();
+        m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+    } else
+        uri = m_pPeerContactMethod->uri();
+
+
     m_DringId = DBus::CallManager::instance().placeCall(m_Account->id(), uri);
 
     // This can happen when the daemon cannot allocate memory
@@ -1637,11 +1647,11 @@ void CallPrivate::call()
             m_PeerName = contact->formattedName();
     }
 
+    setStartTimeStamp();
     CallModel::instance()->registerCall(q_ptr);
 
     connect(m_pPeerContactMethod, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
     m_pPeerContactMethod->addCall(q_ptr);
-    setStartTimeStamp();
 
     // m_pDialNumber is now deprecated by m_pPeerContactMethod
     emit q_ptr->dialNumberChanged(QString());
