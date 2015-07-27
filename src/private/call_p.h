@@ -19,9 +19,14 @@
 #ifndef CALL_PRIVATE_H
 #define CALL_PRIVATE_H
 
-#include <QtCore/QObject>
-#include "call.h"
+// Std
+#include <memory>
 
+//Qt
+#include <QtCore/QObject>
+
+// Ring
+#include "call.h"
 #include "private/matrixutils.h"
 
 //Qt
@@ -43,10 +48,16 @@ namespace Media {
    class Recording;
 }
 
+// Smart pointer deleter helper
+struct DeleteLaterDeleter {
+    void operator ()(QObject* p) { p->deleteLater(); }
+};
+
 class CallPrivate final : public QObject
 {
    Q_OBJECT
 public:
+     friend class Call;
 
    ///@class ConferenceStateChange Possible values from "conferencechanged" signal
    class ConferenceStateChange {
@@ -138,9 +149,6 @@ public:
    Call::Type                m_Type              ;
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
-
-   mutable TemporaryContactMethod* m_pTransferNumber ;
-   mutable TemporaryContactMethod* m_pDialNumber     ;
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
@@ -258,13 +266,18 @@ public:
    static Call* buildExistingCall (const QString& callId                                );
 
 private:
-   Call* q_ptr;
+    Call* q_ptr;
 
     //Constructor helper
     static Call* buildCall(const QString& callId, Call::Direction callDirection, Call::State startState);
 
     //Destructor helper (~Call is private, CallPrivate is a friend class)
     static void deleteCall(Call* call);
+
+    //!< Used as contact until m_pPeerContactMethod is created
+    std::unique_ptr<TemporaryContactMethod, DeleteLaterDeleter> m_pDialNumber;
+
+    std::unique_ptr<TemporaryContactMethod> m_pTransferNumber;
 
 private Q_SLOTS:
    void updated();

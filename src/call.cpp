@@ -275,7 +275,8 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
 CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
 m_pStopTimeStamp(0),m_pTimer(nullptr),m_Account(nullptr),
 m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
-m_pStartTimeStamp(0),m_pDialNumber(nullptr),m_pTransferNumber(nullptr),
+m_pStartTimeStamp(0),
+m_pDialNumber(new TemporaryContactMethod()),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
    /*                                            IN                                                            OUT                           */
@@ -338,10 +339,6 @@ Call::~Call()
 {
    if (d_ptr->m_pTimer) delete d_ptr->m_pTimer;
    this->disconnect();
-
-   //m_pTransferNumber and m_pDialNumber are temporary, they are owned by the call
-   if ( d_ptr->m_pTransferNumber ) delete d_ptr->m_pTransferNumber;
-   if ( d_ptr->m_pDialNumber     ) delete d_ptr->m_pDialNumber;
 
    d_ptr->terminateMedia();
 
@@ -719,17 +716,17 @@ time_t Call::startTimeStamp() const
 ///Get the number where the call have been transferred
 const QString Call::transferNumber() const
 {
-   return d_ptr->m_pTransferNumber?d_ptr->m_pTransferNumber->uri():QString();
+    if (d_ptr->m_pTransferNumber)
+        return d_ptr->m_pTransferNumber->uri();
+    return {};
 }
 
 ///Get the call / peer number
 const QString Call::dialNumber() const
 {
-   if (lifeCycleState() != Call::LifeCycleState::CREATION) return QString();
-   if (!d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryContactMethod();
-   }
-   return d_ptr->m_pDialNumber->uri();
+    if (d_ptr->m_pDialNumber)
+        return d_ptr->m_pDialNumber->uri();
+    return {};
 }
 
 ///Return the call id
@@ -747,12 +744,13 @@ const QString Call::dringId() const
 
 ContactMethod* Call::peerContactMethod() const
 {
-   if (lifeCycleState() == Call::LifeCycleState::CREATION) {
-      if (!d_ptr->m_pDialNumber)
-         d_ptr->m_pDialNumber = new TemporaryContactMethod(d_ptr->m_pPeerContactMethod);
-      return d_ptr->m_pDialNumber;
-   }
-   return d_ptr->m_pPeerContactMethod?d_ptr->m_pPeerContactMethod:const_cast<ContactMethod*>(ContactMethod::BLANK());
+    if (d_ptr->m_pPeerContactMethod)
+        return d_ptr->m_pPeerContactMethod;
+
+    if (d_ptr->m_pDialNumber)
+        return d_ptr->m_pDialNumber.get();
+
+    return const_cast<ContactMethod*>(ContactMethod::BLANK());
 }
 
 ///Get the peer name
@@ -1046,10 +1044,9 @@ Media::Media* MediaTypeInference::safeMediaCreator(Call* c, Media::Media::Type t
 ///Set the transfer number
 void Call::setTransferNumber(const QString& number)
 {
-   if (!d_ptr->m_pTransferNumber) {
-      d_ptr->m_pTransferNumber = new TemporaryContactMethod();
-   }
-   d_ptr->m_pTransferNumber->setUri(number);
+    if (!d_ptr->m_pTransferNumber)
+        d_ptr->m_pTransferNumber.reset(new TemporaryContactMethod());
+    d_ptr->m_pTransferNumber->setUri(number);
 }
 
 ///Set the call number
@@ -1062,10 +1059,6 @@ void Call::setDialNumber(const QString& number)
    }
 
    const bool isEmpty  = number.isEmpty();
-
-   if (!d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryContactMethod();
-   }
 
    d_ptr->m_pDialNumber->setUri(number);
    emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
@@ -1081,22 +1074,9 @@ void Call::setDialNumber(const QString& number)
 ///Set the dial number from a full phone number
 void Call::setDialNumber(const ContactMethod* number)
 {
-   if (lifeCycleState() == Call::LifeCycleState::CREATION && !d_ptr->m_pDialNumber) {
-      d_ptr->m_pDialNumber = new TemporaryContactMethod(number);
-   }
-   if (d_ptr->m_pDialNumber && number)
-      d_ptr->m_pDialNumber->setUri(number->uri());
-
-   if (d_ptr->m_pDialNumber)
-      emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
-
-   emit changed();
-
-   //Make sure the call is now in the right state
-   if (number && state() == Call::State::NEW)
-      d_ptr->changeCurrentState(Call::State::DIALING);
-   else if (!number && state() == Call::State::DIALING)
-      d_ptr->changeCurrentState(Call::State::NEW);
+    if (!number)
+        return;
+    return setDialNumber(number->uri());
 }
 
 ///Set the recording path
@@ -1233,9 +1213,8 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
    }
    if (q_ptr->lifeCycleState() != Call::LifeCycleState::CREATION && m_pDialNumber) {
       if (!m_pPeerContactMethod)
-         m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
-      m_pDialNumber->deleteLater();
-      m_pDialNumber = nullptr;
+          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber.get());
+      m_pDialNumber.reset();
    }
    emit q_ptr->changed();
    qDebug() << "Calling stateChanged " << newStateName << " -> " << toDaemonCallState(newStateName) << " on call with state " << previousState << ". Become " << m_CurrentState;
@@ -1564,12 +1543,10 @@ void CallPrivate::call()
     if (!m_pDialNumber || m_pDialNumber->uri().isEmpty()) {
         qDebug() << "Trying to call an empty URI";
         changeCurrentState(Call::State::FAILURE);
-        if (!m_pDialNumber) {
+        if (!m_pDialNumber)
             emit q_ptr->dialNumberChanged(QString());
-        } else {
-            m_pDialNumber->deleteLater();
-            m_pDialNumber = nullptr;
-        }
+        else
+            m_pDialNumber.reset();
         q_ptr->setPeerName(tr("Failure"));
         emit q_ptr->changed();
         return;
@@ -1578,10 +1555,10 @@ void CallPrivate::call()
     // Trying to find a valid account
     if (!m_Account) {
         qDebug() << "Account is not set, taking the first registered.";
-        m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber);
+        m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber.get());
         if (!m_Account) {
             qDebug() << "Trying to call "
-                     << (m_pTransferNumber ? QString(m_pTransferNumber->uri()) : "ERROR")
+                     << (m_pTransferNumber ? static_cast<QString>(m_pTransferNumber->uri()) : "ERROR")
                      << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
             throw tr("No account registered!");
         }
@@ -1621,23 +1598,22 @@ void CallPrivate::call()
 
     // m_pDialNumber is now deprecated by m_pPeerContactMethod
     emit q_ptr->dialNumberChanged(QString());
-    m_pDialNumber->deleteLater();
-    m_pDialNumber = nullptr;
+    m_pDialNumber.reset();
 }
 
-///Trnasfer the call
+///Transfer the call
 void CallPrivate::transfer()
 {
-   Q_ASSERT_IS_IN_PROGRESS
+    Q_ASSERT_IS_IN_PROGRESS;
 
-   if (m_pTransferNumber) {
-      CallManagerInterface & callManager = DBus::CallManager::instance();
-      qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
-      Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
-      time_t curTime;
-      ::time(&curTime);
-      m_pStopTimeStamp = curTime;
-   }
+    if (!m_pTransferNumber)
+        return;
+    CallManagerInterface & callManager = DBus::CallManager::instance();
+    qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
+    Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
+    time_t curTime;
+    ::time(&curTime);
+    m_pStopTimeStamp = curTime;
 }
 
 ///Unhold the call
@@ -1711,9 +1687,8 @@ void CallPrivate::start()
    emit q_ptr->changed();
    if (m_pDialNumber) {
       if (!m_pPeerContactMethod)
-         m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
-      m_pDialNumber->deleteLater();
-      m_pDialNumber = nullptr;
+          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber.get());
+      m_pDialNumber.reset();
    }
    setStartTimeStamp();
    initTimer();
@@ -1794,12 +1769,12 @@ void Call::appendText(const QString& str)
    switch (d_ptr->m_CurrentState) {
    case Call::State::TRANSFERRED :
    case Call::State::TRANSF_HOLD :
-      editNumber = d_ptr->m_pTransferNumber;
-      break;
+       editNumber = d_ptr->m_pTransferNumber.get();
+       break;
    case Call::State::DIALING     :
    case Call::State::NEW         : {
       const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
-      editNumber = d_ptr->m_pDialNumber;
+      editNumber = d_ptr->m_pDialNumber.get();
       const bool isEmpty  = str.isEmpty();
 
       if (wasEmpty != isEmpty)
@@ -1844,12 +1819,12 @@ void Call::backspaceItemText()
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
       case Call::State::TRANSF_HOLD      :
-         editNumber = d_ptr->m_pTransferNumber;
-         break;
+          editNumber = d_ptr->m_pTransferNumber.get();
+          break;
       case Call::State::NEW:
       case Call::State::DIALING          : {
          const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
-         editNumber = d_ptr->m_pDialNumber;
+         editNumber = d_ptr->m_pDialNumber.get();
          const bool isEmpty  = editNumber->uri().isEmpty();
 
          if (wasEmpty != isEmpty)
@@ -1897,13 +1872,13 @@ void Call::reset()
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
       case Call::State::TRANSF_HOLD      :
-         editNumber = d_ptr->m_pTransferNumber;
-         break;
+          editNumber = d_ptr->m_pTransferNumber.get();
+          break;
       case Call::State::DIALING          :
       case Call::State::NEW              :
-         editNumber = d_ptr->m_pDialNumber;
-         d_ptr->changeCurrentState( Call::State::NEW );
-         break;
+          editNumber = d_ptr->m_pDialNumber.get();
+          d_ptr->changeCurrentState( Call::State::NEW );
+          break;
       case Call::State::INITIALIZATION   :
       case Call::State::CONNECTED        :
       case Call::State::INCOMING         :
