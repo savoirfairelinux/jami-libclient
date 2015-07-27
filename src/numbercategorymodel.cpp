@@ -79,8 +79,9 @@ int NumberCategoryModel::rowCount(const QModelIndex& parent) const
 
 Qt::ItemFlags NumberCategoryModel::flags(const QModelIndex& index) const
 {
-   Q_UNUSED(index)
-   return (d_ptr->m_lCategories[index.row()]->category->name().isEmpty()?Qt::NoItemFlags :Qt::ItemIsEnabled) | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
+   return (d_ptr->m_lCategories[index.row()]->category->name().isEmpty() ? Qt::NoItemFlags : Qt::ItemIsEnabled)
+            | Qt::ItemIsSelectable
+            | Qt::ItemIsUserCheckable;
 }
 
 bool NumberCategoryModel::setData(const QModelIndex& idx, const QVariant &value, int role)
@@ -99,11 +100,15 @@ bool NumberCategoryModel::setData(const QModelIndex& idx, const QVariant &value,
 NumberCategory* NumberCategoryModel::addCategory(const QString& name, const QVariant& icon, int key)
 {
    NumberCategoryModelPrivate::InternalTypeRepresentation* rep = d_ptr->m_hByName[name];
+   if (!name.size())
+      return this->other();
+
    if (!rep) {
       rep = new NumberCategoryModelPrivate::InternalTypeRepresentation();
-      rep->counter = 0      ;
+      rep->counter = 0;
    }
-   NumberCategory* cat = addCollection<NumberCategory,QString>(name.size() ? name : tr("Other"), LoadOptions::NONE);
+
+   NumberCategory* cat = addCollection<NumberCategory,QString>(name, LoadOptions::NONE);
    cat->setKey ( key  );
    cat->setIcon( icon );
 
@@ -111,11 +116,12 @@ NumberCategory* NumberCategoryModel::addCategory(const QString& name, const QVar
    rep->index      = d_ptr->m_lCategories.size();
    rep->enabled    = false                      ;
 
-   d_ptr->m_hToInternal[ cat           ] = rep ;
-   d_ptr->m_hByIdx     [ key           ] = rep ;
-   d_ptr->m_hByName    [ name.toLower()] = rep ;
-   d_ptr->m_lCategories     << rep ;
-   emit layoutChanged()     ;
+   this->beginInsertRows(this->nameToIndex(name),0,0);
+   d_ptr->m_hToInternal[ cat           ] = rep;
+   d_ptr->m_hByIdx     [ key           ] = rep;
+   d_ptr->m_hByName    [ name.toLower()] = rep;
+   d_ptr->m_lCategories << rep;
+   this->endInsertRows();
    return cat;
 }
 
@@ -169,10 +175,14 @@ void NumberCategoryModelPrivate::unregisterNumber(ContactMethod* number)
 NumberCategory* NumberCategoryModel::getCategory(const QString& type)
 {
    const QString lower = type.toLower();
-   NumberCategoryModelPrivate::InternalTypeRepresentation* internal = d_ptr->m_hByName[lower];
-   if (internal)
-      return internal->category;
-   return addCategory(lower,QVariant());
+   if (!lower.size())
+       return this->other();
+   else {
+      NumberCategoryModelPrivate::InternalTypeRepresentation* internal = d_ptr->m_hByName[lower];
+      if (internal)
+         return internal->category;
+      return addCategory(lower,QVariant());
+   }
 }
 
 
@@ -182,8 +192,8 @@ NumberCategory* NumberCategoryModel::other()
    static QString lower      = translated.toLower();
    if (instance()->d_ptr->m_hByName[lower])
       return instance()->d_ptr->m_hByName[lower]->category;
-   if (NumberCategoryModelPrivate::m_spOther)
-      NumberCategoryModelPrivate::m_spOther = instance()->addCollection<NumberCategory,QString>(translated,LoadOptions::NONE);
+   if (!NumberCategoryModelPrivate::m_spOther)
+      NumberCategoryModelPrivate::m_spOther = instance()->addCategory(translated, QVariant());
    return NumberCategoryModelPrivate::m_spOther;
 }
 
