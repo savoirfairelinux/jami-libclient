@@ -581,7 +581,6 @@ bool PersonPlaceHolder::merge(Person* contact)
 
 void Person::replaceDPointer(Person* c)
 {
-
    if (d_ptr->m_LastUsed > c->lastUsedTime()) {
       c->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
       emit c->lastUsedTimeChanged(d_ptr->m_LastUsed);

@@ -629,8 +629,12 @@ void ContactMethod::accountDestroyed(QObject* o)
  */
 void ContactMethod::contactRebased(Person* other)
 {
+
+    qDebug() << "CM" << this << "rebased with person:" << other;
+
    d_ptr->m_PrimaryName_cache = other->formattedName();
    d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
+    setPerson(other);
    d_ptr->changed();
 
    //It is a "partial" rebase, so the ContactMethod data stay the same
