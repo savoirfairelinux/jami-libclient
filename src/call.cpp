@@ -1641,6 +1641,7 @@ void CallPrivate::call()
             m_PeerName = contact->formattedName();
     }
 
+    setStartTimeStamp();
     CallModel::instance()->registerCall(q_ptr);
 
     connect(m_pPeerContactMethod, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
