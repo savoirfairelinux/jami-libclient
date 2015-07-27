@@ -50,7 +50,9 @@ namespace Media {
 
 // Smart pointer deleter helper
 struct DeleteLaterDeleter {
-    void operator ()(QObject* p) { p->deleteLater(); }
+    void operator ()(QObject* p) {
+        p->deleteLater();
+    }
 };
 
 class CallPrivate final : public QObject

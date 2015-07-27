@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QCryptographicHash>
+#include <QDateTime>
 
 //Ring daemon
 #include "dbus/configurationmanager.h"
@@ -483,7 +484,7 @@ QVariant ContactMethod::roleData(int role) const
          cat = tr("N/A");//call->getLength();
          break;
       case static_cast<int>(Call::Role::FormattedDate):
-         cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
+         cat = QDateTime::fromTime_t(d_ptr->m_lCalls.last()->startTimeStamp()).toString();
          break;
       case static_cast<int>(Call::Role::HasAVRecording):
          cat = false;//call->hasRecording();
@@ -629,11 +630,12 @@ void ContactMethod::accountDestroyed(QObject* o)
  */
 void ContactMethod::contactRebased(Person* other)
 {
+   qDebug() << "CM" << this << "rebased with person:" << other;
    d_ptr->m_PrimaryName_cache = other->formattedName();
    d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
-   d_ptr->changed();
+   setPerson(other);
 
-   //It is a "partial" rebase, so the ContactMethod data stay the same
+   d_ptr->changed();
    d_ptr->rebased(this);
 }
 
