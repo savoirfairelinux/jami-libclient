@@ -47,8 +47,6 @@ class CallPrivate final : public QObject
 {
    Q_OBJECT
 public:
-   friend class CallModel;
-   friend class CallModelPrivate;
 
    ///@class ConferenceStateChange Possible values from "conferencechanged" signal
    class ConferenceStateChange {
