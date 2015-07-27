@@ -211,7 +211,7 @@ QString URI::hostname() const
 
 /**
  * Check if the URI has an hostname
- * 
+ *
  * This will return true if there is something between '@' and ';' (or an end of line)
  */
 bool URI::hasHostname() const
@@ -538,19 +538,19 @@ QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
 {
    switch(ph) {
       case URI::ProtocolHint::SIP_OTHER:
-         stream << "SIP_OTHER";
+         stream << QString("SIP_OTHER");
          break;
       case URI::ProtocolHint::IAX      :
-         stream << "IAX";
+         stream << QString("IAX");
          break;
       case URI::ProtocolHint::RING     :
-         stream << "RING";
+         stream << QString("RING");
          break;
       case URI::ProtocolHint::IP       :
-         stream << "IP";
+         stream << QString("IP");
          break;
       case URI::ProtocolHint::SIP_HOST :
-         stream << "SIP_HOST";
+         stream << QString("SIP_HOST");
          break;
    }
    return stream;
