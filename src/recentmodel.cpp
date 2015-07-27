@@ -239,7 +239,10 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
     case RecentViewNode::Type::CALL              :
         return node->m_uContent.m_pCall->roleData(role);
     case RecentViewNode::Type::CALL_GROUP        :
-        return node->m_uContent.m_pCallGroup->m_lCalls[0]->roleData(role);
+        //return node->m_uContent.m_pCallGroup->m_lCalls[0]->roleData(role);
+        return QVariant(QString(QString::number(node->m_uContent.m_pCallGroup->m_lCalls.size())
+                                + (node->m_uContent.m_pCallGroup->m_Direction == Call::Direction::INCOMING ? " Incoming" : " Outgoing")
+                                +" Missed Calls"));
     case RecentViewNode::Type::TEXT_MESSAGE      :
     case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
         //TODO
@@ -307,8 +310,6 @@ QVariant RecentModel::headerData( int section, Qt::Orientation orientation, int 
 /*
  * Move rows around to keep the person/contactmethods ordered
  *
- * Further optimization:
- *  * Invert m_Index to avoid the O(N) loop when adding an item
  */
 void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
 {
@@ -362,13 +363,13 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
         q_ptr->endInsertRows();
 
     //Uncomment if there is issues
-//    qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
-//    for (int i = 0; i<m_lTopLevelReverted.size();i++) {
-//        qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
-//        for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
-//            qDebug() << "|||" << "|||" << child << child->m_uContent.m_pCall->formattedName();
+//        qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
+//        for (int i = 0; i<m_lTopLevelReverted.size();i++) {
+//            qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
+//            for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
+//                qDebug() << "|||" << "|||" << child << (child->m_Type == RecentViewNode::Type::CALL ? "Call" : "CallGroup : " + QString::number(child->m_uContent.m_pCallGroup->m_lCalls.size()));
+//            }
 //        }
-//    }
 }
 
 void RecentModelPrivate::removeNode(RecentViewNode* n)
@@ -452,10 +453,49 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     }
     if (!n)
         return;
-    auto callNode = new RecentViewNode();
-    callNode->m_Type = RecentViewNode::Type::CALL;
-    callNode->m_uContent.m_pCall = call;
-    callNode->m_pParent = n;
-    callNode->m_Index = n->m_lChildren.size();
-    n->m_lChildren.append(callNode);
+
+    auto node = new RecentViewNode();
+    node->m_pParent = n;
+    node->m_Index = n->m_lChildren.size();
+
+    //for new call we'll update their node when it's over
+    if (not call->isHistory())
+        connect(call, &Call::isOver, [=]() {
+            auto node = n->m_lChildren.takeLast();
+            slotCallAdded(node->m_uContent.m_pCall, nullptr);
+            delete node;
+            disconnect(call);
+        });
+
+    //if the last node inserted is a group of call
+    //check if we should append to it
+    //else check if we should make a new one
+    if (n->m_lChildren.size() > 0) {
+        if (n->m_lChildren.last()->m_Type == RecentViewNode::Type::CALL_GROUP) {
+            auto callGroup = n->m_lChildren.last()->m_uContent.m_pCallGroup;
+            if (call->isMissed() && callGroup->m_Missed && call->direction() == callGroup->m_Direction) {
+                callGroup->m_lCalls.append(call);
+                delete node;
+                return;
+            }
+        } else if (n->m_lChildren.last()->m_Type == RecentViewNode::Type::CALL) {
+            auto lastCall = n->m_lChildren.last()->m_uContent.m_pCall;
+            if (lastCall->isMissed() && call->isMissed() && call->direction() == lastCall->direction()) {
+                node->m_Type = RecentViewNode::Type::CALL_GROUP;
+                auto callGroup = new CallGroup();
+                callGroup->m_Direction = lastCall->direction();
+                callGroup->m_Missed = true;
+                callGroup->m_lCalls.append(lastCall);
+                callGroup->m_lCalls.append(call);
+                delete n->m_lChildren.takeLast();
+                node->m_Index = n->m_lChildren.size();
+                node->m_uContent.m_pCallGroup = callGroup;
+                n->m_lChildren.append(node);
+                return;
+            }
+        }
+    }
+    node->m_Type = RecentViewNode::Type::CALL;
+    node->m_uContent.m_pCall = call;
+    n->m_lChildren.append(node);
 }
