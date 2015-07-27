@@ -109,17 +109,20 @@ struct VCardMapper {
    }
 
    void addContactMethod(Person* c, const QString& key, const QByteArray& fn) {
-      Q_UNUSED(c)
-      Q_UNUSED(key)
       QByteArray type;
 
       QRegExp rx("TYPE=([A-Za-z,]*)");
+
+      //VCard spec: it is RECOMMENDED that property and parameter names
+      // be upper-case on output.
+      rx.setCaseSensitivity(Qt::CaseInsensitive);
 
       while ((rx.indexIn(key, 0)) != -1) {
          type = rx.cap(1).toLatin1();
          break;
       }
 
+      // TODO: Currently we only support one type (the first on the line) TYPE=WORK,VOICE: <number>
       const QStringList categories = QString(type).split(',');
 
       ContactMethod* cm = PhoneDirectoryModel::instance()->getNumber(fn,c,nullptr,categories.size()?categories[0]:QString());
