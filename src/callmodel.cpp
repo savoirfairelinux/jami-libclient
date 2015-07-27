@@ -459,7 +459,7 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       emit q_ptr->callAdded(call,parentCall);
       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
       emit q_ptr->dataChanged(idx, idx);
-      connect(call,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
+      connect(call,SIGNAL(changed()),this,SLOT(slotCallChanged(Call*)));
       connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
       connect(call,&Call::videoStarted,[this,call](Video::Renderer* r) {
@@ -725,7 +725,7 @@ Call* CallModelPrivate::addConference(const QString& confID)
       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
       emit q_ptr->dataChanged(idx, idx);
       emit q_ptr->layoutChanged();
-      connect(newConf,SIGNAL(changed(Call*)),this,SLOT(slotCallChanged(Call*)));
+      connect(newConf,SIGNAL(changed()),this,SLOT(slotCallChanged(Call*)));
    }
 
    return newConf;
@@ -1390,7 +1390,6 @@ void CallModelPrivate::slotRecordStateChanged (const QString& callId, bool state
       call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , state);
 
       emit call->changed();
-      emit call->changed(call);
    }
 }
 
