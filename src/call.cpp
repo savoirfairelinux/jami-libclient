@@ -310,7 +310,6 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
    d_ptr->m_pPeerContactMethod = number;
 
    emit changed();
-   emit changed(this);
 }
 
 ///Constructor
@@ -1071,7 +1070,6 @@ void Call::setDialNumber(const QString& number)
    d_ptr->m_pDialNumber->setUri(number);
    emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
    emit changed();
-   emit changed(this);
 
    //Make sure the call is now in the right state
    if ((!isEmpty) && state() == Call::State::NEW)
@@ -1093,7 +1091,6 @@ void Call::setDialNumber(const ContactMethod* number)
       emit dialNumberChanged(d_ptr->m_pDialNumber->uri());
 
    emit changed();
-   emit changed(this);
 
    //Make sure the call is now in the right state
    if (number && state() == Call::State::NEW)
@@ -1241,7 +1238,6 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       m_pDialNumber = nullptr;
    }
    emit q_ptr->changed();
-   emit q_ptr->changed(q_ptr);
    qDebug() << "Calling stateChanged " << newStateName << " -> " << toDaemonCallState(newStateName) << " on call with state " << previousState << ". Become " << m_CurrentState;
    return m_CurrentState;
 } //stateChanged
@@ -1338,7 +1334,6 @@ void CallPrivate::changeCurrentState(Call::State newState)
    }
 
    emit q_ptr->changed();
-   emit q_ptr->changed(q_ptr);
 
    initTimer();
 
@@ -1516,7 +1511,6 @@ void CallPrivate::remove()
    emit q_ptr->isOver(q_ptr);
    emit q_ptr->stateChanged(m_CurrentState, m_CurrentState);
    emit q_ptr->changed();
-   emit q_ptr->changed(q_ptr);
 }
 
 ///Abort this call (never notify the daemon there was a call)
@@ -1677,7 +1671,7 @@ void CallPrivate::peerHoldChanged(bool onPeerHold)
 
    emit q_ptr->holdFlagsChanged(m_fHoldFlags, old);
 
-   emit q_ptr->changed(q_ptr);
+   emit q_ptr->changed();
 }
 
 ///Record the call
@@ -1712,7 +1706,6 @@ void CallPrivate::start()
 {
    qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->changed();
-   emit q_ptr->changed(q_ptr);
    if (m_pDialNumber) {
       if (!m_pPeerContactMethod)
          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
@@ -1838,7 +1831,6 @@ void Call::appendText(const QString& str)
 
 
    emit changed();
-   emit changed(this);
 }
 
 ///Remove the last character
@@ -1885,7 +1877,6 @@ void Call::backspaceItemText()
       if(textSize > 0) {
          editNumber->setUri(text.remove(textSize-1, 1));
          emit changed();
-         emit changed(this);
       }
       else {
          d_ptr->changeCurrentState(Call::State::ABORTED);
@@ -1941,7 +1932,6 @@ void Call::reset()
 void CallPrivate::updated()
 {
    emit q_ptr->changed();
-   emit q_ptr->changed(q_ptr);
 }
 
 UserActionModel* Call::userActionModel() const

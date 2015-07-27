@@ -354,8 +354,6 @@ public Q_SLOTS:
 Q_SIGNALS:
    ///Emitted when a call change (state or details)
    void changed();
-   ///@TODO deprecated, use QObject::sender()
-   void changed(Call* self);
    ///Emitted when the call is over //TODO remove the argument
    void isOver(Call*);
    ///Notify that a DTMF have been played
