@@ -19,6 +19,7 @@
 #define MEDIA_TEXTRECORDING_H
 
 #include <media/recording.h>
+#include <QtCore/QSortFilterProxyModel>
 
 //Qt
 class QJsonObject;
@@ -44,6 +45,25 @@ class LIB_EXPORT TextRecording : public Recording
    friend class ::IMConversationManagerPrivate;
    friend class ::LocalTextRecordingEditor;
    friend class Text;
+
+   ///ProxyModel to filter message by timestamp
+   class LIB_EXPORT InstantMessagingProxyModel final : public QSortFilterProxyModel
+   {
+
+   public:
+     explicit InstantMessagingProxyModel(QAbstractItemModel *parent = 0);
+     virtual void setFilterMinTimestamp(const time_t& min);
+     virtual void setFilterMaxTimestamp(const time_t& max);
+
+   protected:
+     //virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+     virtual bool filterAcceptsRow(int sourceRow,const QModelIndex &sourceParent) const override;
+
+   private:
+     time_t minTimestamp;
+     time_t maxTimestamp;
+   };
+
 public:
 
    enum class Role {
@@ -64,9 +84,10 @@ public:
 
    //Getter
    QAbstractListModel* instantMessagingModel() const;
-
+   InstantMessagingProxyModel* instantMessagingProxyModel();
 private:
    TextRecordingPrivate* d_ptr;
+   InstantMessagingProxyModel* m_ImProxModel;
    Q_DECLARE_PRIVATE(TextRecording)
 };
 
