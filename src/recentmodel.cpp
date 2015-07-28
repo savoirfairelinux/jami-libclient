@@ -20,6 +20,8 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
+#include <QtCore/QDateTime>
 
 //Ring
 #include <call.h>
@@ -31,6 +33,7 @@
 #include <categorizedhistorymodel.h>
 #include <media/recordingmodel.h>
 #include <media/textrecording.h>
+#include <media/text.h>
 
 struct CallGroup
 {
@@ -38,6 +41,13 @@ struct CallGroup
     Call::Direction m_Direction;
     bool            m_Missed   ;
     time_t          m_LastUsed ;
+};
+
+struct TextMessage
+{
+    QString         m_Msg;
+    QString         m_FormattedDate;
+    Media::Media::Direction m_Direction;
 };
 
 struct RecentViewNode
@@ -66,6 +76,7 @@ struct RecentViewNode
         ContactMethod* m_pContactMethod;
         Call*          m_pCall         ;
         CallGroup*     m_pCallGroup    ;
+        TextMessage*   m_pTextMessage  ;
         //ImConversationIterator; //TODO
         //ImConversationIterator;
     } m_uContent;
@@ -88,6 +99,7 @@ public:
     QList<RecentViewNode*>                m_lTopLevelReverted;
     QHash<Person*,RecentViewNode*>        m_hPersonsToNodes  ;
     QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
+    QList<Call*>                          m_lCallBucket      ;
     static RecentModel*                   m_spInstance       ;
 
     //Helper
@@ -102,6 +114,10 @@ public Q_SLOTS:
     void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
     void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
     void slotCallAdded          (Call* call       , Call* parent          );
+    void slotUpdate             (                                         );
+signals:
+    void dataAdded();
+
 };
 
 RecentModel* RecentModelPrivate::m_spInstance = nullptr;
@@ -113,6 +129,9 @@ RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
     connect(PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
+//    connect(PersonModel::instance()        , &PersonModel::newPersonAdded         , [=](const Person* c) {
+//        d_ptr->slotLastUsedTimeChanged(const_cast<Person*>(c), (time_t)0);
+//    });
     connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
     connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
     connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
@@ -244,6 +263,16 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
                                 + (node->m_uContent.m_pCallGroup->m_Direction == Call::Direction::INCOMING ? " Incoming" : " Outgoing")
                                 +" Missed Calls"));
     case RecentViewNode::Type::TEXT_MESSAGE      :
+        switch (role) {
+        case Qt::DisplayRole:
+            return QVariant(node->m_uContent.m_pTextMessage->m_Msg);
+        case (int) Media::TextRecording::Role::FormattedDate:
+            return QVariant(node->m_uContent.m_pTextMessage->m_FormattedDate);
+        case (int) Media::TextRecording::Role::Direction:
+            return QVariant::fromValue(node->m_uContent.m_pTextMessage->m_Direction);
+        default:
+            return QVariant();
+        }
     case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
         //TODO
         break;
@@ -362,14 +391,15 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
     else
         q_ptr->endInsertRows();
 
+
     //Uncomment if there is issues
-//        qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
-//        for (int i = 0; i<m_lTopLevelReverted.size();i++) {
-//            qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
-//            for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
-//                qDebug() << "|||" << "|||" << child << (child->m_Type == RecentViewNode::Type::CALL ? "Call" : "CallGroup : " + QString::number(child->m_uContent.m_pCallGroup->m_lCalls.size()));
-//            }
-//        }
+    //        qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
+    //        for (int i = 0; i<m_lTopLevelReverted.size();i++) {
+    //            qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
+    //            for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
+    //                qDebug() << "|||" << "|||" << child << (child->m_Type == RecentViewNode::Type::CALL ? "Call" : "CallGroup : " + QString::number(child->m_uContent.m_pCallGroup->m_lCalls.size()));
+    //            }
+    //        }
 }
 
 void RecentModelPrivate::removeNode(RecentViewNode* n)
@@ -404,9 +434,11 @@ void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
             RecentViewNode* cmNode = m_hCMsToNodes[cm];
             if (cmNode)
                 n->m_lChildren.append(cmNode->m_lChildren);
+            m_hCMsToNodes[cm] = n;
         }
     }
     insertNode(n, t, isNew);
+    slotUpdate();
 }
 
 void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
@@ -425,6 +457,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
             m_hCMsToNodes[cm]              = n                                   ;
         }
         insertNode(n, t, isNew);
+        slotUpdate();
     }
 }
 
@@ -434,6 +467,7 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
     Q_UNUSED(np)
     if (op)
         return;
+
     RecentViewNode* n = m_hCMsToNodes[cm];
 
     if (n)
@@ -451,22 +485,30 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     } else {
         n = m_hCMsToNodes[call->peerContactMethod()];
     }
-    if (!n)
+    if (!n) {
+       m_lCallBucket.append(call);
+        connect(call, &Call::lifeCycleStateChanged, [=](Call::LifeCycleState newState, Call::LifeCycleState oldState) {
+            if (newState == Call::LifeCycleState::PROGRESS)
+                slotUpdate();
+        });
         return;
+    }
+    if (m_lCallBucket.contains(call))
+        m_lCallBucket.removeOne(call);
 
     auto node = new RecentViewNode();
     node->m_pParent = n;
     node->m_Index = n->m_lChildren.size();
 
     //for new call we'll update their node when it's over
-    if (not call->isHistory())
+    if (not call->isHistory()) {
         connect(call, &Call::isOver, [=]() {
-            auto node = n->m_lChildren.takeLast();
-            slotCallAdded(node->m_uContent.m_pCall, nullptr);
-            delete node;
+            auto callNode = n->m_lChildren.takeLast();
+            slotCallAdded(callNode->m_uContent.m_pCall, nullptr);
+            delete callNode;
             disconnect(call);
         });
-
+    }
     //if the last node inserted is a group of call
     //check if we should append to it
     //else check if we should make a new one
@@ -498,4 +540,28 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     node->m_Type = RecentViewNode::Type::CALL;
     node->m_uContent.m_pCall = call;
     n->m_lChildren.append(node);
+    auto textRecording = Media::RecordingModel::instance()->createTextRecording(call->peerContactMethod())->instantMessagingProxyModel();
+    textRecording->setFilterMinTimestamp(call->startTimeStamp());
+    textRecording->setFilterMaxTimestamp(call->stopTimeStamp());
+    for (int j=0; j < textRecording->rowCount(); j++) {
+        auto date = textRecording->data(textRecording->index(j, 0), static_cast<int>(Media::TextRecording::Role::FormattedDate));
+        auto dir = textRecording->data(textRecording->index(j, 0), static_cast<int>(Media::TextRecording::Role::Direction));
+        auto msg = textRecording->data(textRecording->index(j, 0), Qt::DisplayRole);
+        auto textNode = new RecentViewNode();
+        textNode->m_Type = RecentViewNode::Type::TEXT_MESSAGE;
+        textNode->m_pParent = n;
+        textNode->m_Index = n->m_lChildren.size();
+        auto text = new TextMessage();
+        text->m_Direction = dir.value<Media::Media::Direction>();
+        text->m_Msg = msg.toString();
+        text->m_FormattedDate = date.toString();
+        textNode->m_uContent.m_pTextMessage = text;
+        n->m_lChildren.append(textNode);
+    }
+}
+
+void RecentModelPrivate::slotUpdate()
+{
+    Q_FOREACH(auto call, m_lCallBucket)
+        slotCallAdded(call, nullptr);
 }
