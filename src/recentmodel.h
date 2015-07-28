@@ -23,6 +23,7 @@
 #include <typedefs.h>
 
 class RecentModelPrivate;
+class TextMessage;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
