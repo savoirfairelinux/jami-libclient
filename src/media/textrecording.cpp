@@ -151,7 +151,7 @@ Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m
 
 }
 
-Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
+Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this)), m_ImProxModel(nullptr)
 {
 }
 
@@ -168,6 +168,14 @@ QAbstractListModel* Media::TextRecording::instantMessagingModel() const
    }
 
    return d_ptr->m_pImModel;
+}
+
+Media::TextRecording::InstantMessagingProxyModel* Media::TextRecording::instantMessagingProxyModel()
+{
+    if (!m_ImProxModel) {
+       m_ImProxModel = new InstantMessagingProxyModel(instantMessagingModel());
+    }
+    return m_ImProxModel;
 }
 
 QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
@@ -545,4 +553,31 @@ void InstantMessagingModel::addRowBegin()
 void InstantMessagingModel::addRowEnd()
 {
    endInsertRows();
+}
+
+Media::TextRecording::InstantMessagingProxyModel::InstantMessagingProxyModel(QAbstractItemModel *parent)
+    : QSortFilterProxyModel(parent), minTimestamp(0), maxTimestamp(0)
+{
+    setSourceModel(parent);
+}
+
+void Media::TextRecording::InstantMessagingProxyModel::setFilterMinTimestamp(const time_t& min)
+{
+    minTimestamp = min;
+    invalidateFilter();
+}
+
+void Media::TextRecording::InstantMessagingProxyModel::setFilterMaxTimestamp(const time_t& max)
+{
+    maxTimestamp = max;
+    invalidateFilter();
+}
+
+bool Media::TextRecording::InstantMessagingProxyModel::filterAcceptsRow(int sourceRow,const QModelIndex &sourceParent) const
+{
+    auto timeStamp = sourceModel()->index(sourceRow, 0, sourceParent).data(static_cast<int>(Role::Timestamp)).value<time_t>();
+
+    if (maxTimestamp != 0)
+        return (timeStamp >= minTimestamp && timeStamp <= maxTimestamp);
+    return (timeStamp >= minTimestamp);
 }

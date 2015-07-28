@@ -20,6 +20,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring
 #include <call.h>
@@ -31,6 +32,7 @@
 #include <categorizedhistorymodel.h>
 #include <media/recordingmodel.h>
 #include <media/textrecording.h>
+#include <media/text.h>
 
 struct CallGroup
 {
@@ -38,6 +40,14 @@ struct CallGroup
     Call::Direction m_Direction;
     bool            m_Missed   ;
     time_t          m_LastUsed ;
+};
+
+struct TextMessage
+{
+    QString         m_Msg;
+    time_t          m_Timestamp;
+    QString         m_FormattedDate;
+    Media::Media::Direction m_Direction;
 };
 
 struct RecentViewNode
@@ -66,6 +76,7 @@ struct RecentViewNode
         ContactMethod* m_pContactMethod;
         Call*          m_pCall         ;
         CallGroup*     m_pCallGroup    ;
+        TextMessage*   m_pTextMessage  ;
         //ImConversationIterator; //TODO
         //ImConversationIterator;
     } m_uContent;
@@ -244,6 +255,7 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
                                 + (node->m_uContent.m_pCallGroup->m_Direction == Call::Direction::INCOMING ? " Incoming" : " Outgoing")
                                 +" Missed Calls"));
     case RecentViewNode::Type::TEXT_MESSAGE      :
+        return QVariant(node->m_uContent.m_pTextMessage->m_Msg);
     case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
         //TODO
         break;
@@ -363,13 +375,13 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
         q_ptr->endInsertRows();
 
     //Uncomment if there is issues
-//        qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
-//        for (int i = 0; i<m_lTopLevelReverted.size();i++) {
-//            qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
-//            for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
-//                qDebug() << "|||" << "|||" << child << (child->m_Type == RecentViewNode::Type::CALL ? "Call" : "CallGroup : " + QString::number(child->m_uContent.m_pCallGroup->m_lCalls.size()));
-//            }
-//        }
+    //        qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
+    //        for (int i = 0; i<m_lTopLevelReverted.size();i++) {
+    //            qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
+    //            for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
+    //                qDebug() << "|||" << "|||" << child << (child->m_Type == RecentViewNode::Type::CALL ? "Call" : "CallGroup : " + QString::number(child->m_uContent.m_pCallGroup->m_lCalls.size()));
+    //            }
+    //        }
 }
 
 void RecentModelPrivate::removeNode(RecentViewNode* n)
@@ -459,14 +471,14 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     node->m_Index = n->m_lChildren.size();
 
     //for new call we'll update their node when it's over
-    if (not call->isHistory())
+    if (not call->isHistory()) {
         connect(call, &Call::isOver, [=]() {
-            auto node = n->m_lChildren.takeLast();
-            slotCallAdded(node->m_uContent.m_pCall, nullptr);
-            delete node;
+            auto callNode = n->m_lChildren.takeLast();
+            slotCallAdded(callNode->m_uContent.m_pCall, nullptr);
+            delete callNode;
             disconnect(call);
         });
-
+    }
     //if the last node inserted is a group of call
     //check if we should append to it
     //else check if we should make a new one
@@ -498,4 +510,22 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     node->m_Type = RecentViewNode::Type::CALL;
     node->m_uContent.m_pCall = call;
     n->m_lChildren.append(node);
+    auto textRecording = Media::RecordingModel::instance()->createTextRecording(call->peerContactMethod())->instantMessagingProxyModel();
+    textRecording->setFilterMinTimestamp(call->startTimeStamp());
+    textRecording->setFilterMaxTimestamp(call->stopTimeStamp());
+    for (int j=0; j < textRecording->rowCount(); j++) {
+        auto date = textRecording->data(textRecording->index(j, 0), static_cast<int>(Media::TextRecording::Role::FormattedDate));
+        auto dir = textRecording->data(textRecording->index(j, 0), static_cast<int>(Media::TextRecording::Role::Direction));
+        auto msg = textRecording->data(textRecording->index(j, 0), Qt::DisplayRole);
+        auto textNode = new RecentViewNode();
+        textNode->m_Type = RecentViewNode::Type::TEXT_MESSAGE;
+        textNode->m_pParent = n;
+        textNode->m_Index = n->m_lChildren.size();
+        auto text = new TextMessage();
+        text->m_Direction = dir.value<Media::Media::Direction>();
+        text->m_Msg = msg.toString();
+        text->m_FormattedDate = date.toString();
+        textNode->m_uContent.m_pTextMessage = text;
+        n->m_lChildren.append(textNode);
+    }
 }
