@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_3148f92c",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-29T21:36:35Z",
+      "side": 1,
+      "message": "add const or the map will be copied",
+      "revId": "66f062d1e252c1952c68af20f0bfbf23ae7c6f51",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_1155f5c5",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-29T21:36:35Z",
+      "side": 1,
+      "message": "This one is fine, but please read http://www.dvratil.cz/2015/06/qt-containers-and-c11-range-based-loops/ and https://blogs.kde.org/2015/05/13/simple-qt-container-optimization-you-should-do-your-code",
+      "revId": "66f062d1e252c1952c68af20f0bfbf23ae7c6f51",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_d15e3de9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-29T21:36:35Z",
+      "side": 1,
+      "message": "use foreach()",
+      "revId": "66f062d1e252c1952c68af20f0bfbf23ae7c6f51",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_b163c9b0",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-29T21:36:35Z",
+      "side": 1,
+      "message": "While it doesn\u0027t break, the ABI/API, this should go into the private class. I know I used both elsewhere, but it is really not necessary to export this.",
+      "revId": "66f062d1e252c1952c68af20f0bfbf23ae7c6f51",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_51724d7d",
+        "filename": "src/uri.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-29T21:36:35Z",
+      "side": 1,
+      "message": "Replace QString by QStringLiteral, the UTF16 representation will be created at compile time (I didn\u0027t used it elsewhere, but I planned to eventually fix this).\n\nUse QStringLiteral when:\n1) The string is hardcoded into a definition\n2) When the string is concatenated into another one (like here)\n3) When the string is used in an accessors (ex: QString foo() { return QStringLiteral(\"bar\");} [1]\n\nUse QLatin1String when:\n1) The function take a QLatin1String as input anyway, then skipping this ascii -\u003e QString -\u003e QLatin1String make sense\n2) When using \u003d\u003d, like if (myString \u003d\u003d QLatin1String(\"foo\")) [2]\n\n[1] This is not a micro optimization. If you don\u0027t _EVERYTIME_ the accessor is called, this string will be parser and internally converted into UTF16\n\n[2] This is also not a micro optimization. It avoid the parsing every time the \"if\" is called. In models, those add up pretty quickly.\n\nPlease read:\nhttp://doc.qt.io/qt-4.8/qlatin1string.html#details\nhttp://doc.qt.io/qt-5/qstring.html#QStringLiteral\n\nagain, I, until now, didn\u0027t really had the time to fix it everywhere, but it was on my general Qt5 porting list (even if this is actually available in Qt4 too)",
+      "revId": "66f062d1e252c1952c68af20f0bfbf23ae7c6f51",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
