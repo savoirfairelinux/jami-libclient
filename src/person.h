@@ -148,6 +148,7 @@ public:
    bool isTracked                  () const;
    bool supportPresence            () const;
    bool isReachable                () const;
+   bool isPlaceHolder              () const;
 
    //Setters
    void setContactMethods ( ContactMethods           );

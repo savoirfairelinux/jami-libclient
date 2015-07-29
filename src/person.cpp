@@ -438,6 +438,11 @@ bool Person::isTracked() const
    return false;
 }
 
+bool Person::isPlaceHolder() const
+{
+    return d_ptr->m_isPlaceHolder;
+}
+
 /** Get the last time this person was contacted
  *  @warning This method complexity is O(N)
  */
