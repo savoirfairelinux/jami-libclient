@@ -541,19 +541,19 @@ QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
 {
    switch(ph) {
       case URI::ProtocolHint::SIP_OTHER:
-         stream << "SIP_OTHER";
+         stream << QStringLiteral("SIP_OTHER");
          break;
       case URI::ProtocolHint::IAX      :
-         stream << "IAX";
+         stream << QStringLiteral("IAX");
          break;
       case URI::ProtocolHint::RING     :
-         stream << "RING";
+         stream << QStringLiteral("RING");
          break;
       case URI::ProtocolHint::IP       :
-         stream << "IP";
+         stream << QStringLiteral("IP");
          break;
       case URI::ProtocolHint::SIP_HOST :
-         stream << "SIP_HOST";
+         stream << QStringLiteral("SIP_HOST");
          break;
    }
    return stream;
