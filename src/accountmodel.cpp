@@ -713,8 +713,7 @@ Qt::ItemFlags AccountModel::flags(const QModelIndex& idx) const
 ///Number of account
 int AccountModel::rowCount(const QModelIndex& parentIdx) const
 {
-   Q_UNUSED(parentIdx);
-   return d_ptr->m_lAccounts.size();
+   return parentIdx.isValid() ? 0 : d_ptr->m_lAccounts.size();
 }
 
 Account* AccountModel::getAccountByModelIndex(const QModelIndex& item) const
