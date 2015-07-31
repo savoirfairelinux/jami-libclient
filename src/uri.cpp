@@ -152,17 +152,20 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
    if (uri.isEmpty())
       return {};
 
-   int start(uri[0] == '<'?1:0),end(uri.size()-1); //Other type of comparisons were too slow
+   /* remove whitespace at the start and end */
+   auto uriTrimmed = uri.trimmed();
+
+   int start(uriTrimmed[0] == '<'?1:0),end(uriTrimmed.size()-1); //Other type of comparisons were too slow
 
    if (start == end+1)
       return {};
 
-   const char c = uri[start].toLatin1();
+   const char c = uriTrimmed[start].toLatin1();
 
    //Assume the scheme is either iax, sip or ring using the first letter and length, this
    //is dangerous and can cause undefined behaviour that will cause the call to fail
    //later on, but this is not really a problem for now
-   if (end > start+3 && uri[start+3] == ':') {
+   if (end > start+3 && uriTrimmed[start+3] == ':') {
       switch (c) {
          case 'i':
             scheme = URI::SchemeType::IAX;
@@ -173,7 +176,7 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
       }
       start = start +4;
    }
-   else if (end > start+4 && uri[start+4] == ':') {
+   else if (end > start+4 && uriTrimmed[start+4] == ':') {
       switch (c) {
          case 'i':
             scheme = URI::SchemeType::IAX2;
@@ -188,13 +191,13 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
       start = start +5;
    }
 
-   if (end && uri[end] == '>')
+   if (end && uriTrimmed[end] == '>')
       end--;
    else if (start) {
       //TODO there may be a ';' section with arguments, check
    }
 
-   return uri.mid(start,end-start+1);
+   return uriTrimmed.mid(start,end-start+1);
 }
 
 /**
@@ -211,7 +214,7 @@ QString URI::hostname() const
 
 /**
  * Check if the URI has an hostname
- * 
+ *
  * This will return true if there is something between '@' and ';' (or an end of line)
  */
 bool URI::hasHostname() const
