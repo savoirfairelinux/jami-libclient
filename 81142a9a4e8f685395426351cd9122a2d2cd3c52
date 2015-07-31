@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a5c5d37_ecc4c860",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Use Private class for m_ImProxyModel",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_aca6d0bf",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "d_ptr(new InstantMessagingProxyModelPrivate())",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_4cce3485",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Please place the definition outside of the class, also note that this one is currently in the private section to preserve the ABI",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_2ccb0074",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Please create a private class to have a stable ABI and save some compile time\n\ndeclare\n\"class InstantMessagingProxyModelPrivate;\"\n\nadd:\n\"\nInstantMessagingProxyModelPrivate* d_ptr;\nQ_DECLARE_PRIVATE(InstantMessagingProxyModel);\n\"",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_0cc83c73",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Add to private class instead, it already exist",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_8cab0c89",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Please use the original object, unless you have very good reasons, having a copy of it is kind of pointless. The original one is deleted only when the app quit, so it is quite save to use",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_6cb0d8f4",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "please use Q_SIGNALS: for consistency. It is less of a problem in .cpp files, but cause errors on some platforms when used in the .h. Mostly due to keyword collision issues (signals/slots/emit are Qt keywords, not C++ ones, some other framework have the same)",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_4c95143f",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "Is there any use for this? Calls are not added often (unless I forgot something). At worst, it might happen twice (where a current call goes into history). Maybe it should be fixed there rather than doing this. Given my history file have 2k+ items, this whole bucket concept is quite slow. (2*O(N)).",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a5c5d37_2c92e057",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-07-31T21:40:35Z",
+      "side": 1,
+      "message": "I think it really would be worth it to just extract the actual Media::TestRecording object rather than use the ::data() for this. While it should be cow, this still create pointless duplication and possible desynchronisation (not currently but in the future if more TextMessaging properties are added).",
+      "revId": "81142a9a4e8f685395426351cd9122a2d2cd3c52",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
