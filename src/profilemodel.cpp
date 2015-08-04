@@ -56,7 +56,7 @@ public:
    virtual bool save       ( const Person* item ) override;
    virtual bool remove     ( const Person* item ) override;
    virtual bool edit       (       Person* item ) override;
-   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addNew     ( Person*       item ) override;
    virtual bool addExisting( const Person* item ) override;
 
    Node* getProfileById(const QByteArray& id);
@@ -174,10 +174,10 @@ bool ProfileEditor::edit( Person* contact)
    return false;
 }
 
-bool ProfileEditor::addNew(const Person* contact)
+bool ProfileEditor::addNew( Person* contact)
 {
    qDebug() << "Creating new profile" << contact->uid();
-   m_lProfilePersons << const_cast<Person*>(contact);
+   m_lProfilePersons << contact;
    mediator()->addItem(contact);
    save(contact);
 //    load(); //FIXME

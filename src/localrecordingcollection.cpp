@@ -29,7 +29,7 @@ public:
    virtual bool save       ( const Media::Recording* item ) override;
    virtual bool remove     ( const Media::Recording* item ) override;
    virtual bool edit       ( Media::Recording*       item ) override;
-   virtual bool addNew     ( const Media::Recording* item ) override;
+   virtual bool addNew     ( Media::Recording*       item ) override;
    virtual bool addExisting( const Media::Recording* item ) override;
 
 private:
@@ -75,9 +75,8 @@ bool LocalRecordingEditor::edit( Media::Recording* item)
    return false;
 }
 
-bool LocalRecordingEditor::addNew(const Media::Recording* item)
+bool LocalRecordingEditor::addNew( Media::Recording* item)
 {
-   Q_UNUSED(item)
    addExisting(item);
    return save(item);
 }

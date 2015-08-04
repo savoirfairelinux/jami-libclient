@@ -52,7 +52,7 @@ public:
    virtual bool save       ( const Media::Recording* item ) override;
    virtual bool remove     ( const Media::Recording* item ) override;
    virtual bool edit       ( Media::Recording*       item ) override;
-   virtual bool addNew     ( const Media::Recording* item ) override;
+   virtual bool addNew     ( Media::Recording*       item ) override;
    virtual bool addExisting( const Media::Recording* item ) override;
    QByteArray fetch(const QByteArray& sha1);
 
@@ -118,7 +118,7 @@ bool LocalTextRecordingEditor::edit( Media::Recording* item)
    return false;
 }
 
-bool LocalTextRecordingEditor::addNew(const Media::Recording* item)
+bool LocalTextRecordingEditor::addNew( Media::Recording* item)
 {
    Q_UNUSED(item)
    addExisting(item);

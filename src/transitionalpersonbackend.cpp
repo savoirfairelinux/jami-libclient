@@ -34,7 +34,7 @@ public:
    virtual bool save       ( const Person* item ) override;
    virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
-   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addNew     ( Person*       item ) override;
    virtual bool addExisting( const Person* item ) override;
 
 private:
@@ -59,7 +59,7 @@ bool TransitionalPersonEditor::edit( Person* item)
    return false;
 }
 
-bool TransitionalPersonEditor::addNew(const  Person* item)
+bool TransitionalPersonEditor::addNew( Person* item)
 {
    Q_UNUSED(item)
    return false;

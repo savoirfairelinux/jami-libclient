@@ -56,7 +56,7 @@ public:
      : CollectionEditor<ContactMethod>(m),m_Tracked(false) {}
    virtual bool save       ( const ContactMethod* item ) override;
    virtual bool remove     ( const ContactMethod* item ) override;
-   virtual bool addNew     ( const ContactMethod* item ) override;
+   virtual bool addNew     ( ContactMethod*       item ) override;
    virtual bool addExisting( const ContactMethod* item ) override;
 
    //Attributes
@@ -172,14 +172,14 @@ bool LocalBookmarkEditor::remove(const ContactMethod* item)
    return false;
 }
 
-bool LocalBookmarkEditor::addNew(const ContactMethod* number)
+bool LocalBookmarkEditor::addNew( ContactMethod* number)
 {
    if (!number->isBookmarked()) {
-      const_cast<ContactMethod*>(number)->setTracked   (m_Tracked);
-      const_cast<ContactMethod*>(number)->setBookmarked(true     );
+      number->setTracked(m_Tracked);
+      number->setBookmarked(true);
       Serializable::BookmarkNode n;
 
-      n.cm = const_cast<ContactMethod*>(number);
+      n.cm = number;
       n.account = number->account();
       n.contact = number->contact();
       m_Nodes << n;
