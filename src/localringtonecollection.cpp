@@ -51,7 +51,7 @@ public:
      : CollectionEditor<Ringtone>(m),m_Tracked(false) {}
    virtual bool save       ( const Ringtone* item ) override;
    virtual bool remove     ( const Ringtone* item ) override;
-   virtual bool addNew     ( const Ringtone* item ) override;
+   virtual bool addNew     ( Ringtone*       item ) override;
    virtual bool addExisting( const Ringtone* item ) override;
 
    //Attributes
@@ -186,11 +186,11 @@ bool LocalRingtoneEditor::remove(const Ringtone* item)
    return false;
 }
 
-bool LocalRingtoneEditor::addNew(const Ringtone* ringtone)
+bool LocalRingtoneEditor::addNew( Ringtone* ringtone)
 {
    Serializable::RingtoneNode n;
 
-   n.ringtone = const_cast<Ringtone*>(ringtone);
+   n.ringtone = ringtone;
    m_Nodes << n;
 
    if (!save(ringtone))

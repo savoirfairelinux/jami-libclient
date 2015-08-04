@@ -40,7 +40,7 @@ public:
    virtual bool save       ( const Certificate* item ) override;
    virtual bool remove     ( const Certificate* item ) override;
    virtual bool edit       ( Certificate*       item ) override;
-   virtual bool addNew     ( const Certificate* item ) override;
+   virtual bool addNew     ( Certificate*       item ) override;
    virtual bool addExisting( const Certificate* item ) override;
 
    QVector<Certificate*>             m_lItems;
@@ -274,7 +274,7 @@ bool FallbackLocalCertificateEditor::edit( Certificate* item)
    return false;
 }
 
-bool FallbackLocalCertificateEditor::addNew( const Certificate* item)
+bool FallbackLocalCertificateEditor::addNew( Certificate* item)
 {
    Q_UNUSED(item)
    return false;

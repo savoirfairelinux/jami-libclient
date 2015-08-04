@@ -44,7 +44,7 @@ public:
    virtual bool save       ( const Person* item ) override;
    virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
-   virtual bool addNew     ( const Person* item ) override;
+   virtual bool addNew     ( Person*       item ) override;
    virtual bool addExisting( const Person* item ) override;
 
    QVector<Person*>             m_lItems;
@@ -151,7 +151,7 @@ bool FallbackPersonBackendEditor::edit( Person* item)
    return false;
 }
 
-bool FallbackPersonBackendEditor::addNew(const Person* item)
+bool FallbackPersonBackendEditor::addNew( Person* item)
 {
    bool ret = save(item);
 

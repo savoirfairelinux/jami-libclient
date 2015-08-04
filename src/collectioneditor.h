@@ -71,7 +71,7 @@ public:
    virtual bool edit       ( T*       item     );
 
    ///Add a new item to the backend
-   virtual bool addNew     (const  T*       item     ) = 0;
+   virtual bool addNew     (T*       item     ) = 0;
 
    ///Add an existing item to the collection
    virtual bool addExisting(const  T*       item     ) = 0;

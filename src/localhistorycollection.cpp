@@ -44,7 +44,7 @@ public:
    virtual bool save       ( const Call* item ) override;
    virtual bool remove     ( const Call* item ) override;
    virtual bool edit       ( Call*       item ) override;
-   virtual bool addNew     ( const Call* item ) override;
+   virtual bool addNew     ( Call*       item ) override;
    virtual bool addExisting( const Call* item ) override;
 
 private:
@@ -129,7 +129,7 @@ bool LocalHistoryEditor::regenFile(const Call* toIgnore)
 bool LocalHistoryEditor::save(const Call* call)
 {
    if (call->collection()->editor<Call>() != this)
-      return addNew(call);
+      return addNew(const_cast<Call*>(call));
 
    return regenFile(nullptr);
 }
@@ -149,7 +149,7 @@ bool LocalHistoryEditor::edit( Call* item)
    return false;
 }
 
-bool LocalHistoryEditor::addNew(const Call* call)
+bool LocalHistoryEditor::addNew( Call* call)
 {
    QDir dir(QString('/'));
    dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + QString());

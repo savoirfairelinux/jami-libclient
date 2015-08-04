@@ -48,7 +48,7 @@ public:
    LocalMacroEditor(CollectionMediator<Macro>* m) : CollectionEditor<Macro>(m),m_Tracked(false) {}
    virtual bool save       ( const Macro* item ) override;
    virtual bool remove     ( const Macro* item ) override;
-   virtual bool addNew     ( const Macro* item ) override;
+   virtual bool addNew     ( Macro*       item ) override;
    virtual bool addExisting( const Macro* item ) override;
 
    //Attributes
@@ -158,11 +158,11 @@ bool LocalMacroEditor::remove(const Macro* item)
    return false;
 }
 
-bool LocalMacroEditor::addNew(const Macro* macro)
+bool LocalMacroEditor::addNew( Macro* macro)
 {
    Serializable::MacroNode n;
 
-   n.macro = const_cast<Macro*>(macro);
+   n.macro = macro;
    m_Nodes << n;
 
    if (!save(macro))
