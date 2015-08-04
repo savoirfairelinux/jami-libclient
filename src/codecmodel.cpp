@@ -169,8 +169,7 @@ QVariant CodecModel::data(const QModelIndex& idx, int role) const
 ///Number of audio codecs
 int CodecModel::rowCount(const QModelIndex& par) const
 {
-   Q_UNUSED(par)
-   return d_ptr->m_lCodecs.size();
+   return par.isValid() ? 0 : d_ptr->m_lCodecs.size();
 }
 
 ///Model flags
