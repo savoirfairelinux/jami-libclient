@@ -959,6 +959,21 @@ QString Account::turnServer() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER);
 }
 
+QString Account::turnServerUsername() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
+}
+
+QString Account::turnServerPassword() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD);
+}
+
+QString Account::turnServerRealm() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
+}
+
 bool Account::hasProxy() const
 {
    return proxy().size();
@@ -1146,6 +1161,14 @@ QVariant Account::roleData(int role) const
          return lastTransportErrorMessage();
       case CAST(Account::Role::TurnServer               ):
          return turnServer();
+      case CAST(Account::Role::TurnServerEnabled        ):
+         return isTurnEnabled();
+      case CAST(Account::Role::TurnServerUsername       ):
+         return turnServerUsername();
+      case CAST(Account::Role::TurnServerPassword       ):
+         return turnServerPassword();
+      case CAST(Account::Role::TurnServerRealm          ):
+         return turnServerRealm();
       case CAST(Account::Role::HasProxy                 ):
          return hasProxy();
       case CAST(Account::Role::DisplayName              ):
@@ -1785,6 +1808,21 @@ void Account::setTurnEnabled(bool value)
 void Account::setTurnServer(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER, value);
+}
+
+void Account::setTurnServerUsername(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME, value);
+}
+
+void Account::setTurnServerPassword(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_PWD, value);
+}
+
+void Account::setTurnServerRealm(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM, value);
 }
 
 void Account::setDisplayName(const QString& value)

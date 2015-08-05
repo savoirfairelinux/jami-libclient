@@ -274,6 +274,10 @@ class LIB_EXPORT Account : public ItemBase {
          LastTransportErrorCode      = 163,
          LastTransportErrorMessage   = 164,
          TurnServer                  = 168,
+         TurnServerEnabled           = 194,
+         TurnServerUsername          = 195,
+         TurnServerPassword          = 196,
+         TurnServerRealm             = 197,
          HasProxy                    = 170,
          DisplayName                 = 171,
          SrtpEnabled                 = 172,
@@ -298,7 +302,7 @@ class LIB_EXPORT Account : public ItemBase {
          HasActiveCallLimit          = 191,
          SecurityLevel               = 192,
          SecurityLevelIcon           = 193,
-      };
+      }; //current last number = 197
 
       ///@enum RoleState Whether a role can be used in a certain context
       enum class RoleState {
@@ -415,6 +419,9 @@ class LIB_EXPORT Account : public ItemBase {
       bool    useDefaultPort               () const;
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
+      QString turnServerUsername           () const;
+      QString turnServerPassword           () const;
+      QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
       RegistrationState  registrationState () const;
@@ -458,7 +465,11 @@ class LIB_EXPORT Account : public ItemBase {
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
+      void setTurnEnabled                   (bool value );
       void setTurnServer                    (const QString& value   );
+      void setTurnServerUsername            (const QString& value   );
+      void setTurnServerPassword            (const QString& value   );
+      void setTurnServerRealm               (const QString& value   );
       void setDisplayName                   (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
@@ -492,7 +503,6 @@ class LIB_EXPORT Account : public ItemBase {
       void setUpnpEnabled                   (bool enable);
       void setHasCustomUserAgent            (bool enable);
       void setUseDefaultPort                (bool value );
-      void setTurnEnabled                   (bool value );
       void setAllowIncomingFromHistory      (bool value );
       void setAllowIncomingFromContact      (bool value );
       void setAllowIncomingFromUnknown      (bool value );
