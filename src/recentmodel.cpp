@@ -1,6 +1,8 @@
 /************************************************************************************
  *   Copyright (C) 2015 by Savoir-faire Linux                                       *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>         *
+ *   Authors : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>        *
+ *             Edric Milaret edric edric.ladent-milaret@savoirfairelinux.com        *
+ *             Alexandre Lision <alexandre.lision@savoirfairelinux.com>             *
  *                                                                                  *
  *   This library is free software; you can redistribute it and/or                  *
  *   modify it under the terms of the GNU Lesser General Public                     *
@@ -20,6 +22,8 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QIdentityProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring
 #include <call.h>
@@ -74,8 +78,37 @@ struct RecentViewNode
     inline time_t lastUsed() const;
 };
 
+class PeopleProxy : public QSortFilterProxyModel
+{
+   Q_OBJECT
+public:
+
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    {
+        return !sourceModel()->index(source_row,0,source_parent).parent().isValid();
+    }
+
+};
+
+class PersonProxy : public QIdentityProxyModel
+{
+   Q_OBJECT
+public:
+   PersonProxy(const QModelIndex& root) : QIdentityProxyModel(RecentModel::instance()),
+   m_pRoot(static_cast<RecentViewNode*>(root.internalPointer()))
+   {}
+
+   //Model implementation
+   virtual QModelIndex parent( const QModelIndex& index                                    ) const override;
+   virtual QModelIndex index ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+
+private:
+   RecentViewNode* m_pRoot;
+};
+
 class RecentModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
     RecentModelPrivate(RecentModel* p);
 
@@ -90,9 +123,10 @@ public:
     QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
     static RecentModel*                   m_spInstance       ;
 
-    //Helper
-    void insertNode(RecentViewNode* n, time_t t, bool isNew);
-    void removeNode(RecentViewNode* n                      );
+   //Helper
+   void insertNode(RecentViewNode* n, time_t t, bool isNew);
+   void removeNode(RecentViewNode* n                      );
+   QModelIndex createIndex(RecentViewNode* n);
 
 private:
     RecentModel* q_ptr;
@@ -462,3 +496,52 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     n->m_lChildren.append(callNode);
     q_ptr->endInsertRows();
 }
+
+QModelIndex RecentModelPrivate::createIndex(RecentViewNode* n)
+{
+   return q_ptr->createIndex(n->m_Index, 0, n);
+}
+
+///Filter out every data relevant to a person
+QAbstractItemModel* RecentModel::peopleProxy() const
+{
+   static PeopleProxy* p = nullptr;
+   if (!p) {
+      p = new PeopleProxy();
+      p->setSourceModel(const_cast<RecentModel*>(this));
+   }
+
+   return p;
+}
+
+///Keep only data relevant to a person
+QAbstractItemModel* RecentModel::personProxy(const QModelIndex& idx) const
+{
+   PersonProxy* p = new PersonProxy(idx);
+   p->setSourceModel(const_cast<RecentModel*>(this));
+
+   //TODO re-use the same model when called twice with the same person
+   return p;
+}
+
+QModelIndex PersonProxy::parent(const QModelIndex& index) const
+{
+   if (!index.isValid() || static_cast<RecentViewNode*>(mapToSource(index).internalPointer()) == m_pRoot)
+      return QModelIndex();
+
+   return QIdentityProxyModel::parent(index);
+}
+
+QModelIndex PersonProxy::index( int row, int column, const QModelIndex& parent) const
+{
+   //Assume parent == m_pRoot
+   if ((!parent.isValid()) && row >= 0 && row < m_pRoot->m_lChildren.size()) {
+      QModelIndex srcIdx = RecentModel::instance()->d_ptr->createIndex(m_pRoot->m_lChildren[row]);
+      QModelIndex idx = mapFromSource(srcIdx);
+      return idx;
+   }
+
+   return QIdentityProxyModel::index(row,column,parent);
+}
+
+#include <recentmodel.moc>
