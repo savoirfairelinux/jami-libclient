@@ -20,6 +20,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QIdentityProxyModel>
 
 //Ring
 #include <call.h>
@@ -74,8 +75,35 @@ struct RecentViewNode
     inline time_t lastUsed() const;
 };
 
+class PeopleProxy : public QIdentityProxyModel
+{
+   Q_OBJECT
+public:
+
+   //Model implementation
+   virtual int rowCount( const QModelIndex& parent = QModelIndex()) const override;
+   virtual QModelIndex index ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+};
+
+class PersonProxy : public QIdentityProxyModel
+{
+   Q_OBJECT
+public:
+   PersonProxy(const QModelIndex& root) : QIdentityProxyModel(RecentModel::instance()),
+   m_pRoot(static_cast<RecentViewNode*>(root.internalPointer()))
+   {}
+
+   //Model implementation
+   virtual QModelIndex parent( const QModelIndex& index                                    ) const override;
+   virtual QModelIndex index ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+
+private:
+   RecentViewNode* m_pRoot;
+};
+
 class RecentModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
     RecentModelPrivate(RecentModel* p);
 
@@ -90,9 +118,10 @@ public:
     QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
     static RecentModel*                   m_spInstance       ;
 
-    //Helper
-    void insertNode(RecentViewNode* n, time_t t, bool isNew);
-    void removeNode(RecentViewNode* n                      );
+   //Helper
+   void insertNode(RecentViewNode* n, time_t t, bool isNew);
+   void removeNode(RecentViewNode* n                      );
+   QModelIndex createIndex(RecentViewNode* n);
 
 private:
     RecentModel* q_ptr;
@@ -102,6 +131,7 @@ public Q_SLOTS:
     void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
     void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
     void slotCallAdded          (Call* call       , Call* parent          );
+    void slotCallStateChanged   (Call* call       , Call::State previousState);
 };
 
 RecentModel* RecentModelPrivate::m_spInstance = nullptr;
@@ -116,6 +146,8 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
     connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
     connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
     connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
+    connect(CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
+
 
     //Fill the contacts
     for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
@@ -198,11 +230,29 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
         return false;
 
     RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+    qDebug() << "SIZE:" << node->m_lChildren.size();
     for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
         if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL)
             return  !(node->m_lChildren.at(i)->m_uContent.m_pCall->isHistory());
     }
     return false;
+}
+
+Call* RecentModel::getActiveCall(const QModelIndex &idx)
+{
+    if (not idx.isValid())
+        return nullptr;
+
+    RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+    qDebug() << "SIZE:" << node->m_lChildren.size();
+    for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
+        if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
+            // if last interaction is of type call and is not in history it is an ongoing call
+            auto call = node->m_lChildren.at(i)->m_uContent.m_pCall;
+            return  call->isHistory()?nullptr:call;
+        }
+    }
+    return nullptr;
 }
 
 QHash<int,QByteArray> RecentModel::roleNames() const
@@ -401,8 +451,11 @@ void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
         m_hPersonsToNodes[p]    = n                           ;
         Q_FOREACH(auto cm, p->phoneNumbers()) {
             RecentViewNode* cmNode = m_hCMsToNodes[cm];
-            if (cmNode)
+            if (cmNode) {
+                q_ptr->beginInsertRows(q_ptr->index(cmNode->m_Index,0), cmNode->m_lChildren.size(), cmNode->m_lChildren.size());
                 n->m_lChildren.append(cmNode->m_lChildren);
+                q_ptr->endInsertRows();
+            }
         }
     }
     insertNode(n, t, isNew);
@@ -439,11 +492,29 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
         removeNode(n);
 }
 
+void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
+{
+    qDebug() << call->peerContactMethod();
+    RecentViewNode* n;
+    if (auto p = call->peerContactMethod()->contact()) {
+        n = m_hPersonsToNodes[p];
+    } else {
+        n = m_hCMsToNodes[call->peerContactMethod()];
+    }
+    if (!n)
+        return;
+
+
+    emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+}
+
 void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
 {
     Q_UNUSED(parent)
 
     RecentViewNode* n = nullptr;
+
+    qDebug() << call->peerContactMethod();
 
     if (auto p = call->peerContactMethod()->contact()) {
         n = m_hPersonsToNodes[p];
@@ -462,3 +533,86 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     n->m_lChildren.append(callNode);
     q_ptr->endInsertRows();
 }
+
+QModelIndex RecentModelPrivate::createIndex(RecentViewNode* n)
+{
+   return q_ptr->createIndex(n->m_Index, 0, n);
+}
+
+///Filter out every data relevant to a person
+QIdentityProxyModel* RecentModel::peopleProxy() const
+{
+   static PeopleProxy* p = nullptr;
+   if (!p) {
+      p = new PeopleProxy();
+      p->setSourceModel(const_cast<RecentModel*>(this));
+   }
+
+   return p;
+}
+
+///Keep only data relevant to a person
+QIdentityProxyModel* RecentModel::personProxy(const QModelIndex& idx) const
+{
+   PersonProxy* p = new PersonProxy(idx);
+   p->setSourceModel(const_cast<RecentModel*>(this));
+
+   //TODO re-use the same model when called twice with the same person
+   return p;
+}
+
+
+int PeopleProxy::rowCount( const QModelIndex& parent) const
+{
+   if ((!parent.isValid()))
+      return QIdentityProxyModel::rowCount(parent);
+
+   RecentViewNode::Type t = static_cast<RecentViewNode*>(parent.internalPointer())->m_Type;
+
+   switch(t) {
+      case RecentViewNode::Type::CALL              : //N/A
+      case RecentViewNode::Type::CALL_GROUP        : //N/A
+      case RecentViewNode::Type::TEXT_MESSAGE      : //N/A
+      case RecentViewNode::Type::TEXT_MESSAGE_GROUP: //N/A
+      case RecentViewNode::Type::CONTACT_METHOD    : //Show
+         return 0; //Change the items above to create different filters
+         //This could be exposed in the API with a matrix
+      case RecentViewNode::Type::PERSON            : //Show + children
+         //TODO
+         break;
+   }
+
+   return QIdentityProxyModel::rowCount(parent);
+}
+
+QModelIndex PersonProxy::parent(const QModelIndex& index) const
+{
+   if (!index.isValid() || static_cast<RecentViewNode*>(mapToSource(index).internalPointer()) == m_pRoot)
+      return QModelIndex();
+
+   return QIdentityProxyModel::parent(index);
+}
+
+QModelIndex PersonProxy::index( int row, int column, const QModelIndex& parent) const
+{
+   //Assume parent == m_pRoot
+   if ((!parent.isValid()) && row >= 0 && row < m_pRoot->m_lChildren.size()) {
+      QModelIndex srcIdx = RecentModel::instance()->d_ptr->createIndex(m_pRoot->m_lChildren[row]);
+      QModelIndex idx = mapFromSource(srcIdx);
+      return idx;
+   }
+
+   return QIdentityProxyModel::index(row,column,parent);
+}
+
+QModelIndex PeopleProxy::index ( int row, int column, const QModelIndex& parent) const
+{
+    if(parent.isValid())
+        return QModelIndex();
+
+    QModelIndex srcIdx = RecentModel::instance()->d_ptr->createIndex(RecentModel::instance()->d_ptr->m_lTopLevelReverted[RecentModel::instance()->d_ptr->m_lTopLevelReverted.size() - 1 - row]);
+    QModelIndex idx = mapFromSource(srcIdx);
+    return idx;
+}
+
+#include <recentmodel.moc>
