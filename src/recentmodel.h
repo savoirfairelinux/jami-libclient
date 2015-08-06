@@ -23,12 +23,15 @@
 
 #include <typedefs.h>
 
+class QIdentityProxyModel;
 class RecentModelPrivate;
 class Call;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
    Q_OBJECT
+   friend class PersonProxy;
+   friend class PeopleProxy;
 public:
 
    //Model implementation
@@ -42,10 +45,15 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Proxies
+   QIdentityProxyModel* peopleProxy() const;
+   QIdentityProxyModel* personProxy(const QModelIndex& idx) const;
+
+   //Singleton
    static RecentModel* instance();
 
    bool hasActiveCall(const QModelIndex& parent);
-   Call* getActiveCall(const QModelIndex& parent);
+   Call* getActiveCall(const QModelIndex &idx);
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
