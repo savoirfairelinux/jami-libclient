@@ -305,14 +305,14 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
       q_ptr->endRemoveRows();
    }
 
-   for(auto cm : m_hSipIaxTemporaryNumbers) {
-      if (cm)
-         cm->setUri(m_Prefix);
-   }
-
    if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
       for(TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
          cm->setUri(m_Prefix);
+      }
+   } else {
+      for(auto cm : m_hSipIaxTemporaryNumbers) {
+         if (cm)
+            cm->setUri(m_Prefix);
       }
    }
 }
@@ -346,22 +346,21 @@ void NumberCompletionModelPrivate::updateModel()
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
-      for (auto cm : m_hSipIaxTemporaryNumbers) {
-         if (!cm) continue;
-         const int weight = getWeight(cm->account());
-         if (weight) {
-            q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
-            m_hNumbers.insert(weight,cm);
-            q_ptr->endInsertRows();
-         }
-      }
-
       if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
          for (TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
             const int weight = getWeight(cm->account());
             if (weight) {
                q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
                m_hNumbers.insert(weight,cm);
+               q_ptr->endInsertRows();
+            }
+         }
+      } else {
+         for (auto cm : m_hSipIaxTemporaryNumbers) {
+            if (!cm) continue;
+            if (auto weight = getWeight(cm->account())) {
+               q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+               m_hNumbers.insert(weight, cm);
                q_ptr->endInsertRows();
             }
          }
