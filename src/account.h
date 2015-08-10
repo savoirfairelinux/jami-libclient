@@ -172,6 +172,11 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
    Q_PROPERTY(QAbstractItemModel*      allowedCertificatesModel    READ allowedCertificatesModel                                  )
 
+   Q_PROPERTY(QString turnServer                        READ turnServer                     WRITE setTurnServer                   )
+   Q_PROPERTY(QString turnServerUsername                READ turnServerUsername             WRITE setTurnServerUsername           )
+   Q_PROPERTY(QString turnServerPassword                READ turnServerPassword             WRITE setTurnServerPassword           )
+   Q_PROPERTY(QString turnServerRealm                   READ turnServerRealm                WRITE setTurnServerRealm              )
+
    public:
 
       ///@enum EditState: Manage how and when an account can be reloaded or change state

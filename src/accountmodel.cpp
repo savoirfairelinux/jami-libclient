@@ -196,6 +196,10 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::HasActiveCallLimit          ) ,QByteArray("hasActiveCallLimit"            ));
       roles.insert(CAST(Account::Role::SecurityLevel               ) ,QByteArray("securityLevel"                 ));
       roles.insert(CAST(Account::Role::SecurityLevelIcon           ) ,QByteArray("securityLevelIcon"             ));
+      roles.insert(CAST(Account::Role::TurnServerUsername          ) ,QByteArray("turnServerUsername"            ));
+      roles.insert(CAST(Account::Role::TurnServerPassword          ) ,QByteArray("turnServerPassword"            ));
+      roles.insert(CAST(Account::Role::TurnServerRealm             ) ,QByteArray("turnServerRealm"               ));
+
    }
    return roles;
 }

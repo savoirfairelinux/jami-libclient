@@ -2078,6 +2078,15 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::SecurityLevel):
       case CAST(Account::Role::SecurityLevelIcon):
          break;
+      case CAST(Account::Role::TurnServerPassword):
+       setTurnServerPassword(value.toString());
+       break;
+      case CAST(Account::Role::TurnServerRealm):
+       setTurnServerRealm(value.toString());
+       break;
+      case CAST(Account::Role::TurnServerUsername):
+       setTurnServerUsername(value.toString());
+       break;
    }
 }
 #undef CAST
