@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a4e6583_059ef256",
+        "filename": "src/certificate.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-11T14:11:30Z",
+      "side": 1,
+      "message": "Two spaces now? :-p",
+      "revId": "031c84e661436ac76a2a438146a02e64b83da4eb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a4e6583_e5a2b699",
+        "filename": "src/certificate.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-11T14:11:30Z",
+      "side": 1,
+      "message": "Two spaces now?",
+      "range": {
+        "startLine": 648,
+        "startChar": 1,
+        "endLine": 648,
+        "endChar": 3
+      },
+      "revId": "031c84e661436ac76a2a438146a02e64b83da4eb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a4e6583_c59fba4f",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-11T14:11:30Z",
+      "side": 1,
+      "message": "indent issue",
+      "range": {
+        "startLine": 723,
+        "startChar": 0,
+        "endLine": 726,
+        "endChar": 3
+      },
+      "revId": "031c84e661436ac76a2a438146a02e64b83da4eb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
