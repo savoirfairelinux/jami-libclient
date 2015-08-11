@@ -1127,10 +1127,6 @@ QVariant Account::roleData(int role) const
          return trimesterCallCount();
       case CAST(Account::Role::LastUsed):
          return (int)lastUsed();
-      case CAST(Account::Role::SipTurnServer):
-         return turnServer();
-      case CAST(Account::Role::SipTurnEnabled):
-         return isTurnEnabled();
       case CAST(Account::Role::UserAgent):
          return userAgent();
       case CAST(Account::Role::Password):
@@ -2026,9 +2022,6 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::LastTransportErrorCode   ):
          break;
       case CAST(Account::Role::LastTransportErrorMessage):
-         break;
-      case CAST(Account::Role::SipTurnEnabled           ):
-         setTurnEnabled(value.toBool());
          break;
       case CAST(Account::Role::TurnServer               ):
          setTurnServer(value.toString());

@@ -153,8 +153,6 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::WeekCallCount               ) ,QByteArray("weekCallCount"                 ));
       roles.insert(CAST(Account::Role::TrimesterCallCount          ) ,QByteArray("trimesterCallCount"            ));
       roles.insert(CAST(Account::Role::LastUsed                    ) ,QByteArray("lastUsed"                      ));
-      roles.insert(CAST(Account::Role::SipTurnServer               ) ,QByteArray("sipTurnServer"                 ));
-      roles.insert(CAST(Account::Role::SipTurnEnabled              ) ,QByteArray("turnEnabled"                   ));
       roles.insert(CAST(Account::Role::UserAgent                   ) ,QByteArray("userAgent"                     ));
       roles.insert(CAST(Account::Role::Password                    ) ,QByteArray("password"                      ));
       roles.insert(CAST(Account::Role::SupportPresencePublish      ) ,QByteArray("supportPresencePublish"        ));
