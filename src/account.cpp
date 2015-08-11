@@ -1127,8 +1127,6 @@ QVariant Account::roleData(int role) const
          return trimesterCallCount();
       case CAST(Account::Role::LastUsed):
          return (int)lastUsed();
-      case CAST(Account::Role::SipTurnServer):
-         return turnServer();
       case CAST(Account::Role::SipTurnEnabled):
          return isTurnEnabled();
       case CAST(Account::Role::UserAgent):
