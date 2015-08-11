@@ -262,8 +262,6 @@ class LIB_EXPORT Account : public ItemBase {
          WeekCallCount               = 148,
          TrimesterCallCount          = 149,
          LastUsed                    = 150,
-         SipTurnServer               = 151,
-         SipTurnEnabled              = 152,
          UserAgent                   = 153,
          Password                    = 154,
          SupportPresencePublish      = 155,
