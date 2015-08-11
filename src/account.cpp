@@ -266,6 +266,7 @@ const QString Account::toHumanStateName() const
 {
    const QString s = d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::Registration::STATUS];
 
+   static const QString ready                  = tr("Ready"                    );
    static const QString registered             = tr("Registered"               );
    static const QString notRegistered          = tr("Not Registered"           );
    static const QString trying                 = tr("Trying..."                );
@@ -280,6 +281,8 @@ const QString Account::toHumanStateName() const
    static const QString invalid                = tr("Invalid"                  );
    static const QString requestTimeout         = tr("Request Timeout"          );
 
+   if(s == DRing::Account::States::READY            )
+      return ready                  ;
    if(s == DRing::Account::States::REGISTERED       )
       return registered             ;
    if(s == DRing::Account::States::UNREGISTERED     )
