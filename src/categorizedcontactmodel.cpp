@@ -172,12 +172,13 @@ void ContactTreeNode::slotChanged()
 
    ContactTreeNode *n = static_cast<ContactTreeNode*>(self.internalPointer());
    if (n->m_Type == ContactTreeNode::NodeType::PERSON)
-      n->m_Visible = n->m_pContact && n->m_pContact->isActive();
-   emit m_pModel->dataChanged(self,self);
+      n->setVisible(n->m_pContact->isActive() && ((!m_pModel->areUnreachableHidden()) || n->m_pContact->isReachable()));
+   else
+      emit m_pModel->dataChanged(self,self);
 
-   const QModelIndex& tl = m_pModel->index(0,0,self);
-   const QModelIndex& br = m_pModel->index(0,m_pModel->rowCount(self),self);
-   emit m_pModel->dataChanged(tl, br);
+   // const QModelIndex& tl = m_pModel->index(0,0,self);
+   // const QModelIndex& br = m_pModel->index(m_pModel->rowCount(self),0,self);
+   // emit m_pModel->dataChanged(tl, br);
 }
 
 void ContactTreeNode::slotContactMethodsChanged()
@@ -231,11 +232,17 @@ void ContactTreeNode::setParent(ContactTreeNode* p)
 void ContactTreeNode::setVisible(bool v)
 {
    if (v != m_Visible) {
+      m_Visible = v;
       if (m_pParent) {
          m_pParent->m_VisibleCounter += v ? 1 : -1;
-         m_pParent->m_Visible = m_pParent->m_VisibleCounter > 0;
+         if (m_pParent->m_Visible != (m_pParent->m_VisibleCounter > 0)) {
+            m_pParent->m_Visible = m_pParent->m_VisibleCounter > 0;
+            const QModelIndex idx = m_pModel->index(m_pParent->m_Index,0,m_pParent->m_pParent ?
+               m_pModel->index(m_pParent->m_pParent->m_Index,0) : QModelIndex()
+            );
+            emit m_pModel->dataChanged(idx,idx);
+         }
       }
-      m_Visible = v;
       const QModelIndex idx = m_pModel->index(m_Index,0,m_pParent ?
          m_pModel->index(m_pParent->m_Index,0) : QModelIndex()
       );
