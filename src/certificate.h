@@ -22,7 +22,6 @@
 #include "itembase.h"
 
 //Qt
-#include <QUrl>
 class QAbstractItemModel;
 
 class CertificatePrivate;
@@ -67,7 +66,8 @@ public:
    Q_PROPERTY(bool        isActivated                         READ isActivated                         )
    Q_PROPERTY(bool        hasRemote                           READ hasRemote                           )
    Q_PROPERTY(QByteArray  remoteId                            READ remoteId                            )
-   Q_PROPERTY(QUrl        path                                READ path              WRITE setPath     )
+   Q_PROPERTY(QString     path                                READ path              WRITE setPath     )
+   Q_PROPERTY(QString     privateKeyPath                      READ privateKeyPath    WRITE setPrivateKeyPath)
 
    Q_PROPERTY(QDateTime  expirationDate                       READ expirationDate           )
    Q_PROPERTY(QDateTime  activationDate                       READ activationDate           )
@@ -222,8 +222,8 @@ public:
    Q_ENUMS(Status)
 
    //Getter
-   QUrl path                            (                             ) const;
-   QUrl privateKeyPath                  (                             ) const;
+   QString path                         (                             ) const;
+   QString privateKeyPath               (                             ) const;
    Certificate::Type type               (                             ) const;
    Certificate::CheckValues checkResult ( Certificate::Checks check   ) const;
    QVariant detailResult                ( Certificate::Details detail ) const;
@@ -270,6 +270,8 @@ public:
    QDateTime  expirationDate                       () const;
    QDateTime  activationDate                       () const;
    bool       requirePrivateKeyPassword            () const;
+   QString    privateKeyPassword                   () const;
+
    bool       requirePrivateKey                    () const;
    QByteArray publicSignature                      () const;
    int        versionNumber                        () const;
@@ -288,9 +290,10 @@ public:
    QString    outgoingServer                       () const;
 
    //Setter
-   void setPath(const QUrl& path);
+   void setPath(const QString& path);
    bool setStatus(const Account* a, Status s);
-   void setPrivateKeyPath(const QUrl& path);
+   void setPrivateKeyPath(const QString& path);
+   void setPrivateKeyPassword(const QString& pass);
    void setRequirePrivateKey(bool value);
    void setRequireStrictPermission(bool value);
    void addOrigin(const FlagPack<OriginHint>& hints);
@@ -301,7 +304,7 @@ public:
    Q_INVOKABLE bool moveToDotCert () const;
 
 private:
-   explicit Certificate(const QUrl& path, Type type = Type::NONE, const QUrl& privateKey = QUrl());
+   explicit Certificate(const QString& path, Type type, const QString& privateKey = QString());
    Certificate(const QString& id);
    Certificate(const QByteArray& content, Type type = Type::CALL);
    virtual ~Certificate();

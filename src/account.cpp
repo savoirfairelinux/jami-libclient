@@ -93,7 +93,7 @@ static uint p_sAutoIncrementId = 0;
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
-m_pCaCert(nullptr),m_pTlsCert(nullptr),m_pPrivateKey(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
+m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
@@ -217,16 +217,16 @@ void AccountPrivate::slotUpdateCertificate()
    if (cert) {
       switch (cert->type()) {
          case Certificate::Type::AUTHORITY:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE) != cert->path().toLocalFile())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert->path().toLocalFile());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE) != cert->path())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert->path());
             break;
          case Certificate::Type::USER:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE) != cert->path().toLocalFile())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert->path().toLocalFile());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE) != cert->path())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert->path());
             break;
          case Certificate::Type::PRIVATE_KEY:
-            if (accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE) != cert->path().toLocalFile())
-               setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path().toLocalFile());
+            if (accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE) != cert->path())
+               setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert->path());
             break;
          case Certificate::Type::NONE:
          case Certificate::Type::CALL:
@@ -740,16 +740,9 @@ Certificate* Account::tlsCertificate() const
 }
 
 ///Return the account private key
-Certificate* Account::tlsPrivateKeyCertificate() const
+QString Account::tlsPrivateKey() const
 {
-   if (!d_ptr->m_pPrivateKey) {
-      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE);
-      if (path.isEmpty())
-         return nullptr;
-      d_ptr->m_pPrivateKey = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::PRIVATE_KEY);
-      connect(d_ptr->m_pPrivateKey,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
-   }
-   return d_ptr->m_pPrivateKey;
+   return tlsCertificate() ? tlsCertificate()->privateKeyPath() : QString();
 }
 
 ///Return the account TLS server name
@@ -1052,11 +1045,11 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::TlsPassword):
          return tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return tlsCaListCertificate()?tlsCaListCertificate()->path().toLocalFile():QVariant();
+         return tlsCaListCertificate()?tlsCaListCertificate()->path():QVariant();
       case CAST(Account::Role::TlsCertificate):
-         return tlsCertificate()?tlsCertificate()->path().toLocalFile():QVariant();
-      case CAST(Account::Role::TlsPrivateKeyCertificate):
-         return tlsPrivateKeyCertificate()?tlsPrivateKeyCertificate()->path().toLocalFile():QVariant();
+         return tlsCertificate()?tlsCertificate()->path():QVariant();
+      case CAST(Account::Role::TlsPrivateKey):
+        return tlsPrivateKey();
       case CAST(Account::Role::TlsServerName):
          return tlsServerName();
       case CAST(Account::Role::SipStunServer):
@@ -1441,6 +1434,7 @@ void Account::setPassword(const QString& detail)
 ///Set the TLS (encryption) password
 void Account::setTlsPassword(const QString& detail)
 {
+   tlsCertificate()->setPrivateKeyPassword(detail);
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
    d_ptr->regenSecurityValidation();
 }
@@ -1460,10 +1454,15 @@ void Account::setTlsCertificate(const QString& path)
 }
 
 ///Set the private key
-void Account::setTlsPrivateKeyCertificate(const QString& path)
+void Account::setTlsPrivateKey(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
-   setTlsPrivateKeyCertificate(cert);
+    auto cert = tlsCertificate();
+    if (!cert)
+        return;
+
+    cert->setPrivateKeyPath(path);
+    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?path:QString());
+    d_ptr->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
@@ -1478,7 +1477,7 @@ void Account::setTlsCaListCertificate(Certificate* cert)
    allowCertificate(cert);
 
    d_ptr->m_pCaCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path().toLocalFile():QString());
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path():QString());
    d_ptr->regenSecurityValidation();
 
    if (d_ptr->m_cTlsCaCert)
@@ -1499,42 +1498,8 @@ void Account::setTlsCertificate(Certificate* cert)
    cert->setRequirePrivateKey(true);
 
    d_ptr->m_pTlsCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path().toLocalFile():QString());
-
-   if (cert && d_ptr->m_pPrivateKey)
-      d_ptr->m_pTlsCert->setPrivateKeyPath(d_ptr->m_pPrivateKey->path());
-
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path():QString());
    d_ptr->regenSecurityValidation();
-
-   if (d_ptr->m_cTlsPrivateKeyCert)
-      disconnect(d_ptr->m_cTlsPrivateKeyCert);
-
-   if (cert) {
-      d_ptr->m_cTlsPrivateKeyCert = connect(cert, &Certificate::changed,[this]() {
-         d_ptr->regenSecurityValidation();
-      });
-   }
-}
-
-///Set the private key
-void Account::setTlsPrivateKeyCertificate(Certificate* cert)
-{
-   d_ptr->m_pPrivateKey = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?cert->path().toLocalFile():QString());
-
-   if (d_ptr->m_pTlsCert)
-      d_ptr->m_pTlsCert->setPrivateKeyPath(cert->path());
-
-   d_ptr->regenSecurityValidation();
-
-   if (d_ptr->m_cTlsCert)
-      disconnect(d_ptr->m_cTlsCert);
-
-   if (cert) {
-      d_ptr->m_cTlsCert = connect(cert, &Certificate::changed,[this]() {
-         d_ptr->regenSecurityValidation();
-      });
-   }
 }
 
 ///Set the TLS server
@@ -1909,10 +1874,6 @@ void Account::setRoleData(int role, const QVariant& value)
          setTlsCertificate(value.toString());
       }
          break;
-      case CAST(Account::Role::TlsPrivateKeyCertificate): {
-         setTlsPrivateKeyCertificate(value.toString());
-      }
-         break;
       case CAST(Account::Role::TlsServerName):
          setTlsServerName(value.toString());
          break;
@@ -2174,7 +2135,6 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::Username                :
             case Account::Role::TlsCaListCertificate    :
             case Account::Role::TlsCertificate          :
-            case Account::Role::TlsPrivateKeyCertificate:
             case Account::Role::SrtpEnabled             :
             case Account::Role::TlsEnabled              :
                return Account::RoleState::READ_ONLY;
@@ -2395,7 +2355,7 @@ void AccountPrivate::reload()
             q_ptr->setTlsCertificate(cert);
 
          if (!key.isEmpty())
-            q_ptr->setTlsPrivateKeyCertificate(key);
+            q_ptr->setTlsPrivateKey(key);
 
          m_RemoteEnabledState = q_ptr->isEnabled();
       }

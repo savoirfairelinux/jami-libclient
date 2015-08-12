@@ -571,7 +571,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Check the certificate
    if (!cert_path.isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromPath(QUrl(cert_path),acc);
+      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromPath(cert_path,acc);
    }
 
    //Allow the certificate
