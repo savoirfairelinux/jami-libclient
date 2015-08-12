@@ -117,7 +117,6 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TlsPassword                 ) ,QByteArray("tlsPassword"                   ));
       roles.insert(CAST(Account::Role::TlsCaListCertificate        ) ,QByteArray("tlsCaListCertificate"          ));
       roles.insert(CAST(Account::Role::TlsCertificate              ) ,QByteArray("tlsCertificate"                ));
-      roles.insert(CAST(Account::Role::TlsPrivateKeyCertificate    ) ,QByteArray("tlsPrivateKeyCertificate"      ));
       roles.insert(CAST(Account::Role::TlsServerName               ) ,QByteArray("tlsServerName"                 ));
       roles.insert(CAST(Account::Role::SipStunServer               ) ,QByteArray("sipStunServer"                 ));
       roles.insert(CAST(Account::Role::PublishedAddress            ) ,QByteArray("publishedAddress"              ));
