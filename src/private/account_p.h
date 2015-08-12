@@ -139,7 +139,6 @@ public:
    Account::EditState           m_CurrentState            ;
    QMetaObject::Connection      m_cTlsCert                ;
    QMetaObject::Connection      m_cTlsCaCert              ;
-   QMetaObject::Connection      m_cTlsPrivateKeyCert      ;
    PendingTrustRequestModel*    m_pPendingTrustRequestModel;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
@@ -154,7 +153,6 @@ public:
    mutable int          m_VoiceMailCount;
    mutable Certificate* m_pCaCert;
    mutable Certificate* m_pTlsCert;
-   mutable Certificate* m_pPrivateKey;
 
 public Q_SLOTS:
       void slotPresentChanged        (bool  present  );
