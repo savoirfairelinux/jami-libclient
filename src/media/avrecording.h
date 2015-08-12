@@ -20,6 +20,8 @@
 
 #include <media/recording.h>
 
+#include <QtCore/QUrl>
+
 namespace Media {
 
 class AVRecordingPrivate;
