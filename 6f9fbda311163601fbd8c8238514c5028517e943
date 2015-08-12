@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a4b7175_844546b5",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1472,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-08-12T23:26:24Z",
+      "side": 1,
+      "message": "Watch out, .path() is used elsewhere. This is mostly the same, but not in all scenarios.",
+      "revId": "6f9fbda311163601fbd8c8238514c5028517e943",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
