@@ -461,8 +461,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setTlsCaListCertificate          (Certificate* cert      );
       void setTlsCertificate                (Certificate* cert      );
       void setTlsPrivateKeyCertificate      (Certificate* cert      );
-      void setTlsCaListCertificate          (const QString& detail  );
-      void setTlsCertificate                (const QString& detail  );
+      void setTlsCaListCertificate          (const QUrl& detail     );
+      void setTlsCertificate                (const QUrl& detail     );
       void setTlsPrivateKeyCertificate      (const QString& detail  );
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );

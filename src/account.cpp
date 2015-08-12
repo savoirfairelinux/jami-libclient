@@ -1442,18 +1442,19 @@ void Account::setPassword(const QString& detail)
 void Account::setTlsPassword(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
+   tlsCertificate()->setPrivateKeyPassword(detail);
    d_ptr->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
-void Account::setTlsCaListCertificate(const QString& path)
+void Account::setTlsCaListCertificate(const QUrl& path)
 {
    Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
    setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
-void Account::setTlsCertificate(const QString& path)
+void Account::setTlsCertificate(const QUrl& path)
 {
    Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
    setTlsCertificate(cert);
