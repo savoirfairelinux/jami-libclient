@@ -24,6 +24,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QUrl>
 
 //Ring
 #include "call.h"
@@ -103,7 +104,7 @@ void LocalHistoryEditor::saveCall(QTextStream& stream, const Call* call)
       );
    }
    if (call->certificate())
-      stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CERT_PATH).arg(call->certificate()->path().path());
+      stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CERT_PATH).arg(call->certificate()->path());
    stream << "\n";
    stream.flush();
 }

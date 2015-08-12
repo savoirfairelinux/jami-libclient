@@ -96,13 +96,14 @@ public:
    ~CertificatePrivate();
 
    //Attributes
-   QUrl                m_Path                    ;
+   QString             m_Path                    ;
    Certificate::Type   m_Type                    ;
    QByteArray          m_Content                 ;
    LoadingType         m_LoadingType             ;
    QByteArray          m_Id                      ;
    quint64             m_Statuses             [3];
-   QUrl                m_PrivateKey              ;
+   QString             m_PrivateKey              ;
+   QString             m_PrivateKeyPassword      ;
    bool                m_RequirePrivateKey       ;
    bool                m_RequireStrictPermissions;
    Certificate*        m_pSignedBy               ;
@@ -124,7 +125,7 @@ public:
    mutable ChecksCache*  m_pCheckCache  ;
 
    //Helpers
-   void loadDetails();
+   void loadDetails(bool reload = false);
    void loadChecks (bool loadChecks = false);
 
    static Matrix1D<Certificate::Checks ,QString> m_slChecksName;

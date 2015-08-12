@@ -24,6 +24,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QMutex>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QUrl>
 
 //Ring
 #include "certificate.h"
@@ -342,7 +343,7 @@ void BackgroundLoader::run()
 
       QMutexLocker(&this->m_LoaderMutex);
       for(const QByteArray& id : m_pCurrentFolder->listId()) {
-         Certificate* cert = CertificateModel::instance()->getCertificateFromPath(QUrl(id));
+         Certificate* cert = CertificateModel::instance()->getCertificateFromPath(id);
          m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
 
          if (m_pCurrentFolder->d_ptr->m_Flags & FolderCertificateCollection::Options::ROOT)
