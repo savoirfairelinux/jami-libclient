@@ -555,19 +555,19 @@ QVariant CertificateModel::headerData( int section, Qt::Orientation orientation,
  *
  * @note The path has to be a file, but can contain multiple certificates
  */
-Certificate* CertificateModel::getCertificateFromPath(const QUrl& path, Account* a)
+Certificate* CertificateModel::getCertificateFromPath(const QString& path, Account* a)
 {
    if (!a)
       return getCertificateFromPath(path,Certificate::Type::CALL);
 
    CertificateNode* cat  = d_ptr->getCategory(a);
 
-   Certificate* cert = d_ptr->m_hCertificates[path.path()];
+   Certificate* cert = d_ptr->m_hCertificates[path];
 
    if (!cert) {
-      cert = new Certificate(path);
+      cert = new Certificate(path, Certificate::Type::NONE);
       cert->setCollection(m_pFallbackDaemonCollection);
-      d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
+      d_ptr->m_hCertificates[path.toLatin1()] = cert;
 
       //Add it to the model
       d_ptr->addToTree(cert,a);
@@ -584,18 +584,17 @@ Certificate* CertificateModel::getCertificateFromPath(const QUrl& path, Account*
    return cert;
 }
 
-Certificate* CertificateModel::getCertificateFromPath(const QUrl& path, Certificate::Type type)
+Certificate* CertificateModel::getCertificateFromPath(const QString& path, Certificate::Type type)
 {
-   Q_UNUSED(type)
-   const QString id = path.path();
+   const QString id = path;
 
    Certificate* cert = d_ptr->m_hCertificates[id];
 
    //The certificate is not loaded yet
    if (!cert) {
-      cert = new Certificate(path);
+      cert = new Certificate(path, type);
       cert->setCollection(m_pFallbackDaemonCollection);
-      d_ptr->m_hCertificates[path.toString().toLatin1()] = cert;
+      d_ptr->m_hCertificates[path.toLatin1()] = cert;
 
       //Add it to the model
       d_ptr->addToTree(cert);
@@ -636,13 +635,13 @@ CertificateProxyModel::CertificateProxyModel(CertificateModel* parent, Certifica
    //For debugging
    switch (root->m_Level) {
       case CertificateModel::NodeType::CERTIFICATE     :
-         setObjectName(root->m_pCertificate->path().path());
+         setObjectName(root->m_pCertificate->path());
          break;
       case CertificateModel::NodeType::DETAILS_CATEGORY:
-         setObjectName(root->m_pParent->m_pCertificate->path().path());
+         setObjectName(root->m_pParent->m_pCertificate->path());
          break;
       case CertificateModel::NodeType::DETAILS         :
-         setObjectName(root->m_pParent->m_pParent->m_pCertificate->path().path());
+         setObjectName(root->m_pParent->m_pParent->m_pCertificate->path());
          break;
       case CertificateModel::NodeType::CATEGORY        :
          break;

@@ -102,7 +102,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
    Q_PROPERTY(Certificate*   tlsCaListCertificate         READ tlsCaListCertificate          WRITE setTlsCaListCertificate        )
    Q_PROPERTY(Certificate*   tlsCertificate               READ tlsCertificate                WRITE setTlsCertificate              )
-   Q_PROPERTY(Certificate*   tlsPrivateKeyCertificate     READ tlsPrivateKeyCertificate      WRITE setTlsPrivateKeyCertificate    )
+   Q_PROPERTY(QString        tlsPrivateKey                READ tlsPrivateKey                 WRITE setTlsPrivateKey               )
    Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
@@ -224,7 +224,7 @@ class LIB_EXPORT Account : public ItemBase {
          TlsPassword                 = 107,
          TlsCaListCertificate        = 108,
          TlsCertificate              = 109,
-         TlsPrivateKeyCertificate    = 110,
+         TlsPrivateKey               = 110,
          TlsServerName               = 112,
          SipStunServer               = 113,
          PublishedAddress            = 114,
@@ -390,7 +390,7 @@ class LIB_EXPORT Account : public ItemBase {
       int     bootstrapPort                () const;
       Certificate* tlsCaListCertificate    () const;
       Certificate* tlsCertificate          () const;
-      Certificate* tlsPrivateKeyCertificate() const;
+      QString tlsPrivateKey                () const;
       QString tlsServerName                () const;
       int     tlsNegotiationTimeoutSec     () const;
       bool    isTlsVerifyServer            () const;
@@ -460,10 +460,9 @@ class LIB_EXPORT Account : public ItemBase {
       void setTlsPassword                   (const QString& detail  );
       void setTlsCaListCertificate          (Certificate* cert      );
       void setTlsCertificate                (Certificate* cert      );
-      void setTlsPrivateKeyCertificate      (Certificate* cert      );
       void setTlsCaListCertificate          (const QString& detail  );
       void setTlsCertificate                (const QString& detail  );
-      void setTlsPrivateKeyCertificate      (const QString& detail  );
+      void setTlsPrivateKey                 (const QString& path    );
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );

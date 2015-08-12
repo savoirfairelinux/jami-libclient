@@ -160,7 +160,7 @@ DetailsCache::DetailsCache(const MapStringString& details)
 {
    m_ExpirationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::EXPIRATION_DATE ],"yyyy-mm-dd");
    m_ActivationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::ACTIVATION_DATE ],"yyyy-mm-dd");
-   m_RequirePrivateKeyPassword  = false;//TODO//details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD].toBool();
+   m_RequirePrivateKeyPassword  = details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD] == "PASSED";
    m_PublicSignature            = details[DRing::Certificate::DetailsNames::PUBLIC_SIGNATURE            ].toLatin1();
    m_VersionNumber              = details[DRing::Certificate::DetailsNames::VERSION_NUMBER              ].toInt();
    m_SerialNumber               = details[DRing::Certificate::DetailsNames::SERIAL_NUMBER               ].toLatin1();
@@ -203,14 +203,13 @@ ChecksCache::ChecksCache(const MapStringString& checks)
    m_NotActivated                        = CertificatePrivate::toBool(checks[DRing::Certificate::ChecksNames::NOT_ACTIVATED                    ]);
 }
 
-void CertificatePrivate::loadDetails()
+void CertificatePrivate::loadDetails(bool reload)
 {
-   if (!m_pDetailsCache) {
+   if (!m_pDetailsCache || reload) {
       MapStringString d;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-         //TODO: Implement private key pass
-            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path.toString(), m_PrivateKey.toString(), {});
+            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path, m_PrivateKey, m_PrivateKeyPassword);
             break;
          case LoadingType::FROM_ID:
             d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
@@ -226,8 +225,7 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-         //TODO: Implement private key pass
-            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), {}, {});
+            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path,m_PrivateKey, m_PrivateKeyPassword, {});
             break;
          case LoadingType::FROM_ID:
             checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id);
@@ -240,12 +238,12 @@ void CertificatePrivate::loadChecks(bool reload)
    }
 }
 
-Certificate::Certificate(const QUrl& path, Type type, const QUrl& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_PATH))
+Certificate::Certificate(const QString& path, Type type, const QString& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
    moveToThread(CertificateModel::instance()->thread());
    setParent(CertificateModel::instance());
-   d_ptr->m_Path = path.path();
+   d_ptr->m_Path = path;
    d_ptr->m_Type = type;
 }
 
@@ -456,8 +454,13 @@ bool Certificate::requirePrivateKeyPassword() const
    if (!d_ptr->m_RequirePrivateKey)
       return false;
 
-   d_ptr->loadDetails();
+   d_ptr->loadDetails(true);
    return d_ptr->m_pDetailsCache->m_RequirePrivateKeyPassword;
+}
+
+QString Certificate::privateKeyPassword() const
+{
+    return d_ptr->m_PrivateKeyPassword;
 }
 
 QByteArray Certificate::publicSignature() const
@@ -553,17 +556,17 @@ bool Certificate::isActivated() const {
    return d_ptr->m_pCheckCache->m_NotActivated == Certificate::CheckValues::PASSED;
 }
 
-void Certificate::setPath(const QUrl& path)
+void Certificate::setPath(const QString& path)
 {
    d_ptr->m_Path = path;
 }
 
-QUrl Certificate::path() const
+QString Certificate::path() const
 {
    return d_ptr->m_Path;
 }
 
-void Certificate::setPrivateKeyPath(const QUrl& path)
+void Certificate::setPrivateKeyPath(const QString& path)
 {
    d_ptr->m_PrivateKey = path;
    d_ptr->m_RequirePrivateKey = true;
@@ -573,7 +576,17 @@ void Certificate::setPrivateKeyPath(const QUrl& path)
       d_ptr->loadChecks(true);
 }
 
-QUrl Certificate::privateKeyPath() const
+void Certificate::setPrivateKeyPassword(const QString& pass)
+{
+    if(!d_ptr->m_pDetailsCache->m_RequirePrivateKeyPassword)
+        return;
+    d_ptr->m_PrivateKeyPassword = pass;
+
+    //Reload the checks with the new password
+    d_ptr->loadChecks(true);
+}
+
+QString Certificate::privateKeyPath() const
 {
    return d_ptr->m_PrivateKey;
 }
@@ -783,10 +796,10 @@ bool Certificate::fixPermissions() const
 
    bool ret = true;
 
-   QFile publicKey(d_ptr->m_Path.path());
+   QFile publicKey(d_ptr->m_Path);
 
    if (!publicKey.exists()) {
-      qWarning() << "The public key" << d_ptr->m_Path.path() << "doesn't exist";
+      qWarning() << "The public key" << d_ptr->m_Path << "doesn't exist";
       ret &= false;
    }
 
@@ -794,13 +807,13 @@ bool Certificate::fixPermissions() const
    ret &= publicperm;
 
    if (!publicperm)
-      qWarning() << "Setting the public key" << d_ptr->m_Path.path() << "permissions failed";
+      qWarning() << "Setting the public key" << d_ptr->m_Path << "permissions failed";
 
    if (!d_ptr->m_PrivateKey.isEmpty()) {
-      QFile privateKey(d_ptr->m_PrivateKey.path());
+      QFile privateKey(d_ptr->m_PrivateKey);
 
       if (!privateKey.exists()) {
-         qWarning() << "The private key" << d_ptr->m_PrivateKey.path() << "doesn't exist";
+         qWarning() << "The private key" << d_ptr->m_PrivateKey << "doesn't exist";
          ret &= false;
       }
 
@@ -808,7 +821,7 @@ bool Certificate::fixPermissions() const
       ret &= privperm;
 
       if (!privperm)
-         qWarning() << "Setting the private key" << d_ptr->m_PrivateKey.path() << "permissions failed";
+         qWarning() << "Setting the private key" << d_ptr->m_PrivateKey << "permissions failed";
    }
 
    d_ptr->loadChecks(true);
@@ -830,10 +843,10 @@ bool Certificate::moveToDotCert() const
 
    bool ret = true;
 
-   QFile publicKey(d_ptr->m_Path.path());
+   QFile publicKey(d_ptr->m_Path);
 
    if (!publicKey.exists()) {
-      qWarning() << "The public key" << d_ptr->m_Path.path() << "doesn't exist";
+      qWarning() << "The public key" << d_ptr->m_Path << "doesn't exist";
       ret &= false;
    }
 
@@ -853,10 +866,10 @@ bool Certificate::moveToDotCert() const
    );
 
    if (!d_ptr->m_PrivateKey.isEmpty()) {
-      QFile privateKey(d_ptr->m_PrivateKey.path());
+      QFile privateKey(d_ptr->m_PrivateKey);
 
       if (!privateKey.exists()) {
-         qWarning() << "The private key" << d_ptr->m_Path.path() << "doesn't exist";
+         qWarning() << "The private key" << d_ptr->m_Path << "doesn't exist";
          ret &= false;
       }
 
