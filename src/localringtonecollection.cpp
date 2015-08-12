@@ -26,6 +26,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QUrl>
 
 //Ring
 #include <collectioneditor.h>
@@ -271,4 +272,3 @@ void Serializable::RingtoneNode::write(QJsonObject& json)
 }
 
 #include <localringtonecollection.moc>
-
