@@ -103,6 +103,7 @@ public:
    QByteArray          m_Id                      ;
    quint64             m_Statuses             [3];
    QUrl                m_PrivateKey              ;
+   QString             m_PrivateKeyPassword      ;
    bool                m_RequirePrivateKey       ;
    bool                m_RequireStrictPermissions;
    Certificate*        m_pSignedBy               ;

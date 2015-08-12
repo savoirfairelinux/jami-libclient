@@ -267,6 +267,8 @@ public:
    QDateTime  expirationDate                       () const;
    QDateTime  activationDate                       () const;
    bool       requirePrivateKeyPassword            () const;
+   QString    privateKeyPassword                   () const;
+
    bool       requirePrivateKey                    () const;
    QByteArray publicSignature                      () const;
    int        versionNumber                        () const;
@@ -288,6 +290,7 @@ public:
    void setPath(const QUrl& path);
    bool setStatus(const Account* a, Status s);
    void setPrivateKeyPath(const QUrl& path);
+   void setPrivateKeyPassword(const QString& pass);
    void setRequirePrivateKey(bool value);
    void setRequireStrictPermission(bool value);
    void addOrigin(const FlagPack<OriginHint>& hints);

@@ -159,7 +159,7 @@ DetailsCache::DetailsCache(const MapStringString& details)
 {
    m_ExpirationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::EXPIRATION_DATE ],"yyyy-mm-dd");
    m_ActivationDate             = QDateTime::fromString( details[DRing::Certificate::DetailsNames::ACTIVATION_DATE ],"yyyy-mm-dd");
-   m_RequirePrivateKeyPassword  = false;//TODO//details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD].toBool();
+   m_RequirePrivateKeyPassword  = details[DRing::Certificate::DetailsNames::REQUIRE_PRIVATE_KEY_PASSWORD] == "PASSED";
    m_PublicSignature            = details[DRing::Certificate::DetailsNames::PUBLIC_SIGNATURE            ].toLatin1();
    m_VersionNumber              = details[DRing::Certificate::DetailsNames::VERSION_NUMBER              ].toInt();
    m_SerialNumber               = details[DRing::Certificate::DetailsNames::SERIAL_NUMBER               ].toLatin1();
@@ -208,8 +208,7 @@ void CertificatePrivate::loadDetails()
       MapStringString d;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-         //TODO: Implement private key pass
-            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path.toString(), m_PrivateKey.toString(), {});
+            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path.toString(), m_PrivateKey.toString(), m_PrivateKeyPassword);
             break;
          case LoadingType::FROM_ID:
             d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
@@ -225,8 +224,7 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-         //TODO: Implement private key pass
-            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), {}, {});
+            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path.toString(),m_PrivateKey.toString(), m_PrivateKeyPassword, {});
             break;
          case LoadingType::FROM_ID:
             checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id);
@@ -459,6 +457,11 @@ bool Certificate::requirePrivateKeyPassword() const
    return d_ptr->m_pDetailsCache->m_RequirePrivateKeyPassword;
 }
 
+QString Certificate::privateKeyPassword() const
+{
+    return d_ptr->m_PrivateKeyPassword;
+}
+
 QByteArray Certificate::publicSignature() const
 {
    d_ptr->loadDetails();
@@ -564,12 +567,22 @@ QUrl Certificate::path() const
 
 void Certificate::setPrivateKeyPath(const QUrl& path)
 {
-   d_ptr->m_PrivateKey = path;
+   d_ptr->m_PrivateKey = path.path();
    d_ptr->m_RequirePrivateKey = true;
 
    //Reload the checks if necessary
    if (d_ptr->m_pCheckCache)
       d_ptr->loadChecks(true);
+}
+
+void Certificate::setPrivateKeyPassword(const QString& pass)
+{
+    if(!d_ptr->m_pDetailsCache->m_RequirePrivateKeyPassword)
+        return;
+    d_ptr->m_PrivateKeyPassword = pass;
+
+    //Reload the checks with the new password
+    d_ptr->loadChecks(true);
 }
 
 QUrl Certificate::privateKeyPath() const
