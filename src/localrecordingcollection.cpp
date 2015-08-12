@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "localrecordingcollection.h"
 
+//Qt
+#include <QtCore/QUrl>
+
 #include <delegates/pixmapmanipulationdelegate.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>

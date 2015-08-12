@@ -23,8 +23,6 @@
 //Ring
 #include <callmodel.h>
 
-#include <QtCore/QUrl>
-
 namespace Media {
 
 class AVRecordingPrivate {
