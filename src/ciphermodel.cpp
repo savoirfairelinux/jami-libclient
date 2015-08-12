@@ -117,8 +117,7 @@ QVariant CipherModel::data( const QModelIndex& index, int role) const
 
 int CipherModel::rowCount( const QModelIndex& parent ) const
 {
-   Q_UNUSED(parent)
-   return d_ptr->m_slSupportedCiphers.size();
+   return !parent.isValid() ? d_ptr->m_slSupportedCiphers.size() : 0;
 }
 
 Qt::ItemFlags CipherModel::flags( const QModelIndex& index ) const
