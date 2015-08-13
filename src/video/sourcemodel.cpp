@@ -146,7 +146,8 @@ void Video::SourceModel::switchTo(const QModelIndex& idx)
 ///This model is designed for "live" switching rather than configuration
 void Video::SourceModel::switchTo(const int idx)
 {
-   switch (idx) {
+   auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
+   switch (newIdx) {
       case ExtendedDeviceList::NONE:
          DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
          break;
@@ -166,14 +167,16 @@ void Video::SourceModel::switchTo(const int idx)
       default:
          DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
             Video::DeviceModel::instance()->index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
+         Video::DeviceModel::instance()->setActive(idx-ExtendedDeviceList::COUNT__);
+         newIdx = -1;
          break;
    };
-   d_ptr->m_CurrentSelection = (ExtendedDeviceList) idx;
+   d_ptr->m_CurrentSelection = newIdx;
 }
 
 void Video::SourceModel::switchTo(Video::Device* device)
 {
-   DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA + device->id());
+   switchTo(getDeviceIndex(device));
 }
 
 Video::Device* Video::SourceModel::deviceAt(const QModelIndex& idx) const
@@ -208,4 +211,10 @@ void Video::SourceModel::setDisplay(int index, QRect rect)
    d_ptr->m_Display.index  = index ;
    d_ptr->m_Display.rect   = rect  ;
    switchTo(ExtendedDeviceList::SCREEN);
+}
+
+int Video::SourceModel::getDeviceIndex(Video::Device* device)
+{
+    int index = Video::DeviceModel::instance()->devices().indexOf(device);
+    return index > -1 ? ExtendedDeviceList::COUNT__ + index : -1;
 }
