@@ -48,6 +48,8 @@ public:
 
    int activeIndex() const;
 
+   int getDeviceIndex(Video::Device* device);
+
    //Singleton
    static Video::SourceModel* instance();
 private:
