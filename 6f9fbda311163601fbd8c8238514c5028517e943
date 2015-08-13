@@ -16,6 +16,24 @@
       "revId": "6f9fbda311163601fbd8c8238514c5028517e943",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a4b7175_249fb205",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1472,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-08-13T18:19:16Z",
+      "side": 1,
+      "message": ".toLocalFile() was returning nothing in my case. Any solution?\n\npath() returns m_Path (QUrl), that is constructed strangely (see Certificate:245):\n\nCertificate(const QUrl\u0026 path, Type type, const QUrl\u0026 privateKey) {\n...\nd_ptr-\u003em_Path \u003d path.path();\n...\n}\n\nSo should I remove the path.path() from here and try to make toLocalFile work?",
+      "parentUuid": "3a4b7175_844546b5",
+      "revId": "6f9fbda311163601fbd8c8238514c5028517e943",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
