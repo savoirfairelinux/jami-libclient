@@ -715,8 +715,12 @@ Call* CallModelPrivate::addConference(const QString& confID)
             removeInternal(callInt);
             callInt->m_pParent = aNewStruct;
             callInt->call_real->setProperty("dropState",0);
-            if (aNewStruct->m_lChildren.indexOf(callInt) == -1)
+            if (aNewStruct->m_lChildren.indexOf(callInt) == -1) {
+               auto parent = q_ptr->index(m_lInternalModel.indexOf(aNewStruct), 0, QModelIndex());
+               q_ptr->beginInsertRows(parent, aNewStruct->m_lChildren.size(), aNewStruct->m_lChildren.size());
                aNewStruct->m_lChildren << callInt;
+               q_ptr->endInsertRows();
+            }
          }
          else {
             qDebug() << "References to unknown call";
@@ -885,8 +889,8 @@ Qt::ItemFlags CallModel::flags( const QModelIndex& idx ) const
    const InternalStruct* modelItem = static_cast<InternalStruct*>(idx.internalPointer());
    if (modelItem ) {
       const Call* c = modelItem->call_real;
-      return Qt::ItemIsEnabled|Qt::ItemIsSelectable 
-         | Qt::ItemIsDragEnabled 
+      return Qt::ItemIsEnabled|Qt::ItemIsSelectable
+         | Qt::ItemIsDragEnabled
          | ((c->type() != Call::Type::CONFERENCE)?(Qt::ItemIsDropEnabled):Qt::ItemIsEnabled)
          | ((c->lifeCycleState() == Call::LifeCycleState::CREATION)?Qt::ItemIsEditable:Qt::NoItemFlags);
    }
@@ -1216,7 +1220,12 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
             q_ptr->endInsertRows();
          }
       }
+
+      auto confIdx = q_ptr->index(m_lInternalModel.indexOf(confInt),0,QModelIndex());
+      q_ptr->beginRemoveRows(confIdx,0,confInt->m_lChildren.size());
       confInt->m_lChildren.clear();
+      q_ptr->endRemoveRows();
+
       foreach(const QString& callId,participants) {
          InternalStruct* callInt = m_shDringId[callId];
          if (callInt) {
@@ -1224,7 +1233,9 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
                callInt->m_pParent->m_lChildren.removeAll(callInt);
             removeInternal(callInt);
             callInt->m_pParent = confInt;
+            q_ptr->beginInsertRows(confIdx, confInt->m_lChildren.size(), confInt->m_lChildren.size());
             confInt->m_lChildren << callInt;
+            q_ptr->endInsertRows();
          }
          else {
             qDebug() << "Participants not found";
@@ -1257,11 +1268,15 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
             else if (!confId.isEmpty()) {
                qWarning() << "Found an orphan call";
                InternalStruct* confInt2 = m_shDringId[confId];
-               if (confInt2 && confInt2->call_real->type() == Call::Type::CONFERENCE 
+               if (confInt2 && confInt2->call_real->type() == Call::Type::CONFERENCE
                 && (callInt->call_real->type() != Call::Type::CONFERENCE)) {
                   removeInternal(callInt);
-                  if (confInt2->m_lChildren.indexOf(callInt) == -1)
+                  if (confInt2->m_lChildren.indexOf(callInt) == -1) {
+                     auto confIdx2 = q_ptr->index(m_lInternalModel.indexOf(confInt2), 0, QModelIndex());
+                     q_ptr->beginInsertRows(confIdx2, confInt2->m_lChildren.size(), confInt2->m_lChildren.size());
                      confInt2->m_lChildren << callInt;
+                     q_ptr->endInsertRows();
+                  }
                }
             }
             callInt->call_real->setProperty("dropState",0);
@@ -1272,9 +1287,8 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
 
       //TODO force reload all conferences too
 
-      const QModelIndex idx = q_ptr->index(m_lInternalModel.indexOf(confInt),0,QModelIndex());
       emit q_ptr->layoutChanged();
-      emit q_ptr->dataChanged(idx, idx);
+      emit q_ptr->dataChanged(confIdx, confIdx);
       emit q_ptr->conferenceChanged(conf);
    }
    else {
