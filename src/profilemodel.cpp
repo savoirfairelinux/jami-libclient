@@ -650,7 +650,7 @@ Qt::ItemFlags ProfileModel::flags(const QModelIndex& index ) const
 
    Node* current = static_cast<Node*>(index.internalPointer());
 
-   if (current->parent)
+   if (current && current->parent)
       return QAbstractItemModel::flags(index)
               | Qt::ItemIsUserCheckable
               | Qt::ItemIsEnabled
