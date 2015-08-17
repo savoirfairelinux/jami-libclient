@@ -471,12 +471,6 @@ Call* CallPrivate::buildIncomingCall(const QString& callId)
     return buildCall(callId, Call::Direction::INCOMING, Call::State::INCOMING);
 } //buildIncomingCall
 
-///Build a ringing call (from dbus)
-Call* CallPrivate::buildRingingCall(const QString& callId)
-{
-    return buildCall(callId, Call::Direction::OUTGOING, Call::State::RINGING);
-} //buildRingingCall
-
 ///Build a call from a dialing call (a call that is about to exist, not existing on daemon yet)
 Call* CallPrivate::buildDialingCall(const QString& peerName, Account* account)
 {
@@ -1082,7 +1076,7 @@ void Call::setDialNumber(const ContactMethod* number)
 {
     if (!number)
         return;
-    return setDialNumber(number->uri());
+    setDialNumber(number->uri());
 }
 
 ///Set the recording path

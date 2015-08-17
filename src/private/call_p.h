@@ -263,7 +263,6 @@ public:
    //Constructor
    static Call* buildDialingCall  (const QString & peerName, Account* account = nullptr );
    static Call* buildIncomingCall (const QString& callId                                );
-   static Call* buildRingingCall  (const QString& callId                                );
    static Call* buildExistingCall (const QString& callId                                );
 
 private:

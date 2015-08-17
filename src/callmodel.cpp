@@ -81,7 +81,6 @@ public:
       void  removeConference ( const QString& confId                              );
       void  removeCall       ( Call* call       , bool noEmit = false             );
       Call* addIncomingCall  ( const QString& callId                              );
-      Call* addRingingCall   ( const QString& callId                              );
 
       //Attributes
       QList<InternalStruct*> m_lInternalModel;
@@ -520,17 +519,6 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
       throw tr("Invalid account");
    }
    return call;
-}
-
-///Create a ringing call
-Call* CallModelPrivate::addRingingCall(const QString& callId)
-{
-   Call* c = CallPrivate::buildRingingCall(callId);
-
-   if (!c)
-      return nullptr;
-
-   return addCall2(c);
 }
 
 ///Properly remove an internal from the Qt model
@@ -1118,17 +1106,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
 
    if(!internal) {
       qDebug() << "Call not found" << callID << "new state" << stateName;
-      if(stateName == CallPrivate::StateChange::RINGING) {
-         call = addRingingCall(callID);
-
-         if (!call)
-            return;
-
-      }
-      else {
-         qDebug() << "Call doesn't exist in this client. Might have been initialized by another client instance before this one started.";
-         return;
-      }
+      return;
    }
    else {
       call = internal->call_real;
