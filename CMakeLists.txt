@@ -198,6 +198,7 @@ SET( libringclient_LIB_SRCS
   src/call.cpp
   src/uri.cpp
   src/account.cpp
+  src/credential.cpp
   src/person.cpp
   src/contactmethod.cpp
   src/numbercategory.cpp
@@ -325,6 +326,7 @@ ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 # Public API
 SET( libringclient_LIB_HDRS
   src/account.h
+  src/credential.h
   src/accountmodel.h
   src/availableaccountmodel.h
   src/call.h
