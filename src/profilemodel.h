@@ -60,6 +60,8 @@ public:
    QModelIndex mapFromSource(const QModelIndex& idx) const;
    int acceptedPayloadTypes() const;
    QItemSelectionModel* selectionModel() const;
+   QItemSelectionModel* sortedProxySelectionModel() const;
+   QAbstractItemModel* sortedProxyModel() const;
    Person* getPerson(const QModelIndex& idx);
 
 private:
