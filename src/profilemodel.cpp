@@ -18,6 +18,7 @@
 #include "profilemodel.h"
 
 //Qt
+#include <QtCore/QSortFilterProxyModel>
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 #include <QtCore/QDateTime>
@@ -123,8 +124,9 @@ struct Node {
    QVector<Node*>  children;
    Type            type;
    Account*        account;
-   Person*        contact;
+   Person*         contact;
    int             m_Index;
+   uint            m_ParentIndex {(uint)-1}; //INT_MAX
 };
 
 bool ProfileEditor::save(const Person* contact)
@@ -338,6 +340,7 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    account_pro->parent  = parent;
    account_pro->account = acc;
    account_pro->m_Index = parent->children.size();
+   account_pro->m_ParentIndex = acc->index().row();
 
    ProfileModel::instance()->beginInsertRows(ProfileModel::instance()->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
@@ -504,14 +507,20 @@ public:
    ProfileContentBackend*                 m_pProfileBackend;
    QStringList m_lMimes;
    QItemSelectionModel* m_pSelectionModel {nullptr};
+   QItemSelectionModel* m_pSortedProxySelectionModel {nullptr};
+   QSortFilterProxyModel* m_pSortedProxyModel {nullptr};
 
    //Helpers
    void updateIndexes();
+   void regenParentIndexes();
 
 private Q_SLOTS:
    void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);
    void slotLayoutchanged();
    void slotDelayedInit();
+   void slotRowsRemoved (const QModelIndex& index, int first, int last);
+   void slotRowsInserted(const QModelIndex& index, int first, int last);
+   void slotRowsMoved   (const QModelIndex& index, int first, int last, const QModelIndex& newPar, int newIdx);
 
 private:
    ProfileModel* q_ptr;
@@ -526,6 +535,9 @@ ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent)
 void ProfileModelPrivate::slotDelayedInit()
 {
    connect(AccountModel::instance(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(slotDataChanged(QModelIndex,QModelIndex)));
+   connect(AccountModel::instance(),&QAbstractItemModel::rowsRemoved, this, &ProfileModelPrivate::slotRowsRemoved);
+   connect(AccountModel::instance(),&QAbstractItemModel::rowsInserted, this, &ProfileModelPrivate::slotRowsInserted);
+   connect(AccountModel::instance(),&QAbstractItemModel::rowsMoved, this, &ProfileModelPrivate::slotRowsMoved);
    connect(AccountModel::instance(),SIGNAL(layoutChanged()),this,SLOT(slotLayoutchanged()));
 }
 
@@ -594,6 +606,10 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
 
    //Accounts
    if (account_node->account) {
+      switch(role) {
+         case 9999: //TODO add an Account:: role once rebased
+            return account_node->m_ParentIndex;
+      };
       return account_node->account->roleData(role);
    }
    //Profiles
@@ -712,6 +728,34 @@ QItemSelectionModel* ProfileModel::selectionModel() const
    }
 
    return d_ptr->m_pSelectionModel;
+}
+
+QItemSelectionModel* ProfileModel::sortedProxySelectionModel() const
+{
+   if (!d_ptr->m_pSortedProxySelectionModel) {
+      d_ptr->m_pSortedProxySelectionModel = new QItemSelectionModel(static_cast<QSortFilterProxyModel*>(sortedProxyModel()));
+
+      connect(d_ptr->m_pSortedProxySelectionModel, &QItemSelectionModel::currentChanged, [this](const QModelIndex& i) {
+         const QModelIndex& accIdx = mapToSource(
+            static_cast<QSortFilterProxyModel*>(sortedProxyModel())->mapToSource(i)
+         );
+         AccountModel::instance()->selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
+      });
+   }
+
+   return d_ptr->m_pSortedProxySelectionModel;
+}
+
+QAbstractItemModel* ProfileModel::sortedProxyModel() const
+{
+   if (!d_ptr->m_pSortedProxyModel) {
+      d_ptr->m_pSortedProxyModel = new QSortFilterProxyModel(ProfileModel::instance());
+      d_ptr->m_pSortedProxyModel->setSourceModel(const_cast<ProfileModel*>(this));
+      d_ptr->m_pSortedProxyModel->setSortRole(9999);
+      d_ptr->m_pSortedProxyModel->sort(0);
+   }
+
+   return d_ptr->m_pSortedProxyModel;
 }
 
 void ProfileModelPrivate::updateIndexes()
@@ -849,6 +893,45 @@ void ProfileModelPrivate::slotLayoutchanged()
 {
    m_pProfileBackend->setupDefaultProfile();
    emit q_ptr->layoutChanged();
+}
+
+void ProfileModelPrivate::regenParentIndexes()
+{
+   foreach(Node* n, m_pProfileBackend->m_pEditor->m_lProfiles) {
+      foreach(Node* a, n->children) {
+         a->m_ParentIndex = a->account->index().row();
+      }
+      const QModelIndex par = q_ptr->index(n->m_Index,0,QModelIndex());
+      emit q_ptr->dataChanged(q_ptr->index(0,0,par),q_ptr->index(n->children.size()-1,0,par));
+   }
+}
+
+void ProfileModelPrivate::slotRowsRemoved(const QModelIndex& index, int first, int last)
+{
+   Q_UNUSED(index)
+   Q_UNUSED(first)
+   Q_UNUSED(last)
+   //TODO implement removing
+   regenParentIndexes();
+}
+
+void ProfileModelPrivate::slotRowsInserted(const QModelIndex& index, int first, int last)
+{
+   Q_UNUSED(index)
+   Q_UNUSED(first)
+   Q_UNUSED(last)
+   //TODO implement insertion
+   regenParentIndexes();
+}
+
+void ProfileModelPrivate::slotRowsMoved(const QModelIndex& index, int first, int last, const QModelIndex& newPar, int newIdx)
+{
+   Q_UNUSED(index)
+   Q_UNUSED(first)
+   Q_UNUSED(last)
+   Q_UNUSED(newPar)
+   Q_UNUSED(newIdx)
+   regenParentIndexes();
 }
 
 Person* ProfileModel::getPerson(const QModelIndex& idx)
