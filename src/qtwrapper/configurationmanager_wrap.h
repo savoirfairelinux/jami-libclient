@@ -608,7 +608,7 @@ public Q_SLOTS: // METHODS
 
    bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
    {
-      DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
+      return DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
    }
 
 Q_SIGNALS: // SIGNALS

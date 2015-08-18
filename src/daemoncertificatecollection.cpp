@@ -100,11 +100,14 @@ void DaemonCertificateCollectionPrivate::slotCertificatePinned(const QString& id
 
 void DaemonCertificateCollectionPrivate::slotCertificateExpired(const QString& id)
 {
+   Q_UNUSED(id);
    //qDebug() << "\n\nCERTIFICATE EXPIRED" << id;
 }
 
 void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString& path, const QStringList& certIds)
 {
+   Q_UNUSED(path);
+   Q_UNUSED(certIds);
    //Create a new collection if it is a directory or size > 1
    //qDebug() << "\n\nSIGNAL CERTIFICATE PATH PINNING" << path << certIds;
 }
@@ -125,7 +128,7 @@ bool DaemonCertificateCollection::load()
    //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << certs;
 
    for (const QString& id : certs)
-      Certificate* cert = CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);
+      CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);
 
    return true;
 }
@@ -200,6 +203,7 @@ bool DaemonCertificateEditor::save( const Certificate* item)
 bool DaemonCertificateEditor::remove( const Certificate* item)
 {
    //TODO
+   Q_UNUSED(item);
    return false;
 }
 
