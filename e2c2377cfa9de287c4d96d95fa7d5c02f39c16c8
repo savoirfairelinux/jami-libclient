@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a486d77_43a626c3",
+        "filename": "src/localtextrecordingcollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-08-18T22:31:52Z",
+      "side": 0,
+      "message": "Please leave the end of file carriage return. This is a C/CPP convention. If removed, it trigger a compiler warning in earlier compiler (that ring no longer support) but also in tools such as cppcheck, krazy2 and other linters. This, in turn, create noisy results and may cause us to miss an actual problems. The reasons why C/CPP used to required a new line at the end of file are mostly legacy (it still cause some email to patch system to fail and other stuff like that), but it is still preferred to follow that convention",
+      "revId": "e2c2377cfa9de287c4d96d95fa7d5c02f39c16c8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a486d77_23ab2a8b",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-08-18T22:31:52Z",
+      "side": 1,
+      "message": "Actually, the whole thing can be replaced by \nconnect(call, \u0026Call::lifeCycleChanged, this, \u0026RecentModelPrivate::slotUpdated);\n\nI missed this in my review of the patch where this was introduced. This will also lower the overhead as the [\u003d] is totally useless (compilers are not yet very smart at optimizing that kind of stuff, GCC5 is much better at it, idk about clang).",
+      "revId": "09f3114cde1e9168767c2a83d8852f790f421065",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
