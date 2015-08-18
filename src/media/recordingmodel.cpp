@@ -95,6 +95,7 @@ d_ptr(new RecordingModelPrivate(this))
 
    d_ptr->m_pTextRecordingCollection->listId([](const QList<CollectionInterface::Element>& e) {
       //TODO
+      Q_UNUSED(e);
    });
 }
 

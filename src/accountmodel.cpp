@@ -270,6 +270,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
 ///Account status changed
 void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const QString& registration_state, unsigned code, const QString& status)
 {
+   Q_UNUSED(registration_state);
    Account* a = q_ptr->getById(account.toLatin1());
 
    //TODO move this to AccountStatusModel
@@ -397,6 +398,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 ///When a Ring-DHT trust request arrive
 void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
+   Q_UNUSED(payload);
    qDebug() << "INCOMING REQUEST" << accountId << hash << time;
    Account* a = q_ptr->getById(accountId.toLatin1());
 

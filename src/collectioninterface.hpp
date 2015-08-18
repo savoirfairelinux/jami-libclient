@@ -91,6 +91,7 @@ CollectionEditor<T>* CollectionInterface::editor() const
 template<class T>
 bool CollectionInterface::attachExtension(bool enable)
 {
+    Q_UNUSED(enable);
    //FIXME for now all extensions are considered active
    return true;
 }
