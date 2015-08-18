@@ -189,7 +189,6 @@ void CategorizedBookmarkModel::reloadCategories()
       endInsertRows();
 
       //This a proxy, so the items already exist elsewhere
-      const int currentSize = PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex.size();
       beginInsertRows(index(item->m_Index,0), item->m_lChildren.size(), item->m_lChildren.size());
       endInsertRows();
 
