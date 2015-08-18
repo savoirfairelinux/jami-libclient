@@ -116,6 +116,7 @@ public:
     QList<RecentViewNode*>                m_lTopLevelReverted;
     QHash<Person*,RecentViewNode*>        m_hPersonsToNodes  ;
     QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
+    QList<Call*>                          m_lCallBucket      ;
     static RecentModel*                   m_spInstance       ;
 
    //Helper
@@ -132,6 +133,7 @@ public Q_SLOTS:
     void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
     void slotCallAdded          (Call* call       , Call* parent          );
     void slotCallStateChanged   (Call* call       , Call::State previousState);
+    void slotUpdate             (                                         );
 };
 
 RecentModel* RecentModelPrivate::m_spInstance = nullptr;
@@ -230,10 +232,11 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
         return false;
 
     RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
-    qDebug() << "SIZE:" << node->m_lChildren.size();
     for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
-        if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL)
-            return  !(node->m_lChildren.at(i)->m_uContent.m_pCall->isHistory());
+        if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
+            QModelIndex qIdx = CallModel::instance()->getIndex(node->m_lChildren.at(i)->m_uContent.m_pCall);
+            return  qIdx.isValid();
+        }
     }
     return false;
 }
@@ -244,12 +247,10 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
         return nullptr;
 
     RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
-    qDebug() << "SIZE:" << node->m_lChildren.size();
     for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
         if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
-            // if last interaction is of type call and is not in history it is an ongoing call
             auto call = node->m_lChildren.at(i)->m_uContent.m_pCall;
-            return  call->isHistory()?nullptr:call;
+            return call;
         }
     }
     return nullptr;
@@ -457,6 +458,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
                 q_ptr->endInsertRows();
             }
         }
+         slotUpdate();
     }
     insertNode(n, t, isNew);
 }
@@ -475,6 +477,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
             n->m_pParent                   = nullptr                             ;
             n->m_Index                     = 0                                   ;
             m_hCMsToNodes[cm]              = n                                   ;
+            slotUpdate();
         }
         insertNode(n, t, isNew);
     }
@@ -494,7 +497,7 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
 
 void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
 {
-    qDebug() << call->peerContactMethod();
+    qDebug() << "STATE CHANGED:" << call->peerContactMethod();
     RecentViewNode* n;
     if (auto p = call->peerContactMethod()->contact()) {
         n = m_hPersonsToNodes[p];
@@ -514,15 +517,24 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
 
     RecentViewNode* n = nullptr;
 
-    qDebug() << call->peerContactMethod();
-
     if (auto p = call->peerContactMethod()->contact()) {
         n = m_hPersonsToNodes[p];
     } else {
         n = m_hCMsToNodes[call->peerContactMethod()];
     }
-    if (!n)
+    if (!n && !m_lCallBucket.contains(call)) {
+        m_lCallBucket.append(call);
+        connect(call, &Call::lifeCycleStateChanged, [=](Call::LifeCycleState newState, Call::LifeCycleState oldState) {
+                slotUpdate();
+        });
         return;
+    } else if (n && m_lCallBucket.contains(call)) {
+            m_lCallBucket.removeOne(call);
+            //TODO: remove the connection store callbucket as a map key = call value = metaconnection
+    } else if (!n && m_lCallBucket.contains(call)) {
+        return;
+    }
+
     auto callNode = new RecentViewNode();
     callNode->m_Type = RecentViewNode::Type::CALL;
     callNode->m_uContent.m_pCall = call;
@@ -532,6 +544,12 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
     n->m_lChildren.append(callNode);
     q_ptr->endInsertRows();
+}
+
+void RecentModelPrivate::slotUpdate()
+{
+    Q_FOREACH(auto call, m_lCallBucket)
+        slotCallAdded(call, nullptr);
 }
 
 QModelIndex RecentModelPrivate::createIndex(RecentViewNode* n)
