@@ -498,7 +498,9 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
 
 void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
 {
+    Q_UNUSED(previousState);
     //qDebug() << "STATE CHANGED:" << call->peerContactMethod();
+
     RecentViewNode* n;
     if (auto p = call->peerContactMethod()->contact()) {
         n = m_hPersonsToNodes[p];
@@ -525,7 +527,9 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
     if (!n && !m_lCallBucket.contains(call)) {
         m_lCallBucket.append(call);
         connect(call, &Call::lifeCycleStateChanged, [=](Call::LifeCycleState newState, Call::LifeCycleState oldState) {
-                slotUpdate();
+            Q_UNUSED(newState);
+            Q_UNUSED(oldState);
+            slotUpdate();
         });
         return;
     } else if (n && m_lCallBucket.contains(call)) {
@@ -625,6 +629,7 @@ QModelIndex PersonProxy::index( int row, int column, const QModelIndex& parent) 
 
 QModelIndex PeopleProxy::index ( int row, int column, const QModelIndex& parent) const
 {
+    Q_UNUSED(column);
     if(parent.isValid())
         return QModelIndex();
 
