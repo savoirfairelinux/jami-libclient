@@ -501,7 +501,9 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
 
 void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
 {
+    Q_UNUSED(previousState);
     //qDebug() << "STATE CHANGED:" << call->peerContactMethod();
+
     RecentViewNode* n;
     if (auto p = call->peerContactMethod()->contact()) {
         n = m_hPersonsToNodes[p];
@@ -628,6 +630,7 @@ QModelIndex PersonProxy::index( int row, int column, const QModelIndex& parent) 
 
 QModelIndex PeopleProxy::index ( int row, int column, const QModelIndex& parent) const
 {
+    Q_UNUSED(column);
     if(parent.isValid())
         return QModelIndex();
 
