@@ -223,6 +223,7 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
 
 bool LocalTextRecordingCollection::fetch(const Element& e)
 {
+   Q_UNUSED(e);
    return false;
 }
 
@@ -255,4 +256,3 @@ Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMetho
 
    return r;
 }
-

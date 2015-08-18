@@ -80,6 +80,7 @@ int PendingTrustRequestModel::columnCount( const QModelIndex& parent ) const
 
 Qt::ItemFlags PendingTrustRequestModel::flags( const QModelIndex& index ) const
 {
+   Q_UNUSED(index);
    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
