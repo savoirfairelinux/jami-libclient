@@ -78,8 +78,10 @@ struct VCardMapper {
 
    void setNames(Person* c,  const QString&, const QByteArray& fn) {
       QList<QByteArray> splitted = fn.split(';');
-      c->setFamilyName(splitted[0].trimmed());
-      c->setFirstName(splitted[1].trimmed());
+      if (splitted.length() > 0)
+         c->setFamilyName(splitted.at(0).trimmed());
+      if (splitted.length() > 1)
+         c->setFirstName(splitted.at(1).trimmed());
    }
 
    void setUid(Person* c,  const QString&, const QByteArray& fn) {
