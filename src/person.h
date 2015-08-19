@@ -107,7 +107,7 @@ public:
    Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                                                )
 
    //Mutator
-   Q_INVOKABLE void addAddress(Address* addr);
+   Q_INVOKABLE void addAddress(const Address& addr);
    Q_INVOKABLE void addCustomField(const QString& key, const QString& value);
    Q_INVOKABLE const QByteArray toVCard(QList<Account*> accounts = {}) const;
 

@@ -49,7 +49,7 @@ public:
    Person::ContactMethods   m_Numbers             ;
    bool                     m_Active              ;
    bool                     m_isPlaceHolder       ;
-   QList<Person::Address*>  m_lAddresses          ;
+   QList<Person::Address>   m_lAddresses          ;
    QHash<QString, QString>  m_lCustomAttributes   ;
    ::time_t                 m_LastUsed            ;
    bool                     m_LastUsedInit        ;

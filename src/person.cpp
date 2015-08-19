@@ -603,7 +603,7 @@ bool Person::operator==(const Person& other) const
 }
 
 ///Add a new address to this contact
-void Person::addAddress(Person::Address* addr)
+void Person::addAddress(const Person::Address& addr)
 {
    d_ptr->m_lAddresses << addr;
 }
@@ -632,7 +632,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
       maker->addContactMethod(phone->category()->name(), phone->uri());
    }
 
-   foreach (Address* addr , d_ptr->m_lAddresses) {
+   foreach (const Address& addr , d_ptr->m_lAddresses) {
       maker->addAddress(addr);
    }
 
