@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -17,28 +17,10 @@
  ***************************************************************************/
 #include "shortcutdelegate.h"
 
-struct ShortcutDelegatePrivate
-{
-   static ShortcutDelegate* m_spInstance;
-};
+#include "macro.h"
 
-ShortcutDelegate* ShortcutDelegatePrivate::m_spInstance = new ShortcutDelegate();
-
-ShortcutDelegate* ShortcutDelegate::instance()
+QVariant Delegates::ShortcutDelegate::createAction(Macro* macro)
 {
-   return ShortcutDelegatePrivate::m_spInstance;
-}
-
-void ShortcutDelegate::setInstance(ShortcutDelegate* i)
-{
-   if (i) {
-      delete ShortcutDelegatePrivate::m_spInstance;
-      ShortcutDelegatePrivate::m_spInstance = i;
-   }
-}
-
-QVariant ShortcutDelegate::createAction(Macro* macro)
-{
-   Q_UNUSED(macro)
-   return QVariant();
+    Q_UNUSED(macro)
+    return QVariant();
 }
