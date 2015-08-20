@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,23 +15,31 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTLISTCOLORDELEGATE_H
-#define ACCOUNTLISTCOLORDELEGATE_H
+#include "profilepersisterdefault.h"
 
-#include <typedefs.h>
-class Account;
+// Qt
+#include <QtCore/QStandardPaths>
+#include <QtCore/QDir>
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT AccountListColorDelegate {
-public:
-   virtual QVariant getColor(const Account* a);
-   virtual QVariant getIcon(const Account* a);
-   virtual ~AccountListColorDelegate();
+namespace Interfaces {
 
-   static AccountListColorDelegate* instance();
-   static void setInstance(AccountListColorDelegate* visitor);
-private:
-   static AccountListColorDelegate* m_spInstance;
-};
+bool ProfilePersisterDefault::load()
+{
+    //FIXME: move load method from profilemodel here
+    return false;
+}
 
-#endif
+bool ProfilePersisterDefault::save(const Person* c)
+{
+    Q_UNUSED(c)
+    //FIXME: move save method from profilemodel here
+    return false;
+}
+
+QDir ProfilePersisterDefault::profilesDir() const
+{
+    static QDir d = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+    return d;
+}
+
+} // namespace Interfaces

@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                           *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,36 +15,21 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#pragma once
 
-#include "profilepersisterdelegate.h"
-#include <QtCore/QSize>
-#include <QtCore/QStandardPaths>
+#include <typedefs.h>
 
-ProfilePersisterDelegate* ProfilePersisterDelegate::m_spInstance = nullptr;
+class CollectionInterface;
 
-void ProfilePersisterDelegate::setInstance(ProfilePersisterDelegate* i)
-{
-   m_spInstance = i;
-}
+namespace Interfaces {
 
-ProfilePersisterDelegate* ProfilePersisterDelegate::instance()
-{
-   return m_spInstance;
-}
+class PresenceSerializerI {
+public:
+    virtual ~PresenceSerializerI() = default;
+    virtual void save     () = 0;
+    virtual void load     () = 0;
+    virtual bool isTracked(CollectionInterface* backend) const = 0;
+    virtual void setTracked(CollectionInterface* backend, bool tracked) = 0;
+};
 
-bool ProfilePersisterDelegate::load()
-{
-   return false;
-}
-
-bool ProfilePersisterDelegate::save(const Person* c)
-{
-   Q_UNUSED(c)
-   return false;
-}
-
-QDir ProfilePersisterDelegate::getProfilesDir()
-{
-   static QDir d = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
-   return d;
-}
+} // namespace Interfaces

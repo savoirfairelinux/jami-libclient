@@ -29,7 +29,8 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -193,7 +194,7 @@ QString FolderCertificateCollection::category() const
 
 QVariant FolderCertificateCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::CERTIFICATE);
 }
 
 bool FolderCertificateCollection::isEnabled() const

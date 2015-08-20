@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,30 +15,20 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "shortcutdelegate.h"
+#include "presenceserializerdefault.h"
 
-struct ShortcutDelegatePrivate
+namespace Interfaces {
+
+bool PresenceSerializerDefault::isTracked(CollectionInterface* backend) const
 {
-   static ShortcutDelegate* m_spInstance;
-};
-
-ShortcutDelegate* ShortcutDelegatePrivate::m_spInstance = new ShortcutDelegate();
-
-ShortcutDelegate* ShortcutDelegate::instance()
-{
-   return ShortcutDelegatePrivate::m_spInstance;
+    Q_UNUSED(backend)
+    return false;
 }
 
-void ShortcutDelegate::setInstance(ShortcutDelegate* i)
+void PresenceSerializerDefault::setTracked(CollectionInterface* backend, bool tracked)
 {
-   if (i) {
-      delete ShortcutDelegatePrivate::m_spInstance;
-      ShortcutDelegatePrivate::m_spInstance = i;
-   }
+    Q_UNUSED(backend)
+    Q_UNUSED(tracked)
 }
 
-QVariant ShortcutDelegate::createAction(Macro* macro)
-{
-   Q_UNUSED(macro)
-   return QVariant();
-}
+} // namespace Interfaces
