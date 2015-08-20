@@ -23,6 +23,7 @@
 //Ring
 #include "accountmodel.h"
 #include "dbus/presencemanager.h"
+#include "delegates/delegatemanager.h"
 #include "delegates/presenceserializationdelegate.h"
 
 //Static
@@ -44,7 +45,7 @@ public:
 PresenceStatusModelPrivate::PresenceStatusModelPrivate() :
 m_pCurrentStatus(nullptr),m_pDefaultStatus(nullptr),m_UseCustomStatus(false),m_CustomStatus(false)
 {
-   
+
 }
 
 ///Constructor
@@ -235,7 +236,7 @@ void PresenceStatusModel::removeRow(const QModelIndex& index)
 ///Serialize model TODO a backend visitor need to be created
 void PresenceStatusModel::save()
 {
-   PresenceSerializationDelegate::instance()->serialize();
+   getDelegateManager()->getPresenceSerializationDelegate()->serialize();
 }
 
 ///Singleton
@@ -389,10 +390,10 @@ void PresenceStatusModel::setDefaultStatus( const QModelIndex& idx )
 
 bool PresenceStatusModel::isAutoTracked(CollectionInterface* backend) const
 {
-   return PresenceSerializationDelegate::instance()->isTracked(backend);
+    return getDelegateManager()->getPresenceSerializationDelegate()->isTracked(backend);
 }
 
 void PresenceStatusModel::setAutoTracked(CollectionInterface* backend, bool tracked) const
 {
-   PresenceSerializationDelegate::instance()->setTracked(backend,tracked);
+    getDelegateManager()->getPresenceSerializationDelegate()->setTracked(backend,tracked);
 }

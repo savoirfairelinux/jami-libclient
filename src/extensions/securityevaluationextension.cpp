@@ -24,8 +24,9 @@
 #include "call.h"
 #include "presencestatusmodel.h"
 #include "collectionextensionmodel.h"
-#include <delegates/pixmapmanipulationdelegate.h>
-#include <private/securityevaluationmodel_p.h>
+#include "delegates/delegatemanager.h"
+#include "delegates/pixmapmanipulationdelegate.h"
+#include "private/securityevaluationmodel_p.h"
 
 //Qt
 #include <QtCore/QMetaObject>
@@ -69,7 +70,7 @@ QVariant SecurityEvaluationExtension::securityLevelIcon(const ItemBase* item) co
 {
    const SecurityEvaluationModel::SecurityLevel sl = securityLevel(item);
 
-   return PixmapManipulationDelegate::instance()->securityLevelIcon(sl);
+   return getDelegateManager()->getPixmapManipulationDelegate()->securityLevelIcon(sl);
 }
 
 SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLevel(const ItemBase* item) const

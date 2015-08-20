@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -24,14 +24,9 @@ class Account;
 ///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
 class LIB_EXPORT AccountListColorDelegate {
 public:
-   virtual QVariant getColor(const Account* a);
-   virtual QVariant getIcon(const Account* a);
-   virtual ~AccountListColorDelegate();
-
-   static AccountListColorDelegate* instance();
-   static void setInstance(AccountListColorDelegate* visitor);
-private:
-   static AccountListColorDelegate* m_spInstance;
+    virtual QVariant getColor(const Account* a);
+    virtual QVariant getIcon(const Account* a);
+    virtual ~AccountListColorDelegate() {};
 };
 
 #endif
