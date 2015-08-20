@@ -27,7 +27,6 @@
 #include "collectioninterface.h"
 #include "collectionmodel.h"
 #include "collectioneditor.h"
-#include "delegates/itemmodelstateserializationdelegate.h"
 
 //Qt
 #include <QtCore/QHash>

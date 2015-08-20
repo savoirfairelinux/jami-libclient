@@ -29,6 +29,7 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
+#include "delegates/delegatemanager.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
 //Dring
@@ -193,7 +194,7 @@ QString FolderCertificateCollection::category() const
 
 QVariant FolderCertificateCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
+   return getDelegateManager()->getPixmapManipulationDelegate()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
 }
 
 bool FolderCertificateCollection::isEnabled() const

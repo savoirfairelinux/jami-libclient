@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                           *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -17,52 +17,14 @@
  ***************************************************************************/
 #include "presenceserializationdelegate.h"
 
-class LIB_EXPORT DummyPresenceSerializationDelegate : public PresenceSerializationDelegate {
-public:
-   virtual void serialize() override;
-   virtual void load     () override;
-   virtual bool isTracked(CollectionInterface* backend) override;
-   virtual void setTracked(CollectionInterface* backend, bool tracked) override;
-   virtual ~DummyPresenceSerializationDelegate();
-
-};
-
-PresenceSerializationDelegate* PresenceSerializationDelegate::m_spInstance = new DummyPresenceSerializationDelegate();
-
-void DummyPresenceSerializationDelegate::serialize()
+bool PresenceSerializationDelegate::isTracked(CollectionInterface* backend)
 {
-   
-}
-void DummyPresenceSerializationDelegate::load()
-{
-   
+    Q_UNUSED(backend)
+    return false;
 }
 
-bool DummyPresenceSerializationDelegate::isTracked(CollectionInterface* backend)
+void PresenceSerializationDelegate::setTracked(CollectionInterface* backend, bool tracked)
 {
-   Q_UNUSED(backend)
-   return false;
-}
-
-void DummyPresenceSerializationDelegate::setTracked(CollectionInterface* backend, bool tracked)
-{
-   Q_UNUSED(backend)
-   Q_UNUSED(tracked)
-}
-
-DummyPresenceSerializationDelegate::~DummyPresenceSerializationDelegate()
-{}
-
-PresenceSerializationDelegate* PresenceSerializationDelegate::instance()
-{
-   return m_spInstance;
-}
-
-void PresenceSerializationDelegate::setInstance(PresenceSerializationDelegate* ins)
-{
-   if (ins) {
-      delete m_spInstance;
-      m_spInstance = ins;
-      ins->load();
-   }
+    Q_UNUSED(backend)
+    Q_UNUSED(tracked)
 }

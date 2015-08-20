@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                         ***
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -39,50 +39,44 @@ struct UserActionElement;
  * abstract class define many operations that can be defined by each clients.
  *
  * Most methods return QVariants as this library doesn't link against QtGui
- * 
+ *
  * This interface is not frozen, more methods may be added later. To implement,
  * just create an object somewhere, be sure to call PixmapManipulationDelegate()
  */
 class LIB_EXPORT PixmapManipulationDelegate {
 public:
-   //Implementation can use random values to extend this
-   enum CollectionIconHint {
-      NONE,
-      HISTORY,
-      CONTACT,
-      BOOKMARK,
-      PHONE_NUMBER,
-      RINGTONE,
-      PROFILE,
-      CERTIFICATE,
-      ACCOUNT,
-      RECORDING,
-      MACRO,
-   };
+    //Implementation can use random values to extend this
+    enum CollectionIconHint {
+        NONE,
+        HISTORY,
+        CONTACT,
+        BOOKMARK,
+        PHONE_NUMBER,
+        RINGTONE,
+        PROFILE,
+        CERTIFICATE,
+        ACCOUNT,
+        RECORDING,
+        MACRO,
+    };
 
-   PixmapManipulationDelegate();
-   virtual ~PixmapManipulationDelegate() {}
-   virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
-   virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true);
-   virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
-   virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
-   virtual QVariant   securityIssueIcon(const QModelIndex& index);
-   virtual QByteArray toByteArray(const QVariant& pxm);
-   virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG");
-   virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
-   virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const;
-   virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const;
-   virtual QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const;
+    virtual ~PixmapManipulationDelegate() {}
+    virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true);
+    virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true);
+    virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true);
+    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false);
+    virtual QVariant   securityIssueIcon(const QModelIndex& index);
+    virtual QByteArray toByteArray(const QVariant& pxm);
+    virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG");
+    virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulationDelegate::CollectionIconHint hint = PixmapManipulationDelegate::CollectionIconHint::NONE) const;
+    virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const;
+    virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const;
+    virtual QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const;
 
-   /**
-    * Return the icons associated with the action and its state
-    */
-   virtual QVariant userActionIcon(const UserActionElement& state) const;
-
-   //Singleton
-   static PixmapManipulationDelegate* instance();
-protected:
-   static PixmapManipulationDelegate* m_spInstance;
+    /**
+     * Return the icons associated with the action and its state
+     */
+    virtual QVariant userActionIcon(const UserActionElement& state) const;
 };
 
 #endif //PIXMAPMANIPULATIONVISITOR_H

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                         ***
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -20,21 +20,15 @@
 
 #include <typedefs.h>
 
-class AbstractCategorizedBookmarkModel;
 class CollectionInterface;
 
 class LIB_EXPORT PresenceSerializationDelegate {
 public:
-   virtual void serialize() = 0;
-   virtual void load     () = 0;
-   virtual bool isTracked(CollectionInterface* backend) = 0;
-   virtual void setTracked(CollectionInterface* backend, bool tracked) = 0;
-   virtual ~PresenceSerializationDelegate(){};
-
-   static PresenceSerializationDelegate* instance();
-   static void setInstance(PresenceSerializationDelegate* ins);
-private:
-   static PresenceSerializationDelegate* m_spInstance;
+    virtual void serialize() {}
+    virtual void load     () {}
+    virtual bool isTracked(CollectionInterface* backend);
+    virtual void setTracked(CollectionInterface* backend, bool tracked);
+    virtual ~PresenceSerializationDelegate(){}
 };
 
-#endif //PRESENCESERIALIZATIONVISITOR_H
+#endif //PRESENCESERIALIZATIONDELEGATE_H
