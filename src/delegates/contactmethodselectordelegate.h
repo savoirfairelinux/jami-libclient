@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -16,25 +16,23 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-#ifndef PHONENUMBERSELECTOR_H
-#define PHONENUMBERSELECTOR_H
+#ifndef CONTACTMETHODSELECTORDELEGATE_H
+#define CONTACTMETHODSELECTORDELEGATE_H
 
 #include <typedefs.h>
-#include "../person.h"
 
 class ContactMethod;
 class Person;
 
+namespace Delegates {
+
 ///Common point visitor for UI specific contact dialog
-class LIB_EXPORT ContactMethodSelector {
+class LIB_EXPORT ContactMethodSelectorDelegate {
 public:
-   virtual ~ContactMethodSelector() {}
-   virtual ContactMethod* getNumber(const Person* nb) = 0;
-   static ContactMethodSelector* defaultDelegate();
-protected:
-   static void setDefaultDelegate(ContactMethodSelector* v);
-private:
-   static ContactMethodSelector* m_spDefaultDelegate;
+    virtual ~ContactMethodSelectorDelegate() {}
+    virtual ContactMethod* getNumber(const Person* p) = 0;
 };
 
-#endif
+} // namespace Delegates
+
+#endif // CONTACTMETHODSELECTORDELEGATE_H

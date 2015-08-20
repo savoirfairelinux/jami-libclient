@@ -23,6 +23,7 @@
 
 //Ring
 #include "collectionmanagerinterface.h"
+#include "delegates/delegates.h"
 #include "delegates/itemmodelstateserializationdelegate.h"
 #include "collectionextensioninterface.h"
 #include "private/collectionmodel_p.h"
@@ -116,7 +117,7 @@ QVariant CollectionModel::data (const QModelIndex& idx, int role) const
             case Qt::UserRole: // and Role::count
                return 'x'+QString::number(item->collection->size());
             case Qt::CheckStateRole: {
-               if (ItemModelStateSerializationDelegate::instance()) //TODO do better than that
+               if (Delegates::getItemModelStateSerializationDelegate()) //TODO do better than that
                   return item->collection->isEnabled()?Qt::Checked:Qt::Unchecked;
                break;
             }
@@ -192,8 +193,8 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
       CollectionModelPrivate::ProxyItem* item = static_cast<CollectionModelPrivate::ProxyItem*>(idx.internalPointer());
       if (item && item->collection) {
          const bool old = item->collection->isEnabled();
-         if (ItemModelStateSerializationDelegate::instance()) {
-            ItemModelStateSerializationDelegate::instance()->setChecked(item->collection,value==Qt::Checked);
+         if (Delegates::getItemModelStateSerializationDelegate()) {
+            Delegates::getItemModelStateSerializationDelegate()->setChecked(item->collection,value==Qt::Checked);
             emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
             if (old != (value==Qt::Checked)) {
                emit checkStateChanged();
@@ -261,14 +262,14 @@ QVariant CollectionModel::headerData(int section, Qt::Orientation orientation, i
 
 bool CollectionModel::save()
 {
-   if (ItemModelStateSerializationDelegate::instance()) {
+   if (Delegates::getItemModelStateSerializationDelegate()) {
 
       //Load newly enabled collections
       foreach(CollectionModelPrivate::ProxyItem* top, d_ptr->m_lTopLevelBackends) {
          CollectionInterface* current = top->collection;
          bool check,wasChecked;
          if (current) {
-            check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
+            check = Delegates::getItemModelStateSerializationDelegate()->isChecked(current);
             wasChecked = current->isEnabled();
             if (check && !wasChecked)
                current->enable(true);
@@ -279,7 +280,7 @@ bool CollectionModel::save()
          //TODO implement real tree digging
          foreach(CollectionModelPrivate::ProxyItem* leaf ,top->m_Children) {
             current = leaf->collection;
-            check = ItemModelStateSerializationDelegate::instance()->isChecked(current);
+            check = Delegates::getItemModelStateSerializationDelegate()->isChecked(current);
             wasChecked = current->isEnabled();
             if (check && !wasChecked)
                current->enable(true);
@@ -288,15 +289,15 @@ bool CollectionModel::save()
             //else: do nothing
          }
       }
-      return ItemModelStateSerializationDelegate::instance()->save();
+      return Delegates::getItemModelStateSerializationDelegate()->save();
    }
    return false;
 }
 
 bool CollectionModel::load()
 {
-   if (ItemModelStateSerializationDelegate::instance()) {
-      return ItemModelStateSerializationDelegate::instance()->load();
+   if (Delegates::getItemModelStateSerializationDelegate()) {
+      return Delegates::getItemModelStateSerializationDelegate()->load();
    }
    return false;
 }

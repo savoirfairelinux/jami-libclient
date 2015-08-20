@@ -29,6 +29,7 @@
 //Ring
 #include "macro.h"
 #include "private/macromodel_p.h"
+#include "delegates/delegates.h"
 #include "delegates/shortcutdelegate.h"
 
 ///Init static attributes
@@ -290,7 +291,7 @@ Macro* MacroModel::newMacro(const QString& id)
    emit layoutChanged ();
    emit selectMacro(d_ptr->m_pCurrentMacro);
 
-   d_ptr->m_pCurrentMacro->d_ptr->m_Action = ShortcutDelegate::instance()->createAction(d_ptr->m_pCurrentMacro);
+   d_ptr->m_pCurrentMacro->d_ptr->m_Action = Delegates::getShortcutDelegate()->createAction(d_ptr->m_pCurrentMacro);
    emit addAction(d_ptr->m_pCurrentMacro->d_ptr->m_Action);
 
    return d_ptr->m_pCurrentMacro;

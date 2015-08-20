@@ -35,8 +35,8 @@
 #include "callmodel.h"
 #include "contactmethod.h"
 #include "person.h"
+#include "delegates/delegates.h"
 #include "delegates/profilepersisterdelegate.h"
-#include "delegates/pixmapmanipulationdelegate.h"
 #include "private/vcardutils.h"
 #include "mime.h"
 
@@ -128,14 +128,15 @@ struct Node {
 
 bool ProfileEditor::save(const Person* contact)
 {
+    if (Delegates::getProfilePersisterDelegate()) {
 #if QT_VERSION >= 0x050400
-    if (!contact->property("delayedSaving").toBool()) {
-        const_cast<Person*>(contact)->setProperty("delayedSaving", true);
+        if (!contact->property("delayedSaving").toBool()) {
+            const_cast<Person*>(contact)->setProperty("delayedSaving", true);
 
-        QTimer::singleShot(0,[this,contact]() {
+            QTimer::singleShot(0,[this,contact]() {
                 const_cast<Person*>(contact)->setProperty("delayedSaving", false);
 #endif
-                const auto& profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
+                const auto& profilesDir = Delegates::getProfilePersisterDelegate()->getProfilesDir();
                 const auto& filename = profilesDir.absolutePath() + '/' + contact->uid() + ".vcf";
                 qDebug() << "Saving vcf in:" << filename;
                 const auto& result = contact->toVCard(getAccountsForProfile(contact->uid()));
@@ -146,10 +147,11 @@ bool ProfileEditor::save(const Person* contact)
                 file.close();
 #if QT_VERSION >= 0x050400
             });
-
-    }
+        }
 #endif
-    return true;
+        return true;
+    }
+    return false;
 }
 
 ProfileEditor::~ProfileEditor()
@@ -346,10 +348,10 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
 
 void ProfileContentBackend::loadProfiles()
 {
-   if (ProfilePersisterDelegate::instance()) {
+   if (Delegates::getProfilePersisterDelegate()) {
       m_pEditor->m_lProfiles.clear();
 
-      const QDir profilesDir = ProfilePersisterDelegate::instance()->getProfilesDir();
+      const QDir profilesDir = Delegates::getProfilePersisterDelegate()->getProfilesDir();
 
       qDebug() << "Loading vcf from:" << profilesDir;
 
@@ -498,7 +500,6 @@ class ProfileModelPrivate final : public QObject {
 public:
    ProfileModelPrivate(ProfileModel* parent);
    ProfileContentBackend*                 m_pProfileBackend;
-   ProfilePersisterDelegate*               m_pDelegate   ;
    QStringList m_lMimes;
    QItemSelectionModel* m_pSelectionModel {nullptr};
 

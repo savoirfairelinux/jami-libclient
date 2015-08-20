@@ -19,6 +19,7 @@
 
 #include <QtCore/QSize>
 
+#include "delegates/delegates.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "collectionmediator.h"
 #include "collectioneditor.h"
@@ -53,12 +54,12 @@ NumberCategory::~NumberCategory()
 
 QVariant NumberCategory::icon() const
 {
-   return PixmapManipulationDelegate::instance()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),false,false);
+   return Delegates::getPixmapManipulationDelegate()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),false,false);
 }
 
 QVariant NumberCategory::icon(bool isTracked, bool isPresent) const
 {
-   return PixmapManipulationDelegate::instance()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),isTracked,isPresent);
+   return Delegates::getPixmapManipulationDelegate()->numberCategoryIcon(d_ptr->m_pIcon,QSize(),isTracked,isPresent);
 }
 
 QString  NumberCategory::name() const

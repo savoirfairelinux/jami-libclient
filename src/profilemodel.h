@@ -19,17 +19,18 @@
 #define PROFILEMODEL_H
 
 #include "typedefs.h"
-#include "person.h"
-#include "account.h"
-#include <QStringList>
-#include <QSharedPointer>
-#include <QtCore/QAbstractItemModel>
 
+// Qt
+#include <QtCore/QAbstractItemModel>
+class QItemSelectionModel;
+class QStringList;
+
+// Ring
+class Person;
 class ProfileContentBackend;
-class ProfilePersisterDelegate;
 class VCardMapper;
 class ProfileModelPrivate;
-class QItemSelectionModel;
+
 
 template<typename T> class CollectionMediator;
 
