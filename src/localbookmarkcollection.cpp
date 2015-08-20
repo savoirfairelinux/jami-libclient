@@ -34,6 +34,7 @@
 #include <personmodel.h>
 #include <phonedirectorymodel.h>
 #include <collectioneditor.h>
+#include <delegates/delegatemanager.h>
 #include <delegates/pixmapmanipulationdelegate.h>
 
 namespace Serializable {
@@ -218,7 +219,7 @@ QString LocalBookmarkCollection::category () const
 
 QVariant LocalBookmarkCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::BOOKMARK);
+   return getDelegateManager()->getPixmapManipulationDelegate()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::BOOKMARK);
 }
 
 bool LocalBookmarkCollection::isEnabled() const

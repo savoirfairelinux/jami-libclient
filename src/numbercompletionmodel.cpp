@@ -36,7 +36,6 @@
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
 #include "numbercategorymodel.h"
-#include "delegates/pixmapmanipulationdelegate.h"
 #include "person.h"
 
 //Private
@@ -327,7 +326,7 @@ ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
    if (idx.isValid()) {
       //Keep the temporary contact methods private, export a copy
       ContactMethod* m = (d_ptr->m_hNumbers.end()-1-idx.row()).value();
-      return m->type() == ContactMethod::Type::TEMPORARY ? 
+      return m->type() == ContactMethod::Type::TEMPORARY ?
          PhoneDirectoryModel::instance()->fromTemporary(qobject_cast<TemporaryContactMethod*>(m))
          : m;
    }

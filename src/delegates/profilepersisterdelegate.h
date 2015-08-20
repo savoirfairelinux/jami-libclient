@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -20,27 +20,20 @@
 
 #include <typedefs.h>
 
-//Qt
-#include <QtCore/QVariant>
-#include <QtCore/QModelIndex>
-#include <QDir>
+// Qt
+#include <QtCore/QDir>
 
-//SFLPhone
+// Ring
 class Person;
 
 class LIB_EXPORT ProfilePersisterDelegate {
 public:
-   virtual ~ProfilePersisterDelegate() {}
-   virtual bool load();
-   virtual bool save(const Person* c);
-   virtual QDir getProfilesDir();
+    virtual ~ProfilePersisterDelegate() {}
 
-   //Singleton
-   static ProfilePersisterDelegate* instance();
-   static void setInstance(ProfilePersisterDelegate* i);
-
-protected:
-   static ProfilePersisterDelegate* m_spInstance;
+    // FIXME: the load and save methods should be taken from the implementation in profilemodel.cpp
+    virtual bool load() = 0;
+    virtual bool save(const Person* c) = 0;
+    virtual QDir getProfilesDir();
 };
 
 #endif // PROFILEPERSISTERVISITOR_H
