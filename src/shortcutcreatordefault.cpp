@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,29 +15,16 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SHORTCUTDELEGATE_H
-#define SHORTCUTDELEGATE_H
+#include "shortcutcreatordefault.h"
 
-#include <typedefs.h>
+#include "macro.h"
 
-//Qt
-#include <QtCore/QVariant>
+namespace Interfaces {
 
-//Ring
-class Macro;
+QVariant ShortcutCreatorDefault::createAction(Macro* macro)
+{
+    Q_UNUSED(macro)
+    return QVariant();
+}
 
-/**
- * This delegate allow to attach a QAction/GAction/MASShortcut to a Macro
- */
-class LIB_EXPORT ShortcutDelegate {
-public:
-   virtual ~ShortcutDelegate(){}
-
-   virtual QVariant createAction(Macro* macro);
-
-   //Singleton
-   static ShortcutDelegate* instance();
-   static void setInstance(ShortcutDelegate* i);
-};
-
-#endif
+} // namespace Interfaces

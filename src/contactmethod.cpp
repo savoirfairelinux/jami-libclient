@@ -406,7 +406,7 @@ QVariant ContactMethod::icon() const
 
 QVariant TemporaryContactMethod::icon() const
 {
-   return QVariant(); //TODO use the pixmap delegate to get a better icon
+   return QVariant(); //TODO use the pixmapmanipulator to get a better icon
 }
 
 ///The number of seconds spent with the URI (from history)

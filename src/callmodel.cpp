@@ -41,7 +41,8 @@
 #include "collectioninterface.h"
 #include "dbus/videomanager.h"
 #include "categorizedhistorymodel.h"
-#include "delegates/phonenumberselectordelegate.h"
+#include "globalinstances.h"
+#include "interfaces/contactmethodselectori.h"
 #include "personmodel.h"
 #include "useractionmodel.h"
 #include "video/renderer.h"
@@ -1069,8 +1070,8 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       const QByteArray encodedPerson = mimedata->data(RingMimes::CONTACT);
       Call* target = getCall(targetIdx);
       qDebug() << "Contact" << encodedPerson << "on call" << target;
-      if (ContactMethodSelector::defaultDelegate()) {
-         const ContactMethod* number = ContactMethodSelector::defaultDelegate()->getNumber(
+      try {
+         const ContactMethod* number = GlobalInstances::contactMethodSelector().number(
          PersonModel::instance()->getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();
@@ -1082,8 +1083,9 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
             qDebug() << "Person not found";
          }
       }
-      else
+      catch (...) {
          qDebug() << "There is nothing to handle contact";
+      }
    }
    return false;
 }

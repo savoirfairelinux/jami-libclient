@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,38 +15,26 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "accountlistcolordelegate.h"
+#ifndef PRESENCESERIALIZERDEFAULT_H
+#define PRESENCESERIALIZERDEFAULT_H
 
-AccountListColorDelegate* AccountListColorDelegate::m_spInstance = new AccountListColorDelegate();
+#include "interfaces/presenceserializeri.h"
 
-QVariant AccountListColorDelegate::getColor(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+class CollectionInterface;
 
-QVariant AccountListColorDelegate::getIcon(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+namespace Interfaces {
 
-AccountListColorDelegate::~AccountListColorDelegate()
-{
+///Default implementation of the PresenceSerializer interface; does not actually preform any serialization
+class LIB_EXPORT PresenceSerializerDefault : public PresenceSerializerI {
+public:
+    void save       () override {}
+    void load       () override {}
 
-}
+    ///Always returns 'false'
+    bool isTracked  (CollectionInterface* backend) const override;
+    void setTracked (CollectionInterface* backend, bool tracked) override;
+};
 
-AccountListColorDelegate* AccountListColorDelegate::instance()
-{
-   return m_spInstance;
-}
+} // namespace Interfaces
 
-void AccountListColorDelegate::setInstance(AccountListColorDelegate* visitor)
-{
-   if (visitor) {
-      delete m_spInstance;
-      m_spInstance = visitor;
-   }
-}
+#endif // PRESENCESERIALIZERDEFAULT_H

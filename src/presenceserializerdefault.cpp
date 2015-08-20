@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,20 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PROFILEPERSISTERDELEGATE_H
-#define PROFILEPERSISTERDELEGATE_H
+#include "presenceserializerdefault.h"
 
-#include <typedefs.h>
+namespace Interfaces {
 
-//Qt
-#include <QtCore/QVariant>
-#include <QtCore/QModelIndex>
-#include <QDir>
+bool PresenceSerializerDefault::isTracked(CollectionInterface* backend) const
+{
+    Q_UNUSED(backend)
+    return false;
+}
 
-//SFLPhone
-class Person;
+void PresenceSerializerDefault::setTracked(CollectionInterface* backend, bool tracked)
+{
+    Q_UNUSED(backend)
+    Q_UNUSED(tracked)
+}
 
-class LIB_EXPORT ProfilePersisterDelegate {
-public:
-   virtual ~ProfilePersisterDelegate() {}
-   virtual bool load();
-   virtual bool save(const Person* c);
-   virtual QDir getProfilesDir();
-
-   //Singleton
-   static ProfilePersisterDelegate* instance();
-   static void setInstance(ProfilePersisterDelegate* i);
-
-protected:
-   static ProfilePersisterDelegate* m_spInstance;
-};
-
-#endif // PROFILEPERSISTERVISITOR_H
+} // namespace Interfaces

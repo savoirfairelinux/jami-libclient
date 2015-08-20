@@ -33,8 +33,9 @@
 #include "private/vcardutils.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
-#include "delegates/pixmapmanipulationdelegate.h"
-#include "delegates/itemmodelstateserializationdelegate.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
+#include "interfaces/itemmodelstateserializeri.h"
 #include "private/threadworker.h"
 
 class FallbackPersonBackendEditor final : public CollectionEditor<Person>
@@ -186,16 +187,17 @@ QString FallbackPersonCollection::category () const
 
 QVariant FallbackPersonCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CONTACT);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::CONTACT);
 }
 
 bool FallbackPersonCollection::isEnabled() const
 {
-   /* if delegate exists, check if collectin is enabled, else assume it is */
-   if (auto delegate = ItemModelStateSerializationDelegate::instance())
-      return delegate->isChecked(this);
-   else
-      return true;
+    /* if ItemModelStateSerializer exists, check if collectin is enabled, else assume it is */
+    try {
+        return GlobalInstances::itemModelStateSerializer().isChecked(this);
+    } catch (...) {
+        return true;
+     }
 }
 
 bool FallbackPersonCollection::load()

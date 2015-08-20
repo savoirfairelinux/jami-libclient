@@ -25,7 +25,8 @@
 #include <QtCore/QJsonObject>
 
 //Ring
-#include <delegates/pixmapmanipulationdelegate.h>
+#include <globalinstances.h>
+#include <interfaces/pixmapmanipulatori.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>
 #include <media/textrecording.h>
@@ -161,7 +162,7 @@ QString LocalTextRecordingCollection::category () const
 
 QVariant LocalTextRecordingCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::RECORDING);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::RECORDING);
 }
 
 bool LocalTextRecordingCollection::isEnabled() const
@@ -255,4 +256,3 @@ Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMetho
 
    return r;
 }
-

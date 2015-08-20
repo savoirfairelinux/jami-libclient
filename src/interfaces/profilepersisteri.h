@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,30 +15,28 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "shortcutdelegate.h"
+#ifndef PROFILEPERSISTERI_H
+#define PROFILEPERSISTERI_H
 
-struct ShortcutDelegatePrivate
-{
-   static ShortcutDelegate* m_spInstance;
+#include <typedefs.h>
+
+// Qt
+class QDir;
+
+// Ring
+class Person;
+
+namespace Interfaces {
+
+class ProfilePersisterI {
+public:
+    virtual ~ProfilePersisterI() = default;
+
+    virtual bool load       (               )       = 0;
+    virtual bool save       (const Person* c)       = 0;
+    virtual QDir profilesDir(               ) const = 0;
 };
 
-ShortcutDelegate* ShortcutDelegatePrivate::m_spInstance = new ShortcutDelegate();
+} // namespace Interfaces
 
-ShortcutDelegate* ShortcutDelegate::instance()
-{
-   return ShortcutDelegatePrivate::m_spInstance;
-}
-
-void ShortcutDelegate::setInstance(ShortcutDelegate* i)
-{
-   if (i) {
-      delete ShortcutDelegatePrivate::m_spInstance;
-      ShortcutDelegatePrivate::m_spInstance = i;
-   }
-}
-
-QVariant ShortcutDelegate::createAction(Macro* macro)
-{
-   Q_UNUSED(macro)
-   return QVariant();
-}
+#endif // PROFILEPERSISTERI_H

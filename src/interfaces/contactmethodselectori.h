@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,16 +15,26 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "itemmodelstateserializationdelegate.h"
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::m_spInstance = nullptr;
+#ifndef CONTACTMETHODSELECTORI_H
+#define CONTACTMETHODSELECTORI_H
 
-void ItemModelStateSerializationDelegate::setInstance(ItemModelStateSerializationDelegate* i)
-{
-   m_spInstance = i;
-}
+#include <typedefs.h>
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::instance()
-{
-   return m_spInstance;
-}
+class ContactMethod;
+class Person;
+
+namespace Interfaces {
+
+///Interface for client (GUI) specific contact dialog
+class ContactMethodSelectorI {
+public:
+    virtual ~ContactMethodSelectorI() = default;
+
+    ///Returns the CM chosen to be used to contact the given Person
+    virtual ContactMethod* number(const Person* p) = 0;
+};
+
+} // namespace Interfaces
+
+#endif // CONTACTMETHODSELECTORI_H

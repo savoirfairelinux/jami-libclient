@@ -34,7 +34,8 @@
 #include "numbercategorymodel.h"
 #include "collectioninterface.h"
 #include "dbus/presencemanager.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 #include "personmodel.h"
 
 //Private
@@ -107,7 +108,7 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
             case Qt::DisplayRole:
                return number->uri();
             case Qt::DecorationRole :
-               return PixmapManipulationDelegate::instance()->callPhoto(number,QSize(16,16));
+               return GlobalInstances::pixmapManipulator().callPhoto(number,QSize(16,16));
             case (int) Role::Object:
                return QVariant::fromValue(const_cast<ContactMethod*>(number));
          }
@@ -265,7 +266,7 @@ Qt::ItemFlags PhoneDirectoryModel::flags(const QModelIndex& index ) const
       && number->account() && (!number->account()->supportPresenceSubscribe()));
 
    return Qt::ItemIsEnabled
-      | Qt::ItemIsSelectable 
+      | Qt::ItemIsSelectable
       | (index.column() == static_cast<int>(PhoneDirectoryModelPrivate::Columns::TRACKED)&&enabled?Qt::ItemIsUserCheckable:Qt::NoItemFlags);
 }
 

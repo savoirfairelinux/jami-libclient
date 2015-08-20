@@ -34,7 +34,8 @@
 #include <personmodel.h>
 #include <phonedirectorymodel.h>
 #include <collectioneditor.h>
-#include <delegates/pixmapmanipulationdelegate.h>
+#include <globalinstances.h>
+#include <interfaces/pixmapmanipulatori.h>
 
 namespace Serializable {
    class BookmarkNode
@@ -218,7 +219,7 @@ QString LocalBookmarkCollection::category () const
 
 QVariant LocalBookmarkCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::BOOKMARK);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::BOOKMARK);
 }
 
 bool LocalBookmarkCollection::isEnabled() const
