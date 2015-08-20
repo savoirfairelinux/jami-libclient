@@ -33,7 +33,8 @@
 #include <accountmodel.h>
 #include <personmodel.h>
 #include <private/textrecording_p.h>
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "interfaces/instances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 //Std
 #include <ctime>
@@ -486,7 +487,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return QVariant(n->m_pMessage->m_PlainText);
          case Qt::DecorationRole         :
             if (n->m_pMessage->direction == Media::Media::Direction::IN)
-               return PixmapManipulationDelegate::instance()->callPhoto(n->m_pContactMethod,QSize(48,48));
+               return Interfaces::pixmapManipulator().callPhoto(n->m_pContactMethod,QSize(48,48));
             break;
          case (int)Media::TextRecording::Role::Direction            :
             return QVariant::fromValue(n->m_pMessage->direction);

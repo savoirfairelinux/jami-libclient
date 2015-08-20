@@ -288,14 +288,13 @@ SET( libringclient_LIB_SRCS
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
 
-  #Delegates
-  src/delegates/accountlistcolordelegate.cpp
-  src/delegates/phonenumberselectordelegate.cpp
-  src/delegates/pixmapmanipulationdelegate.cpp
-  src/delegates/presenceserializationdelegate.cpp
-  src/delegates/itemmodelstateserializationdelegate.cpp
-  src/delegates/profilepersisterdelegate.cpp
-  src/delegates/shortcutdelegate.cpp
+  #Interfaces
+  src/interfaces/instances.cpp
+  src/interfaces/accountlistcolorizerdefault.cpp
+  src/interfaces/presenceserializerdefault.cpp
+  src/interfaces/pixmapmanipulatordefault.cpp
+  src/interfaces/profilepersisterdefault.cpp
+  src/interfaces/shortcutcreatordefault.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -437,14 +436,20 @@ SET(libringclient_media_LIB_HDRS
   src/media/recordingmodel.h
 )
 
-SET(libringclient_delegates_LIB_HDRS
-  src/delegates/accountlistcolordelegate.h
-  src/delegates/phonenumberselectordelegate.h
-  src/delegates/presenceserializationdelegate.h
-  src/delegates/itemmodelstateserializationdelegate.h
-  src/delegates/pixmapmanipulationdelegate.h
-  src/delegates/profilepersisterdelegate.h
-  src/delegates/shortcutdelegate.h
+SET(libringclient_interface_LIB_HDRS
+  src/interfaces/instances.h
+  src/interfaces/accountlistcolorizeri.h
+  src/interfaces/accountlistcolorizerdefault.h
+  src/interfaces/contactmethodselectori.h
+  src/interfaces/presenceserializeri.h
+  src/interfaces/presenceserializerdefault.h
+  src/interfaces/itemmodelstateserializeri.h
+  src/interfaces/pixmapmanipulatori.h
+  src/interfaces/pixmapmanipulatordefault.h
+  src/interfaces/profilepersisteri.h
+  src/interfaces/profilepersisterdefault.h
+  src/interfaces/shortcutcreatori.h
+  src/interfaces/shortcutcreatordefault.h
 )
 
 SET( libringclient_extra_LIB_HDRS
@@ -670,8 +675,8 @@ INSTALL( FILES ${libringclient_extensions_LIB_HDRS}
   COMPONENT Devel
 )
 
-INSTALL( FILES ${libringclient_delegates_LIB_HDRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/delegates
+INSTALL( FILES ${libringclient_interface_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/interfaces
   COMPONENT Devel
 )
 

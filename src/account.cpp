@@ -34,7 +34,8 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/videomanager.h"
-#include "delegates/accountlistcolordelegate.h"
+#include "interfaces/instances.h"
+#include "interfaces/accountlistcolorizeri.h"
 #include "certificate.h"
 #include "certificatemodel.h"
 #include "accountmodel.h"
@@ -386,7 +387,7 @@ bool Account::isLoaded() const
 ///Return status Qt color, QColor is not part of QtCore, use using the global variant
 QVariant Account::stateColor() const
 {
-   return AccountListColorDelegate::instance()->getColor(this);
+   return Interfaces::accountListColorizer().color(this);
 }
 
 ///Create and return the credential model
@@ -1025,7 +1026,7 @@ QVariant Account::roleData(int role) const
       case Qt::BackgroundRole:
          return stateColor();
       case Qt::DecorationRole:
-         return AccountListColorDelegate::instance()->getIcon(this);
+         return Interfaces::accountListColorizer().icon(this);
 
       //Specialized
       case CAST(Account::Role::Alias):

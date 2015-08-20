@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,27 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PROFILEPERSISTERDELEGATE_H
-#define PROFILEPERSISTERDELEGATE_H
+#ifndef PRESENCESERIALIZERDEFAULT_H
+#define PRESENCESERIALIZERDEFAULT_H
 
-#include <typedefs.h>
+#include "presenceserializeri.h"
 
-//Qt
-#include <QtCore/QVariant>
-#include <QtCore/QModelIndex>
-#include <QDir>
+class CollectionInterface;
 
-//SFLPhone
-class Person;
+namespace Interfaces {
 
-class LIB_EXPORT ProfilePersisterDelegate {
+///Default implementation of the PresenceSerializer interface; does not actually preform any serialization
+class LIB_EXPORT PresenceSerializerDefault : public PresenceSerializerI {
 public:
-   virtual ~ProfilePersisterDelegate() {}
-   virtual bool load();
-   virtual bool save(const Person* c);
-   virtual QDir getProfilesDir();
+    virtual ~PresenceSerializerDefault(){}
+    virtual void save     () override {}
+    virtual void load     () override {}
 
-   //Singleton
-   static ProfilePersisterDelegate* instance();
-   static void setInstance(ProfilePersisterDelegate* i);
-
-protected:
-   static ProfilePersisterDelegate* m_spInstance;
+    ///Always returns 'false'
+    virtual bool isTracked(CollectionInterface* backend) const override;
+    virtual void setTracked(CollectionInterface* backend, bool tracked) override;
 };
 
-#endif // PROFILEPERSISTERVISITOR_H
+} // namespace Interfaces
+
+#endif // PRESENCESERIALIZERDEFAULT_H

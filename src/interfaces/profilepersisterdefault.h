@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,26 +15,32 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef PHONENUMBERSELECTOR_H
-#define PHONENUMBERSELECTOR_H
+#ifndef PROFILEPERSISTERDEFAULT_H
+#define PROFILEPERSISTERDEFAULT_H
 
 #include <typedefs.h>
-#include "../person.h"
 
-class ContactMethod;
+#include "profilepersisteri.h"
+
+// Qt
+// #include <QtCore/QDir>
+class QDir;
+
+// Ring
 class Person;
 
-///Common point visitor for UI specific contact dialog
-class LIB_EXPORT ContactMethodSelector {
+namespace Interfaces {
+
+class LIB_EXPORT ProfilePersisterDefault : public ProfilePersisterI {
 public:
-   virtual ~ContactMethodSelector() {}
-   virtual ContactMethod* getNumber(const Person* nb) = 0;
-   static ContactMethodSelector* defaultDelegate();
-protected:
-   static void setDefaultDelegate(ContactMethodSelector* v);
-private:
-   static ContactMethodSelector* m_spDefaultDelegate;
+    virtual ~ProfilePersisterDefault() {}
+
+    // FIXME: the load and save methods should be taken from the implementation in profilemodel.cpp
+    virtual bool load       (               )       override;
+    virtual bool save       (const Person* c)       override;
+    virtual QDir profilesDir(               ) const override;
 };
 
-#endif
+} // namespace Interfaces
+
+#endif // PROFILEPERSISTERDEFAULT_H

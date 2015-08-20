@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,31 +15,24 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ITEMMODELSTATESERIALIZATIONDELEGATE_H
-#define ITEMMODELSTATESERIALIZATIONDELEGATE_H
+#ifndef PRESENCESERIALIZERI_H
+#define PRESENCESERIALIZERI_H
 
 #include <typedefs.h>
+
 class CollectionInterface;
-class Account;
 
-///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
-class LIB_EXPORT ItemModelStateSerializationDelegate {
+namespace Interfaces {
+
+class LIB_EXPORT PresenceSerializerI {
 public:
-   virtual bool save() = 0;
-   virtual bool load() = 0;
-   virtual ~ItemModelStateSerializationDelegate() {}
-
-   static void setInstance(ItemModelStateSerializationDelegate* i);
-   static ItemModelStateSerializationDelegate* instance();
-
-   //Getter
-   virtual bool isChecked(const CollectionInterface* backend) const = 0;
-
-   //Setter
-   virtual bool setChecked(const CollectionInterface* backend, bool enabled) = 0;
-
-private:
-   static ItemModelStateSerializationDelegate* m_spInstance;
+    virtual ~PresenceSerializerI(){}
+    virtual void save     () = 0;
+    virtual void load     () = 0;
+    virtual bool isTracked(CollectionInterface* backend) const = 0;
+    virtual void setTracked(CollectionInterface* backend, bool tracked) = 0;
 };
 
-#endif
+} // namespace Interfaces
+
+#endif // PRESENCESERIALIZERI_H

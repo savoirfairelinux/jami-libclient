@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,38 +15,29 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "accountlistcolordelegate.h"
+#ifndef PROFILEPERSISTERI_H
+#define PROFILEPERSISTERI_H
 
-AccountListColorDelegate* AccountListColorDelegate::m_spInstance = new AccountListColorDelegate();
+#include <typedefs.h>
 
-QVariant AccountListColorDelegate::getColor(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+// Qt
+// #include <QtCore/QDir>
+class QDir;
 
-QVariant AccountListColorDelegate::getIcon(const Account* a)
-{
-   Q_UNUSED(a)
-   //The default implementation does nothing
-   return QVariant();
-}
+// Ring
+class Person;
 
-AccountListColorDelegate::~AccountListColorDelegate()
-{
+namespace Interfaces {
 
-}
+class LIB_EXPORT ProfilePersisterI {
+public:
+    virtual ~ProfilePersisterI() {}
 
-AccountListColorDelegate* AccountListColorDelegate::instance()
-{
-   return m_spInstance;
-}
+    virtual bool load       (               )       = 0;
+    virtual bool save       (const Person* c)       = 0;
+    virtual QDir profilesDir(               ) const = 0;
+};
 
-void AccountListColorDelegate::setInstance(AccountListColorDelegate* visitor)
-{
-   if (visitor) {
-      delete m_spInstance;
-      m_spInstance = visitor;
-   }
-}
+} // namespace Interfaces
+
+#endif // PROFILEPERSISTERI_H

@@ -29,7 +29,8 @@
 #include <macro.h>
 #include <collectioneditor.h>
 #include <macromodel.h>
-#include <delegates/pixmapmanipulationdelegate.h>
+#include <interfaces/instances.h>
+#include <interfaces/pixmapmanipulatori.h>
 
 namespace Serializable {
    class MacroNode
@@ -196,7 +197,7 @@ QString LocalMacroCollection::category () const
 
 QVariant LocalMacroCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::MACRO);
+   return Interfaces::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::MACRO);
 }
 
 bool LocalMacroCollection::isEnabled() const

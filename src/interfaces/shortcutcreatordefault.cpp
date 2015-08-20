@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,17 +15,16 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "phonenumberselectordelegate.h"
+#include "shortcutcreatordefault.h"
 
-//Interface only
-ContactMethodSelector* ContactMethodSelector::m_spDefaultDelegate = nullptr;
+#include "macro.h"
 
-void ContactMethodSelector::setDefaultDelegate(ContactMethodSelector* v)
+namespace Interfaces {
+
+QVariant ShortcutCreatorDefault::createAction(Macro* macro)
 {
-   m_spDefaultDelegate = v;
+    Q_UNUSED(macro)
+    return QVariant();
 }
 
-ContactMethodSelector* ContactMethodSelector::defaultDelegate()
-{
-   return m_spDefaultDelegate;
-}
+} // namespace Interfaces

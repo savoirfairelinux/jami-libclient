@@ -36,7 +36,8 @@
 #include "certificate.h"
 #include "contactmethod.h"
 #include "categorizedhistorymodel.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "interfaces/instances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 class LocalHistoryEditor final : public CollectionEditor<Call>
 {
@@ -197,7 +198,7 @@ QString LocalHistoryCollection::category () const
 
 QVariant LocalHistoryCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::HISTORY);
+   return Interfaces::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::HISTORY);
 }
 
 bool LocalHistoryCollection::isEnabled() const

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,16 +15,23 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "itemmodelstateserializationdelegate.h"
+#ifndef ACCOUNTLISTCOLORIZERI_H
+#define ACCOUNTLISTCOLORIZERI_H
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::m_spInstance = nullptr;
+#include <typedefs.h>
 
-void ItemModelStateSerializationDelegate::setInstance(ItemModelStateSerializationDelegate* i)
-{
-   m_spInstance = i;
-}
+class Account;
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::instance()
-{
-   return m_spInstance;
-}
+namespace Interfaces {
+
+///Interface for getting the account color and icon
+class LIB_EXPORT AccountListColorizerI {
+public:
+    virtual ~AccountListColorizerI() {}
+    virtual QVariant color(const Account* a) = 0;
+    virtual QVariant icon(const Account* a) = 0;
+};
+
+} // namespace Interfaces
+
+#endif // ACCOUNTLISTCOLORIZERI_H

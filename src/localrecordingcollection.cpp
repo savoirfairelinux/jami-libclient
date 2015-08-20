@@ -20,7 +20,8 @@
 //Qt
 #include <QtCore/QUrl>
 
-#include <delegates/pixmapmanipulationdelegate.h>
+#include <interfaces/instances.h>
+#include <interfaces/pixmapmanipulatori.h>
 #include <media/recordingmodel.h>
 #include <media/recording.h>
 #include <media/avrecording.h>
@@ -108,7 +109,7 @@ QString LocalRecordingCollection::category () const
 
 QVariant LocalRecordingCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::RECORDING);
+   return Interfaces::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::RECORDING);
 }
 
 bool LocalRecordingCollection::isEnabled() const

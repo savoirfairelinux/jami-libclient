@@ -27,7 +27,8 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "availableaccountmodel.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "interfaces/instances.h"
+#include "interfaces/pixmapmanipulatori.h"
 #include "private/useractions.h"
 #include "private/matrixutils.h"
 
@@ -489,7 +490,7 @@ QVariant UserActionModel::data(const QModelIndex& idx, int role ) const
          state.action     = action       ;
          state.calls      = {}           ;
          state.checkState = Qt::Unchecked;
-         return PixmapManipulationDelegate::instance()->userActionIcon(state);
+         return Interfaces::pixmapManipulator().userActionIcon(state);
       }
       case UserActionModel::Role::ACTION:
          return QVariant::fromValue(static_cast<Action>(idx.row()));

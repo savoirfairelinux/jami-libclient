@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,29 +15,26 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SHORTCUTDELEGATE_H
-#define SHORTCUTDELEGATE_H
+
+#ifndef CONTACTMETHODSELECTORI_H
+#define CONTACTMETHODSELECTORI_H
 
 #include <typedefs.h>
 
-//Qt
-#include <QtCore/QVariant>
+class ContactMethod;
+class Person;
 
-//Ring
-class Macro;
+namespace Interfaces {
 
-/**
- * This delegate allow to attach a QAction/GAction/MASShortcut to a Macro
- */
-class LIB_EXPORT ShortcutDelegate {
+///Interface for client (GUI) specific contact dialog
+class LIB_EXPORT ContactMethodSelectorI {
 public:
-   virtual ~ShortcutDelegate(){}
+    virtual ~ContactMethodSelectorI() {}
 
-   virtual QVariant createAction(Macro* macro);
-
-   //Singleton
-   static ShortcutDelegate* instance();
-   static void setInstance(ShortcutDelegate* i);
+    ///Returns the CM chosen to be used to contact the given Person
+    virtual ContactMethod* number(const Person* p) = 0;
 };
 
-#endif
+} // namespace Interfaces
+
+#endif // CONTACTMETHODSELECTORI_H

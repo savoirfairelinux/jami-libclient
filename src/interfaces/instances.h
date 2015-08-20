@@ -1,0 +1,81 @@
+/****************************************************************************
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
+ *                                                                          *
+ *   This library is free software; you can redistribute it and/or          *
+ *   modify it under the terms of the GNU Lesser General Public             *
+ *   License as published by the Free Software Foundation; either           *
+ *   version 2.1 of the License, or (at your option) any later version.     *
+ *                                                                          *
+ *   This library is distributed in the hope that it will be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU General Public License      *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
+ ***************************************************************************/
+#ifndef INSTANCES_H
+#define INSTANCES_H
+
+#include <typedefs.h>
+
+#include <memory>
+
+namespace Interfaces {
+class AccountListColorizerI;
+class ContactMethodSelectorI;
+class ItemModelStateSerializerI;
+class PixmapManipulatorI;
+class PresenceSerializerI;
+class ProfilePersisterI;
+class ShortcutCreatorI;
+} // namespace Interfaces
+
+/**
+ * Use these functions to get and set the global instance of the implementation of each interface.
+ *
+ * The setter functions demand an std::unique_ptr because they become the object owners.
+ *
+ * Note that certain interfaces do not have a default implementation in LRC, in this case the getter
+ * function will throw an exception if no instance has been set by the client.
+ */
+namespace Interfaces {
+
+AccountListColorizerI& accountListColorizer();
+void setAccountListColorizer(std::unique_ptr<AccountListColorizerI> instance);
+
+/**
+ * LRC does not provide a default implementation of this interface, thus an exception will be thrown
+ * if this getter is called without an instance being set by the client
+ */
+ContactMethodSelectorI& contactMethodSelector();
+void setContactMethodSelector(std::unique_ptr<ContactMethodSelectorI> instance);
+
+/**
+ * LRC does not provide a default implementation of this interface, thus an exception will be thrown
+ * if this getter is called without an instance being set by the client
+ */
+ItemModelStateSerializerI& itemModelStateSerializer();
+void setItemModelStateSerializer(std::unique_ptr<ItemModelStateSerializerI> instance);
+
+PixmapManipulatorI& pixmapManipulator();
+void setPixmapManipulator(std::unique_ptr<PixmapManipulatorI> instance);
+
+PresenceSerializerI& presenceSerializer();
+void setPresenceSerializer(std::unique_ptr<PresenceSerializerI> instance);
+
+/**
+ * TODO: LRC has a default implementation of this interface; however profiles are still in an
+ * experimental state, so this getter will throw an exception unless an instance is set by the
+ * client
+ */
+ProfilePersisterI& profilePersister();
+void setProfilePersister(std::unique_ptr<ProfilePersisterI> instance);
+
+ShortcutCreatorI& shortcutCreator();
+void setShortcutCreatorI(std::unique_ptr<ShortcutCreatorI> instance);
+
+} // namespace Interfaces
+
+#endif // INSTANCES_H

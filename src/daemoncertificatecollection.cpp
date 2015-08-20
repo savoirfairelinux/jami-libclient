@@ -21,7 +21,8 @@
 #include "certificate.h"
 #include "account.h"
 #include "certificatemodel.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "interfaces/instances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -157,7 +158,7 @@ QString DaemonCertificateCollection::category() const
 
 QVariant DaemonCertificateCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
+   return Interfaces::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::CERTIFICATE);
 }
 
 bool DaemonCertificateCollection::isEnabled() const

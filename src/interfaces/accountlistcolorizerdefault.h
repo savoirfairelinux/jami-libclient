@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
- *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
+ *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
+ *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,30 +15,21 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "shortcutdelegate.h"
+#ifndef ACCOUNTLISTCOLORIZERDEFAULT_H
+#define ACCOUNTLISTCOLORIZERDEFAULT_H
 
-struct ShortcutDelegatePrivate
-{
-   static ShortcutDelegate* m_spInstance;
+#include "accountlistcolorizeri.h"
+
+namespace Interfaces {
+
+///Default implementation of the AccountListColorizer interface which simply returns empty QVariants
+class LIB_EXPORT AccountListColorizerDefault : public AccountListColorizerI {
+public:
+    virtual ~AccountListColorizerDefault() {};
+    virtual QVariant color(const Account* a) override;
+    virtual QVariant icon(const Account* a) override;
 };
 
-ShortcutDelegate* ShortcutDelegatePrivate::m_spInstance = new ShortcutDelegate();
+} // namespace Interfaces
 
-ShortcutDelegate* ShortcutDelegate::instance()
-{
-   return ShortcutDelegatePrivate::m_spInstance;
-}
-
-void ShortcutDelegate::setInstance(ShortcutDelegate* i)
-{
-   if (i) {
-      delete ShortcutDelegatePrivate::m_spInstance;
-      ShortcutDelegatePrivate::m_spInstance = i;
-   }
-}
-
-QVariant ShortcutDelegate::createAction(Macro* macro)
-{
-   Q_UNUSED(macro)
-   return QVariant();
-}
+#endif // ACCOUNTLISTCOLORIZERDEFAULT_H
