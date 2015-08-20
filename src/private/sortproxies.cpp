@@ -29,6 +29,7 @@
 #include "matrixutils.h"
 #include <categorizedcontactmodel.h>
 #include <categorizedhistorymodel.h>
+#include <delegates/delegatemanager.h>
 #include <delegates/pixmapmanipulationdelegate.h>
 
 namespace CategoryModelCommon {
@@ -165,7 +166,7 @@ QVariant ContactSortingCategoryModel::data( const QModelIndex& index, int role )
          case Qt::DisplayRole:
             return CategoryModelCommon::contactSortNames[static_cast<CategorizedContactModel::SortedProxy::Categories>(index.row())];
          case Qt::DecorationRole:
-            return PixmapManipulationDelegate::instance()->contactSortingCategoryIcon(static_cast<CategorizedContactModel::SortedProxy::Categories>(index.row()));
+            return getDelegateManager()->getPixmapManipulationDelegate()->contactSortingCategoryIcon(static_cast<CategorizedContactModel::SortedProxy::Categories>(index.row()));
       }
    }
    return QVariant();
@@ -217,7 +218,7 @@ void sortHistory(QSortFilterProxyModel* p, int role)
 
 HistorySortingCategoryModel::HistorySortingCategoryModel(QObject* parent) : QAbstractListModel(parent)
 {
-   
+
 }
 
 HistorySortingCategoryModel::~HistorySortingCategoryModel()
@@ -232,7 +233,7 @@ QVariant HistorySortingCategoryModel::data( const QModelIndex& index, int role) 
          case Qt::DisplayRole:
             return CategoryModelCommon::historySortNames[static_cast<CategorizedHistoryModel::SortedProxy::Categories>(index.row())];
          case Qt::DecorationRole:
-            return PixmapManipulationDelegate::instance()->historySortingCategoryIcon(static_cast<CategorizedHistoryModel::SortedProxy::Categories>(index.row()));
+            return getDelegateManager()->getPixmapManipulationDelegate()->historySortingCategoryIcon(static_cast<CategorizedHistoryModel::SortedProxy::Categories>(index.row()));
       }
    }
 

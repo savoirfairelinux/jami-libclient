@@ -35,6 +35,7 @@
 #include "historytimecategorymodel.h"
 #include "numbercategorymodel.h"
 #include "numbercategory.h"
+#include "delegates/delegatemanager.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "private/person_p.h"
 
@@ -644,7 +645,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
       maker->addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
    }
 
-   maker->addPhoto(PixmapManipulationDelegate::instance()->toByteArray(photo()));
+   maker->addPhoto(getDelegateManager()->getPixmapManipulationDelegate()->toByteArray(photo()));
    return maker->endVCard();
 }
 

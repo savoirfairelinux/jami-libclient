@@ -24,6 +24,7 @@
 //Ring
 #include "account.h"
 #include "certificatemodel.h"
+#include "delegates/delegatemanager.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "private/securityevaluationmodel_p.h"
 #include "securityflaw.h"
@@ -207,7 +208,7 @@ private:
 
 /**
  * This model take multiple listModels and append them one after the other
- * 
+ *
  * the trick for high performance is to known at compile time the sizes
  */
 class CombinaisonProxyModel : public QAbstractTableModel
@@ -344,7 +345,7 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
          case (int)AccountChecksModel::Columns::MESSAGE:
             switch(role) {
                case Qt::DecorationRole:
-                  return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
+                  return getDelegateManager()->getPixmapManipulationDelegate()->securityIssueIcon(index);
                case (int)SecurityEvaluationModel::Role::Severity:
                   return QVariant::fromValue(SecurityEvaluationModelPrivate::certificateFlawSeverity[c]);
                case (int)SecurityEvaluationModel::Role::SecurityLevel:
@@ -428,7 +429,7 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
             case Qt::DisplayRole:
                return SecurityEvaluationModelPrivate::messages[index.row()];
             case Qt::DecorationRole:
-               return PixmapManipulationDelegate::instance()->securityIssueIcon(index);
+               return getDelegateManager()->getPixmapManipulationDelegate()->securityIssueIcon(index);
          };
          break;
       case (int)AccountChecksModel::Columns::SOURCE:
