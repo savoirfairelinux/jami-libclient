@@ -32,7 +32,8 @@
 #include <collectioneditor.h>
 #include <ringtonemodel.h>
 #include <ringtone.h>
-#include <delegates/pixmapmanipulationdelegate.h>
+#include <globalinstances.h>
+#include <interfaces/pixmapmanipulatori.h>
 
 namespace Serializable {
    class RingtoneNode
@@ -225,7 +226,7 @@ QString LocalRingtoneCollection::category () const
 
 QVariant LocalRingtoneCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::MACRO);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::MACRO);
 }
 
 bool LocalRingtoneCollection::isEnabled() const

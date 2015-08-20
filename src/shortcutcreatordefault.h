@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,23 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PROFILEPERSISTERDELEGATE_H
-#define PROFILEPERSISTERDELEGATE_H
+#pragma once
 
 #include <typedefs.h>
 
 //Qt
 #include <QtCore/QVariant>
-#include <QtCore/QModelIndex>
-#include <QDir>
 
-//SFLPhone
-class Person;
+//Ring
+#include "interfaces/shortcutcreatori.h"
+class Macro;
 
-class LIB_EXPORT ProfilePersisterDelegate {
+namespace Interfaces {
+
+///Default implementation of the the ShortcutCreator interfaces; does nothing
+class LIB_EXPORT ShortcutCreatorDefault : public ShortcutCreatorI {
 public:
-   virtual ~ProfilePersisterDelegate() {}
-   virtual bool load();
-   virtual bool save(const Person* c);
-   virtual QDir getProfilesDir();
-
-   //Singleton
-   static ProfilePersisterDelegate* instance();
-   static void setInstance(ProfilePersisterDelegate* i);
-
-protected:
-   static ProfilePersisterDelegate* m_spInstance;
+    QVariant createAction(Macro* macro) override;
 };
 
-#endif // PROFILEPERSISTERVISITOR_H
+} // namespace Interfaces

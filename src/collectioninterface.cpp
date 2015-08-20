@@ -27,7 +27,8 @@
 #include "collectioneditor.h"
 #include "collectionextensionmodel.h"
 #include "itembase.h"
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 //Libstdc++
 #include <functional>
@@ -125,7 +126,7 @@ QVector<CollectionInterface*> CollectionInterface::children() const
 
 QVariant CollectionInterface::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this);
 }
 
 bool CollectionInterface::clear()

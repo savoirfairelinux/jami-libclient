@@ -23,7 +23,6 @@
 #include <QtCore/QVector>
 #include "collectionmanagerinterface.h"
 
-class NumberCategoryDelegate;
 class ContactMethod;
 class NumberCategory;
 class NumberCategoryModelPrivate;

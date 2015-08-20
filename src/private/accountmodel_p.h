@@ -27,7 +27,6 @@
 #include <accountmodel.h>
 #include "matrixutils.h"
 class AccountModel;
-class AccountListColorDelegate;
 class ProtocolModel;
 class QItemSelectionModel;
 
@@ -52,7 +51,6 @@ public:
    //Attributes
    AccountModel*                     q_ptr                ;
    QVector<Account*>                 m_lAccounts          ;
-   AccountListColorDelegate*         m_pColorDelegate     ;
    QStringList                       m_lDeletedAccounts   ;
    Account*                          m_pIP2IP             ;
    QList<Account*>                   m_pRemovedAccounts   ;

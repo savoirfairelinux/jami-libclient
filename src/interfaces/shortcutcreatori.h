@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,16 +15,27 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "itemmodelstateserializationdelegate.h"
+#pragma once
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::m_spInstance = nullptr;
+#include <typedefs.h>
 
-void ItemModelStateSerializationDelegate::setInstance(ItemModelStateSerializationDelegate* i)
-{
-   m_spInstance = i;
-}
+//Qt
+// #include <QtCore/QVariant>
+class QVariant;
 
-ItemModelStateSerializationDelegate* ItemModelStateSerializationDelegate::instance()
-{
-   return m_spInstance;
-}
+//Ring
+class Macro;
+
+namespace Interfaces {
+
+/**
+ * Interface for attaching a QAction/GAction/MASShortcut to a Macro
+ */
+class ShortcutCreatorI {
+public:
+    virtual ~ShortcutCreatorI() = default;
+
+    virtual QVariant createAction(Macro* macro) = 0;
+};
+
+} // namespace Interfaces

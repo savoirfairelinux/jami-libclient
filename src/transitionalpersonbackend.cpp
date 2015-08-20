@@ -20,7 +20,8 @@
 
 #include <collectioneditor.h>
 
-#include "delegates/pixmapmanipulationdelegate.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 class TransitionalPersonBackendPrivate
 {
@@ -155,7 +156,7 @@ QString TransitionalPersonBackend::category () const
 
 QVariant TransitionalPersonBackend::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CONTACT);
+   return GlobalInstances::pixmapManipulator().collectionIcon(this,Interfaces::PixmapManipulatorI::CollectionIconHint::CONTACT);
 }
 
 QByteArray TransitionalPersonBackend::id() const
