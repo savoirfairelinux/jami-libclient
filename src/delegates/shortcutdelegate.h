@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                               *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage <emmanuel.lepage@savoirfairelinux.com>        *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -26,18 +26,18 @@
 //Ring
 class Macro;
 
+namespace Delegates {
+
 /**
  * This delegate allow to attach a QAction/GAction/MASShortcut to a Macro
  */
 class LIB_EXPORT ShortcutDelegate {
 public:
-   virtual ~ShortcutDelegate(){}
+    virtual ~ShortcutDelegate(){}
 
-   virtual QVariant createAction(Macro* macro);
-
-   //Singleton
-   static ShortcutDelegate* instance();
-   static void setInstance(ShortcutDelegate* i);
+    virtual QVariant createAction(Macro* macro);
 };
+
+} // namespace Delegates
 
 #endif

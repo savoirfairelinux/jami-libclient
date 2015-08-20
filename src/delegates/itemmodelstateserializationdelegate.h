@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2014-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2014-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -22,24 +22,22 @@
 class CollectionInterface;
 class Account;
 
+namespace Delegates {
+
 ///Ringlib Qt does not link to QtGui, and does not need to, this allow to add runtime Gui support
 class LIB_EXPORT ItemModelStateSerializationDelegate {
 public:
-   virtual bool save() = 0;
-   virtual bool load() = 0;
-   virtual ~ItemModelStateSerializationDelegate() {}
+    virtual bool save() = 0;
+    virtual bool load() = 0;
+    virtual ~ItemModelStateSerializationDelegate() {}
 
-   static void setInstance(ItemModelStateSerializationDelegate* i);
-   static ItemModelStateSerializationDelegate* instance();
+    //Getter
+    virtual bool isChecked(const CollectionInterface* backend) const = 0;
 
-   //Getter
-   virtual bool isChecked(const CollectionInterface* backend) const = 0;
-
-   //Setter
-   virtual bool setChecked(const CollectionInterface* backend, bool enabled) = 0;
-
-private:
-   static ItemModelStateSerializationDelegate* m_spInstance;
+    //Setter
+    virtual bool setChecked(const CollectionInterface* backend, bool enabled) = 0;
 };
+
+} // namespace Delegates
 
 #endif

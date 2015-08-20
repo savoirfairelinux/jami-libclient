@@ -289,11 +289,10 @@ SET( libringclient_LIB_SRCS
   src/dbus/presencemanager.cpp
 
   #Delegates
+  src/delegates/delegates.cpp
   src/delegates/accountlistcolordelegate.cpp
-  src/delegates/phonenumberselectordelegate.cpp
   src/delegates/pixmapmanipulationdelegate.cpp
   src/delegates/presenceserializationdelegate.cpp
-  src/delegates/itemmodelstateserializationdelegate.cpp
   src/delegates/profilepersisterdelegate.cpp
   src/delegates/shortcutdelegate.cpp
 
@@ -438,8 +437,9 @@ SET(libringclient_media_LIB_HDRS
 )
 
 SET(libringclient_delegates_LIB_HDRS
+  src/delegates/delegates.h
   src/delegates/accountlistcolordelegate.h
-  src/delegates/phonenumberselectordelegate.h
+  src/delegates/contactmethodselectordelegate.h
   src/delegates/presenceserializationdelegate.h
   src/delegates/itemmodelstateserializationdelegate.h
   src/delegates/pixmapmanipulationdelegate.h

@@ -67,6 +67,7 @@
 
 //TODO remove
 #include "securityevaluationmodel.h"
+#include "delegates/delegates.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
 //Track where state changes are performed on finished (over, error, failed) calls
@@ -2092,7 +2093,7 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::SecurityLevel): //TODO remove
          return QVariant::fromValue(account()->securityEvaluationModel()->securityLevel());
       case static_cast<int>(Call::Role::SecurityLevelIcon): //TODO remove
-         return PixmapManipulationDelegate::instance()->securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
+         return Delegates::getPixmapManipulationDelegate()->securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
       default:
          break;
    };

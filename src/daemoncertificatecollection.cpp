@@ -21,6 +21,7 @@
 #include "certificate.h"
 #include "account.h"
 #include "certificatemodel.h"
+#include "delegates/delegates.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
 //Dring
@@ -157,7 +158,7 @@ QString DaemonCertificateCollection::category() const
 
 QVariant DaemonCertificateCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
+   return Delegates::getPixmapManipulationDelegate()->collectionIcon(this,Delegates::PixmapManipulationDelegate::CollectionIconHint::CERTIFICATE);
 }
 
 bool DaemonCertificateCollection::isEnabled() const

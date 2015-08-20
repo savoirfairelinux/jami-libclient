@@ -33,6 +33,7 @@
 #include "private/vcardutils.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
+#include "delegates/delegates.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 #include "delegates/itemmodelstateserializationdelegate.h"
 #include "private/threadworker.h"
@@ -186,13 +187,13 @@ QString FallbackPersonCollection::category () const
 
 QVariant FallbackPersonCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::CONTACT);
+   return Delegates::getPixmapManipulationDelegate()->collectionIcon(this,Delegates::PixmapManipulationDelegate::CollectionIconHint::CONTACT);
 }
 
 bool FallbackPersonCollection::isEnabled() const
 {
    /* if delegate exists, check if collectin is enabled, else assume it is */
-   if (auto delegate = ItemModelStateSerializationDelegate::instance())
+   if (auto delegate = Delegates::getItemModelStateSerializationDelegate())
       return delegate->isChecked(this);
    else
       return true;

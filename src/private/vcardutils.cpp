@@ -29,6 +29,7 @@
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "accountmodel.h"
+#include "delegates/delegates.h"
 #include "delegates/pixmapmanipulationdelegate.h"
 
 /* https://www.ietf.org/rfc/rfc2045.txt
@@ -106,7 +107,7 @@ struct VCardMapper {
          break;
       }
 
-      QVariant photo = PixmapManipulationDelegate::instance()->personPhoto(fn,type);
+      QVariant photo = Delegates::getPixmapManipulationDelegate()->personPhoto(fn,type);
       c->setPhoto(photo);
    }
 

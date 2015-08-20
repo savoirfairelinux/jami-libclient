@@ -29,6 +29,7 @@
 #include <macro.h>
 #include <collectioneditor.h>
 #include <macromodel.h>
+#include <delegates/delegates.h>
 #include <delegates/pixmapmanipulationdelegate.h>
 
 namespace Serializable {
@@ -196,7 +197,7 @@ QString LocalMacroCollection::category () const
 
 QVariant LocalMacroCollection::icon() const
 {
-   return PixmapManipulationDelegate::instance()->collectionIcon(this,PixmapManipulationDelegate::CollectionIconHint::MACRO);
+   return Delegates::getPixmapManipulationDelegate()->collectionIcon(this,Delegates::PixmapManipulationDelegate::CollectionIconHint::MACRO);
 }
 
 bool LocalMacroCollection::isEnabled() const
