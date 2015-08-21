@@ -24,6 +24,7 @@
 namespace Interfaces {
 class AccountListColorizerI;
 class ContactMethodSelectorI;
+class DBusErrorHandlerI;
 class ItemModelStateSerializerI;
 class PixmapManipulatorI;
 class PresenceSerializerI;
@@ -50,6 +51,9 @@ void setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> 
  */
 Interfaces::ContactMethodSelectorI& contactMethodSelector();
 void setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
+
+Interfaces::DBusErrorHandlerI& dBusErrorHandler();
+void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
