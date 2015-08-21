@@ -295,6 +295,7 @@ SET( libringclient_LIB_SRCS
   src/pixmapmanipulatordefault.cpp
   src/profilepersisterdefault.cpp
   src/shortcutcreatordefault.cpp
+  src/dbuserrorhandlerdefault.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -400,6 +401,7 @@ SET( libringclient_LIB_HDRS
   src/pixmapmanipulatordefault.h
   src/profilepersisterdefault.h
   src/shortcutcreatordefault.h
+  src/dbuserrorhandlerdefault.h
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -450,6 +452,7 @@ SET(libringclient_interface_LIB_HDRS
   src/interfaces/pixmapmanipulatori.h
   src/interfaces/profilepersisteri.h
   src/interfaces/shortcutcreatori.h
+  src/interfaces/dbuserrorhandleri.h
 )
 
 SET( libringclient_extra_LIB_HDRS
