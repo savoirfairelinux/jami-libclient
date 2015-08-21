@@ -24,6 +24,7 @@
 
 class AccountListColorDelegate;
 class ContactMethodSelectorDelegate;
+class DBusErrorDelegate;
 class ItemModelStateSerializationDelegate;
 class PixmapManipulationDelegate;
 class PresenceSerializationDelegate;
@@ -55,6 +56,9 @@ public:
      */
     ContactMethodSelectorDelegate* getContactMethodSelectorDelegate();
     void setContactMethodSelectorDelegate(ContactMethodSelectorDelegate* delegate);
+
+    DBusErrorDelegate* getDBusErrorDelegate();
+    void setDBusErrorDelegate(DBusErrorDelegate* delegate);
 
     /**
      * The LRC implementation of this class is abstract, thus this will return a nullptr if no instance
