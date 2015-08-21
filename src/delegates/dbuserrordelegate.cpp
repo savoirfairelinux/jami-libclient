@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,22 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "videomanager.h"
+#include "dbuserrordelegate.h"
 
-#include "../delegates/delegates.h"
-#include "../delegates/dbuserrordelegate.h"
+namespace Delegates {
 
-VideoManagerInterface* DBus::VideoManager::interface = nullptr;
-
-VideoManagerInterface& DBus::VideoManager::instance()
+void
+DBusErrorDelegate::connectionError(const QString& error)
 {
-#ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new VideoManagerInterface();
-#else
-    if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
-    if (!interface->connection().isConnected()) {
-        Delegates::getDBusErrorDelegate()->connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."
-        );
-    }
-    if (!interface->isValid()) {
-        Delegates::getDBusErrorDelegate()->invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
-    }
-#endif
-   return *interface;
+    qDebug() << error;
+    throw error.toLatin1().constData();
 }
+
+void
+DBusErrorDelegate::invalidInterfaceError(const QString& error)
+{
+    qDebug() << error;
+    throw error.toLatin1().constData();
+}
+
+} // namespace Delegates

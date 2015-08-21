@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2009-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2009-2015 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
@@ -18,7 +18,11 @@
  ***************************************************************************/
 
 #include "instancemanager.h"
+
 #include <unistd.h>
+
+#include "../delegates/delegates.h"
+#include "../delegates/dbuserrordelegate.h"
 
 InstanceInterface* DBus::InstanceManager::interface = nullptr;
 
@@ -28,18 +32,25 @@ InstanceInterface& DBus::InstanceManager::instance()
     if (!interface)
         interface = new InstanceInterface();
 #else
-   if (!dbus_metaTypeInit) registerCommTypes();
-   if (!interface)
-      interface = new InstanceInterface("cx.ring.Ring", "/cx/ring/Ring/Instance", QDBusConnection::sessionBus());
-   if(!interface->connection().isConnected()) {
-      throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
-   }
-   static bool registered = false;
-   if (!registered) {
-      QDBusPendingReply<QString> reply = interface->Register(getpid(), "");
-      registered = true;
-      reply.waitForFinished();
-   }
+    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!interface)
+        interface = new InstanceInterface("cx.ring.Ring", "/cx/ring/Ring/Instance", QDBusConnection::sessionBus());
+    if (!interface->connection().isConnected()) {
+        Delegates::getDBusErrorDelegate()->connectionError(
+            "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface."
+        );
+    }
+    static bool registered = false;
+    if (!registered) {
+        QDBusPendingReply<QString> reply = interface->Register(getpid(), "");
+        registered = true;
+        reply.waitForFinished();
+    }
+    if (!interface->isValid()) {
+        Delegates::getDBusErrorDelegate()->invalidInterfaceError(
+            "Error : dring is not available, make sure it is running"
+        );
+    }
 #endif
-   return *interface;
+    return *interface;
 }

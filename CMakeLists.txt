@@ -295,6 +295,7 @@ SET( libringclient_LIB_SRCS
   src/delegates/presenceserializationdelegate.cpp
   src/delegates/profilepersisterdelegate.cpp
   src/delegates/shortcutdelegate.cpp
+  src/delegates/dbuserrordelegate.cpp
 
   #Other
   src/categorizedcompositenode.cpp
@@ -445,6 +446,7 @@ SET(libringclient_delegates_LIB_HDRS
   src/delegates/pixmapmanipulationdelegate.h
   src/delegates/profilepersisterdelegate.h
   src/delegates/shortcutdelegate.h
+  src/delegates/dbuserrordelegate.h
 )
 
 SET( libringclient_extra_LIB_HDRS

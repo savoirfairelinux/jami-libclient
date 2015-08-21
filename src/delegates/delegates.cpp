@@ -21,6 +21,7 @@
 
 #include "accountlistcolordelegate.h"
 #include "contactmethodselectordelegate.h"
+#include "dbuserrordelegate.h"
 #include "itemmodelstateserializationdelegate.h"
 #include "pixmapmanipulationdelegate.h"
 #include "presenceserializationdelegate.h"
@@ -34,6 +35,7 @@ class DelegateManager
 public:
     std::unique_ptr<AccountListColorDelegate>            m_accountListColorDelegate;
     std::unique_ptr<ContactMethodSelectorDelegate>       m_contactMethodSelectorDelegate;
+    std::unique_ptr<DBusErrorDelegate>                   m_dBusErrorDelegate;
     std::unique_ptr<ItemModelStateSerializationDelegate> m_itemModelStateSerializationDelegate;
     std::unique_ptr<PixmapManipulationDelegate>          m_pixmapManipulationDelegate;
     std::unique_ptr<PresenceSerializationDelegate>       m_presenceSerializationDelegate;
@@ -76,6 +78,20 @@ void
 setContactMethodSelectorDelegate(ContactMethodSelectorDelegate* delegate)
 {
     getDelegateManager()->m_contactMethodSelectorDelegate.reset(delegate);
+}
+
+DBusErrorDelegate*
+getDBusErrorDelegate()
+{
+    if (!getDelegateManager()->m_dBusErrorDelegate)
+        getDelegateManager()->m_dBusErrorDelegate.reset(new DBusErrorDelegate);
+    return getDelegateManager()->m_dBusErrorDelegate.get();
+}
+
+void
+setDBusErrorDelegate(DBusErrorDelegate* delegate)
+{
+    getDelegateManager()->m_dBusErrorDelegate.reset(delegate);
 }
 
 /**
