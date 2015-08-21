@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,21 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "videomanager.h"
+#ifndef DBUSERRORDELEGATE_H
+#define DBUSERRORDELEGATE_H
+#include <typedefs.h>
 
-#include "../delegates/delegatemanager.h"
-#include "../delegates/dbuserrordelegate.h"
+/**
+ * Some clients may not have a nice way to generally handle exceptions event wide (ie: handle any
+ * exception which may occur during an itteration or an event on the main loop). This delegate
+ * gives them the option to implement another way to handle dbus errors.
+ *
+ * This implementation throws an exception with the given message.
+ */
+class LIB_EXPORT DBusErrorDelegate {
+public:
+    [[noreturn]] virtual void connectionError(const QString& error);
+    [[noreturn]] virtual void invalidInterfaceError(const QString& error);
+};
 
-VideoManagerInterface* DBus::VideoManager::interface = nullptr;
-
-VideoManagerInterface& DBus::VideoManager::instance()
-{
-#ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new VideoManagerInterface();
-#else
-    if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
-    if (!interface->connection().isConnected()) {
-        getDelegateManager()->getDBusErrorDelegate()->connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."
-        );
-    }
-    if (!interface->isValid()) {
-        getDelegateManager()->getDBusErrorDelegate()->invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
-    }
-#endif
-   return *interface;
-}
+#endif // DBUSERRORDELEGATE_H

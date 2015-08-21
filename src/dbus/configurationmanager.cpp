@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2009-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2009-2015 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
@@ -18,24 +18,31 @@
  ***************************************************************************/
 #include "configurationmanager.h"
 
+#include "../delegates/delegatemanager.h"
+#include "../delegates/dbuserrordelegate.h"
+
 ConfigurationManagerInterface* DBus::ConfigurationManager::interface = nullptr;
 
 ConfigurationManagerInterface& DBus::ConfigurationManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
-   if (!interface) {
+    if (!interface) {
         interface = new ConfigurationManagerInterface();
     }
 #else
-   if (!dbus_metaTypeInit) registerCommTypes();
-   if (!interface)
-      interface = new ConfigurationManagerInterface("cx.ring.Ring", "/cx/ring/Ring/ConfigurationManager", QDBusConnection::sessionBus());
-   if(!interface->connection().isConnected()) {
-      qDebug() << "Error : dring not connected. Service " << interface->service() << " not connected. From configuration manager interface.";
-      throw "Error : dring not connected. Service " + interface->service() + " not connected. From configuration manager interface.";
-   }
-   if (!interface->isValid())
-      throw "DRing daemon not available, be sure it running";
+    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!interface)
+        interface = new ConfigurationManagerInterface("cx.ring.Ring", "/cx/ring/Ring/ConfigurationManager", QDBusConnection::sessionBus());
+    if(!interface->connection().isConnected()) {
+        getDelegateManager()->getDBusErrorDelegate()->connectionError(
+            "Error : dring not connected. Service " + interface->service() + " not connected. From configuration manager interface."
+        );
+    }
+    if (!interface->isValid()) {
+        getDelegateManager()->getDBusErrorDelegate()->invalidInterfaceError(
+            "Error : dring is not available, make sure it is running"
+        );
+    }
 #endif
-   return *interface;
+    return *interface;
 }
