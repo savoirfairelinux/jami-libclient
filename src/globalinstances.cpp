@@ -21,6 +21,7 @@
 
 #include "interfaces/accountlistcolorizeri.h"
 #include "interfaces/contactmethodselectori.h"
+#include "interfaces/dbuserrorhandleri.h"
 #include "interfaces/itemmodelstateserializeri.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "interfaces/presenceserializeri.h"
@@ -28,6 +29,7 @@
 #include "interfaces/shortcutcreatori.h"
 
 #include "accountlistcolorizerdefault.h"
+#include "dbuserrorhandlerdefault.h"
 #include "pixmapmanipulatordefault.h"
 #include "presenceserializerdefault.h"
 #include "shortcutcreatordefault.h"
@@ -36,13 +38,14 @@ namespace GlobalInstances {
 
 struct InstanceManager
 {
-   std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
-   std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
-   std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
-   std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
-   std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
-   std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
-   std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
+    std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
+    std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
+    std::unique_ptr<Interfaces::DBusErrorHandlerI>         m_dBusErrorHandler;
+    std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
+    std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
+    std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
+    std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
+    std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
 };
 
 static InstanceManager&
@@ -92,6 +95,25 @@ setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> ins
         return;
     }
     instanceManager().m_contactMethodSelector = std::move(instance);
+}
+
+Interfaces::DBusErrorHandlerI&
+dBusErrorHandler()
+{
+    if (!instanceManager().m_dBusErrorHandler)
+        instanceManager().m_dBusErrorHandler.reset(new Interfaces::DBusErrorHandlerDefault);
+    return *instanceManager().m_dBusErrorHandler;
+}
+
+void
+setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance)
+{
+    // do not allow empty pointers
+    if (!instance) {
+        qWarning() << "ignoring empty unique_ptr";
+        return;
+    }
+    instanceManager().m_dBusErrorHandler = std::move(instance);
 }
 
 /**
@@ -221,6 +243,7 @@ void setInterfaceInternal(I* i)\
 
 REGISTER_INTERFACE(Interfaces::AccountListColorizerI    , m_accountListColorizer    )
 REGISTER_INTERFACE(Interfaces::ContactMethodSelectorI   , m_contactMethodSelector   )
+REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler        )
 REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)
 REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
 REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
