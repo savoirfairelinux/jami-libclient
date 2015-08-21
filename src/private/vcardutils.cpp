@@ -156,6 +156,9 @@ struct VCardMapper {
 
    bool metacall(Person* c, const QByteArray& key, const QByteArray& value) {
       const QStringList settings = QString(key).split(';');
+      if (settings.length() < 1)
+         return false;
+
       if (!m_hHash[settings[0].toLatin1()]) {
          if(key.contains(VCardUtils::Property::PHOTO)) {
             //key must contain additional attributes, we don't need them right now (ENCODING, TYPE...)
