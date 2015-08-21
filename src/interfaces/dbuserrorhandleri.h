@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2015 by Savoir-faire Linux                               *
+ *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,32 +15,21 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "videomanager.h"
+#pragma once
 
-#include "../globalinstances.h"
-#include "../interfaces/dbuserrorhandleri.h"
+#include <typedefs.h>
 
-VideoManagerInterface* DBus::VideoManager::interface = nullptr;
+namespace Interfaces {
 
-VideoManagerInterface& DBus::VideoManager::instance()
-{
-#ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new VideoManagerInterface();
-#else
-    if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
-    if (!interface->connection().isConnected()) {
-        GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."
-        );
-    }
-    if (!interface->isValid()) {
-        GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
-    }
-#endif
-   return *interface;
-}
+/**
+ * Some clients may not have a nice way to generally handle exceptions event wide (ie: handle any
+ * exception which may occur during an itteration or an event on the main loop). This interface
+ * gives them the option to implement various ways to handle dbus errors.
+ */
+class DBusErrorHandlerI {
+public:
+    virtual void connectionError(const QString& error) = 0;
+    virtual void invalidInterfaceError(const QString& error) = 0;
+};
+
+} // namespace Interfaces

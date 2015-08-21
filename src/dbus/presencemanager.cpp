@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -17,21 +17,30 @@
  ***************************************************************************/
 #include "presencemanager.h"
 
+#include "../globalinstances.h"
+#include "../interfaces/dbuserrorhandleri.h"
+
 PresenceManagerInterface* DBus::PresenceManager::interface = nullptr;
 
 PresenceManagerInterface& DBus::PresenceManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
-   if (!interface)
-      interface = new PresenceManagerInterface();
+    if (!interface)
+        interface = new PresenceManagerInterface();
 #else
-   if (!dbus_metaTypeInit) registerCommTypes();
-   if (!interface)
-      interface = new PresenceManagerInterface("cx.ring.Ring", "/cx/ring/Ring/PresenceManager", QDBusConnection::sessionBus());
-
-   if(!interface->connection().isConnected()) {
-      throw "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface.";
-   }
+    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!interface)
+        interface = new PresenceManagerInterface("cx.ring.Ring", "/cx/ring/Ring/PresenceManager", QDBusConnection::sessionBus());
+    if (!interface->connection().isConnected()) {
+        GlobalInstances::dBusErrorHandler().connectionError(
+            "Error : dring not connected. Service " + interface->service() + " not connected. From presence interface."
+        );
+    }
+    if (!interface->isValid()) {
+        GlobalInstances::dBusErrorHandler().invalidInterfaceError(
+            "Error : dring is not available, make sure it is running"
+        );
+    }
 #endif
-   return *interface;
+    return *interface;
 }
