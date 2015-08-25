@@ -127,7 +127,7 @@ Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString
     m_hRequest[id] = nullptr;
     delete c;
 
-    return new Person(cv);
+    return new Person(cv, Person::Encoding::vCard);
 }
 
 ///Called when a new message is incoming
