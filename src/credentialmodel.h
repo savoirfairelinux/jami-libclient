@@ -18,16 +18,21 @@
 #ifndef CREDENTIAL_MODEL_H
 #define CREDENTIAL_MODEL_H
 
-#include <QtCore/QString>
 #include <QtCore/QAbstractListModel>
+
 #include "typedefs.h"
 
+//Qt
+#include <QtCore/QString>
+
+//Ring
+#include <credential.h>
 
 class CredentialModelPrivate;
 class Account;
 
 ///CredentialModel: A model for account credentials
-class LIB_EXPORT CredentialModel : public QAbstractListModel {
+class LIB_EXPORT CredentialModel : public QAbstractItemModel {
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
@@ -63,14 +68,17 @@ public:
    virtual ~CredentialModel();
 
    //Abstract model member
-   QVariant                      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
-   int                           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
-   Qt::ItemFlags                 flags    ( const QModelIndex& index                                 ) const override;
-   virtual bool                  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
-   virtual QHash<int,QByteArray> roleNames(                                                          ) const override;
+   virtual QVariant              data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
+   virtual int                   rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual Qt::ItemFlags         flags       ( const QModelIndex& index                                    ) const override;
+   virtual bool                  setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
+   virtual QModelIndex           parent      ( const QModelIndex& index                                    ) const override;
+   virtual int                   columnCount ( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual QModelIndex           index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+   virtual QHash<int,QByteArray> roleNames(                                                                ) const override;
 
    //Mutator
-   QModelIndex addCredentials();
+   QModelIndex addCredentials(Credential::Type type);
    void removeCredentials(const QModelIndex& idx);
    bool performAction(CredentialModel::EditAction action);
 
