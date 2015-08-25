@@ -1390,7 +1390,7 @@ void Account::setUsername(const QString& detail)
          if (credentialModel()->rowCount())
             credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::NAME);
          else {
-            const QModelIndex idx = credentialModel()->addCredentials();
+            const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
             credentialModel()->setData(idx,detail,CredentialModel::Role::NAME);
          }
          break;
@@ -1417,7 +1417,7 @@ void Account::setPassword(const QString& detail)
          if (credentialModel()->rowCount())
             credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::PASSWORD);
          else {
-            const QModelIndex idx = credentialModel()->addCredentials();
+            const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
             credentialModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
          }
          break;
