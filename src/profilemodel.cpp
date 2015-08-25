@@ -368,12 +368,14 @@ void ProfileContentBackend::loadProfiles()
          qDebug() << "\n\n\nMAPPING!!!";
          VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
          qDebug() << "\n\nEND MAP";
-         foreach(Account* a, accs)
-            addAccount(pro,a);
 
          ProfileModel::instance()->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
          m_pEditor->m_lProfiles << pro;
          ProfileModel::instance()->endInsertRows();
+
+         /* must be done after inserting profile, or else we try to insert to non existing parent */
+         foreach(Account* a, accs)
+            addAccount(pro,a);
 
          connect(profile, SIGNAL(changed()), this, SLOT(contactChanged()));
          PersonModel::instance()->addPerson(profile);
