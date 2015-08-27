@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da87b5cf_611256b6",
+        "filename": "src/delegates/delegatemanager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T14:23:43Z",
+      "side": 1,
+      "message": "use a \"struct\" and remove useless \"public:\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 5
+      },
+      "revId": "6a022970c14a1c711a5f034c2b3fb1e5c88e5be8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_81175aa3",
+        "filename": "src/delegates/delegatemanager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T14:23:43Z",
+      "side": 1,
+      "message": "unique_ptr?",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 27
+      },
+      "revId": "6a022970c14a1c711a5f034c2b3fb1e5c88e5be8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_c14562b4",
+        "filename": "src/delegates/delegatemanager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T14:23:43Z",
+      "side": 1,
+      "message": "I know using a shared_ptr gives some freedom on usage.\nBut If it\u0027s clear that only one instance has to exist\nin our application, just return a simple reference.\nBy the way as the implementation always keep a token,\nusing share_ptr is useless.\nBy using reference you also simplify and robustify your code:\nmake private constructor/destructor and move the getDelegateManager function\ninto the class as static method.\n\nAnother point: doing getDeletegateManager()-\u003egetFooBarDelegate()-\u003etrucmuchMethod() is really painfull!\nHide the cumbersome getDeletegateManage() into a class static method OR don\u0027t use a class at all and put everything into a namespace (I\u0027ve not a preference yet, I let you find the good practive ;-))",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 32
+      },
+      "revId": "6a022970c14a1c711a5f034c2b3fb1e5c88e5be8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
