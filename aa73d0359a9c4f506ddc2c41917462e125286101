@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da87b5cf_c17d62b3",
+        "filename": "src/delegates/delegates.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "struct",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 5
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_614a5685",
+        "filename": "src/delegates/delegates.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "remove if struct",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 7
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_814f5a92",
+        "filename": "src/delegates/delegates.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "not pointer, use reference \u0026 as you never got a nullptr by contruction",
+      "range": {
+        "startLine": 44,
+        "startChar": 22,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_21444e73",
+        "filename": "src/delegates/delegates.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "*manager if reference is returned",
+      "range": {
+        "startLine": 48,
+        "startChar": 11,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_4149528a",
+        "filename": "src/delegates/delegates.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "needed?",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 30
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_e15d064a",
+        "filename": "src/delegates/delegates.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "remove the namespace indent",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 57
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_015b4a55",
+        "filename": "src/delegates/pixmapmanipulationdelegate.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-08-27T16:19:58Z",
+      "side": 1,
+      "message": "remove indent",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 74
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
