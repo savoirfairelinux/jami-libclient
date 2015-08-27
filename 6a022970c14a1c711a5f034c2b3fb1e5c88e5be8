@@ -68,6 +68,30 @@
       "revId": "6a022970c14a1c711a5f034c2b3fb1e5c88e5be8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_246e9cca",
+        "filename": "src/delegates/delegatemanager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-08-27T20:55:32Z",
+      "side": 1,
+      "message": "+1 for a namespace, see my previous comment. But removing the manager public API end up returning to the previous API. So the manager could be private, never exported and only used internally. This way the old API would stay compatible but a manager would exist internally to solve the instantiation problem. Again, that\u0027s a choice to make, there is no \"right\" way to do this.\n\nIt is also important to remember that the delegate API is used internally by LRC, not directly by the clients (beside implementing the delegate and setting one)",
+      "parentUuid": "da87b5cf_c14562b4",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 32
+      },
+      "revId": "6a022970c14a1c711a5f034c2b3fb1e5c88e5be8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
