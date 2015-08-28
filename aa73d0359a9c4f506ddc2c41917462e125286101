@@ -117,6 +117,30 @@
     },
     {
       "key": {
+        "uuid": "da87b5cf_44cf20b1",
+        "filename": "src/delegates/delegates.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-08-28T10:47:05Z",
+      "side": 1,
+      "message": "I don\u0027t thing so, this was probably a leftover from renaming class. Other namespaces are not \"exported\" and work just fine when used by clients.\n\nThe LIB_EXPORT macro is only necessary for classes and structs (otherwise they cause linking errors when compiling clients)",
+      "parentUuid": "da87b5cf_4149528a",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 30
+      },
+      "revId": "aa73d0359a9c4f506ddc2c41917462e125286101",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da87b5cf_e15d064a",
         "filename": "src/delegates/delegates.h",
         "patchSetId": 7
