@@ -16,6 +16,24 @@
       "revId": "e2c2377cfa9de287c4d96d95fa7d5c02f39c16c8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_07103a4d",
+        "filename": "src/localtextrecordingcollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-01T14:25:31Z",
+      "side": 0,
+      "message": "There were two empty lines (258 and 259), I removed only one of them.",
+      "parentUuid": "1a486d77_43a626c3",
+      "revId": "e2c2377cfa9de287c4d96d95fa7d5c02f39c16c8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
