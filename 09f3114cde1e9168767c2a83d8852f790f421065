@@ -16,6 +16,24 @@
       "revId": "09f3114cde1e9168767c2a83d8852f790f421065",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da87b5cf_c73012eb",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-01T14:37:25Z",
+      "side": 1,
+      "message": "I\u0027ve edited this in the relatde patchset: \"Implement the \"last contacted\" smartview\", 0104d5232.",
+      "parentUuid": "1a486d77_23ab2a8b",
+      "revId": "09f3114cde1e9168767c2a83d8852f790f421065",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
