@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba8cc1f7_80bbd6c3",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-02T20:42:53Z",
+      "side": 1,
+      "message": "Maybe a new folder would make sense, if only to make the code better organized?",
+      "revId": "5e6ad2875e21223ed0e29bc19550f8ea10772740",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba8cc1f7_c0a9de7c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-02T20:42:53Z",
+      "side": 1,
+      "message": "Why are those exported?",
+      "revId": "5e6ad2875e21223ed0e29bc19550f8ea10772740",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
