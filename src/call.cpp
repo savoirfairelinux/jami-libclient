@@ -1523,7 +1523,6 @@ void CallPrivate::sendProfile()
     auto t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
     auto vCard = q_ptr->account()->contactMethod()->contact()->toVCard();
 
-    QMap<QString, QString> chunks;
 
     qsrand(time(nullptr));
     const auto& key = QString::number(qrand());
@@ -1531,7 +1530,8 @@ void CallPrivate::sendProfile()
     int i = 0;
     int total = vCard.size()/1000 + (vCard.size()%1000?1:0);
     while (vCard.size()) {
-        chunks[QString("%1; id=%2,part=%3,of=%4")
+        QMap<QString, QString> chunk;
+        chunk[QString("%1; id=%2,part=%3,of=%4")
                .arg( RingMimes::PROFILE_VCF     )
                .arg( key                        )
                .arg( QString::number( i+1   ) )
@@ -1539,9 +1539,9 @@ void CallPrivate::sendProfile()
             ] = vCard.left(1000);
         vCard = vCard.remove(0, 1000);
         ++i;
+        t->send(chunk);
     }
 
-    t->send(chunks);
 }
 
 ///Cancel this call
