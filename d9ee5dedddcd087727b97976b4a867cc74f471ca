@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba8cc1f7_a354e4ca",
+        "filename": "src/globalinstances.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-04T17:32:35Z",
+      "side": 1,
+      "message": ".get() at end is not needed. std::unique_ptr::operator* does that for you",
+      "range": {
+        "startLine": 105,
+        "startChar": 11,
+        "endLine": 105,
+        "endChar": 55
+      },
+      "revId": "d9ee5dedddcd087727b97976b4a867cc74f471ca",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
