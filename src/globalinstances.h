@@ -75,4 +75,35 @@ void setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance
 Interfaces::ShortcutCreatorI& shortcutCreator();
 void setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
+
+//Private use only
+void setInterfaceInternal(Interfaces::AccountListColorizerI    *);
+void setInterfaceInternal(Interfaces::ContactMethodSelectorI   *);
+void setInterfaceInternal(Interfaces::ItemModelStateSerializerI*);
+void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
+void setInterfaceInternal(Interfaces::PresenceSerializerI      *);
+void setInterfaceInternal(Interfaces::ProfilePersisterI        *);
+void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
+
+/**
+ * Generic interface setter. This metamethod can set any type of interface
+ * dynamically using variadic template, compile time type deduction and
+ * the macro subsystem. Passing an invalid interface should trigger compile
+ * time errors.
+ *
+ * The interface object is created internally and additional parameters
+ * can be passed.
+ */
+template<class I, typename ...Ts>
+void setInterface(Ts... args)
+{
+   try {
+      auto i = new I(args...);
+      setInterfaceInternal(i);
+   }
+   catch(void* e) { //TODO define some kind of object for errors like this
+      qDebug() << "Interface could not be set";
+   }
+}
+
 } // namespace GlobalInstances
