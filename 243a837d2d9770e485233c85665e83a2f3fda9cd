@@ -45,6 +45,30 @@
       "revId": "243a837d2d9770e485233c85665e83a2f3fda9cd",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba8cc1f7_c3a6c853",
+        "filename": "src/globalinstances.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-08T18:37:38Z",
+      "side": 1,
+      "message": "Because the template function need to be in the .h and need to access those. If they are moved into the .cpp, it will create an undefined reference during client linking (I tried)",
+      "parentUuid": "ba8cc1f7_e3af4c2a",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 1
+      },
+      "revId": "243a837d2d9770e485233c85665e83a2f3fda9cd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
