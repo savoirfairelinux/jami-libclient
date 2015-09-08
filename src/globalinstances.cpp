@@ -36,13 +36,13 @@ namespace GlobalInstances {
 
 struct InstanceManager
 {
-    std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
-    std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
-    std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
-    std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
-    std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
-    std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
-    std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
+   std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
+   std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
+   std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
+   std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
+   std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
+   std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
+   std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
 };
 
 static InstanceManager&
@@ -197,5 +197,38 @@ setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
     }
     instanceManager().m_shortcutCreator = std::move(instance);
 }
+
+
+/*
+ * This API have some advantage over a more "explicit" one
+ * 1) It treat interfaces as class instead of as objects, making conceptual sense
+ * 2) It remove the boilerplate code related to creating the unique_ptr away from
+ *    the client
+ * 3) It offer a transparent entry point for interface without having to
+ *    extend the API when adding new interfaces
+ * 4) It mimic the addCollection interface, making the API more consistent. It
+ *    also does so without the tick layer of black magic used in the Media and
+ *    collection APIs.
+ */
+#define REGISTER_INTERFACE(I,m) \
+void setInterfaceInternal(I* i)\
+{\
+   instanceManager().m = std::unique_ptr<I>(i);\
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+
+REGISTER_INTERFACE(Interfaces::AccountListColorizerI    , m_accountListColorizer    )
+REGISTER_INTERFACE(Interfaces::ContactMethodSelectorI   , m_contactMethodSelector   )
+REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)
+REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
+REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
+REGISTER_INTERFACE(Interfaces::ProfilePersisterI        , m_profilePersister        )
+REGISTER_INTERFACE(Interfaces::ShortcutCreatorI         , m_shortcutCreator         )
+
+#pragma GCC diagnostic pop
+
+#undef REGISTER_INTERFACE
 
 } // namespace GlobalInstances
