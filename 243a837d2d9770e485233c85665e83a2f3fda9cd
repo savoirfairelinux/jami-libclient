@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba8cc1f7_03ad9031",
+        "filename": "src/globalinstances.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-09-08T18:14:52Z",
+      "side": 1,
+      "message": "see comment below",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 66
+      },
+      "revId": "243a837d2d9770e485233c85665e83a2f3fda9cd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba8cc1f7_e3af4c2a",
+        "filename": "src/globalinstances.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-09-08T18:14:52Z",
+      "side": 1,
+      "message": "Why not define this function in the .cpp file so then the setInteraceInternal functions can be moved there as well and not be exposed in the public API?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 1
+      },
+      "revId": "243a837d2d9770e485233c85665e83a2f3fda9cd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
