@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a91bd0f_ff36ffe6",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-09T19:17:06Z",
+      "side": 1,
+      "message": "Please add \"final\", I forgot when I wrote it. Otherwise, it prevent the d_ptr inlining into the parent class",
+      "revId": "6a6a439235970d601ee86b6fd67593d111852df8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a91bd0f_9f3333f6",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-09T19:17:06Z",
+      "side": 1,
+      "message": "Please remove or comment before pushing the patch",
+      "revId": "6a6a439235970d601ee86b6fd67593d111852df8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a91bd0f_bf3077e9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-09T19:17:06Z",
+      "side": 1,
+      "message": "This still need to be implemented to avoid memory leaks. Using QSharedPointer could also solve the problem",
+      "revId": "6a6a439235970d601ee86b6fd67593d111852df8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
