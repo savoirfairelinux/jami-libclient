@@ -221,9 +221,7 @@ bool LocalHistoryCollection::load()
          //The item is complete
          if ((line.isEmpty() || !line.size()) && hc.size()) {
             Call* pastCall = Call::buildHistoryCall(hc);
-            if (pastCall->peerName().isEmpty()) {
-               pastCall->setPeerName(QObject::tr("Unknown"));
-            }
+
             pastCall->setCollection(this);
 
             editor<Call>()->addExisting(pastCall);
