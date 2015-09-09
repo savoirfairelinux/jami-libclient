@@ -1174,7 +1174,8 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       }
 
       MapStringString details = getCallDetailsCommon(m_DringId);
-      if (details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName)
+      if (!details[CallPrivate::DetailsMapFields::PEER_NAME].isEmpty()
+          and ( details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName) )
          m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
 
       //Load the certificate if it's now available
