@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a91bd0f_1f20839a",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-09T19:12:24Z",
+      "side": 1,
+      "message": "I think you accidentally forgot the \"else\"",
+      "revId": "2852808915c349a7ea867a276b45d79cc5dbdbb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
