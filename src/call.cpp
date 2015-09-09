@@ -2001,10 +2001,7 @@ QVariant Call::roleData(int role) const
             return tr("Conference");
          else if (lifeCycleState() == Call::LifeCycleState::CREATION)
             return dialNumber();
-         else if (d_ptr->m_PeerName.isEmpty())
-            return ct?ct->formattedName():peerContactMethod()?peerContactMethod()->uri():dialNumber();
-         else
-            return formattedName();
+         return formattedName();
       case Qt::ToolTipRole:
          return tr("Account: ") + (account()?account()->alias():QString());
       case Qt::EditRole:
