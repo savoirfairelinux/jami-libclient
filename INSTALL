@@ -63,3 +63,12 @@ cmake .. -DCMAKE_INSTALL_PREFIX=<install_dir_of_daemon> [-DCMAKE_BUILD_TYPE=Debu
 make install
 
 You can now link and build the OSX client with Ring daemon and LRC library
+
+Internationalization
+====================
+
+To regenerate strings for translations we use lupdate (within root of the project)
+
+lupdate ./src/ -source-language en -ts translations/lrc_en.ts
+
+Hint: On OSX lupdate is installed with Qt in /usr/local/Cellar/qt5/5.5.0/bin/ when installed with HomeBrew
