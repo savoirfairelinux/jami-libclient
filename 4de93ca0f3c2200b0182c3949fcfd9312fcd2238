@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a96c907_beb5d932",
+        "filename": "src/call.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1626,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-12T01:33:34Z",
+      "side": 1,
+      "message": "inefficient (uneeded constructor and copy-assignment):\n\nURI uri {m_pDialNumber-\u003euri()};\n\nBut anyway: why do you set uri here, as you overwrite it just below?",
+      "range": {
+        "startLine": 1626,
+        "startChar": 4,
+        "endLine": 1626,
+        "endChar": 40
+      },
+      "revId": "4de93ca0f3c2200b0182c3949fcfd9312fcd2238",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_5e829553",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-12T01:33:34Z",
+      "side": 1,
+      "message": "space???",
+      "range": {
+        "startLine": 1345,
+        "startChar": 3,
+        "endLine": 1345,
+        "endChar": 5
+      },
+      "revId": "4de93ca0f3c2200b0182c3949fcfd9312fcd2238",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_1e7c0d72",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-12T01:33:34Z",
+      "side": 1,
+      "message": "dead code to remove?",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 7
+      },
+      "revId": "4de93ca0f3c2200b0182c3949fcfd9312fcd2238",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_3e81c94a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-12T01:33:34Z",
+      "side": 1,
+      "message": "dead code to remove?",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 401,
+        "endChar": 7
+      },
+      "revId": "4de93ca0f3c2200b0182c3949fcfd9312fcd2238",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_7e875162",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-12T01:33:34Z",
+      "side": 1,
+      "message": "as you change it in some places: little f",
+      "range": {
+        "startLine": 2,
+        "startChar": 34,
+        "endLine": 2,
+        "endChar": 35
+      },
+      "revId": "4de93ca0f3c2200b0182c3949fcfd9312fcd2238",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
