@@ -180,6 +180,7 @@ ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5DBus)
+FIND_PACKAGE(Qt5LinguistTools) # translations
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
 
 SET(GENERIC_LIB_VERSION "0.4.0")
@@ -726,3 +727,20 @@ INSTALL( FILES ${libringclient_CONFIG_PATH}
 #    VERSION ${GENERIC_LIB_VERSION}
 #    COMPATIBILITY SameMajorVersion
 # )
+
+# translations
+IF( Qt5LinguistTools_FOUND )
+   # translation template file
+   SET(TS_TEMPLATE ${CMAKE_SOURCE_DIR}/translations/lrc_en.ts)
+
+   # get all translation files except the template
+   FILE(GLOB TS_FILES ${CMAKE_SOURCE_DIR}/translations/*.ts)
+   LIST(REMOVE_ITEM TS_FILES ${TS_TEMPLATE})
+
+   # compiled .qm files
+   QT5_ADD_TRANSLATION(QM_FILES ${TS_FILES})
+
+   ADD_CUSTOM_TARGET(translations ALL DEPENDS ${QM_FILES})
+
+   INSTALL(FILES ${QM_FILES} DESTINATION "${CMAKE_INSTALL_PREFIX}/share/libringclient/translations")
+ENDIF()
