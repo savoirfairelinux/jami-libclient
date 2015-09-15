@@ -160,7 +160,7 @@
     <message>
         <location filename="../src/call.cpp" line="685"/>
         <location filename="../src/call.cpp" line="767"/>
-        <location filename="../src/call.cpp" line="2001"/>
+        <location filename="../src/call.cpp" line="2002"/>
         <source>Conference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -195,7 +195,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2009"/>
+        <location filename="../src/call.cpp" line="2007"/>
         <source>Account: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,12 +219,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1596"/>
+        <location filename="../src/call.cpp" line="1597"/>
         <source>Failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1609"/>
+        <location filename="../src/call.cpp" line="1610"/>
         <source>No account registered!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -237,7 +237,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="303"/>
+        <location filename="../src/categorizedbookmarkmodel.cpp" line="302"/>
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -277,10 +277,10 @@
 <context>
     <name>ContactMethod</name>
     <message>
-        <location filename="../src/contactmethod.cpp" line="477"/>
-        <location filename="../src/contactmethod.cpp" line="480"/>
         <location filename="../src/contactmethod.cpp" line="483"/>
         <location filename="../src/contactmethod.cpp" line="486"/>
+        <location filename="../src/contactmethod.cpp" line="489"/>
+        <location filename="../src/contactmethod.cpp" line="492"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -425,17 +425,17 @@
 <context>
     <name>Media::RecordingModel</name>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="148"/>
+        <location filename="../src/media/recordingmodel.cpp" line="149"/>
         <source>Recordings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="218"/>
+        <location filename="../src/media/recordingmodel.cpp" line="219"/>
         <source>Text messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="223"/>
+        <location filename="../src/media/recordingmodel.cpp" line="224"/>
         <source>Audio/Video</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1930,27 +1930,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="146"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
         <source>%1 %2 list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="147"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="156"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
         <location filename="../src/foldercertificatecollection.cpp" line="192"/>
         <source>Certificate</source>
         <translation type="unfinished"></translation>
@@ -1989,13 +1989,6 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/localhistorycollection.cpp" line="225"/>
-        <location filename="../src/private/sortproxies.cpp" line="135"/>
-        <location filename="../src/private/sortproxies.cpp" line="153"/>
-        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2094,6 +2087,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="135"/>
+        <location filename="../src/private/sortproxies.cpp" line="153"/>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
