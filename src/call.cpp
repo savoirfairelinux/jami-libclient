@@ -1642,11 +1642,11 @@ void CallPrivate::call()
             m_PeerName = contact->formattedName();
     }
 
+    setStartTimeStamp();
     CallModel::instance()->registerCall(q_ptr);
 
     connect(m_pPeerContactMethod, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
     m_pPeerContactMethod->addCall(q_ptr);
-    setStartTimeStamp();
 
     // m_pDialNumber is now deprecated by m_pPeerContactMethod
     emit q_ptr->dialNumberChanged(QString());
