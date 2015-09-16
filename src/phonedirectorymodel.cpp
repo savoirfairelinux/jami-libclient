@@ -328,16 +328,6 @@ void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* acco
    }
 }
 
-/**
- * This version of getNumber() try to get a phone number with a contact from an URI and account
- * It will also try to attach an account to existing numbers. This is not 100% reliable, but
- * it is correct often enough to do it.
- */
-ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Account* account, const QString& type)
-{
-   return getNumber(uri,nullptr,account,type);
-}
-
 ///Add new information to existing numbers and try to merge
 ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, const URI& strippedUri, Account* account, Person* contact, const QString& type)
 {
@@ -411,6 +401,16 @@ ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, cons
       }
    }
    return nullptr;
+}
+
+/**
+ * This version of getNumber() try to get a phone number with a contact from an URI and account
+ * It will also try to attach an account to existing numbers. This is not 100% reliable, but
+ * it is correct often enough to do it.
+ */
+ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Account* account, const QString& type)
+{
+   return getNumber(uri,nullptr,account,type);
 }
 
 ///Return/create a number when no information is available
