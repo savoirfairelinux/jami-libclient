@@ -1,6 +1,7 @@
 /************************************************************************************
- *   Copyright (C) 2015 by Savoir-Faire Linux                                       *
+ *   Copyright (C) 2015 by Savoir-faire Linux                                       *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>         *
+ *            Alexandre Lision <alexandre.lision@savoirfairelinux.com>              *
  *                                                                                  *
  *   This library is free software; you can redistribute it and/or                  *
  *   modify it under the terms of the GNU Lesser General Public                     *
@@ -27,6 +28,10 @@
 #include <personmodel.h>
 #include <contactmethod.h>
 #include <phonedirectorymodel.h>
+#include <callmodel.h>
+#include <categorizedhistorymodel.h>
+#include <media/recordingmodel.h>
+#include <media/textrecording.h>
 
 struct CallGroup
 {
@@ -58,7 +63,7 @@ struct RecentViewNode
    RecentViewNode*        m_pParent  ;
    QList<RecentViewNode*> m_lChildren;
    union {
-      Person*        m_pPerson       ;
+      const Person*  m_pPerson       ;
       ContactMethod* m_pContactMethod;
       Call*          m_pCall         ;
       CallGroup*     m_pCallGroup    ;
@@ -76,14 +81,16 @@ public:
    RecentModelPrivate(RecentModel* p);
 
    /*
-    * m_lTopLevelReverted hold the elements in the reverse order of
-    * QAbstractItemModel::index. This cause most of the energy to be
-    * in the bottom half of the vector, preventing std::move every time
-    * someone is contacted
-    */
+   * m_lTopLevelReverted hold the elements in the reverse order of
+   * QAbstractItemModel::index. This cause most of the energy to be
+   * in the bottom half of the vector, preventing std::move every time
+   * someone is contacted
+   */
    QList<RecentViewNode*>                m_lTopLevelReverted;
-   QHash<Person*,RecentViewNode*>        m_hPersonsToNodes  ;
+   QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
+   QList<Call*>                          m_lCallBucket      ;
+   static RecentModel*                   m_spInstance       ;
 
    //Helper
    void insertNode(RecentViewNode* n, time_t t, bool isNew);
@@ -93,10 +100,16 @@ private:
    RecentModel* q_ptr;
 
 public Q_SLOTS:
-   void slotLastUsedTimeChanged(Person*        p , time_t t              );
+   void slotLastUsedTimeChanged(const Person*  p , time_t t              );
+   void slotPersonAdded        (const Person*  p                         );
    void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
+   void slotCallAdded          (Call* call       , Call* parent          );
+   void slotCallStateChanged   (Call* call       , Call::State previousState);
+   void slotUpdate             (                                         );
 };
+
+RecentModel* RecentModelPrivate::m_spInstance = nullptr;
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 {
@@ -105,8 +118,11 @@ RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
    connect(PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
+   connect(PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
+   connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
+   connect(CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
 
    //Fill the contacts
    for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
@@ -120,7 +136,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    }
 
    //Fill the "orphan" contact methods
-   for (int i=0; i < PhoneDirectoryModel::instance()->rowCount(); i++) {
+   for (int i = 0; i < PhoneDirectoryModel::instance()->rowCount(); i++) {
       ContactMethod* cm = qvariant_cast<ContactMethod*>(PhoneDirectoryModel::instance()->data(
          PhoneDirectoryModel::instance()->index(i,0),
          static_cast<int>(PhoneDirectoryModel::Role::Object)
@@ -129,6 +145,12 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
       if (cm && cm->lastUsed() && !cm->contact())
          d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
    }
+
+   //Fill node with history data
+   //const CallMap callMap = CategorizedHistoryModel::instance()->getHistoryCalls();
+   //Q_FOREACH(auto const &call , callMap) {
+   //    d_ptr->slotCallAdded(call, nullptr);
+   //}
 }
 
 RecentModel::~RecentModel()
@@ -172,8 +194,46 @@ time_t RecentViewNode::lastUsed() const
 
 RecentModel* RecentModel::instance()
 {
-   RecentModel* m_spInstance =  new RecentModel(QCoreApplication::instance());
-   return m_spInstance;
+   if(!RecentModelPrivate::m_spInstance)
+      RecentModelPrivate::m_spInstance = new RecentModel(QCoreApplication::instance());
+   return RecentModelPrivate::m_spInstance;
+}
+
+/**
+ * Check if given index has an ongoing call
+ * returns true if one of its child is also in the CallModel
+ */
+bool RecentModel::hasActiveCall(const QModelIndex &idx)
+{
+   if (not idx.isValid())
+      return false;
+
+   RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+   for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
+      if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
+         QModelIndex qIdx = CallModel::instance()->getIndex(node->m_lChildren.at(i)->m_uContent.m_pCall);
+         return  qIdx.isValid();
+      }
+   }
+   return false;
+}
+
+/**
+ * Return the first found ongoing call of the given parent index
+ */
+Call* RecentModel::getActiveCall(const QModelIndex &idx)
+{
+   if (not idx.isValid())
+      return nullptr;
+
+   RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+   for (int i = node->m_lChildren.size()-1; i >= 0; i--) {
+      if (node->m_lChildren.at(i)->m_Type == RecentViewNode::Type::CALL) {
+         auto call = node->m_lChildren.at(i)->m_uContent.m_pCall;
+         return call;
+     }
+   }
+   return nullptr;
 }
 
 QHash<int,QByteArray> RecentModel::roleNames() const
@@ -226,7 +286,6 @@ int RecentModel::rowCount( const QModelIndex& parent ) const
       return d_ptr->m_lTopLevelReverted.size();
 
    RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
-
    return node->m_lChildren.size();
 }
 
@@ -306,15 +365,17 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
          return a->lastUsed() < t2->m_Index;
       });
 
-      newPos = (*lower)->m_Index+1;
+      // the value pointed by the iterator returned by this function may also be equivalent to val, and not only greater
+      if (!isNew && n->m_Index == (*lower)->m_Index) {
+         newPos = (*lower)->m_Index;
+      } else
+         newPos = (*lower)->m_Index+1;
    }
 
    //Begin the transaction
    if (!isNew) {
-
       if (newPos == n->m_Index)
          return; //Nothing to do
-
       q_ptr->beginMoveRows(QModelIndex(), n->m_Index, n->m_Index, QModelIndex(), newPos ? newPos+1 : newPos );
       m_lTopLevelReverted.removeAt(m_lTopLevelReverted.size()-1-n->m_Index);
    }
@@ -322,22 +383,9 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
       q_ptr->beginInsertRows(QModelIndex(),newPos,newPos);
 
    //Apply the transaction
-   const int updateBound = n->m_Index;
-   if (m_lTopLevelReverted.last()->lastUsed() <= t) {
-
-      //TODO this happen often and is O(N), inverting m_Index would "fix" this
-      for (int i = m_lTopLevelReverted.size()-1; i >= updateBound; i--)
-         m_lTopLevelReverted[m_lTopLevelReverted.size()-1-i]->m_Index = i+1;
-
-      m_lTopLevelReverted << n;
-   }
-   else {
-      m_lTopLevelReverted.insert(m_lTopLevelReverted.size()-newPos,n);
-      n->m_Index = newPos;
-
-      for (int i = m_lTopLevelReverted.size()-1; i >= updateBound; i--)
-         m_lTopLevelReverted[m_lTopLevelReverted.size()-1-i]->m_Index = i;
-
+   m_lTopLevelReverted.insert(m_lTopLevelReverted.size() - newPos,n);
+   for (int i = m_lTopLevelReverted.size() - 1 ; i >= 0; i--) {
+      m_lTopLevelReverted[m_lTopLevelReverted.size() - 1 - i]->m_Index = i;
    }
 
    //Notify that the transaction is complete
@@ -347,31 +395,38 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
       q_ptr->endInsertRows();
 
    //Uncomment if there is issues
-   //qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
-   //for (int i = 0; i<m_lTopLevelReverted.size();i++)
-   //  qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
-
+   //    qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
+   //    for (int i = 0; i<m_lTopLevelReverted.size();i++) {
+   //        qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
+   //        for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
+   //            qDebug() << "|||" << "|||" << child << child->m_uContent.m_pCall->formattedName();
+   //    }
+   // }
 }
 
 void RecentModelPrivate::removeNode(RecentViewNode* n)
 {
    const int idx  = n->m_Index;
-   const int size = m_lTopLevelReverted.size();
 
    q_ptr->beginRemoveRows(QModelIndex(), idx, idx);
 
-   //If this assert, the data is corrupted anyway, it will crash later on
-   Q_ASSERT(m_lTopLevelReverted[size-idx-1] == n);
+   m_lTopLevelReverted.removeOne(n);
 
-   m_lTopLevelReverted.removeAt(size-idx-1);
-
-   for (int i = 0; i <= idx; i++)
-      m_lTopLevelReverted[i]->m_Index--;
-
+   if (idx < m_lTopLevelReverted.size()) {
+      for (int i = 0; i <= idx; i++) {
+         m_lTopLevelReverted[i]->m_Index--;
+      }
+   }
    q_ptr->endRemoveRows();
 }
 
-void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
+void RecentModelPrivate::slotPersonAdded(const Person* p)
+{
+   if (p)
+      slotLastUsedTimeChanged(p, p->lastUsedTime());
+}
+
+void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
 {
    RecentViewNode* n = m_hPersonsToNodes[p];
    const bool isNew = !n;
@@ -383,9 +438,16 @@ void RecentModelPrivate::slotLastUsedTimeChanged(Person* p, time_t t)
       n->m_pParent            = nullptr                     ;
       n->m_Index              = 0                           ;
       m_hPersonsToNodes[p]    = n                           ;
+      Q_FOREACH(auto cm, p->phoneNumbers()) {
+         RecentViewNode* cmNode = m_hCMsToNodes[cm];
+         if (cmNode)
+            n->m_lChildren.append(cmNode->m_lChildren);
+      }
+
    }
 
    insertNode(n, t, isNew);
+   slotUpdate();
 }
 
 void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
@@ -402,8 +464,8 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
          n->m_pParent                   = nullptr                             ;
          n->m_Index                     = 0                                   ;
          m_hCMsToNodes[cm]              = n                                   ;
+         slotUpdate();
       }
-
       insertNode(n, t, isNew);
    }
 }
@@ -411,11 +473,82 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 ///Remove the contact method once they are associated with a contact
 void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
 {
-   if (op)
-      return;
-
+   Q_UNUSED(np)
    RecentViewNode* n = m_hCMsToNodes[cm];
 
    if (n)
       removeNode(n);
+}
+
+void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
+{
+   //qDebug() << "STATE CHANGED:" << call->peerContactMethod();
+   RecentViewNode* n;
+   if (auto p = call->peerContactMethod()->contact()) {
+      n = m_hPersonsToNodes[p];
+   } else {
+      n = m_hCMsToNodes[call->peerContactMethod()];
+   }
+   if (!n)
+      return;
+
+   if(call->state() == Call::State::OVER) {
+      // Find the active call in children of this node and remove it
+      RecentViewNode* callNode = nullptr;
+      for (auto node : n->m_lChildren) {
+      qDebug() << "Call is:" << call << " node is" << node->m_uContent.m_pCall;
+
+      if (node->m_uContent.m_pCall == call)
+         callNode = node;
+      }
+      if (!callNode) {
+         qWarning() << "Call not found in RecentModel" << call;
+         return;
+      }
+
+      q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), callNode->m_Index, callNode->m_Index);
+      n->m_lChildren.removeAt(callNode->m_Index);
+      q_ptr->endRemoveRows();
+   } else
+   emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+}
+
+void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
+{
+   Q_UNUSED(parent)
+
+   RecentViewNode* n = nullptr;
+   if (auto p = call->peerContactMethod()->contact()) {
+      n = m_hPersonsToNodes[p];
+   } else {
+      n = m_hCMsToNodes[call->peerContactMethod()];
+   }
+   if (!n && !m_lCallBucket.contains(call)) {
+      m_lCallBucket.append(call);
+      connect(call, &Call::lifeCycleStateChanged, this, &RecentModelPrivate::slotUpdate);
+      return;
+   } else if (n && m_lCallBucket.contains(call)) {
+      m_lCallBucket.removeOne(call);
+      //TODO: remove the connection store callbucket as a map key = call value = metaconnection
+   } else if (!n && m_lCallBucket.contains(call)) {
+      return;
+   }
+
+   auto callNode = new RecentViewNode();
+   callNode->m_Type = RecentViewNode::Type::CALL;
+   callNode->m_uContent.m_pCall = call;
+   callNode->m_pParent = n;
+   callNode->m_Index = n->m_lChildren.size();
+
+   q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
+   n->m_lChildren.append(callNode);
+   q_ptr->endInsertRows();
+}
+
+void RecentModelPrivate::slotUpdate()
+{
+   Q_FOREACH(auto call, m_lCallBucket) {
+      qDebug() << "trying to empty bucket call:" << call;
+      slotCallAdded(call, nullptr);
+   }
 }
