@@ -1,6 +1,7 @@
 /************************************************************************************
  *   Copyright (C) 2015 by Savoir-Faire Linux                                       *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>         *
+ *            Alexandre Lision <alexandre.lision@savoirfairelinux.com>              *
  *                                                                                  *
  *   This library is free software; you can redistribute it and/or                  *
  *   modify it under the terms of the GNU Lesser General Public                     *
@@ -23,6 +24,7 @@
 #include <typedefs.h>
 
 class RecentModelPrivate;
+class Call;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
@@ -41,6 +43,9 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    static RecentModel* instance();
+
+   bool hasActiveCall(const QModelIndex& parent);
+   Call* getActiveCall(const QModelIndex& parent);
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
