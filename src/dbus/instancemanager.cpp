@@ -46,11 +46,15 @@ InstanceInterface& DBus::InstanceManager::instance()
         registered = true;
         reply.waitForFinished();
     }
-    if (!interface->isValid()) {
-        GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
-    }
+
+    /* we do not check if the interface isValid;
+     * isValid() return 'false' if there was any error;
+     * we expect there to be an error when we first launch the client and the daemon is not yet
+     * running;
+     * TODO: check if we get the expected error, or another, see:
+     * http://doc.qt.io/qt-4.8/qdbuserror.html#ErrorType-enum
+     */
+
 #endif
     return *interface;
 }
