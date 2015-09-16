@@ -1079,6 +1079,16 @@ void Call::setDialNumber(const ContactMethod* number)
     setDialNumber(number->uri());
 }
 
+void Call::setPeerContactMethod(ContactMethod* cm)
+{
+    if (!cm)
+        return;
+    d_ptr->m_pPeerContactMethod = cm;
+    if (lifeCycleState() == Call::LifeCycleState::CREATION) {
+       setDialNumber(cm->uri());
+    }
+}
+
 ///Set the recording path
 void CallPrivate::setRecordingPath(const QString& path)
 {
@@ -1585,7 +1595,7 @@ void CallPrivate::call()
     Q_ASSERT_IS_IN_PROGRESS;
 
     // Calls to empty URI should not be allowed, dring will go crazy
-    if (!m_pDialNumber || m_pDialNumber->uri().isEmpty()) {
+    if (!m_pPeerContactMethod && (!m_pDialNumber || m_pDialNumber->uri().isEmpty())) {
         qDebug() << "Trying to call an empty URI";
         changeCurrentState(Call::State::FAILURE);
         if (!m_pDialNumber)
@@ -1597,10 +1607,19 @@ void CallPrivate::call()
         return;
     }
 
-    // Trying to find a valid account
+    // Try to set the account from the associated ContactMethod
+    if (q_ptr->peerContactMethod()->account()) {
+        auto tryingAcc = q_ptr->peerContactMethod()->account();
+        // make sure account exist in the model and that it's READY
+        if(AccountModel::instance()->getById(tryingAcc->id()) &&
+                (tryingAcc->registrationState() == Account::RegistrationState::READY))
+            m_Account = q_ptr->peerContactMethod()->account();
+    }
+
+    // Otherwise set default account
     if (!m_Account) {
         qDebug() << "Account is not set, taking the first registered.";
-        m_Account = AvailableAccountModel::currentDefaultAccount(m_pDialNumber.get());
+        m_Account = AvailableAccountModel::currentDefaultAccount(q_ptr->peerContactMethod());
         if (!m_Account) {
             qDebug() << "Trying to call "
                      << (m_pTransferNumber ? static_cast<QString>(m_pTransferNumber->uri()) : "ERROR")
@@ -1608,7 +1627,6 @@ void CallPrivate::call()
             throw tr("No account registered!");
         }
     }
-    qDebug() << "account = " << m_Account << " " << m_Account->alias();
 
     // Normal case
     qDebug() << "Calling " << q_ptr->peerContactMethod()->uri() << " with account " << m_Account
@@ -1617,8 +1635,13 @@ void CallPrivate::call()
     m_Direction = Call::Direction::OUTGOING;
 
     // Warning: m_pDialNumber can become nullptr when linking directly
-    const auto& uri = m_pDialNumber->uri();
-    m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+    URI uri {q_ptr->peerContactMethod()->uri()};
+    if (!m_pPeerContactMethod) {
+        uri = m_pDialNumber->uri();
+        m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+    } else
+        uri = m_pPeerContactMethod->uri();
+
     m_DringId = DBus::CallManager::instance().placeCall(m_Account->id(), uri);
 
     // This can happen when the daemon cannot allocate memory
