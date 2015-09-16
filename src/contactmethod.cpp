@@ -637,9 +637,9 @@ void ContactMethod::contactRebased(Person* other)
 {
    d_ptr->m_PrimaryName_cache = other->formattedName();
    d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
-   d_ptr->changed();
+   setPerson(other);
 
-   //It is a "partial" rebase, so the ContactMethod data stay the same
+   d_ptr->changed();
    d_ptr->rebased(this);
 }
 
