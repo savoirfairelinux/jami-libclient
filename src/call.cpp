@@ -1079,6 +1079,13 @@ void Call::setDialNumber(const ContactMethod* number)
     setDialNumber(number->uri());
 }
 
+void Call::setPeerContactMethod(ContactMethod* cm)
+{
+    if (!cm)
+        return;
+    d_ptr->m_pPeerContactMethod = cm;
+}
+
 ///Set the recording path
 void CallPrivate::setRecordingPath(const QString& path)
 {
