@@ -99,6 +99,12 @@ m_IsHNParsed(false),m_Port(-1),m_Transport(URI::Transport::NOT_SET)
 {
 }
 
+///Default constructor
+URI::URI() : QString(), d_ptr(new URIPrivate(this))
+{
+
+}
+
 ///Constructor
 URI::URI(const QString& other):QString(), d_ptr(new URIPrivate(this))
 {
