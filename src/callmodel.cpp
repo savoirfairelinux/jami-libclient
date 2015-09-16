@@ -573,8 +573,8 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
       return;
    }
 
-   if (m_shInternalMapping[call] != nullptr) {
-      removeInternal(m_shInternalMapping[call]);
+   if (internal != nullptr) {
+      removeInternal(internal);
       //NOTE Do not free the memory, it can still be used elsewhere or in modelindexes
    }
 
@@ -582,8 +582,6 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
    if (m_shDringId[m_shDringId.key(internal)] == internal) {
       m_shDringId.remove(m_shDringId.key(internal));
    }
-
-   removeInternal(internal);
 
    //Restore calls to the main list if they are not really over
    if (internal->m_lChildren.size()) {

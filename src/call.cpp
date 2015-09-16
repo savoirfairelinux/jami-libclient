@@ -518,12 +518,9 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Try to assiciate a contact now, the real contact object is probably not
    //loaded yet, but we can get a placeholder for now
-//    const QString& contactUsed    = hc[ Call::HistoryMapFields::CONTACT_USED ]; //TODO
-   const QString& contactUid     = hc[ Call::HistoryMapFields::CONTACT_UID  ];
-
-
+   const QString& contactUid = hc[ Call::HistoryMapFields::CONTACT_UID ];
    Person* ct = nullptr;
-   if (!hc[ Call::HistoryMapFields::CONTACT_UID].isEmpty())
+   if (!contactUid.isEmpty())
       ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
 
    Account*        acc            = AccountModel::instance()->getById(accId);
@@ -792,7 +789,9 @@ FlagPack<Call::HoldFlags> Call::holdFlags() const
 ///Generate an human readable string from the difference between StartTimeStamp and StopTimeStamp (or 'now')
 QString Call::length() const
 {
-   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp) return QString(); //Invalid
+   if (d_ptr->m_pStartTimeStamp == d_ptr->m_pStopTimeStamp)
+      return QString(); //Invalid
+
    int nsec =0;
    if (d_ptr->m_pStopTimeStamp)
       nsec = stopTimeStamp() - startTimeStamp();//If the call is over
@@ -1552,7 +1551,6 @@ void CallPrivate::cancel()
    CallManagerInterface & callManager = DBus::CallManager::instance();
    qDebug() << "Canceling call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->dialNumberChanged(QString());
-//    Q_NOREPLY callManager.hangUp(m_DringId);
    if (!callManager.hangUp(m_DringId)) {
       qWarning() << "HangUp failed, the call was probably already over";
       changeCurrentState(Call::State::OVER);
