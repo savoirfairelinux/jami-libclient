@@ -99,11 +99,31 @@ m_IsHNParsed(false),m_Port(-1),m_Transport(URI::Transport::NOT_SET)
 {
 }
 
+///Default constructor
+URI::URI() : QString(), d_ptr(new URIPrivate(this))
+{
+
+}
+
 ///Constructor
-URI::URI(const QString& other):QString(), d_ptr(new URIPrivate(this))
+URI::URI(const QString& other) : URI()
 {
    d_ptr->m_Stripped              = URIPrivate::strip(other,d_ptr->m_HeaderType);
    (*static_cast<QString*>(this)) = d_ptr->m_Stripped                           ;
+}
+
+///Copy constructor
+URI::URI(const URI& o) : URI()
+{
+   d_ptr->commonCopyConstructor(o);
+}
+
+///Destructor
+URI::~URI()
+{
+   (*static_cast<QString*>(this)) = QString();
+   d_ptr->m_Stripped = QString();
+//    delete d_ptr;
 }
 
 void URIPrivate::commonCopyConstructor(const URI& o)
@@ -123,20 +143,6 @@ void URIPrivate::commonCopyConstructor(const URI& o)
    m_Tag          = o.d_ptr->m_Tag         ;
 
    (*static_cast<QString*>(q_ptr)) = o.d_ptr->m_Stripped;
-}
-
-///Copy constructor
-URI::URI(const URI& o):QString(), d_ptr(new URIPrivate(this))
-{
-   d_ptr->commonCopyConstructor(o);
-}
-
-///Destructor
-URI::~URI()
-{
-   (*static_cast<QString*>(this)) = QString();
-   d_ptr->m_Stripped = QString();
-//    delete d_ptr;
 }
 
 /// Copy operator, make sure the cache is also copied

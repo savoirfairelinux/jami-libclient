@@ -81,12 +81,16 @@ class LIB_EXPORT URI : public QString
    friend class URIPrivate;
 public:
 
+   ///Default constructor
+   URI();
+
    /**
     * Default copy constructor
     * @param other an URI string
     */
-   URI(const QString& other);
    URI(const URI&     other);
+
+   URI(const QString& other);
    virtual ~URI();
 
    ///@enum SchemeType The very first part of the URI followed by a ':'
