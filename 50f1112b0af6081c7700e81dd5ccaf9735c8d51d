@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7a96c907_e701903a",
+        "filename": "src/call.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1644,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-17T16:41:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a96c907_67602036",
+      "range": {
+        "startLine": 1639,
+        "startChar": 4,
+        "endLine": 1644,
+        "endChar": 42
+      },
+      "revId": "50f1112b0af6081c7700e81dd5ccaf9735c8d51d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a96c907_87652c47",
         "filename": "src/call.cpp",
         "patchSetId": 7
@@ -36,6 +60,30 @@
       "writtenOn": "2015-09-17T16:23:38Z",
       "side": 1,
       "message": "but you just changed the peer cm, this value is outdated.",
+      "range": {
+        "startLine": 1658,
+        "startChar": 27,
+        "endLine": 1658,
+        "endChar": 33
+      },
+      "revId": "50f1112b0af6081c7700e81dd5ccaf9735c8d51d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_07ffdc35",
+        "filename": "src/call.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1658,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-17T16:41:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a96c907_87652c47",
       "range": {
         "startLine": 1658,
         "startChar": 27,
