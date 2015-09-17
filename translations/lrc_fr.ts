@@ -96,104 +96,104 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="661"/>
+        <location filename="../src/call.cpp" line="658"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="663"/>
+        <location filename="../src/call.cpp" line="660"/>
         <source>Ringing (in)</source>
         <translation>Sonnerie (entrante)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="665"/>
+        <location filename="../src/call.cpp" line="662"/>
         <source>Ringing (out)</source>
         <translation>Sonnerie (sortante)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="667"/>
+        <location filename="../src/call.cpp" line="664"/>
         <source>Talking</source>
         <translation>Communication établie</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="669"/>
+        <location filename="../src/call.cpp" line="666"/>
         <source>Dialing</source>
         <translation>Composition</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="671"/>
+        <location filename="../src/call.cpp" line="668"/>
         <source>Hold</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="673"/>
+        <location filename="../src/call.cpp" line="670"/>
         <source>Failed</source>
         <translation>Échec</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="675"/>
+        <location filename="../src/call.cpp" line="672"/>
         <source>Busy</source>
         <translation>Occupé</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="677"/>
+        <location filename="../src/call.cpp" line="674"/>
         <source>Transfer</source>
         <translation>Transférer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="679"/>
+        <location filename="../src/call.cpp" line="676"/>
         <source>Transfer hold</source>
         <translation>Transfert sur garde</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="681"/>
+        <location filename="../src/call.cpp" line="678"/>
         <source>Over</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="683"/>
+        <location filename="../src/call.cpp" line="680"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="685"/>
-        <location filename="../src/call.cpp" line="767"/>
-        <location filename="../src/call.cpp" line="2002"/>
+        <location filename="../src/call.cpp" line="682"/>
+        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="2000"/>
         <source>Conference</source>
         <translation>Conférence</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="687"/>
+        <location filename="../src/call.cpp" line="684"/>
         <source>Conference (hold)</source>
         <translation>Conférence (sur pause)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="689"/>
+        <location filename="../src/call.cpp" line="686"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="691"/>
+        <location filename="../src/call.cpp" line="688"/>
         <source>Searching for</source>
         <translation>Recherche de </translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="693"/>
+        <location filename="../src/call.cpp" line="690"/>
         <source>Aborted</source>
         <translation>Interrompu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="695"/>
+        <location filename="../src/call.cpp" line="692"/>
         <source>Communication established</source>
         <translation>Communication établie</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="777"/>
+        <location filename="../src/call.cpp" line="774"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2007"/>
+        <location filename="../src/call.cpp" line="2005"/>
         <source>Account: </source>
         <translation>Compte:</translation>
     </message>
@@ -201,7 +201,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="850"/>
+        <location filename="../src/callmodel.cpp" line="848"/>
         <source>Calls</source>
         <translation>Appels</translation>
     </message>
@@ -217,12 +217,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1597"/>
+        <location filename="../src/call.cpp" line="1595"/>
         <source>Failure</source>
         <translation>Échec</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1610"/>
+        <location filename="../src/call.cpp" line="1608"/>
         <source>No account registered!</source>
         <translation>Pas de compte enregistré</translation>
     </message>
@@ -246,6 +246,27 @@
         <location filename="../src/categorizedcontactmodel.cpp" line="414"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="129"/>
+        <source>Empty</source>
+        <translation>Vide</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="135"/>
+        <location filename="../src/private/sortproxies.cpp" line="153"/>
+        <source>Unknown</source>
+        <translation>Inconnu</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="141"/>
+        <source>Never</source>
+        <translation>Jamais</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="147"/>
+        <source>Other</source>
+        <translation>Autre</translation>
     </message>
 </context>
 <context>
@@ -281,6 +302,62 @@
         <location filename="../src/contactmethod.cpp" line="492"/>
         <source>N/A</source>
         <translation>N/A</translation>
+    </message>
+</context>
+<context>
+    <name>ContactSortingCategoryModel</name>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="49"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="50"/>
+        <source>Organisation</source>
+        <translation>Organisation</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="51"/>
+        <source>Recently used</source>
+        <translation>Récemment utilisé</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="52"/>
+        <source>Group</source>
+        <translation>Groupe</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="53"/>
+        <source>Department</source>
+        <translation>Département</translation>
+    </message>
+</context>
+<context>
+    <name>HistorySortingCategoryModel</name>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="57"/>
+        <source>Date</source>
+        <translation>Date</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="58"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="59"/>
+        <source>Popularity</source>
+        <translation>Popularité</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="60"/>
+        <source>Duration</source>
+        <translation>Durée</translation>
+    </message>
+    <message>
+        <location filename="../src/private/sortproxies.cpp" line="61"/>
+        <source>Total time</source>
+        <translation>Temps total</translation>
     </message>
 </context>
 <context>
@@ -625,17 +702,17 @@
 <context>
     <name>ProfileContentBackend</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="220"/>
+        <location filename="../src/profilemodel.cpp" line="222"/>
         <source>Profile backend</source>
         <translation>Profil de machinerie</translation>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="225"/>
+        <location filename="../src/profilemodel.cpp" line="227"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="316"/>
+        <location filename="../src/profilemodel.cpp" line="318"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -643,7 +720,7 @@
 <context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="829"/>
+        <location filename="../src/profilemodel.cpp" line="873"/>
         <source>Profiles</source>
         <translation>Profils</translation>
     </message>
@@ -978,12 +1055,6 @@
         <translation>Historique</translation>
     </message>
     <message>
-        <location filename="../src/private/sortproxies.cpp" line="135"/>
-        <location filename="../src/private/sortproxies.cpp" line="153"/>
-        <source>Unknown</source>
-        <translation>Inconnu</translation>
-    </message>
-    <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
         <translation type="unfinished"/>
@@ -1026,65 +1097,8 @@
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="191"/>
-        <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
         <translation>Autre</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="49"/>
-        <location filename="../src/private/sortproxies.cpp" line="58"/>
-        <source>Name</source>
-        <translation>Nom</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="50"/>
-        <source>Organisation</source>
-        <translation>Organisation</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="51"/>
-        <source>Recently used</source>
-        <translation>Récemment utilisé</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="52"/>
-        <source>Group</source>
-        <translation>Groupe</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="53"/>
-        <source>Department</source>
-        <translation>Département</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="57"/>
-        <source>Date</source>
-        <translation>Date</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="59"/>
-        <source>Popularity</source>
-        <translation>Popularité</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="60"/>
-        <source>Duration</source>
-        <translation>Durée</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="61"/>
-        <source>Total time</source>
-        <translation>Temps total</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="129"/>
-        <source>Empty</source>
-        <translation>Vide</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="141"/>
-        <source>Never</source>
-        <translation>Jamais</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
