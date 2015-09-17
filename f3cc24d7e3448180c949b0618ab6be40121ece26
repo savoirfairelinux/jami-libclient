@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a96c907_07a03c8f",
+        "filename": "src/call.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-09-17T14:19:50Z",
+      "side": 1,
+      "message": "You should probably check that the call hasn\u0027t started yet, like in setDialNumber():\n\nif (lifeCycleState() !\u003d Call::LifeCycleState::CREATION)",
+      "range": {
+        "startLine": 1084,
+        "startChar": 4,
+        "endLine": 1089,
+        "endChar": 5
+      },
+      "revId": "f3cc24d7e3448180c949b0618ab6be40121ece26",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
