@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a96c907_b233c8f5",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "\"global initialization order fiasco\" !!!\n\nJust take the old code, and add \"static\" in front of local variable.",
+      "range": {
+        "startLine": 197,
+        "startChar": 3,
+        "endLine": 200,
+        "endChar": 1
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_d230d4ea",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "auto",
+      "range": {
+        "startLine": 211,
+        "startChar": 3,
+        "endLine": 211,
+        "endChar": 18
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_525cc425",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "why not using iterator on node-\u003em_lChildren?",
+      "range": {
+        "startLine": 212,
+        "startChar": 3,
+        "endLine": 212,
+        "endChar": 58
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_f2407037",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "same comments as hasActiveCall()",
+      "range": {
+        "startLine": 229,
+        "startChar": 3,
+        "endLine": 230,
+        "endChar": 58
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_123e3cb9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "just return ...;",
+      "range": {
+        "startLine": 232,
+        "startChar": 9,
+        "endLine": 232,
+        "endChar": 20
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_b24ae853",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "line too long",
+      "range": {
+        "startLine": 368,
+        "startChar": 97,
+        "endLine": 368,
+        "endChar": 106
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_d247744a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "better to encapsulate by #if 0 ... #endif than using comments for this needs",
+      "range": {
+        "startLine": 397,
+        "startChar": 4,
+        "endLine": 404,
+        "endChar": 7
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_7274609c",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "missing space after if",
+      "range": {
+        "startLine": 495,
+        "startChar": 5,
+        "endLine": 495,
+        "endChar": 6
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_9279ec95",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "indentation issue",
+      "range": {
+        "startLine": 499,
+        "startChar": 6,
+        "endLine": 502,
+        "endChar": 25
+      },
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_326ed8ca",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T19:08:15Z",
+      "side": 1,
+      "message": "indentation issue",
+      "revId": "1c641f5a0524fc1f65fdbba00915a79e50eaeef4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
