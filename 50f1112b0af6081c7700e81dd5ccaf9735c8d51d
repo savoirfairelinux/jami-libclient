@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a96c907_67602036",
+        "filename": "src/call.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1644,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T16:23:38Z",
+      "side": 1,
+      "message": "this code is not clear, checks also the fact that m_pDialNumber is used just after (1651)",
+      "range": {
+        "startLine": 1639,
+        "startChar": 4,
+        "endLine": 1644,
+        "endChar": 42
+      },
+      "revId": "50f1112b0af6081c7700e81dd5ccaf9735c8d51d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_87652c47",
+        "filename": "src/call.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1658,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T16:23:38Z",
+      "side": 1,
+      "message": "but you just changed the peer cm, this value is outdated.",
+      "range": {
+        "startLine": 1658,
+        "startChar": 27,
+        "endLine": 1658,
+        "endChar": 33
+      },
+      "revId": "50f1112b0af6081c7700e81dd5ccaf9735c8d51d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a96c907_07511c62",
+        "filename": "src/uri.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-17T16:23:38Z",
+      "side": 1,
+      "message": "URI() (delegate contructor: https://isocpp.org/wiki/faq/cpp11-language-classes#delegating-ctor)",
+      "range": {
+        "startLine": 109,
+        "startChar": 31,
+        "endLine": 109,
+        "endChar": 69
+      },
+      "revId": "50f1112b0af6081c7700e81dd5ccaf9735c8d51d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
