@@ -166,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_fdacc737",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-18T19:12:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_7df3d773",
+      "range": {
+        "startLine": 390,
+        "startChar": 3,
+        "endLine": 391,
+        "endChar": 75
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_5dee1b8d",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 36
