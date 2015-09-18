@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2013-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -41,8 +41,6 @@
 //Private
 #include "private/phonedirectorymodel_p.h"
 
-PhoneDirectoryModel* PhoneDirectoryModel::m_spInstance = nullptr;
-
 PhoneDirectoryModelPrivate::PhoneDirectoryModelPrivate(PhoneDirectoryModel* parent) : QObject(parent), q_ptr(parent),
 m_CallWithAccount(false),m_pPopularModel(nullptr)
 {
@@ -81,9 +79,7 @@ PhoneDirectoryModel::~PhoneDirectoryModel()
 
 PhoneDirectoryModel* PhoneDirectoryModel::instance()
 {
-   if (!m_spInstance) {
-      m_spInstance = new PhoneDirectoryModel();
-   }
+   auto m_spInstance = new PhoneDirectoryModel();
    return m_spInstance;
 }
 
