@@ -101,9 +101,6 @@ private:
    QScopedPointer<PhoneDirectoryModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(PhoneDirectoryModel)
 
-   //Singleton
-   static PhoneDirectoryModel* m_spInstance;
-
 Q_SIGNALS:
    void lastUsedChanged(ContactMethod* cm, time_t t);
    void contactChanged(ContactMethod* cm, Person* newContact, Person* oldContact);
