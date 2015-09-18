@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_3d11cfac",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:24:45Z",
+      "side": 1,
+      "message": "could be removed as lead to noisy output at contact loading",
+      "range": {
+        "startLine": 633,
+        "startChar": 3,
+        "endLine": 633,
+        "endChar": 63
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_7d651744",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:24:45Z",
+      "side": 1,
+      "message": "std::for_each + std::make_reverse_iterator",
+      "range": {
+        "startLine": 209,
+        "startChar": 3,
+        "endLine": 211,
+        "endChar": 35
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_fd692726",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:24:45Z",
+      "side": 1,
+      "message": "std::for_each + std::make_reverse_iterator",
+      "range": {
+        "startLine": 229,
+        "startChar": 3,
+        "endLine": 232,
+        "endChar": 35
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
