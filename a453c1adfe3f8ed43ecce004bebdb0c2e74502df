@@ -68,6 +68,75 @@
       "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_7df3d773",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:39:01Z",
+      "side": 1,
+      "message": "a bit complex, just to set a number in a decreasing way.\njust loop on increment order, and set to size - i - 1",
+      "range": {
+        "startLine": 390,
+        "startChar": 3,
+        "endLine": 391,
+        "endChar": 75
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_5dee1b8d",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:39:01Z",
+      "side": 1,
+      "message": "if (auto ...)",
+      "range": {
+        "startLine": 447,
+        "startChar": 9,
+        "endLine": 448,
+        "endChar": 20
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_bde15f9c",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-18T18:39:01Z",
+      "side": 1,
+      "message": "looks like std::find_if",
+      "range": {
+        "startLine": 502,
+        "startChar": 6,
+        "endLine": 508,
+        "endChar": 22
+      },
+      "revId": "a453c1adfe3f8ed43ecce004bebdb0c2e74502df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
