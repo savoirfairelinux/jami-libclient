@@ -746,7 +746,7 @@ ContactMethod* Call::peerContactMethod() const
         return d_ptr->m_pPeerContactMethod;
 
     if (d_ptr->m_pDialNumber)
-        return d_ptr->m_pDialNumber.get();
+        return d_ptr->m_pDialNumber;
 
     return const_cast<ContactMethod*>(ContactMethod::BLANK());
 }
@@ -1045,7 +1045,7 @@ Media::Media* MediaTypeInference::safeMediaCreator(Call* c, Media::Media::Type t
 void Call::setTransferNumber(const QString& number)
 {
     if (!d_ptr->m_pTransferNumber)
-        d_ptr->m_pTransferNumber.reset(new TemporaryContactMethod());
+        d_ptr->m_pTransferNumber = new TemporaryContactMethod();
     d_ptr->m_pTransferNumber->setUri(number);
 }
 
@@ -1225,8 +1225,9 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
    }
    if (q_ptr->lifeCycleState() != Call::LifeCycleState::CREATION && m_pDialNumber) {
       if (!m_pPeerContactMethod)
-          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber.get());
-      m_pDialNumber.reset();
+          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+      m_pDialNumber->deleteLater();
+      m_pDialNumber = nullptr;
    }
    emit q_ptr->changed();
    qDebug() << "Calling stateChanged " << newStateName << " -> " << toDaemonCallState(newStateName) << " on call with state " << previousState << ". Become " << m_CurrentState;
@@ -1602,8 +1603,10 @@ void CallPrivate::call()
         changeCurrentState(Call::State::ABORTED);
         if (!m_pDialNumber)
             emit q_ptr->dialNumberChanged(QString());
-        else
-            m_pDialNumber.reset();
+        else {
+           m_pDialNumber->deleteLater();
+           m_pDialNumber = nullptr;
+        }
         q_ptr->setPeerName(tr("Aborted"));
         emit q_ptr->changed();
         return;
@@ -1641,7 +1644,8 @@ void CallPrivate::call()
         m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
 
     // m_pDialNumber is now discarded
-    m_pDialNumber.reset();
+    m_pDialNumber->deleteLater();
+    m_pDialNumber = nullptr;
 
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
@@ -1757,8 +1761,9 @@ void CallPrivate::start()
    emit q_ptr->changed();
    if (m_pDialNumber) {
       if (!m_pPeerContactMethod)
-          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber.get());
-      m_pDialNumber.reset();
+          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+      m_pDialNumber->deleteLater();
+      m_pDialNumber = nullptr;
    }
    setStartTimeStamp();
    initTimer();
@@ -1839,12 +1844,12 @@ void Call::appendText(const QString& str)
    switch (d_ptr->m_CurrentState) {
    case Call::State::TRANSFERRED :
    case Call::State::TRANSF_HOLD :
-       editNumber = d_ptr->m_pTransferNumber.get();
+       editNumber = d_ptr->m_pTransferNumber;
        break;
    case Call::State::DIALING     :
    case Call::State::NEW         : {
       const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
-      editNumber = d_ptr->m_pDialNumber.get();
+      editNumber = d_ptr->m_pDialNumber;
       const bool isEmpty  = str.isEmpty();
 
       if (wasEmpty != isEmpty)
@@ -1889,12 +1894,12 @@ void Call::backspaceItemText()
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
       case Call::State::TRANSF_HOLD      :
-          editNumber = d_ptr->m_pTransferNumber.get();
+          editNumber = d_ptr->m_pTransferNumber;
           break;
       case Call::State::NEW:
       case Call::State::DIALING          : {
          const bool wasEmpty = (!editNumber) ||editNumber->uri().isEmpty();
-         editNumber = d_ptr->m_pDialNumber.get();
+         editNumber = d_ptr->m_pDialNumber;
          const bool isEmpty  = editNumber->uri().isEmpty();
 
          if (wasEmpty != isEmpty)
@@ -1942,11 +1947,11 @@ void Call::reset()
    switch (d_ptr->m_CurrentState) {
       case Call::State::TRANSFERRED      :
       case Call::State::TRANSF_HOLD      :
-          editNumber = d_ptr->m_pTransferNumber.get();
+          editNumber = d_ptr->m_pTransferNumber;
           break;
       case Call::State::DIALING          :
       case Call::State::NEW              :
-          editNumber = d_ptr->m_pDialNumber.get();
+          editNumber = d_ptr->m_pDialNumber;
           d_ptr->changeCurrentState( Call::State::NEW );
           break;
       case Call::State::INITIALIZATION   :

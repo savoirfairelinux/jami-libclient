@@ -48,11 +48,6 @@ namespace Media {
    class Recording;
 }
 
-// Smart pointer deleter helper
-struct DeleteLaterDeleter {
-    void operator ()(QObject* p) { p->deleteLater(); }
-};
-
 class CallPrivate final : public QObject
 {
    Q_OBJECT
@@ -274,10 +269,12 @@ private:
     //Destructor helper (~Call is private, CallPrivate is a friend class)
     static void deleteCall(Call* call);
 
-    //!< Used as contact until m_pPeerContactMethod is created
-    std::unique_ptr<TemporaryContactMethod, DeleteLaterDeleter> m_pDialNumber;
+    // Used as contact until m_pPeerContactMethod is created
+    // Owner is PhoneDirectoryModel instance
+    TemporaryContactMethod* m_pDialNumber;
 
-    std::unique_ptr<TemporaryContactMethod> m_pTransferNumber;
+    // Owner is PhoneDirectoryModel instance
+    TemporaryContactMethod* m_pTransferNumber;
 
 private Q_SLOTS:
    void updated();
