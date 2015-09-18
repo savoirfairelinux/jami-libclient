@@ -17,7 +17,7 @@ INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
 
-ADD_DEFINITIONS("-std=c++1y")
+ADD_DEFINITIONS("-std=c++14")
 
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}

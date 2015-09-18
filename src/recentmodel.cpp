@@ -19,6 +19,8 @@
  ***********************************************************************************/
 #include "recentmodel.h"
 
+#include <iterator>
+
 //Qt
 #include <QtCore/QCoreApplication>
 
