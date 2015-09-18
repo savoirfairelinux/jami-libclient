@@ -404,11 +404,6 @@ QVariant ContactMethod::icon() const
    return category()->icon(isTracked(),isPresent());
 }
 
-QVariant TemporaryContactMethod::icon() const
-{
-   return QVariant(); //TODO use the pixmapmanipulator to get a better icon
-}
-
 ///The number of seconds spent with the URI (from history)
 int ContactMethod::totalSpentTime() const
 {
@@ -760,16 +755,6 @@ bool ContactMethod::sendOfflineTextMessage(const QString& text)
  *                                                                                  *
  ***********************************************************************************/
 
-void TemporaryContactMethod::setUri(const URI& uri)
-{
-   ContactMethod::d_ptr->m_Uri = uri;
-
-   //The sha1 is no longer valid
-   ContactMethod::d_ptr->m_Sha1.clear();
-
-   ContactMethod::d_ptr->changed();
-}
-
 ///Constructor
 TemporaryContactMethod::TemporaryContactMethod(const ContactMethod* number) :
    ContactMethod(QString(),NumberCategoryModel::other(),ContactMethod::Type::TEMPORARY),d_ptr(nullptr)
@@ -778,6 +763,20 @@ TemporaryContactMethod::TemporaryContactMethod(const ContactMethod* number) :
       setPerson(number->contact());
       setAccount(number->account());
    }
+}
+
+void TemporaryContactMethod::setUri(const URI& uri)
+{
+   ContactMethod::d_ptr->m_Uri = uri;
+
+   //The sha1 is no longer valid
+   ContactMethod::d_ptr->m_Sha1.clear();
+   ContactMethod::d_ptr->changed();
+}
+
+QVariant TemporaryContactMethod::icon() const
+{
+   return QVariant(); //TODO use the pixmapmanipulator to get a better icon
 }
 
 Q_DECLARE_METATYPE(QList<Call*>)
