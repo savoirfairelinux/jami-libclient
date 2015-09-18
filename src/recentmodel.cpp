@@ -19,6 +19,9 @@
  ***********************************************************************************/
 #include "recentmodel.h"
 
+//std
+#include <algorithm>
+
 //Qt
 #include <QtCore/QCoreApplication>
 
@@ -205,14 +208,15 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
       return false;
 
    auto node = static_cast<RecentViewNode*>(idx.internalPointer());
-
-   auto reverseEnd = std::make_reverse_iterator(node->m_lChildren.begin());
-   auto it = std::find_if (std::make_reverse_iterator(node->m_lChildren.end()),
-            reverseEnd, [] (RecentViewNode* child) {
-                     return child->m_Type == RecentViewNode::Type::CALL;
-               });
-
-   return it != reverseEnd;
+   QListIterator<RecentViewNode*> lIterator(node->m_lChildren);
+   lIterator.toBack();
+   while (lIterator.hasPrevious()) {
+      auto child = lIterator.previous();
+      if (child->m_Type == RecentViewNode::Type::CALL) {
+         return  CallModel::instance()->getIndex(child->m_uContent.m_pCall).isValid();
+      }
+   }
+   return false;
 }
 
 /**
@@ -224,14 +228,15 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
       return nullptr;
 
    RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
-
-   auto reverseEnd = std::make_reverse_iterator(node->m_lChildren.begin());
-   auto it = std::find_if (std::make_reverse_iterator(node->m_lChildren.end()),
-            reverseEnd, [] (RecentViewNode* child) {
-                     return child->m_Type == RecentViewNode::Type::CALL;
-               });
-
-   return it != reverseEnd ? (*it)->m_uContent.m_pCall : nullptr;
+   QListIterator<RecentViewNode*> lIterator(node->m_lChildren);
+   lIterator.toBack();
+   while (lIterator.hasPrevious()) {
+      auto child = lIterator.previous();
+      if (child->m_Type == RecentViewNode::Type::CALL) {
+         return child->m_uContent.m_pCall;
+      }
+   }
+   return nullptr;
 }
 
 QHash<int,QByteArray> RecentModel::roleNames() const
