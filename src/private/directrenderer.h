@@ -54,6 +54,7 @@ public:
    virtual ColorSpace colorSpace() const override;
 
    void onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h);
+   void swapFrame();
 
 public Q_SLOTS:
    virtual void startRendering() override;
