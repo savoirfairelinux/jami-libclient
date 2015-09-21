@@ -75,7 +75,8 @@ const QByteArray& Video::Renderer::currentFrame() const
 
 const std::shared_ptr<std::vector<unsigned char> >& Video::Renderer::currentSmartFrame() const
 {
-   return d_ptr->m_pSFrame;
+   QMutexLocker lk {mutex()};
+   return d_ptr->m_pSFrameRead;
 }
 
 bool Video::Renderer::isFrameSmart() const
