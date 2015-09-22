@@ -220,7 +220,8 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
 }
 
 /**
- * Return the first found ongoing call of the given parent index
+ * Return the first found ongoing call of the given index
+ * Index can be the call itself or the associated parent
  */
 Call* RecentModel::getActiveCall(const QModelIndex &idx)
 {
@@ -228,6 +229,11 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
       return nullptr;
 
    RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+
+   if (node->m_Type == RecentViewNode::Type::CALL) {
+      return node->m_uContent.m_pCall;
+   }
+
    QListIterator<RecentViewNode*> lIterator(node->m_lChildren);
    lIterator.toBack();
    while (lIterator.hasPrevious()) {
@@ -512,9 +518,21 @@ void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousSt
          return;
       }
 
-      q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
-      n->m_lChildren.removeAt((*it)->m_Index);
-      q_ptr->endRemoveRows();
+      // As long as we have more than 2 parallels calls, show them
+      if (n->m_lChildren.size() > 2) {
+         q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
+         n->m_lChildren.removeAt((*it)->m_Index);
+         q_ptr->endRemoveRows();
+      } else if (n->m_lChildren.size() == 2) {
+         // We had two calls, now only one, emit removeRows for ALL children
+         q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size() - 1);
+         n->m_lChildren.removeAt((*it)->m_Index);
+         q_ptr->endRemoveRows();
+      } else { // Only one call, remove it, and emit dataChanged
+          n->m_lChildren.removeFirst();
+          emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+      }
+
    } else
       emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
 }
@@ -546,9 +564,18 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
 
-   q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
-   n->m_lChildren.append(callNode);
-   q_ptr->endInsertRows();
+   // Emit insertRows only when there is more than one call
+   if (n->m_lChildren.size() > 1) {
+      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
+      n->m_lChildren.append(callNode);
+      q_ptr->endInsertRows();
+   } else if (n->m_lChildren.size() == 1) {
+      // If there is already a call emit insertRows for the two children
+      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size());
+      n->m_lChildren.append(callNode);
+      q_ptr->endInsertRows();
+   } else // size == 0, only add the child no signal emitted
+      n->m_lChildren.append(callNode);
 }
 
 void RecentModelPrivate::slotUpdate()
