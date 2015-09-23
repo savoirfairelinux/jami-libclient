@@ -574,8 +574,10 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
       q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size());
       n->m_lChildren.append(callNode);
       q_ptr->endInsertRows();
-   } else // size == 0, only add the child no signal emitted
+   } else { // size == 0, only add the child, emit dataChanged for the top node
       n->m_lChildren.append(callNode);
+      emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+   }
 }
 
 void RecentModelPrivate::slotUpdate()
