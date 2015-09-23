@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -28,7 +29,7 @@ public:
 
 HistoryTimeCategoryModel* HistoryTimeCategoryModelPrivate::instance()
 {
-   static HistoryTimeCategoryModel* m_spInstance = new HistoryTimeCategoryModel();
+   static auto m_spInstance = new HistoryTimeCategoryModel();
    return m_spInstance;
 }
 
@@ -121,41 +122,34 @@ QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
 
 HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
 {
-   time_t time2 = time;
-   time_t currentTime;
-   ::time(&currentTime);
    if (!time || time < 0)
       return HistoryTimeCategoryModel::HistoryConst::Never;
 
-   //Check if part if the current Nychthemeron
-   if (currentTime - time <= 3600*24) //The future case would be a bug, but it have to be handled anyway or it will appear in "very long time ago"
-      return HistoryConst::Today;
+   qint64 daysBetween = QDateTime::fromTime_t(time).daysTo(QDateTime::currentDateTime());
+   auto difference = QDate::fromJulianDay(daysBetween);
+   auto today = QDate::fromJulianDay(0);
 
-   time2 -= time%(3600*24); //Reset to midnight
-   currentTime -= currentTime%(3600*24); //Reset to midnight
+   int years = difference.year() - today.year();
+   int months = difference.month() - today.month();
+   int days = difference.day() - today.day();
+
+   //Check if today
+   if (years == 0 && months == 0 && days == 0) {
+      return HistoryConst::Today;
+   }
    //Check for last week
-   if (currentTime-(6)*3600*24 < time2) {
-      for (int i=1;i<7;i++) {
-         if (currentTime-((i)*3600*24) == time2)
-            return (HistoryTimeCategoryModel::HistoryConst)(i); //Yesterday to Six_days_ago
-      }
+   else if (years == 0 && months == 0) {
+      return (HistoryTimeCategoryModel::HistoryConst)(days); //Yesterday to Six_days_ago
    }
    //Check for last month
-   else if (currentTime - ((4)*7*24*3600) < time2) {
-      for (int i=1;i<4;i++) {
-         if (currentTime - ((i+1)*7*24*3600) < time2)
-            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::Last_week)-1); //Last_week to Three_weeks_ago
-      }
+   else if (years == 0 && months == 1 && days < 0) {
+      return (HistoryTimeCategoryModel::HistoryConst)((daysBetween) / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::Last_week)); //Last_week to Three_weeks_ago
    }
    //Check for last year
-   else if (currentTime-(12)*30.4f*24*3600 < time2) {
-      for (int i=1;i<12;i++) {
-         if (currentTime-(i+1)*30.4f*24*3600 < time2) //Not exact, but faster
-            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::Last_month)-1); //Last_month to Twelve_months ago
-      }
+   else if (years == 1 && months < 0) {
+      return (HistoryTimeCategoryModel::HistoryConst)((12 + months)%12 + ((int)HistoryTimeCategoryModel::HistoryConst::Last_month) - 1); //Last_month to Twelve_months ago
    }
-   //if (QDate::currentDate().addYears(-1)  >= date && QDate::currentDate().addYears(-2)  < date)
-   else if (currentTime-365*24*3600 < time2)
+   else if (years == 1)
       return HistoryConst::Last_year;
 
    //Every other senario
