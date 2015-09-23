@@ -75,10 +75,10 @@ void Video::DirectRenderer::stopRendering ()
 void Video::DirectRenderer::swapFrame ()
 {
    QMutexLocker lk {mutex()};
-   Video::Renderer::d_ptr->m_pSFrameRead.swap(Video::Renderer::d_ptr->m_pSFrameWrite);
+   std::swap(Video::Renderer::d_ptr->m_pFrameWrite, Video::Renderer::d_ptr->m_pFrameRead);
 }
 
-void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h)
+void Video::DirectRenderer::onNewFrame(const QByteArray& frame, int w, int h)
 {
    if (!isRendering()) {
       return;
@@ -88,7 +88,7 @@ void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigne
 
    Video::Renderer::d_ptr->m_pSize.setWidth(w);
    Video::Renderer::d_ptr->m_pSize.setHeight(h);
-   Video::Renderer::d_ptr->m_pSFrameWrite = frame;
+   Video::Renderer::d_ptr->m_pFrameWrite = const_cast<char*>(frame.data());
    emit frameUpdated();
 }
 
