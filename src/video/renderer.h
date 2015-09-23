@@ -17,7 +17,6 @@
  ***************************************************************************/
 #pragma once
 
-#include <memory>
 
 //Base
 #include <QtCore/QObject>
@@ -76,8 +75,6 @@ public:
    //Getters
    virtual bool              isRendering     () const;
    virtual const QByteArray& currentFrame    () const;
-   virtual const std::shared_ptr<std::vector<unsigned char> >& currentSmartFrame() const;
-   virtual bool        isFrameSmart() const;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
    virtual ColorSpace        colorSpace      () const = 0;
