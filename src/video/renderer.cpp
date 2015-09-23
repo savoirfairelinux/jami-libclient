@@ -73,10 +73,12 @@ const QByteArray& Video::Renderer::currentFrame() const
    return d_ptr->m_Content;
 }
 
-const std::shared_ptr<std::vector<unsigned char> >& Video::Renderer::currentSmartFrame() const
+const QByteArray& Video::Renderer::currentFrameForReading() const
 {
    QMutexLocker lk {mutex()};
-   return d_ptr->m_pSFrameRead;
+   //FIXME: Eloi: is it really useful to use mutex here ?
+   if (d_ptr->m_pFrameRead && d_ptr->m_FrameSize)
+       return d_ptr->m_pFrameRead;
 }
 
 bool Video::Renderer::isFrameSmart() const
