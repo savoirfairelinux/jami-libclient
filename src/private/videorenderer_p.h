@@ -18,7 +18,6 @@
 #ifndef RENDERERPRIVATE_H
 #define RENDERERPRIVATE_H
 
-#include <memory>
 
 //Qt
 #include <QtCore/QObject>
@@ -44,8 +43,6 @@ public:
    QString           m_Id         ;
    QSize             m_pSize      ;
    char*             m_pFrame     ;
-   std::shared_ptr<std::vector<unsigned char> > m_pSFrameWrite;
-   std::shared_ptr<std::vector<unsigned char> > m_pSFrameRead;
    QByteArray        m_Content    ;
    unsigned int      m_FrameSize  ;
 
