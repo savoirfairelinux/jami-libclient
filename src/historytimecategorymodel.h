@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -15,8 +15,9 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef HISTORYTIMECATEGORYMODEL_H
-#define HISTORYTIMECATEGORYMODEL_H
+
+#pragma once
+
 #include "typedefs.h"
 #include <time.h>
 
@@ -83,5 +84,3 @@ private:
 };
 Q_DECLARE_METATYPE(HistoryTimeCategoryModel::HistoryConst)
 Q_DECLARE_METATYPE(HistoryTimeCategoryModel*)
-
-#endif
