@@ -48,7 +48,6 @@ public:
    //Constructor
    ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
    virtual ~ShmRenderer();
-   void swapFrame() {}
 
    //Mutators
    void stopShm  ();

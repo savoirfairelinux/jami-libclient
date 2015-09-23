@@ -18,8 +18,6 @@
 #ifndef VIDEO_DIRECT_RENDERER_H
 #define VIDEO_DIRECT_RENDERER_H
 
-#include <memory>
-
 //Base
 #include <QtCore/QObject>
 #include "typedefs.h"
@@ -53,8 +51,9 @@ public:
    //Getter
    virtual ColorSpace colorSpace() const override;
 
-   void onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h);
-   void swapFrame();
+   void onNewFrame(int w, int h);
+
+   std::vector<unsigned char>* frameBuffer_;
 
 public Q_SLOTS:
    virtual void startRendering() override;
@@ -63,7 +62,6 @@ public Q_SLOTS:
 private:
    QScopedPointer<DirectRendererPrivate> d_ptr;
    Q_DECLARE_PRIVATE(DirectRenderer)
-
 };
 
 }
