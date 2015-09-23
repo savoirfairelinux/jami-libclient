@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QCryptographicHash>
+#include <QDateTime>
 
 //Ring daemon
 #include "dbus/configurationmanager.h"
@@ -472,25 +473,25 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::EditRole:
       case static_cast<int>(Role::Uri):
       case static_cast<int>(Call::Role::Number):
-         cat = uri();//call->getPeerContactMethod();
+         cat = uri();
          break;
       case static_cast<int>(Call::Role::Direction):
-         cat = tr("N/A");//call->getHistoryState();
+         cat = QVariant::fromValue(d_ptr->m_lCalls.last()->direction());
          break;
       case static_cast<int>(Call::Role::Date):
-         cat = tr("N/A");//call->getStartTimeStamp();
+         cat = QDateTime::fromTime_t(d_ptr->m_lCalls.last()->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::Length):
-         cat = tr("N/A");//call->getLength();
+         cat = d_ptr->m_lCalls.last()->length();
          break;
       case static_cast<int>(Call::Role::FormattedDate):
-         cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
+         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_lCalls.last()->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::HasAVRecording):
-         cat = false;//call->hasRecording();
+         cat = d_ptr->m_lCalls.last()->isAVRecording();
          break;
       case static_cast<int>(Call::Role::FuzzyDate):
-         cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
+         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_lCalls.last()->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::ContactMethod):
       case static_cast<int>(Role::Object):
