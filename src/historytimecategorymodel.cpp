@@ -1,6 +1,7 @@
 /****************************************************************************
- *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -28,7 +29,7 @@ public:
 
 HistoryTimeCategoryModel* HistoryTimeCategoryModelPrivate::instance()
 {
-   static HistoryTimeCategoryModel* m_spInstance = new HistoryTimeCategoryModel();
+   static auto m_spInstance = new HistoryTimeCategoryModel();
    return m_spInstance;
 }
 
@@ -121,41 +122,42 @@ QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
 
 HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
 {
-   time_t time2 = time;
-   time_t currentTime;
-   ::time(&currentTime);
    if (!time || time < 0)
       return HistoryTimeCategoryModel::HistoryConst::Never;
 
-   //Check if part if the current Nychthemeron
-   if (currentTime - time <= 3600*24) //The future case would be a bug, but it have to be handled anyway or it will appear in "very long time ago"
-      return HistoryConst::Today;
+   time_t currentTime;
+   ::time(&currentTime);
 
-   time2 -= time%(3600*24); //Reset to midnight
-   currentTime -= currentTime%(3600*24); //Reset to midnight
-   //Check for last week
-   if (currentTime-(6)*3600*24 < time2) {
-      for (int i=1;i<7;i++) {
-         if (currentTime-((i)*3600*24) == time2)
-            return (HistoryTimeCategoryModel::HistoryConst)(i); //Yesterday to Six_days_ago
-      }
+   /*
+   * Struct tm description of fields used below:
+   *  tm_mday	int	day of the month	1-31
+   *  tm_mon	int	months since January	0-11
+   *  tm_year	int	years since 1900
+   *  tm_wday	int	days since Sunday	0-6
+   */
+   struct tm localCurrentTime = {};
+   struct tm localPastTime = {};
+
+   ::localtime_r(&currentTime, &localCurrentTime);
+   ::localtime_r(&time, &localPastTime);
+
+   int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
+   int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
+   int diffDays = localCurrentTime.tm_mday - localPastTime.tm_mday;
+
+   //Check for last week starting Monday
+   if (diffYears == 0 && diffMonths == 0 && diffDays < 7 && localPastTime.tm_wday <= localCurrentTime.tm_wday) {
+      return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
    }
    //Check for last month
-   else if (currentTime - ((4)*7*24*3600) < time2) {
-      for (int i=1;i<4;i++) {
-         if (currentTime - ((i+1)*7*24*3600) < time2)
-            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::Last_week)-1); //Last_week to Three_weeks_ago
-      }
+   else if (diffYears == 0 && diffMonths == 0) {
+      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::Last_week)); //Last_week to Three_weeks_ago
    }
    //Check for last year
-   else if (currentTime-(12)*30.4f*24*3600 < time2) {
-      for (int i=1;i<12;i++) {
-         if (currentTime-(i+1)*30.4f*24*3600 < time2) //Not exact, but faster
-            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::Last_month)-1); //Last_month to Twelve_months ago
-      }
+   else if (diffYears == 0 && diffMonths > 0) {
+      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::Last_month) - 1); //Last_month to Twelve_months ago
    }
-   //if (QDate::currentDate().addYears(-1)  >= date && QDate::currentDate().addYears(-2)  < date)
-   else if (currentTime-365*24*3600 < time2)
+   else if (diffYears == 1)
       return HistoryConst::Last_year;
 
    //Every other senario
