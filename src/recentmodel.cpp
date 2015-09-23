@@ -546,9 +546,20 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
 
-   q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
-   n->m_lChildren.append(callNode);
-   q_ptr->endInsertRows();
+   // Emit insertRows only when there is more than one call
+   if (n->m_lChildren.size() > 1) {
+      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
+      n->m_lChildren.append(callNode);
+      q_ptr->endInsertRows();
+   } else if (n->m_lChildren.size() == 1) {
+      // If there is already a call emit insertRows for the two children
+      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size());
+      n->m_lChildren.append(callNode);
+      q_ptr->endInsertRows();
+   } else { // size == 0, only add the child, emit dataChanged for the top node
+      n->m_lChildren.append(callNode);
+      emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+   }
 }
 
 void RecentModelPrivate::slotUpdate()
