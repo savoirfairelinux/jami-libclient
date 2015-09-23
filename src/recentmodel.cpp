@@ -24,6 +24,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 
 //Ring
 #include <call.h>
@@ -202,7 +203,7 @@ RecentModel* RecentModel::instance()
  * Check if given index has an ongoing call
  * returns true if one of its child is also in the CallModel
  */
-bool RecentModel::hasActiveCall(const QModelIndex &idx)
+bool RecentModel::hasActiveCall(const QModelIndex &idx) const
 {
    if (not idx.isValid())
       return false;
@@ -223,7 +224,7 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
  * Return the first found ongoing call of the given index
  * Index can be the call itself or the associated parent
  */
-Call* RecentModel::getActiveCall(const QModelIndex &idx)
+Call* RecentModel::getActiveCall(const QModelIndex &idx) const
 {
    if (not idx.isValid())
       return nullptr;
@@ -266,27 +267,171 @@ bool RecentModel::setData( const QModelIndex& index, const QVariant &value, int 
 
 QVariant RecentModel::data( const QModelIndex& index, int role ) const
 {
-   if (!index.isValid())
-      return QVariant();
+    if (!index.isValid())
+    return QVariant();
 
-   RecentViewNode* node = static_cast<RecentViewNode*>(index.internalPointer());
+    RecentViewNode* node = static_cast<RecentViewNode*>(index.internalPointer());
 
-   switch(node->m_Type) {
-      case RecentViewNode::Type::PERSON            :
-         return node->m_uContent.m_pPerson->roleData(role);
-      case RecentViewNode::Type::CONTACT_METHOD    :
-         return node->m_uContent.m_pContactMethod->roleData(role);
-      case RecentViewNode::Type::CALL              :
-         return node->m_uContent.m_pCall->roleData(role);
-      case RecentViewNode::Type::CALL_GROUP        :
-         return node->m_uContent.m_pCallGroup->m_lCalls[0]->roleData(role);
-      case RecentViewNode::Type::TEXT_MESSAGE      :
-      case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
-         //TODO
-         break;
-   }
+    switch(role) {
+        case static_cast<int>(RecentModel::Role::Object):
+            /* get the object pointer */
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    return node->m_uContent.m_pPerson->roleData(static_cast<int>(Person::Role::Object));
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(ContactMethod::Role::Object));
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::Object));
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+        case static_cast<int>(RecentModel::Role::Name):
+            /* try to get the name or fallback on the URI */
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    return node->m_uContent.m_pPerson->roleData(Qt::DisplayRole);
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(Call::Role::Name));
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::Name));
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::Number):
+            /* get the URI in most cases */
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    break; //TODO: what do we do in the case of multiple numbers?
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(Call::Role::Number));
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::Number));
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::Status):
+            /* This will return a QString containing either a formatted date, or the state of the
+            * ongoing call, depending on the context. */
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    //FIXME: currently the only children are active calls, this code will have to change
+                    //       once other types of child nodes exist
+                    switch(node->m_lChildren.size()) {
+                        case 0 :
+                            return node->m_uContent.m_pPerson->roleData(static_cast<int>(Person::Role::FormattedLastUsed));
+                        case 1 :
+                        {
+                            if (auto call = getActiveCall(index))
+                                return Call::toHumanStateName(call->state());
+                            break;
+                        }
+                        default:
+                            break; //return nothing as there are multiple calls
+                    }
+                    break;
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    //FIXME: currently the only children are active calls, this code will have to change
+                    //       once other types of child nodes exist
+                    switch(node->m_lChildren.size()) {
+                        case 0 :
+                            return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(Call::Role::FormattedDate));
+                        case 1 :
+                        {
+                            if (auto call = getActiveCall(index))
+                                return QVariant::fromValue(Call::toHumanStateName(call->state()));
+                            break;
+                        }
+                        default:
+                            break; //return nothing as there are multiple calls
+                    }
+                    break;
+                case RecentViewNode::Type::CALL               :
+                    return QVariant::fromValue(Call::toHumanStateName(node->m_uContent.m_pCall->state()));
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::FormattedLastUsed):
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    return node->m_uContent.m_pPerson->roleData(static_cast<int>(Person::Role::FormattedLastUsed));
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(Call::Role::FormattedDate));
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::FormattedDate));
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::DatedLastUsed):
+            switch(node->m_Type) {
+                case RecentViewNode::Type::PERSON             :
+                    return node->m_uContent.m_pPerson->roleData(static_cast<int>(Person::Role::DatedLastUsed));
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                    return node->m_uContent.m_pContactMethod->roleData(static_cast<int>(Call::Role::Date));
+                case RecentViewNode::Type::CALL               :
+                    // we do this because Call::Role::Date returns an int for Call, instead of QDateTime
+                    return QDateTime::fromTime_t(node->m_uContent.m_pCall->startTimeStamp());
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::CallState):
+            switch(node->m_Type) {
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::State));
+                case RecentViewNode::Type::PERSON             :
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::CallHumanStateName):
+            switch(node->m_Type) {
+                case RecentViewNode::Type::CALL               :
+                    return QVariant::fromValue(Call::toHumanStateName(node->m_uContent.m_pCall->state()));
+                case RecentViewNode::Type::PERSON             :
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+        case static_cast<int>(RecentModel::Role::CallLength):
+            switch(node->m_Type) {
+                case RecentViewNode::Type::CALL               :
+                    return node->m_uContent.m_pCall->roleData(static_cast<int>(Call::Role::Length));
+                case RecentViewNode::Type::PERSON             :
+                case RecentViewNode::Type::CONTACT_METHOD     :
+                case RecentViewNode::Type::CALL_GROUP         :
+                case RecentViewNode::Type::TEXT_MESSAGE       :
+                case RecentViewNode::Type::TEXT_MESSAGE_GROUP :
+                    break;
+            }
+            break;
+    }
 
-   return QVariant();
+    return QVariant();
 }
 
 int RecentModel::rowCount( const QModelIndex& parent ) const

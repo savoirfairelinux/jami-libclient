@@ -31,6 +31,18 @@ class LIB_EXPORT RecentModel : public QAbstractItemModel
    Q_OBJECT
 public:
 
+   enum class Role {
+      Object             = 1000,
+      Name               = 1001,
+      Number             = 1002,
+      Status             = 1003,
+      FormattedLastUsed  = 1004,
+      DatedLastUsed      = 1005,
+      CallState          = 1006,
+      CallHumanStateName = 1007,
+      CallLength         = 1008,
+   };
+
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
@@ -44,8 +56,8 @@ public:
 
    static RecentModel* instance();
 
-   bool hasActiveCall(const QModelIndex& parent);
-   Call* getActiveCall(const QModelIndex& parent);
+   bool hasActiveCall(const QModelIndex& parent) const;
+   Call* getActiveCall(const QModelIndex& parent) const;
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
