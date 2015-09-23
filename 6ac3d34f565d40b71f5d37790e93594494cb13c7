@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_439e3a58",
+        "filename": "src/private/videorenderer_p.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-23T01:29:27Z",
+      "side": 1,
+      "message": "space between two \u003e are not more required by C++11 standard.\nIt\u0027s also well supported by vi and emacs.",
+      "range": {
+        "startLine": 47,
+        "startChar": 44,
+        "endLine": 48,
+        "endChar": 48
+      },
+      "revId": "6ac3d34f565d40b71f5d37790e93594494cb13c7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_c3a9ea7c",
+        "filename": "src/video/renderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-23T01:29:27Z",
+      "side": 1,
+      "message": "you will got a serious problem here if you return a reference\non the internal shared pointer!\nThe content of this smart ptr will be swapped, so if someone keeps reference on it, it can does stuff on it outside of mutex protection.\nYou must return a plain smart-ptr (i.e. remove reference)",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 1
+      },
+      "revId": "6ac3d34f565d40b71f5d37790e93594494cb13c7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
