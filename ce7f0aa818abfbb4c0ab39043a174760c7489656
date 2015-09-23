@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_63601636",
+        "filename": "src/historytimecategorymodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-23T17:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_e36c2639",
+      "range": {
+        "startLine": 2,
+        "startChar": 39,
+        "endLine": 2,
+        "endChar": 44
+      },
+      "revId": "ce7f0aa818abfbb4c0ab39043a174760c7489656",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_036a721a",
         "filename": "src/historytimecategorymodel.h",
         "patchSetId": 5
@@ -36,6 +60,24 @@
       "writtenOn": "2015-09-23T17:27:08Z",
       "side": 1,
       "message": "why ?",
+      "revId": "ce7f0aa818abfbb4c0ab39043a174760c7489656",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_c3732a14",
+        "filename": "src/historytimecategorymodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-23T17:44:25Z",
+      "side": 1,
+      "message": "This is what we are moving to in the daemon.\n\nhttp://stackoverflow.com/questions/2964100/pragma-once-versus-if-defined-myheader-included",
+      "parentUuid": "5a93c517_036a721a",
       "revId": "ce7f0aa818abfbb4c0ab39043a174760c7489656",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
