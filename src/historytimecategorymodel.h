@@ -15,8 +15,9 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef HISTORYTIMECATEGORYMODEL_H
-#define HISTORYTIMECATEGORYMODEL_H
+
+#pragma once
+
 #include "typedefs.h"
 #include <time.h>
 
@@ -83,5 +84,3 @@ private:
 };
 Q_DECLARE_METATYPE(HistoryTimeCategoryModel::HistoryConst)
 Q_DECLARE_METATYPE(HistoryTimeCategoryModel*)
-
-#endif
