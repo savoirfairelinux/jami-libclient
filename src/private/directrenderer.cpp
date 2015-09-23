@@ -72,13 +72,16 @@ void Video::DirectRenderer::stopRendering ()
    emit stopped();
 }
 
-void Video::DirectRenderer::swapFrame ()
+QByteArray& Video::DirectRenderer::copyFrame ()
 {
    QMutexLocker lk {mutex()};
-   Video::Renderer::d_ptr->m_pSFrameRead.swap(Video::Renderer::d_ptr->m_pSFrameWrite);
+   QByteArray frameForReading;
+   frameForReading.resize(d_ptr->m_FrameSize);
+   memcpy(&frameForReading, d_ptr->m_pFrameWrite, d_ptr->m_FrameSize); 
+   return frameForReading;
 }
 
-void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigned char> >& frame, int w, int h)
+void Video::DirectRenderer::onNewFrame(const QByteArray& frame, int w, int h)
 {
    if (!isRendering()) {
       return;
@@ -88,7 +91,7 @@ void Video::DirectRenderer::onNewFrame(const std::shared_ptr<std::vector<unsigne
 
    Video::Renderer::d_ptr->m_pSize.setWidth(w);
    Video::Renderer::d_ptr->m_pSize.setHeight(h);
-   Video::Renderer::d_ptr->m_pSFrameWrite = frame;
+   Video::Renderer::d_ptr->m_pFrameWrite = const_cast<char*>(frame.data());
    emit frameUpdated();
 }
 
@@ -101,4 +104,9 @@ Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
 #endif
 }
 
+
+const QByteArray& Video::DirectRenderer::currentFrameForReading() const
+{
+   return copyFrame();
+}
 #include <directrenderer.moc>
