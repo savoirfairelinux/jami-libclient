@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_86bbf0c3",
+        "filename": "src/historytimecategorymodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-24T18:52:41Z",
+      "side": 1,
+      "message": "add \"static\" in from of categoriesSize, the size wont change, so it is pointless to have the function called everytime.",
+      "revId": "60559c6d52498322cd4b17a03ef01ff087134235",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_46b5e8cb",
+        "filename": "src/historytimecategorymodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-24T18:52:41Z",
+      "side": 1,
+      "message": "The \n\nstatic int size \u003d HistoryTimeCategoryModelPrivate::instance()-\u003ed_ptr-\u003em_lCategories.size()\n\nif (idx \u003e\u003d size)\n\ntrick can also be used here to lower the callcount (this code path is involved in the history sorting)",
+      "revId": "60559c6d52498322cd4b17a03ef01ff087134235",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
