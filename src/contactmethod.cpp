@@ -457,7 +457,7 @@ QVariant ContactMethod::roleData(int role) const
 {
    QVariant cat;
 
-   auto lastCall = d_ptr->m_lCalls.last();
+   auto lastCall = d_ptr->m_lCalls.isEmpty() ? nullptr : d_ptr->m_lCalls.last();
 
    switch (role) {
       case static_cast<int>(Call::Role::Name):
