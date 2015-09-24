@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef FOLDERCERTIFICATECOLLECTION_H
-#define FOLDERCERTIFICATECOLLECTION_H
+#pragma once
 
 #include <collectioninterface.h>
 #include <typedefs.h>
@@ -76,5 +75,3 @@ private:
 };
 Q_DECLARE_METATYPE(FolderCertificateCollection*)
 DECLARE_ENUM_FLAGS(FolderCertificateCollection::Options)
-
-#endif

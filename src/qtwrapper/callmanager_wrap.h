@@ -16,8 +16,7 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef CALLMANAGERINTERFACE_H
-#define CALLMANAGERINTERFACE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -496,4 +495,3 @@ namespace org {
     }
   }
 }
-#endif

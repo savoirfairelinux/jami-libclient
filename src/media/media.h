@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_H
-#define MEDIA_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -100,4 +99,3 @@ Q_DECLARE_METATYPE(Media::Media::Direction)
 
 Media::Media* operator<<(Media::Media* m, Media::Media::Action a);
 
-#endif

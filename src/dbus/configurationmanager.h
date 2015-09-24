@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
-#define CONFIGURATION_MANAGER_INTERFACE_SINGLETON_H
+#pragma once
 
 #ifdef ENABLE_LIBWRAP
  #include "../qtwrapper/configurationmanager_wrap.h"
@@ -41,4 +40,3 @@ namespace DBus {
 
 }
 
-#endif

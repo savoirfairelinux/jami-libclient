@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTMODELPRIVATE_H
-#define ACCOUNTMODELPRIVATE_H
+#pragma once
 
 //Qt
 #include <QtCore/QObject>
@@ -77,4 +76,3 @@ public Q_SLOTS:
    void slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
 };
 
-#endif

@@ -15,9 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef VCARDUTILS_H
-#define VCARDUTILS_H
+#pragma once
 
 #include "typedefs.h"
 #include <QStringList>
@@ -96,4 +94,3 @@ private:
 
 };
 
-#endif // VCARDUTILS_H

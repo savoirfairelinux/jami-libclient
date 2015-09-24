@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PHONEDIRECTORYMODEL_PRIVATE_H
-#define PHONEDIRECTORYMODEL_PRIVATE_H
+#pragma once
+
 #include <QtCore/QObject>
 
 //Ring
@@ -104,5 +104,3 @@ private Q_SLOTS:
    //From DBus
    void slotNewBuddySubscription(const QString& uri, const QString& accountId, bool status, const QString& message);
 };
-
-#endif

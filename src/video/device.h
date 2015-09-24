@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEO_DEVICE_H
-#define VIDEO_DEVICE_H
+#pragma once
 
 #include <typedefs.h>
 #include <QtCore/QAbstractListModel>
@@ -96,4 +95,4 @@ class LIB_EXPORT Device : public QAbstractListModel {
 };
 
 }
-#endif
+

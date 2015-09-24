@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PENDINGTRUSTREQUESTMODEL_H
-#define PENDINGTRUSTREQUESTMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractTableModel>
 #include <typedefs.h>
@@ -57,4 +56,3 @@ Q_SIGNALS:
    void requestDiscarded(TrustRequest* r);
 };
 
-#endif

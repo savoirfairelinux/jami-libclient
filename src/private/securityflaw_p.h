@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SECURITYFLAWPRIVATE_H
-#define SECURITYFLAWPRIVATE_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -38,4 +37,3 @@ public:
    SecurityFlaw* q_ptr;
 };
 
-#endif

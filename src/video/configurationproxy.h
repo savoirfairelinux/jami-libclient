@@ -15,9 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONFIGURATIONPROXY_H
-#define CONFIGURATIONPROXY_H
-
+#pragma once
 
 class QAbstractItemModel;
 class QItemSelectionModel;
@@ -45,4 +43,3 @@ public:
 
 } //namespace Video
 
-#endif

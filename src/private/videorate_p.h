@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef RATEPRIVATE_H
-#define RATEPRIVATE_H
+#pragma once
 
 namespace Video {
    class Resolution;
@@ -29,4 +28,3 @@ public:
    const Video::Resolution* m_pResolution;
 };
 
-#endif

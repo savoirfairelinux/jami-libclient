@@ -16,9 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef ACCOUNT_H
-#define ACCOUNT_H
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
@@ -566,6 +564,3 @@ private:
    AccountPlaceHolderPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountPlaceHolder)
 };
-
-
-#endif

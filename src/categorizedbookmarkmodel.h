@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CATEGORIZEDBOOKMARKMODEL_H
-#define CATEGORIZEDBOOKMARKMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QHash>
@@ -92,4 +91,3 @@ public Q_SLOTS:
    void reloadCategories();
 };
 
-#endif

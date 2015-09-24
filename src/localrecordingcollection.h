@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef LOCALRECORDINGCOLLECTON_H
-#define LOCALRECORDINGCOLLECTON_H
+#pragma once
 
 #include <collectioninterface.h>
 #include <typedefs.h>
@@ -50,5 +49,3 @@ public:
    static LocalRecordingCollection* instance();
 
 };
-
-#endif

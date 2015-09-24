@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CREDENTIAL_MODEL_H
-#define CREDENTIAL_MODEL_H
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QAbstractListModel>
@@ -88,4 +87,3 @@ Q_DECLARE_METATYPE(CredentialModel*)
 
 CredentialModel* LIB_EXPORT operator<<(CredentialModel* a, CredentialModel::EditAction action);
 
-#endif

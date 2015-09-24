@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTION_MODEL_H
-#define COLLECTION_MODEL_H
+#pragma once
 
 #include "typedefs.h"
 #include "person.h"
@@ -95,4 +94,3 @@ private:
 
 };
 
-#endif

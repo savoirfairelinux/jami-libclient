@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTMODEL_H
-#define ACCOUNTMODEL_H
+#pragma once
 
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
@@ -158,4 +157,3 @@ Q_SIGNALS:
 };
 Q_DECLARE_METATYPE(AccountModel*)
 
-#endif

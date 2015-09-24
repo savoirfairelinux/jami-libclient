@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CERTIFICATE_H
-#define CERTIFICATE_H
+#pragma once
 
 #include "typedefs.h"
 #include "itembase.h"
@@ -320,4 +319,3 @@ Q_DECLARE_METATYPE(Certificate::Checks)
 Q_DECLARE_METATYPE(Certificate::Details)
 Q_DECLARE_METATYPE(Certificate::Status)
 
-#endif

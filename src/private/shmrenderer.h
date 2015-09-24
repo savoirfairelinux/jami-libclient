@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEO_SHM_RENDERER_H
-#define VIDEO_SHM_RENDERER_H
+#pragma once
 
 //Base
 #include "video/renderer.h"
@@ -72,4 +71,3 @@ public Q_SLOTS:
 
 }
 
-#endif

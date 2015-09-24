@@ -16,9 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef TYPEDEFS_H
-#define TYPEDEFS_H
+#pragma once
 
 //Qt
 #include <QtCore/QMetaType>
@@ -168,7 +166,4 @@ static FlagPack<T> operator|(const T& first, const T& second) { \
    return p | second; \
 } \
 DO_PRAGMA(GCC diagnostic pop)
-
-
-#endif //TYPEDEFS_H
 

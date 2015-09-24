@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CATEGORIZEDCONTACTMODEL_H
-#define CATEGORIZEDCONTACTMODEL_H
+#pragma once
 
 #include <QtCore/QHash>
 #include <QtCore/QStringList>
@@ -99,4 +98,3 @@ private:
    Q_DECLARE_PRIVATE(CategorizedContactModel)
 };
 
-#endif

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CHAINOFTRUSTMODEL_H
-#define CHAINOFTRUSTMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractItemModel>
 #include <typedefs.h>
@@ -55,4 +54,3 @@ private:
    Q_DECLARE_PRIVATE(ChainOfTrustModel)
 };
 
-#endif

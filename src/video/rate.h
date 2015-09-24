@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEORATE_H
-#define VIDEORATE_H
+#pragma once
 
 #include <typedefs.h>
 
@@ -50,4 +49,3 @@ private:
 
 }
 
-#endif

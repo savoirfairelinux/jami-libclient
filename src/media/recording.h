@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_RECORDING_H
-#define MEDIA_RECORDING_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <itembase.h>
@@ -65,5 +64,3 @@ private:
 };
 
 }
-
-#endif

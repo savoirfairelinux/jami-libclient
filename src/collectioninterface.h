@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONINTERFACE_H
-#define COLLECTIONINTERFACE_H
+#pragma once
 
 #include <QObject>
 #include <QHash>
@@ -308,4 +307,3 @@ DECLARE_ENUM_FLAGS(CollectionInterface::SupportedFeatures)
 
 #include <collectioninterface.hpp>
 
-#endif

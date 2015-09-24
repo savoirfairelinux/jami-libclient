@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_TEXTRECORDING_H
-#define MEDIA_TEXTRECORDING_H
+#pragma once
 
 #include <media/recording.h>
 
@@ -72,4 +71,3 @@ private:
 
 }
 
-#endif

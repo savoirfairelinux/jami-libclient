@@ -15,9 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef MACRO_MODEL_H
-#define MACRO_MODEL_H
+#pragma once
 
 //Qt
 #include <QtCore/QAbstractItemModel>
@@ -103,4 +101,3 @@ Q_SIGNALS:
    void selectMacro(Macro* macro);
 };
 
-#endif

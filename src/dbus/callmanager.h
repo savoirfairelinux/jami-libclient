@@ -16,9 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef CALL_MANAGER_INTERFACE_SINGLETON_H
-#define CALL_MANAGER_INTERFACE_SINGLETON_H
+#pragma once
 
 #ifdef ENABLE_LIBWRAP
  #include "../qtwrapper/callmanager_wrap.h"
@@ -43,4 +41,3 @@ namespace DBus {
 
 }
 
-#endif

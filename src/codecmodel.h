@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CODEC_MODEL_H
-#define CODEC_MODEL_H
+#pragma once
 
 #include <QtCore/QAbstractListModel>
 
@@ -120,4 +119,3 @@ Q_DECLARE_METATYPE(CodecModel*)
 
 CodecModel* LIB_EXPORT operator<<(CodecModel* a, CodecModel::EditAction action);
 
-#endif

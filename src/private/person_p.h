@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PERSON_P_H
-#define PERSON_P_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -79,4 +78,3 @@ public Q_SLOTS:
    void slotLastUsedTimeChanged(::time_t t);
 };
 
-#endif

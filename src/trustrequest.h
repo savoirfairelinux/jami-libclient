@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef TRUSTREQUEST_H
-#define TRUSTREQUEST_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <typedefs.h>
@@ -59,4 +58,3 @@ Q_SIGNALS:
    void requestDiscarded();
 };
 
-#endif

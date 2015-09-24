@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOSOURCESMODEL_H
-#define VIDEOSOURCESMODEL_H
+#pragma once
+
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QRect>
 #include <typedefs.h>
@@ -69,4 +69,3 @@ public Q_SLOTS:
 
 }
 
-#endif

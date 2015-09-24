@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef USERACTIONS_H
-#define USERACTIONS_H
+#pragma once
 
 #include "media/media.h"
 #include "media/audio.h"
@@ -290,4 +289,3 @@ bool muteVideo(const QList<Call*> calls, bool state)
 
 } //namespace UserActions
 
-#endif

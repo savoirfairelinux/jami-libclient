@@ -16,8 +16,7 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef INSTANCEINTERFACE_H
-#define INSTANCEINTERFACE_H
+#pragma once
 
 #include <QObject>
 #include <QByteArray>
@@ -75,4 +74,4 @@ namespace cx {
     }
   }
 }
-#endif
+

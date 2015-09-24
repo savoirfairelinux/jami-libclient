@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PERSONMODEL_H
-#define PERSONMODEL_H
+#pragma once
 
 #include <QObject>
 #include <QHash>
@@ -97,4 +96,3 @@ Q_SIGNALS:
    void lastUsedTimeChanged(Person* p, long long) const;
 };
 
-#endif

@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef NUMBERCATEGORYMODEL_H
-#define NUMBERCATEGORYMODEL_H
+#pragma once
+
 #include "typedefs.h"
 
 #include <QtCore/QAbstractListModel>
@@ -77,4 +77,3 @@ private:
    static NumberCategoryModel* m_spInstance;
 };
 
-#endif //NUMBERCATEGORYMODEL_H

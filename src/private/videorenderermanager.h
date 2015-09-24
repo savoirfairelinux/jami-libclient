@@ -15,8 +15,8 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef VIDEORENDERERMANAGER_H
-#define VIDEORENDERERMANAGER_H
+#pragma once
+
 //Base
 #include <typedefs.h>
 #include <QtCore/QThread>
@@ -80,5 +80,3 @@ Q_SIGNALS:
 
 };
 
-
-#endif

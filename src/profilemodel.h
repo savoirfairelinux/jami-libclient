@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PROFILEMODEL_H
-#define PROFILEMODEL_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -77,4 +76,3 @@ public Q_SLOTS:
 //    bool createProfile(const QString& name);
 };
 
-#endif

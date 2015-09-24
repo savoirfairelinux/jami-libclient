@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONMANAGERINTERFACE_H
-#define COLLECTIONMANAGERINTERFACE_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -201,4 +200,3 @@ private:
 
 #include "collectionmanagerinterface.hpp"
 
-#endif

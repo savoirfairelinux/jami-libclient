@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef INSTANCEMANAGER_H
-#define INSTANCEMANAGER_H
+#pragma once
 
 #ifdef ENABLE_LIBWRAP
  #include "../qtwrapper/instancemanager_wrap.h"
@@ -43,4 +42,3 @@ namespace DBus {
 
 }
 
-#endif

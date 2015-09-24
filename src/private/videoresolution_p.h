@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEORESOLUTIONPRIVATE_H
-#define VIDEORESOLUTIONPRIVATE_H
+#pragma once
 
 namespace Video {
    class Rate;
@@ -32,5 +31,3 @@ public:
    Video::Channel*     m_pChannel;
    QSize               m_Size;
 };
-
-#endif

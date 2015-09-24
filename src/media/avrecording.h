@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MEDIA_AVRECORDING_H
-#define MEDIA_AVRECORDING_H
+#pragma once
 
 #include <media/recording.h>
 
@@ -90,4 +89,3 @@ Q_SIGNALS:
 
 }
 
-#endif

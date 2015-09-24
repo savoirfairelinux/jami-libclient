@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef HOOKMANAGER_H
-#define HOOKMANAGER_H
+#pragma once
 
 #include "typedefs.h"
 class HookManagerPrivate;
@@ -64,4 +63,3 @@ private:
    static HookManager* m_spInstance;
 };
 
-#endif

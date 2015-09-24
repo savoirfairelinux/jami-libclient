@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef ACCOUNTSTATUSMODEL_H
-#define ACCOUNTSTATUSMODEL_H
+#pragma once
 
 #include "typedefs.h"
 #include <QtCore/QAbstractTableModel>
@@ -80,4 +79,3 @@ private:
    Q_DECLARE_PRIVATE(AccountStatusModel)
 };
 Q_DECLARE_METATYPE(AccountStatusModel*)
-#endif

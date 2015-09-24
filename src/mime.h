@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MIME_H
-#define MIME_H
+#pragma once
 
 namespace RingMimes {
    constexpr static const char* CALLID      = "text/ring.call.id"        ;
@@ -31,6 +30,3 @@ namespace RingMimes {
    constexpr static const char* VIDEO_CODEC = "text/ring.codec.video"    ;
    constexpr static const char* PROFILE_VCF = "x-ring/ring.profile.vcard";
 }
-
-#endif
-

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef AVAILABLE_ACCOUNT_MODEL_H
-#define AVAILABLE_ACCOUNT_MODEL_H
+#pragma once
 
 #include <QtCore/QSortFilterProxyModel>
 
@@ -66,4 +65,3 @@ private:
 };
 Q_DECLARE_METATYPE(AvailableAccountModel*)
 
-#endif

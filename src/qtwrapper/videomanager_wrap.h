@@ -16,8 +16,7 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef VIDEOMANAGERINTERFACE_H
-#define VIDEOMANAGERINTERFACE_H
+#pragma once
 
 // libstdc++
 #include <functional>
@@ -219,4 +218,4 @@ Q_SIGNALS: // SIGNALS
 namespace org { namespace ring { namespace Ring {
       typedef ::VideoManagerInterface VideoManager;
 }}} // namesapce org::ring::Ring
-#endif
+

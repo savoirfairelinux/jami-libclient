@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MACROMODEL_P_H
-#define MACROMODEL_P_H
+#pragma once
 
 #include <macromodel.h>
 
@@ -89,4 +88,3 @@ public Q_SLOTS:
    void nextStep();
 };
 
-#endif

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CATEGORIZEDCOMPOSITENODE_H
-#define CATEGORIZEDCOMPOSITENODE_H
+#pragma once
 
 #include "typedefs.h"
 #include <QtCore/QModelIndex>
@@ -51,4 +50,3 @@ private:
    CategorizedCompositeNodePrivate* d_ptr;
 };
 
-#endif

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONTACTMETHODPRIVATE_H
-#define CONTACTMETHODPRIVATE_H
+#pragma once
 
 class ContactMethodPrivate {
 public:
@@ -70,4 +69,3 @@ public:
    ContactMethod* q_ptr;
 };
 
-#endif

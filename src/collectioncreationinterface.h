@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONCREATIONINTERFACE_H
-#define COLLECTIONCREATIONINTERFACE_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -32,4 +31,3 @@ public:
 
 Q_DECLARE_METATYPE(CollectionCreationInterface*)
 
-#endif

@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CALL_H
-#define CALL_H
+#pragma once
 
 #include "categorizedcompositenode.h"
 #include <itembase.h>
@@ -393,5 +392,3 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
 
 #include <call.hpp>
-
-#endif

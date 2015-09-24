@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEODEVICEPRIVATE_H
-#define VIDEODEVICEPRIVATE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QList>
@@ -52,4 +51,3 @@ public Q_SLOTS:
    void saveIdle();
 };
 
-#endif

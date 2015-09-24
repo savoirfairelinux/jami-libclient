@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CERTIFICATEMODELPRIVATE_H
-#define CERTIFICATEMODELPRIVATE_H
+#pragma once
 
 #include "matrixutils.h"
 
@@ -76,4 +75,3 @@ private:
    CertificateModel* q_ptr;
 };
 
-#endif

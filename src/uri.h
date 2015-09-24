@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef URI_H
-#define URI_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -199,5 +198,3 @@ Q_DECLARE_METATYPE(URI::ProtocolHint)
 DECLARE_ENUM_FLAGS(URI::Section)
 
 QDataStream& operator<< ( QDataStream& stream, const URI::ProtocolHint& ph );
-
-#endif //URI_H

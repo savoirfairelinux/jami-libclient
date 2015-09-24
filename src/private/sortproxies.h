@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SORTPROXIES_H
-#define SORTPROXIES_H
+#pragma once
 
 class QAbstractListModel;
 class QItemSelectionModel;
@@ -39,5 +38,3 @@ namespace SortingCategory {
    ModelTuple* getContactProxy();
    ModelTuple* getHistoryProxy();
 }
-
-#endif

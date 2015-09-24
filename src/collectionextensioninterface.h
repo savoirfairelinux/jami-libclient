@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONEXTENSIONINTERFACE_H
-#define COLLECTIONEXTENSIONINTERFACE_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -60,4 +59,3 @@ static auto DECLARE_COLLECTION_EXTENSION_M2(val,__COUNTER__) = []{\
    return 0;\
 }();
 
-#endif

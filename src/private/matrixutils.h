@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef MATRIXUTILS_H
-#define MATRIXUTILS_H
+#pragma once
 
 //libSTDC++
 #include <initializer_list>
@@ -198,4 +197,3 @@ struct EnumIterator
 
 #include "matrixutils.hpp"
 
-#endif

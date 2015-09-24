@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOMANAGER_H
-#define VIDEOMANAGER_H
+#pragma once
 
 #ifdef ENABLE_LIBWRAP
  #include "videomanager_wrap.h"
@@ -45,4 +44,3 @@ namespace DBus {
 
 }
 
-#endif

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEORESOLUTION_H
-#define VIDEORESOLUTION_H
+#pragma once
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QSize>
@@ -73,5 +72,3 @@ private:
 };
 
 }
-
-#endif

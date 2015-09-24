@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEOCHANNELPRIVATE_H
-#define VIDEOCHANNELPRIVATE_H
+#pragma once
 
 class VideoChannelPrivate
 {
@@ -28,4 +27,3 @@ public:
    Video::Device*              m_pDevice;
 };
 
-#endif

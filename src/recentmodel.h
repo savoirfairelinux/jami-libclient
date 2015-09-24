@@ -17,8 +17,8 @@
  *   License along with this library; if not, write to the Free Software            *
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA *
  ***********************************************************************************/
-#ifndef RECENTMODEL_H
-#define RECENTMODEL_H
+#pragma once
+
 #include <QtCore/QAbstractItemModel>
 
 #include <typedefs.h>
@@ -55,4 +55,3 @@ private:
 };
 Q_DECLARE_METATYPE(RecentModel*)
 
-#endif

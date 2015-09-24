@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONMODELPRIVATE_H
-#define COLLECTIONMODELPRIVATE_H
+#pragma once
 
 //Qt
 #include <QtCore/QObject>
@@ -75,4 +74,3 @@ private Q_SLOTS:
    void slotExtensionDataChanged(const QModelIndex& idx);
 };
 
-#endif

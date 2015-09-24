@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PERSON_H
-#define PERSON_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
@@ -206,4 +205,3 @@ private:
 
 Q_DECLARE_METATYPE(Person*)
 
-#endif

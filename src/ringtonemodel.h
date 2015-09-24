@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef RINGTONEMODEL_H
-#define RINGTONEMODEL_H
+#pragma once
+
 #include "typedefs.h"
 
 //Qt
@@ -72,5 +72,3 @@ private:
    virtual bool removeItemCallback     (const Ringtone* item        ) override;
 
 };
-
-#endif //RINGTONEMODEL_H

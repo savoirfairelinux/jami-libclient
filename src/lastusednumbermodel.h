@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef LASTUSEDNUMBERMODEL_H
-#define LASTUSEDNUMBERMODEL_H
+#pragma once
 
 #include "typedefs.h"
 
@@ -56,5 +55,3 @@ private:
    //Static attributes
    static LastUsedNumberModel* m_spInstance;
 };
-
-#endif

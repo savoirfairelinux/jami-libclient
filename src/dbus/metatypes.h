@@ -16,8 +16,7 @@
  *   You should have received a copy of the Lesser GNU General Public License *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  *****************************************************************************/
-#ifndef METATYPES_H
-#define METATYPES_H
+#pragma once
 
 #include <QtCore/QMetaType>
 #include <QtCore/QMap>
@@ -60,4 +59,3 @@ inline void registerCommTypes() {
 
 #pragma GCC diagnostic pop
 
-#endif

@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef THREADWORKER_H
-#define THREADWORKER_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -39,5 +38,3 @@ class ThreadWorker : public QObject
 public:
    ThreadWorker(std::function<void()> f);
 };
-
-#endif

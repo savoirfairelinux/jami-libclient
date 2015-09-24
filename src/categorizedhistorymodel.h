@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CATEGORIZED_HISTORY_MODEL_H
-#define CATEGORIZED_HISTORY_MODEL_H
+#pragma once
+
 //Base
 #include "typedefs.h"
 #include <QtCore/QObject>
@@ -124,4 +124,3 @@ Q_SIGNALS:
    void newHistoryCall          ( Call* call );
 };
 
-#endif

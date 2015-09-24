@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef IMCONVERSATIONMANAGERPRIVATE_H
-#define IMCONVERSATIONMANAGERPRIVATE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QHash>
@@ -44,5 +43,3 @@ private Q_SLOTS:
    void newAccountMessage(const QString& accountId, const QString& from, const QString& message);
 
 };
-
-#endif

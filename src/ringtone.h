@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef RINGTONE_H
-#define RINGTONE_H
+#pragma once
 
 #include <typedefs.h>
 #include <itembase.h>
@@ -44,5 +43,3 @@ private:
    RingtonePrivate* d_ptr;
    Q_DECLARE_PRIVATE(Ringtone)
 };
-
-#endif

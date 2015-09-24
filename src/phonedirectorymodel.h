@@ -15,8 +15,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PHONEDIRECTORYMODEL_H
-#define PHONEDIRECTORYMODEL_H
+#pragma once
+
 #include "typedefs.h"
 
 //Qt
@@ -107,4 +107,3 @@ Q_SIGNALS:
 };
 Q_DECLARE_METATYPE(PhoneDirectoryModel*)
 
-#endif

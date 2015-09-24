@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef PENDINGTRUSTREQUESTMODELPRIVATE_H
-#define PENDINGTRUSTREQUESTMODELPRIVATE_H
+#pragma once
 
 class PendingTrustRequestModel;
 class TrustRequest;
@@ -38,5 +37,3 @@ public:
 private:
    PendingTrustRequestModel* q_ptr;
 };
-
-#endif

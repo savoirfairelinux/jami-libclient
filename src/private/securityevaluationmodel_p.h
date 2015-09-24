@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SECURITYVALIDATIONMODELPRIVATE_H
-#define SECURITYVALIDATIONMODELPRIVATE_H
+#pragma once
 
 class SecurityFlaw;
 class Account;
@@ -66,4 +65,3 @@ public Q_SLOTS:
 
 };
 
-#endif

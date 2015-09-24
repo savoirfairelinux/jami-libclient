@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef SECURITYEVALUATIONMODEL_H
-#define SECURITYEVALUATIONMODEL_H
+#pragma once
 
 #include <QtCore/QSortFilterProxyModel>
 
@@ -162,4 +161,3 @@ Q_DECLARE_METATYPE(SecurityEvaluationModel*)
 Q_DECLARE_METATYPE(SecurityEvaluationModel::Severity)
 Q_DECLARE_METATYPE(SecurityEvaluationModel::SecurityLevel)
 
-#endif

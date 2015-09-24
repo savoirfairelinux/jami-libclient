@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CERTIFICATEPRIVATE_H
-#define CERTIFICATEPRIVATE_H
+#pragma once
 
 //Qt
 #include <QtCore/QDateTime>
@@ -140,4 +139,3 @@ private:
    Certificate* q_ptr;
 };
 
-#endif

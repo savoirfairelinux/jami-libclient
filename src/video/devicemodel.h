@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef VIDEODEVICEMODEL_H
-#define VIDEODEVICEMODEL_H
+#pragma once
 
 #include <typedefs.h>
 #include <QtCore/QAbstractListModel>
@@ -77,4 +76,4 @@ Q_SIGNALS:
 
 }
 Q_DECLARE_METATYPE(Video::DeviceModel*)
-#endif
+

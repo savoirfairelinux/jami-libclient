@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CONTACTMETHOD_H
-#define CONTACTMETHOD_H
+#pragma once
 
 #include "typedefs.h"
 #include <time.h>
@@ -237,4 +236,3 @@ private:
    Q_DECLARE_PRIVATE(TemporaryContactMethod)
 };
 
-#endif

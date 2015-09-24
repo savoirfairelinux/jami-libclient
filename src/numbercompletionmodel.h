@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef NUMBERCOMPLETIONMODEL_H
-#define NUMBERCOMPLETIONMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractTableModel>
 #include "typedefs.h"
@@ -86,4 +85,3 @@ Q_SIGNALS:
 
 };
 
-#endif

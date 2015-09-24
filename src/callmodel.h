@@ -15,9 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-
-#ifndef CALL_MODEL2_H
-#define CALL_MODEL2_H
+#pragma once
 
 #include <QAbstractItemModel>
 #include <QMap>
@@ -166,4 +164,3 @@ Q_SIGNALS:
 };
 Q_DECLARE_METATYPE(CallModel*)
 
-#endif

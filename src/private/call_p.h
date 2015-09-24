@@ -16,8 +16,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef CALL_PRIVATE_H
-#define CALL_PRIVATE_H
+#pragma once
 
 // Std
 #include <memory>
@@ -280,4 +279,3 @@ private Q_SLOTS:
    void updated();
 };
 
-#endif

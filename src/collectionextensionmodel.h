@@ -15,8 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#ifndef COLLECTIONEXTENSIONMODEL_H
-#define COLLECTIONEXTENSIONMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractListModel>
 
@@ -77,4 +76,3 @@ private:
 
 #include <collectionextensionmodel.hpp>
 
-#endif
