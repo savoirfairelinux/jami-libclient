@@ -19,7 +19,6 @@
 
 //Qt
 #include <QtCore/QCryptographicHash>
-#include <QDateTime>
 
 //Ring daemon
 #include "dbus/configurationmanager.h"
@@ -456,9 +455,6 @@ QHash<QString,int> ContactMethod::alternativeNames() const
 QVariant ContactMethod::roleData(int role) const
 {
    QVariant cat;
-
-   auto lastCall = d_ptr->m_lCalls.last();
-
    switch (role) {
       case static_cast<int>(Call::Role::Name):
          /* the formatted name could be empty either because the name of the contact is actually
@@ -476,25 +472,25 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::EditRole:
       case static_cast<int>(Role::Uri):
       case static_cast<int>(Call::Role::Number):
-         cat = uri();
+         cat = uri();//call->getPeerContactMethod();
          break;
       case static_cast<int>(Call::Role::Direction):
-         cat = cat = !lastCall ? QVariant() : QVariant::fromValue(lastCall->direction());
+         cat = tr("N/A");//call->getHistoryState();
          break;
       case static_cast<int>(Call::Role::Date):
-         cat = cat = !lastCall ? QVariant() : QDateTime::fromTime_t(lastCall->startTimeStamp());
+         cat = tr("N/A");//call->getStartTimeStamp();
          break;
       case static_cast<int>(Call::Role::Length):
-         cat = cat = !lastCall ? QVariant() : lastCall->length();
+         cat = tr("N/A");//call->getLength();
          break;
       case static_cast<int>(Call::Role::FormattedDate):
-         cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
+         cat = tr("N/A");//QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).toString();
          break;
       case static_cast<int>(Call::Role::HasAVRecording):
-         cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
+         cat = false;//call->hasRecording();
          break;
       case static_cast<int>(Call::Role::FuzzyDate):
-         cat = cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
+         cat = "N/A";//timeToHistoryCategory(QDateTime::fromTime_t(call->getStartTimeStamp().toUInt()).date());
          break;
       case static_cast<int>(Call::Role::ContactMethod):
       case static_cast<int>(Role::Object):

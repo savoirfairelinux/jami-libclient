@@ -125,10 +125,7 @@ public:
    Media::TextRecording* textRecording   () const;
    Certificate*          certificate  () const;
 
-   /*
-    * Returns roles associated on ContactMethod based on Call::Roles
-    * Returns last call info when querying info on call associated to this contact method
-    */
+
    QVariant roleData(int role) const;
 
    //Setters
@@ -238,3 +235,4 @@ private:
    TemporaryContactMethodPrivate* d_ptr;
    Q_DECLARE_PRIVATE(TemporaryContactMethod)
 };
+
