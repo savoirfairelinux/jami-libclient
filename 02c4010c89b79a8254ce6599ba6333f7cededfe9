@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_660584c1",
+        "filename": "src/private/directrenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-09-24T18:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_a654ecca",
+      "range": {
+        "startLine": 54,
+        "startChar": 152,
+        "endLine": 54,
+        "endChar": 182
+      },
+      "revId": "02c4010c89b79a8254ce6599ba6333f7cededfe9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_0648402c",
         "filename": "src/private/directrenderer.cpp",
         "patchSetId": 4
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_860a10d1",
+        "filename": "src/private/directrenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-09-24T18:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_0648402c",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 24
+      },
+      "revId": "02c4010c89b79a8254ce6599ba6333f7cededfe9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_e64af426",
         "filename": "src/private/directrenderer.h",
         "patchSetId": 4
@@ -59,6 +107,30 @@
       "writtenOn": "2015-09-24T17:49:48Z",
       "side": 1,
       "message": "remove *",
+      "range": {
+        "startLine": 56,
+        "startChar": 29,
+        "endLine": 56,
+        "endChar": 30
+      },
+      "revId": "02c4010c89b79a8254ce6599ba6333f7cededfe9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_260f7ce3",
+        "filename": "src/private/directrenderer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-09-24T18:22:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_e64af426",
       "range": {
         "startLine": 56,
         "startChar": 29,
