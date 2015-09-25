@@ -89,6 +89,7 @@ class LIB_EXPORT Account : public ItemBase {
    friend class ContactMethod;
    friend class Certificate;
    friend class NetworkInterfaceModelPrivate;
+   friend class CredentialModelPrivate;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
