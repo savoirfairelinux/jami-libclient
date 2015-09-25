@@ -79,11 +79,14 @@ public:
 
    //Mutator
    QModelIndex addCredentials(Credential::Type type);
+   QModelIndex addCredentials();
    void removeCredentials(const QModelIndex& idx);
    bool performAction(CredentialModel::EditAction action);
 
    //Getter
    CredentialModel::EditState editState() const;
+   QAbstractItemModel* availableTypeModel() const;
+   QItemSelectionModel* availableTypeSelectionModel() const;
    Credential* primaryCredential(Credential::Type type = Credential::Type::SIP) const;
 
    //Operator
