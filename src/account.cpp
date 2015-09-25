@@ -2135,6 +2135,7 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::Password          :
             case Account::Role::RegistrationExpire:
             case Account::Role::Mailbox           :
+            case Account::Role::Hostname          :
             case Account::Role::UserAgent         :
             case Account::Role::HasCustomUserAgent:
             case Account::Role::HasProxy          :
