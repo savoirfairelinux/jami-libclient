@@ -64,6 +64,7 @@ public:
    friend class ContactMethod;
    friend class Certificate;
    friend class NetworkInterfaceModelPrivate;
+   friend class CredentialModelPrivate;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
