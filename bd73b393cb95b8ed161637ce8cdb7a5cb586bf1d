@@ -34,6 +34,29 @@
       "revId": "bd73b393cb95b8ed161637ce8cdb7a5cb586bf1d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_e62434c8",
+        "filename": "src/qtwrapper/videomanager_wrap.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-25T15:36:19Z",
+      "side": 1,
+      "message": "not related to the patch itself, but this move() is an noop here and can safely by remove.",
+      "range": {
+        "startLine": 212,
+        "startChar": 69,
+        "endLine": 212,
+        "endChar": 82
+      },
+      "revId": "bd73b393cb95b8ed161637ce8cdb7a5cb586bf1d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
