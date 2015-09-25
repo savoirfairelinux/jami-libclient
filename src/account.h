@@ -172,9 +172,6 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QAbstractItemModel*      allowedCertificatesModel    READ allowedCertificatesModel                                  )
 
    Q_PROPERTY(QString turnServer                        READ turnServer                     WRITE setTurnServer                   )
-   Q_PROPERTY(QString turnServerUsername                READ turnServerUsername             WRITE setTurnServerUsername           )
-   Q_PROPERTY(QString turnServerPassword                READ turnServerPassword             WRITE setTurnServerPassword           )
-   Q_PROPERTY(QString turnServerRealm                   READ turnServerRealm                WRITE setTurnServerRealm              )
 
    public:
 
@@ -277,9 +274,6 @@ class LIB_EXPORT Account : public ItemBase {
          LastTransportErrorMessage   ,
          TurnServer                  ,
          TurnServerEnabled           ,
-         TurnServerUsername          ,
-         TurnServerPassword          ,
-         TurnServerRealm             ,
          HasProxy                    ,
          DisplayName                 ,
          SrtpEnabled                 ,
@@ -304,7 +298,7 @@ class LIB_EXPORT Account : public ItemBase {
          HasActiveCallLimit          ,
          SecurityLevel               ,
          SecurityLevelIcon           ,
-      };
+      }; //current last number = 197
 
       ///@enum RoleState Whether a role can be used in a certain context
       enum class RoleState {
@@ -421,9 +415,6 @@ class LIB_EXPORT Account : public ItemBase {
       bool    useDefaultPort               () const;
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
-      QString turnServerUsername           () const;
-      QString turnServerPassword           () const;
-      QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
       RegistrationState  registrationState () const;
@@ -468,9 +459,6 @@ class LIB_EXPORT Account : public ItemBase {
       void setRingtonePath                  (const QString& detail  );
       void setTurnEnabled                   (bool value );
       void setTurnServer                    (const QString& value   );
-      void setTurnServerUsername            (const QString& value   );
-      void setTurnServerPassword            (const QString& value   );
-      void setTurnServerRealm               (const QString& value   );
       void setDisplayName                   (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
