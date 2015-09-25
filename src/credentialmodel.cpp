@@ -24,6 +24,7 @@
 //Ring
 #include <account.h>
 #include <private/matrixutils.h>
+#include <private/account_p.h>
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -54,7 +55,7 @@ struct CredentialNode final
 };
 void free_node(CredentialNode* n);
 
-class CredentialModelPrivate
+class CredentialModelPrivate final
 {
 public:
 
@@ -305,9 +306,11 @@ CredentialNode* CredentialModelPrivate::getCategory(Credential::Type type)
             m_pTurnCat = createCat(QStringLiteral("TURN"));
          return m_pTurnCat;
       case Credential::Type::STUN:
-         if (m_pStunCat)
+         if (!m_pStunCat)
             m_pStunCat = createCat(QStringLiteral("STUN"));
          return m_pStunCat;
+      case Credential::Type::COUNT__:
+         break;
    }
 
    return nullptr;
@@ -327,6 +330,17 @@ QModelIndex CredentialModel::addCredentials(Credential::Type type)
    node->m_uContent.m_Cred.m_pParent = par;
    node->m_Index = par->m_uContent.m_Category.m_lChildren->size();
    par->m_uContent.m_Category.m_lChildren->append(node);
+
+   connect(node->m_uContent.m_Cred.m_pCredential, &Credential::changed,[this, node, par, type]() {
+      const QModelIndex parIdx = index(par->m_Index,0);
+      const QModelIndex idx    = index(node->m_Index,0,parIdx);
+      emit dataChanged(idx, idx);
+
+      if (!node->m_Index) {
+         Credential* c = node->m_uContent.m_Cred.m_pCredential;
+         emit primaryCredentialChanged(type, c);
+      }
+   });
 
    endInsertRows();
 
@@ -373,26 +387,40 @@ void CredentialModelPrivate::clear()
 void CredentialModelPrivate::save()
 {
    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
-   VectorMapStringString toReturn;
-   for (int i=0; i < q_ptr->rowCount();i++) {
-      const QModelIndex& idx = q_ptr->index(i,0);
-      MapStringString credentialData;
-      QString user  = q_ptr->data(idx,CredentialModel::Role::NAME).toString();
-      QString realm = q_ptr->data(idx,CredentialModel::Role::REALM).toString();
-      if (user.isEmpty()) {
-         user = m_pAccount->username();
-         q_ptr->setData(idx,user,CredentialModel::Role::NAME);
+
+   //SIP creds
+   if (m_pSipCat) {
+      VectorMapStringString toReturn;
+
+      foreach (CredentialNode* n, *m_pSipCat->m_uContent.m_Category.m_lChildren) {
+         Credential* cred = n->m_uContent.m_Cred.m_pCredential;
+
+         if (cred->username().isEmpty())
+            cred->setUsername(m_pAccount->username());
+
+         if (cred->realm().isEmpty())
+            cred->setRealm(QStringLiteral("*"));
+
+         toReturn << MapStringString {
+            { DRing::Account::ConfProperties::USERNAME, cred->username() },
+            { DRing::Account::ConfProperties::PASSWORD, cred->password() },
+            { DRing::Account::ConfProperties::REALM   , cred->realm   () },
+         };
       }
-      if (realm.isEmpty()) {
-         realm = '*';
-         q_ptr->setData(idx,realm,CredentialModel::Role::REALM);
-      }
-      credentialData[ DRing::Account::ConfProperties::USERNAME ] = user;
-      credentialData[ DRing::Account::ConfProperties::PASSWORD ] = q_ptr->data(idx,CredentialModel::Role::PASSWORD).toString();
-      credentialData[ DRing::Account::ConfProperties::REALM    ] = realm;
-      toReturn << credentialData;
+      configurationManager.setCredentials(m_pAccount->id(),toReturn);
    }
-   configurationManager.setCredentials(m_pAccount->id(),toReturn);
+
+   //TURN creds
+   if (m_pTurnCat) {
+      foreach (CredentialNode* n, *m_pSipCat->m_uContent.m_Category.m_lChildren) {
+         Credential* cred = n->m_uContent.m_Cred.m_pCredential;
+
+         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME , cred->username());
+         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_PWD   , cred->password());
+         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM , cred->realm   ());
+      }
+   }
+
    m_EditState = CredentialModel::EditState::READY;
 }
 
@@ -403,12 +431,26 @@ void CredentialModelPrivate::reload()
       clear();
       m_EditState = CredentialModel::EditState::LOADING;
       ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+
+      //SIP
       const VectorMapStringString credentials = configurationManager.getCredentials(m_pAccount->id());
       for (int i=0; i < credentials.size(); i++) {
          const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::SIP);
          q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
          q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
          q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
+      }
+
+      //TURN
+      const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::TURN);
+      const QString usern = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
+      const QString passw = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD  );
+      const QString realm = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
+
+      if (!(usern.isEmpty() && passw.isEmpty() && realm.isEmpty())) {
+         q_ptr->setData(idx, usern, CredentialModel::Role::NAME    );
+         q_ptr->setData(idx, passw, CredentialModel::Role::PASSWORD);
+         q_ptr->setData(idx, realm, CredentialModel::Role::REALM   );
       }
    }
    m_EditState = CredentialModel::EditState::READY;
@@ -448,4 +490,26 @@ bool CredentialModel::performAction(const CredentialModel::EditAction action)
    CredentialModel::EditState curState = d_ptr->m_EditState;
    d_ptr->performAction(action);
    return curState != d_ptr->m_EditState;
+}
+
+Credential* CredentialModel::primaryCredential(Credential::Type type) const
+{
+   switch(type) {
+      case Credential::Type::STUN:
+         if (d_ptr->m_pStunCat && d_ptr->m_pStunCat->m_uContent.m_Category.m_lChildren->size())
+            return d_ptr->m_pStunCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         break;
+      case Credential::Type::TURN:
+         if (d_ptr->m_pTurnCat && d_ptr->m_pTurnCat->m_uContent.m_Category.m_lChildren->size())
+            return d_ptr->m_pTurnCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         break;
+      case Credential::Type::SIP:
+         if (d_ptr->m_pSipCat && d_ptr->m_pSipCat->m_uContent.m_Category.m_lChildren->size())
+            return d_ptr->m_pSipCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         break;
+      case Credential::Type::COUNT__:
+         break;
+   }
+
+   return nullptr;
 }

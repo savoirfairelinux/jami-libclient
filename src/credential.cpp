@@ -58,16 +58,22 @@ FlagPack<Credential::Type> Credential::type() const
 void Credential::setRealm(const QString& value)
 {
    d_ptr->m_Realm = value;
+   emit realmChanged(d_ptr->m_Realm);
+   emit changed();
 }
 
 void Credential::setUsername(const QString& value)
 {
    d_ptr->m_Username = value;
+   emit usernameChanged(d_ptr->m_Username);
+   emit changed();
 }
 
 void Credential::setPassword(const QString& value)
 {
    d_ptr->m_Password = value;
+   emit passwordChanged(d_ptr->m_Password);
+   emit changed();
 }
 
 void Credential::setType(const FlagPack<Type>& value)
