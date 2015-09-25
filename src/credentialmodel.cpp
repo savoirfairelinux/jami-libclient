@@ -55,6 +55,31 @@ struct CredentialNode final
 };
 void free_node(CredentialNode* n);
 
+/**
+ * Display the types of credentials that can be added
+ * This depend on the account type and settings
+ */
+class NewCredentialTypeModel final : public QAbstractListModel
+{
+   Q_OBJECT
+   friend class CredentialModel;
+public:
+   explicit NewCredentialTypeModel(Account* a);
+   virtual ~NewCredentialTypeModel();
+
+   virtual QVariant      data    ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
+   virtual int           rowCount( const QModelIndex& parent = QModelIndex()                   ) const override;
+   virtual Qt::ItemFlags flags   ( const QModelIndex& index                                    ) const override;
+   virtual bool          setData ( const QModelIndex& index, const QVariant &value, int role   )       override;
+
+private:
+   Account* m_pAccount;
+   QItemSelectionModel* m_pSelectionModel {nullptr};
+   QStringList m_lValues { QStringLiteral("SIP"),QStringLiteral("STUN"),QStringLiteral("TURN")};
+   static const Matrix1D<Credential::Type, int> m_smMaximumCount;
+   static const Matrix2D<Credential::Type, Account::Protocol, bool> m_smAvailableInProtocol;
+};
+
 class CredentialModelPrivate final
 {
 public:
@@ -69,6 +94,7 @@ public:
    CredentialNode* m_pSipCat  = {nullptr};
    CredentialNode* m_pTurnCat = {nullptr};
    CredentialNode* m_pStunCat = {nullptr};
+   NewCredentialTypeModel* m_pTypeModel {nullptr};
 
    //Callbacks
    void clear  ();
@@ -316,6 +342,20 @@ CredentialNode* CredentialModelPrivate::getCategory(Credential::Type type)
    return nullptr;
 }
 
+///Use the selectionmodel to get the type
+QModelIndex CredentialModel::addCredentials()
+{
+   Credential::Type type = Credential::Type::SIP;
+
+   if (d_ptr->m_pTypeModel && d_ptr->m_pTypeModel->m_pSelectionModel
+     && d_ptr->m_pTypeModel->m_pSelectionModel->currentIndex().isValid())
+      type = static_cast<Credential::Type>(
+         d_ptr->m_pTypeModel->m_pSelectionModel->currentIndex().row()
+      );
+
+   return addCredentials(type);
+}
+
 ///Add a new credential
 QModelIndex CredentialModel::addCredentials(Credential::Type type)
 {
@@ -514,3 +554,109 @@ Credential* CredentialModel::primaryCredential(Credential::Type type) const
 
    return nullptr;
 }
+
+/**
+ * NewCredentialTypeModel
+ */
+
+///Is a credential type available for an account protocol
+const Matrix2D<Credential::Type, Account::Protocol, bool> NewCredentialTypeModel::m_smAvailableInProtocol = {
+   /*                          SIP   IAX    RING */
+   { Credential::Type::SIP , {{true, false, false}}},
+   { Credential::Type::STUN, {{true, false, true }}},
+   { Credential::Type::TURN, {{true, false, true }}},
+};
+
+///The maximum number of credentials (-1 = inf), this could be protocol dependent
+const Matrix1D<Credential::Type, int> NewCredentialTypeModel::m_smMaximumCount = {
+   { Credential::Type::SIP , -1 },
+   { Credential::Type::STUN,  1 },
+   { Credential::Type::TURN,  1 },
+};
+
+NewCredentialTypeModel::NewCredentialTypeModel(Account* a) : m_pAccount(a)
+{
+
+}
+
+NewCredentialTypeModel::~NewCredentialTypeModel()
+{}
+
+QVariant NewCredentialTypeModel::data( const QModelIndex& index, int role ) const
+{
+   if (!index.isValid())
+      return QVariant();
+
+   switch (role) {
+      case Qt::DisplayRole:
+         return m_lValues[index.row()];
+   }
+
+   return QVariant();
+}
+
+int NewCredentialTypeModel::rowCount( const QModelIndex& parent ) const
+{
+   return parent.isValid() ? 0 : m_lValues.size();
+}
+
+///Only enabled the available types
+Qt::ItemFlags NewCredentialTypeModel::flags( const QModelIndex& index ) const
+{
+   if (!index.isValid())
+      return Qt::NoItemFlags;
+
+   const Credential::Type t = static_cast<Credential::Type>(index.row());
+
+   bool avail = m_smAvailableInProtocol[t][m_pAccount->protocol()];
+
+#if 0 //TODO it mostly work, but make developement/testing harder, to enable in the last patch
+   switch(t) {
+      case Credential::Type::STUN:
+         avail &= m_pAccount->isSipStunEnabled();
+         break;
+      case Credential::Type::TURN:
+         avail &= m_pAccount->isTurnEnabled();
+         break;
+      case Credential::Type::SIP:
+      case Credential::Type::COUNT__:
+         break;
+   }
+#endif
+
+   return avail ? Qt::ItemIsEnabled | Qt::ItemIsSelectable : Qt::NoItemFlags;
+}
+
+bool NewCredentialTypeModel::setData( const QModelIndex& index, const QVariant &value, int role   )
+{
+   Q_UNUSED(index)
+   Q_UNUSED(value)
+   Q_UNUSED(role)
+   return false;
+}
+
+QAbstractItemModel* CredentialModel::availableTypeModel() const
+{
+   if (!d_ptr->m_pTypeModel)
+      d_ptr->m_pTypeModel = new NewCredentialTypeModel(d_ptr->m_pAccount);
+
+   return d_ptr->m_pTypeModel;
+}
+
+QItemSelectionModel* CredentialModel::availableTypeSelectionModel() const
+{
+   if (!static_cast<NewCredentialTypeModel*>(availableTypeModel())->m_pSelectionModel) {
+      d_ptr->m_pTypeModel->m_pSelectionModel = new QItemSelectionModel(d_ptr->m_pTypeModel);
+      for (int i=0; i < d_ptr->m_pTypeModel->rowCount(); i++) {
+         const QModelIndex idx = d_ptr->m_pTypeModel->index(i,0);
+         if (idx.flags() & Qt::ItemIsSelectable) {
+            d_ptr->m_pTypeModel->m_pSelectionModel->setCurrentIndex(idx, QItemSelectionModel::ClearAndSelect);
+            break;
+         }
+      }
+   }
+
+   return d_ptr->m_pTypeModel->m_pSelectionModel;
+}
+
+#include <credentialmodel.moc>
