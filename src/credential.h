@@ -17,19 +17,27 @@
  ***************************************************************************/
 #pragma once
 
+#include <QtCore/QObject>
 #include <typedefs.h>
 
 struct CredentialPrivate;
 
 ///A set of credential to be used by an account
-class LIB_EXPORT Credential final
+class LIB_EXPORT Credential final : public QObject
 {
+   Q_OBJECT
 public:
    enum class Type {
       SIP ,
       STUN,
-      TURN //Does this exist?
+      TURN, //Does this exist?
+      COUNT__
    };
+
+   //Property
+   Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
+   Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged)
+   Q_PROPERTY(QString realm    READ realm    WRITE setRealm    NOTIFY realmChanged   )
 
    //Constructor
    explicit Credential(const FlagPack<Credential::Type>& t);
@@ -46,6 +54,12 @@ public:
    void setUsername(const QString&        value );
    void setPassword(const QString&        value );
    void setType    (const FlagPack<Type>& value );
+
+Q_SIGNALS:
+   void changed();
+   void usernameChanged(const QString&);
+   void passwordChanged(const QString&);
+   void realmChanged   (const QString&);
 
 private:
    CredentialPrivate* d_ptr;
