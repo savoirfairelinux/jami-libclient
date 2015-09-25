@@ -23,6 +23,7 @@
 
 //Qt
 #include <QtCore/QString>
+class QItemSelectionModel;
 
 //Ring
 #include <credential.h>
@@ -83,9 +84,13 @@ public:
 
    //Getter
    CredentialModel::EditState editState() const;
+   Credential* primaryCredential(Credential::Type type = Credential::Type::SIP) const;
 
    //Operator
    CredentialModel* operator<<(CredentialModel::EditAction& action);
+
+Q_SIGNALS:
+   void primaryCredentialChanged(Credential::Type type, Credential* c);
 
 private:
    QScopedPointer<CredentialModelPrivate> d_ptr;

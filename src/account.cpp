@@ -395,6 +395,10 @@ CredentialModel* Account::credentialModel() const
 {
    if (!d_ptr->m_pCredentials) {
       d_ptr->m_pCredentials = new CredentialModel(const_cast<Account*>(this));
+      connect(d_ptr->m_pCredentials, &CredentialModel::primaryCredentialChanged,[this]() {
+         Account* a = const_cast<Account*>(this);
+         emit a->changed(a);
+      });
    }
    return d_ptr->m_pCredentials;
 }
@@ -617,8 +621,8 @@ QString Account::password() const
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialModel()->rowCount())
-            return credentialModel()->data(credentialModel()->index(0,0),CredentialModel::Role::PASSWORD).toString();
+         if (credentialModel()->primaryCredential(Credential::Type::SIP))
+            return credentialModel()->primaryCredential(Credential::Type::SIP)->password();
          break;
       case Account::Protocol::IAX:
          return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
@@ -1396,8 +1400,10 @@ void Account::setPassword(const QString& detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialModel()->rowCount())
-            credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::PASSWORD);
+         if (credentialModel()->primaryCredential(Credential::Type::SIP)) {
+            credentialModel()->primaryCredential(Credential::Type::SIP)->setPassword(detail);
+            credentialModel() << CredentialModel::EditAction::MODIFY;
+         }
          else {
             const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
             credentialModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
