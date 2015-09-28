@@ -138,8 +138,8 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
    *  tm_year   int   years since 1900
    *  tm_wday   int   days since Sunday     0-6
    */
-   struct tm localCurrentTime = {};
-   struct tm localPastTime = {};
+   struct tm localCurrentTime;
+   struct tm localPastTime;
 
    ::localtime_r(&currentTime, &localCurrentTime);
    ::localtime_r(&time, &localPastTime);
