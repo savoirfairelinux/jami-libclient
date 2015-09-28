@@ -480,6 +480,14 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
    return call;
 } //addCall
 
+///Return the current or create a new dialing call from peer ContactMethod
+Call* CallModel::dialingCall(ContactMethod* cm)
+{
+   auto call = dialingCall();
+   call->setPeerContactMethod(cm);
+   return call;
+}
+
 ///Return the current or create a new dialing call from peer name and the account
 Call* CallModel::dialingCall(const QString& peerName, Account* account)
 {

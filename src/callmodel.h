@@ -80,6 +80,7 @@ public:
 
    //Call related
    Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr );
+   Q_INVOKABLE Call*       dialingCall       ( ContactMethod* cm                                           );
    Q_INVOKABLE void        attendedTransfer  ( Call* toTransfer , Call* target                             );
    Q_INVOKABLE void        transfer          ( Call* toTransfer , const ContactMethod* target              );
    Q_INVOKABLE QByteArray  getMime           ( const Call* call                                            ) const;
@@ -163,4 +164,3 @@ Q_SIGNALS:
    void mediaStateChanged( Call* call, Media::Media* media, const Media::Media::State s, const Media::Media::State m);
 };
 Q_DECLARE_METATYPE(CallModel*)
-
