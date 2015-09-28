@@ -1435,7 +1435,10 @@ void Account::setPassword(const QString& detail)
 ///Set the TLS (encryption) password
 void Account::setTlsPassword(const QString& detail)
 {
-   tlsCertificate()->setPrivateKeyPassword(detail);
+   auto cert = tlsCertificate();
+   if (!cert)
+      return;
+   cert->setPrivateKeyPassword(detail);
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
    d_ptr->regenSecurityValidation();
 }
@@ -2352,14 +2355,15 @@ void AccountPrivate::reload()
          if (!ca.isEmpty())
             q_ptr->setTlsCaListCertificate(ca);
 
-         if (!cert.isEmpty())
+         // Set the pvk file and password only if there is a certificate
+         if (!cert.isEmpty()) {
             q_ptr->setTlsCertificate(cert);
-
-         if (!key.isEmpty())
-            q_ptr->setTlsPrivateKey(key);
-
-         if (!pass.isEmpty())
-            q_ptr->setTlsPassword(pass);
+            if (!key.isEmpty()) {
+               q_ptr->setTlsPrivateKey(key);
+                  if (!pass.isEmpty())
+                     q_ptr->setTlsPassword(pass);
+            }
+         }
 
          m_RemoteEnabledState = q_ptr->isEnabled();
       }
