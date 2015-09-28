@@ -327,6 +327,9 @@ QModelIndex RecentModel::index( int row, int column, const QModelIndex& parent) 
    if (!parent.isValid() && row >= 0 && row < d_ptr->m_lTopLevelReverted.size() && !column)
       return createIndex(row, 0, d_ptr->m_lTopLevelReverted[d_ptr->m_lTopLevelReverted.size() - 1 - row]);
 
+   if (!parent.isValid())
+      return QModelIndex();
+
    RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
 
    if (row >= 0 && row < node->m_lChildren.size())
