@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_4c3ae737",
+        "filename": "src/account.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1441,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-29T01:01:07Z",
+      "side": 1,
+      "message": "to replace by \"cert\" ?",
+      "range": {
+        "startLine": 1441,
+        "startChar": 3,
+        "endLine": 1441,
+        "endChar": 19
+      },
+      "revId": "0ed15f309e6f6c74ff2e3f864dea4bed042850f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
