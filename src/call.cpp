@@ -984,6 +984,7 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
       emit q_ptr->videoStopped(renderer);
    });
    #else
+   Q_UNUSED(renderer)
    return;
    #endif
 }

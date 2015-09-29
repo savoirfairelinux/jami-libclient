@@ -20,9 +20,7 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-
 ADD_DEFINITIONS("-std=c++1y")
-
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
@@ -50,8 +48,14 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
+FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5LinguistTools) # translations
 
-
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
+   FIND_PACKAGE(Qt5DBus)
+ELSE()
+   SET(ENABLE_LIBWRAP true)
+ENDIF()
 
 # Enable some useful warnings
 ADD_DEFINITIONS(
@@ -143,7 +147,6 @@ endif()
 
 # OS X
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   SET(ENABLE_LIBWRAP true)
 
    SET(CMAKE_MACOSX_RPATH ON)
    SET(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -162,7 +165,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Use native calls (no dbus)
    ADD_DEFINITIONS(-Wno-unknown-pragmas)
    SET(ENABLE_QT5 true) # Use Qt5
-   MESSAGE("Compiling for OS X: LibWrap enabled, Qt5 enabled.")
+   MESSAGE("Compiling with qtwrapper enabled, Qt5 enabled.")
 
    INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/src/qtwrapper/)
 
@@ -182,9 +185,6 @@ IF(NOT (${ENABLE_VIDEO} MATCHES false))
    add_definitions( -DENABLE_VIDEO=true )
 ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 
-FIND_PACKAGE(Qt5Core REQUIRED)
-FIND_PACKAGE(Qt5DBus)
-FIND_PACKAGE(Qt5LinguistTools) # translations
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
 
 SET(GENERIC_LIB_VERSION "0.4.0")
