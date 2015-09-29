@@ -23,6 +23,7 @@
 
 #include <typedefs.h>
 
+class QSortFilterProxyModel;
 class RecentModelPrivate;
 class Call;
 
@@ -42,6 +43,9 @@ public:
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Proxy
+   QSortFilterProxyModel* peopleProxy() const;
+
    static RecentModel* instance();
 
    bool hasActiveCall(const QModelIndex& parent);
@@ -54,4 +58,3 @@ private:
    Q_DECLARE_PRIVATE(RecentModel)
 };
 Q_DECLARE_METATYPE(RecentModel*)
-
