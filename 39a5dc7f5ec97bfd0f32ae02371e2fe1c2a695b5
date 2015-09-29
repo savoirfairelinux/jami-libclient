@@ -69,6 +69,30 @@
       "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_6ceec38d",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-09-29T18:28:48Z",
+      "side": 1,
+      "message": "Interesting point, but in this case calling \u0027auto call \u003d dialingCall();\u0027 returns the already existing call if there is one. There is no not needed allocation.",
+      "parentUuid": "5a93c517_6c79e3fb",
+      "range": {
+        "startLine": 487,
+        "startChar": 9,
+        "endLine": 487,
+        "endChar": 29
+      },
+      "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
