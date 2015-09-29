@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_0c3cdf2e",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-29T01:08:11Z",
+      "side": 1,
+      "message": "\"this-\u003e\" to remove",
+      "range": {
+        "startLine": 486,
+        "startChar": 15,
+        "endLine": 486,
+        "endChar": 21
+      },
+      "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_ac484bcd",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-09-29T01:08:11Z",
+      "side": 1,
+      "message": "is it safe? I mean if setPeerContactMethod thrown an exception, call has been heap allocated and if this call is embeeded inside a try/catch, this allocation may not be unallocated and you get a memory leak.",
+      "range": {
+        "startLine": 487,
+        "startChar": 9,
+        "endLine": 487,
+        "endChar": 29
+      },
+      "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
