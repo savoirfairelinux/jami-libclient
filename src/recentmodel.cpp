@@ -24,6 +24,7 @@
 
 //Qt
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring
 #include <call.h>
@@ -78,8 +79,18 @@ struct RecentViewNode
    inline time_t lastUsed() const;
 };
 
+class PeopleProxy : public QSortFilterProxyModel
+{
+   Q_OBJECT
+public:
+    PeopleProxy(RecentModel* source_model) { setSourceModel(source_model); }
+protected:
+    virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
+};
+
 class RecentModelPrivate : public QObject
 {
+    Q_OBJECT
 public:
    RecentModelPrivate(RecentModel* p);
 
@@ -521,19 +532,14 @@ void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousSt
          return;
       }
 
-      // As long as we have more than 2 parallels calls, show them
-      if (n->m_lChildren.size() > 2) {
-         q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
-         n->m_lChildren.removeAt((*it)->m_Index);
-         q_ptr->endRemoveRows();
-      } else if (n->m_lChildren.size() == 2) {
-         // We had two calls, now only one, emit removeRows for ALL children
-         q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size() - 1);
-         n->m_lChildren.removeAt((*it)->m_Index);
-         q_ptr->endRemoveRows();
-      } else { // Only one call, remove it, and emit dataChanged
-          n->m_lChildren.removeFirst();
-          emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+      q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
+      n->m_lChildren.removeAt((*it)->m_Index);
+      q_ptr->endRemoveRows();
+
+      if (n->m_lChildren.size() == 1) {
+          // there is now only one call, emit dataChanged on it so it becomes hidden in the PeopleProxy
+          auto firstChild = q_ptr->index(0, 0, q_ptr->index(n->m_Index, 0));
+          emit q_ptr->dataChanged(firstChild, firstChild);
       }
 
    } else
@@ -567,20 +573,17 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
 
-   // Emit insertRows only when there is more than one call
-   if (n->m_lChildren.size() > 1) {
-      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
-      n->m_lChildren.append(callNode);
-      q_ptr->endInsertRows();
-   } else if (n->m_lChildren.size() == 1) {
-      // If there is already a call emit insertRows for the two children
-      q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), 0, n->m_lChildren.size());
-      n->m_lChildren.append(callNode);
-      q_ptr->endInsertRows();
-   } else { // size == 0, only add the child, emit dataChanged for the top node
-      n->m_lChildren.append(callNode);
-      emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+   q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
+   n->m_lChildren.append(callNode);
+   q_ptr->endInsertRows();
+
+   if (n->m_lChildren.size() == 2) {
+       // we went from 1 to 2 calls, emit a dataChanged on the first call so that the PeopleProxy
+       // now shows the first call (otherwise it will only show the 2nd +)
+       auto firstChild = q_ptr->index(0, 0, q_ptr->index(n->m_Index, 0));
+       emit q_ptr->dataChanged(firstChild, firstChild);
    }
+
 }
 
 void RecentModelPrivate::slotUpdate()
@@ -590,3 +593,24 @@ void RecentModelPrivate::slotUpdate()
       slotCallAdded(call, nullptr);
    }
 }
+
+///Filter out every data relevant to a person
+QSortFilterProxyModel*
+RecentModel::peopleProxy() const
+{
+   static PeopleProxy* p = new PeopleProxy(const_cast<RecentModel*>(this));
+   return p;
+}
+
+bool
+PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+{
+    //Always show the top nodes; in the case of childre, only show if there is more than one
+    if (!source_parent.isValid())
+        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+    else if (sourceModel()->rowCount(source_parent) > 1 )
+        return true;
+    return false;
+}
+
+#include <recentmodel.moc>
