@@ -45,6 +45,30 @@
       "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_6c79e3fb",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-09-29T12:21:34Z",
+      "side": 1,
+      "message": "There is not a lot of try/catch in LRC. There is in the matrix system to detect out of bound calls, some state machines are also protected by them for the same reason , then there is the daemon crash and missing delegates ones. However, this very code path doesn\u0027t have any. While try/catch are an ok feature, some people (including me) don\u0027t really like the \"jump to a random location\" issue of the C++ implementation. For example, Java wont compile if a \"throwable\" method is called without try/catch or explicit exception forwarding. This force the try/catch to be as close as possible to the error source (but make the code a PITA to write, as you usually don\u0027t care about some classes of exception and have to handle them anyway).\n\nIn the end, unless the design change radically, this code should be ok.",
+      "parentUuid": "5a93c517_ac484bcd",
+      "range": {
+        "startLine": 487,
+        "startChar": 9,
+        "endLine": 487,
+        "endChar": 29
+      },
+      "revId": "39a5dc7f5ec97bfd0f32ae02371e2fe1c2a695b5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
