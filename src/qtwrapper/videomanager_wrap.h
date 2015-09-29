@@ -101,6 +101,9 @@ public Q_SLOTS: // METHODS
 #ifdef ENABLE_VIDEO
         DRing::applySettings(
             name.toStdString(), convertMap(settings));
+#else
+        Q_UNUSED(name)
+        Q_UNUSED(settings)
 #endif
     }
 
@@ -119,6 +122,8 @@ public Q_SLOTS: // METHODS
             }
             ret[QString(x.first.c_str())] = ytemp;
         }
+#else
+        Q_UNUSED(name)
 #endif
         return ret;
     }
@@ -126,12 +131,10 @@ public Q_SLOTS: // METHODS
     QString getDefaultDevice()
     {
 #ifdef ENABLE_VIDEO
-        QString temp(
-            DRing::getDefaultDevice().c_str());
+        return QString::fromStdString(DRing::getDefaultDevice().c_str());
 #else
-        QString temp;
+        return QString();
 #endif
-        return temp;
     }
 
     QStringList getDeviceList()
@@ -151,6 +154,7 @@ public Q_SLOTS: // METHODS
         MapStringString temp =
             convertMap(DRing::getSettings(device.toStdString()));
 #else
+        Q_UNUSED(device)
         MapStringString temp;
 #endif
         return temp;
@@ -169,6 +173,8 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         DRing::setDefaultDevice(name.toStdString());
+#else
+        Q_UNUSED(name)
 #endif
     }
 
@@ -191,6 +197,7 @@ public Q_SLOTS: // METHODS
 #ifdef ENABLE_VIDEO
         return DRing::switchInput(resource.toStdString());
 #else
+        Q_UNUSED(resource)
         return false;
 #endif
     }
@@ -201,6 +208,10 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         DRing::registerSinkTarget(sinkID.toStdString(), frameBuffer, std::move(cb));
+#else
+        Q_UNUSED(sinkID)
+        Q_UNUSED(frameBuffer)
+        Q_UNUSED(cb)
 #endif
     }
 
@@ -210,6 +221,10 @@ public Q_SLOTS: // METHODS
     {
 #ifdef ENABLE_VIDEO
         DRing::registerSinkTarget(sinkID.toStdString(), frameBuffer, std::move(cb));
+#else
+        Q_UNUSED(sinkID)
+        Q_UNUSED(frameBuffer)
+        Q_UNUSED(cb)
 #endif
     }
 
