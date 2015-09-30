@@ -403,6 +403,7 @@ SET( libringclient_LIB_HDRS
   src/profilepersisterdefault.h
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
+  src/itemdataroles.h
 )
 
 SET(libringclient_video_LIB_HDRS
