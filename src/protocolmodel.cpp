@@ -35,14 +35,17 @@ public:
 
    ProtocolModelPrivate(Account* a);
 
+   //Attributes
    mutable QItemSelectionModel* m_pSelectionModel;
    Account* m_pAccount;
+   bool m_ShowProfile {false};
 
    //Constants
    struct ToolTips {
       static const QString RING_ACCOUNT_TOOLTIP;
       static const QString SIP_ACCOUNT_TOOLTIP ;
       static const QString IAX2_ACCOUNT_TOOLTIP;
+      static const QString PROFILE_TOOLTIP     ;
    };
 
 public Q_SLOTS:
@@ -52,6 +55,7 @@ public Q_SLOTS:
 const QString ProtocolModelPrivate::ToolTips::RING_ACCOUNT_TOOLTIP = QObject::tr("Ring Account");
 const QString ProtocolModelPrivate::ToolTips::SIP_ACCOUNT_TOOLTIP  = QObject::tr("SIP Account" );
 const QString ProtocolModelPrivate::ToolTips::IAX2_ACCOUNT_TOOLTIP = QObject::tr("IAX2 Account");
+const QString ProtocolModelPrivate::ToolTips::PROFILE_TOOLTIP      = QObject::tr("Profile"     );
 
 
 ProtocolModelPrivate::ProtocolModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a)
@@ -94,7 +98,8 @@ QVariant ProtocolModel::data( const QModelIndex& index, int role) const
             return DRing::Account::ProtocolNames::IAX;
          case Account::Protocol::RING   :
             return DRing::Account::ProtocolNames::RING;
-         case Account::Protocol::COUNT__:
+         case Account::Protocol::COUNT__: //Profile
+            return ProtocolModelPrivate::ToolTips::PROFILE_TOOLTIP;
             break;
       };
    }
@@ -106,7 +111,9 @@ QVariant ProtocolModel::data( const QModelIndex& index, int role) const
 
 int ProtocolModel::rowCount( const QModelIndex& parent ) const
 {
-   return parent.isValid()?0:enum_class_size<Account::Protocol>();
+   return parent.isValid()?0: (enum_class_size<Account::Protocol>()
+      + (d_ptr->m_ShowProfile ? 1: 0)
+   );
 }
 
 Qt::ItemFlags ProtocolModel::flags( const QModelIndex& index ) const
@@ -151,6 +158,26 @@ void ProtocolModelPrivate::slotSelectionChanged(const QModelIndex& idx)
       return;
 
    m_pAccount->setProtocol(static_cast<Account::Protocol>(idx.row()));
+}
+
+bool ProtocolModel::profileDisplayed() const
+{
+    return d_ptr->m_ShowProfile;
+}
+
+void ProtocolModel::displayProfile(bool display)
+{
+    const char delta = display - d_ptr->m_ShowProfile; // -1, 0, +1
+    d_ptr->m_ShowProfile = display;
+
+    if (delta > 0) {
+        beginInsertRows({}, enum_class_size<Account::Protocol>(), enum_class_size<Account::Protocol>());
+        endInsertRows();
+    }
+    else if (delta < 0) {
+        beginRemoveRows({}, enum_class_size<Account::Protocol>(), enum_class_size<Account::Protocol>());
+        endRemoveRows();
+    }
 }
 
 #include <protocolmodel.moc>
