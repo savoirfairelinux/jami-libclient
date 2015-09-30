@@ -30,6 +30,8 @@ class Account;
 /**
  * This model is used to select the account protocol when creating a new account.
  * It then become a simple readonly model.
+ *
+ * It can be used per account, or with a global one also handling profiles
  */
 class LIB_EXPORT ProtocolModel : public QAbstractListModel {
    #pragma GCC diagnostic push
@@ -56,6 +58,10 @@ public:
 
    //Getters
    QItemSelectionModel* selectionModel() const;
+   bool profileDisplayed() const;
+
+   //Setters
+   void displayProfile(bool display);
 
 private:
    ProtocolModelPrivate* d_ptr;
