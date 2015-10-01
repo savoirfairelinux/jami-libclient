@@ -44,25 +44,24 @@ d_ptr(new HistoryTimeCategoryModelPrivate)
    d_ptr->m_lCategories << QDate::currentDate().addDays(-4).toString("dddd");//4
    d_ptr->m_lCategories << QDate::currentDate().addDays(-5).toString("dddd");//5
    d_ptr->m_lCategories << QDate::currentDate().addDays(-6).toString("dddd");//6
-   d_ptr->m_lCategories << tr("Last week")                             ;//7
+   d_ptr->m_lCategories << tr("A week ago")                            ;//7
    d_ptr->m_lCategories << tr("Two weeks ago")                         ;//8
    d_ptr->m_lCategories << tr("Three weeks ago")                       ;//9
-   d_ptr->m_lCategories << tr("Four weeks ago")                        ;//10
-   d_ptr->m_lCategories << tr("Last month")                            ;//11
-   d_ptr->m_lCategories << tr("Two months ago")                        ;//12
-   d_ptr->m_lCategories << tr("Three months ago")                      ;//13
-   d_ptr->m_lCategories << tr("Four months ago")                       ;//14
-   d_ptr->m_lCategories << tr("Five months ago")                       ;//15
-   d_ptr->m_lCategories << tr("Six months ago")                        ;//16
-   d_ptr->m_lCategories << tr("Seven months ago")                      ;//17
-   d_ptr->m_lCategories << tr("Eight months ago")                      ;//18
-   d_ptr->m_lCategories << tr("Nine months ago")                       ;//19
-   d_ptr->m_lCategories << tr("Ten months ago")                        ;//20
-   d_ptr->m_lCategories << tr("Eleven months ago")                     ;//21
-   d_ptr->m_lCategories << tr("Twelve months ago")                     ;//22
-   d_ptr->m_lCategories << tr("Last year")                             ;//23
-   d_ptr->m_lCategories << tr("Very long time ago")                    ;//24
-   d_ptr->m_lCategories << tr("Never")                                 ;//25
+   d_ptr->m_lCategories << tr("A month ago")                           ;//10
+   d_ptr->m_lCategories << tr("Two months ago")                        ;//11
+   d_ptr->m_lCategories << tr("Three months ago")                      ;//12
+   d_ptr->m_lCategories << tr("Four months ago")                       ;//13
+   d_ptr->m_lCategories << tr("Five months ago")                       ;//14
+   d_ptr->m_lCategories << tr("Six months ago")                        ;//15
+   d_ptr->m_lCategories << tr("Seven months ago")                      ;//16
+   d_ptr->m_lCategories << tr("Eight months ago")                      ;//17
+   d_ptr->m_lCategories << tr("Nine months ago")                       ;//18
+   d_ptr->m_lCategories << tr("Ten months ago")                        ;//19
+   d_ptr->m_lCategories << tr("Eleven months ago")                     ;//20
+   d_ptr->m_lCategories << tr("Twelve months ago")                     ;//21
+   d_ptr->m_lCategories << tr("A year ago")                            ;//22
+   d_ptr->m_lCategories << tr("Very long time ago")                    ;//23
+   d_ptr->m_lCategories << tr("Never")                                 ;//24
 }
 
 HistoryTimeCategoryModel::~HistoryTimeCategoryModel()
@@ -133,7 +132,7 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    /*
    * Struct tm description of fields used below:
-   *  tm_mday   int   day of the month      1-31
+   *  tm_yday   int   days since January 1  1-31
    *  tm_mon    int   months since January  0-11
    *  tm_year   int   years since 1900
    *  tm_wday   int   days since Sunday     0-6
@@ -146,22 +145,27 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
    int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
-   int diffDays = localCurrentTime.tm_mday - localPastTime.tm_mday;
+   int diffDays = localCurrentTime.tm_yday - localPastTime.tm_yday;
 
-   //Check for past days, stopping at Monday
-   if (diffYears == 0 && diffMonths == 0 && diffDays < 7 && localPastTime.tm_wday <= localCurrentTime.tm_wday) {
+   if (diffYears == 1 && diffMonths < 0) {
+      diffMonths += 12;
+      diffYears = 0;
+   }
+
+   //Check for past 6 days
+   if (diffYears == 0 && diffDays < 7) {
       return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
    }
    //Check for last month
-   else if (diffYears == 0 && diffMonths == 0) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::Last_week)); //Last_week to Three_weeks_ago
+   else if (diffYears == 0 && diffMonths <= 1 && (diffDays / 7 <= 4)) {
+      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago) - 1); //A_week_ago to Three_weeks_ago
    }
    //Check for last year
    else if (diffYears == 0 && diffMonths > 0) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::Last_month) - 1); //Last_month to Twelve_months ago
+      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago) - 1); //A_month_ago to Twelve_months ago
    }
    else if (diffYears == 1)
-      return HistoryConst::Last_year;
+      return HistoryConst::A_year_ago;
 
    //Every other senario
    return HistoryTimeCategoryModel::HistoryConst::Very_long_time_ago;
