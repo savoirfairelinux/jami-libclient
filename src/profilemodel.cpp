@@ -65,6 +65,7 @@ public:
    QList<Account*> getAccountsForProfile(const QString& id);
    QList<Node*> m_lProfiles;
    QHash<QByteArray,Node*> m_hProfileByAccountId;
+   QHash<QByteArray,Node*> m_hAccountIdToNode;
    QVector<Person*> m_lProfilePersons;
 
 private:
@@ -345,7 +346,8 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    ProfileModel::instance()->beginInsertRows(ProfileModel::instance()->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
    ProfileModel::instance()->endInsertRows();
-   m_pEditor->m_hProfileByAccountId[acc->id()] = account_pro;
+   m_pEditor->m_hProfileByAccountId[acc->id()] = parent;
+   m_pEditor->m_hAccountIdToNode[acc->id()] = account_pro;
 
    if (parent->contact)
       acc->contactMethod()->setPerson(parent->contact);
@@ -372,9 +374,7 @@ void ProfileContentBackend::loadProfiles()
          pro->m_Index = m_pEditor->m_lProfiles.size() ;
 
          QList<Account*> accs;
-         qDebug() << "\n\n\nMAPPING!!!";
          VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
-         qDebug() << "\n\nEND MAP";
 
          ProfileModel::instance()->beginInsertRows(QModelIndex(), m_pEditor->m_lProfiles.size(), m_pEditor->m_lProfiles.size());
          m_pEditor->m_lProfiles << pro;
@@ -586,15 +586,17 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
       return QModelIndex();
 
    Account* acc = AccountModel::instance()->getAccountByModelIndex(idx);
-   Node* pro = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[acc->id()];
+   Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountIdToNode[acc->id()];
 
    //Something is wrong, there is an orphan
-   if (!pro) {
+   if (!accNode) {
       d_ptr->m_pProfileBackend->setupDefaultProfile();
-      pro = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[acc->id()];
+      accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountIdToNode[acc->id()];
    }
 
-   return AccountModel::instance()->index(pro->m_Index,0,index(pro->parent->m_Index,0,QModelIndex()));
+   Q_ASSERT(accNode->parent && accNode->type == Node::Type::ACCOUNT);
+
+   return ProfileModel::instance()->index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
 }
 
 QVariant ProfileModel::data(const QModelIndex& index, int role ) const
@@ -771,34 +773,55 @@ void ProfileModelPrivate::updateIndexes()
 bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
    Q_UNUSED(action)
-   if((parent.isValid() && row < 0) || column > 0) {
-      qDebug() << "row or column invalid";
+
+   QModelIndex accountIdx, profileIdx;
+
+   // For some reasons, it seem that row and column are {-1,-1} when using a
+   // proxy model. The proxy is required to properly sort the accounts, so
+   // this code "fix" the values
+   if (parent.parent().isValid()) {
+       accountIdx = parent;
+       profileIdx = parent.parent();
+       row        = accountIdx.row();
+       column     = accountIdx.column();
+   }
+   else {
+       accountIdx = index(row, column, parent);
+       profileIdx = parent;
+   }
+
+   if(((!profileIdx.isValid()) && row < 0) || column > 0) {
+      qDebug() << "Row or column invalid";
       return false;
    }
 
    if (data->hasFormat(RingMimes::ACCOUNT)) {
-      qDebug() << "dropping account";
+      qDebug() << "Dropping account";
 
       const QByteArray accountId = data->data(RingMimes::ACCOUNT);
       Node* newProfile = nullptr;
       int destIdx = 0, indexOfAccountToMove = -1; // Where to insert in account list of profile
 
-      if(!parent.isValid() && row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size()) {
+      // Dropped on a profile index, append it at the end
+      if(profileIdx.isValid()) {
          qDebug() << "Dropping on profile title";
-         qDebug() << "row:" << row;
-         newProfile = d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles[row];
+         newProfile = static_cast<Node*>(profileIdx.internalPointer());
          destIdx = 0;
       }
-      else if (parent.isValid()) {
-         newProfile = static_cast<Node*>(parent.internalPointer());
+      // Dropped on an account
+      else if (profileIdx.isValid()) {
+         newProfile = static_cast<Node*>(profileIdx.internalPointer());
          destIdx = row;
       }
 
-      if (!newProfile)
+      if ((!newProfile) || (!newProfile->contact)) {
+         qDebug() << "Invalid profile";
          return false;
+      }
 
+      // Use the account ID to locate the original location
       Node* accountProfile = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId];
-      for (Node* acc : accountProfile->children) {
+      foreach (Node* acc, accountProfile->children) {
          if(acc->account->id() == accountId) {
             indexOfAccountToMove = acc->m_Index;
             break;
@@ -806,7 +829,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       }
 
       if(indexOfAccountToMove == -1) {
-         qDebug() << "indexOfAccountToMove:" << indexOfAccountToMove;
+         qDebug() << "Failed to obtain the account ID";
          return false;
       }
 
@@ -825,8 +848,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       endMoveRows();
    }
    else if (data->hasFormat(RingMimes::PROFILE)) {
-      qDebug() << "dropping profile";
-      qDebug() << "row:" << row;
+      qDebug() << "Dropping profile on row" << row;
 
       int destinationRow = -1;
       if(row < 0) {
