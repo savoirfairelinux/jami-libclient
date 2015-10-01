@@ -160,7 +160,7 @@
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <location filename="../src/call.cpp" line="764"/>
-        <location filename="../src/call.cpp" line="2000"/>
+        <location filename="../src/call.cpp" line="2030"/>
         <source>Conference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -195,7 +195,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2005"/>
+        <location filename="../src/call.cpp" line="2035"/>
         <source>Account: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,12 +219,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1595"/>
-        <source>Failure</source>
+        <location filename="../src/call.cpp" line="1610"/>
+        <source>Aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1608"/>
+        <location filename="../src/call.cpp" line="1631"/>
         <source>No account registered!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -296,17 +296,6 @@
     </message>
 </context>
 <context>
-    <name>ContactMethod</name>
-    <message>
-        <location filename="../src/contactmethod.cpp" line="483"/>
-        <location filename="../src/contactmethod.cpp" line="486"/>
-        <location filename="../src/contactmethod.cpp" line="489"/>
-        <location filename="../src/contactmethod.cpp" line="492"/>
-        <source>N/A</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ContactSortingCategoryModel</name>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
@@ -365,102 +354,107 @@
 <context>
     <name>HistoryTimeCategoryModel</name>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="38"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="39"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="45"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>Last week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="46"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="48"/>
-        <source>Last month</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="49"/>
-        <source>Two months ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
-        <source>Three months ago</source>
+        <source>Four weeks ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
-        <source>Four months ago</source>
+        <source>Last month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
-        <source>Five months ago</source>
+        <source>Two months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
-        <source>Six months ago</source>
+        <source>Three months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
-        <source>Seven months ago</source>
+        <source>Four months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
-        <source>Eight months ago</source>
+        <source>Five months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
-        <source>Nine months ago</source>
+        <source>Six months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
-        <source>Ten months ago</source>
+        <source>Seven months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
-        <source>Eleven months ago</source>
+        <source>Eight months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
-        <source>Twelve months ago</source>
+        <source>Nine months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
-        <source>Last year</source>
+        <source>Ten months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
-        <source>Very long time ago</source>
+        <source>Eleven months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <source>Twelve months ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
+        <source>Last year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <source>Very long time ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,102 +553,102 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="226"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="222"/>
         <source>This account does not support presence tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="229"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="225"/>
         <source>No associated account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>URI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Person</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Call count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Have Called</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Last used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Total (in seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Bookmarked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Tracked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Presence message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Uid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1118,7 +1112,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="407"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
         <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1311,7 +1305,7 @@
 <context>
     <name>RecentModel</name>
     <message>
-        <location filename="../src/recentmodel.cpp" line="273"/>
+        <location filename="../src/recentmodel.cpp" line="341"/>
         <source>Recent persons</source>
         <translation type="unfinished"></translation>
     </message>
