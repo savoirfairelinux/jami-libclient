@@ -1020,6 +1020,7 @@ QVariant Account::roleData(int role) const
       //Generic
       case Qt::DisplayRole:
       case Qt::EditRole:
+      case static_cast<int>(::Role::Name):
          return alias();
       case Qt::CheckStateRole:
          return QVariant(isEnabled() ? Qt::Checked : Qt::Unchecked);
@@ -1101,6 +1102,7 @@ QVariant Account::roleData(int role) const
          return DTMFType();
       case CAST(Account::Role::Id):
          return id();
+      case static_cast<int>(::Role::Object):
       case CAST(Account::Role::Object): {
          QVariant var;
          var.setValue(const_cast<Account*>(this));
@@ -1122,6 +1124,7 @@ QVariant Account::roleData(int role) const
          return weekCallCount();
       case CAST(Account::Role::TrimesterCallCount):
          return trimesterCallCount();
+      case static_cast<int>(::Role::LastUsed):
       case CAST(Account::Role::LastUsed):
          return (int)lastUsed();
       case CAST(Account::Role::UserAgent):
