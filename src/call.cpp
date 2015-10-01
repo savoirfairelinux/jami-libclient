@@ -2024,6 +2024,7 @@ QVariant Call::roleData(int role) const
 {
    const Person* ct = peerContactMethod()?peerContactMethod()->contact():nullptr;
    switch (role) {
+      case static_cast<int>(::Role::Name):
       case static_cast<int>(Call::Role::Name):
       case Qt::DisplayRole:
          if (type() == Call::Type::CONFERENCE)
@@ -2035,6 +2036,7 @@ QVariant Call::roleData(int role) const
          return tr("Account: ") + (account()?account()->alias():QString());
       case Qt::EditRole:
          return dialNumber();
+      case static_cast<int>(::Role::Number):
       case static_cast<int>(Call::Role::Number):
          return peerContactMethod()->uri();
       case static_cast<int>(Call::Role::Direction):
@@ -2072,12 +2074,14 @@ QVariant Call::roleData(int role) const
          return ct?ct->preferredEmail():QVariant();
       case static_cast<int>(Call::Role::Organisation):
          return ct?ct->organization():QVariant();
+      case static_cast<int>(::Role::Object):
       case static_cast<int>(Call::Role::Object):
          return QVariant::fromValue(const_cast<Call*>(this));
       case static_cast<int>(Call::Role::ContactMethod):
          return QVariant::fromValue(peerContactMethod());
       case static_cast<int>(Call::Role::Photo):
          return ct?ct->photo():QVariant();
+      case static_cast<int>(::Role::State):
       case static_cast<int>(Call::Role::State):
          return QVariant::fromValue(state());
       case static_cast<int>(Call::Role::StartTime):
@@ -2102,6 +2106,7 @@ QVariant Call::roleData(int role) const
          return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Call::Role::HasVideoRecording):
          return d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN]->size() > 0;
+      case static_cast<int>(::Role::FormattedState):
       case static_cast<int>(Call::Role::HumanStateName):
          return toHumanStateName(state());
       case static_cast<int>(Call::Role::DropState):

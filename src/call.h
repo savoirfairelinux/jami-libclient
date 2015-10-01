@@ -31,6 +31,7 @@ class QTimer;
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
 #include "media/media.h"
+#include "roles.h"
 class Account               ;
 class InstantMessagingModel ;
 class UserActionModel       ;
@@ -94,46 +95,46 @@ public:
 
    ///Model roles
    enum class Role {
-      Name               = 100, /*!< The peer name from SIP or Persons                                   */
-      Number             = 101, /*!< The peer URI / phone number (as text)                               */
-      Direction          = 102, /*!<                                                                     */
-      Date               = 103, /*!< The date when the call started                                      */
-      Length             = 104, /*!< The current length of the call                                      */
-      FormattedDate      = 105, /*!< An human readable starting date                                     */
-      Historystate       = 107, /*!<                                                                     */
-      Filter             = 108, /*!<                                                                     */
-      FuzzyDate          = 109, /*!<                                                                     */
-      IsBookmark         = 110, /*!<                                                                     */
-      Security           = 111, /*!<                                                                     */
-      Department         = 112, /*!<                                                                     */
-      Email              = 113, /*!<                                                                     */
-      Organisation       = 114, /*!<                                                                     */
-      HasAVRecording     = 115, /*!<                                                                     */
-      Object             = 117, /*!<                                                                     */
-      Photo              = 118, /*!<                                                                     */
-      State              = 119, /*!<                                                                     */
-      StartTime          = 121, /*!<                                                                     */
-      StopTime           = 122, /*!<                                                                     */
-      IsAVRecording      = 123, /*!<                                                                     */
-      ContactMethod      = 124, /*!<                                                                     */
-      IsPresent          = 125, /*!<                                                                     */
-      SupportPresence    = 126, /*!<                                                                     */
-      IsTracked          = 127, /*!<                                                                     */
-      CategoryIcon       = 128, /*!<                                                                     */
-      CallCount          = 129, /*!< The number of calls made with the same phone number                 */
-      TotalSpentTime     = 130, /*!< The total time spent speaking to with this phone number             */
-      Missed             = 131, /*!< This call has been missed                                           */
-      LifeCycleState     = 132, /*!<                                                                     */
-      Certificate        = 133, /*!< The certificate (for encrypted calls)                               */
-      HasAudioRecording  = 134, /*!<                                                                     */
-      HasVideoRecording  = 135, /*!<                                                                     */
-      HumanStateName     = 136, /*!<                                                                     */
-      DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop    */
-      DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
-      LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
-      DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop    */
-      SecurityLevel      = 998, //TODO REMOVE use the extensions
-      SecurityLevelIcon  = 999, //TODO REMOVE use the extensions
+      Name               = static_cast<int>(::Role::UserRole) + 100, /*!< The peer name from SIP or Persons                                   */
+      Number             = static_cast<int>(::Role::UserRole) + 101, /*!< The peer URI / phone number (as text)                               */
+      Direction          = static_cast<int>(::Role::UserRole) + 102, /*!<                                                                     */
+      Date               = static_cast<int>(::Role::UserRole) + 103, /*!< The date when the call started                                      */
+      Length             = static_cast<int>(::Role::UserRole) + 104, /*!< The current length of the call                                      */
+      FormattedDate      = static_cast<int>(::Role::UserRole) + 105, /*!< An human readable starting date                                     */
+      Historystate       = static_cast<int>(::Role::UserRole) + 107, /*!<                                                                     */
+      Filter             = static_cast<int>(::Role::UserRole) + 108, /*!<                                                                     */
+      FuzzyDate          = static_cast<int>(::Role::UserRole) + 109, /*!<                                                                     */
+      IsBookmark         = static_cast<int>(::Role::UserRole) + 110, /*!<                                                                     */
+      Security           = static_cast<int>(::Role::UserRole) + 111, /*!<                                                                     */
+      Department         = static_cast<int>(::Role::UserRole) + 112, /*!<                                                                     */
+      Email              = static_cast<int>(::Role::UserRole) + 113, /*!<                                                                     */
+      Organisation       = static_cast<int>(::Role::UserRole) + 114, /*!<                                                                     */
+      HasAVRecording     = static_cast<int>(::Role::UserRole) + 115, /*!<                                                                     */
+      Object             = static_cast<int>(::Role::UserRole) + 117, /*!<                                                                     */
+      Photo              = static_cast<int>(::Role::UserRole) + 118, /*!<                                                                     */
+      State              = static_cast<int>(::Role::UserRole) + 119, /*!<                                                                     */
+      StartTime          = static_cast<int>(::Role::UserRole) + 121, /*!<                                                                     */
+      StopTime           = static_cast<int>(::Role::UserRole) + 122, /*!<                                                                     */
+      IsAVRecording      = static_cast<int>(::Role::UserRole) + 123, /*!<                                                                     */
+      ContactMethod      = static_cast<int>(::Role::UserRole) + 124, /*!<                                                                     */
+      IsPresent          = static_cast<int>(::Role::UserRole) + 125, /*!<                                                                     */
+      SupportPresence    = static_cast<int>(::Role::UserRole) + 126, /*!<                                                                     */
+      IsTracked          = static_cast<int>(::Role::UserRole) + 127, /*!<                                                                     */
+      CategoryIcon       = static_cast<int>(::Role::UserRole) + 128, /*!<                                                                     */
+      CallCount          = static_cast<int>(::Role::UserRole) + 129, /*!< The number of calls made with the same phone number                 */
+      TotalSpentTime     = static_cast<int>(::Role::UserRole) + 130, /*!< The total time spent speaking to with this phone number             */
+      Missed             = static_cast<int>(::Role::UserRole) + 131, /*!< This call has been missed                                           */
+      LifeCycleState     = static_cast<int>(::Role::UserRole) + 132, /*!<                                                                     */
+      Certificate        = static_cast<int>(::Role::UserRole) + 133, /*!< The certificate (for encrypted calls)                               */
+      HasAudioRecording  = static_cast<int>(::Role::UserRole) + 134, /*!<                                                                     */
+      HasVideoRecording  = static_cast<int>(::Role::UserRole) + 135, /*!<                                                                     */
+      HumanStateName     = static_cast<int>(::Role::UserRole) + 136, /*!<                                                                     */
+      DropState          = static_cast<int>(::Role::DropState)     , /*!< GUI related state to keep track of metadata during drag and drop    */
+      DTMFAnimState      = static_cast<int>(::Role::UserRole) + 400, /*!< GUI related state to hold animation key(s)                          */
+      LastDTMFidx        = static_cast<int>(::Role::UserRole) + 401, /*!< The last DTMF (button) sent on this call                            */
+      DropPosition       = static_cast<int>(::Role::UserRole) + 402, /*!< GUI related state to keep track of metadata during drag and drop    */
+      SecurityLevel      = static_cast<int>(::Role::UserRole) + 998, //TODO REMOVE use the extensions
+      SecurityLevelIcon  = static_cast<int>(::Role::UserRole) + 999, //TODO REMOVE use the extensions
    };
 
    enum DropAction {

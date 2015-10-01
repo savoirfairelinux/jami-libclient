@@ -28,6 +28,7 @@
 #include <QtCore/QSharedPointer>
 
 //Ring
+#include "roles.h"
 #include "uri.h"
 class Account;
 class Person;
@@ -55,9 +56,9 @@ public:
    friend class CallPrivate;
 
    enum class Role {
-      Uri          = 1000,
-      Object       = 1001,
-      CategoryIcon = 1002,
+      Uri          = static_cast<int>(::Role::UserRole) + 1000,
+      Object       = static_cast<int>(::Role::UserRole) + 1001,
+      CategoryIcon = static_cast<int>(::Role::UserRole) + 1002,
       //TODO implement all others
    };
 

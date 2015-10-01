@@ -24,6 +24,7 @@
 #include <itembase.h>
 
 //Ring
+#include "roles.h"
 class ContactMethod;
 class PersonPrivate;
 class AddressPrivate;
@@ -47,16 +48,16 @@ class LIB_EXPORT Person : public ItemBase
 public:
 
    enum class Role {
-      Organization      = 100,
-      Group             = 101,
-      Department        = 102,
-      PreferredEmail    = 103,
-      FormattedLastUsed = 104,
-      IndexedLastUsed   = 105,
-      DatedLastUsed     = 106,
-      Object            = 108,
-      Filter            = 200, //All roles, all at once
-      DropState         = 300, //State for drag and drop
+      Organization      = static_cast<int>(::Role::UserRole) + 100,
+      Group             = static_cast<int>(::Role::UserRole) + 101,
+      Department        = static_cast<int>(::Role::UserRole) + 102,
+      PreferredEmail    = static_cast<int>(::Role::UserRole) + 103,
+      FormattedLastUsed = static_cast<int>(::Role::UserRole) + 104,
+      IndexedLastUsed   = static_cast<int>(::Role::UserRole) + 105,
+      DatedLastUsed     = static_cast<int>(::Role::UserRole) + 106,
+      Object            = static_cast<int>(::Role::UserRole) + 108,
+      Filter            = static_cast<int>(::Role::UserRole) + 200, //All roles, all at once
+      DropState         = static_cast<int>(::Role::DropState)     , //State for drag and drop
    };
 
    ///@enum Encoding How to decode the person content payload
@@ -204,4 +205,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(Person*)
-
