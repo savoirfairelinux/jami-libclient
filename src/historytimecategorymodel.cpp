@@ -133,7 +133,7 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    /*
    * Struct tm description of fields used below:
-   *  tm_mday   int   day of the month      1-31
+   *  tm_yday   int   days since January 1  1-31
    *  tm_mon    int   months since January  0-11
    *  tm_year   int   years since 1900
    *  tm_wday   int   days since Sunday     0-6
@@ -146,14 +146,19 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
    int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
-   int diffDays = localCurrentTime.tm_mday - localPastTime.tm_mday;
+   int diffDays = localCurrentTime.tm_yday - localPastTime.tm_yday;
+
+   if (diffYears == 1 && diffMonths < 0) {
+      diffMonths += 12;
+      diffYears = 0;
+   }
 
    //Check for past days, stopping at Monday
-   if (diffYears == 0 && diffMonths == 0 && diffDays < 7 && localPastTime.tm_wday <= localCurrentTime.tm_wday) {
+   if (diffYears == 0 && diffDays < 7) {
       return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
    }
    //Check for last month
-   else if (diffYears == 0 && diffMonths == 0) {
+   else if (diffYears == 0 && diffMonths <= 1 && (diffDays / 7 <= 4)) {
       return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::Last_week)); //Last_week to Three_weeks_ago
    }
    //Check for last year

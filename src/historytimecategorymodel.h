@@ -41,7 +41,7 @@ public:
       Last_week         = 7  ,
       Two_weeks_ago     = 8  ,
       Three_weeks_ago   = 9  ,
-      Four_weeks_ago    = 10  ,
+      Four_weeks_ago    = 10 ,
       Last_month        = 11 ,
       Two_months_ago    = 12 ,
       Three_months_ago  = 13 ,
