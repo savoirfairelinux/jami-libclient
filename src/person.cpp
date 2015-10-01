@@ -521,6 +521,7 @@ QVariant Person::roleData(int role) const
    switch (role) {
       case Qt::DisplayRole:
       case Qt::EditRole:
+      case static_cast<int>(Ring::Role::Name):
          return QVariant(formattedName());
       case static_cast<int>(Person::Role::Organization):
          return QVariant(organization());
@@ -530,12 +531,15 @@ QVariant Person::roleData(int role) const
          return QVariant(department());
       case static_cast<int>(Person::Role::PreferredEmail):
          return QVariant(preferredEmail());
+      case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Person::Role::FormattedLastUsed):
          return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(lastUsedTime()));
       case static_cast<int>(Person::Role::IndexedLastUsed):
          return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime())));
+      case static_cast<int>(Ring::Role::Object):
       case static_cast<int>(Person::Role::Object):
          return QVariant::fromValue(const_cast<Person*>(this));
+      case static_cast<int>(Ring::Role::LastUsed):
       case static_cast<int>(Person::Role::DatedLastUsed):
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));
       case static_cast<int>(Person::Role::Filter):

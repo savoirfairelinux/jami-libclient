@@ -460,6 +460,7 @@ QVariant ContactMethod::roleData(int role) const
    auto lastCall = d_ptr->m_lCalls.isEmpty() ? nullptr : d_ptr->m_lCalls.last();
 
    switch (role) {
+      case static_cast<int>(Ring::Role::Name):
       case static_cast<int>(Call::Role::Name):
          /* the formatted name could be empty either because the name of the contact is actually
           * empty, or because the PersonPlaceHolder was never matched to a Person, in either case
@@ -475,18 +476,21 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::DisplayRole:
       case Qt::EditRole:
       case static_cast<int>(Role::Uri):
+      case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
          cat = uri();
          break;
       case static_cast<int>(Call::Role::Direction):
          cat = cat = !lastCall ? QVariant() : QVariant::fromValue(lastCall->direction());
          break;
+      case static_cast<int>(Ring::Role::LastUsed):
       case static_cast<int>(Call::Role::Date):
          cat = cat = !lastCall ? QVariant() : QDateTime::fromTime_t(lastCall->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::Length):
          cat = cat = !lastCall ? QVariant() : lastCall->length();
          break;
+      case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Call::Role::FormattedDate):
          cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
          break;
@@ -497,6 +501,7 @@ QVariant ContactMethod::roleData(int role) const
          cat = cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::ContactMethod):
+      case static_cast<int>(Ring::Role::Object):
       case static_cast<int>(Role::Object):
          cat = QVariant::fromValue(const_cast<ContactMethod*>(this));
          break;

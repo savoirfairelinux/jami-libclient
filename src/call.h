@@ -31,6 +31,7 @@ class QTimer;
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
 #include "media/media.h"
+#include "itemdataroles.h"
 class Account               ;
 class InstantMessagingModel ;
 class UserActionModel       ;
@@ -94,46 +95,46 @@ public:
 
    ///Model roles
    enum class Role {
-      Name               = 100, /*!< The peer name from SIP or Persons                                   */
-      Number             = 101, /*!< The peer URI / phone number (as text)                               */
-      Direction          = 102, /*!<                                                                     */
-      Date               = 103, /*!< The date when the call started                                      */
-      Length             = 104, /*!< The current length of the call                                      */
-      FormattedDate      = 105, /*!< An human readable starting date                                     */
-      Historystate       = 107, /*!<                                                                     */
-      Filter             = 108, /*!<                                                                     */
-      FuzzyDate          = 109, /*!<                                                                     */
-      IsBookmark         = 110, /*!<                                                                     */
-      Security           = 111, /*!<                                                                     */
-      Department         = 112, /*!<                                                                     */
-      Email              = 113, /*!<                                                                     */
-      Organisation       = 114, /*!<                                                                     */
-      HasAVRecording     = 115, /*!<                                                                     */
-      Object             = 117, /*!<                                                                     */
-      Photo              = 118, /*!<                                                                     */
-      State              = 119, /*!<                                                                     */
-      StartTime          = 121, /*!<                                                                     */
-      StopTime           = 122, /*!<                                                                     */
-      IsAVRecording      = 123, /*!<                                                                     */
-      ContactMethod      = 124, /*!<                                                                     */
-      IsPresent          = 125, /*!<                                                                     */
-      SupportPresence    = 126, /*!<                                                                     */
-      IsTracked          = 127, /*!<                                                                     */
-      CategoryIcon       = 128, /*!<                                                                     */
-      CallCount          = 129, /*!< The number of calls made with the same phone number                 */
-      TotalSpentTime     = 130, /*!< The total time spent speaking to with this phone number             */
-      Missed             = 131, /*!< This call has been missed                                           */
-      LifeCycleState     = 132, /*!<                                                                     */
-      Certificate        = 133, /*!< The certificate (for encrypted calls)                               */
-      HasAudioRecording  = 134, /*!<                                                                     */
-      HasVideoRecording  = 135, /*!<                                                                     */
-      HumanStateName     = 136, /*!<                                                                     */
-      DropState          = 300, /*!< GUI related state to keep track of metadata during drag and drop    */
-      DTMFAnimState      = 400, /*!< GUI related state to hold animation key(s)                          */
-      LastDTMFidx        = 401, /*!< The last DTMF (button) sent on this call                            */
-      DropPosition       = 402, /*!< GUI related state to keep track of metadata during drag and drop    */
-      SecurityLevel      = 998, //TODO REMOVE use the extensions
-      SecurityLevelIcon  = 999, //TODO REMOVE use the extensions
+      Name               = static_cast<int>(Ring::Role::UserRole) + 100, /*!< The peer name from SIP or Persons */
+      Number             , /*!< The peer URI / phone number (as text)                               */
+      Direction          , /*!<                                                                     */
+      Date               , /*!< The date when the call started                                      */
+      Length             , /*!< The current length of the call                                      */
+      FormattedDate      , /*!< An human readable starting date                                     */
+      Historystate       , /*!<                                                                     */
+      Filter             , /*!<                                                                     */
+      FuzzyDate          , /*!<                                                                     */
+      IsBookmark         , /*!<                                                                     */
+      Security           , /*!<                                                                     */
+      Department         , /*!<                                                                     */
+      Email              , /*!<                                                                     */
+      Organisation       , /*!<                                                                     */
+      HasAVRecording     , /*!<                                                                     */
+      Object             , /*!<                                                                     */
+      Photo              , /*!<                                                                     */
+      State              , /*!<                                                                     */
+      StartTime          , /*!<                                                                     */
+      StopTime           , /*!<                                                                     */
+      IsAVRecording      , /*!<                                                                     */
+      ContactMethod      , /*!<                                                                     */
+      IsPresent          , /*!<                                                                     */
+      SupportPresence    , /*!<                                                                     */
+      IsTracked          , /*!<                                                                     */
+      CategoryIcon       , /*!<                                                                     */
+      CallCount          , /*!< The number of calls made with the same phone number                 */
+      TotalSpentTime     , /*!< The total time spent speaking to with this phone number             */
+      Missed             , /*!< This call has been missed                                           */
+      LifeCycleState     , /*!<                                                                     */
+      Certificate        , /*!< The certificate (for encrypted calls)                               */
+      HasAudioRecording  , /*!<                                                                     */
+      HasVideoRecording  , /*!<                                                                     */
+      HumanStateName     , /*!<                                                                     */
+      DTMFAnimState      , /*!< GUI related state to hold animation key(s)                          */
+      LastDTMFidx        , /*!< The last DTMF (button) sent on this call                            */
+      DropPosition       , /*!< GUI related state to keep track of metadata during drag and drop    */
+      SecurityLevel      , //TODO REMOVE use the extensions
+      SecurityLevelIcon  , //TODO REMOVE use the extensions
+      DropState          = static_cast<int>(Ring::Role::DropState), /*!< GUI related state to keep track of metadata during drag and drop */
    };
 
    enum DropAction {
