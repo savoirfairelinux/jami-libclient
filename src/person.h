@@ -122,6 +122,7 @@ public:
    //Constructors & Destructors
    explicit Person(CollectionInterface* parent = nullptr, const QByteArray& uid = QByteArray());
    Person(const QByteArray& content, Person::Encoding encoding = Encoding::UID, CollectionInterface* parent = nullptr);
+   Person(const Person& other) noexcept;
    virtual ~Person();
 
    //Getters

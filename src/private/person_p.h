@@ -27,12 +27,12 @@
 #include "person.h"
 class ContactMethod;
 
-class PersonPrivate : public QObject
+class PersonPrivate final : public QObject
 {
    Q_OBJECT
    friend class ContactMethod;
 public:
-   PersonPrivate(Person* contact);
+   explicit PersonPrivate(Person* contact);
    ~PersonPrivate();
    QString                  m_FirstName           ;
    QString                  m_SecondName          ;
@@ -53,6 +53,14 @@ public:
    ::time_t                 m_LastUsed            ;
    bool                     m_LastUsedInit        ;
    QList<ContactMethod*>    m_HiddenContactMethods;
+
+   /*
+    * NOTE If new attributes are added, please update the explicit Person copy
+    * constructor as Qt force QObject copy via serialization (to force developers
+    * to use references, copy-on-write based containers and smart pointers
+    * instead), which is overkill for this scenario and would detach all the
+    * containers causing useless increase in memory usage.
+   */
 
    //Cache
    QString m_CachedFilterString;
