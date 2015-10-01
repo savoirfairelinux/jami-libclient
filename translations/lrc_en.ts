@@ -203,7 +203,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="848"/>
+        <location filename="../src/callmodel.cpp" line="856"/>
         <source>Calls</source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,7 +211,7 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="520"/>
+        <location filename="../src/callmodel.cpp" line="528"/>
         <source>Invalid account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -364,11 +364,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
-        <source>Last week</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
         <translation type="unfinished"></translation>
@@ -379,82 +374,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <source>A week ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
-        <source>Four weeks ago</source>
+        <source>A month ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
-        <source>Last month</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Two months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
-        <source>Last year</source>
+        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <source>A year ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1305,7 +1300,7 @@
 <context>
     <name>RecentModel</name>
     <message>
-        <location filename="../src/recentmodel.cpp" line="341"/>
+        <location filename="../src/recentmodel.cpp" line="344"/>
         <source>Recent persons</source>
         <translation type="unfinished"></translation>
     </message>
