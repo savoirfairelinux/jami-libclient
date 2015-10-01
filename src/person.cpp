@@ -224,6 +224,40 @@ Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionI
    };
 }
 
+/**
+ * Copy constructor, useful when transferring a contact between collections
+ *
+ * For example, converting a trust request to GMail contact without forcing
+ * a slow vCard conversion.
+ *
+ * This create a COPY of the person details, using shared attributes between
+ * multiple person with multiple collection is currently not supported (but
+ * would be easy to enable if the need arise).
+ */
+Person::Person(const Person& other) noexcept : ItemBase(nullptr),
+d_ptr(new PersonPrivate(this))
+{
+   d_ptr->m_FirstName            = other.d_ptr->m_FirstName           ;
+   d_ptr->m_SecondName           = other.d_ptr->m_SecondName          ;
+   d_ptr->m_NickName             = other.d_ptr->m_NickName            ;
+   d_ptr->m_vPhoto               = other.d_ptr->m_vPhoto              ;
+   d_ptr->m_FormattedName        = other.d_ptr->m_FormattedName       ;
+   d_ptr->m_PreferredEmail       = other.d_ptr->m_PreferredEmail      ;
+   d_ptr->m_Organization         = other.d_ptr->m_Organization        ;
+   d_ptr->m_Uid                  = other.d_ptr->m_Uid                 ;
+   d_ptr->m_Group                = other.d_ptr->m_Group               ;
+   d_ptr->m_Department           = other.d_ptr->m_Department          ;
+   d_ptr->m_DisplayPhoto         = other.d_ptr->m_DisplayPhoto        ;
+   d_ptr->m_Numbers              = other.d_ptr->m_Numbers             ;
+   d_ptr->m_Active               = other.d_ptr->m_Active              ;
+   d_ptr->m_isPlaceHolder        = other.d_ptr->m_isPlaceHolder       ;
+   d_ptr->m_lAddresses           = other.d_ptr->m_lAddresses          ;
+   d_ptr->m_lCustomAttributes    = other.d_ptr->m_lCustomAttributes   ;
+   d_ptr->m_LastUsed             = other.d_ptr->m_LastUsed            ;
+   d_ptr->m_LastUsedInit         = other.d_ptr->m_LastUsedInit        ;
+   d_ptr->m_HiddenContactMethods = other.d_ptr->m_HiddenContactMethods;
+}
+
 ///Updates an existing contact from vCard info
 void Person::updateFromVCard(const QByteArray& content)
 {
