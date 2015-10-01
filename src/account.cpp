@@ -1020,6 +1020,7 @@ QVariant Account::roleData(int role) const
       //Generic
       case Qt::DisplayRole:
       case Qt::EditRole:
+      case CAST(Ring::Role::Name):
          return alias();
       case Qt::CheckStateRole:
          return QVariant(isEnabled() ? Qt::Checked : Qt::Unchecked);
@@ -1032,7 +1033,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::Alias):
          return alias();
       case CAST(Account::Role::Proto):
-         return static_cast<int>(protocol());
+         return CAST(protocol());
       case CAST(Account::Role::Hostname):
          return hostname();
       case CAST(Account::Role::Username):
@@ -1101,13 +1102,14 @@ QVariant Account::roleData(int role) const
          return DTMFType();
       case CAST(Account::Role::Id):
          return id();
+      case CAST(Ring::Role::Object):
       case CAST(Account::Role::Object): {
          QVariant var;
          var.setValue(const_cast<Account*>(this));
          return var;
       }
       case CAST(Account::Role::TypeName):
-         return static_cast<int>(protocol());
+         return CAST(protocol());
       case CAST(Account::Role::PresenceStatus):
          return PresenceStatusModel::instance()->currentStatus();
       case CAST(Account::Role::PresenceMessage):
@@ -1122,6 +1124,7 @@ QVariant Account::roleData(int role) const
          return weekCallCount();
       case CAST(Account::Role::TrimesterCallCount):
          return trimesterCallCount();
+      case CAST(Ring::Role::LastUsed):
       case CAST(Account::Role::LastUsed):
          return (int)lastUsed();
       case CAST(Account::Role::UserAgent):
