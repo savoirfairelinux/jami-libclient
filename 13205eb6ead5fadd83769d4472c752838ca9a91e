@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_1c0c1594",
+        "filename": "src/roles.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-01T21:31:19Z",
+      "side": 1,
+      "message": "This will cause ambiguity as many classes have a \"Role\" sub-type.\n\nex:\n\nclass A {\n  enum class Role {\n    Object \u003d 42;\n  };\n\n  void a();\n\n  void b(Role r);\n\n  void c(Role r) {\n    qDebug() \u003c\u003c (int)r; //42\n  }\n};\n\nvoid A::a() {\n  qDebug() \u003c\u003c (int)Role::Object \u003c\u003c (int)::Role::Object \u003c\u003c (int) A::Role::Object; //Try to guess the result :P\n}\n\nvoid A::b(Role r) {\n  qDebug() \u003c\u003c (int) r;\n} //Error, wont compile, signature don\u0027t match\n\nSo I would suggest using the \"GlobalInstance\" namespace you created a while back to encapsulate the enum",
+      "revId": "13205eb6ead5fadd83769d4472c752838ca9a91e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
