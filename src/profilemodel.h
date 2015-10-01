@@ -36,6 +36,7 @@ template<typename T> class CollectionMediator;
 class LIB_EXPORT ProfileModel : public QAbstractItemModel {
    Q_OBJECT
    friend class ProfileContentBackend;
+   friend class ProfileEditor;
 public:
    explicit ProfileModel(QObject* parent = nullptr);
    virtual ~ProfileModel();
@@ -72,7 +73,8 @@ private:
    static ProfileModel* m_spInstance;
 
 public Q_SLOTS:
-//    bool addNewProfile(Person* c, CollectionInterface* backend = nullptr);
-//    bool createProfile(const QString& name);
+   bool remove(const QModelIndex& idx);
+   QModelIndex add(Person* person = nullptr);
+   QModelIndex add(const QString& name);
 };
 
