@@ -379,7 +379,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Four weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Il y a quatre semaines</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algorithme de la clé du sujet</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
