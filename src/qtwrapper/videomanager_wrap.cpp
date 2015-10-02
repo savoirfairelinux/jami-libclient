@@ -55,7 +55,7 @@ VideoManagerInterface::~VideoManagerInterface()
 }
 
 VideoManagerSignalProxy::VideoManagerSignalProxy(VideoManagerInterface* parent) : QObject(parent),
-m_pParent(parent), m_pSem(new QSemaphore(3))
+m_pParent(parent)
 {}
 
 void VideoManagerSignalProxy::slotDeviceEvent()
@@ -68,21 +68,13 @@ void VideoManagerSignalProxy::slotDeviceEvent()
 void VideoManagerSignalProxy::slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer)
 {
     QTimer::singleShot(0, [=] {
-        if(m_pSem->available() == 3)
-            emit m_pParent->startedDecoding(id,shmPath,width,height,isMixer);
-        else {
-            QTimer::singleShot(0, [=] {
-                slotStartedDecoding(id,shmPath,width,height,isMixer);
-            });
-        }
+        emit m_pParent->startedDecoding(id,shmPath,width,height,isMixer);
     });
 }
 
 void VideoManagerSignalProxy::slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer)
 {
-    m_pSem->acquire(1);
     QTimer::singleShot(0, [=] {
         emit m_pParent->stoppedDecoding(id,shmPath,isMixer);
-        m_pSem->release(1);
     });
 }
