@@ -379,7 +379,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Four weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Il y a quatre semaines</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
@@ -779,32 +779,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Possède les permissions correctes sur le répertoire de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Possède les permissions correctes sur le répertoire de clé publiques</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Possède un chemin correcte sur le répertoire de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Possède un chemin correcte sur le répertoire de clé publiques</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Possède les attributs SELinux de clé privée correctes</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Possède les attributs SELinux de clé publique correctes</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
@@ -884,12 +884,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algorithme de la clé du sujet</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Nom commun (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
@@ -1051,12 +1051,12 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>Macros locales</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>Macro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="102"/>
@@ -1178,7 +1178,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="149"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Dépôt du contact</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="376"/>
@@ -1205,7 +1205,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="380"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transfert du serveur</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="381"/>
