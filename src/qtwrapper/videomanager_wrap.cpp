@@ -80,9 +80,17 @@ void VideoManagerSignalProxy::slotStartedDecoding(const QString &id, const QStri
 
 void VideoManagerSignalProxy::slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer)
 {
-    m_pSem->acquire(1);
-    QTimer::singleShot(0, [=] {
-        emit m_pParent->stoppedDecoding(id,shmPath,isMixer);
-        m_pSem->release(1);
-    });
+    qDebug() << "sem av: " << m_pSem->available();
+    if (m_pSem->available()) {
+      m_pSem->acquire(1);
+      QTimer::singleShot(0, [=] {
+          emit m_pParent->stoppedDecoding(id,shmPath,isMixer);
+          m_pSem->release(1);
+      });
+   } else {
+      QTimer::singleShot(0, [=] {
+          emit slotStoppedDecoding(id,shmPath,isMixer);
+      });
+   }
+
 }
