@@ -84,6 +84,8 @@ class PeopleProxy : public QSortFilterProxyModel
    Q_OBJECT
 public:
     PeopleProxy(RecentModel* source_model) { setSourceModel(source_model); }
+
+    virtual QVariant data(const QModelIndex& index, int role) const override;
 protected:
     virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
 };
@@ -613,6 +615,32 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
     else if (sourceModel()->rowCount(source_parent) > 1 )
         return true;
     return false;
+}
+
+QVariant
+PeopleProxy::data(const QModelIndex& index, int role) const
+{
+    auto indexSource = this->mapToSource(index);
+
+    if (!indexSource.isValid())
+        return QVariant();
+
+    //This proxy model filters out single calls, so in this case we want to forward certain data
+    //from the call to its parent
+    RecentViewNode* node = static_cast<RecentViewNode*>(indexSource.internalPointer());
+    bool topNode = node->m_Type == RecentViewNode::Type::PERSON         ||
+                   node->m_Type == RecentViewNode::Type::CONTACT_METHOD;
+    bool forwardRole = role == static_cast<int>(Ring::Role::State)          ||
+                       role == static_cast<int>(Ring::Role::FormattedState) ||
+                       role == static_cast<int>(Call::Role::Length);
+    if ( topNode && forwardRole ) {
+        if (sourceModel()->rowCount(indexSource) == 1) {
+            auto child = sourceModel()->index(0, 0, indexSource);
+            return sourceModel()->data(child, role);
+        }
+    }
+
+    return sourceModel()->data(indexSource, role);
 }
 
 #include <recentmodel.moc>
