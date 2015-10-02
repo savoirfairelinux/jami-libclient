@@ -201,7 +201,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="848"/>
+        <location filename="../src/callmodel.cpp" line="856"/>
         <source>Calls</source>
         <translation>المكالمات</translation>
     </message>
@@ -209,7 +209,7 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="520"/>
+        <location filename="../src/callmodel.cpp" line="528"/>
         <source>Invalid account</source>
         <translation>حساب باطل</translation>
     </message>
@@ -362,11 +362,6 @@
         <translation>البارحة</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
-        <source>Last week</source>
-        <translation>الأسبوع الفارط</translation>
-    </message>
-    <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
         <translation>الأسبوعان الماضيان</translation>
@@ -377,82 +372,82 @@
         <translation>الثلاث أسابيع الماضية</translation>
     </message>
     <message>
+        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <source>A week ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
-        <source>Four weeks ago</source>
+        <source>A month ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
-        <source>Last month</source>
-        <translation>الشهر الماضي</translation>
-    </message>
-    <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Two months ago</source>
         <translation>الشهران الماضيان</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
         <translation>الثلاث أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
         <translation>الأربع  أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
         <translation>الخمس أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
         <translation>الستة أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
         <translation>السبع أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
         <translation>الثمانية أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
         <translation>التسعة أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
         <translation>العشرة أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
         <translation>الإحدى عشر أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
         <translation>الإثنى عشر أشهر الماضية</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
-        <source>Last year</source>
-        <translation>السنة الماضية</translation>
+        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <source>A year ago</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
         <translation>منذ زمن طويل جدا</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
         <translation>أبدا</translation>
     </message>
@@ -1303,7 +1298,7 @@
 <context>
     <name>RecentModel</name>
     <message>
-        <location filename="../src/recentmodel.cpp" line="341"/>
+        <location filename="../src/recentmodel.cpp" line="344"/>
         <source>Recent persons</source>
         <translation>الأشخاص الحديثة</translation>
     </message>
