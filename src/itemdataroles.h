@@ -36,6 +36,7 @@ enum class Role
 {
     DisplayRole        = Qt::DisplayRole ,
     Object             = Qt::UserRole + 1,
+    ObjectType         ,
     Name               ,
     Number             ,
     LastUsed           ,
@@ -45,4 +46,18 @@ enum class Role
     DropState          ,
     UserRole           = Qt::UserRole + 100  // this should always be the last role in the list
 };
+
+/**
+ * All LRC models that store more than one type of class (eg: RecentModel) should return a member of
+ * this enum when ::data(Ring::Role::ObjectType) is called on one of their indeces. This is to
+ * simplify LRC and client logic by not having to dynamic_cast the pointer stored in the index.
+ */
+enum class ObjectType
+{
+    Person,
+    ContactMethod,
+    Call,
+    Media,
+}
+
 } // namespace Ring
