@@ -299,7 +299,7 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
    /* VIDEO */ {{ false, false }},
    /* TEXT  */ {{ false, false }},
    /* FILE  */ {{ false, false }},
-}})
+}}), m_pTransferNumber(nullptr)
 {
 }
 
