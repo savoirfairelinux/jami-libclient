@@ -539,6 +539,8 @@ QVariant Person::roleData(int role) const
       case static_cast<int>(Ring::Role::Object):
       case static_cast<int>(Person::Role::Object):
          return QVariant::fromValue(const_cast<Person*>(this));
+      case static_cast<int>(Ring::Role::ObjectType):
+         return QVariant::fromValue(Ring::ObjectType::Person);
       case static_cast<int>(Ring::Role::LastUsed):
       case static_cast<int>(Person::Role::DatedLastUsed):
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));

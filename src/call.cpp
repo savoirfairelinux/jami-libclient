@@ -2077,6 +2077,8 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Ring::Role::Object):
       case static_cast<int>(Call::Role::Object):
          return QVariant::fromValue(const_cast<Call*>(this));
+      case static_cast<int>(Ring::Role::ObjectType):
+         return QVariant::fromValue(Ring::ObjectType::Call);
       case static_cast<int>(Call::Role::ContactMethod):
          return QVariant::fromValue(peerContactMethod());
       case static_cast<int>(Call::Role::Photo):

@@ -505,6 +505,9 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Role::Object):
          cat = QVariant::fromValue(const_cast<ContactMethod*>(this));
          break;
+      case static_cast<int>(Ring::Role::ObjectType):
+         cat = QVariant::fromValue(Ring::ObjectType::ContactMethod);
+         break;
       case static_cast<int>(Call::Role::IsBookmark):
          cat = false;
          break;
