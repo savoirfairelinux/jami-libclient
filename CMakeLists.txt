@@ -299,7 +299,6 @@ SET( libringclient_LIB_SRCS
   src/dbuserrorhandlerdefault.cpp
 
   #Other
-  src/categorizedcompositenode.cpp
   src/hookmanager.cpp
   src/itembase.cpp
   src/private/vcardutils.cpp
@@ -374,7 +373,6 @@ SET( libringclient_LIB_HDRS
   src/itembase.h
   src/itembase.hpp
   src/mime.h
-  src/categorizedcompositenode.h
   src/collectionextensioninterface.h
   src/collectionmanagerinterface.h
   src/collectionmanagerinterface.hpp

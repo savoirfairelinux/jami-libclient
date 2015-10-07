@@ -37,7 +37,8 @@
 
 class ContactTreeNode;
 
-class ContactTreeNode final : public CategorizedCompositeNode {
+class ContactTreeNode final
+{
 public:
    friend class CategorizedContactModel;
    friend class CategorizedContactModelPrivate;
@@ -54,8 +55,6 @@ public:
    ContactTreeNode( ContactMethod* cm   , CategorizedContactModel* parent);
    ContactTreeNode( const QString& name , CategorizedContactModel* parent);
    virtual ~ContactTreeNode();
-
-   virtual QObject* getSelf() const override;
 
    //Attributes
    const Person*             m_pContact      ;
@@ -121,7 +120,7 @@ public Q_SLOTS:
 
 CategorizedContactModel* CategorizedContactModelPrivate::m_spInstance = nullptr;
 
-ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) :
    m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent),m_Visible(true),
    m_VisibleCounter(0)
 {
@@ -131,14 +130,14 @@ ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* pare
    m_lConections << QObject::connect(m_pContact,&Person::phoneNumbersAboutToChange,[this](){ slotContactMethodsAboutToChange(); });
 }
 
-ContactTreeNode::ContactTreeNode(ContactMethod* cm, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::NUMBER),
+ContactTreeNode::ContactTreeNode(ContactMethod* cm, CategorizedContactModel* parent) :
    m_pContactMethod(cm),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CONTACTMETHOD),m_pParent(nullptr),m_pModel(parent),
    m_Visible(true),m_VisibleCounter(0)
 {
    m_lConections << QObject::connect(m_pContactMethod,&ContactMethod::changed,[this](){ slotChanged(); });
 }
 
-ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* parent) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CONTACT),
+ContactTreeNode::ContactTreeNode(const QString& name, CategorizedContactModel* parent) :
    m_pContactMethod(nullptr),m_Index(-1),m_pContact(nullptr),m_Type(ContactTreeNode::NodeType::CATEGORY),m_Name(name),m_pParent(nullptr),
    m_pModel(parent),m_Visible(false),m_VisibleCounter(0)
 {
@@ -157,11 +156,6 @@ ContactTreeNode::~ContactTreeNode()
 QModelIndex CategorizedContactModelPrivate::getIndex(int row, int column, ContactTreeNode* parent)
 {
    return q_ptr->createIndex(row,column,parent);
-}
-
-QObject* ContactTreeNode::getSelf() const
-{
-   return (QObject*)m_pContact;
 }
 
 void ContactTreeNode::slotChanged()
@@ -366,7 +360,7 @@ bool CategorizedContactModel::setData( const QModelIndex& index, const QVariant 
    if (index.isValid() && index.parent().isValid()) {
       ContactTreeNode* modelItem = (ContactTreeNode*)index.internalPointer();
       if (modelItem && role == (int)Person::Role::DropState && modelItem->m_Type == ContactTreeNode::NodeType::PERSON) {
-         modelItem->setDropState(value.toInt());
+         //modelItem->setDropState(value.toInt());
          emit dataChanged(index, index);
          return true;
       }
@@ -392,10 +386,10 @@ QVariant CategorizedContactModel::data( const QModelIndex& index, int role) cons
       }
       break;
    case ContactTreeNode::NodeType::PERSON:{
-      const Person* c = static_cast<Person*>(modelItem->getSelf());
+      const Person* c = modelItem->m_pContact;
       switch (role) {
          case (int)Person::Role::DropState:
-            return QVariant(modelItem->dropState());
+            return QVariant(/*modelItem->dropState()*/);
          default:
             break;
       }
@@ -427,7 +421,7 @@ bool CategorizedContactModel::dropMimeData(const QMimeData *data, Qt::DropAction
          ContactTreeNode* modelItem = (ContactTreeNode*)targetIdx.internalPointer();
          switch (modelItem->m_Type) {
             case ContactTreeNode::NodeType::PERSON: {
-               const Person* ct = static_cast<Person*>(modelItem->getSelf());
+               const Person* ct = modelItem->m_pContact;
                if (ct) {
                   switch(ct->phoneNumbers().size()) {
                      case 0: //Do nothing when there is no phone numbers
@@ -528,7 +522,7 @@ QMimeData* CategorizedContactModel::mimeData(const QModelIndexList &indexes) con
          switch(modelItem->m_Type) {
             case ContactTreeNode::NodeType::PERSON: {
                //Contact
-               const Person* ct = static_cast<Person*>(modelItem->getSelf());
+               const Person* ct = modelItem->m_pContact;
                if (ct) {
                   if (ct->phoneNumbers().size() == 1) {
                      mimeData->setData(RingMimes::PHONENUMBER , ct->phoneNumbers()[0]->toHash().toUtf8());

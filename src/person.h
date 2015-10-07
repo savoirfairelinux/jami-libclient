@@ -33,7 +33,6 @@ class CollectionInterface;
 class PersonPlaceHolderPrivate;
 
 #include "typedefs.h"
-#include "categorizedcompositenode.h"
 
 ///Person: Abstract version of a contact
 class LIB_EXPORT Person : public ItemBase

@@ -250,7 +250,6 @@ bool CategorizedBookmarkModel::setData( const QModelIndex& index, const QVariant
    return false;
 }
 
-///Get bookmark model data CategorizedCompositeNode::Type and Call::Role
 QVariant CategorizedBookmarkModel::data( const QModelIndex& index, int role) const
 {
    if ((!index.isValid()))

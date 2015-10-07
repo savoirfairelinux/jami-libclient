@@ -44,7 +44,7 @@
  *                                                                           *
  ****************************************************************************/
 
-class HistoryTopLevelItem;
+struct HistoryNode;
 
 class CategorizedHistoryModelPrivate final : public QObject
 {
@@ -52,31 +52,17 @@ class CategorizedHistoryModelPrivate final : public QObject
 public:
    CategorizedHistoryModelPrivate(CategorizedHistoryModel* parent);
 
-   //Model
-   class HistoryItem final : public CategorizedCompositeNode {
-   public:
-      explicit HistoryItem(Call* call);
-      virtual ~HistoryItem();
-      virtual QObject* getSelf() const override;
-      Call* call() const;
-      int m_Index;
-      HistoryTopLevelItem* m_pParent;
-      HistoryItemNode* m_pNode;
-   private:
-      Call* m_pCall;
-   };
-
    //Helpers
-   HistoryTopLevelItem* getCategory(const Call* call);
+   HistoryNode* getCategory(const Call* call);
 
    //Attributes
    static CallMap m_sHistoryCalls;
 
    //Model categories
-   QVector<HistoryTopLevelItem*>       m_lCategoryCounter ;
-   QHash<int,HistoryTopLevelItem*>     m_hCategories      ;
-   QHash<QString,HistoryTopLevelItem*> m_hCategoryByName  ;
-   SortingCategory::ModelTuple*        m_pSortedProxy     ;
+   QVector<HistoryNode*>        m_lCategoryCounter ;
+   QHash<int,HistoryNode*>      m_hCategories      ;
+   QHash<QString,HistoryNode*>  m_hCategoryByName  ;
+   SortingCategory::ModelTuple* m_pSortedProxy     ;
    int                          m_Role             ;
    QStringList                  m_lMimes           ;
    CategorizedHistoryModel::SortedProxy m_pProxies;
@@ -90,93 +76,29 @@ public Q_SLOTS:
    void slotChanged(const QModelIndex& idx);
 };
 
-class HistoryTopLevelItem final : public CategorizedCompositeNode, public QObject
+struct HistoryNode final
 {
-   friend class CategorizedHistoryModel;
-   friend class CategorizedHistoryModelPrivate;
-public:
-   virtual QObject* getSelf() const override final;
-   virtual ~HistoryTopLevelItem();
-   int m_Index;
-   int m_AbsoluteIndex;
-   QVector<CategorizedHistoryModelPrivate::HistoryItem*> m_lChildren;
-private:
-   explicit HistoryTopLevelItem(const QString& name, int index);
-   QString m_NameStr;
-   int modelRow;
-};
+   enum class Type {
+      CAT ,
+      CALL,
+   };
 
-class HistoryItemNode final : public QObject //TODO remove this once Qt4 support is dropped, use lambdas
-{
-   Q_OBJECT
-public:
-   HistoryItemNode(CategorizedHistoryModel* m, Call* c, CategorizedHistoryModelPrivate::HistoryItem* backend);
-   Call* m_pCall;
-private:
-   CategorizedHistoryModelPrivate::HistoryItem* m_pBackend;
-   CategorizedHistoryModel* m_pModel;
-private Q_SLOTS:
-   void slotNumberChanged();
-Q_SIGNALS:
-   void changed(const QModelIndex& idx);
-};
-
-HistoryItemNode::HistoryItemNode(CategorizedHistoryModel* m, Call* c, CategorizedHistoryModelPrivate::HistoryItem* backend) :
-m_pCall(c),m_pBackend(backend),m_pModel(m){
-   connect(c,SIGNAL(changed()),this,SLOT(slotNumberChanged()));
-}
-
-void HistoryItemNode::slotNumberChanged()
-{
-   emit changed(m_pModel->index(m_pBackend->m_Index,0,m_pModel->index(m_pBackend->m_pParent->m_AbsoluteIndex,0)));
-}
-
-CategorizedHistoryModel* CategorizedHistoryModel::m_spInstance    = nullptr;
-CallMap       CategorizedHistoryModelPrivate::m_sHistoryCalls          ;
-
-HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) :
-   CategorizedCompositeNode(CategorizedCompositeNode::Type::TOP_LEVEL),QObject(nullptr),m_Index(index),m_NameStr(name),
-   m_AbsoluteIndex(-1),modelRow(-1)
-{}
-
-HistoryTopLevelItem::~HistoryTopLevelItem() {
-   const int idx = CategorizedHistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.indexOf(this);
-   if (idx != -1)
-      CategorizedHistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.remove(idx);
-   while(m_lChildren.size()) {
-      CategorizedHistoryModelPrivate::HistoryItem* item = m_lChildren[0];
-      m_lChildren.remove(0);
-      delete item;
+   ~HistoryNode() {
+      foreach (HistoryNode* n, m_lChildren)
+         delete n;
    }
-}
 
-QObject* HistoryTopLevelItem::getSelf() const
-{
-   return const_cast<HistoryTopLevelItem*>(this);
-}
+   //Attributes
+   HistoryNode* m_pParent {  nullptr  };
+   int          m_Index   {    -1     };
+   Call*        m_pCall   {  nullptr  };
+   Type         m_Type    { Type::CAT };
+   QString      m_Name                ;
+   QVector<HistoryNode*> m_lChildren  ;
+};
 
-CategorizedHistoryModelPrivate::HistoryItem::HistoryItem(Call* call) : CategorizedCompositeNode(CategorizedCompositeNode::Type::CALL),m_pCall(call),
-m_Index(0),m_pParent(nullptr),m_pNode(nullptr)
-{
-
-}
-
-CategorizedHistoryModelPrivate::HistoryItem::~HistoryItem()
-{
-   delete m_pNode;
-}
-
-
-QObject* CategorizedHistoryModelPrivate::HistoryItem::getSelf() const
-{
-   return const_cast<Call*>(m_pCall);
-}
-
-Call* CategorizedHistoryModelPrivate::HistoryItem::call() const
-{
-   return m_pCall;
-}
-
+CategorizedHistoryModel* CategorizedHistoryModel::m_spInstance = nullptr;
+CallMap CategorizedHistoryModelPrivate::m_sHistoryCalls;
 
 /*****************************************************************************
  *                                                                           *
@@ -200,11 +122,9 @@ d_ptr(new CategorizedHistoryModelPrivate(this))
 ///Destructor
 CategorizedHistoryModel::~CategorizedHistoryModel()
 {
-   for (int i=0; i<d_ptr->m_lCategoryCounter.size();i++) {
-      delete d_ptr->m_lCategoryCounter[i];
-   }
+
    while(d_ptr->m_lCategoryCounter.size()) {
-      HistoryTopLevelItem* item = d_ptr->m_lCategoryCounter[0];
+      HistoryNode* item = d_ptr->m_lCategoryCounter[0];
       d_ptr->m_lCategoryCounter.remove(0);
 
       delete item;
@@ -261,9 +181,9 @@ CategorizedHistoryModel* CategorizedHistoryModel::instance()
  *                                                                           *
  ****************************************************************************/
 ///Get the top level item based on a call
-HistoryTopLevelItem* CategorizedHistoryModelPrivate::getCategory(const Call* call)
+HistoryNode* CategorizedHistoryModelPrivate::getCategory(const Call* call)
 {
-   HistoryTopLevelItem* category = nullptr;
+   HistoryNode* category = nullptr;
    static QString name;
    int index = -1;
    if (m_Role == static_cast<int>(Call::Role::FuzzyDate)) {
@@ -277,11 +197,13 @@ HistoryTopLevelItem* CategorizedHistoryModelPrivate::getCategory(const Call* cal
       category = m_hCategoryByName[name];
    }
    if (!category) {
-      category = new HistoryTopLevelItem(name,index);
-      category->modelRow = m_lCategoryCounter.size();
+      category = new HistoryNode();
+      category->m_Name = name;
+      category->m_Index = m_lCategoryCounter.size();
+//       category->modelRow = m_lCategoryCounter.size();
       //emit layoutAboutToBeChanged(); //Not necessary
       CategorizedHistoryModel::instance()->beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
-      category->m_AbsoluteIndex = m_lCategoryCounter.size();
+//       category->m_AbsoluteIndex = m_lCategoryCounter.size();
       m_lCategoryCounter << category;
       m_hCategories    [index] = category;
       m_hCategoryByName[name ] = category;
@@ -305,14 +227,24 @@ void CategorizedHistoryModelPrivate::add(Call* call)
    }
 
    emit q_ptr->newHistoryCall(call);
-   HistoryTopLevelItem* tl = getCategory(call);
-   const QModelIndex& parentIdx = q_ptr->index(tl->modelRow,0);
+
+   HistoryNode* tl = getCategory(call);
+
+   const QModelIndex& parentIdx = q_ptr->index(tl->m_Index, 0);
 
    q_ptr->beginInsertRows(parentIdx,tl->m_lChildren.size(),tl->m_lChildren.size());
-   CategorizedHistoryModelPrivate::HistoryItem* item = new CategorizedHistoryModelPrivate::HistoryItem(call);
+
+   HistoryNode* item = new HistoryNode();
+
+   item->m_Type = HistoryNode::Type::CALL;
+   item->m_pCall = call;
    item->m_pParent = tl;
-   item->m_pNode = new HistoryItemNode(q_ptr,call,item);
-   connect(item->m_pNode,SIGNAL(changed(QModelIndex)),this,SLOT(slotChanged(QModelIndex)));
+
+   connect(call, &Call::changed, [this, item]() {
+      const QModelIndex idx = q_ptr->createIndex(item->m_Index, 0, item);
+      emit q_ptr->dataChanged(idx, idx);
+   });
+
    const int size = tl->m_lChildren.size();
    item->m_Index = size;
    tl->m_lChildren << item;
@@ -371,21 +303,27 @@ void CategorizedHistoryModelPrivate::reloadCategories()
    m_hCategories.clear();
    m_hCategoryByName.clear();
    q_ptr->beginRemoveRows(QModelIndex(),0,m_lCategoryCounter.size()-1);
-   foreach(HistoryTopLevelItem* item, m_lCategoryCounter) {
+   foreach(HistoryNode* item, m_lCategoryCounter) {
       delete item;
    }
    q_ptr->endRemoveRows();
    m_lCategoryCounter.clear();
 
    foreach(Call* call, m_sHistoryCalls) {
-      HistoryTopLevelItem* category = getCategory(call);
+      HistoryNode* category = getCategory(call);
       if (category) {
-         HistoryItem* item = new HistoryItem(call);
+         HistoryNode* item = new HistoryNode();
+         item->m_Type = HistoryNode::Type::CALL;
+         item->m_pCall = call;
          item->m_Index = category->m_lChildren.size();
-         item->m_pNode = new HistoryItemNode(q_ptr,call,item);
-         connect(item->m_pNode,SIGNAL(changed(QModelIndex)),this,SLOT(slotChanged(QModelIndex)));
+
+         connect(call, &Call::changed, [this, item]() {
+            const QModelIndex idx = q_ptr->createIndex(item->m_Index, 0, item);
+            emit q_ptr->dataChanged(idx, idx);
+         });
+
          item->m_pParent = category;
-         q_ptr->beginInsertRows(q_ptr->index(category->modelRow,0), item->m_Index, item->m_Index); {
+         q_ptr->beginInsertRows(q_ptr->index(category->m_Index,0), item->m_Index, item->m_Index); {
             category->m_lChildren << item;
          } q_ptr->endInsertRows();
       }
@@ -405,9 +343,9 @@ void CategorizedHistoryModelPrivate::slotChanged(const QModelIndex& idx)
 bool CategorizedHistoryModel::setData( const QModelIndex& idx, const QVariant &value, int role)
 {
    if (idx.isValid() && idx.parent().isValid()) {
-      CategorizedCompositeNode* modelItem = (CategorizedCompositeNode*)idx.internalPointer();
+      HistoryNode* modelItem = (HistoryNode*)idx.internalPointer();
       if (role == static_cast<int>(Call::Role::DropState)) {
-         modelItem->setDropState(value.toInt());
+         //modelItem->setDropState(value.toInt());
          emit dataChanged(idx, idx);
       }
    }
@@ -419,43 +357,22 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
    if (!idx.isValid())
       return QVariant();
 
-   CategorizedCompositeNode* modelItem = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
-   switch (modelItem->type()) {
-      case CategorizedCompositeNode::Type::TOP_LEVEL:
-      switch (role) {
-         case Qt::DisplayRole:
-            return static_cast<HistoryTopLevelItem*>(modelItem)->m_NameStr;
-         case static_cast<int>(Call::Role::FuzzyDate):
-         case static_cast<int>(Call::Role::Date):
-            return d_ptr->m_lCategoryCounter.size() - static_cast<HistoryTopLevelItem*>(modelItem)->m_Index;
-         default:
-            break;
-      }
-      break;
-   case CategorizedCompositeNode::Type::CALL:
-      if (role == static_cast<int>(Call::Role::DropState))
-         return QVariant(modelItem->dropState());
-      else {
-         const int parRow = idx.parent().row();
-         const HistoryTopLevelItem* parTli = d_ptr->m_lCategoryCounter[parRow];
+   HistoryNode* modelItem = static_cast<HistoryNode*>(idx.internalPointer());
 
-         //HACK force a reload
-         #if QT_VERSION >= 0x050400
-         if (parTli->isActive() && parTli->m_lChildren.size() > idx.row() && !parTli->m_lChildren[idx.row()]->call()->isActive()) {
-            QTimer::singleShot(0,[this,idx]() {
-               emit const_cast<CategorizedHistoryModel*>(this)->dataChanged(idx,idx);
-            });
+   switch (modelItem->m_Type) {
+      case HistoryNode::Type::CAT:
+         switch (role) {
+            case Qt::DisplayRole:
+               return modelItem->m_Name;
+            case static_cast<int>(Call::Role::FuzzyDate):
+            case static_cast<int>(Call::Role::Date):
+               return d_ptr->m_lCategoryCounter.size() - modelItem->m_Index;
+            default:
+               break;
          }
-         #endif
-
-         if (d_ptr->m_lCategoryCounter.size() > parRow && parRow >= 0 && parTli && parTli->m_lChildren.size() > idx.row())
-            return parTli->m_lChildren[idx.row()]->call()->roleData((Call::Role)role);
-      }
-      break;
-   case CategorizedCompositeNode::Type::NUMBER:
-   case CategorizedCompositeNode::Type::BOOKMARK:
-   case CategorizedCompositeNode::Type::CONTACT:
-      break;
+         break;
+      case HistoryNode::Type::CALL:
+         return modelItem->m_pCall->roleData(role);
    };
    return QVariant();
 }
@@ -476,14 +393,11 @@ int CategorizedHistoryModel::rowCount( const QModelIndex& parentIdx ) const
       return d_ptr->m_lCategoryCounter.size();
    }
    else {
-      CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(parentIdx.internalPointer());
-      switch(node->type()) {
-         case CategorizedCompositeNode::Type::TOP_LEVEL:
-            return ((HistoryTopLevelItem*)node)->m_lChildren.size();
-         case CategorizedCompositeNode::Type::CALL:
-         case CategorizedCompositeNode::Type::NUMBER:
-         case CategorizedCompositeNode::Type::BOOKMARK:
-         case CategorizedCompositeNode::Type::CONTACT:
+      HistoryNode* node = static_cast<HistoryNode*>(parentIdx.internalPointer());
+      switch(node->m_Type) {
+         case HistoryNode::Type::CAT:
+            return node->m_lChildren.size();
+         case HistoryNode::Type::CALL:
             return 0;
       };
    }
@@ -495,9 +409,9 @@ Qt::ItemFlags CategorizedHistoryModel::flags( const QModelIndex& idx ) const
    if (!idx.isValid())
       return Qt::NoItemFlags;
 
-   CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
-   const bool hasParent = node->type() != CategorizedCompositeNode::Type::TOP_LEVEL;
-   const bool isEnabled = node->type() == CategorizedCompositeNode::Type::CALL && ((Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf())->isActive();
+   HistoryNode* node = static_cast<HistoryNode*>(idx.internalPointer());
+   const bool hasParent = node->m_Type != HistoryNode::Type::CAT;
+   const bool isEnabled = node->m_Type == HistoryNode::Type::CALL && node->m_pCall->isActive();
 
    return (isEnabled?Qt::ItemIsEnabled:Qt::NoItemFlags) | Qt::ItemIsSelectable | (hasParent?Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled:Qt::ItemIsEnabled);
 }
@@ -513,38 +427,34 @@ QModelIndex CategorizedHistoryModel::parent( const QModelIndex& idx) const
    if (!idx.isValid() || !idx.internalPointer()) {
       return QModelIndex();
    }
-   CategorizedCompositeNode* modelItem = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
-   if (modelItem && modelItem->type() == CategorizedCompositeNode::Type::CALL) {
-      const Call* call = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
-      //TODO this is called way to often to use getCategory, make sure getSelf return the node and cache this
-      HistoryTopLevelItem* tli = d_ptr->getCategory(call);
-      if (tli)
-         return CategorizedHistoryModel::index(tli->modelRow,0);
+
+   HistoryNode* modelItem = static_cast<HistoryNode*>(idx.internalPointer());
+
+   if (modelItem->m_Type == HistoryNode::Type::CALL) {
+      HistoryNode* tli = modelItem->m_pParent;
+
+      return createIndex(tli->m_Index, idx.column(), tli);
    }
+
    return QModelIndex();
 }
 
 QModelIndex CategorizedHistoryModel::index( int row, int column, const QModelIndex& parentIdx) const
 {
-   if (!parentIdx.isValid()) {
-      if (row >= 0 && d_ptr->m_lCategoryCounter.size() > row) {
-         return createIndex(row,column,(void*)d_ptr->m_lCategoryCounter[row]);
-      }
-   }
-   else {
-      CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(parentIdx.internalPointer());
-      switch(node->type()) {
-         case CategorizedCompositeNode::Type::TOP_LEVEL:
-            if (((HistoryTopLevelItem*)node)->m_lChildren.size() > row)
-               return createIndex(row,column,(void*)static_cast<CategorizedCompositeNode*>(((HistoryTopLevelItem*)node)->m_lChildren[row]));
-            break;
-         case CategorizedCompositeNode::Type::CALL:
-         case CategorizedCompositeNode::Type::NUMBER:
-         case CategorizedCompositeNode::Type::BOOKMARK:
-         case CategorizedCompositeNode::Type::CONTACT:
-            break;
-      };
-   }
+   if (!parentIdx.isValid() && row >= 0 && row < d_ptr->m_lCategoryCounter.size())
+      return createIndex(row,column,(void*)d_ptr->m_lCategoryCounter[row]);
+
+   HistoryNode* node = static_cast<HistoryNode*>(parentIdx.internalPointer());
+
+   switch(node->m_Type) {
+      case HistoryNode::Type::CAT:
+         if (row < node->m_lChildren.size())
+            return createIndex(row,column, node->m_lChildren[row]);
+         break;
+      case HistoryNode::Type::CALL:
+         break;
+   };
+
    return QModelIndex();
 }
 
@@ -569,13 +479,17 @@ QMimeData* CategorizedHistoryModel::mimeData(const QModelIndexList &indexes) con
    QMimeData *mimeData2 = new QMimeData();
    foreach (const QModelIndex &idx, indexes) {
       if (idx.isValid()) {
-         const QString text = data(idx, static_cast<int>(Call::Role::Number)).toString();
+         const HistoryNode* node = static_cast<HistoryNode*>(idx.internalPointer());
+         const QString      text = data(idx, static_cast<int>(Call::Role::Number)).toString();
+         const Call*        call = node->m_pCall;
+
          mimeData2->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
-         const Call* call = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
+
          mimeData2->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
-         CategorizedCompositeNode* node = static_cast<CategorizedCompositeNode*>(idx.internalPointer());
-         if (node->type() == CategorizedCompositeNode::Type::CALL)
-            mimeData2->setData(RingMimes::HISTORYID  , static_cast<Call*>(node->getSelf())->dringId().toUtf8());
+
+         if (node->m_Type == HistoryNode::Type::CALL)
+            mimeData2->setData(RingMimes::HISTORYID  , call->dringId().toUtf8());
+
          return mimeData2;
       }
    }
@@ -592,14 +506,18 @@ bool CategorizedHistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction
    QByteArray encodedPerson     = mime->data( RingMimes::CONTACT     );
 
    if (parentIdx.isValid() && mime->hasFormat( RingMimes::CALLID)) {
-      QByteArray encodedCallId      = mime->data( RingMimes::CALLID      );
-      Call* call = CallModel::instance()->fromMime(encodedCallId);
+      QByteArray encodedCallId = mime->data( RingMimes::CALLID );
+      Call*      call          = CallModel::instance()->fromMime(encodedCallId);
+
       if (call) {
          const QModelIndex& idx = index(row,column,parentIdx);
+
          if (idx.isValid()) {
-            const Call* target = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
+            const Call* target = static_cast<HistoryNode*>(idx.internalPointer())->m_pCall;
+
             if (target) {
                CallModel::instance()->transfer(call,target->peerContactMethod());
+
                return true;
             }
          }
