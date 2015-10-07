@@ -494,6 +494,8 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Call::Role::FormattedDate):
          cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
          break;
+      case static_cast<int>(Ring::Role::IndexedLastUsed):
+         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastCall->startTimeStamp())));
       case static_cast<int>(Call::Role::HasAVRecording):
          cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
          break;

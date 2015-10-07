@@ -568,6 +568,7 @@ QVariant Person::roleData(int role) const
       case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Person::Role::FormattedLastUsed):
          return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(lastUsedTime()));
+      case static_cast<int>(Ring::Role::IndexedLastUsed):
       case static_cast<int>(Person::Role::IndexedLastUsed):
          return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime())));
       case static_cast<int>(Ring::Role::Object):

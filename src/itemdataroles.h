@@ -41,6 +41,7 @@ enum class Role
     Number             ,
     LastUsed           ,
     FormattedLastUsed  ,
+    IndexedLastUsed    ,
     State              ,
     FormattedState     ,
     DropState          ,
