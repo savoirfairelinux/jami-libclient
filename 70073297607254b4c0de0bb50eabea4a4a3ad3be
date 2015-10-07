@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3aa0d159_e2ae62e7",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-07T20:21:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_e23982d9",
+      "range": {
+        "startLine": 143,
+        "startChar": 25,
+        "endLine": 143,
+        "endChar": 42
+      },
+      "revId": "70073297607254b4c0de0bb50eabea4a4a3ad3be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3aa0d159_0237cee4",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 6
@@ -36,6 +60,30 @@
       "writtenOn": "2015-10-07T14:40:59Z",
       "side": 1,
       "message": "this only inserts one profile at a time, no?",
+      "range": {
+        "startLine": 153,
+        "startChar": 22,
+        "endLine": 153,
+        "endChar": 23
+      },
+      "revId": "70073297607254b4c0de0bb50eabea4a4a3ad3be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_42aab6d5",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-07T20:21:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_0237cee4",
       "range": {
         "startLine": 153,
         "startChar": 22,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "3aa0d159_22a52a04",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-07T20:21:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_a2337af5",
+      "range": {
+        "startLine": 169,
+        "startChar": 3,
+        "endLine": 169,
+        "endChar": 79
+      },
+      "revId": "70073297607254b4c0de0bb50eabea4a4a3ad3be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3aa0d159_c23006eb",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 6
@@ -82,6 +154,30 @@
       "writtenOn": "2015-10-07T14:40:59Z",
       "side": 1,
       "message": "do we need to delete the Node after this, to prevent a small mem leak?",
+      "range": {
+        "startLine": 954,
+        "startChar": 3,
+        "endLine": 956,
+        "endChar": 19
+      },
+      "revId": "70073297607254b4c0de0bb50eabea4a4a3ad3be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_82a0bef5",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-07T20:21:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_c23006eb",
       "range": {
         "startLine": 954,
         "startChar": 3,
