@@ -22,6 +22,30 @@
       "revId": "bbf3f1eff26368e4568cc9fa9f6f3d7d0a77378f",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_8263deb0",
+        "filename": "src/qtwrapper/videomanager_wrap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-08T13:22:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_e24ae226",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 25
+      },
+      "revId": "bbf3f1eff26368e4568cc9fa9f6f3d7d0a77378f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
