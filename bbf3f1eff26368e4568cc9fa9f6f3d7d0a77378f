@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_e24ae226",
+        "filename": "src/qtwrapper/videomanager_wrap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-08T01:44:54Z",
+      "side": 1,
+      "message": "not safe to do test and acquire in non atomic way like this:\nuse tryAcquire for this purpose.",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 25
+      },
+      "revId": "bbf3f1eff26368e4568cc9fa9f6f3d7d0a77378f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
