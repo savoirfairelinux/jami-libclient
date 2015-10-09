@@ -22,12 +22,16 @@
 #include <QtCore/QObject>
 #include <typedefs.h>
 
+// Std
+#include <memory>
+#include <vector>
+#include <cstdint>
+
 //Qt
 class QMutex;
 
 //Ring
 #include "device.h"
-
 
 namespace Video {
 
@@ -73,11 +77,11 @@ public:
    virtual ~Renderer();
 
    //Getters
-   virtual bool              isRendering     () const;
-   virtual const QByteArray& currentFrame    () const;
-   virtual QSize             size            () const;
-   virtual QMutex*           mutex           () const;
-   virtual ColorSpace        colorSpace      () const = 0;
+   virtual bool       isRendering     () const;
+   virtual QByteArray currentFrame    () const = 0;
+   virtual QSize      size            () const;
+   virtual QMutex*    mutex           () const;
+   virtual ColorSpace colorSpace      () const = 0;
 
    void setSize(const QSize& size) const;
 
@@ -97,4 +101,3 @@ private:
 };
 
 }
-
