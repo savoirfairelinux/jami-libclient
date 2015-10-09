@@ -40,20 +40,38 @@ class DirectRendererPrivate : public QObject
    Q_OBJECT
 public:
    DirectRendererPrivate(Video::DirectRenderer* parent);
+   DRing::SinkTarget::FrameBufferPtr requestFrameBuffer();
+   void onNewFrame(DRing::SinkTarget::FrameBufferPtr buf);
+
+   void swapFrames() const;
+   mutable QMutex directmutex;
+   DRing::SinkTarget target;
+   mutable DRing::SinkTarget::FrameBufferPtr jojo_;
+   mutable DRing::SinkTarget::FrameBufferPtr bernard_;
+
 private:
-//    Video::DirectRenderer* q_ptr;
+    Video::DirectRenderer* q_ptr;
 };
 
 }
 
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent)/*, q_ptr(parent)*/
+Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) :
+QObject(parent),
+q_ptr(parent),
+jojo_(new DRing::FrameBuffer),
+bernard_(new DRing::FrameBuffer)
 {
+    using namespace std::placeholders;
+    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this);
+    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
 }
 
 ///Constructor
-Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res): Renderer(id, res), d_ptr(new DirectRendererPrivate(this))
+Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res):
+Renderer(id, res),
+d_ptr(new DirectRendererPrivate(this))
 {
-   setObjectName("Video::DirectRenderer:"+id);
+    setObjectName("Video::DirectRenderer:"+id);
 }
 
 ///Destructor
@@ -72,17 +90,47 @@ void Video::DirectRenderer::stopRendering ()
    emit stopped();
 }
 
-
-void Video::DirectRenderer::onNewFrame(int w, int h)
+DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuffer()
 {
-   if (!isRendering()) {
-      return;
-   }
+    QMutexLocker lock(&directmutex);
+    return std::move(jojo_);
+}
 
-   Video::Renderer::d_ptr->m_pSize.setWidth(w);
-   Video::Renderer::d_ptr->m_pSize.setHeight(h);
-   Video::Renderer::d_ptr->m_pFrame = reinterpret_cast<char*>(frameBuffer_.data());
-   emit frameUpdated();
+void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
+{
+    if (!q_ptr->isRendering()) {
+        return;
+    }
+    {
+        QMutexLocker lock(&directmutex);
+        jojo_ = std::move(buf);
+    }
+
+    emit q_ptr->frameUpdated();
+}
+
+// Called only by currentFrame
+void Video::DirectRendererPrivate::swapFrames() const
+{
+    QMutexLocker lock(&directmutex);
+    jojo_.swap(bernard_);
+}
+
+const QByteArray& Video::DirectRenderer::currentFrame() const
+{
+    d_ptr->swapFrames();
+    Video::Renderer::d_ptr->m_pFrame = reinterpret_cast<char*>(d_ptr->bernard_->data.data());
+    Video::Renderer::d_ptr->m_FrameSize = d_ptr->bernard_->data.size();
+    if (Video::Renderer::d_ptr->m_pFrame && Video::Renderer::d_ptr->m_FrameSize) {
+        Video::Renderer::d_ptr->m_Content.setRawData(Video::Renderer::d_ptr->m_pFrame,
+                                    Video::Renderer::d_ptr->m_FrameSize);
+    }
+    return Video::Renderer::d_ptr->m_Content;
+}
+
+const DRing::SinkTarget& Video::DirectRenderer::target() const
+{
+    return d_ptr->target;
 }
 
 Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const

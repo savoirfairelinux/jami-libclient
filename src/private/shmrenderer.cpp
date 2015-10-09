@@ -359,12 +359,16 @@ int ShmRenderer::fps() const
 /// Get frame data pointer from shared memory
 const QByteArray& ShmRenderer::currentFrame() const
 {
-   if (!isRendering())
-      return Renderer::currentFrame();
-
-   QMutexLocker lk {mutex()};
-   d_ptr->getNewFrame(false);
-   return Renderer::currentFrame();
+    auto prv_renderer = Video::Renderer::d_ptr;
+    if (isRendering()) {
+       {
+           QMutexLocker lk {mutex()};
+           d_ptr->getNewFrame(false);
+       }
+       if (prv_renderer->m_pFrame && prv_renderer->m_FrameSize)
+          prv_renderer->m_Content.setRawData(prv_renderer->m_pFrame, prv_renderer->m_FrameSize);
+    }
+    return prv_renderer->m_Content;
 }
 
 Video::Renderer::ColorSpace ShmRenderer::colorSpace() const
