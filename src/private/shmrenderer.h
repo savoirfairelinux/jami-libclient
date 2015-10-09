@@ -54,8 +54,8 @@ public:
 
    //Getters
    int fps() const;
-   virtual const QByteArray& currentFrame() const override;
-   virtual ColorSpace        colorSpace  () const override;
+   virtual DRing::SinkTarget::FrameBufferPtr currentFrame() const override;
+   virtual ColorSpace                        colorSpace  () const override;
 
    //Setters
    void setShmPath(const QString& path);

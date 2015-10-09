@@ -27,7 +27,7 @@ class QMutex;
 
 //Ring
 #include "device.h"
-
+#include "videomanager_interface.h"
 
 namespace Video {
 
@@ -73,11 +73,11 @@ public:
    virtual ~Renderer();
 
    //Getters
-   virtual bool              isRendering     () const;
-   virtual const QByteArray& currentFrame    () const;
-   virtual QSize             size            () const;
-   virtual QMutex*           mutex           () const;
-   virtual ColorSpace        colorSpace      () const = 0;
+   virtual bool                              isRendering     () const;
+   virtual DRing::SinkTarget::FrameBufferPtr currentFrame    () const = 0;
+   virtual QSize                             size            () const;
+   virtual QMutex*                           mutex           () const;
+   virtual ColorSpace                        colorSpace      () const = 0;
 
    void setSize(const QSize& size) const;
 
@@ -97,4 +97,3 @@ private:
 };
 
 }
-
