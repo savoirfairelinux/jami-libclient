@@ -54,8 +54,8 @@ public:
 
    //Getters
    int fps() const;
-   virtual const QByteArray& currentFrame() const override;
-   virtual ColorSpace        colorSpace  () const override;
+   virtual Frame currentFrame() const override;
+   virtual ColorSpace colorSpace  () const override;
 
    //Setters
    void setShmPath(const QString& path);

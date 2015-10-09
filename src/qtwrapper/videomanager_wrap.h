@@ -196,20 +196,10 @@ public Q_SLOTS: // METHODS
     }
 
     void registerSinkTarget(const QString &sinkID,
-                            std::vector<unsigned char>& frameBuffer,
-                            std::function<void(int, int)>&& cb)
+                            const DRing::SinkTarget& target)
     {
 #ifdef ENABLE_VIDEO
-        DRing::registerSinkTarget(sinkID.toStdString(), frameBuffer, std::move(cb));
-#endif
-    }
-
-    void registerSinkTarget(const QString &sinkID,
-                            std::vector<unsigned char>& frameBuffer,
-                            std::function<void(int, int)>& cb)
-    {
-#ifdef ENABLE_VIDEO
-        DRing::registerSinkTarget(sinkID.toStdString(), frameBuffer, std::move(cb));
+        DRing::registerSinkTarget(sinkID.toStdString(), target);
 #endif
     }
 
@@ -222,4 +212,3 @@ Q_SIGNALS: // SIGNALS
 namespace org { namespace ring { namespace Ring {
       typedef ::VideoManagerInterface VideoManager;
 }}} // namesapce org::ring::Ring
-
