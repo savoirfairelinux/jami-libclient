@@ -2043,6 +2043,7 @@ QVariant Call::roleData(int role) const
          return QVariant::fromValue(d_ptr->m_Direction);
       case static_cast<int>(Call::Role::Date):
          return (int)startTimeStamp();
+      case static_cast<int>(Ring::Role::Length):
       case static_cast<int>(Call::Role::Length):
          return length();
       case static_cast<int>(Call::Role::FormattedDate):
