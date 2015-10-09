@@ -74,7 +74,7 @@ public:
 
    //Getters
    virtual bool              isRendering     () const;
-   virtual const QByteArray& currentFrame    () const;
+   virtual const QByteArray& currentFrame    () const = 0;
    virtual QSize             size            () const;
    virtual QMutex*           mutex           () const;
    virtual ColorSpace        colorSpace      () const = 0;
@@ -97,4 +97,3 @@ private:
 };
 
 }
-

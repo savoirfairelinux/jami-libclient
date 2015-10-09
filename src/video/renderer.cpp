@@ -66,13 +66,6 @@ QSize Video::Renderer::size() const
   return d_ptr->m_pSize;
 }
 
-const QByteArray& Video::Renderer::currentFrame() const
-{
-   if (d_ptr->m_pFrame && d_ptr->m_FrameSize)
-      d_ptr->m_Content.setRawData(d_ptr->m_pFrame,d_ptr->m_FrameSize);
-   return d_ptr->m_Content;
-}
-
 /*****************************************************************************
  *                                                                           *
  *                                 Setters                                   *
