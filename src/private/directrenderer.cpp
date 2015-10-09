@@ -33,27 +33,42 @@
 #include "video/resolution.h"
 #include "private/videorenderer_p.h"
 
+#include "videomanager_interface.h"
+
 namespace Video {
 
 class DirectRendererPrivate : public QObject
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   DirectRendererPrivate(Video::DirectRenderer* parent);
+    DirectRendererPrivate(Video::DirectRenderer* parent);
+    DRing::SinkTarget::FrameBufferPtr requestFrameBuffer(std::size_t bytes);
+    void onNewFrame(DRing::SinkTarget::FrameBufferPtr buf);
+
+    DRing::SinkTarget target;
+    mutable QMutex directmutex;
+    mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
 private:
-//    Video::DirectRenderer* q_ptr;
+    Video::DirectRenderer* q_ptr;
 };
 
-}
+} // namespace Video
 
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) : QObject(parent)/*, q_ptr(parent)*/
+Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent) :
+QObject(parent),
+q_ptr(parent)
 {
+    using namespace std::placeholders;
+    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
+    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
 }
 
 ///Constructor
-Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res): Renderer(id, res), d_ptr(new DirectRendererPrivate(this))
+Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res) :
+Renderer(id, res),
+d_ptr(new DirectRendererPrivate(this))
 {
-   setObjectName("Video::DirectRenderer:"+id);
+    setObjectName("Video::DirectRenderer:"+id);
 }
 
 ///Destructor
@@ -72,17 +87,46 @@ void Video::DirectRenderer::stopRendering ()
    emit stopped();
 }
 
-
-void Video::DirectRenderer::onNewFrame(int w, int h)
+DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
 {
-   if (!isRendering()) {
-      return;
-   }
+    QMutexLocker lk(q_ptr->mutex());
+    if (not daemonFramePtr_)
+        daemonFramePtr_.reset(new DRing::FrameBuffer);
+    daemonFramePtr_->storage.resize(bytes);
+    daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
+    daemonFramePtr_->ptrSize = bytes;
+    return std::move(daemonFramePtr_);
+}
 
-   Video::Renderer::d_ptr->m_pSize.setWidth(w);
-   Video::Renderer::d_ptr->m_pSize.setHeight(h);
-   Video::Renderer::d_ptr->m_pFrame = reinterpret_cast<char*>(frameBuffer_.data());
-   emit frameUpdated();
+void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
+{
+    if (not q_ptr->isRendering())
+        return;
+
+    {
+        QMutexLocker lk(q_ptr->mutex());
+        daemonFramePtr_ = std::move(buf);
+    }
+
+    emit q_ptr->frameUpdated();
+}
+
+Video::Frame Video::DirectRenderer::currentFrame() const
+{
+    if (not isRendering())
+        return {};
+
+    QMutexLocker lock(mutex());
+    RendererFrame frame;
+    frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
+    frame.ptr = frame.storage.data();
+    frame.size = frame.storage.size();
+    return std::move(frame);
+}
+
+const DRing::SinkTarget& Video::DirectRenderer::target() const
+{
+    return d_ptr->target;
 }
 
 Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const

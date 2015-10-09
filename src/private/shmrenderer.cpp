@@ -1,7 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
- *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -41,6 +41,7 @@
 #include "private/videorenderermanager.h"
 #include "video/resolution.h"
 #include "private/videorenderer_p.h"
+#include "videomanager_interface.h"
 
 // Uncomment following line to output in console the FPS value
 //#define DEBUG_FPS
@@ -64,7 +65,7 @@ struct SHMHeader {
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-pedantic"
-   char data[];           /*!< the whole shared memory                                       */
+   uint8_t data[]     ; /*!< the whole shared memory                                      */
 #pragma GCC diagnostic pop
 };
 
@@ -176,9 +177,13 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
       return false;
    }
 
-   q_ptr->Video::Renderer::d_ptr->m_pFrame    = (char*)(m_pShmArea->data + m_pShmArea->readOffset);
-   m_FrameGen                                 = m_pShmArea->frameGen;
-   q_ptr->Video::Renderer::d_ptr->m_FrameSize = m_pShmArea->frameSize;
+   auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
+   if (not frame_ptr)
+       frame_ptr.reset(new Frame);
+   frame_ptr->storage.clear();
+   frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
+   frame_ptr->size = m_pShmArea->frameSize;
+   m_FrameGen = m_pShmArea->frameGen;
 
    shmUnlock();
 
@@ -357,14 +362,14 @@ int ShmRenderer::fps() const
 }
 
 /// Get frame data pointer from shared memory
-const QByteArray& ShmRenderer::currentFrame() const
+Frame ShmRenderer::currentFrame() const
 {
-   if (!isRendering())
-      return Renderer::currentFrame();
+    if (not isRendering())
+        return {};
 
-   QMutexLocker lk {mutex()};
-   d_ptr->getNewFrame(false);
-   return Renderer::currentFrame();
+    QMutexLocker lk {mutex()};
+    d_ptr->getNewFrame(false);
+    return std::move(*Video::Renderer::d_ptr->m_pFrame);
 }
 
 Video::Renderer::ColorSpace ShmRenderer::colorSpace() const

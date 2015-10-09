@@ -22,12 +22,16 @@
 #include <QtCore/QObject>
 #include <typedefs.h>
 
+// Std
+#include <memory>
+#include <vector>
+#include <cstdint>
+
 //Qt
 class QMutex;
 
 //Ring
 #include "device.h"
-
 
 namespace Video {
 
@@ -36,6 +40,19 @@ class ShmRendererPrivate;
 class ShmRenderer;
 class DirectRendererPrivate;
 class DirectRenderer;
+
+/**
+ * This class is used by Renderer class to expose video data frame
+ * that could be owned by instances of this class or shared.
+ * If an instance carries data, "storage.size()" is greater than 0
+ * and equals to "size", "ptr" is equals to "storage.data()".
+ * If shared data is carried, only "ptr" and "size" are set.
+ */
+struct Frame {
+    uint8_t* ptr;
+    std::size_t size;
+    std::vector<uint8_t> storage;
+};
 
 /**
  * This class provide a rendering object to be used by clients
@@ -73,11 +90,11 @@ public:
    virtual ~Renderer();
 
    //Getters
-   virtual bool              isRendering     () const;
-   virtual const QByteArray& currentFrame    () const;
-   virtual QSize             size            () const;
-   virtual QMutex*           mutex           () const;
-   virtual ColorSpace        colorSpace      () const = 0;
+   virtual bool       isRendering     () const;
+   virtual Frame currentFrame    () const = 0;
+   virtual QSize      size            () const;
+   virtual QMutex*    mutex           () const;
+   virtual ColorSpace colorSpace      () const = 0;
 
    void setSize(const QSize& size) const;
 
@@ -97,4 +114,3 @@ private:
 };
 
 }
-
