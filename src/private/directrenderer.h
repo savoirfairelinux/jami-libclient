@@ -30,7 +30,6 @@ class QThread;
 //Ring
 #include "video/device.h"
 
-
 namespace Video {
 class DirectRendererPrivate;
 
@@ -48,11 +47,10 @@ public:
    virtual ~DirectRenderer();
 
    //Getter
+   const DRing::SinkTarget& target() const;
    virtual ColorSpace colorSpace() const override;
+   virtual QByteArray currentFrame() const override;
 
-   void onNewFrame(int w, int h);
-
-   std::vector<unsigned char> frameBuffer_;
 
 public Q_SLOTS:
    virtual void startRendering() override;
@@ -64,4 +62,3 @@ private:
 };
 
 }
-
