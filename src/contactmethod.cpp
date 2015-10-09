@@ -487,6 +487,7 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Call::Role::Date):
          cat = cat = !lastCall ? QVariant() : QDateTime::fromTime_t(lastCall->startTimeStamp());
          break;
+      case static_cast<int>(Ring::Role::Length):
       case static_cast<int>(Call::Role::Length):
          cat = cat = !lastCall ? QVariant() : lastCall->length();
          break;
