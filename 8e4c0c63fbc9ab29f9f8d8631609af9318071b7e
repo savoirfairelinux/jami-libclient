@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_85044816",
+        "filename": "src/private/directrenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-09T19:28:04Z",
+      "side": 1,
+      "message": "please use LRC coding guidelines here, m_ for normal objects, m_p for pointers, etc. Those are defined in the coding guidelines document. While this file has always been a grey area as it is both daemon and LRC code, some consistency doesn\u0027t hurt",
+      "revId": "8e4c0c63fbc9ab29f9f8d8631609af9318071b7e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
