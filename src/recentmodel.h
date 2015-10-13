@@ -26,6 +26,8 @@
 class QSortFilterProxyModel;
 class RecentModelPrivate;
 class Call;
+class Person;
+class ContactMethod;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
@@ -49,8 +51,9 @@ public:
    //Singleton
    static RecentModel* instance();
 
-   //Call related
    QModelIndex getIndex(Call *call);
+   QModelIndex getIndex(Person *p);
+   QModelIndex getIndex(ContactMethod *cm);
    bool hasActiveCall(const QModelIndex& parent);
    Call* getActiveCall(const QModelIndex& parent);
 
