@@ -121,6 +121,7 @@ public Q_SLOTS:
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
+   void slotCallChanged        (                                         );
    void slotUpdate             (                                         );
 };
 
@@ -613,6 +614,7 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_uContent.m_pCall = call;
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
+   connect(call, &Call::changed, this, &RecentModelPrivate::slotCallChanged);
 
    q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
    n->m_lChildren.append(callNode);
@@ -633,6 +635,19 @@ void RecentModelPrivate::slotUpdate()
       qDebug() << "trying to empty bucket call:" << call;
       slotCallAdded(call, nullptr);
    }
+}
+
+void
+RecentModelPrivate::slotCallChanged()
+{
+    if (auto call = dynamic_cast<Call*>(sender())) {
+        auto idx = q_ptr->getIndex(call);
+        if (idx.isValid()) {
+            // emit data changed on the parent as well, so that the proxy model is updated
+            emit q_ptr->dataChanged(idx.parent(), idx.parent());
+            emit q_ptr->dataChanged(idx, idx);
+        }
+    }
 }
 
 ///Filter out every data relevant to a person
