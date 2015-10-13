@@ -161,9 +161,8 @@ private:
 #define DECLARE_ENUM_FLAGS(T)\
 DO_PRAGMA(GCC diagnostic push)\
 DO_PRAGMA(GCC diagnostic ignored "-Wunused-function")\
-static FlagPack<T> operator|(const T& first, const T& second) { \
+__attribute__ ((unused)) static FlagPack<T> operator|(const T& first, const T& second) { \
    FlagPack<T> p (first); \
    return p | second; \
 } \
 DO_PRAGMA(GCC diagnostic pop)
-
