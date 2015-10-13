@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_d019ac7a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-13T21:57:54Z",
+      "side": 1,
+      "message": "connect(p, \u0026Person::changed, this, \u0026RecentModelPrivate::slotNodeChanged);\n\nis favorable, because it should be a little faster by omiting the lambda stack frame",
+      "revId": "ccf68781c50df8b3cd1c5d4c9035d5a41c5b0414",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_702698bc",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-13T21:57:54Z",
+      "side": 1,
+      "message": "Same",
+      "revId": "ccf68781c50df8b3cd1c5d4c9035d5a41c5b0414",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
