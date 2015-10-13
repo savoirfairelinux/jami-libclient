@@ -123,7 +123,7 @@ public Q_SLOTS:
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
-   void slotCallChanged        (                                         );
+   void slotChanged            (                                         );
    void slotUpdate             (                                         );
 };
 
@@ -239,6 +239,36 @@ RecentModel::getIndex(Call *call)
         return {};
 
     return index((*it)->m_Index, 0, index(parent->m_Index, 0));
+}
+
+/**
+ * Tries to find the given Person in the RecentModel and return
+ * the corresponding index
+ */
+QModelIndex
+RecentModel::getIndex(Person *p)
+{
+    if (d_ptr->m_hPersonsToNodes.contains(p)) {
+        if (auto node = d_ptr->m_hPersonsToNodes.value(p))
+            return index(node->m_Index, 0);
+    }
+
+    return {};
+}
+
+/**
+ * Tries to find the given CM in the RecentModel and return
+ * the corresponding index
+ */
+QModelIndex
+RecentModel::getIndex(ContactMethod *cm)
+{
+    if (d_ptr->m_hCMsToNodes.contains(cm)) {
+        if (auto node = d_ptr->m_hCMsToNodes.value(cm))
+            return index(node->m_Index, 0);
+    }
+
+    return {};
 }
 
 
@@ -499,6 +529,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
       n->m_pParent            = nullptr                     ;
       n->m_Index              = 0                           ;
       m_hPersonsToNodes[p]    = n                           ;
+      connect(p, &Person::changed, this, &RecentModelPrivate::slotChanged);
       Q_FOREACH(auto cm, p->phoneNumbers()) {
          if (auto cmNode = m_hCMsToNodes[cm])
             n->m_lChildren.append(cmNode->m_lChildren);
@@ -524,6 +555,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
          n->m_pParent                   = nullptr                             ;
          n->m_Index                     = 0                                   ;
          m_hCMsToNodes[cm]              = n                                   ;
+         connect(cm, &ContactMethod::changed, this, &RecentModelPrivate::slotChanged);
       }
       insertNode(n, t, isNew);
       slotUpdate();
@@ -602,7 +634,7 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_uContent.m_pCall = call;
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
-   connect(call, &Call::changed, this, &RecentModelPrivate::slotCallChanged);
+   connect(call, &Call::changed, this, &RecentModelPrivate::slotChanged);
 
    q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
    n->m_lChildren.append(callNode);
@@ -645,16 +677,20 @@ RecentModelPrivate::parentNode(Call *call) const
 }
 
 void
-RecentModelPrivate::slotCallChanged()
+RecentModelPrivate::slotChanged()
 {
+    QModelIndex idx;
     if (auto call = dynamic_cast<Call*>(sender())) {
-        auto idx = q_ptr->getIndex(call);
-        if (idx.isValid()) {
-            // emit data changed on the parent as well, so that the proxy model is updated
-            emit q_ptr->dataChanged(idx.parent(), idx.parent());
-            emit q_ptr->dataChanged(idx, idx);
-        }
+        idx = q_ptr->getIndex(call);
+    } else if (auto person = dynamic_cast<Person*>(sender())) {
+        idx = q_ptr->getIndex(person);
+    } else if (auto cm = dynamic_cast<ContactMethod*>(sender())) {
+        idx = q_ptr->getIndex(cm);
     }
+    if (idx.parent().isValid())
+        emit q_ptr->dataChanged(idx.parent(), idx.parent());
+    if (idx.isValid())
+        emit q_ptr->dataChanged(idx, idx);
 }
 
 ///Filter out every data relevant to a person
