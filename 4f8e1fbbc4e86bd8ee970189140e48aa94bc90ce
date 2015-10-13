@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_50259ca9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-13T21:59:23Z",
+      "side": 1,
+      "message": "the lambda isn\u0027t necessary, see the other Gerrit patchset for details",
+      "revId": "4f8e1fbbc4e86bd8ee970189140e48aa94bc90ce",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
