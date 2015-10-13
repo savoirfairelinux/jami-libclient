@@ -2,6 +2,7 @@
  *   Copyright (C) 2015 by Savoir-faire Linux                                       *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>         *
  *            Alexandre Lision <alexandre.lision@savoirfairelinux.com>              *
+ *            Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>        *
  *                                                                                  *
  *   This library is free software; you can redistribute it and/or                  *
  *   modify it under the terms of the GNU Lesser General Public                     *
@@ -440,6 +441,8 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
    m_lTopLevelReverted.removeOne(n);
 
+   delete n;
+
    if (idx < m_lTopLevelReverted.size()) {
       for (int i = 0; i <= idx; i++) {
          m_lTopLevelReverted[i]->m_Index--;
@@ -505,6 +508,8 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
 
    if (n)
       removeNode(n);
+
+   m_hCMsToNodes[cm] = nullptr;
 }
 
 void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
@@ -536,6 +541,7 @@ void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousSt
 
       q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
       n->m_lChildren.removeAt((*it)->m_Index);
+      delete *it;
       q_ptr->endRemoveRows();
 
       if (n->m_lChildren.size() == 1) {
