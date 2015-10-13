@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_7074589c",
+        "filename": "src/video/renderer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-13T22:18:33Z",
+      "side": 1,
+      "message": "Can this be moved inside of Renderer?\n\nBy LRC coding standards, that should be Renderer::Frame instead of RendererFrame. This doesn\u0027t change much, but this avoid replicating the first part of the names in helper classes like this. The class is also definitely a logic child class of Renderer and make no sense outside of its context\n\nAlso, why is it required, what does it bring the QByteArray class doesn\u0027t?",
+      "revId": "456cfe4294e5c907bb5943494ea4c0c75ea79ed3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
