@@ -76,6 +76,8 @@ struct RecentViewNode
       //ImConversationIterator;
    } m_uContent;
 
+   QMetaObject::Connection m_ChangedConn;
+
    //Helpers
    inline time_t lastUsed() const;
 };
@@ -122,6 +124,7 @@ public Q_SLOTS:
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
+   void slotNodeChanged        (RecentViewNode* n                        );
    void slotUpdate             (                                         );
 };
 
@@ -182,6 +185,8 @@ RecentViewNode::RecentViewNode()
 
 RecentViewNode::~RecentViewNode()
 {
+   QObject::disconnect(m_ChangedConn);
+
    for (RecentViewNode* n : m_lChildren) {
       delete n;
    }
@@ -580,6 +585,7 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
    callNode->m_uContent.m_pCall = call;
    callNode->m_pParent = n;
    callNode->m_Index = n->m_lChildren.size();
+   callNode->m_ChangedConn = connect(call, &Call::changed, [this, callNode]{ slotNodeChanged(callNode); });
 
    q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
    n->m_lChildren.append(callNode);
@@ -600,6 +606,23 @@ void RecentModelPrivate::slotUpdate()
       qDebug() << "trying to empty bucket call:" << call;
       slotCallAdded(call, nullptr);
    }
+}
+
+void
+RecentModelPrivate::slotNodeChanged(RecentViewNode *n)
+{
+    //TODO: support nodes more than 2 levels deep
+    QModelIndex idx;
+    if (!n->m_pParent) {
+        idx = q_ptr->index(n->m_Index, 0);
+    } else {
+        auto parent =  q_ptr->index(n->m_pParent->m_Index, 0);
+        idx = q_ptr->index(n->m_Index, 0, parent);
+
+        // we want to update the parent as well, for the peopleProxy use case
+        emit q_ptr->dataChanged(parent, parent);
+    }
+    emit q_ptr->dataChanged(idx, idx);
 }
 
 ///Filter out every data relevant to a person
