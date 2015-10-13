@@ -71,7 +71,7 @@ T* Call::addOutgoingMedia(bool useExisting)
    return static_cast<T*>(MediaTypeInference::safeMediaCreator(this,t,Media::Media::Direction::OUT));
 }
 
-#define REGISTER_MEDIA() static auto forceType = [] {\
+#define REGISTER_MEDIA() __attribute__ ((unused)) static auto forceType = [] {\
   QHash<int,::Media::Media::Type>& sTypeMap = MediaTypeInference::typeMap(0);\
   sTypeMap[MediaTypeInference::getId<Media::Audio>()] = ::Media::Media::Type::AUDIO;\
   sTypeMap[MediaTypeInference::getId<Media::Video>()] = ::Media::Media::Type::VIDEO;\
