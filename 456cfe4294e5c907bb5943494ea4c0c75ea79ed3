@@ -16,6 +16,24 @@
       "revId": "456cfe4294e5c907bb5943494ea4c0c75ea79ed3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_f0f868c6",
+        "filename": "src/video/renderer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-14T01:23:04Z",
+      "side": 1,
+      "message": "Moving into Renderer::Frame is an idea, I will think about that tomorrow (too late right now ;-)).\n\nAbout why moved from QByteArray (the long explanation): the problem is how Renderer\u0027s work (data handling difference between direct and shm Renderer\u0027s) and how LRC and deamon communicate.\nThis patch introduces a \"Downfall\" concept (named from my own, from a 1970\u0027s french game named \"Dix de chute\", yes! check here: http://lescopainsd-abord.over-blog.com/article-le-jeu-dix-de-chute-par-didile-81914822.html ).\n\nSo, the idea is the frame data (the real memory place where the picture reside) is never owned by the same place. As in Downfall, it\u0027s like a token given atomically from one layer to another layer (like gears in the game).\nThis concept protects against invalid memory storage seen in  multi-threaded layers, specially seen in the use case of conferencing and direct-rendering on Windows, where 4 threads pass frames between them!\nNow: we need a unique object/class that can be understood both by LRC and daemon. This object need to carries sometime a storage (std::vector in case of direct-rendering), sometime only a ptr without embeeded owner-ship (as in shm).\nSo no Qt classes can do that as Qt is not used by daemon.\nI\u0027ve choosen a structure containing both storage and raw ptr, and using \"moveable\" C++11 concept to implements my Downfall game.\n\nYes I tried ton of implementations to keep QByteArray but none of them work due to rules as explained before.",
+      "parentUuid": "3aa0d159_7074589c",
+      "revId": "456cfe4294e5c907bb5943494ea4c0c75ea79ed3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
