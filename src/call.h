@@ -147,7 +147,7 @@ public:
       NEW             = 0, /*!< The call has been created, but no dialing number been set                         */
       INCOMING        = 1, /*!< Ringing incoming call                                                             */
       RINGING         = 2, /*!< Ringing outgoing call                                                             */
-      CURRENT         = 3, /*!< Call to which the user can speak and hear                                         */
+      CURRENT         = 3, /*!< Call in which the user can speak and hear                                         */
       DIALING         = 4, /*!< Call which numbers are being added by the user                                    */
       HOLD            = 5, /*!< Call is on hold by this side of the communication, @see Call::HoldFlags           */
       FAILURE         = 6, /*!< Call has failed                                                                   */

@@ -290,6 +290,11 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
    Call* c = CallModel::instance()->getCall(id);
 
    if (c) {
+      if (c->state() == Call::State::CONFERENCE
+              || c->state() == Call::State::HOLD
+              || c->state() == Call::State::CURRENT) {
+          return;
+      }
       c->d_ptr->removeRenderer(r);
    }
 
