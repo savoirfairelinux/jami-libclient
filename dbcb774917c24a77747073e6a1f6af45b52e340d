@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_4bd651c7",
+        "filename": "src/categorizedcontactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-15T18:02:50Z",
+      "side": 1,
+      "message": "Should it be kept? Or removed? commenting does not seem right",
+      "range": {
+        "startLine": 363,
+        "startChar": 9,
+        "endLine": 363,
+        "endChar": 50
+      },
+      "revId": "dbcb774917c24a77747073e6a1f6af45b52e340d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_ebdabde8",
+        "filename": "src/categorizedcontactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-15T18:02:50Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 392,
+        "startChar": 28,
+        "endLine": 392,
+        "endChar": 54
+      },
+      "revId": "dbcb774917c24a77747073e6a1f6af45b52e340d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
