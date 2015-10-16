@@ -47,9 +47,6 @@ private:
    explicit PreviewManager();
    virtual ~PreviewManager();
 
-   //Static attributes
-   static PreviewManager* m_spInstance;
-
 public Q_SLOTS:
    void stopPreview ();
    void startPreview();

@@ -20,15 +20,10 @@
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
 
-Video::PreviewManager* Video::PreviewManager::m_spInstance = nullptr;
-
-
 Video::PreviewManager* Video::PreviewManager::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new PreviewManager();
-
-   return m_spInstance;
+   static auto instance = new PreviewManager();
+   return instance;
 }
 
 //Getters

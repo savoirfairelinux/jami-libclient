@@ -1,6 +1,7 @@
 /******************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                            *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>   *
+ *   Author: Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>    *
+ *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>         *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -49,7 +50,7 @@ public:
 
    //Getters
    bool             isPreviewing   () const;
-   Video::Renderer* previewRenderer()      ;
+   Video::Renderer* previewRenderer() const;
    int              size           () const;
 
    //Helpers
@@ -59,14 +60,13 @@ public:
 
 private:
    //Constructor
-   explicit VideoRendererManager();
+   VideoRendererManager();
    virtual ~VideoRendererManager();
+
+   Video::Renderer* makePreviewRenderer() const;
 
    QScopedPointer<VideoRendererManagerPrivate> d_ptr;
    Q_DECLARE_PRIVATE(VideoRendererManager)
-
-   //Static attributes
-   static VideoRendererManager* m_spInstance;
 
 public Q_SLOTS:
    void stopPreview ();
