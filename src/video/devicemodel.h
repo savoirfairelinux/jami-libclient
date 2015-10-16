@@ -60,7 +60,6 @@ public:
 
 private:
    const QScopedPointer<DeviceModelPrivate> d_ptr;
-   static DeviceModel* m_spInstance;
 
 public Q_SLOTS:
    void setActive(const QModelIndex& idx);

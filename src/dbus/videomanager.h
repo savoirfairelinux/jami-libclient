@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2014 by Savoir-Faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -26,21 +27,9 @@
 
 #include <typedefs.h>
 
-namespace DBus {
+namespace VideoManager {
 
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT VideoManager
-   {
-
-   private:
-      static VideoManagerInterface* interface;
-
-   public:
-      static VideoManagerInterface& instance();
-
-   };
+VideoManagerInterface& LIB_EXPORT instance() noexcept;
 
 }
 

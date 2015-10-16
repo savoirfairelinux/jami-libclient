@@ -29,8 +29,6 @@
 #include "../dbus/videomanager.h"
 #include "../private/videorenderermanager.h"
 
-Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
-
 namespace Video {
 class DeviceModelPrivate : public QObject
 {
@@ -63,17 +61,15 @@ void Video::DeviceModelPrivate::idleReload()
 Video::DeviceModel::DeviceModel() : QAbstractListModel(QCoreApplication::instance()),
 d_ptr(new Video::DeviceModelPrivate())
 {
-   m_spInstance = this;
    reload();
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()));
 }
 
 Video::DeviceModel* Video::DeviceModel::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new Video::DeviceModel();
-   return m_spInstance;
+    static auto instance = new Video::DeviceModel;
+    return instance;
 }
 
 QHash<int,QByteArray> Video::DeviceModel::roleNames() const
@@ -134,14 +130,14 @@ Video::DeviceModel::~DeviceModel()
 void Video::DeviceModel::setActive(const QModelIndex& idx)
 {
    if (idx.isValid() && d_ptr->m_lDevices.size() > idx.row()) {
-      VideoManagerInterface& interface = DBus::VideoManager::instance();
+      VideoManagerInterface& interface = VideoManager::instance();
       interface.setDefaultDevice(d_ptr->m_lDevices[idx.row()]->id());
       d_ptr->m_pActiveDevice = d_ptr->m_lDevices[idx.row()];
       emit changed();
       emit currentIndexChanged(idx.row());
 
       //If the only renderer is the preview, reload it
-      if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
+      if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance().size() == 1) {
          Video::PreviewManager::instance()->stopPreview();
          Video::PreviewManager::instance()->startPreview();
       }
@@ -157,7 +153,7 @@ void Video::DeviceModel::setActive(const int idx)
 
 void Video::DeviceModel::setActive(const Video::Device* device)
 {
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
 
    interface.setDefaultDevice(device?device->id():Video::Device::NONE);
    d_ptr->m_pActiveDevice = const_cast<Video::Device*>(device);
@@ -169,7 +165,7 @@ void Video::DeviceModel::setActive(const Video::Device* device)
 void Video::DeviceModel::reload()
 {
    QHash<QString,Video::Device*> devicesHash;
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    const QStringList deviceList = interface.getDeviceList();
    if (deviceList.size() == d_ptr->m_hDevices.size()) {
       d_ptr->m_lDevices = d_ptr->m_hDevices.values();
@@ -208,7 +204,7 @@ void Video::DeviceModel::reload()
 Video::Device* Video::DeviceModel::activeDevice() const
 {
    if (!d_ptr->m_pActiveDevice) {
-      VideoManagerInterface& interface = DBus::VideoManager::instance();
+      VideoManagerInterface& interface = VideoManager::instance();
       const QString deId = interface.getDefaultDevice();
       if (!d_ptr->m_lDevices.size())
          const_cast<Video::DeviceModel*>(this)->reload();

@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -20,17 +21,17 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-VideoManagerInterface* DBus::VideoManager::interface = nullptr;
-
-VideoManagerInterface& DBus::VideoManager::instance()
+VideoManagerInterface& VideoManager::instance() noexcept
 {
 #ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new VideoManagerInterface();
+    static auto interface = new VideoManagerInterface();
 #else
-    if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
+    if (!dbus_metaTypeInit)
+        registerCommTypes();
+
+    static auto interface = new VideoManagerInterface("cx.ring.Ring",
+                                                      "/cx/ring/Ring/VideoManager",
+                                                      QDBusConnection::sessionBus());
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
             "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."

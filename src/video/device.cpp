@@ -45,7 +45,7 @@ Video::Device::Device(const QString &id) : QAbstractListModel(nullptr),
 d_ptr(new VideoDevicePrivate(this))
 {
    d_ptr->m_DeviceId = id;
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    MapStringMapStringVectorString cap = interface.getCapabilities(id);
    QMapIterator<QString, MapStringVectorString> channels(cap);
    while (channels.hasNext()) {
@@ -133,7 +133,7 @@ const QString Video::Device::id() const
 ///Get the device name
 const QString Video::Device::name() const
 {
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    return QMap<QString,QString>(interface.getSettings(d_ptr->m_DeviceId))[VideoDevicePrivate::PreferenceNames::NAME];;
 }
 
@@ -167,7 +167,7 @@ bool Video::Device::setActiveChannel(int idx)
 Video::Channel* Video::Device::activeChannel() const
 {
    if (!d_ptr->m_pCurrentChannel) {
-      VideoManagerInterface& interface = DBus::VideoManager::instance();
+      VideoManagerInterface& interface = VideoManager::instance();
       const QString chan = QMap<QString,QString>(interface.getSettings(d_ptr->m_DeviceId))[VideoDevicePrivate::PreferenceNames::CHANNEL];
       foreach(Video::Channel* c, d_ptr->m_lChannels) {
          if (c->name() == chan) {
@@ -188,7 +188,7 @@ void VideoDevicePrivate::saveIdle()
    m_RequireSave = false;
 
    //In case new (unsupported) fields are added, merge with existing
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    MapStringString pref = interface.getSettings(m_DeviceId);
 
    Video::Channel* chan = q_ptr->activeChannel();
@@ -219,7 +219,7 @@ void VideoDevicePrivate::saveIdle()
 
    //If the preview is running, reload it
    //doing this during a call will cause re-invite, this is unwanted
-   if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
+   if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance().size() == 1) {
       Video::PreviewManager::instance()->stopPreview();
       Video::PreviewManager::instance()->startPreview();
    }

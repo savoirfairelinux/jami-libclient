@@ -845,7 +845,7 @@ bool Call::hasVideo() const
    if (!hasRemote())
       return false;
 
-   return VideoRendererManager::instance()->getRenderer(this) != nullptr;
+   return VideoRendererManager::instance().getRenderer(this) != nullptr;
    #else
    return false;
    #endif
@@ -897,7 +897,7 @@ bool Call::isSecure() const
 Video::Renderer* Call::videoRenderer() const
 {
    #ifdef ENABLE_VIDEO
-   return VideoRendererManager::instance()->getRenderer(this);
+   return VideoRendererManager::instance().getRenderer(this);
    #else
    return nullptr;
    #endif

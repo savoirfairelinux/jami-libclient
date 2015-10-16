@@ -161,7 +161,7 @@ void CallModelPrivate::init()
    if (!dbusInit) {
       CallManagerInterface& callManager = DBus::CallManager::instance();
       #ifdef ENABLE_VIDEO
-      DBus::VideoManager::instance();
+      VideoManager::instance();
       #endif
 
       //SLOTS
