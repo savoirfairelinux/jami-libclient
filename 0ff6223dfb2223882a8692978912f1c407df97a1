@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_56b034f4",
+        "filename": "src/private/shmrenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-16T20:25:14Z",
+      "side": 1,
+      "message": "results in compilations warnings for the struct members:\nwarning: missing initializer for member ‘Video::Frame::ptr’, etc",
+      "range": {
+        "startLine": 374,
+        "startChar": 4,
+        "endLine": 374,
+        "endChar": 14
+      },
+      "revId": "0ff6223dfb2223882a8692978912f1c407df97a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
