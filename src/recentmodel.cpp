@@ -212,6 +212,43 @@ RecentModel* RecentModel::instance()
 }
 
 /**
+ * Tries to find the given call in the RecentModel and return
+ * the corresponding index
+ */
+QModelIndex
+RecentModel::getIndex(Call *call)
+{
+    if (!call)
+        return QModelIndex();
+
+    RecentViewNode* parent = nullptr;
+    if (auto p = call->peerContactMethod()->contact()) {
+        if (d_ptr->m_hPersonsToNodes.contains(p))
+            parent = d_ptr->m_hPersonsToNodes.value(p);
+    } else {
+        if (d_ptr->m_hCMsToNodes.contains(call->peerContactMethod()))
+            parent = d_ptr->m_hCMsToNodes.value(call->peerContactMethod());
+    }
+    if (!parent)
+       return QModelIndex();
+
+    // Find the active call in children of this node and remove it
+    auto itEnd = parent->m_lChildren.end();
+    auto it = std::find_if (parent->m_lChildren.begin(),
+               itEnd, [call] (RecentViewNode* child) {
+                     return child->m_uContent.m_pCall == call;
+               });
+
+    if (it == itEnd)
+        return QModelIndex();
+
+    RecentViewNode* callNode = *it;
+
+    return index(callNode->m_Index, 0, index(parent->m_Index, 0));
+}
+
+
+/**
  * Check if given index has an ongoing call
  * returns true if one of its child is also in the CallModel
  */
