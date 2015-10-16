@@ -46,10 +46,14 @@ public:
    //Proxy
    QSortFilterProxyModel* peopleProxy() const;
 
+   //Singleton
    static RecentModel* instance();
 
+   //Call related
+   QModelIndex getIndex(Call *call) const;
    bool hasActiveCall(const QModelIndex& parent);
    Call* getActiveCall(const QModelIndex& parent);
+
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
