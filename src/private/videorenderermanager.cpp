@@ -44,6 +44,7 @@
 #endif
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
+constexpr static const char DIRECT_RENDERER_ID[] = "direct";
 
 //Static member
 VideoRendererManager* VideoRendererManager::m_spInstance = nullptr;
@@ -197,9 +198,14 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 {
    Q_UNUSED(shmPath) //When directly linked, there is no SHM
    const QSize      res = QSize(width,height);
-   const QByteArray rid = id.toLatin1();
+   QByteArray rid = id.toLatin1();
 
-   qWarning() << "startedDecoding for sink id: " << id;
+#ifdef ENABLE_LIBWRAP
+   if (id != PREVIEW_RENDERER_ID) {
+       rid = DIRECT_RENDERER_ID;
+   }
+#endif
+   qWarning() << "startedDecoding for sink id: " << id << rid;
 
    Video::Renderer* r = nullptr;
 
@@ -240,6 +246,10 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
 #ifdef ENABLE_LIBWRAP
     DBus::VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+    QThread* t = m_hThreads[r];
+
+    if (!t->isRunning())
+       t->start();
 #else //ENABLE_LIBWRAP
 
       static_cast<Video::ShmRenderer*>(r)->setShmPath(shmPath);
@@ -307,21 +317,26 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
       emit q_ptr->previewStateChanged(false);
       emit q_ptr->previewStopped(r);
    }
-
+#ifndef ENABLE_LIBWRAP
    m_hRendererIds.remove(r);
    m_hRenderers.remove(id);
 
+   delete r;
    QThread* t = m_hThreads[r];
    m_hThreads[r] = nullptr;
-
    if (t) {
       t->quit();
       t->wait();
    }
 
-   delete r;
-
    t->deleteLater();
+#else
+   QThread* t = m_hThreads[r];
+   if (t) {
+       t->quit();
+   }
+#endif
+
 }
 
 ///A video stopped being rendered
