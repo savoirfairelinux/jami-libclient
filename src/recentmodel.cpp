@@ -109,8 +109,9 @@ public:
    QList<Call*>                          m_lCallBucket      ;
 
    //Helper
-   void insertNode(RecentViewNode* n, time_t t, bool isNew);
-   void removeNode(RecentViewNode* n                      );
+   void            insertNode(RecentViewNode* n, time_t t, bool isNew);
+   void            removeNode(RecentViewNode* n                      );
+   RecentViewNode* parentNode(Call *call                             )  const;
 
 private:
    RecentModel* q_ptr;
@@ -211,6 +212,34 @@ RecentModel* RecentModel::instance()
    static RecentModel* instance = new RecentModel(QCoreApplication::instance());
    return instance;
 }
+
+/**
+ * Tries to find the given call in the RecentModel and return
+ * the corresponding index
+ */
+QModelIndex
+RecentModel::getIndex(Call *call)
+{
+    if (!call)
+        return {};
+
+    auto parent = d_ptr->parentNode(call);
+
+    if (!parent)
+       return {};
+
+    auto itEnd = parent->m_lChildren.end();
+    auto it = std::find_if (parent->m_lChildren.begin(),
+               itEnd, [call] (RecentViewNode* child) {
+                     return child->m_uContent.m_pCall == call;
+               });
+
+    if (it == itEnd)
+        return {};
+
+    return index((*it)->m_Index, 0, index(parent->m_Index, 0));
+}
+
 
 /**
  * Check if given index has an ongoing call
@@ -513,12 +542,8 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
 void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
 {
    //qDebug() << "STATE CHANGED:" << call->peerContactMethod();
-   RecentViewNode* n;
-   if (auto p = call->peerContactMethod()->contact()) {
-      n = m_hPersonsToNodes[p];
-   } else {
-      n = m_hCMsToNodes[call->peerContactMethod()];
-   }
+   auto n = parentNode(call);
+
    if (!n)
       return;
 
@@ -558,12 +583,8 @@ void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
 {
    Q_UNUSED(parent)
 
-   RecentViewNode* n = nullptr;
-   if (auto p = call->peerContactMethod()->contact()) {
-      n = m_hPersonsToNodes[p];
-   } else {
-      n = m_hCMsToNodes[call->peerContactMethod()];
-   }
+   auto n = parentNode(call);
+
    if (!n && !m_lCallBucket.contains(call)) {
       m_lCallBucket.append(call);
       connect(call, &Call::lifeCycleStateChanged, this, &RecentModelPrivate::slotUpdate);
@@ -600,6 +621,25 @@ void RecentModelPrivate::slotUpdate()
       qDebug() << "trying to empty bucket call:" << call;
       slotCallAdded(call, nullptr);
    }
+}
+
+// helper method to find parent node of a call, if it exists
+RecentViewNode*
+RecentModelPrivate::parentNode(Call *call) const
+{
+    if (!call)
+        return {};
+
+    RecentViewNode* parent = nullptr;
+    if (auto p = call->peerContactMethod()->contact()) {
+        if (m_hPersonsToNodes.contains(p))
+            parent = m_hPersonsToNodes.value(p);
+    } else {
+        if (m_hCMsToNodes.contains(call->peerContactMethod()))
+            parent = m_hCMsToNodes.value(call->peerContactMethod());
+    }
+
+    return parent;
 }
 
 ///Filter out every data relevant to a person
