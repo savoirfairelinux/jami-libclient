@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_96179ca3",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-17T03:14:48Z",
+      "side": 1,
+      "message": "how do you ensure that node is never nullptr?",
+      "range": {
+        "startLine": 274,
+        "startChar": 8,
+        "endLine": 274,
+        "endChar": 51
+      },
+      "revId": "53f2439ed098554419430cdf64bfd92b0f04cdb6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
