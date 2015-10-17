@@ -22,6 +22,30 @@
       "revId": "0ff6223dfb2223882a8692978912f1c407df97a1",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_56b594cb",
+        "filename": "src/private/shmrenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-17T00:43:33Z",
+      "side": 1,
+      "message": "Annoying but it\u0027s a GCC bug solved since its version 5",
+      "parentUuid": "3aa0d159_56b034f4",
+      "range": {
+        "startLine": 374,
+        "startChar": 4,
+        "endLine": 374,
+        "endChar": 14
+      },
+      "revId": "0ff6223dfb2223882a8692978912f1c407df97a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
