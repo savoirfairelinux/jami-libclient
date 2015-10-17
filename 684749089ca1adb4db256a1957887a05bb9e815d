@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_d64524b4",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-17T03:10:25Z",
+      "side": 1,
+      "message": "all this code can be safely replaced by this more efficient version:\n\n if (auto n \u003d m_hCMsToNodes.take(cm))\n      removeNode(n);",
+      "range": {
+        "startLine": 507,
+        "startChar": 3,
+        "endLine": 512,
+        "endChar": 28
+      },
+      "revId": "684749089ca1adb4db256a1957887a05bb9e815d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
