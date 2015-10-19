@@ -77,7 +77,8 @@ struct RecentViewNode
    } m_uContent;
 
    //Helpers
-   inline time_t lastUsed() const;
+   inline time_t   lastUsed (          ) const;
+   RecentViewNode* childNode(Call *call) const;
 };
 
 class PeopleProxy : public QSortFilterProxyModel
@@ -106,12 +107,14 @@ public:
    QList<RecentViewNode*>                m_lTopLevelReverted;
    QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
-   QList<Call*>                          m_lCallBucket      ;
 
    //Helper
-   void            insertNode(RecentViewNode* n, time_t t, bool isNew);
-   void            removeNode(RecentViewNode* n                      );
-   RecentViewNode* parentNode(Call *call                             )  const;
+   void            insertNode    (RecentViewNode* n, time_t t, bool isNew);
+   void            removeNode    (RecentViewNode* n                      );
+   RecentViewNode* parentNode    (Call *call                             )  const;
+   void            insertCallNode(RecentViewNode *parent, Call* call     );
+   void            removeCall    (Call *call                             );
+   void            updateCall    (Call *call                             );
 
 private:
    RecentModel* q_ptr;
@@ -122,9 +125,7 @@ public Q_SLOTS:
    void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
-   void slotCallStateChanged   (Call* call       , Call::State previousState);
    void slotChanged            (                                         );
-   void slotUpdate             (                                         );
 };
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
@@ -138,7 +139,6 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
    connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
-   connect(CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
 
    //Fill the contacts
    for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
@@ -208,6 +208,29 @@ time_t RecentViewNode::lastUsed() const
    return {};
 }
 
+// returns the child node containing the given call, if it exists
+RecentViewNode*
+RecentViewNode::childNode(Call *call) const
+{
+    if (!call)
+        return {};
+
+    // only Person and CM nodes contains calls as children for now, so no need to check other types
+    if ( !(m_Type == RecentViewNode::Type::PERSON || m_Type == RecentViewNode::Type::CONTACT_METHOD) )
+        return {};
+
+    auto itEnd = m_lChildren.end();
+    auto it = std::find_if (m_lChildren.begin(),
+               itEnd, [call] (RecentViewNode* child) {
+                     return child->m_uContent.m_pCall == call;
+               });
+
+    if (it == itEnd)
+        return {};
+
+    return *it;
+}
+
 RecentModel* RecentModel::instance()
 {
    static RecentModel* instance = new RecentModel(QCoreApplication::instance());
@@ -221,24 +244,12 @@ RecentModel* RecentModel::instance()
 QModelIndex
 RecentModel::getIndex(Call *call) const
 {
-    if (!call)
-        return {};
+    if (auto parent = d_ptr->parentNode(call)) {
+        if (auto callNode = parent->childNode(call))
+            return index(callNode->m_Index, 0, index(parent->m_Index, 0));
+    }
 
-    auto parent = d_ptr->parentNode(call);
-
-    if (!parent)
-       return {};
-
-    auto itEnd = parent->m_lChildren.cend();
-    auto it = std::find_if (parent->m_lChildren.cbegin(),
-               itEnd, [call] (RecentViewNode* child) {
-                     return child->m_uContent.m_pCall == call;
-               });
-
-    if (it == itEnd)
-        return {};
-
-    return index((*it)->m_Index, 0, index(parent->m_Index, 0));
+    return {};
 }
 
 /**
@@ -538,7 +549,6 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
    }
 
    insertNode(n, t, isNew);
-   slotUpdate();
 }
 
 void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
@@ -558,7 +568,6 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
          connect(cm, &ContactMethod::changed, this, &RecentModelPrivate::slotChanged);
       }
       insertNode(n, t, isNew);
-      slotUpdate();
    }
 }
 
@@ -572,89 +581,68 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
       removeNode(n);
 }
 
-void RecentModelPrivate::slotCallStateChanged(Call* call, Call::State previousState)
+void
+RecentModelPrivate::insertCallNode(RecentViewNode *parent, Call* call)
 {
-   //qDebug() << "STATE CHANGED:" << call->peerContactMethod();
-   auto n = parentNode(call);
+    Q_ASSERT(parent && call);
 
-   if (!n)
-      return;
+    auto callNode = new RecentViewNode();
+    callNode->m_Type = RecentViewNode::Type::CALL;
+    callNode->m_uContent.m_pCall = call;
+    callNode->m_pParent = parent;
+    callNode->m_Index = parent->m_lChildren.size();
 
-   if (call->state() == Call::State::OVER) {
-      // Find the active call in children of this node and remove it
-      auto itEnd = n->m_lChildren.end();
-      auto it = std::find_if (n->m_lChildren.begin(),
-                  itEnd, [call] (RecentViewNode* child) {
-                        return child->m_uContent.m_pCall == call;
-                  });
+    auto parentIdx = q_ptr->index(parent->m_Index,0);
 
-      if (it == itEnd) {
-         // Call can be in the bucket (after callAdded) but not inserted
-         // because it failed before lastUsedChanged to be emitted
-         m_lCallBucket.removeOne(call);
-         return;
-      }
+    q_ptr->beginInsertRows(parentIdx, callNode->m_Index, callNode->m_Index);
+    parent->m_lChildren.append(callNode);
+    q_ptr->endInsertRows();
 
-      q_ptr->beginRemoveRows(q_ptr->index(n->m_Index,0), (*it)->m_Index, (*it)->m_Index);
-      n->m_lChildren.removeAt((*it)->m_Index);
-      delete *it;
-      q_ptr->endRemoveRows();
+    // emit dataChanged on parent, since number of children has changed
+    emit q_ptr->dataChanged(parentIdx, parentIdx);
 
-      if (n->m_lChildren.size() == 1) {
-          // there is now only one call, emit dataChanged on it so it becomes hidden in the PeopleProxy
-          auto firstChild = q_ptr->index(0, 0, q_ptr->index(n->m_Index, 0));
-          emit q_ptr->dataChanged(firstChild, firstChild);
-      } else {
-          emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
-      }
-
-   } else
-      emit q_ptr->dataChanged(q_ptr->index(n->m_Index,0),q_ptr->index(n->m_Index,0));
+    if (callNode->m_Index == 2) {
+        // we went from 1 to 2 calls, emit a dataChanged on the first call so that the PeopleProxy
+        // now shows the first call (otherwise it will only show the 2nd +)
+        auto firstChild = q_ptr->index(0, 0, parentIdx);
+        emit q_ptr->dataChanged(firstChild, firstChild);
+    }
 }
 
-void RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
+void
+RecentModelPrivate::removeCall(Call *call)
+{
+    if (auto parent = parentNode(call)) {
+        if (auto callNode = parent->childNode(call)) {
+            q_ptr->beginRemoveRows(q_ptr->index(parent->m_Index,0), callNode->m_Index, callNode->m_Index);
+            parent->m_lChildren.removeAt(callNode->m_Index);
+            delete callNode;
+            q_ptr->endRemoveRows();
+
+            auto parentIdx = q_ptr->index(parent->m_Index, 0);
+            if (parent->m_lChildren.size() == 1) {
+                // there is now only one call, emit dataChanged on it so it becomes hidden in the PeopleProxy
+                auto firstChild = q_ptr->index(0, 0, parentIdx);
+                emit q_ptr->dataChanged(firstChild, firstChild);
+            }
+            // emit dataChanted on the parent since the number of children has changed
+            emit q_ptr->dataChanged(parentIdx,parentIdx);
+        }
+    }
+}
+
+void
+RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
 {
    Q_UNUSED(parent)
+   Q_ASSERT(call);
 
-   auto n = parentNode(call);
-
-   if (!n && !m_lCallBucket.contains(call)) {
-      m_lCallBucket.append(call);
-      connect(call, &Call::lifeCycleStateChanged, this, &RecentModelPrivate::slotUpdate);
-      return;
-   } else if (n && m_lCallBucket.contains(call)) {
-      m_lCallBucket.removeOne(call);
-      //TODO: remove the connection store callbucket as a map key = call value = metaconnection
-   } else if (!n && m_lCallBucket.contains(call)) {
-      return;
-   }
-
-   auto callNode = new RecentViewNode();
-   callNode->m_Type = RecentViewNode::Type::CALL;
-   callNode->m_uContent.m_pCall = call;
-   callNode->m_pParent = n;
-   callNode->m_Index = n->m_lChildren.size();
+   // new call, connect to its changed signal to react to all changes to the call
    connect(call, &Call::changed, this, &RecentModelPrivate::slotChanged);
 
-   q_ptr->beginInsertRows(q_ptr->index(n->m_Index,0), n->m_lChildren.size(), n->m_lChildren.size());
-   n->m_lChildren.append(callNode);
-   q_ptr->endInsertRows();
-
-   if (n->m_lChildren.size() == 2) {
-       // we went from 1 to 2 calls, emit a dataChanged on the first call so that the PeopleProxy
-       // now shows the first call (otherwise it will only show the 2nd +)
-       auto firstChild = q_ptr->index(0, 0, q_ptr->index(n->m_Index, 0));
-       emit q_ptr->dataChanged(firstChild, firstChild);
-   }
-
-}
-
-void RecentModelPrivate::slotUpdate()
-{
-   Q_FOREACH(auto call, m_lCallBucket) {
-      qDebug() << "trying to empty bucket call:" << call;
-      slotCallAdded(call, nullptr);
-   }
+   // check if call is associated with a Person or CM yet
+   if (auto parent = parentNode(call))
+       insertCallNode(parent, call);
 }
 
 // helper method to find parent node of a call, if it exists
@@ -674,6 +662,7 @@ RecentModelPrivate::slotChanged()
 {
     QModelIndex idx;
     if (auto call = dynamic_cast<Call*>(sender())) {
+        updateCall(call);
         idx = q_ptr->getIndex(call);
     } else if (auto person = dynamic_cast<Person*>(sender())) {
         idx = q_ptr->getIndex(person);
@@ -684,6 +673,46 @@ RecentModelPrivate::slotChanged()
         emit q_ptr->dataChanged(idx.parent(), idx.parent());
     if (idx.isValid())
         emit q_ptr->dataChanged(idx, idx);
+}
+
+void
+RecentModelPrivate::updateCall(Call* call)
+{
+    if (!call)
+        return;
+
+    // if the call is ERROR or OVER, make sure to remove it
+    // otherwise make sure it is in the RecentModel
+    // (it may not have been added if was not yet assocaited with a CM/Person
+    switch(call->state()) {
+        case Call::State::COUNT__:
+        case Call::State::ERROR:
+        case Call::State::ABORTED:
+        case Call::State::OVER:
+            removeCall(call);
+        break;
+        case Call::State::TRANSFERRED:
+        case Call::State::INCOMING:
+        case Call::State::RINGING:
+        case Call::State::INITIALIZATION:
+        case Call::State::CONNECTED:
+        case Call::State::CURRENT:
+        case Call::State::DIALING:
+        case Call::State::NEW:
+        case Call::State::HOLD:
+        case Call::State::FAILURE:
+        case Call::State::BUSY:
+        case Call::State::TRANSF_HOLD:
+        case Call::State::CONFERENCE:
+        case Call::State::CONFERENCE_HOLD:
+        {
+            if (auto parent = parentNode(call)) {
+                if (!parent->childNode(call))
+                    insertCallNode(parent, call);
+            }
+        }
+        break;
+    };
 }
 
 ///Filter out every data relevant to a person
