@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_51aa7ed5",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-19T17:33:26Z",
+      "side": 1,
+      "message": "fyi: you can just use {}, it\u0027s a synonym of default-constructor, without to change the type everywhere the day\nyou change the return type.",
+      "range": {
+        "startLine": 223,
+        "startChar": 15,
+        "endLine": 223,
+        "endChar": 29
+      },
+      "revId": "44892205a5347bcc7372072fd8e3689a33c0674d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_d1b52e32",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-19T17:33:26Z",
+      "side": 1,
+      "message": "easy to cache to not duplicate the code everywhere and have a better readable code",
+      "range": {
+        "startLine": 226,
+        "startChar": 17,
+        "endLine": 226,
+        "endChar": 42
+      },
+      "revId": "44892205a5347bcc7372072fd8e3689a33c0674d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_9187a661",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-19T17:33:26Z",
+      "side": 1,
+      "message": "not removed, so remove this from comment",
+      "range": {
+        "startLine": 236,
+        "startChar": 53,
+        "endLine": 236,
+        "endChar": 66
+      },
+      "revId": "44892205a5347bcc7372072fd8e3689a33c0674d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_317c9272",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-19T17:33:26Z",
+      "side": 1,
+      "message": "unneeded, just use (*it)-\u003em_index in next line.\nexcept if you want to test *it pointer for nullptr...",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 35
+      },
+      "revId": "44892205a5347bcc7372072fd8e3689a33c0674d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
