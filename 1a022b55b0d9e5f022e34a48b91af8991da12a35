@@ -16,6 +16,24 @@
       "revId": "1a022b55b0d9e5f022e34a48b91af8991da12a35",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_e3e1819b",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-20T23:27:36Z",
+      "side": 1,
+      "message": "mmm, the lifecyclestate groups OVER and ERROR with FAILURE and BUSY into FINISHED, and we don\u0027t want to remove the call on FAILURE/BUSY since for now you still have to hang it up manually",
+      "parentUuid": "3aa0d159_43d155cc",
+      "revId": "1a022b55b0d9e5f022e34a48b91af8991da12a35",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
