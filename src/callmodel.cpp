@@ -586,11 +586,6 @@ void CallModelPrivate::removeCall(Call* call, bool noEmit)
       //NOTE Do not free the memory, it can still be used elsewhere or in modelindexes
    }
 
-   //TODO DEAD CODE Is this really required?, so far multi conference fail without
-   if (m_shDringId[m_shDringId.key(internal)] == internal) {
-      m_shDringId.remove(m_shDringId.key(internal));
-   }
-
    //Restore calls to the main list if they are not really over
    if (internal->m_lChildren.size()) {
       foreach(InternalStruct* child,internal->m_lChildren) {
