@@ -79,8 +79,8 @@ public:
    Q_PROPERTY(UserActionModel* userActionModel READ userActionModel )
 
    //Call related
-   Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr );
-   Q_INVOKABLE Call*       dialingCall       ( ContactMethod* cm                                           );
+   Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr, Call* parent = nullptr );
+   Q_INVOKABLE Call*       dialingCall       (ContactMethod* cm                 , Call* parent = nullptr);
    Q_INVOKABLE void        attendedTransfer  ( Call* toTransfer , Call* target                             );
    Q_INVOKABLE void        transfer          ( Call* toTransfer , const ContactMethod* target              );
    Q_INVOKABLE QByteArray  getMime           ( const Call* call                                            ) const;
@@ -127,6 +127,9 @@ public:
    //Singleton
    static CallModel* instance();
    virtual ~CallModel( );
+
+   QList<Call *> getConferenceParticipants(Call *conf);
+
 
 private:
    //Constructors, initializer and destructors
