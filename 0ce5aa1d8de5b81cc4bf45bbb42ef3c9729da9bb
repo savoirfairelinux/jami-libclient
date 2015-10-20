@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_c3fb2546",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-20T23:34:15Z",
+      "side": 1,
+      "message": "well, i guess yomguy would like \nif (auto t \u003d m_hThreads[r])\n   t-\u003equit();",
+      "revId": "0ce5aa1d8de5b81cc4bf45bbb42ef3c9729da9bb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
