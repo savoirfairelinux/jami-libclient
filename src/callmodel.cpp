@@ -1286,6 +1286,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
 void CallModelPrivate::slotConferenceRemoved(const QString &confId)
 {
    Call* conf = q_ptr->getCall(confId);
+   qDebug() << "SLOT CONFERENCE REMOVED" << conf << confId;
    removeConference(confId);
    emit q_ptr->layoutChanged();
    emit q_ptr->conferenceRemoved(conf);
