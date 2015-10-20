@@ -691,6 +691,8 @@ Call* CallModelPrivate::addConference(const QString& confID)
    if (m_shDringId[callList[0]]->call_real->account())
       newConf =  new Call(confID, m_shDringId[callList[0]]->call_real->account()->id());
 
+   qDebug() << "\n\n\n\nCONF ID IS " << confID << newConf;
+
    if (newConf) {
       InternalStruct* aNewStruct = new InternalStruct;
       aNewStruct->call_real  = newConf;
@@ -1286,6 +1288,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
 void CallModelPrivate::slotConferenceRemoved(const QString &confId)
 {
    Call* conf = q_ptr->getCall(confId);
+   qDebug() << "SLOT CONFERENCE REMOVED" << conf << confId;
    removeConference(confId);
    emit q_ptr->layoutChanged();
    emit q_ptr->conferenceRemoved(conf);
