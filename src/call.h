@@ -267,6 +267,7 @@ public:
    Q_PROPERTY( Direction          direction          READ direction                                 )
    Q_PROPERTY( bool               hasVideo           READ hasVideo                                  )
    Q_PROPERTY( Certificate*       certificate        READ certificate                               )
+   Q_PROPERTY( bool               hasParentCall      READ hasParentCall                             )
 
    //Read/write properties
    Q_PROPERTY( ContactMethod*     peerContactMethod  READ peerContactMethod WRITE setPeerContactMethod)
@@ -308,6 +309,7 @@ public:
    FlagPack<HoldFlags>      holdFlags        () const;
    QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
+   bool                     hasParentCall    () const;
 
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;
@@ -327,6 +329,7 @@ public:
    void setPeerContactMethod( ContactMethod* cm           );
    void setPeerName       ( const QString&     name       );
    void setAccount        ( Account*           account    );
+   void setParentCall     (Call*               call       );
 
    //Mutators
    template<typename T>
@@ -337,6 +340,8 @@ public:
 
    //syntactic sugar
    Call* operator<<( Call::Action& c);
+
+   Call* m_pParentCall = nullptr;
 
 private:
    Call(const QString& confId, const QString& account);
