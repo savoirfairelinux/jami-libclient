@@ -85,11 +85,17 @@ class PeopleProxy : public QSortFilterProxyModel
 {
    Q_OBJECT
 public:
-    PeopleProxy(RecentModel* source_model) { setSourceModel(source_model); }
+    PeopleProxy(RecentModel* source_model);
 
     virtual QVariant data(const QModelIndex& index, int role) const override;
 protected:
     virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
+
+public Q_SLOTS:
+    void slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
+                                const QModelIndex & destinationParent, int destinationRow);
+    void slotRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
+                       const QModelIndex & destinationParent, int destinationRow);
 };
 
 class RecentModelPrivate : public QObject
@@ -741,6 +747,17 @@ RecentModel::peopleProxy() const
    return p;
 }
 
+PeopleProxy::PeopleProxy(RecentModel* sourceModel)
+{
+    setSourceModel(sourceModel);
+
+    // forward the rowsAboutToBeMoved and rowsMoved signals from the source model
+    // this is needed for the OSX and GNOME clients because they do not handle the layoutChanged
+    // signal which is emited by the QSortFilterProxyModel when rows are moved in the source model
+    connect(sourceModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &PeopleProxy::slotRowsAboutToBeMoved);
+    connect(sourceModel, &QAbstractItemModel::rowsMoved, this, &PeopleProxy::slotRowsMoved);
+}
+
 bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
@@ -776,6 +793,25 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     }
 
     return sourceModel()->data(indexSource, role);
+}
+
+void
+PeopleProxy::slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
+                                    const QModelIndex & destinationParent, int destinationRow)
+{
+    const auto proxySourceParent = mapFromSource(sourceParent);
+    const auto proxyDestinationParent = mapFromSource(destinationParent);
+
+    // since the PeopleProxy doesn't do any sorting or filtering on the top nodes and they are the
+    // only ones being moved, we can assume the row numbers stay the same
+    beginMoveRows(proxySourceParent, sourceStart, sourceEnd, destinationParent, destinationRow);
+}
+
+void
+PeopleProxy::slotRowsMoved(const QModelIndex & parent, int start, int end,
+                           const QModelIndex & destination, int row)
+{
+    endMoveRows();
 }
 
 #include <recentmodel.moc>
