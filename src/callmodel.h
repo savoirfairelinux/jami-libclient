@@ -79,8 +79,8 @@ public:
    Q_PROPERTY(UserActionModel* userActionModel READ userActionModel )
 
    //Call related
-   Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr );
-   Q_INVOKABLE Call*       dialingCall       ( ContactMethod* cm                                           );
+   Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr, Call* parent = nullptr );
+   Q_INVOKABLE Call*       dialingCall       (ContactMethod* cm                 , Call* parent = nullptr);
    Q_INVOKABLE void        attendedTransfer  ( Call* toTransfer , Call* target                             );
    Q_INVOKABLE void        transfer          ( Call* toTransfer , const ContactMethod* target              );
    Q_INVOKABLE QByteArray  getMime           ( const Call* call                                            ) const;
@@ -91,7 +91,7 @@ public:
    Q_INVOKABLE Call*       selectDialingCall ( const QString& peerName=QString(), Account* account=nullptr );
 
    //Conference related
-   Q_INVOKABLE bool createConferenceFromCall ( Call* call1, Call* call2      );
+   Q_INVOKABLE bool createJoinOrMergeConferenceFromCall ( Call* call1, Call* call2      );
    Q_INVOKABLE bool mergeConferences         ( Call* conf1, Call* conf2      );
    Q_INVOKABLE bool addParticipant           ( Call* call2, Call* conference );
    Q_INVOKABLE bool detachParticipant        ( Call* call                    );
@@ -108,6 +108,7 @@ public:
    QItemSelectionModel* selectionModel      () const;
 
    Q_INVOKABLE Call* getCall ( const QModelIndex& idx ) const;
+   Q_INVOKABLE QList<Call*> getConferenceParticipants(Call *conf) const;
 
    //Model implementation
    virtual bool          setData      ( const QModelIndex& index, const QVariant &value, int role   ) override;

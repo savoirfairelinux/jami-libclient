@@ -355,6 +355,17 @@ bool CallModel::hasConference() const
    return false;
 }
 
+QList<Call*> CallModel::getConferenceParticipants(Call* conf) const
+{
+    QList<Call*> participantCallList;
+
+    const auto internalConf = d_ptr->m_shInternalMapping[conf];
+    foreach (const auto s, internalConf->m_lChildren) {
+        participantCallList << s->call_real;
+    }
+    return participantCallList;
+}
+
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
@@ -473,15 +484,15 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
 } //addCall
 
 ///Return the current or create a new dialing call from peer ContactMethod
-Call* CallModel::dialingCall(ContactMethod* cm)
+Call* CallModel::dialingCall(ContactMethod* cm, Call* parent)
 {
-   auto call = dialingCall();
+   auto call = dialingCall(QString(), nullptr, parent);
    call->setPeerContactMethod(cm);
    return call;
 }
 
 ///Return the current or create a new dialing call from peer name and the account
-Call* CallModel::dialingCall(const QString& peerName, Account* account)
+Call* CallModel::dialingCall(const QString& peerName, Account* account, Call* parent)
 {
    //Having multiple dialing calls could be supported, but for now we decided not to
    //handle this corner case as it will create issues of its own
@@ -490,7 +501,7 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account)
          return call;
    }
 
-   return d_ptr->addCall2(CallPrivate::buildDialingCall(peerName, account));
+   return d_ptr->addCall2(CallPrivate::buildDialingCall(peerName, account, parent));
 }  //dialingCall
 
 ///Create a new incoming call when the daemon is being called
@@ -723,12 +734,19 @@ Call* CallModelPrivate::addConference(const QString& confID)
    return newConf;
 } //addConference
 
-///Join two call to create a conference, the conference will be created later (see addConference)
-bool CallModel::createConferenceFromCall(Call* call1, Call* call2)
+/// TODO Rename that method accordingly
+bool CallModel::createJoinOrMergeConferenceFromCall(Call* call1, Call* call2)
 {
   if (!call1 || !call2) return false;
   qDebug() << "Joining call: " << call1 << " and " << call2;
-  Q_NOREPLY CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
+  if (call1->type() == Call::Type::CONFERENCE)
+      return addParticipant(call2, call1);
+  else if (call2->type() == Call::Type::CONFERENCE)
+      return addParticipant(call1, call2);
+  else if (call1->type() == Call::Type::CONFERENCE && call2->type() == Call::Type::CONFERENCE)
+      return mergeConferences(call1, call2);
+  else
+    Q_NOREPLY CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
   return true;
 } //createConferenceFromCall
 
@@ -1043,7 +1061,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
             //Call dropped on a call
             else if (call && target && !targetIdx.parent().isValid()) {
                qDebug() << "Call dropped on a call: creating a conference";
-               createConferenceFromCall(call,target);
+               createJoinOrMergeConferenceFromCall(call,target);
                return true;
             }
             break;
@@ -1063,7 +1081,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       ContactMethod* nb = PhoneDirectoryModel::instance().fromHash(encodedContactMethod);
       newCall->setDialNumber(nb);
       newCall->performAction(Call::Action::ACCEPT);
-      createConferenceFromCall(newCall,target);
+      createJoinOrMergeConferenceFromCall(newCall,target);
    }
    else if (mimedata->hasFormat(RingMimes::CONTACT)) {
       const QByteArray encodedPerson = mimedata->data(RingMimes::CONTACT);
@@ -1076,7 +1094,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
             Call* newCall = dialingCall();
             newCall->setDialNumber(number);
             newCall->performAction(Call::Action::ACCEPT);
-            createConferenceFromCall(newCall,target);
+            createJoinOrMergeConferenceFromCall(newCall,target);
          }
          else {
             qDebug() << "Person not found";
