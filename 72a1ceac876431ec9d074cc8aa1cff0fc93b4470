@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_43e8757c",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-20T23:30:43Z",
+      "side": 1,
+      "message": "const auto",
+      "revId": "72a1ceac876431ec9d074cc8aa1cff0fc93b4470",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
