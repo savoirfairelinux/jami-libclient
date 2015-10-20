@@ -363,6 +363,17 @@ bool CallModel::hasConference() const
    return false;
 }
 
+QList<Call*> CallModel::getConferenceParticipants(Call* conf)
+{
+    QList<Call*> participantCallList;
+
+    const auto internalConf = d_ptr->m_shInternalMapping[conf];
+    foreach (const auto s, internalConf->m_lChildren) {
+        participantCallList << s->call_real;
+    }
+    return participantCallList;
+}
+
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP

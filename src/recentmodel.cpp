@@ -54,6 +54,7 @@ struct RecentViewNode
       CONTACT_METHOD    ,
       CALL              ,
       CALL_GROUP        ,
+      CONFERENCE        ,
       TEXT_MESSAGE      ,
       TEXT_MESSAGE_GROUP,
    };
@@ -72,6 +73,7 @@ struct RecentViewNode
       ContactMethod* m_pContactMethod;
       Call*          m_pCall         ;
       CallGroup*     m_pCallGroup    ;
+      Call*          m_pConfCall     ;
       //ImConversationIterator; //TODO
       //ImConversationIterator;
    } m_uContent;
@@ -113,6 +115,7 @@ public:
    QList<RecentViewNode*>                m_lTopLevelReverted;
    QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
+   QHash<Call*,RecentViewNode*>          m_hConfToNodes     ;
 
    //Helper
    void            insertNode    (RecentViewNode* n, time_t t, bool isNew);
@@ -132,6 +135,8 @@ public Q_SLOTS:
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotChanged            (                                         );
+   void slotConferenceAdded    (Call* conf                               );
+   void slotConferenceRemoved  (Call* conf                               );
 };
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
@@ -145,6 +150,8 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
    connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
+   connect(CallModel::instance()          , &CallModel::conferenceCreated        , d_ptr, &RecentModelPrivate::slotConferenceAdded    );
+   connect(CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
 
    //Fill the contacts
    for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
@@ -206,6 +213,8 @@ time_t RecentViewNode::lastUsed() const
          return m_uContent.m_pCall->stopTimeStamp();
       case Type::CALL_GROUP        :
          return m_uContent.m_pCallGroup->m_LastUsed;
+      case Type::CONFERENCE:
+         return m_uContent.m_pConfCall->stopTimeStamp();
       case Type::TEXT_MESSAGE      :
       case Type::TEXT_MESSAGE_GROUP:
          //TODO
@@ -323,6 +332,8 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
 
    if (node->m_Type == RecentViewNode::Type::CALL) {
       return node->m_uContent.m_pCall;
+   } else if (node->m_Type == RecentViewNode::Type::CONFERENCE) {
+      return node->m_uContent.m_pConfCall;
    }
 
    QListIterator<RecentViewNode*> lIterator(node->m_lChildren);
@@ -371,6 +382,8 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
          return node->m_uContent.m_pCall->roleData(role);
       case RecentViewNode::Type::CALL_GROUP        :
          return node->m_uContent.m_pCallGroup->m_lCalls[0]->roleData(role);
+      case RecentViewNode::Type::CONFERENCE        :
+        return node->m_uContent.m_pConfCall->roleData(role);
       case RecentViewNode::Type::TEXT_MESSAGE      :
       case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
          //TODO
@@ -521,10 +534,11 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
    delete n;
 
    if (idx < m_lTopLevelReverted.size()) {
-      for (int i = 0; i <= idx; i++) {
+      for (int i = m_lTopLevelReverted.size()-1; i >= idx; i--) {
          m_lTopLevelReverted[i]->m_Index--;
       }
    }
+
    q_ptr->endRemoveRows();
 }
 
@@ -553,13 +567,13 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
       }
 
    }
-
    insertNode(n, t, isNew);
 }
 
 void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 {
    //ContactMethod with a Person are handled elsewhere
+
    if (!cm->contact()) {
       RecentViewNode* n = m_hCMsToNodes[cm];
       const bool isNew = !n;
@@ -675,6 +689,7 @@ RecentModelPrivate::slotChanged()
 {
     QModelIndex idx;
     if (auto call = qobject_cast<Call*>(sender())) {
+        //FIXME: This is called way too much
         updateCall(call);
         idx = q_ptr->getIndex(call);
     } else if (auto person = qobject_cast<Person*>(sender())) {
@@ -719,6 +734,16 @@ RecentModelPrivate::updateCall(Call* call)
         case Call::State::CONFERENCE:
         case Call::State::CONFERENCE_HOLD:
         {
+            //Check if this call is in a conference
+            if (m_hConfToNodes.size() > 0) {
+                Q_FOREACH(const auto node, m_hConfToNodes) {
+                    auto participants = CallModel::instance()->getConferenceParticipants(node->m_uContent.m_pConfCall);
+                    if (participants.contains(call)) {
+                        removeCall(call);
+                        return;
+                    }
+                }
+            }
             if (auto parent = parentNode(call)) {
                 if (!parent->childNode(call))
                     insertCallNode(parent, call);
@@ -726,6 +751,39 @@ RecentModelPrivate::updateCall(Call* call)
         }
         break;
     };
+}
+
+void RecentModelPrivate::slotConferenceRemoved(Call* conf)
+{
+    RecentViewNode* n = m_hConfToNodes[conf];
+
+    if (n) {
+        foreach (RecentViewNode* node, n->m_lChildren) {
+            removeCall(node->m_uContent.m_pCall);
+        }
+        removeNode(n);
+        m_hConfToNodes.remove(conf);
+    }
+}
+
+void RecentModelPrivate::slotConferenceAdded(Call* conf)
+{
+    RecentViewNode* n = m_hConfToNodes[conf];
+    const bool isNew = !n;
+
+    if (isNew) {
+        n = new RecentViewNode();
+        n->m_Type                      = RecentViewNode::Type::CONFERENCE    ;
+        n->m_uContent.m_pConfCall      = conf                                ;
+        n->m_pParent                   = nullptr                             ;
+        n->m_Index                     = 0                                   ;
+        m_hConfToNodes[conf]           = n                                   ;
+        auto pList = CallModel::instance()->getConferenceParticipants(conf);
+        foreach (Call* p, pList) {
+            insertCallNode(n, p);
+        }
+    }
+    insertNode(n, conf->startTimeStamp(), isNew);
 }
 
 ///Filter out every data relevant to a person
@@ -770,7 +828,8 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     //from the call to its parent
     RecentViewNode* node = static_cast<RecentViewNode*>(indexSource.internalPointer());
     bool topNode = node->m_Type == RecentViewNode::Type::PERSON         ||
-                   node->m_Type == RecentViewNode::Type::CONTACT_METHOD;
+                   node->m_Type == RecentViewNode::Type::CONTACT_METHOD ||
+                   node->m_Type == RecentViewNode::Type::CONFERENCE;
     bool forwardRole = role == static_cast<int>(Ring::Role::State)          ||
                        role == static_cast<int>(Ring::Role::FormattedState) ||
                        role == static_cast<int>(Ring::Role::Length);
