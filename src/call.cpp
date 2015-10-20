@@ -305,7 +305,8 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
 
 ///Constructor
 Call::Call(Call::State startState, const QString& peerName, ContactMethod* number, Account* account)
-   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(CallModel::instance())
+   , d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState     = startState;
    d_ptr->m_Type             = Call::Type::CALL;
@@ -318,7 +319,8 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
 
 ///Constructor
 Call::Call(const QString& confId, const QString& account)
-   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(CallModel::instance())
+   , d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
    d_ptr->m_Account      = AccountModel::instance()->getById(account.toLatin1());
@@ -1116,7 +1118,12 @@ void Call::setPeerName(const QString& name)
 void Call::setAccount( Account* account)
 {
    if (lifeCycleState() == Call::LifeCycleState::CREATION)
-      d_ptr->m_Account = account;
+       d_ptr->m_Account = account;
+}
+
+void Call::setParentCall(Call* call)
+{
+    m_pParentCall = call;
 }
 
 /*****************************************************************************
@@ -2016,7 +2023,12 @@ void CallPrivate::initTimer()
 
 QVariant Call::roleData(Call::Role role) const
 {
-   return roleData(static_cast<int>(role));
+    return roleData(static_cast<int>(role));
+}
+
+bool Call::hasParentCall() const
+{
+    return (m_pParentCall != nullptr);
 }
 
 ///Common source for model data roles

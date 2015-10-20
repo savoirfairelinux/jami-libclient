@@ -363,6 +363,17 @@ bool CallModel::hasConference() const
    return false;
 }
 
+QList<Call*> CallModel::getConferenceParticipants(Call* conf)
+{
+    QList<Call*> participantCallList;
+
+    const auto internalConf = d_ptr->m_shInternalMapping[conf];
+    foreach (const auto s, internalConf->m_lChildren) {
+        participantCallList << s->call_real;
+    }
+    return participantCallList;
+}
+
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
@@ -751,7 +762,18 @@ bool CallModel::addParticipant(Call* call2, Call* conference)
 bool CallModel::detachParticipant(Call* call)
 {
    Q_NOREPLY DBus::CallManager::instance().detachParticipant(call->dringId());
-   return true;
+    return true;
+}
+
+bool CallModel::createConferenceFromParent()
+{
+    auto call = this->selectedCall();
+    if (!call || !call->m_pParentCall)
+        return false;
+    auto ret = createConferenceFromCall(call, call->m_pParentCall);
+    if (ret)
+        call->setParentCall(nullptr);
+    return ret;
 }
 
 ///Merge two conferences
