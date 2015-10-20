@@ -143,6 +143,7 @@ public:
    Call::Type                m_Type              ;
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
+   Call*                     m_pParentCall       ;
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
@@ -255,7 +256,7 @@ public:
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );
 
    //Constructor
-   static Call* buildDialingCall  (const QString & peerName, Account* account = nullptr );
+   static Call* buildDialingCall  (const QString & peerName, Account* account = nullptr, Call* parent = nullptr );
    static Call* buildIncomingCall (const QString& callId                                );
    static Call* buildExistingCall (const QString& callId                                );
 
