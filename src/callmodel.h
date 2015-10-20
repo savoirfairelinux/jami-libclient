@@ -128,6 +128,7 @@ public:
    static CallModel* instance();
    virtual ~CallModel( );
 
+   QList<Call *> getConferenceParticipants(Call *conf);
 private:
    //Constructors, initializer and destructors
    explicit CallModel();
