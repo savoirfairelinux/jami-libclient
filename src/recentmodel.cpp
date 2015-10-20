@@ -620,9 +620,16 @@ RecentModelPrivate::removeCall(Call *call)
 {
     if (auto parent = parentNode(call)) {
         if (auto callNode = parent->childNode(call)) {
-            q_ptr->beginRemoveRows(q_ptr->index(parent->m_Index,0), callNode->m_Index, callNode->m_Index);
-            parent->m_lChildren.removeAt(callNode->m_Index);
+            const auto removedIndex = callNode->m_Index;
+            q_ptr->beginRemoveRows(q_ptr->index(parent->m_Index,0), removedIndex, removedIndex);
+            parent->m_lChildren.removeAt(removedIndex);
             delete callNode;
+
+            // update the indices of the remaining children
+            for (int i = removedIndex; i < parent->m_lChildren.size(); ++i) {
+                if (auto child = parent->m_lChildren.at(i))
+                    --child->m_Index;
+            }
             q_ptr->endRemoveRows();
 
             auto parentIdx = q_ptr->index(parent->m_Index, 0);
