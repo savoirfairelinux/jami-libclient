@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_43d155cc",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-20T23:22:00Z",
+      "side": 1,
+      "message": "maybe use the lifecycle state here?",
+      "revId": "1a022b55b0d9e5f022e34a48b91af8991da12a35",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
