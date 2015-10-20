@@ -54,6 +54,7 @@ struct RecentViewNode
       CONTACT_METHOD    ,
       CALL              ,
       CALL_GROUP        ,
+      CONFERENCE        ,
       TEXT_MESSAGE      ,
       TEXT_MESSAGE_GROUP,
    };
@@ -72,6 +73,7 @@ struct RecentViewNode
       ContactMethod* m_pContactMethod;
       Call*          m_pCall         ;
       CallGroup*     m_pCallGroup    ;
+      Call*          m_pConfCall     ;
       //ImConversationIterator; //TODO
       //ImConversationIterator;
    } m_uContent;
@@ -106,6 +108,7 @@ public:
    QList<RecentViewNode*>                m_lTopLevelReverted;
    QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
+   QHash<Call*,RecentViewNode*>          m_hConfToNodes     ;
    QList<Call*>                          m_lCallBucket      ;
 
    //Helper
@@ -125,6 +128,8 @@ public Q_SLOTS:
    void slotCallStateChanged   (Call* call       , Call::State previousState);
    void slotChanged            (                                         );
    void slotUpdate             (                                         );
+   void slotConferenceAdded    (Call* conf                               );
+   void slotConferenceRemoved  (Call* conf                               );
 };
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
@@ -139,6 +144,8 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
    connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
    connect(CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
+   connect(CallModel::instance()          , &CallModel::conferenceCreated        , d_ptr, &RecentModelPrivate::slotConferenceAdded    );
+   connect(CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
 
    //Fill the contacts
    for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
@@ -200,6 +207,8 @@ time_t RecentViewNode::lastUsed() const
          return m_uContent.m_pCall->stopTimeStamp();
       case Type::CALL_GROUP        :
          return m_uContent.m_pCallGroup->m_LastUsed;
+      case Type::CONFERENCE:
+         return m_uContent.m_pConfCall->stopTimeStamp();
       case Type::TEXT_MESSAGE      :
       case Type::TEXT_MESSAGE_GROUP:
          //TODO
@@ -306,6 +315,8 @@ Call* RecentModel::getActiveCall(const QModelIndex &idx)
 
    if (node->m_Type == RecentViewNode::Type::CALL) {
       return node->m_uContent.m_pCall;
+   } else if (node->m_Type == RecentViewNode::Type::CONFERENCE) {
+      return node->m_uContent.m_pConfCall;
    }
 
    QListIterator<RecentViewNode*> lIterator(node->m_lChildren);
@@ -354,6 +365,8 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
          return node->m_uContent.m_pCall->roleData(role);
       case RecentViewNode::Type::CALL_GROUP        :
          return node->m_uContent.m_pCallGroup->m_lCalls[0]->roleData(role);
+      case RecentViewNode::Type::CONFERENCE        :
+        return node->m_uContent.m_pConfCall->roleData(role);
       case RecentViewNode::Type::TEXT_MESSAGE      :
       case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
          //TODO
@@ -692,6 +705,34 @@ RecentModelPrivate::slotChanged()
     if (idx.isValid())
         emit q_ptr->dataChanged(idx, idx);
 }
+
+void RecentModelPrivate::slotConferenceRemoved(Call* conf)
+{
+    RecentViewNode* n = m_hConfToNodes[conf];
+
+    qDebug() << "REMOVE CONFERENCE" << conf << n;
+    if (n) {
+        qDebug() << "REMOVE CONFERENCE" << conf << n;
+        removeNode(n);
+    }
+}
+
+void RecentModelPrivate::slotConferenceAdded(Call* conf)
+{
+    RecentViewNode* n = m_hConfToNodes[conf];
+    const bool isNew = !n;
+
+    if (isNew) {
+        n = new RecentViewNode();
+        n->m_Type                      = RecentViewNode::Type::CONFERENCE    ;
+        n->m_uContent.m_pConfCall      = conf                                ;
+        n->m_pParent                   = nullptr                             ;
+        n->m_Index                     = 0                                   ;
+        m_hConfToNodes[conf]           = n                                   ;
+    }
+    insertNode(n, conf->startTimeStamp(), isNew);
+}
+
 
 ///Filter out every data relevant to a person
 QSortFilterProxyModel*
