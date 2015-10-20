@@ -95,6 +95,7 @@ public:
    Q_INVOKABLE bool mergeConferences         ( Call* conf1, Call* conf2      );
    Q_INVOKABLE bool addParticipant           ( Call* call2, Call* conference );
    Q_INVOKABLE bool detachParticipant        ( Call* call                    );
+   Q_INVOKABLE bool createConferenceFromParent();
 
    //Getters
    Q_INVOKABLE CallList getActiveCalls      ();
@@ -127,6 +128,9 @@ public:
    //Singleton
    static CallModel* instance();
    virtual ~CallModel( );
+
+   QList<Call *> getConferenceParticipants(Call *conf);
+
 
 private:
    //Constructors, initializer and destructors

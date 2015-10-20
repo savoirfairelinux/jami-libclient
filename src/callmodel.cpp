@@ -363,6 +363,17 @@ bool CallModel::hasConference() const
    return false;
 }
 
+QList<Call*> CallModel::getConferenceParticipants(Call* conf)
+{
+    QList<Call*> participantCallList;
+
+    const auto internalConf = d_ptr->m_shInternalMapping[conf];
+    foreach (const auto s, internalConf->m_lChildren) {
+        participantCallList << s->call_real;
+    }
+    return participantCallList;
+}
+
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
@@ -725,12 +736,19 @@ Call* CallModelPrivate::addConference(const QString& confID)
    return newConf;
 } //addConference
 
-///Join two call to create a conference, the conference will be created later (see addConference)
+/// TODO Rename that method accordingly
 bool CallModel::createConferenceFromCall(Call* call1, Call* call2)
 {
   if (!call1 || !call2) return false;
   qDebug() << "Joining call: " << call1 << " and " << call2;
-  Q_NOREPLY DBus::CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
+  if (call1->type() == Call::Type::CONFERENCE)
+      return addParticipant(call2, call1);
+  else if (call2->type() == Call::Type::CONFERENCE)
+      return addParticipant(call1, call2);
+  else if (call1->type() == Call::Type::CONFERENCE && call2->type() == Call::Type::CONFERENCE)
+      return mergeConferences(call1, call2);
+  else
+    Q_NOREPLY DBus::CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
   return true;
 } //createConferenceFromCall
 
@@ -751,7 +769,18 @@ bool CallModel::addParticipant(Call* call2, Call* conference)
 bool CallModel::detachParticipant(Call* call)
 {
    Q_NOREPLY DBus::CallManager::instance().detachParticipant(call->dringId());
-   return true;
+    return true;
+}
+
+bool CallModel::createConferenceFromParent()
+{
+    auto call = this->selectedCall();
+    if (!call || !call->m_pParentCall)
+        return false;
+    auto ret = createConferenceFromCall(call, call->m_pParentCall);
+    if (ret)
+        call->setParentCall(nullptr);
+    return ret;
 }
 
 ///Merge two conferences
