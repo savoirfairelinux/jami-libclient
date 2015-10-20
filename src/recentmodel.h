@@ -36,7 +36,7 @@ class LIB_EXPORT RecentModel : public QAbstractItemModel
 public:
 
    //Model implementation
-   virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
+   virtual bool          setData     ( const QModelIndex& index, const QVariant& value, int role   ) override;
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
    virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const override;
@@ -52,13 +52,16 @@ public:
    //Singleton
    static RecentModel& instance();
 
-   QModelIndex          getIndex     (Call *call               ) const;
-   QModelIndex          getIndex     (Person *p                ) const;
-   QModelIndex          getIndex     (ContactMethod *cm        ) const;
+   QModelIndex          getIndex     (Call* call               ) const;
+   QModelIndex          getIndex     (Person* p                ) const;
+   QModelIndex          getIndex     (ContactMethod* cm        ) const;
+   bool                 isConference (const QModelIndex& idx   ) const;
    bool                 hasActiveCall(const QModelIndex& parent)      ;
    QVector<ContactMethod*> getContactMethods(const QModelIndex& idx) const;
    Call*                getActiveCall(const QModelIndex& parent)      ;
    QItemSelectionModel* selectionModel(                        ) const;
+   QStringList          getParticipantName(Call* call          ) const;
+   int                  getParticipantNumber(Call* call        ) const;
 
 private:
    explicit RecentModel(QObject* parent = nullptr);
