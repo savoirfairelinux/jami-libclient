@@ -27,6 +27,7 @@
 // Ring
 #include "call.h"
 #include "private/matrixutils.h"
+#include "video/sourcemodel.h"
 
 //Qt
 class QTimer;
@@ -143,6 +144,7 @@ public:
    Call::Type                m_Type              ;
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
+   Video::SourceModel*       m_sourceModel       ;
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
