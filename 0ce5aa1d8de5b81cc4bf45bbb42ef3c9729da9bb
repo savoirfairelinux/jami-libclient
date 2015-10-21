@@ -16,6 +16,24 @@
       "revId": "0ce5aa1d8de5b81cc4bf45bbb42ef3c9729da9bb",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_263777e5",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-21T14:51:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa0d159_c3fb2546",
+      "revId": "0ce5aa1d8de5b81cc4bf45bbb42ef3c9729da9bb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
