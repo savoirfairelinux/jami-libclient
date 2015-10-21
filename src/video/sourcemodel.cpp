@@ -20,6 +20,7 @@
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
+#include "callmodel.h"
 
 namespace Video {
 class SourceModelPrivate
@@ -53,8 +54,6 @@ Video::SourceModelPrivate::SourceModelPrivate() : m_CurrentSelection(-1)
 
 }
 
-Video::SourceModel* Video::SourceModel::m_spInstance = nullptr;
-
 Video::SourceModel::SourceModel() : QAbstractListModel(QCoreApplication::instance()),
 d_ptr(new Video::SourceModelPrivate())
 {
@@ -64,13 +63,6 @@ d_ptr(new Video::SourceModelPrivate())
 Video::SourceModel::~SourceModel()
 {
    delete d_ptr;
-}
-
-Video::SourceModel* Video::SourceModel::instance()
-{
-   if (!m_spInstance)
-      m_spInstance = new Video::SourceModel();
-   return m_spInstance;
 }
 
 QHash<int,QByteArray> Video::SourceModel::roleNames() const
@@ -218,3 +210,9 @@ int Video::SourceModel::getDeviceIndex(Video::Device* device)
     int index = Video::DeviceModel::instance()->devices().indexOf(device);
     return index > -1 ? ExtendedDeviceList::COUNT__ + index : -1;
 }
+
+Video::SourceModel* Video::SourceModel::currentModel()
+{
+	return CallModel::instance()->selectedCall()->sourceModel();
+}
+

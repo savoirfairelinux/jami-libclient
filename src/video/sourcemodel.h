@@ -32,6 +32,9 @@ class SourceModelPrivate;
 class LIB_EXPORT SourceModel : public QAbstractListModel {
    Q_OBJECT
 public:
+   explicit SourceModel();
+   virtual ~SourceModel();
+
    enum ExtendedDeviceList {
       NONE   ,
       SCREEN ,
@@ -50,14 +53,11 @@ public:
 
    int getDeviceIndex(Video::Device* device);
 
-   //Singleton
-   static Video::SourceModel* instance();
-private:
-   explicit SourceModel();
-   virtual ~SourceModel();
+   /// Give access to the sourceModel related with the currently active call
+   static Video::SourceModel* currentModel();
 
+private:
    Video::SourceModelPrivate* d_ptr;
-   static Video::SourceModel* m_spInstance;
 
 public Q_SLOTS:
    void switchTo(const QModelIndex& idx);
