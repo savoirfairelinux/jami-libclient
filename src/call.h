@@ -323,6 +323,8 @@ public:
    Q_INVOKABLE QVariant   roleData         (Role role) const;
    Q_INVOKABLE QMimeData* mimePayload      (         ) const;
 
+   Media::Video*            getOutgoingVideoMedia() const;
+
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;
    QList<Media::Recording*> recordings  (Media::Media::Type type, Media::Media::Direction direction) const;
