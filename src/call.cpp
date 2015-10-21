@@ -55,6 +55,7 @@
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "video/renderer.h"
+#include "video/sourcemodel.h"
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
 #include "personmodel.h"
@@ -378,6 +379,27 @@ void CallPrivate::deleteCall(Call* call)
     delete call;
 }
 
+void CallPrivate::updateCallOutgoingMedia()
+{
+   auto list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   const auto& details = CallPrivate::getCallDetailsCommon(m_DringId);
+   QString video_source  = details[ CallPrivate::DetailsMapFields::VIDEO_SOURCE];
+
+   if(video_source.length() <= 0 && list.size() <=0 ){ //Means there is no video, and there never was. Nothing to do.
+       return;
+   }
+
+   if(list.size() <=0 ){//update data
+       Media::Media::Direction direction = Media::Media::Direction::OUT;
+       mediaFactory<Media::Video>(direction);
+   }
+   list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   Media::Video* media_video = (Media::Video*)list[0];
+   media_video->sourceModel()->setUsedIndex(video_source);
+
+   return;
+}
+
 MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 {
    CallManagerInterface& callManager = CallManager::instance();
@@ -427,6 +449,7 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
                                                              deleteCall );
+    call->d_ptr->updateCallOutgoingMedia();
 
     call->d_ptr->m_DringId      = callId;
     call->d_ptr->m_Direction    = callDirection;
@@ -619,6 +642,18 @@ Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCall
  *                                  Getters                                  *
  *                                                                           *
  ****************************************************************************/
+
+///Request outgoing source to the deamon and return media
+Media::Video* Call::GetOutgoingVideoMedia() const
+{
+   d_ptr->updateCallOutgoingMedia();
+   auto list = media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   if(list.size() <=0){
+        return nullptr;
+   }
+   return (Media::Video*)list[0];
+}
+
 
 ///Transfer state from internal to daemon internal syntaz
 CallPrivate::DaemonState CallPrivate::toDaemonCallState(const QString& stateName)
