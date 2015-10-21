@@ -20,6 +20,11 @@
 #include <media/media.h>
 #include <typedefs.h>
 
+namespace Video{
+    class SourceModel;
+}
+
+
 class MediaVideoPrivate;
 class Call;
 class CallPrivate;
@@ -34,6 +39,7 @@ public:
    virtual Media::Type type() override;
    virtual bool mute() override;
    virtual bool unmute() override;
+   ::Video::SourceModel* sourceModel() const;
 
 private:
    Video(Call* parent, const Media::Direction direction);

@@ -20,12 +20,15 @@
 //Dring
 #include <media_const.h>
 #include "dbus/callmanager.h"
+#include "../video/sourcemodel.h"
 
 //Ring
 #include <call.h>
 
 class MediaVideoPrivate
 {
+public:
+    Video::SourceModel *m_pSourceModel = nullptr;
 };
 
 Media::Video::Video(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaVideoPrivate())
@@ -48,6 +51,15 @@ bool Media::Video::unmute()
 {
    CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_VIDEO,false);
+}
+
+Video::SourceModel* Media::Video::sourceModel() const
+{
+    if(!d_ptr->m_pSourceModel){
+        d_ptr->m_pSourceModel = new ::Video::SourceModel();
+    }
+
+    return d_ptr->m_pSourceModel;
 }
 
 Media::Video::~Video()
