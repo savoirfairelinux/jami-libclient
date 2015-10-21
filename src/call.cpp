@@ -55,6 +55,7 @@
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "video/renderer.h"
+#include "video/sourcemodel.h"
 #include "tlsmethodmodel.h"
 #include "audio/settings.h"
 #include "personmodel.h"
@@ -388,6 +389,28 @@ void CallPrivate::deleteCall(Call* call)
     delete call;
 }
 
+void CallPrivate::updateOutgoingMedia(const MapStringString& details)
+{
+   auto list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   QString video_source  = details[ DRing::Call::Details::VIDEO_SOURCE];
+
+   if (video_source.length() <= 0 && list.isEmpty()) {
+       // Means there is no video, and there never was. Nothing to do.
+       return;
+   }
+
+   if (list.isEmpty()) {
+       // Update data
+       static const Media::Media::Direction direction = Media::Media::Direction::OUT;
+       mediaFactory<Media::Video>(direction);
+   }
+
+   list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   Media::Video* media_video = static_cast<Media::Video*>(list[0]);
+   media_video->sourceModel()->setUsedIndex(video_source);
+   return;
+}
+
 MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 {
    CallManagerInterface& callManager = CallManager::instance();
@@ -437,6 +460,7 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
                                                              deleteCall );
+    call->d_ptr->updateOutgoingMedia(details);
 
     call->d_ptr->m_DringId      = callId;
     call->d_ptr->m_Direction    = callDirection;
@@ -1251,6 +1275,8 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       }
 
       MapStringString details = getCallDetailsCommon(m_DringId);
+      updateOutgoingMedia(details);
+
       if (!details[DRing::Call::Details::DISPLAY_NAME].isEmpty()
           and ( details[DRing::Call::Details::DISPLAY_NAME] != m_PeerName) )
          m_PeerName = details[DRing::Call::Details::DISPLAY_NAME];
