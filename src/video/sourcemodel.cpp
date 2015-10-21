@@ -20,6 +20,7 @@
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
+#include "callmodel.h"
 
 namespace Video {
 class SourceModelPrivate
@@ -50,10 +51,10 @@ public:
 
 Video::SourceModelPrivate::SourceModelPrivate() : m_CurrentSelection(-1)
 {
-
+   m_CurrentSelection = SourceModel::ExtendedDeviceList::COUNT__ - Video::DeviceModel::instance().activeIndex();
 }
 
-Video::SourceModel::SourceModel() : QAbstractListModel(QCoreApplication::instance()),
+Video::SourceModel::SourceModel(QObject* parent) : QAbstractListModel(parent),
 d_ptr(new Video::SourceModelPrivate())
 {
    d_ptr->m_Display.rect = QRect(0,0,0,0);
@@ -62,12 +63,6 @@ d_ptr(new Video::SourceModelPrivate())
 Video::SourceModel::~SourceModel()
 {
    delete d_ptr;
-}
-
-Video::SourceModel& Video::SourceModel::instance()
-{
-   static auto instance = new Video::SourceModel;
-   return *instance;
 }
 
 QHash<int,QByteArray> Video::SourceModel::roleNames() const
@@ -143,8 +138,7 @@ void Video::SourceModel::switchTo(const QModelIndex& idx)
 ///This model is designed for "live" switching rather than configuration
 void Video::SourceModel::switchTo(const int idx)
 {
-   auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
-   switch (newIdx) {
+   switch (idx) {
       case ExtendedDeviceList::NONE:
          VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
          break;
@@ -164,11 +158,9 @@ void Video::SourceModel::switchTo(const int idx)
       default:
          VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
-         Video::DeviceModel::instance().setActive(idx-ExtendedDeviceList::COUNT__);
-         newIdx = -1;
          break;
    };
-   d_ptr->m_CurrentSelection = newIdx;
+   d_ptr->m_CurrentSelection = idx;
 }
 
 void Video::SourceModel::switchTo(Video::Device* device)
@@ -191,10 +183,7 @@ Video::Device* Video::SourceModel::deviceAt(const QModelIndex& idx) const
 
 int Video::SourceModel::activeIndex() const
 {
-   if (d_ptr->m_CurrentSelection == -1) {
-      return ExtendedDeviceList::COUNT__ + Video::DeviceModel::instance().activeIndex();
-   }
-   return d_ptr->m_CurrentSelection;
+    return d_ptr->m_CurrentSelection;
 }
 
 void Video::SourceModel::setFile(const QUrl& url)
@@ -215,3 +204,4 @@ int Video::SourceModel::getDeviceIndex(Video::Device* device)
     int index = Video::DeviceModel::instance().devices().indexOf(device);
     return index > -1 ? ExtendedDeviceList::COUNT__ + index : -1;
 }
+
