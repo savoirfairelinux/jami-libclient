@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa0d159_03890dca",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-21T13:49:17Z",
+      "side": 1,
+      "message": "Should we verify if parent is valid ?",
+      "range": {
+        "startLine": 647,
+        "startChar": 40,
+        "endLine": 647,
+        "endChar": 46
+      },
+      "revId": "09eb4967e5855a0a4f95e616d10ba846f1febdac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
