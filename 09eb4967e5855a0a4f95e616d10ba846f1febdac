@@ -22,6 +22,30 @@
       "revId": "09eb4967e5855a0a4f95e616d10ba846f1febdac",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_c39245f6",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-21T13:56:21Z",
+      "side": 1,
+      "message": "well, I don\u0027t think anything bad will happen if dataChanged is called on an invalid index, though it should never happen in this case and I think I added this check in the following patch, but yeah, we should",
+      "parentUuid": "3aa0d159_03890dca",
+      "range": {
+        "startLine": 647,
+        "startChar": 40,
+        "endLine": 647,
+        "endChar": 46
+      },
+      "revId": "09eb4967e5855a0a4f95e616d10ba846f1febdac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
