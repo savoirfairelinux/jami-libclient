@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_1bcadba1",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-21T16:49:08Z",
+      "side": 1,
+      "message": "you missed the r-\u003emoveToThread(t);\nAnyway this code is duplicated and done in same way in both if case, just do it after all the if else.",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 18
+      },
+      "revId": "3a4d77d23bf31bca16f341aabb04e2589cf72eb4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_3bcf97b2",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-10-21T16:49:08Z",
+      "side": 1,
+      "message": "miss the t-\u003ewait() no?\nCheck the code in shm case, do not duplicate if it\u0027s the same code path",
+      "revId": "3a4d77d23bf31bca16f341aabb04e2589cf72eb4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
