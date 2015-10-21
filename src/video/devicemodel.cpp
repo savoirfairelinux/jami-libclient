@@ -144,6 +144,20 @@ void Video::DeviceModel::setActive(const QModelIndex& idx)
    }
 }
 
+///Returns index from a source QString
+int Video::DeviceModel::getIndex(QString *deviceStr) 
+{
+    int dev_index;
+
+    for(dev_index = 0 ; dev_index < d_ptr->m_lDevices.size() ; dev_index++){
+        if(deviceStr->indexOf( d_ptr->m_lDevices[dev_index]->name()) >= 0){
+            return dev_index;
+        }
+    }
+
+    return 0;
+}
+
 ///Convenience
 void Video::DeviceModel::setActive(const int idx)
 {

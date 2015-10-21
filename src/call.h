@@ -30,6 +30,7 @@ class QTimer;
 #include "typedefs.h"
 #include "historytimecategorymodel.h"
 #include "media/media.h"
+#include "video/sourcemodel.h"
 #include "itemdataroles.h"
 class Account               ;
 class InstantMessagingModel ;
@@ -306,9 +307,11 @@ public:
    bool                     hasRemote        () const;
    Certificate*             certificate      () const;
    FlagPack<HoldFlags>      holdFlags        () const;
+   Video::SourceModel*      sourceModel      () const;
    QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
    bool                     hasParentCall    () const;
+   Media::Video*            GetOutgoingVideoMedia() const;
 
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;
