@@ -145,7 +145,7 @@ const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonSta
 /*ERROR        */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
 /*CONF         */ {{Call::State::CURRENT     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*CONF_HOLD    */ {{Call::State::HOLD        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*INIT         */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
+/*INIT         */ {{Call::State::RINGING     , Call::State::INITIALIZATION, Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 /*ABORTED      */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
 /*CONNECTED    */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
 }};//                                                                                                                                                                                                 */
