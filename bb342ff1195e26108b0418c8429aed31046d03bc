@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_9b8fcb75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-21T16:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_1b573b04",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 27
+      },
+      "revId": "bb342ff1195e26108b0418c8429aed31046d03bc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_7b52ff14",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2015-10-21T15:51:53Z",
       "side": 1,
       "message": "not needed as it\u0027s the first check done by the for-loop",
+      "range": {
+        "startLine": 629,
+        "startChar": 12,
+        "endLine": 629,
+        "endChar": 61
+      },
+      "revId": "bb342ff1195e26108b0418c8429aed31046d03bc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_bb8c0781",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-21T16:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_7b52ff14",
       "range": {
         "startLine": 629,
         "startChar": 12,
