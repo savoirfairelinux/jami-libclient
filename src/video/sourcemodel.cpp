@@ -53,8 +53,6 @@ Video::SourceModelPrivate::SourceModelPrivate() : m_CurrentSelection(-1)
 
 }
 
-Video::SourceModel* Video::SourceModel::m_spInstance = nullptr;
-
 Video::SourceModel::SourceModel() : QAbstractListModel(QCoreApplication::instance()),
 d_ptr(new Video::SourceModelPrivate())
 {
@@ -64,13 +62,6 @@ d_ptr(new Video::SourceModelPrivate())
 Video::SourceModel::~SourceModel()
 {
    delete d_ptr;
-}
-
-Video::SourceModel* Video::SourceModel::instance()
-{
-   if (!m_spInstance)
-      m_spInstance = new Video::SourceModel();
-   return m_spInstance;
 }
 
 QHash<int,QByteArray> Video::SourceModel::roleNames() const
