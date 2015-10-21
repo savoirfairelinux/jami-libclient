@@ -59,6 +59,7 @@
 #include "audio/settings.h"
 #include "personmodel.h"
 #include "private/contactmethod_p.h"
+#include "video/sourcemodel.h"
 
 #include "media/audio.h"
 #include "media/video.h"
@@ -312,6 +313,7 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
    d_ptr->m_Account          = account;
    d_ptr->m_PeerName         = peerName;
    d_ptr->m_pPeerContactMethod = number;
+   d_ptr->m_sourceModel      = new Video::SourceModel();
 
    emit changed();
 }
@@ -324,7 +326,7 @@ Call::Call(const QString& confId, const QString& account)
    d_ptr->m_Account      = AccountModel::instance().getById(account.toLatin1());
    d_ptr->m_Type         = (!confId.isEmpty())?Call::Type::CONFERENCE:Call::Type::CALL;
    d_ptr->m_DringId      = confId;
-
+   d_ptr->m_sourceModel  = new Video::SourceModel(); 
    setObjectName("Conf:"+confId);
 
    if (type() == Call::Type::CONFERENCE) {
@@ -857,6 +859,12 @@ Call::State Call::state() const
    return d_ptr->m_CurrentState;
 }
 
+
+Video::SourceModel* Call::sourceModel() const
+{
+   return d_ptr->m_sourceModel;
+}
+
 ///Translate the state into its life cycle equivalent
 Call::LifeCycleState Call::lifeCycleState() const
 {
@@ -1343,6 +1351,9 @@ void CallPrivate::initMedia()
 
 void CallPrivate::terminateMedia()
 {
+   if(m_sourceModel != nullptr ){
+      delete m_sourceModel;
+   }
    //Delete remaining media
    for (const auto t : EnumIterator<Media::Media::Type>() ) {
       for (const auto d : EnumIterator<Media::Media::Direction>() ) {
