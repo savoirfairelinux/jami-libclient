@@ -237,6 +237,7 @@ public:
    void peerHoldChanged(bool onPeerHold);
    template<typename T>
    T* mediaFactory(Media::Media::Direction dir);
+   void updateOutgoingMedia(const MapStringString& details);
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );
