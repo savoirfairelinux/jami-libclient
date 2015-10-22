@@ -63,7 +63,7 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
    registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
    registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
 #ifdef ENABLE_VIDEO
-   registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
+   registerVideoHandlers(VideoManager::instance().videoHandlers);
 #endif
 
    if (!DRing::start())

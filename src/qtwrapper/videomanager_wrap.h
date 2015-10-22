@@ -2,6 +2,7 @@
  *   Copyright (C) 2014 by Savoir-Faire Linux                                 *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>        *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -23,15 +24,9 @@
 
 // Qt
 #include <QtCore/QObject>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QByteArray>
-#include <QtCore/QThread>
-#include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <QtCore/QVariant>
-#include <QtCore/QTimer>
 
 // Ring
 #include <videomanager_interface.h>
@@ -39,46 +34,12 @@
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
 
-class VideoManagerInterface;
-
-class VideoManagerSignalProxy : public QObject
-{
-   Q_OBJECT
-public:
-   VideoManagerSignalProxy(VideoManagerInterface* parent);
-
-public Q_SLOTS:
-   void slotDeviceEvent();
-   void slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
-   void slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
-
-private:
-   VideoManagerInterface* m_pParent;
-};
-
-class VideoManagerProxySender : public QObject
-{
-    Q_OBJECT
-    friend class VideoManagerInterface;
-public:
-
-Q_SIGNALS:
-    void deviceEvent();
-    void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
-    void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
-};
-
-
-
 /*
  * Proxy class for interface org.ring.Ring.VideoManager
  */
 class VideoManagerInterface: public QObject
 {
     Q_OBJECT
-
-friend class VideoManagerSignalProxy;
-
 public:
 
     VideoManagerInterface();
@@ -87,10 +48,6 @@ public:
 #ifdef ENABLE_VIDEO
      std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
 #endif
-
-private:
-    VideoManagerSignalProxy* proxy;
-    VideoManagerProxySender* sender;
 
 public Q_SLOTS: // METHODS
     void applySettings(const QString &name, MapStringString settings)

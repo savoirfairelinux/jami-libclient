@@ -70,18 +70,19 @@ Renderer(id, res),
 d_ptr(new DirectRendererPrivate(this))
 {
     setObjectName("Video::DirectRenderer:"+id);
+    qWarning() << "Calling registerSinkTarget";
 }
 
 ///Destructor
 Video::DirectRenderer::~DirectRenderer()
-{
-}
+{}
 
 void Video::DirectRenderer::startRendering()
 {
    Video::Renderer::d_ptr->m_isRendering = true;
    emit started();
 }
+
 void Video::DirectRenderer::stopRendering ()
 {
    Video::Renderer::d_ptr->m_isRendering = false;
