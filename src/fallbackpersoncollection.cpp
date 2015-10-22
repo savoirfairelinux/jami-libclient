@@ -253,7 +253,7 @@ void FallbackPersonCollectionPrivate::loadAsync()
    QDir d(m_Path);
    for (const QString& dir : d.entryList(QDir::AllDirs)) {
       if (dir != QString('.') && dir != "..") {
-         CollectionInterface* col = PersonModel::instance()->addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
+         CollectionInterface* col = PersonModel::instance().addCollection<FallbackPersonCollection,QString,FallbackPersonCollection*>(m_Path+'/'+dir,q_ptr);
          if (col->isEnabled()) {
             col->load();
          }
