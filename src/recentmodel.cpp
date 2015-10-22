@@ -164,7 +164,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
          static_cast<int>(PhoneDirectoryModel::Role::Object)
       ));
 
-      if (cm && cm->lastUsed() && !cm->contact())
+      if (cm && cm->lastUsed() && (!cm->contact() || cm->contact()->isPlaceHolder()))
          d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
    }
 
@@ -560,7 +560,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
 void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 {
    //ContactMethod with a Person are handled elsewhere
-   if (!cm->contact()) {
+   if (!cm->contact() || cm->contact()->isPlaceHolder()) {
       RecentViewNode* n = m_hCMsToNodes[cm];
       const bool isNew = !n;
 
@@ -665,8 +665,11 @@ RecentModelPrivate::parentNode(Call *call) const
     if (!call)
         return {};
 
-    if (auto p = call->peerContactMethod()->contact())
-        return m_hPersonsToNodes.value(p);
+    if (auto p = call->peerContactMethod()->contact()) {
+        // if we don't find the Person in our list of nodes, then we want to check the list of CMs
+        if (m_hPersonsToNodes.contains(p))
+            return m_hPersonsToNodes.value(p);
+    }
     return m_hCMsToNodes.value(call->peerContactMethod());
 }
 
