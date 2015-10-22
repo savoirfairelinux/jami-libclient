@@ -1,6 +1,7 @@
 /******************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                            *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>   *
+ *   Author: Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>    *
+ *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>         *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -26,55 +27,56 @@
 
 //Ring
 #include "video/device.h"
+
 namespace Video {
-   class Renderer;
+class Renderer;
 }
+
+struct SHMHeader;
 class Call;
 class QMutex;
-struct SHMHeader;
-
-
 class VideoRendererManagerPrivate;
 
 ///VideoModel: Video event dispatcher
 class VideoRendererManager final : public QObject
 {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
    Q_OBJECT
-   #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
+
 public:
     //Singleton
     static VideoRendererManager& instance();
 
-   //Getters
-   bool             isPreviewing   () const;
-   Video::Renderer* previewRenderer()      ;
-   int              size           () const;
+    //Getters
+    bool             isPreviewing   () const;
+    Video::Renderer* previewRenderer() const;
+    int              size           () const;
 
-   //Helpers
-   Video::Renderer* getRenderer(const Call* call) const;
-   void setBufferSize(uint size);
-   void switchDevice(const Video::Device* device) const;
+    //Helpers
+    Video::Renderer* getRenderer(const Call* call) const;
+    void setBufferSize(uint size);
+    void switchDevice(const Video::Device* device) const;
 
 private:
-   //Constructor
-   explicit VideoRendererManager();
-   virtual ~VideoRendererManager();
+    //Constructor
+    VideoRendererManager();
+    virtual ~VideoRendererManager();
 
-   QScopedPointer<VideoRendererManagerPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(VideoRendererManager)
+    Video::Renderer* makePreviewRenderer() const;
 
+    QScopedPointer<VideoRendererManagerPrivate> d_ptr;
+    Q_DECLARE_PRIVATE(VideoRendererManager)
 
 public Q_SLOTS:
-   void stopPreview ();
-   void startPreview();
+    void stopPreview ();
+    void startPreview();
 
 Q_SIGNALS:
-   ///The preview started/stopped
-   void previewStateChanged(bool startStop);
-   void previewStarted(Video::Renderer* Renderer);
-   void previewStopped(Video::Renderer* Renderer);
-
+    ///The preview started/stopped
+    void previewStateChanged(bool startStop);
+    void previewStarted(Video::Renderer* Renderer);
+    void previewStopped(Video::Renderer* Renderer);
 };
 
