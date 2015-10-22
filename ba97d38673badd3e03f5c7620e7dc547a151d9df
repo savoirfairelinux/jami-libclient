@@ -22,6 +22,30 @@
       "revId": "ba97d38673badd3e03f5c7620e7dc547a151d9df",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_9ec33938",
+        "filename": "src/video/configurationproxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-22T19:56:31Z",
+      "side": 1,
+      "message": "in the destructor of this class?",
+      "parentUuid": "1a9dcd25_5e8ff123",
+      "range": {
+        "startLine": 65,
+        "startChar": 51,
+        "endLine": 65,
+        "endChar": 77
+      },
+      "revId": "ba97d38673badd3e03f5c7620e7dc547a151d9df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
