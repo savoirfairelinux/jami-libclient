@@ -234,23 +234,23 @@ void CertificatePrivate::loadChecks(bool reload)
       if (reload && m_pCheckCache)
          delete m_pCheckCache;
       m_pCheckCache = new ChecksCache(checks);
-      CertificateModel::instance()->d_ptr->regenChecks(q_ptr);
+      CertificateModel::instance().d_ptr->regenChecks(q_ptr);
    }
 }
 
 Certificate::Certificate(const QString& path, Type type, const QString& privateKey) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_PATH))
 {
    Q_UNUSED(privateKey)
-   moveToThread(CertificateModel::instance()->thread());
-   setParent(CertificateModel::instance());
+   moveToThread(CertificateModel::instance().thread());
+   setParent(&CertificateModel::instance());
    d_ptr->m_Path = path;
    d_ptr->m_Type = type;
 }
 
 Certificate::Certificate(const QString& id) : ItemBase(nullptr),d_ptr(new CertificatePrivate(this,LoadingType::FROM_ID))
 {
-   moveToThread(CertificateModel::instance()->thread());
-   setParent(CertificateModel::instance());
+   moveToThread(CertificateModel::instance().thread());
+   setParent(&CertificateModel::instance());
    d_ptr->m_Id = id.toLatin1();
 }
 
@@ -627,7 +627,7 @@ bool Certificate::requireStrictPermission() const
 Certificate* Certificate::signedBy() const
 {
    if ((!d_ptr->m_pSignedBy) && (!issuer().isEmpty())) {
-      d_ptr->m_pSignedBy = CertificateModel::instance()->getCertificateFromId(issuer());
+      d_ptr->m_pSignedBy = CertificateModel::instance().getCertificateFromId(issuer());
    }
 
    return d_ptr->m_pSignedBy;
@@ -727,7 +727,7 @@ QVariant Certificate::detailResult(Certificate::Details detail) const
  */
 QAbstractItemModel* Certificate::model() const
 {
-   return CertificateModel::instance()->d_ptr->model(this);
+   return CertificateModel::instance().d_ptr->model(this);
 }
 
 /**
@@ -736,7 +736,7 @@ QAbstractItemModel* Certificate::model() const
  */
 QAbstractItemModel* Certificate::checksModel() const
 {
-   return CertificateModel::instance()->d_ptr->checksModel(this);
+   return CertificateModel::instance().d_ptr->checksModel(this);
 }
 
 ///DEPRECATED

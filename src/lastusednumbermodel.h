@@ -32,7 +32,7 @@ class LIB_EXPORT LastUsedNumberModel : public QAbstractListModel
 
 public:
    //Singleton
-   static LastUsedNumberModel* instance();
+   static LastUsedNumberModel& instance();
 
    //Model functions
    virtual  QVariant     data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
@@ -51,7 +51,4 @@ private:
 
    LastUsedNumberModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(LastUsedNumberModel)
-
-   //Static attributes
-   static LastUsedNumberModel* m_spInstance;
 };

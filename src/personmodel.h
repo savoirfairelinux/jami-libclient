@@ -72,14 +72,11 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Singleton
-   static PersonModel* instance();
+   static PersonModel& instance();
 
 private:
    QScopedPointer<PersonModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(PersonModel)
-
-   //Singleton
-   static PersonModel* m_spInstance;
 
    //Backend interface
    virtual void collectionAddedCallback(CollectionInterface* backend) override;
