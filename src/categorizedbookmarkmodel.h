@@ -74,11 +74,9 @@ public:
    ContactMethod* getNumber(const QModelIndex& idx);
 
    //Singleton
-   static CategorizedBookmarkModel* instance();
+   static CategorizedBookmarkModel& instance();
 
 private:
-   static CategorizedBookmarkModel* m_spInstance;
-
    CategorizedBookmarkModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CategorizedBookmarkModel)
 

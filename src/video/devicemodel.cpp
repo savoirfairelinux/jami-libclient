@@ -29,8 +29,6 @@
 #include "../dbus/videomanager.h"
 #include "../private/videorenderermanager.h"
 
-Video::DeviceModel* Video::DeviceModel::m_spInstance = nullptr;
-
 namespace Video {
 class DeviceModelPrivate : public QObject
 {
@@ -56,24 +54,22 @@ Video::DeviceModelPrivate::DeviceModelPrivate() : m_pDummyDevice(nullptr),m_pAct
 ///
 void Video::DeviceModelPrivate::idleReload()
 {
-   DeviceModel::instance()->setActive(DeviceModel::instance()->activeDevice());
+   DeviceModel::instance().setActive(DeviceModel::instance().activeDevice());
 }
 
 ///Constructor
 Video::DeviceModel::DeviceModel() : QAbstractListModel(QCoreApplication::instance()),
 d_ptr(new Video::DeviceModelPrivate())
 {
-   m_spInstance = this;
    reload();
    VideoManagerInterface& interface = DBus::VideoManager::instance();
    connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()));
 }
 
-Video::DeviceModel* Video::DeviceModel::instance()
+Video::DeviceModel& Video::DeviceModel::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new Video::DeviceModel();
-   return m_spInstance;
+    static auto instance = new Video::DeviceModel;
+    return *instance;
 }
 
 QHash<int,QByteArray> Video::DeviceModel::roleNames() const
@@ -141,9 +137,9 @@ void Video::DeviceModel::setActive(const QModelIndex& idx)
       emit currentIndexChanged(idx.row());
 
       //If the only renderer is the preview, reload it
-      if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
-         Video::PreviewManager::instance()->stopPreview();
-         Video::PreviewManager::instance()->startPreview();
+      if (Video::PreviewManager::instance().isPreviewing() && VideoRendererManager::instance().size() == 1) {
+         Video::PreviewManager::instance().stopPreview();
+         Video::PreviewManager::instance().startPreview();
       }
    }
 }

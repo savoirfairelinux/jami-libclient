@@ -28,7 +28,7 @@ class LIB_EXPORT HookManager : public QObject
    Q_OBJECT
 
 public:
-   static HookManager* instance();
+   static HookManager& instance();
 
    //Properties
    Q_PROPERTY(QString prefix              READ prefix               WRITE setPrefix             )
@@ -59,7 +59,5 @@ private:
    virtual ~HookManager();
 
    QScopedPointer<HookManagerPrivate> d_ptr;
-
-   static HookManager* m_spInstance;
 };
 

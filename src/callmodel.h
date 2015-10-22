@@ -125,7 +125,7 @@ public:
 
 
    //Singleton
-   static CallModel* instance();
+   static CallModel& instance();
    virtual ~CallModel( );
 
 private:
@@ -137,9 +137,6 @@ private:
    //Friend API
    Call* getCall ( const QString& callId  ) const;
    void  registerCall(Call* call);
-
-   //Singleton
-   static CallModel* m_spInstance;
 
 Q_SIGNALS:
    ///Emitted when a call state change

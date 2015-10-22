@@ -110,7 +110,7 @@ Qt::ItemFlags EnabledExtensionsProxy::flags( const QModelIndex& index) const
 QAbstractItemModel* CollectionInterface::extensionsModel() const
 {
    if (!d_ptr2->m_pEnabledExtensions)
-      d_ptr2->m_pEnabledExtensions = new EnabledExtensionsProxy(CollectionExtensionModel::instance());
+      d_ptr2->m_pEnabledExtensions = new EnabledExtensionsProxy(&CollectionExtensionModel::instance());
    return d_ptr2->m_pEnabledExtensions;
 }
 

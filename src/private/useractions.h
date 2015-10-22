@@ -44,9 +44,9 @@ bool muteVideo(const QList<Call*> calls, bool state);
 
 bool addNew()
 {
-   Call* call = CallModel::instance()->dialingCall();
-      CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
-      return true;
+    Call* call = CallModel::instance().dialingCall();
+    CallModel::instance().selectionModel()->setCurrentIndex(CallModel::instance().getIndex(call), QItemSelectionModel::ClearAndSelect);
+    return true;
 }
 
 bool accept(const QList<Call*> calls)
@@ -64,8 +64,8 @@ bool accept(const QList<Call*> calls)
       if (state == Call::State::RINGING || state == Call::State::CURRENT || state == Call::State::HOLD
          || state == Call::State::BUSY || state == Call::State::FAILURE || state == Call::State::ERROR) {
          qDebug() << "Calling when item currently ringing, current, hold or busy. Opening an item.";
-         Call* c2 = CallModel::instance()->dialingCall();
-         CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(c2), QItemSelectionModel::ClearAndSelect);
+         Call* c2 = CallModel::instance().dialingCall();
+         CallModel::instance().selectionModel()->setCurrentIndex(CallModel::instance().getIndex(c2), QItemSelectionModel::ClearAndSelect);
       }
       else {
          try {
