@@ -128,7 +128,7 @@ struct VCardMapper {
       // TODO: Currently we only support one type (the first on the line) TYPE=WORK,VOICE: <number>
       const QStringList categories = QString(type).split(',');
 
-      ContactMethod* cm = PhoneDirectoryModel::instance()->getNumber(fn,c,nullptr,categories.size()?categories[0]:QString());
+      ContactMethod* cm = PhoneDirectoryModel::instance().getNumber(fn,c,nullptr,categories.size()?categories[0]:QString());
       Person::ContactMethods m = c->phoneNumbers();
       m << cm;
       c->setContactMethods(m);
@@ -307,7 +307,7 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
             //Link with accounts
             if(k == VCardUtils::Property::X_RINGACCOUNT) {
                   if (accounts) {
-                  Account* a = AccountModel::instance()->getById(v.trimmed(),true);
+                  Account* a = AccountModel::instance().getById(v.trimmed(),true);
                   if(!a) {
                      qDebug() << "Could not find account: " << v.trimmed();
                      continue;

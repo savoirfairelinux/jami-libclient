@@ -50,7 +50,7 @@ public:
    virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
-   static DeviceModel* instance();
+   static DeviceModel& instance();
 
 
    Video::Device* activeDevice() const;
@@ -60,7 +60,6 @@ public:
 
 private:
    const QScopedPointer<DeviceModelPrivate> d_ptr;
-   static DeviceModel* m_spInstance;
 
 public Q_SLOTS:
    void setActive(const QModelIndex& idx);

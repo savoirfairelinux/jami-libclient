@@ -82,7 +82,7 @@ public:
    TextRecording* createTextRecording(const ContactMethod* cm);
 
    //Singleton
-   static RecordingModel* instance();
+   static RecordingModel& instance();
 
 private:
    RecordingModelPrivate* d_ptr;

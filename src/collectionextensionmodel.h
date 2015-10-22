@@ -57,14 +57,14 @@ public:
 
    /**
     * Get the instance of a particular extension
-    * 
+    *
     * This function will register the type if it isn't already registered
     */
    template<class T>
    static T* getExtension();
 
    //Singleton
-   static CollectionExtensionModel* instance();
+   static CollectionExtensionModel& instance();
 
 
 private:

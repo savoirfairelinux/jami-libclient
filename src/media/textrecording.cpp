@@ -383,11 +383,11 @@ void Serializable::Peer::read (const QJsonObject &json)
    personUID = json["personUID"].toString();
    sha1      = json["sha1"     ].toString();
 
-   Account* a     = AccountModel::instance()->getById(accountId.toLatin1());
+   Account* a     = AccountModel::instance().getById(accountId.toLatin1());
    Person* person = personUID.isEmpty() ?
-      nullptr : PersonModel::instance()->getPersonByUid(personUID.toLatin1());
+      nullptr : PersonModel::instance().getPersonByUid(personUID.toLatin1());
 
-   m_pContactMethod = PhoneDirectoryModel::instance()->getNumber(uri,person,a);
+   m_pContactMethod = PhoneDirectoryModel::instance().getNumber(uri,person,a);
 }
 
 void Serializable::Peer::write(QJsonObject &json) const

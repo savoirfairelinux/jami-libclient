@@ -122,37 +122,37 @@ ContactSortingCategoryModel::~ContactSortingCategoryModel()
 void sortContact(QSortFilterProxyModel* p, int roleIdx);
 void sortContact(QSortFilterProxyModel* p, int roleIdx)
 {
-   static CategorizedContactModel* m = CategorizedContactModel::instance();
+   static auto& m = CategorizedContactModel::instance();
    switch(static_cast<CategorizedContactModel::SortedProxy::Categories>(roleIdx)) {
       case CategorizedContactModel::SortedProxy::Categories::NAME:
-         m->setSortAlphabetical(true);
-         m->setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Empty"));
+         m.setSortAlphabetical(true);
+         m.setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Empty"));
          p->setSortRole(Qt::DisplayRole);
-         m->setRole(Qt::DisplayRole);
+         m.setRole(Qt::DisplayRole);
          break;
       case CategorizedContactModel::SortedProxy::Categories::ORGANIZATION:
-         m->setSortAlphabetical(false);
-         m->setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Unknown"));
+         m.setSortAlphabetical(false);
+         m.setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Unknown"));
          p->setSortRole((int)Person::Role::Organization);
-         m->setRole((int)Person::Role::Organization);
+         m.setRole((int)Person::Role::Organization);
          break;
       case CategorizedContactModel::SortedProxy::Categories::RECENTLYUSED:
-         m->setSortAlphabetical(false);
-         m->setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Never"));
+         m.setSortAlphabetical(false);
+         m.setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Never"));
          p->setSortRole((int)Person::Role::IndexedLastUsed);
-         m->setRole((int)Person::Role::FormattedLastUsed);
+         m.setRole((int)Person::Role::FormattedLastUsed);
          break;
       case CategorizedContactModel::SortedProxy::Categories::GROUP:
-         m->setSortAlphabetical(false);
-         m->setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Other"));
+         m.setSortAlphabetical(false);
+         m.setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Other"));
          p->setSortRole((int)Person::Role::Group);
-         m->setRole((int)Person::Role::Group);
+         m.setRole((int)Person::Role::Group);
          break;
       case CategorizedContactModel::SortedProxy::Categories::DEPARTMENT:
-         m->setSortAlphabetical(false);
-         m->setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Unknown"));
+         m.setSortAlphabetical(false);
+         m.setDefaultCategory(QT_TRANSLATE_NOOP("CategorizedContactModel", "Unknown"));
          p->setSortRole((int)Person::Role::Department);
-         m->setRole((int)Person::Role::Department);
+         m.setRole((int)Person::Role::Department);
          break;
       case CategorizedContactModel::SortedProxy::Categories::COUNT__:
          break;
@@ -192,23 +192,23 @@ void sortHistory(QSortFilterProxyModel* p, int role)
 {
    switch (static_cast<CategorizedHistoryModel::SortedProxy::Categories>(role)) {
       case CategorizedHistoryModel::SortedProxy::Categories::DATE:
-         CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::FuzzyDate));
+         CategorizedHistoryModel::instance().setCategoryRole(static_cast<int>(Call::Role::FuzzyDate));
          p->setSortRole(static_cast<int>(Call::Role::Date));
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::NAME:
-         CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::Name));
+         CategorizedHistoryModel::instance().setCategoryRole(static_cast<int>(Call::Role::Name));
          p->setSortRole(Qt::DisplayRole);
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::POPULARITY:
-         CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::CallCount));
+         CategorizedHistoryModel::instance().setCategoryRole(static_cast<int>(Call::Role::CallCount));
          p->setSortRole(static_cast<int>(Call::Role::CallCount));
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::LENGTH:
-         CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::Length));
+         CategorizedHistoryModel::instance().setCategoryRole(static_cast<int>(Call::Role::Length));
          p->setSortRole(static_cast<int>(Call::Role::Length));
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::SPENT_TIME:
-         CategorizedHistoryModel::instance()->setCategoryRole(static_cast<int>(Call::Role::TotalSpentTime));
+         CategorizedHistoryModel::instance().setCategoryRole(static_cast<int>(Call::Role::TotalSpentTime));
          p->setSortRole(static_cast<int>(Call::Role::TotalSpentTime));
          break;
       case CategorizedHistoryModel::SortedProxy::Categories::COUNT__:
@@ -281,7 +281,7 @@ SortingCategory::ModelTuple* createModels(QAbstractItemModel* src, int role, std
 
 SortingCategory::ModelTuple* SortingCategory::getContactProxy()
 {
-   return createModels<ContactSortingCategoryModel>(CategorizedContactModel::instance(),(int)Person::Role::Filter, [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
+   return createModels<ContactSortingCategoryModel>(&CategorizedContactModel::instance(),(int)Person::Role::Filter, [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
       if (idx.isValid()) {
          qDebug() << "Selection changed" << idx.row();
          sortContact(proxy,idx.row());
@@ -291,7 +291,7 @@ SortingCategory::ModelTuple* SortingCategory::getContactProxy()
 
 SortingCategory::ModelTuple* SortingCategory::getHistoryProxy()
 {
-   return createModels<HistorySortingCategoryModel>(CategorizedHistoryModel::instance(),static_cast<int>(Call::Role::Date), [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
+   return createModels<HistorySortingCategoryModel>(&CategorizedHistoryModel::instance(),static_cast<int>(Call::Role::Date), [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
      if (idx.isValid()) {
          qDebug() << "Selection changed" << idx.row();
          sortHistory(proxy,idx.row());
