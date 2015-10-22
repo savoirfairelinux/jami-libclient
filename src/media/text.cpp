@@ -91,11 +91,10 @@ IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QO
    connect(&callManager         , &CallManagerInterface::incomingMessage                , this, &IMConversationManagerPrivate::newMessage       );
 }
 
-IMConversationManagerPrivate* IMConversationManagerPrivate::instance()
+IMConversationManagerPrivate& IMConversationManagerPrivate::instance()
 {
-   static IMConversationManagerPrivate* ins = new IMConversationManagerPrivate(nullptr);
-
-   return ins;
+   static auto instance = new IMConversationManagerPrivate(nullptr);
+   return *instance;
 }
 
 Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload)
@@ -135,7 +134,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 {
    Q_UNUSED(from)
 
-   Call* call = CallModel::instance()->getCall(callId);
+   Call* call = CallModel::instance().getCall(callId);
 
    Q_ASSERT(call);
 
@@ -211,7 +210,7 @@ Media::TextRecording* Media::Text::recording() const
    }
 
    if ((!wasChecked) && !d_ptr->m_pRecording) {
-      d_ptr->m_pRecording = RecordingModel::instance()->createTextRecording(call()->peerContactMethod());
+      d_ptr->m_pRecording = RecordingModel::instance().createTextRecording(call()->peerContactMethod());
    }
 
    return d_ptr->m_pRecording;

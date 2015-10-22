@@ -434,7 +434,7 @@ UserActionModel::UserActionModel(Call* parent, const FlagPack<UserActionModel::C
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALL;
    d_ptr->m_pCall = parent;
 
-   connect(AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(slotStateChanged()));
+   connect(&AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(slotStateChanged()));
    d_ptr->updateActions();
 }
 
@@ -447,11 +447,11 @@ UserActionModel::UserActionModel(CallModel* parent, const FlagPack<UserActionMod
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALLMODEL;
    d_ptr->m_SelectionState = UserActionModelPrivate::SelectionState::UNIQUE;
 
-   connect(parent->selectionModel(), &QItemSelectionModel::currentRowChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent->selectionModel(), &QItemSelectionModel::selectionChanged  , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent,                   &CallModel::callStateChanged            , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent,                   &CallModel::mediaStateChanged           , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent->selectionModel(),  &QItemSelectionModel::currentRowChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent->selectionModel(),  &QItemSelectionModel::selectionChanged  , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent,                    &CallModel::callStateChanged            , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(parent,                    &CallModel::mediaStateChanged           , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(&AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
    d_ptr->updateActions();
 }
 
@@ -655,7 +655,7 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
 
 bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const Call* c)
 {
-   Account* a = c->account() ? c->account() : AvailableAccountModel::instance()->currentDefaultAccount();
+   Account* a = c->account() ? c->account() : AvailableAccountModel::instance().currentDefaultAccount();
    return (!c) ? false : (
       availableActionMap        [action] [c->state()             ] &&
       availableAccountActionMap [action] [a->registrationState() ] &&
@@ -677,18 +677,18 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
       case UserActionModelMode::CALLMODEL: {
          bool ret = true;
 
-         m_SelectionState = CallModel::instance()->selectionModel()->selectedRows().size() > 1 ? SelectionState::MULTI : SelectionState::UNIQUE;
+         m_SelectionState = CallModel::instance().selectionModel()->selectedRows().size() > 1 ? SelectionState::MULTI : SelectionState::UNIQUE;
 
          //Aggregate and reduce the action state for each selected calls
-         if (CallModel::instance()->selectionModel()->selectedRows().size()) {
-            for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
+         if (CallModel::instance().selectionModel()->selectedRows().size()) {
+            for (const QModelIndex& idx : CallModel::instance().selectionModel()->selectedRows()) {
                const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
                updateCheckMask    ( state ,action, c );
                ret &= updateByCall( action       , c );
             }
          }
          else {
-            Account* a = AvailableAccountModel::instance()->currentDefaultAccount();
+            Account* a = AvailableAccountModel::instance().currentDefaultAccount();
             ret = multi_call_options[action][UserActionModelPrivate::SelectionState::NONE]
                && (a?availableAccountActionMap[action][a->registrationState()]:false);
          }
@@ -734,7 +734,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          selected << d_ptr->m_pCall;
          break;
       case UserActionModelPrivate::UserActionModelMode::CALLMODEL: {
-         for (const QModelIndex& idx : CallModel::instance()->selectionModel()->selectedRows()) {
+         for (const QModelIndex& idx : CallModel::instance().selectionModel()->selectedRows()) {
             Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
             if (c)
                selected << c;

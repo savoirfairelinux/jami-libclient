@@ -57,47 +57,47 @@ namespace ConfigurationProxyPrivate {
    void updateRateSelection      ();
 }
 
-QAbstractItemModel* Video::ConfigurationProxy::deviceModel()
+QAbstractItemModel& Video::ConfigurationProxy::deviceModel()
 {
    if (!ConfigurationProxyPrivate::m_spDeviceModel) {
-      ConfigurationProxyPrivate::m_spDeviceModel = new QIdentityProxyModel(Video::SourceModel::instance());
-      ConfigurationProxyPrivate::m_spDeviceModel->setSourceModel(Video::DeviceModel::instance());
+      ConfigurationProxyPrivate::m_spDeviceModel = new QIdentityProxyModel(&Video::SourceModel::instance());
+      ConfigurationProxyPrivate::m_spDeviceModel->setSourceModel(&Video::DeviceModel::instance());
       ConfigurationProxyPrivate::updateDeviceSelection();
    }
-   return ConfigurationProxyPrivate::m_spDeviceModel;
+   return *ConfigurationProxyPrivate::m_spDeviceModel;
 }
 
 static Video::Device* ConfigurationProxyPrivate::currentDevice()
 {
-   return Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice();
+   return Video::DeviceModel::instance().Video::DeviceModel::instance().activeDevice();
 }
 
 static Video::Channel* ConfigurationProxyPrivate::currentChannel()
 {
-   if (Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()
-    && Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel())
-      return Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel();
+   if (Video::DeviceModel::instance().activeDevice()
+    && Video::DeviceModel::instance().activeDevice()->activeChannel())
+      return Video::DeviceModel::instance().activeDevice()->activeChannel();
 
    return nullptr;
 }
 
 static Video::Resolution* ConfigurationProxyPrivate::currentResolution()
 {
-   if (Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()
-    && Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()
-    && Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()
+   if (Video::DeviceModel::instance().activeDevice()
+    && Video::DeviceModel::instance().activeDevice()->activeChannel()
+    && Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution()
    )
-      return Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution();
+      return Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution();
    return nullptr;
 }
 
 /*static Video::Rate* ConfigurationProxyPrivate::currentRate()
 {
-   if (Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()
-    && Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()
-    && Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()
+   if (Video::DeviceModel::instance().activeDevice()
+    && Video::DeviceModel::instance().activeDevice()->activeChannel()
+    && Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution()
    )
-      return Video::DeviceModel::instance()->Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()->activeRate();
+      return Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution()->activeRate();
 
    return nullptr;
 }*/
@@ -106,9 +106,9 @@ void ConfigurationProxyPrivate::changeDevice()
 {
    Video::ConfigurationProxy::deviceSelectionModel();
 
-   Video::DeviceModel::instance()->setActive(ConfigurationProxyPrivate::m_spDeviceSelectionModel->currentIndex());
+   Video::DeviceModel::instance().setActive(ConfigurationProxyPrivate::m_spDeviceSelectionModel->currentIndex());
 
-   ((QIdentityProxyModel*) Video::ConfigurationProxy::channelModel())->setSourceModel(ConfigurationProxyPrivate::currentDevice());
+   reinterpret_cast<QIdentityProxyModel&>(Video::ConfigurationProxy::channelModel()).setSourceModel(ConfigurationProxyPrivate::currentDevice());
    changeChannel();
 }
 
@@ -121,7 +121,7 @@ void ConfigurationProxyPrivate::changeChannel()
    if (dev)
       dev->setActiveChannel(ConfigurationProxyPrivate::m_spChannelSelectionModel->currentIndex().row());
 
-   ((QIdentityProxyModel*) Video::ConfigurationProxy::resolutionModel())->setSourceModel(ConfigurationProxyPrivate::currentChannel());
+   reinterpret_cast<QIdentityProxyModel&>(Video::ConfigurationProxy::resolutionModel()).setSourceModel(ConfigurationProxyPrivate::currentChannel());
 
    updateChannelSelection();
 
@@ -137,7 +137,7 @@ void ConfigurationProxyPrivate::changeResolution()
    if (chan)
       chan->setActiveResolution(ConfigurationProxyPrivate::m_spResolutionSelectionModel->currentIndex().row());
 
-   ((QIdentityProxyModel*) Video::ConfigurationProxy::rateModel())->setSourceModel(ConfigurationProxyPrivate::currentResolution());
+   reinterpret_cast<QIdentityProxyModel&>(Video::ConfigurationProxy::rateModel()).setSourceModel(ConfigurationProxyPrivate::currentResolution());
 
    updateResolutionSelection();
 
@@ -159,9 +159,9 @@ void ConfigurationProxyPrivate::changeRate()
 void ConfigurationProxyPrivate::updateDeviceSelection()
 {
    if (ConfigurationProxyPrivate::m_spDeviceModel) {
-      const QModelIndex& idx = ConfigurationProxyPrivate::m_spDeviceModel->index(Video::DeviceModel::instance()->activeIndex(),0);
-      if (idx.row() != Video::ConfigurationProxy::deviceSelectionModel()->currentIndex().row())
-         Video::ConfigurationProxy::deviceSelectionModel()->setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
+      const QModelIndex& idx = ConfigurationProxyPrivate::m_spDeviceModel->index(Video::DeviceModel::instance().activeIndex(),0);
+      if (idx.row() != Video::ConfigurationProxy::deviceSelectionModel().currentIndex().row())
+         Video::ConfigurationProxy::deviceSelectionModel().setCurrentIndex(idx , QItemSelectionModel::ClearAndSelect);
    }
 }
 
@@ -172,8 +172,8 @@ void ConfigurationProxyPrivate::updateChannelSelection()
       Video::Channel* chan = dev->activeChannel();
       if (chan) {
          const QModelIndex& newIdx = dev->index(chan->relativeIndex(),0);
-         if (newIdx.row() != Video::ConfigurationProxy::channelSelectionModel()->currentIndex().row())
-            Video::ConfigurationProxy::channelSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect );
+         if (newIdx.row() != Video::ConfigurationProxy::channelSelectionModel().currentIndex().row())
+            Video::ConfigurationProxy::channelSelectionModel().setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect );
       }
    }
 }
@@ -185,8 +185,8 @@ void ConfigurationProxyPrivate::updateResolutionSelection()
       Video::Resolution* res = chan->activeResolution();
       if (res) {
          const QModelIndex& newIdx = chan->index(res->relativeIndex(),0);
-         if (newIdx.row() != Video::ConfigurationProxy::resolutionSelectionModel()->currentIndex().row())
-            Video::ConfigurationProxy::resolutionSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
+         if (newIdx.row() != Video::ConfigurationProxy::resolutionSelectionModel().currentIndex().row())
+            Video::ConfigurationProxy::resolutionSelectionModel().setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
       }
    }
 }
@@ -198,46 +198,46 @@ void ConfigurationProxyPrivate::updateRateSelection()
       Video::Rate* rate = res->activeRate();
       if (rate) {
          const QModelIndex& newIdx = res->index(rate->relativeIndex(),0);
-         if (newIdx.row() != Video::ConfigurationProxy::rateSelectionModel()->currentIndex().row())
-            Video::ConfigurationProxy::rateSelectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
+         if (newIdx.row() != Video::ConfigurationProxy::rateSelectionModel().currentIndex().row())
+            Video::ConfigurationProxy::rateSelectionModel().setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
       }
    }
 }
 
-QAbstractItemModel* Video::ConfigurationProxy::channelModel()
+QAbstractItemModel& Video::ConfigurationProxy::channelModel()
 {
    if (!ConfigurationProxyPrivate::m_spChannelModel) {
-      ConfigurationProxyPrivate::m_spChannelModel = new QIdentityProxyModel(Video::SourceModel::instance());
+      ConfigurationProxyPrivate::m_spChannelModel = new QIdentityProxyModel(&Video::SourceModel::instance());
       Video::Device* dev = ConfigurationProxyPrivate::currentDevice();
       if (dev) {
          ConfigurationProxyPrivate::m_spChannelModel->setSourceModel(dev);
       }
    }
-   return ConfigurationProxyPrivate::m_spChannelModel;
+   return *ConfigurationProxyPrivate::m_spChannelModel;
 }
 
-QAbstractItemModel* Video::ConfigurationProxy::resolutionModel()
+QAbstractItemModel& Video::ConfigurationProxy::resolutionModel()
 {
    if (!ConfigurationProxyPrivate::m_spResolutionModel) {
-      ConfigurationProxyPrivate::m_spResolutionModel = new QIdentityProxyModel(Video::SourceModel::instance());
+      ConfigurationProxyPrivate::m_spResolutionModel = new QIdentityProxyModel(&Video::SourceModel::instance());
       Video::Channel* chan = ConfigurationProxyPrivate::currentChannel();
       if (chan) {
          ConfigurationProxyPrivate::m_spResolutionModel->setSourceModel(chan);
       }
    }
-   return ConfigurationProxyPrivate::m_spResolutionModel;
+   return *ConfigurationProxyPrivate::m_spResolutionModel;
 }
 
-QAbstractItemModel* Video::ConfigurationProxy::rateModel()
+QAbstractItemModel& Video::ConfigurationProxy::rateModel()
 {
    if (!ConfigurationProxyPrivate::m_spRateModel) {
-      ConfigurationProxyPrivate::m_spRateModel = new QIdentityProxyModel(Video::SourceModel::instance());
+      ConfigurationProxyPrivate::m_spRateModel = new QIdentityProxyModel(&Video::SourceModel::instance());
       ConfigurationProxyPrivate::m_spRateModel->setSourceModel(ConfigurationProxyPrivate::currentResolution());
    }
-   return ConfigurationProxyPrivate::m_spRateModel;
+   return *ConfigurationProxyPrivate::m_spRateModel;
 }
 
-QItemSelectionModel* Video::ConfigurationProxy::deviceSelectionModel()
+QItemSelectionModel& Video::ConfigurationProxy::deviceSelectionModel()
 {
    if (!ConfigurationProxyPrivate::m_spDeviceSelectionModel) {
       ConfigurationProxyPrivate::m_spDeviceSelectionModel = new QItemSelectionModel(ConfigurationProxyPrivate::m_spDeviceModel);
@@ -245,16 +245,16 @@ QItemSelectionModel* Video::ConfigurationProxy::deviceSelectionModel()
       ConfigurationProxyPrivate::updateDeviceSelection();
 
       //Can happen if a device is removed
-      QObject::connect(Video::DeviceModel::instance(), &Video::DeviceModel::currentIndexChanged,[](int idx) {
+      QObject::connect(&Video::DeviceModel::instance(), &Video::DeviceModel::currentIndexChanged,[](int idx) {
          ConfigurationProxyPrivate::m_spDeviceSelectionModel->setCurrentIndex(ConfigurationProxyPrivate::m_spDeviceModel->index(idx,0), QItemSelectionModel::ClearAndSelect );
       });
 
       QObject::connect(ConfigurationProxyPrivate::m_spDeviceSelectionModel,&QItemSelectionModel::currentChanged, &ConfigurationProxyPrivate::changeDevice);
    }
-   return ConfigurationProxyPrivate::m_spDeviceSelectionModel;
+   return *ConfigurationProxyPrivate::m_spDeviceSelectionModel;
 }
 
-QItemSelectionModel* Video::ConfigurationProxy::channelSelectionModel()
+QItemSelectionModel& Video::ConfigurationProxy::channelSelectionModel()
 {
    if (!ConfigurationProxyPrivate::m_spChannelSelectionModel) {
       ConfigurationProxyPrivate::m_spChannelSelectionModel = new QItemSelectionModel(ConfigurationProxyPrivate::m_spChannelModel);
@@ -263,10 +263,10 @@ QItemSelectionModel* Video::ConfigurationProxy::channelSelectionModel()
 
       QObject::connect(ConfigurationProxyPrivate::m_spChannelSelectionModel,&QItemSelectionModel::currentChanged, &ConfigurationProxyPrivate::changeChannel);
    }
-   return ConfigurationProxyPrivate::m_spChannelSelectionModel;
+   return *ConfigurationProxyPrivate::m_spChannelSelectionModel;
 }
 
-QItemSelectionModel* Video::ConfigurationProxy::resolutionSelectionModel()
+QItemSelectionModel& Video::ConfigurationProxy::resolutionSelectionModel()
 {
    if (!ConfigurationProxyPrivate::m_spResolutionSelectionModel) {
       ConfigurationProxyPrivate::m_spResolutionSelectionModel = new QItemSelectionModel(ConfigurationProxyPrivate::m_spResolutionModel);
@@ -275,10 +275,10 @@ QItemSelectionModel* Video::ConfigurationProxy::resolutionSelectionModel()
 
       QObject::connect(ConfigurationProxyPrivate::m_spResolutionSelectionModel,&QItemSelectionModel::currentChanged, &ConfigurationProxyPrivate::changeResolution);
    }
-   return ConfigurationProxyPrivate::m_spResolutionSelectionModel;
+   return *ConfigurationProxyPrivate::m_spResolutionSelectionModel;
 }
 
-QItemSelectionModel* Video::ConfigurationProxy::rateSelectionModel()
+QItemSelectionModel& Video::ConfigurationProxy::rateSelectionModel()
 {
    if (!ConfigurationProxyPrivate::m_spRateSelectionModel) {
       ConfigurationProxyPrivate::m_spRateSelectionModel = new QItemSelectionModel(ConfigurationProxyPrivate::m_spRateModel);
@@ -287,5 +287,5 @@ QItemSelectionModel* Video::ConfigurationProxy::rateSelectionModel()
 
       QObject::connect(ConfigurationProxyPrivate::m_spRateSelectionModel,&QItemSelectionModel::currentChanged, &ConfigurationProxyPrivate::changeRate);
    }
-   return ConfigurationProxyPrivate::m_spRateSelectionModel;
+   return *ConfigurationProxyPrivate::m_spRateSelectionModel;
 }

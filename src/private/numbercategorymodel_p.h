@@ -32,7 +32,6 @@ public:
    QHash<int,InternalTypeRepresentation*>                   m_hByIdx      ;
    QHash<QString,InternalTypeRepresentation*>               m_hByName     ;
    QHash<const NumberCategory*,InternalTypeRepresentation*> m_hToInternal ;
-   static NumberCategory*                                   m_spOther     ;
 
    //Mutator
    void registerNumber  ( ContactMethod* number     ); //FIXME this should be private

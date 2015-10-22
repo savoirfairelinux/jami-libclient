@@ -20,17 +20,17 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-VideoManagerInterface* DBus::VideoManager::interface = nullptr;
-
 VideoManagerInterface& DBus::VideoManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new VideoManagerInterface();
+    static auto interface = new VideoManagerInterface();
 #else
-    if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new VideoManagerInterface("cx.ring.Ring", "/cx/ring/Ring/VideoManager", QDBusConnection::sessionBus());
+    if (!dbus_metaTypeInit)
+        registerCommTypes();
+
+    static auto interface = new VideoManagerInterface("cx.ring.Ring",
+                                                      "/cx/ring/Ring/VideoManager",
+                                                      QDBusConnection::sessionBus());
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
             "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."

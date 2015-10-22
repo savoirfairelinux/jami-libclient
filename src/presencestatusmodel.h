@@ -84,7 +84,7 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Singleton
-   static PresenceStatusModel* instance();
+   static PresenceStatusModel& instance();
 
    //Setters
    void setDefaultStatus( const QModelIndex& idx );
@@ -102,9 +102,6 @@ public:
 
 private:
    QScopedPointer<PresenceStatusModelPrivate> d_ptr;
-
-   //Singleton
-   static PresenceStatusModel* m_spInstance;
 
 public Q_SLOTS:
    void addRow            (                          );

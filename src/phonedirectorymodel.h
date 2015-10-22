@@ -73,7 +73,7 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Singleton
-   static PhoneDirectoryModel* instance();
+   static PhoneDirectoryModel& instance();
 
    //Factory
    Q_INVOKABLE ContactMethod* getNumber(const QString& uri, const QString& type = QString());

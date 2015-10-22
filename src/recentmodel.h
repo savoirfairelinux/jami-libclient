@@ -50,7 +50,7 @@ public:
    QSortFilterProxyModel* peopleProxy() const;
 
    //Singleton
-   static RecentModel* instance();
+   static RecentModel& instance();
 
    QModelIndex          getIndex     (Call *call               ) const;
    QModelIndex          getIndex     (Person *p                ) const;
