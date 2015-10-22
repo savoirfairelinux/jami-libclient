@@ -55,7 +55,7 @@ public:
    NumberCategory* addCategory(const QString& name, const QVariant& icon, int key = -1);
 
    //Singleton
-   static NumberCategoryModel* instance();
+   static NumberCategoryModel& instance();
 
    //Getter
    QModelIndex            nameToIndex(const QString& name       ) const;
@@ -72,8 +72,5 @@ private:
    virtual void collectionAddedCallback(CollectionInterface* collection) override;
    virtual bool addItemCallback        (const ContactMethod* item      ) override;
    virtual bool removeItemCallback     (const ContactMethod* item      ) override;
-
-   //Singleton
-   static NumberCategoryModel* m_spInstance;
 };
 

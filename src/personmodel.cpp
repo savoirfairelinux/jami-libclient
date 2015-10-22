@@ -33,9 +33,6 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 
-PersonModel* PersonModel::m_spInstance = nullptr;
-
-
 class PersonItemNode
 {
 public:
@@ -117,10 +114,10 @@ PersonModel::~PersonModel()
    }
 }
 
-PersonModel* PersonModel::instance() {
-   if (!m_spInstance)
-      m_spInstance = new PersonModel(QCoreApplication::instance());
-   return m_spInstance;
+PersonModel& PersonModel::instance()
+{
+    static auto instance = new PersonModel(QCoreApplication::instance());
+    return *instance;
 }
 
 /*****************************************************************************

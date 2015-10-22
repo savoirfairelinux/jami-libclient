@@ -163,15 +163,15 @@ void ManagerModelPrivate::slotSelectionChanged(const QModelIndex& idx)
    switch (m_lSupportedManagers[idx.row()]) {
       case Audio::ManagerModel::Manager::PULSE:
          ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::PULSEAUDIO);
-         Audio::Settings::instance()->reload();
+         Audio::Settings::instance().reload();
          break;
       case Audio::ManagerModel::Manager::ALSA:
          ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::ALSA);
-         Audio::Settings::instance()->reload();
+         Audio::Settings::instance().reload();
          break;
       case Audio::ManagerModel::Manager::JACK:
          ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::JACK);
-         Audio::Settings::instance()->reload();
+         Audio::Settings::instance().reload();
          break;
       case Audio::ManagerModel::Manager::ERROR:
          break;

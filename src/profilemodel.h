@@ -40,7 +40,7 @@ class LIB_EXPORT ProfileModel : public QAbstractItemModel {
 public:
    explicit ProfileModel(QObject* parent = nullptr);
    virtual ~ProfileModel();
-   static ProfileModel* instance();
+   static ProfileModel& instance();
 
    //Abstract model member
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole         ) const override;
@@ -68,9 +68,6 @@ public:
 private:
    ProfileModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(ProfileModel)
-
-   //Singleton
-   static ProfileModel* m_spInstance;
 
 public Q_SLOTS:
    bool remove(const QModelIndex& idx);

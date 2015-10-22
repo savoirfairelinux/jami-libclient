@@ -28,8 +28,6 @@
 #include "collectionextensioninterface.h"
 #include "private/collectionmodel_p.h"
 
-CollectionModel* CollectionModelPrivate::m_spInstance = nullptr;
-
 class ManageableCollectionProxy final : public QSortFilterProxyModel
 {
 public:
@@ -65,11 +63,10 @@ CollectionModel::~CollectionModel()
    }
 }
 
-CollectionModel* CollectionModel::instance()
+CollectionModel& CollectionModel::instance()
 {
-   if (!CollectionModelPrivate::m_spInstance)
-      CollectionModelPrivate::m_spInstance = new CollectionModel(QCoreApplication::instance());
-   return CollectionModelPrivate::m_spInstance;
+    static auto instance = new CollectionModel(QCoreApplication::instance());
+    return *instance;
 }
 
 QHash<int,QByteArray> CollectionModel::roleNames() const

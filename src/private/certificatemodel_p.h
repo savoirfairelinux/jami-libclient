@@ -68,9 +68,6 @@ public:
    QAbstractItemModel* createBannedList  (const Account* a       ) const;
    QAbstractItemModel* createAllowedList (const Account* a       ) const;
 
-   //Singleton
-   static CertificateModel* m_spInstance;
-
 private:
    CertificateModel* q_ptr;
 };
