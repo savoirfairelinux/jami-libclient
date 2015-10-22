@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_5e2b71eb",
+        "filename": "src/call.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2031,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:28:17Z",
+      "side": 1,
+      "message": "actually, you can just return d_ptr-\u003em_pParentCall, it will turn into a bool by itself",
+      "revId": "da830d36681361f96dfbf1e88687aca354dbd686",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_beee35b3",
+        "filename": "src/call.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:28:17Z",
+      "side": 1,
+      "message": "Please move to the private class",
+      "revId": "da830d36681361f96dfbf1e88687aca354dbd686",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_1e35e945",
+        "filename": "src/callmodel.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:28:17Z",
+      "side": 1,
+      "message": "Same as below, maybe this would belong in Call:: itself",
+      "revId": "da830d36681361f96dfbf1e88687aca354dbd686",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_7e30ad56",
+        "filename": "src/callmodel.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:28:17Z",
+      "side": 1,
+      "message": "I wonder if it would make sense to keep track of this in Call:: itself\n\nconst auto list \u003d call-\u003esiblings();\n\nwould be a much nicer API than this. I agree the current CallModel API is full of things like this and one more would not hurt. Given you already add Call::setParent, while not go all the way and handle the conferences siblings in the Call:: class itself?\n\nFeel free to ignore me on this one",
+      "revId": "da830d36681361f96dfbf1e88687aca354dbd686",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
