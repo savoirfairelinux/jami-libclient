@@ -31,7 +31,7 @@ int CollectionExtensionModel::registerExtension()
    static int typeId = CollectionExtensionModelSpecific::entries().size();
 
    if (!typeInit) {
-      CollectionExtensionModelSpecific::entries() << new T(CollectionExtensionModel::instance());
+      CollectionExtensionModelSpecific::entries() << new T(&CollectionExtensionModel::instance());
    }
 
    return typeId;

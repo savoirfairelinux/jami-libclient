@@ -53,7 +53,7 @@ public:
       virtual ~MacroListener() {}
    };
 
-   static MacroModel* instance();
+   static MacroModel& instance();
    static void addListener(MacroListener* interface);
 
    enum MacroFields {

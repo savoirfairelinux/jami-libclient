@@ -46,6 +46,6 @@ public:
    //Mutator
    Media::Recording* addFromPath(const QString& path);
 
-   static LocalRecordingCollection* instance();
+   static LocalRecordingCollection& instance();
 
 };

@@ -55,7 +55,7 @@ public:
    Q_PROPERTY(bool hasCollections   READ hasCollections  )
 
    //Singleton
-   static CategorizedHistoryModel* instance();
+   static CategorizedHistoryModel& instance();
 
    //Getters
    int  acceptedPayloadTypes       () const;
@@ -99,7 +99,7 @@ public:
       QSortFilterProxyModel* model                 () const;
       QAbstractItemModel   * categoryModel         () const;
       QItemSelectionModel  * categorySelectionModel() const;
-      static CategorizedHistoryModel::SortedProxy* instance();
+      static CategorizedHistoryModel::SortedProxy& instance();
    };
 
 private:
@@ -108,9 +108,6 @@ private:
    ~CategorizedHistoryModel();
    QScopedPointer<CategorizedHistoryModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CategorizedHistoryModel)
-
-   //Static attributes
-   static CategorizedHistoryModel* m_spInstance;
 
    //Backend interface
    virtual void collectionAddedCallback(CollectionInterface* collection) override;

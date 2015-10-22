@@ -84,7 +84,7 @@ public:
    Certificate* getCertificateFromId(const QString& id, Account* a = nullptr, const QString& category = QString());
 
    //Singleton
-   static CertificateModel* instance();
+   static CertificateModel& instance();
 
 private:
 
