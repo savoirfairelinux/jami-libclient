@@ -46,6 +46,30 @@
       "revId": "ba97d38673badd3e03f5c7620e7dc547a151d9df",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_fef4bd88",
+        "filename": "src/video/configurationproxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:17:03Z",
+      "side": 1,
+      "message": "If you add a QObject* parent \u003d nullptr in the Video::SourceModel constructor, let Qt handle this for you",
+      "parentUuid": "1a9dcd25_5e8ff123",
+      "range": {
+        "startLine": 65,
+        "startChar": 51,
+        "endLine": 65,
+        "endChar": 77
+      },
+      "revId": "ba97d38673badd3e03f5c7620e7dc547a151d9df",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
