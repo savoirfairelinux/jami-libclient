@@ -244,7 +244,7 @@ bool LocalMacroCollection::isPresenceTracked() const
 
 void Serializable::MacroNode::read(const QJsonObject &json)
 {
-   macro = MacroModel::instance()->newMacro(json["ID"].toString());
+   macro = MacroModel::instance().newMacro(json["ID"].toString());
    macro->setName        ( json[ "Name"   ].toString ());
    macro->setSequence    ( json[ "Seq"    ].toString ());
    macro->setCategory    ( json[ "Cat"    ].toString ());

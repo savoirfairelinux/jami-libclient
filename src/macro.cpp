@@ -68,10 +68,10 @@ void Macro::execute() {
 void MacroPrivate::nextStep()
 {
    if (m_Position < m_Escaped.size()) {
-      if (!MacroModel::instance()->d_ptr->m_lListeners.size())
+      if (!MacroModel::instance().d_ptr->m_lListeners.size())
          Audio::OutputDeviceModel::playDTMF(QString(m_Escaped[m_Position]));
       else {
-         foreach(MacroModel::MacroListener* l, MacroModel::instance()->d_ptr->m_lListeners) {
+         foreach(MacroModel::MacroListener* l, MacroModel::instance().d_ptr->m_lListeners) {
             l->addDTMF(QString(m_Escaped[m_Position]));
          }
       }

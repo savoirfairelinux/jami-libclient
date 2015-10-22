@@ -85,11 +85,11 @@ public:
       QSortFilterProxyModel* model                 () const;
       QAbstractItemModel   * categoryModel         () const;
       QItemSelectionModel  * categorySelectionModel() const;
-      static CategorizedContactModel::SortedProxy* instance();
+      static CategorizedContactModel::SortedProxy& instance();
    };
 
    //Singleton
-   static CategorizedContactModel* instance();
+   static CategorizedContactModel& instance();
 
 private:
    explicit CategorizedContactModel(int role = Qt::DisplayRole);

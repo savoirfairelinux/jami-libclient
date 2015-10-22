@@ -53,7 +53,6 @@ public:
    QStringList                       m_lDeletedAccounts   ;
    Account*                          m_pIP2IP             ;
    QList<Account*>                   m_pRemovedAccounts   ;
-   static AccountModel*              m_spAccountList      ;
    ProtocolModel*                    m_pProtocolModel     ;
    QItemSelectionModel*              m_pSelectionModel    ;
    QStringList                       m_lMimes             ;

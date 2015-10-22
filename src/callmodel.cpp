@@ -68,9 +68,6 @@ struct InternalStruct {
    InternalStruct*        m_pParent  ;
 };
 
-//Static member
-CallModel*   CallModel::m_spInstance = nullptr;
-
 class CallModelPrivate final : public QObject
 {
    Q_OBJECT
@@ -125,12 +122,10 @@ public:
  ****************************************************************************/
 
 ///Singleton
-CallModel* CallModel::instance() {
-   if (!m_spInstance) {
-      m_spInstance = new CallModel();
-      m_spInstance->d_ptr->init();
-   }
-   return m_spInstance;
+CallModel& CallModel::instance()
+{
+    static auto instance = new CallModel();
+    return *instance;
 }
 
 CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),
@@ -152,6 +147,7 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
    //Necessary to receive text message
    IMConversationManagerPrivate::instance();
 
+   d_ptr->init();
 } //CallModel
 
 ///Constructor (there fix an initializationn loop)
@@ -178,7 +174,7 @@ void CallModelPrivate::init()
       /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)));
       /*                                                                                                                           */
 
-      connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
+      connect(&CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
 
       dbusInit = true;
 
@@ -214,7 +210,6 @@ CallModel::~CallModel()
       delete s;
    d_ptr->m_shInternalMapping.clear  ();
    d_ptr->m_shDringId.clear();
-   m_spInstance = nullptr;
 
    //Unregister from the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
@@ -1062,7 +1057,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       Call* target = getCall(targetIdx);
       qDebug() << "Phone number" << encodedContactMethod << "on call" << target;
       Call* newCall = dialingCall(QString(),target->account());
-      ContactMethod* nb = PhoneDirectoryModel::instance()->fromHash(encodedContactMethod);
+      ContactMethod* nb = PhoneDirectoryModel::instance().fromHash(encodedContactMethod);
       newCall->setDialNumber(nb);
       newCall->performAction(Call::Action::ACCEPT);
       createConferenceFromCall(newCall,target);
@@ -1073,7 +1068,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       qDebug() << "Contact" << encodedPerson << "on call" << target;
       try {
          const ContactMethod* number = GlobalInstances::contactMethodSelector().number(
-         PersonModel::instance()->getPersonByUid(encodedPerson));
+         PersonModel::instance().getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();
             newCall->setDialNumber(number);
@@ -1139,7 +1134,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    //Add to history
    if (call->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       if (!call->collection()) {
-         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance()->collections(CollectionInterface::SupportedFeatures::ADD)) {
+         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
             if (backend->editor<Call>()->addNew(call))
                call->setCollection(backend);
          }

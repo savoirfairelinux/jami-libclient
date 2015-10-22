@@ -41,7 +41,7 @@ TrustRequest::TrustRequest(Account* a, const QString& id, time_t time) : QObject
 {
    d_ptr->m_pAccount     = a;
    d_ptr->m_Time         = QDateTime::fromTime_t(time);
-   d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(id, a);
+   d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(id, a);
 }
 
 TrustRequest::~TrustRequest()

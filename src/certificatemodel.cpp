@@ -133,8 +133,6 @@ const Matrix1D<Certificate::Status, const char*> CertificateModelPrivate::m_Stat
 /* Certificate::Status::REVOKED_ALLOWED*/ DRing::Certificate::Status::ALLOWED  ,
 }};
 
-CertificateModel* CertificateModelPrivate::m_spInstance = nullptr;
-
 CertificateModelPrivate::~CertificateModelPrivate()
 {
    foreach(CertificateNode* node, m_lTopLevelNodes) {
@@ -148,14 +146,14 @@ CertificateNode::CertificateNode(int index, CertificateModel::NodeType level, Ce
    m_EnumClassDetail(0),m_CatIdx(-1),m_fIsPartOf(0)
 {
    if (level == CertificateModel::NodeType::CATEGORY )
-      m_CatIdx = ++(CertificateModel::instance()->d_ptr->m_GroupCounter);
+      m_CatIdx = ++(CertificateModel::instance().d_ptr->m_GroupCounter);
 
-   CertificateNode* sibling = CertificateModel::instance()->d_ptr->m_hNodes[cert];
+   CertificateNode* sibling = CertificateModel::instance().d_ptr->m_hNodes[cert];
 
    if (parent && sibling && parent->m_Level == CertificateModel::NodeType::CATEGORY)
       sibling->m_fIsPartOf |= (0x01 << parent->m_CatIdx);
    else
-      CertificateModel::instance()->d_ptr->m_hNodes[cert] = this;
+      CertificateModel::instance().d_ptr->m_hNodes[cert] = this;
 
    if (parent && parent->m_Level == CertificateModel::NodeType::CATEGORY)
       m_fIsPartOf |= (0x01 << parent->m_CatIdx);
@@ -194,11 +192,10 @@ CertificateModel::~CertificateModel()
    delete d_ptr;
 }
 
-CertificateModel* CertificateModel::instance()
+CertificateModel& CertificateModel::instance()
 {
-   if (!CertificateModelPrivate::m_spInstance)
-      CertificateModelPrivate::m_spInstance = new CertificateModel(QCoreApplication::instance());
-   return CertificateModelPrivate::m_spInstance;
+    static auto instance = new CertificateModel(QCoreApplication::instance());
+    return *instance;
 }
 
 QHash<int,QByteArray> CertificateModel::roleNames() const
@@ -375,7 +372,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       category = defaultCategory();
 
    //Do not add it twice
-   CertificateNode* node = CertificateModel::instance()->d_ptr->m_hNodes[cert];
+   CertificateNode* node = CertificateModel::instance().d_ptr->m_hNodes[cert];
 
    if (node && node->m_fIsPartOf & (0x01 << category->m_CatIdx))
       return node;
@@ -667,7 +664,7 @@ QModelIndex CertificateProxyModel::mapFromSource(const QModelIndex& sourceIndex)
 
 QModelIndex CertificateProxyModel::mapToSource(const QModelIndex& proxyIndex) const
 {
-   return CertificateModel::instance()->d_ptr->createIndex(proxyIndex.row(),proxyIndex.column(),proxyIndex.internalPointer());
+   return CertificateModel::instance().d_ptr->createIndex(proxyIndex.row(),proxyIndex.column(),proxyIndex.internalPointer());
 }
 
 QModelIndex CertificateProxyModel::index( int row, int column, const QModelIndex& parent) const
