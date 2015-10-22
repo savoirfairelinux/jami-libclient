@@ -140,16 +140,16 @@ RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
-   connect(PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
-   connect(PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
-   connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
-   connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
-   connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
+   connect(&PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
+   connect(&PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
+   connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
+   connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
+   connect(&CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
 
    //Fill the contacts
-   for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
-      auto person = qvariant_cast<Person*>(PersonModel::instance()->data(
-         PersonModel::instance()->index(i,0),
+   for (int i=0; i < PersonModel::instance().rowCount(); i++) {
+      auto person = qvariant_cast<Person*>(PersonModel::instance().data(
+         PersonModel::instance().index(i,0),
          static_cast<int>(Person::Role::Object)
       ));
 
@@ -158,9 +158,9 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    }
 
    //Fill the "orphan" contact methods
-   for (int i = 0; i < PhoneDirectoryModel::instance()->rowCount(); i++) {
-      auto cm = qvariant_cast<ContactMethod*>(PhoneDirectoryModel::instance()->data(
-         PhoneDirectoryModel::instance()->index(i,0),
+   for (int i = 0; i < PhoneDirectoryModel::instance().rowCount(); i++) {
+      auto cm = qvariant_cast<ContactMethod*>(PhoneDirectoryModel::instance().data(
+         PhoneDirectoryModel::instance().index(i,0),
          static_cast<int>(PhoneDirectoryModel::Role::Object)
       ));
 
@@ -169,7 +169,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    }
 
    //Fill node with history data
-   //const CallMap callMap = CategorizedHistoryModel::instance()->getHistoryCalls();
+   //const CallMap callMap = CategorizedHistoryModel::instance().getHistoryCalls();
    //Q_FOREACH(auto const &call , callMap) {
    //    d_ptr->slotCallAdded(call, nullptr);
    //}
@@ -237,10 +237,10 @@ RecentViewNode::childNode(Call *call) const
     return *it;
 }
 
-RecentModel* RecentModel::instance()
+RecentModel& RecentModel::instance()
 {
-   static RecentModel* instance = new RecentModel(QCoreApplication::instance());
-   return instance;
+    static auto instance = new RecentModel(QCoreApplication::instance());
+    return *instance;
 }
 
 /**
@@ -304,7 +304,7 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
    while (lIterator.hasPrevious()) {
       auto child = lIterator.previous();
       if (child->m_Type == RecentViewNode::Type::CALL) {
-         return  CallModel::instance()->getIndex(child->m_uContent.m_pCall).isValid();
+         return  CallModel::instance().getIndex(child->m_uContent.m_pCall).isValid();
       }
    }
    return false;

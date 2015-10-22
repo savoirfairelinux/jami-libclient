@@ -44,8 +44,8 @@ class VideoRendererManager final : public QObject
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   //Singleton
-   static VideoRendererManager* instance();
+    //Singleton
+    static VideoRendererManager& instance();
 
    //Getters
    bool             isPreviewing   () const;
@@ -65,8 +65,6 @@ private:
    QScopedPointer<VideoRendererManagerPrivate> d_ptr;
    Q_DECLARE_PRIVATE(VideoRendererManager)
 
-   //Static attributes
-   static VideoRendererManager* m_spInstance;
 
 public Q_SLOTS:
    void stopPreview ();

@@ -114,7 +114,7 @@ void AccountPrivate::changeState(Account::EditState state) {
 }
 
 ///Constructors
-Account::Account():ItemBase(AccountModel::instance()),d_ptr(new AccountPrivate(this))
+Account::Account():ItemBase(&AccountModel::instance()),d_ptr(new AccountPrivate(this))
 {
 }
 
@@ -130,8 +130,8 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
    a->performAction(Account::EditAction::RELOAD);
 
    //If a placeholder exist for this account, upgrade it
-   if (AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]) {
-      AccountModel::instance()->d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
+   if (AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]) {
+      AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
    }
 
    //Load the pending trust requests
@@ -352,9 +352,9 @@ const QString Account::alias() const
 QModelIndex Account::index() const
 {
    //There is usually < 5 accounts, the loop may be faster than a hash for most users
-   for (int i=0;i < AccountModel::instance()->size();i++) {
-      if (this == (*AccountModel::instance())[i]) {
-         return AccountModel::instance()->index(i,0);
+   for (int i=0;i < AccountModel::instance().size();i++) {
+      if (this == AccountModel::instance()[i]) {
+         return AccountModel::instance().index(i,0);
       }
    }
    return QModelIndex();
@@ -471,7 +471,7 @@ BootstrapModel* Account::bootstrapModel() const
 QAbstractItemModel* Account::knownCertificateModel() const
 {
    if (!d_ptr->m_pKnownCertificates) {
-      d_ptr->m_pKnownCertificates = CertificateModel::instance()->d_ptr->createKnownList(this);
+      d_ptr->m_pKnownCertificates = CertificateModel::instance().d_ptr->createKnownList(this);
    }
 
    return d_ptr->m_pKnownCertificates;
@@ -483,7 +483,7 @@ QAbstractItemModel* Account::bannedCertificatesModel() const
       return nullptr;
 
    if (!d_ptr->m_pBannedCerts) {
-      d_ptr->m_pBannedCerts = CertificateModel::instance()->addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
+      d_ptr->m_pBannedCerts = CertificateModel::instance().addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
          const_cast<Account*>(this),
          DaemonCertificateCollection::Mode::BANNED
       );
@@ -491,7 +491,7 @@ QAbstractItemModel* Account::bannedCertificatesModel() const
    }
 
    if (!d_ptr->m_pBannedCertificates) {
-      d_ptr->m_pBannedCertificates = CertificateModel::instance()->d_ptr->createBannedList(this);
+      d_ptr->m_pBannedCertificates = CertificateModel::instance().d_ptr->createBannedList(this);
    }
 
    return d_ptr->m_pBannedCertificates;
@@ -503,7 +503,7 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
       return nullptr;
 
    if (!d_ptr->m_pAllowedCerts) {
-      d_ptr->m_pAllowedCerts = CertificateModel::instance()->addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
+      d_ptr->m_pAllowedCerts = CertificateModel::instance().addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
          const_cast<Account*>(this),
          DaemonCertificateCollection::Mode::ALLOWED
       );
@@ -511,7 +511,7 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
    }
 
    if (!d_ptr->m_pAllowedCertificates) {
-      d_ptr->m_pAllowedCertificates = CertificateModel::instance()->d_ptr->createAllowedList(this);
+      d_ptr->m_pAllowedCertificates = CertificateModel::instance().d_ptr->createAllowedList(this);
    }
 
    return d_ptr->m_pAllowedCertificates;
@@ -721,7 +721,7 @@ Certificate* Account::tlsCaListCertificate() const
       const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pCaCert = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::AUTHORITY);
+      d_ptr->m_pCaCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::AUTHORITY);
       connect(d_ptr->m_pCaCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pCaCert;
@@ -734,7 +734,7 @@ Certificate* Account::tlsCertificate() const
       const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pTlsCert = CertificateModel::instance()->getCertificateFromPath(path,Certificate::Type::USER);
+      d_ptr->m_pTlsCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::USER);
       connect(d_ptr->m_pTlsCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
    }
    return d_ptr->m_pTlsCert;
@@ -1111,9 +1111,9 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::TypeName):
          return CAST(protocol());
       case CAST(Account::Role::PresenceStatus):
-         return PresenceStatusModel::instance()->currentStatus();
+         return PresenceStatusModel::instance().currentStatus();
       case CAST(Account::Role::PresenceMessage):
-         return PresenceStatusModel::instance()->currentMessage();
+         return PresenceStatusModel::instance().currentMessage();
       case CAST(Account::Role::RegistrationState):
          return QVariant::fromValue(registrationState());
       case CAST(Account::Role::UsedForOutgogingCall):
@@ -1268,7 +1268,7 @@ bool Account::allowCertificate(Certificate* c)
    if (protocol() != Account::Protocol::RING)
       return false;
 
-   return CertificateModel::instance()->d_ptr->allowCertificate(c, this);
+   return CertificateModel::instance().d_ptr->allowCertificate(c, this);
 }
 
 bool Account::banCertificate(Certificate* c)
@@ -1276,7 +1276,7 @@ bool Account::banCertificate(Certificate* c)
    if (protocol() != Account::Protocol::RING)
       return false;
 
-   return CertificateModel::instance()->d_ptr->banCertificate(c, this);
+   return CertificateModel::instance().d_ptr->banCertificate(c, this);
 }
 
 ///Ask the certificate owner (peer) to trust you
@@ -1449,14 +1449,14 @@ void Account::setTlsPassword(const QString& detail)
 ///Set the certificate authority list file
 void Account::setTlsCaListCertificate(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
+   Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
 void Account::setTlsCertificate(const QString& path)
 {
-   Certificate* cert = CertificateModel::instance()->getCertificateFromPath(path);
+   Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    setTlsCertificate(cert);
 }
 
@@ -2307,10 +2307,10 @@ void AccountPrivate::save()
    q_ptr->credentialModel() << CredentialModel::EditAction::SAVE;
 
    if (!q_ptr->id().isEmpty()) {
-      Account* acc =  AccountModel::instance()->getById(q_ptr->id());
+      Account* acc =  AccountModel::instance().getById(q_ptr->id());
       qDebug() << "Adding the new account to the account list (" << q_ptr->id() << ")";
       if (acc != q_ptr) {
-         AccountModel::instance()->add(q_ptr);
+         AccountModel::instance().add(q_ptr);
       }
 
       q_ptr->performAction(Account::EditAction::RELOAD);
@@ -2381,7 +2381,7 @@ void AccountPrivate::reload()
             disconnect(m_pAccountNumber,SIGNAL(presenceMessageChanged(QString)),this,SLOT(slotPresenceMessageChanged(QString)));
             disconnect(m_pAccountNumber,SIGNAL(presentChanged(bool)),this,SLOT(slotPresentChanged(bool)));
          }
-         m_pAccountNumber = PhoneDirectoryModel::instance()->getNumber(currentUri,q_ptr);
+         m_pAccountNumber = PhoneDirectoryModel::instance().getNumber(currentUri,q_ptr);
          m_pAccountNumber->setType(ContactMethod::Type::ACCOUNT);
          connect(m_pAccountNumber,SIGNAL(presenceMessageChanged(QString)),this,SLOT(slotPresenceMessageChanged(QString)));
          connect(m_pAccountNumber,SIGNAL(presentChanged(bool)),this,SLOT(slotPresentChanged(bool)));
@@ -2400,7 +2400,7 @@ void AccountPrivate::reload()
       //The registration state is cached, update that cache
       updateState();
 
-      AccountModel::instance()->d_ptr->slotVolatileAccountDetailsChange(q_ptr->id(),configurationManager.getVolatileAccountDetails(q_ptr->id()));
+      AccountModel::instance().d_ptr->slotVolatileAccountDetailsChange(q_ptr->id(),configurationManager.getVolatileAccountDetails(q_ptr->id()));
    }
 }
 

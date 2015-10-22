@@ -53,11 +53,10 @@ LocalRecordingCollection::~LocalRecordingCollection()
 
 }
 
-LocalRecordingCollection* LocalRecordingCollection::instance()
+LocalRecordingCollection& LocalRecordingCollection::instance()
 {
-   static LocalRecordingCollection* i = Media::RecordingModel::instance()->addCollection<LocalRecordingCollection>();
-
-   return i;
+   static auto instance = Media::RecordingModel::instance().addCollection<LocalRecordingCollection>();
+   return *instance;
 }
 
 bool LocalRecordingEditor::save(const Media::Recording* recording)

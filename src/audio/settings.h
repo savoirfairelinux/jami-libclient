@@ -47,7 +47,7 @@ public:
    };
 
    virtual ~Settings();
-   static Settings* instance();
+   static Settings& instance();
 
    //Getters
    Audio::AlsaPluginModel*     alsaPluginModel    () const;
@@ -103,9 +103,6 @@ private:
    explicit Settings();
    QScopedPointer<SettingsPrivate> d_ptr;
    Q_DECLARE_PRIVATE(Settings)
-
-   //Singleton
-   static Settings* m_spInstance;
 };
 
 }

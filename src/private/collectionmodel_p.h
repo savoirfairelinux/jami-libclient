@@ -57,7 +57,6 @@ public:
    QVector<ProxyItem*>                      m_lTopLevelBackends;
    QVector<CollectionExtensionInterface*>   m_lExtensions;
    QHash<QString,ProxyItem*>                m_hCategories;
-   static CollectionModel*                  m_spInstance;
    QAbstractItemModel*                      m_pManageableProxy;
    QList<CollectionConfigurationInterface*> m_lConfigurator;
    QList<CollectionCreationInterface*>      m_lCreator;

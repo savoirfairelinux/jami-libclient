@@ -140,7 +140,7 @@ const QString Video::Device::name() const
 ///Is this device the default one
 bool Video::Device::isActive() const
 {
-   return Video::DeviceModel::instance()->activeDevice() == this;
+   return Video::DeviceModel::instance().activeDevice() == this;
 }
 
 bool Video::Device::setActiveChannel(Video::Channel* chan)
@@ -219,8 +219,8 @@ void VideoDevicePrivate::saveIdle()
 
    //If the preview is running, reload it
    //doing this during a call will cause re-invite, this is unwanted
-   if (Video::PreviewManager::instance()->isPreviewing() && VideoRendererManager::instance()->size() == 1) {
-      Video::PreviewManager::instance()->stopPreview();
-      Video::PreviewManager::instance()->startPreview();
+   if (Video::PreviewManager::instance().isPreviewing() && VideoRendererManager::instance().size() == 1) {
+      Video::PreviewManager::instance().stopPreview();
+      Video::PreviewManager::instance().startPreview();
    }
 }
