@@ -20,6 +20,7 @@
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
+#include "callmodel.h"
 
 namespace Video {
 class SourceModelPrivate
@@ -209,3 +210,9 @@ int Video::SourceModel::getDeviceIndex(Video::Device* device)
     int index = Video::DeviceModel::instance()->devices().indexOf(device);
     return index > -1 ? ExtendedDeviceList::COUNT__ + index : -1;
 }
+
+Video::SourceModel* Video::SourceModel::SourceModelFromSelectedCall()
+{
+	return CallModel::instance()->selectedCall()->sourceModel();
+}
+

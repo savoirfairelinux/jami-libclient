@@ -53,6 +53,8 @@ public:
 
    int getDeviceIndex(Video::Device* device);
 
+   static Video::SourceModel* SourceModelFromSelectedCall();
+
 private:
    Video::SourceModelPrivate* d_ptr;
 
