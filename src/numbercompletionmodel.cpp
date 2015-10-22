@@ -100,10 +100,10 @@ m_pSelectionModel(nullptr),m_HasCustomSelection(false)
 {
    //Create the temporary number list
    bool     hasNonIp2Ip = false;
-   Account* ip2ip       = AccountModel::instance()->ip2ip();
+   Account* ip2ip       = AccountModel::instance().ip2ip();
 
-   for (int i =0; i < AccountModel::instance()->size();i++) {
-      Account* a = (*AccountModel::instance())[i];
+   for (int i =0; i < AccountModel::instance().size();i++) {
+      Account* a = AccountModel::instance()[i];
       if (a != ip2ip) {
          hasNonIp2Ip |= accountAdded(a);
       }
@@ -116,11 +116,11 @@ m_pSelectionModel(nullptr),m_HasCustomSelection(false)
       m_hSipIaxTemporaryNumbers[ip2ip] = cm;
    }
 
-   connect(AccountModel::instance(), &AccountModel::accountAdded  , this, &NumberCompletionModelPrivate::accountAdded  );
-   connect(AccountModel::instance(), &AccountModel::accountRemoved, this, &NumberCompletionModelPrivate::accountRemoved);
+   connect(&AccountModel::instance(), &AccountModel::accountAdded  , this, &NumberCompletionModelPrivate::accountAdded  );
+   connect(&AccountModel::instance(), &AccountModel::accountRemoved, this, &NumberCompletionModelPrivate::accountRemoved);
 }
 
-NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(PhoneDirectoryModel::instance()), d_ptr(new NumberCompletionModelPrivate(this))
+NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(&PhoneDirectoryModel::instance()), d_ptr(new NumberCompletionModelPrivate(this))
 {
    setObjectName("NumberCompletionModel");
 }
@@ -327,7 +327,7 @@ ContactMethod* NumberCompletionModel::number(const QModelIndex& idx) const
       //Keep the temporary contact methods private, export a copy
       ContactMethod* m = (d_ptr->m_hNumbers.end()-1-idx.row()).value();
       return m->type() == ContactMethod::Type::TEMPORARY ?
-         PhoneDirectoryModel::instance()->fromTemporary(qobject_cast<TemporaryContactMethod*>(m))
+         PhoneDirectoryModel::instance().fromTemporary(qobject_cast<TemporaryContactMethod*>(m))
          : m;
    }
 
@@ -376,7 +376,7 @@ void NumberCompletionModelPrivate::updateModel()
    }
    else if (m_DisplayMostUsedNumbers) {
       //If enabled, display the most probable entries
-      const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance()->getNumbersByPopularity();
+      const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance().getNumbersByPopularity();
 
       for (int i=0;i<((cl.size()>=10)?10:cl.size());i++) {
          ContactMethod* n = cl[i];
@@ -464,12 +464,12 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
 
 void NumberCompletionModelPrivate::locateNameRange(const QString& prefix, QSet<ContactMethod*>& set)
 {
-   getRange(PhoneDirectoryModel::instance()->d_ptr->m_lSortedNames,prefix,set);
+   getRange(PhoneDirectoryModel::instance().d_ptr->m_lSortedNames,prefix,set);
 }
 
 void NumberCompletionModelPrivate::locateNumberRange(const QString& prefix, QSet<ContactMethod*>& set)
 {
-   getRange(PhoneDirectoryModel::instance()->d_ptr->m_hSortedNumbers,prefix,set);
+   getRange(PhoneDirectoryModel::instance().d_ptr->m_hSortedNumbers,prefix,set);
 }
 
 uint NumberCompletionModelPrivate::getWeight(ContactMethod* number)

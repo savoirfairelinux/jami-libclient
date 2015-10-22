@@ -323,7 +323,7 @@ QList<CollectionInterface::Element> FolderCertificateCollectionPrivate::getCerti
    if (m_Flags & FolderCertificateCollection::Options::RECURSIVE) {
       for (const QString& d : dir.entryList(QDir::AllDirs)) {
          if (d != QString('.') && d != "..") {
-            CertificateModel::instance()->addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>,QString,FolderCertificateCollection*>(
+            CertificateModel::instance().addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>,QString,FolderCertificateCollection*>(
                m_Path+'/'+d              ,
                m_Flags                   ,
                d                         ,
@@ -344,7 +344,7 @@ void BackgroundLoader::run()
 
       QMutexLocker(&this->m_LoaderMutex);
       for(const QByteArray& id : m_pCurrentFolder->listId()) {
-         Certificate* cert = CertificateModel::instance()->getCertificateFromPath(id);
+         Certificate* cert = CertificateModel::instance().getCertificateFromPath(id);
          m_pCurrentFolder->editor<Certificate>()->addExisting(cert);
 
          if (m_pCurrentFolder->d_ptr->m_Flags & FolderCertificateCollection::Options::ROOT)

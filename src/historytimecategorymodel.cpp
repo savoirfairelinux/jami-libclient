@@ -25,13 +25,13 @@ class HistoryTimeCategoryModelPrivate
 {
 public:
    QVector<QString> m_lCategories;
-   static HistoryTimeCategoryModel* instance();
+   static HistoryTimeCategoryModel& instance();
 };
 
-HistoryTimeCategoryModel* HistoryTimeCategoryModelPrivate::instance()
+HistoryTimeCategoryModel& HistoryTimeCategoryModelPrivate::instance()
 {
-   static auto m_spInstance = new HistoryTimeCategoryModel();
-   return m_spInstance;
+   static auto instance = new HistoryTimeCategoryModel();
+   return *instance;
 }
 
 HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractListModel(parent),
@@ -114,12 +114,12 @@ bool HistoryTimeCategoryModel::setData(const QModelIndex& index, const QVariant 
 
 QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
 {
-   static int categoriesSize = HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories.size();
+   static int categoriesSize = HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.size();
    int period = (int)HistoryTimeCategoryModel::timeToHistoryConst(time);
    if (period >= 0 && period < categoriesSize)
-      return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[period];
+      return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories[period];
    else
-      return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[categoriesSize - 1];
+      return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories[categoriesSize - 1];
 }
 
 HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
@@ -173,8 +173,8 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
 QString HistoryTimeCategoryModel::indexToName(int idx)
 {
-   static int size = HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories.size();
+   static int size = HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.size();
    if (idx >= size)
-      return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories.last();
-   return HistoryTimeCategoryModelPrivate::instance()->d_ptr->m_lCategories[idx];
+      return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.last();
+   return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories[idx];
 }

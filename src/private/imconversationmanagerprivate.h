@@ -36,7 +36,7 @@ public:
    friend class Call;
    IMConversationManagerPrivate(QObject* parent);
 
-   static IMConversationManagerPrivate* instance();
+   static IMConversationManagerPrivate& instance();
 
 private Q_SLOTS:
    void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& message);

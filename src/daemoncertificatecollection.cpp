@@ -91,7 +91,7 @@ DaemonCertificateCollection::~DaemonCertificateCollection()
 void DaemonCertificateCollectionPrivate::slotCertificatePinned(const QString& id)
 {
    //qDebug() << "\n\nCERTIFICATE ADDED" << id;
-   Certificate* cert = CertificateModel::instance()->getCertificateFromId(id);
+   Certificate* cert = CertificateModel::instance().getCertificateFromId(id);
 
    if (!cert->collection())
       cert->setCollection(q_ptr);
@@ -129,7 +129,7 @@ bool DaemonCertificateCollection::load()
    //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << certs;
 
    for (const QString& id : certs)
-      CertificateModel::instance()->getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);
+      CertificateModel::instance().getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);
 
    return true;
 }

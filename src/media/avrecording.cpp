@@ -73,10 +73,7 @@ public:
    void desactivateRecording(Media::AVRecording* r);
 
    //Singleton
-   static RecordingPlaybackManager* instance();
-
-private:
-   static RecordingPlaybackManager* m_spInstance;
+   static RecordingPlaybackManager& instance();
 
 public Q_SLOTS:
    void slotRecordPlaybackFilepath(const QString& callID, const QString& filepath );
@@ -84,10 +81,7 @@ public Q_SLOTS:
    void slotUpdatePlaybackScale   (const QString& filepath, int position, int size);
 };
 
-RecordingPlaybackManager* RecordingPlaybackManager::m_spInstance = nullptr;
-
-
-RecordingPlaybackManager::RecordingPlaybackManager() : QObject(CallModel::instance())
+RecordingPlaybackManager::RecordingPlaybackManager() : QObject(&CallModel::instance())
 {
    CallManagerInterface& callManager = DBus::CallManager::instance();
    connect(&callManager,&CallManagerInterface::recordPlaybackStopped , this, &RecordingPlaybackManager::slotRecordPlaybackStopped );
@@ -96,12 +90,10 @@ RecordingPlaybackManager::RecordingPlaybackManager() : QObject(CallModel::instan
 }
 
 ///Singleton
-RecordingPlaybackManager* RecordingPlaybackManager::instance()
+RecordingPlaybackManager& RecordingPlaybackManager::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new RecordingPlaybackManager();
-
-   return m_spInstance;
+    static auto instance = new RecordingPlaybackManager;
+    return *instance;
 }
 
 
@@ -180,7 +172,7 @@ void Media::AVRecording::setPath(const QUrl& path)
 ///Play (or resume) the playback
 void Media::AVRecording::play()
 {
-   RecordingPlaybackManager::instance()->activateRecording(this);
+   RecordingPlaybackManager::instance().activateRecording(this);
 
    CallManagerInterface& callManager = DBus::CallManager::instance();
    const bool retval = callManager.startRecordedFilePlayback(path().path());
@@ -200,7 +192,7 @@ void Media::AVRecording::stop()
    Q_NOREPLY callManager.stopRecordedFilePlayback(path().path());
    emit stopped();
 
-   RecordingPlaybackManager::instance()->desactivateRecording(this);
+   RecordingPlaybackManager::instance().desactivateRecording(this);
    d_ptr->m_IsPaused = false;
 }
 

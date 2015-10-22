@@ -107,9 +107,6 @@ public:
    QModelIndex getIndex(int row, int column, ContactTreeNode* parent);
    void reloadTreeVisibility               (ContactTreeNode*);
 
-   //Singleton
-   static CategorizedContactModel* m_spInstance;
-
 private:
    CategorizedContactModel* q_ptr;
 
@@ -117,8 +114,6 @@ public Q_SLOTS:
    void reloadCategories();
    void slotContactAdded(const Person* c);
 };
-
-CategorizedContactModel* CategorizedContactModelPrivate::m_spInstance = nullptr;
 
 ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) :
    m_pContact(ct),m_Index(-1),m_pContactMethod(nullptr),m_Type(ContactTreeNode::NodeType::PERSON),m_pParent(nullptr),m_pModel(parent),m_Visible(true),
@@ -251,10 +246,10 @@ CategorizedContactModel::CategorizedContactModel(int role) : QAbstractItemModel(
    d_ptr->m_lCategoryCounter.reserve(32);
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
 
-   connect(PersonModel::instance(),&PersonModel::newPersonAdded,d_ptr.data(),&CategorizedContactModelPrivate::slotContactAdded);
+   connect(&PersonModel::instance(),&PersonModel::newPersonAdded,d_ptr.data(),&CategorizedContactModelPrivate::slotContactAdded);
 
-   for(int i=0; i < PersonModel::instance()->rowCount();i++) {
-      Person* p = qvariant_cast<Person*>(PersonModel::instance()->index(i,0).data((int)Person::Role::Object));
+   for(int i=0; i < PersonModel::instance().rowCount();i++) {
+      Person* p = qvariant_cast<Person*>(PersonModel::instance().index(i,0).data((int)Person::Role::Object));
       d_ptr->slotContactAdded(p);
    }
 
@@ -267,11 +262,10 @@ CategorizedContactModel::~CategorizedContactModel()
    }
 }
 
-CategorizedContactModel* CategorizedContactModel::instance()
+CategorizedContactModel& CategorizedContactModel::instance()
 {
-   if (!CategorizedContactModelPrivate::m_spInstance)
-      CategorizedContactModelPrivate::m_spInstance = new CategorizedContactModel();
-   return CategorizedContactModelPrivate::m_spInstance;
+    static auto instance = new CategorizedContactModel;
+    return *instance;
 }
 
 QHash<int,QByteArray> CategorizedContactModel::roleNames() const
@@ -319,8 +313,8 @@ void CategorizedContactModelPrivate::reloadCategories()
    }
    q_ptr->endRemoveRows();
    m_lCategoryCounter.clear();
-   for(int i=0; i < PersonModel::instance()->rowCount();i++) {
-      Person* cont = qvariant_cast<Person*>(PersonModel::instance()->index(i,0).data((int)Person::Role::Object));
+   for(int i=0; i < PersonModel::instance().rowCount();i++) {
+      Person* cont = qvariant_cast<Person*>(PersonModel::instance().index(i,0).data((int)Person::Role::Object));
       slotContactAdded(cont);
    }
    emit q_ptr->layoutChanged();
@@ -343,7 +337,7 @@ void CategorizedContactModelPrivate::slotContactAdded(const Person* c)
 
    if (c->phoneNumbers().size() > 1) {
       q_ptr->beginInsertRows(q_ptr->createIndex(contactNode->m_Index,0,contactNode),0,c->phoneNumbers().size() - 1);
-      foreach (ContactMethod* m, c->phoneNumbers() ) { //TODO check if this can be merged with slotContactMethodCountChanged
+      for (ContactMethod* m : c->phoneNumbers() ) { //TODO check if this can be merged with slotContactMethodCountChanged
          ContactTreeNode* n2 = new ContactTreeNode(m,q_ptr);
          n2->m_Index = contactNode->m_lChildren.size();
          n2->setParent(contactNode);
@@ -404,7 +398,7 @@ bool CategorizedContactModel::dropMimeData(const QMimeData *data, Qt::DropAction
    if (data->hasFormat(RingMimes::CALLID)) {
       const QByteArray encodedCallId = data->data( RingMimes::CALLID    );
       const QModelIndex targetIdx    = index   ( row,column,parent );
-      Call* call                     = CallModel::instance()->fromMime ( encodedCallId        );
+      Call* call                     = CallModel::instance().fromMime ( encodedCallId        );
       if (call && targetIdx.isValid()) {
          ContactTreeNode* modelItem = (ContactTreeNode*)targetIdx.internalPointer();
          switch (modelItem->m_Type) {
@@ -415,7 +409,7 @@ bool CategorizedContactModel::dropMimeData(const QMimeData *data, Qt::DropAction
                      case 0: //Do nothing when there is no phone numbers
                         return false;
                      case 1: //Call when there is one
-                        CallModel::instance()->transfer(call,ct->phoneNumbers()[0]);
+                        CallModel::instance().transfer(call,ct->phoneNumbers()[0]);
                         break;
                      default:
                         //TODO
@@ -427,7 +421,7 @@ bool CategorizedContactModel::dropMimeData(const QMimeData *data, Qt::DropAction
                const ContactMethod* nb  = modelItem->m_pContactMethod;
                if (nb) {
                   call->setTransferNumber(nb->uri());
-                  CallModel::instance()->transfer(call,nb);
+                  CallModel::instance().transfer(call,nb);
                }
             } break;
             case ContactTreeNode::NodeType::CATEGORY:
@@ -638,31 +632,31 @@ void CategorizedContactModelPrivate::reloadTreeVisibility( ContactTreeNode* node
 
 QSortFilterProxyModel* CategorizedContactModel::SortedProxy::model() const
 {
-   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+    if (!CategorizedContactModel::instance().d_ptr->m_pSortedProxy)
+        CategorizedContactModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
 
-   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->model;
+    return CategorizedContactModel::instance().d_ptr->m_pSortedProxy->model;
 }
 
 QAbstractItemModel* CategorizedContactModel::SortedProxy::categoryModel() const
 {
-   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+    if (!CategorizedContactModel::instance().d_ptr->m_pSortedProxy)
+        CategorizedContactModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
 
-   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->categories;
+    return CategorizedContactModel::instance().d_ptr->m_pSortedProxy->categories;
 }
 
 QItemSelectionModel* CategorizedContactModel::SortedProxy::categorySelectionModel() const
 {
-   if (!CategorizedContactModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedContactModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
+    if (!CategorizedContactModel::instance().d_ptr->m_pSortedProxy)
+        CategorizedContactModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getContactProxy();
 
-   return CategorizedContactModel::instance()->d_ptr->m_pSortedProxy->selectionModel;
+    return CategorizedContactModel::instance().d_ptr->m_pSortedProxy->selectionModel;
 }
 
-CategorizedContactModel::SortedProxy* CategorizedContactModel::SortedProxy::instance()
+CategorizedContactModel::SortedProxy& CategorizedContactModel::SortedProxy::instance()
 {
-   return &CategorizedContactModel::instance()->d_ptr->m_pProxies;
+    return CategorizedContactModel::instance().d_ptr->m_pProxies;
 }
 
 #include <categorizedcontactmodel.moc>

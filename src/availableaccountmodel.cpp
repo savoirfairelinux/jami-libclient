@@ -35,9 +35,8 @@ class AvailableAccountModelPrivate final : public QObject
 public:
    AvailableAccountModelPrivate(AvailableAccountModel* parent);
 
-   QItemSelectionModel*          m_pSelectionModel;
-   static Account*               m_spPriorAccount ;
-   static AvailableAccountModel* m_spInstance     ;
+   QItemSelectionModel* m_pSelectionModel;
+   static Account*      m_spPriorAccount ;
 
    static void     setPriorAccount       ( const Account* account );
    static Account* firstRegisteredAccount( URI::SchemeType type = URI::SchemeType::NONE );
@@ -50,19 +49,18 @@ public Q_SLOTS:
    void selectionChanged(const QModelIndex& idx, const QModelIndex& previous);
 };
 
-Account*               AvailableAccountModelPrivate::m_spPriorAccount  = nullptr;
-AvailableAccountModel* AvailableAccountModelPrivate::m_spInstance      = nullptr;
+Account* AvailableAccountModelPrivate::m_spPriorAccount = nullptr;
 
 AvailableAccountModelPrivate::AvailableAccountModelPrivate(AvailableAccountModel* parent) :m_pSelectionModel(nullptr),q_ptr(parent)
 {
-   connect(AccountModel::instance(), &AccountModel::accountRemoved     , this, &AvailableAccountModelPrivate::checkRemovedAccount );
-   connect(AccountModel::instance(), &AccountModel::accountStateChanged, this, &AvailableAccountModelPrivate::checkStateChanges   );
+    connect(&AccountModel::instance(), &AccountModel::accountRemoved     , this, &AvailableAccountModelPrivate::checkRemovedAccount );
+    connect(&AccountModel::instance(), &AccountModel::accountStateChanged, this, &AvailableAccountModelPrivate::checkStateChanges   );
 }
 
 AvailableAccountModel::AvailableAccountModel(QObject* parent) : QSortFilterProxyModel(parent),
 d_ptr(new AvailableAccountModelPrivate(this))
 {
-   setSourceModel(AccountModel::instance());
+   setSourceModel(&AccountModel::instance());
 }
 
 AvailableAccountModel::~AvailableAccountModel()
@@ -70,12 +68,10 @@ AvailableAccountModel::~AvailableAccountModel()
    delete d_ptr;
 }
 
-AvailableAccountModel* AvailableAccountModel::instance()
+AvailableAccountModel& AvailableAccountModel::instance()
 {
-   if (!AvailableAccountModelPrivate::m_spInstance)
-      AvailableAccountModelPrivate::m_spInstance = new AvailableAccountModel(QCoreApplication::instance());
-
-   return AvailableAccountModelPrivate::m_spInstance;
+    static auto instance = new AvailableAccountModel(QCoreApplication::instance());
+    return *instance;
 }
 
 //Do not show the checkbox
@@ -104,7 +100,7 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
 Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
 
-   static Account* ip2ip = AccountModel::instance()->getById(DRing::Account::ProtocolNames::IP2IP);
+   static Account* ip2ip = AccountModel::instance().getById(DRing::Account::ProtocolNames::IP2IP);
 
    Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
 
@@ -157,23 +153,24 @@ Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType
 }
 
 ///Set the previous account used
-void AvailableAccountModelPrivate::setPriorAccount(const Account* account) {
+void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
+{
    const bool changed = (account && m_spPriorAccount != account) || (!account && m_spPriorAccount);
    m_spPriorAccount = const_cast<Account*>(account);
    if (changed) {
-      AvailableAccountModel* self = AvailableAccountModel::instance();
-      Account* a = self->currentDefaultAccount();
+      auto& self = AvailableAccountModel::instance();
+      Account* a = self.currentDefaultAccount();
 
-      emit self->currentDefaultAccountChanged(a);
+      emit self.currentDefaultAccountChanged(a);
 
-      if (self->d_ptr->m_pSelectionModel) {
+      if (self.d_ptr->m_pSelectionModel) {
 
-         const QModelIndex idx = self->mapFromSource(a->index());
+         const QModelIndex idx = self.mapFromSource(a->index());
 
          if (idx.isValid())
-            self->d_ptr->m_pSelectionModel->setCurrentIndex(self->mapFromSource(a->index()), QItemSelectionModel::ClearAndSelect);
+            self.d_ptr->m_pSelectionModel->setCurrentIndex(self.mapFromSource(a->index()), QItemSelectionModel::ClearAndSelect);
          else
-            self->d_ptr->m_pSelectionModel->clearSelection();
+            self.d_ptr->m_pSelectionModel->clearSelection();
       }
    }
 }
@@ -181,7 +178,7 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account) {
 ///Get the first registerred account (default account)
 Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType type)
 {
-   for (Account* current : AccountModel::instance()->d_ptr->m_lAccounts) {
+   for (Account* current : AccountModel::instance().d_ptr->m_lAccounts) {
       if(current
         && current->registrationState() == Account::RegistrationState::READY
         && current->isEnabled()

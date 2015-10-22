@@ -74,10 +74,10 @@ RingtoneModel::RingtoneModel(QObject* parent)
    addCollection<LocalRingtoneCollection>();
 }
 
-RingtoneModel* RingtoneModel::instance()
+RingtoneModel& RingtoneModel::instance()
 {
-   static RingtoneModel* ins = new RingtoneModel(QCoreApplication::instance());
-   return ins;
+   static auto instance = new RingtoneModel(QCoreApplication::instance());
+   return *instance;
 }
 
 RingtoneModel::~RingtoneModel()
