@@ -36,7 +36,7 @@ class LIB_EXPORT PreviewManager : public QObject
 
 public:
    //Singleton
-   static PreviewManager* instance();
+   static PreviewManager& instance();
 
    //Getters
    bool             isPreviewing   ();
@@ -46,9 +46,6 @@ private:
    //Constructor
    explicit PreviewManager();
    virtual ~PreviewManager();
-
-   //Static attributes
-   static PreviewManager* m_spInstance;
 
 public Q_SLOTS:
    void stopPreview ();

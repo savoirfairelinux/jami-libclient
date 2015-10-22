@@ -20,8 +20,6 @@
 #include "contactmethod.h"
 #include "numbercategory.h"
 
-NumberCategoryModel* NumberCategoryModel::m_spInstance = nullptr;
-
 NumberCategory*      NumberCategoryModelPrivate::m_spOther    = nullptr;
 
 NumberCategoryModel::NumberCategoryModel(QObject* parent) : QAbstractListModel(parent),CollectionManagerInterface(this),d_ptr(new NumberCategoryModelPrivate())
@@ -125,11 +123,10 @@ NumberCategory* NumberCategoryModel::addCategory(const QString& name, const QVar
    return cat;
 }
 
-NumberCategoryModel* NumberCategoryModel::instance()
+NumberCategoryModel& NumberCategoryModel::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new NumberCategoryModel();
-   return m_spInstance;
+    static auto instance = new NumberCategoryModel;
+    return *instance;
 }
 
 /*void NumberCategoryModel::setIcon(int idx, const QVariant& icon)
@@ -157,7 +154,7 @@ void NumberCategoryModelPrivate::registerNumber(ContactMethod* number)
    const QString lower = number->category()->name().toLower();
    NumberCategoryModelPrivate::InternalTypeRepresentation* rep = m_hByName[lower];
    if (!rep) {
-      NumberCategoryModel::instance()->addCategory(number->category()->name(),QVariant());
+      NumberCategoryModel::instance().addCategory(number->category()->name(),QVariant());
       rep = m_hByName[lower];
    }
    rep->counter++;
@@ -190,10 +187,10 @@ NumberCategory* NumberCategoryModel::other()
 {
    static QString translated = QObject::tr("Other");
    static QString lower      = translated.toLower();
-   if (instance()->d_ptr->m_hByName[lower])
-      return instance()->d_ptr->m_hByName[lower]->category;
+   if (instance().d_ptr->m_hByName[lower])
+      return instance().d_ptr->m_hByName[lower]->category;
    if (!NumberCategoryModelPrivate::m_spOther)
-      NumberCategoryModelPrivate::m_spOther = instance()->addCategory(lower, QVariant());
+      NumberCategoryModelPrivate::m_spOther = instance().addCategory(lower, QVariant());
    return NumberCategoryModelPrivate::m_spOther;
 }
 

@@ -305,7 +305,7 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
 
 ///Constructor
 Call::Call(Call::State startState, const QString& peerName, ContactMethod* number, Account* account)
-   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(&CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState     = startState;
    d_ptr->m_Type             = Call::Type::CALL;
@@ -318,10 +318,10 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
 
 ///Constructor
 Call::Call(const QString& confId, const QString& account)
-   : ItemBase(CallModel::instance()),d_ptr(new CallPrivate(this))
+   : ItemBase(&CallModel::instance()),d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
-   d_ptr->m_Account      = AccountModel::instance()->getById(account.toLatin1());
+   d_ptr->m_Account      = AccountModel::instance().getById(account.toLatin1());
    d_ptr->m_Type         = (!confId.isEmpty())?Call::Type::CONFERENCE:Call::Type::CALL;
    d_ptr->m_DringId      = confId;
 
@@ -385,7 +385,7 @@ MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
    if (account.isEmpty())
       return details;
 
-   Account* acc = AccountModel::instance()->getById(account.toLatin1());
+   Account* acc = AccountModel::instance().getById(account.toLatin1());
 
    //Only keep the useful part of the URI
    if (acc && acc->protocol() == Account::Protocol::RING)
@@ -418,8 +418,8 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
         return nullptr;
     }
 
-    const auto& acc = AccountModel::instance()->getById(account.toLatin1());
-    const auto& nb  = PhoneDirectoryModel::instance()->getNumber(peerNumber, acc);
+    const auto& acc = AccountModel::instance().getById(account.toLatin1());
+    const auto& nb  = PhoneDirectoryModel::instance().getNumber(peerNumber, acc);
 
     auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
                                                              deleteCall );
@@ -447,7 +447,7 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     //Load the certificate if it's now available
     if (!call->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-        auto cert = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
+        auto cert = CertificateModel::instance().getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], call->account());
         call->d_ptr->m_pCertificate = cert;
         nb->d_ptr->setCertificate(cert);
     }
@@ -479,8 +479,8 @@ Call* CallPrivate::buildDialingCall(const QString& peerName, Account* account)
                                                                       peerName, nullptr, account),
                                                              deleteCall );
     call->d_ptr->m_Direction = Call::Direction::OUTGOING;
-    if (Audio::Settings::instance()->isRoomToneEnabled()) {
-        Audio::Settings::instance()->playRoomTone();
+    if (Audio::Settings::instance().isRoomToneEnabled()) {
+        Audio::Settings::instance().playRoomTone();
     }
 
     return call.release();
@@ -521,10 +521,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    const QString& contactUid = hc[ Call::HistoryMapFields::CONTACT_UID ];
    Person* ct = nullptr;
    if (!contactUid.isEmpty())
-      ct = PersonModel::instance()->getPlaceHolder(contactUid.toLatin1());
+      ct = PersonModel::instance().getPlaceHolder(contactUid.toLatin1());
 
-   Account*        acc            = AccountModel::instance()->getById(accId);
-   ContactMethod*  nb             = PhoneDirectoryModel::instance()->getNumber(number,ct,acc);
+   Account*        acc            = AccountModel::instance().getById(accId);
+   ContactMethod*  nb             = PhoneDirectoryModel::instance().getNumber(number,ct,acc);
 
    Call*           call           = new Call(Call::State::OVER, (name == "empty")?QString():name, nb, acc );
    call->d_ptr->m_DringId         = callId;
@@ -533,7 +533,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    call->d_ptr->setStartTimeStamp(startTimeStamp);
    call->d_ptr->setRecordingPath (rec_path);
    call->d_ptr->m_History         = true;
-   call->d_ptr->m_Account         = AccountModel::instance()->getById(accId);
+   call->d_ptr->m_Account         = AccountModel::instance().getById(accId);
 
    if (missed) {
       call->d_ptr->m_Missed = true;
@@ -563,12 +563,12 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Check the certificate
    if (!cert_path.isEmpty()) {
-      call->d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromPath(cert_path,acc);
+      call->d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromPath(cert_path,acc);
    }
 
    //Allow the certificate
    if (acc && acc->allowIncomingFromHistory() && acc->protocol() == Account::Protocol::RING)
-      acc->allowCertificate(CertificateModel::instance()->getCertificateFromId(number, acc));
+      acc->allowCertificate(CertificateModel::instance().getCertificateFromId(number, acc));
 
    return call;
 }
@@ -845,7 +845,7 @@ bool Call::hasVideo() const
    if (!hasRemote())
       return false;
 
-   return VideoRendererManager::instance()->getRenderer(this) != nullptr;
+   return VideoRendererManager::instance().getRenderer(this) != nullptr;
    #else
    return false;
    #endif
@@ -897,7 +897,7 @@ bool Call::isSecure() const
 Video::Renderer* Call::videoRenderer() const
 {
    #ifdef ENABLE_VIDEO
-   return VideoRendererManager::instance()->getRenderer(this);
+   return VideoRendererManager::instance().getRenderer(this);
    #else
    return nullptr;
    #endif
@@ -1096,7 +1096,7 @@ void CallPrivate::setRecordingPath(const QString& path)
 
    if (!path.isEmpty() && QFile::exists(path)) {
 
-      Media::Recording* rec = LocalRecordingCollection::instance()->addFromPath(path);
+      Media::Recording* rec = LocalRecordingCollection::instance().addFromPath(path);
       (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN ]) << rec;
       (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::OUT]) << rec;
    }
@@ -1190,7 +1190,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
 
       //Load the certificate if it's now available
       if (!q_ptr->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
-         m_pCertificate = CertificateModel::instance()->getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], q_ptr->account());
+         m_pCertificate = CertificateModel::instance().getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], q_ptr->account());
       }
 
       try {
@@ -1225,7 +1225,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
    }
    if (q_ptr->lifeCycleState() != Call::LifeCycleState::CREATION && m_pDialNumber) {
       if (!m_pPeerContactMethod)
-          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+          m_pPeerContactMethod = PhoneDirectoryModel::instance().fromTemporary(m_pDialNumber);
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
@@ -1615,7 +1615,7 @@ void CallPrivate::call()
     // Try to set the account from the associated ContactMethod
     if (auto tryingAcc = peerCM->account()) {
         // make sure account exist in the model and that it's READY
-        if (AccountModel::instance()->getById(tryingAcc->id()) &&
+        if (AccountModel::instance().getById(tryingAcc->id()) &&
             (tryingAcc->registrationState() == Account::RegistrationState::READY))
             m_Account = tryingAcc;
     }
@@ -1641,7 +1641,7 @@ void CallPrivate::call()
     // Warning: m_pDialNumber can become nullptr when linking directly
     URI uri {peerCM->uri()};
     if (!m_pPeerContactMethod)
-        m_pPeerContactMethod = PhoneDirectoryModel::instance()->getNumber(uri, q_ptr->account());
+        m_pPeerContactMethod = PhoneDirectoryModel::instance().getNumber(uri, q_ptr->account());
 
     // m_pDialNumber is now discarded
     m_pDialNumber->deleteLater();
@@ -1661,13 +1661,13 @@ void CallPrivate::call()
     }
     setObjectName("Call:"+m_DringId);
 
-    if (PersonModel::instance()->hasCollections()) {
+    if (PersonModel::instance().hasCollections()) {
         if (auto contact = peerCM->contact())
             m_PeerName = contact->formattedName();
     }
 
     setStartTimeStamp();
-    CallModel::instance()->registerCall(q_ptr);
+    CallModel::instance().registerCall(q_ptr);
 
     connect(peerCM, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
     peerCM->addCall(q_ptr);
@@ -1761,7 +1761,7 @@ void CallPrivate::start()
    emit q_ptr->changed();
    if (m_pDialNumber) {
       if (!m_pPeerContactMethod)
-          m_pPeerContactMethod = PhoneDirectoryModel::instance()->fromTemporary(m_pDialNumber);
+          m_pPeerContactMethod = PhoneDirectoryModel::instance().fromTemporary(m_pDialNumber);
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
