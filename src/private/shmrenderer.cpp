@@ -21,6 +21,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QMutex>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -35,7 +36,6 @@
 #define CLOCK_REALTIME 0
 #endif
 
-#include <QtCore/QTimer>
 #include <chrono>
 
 #include "private/videorenderermanager.h"
@@ -76,7 +76,8 @@ class ShmRendererPrivate final : public QObject
    Q_OBJECT
 
 public:
-   ShmRendererPrivate(ShmRenderer* parent);
+   explicit ShmRendererPrivate(ShmRenderer* parent);
+    ~ShmRendererPrivate();
 
    //Types
    using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
@@ -91,6 +92,7 @@ public:
    int        m_Fps           ;
    TimePoint  m_lastFrameDebug;
    QTimer*    m_pTimer        ;
+   QThread    m_Thread        ;
 
    // Constants
    constexpr static const int FPS_RATE_SEC        = 1  ;
@@ -104,7 +106,7 @@ public:
    bool     remapShm     (           );
 
 private:
-   Video::ShmRenderer* q_ptr;
+    Video::ShmRenderer* q_ptr;
 };
 
 ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
@@ -117,11 +119,17 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
    , m_ShmAreaLen( 0                                   )
    , m_FrameGen  ( 0                                   )
    , m_pTimer    ( nullptr                             )
-#ifdef DEBUG_FPS
-   , m_frameCount( 0                                   )
-   , m_lastFrameDebug(std::chrono::system_clock::now() )
-#endif
+   , m_Thread    ( this                                )
 {
+    if (!m_Thread.isRunning())
+         m_Thread.start();
+    moveToThread(&m_Thread);
+}
+
+ShmRendererPrivate::~ShmRendererPrivate()
+{
+    m_Thread.quit();
+    m_Thread.wait();
 }
 
 /// Constructor
@@ -136,11 +144,11 @@ ShmRenderer::ShmRenderer(const QByteArray& id, const QString& shmPath, const QSi
 /// Destructor
 ShmRenderer::~ShmRenderer()
 {
-   if (d_ptr->m_pTimer) {
-      d_ptr->m_pTimer->stop();
-      d_ptr->m_pTimer = nullptr;
-   }
-   stopShm();
+    if (d_ptr->m_pTimer) {
+        d_ptr->m_pTimer->stop();
+        d_ptr->m_pTimer = nullptr;
+    }
+    stopShm();
 }
 
 /// Wait new frame data from shared memory and save pointer
@@ -193,7 +201,7 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
    auto currentTime = std::chrono::system_clock::now();
    const std::chrono::duration<double> seconds = currentTime - m_lastFrameDebug;
    if (seconds.count() >= FPS_RATE_SEC) {
-      m_Fps = m_fpsC / seconds.count();
+      m_Fps = static_cast<int>(m_fpsC / seconds.count());
       m_fpsC = 0;
       m_lastFrameDebug = currentTime;
 #ifdef DEBUG_FPS

@@ -1,7 +1,8 @@
 /****************************************************************************
  *   Copyright (C) 2012-2015 by Savoir-Faire Linux                          *
- *   Authors : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>*
- *             Alexandre Lision <alexandre.lision@savoirfairelinux.com>     *
+ *   Author: Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>  *
+ *   Author: Alexandre Lision <alexandre.lision@savoirfairelinux.com>       *
+ *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -44,42 +45,44 @@
 #endif
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
+constexpr static const char DIRECT_RENDERER_ID[] = "direct";
 
 class VideoRendererManagerPrivate final : public QObject
 {
-   Q_OBJECT
+    Q_OBJECT
 
-public:
-   VideoRendererManagerPrivate(VideoRendererManager* parent);
-
-   //Attributes
-   bool                               m_PreviewState;
-   uint                               m_BufferSize  ;
-   QHash<QByteArray,Video::Renderer*> m_hRenderers  ;
-   QHash<Video::Renderer*,QByteArray> m_hRendererIds;
-   QHash<Video::Renderer*, QThread*>  m_hThreads    ;
-
-   //Helper
-   void removeRenderer(Video::Renderer* r);
-
+    friend class VideoRendererManager;
 
 private:
-   VideoRendererManager* q_ptr;
+    VideoRendererManagerPrivate(VideoRendererManager* parent);
 
-public Q_SLOTS:
+    //Attributes
+    bool                               m_PreviewState;
+    uint                               m_BufferSize  ;
+    QHash<QByteArray,Video::Renderer*> m_hRenderers  ;
+    QHash<Video::Renderer*,QByteArray> m_hRendererIds;
+
+    //Helper
+    void removeRenderer(const QString &id);
+
+    VideoRendererManager* q_ptr;
+
+private Q_SLOTS:
    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
    void stoppedDecoding(const QString& id, const QString& shmPath);
-
 };
 
-VideoRendererManagerPrivate::VideoRendererManagerPrivate(VideoRendererManager* parent) : QObject(parent), q_ptr(parent),
-m_BufferSize(0),m_PreviewState(false)
-{
-
-}
+VideoRendererManagerPrivate::VideoRendererManagerPrivate(VideoRendererManager* parent)
+    : QObject(parent)
+    , q_ptr(parent)
+    , m_BufferSize(0)
+    , m_PreviewState(false)
+{}
 
 ///Constructor
-VideoRendererManager::VideoRendererManager():QObject(QCoreApplication::instance()), d_ptr(new VideoRendererManagerPrivate(this))
+VideoRendererManager::VideoRendererManager()
+    : QObject(QCoreApplication::instance())
+    , d_ptr(new VideoRendererManagerPrivate(this))
 {
    VideoManagerInterface& interface = VideoManager::instance();
    connect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
@@ -88,9 +91,7 @@ VideoRendererManager::VideoRendererManager():QObject(QCoreApplication::instance(
 
 
 VideoRendererManager::~VideoRendererManager()
-{
-//    delete d_ptr;
-}
+{}
 
 ///Singleton
 VideoRendererManager& VideoRendererManager::instance()
@@ -107,76 +108,80 @@ int VideoRendererManager::size() const
 ///Return the call Renderer or nullptr
 Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
 {
-   if ((!call) || (!call->hasRemote()) || !d_ptr->m_hRenderers.contains(call->dringId().toLatin1()))
-      return nullptr;
+    if (not call or not call->hasRemote())
+        return nullptr;
 
-   return d_ptr->m_hRenderers[call->dringId().toLatin1()];
+    const auto id = call->dringId();
+    QByteArray rid = id.toLatin1();
+
+#ifdef ENABLE_LIBWRAP
+    if (id != PREVIEW_RENDERER_ID)
+        rid = DIRECT_RENDERER_ID;
+#endif
+    if (not d_ptr->m_hRenderers.contains(rid))
+        return nullptr;
+
+    return d_ptr->m_hRenderers[rid];
+}
+
+Video::Renderer* VideoRendererManager::makePreviewRenderer() const
+{
+    if ((!Video::DeviceModel::instance().activeDevice()) or
+        (!Video::DeviceModel::instance().activeDevice()->activeChannel())) {
+        qWarning() << "No device found";
+        return nullptr;
+    }
+
+    Video::Resolution* res = Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution();
+
+    if (!res) {
+        qWarning() << "Misconfigured video device";
+        return nullptr;
+    }
+
+    Video::Renderer* r;
+
+#ifdef ENABLE_LIBWRAP
+    r = new Video::DirectRenderer(PREVIEW_RENDERER_ID, res->size());
+#else
+    r = new Video::ShmRenderer(PREVIEW_RENDERER_ID, "", res->size());
+#endif
+
+    d_ptr->m_hRenderers[PREVIEW_RENDERER_ID] = r;
+    d_ptr->m_hRendererIds[r] = PREVIEW_RENDERER_ID;
+
+    return r;
 }
 
 ///Get the video preview Renderer
-Video::Renderer* VideoRendererManager::previewRenderer()
+Video::Renderer* VideoRendererManager::previewRenderer() const
 {
-   if (!d_ptr->m_hRenderers.contains(PREVIEW_RENDERER_ID)) {
-
-      if ((!Video::DeviceModel::instance().activeDevice()) || (!Video::DeviceModel::instance().activeDevice()->activeChannel())) {
-         qWarning() << "No device found";
-         return nullptr;
-      }
-
-      Video::Resolution* res = Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution();
-
-      if (!res) {
-         qWarning() << "Misconfigured video device";
-         return nullptr;
-      }
-
-      Video::Renderer* r = nullptr;
-
-#ifdef ENABLE_LIBWRAP
-      r = new Video::DirectRenderer(PREVIEW_RENDERER_ID, res->size());
-#else //ENABLE_LIBWRAP
-      r = new Video::ShmRenderer(PREVIEW_RENDERER_ID,"",res->size());
-#endif
-
-      QThread* t = new QThread(this);
-      d_ptr->m_hThreads[r] = t;
-
-      r->moveToThread(t);
-
-      d_ptr->m_hRenderers[PREVIEW_RENDERER_ID] = r;
-      d_ptr->m_hRendererIds[r] = PREVIEW_RENDERER_ID;
-
-   }
-   return d_ptr->m_hRenderers[PREVIEW_RENDERER_ID];
+    if (!d_ptr->m_hRenderers.contains(PREVIEW_RENDERER_ID))
+        return makePreviewRenderer();
+    return d_ptr->m_hRenderers[PREVIEW_RENDERER_ID];
 }
 
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
-
-   VideoManager::instance().stopCamera();
-
-   d_ptr->m_PreviewState = false;
-
+    VideoManager::instance().stopCamera();
+    d_ptr->m_PreviewState = false;
 }
 
 ///Start video preview
 void VideoRendererManager::startPreview()
 {
+    if (d_ptr->m_PreviewState)
+        return;
 
-   if (d_ptr->m_PreviewState)
-      return;
-
-   VideoManager::instance().startCamera();
-
-   d_ptr->m_PreviewState = true;
-
+    VideoManager::instance().startCamera();
+    d_ptr->m_PreviewState = true;
 }
 
 ///Is the video model fetching preview from a camera
 bool VideoRendererManager::isPreviewing() const
 {
-   return d_ptr->m_PreviewState;
+    return d_ptr->m_PreviewState;
 }
 
 ///@todo Set the video buffer size
@@ -188,149 +193,108 @@ void VideoRendererManager::setBufferSize(uint size)
 ///A video is not being rendered
 void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-   Q_UNUSED(shmPath) //When directly linked, there is no SHM
-   const QSize      res = QSize(width,height);
-   const QByteArray rid = id.toLatin1();
+    Q_UNUSED(shmPath); //When directly linked, there is no SHM
 
-   qWarning() << "startedDecoding for sink id: " << id;
-
-   Video::Renderer* r = nullptr;
-
-   if (!m_hRenderers.contains(rid)) {
+    const QSize res = QSize(width,height);
+    QByteArray rid = id.toLatin1();
 
 #ifdef ENABLE_LIBWRAP
-
-      r = new Video::DirectRenderer(rid, res);
-
-      qWarning() << "Calling registerFrameListener";
-      m_hRenderers[rid] = r;
-      m_hRendererIds[r]=rid;
-
-      VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
-
-#else //ENABLE_LIBWRAP
-
-      r = new Video::ShmRenderer(rid,shmPath,res);
-      m_hRenderers[rid] = r;
-      m_hRendererIds[r]=rid;
-
+    if (id != PREVIEW_RENDERER_ID)
+        rid = DIRECT_RENDERER_ID;
 #endif
 
+    Video::Renderer* r;
 
-      QThread* t = new QThread(this);
-      m_hThreads[r] = t;
-
-      r->moveToThread(t);
-
-      if (!t->isRunning())
-         t->start();
-
-   }
-   else {
-      r = m_hRenderers[rid];
-
-      r->setSize(res);
-
+    qDebug() << "Search for renderer" << rid;
+    if (not m_hRenderers.contains(rid)) {
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
-#else //ENABLE_LIBWRAP
-
-      static_cast<Video::ShmRenderer*>(r)->setShmPath(shmPath);
-
+        r = new Video::DirectRenderer(rid, res);
+        qWarning() << "Calling registerSinkTarget";
+        VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+#else
+        r = new Video::ShmRenderer(rid, shmPath, res);
 #endif
+        m_hRenderers[rid] = r;
+        m_hRendererIds[r] = rid;
+    } else {
+        r = m_hRenderers[rid];
 
-   }
+        r->setSize(res);
+#ifdef ENABLE_LIBWRAP
+        qWarning() << "Calling registerSinkTarget";
+        VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+#else
+        dynamic_cast<Video::ShmRenderer*>(r)->setShmPath(shmPath);
+#endif
+    }
 
-   r->startRendering();
+    qDebug() << "Starting renderer" << rid;
+    r->startRendering();
 
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+    if (auto dev = Video::DeviceModel::instance().getDevice(id))
+        emit dev->renderingStarted(r);
 
-   if (dev)
-      emit dev->renderingStarted(r);
-
-   if (id != PREVIEW_RENDERER_ID) {
-      qDebug() << "Starting video for call" << id;
-
-      Call* c = CallModel::instance().getCall(id);
-
-      if (c)
-         c->d_ptr->registerRenderer(r);
-
-   }
-   else {
-      m_PreviewState = true;
-      emit q_ptr->previewStateChanged(true);
-      emit q_ptr->previewStarted(r);
-   }
+    if (id != PREVIEW_RENDERER_ID) {
+        if (auto c = CallModel::instance().getCall(id))
+            c->d_ptr->registerRenderer(r); // FIXME: bad private access
+    } else {
+        m_PreviewState = true;
+        emit q_ptr->previewStateChanged(true);
+        emit q_ptr->previewStarted(r);
+    }
 }
 
 /**
  * @warning This method can be called multiple time for the same renderer
  */
-void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
+void VideoRendererManagerPrivate::removeRenderer(const QString& id)
 {
-   if (!r || !m_hRenderers.contains(m_hRendererIds[r]))
-      return;
+    QByteArray rid = id.toLatin1();
 
-   const QByteArray id = m_hRendererIds[r];
+#ifdef ENABLE_LIBWRAP
+    if (id != PREVIEW_RENDERER_ID)
+        rid = DIRECT_RENDERER_ID;
+#endif
 
-   //Quit if for some reasons the renderer is not found
-   if ( !r ) {
-      qWarning() << "Cannot stop rendering, renderer" << id << "not found";
-      return;
-   }
+    if (not m_hRenderers.contains(rid))
+        return;
 
-   Call* c = CallModel::instance().getCall(id);
+    auto r = m_hRenderers[rid];
+    Q_CHECK_PTR(r);
 
-   if (c) {
-      c->d_ptr->removeRenderer(r);
-   }
+   if (auto c = CallModel::instance().getCall(id))
+       c->d_ptr->removeRenderer(r); // FIXME: bad private access
 
    r->stopRendering();
+   qDebug() << "Stopped renderer" << rid;
 
-   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
-
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
-
-   if (dev)
+   if (auto dev = Video::DeviceModel::instance().getDevice(rid))
       emit dev->renderingStopped(r);
 
-   if (id == PREVIEW_RENDERER_ID) {
+   if (rid == PREVIEW_RENDERER_ID) {
       m_PreviewState = false;
       emit q_ptr->previewStateChanged(false);
       emit q_ptr->previewStopped(r);
    }
 
+#ifndef ENABLE_LIBWRAP
    m_hRendererIds.remove(r);
-   m_hRenderers.remove(id);
-
-   QThread* t = m_hThreads[r];
-   m_hThreads[r] = nullptr;
-
-   if (t) {
-      t->quit();
-      t->wait();
-   }
-
+   m_hRenderers.remove(rid);
    delete r;
-
-   t->deleteLater();
+#endif
 }
 
 ///A video stopped being rendered
 void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
 {
-   Q_UNUSED(shmPath)
+    Q_UNUSED(shmPath);
 
-   if (m_hRenderers.contains(id.toLatin1())) {
-      removeRenderer(m_hRenderers[id.toLatin1()]);
-   }
+    removeRenderer(id);
 }
 
 void VideoRendererManager::switchDevice(const Video::Device* device) const
 {
-   VideoManagerInterface& interface = VideoManager::instance();
-   interface.switchInput(device->id());
+   VideoManager::instance().switchInput(device->id());
 }
 
 #include <videorenderermanager.moc>
