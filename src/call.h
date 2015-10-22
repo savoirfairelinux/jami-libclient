@@ -18,7 +18,6 @@
  ***************************************************************************/
 #pragma once
 
-#include "categorizedcompositenode.h"
 #include <itembase.h>
 #include <time.h>
 
