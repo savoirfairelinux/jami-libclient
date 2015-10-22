@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_7ee2edd6",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:04:42Z",
+      "side": 1,
+      "message": "Indentation",
+      "revId": "492b05bf99ef1d77b1f0706ec091a4c8476df175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_1ee729e6",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:04:42Z",
+      "side": 1,
+      "message": "Indentation",
+      "revId": "492b05bf99ef1d77b1f0706ec091a4c8476df175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_3eec65c7",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:04:42Z",
+      "side": 1,
+      "message": "Indentation",
+      "revId": "492b05bf99ef1d77b1f0706ec091a4c8476df175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_ded0e1f9",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:04:42Z",
+      "side": 1,
+      "message": "A new constructor parameter \"QObject* parent \u003d nullptr) should be added to the Video::SourceModel so its memory is handled by Qt object ownership",
+      "revId": "492b05bf99ef1d77b1f0706ec091a4c8476df175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
