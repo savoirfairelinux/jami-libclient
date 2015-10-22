@@ -131,7 +131,6 @@ void HistoryItemNode::slotNumberChanged()
    emit changed(m_pModel->index(m_pBackend->m_Index,0,m_pModel->index(m_pBackend->m_pParent->m_AbsoluteIndex,0)));
 }
 
-CategorizedHistoryModel* CategorizedHistoryModel::m_spInstance    = nullptr;
 CallMap       CategorizedHistoryModelPrivate::m_sHistoryCalls          ;
 
 HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) :
@@ -140,9 +139,9 @@ HistoryTopLevelItem::HistoryTopLevelItem(const QString& name, int index) :
 {}
 
 HistoryTopLevelItem::~HistoryTopLevelItem() {
-   const int idx = CategorizedHistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.indexOf(this);
+   const int idx = CategorizedHistoryModel::instance().d_ptr->m_lCategoryCounter.indexOf(this);
    if (idx != -1)
-      CategorizedHistoryModel::m_spInstance->d_ptr->m_lCategoryCounter.remove(idx);
+      CategorizedHistoryModel::instance().d_ptr->m_lCategoryCounter.remove(idx);
    while(m_lChildren.size()) {
       CategorizedHistoryModelPrivate::HistoryItem* item = m_lChildren[0];
       m_lChildren.remove(0);
@@ -193,7 +192,6 @@ m_Role(static_cast<int>(Call::Role::FuzzyDate)),m_pSortedProxy(nullptr)
 CategorizedHistoryModel::CategorizedHistoryModel():QAbstractItemModel(QCoreApplication::instance()),CollectionManagerInterface<Call>(this),
 d_ptr(new CategorizedHistoryModelPrivate(this))
 {
-   m_spInstance  = this;
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER << RingMimes::HISTORYID;
 } //initHistory
 
@@ -209,7 +207,6 @@ CategorizedHistoryModel::~CategorizedHistoryModel()
 
       delete item;
    }
-   m_spInstance = nullptr;
 }
 
 QHash<int,QByteArray> CategorizedHistoryModel::roleNames() const
@@ -247,11 +244,10 @@ QHash<int,QByteArray> CategorizedHistoryModel::roleNames() const
 }
 
 ///Singleton
-CategorizedHistoryModel* CategorizedHistoryModel::instance()
+CategorizedHistoryModel& CategorizedHistoryModel::instance()
 {
-   if (!m_spInstance)
-      m_spInstance = new CategorizedHistoryModel();
-   return m_spInstance;
+    static auto instance = new CategorizedHistoryModel();
+    return *instance;
 }
 
 
@@ -280,12 +276,12 @@ HistoryTopLevelItem* CategorizedHistoryModelPrivate::getCategory(const Call* cal
       category = new HistoryTopLevelItem(name,index);
       category->modelRow = m_lCategoryCounter.size();
       //emit layoutAboutToBeChanged(); //Not necessary
-      CategorizedHistoryModel::instance()->beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
+      CategorizedHistoryModel::instance().beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
       category->m_AbsoluteIndex = m_lCategoryCounter.size();
       m_lCategoryCounter << category;
       m_hCategories    [index] = category;
       m_hCategoryByName[name ] = category;
-      CategorizedHistoryModel::instance()->endInsertRows();
+      CategorizedHistoryModel::instance().endInsertRows();
       //emit layoutChanged();
    }
    return category;
@@ -322,7 +318,7 @@ void CategorizedHistoryModelPrivate::add(Call* call)
    m_sHistoryCalls[(call->startTimeStamp() << 10)+qrand()%1024] = call;
    q_ptr->endInsertRows();
 
-   LastUsedNumberModel::instance()->addCall(call);
+   LastUsedNumberModel::instance().addCall(call);
    emit q_ptr->historyChanged();
 
    //When the categories goes from 0 items to many, its conceptual state change
@@ -593,13 +589,13 @@ bool CategorizedHistoryModel::dropMimeData(const QMimeData *mime, Qt::DropAction
 
    if (parentIdx.isValid() && mime->hasFormat( RingMimes::CALLID)) {
       QByteArray encodedCallId      = mime->data( RingMimes::CALLID      );
-      Call* call = CallModel::instance()->fromMime(encodedCallId);
+      Call* call = CallModel::instance().fromMime(encodedCallId);
       if (call) {
          const QModelIndex& idx = index(row,column,parentIdx);
          if (idx.isValid()) {
             const Call* target = (Call*)((CategorizedCompositeNode*)(idx.internalPointer()))->getSelf();
             if (target) {
-               CallModel::instance()->transfer(call,target->peerContactMethod());
+               CallModel::instance().transfer(call,target->peerContactMethod());
                return true;
             }
          }
@@ -652,31 +648,31 @@ void CategorizedHistoryModel::setCategoryRole(int role)
 
 QSortFilterProxyModel* CategorizedHistoryModel::SortedProxy::model() const
 {
-   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+   if (!CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
 
-   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->model;
+   return CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy->model;
 }
 
 QAbstractItemModel* CategorizedHistoryModel::SortedProxy::categoryModel() const
 {
-   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+   if (!CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
 
-   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->categories;
+   return CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy->categories;
 }
 
 QItemSelectionModel* CategorizedHistoryModel::SortedProxy::categorySelectionModel() const
 {
-   if (!CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy)
-      CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
+   if (!CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy)
+      CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy = SortingCategory::getHistoryProxy();
 
-   return CategorizedHistoryModel::instance()->d_ptr->m_pSortedProxy->selectionModel;
+   return CategorizedHistoryModel::instance().d_ptr->m_pSortedProxy->selectionModel;
 }
 
-CategorizedHistoryModel::SortedProxy* CategorizedHistoryModel::SortedProxy::instance()
+CategorizedHistoryModel::SortedProxy& CategorizedHistoryModel::SortedProxy::instance()
 {
-   return &CategorizedHistoryModel::instance()->d_ptr->m_pProxies;
+   return CategorizedHistoryModel::instance().d_ptr->m_pProxies;
 }
 
 #include <categorizedhistorymodel.moc>

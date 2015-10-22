@@ -62,8 +62,6 @@ private:
    CategorizedBookmarkModel* q_ptr;
 };
 
-CategorizedBookmarkModel* CategorizedBookmarkModel::m_spInstance = nullptr;
-
 //Model item/index
 class NumberTreeBackend final
 {
@@ -119,7 +117,7 @@ d_ptr(new CategorizedBookmarkModelPrivate(this))
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
 
    if (d_ptr->displayFrequentlyUsed()) {
-      connect(PhoneDirectoryModel::instance()->mostPopularNumberModel(),&QAbstractItemModel::rowsInserted,this,&CategorizedBookmarkModel::reloadCategories);
+      connect(PhoneDirectoryModel::instance().mostPopularNumberModel(),&QAbstractItemModel::rowsInserted,this,&CategorizedBookmarkModel::reloadCategories);
    }
 }
 
@@ -138,11 +136,10 @@ CategorizedBookmarkModel::~CategorizedBookmarkModel()
    delete d_ptr;
 }
 
-CategorizedBookmarkModel* CategorizedBookmarkModel::instance()
+CategorizedBookmarkModel& CategorizedBookmarkModel::instance()
 {
-   if (! m_spInstance )
-      m_spInstance = new CategorizedBookmarkModel(QCoreApplication::instance());
-   return m_spInstance;
+    static auto instance = new CategorizedBookmarkModel(QCoreApplication::instance());
+    return *instance;
 }
 
 QHash<int,QByteArray> CategorizedBookmarkModel::roleNames() const
@@ -151,7 +148,7 @@ QHash<int,QByteArray> CategorizedBookmarkModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles[static_cast<int>(Call::Role::Name)] = CallModel::instance()->roleNames()[static_cast<int>(Call::Role::Name)];
+      roles[static_cast<int>(Call::Role::Name)] = CallModel::instance().roleNames()[static_cast<int>(Call::Role::Name)];
    }
    return roles;
 }
@@ -192,7 +189,7 @@ void CategorizedBookmarkModel::reloadCategories()
       beginInsertRows(index(item->m_Index,0), item->m_lChildren.size(), item->m_lChildren.size());
       endInsertRows();
 
-      const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance()->getNumbersByPopularity();
+      const QVector<ContactMethod*> cl = PhoneDirectoryModel::instance().getNumbersByPopularity();
    }
 
    foreach(ContactMethod* bookmark, d_ptr->bookmarkList()) {
@@ -259,8 +256,8 @@ QVariant CategorizedBookmarkModel::data( const QModelIndex& index, int role) con
    if (index.parent().isValid()) {
       NumberTreeBackend* parentItem = static_cast<NumberTreeBackend*>(index.parent().internalPointer());
       if (parentItem->m_MostPopular) {
-         return PhoneDirectoryModel::instance()->mostPopularNumberModel()->data(
-            PhoneDirectoryModel::instance()->mostPopularNumberModel()->index(index.row(),0),
+         return PhoneDirectoryModel::instance().mostPopularNumberModel()->data(
+            PhoneDirectoryModel::instance().mostPopularNumberModel()->index(index.row(),0),
             role
          );
       }
@@ -318,8 +315,8 @@ int CategorizedBookmarkModel::rowCount( const QModelIndex& parent ) const
    switch (modelItem->m_Type) {
       case NumberTreeBackend::Type::CATEGORY:
          if (modelItem->m_MostPopular) {
-            static PhoneDirectoryModel* m = PhoneDirectoryModel::instance();
-            return m->d_ptr->m_lPopularityIndex.size();
+            static auto& index = PhoneDirectoryModel::instance().d_ptr->m_lPopularityIndex;
+            return index.size();
          }
          else
             return modelItem->m_lChildren.size();

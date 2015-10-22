@@ -29,17 +29,17 @@ public:
 
 void CollectionManagerInterfaceBase::registerToModel(CollectionInterface* col) const
 {
-   CollectionModel::instance()->d_ptr->registerNew(col);
+   CollectionModel::instance().d_ptr->registerNew(col);
 }
 
 void CollectionManagerInterfaceBase::addCreatorToList(CollectionCreationInterface* creator)
 {
-   CollectionModel::instance()->d_ptr->m_lCreator << creator;
+   CollectionModel::instance().d_ptr->m_lCreator << creator;
 }
 
 void CollectionManagerInterfaceBase::addConfiguratorToList(CollectionConfigurationInterface* configurator)
 {
-   CollectionModel::instance()->d_ptr->m_lConfigurator << configurator;
+   CollectionModel::instance().d_ptr->m_lConfigurator << configurator;
 }
 
 void CollectionManagerInterfaceBase::setCollectionConfigurator(CollectionInterface* col, std::function<CollectionConfigurationInterface*()> getter)

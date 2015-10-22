@@ -77,10 +77,10 @@ PhoneDirectoryModel::~PhoneDirectoryModel()
    }
 }
 
-PhoneDirectoryModel* PhoneDirectoryModel::instance()
+PhoneDirectoryModel& PhoneDirectoryModel::instance()
 {
-   auto static m_spInstance = new PhoneDirectoryModel();
-   return m_spInstance;
+   static auto instance = new PhoneDirectoryModel;
+   return *instance;
 }
 
 QHash<int,QByteArray> PhoneDirectoryModel::roleNames() const
@@ -386,7 +386,7 @@ ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, cons
 
             //Set a type, this has low probabilities of being invalid
             if ((!number->hasType()) && (!type.isEmpty())) {
-               number->setCategory(NumberCategoryModel::instance()->getCategory(type));
+               number->setCategory(NumberCategoryModel::instance().getCategory(type));
             }
 
             //We already have enough information to confirm the choice
@@ -417,13 +417,13 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString&
    if (wrap) {
       ContactMethod* nb = wrap->numbers[0];
       if ((!nb->hasType()) && (!type.isEmpty())) {
-         nb->setCategory(NumberCategoryModel::instance()->getCategory(type));
+         nb->setCategory(NumberCategoryModel::instance().getCategory(type));
       }
       return nb;
    }
 
    //Too bad, lets create one
-   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance()->getCategory(type));
+   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance().getCategory(type));
    number->setIndex(d_ptr->m_lNumbers.size());
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
@@ -531,7 +531,7 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    }
 
    //Create the number
-   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance()->getCategory(type));
+   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance().getCategory(type));
    number->setAccount(account);
    number->setIndex( d_ptr->m_lNumbers.size());
    if (contact)
@@ -576,8 +576,8 @@ ContactMethod* PhoneDirectoryModel::fromHash(const QString& hash)
    if (fields.size() == 3) {
       const QString uri = fields[0];
       const QByteArray acc = fields[1].toLatin1();
-      Account* account = acc.isEmpty() ? nullptr : AccountModel::instance()->getById(acc);
-      Person* contact = PersonModel::instance()->getPersonByUid(fields[2].toUtf8());
+      Account* account = acc.isEmpty() ? nullptr : AccountModel::instance().getById(acc);
+      Person* contact = PersonModel::instance().getPersonByUid(fields[2].toUtf8());
       return getNumber(uri,contact,account);
    }
    else if (fields.size() == 1) {
@@ -673,7 +673,7 @@ void PhoneDirectoryModelPrivate::slotContactChanged(Person* newContact, Person* 
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
    qDebug() << "New presence buddy" << uri << status << message;
-   ContactMethod* number = q_ptr->getNumber(uri,AccountModel::instance()->getById(accountId.toLatin1()));
+   ContactMethod* number = q_ptr->getNumber(uri,AccountModel::instance().getById(accountId.toLatin1()));
    number->setPresent(status);
    number->setPresenceMessage(message);
    emit number->changed();
@@ -724,7 +724,7 @@ void PhoneDirectoryModel::setCallWithAccount(bool value) {
 
 ///Popular number model related code
 
-MostPopularNumberModel::MostPopularNumberModel() : QAbstractListModel(PhoneDirectoryModel::instance()) {
+MostPopularNumberModel::MostPopularNumberModel() : QAbstractListModel(&PhoneDirectoryModel::instance()) {
    setObjectName("MostPopularNumberModel");
 }
 
@@ -733,14 +733,14 @@ QVariant MostPopularNumberModel::data( const QModelIndex& index, int role ) cons
    if (!index.isValid())
       return QVariant();
 
-   return PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex[index.row()]->roleData(
+   return PhoneDirectoryModel::instance().d_ptr->m_lPopularityIndex[index.row()]->roleData(
       role == Qt::DisplayRole ? (int)Call::Role::Name : role
    );
 }
 
 int MostPopularNumberModel::rowCount( const QModelIndex& parent ) const
 {
-   return parent.isValid() ? 0 : PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex.size();
+   return parent.isValid() ? 0 : PhoneDirectoryModel::instance().d_ptr->m_lPopularityIndex.size();
 }
 
 Qt::ItemFlags MostPopularNumberModel::flags( const QModelIndex& index ) const
@@ -758,7 +758,7 @@ bool MostPopularNumberModel::setData( const QModelIndex& index, const QVariant &
 
 void MostPopularNumberModel::addRow()
 {
-   const int oldSize = PhoneDirectoryModel::instance()->d_ptr->m_lPopularityIndex.size()-1;
+   const int oldSize = PhoneDirectoryModel::instance().d_ptr->m_lPopularityIndex.size()-1;
    beginInsertRows(QModelIndex(),oldSize,oldSize);
    endInsertRows();
 }

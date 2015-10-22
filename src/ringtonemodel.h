@@ -58,7 +58,7 @@ public:
    //Mutator
    void play(const QModelIndex& index);
 
-   static RingtoneModel* instance();
+   static RingtoneModel& instance();
 
 private:
    explicit RingtoneModel(QObject* parent = nullptr);

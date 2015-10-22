@@ -35,7 +35,7 @@ Video::Rate::~Rate()
 
 int Video::Rate::relativeIndex()
 {
-   return Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution()->validRates().indexOf(this);
+   return Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution()->validRates().indexOf(this);
 }
 
 QString Video::Rate::name() const

@@ -51,7 +51,7 @@ public:
    static Account* currentDefaultAccount(URI::SchemeType schemeType);
 
    //Singleton
-   static AvailableAccountModel* instance();
+   static AvailableAccountModel& instance();
 
 Q_SIGNALS:
    void currentDefaultAccountChanged(Account*);
