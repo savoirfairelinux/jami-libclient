@@ -22,6 +22,23 @@
       "revId": "ed31feb9990576a7ef0aa327a4543b9f189ede19",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_7e098d94",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-22T20:10:02Z",
+      "side": 1,
+      "message": "please make this function \"const\" and rename it \"Video::SourceModel* Video::SourceModel::currentModel() const\" for API consistency and naming conventions. See\n\nhttps://projects.savoirfairelinux.com/projects/libringclient/wiki/Codestyle for an overview of the defined coding guidelines\n\nIt doesn\u0027t have to be static as there is already a singleton for this class",
+      "revId": "ed31feb9990576a7ef0aa327a4543b9f189ede19",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
