@@ -83,7 +83,7 @@ public:
    bool save();
    bool load();
 
-   static CollectionModel* instance();
+   static CollectionModel& instance();
 
 Q_SIGNALS:
    void checkStateChanged();

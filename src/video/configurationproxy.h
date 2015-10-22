@@ -30,15 +30,15 @@ namespace Video {
  */
 class ConfigurationProxy {
 public:
-   static QAbstractItemModel* deviceModel    ();
-   static QAbstractItemModel* channelModel   ();
-   static QAbstractItemModel* resolutionModel();
-   static QAbstractItemModel* rateModel      ();
+   static QAbstractItemModel& deviceModel    ();
+   static QAbstractItemModel& channelModel   ();
+   static QAbstractItemModel& resolutionModel();
+   static QAbstractItemModel& rateModel      ();
 
-   static QItemSelectionModel* deviceSelectionModel    ();
-   static QItemSelectionModel* channelSelectionModel   ();
-   static QItemSelectionModel* resolutionSelectionModel();
-   static QItemSelectionModel* rateSelectionModel      ();
+   static QItemSelectionModel& deviceSelectionModel    ();
+   static QItemSelectionModel& channelSelectionModel   ();
+   static QItemSelectionModel& resolutionSelectionModel();
+   static QItemSelectionModel& rateSelectionModel      ();
 };
 
 } //namespace Video
