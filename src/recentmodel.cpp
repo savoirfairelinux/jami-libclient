@@ -114,6 +114,8 @@ public:
    QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
 
+   QItemSelectionModel*                  m_pSelectionModel  ;
+
    //Helper
    void            insertNode    (RecentViewNode* n, time_t t, bool isNew);
    void            removeNode    (RecentViewNode* n                      );
@@ -136,7 +138,24 @@ public Q_SLOTS:
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
 {
+    m_pSelectionModel = nullptr;
 }
+
+QItemSelectionModel* RecentModel::selectionModel() const
+{
+   if (!d_ptr->m_pSelectionModel) {
+      d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<RecentModel*>(this));
+   }
+   return d_ptr->m_pSelectionModel;
+}
+
+void RecentModel::selectNode(RecentViewNode* node) const
+{
+   const auto idx = createIndex(node->m_Index, 0, node->m_pParent);
+
+   selectionModel()->setCurrentIndex(idx, QItemSelectionModel::ClearAndSelect);
+}
+
 
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
@@ -497,6 +516,7 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
       q_ptr->endMoveRows();
    else
       q_ptr->endInsertRows();
+   q_ptr->selectionModel()->select(q_ptr->index(n->m_Index, 0), QItemSelectionModel::ClearAndSelect);
 
 #if 0
     //Uncomment if there is issues
