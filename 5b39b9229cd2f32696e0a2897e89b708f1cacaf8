@@ -48,6 +48,29 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_01934ea4",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-23T17:19:44Z",
+      "side": 1,
+      "message": "if there are no call, or no selected calls, selectedCall() will give you a nullptr",
+      "range": {
+        "startLine": 216,
+        "startChar": 1,
+        "endLine": 216,
+        "endChar": 61
+      },
+      "revId": "5b39b9229cd2f32696e0a2897e89b708f1cacaf8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_de2461c8",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 3
