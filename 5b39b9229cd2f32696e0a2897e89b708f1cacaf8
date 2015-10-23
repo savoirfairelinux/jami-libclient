@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_1e3ba9ec",
+        "filename": "src/call.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-23T14:27:03Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 316,
+        "startChar": 23,
+        "endLine": 316,
+        "endChar": 26
+      },
+      "revId": "5b39b9229cd2f32696e0a2897e89b708f1cacaf8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_3e40e555",
+        "filename": "src/call.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-23T14:27:03Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 329,
+        "startChar": 23,
+        "endLine": 329,
+        "endChar": 25
+      },
+      "revId": "5b39b9229cd2f32696e0a2897e89b708f1cacaf8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_de2461c8",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-23T14:27:03Z",
+      "side": 1,
+      "message": "I agree with Emmanuel\u0027s comment (from the abandoned patch) that this function isn\u0027t needed and that it increases coupling. The SouceModel shouldn\u0027t need to know about the CallModel nor which selection is made... but this isn\u0027t a big deal. I think mostly that the VideoWidget in the GNOME client should not use function, because the VideoWidget shouldn\u0027t assume that it is from the selected call. This is currently the case in the GNOME client, but it could change in the future. Instead I think the VideoWidget should retain a pointer to either the SourceModel or the Call that it is associated with. That way it will always have the correct device selection.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 45
+      },
+      "revId": "5b39b9229cd2f32696e0a2897e89b708f1cacaf8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
