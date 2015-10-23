@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QItemSelectionModel>
 
 #include <typedefs.h>
 
@@ -51,11 +52,12 @@ public:
    //Singleton
    static RecentModel* instance();
 
-   QModelIndex getIndex     (Call *call               ) const;
-   QModelIndex getIndex     (Person *p                ) const;
-   QModelIndex getIndex     (ContactMethod *cm        ) const;
-   bool        hasActiveCall(const QModelIndex& parent)      ;
-   Call*       getActiveCall(const QModelIndex& parent)      ;
+   QModelIndex          getIndex     (Call *call               ) const;
+   QModelIndex          getIndex     (Person *p                ) const;
+   QModelIndex          getIndex     (ContactMethod *cm        ) const;
+   bool                 hasActiveCall(const QModelIndex& parent)      ;
+   Call*                getActiveCall(const QModelIndex& parent)      ;
+   QItemSelectionModel* selectionModel(                        ) const;
 
 private:
    explicit RecentModel(QObject* parent = nullptr);
