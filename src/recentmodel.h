@@ -28,6 +28,8 @@ class RecentModelPrivate;
 class Call;
 class Person;
 class ContactMethod;
+class QItemSelectionModel;
+class RecentViewNode;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
@@ -51,15 +53,18 @@ public:
    //Singleton
    static RecentModel* instance();
 
-   QModelIndex getIndex     (Call *call               ) const;
-   QModelIndex getIndex     (Person *p                ) const;
-   QModelIndex getIndex     (ContactMethod *cm        ) const;
-   bool        hasActiveCall(const QModelIndex& parent)      ;
-   Call*       getActiveCall(const QModelIndex& parent)      ;
+   QModelIndex          getIndex     (Call *call               ) const;
+   QModelIndex          getIndex     (Person *p                ) const;
+   QModelIndex          getIndex     (ContactMethod *cm        ) const;
+   bool                 hasActiveCall(const QModelIndex& parent)      ;
+   Call*                getActiveCall(const QModelIndex& parent)      ;
+   QItemSelectionModel* selectionModel(                        ) const;
 
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
+
+   void selectNode(RecentViewNode* node) const;
 
    RecentModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(RecentModel)
