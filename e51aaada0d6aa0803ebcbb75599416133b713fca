@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_21abea8a",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-23T20:29:29Z",
+      "side": 1,
+      "message": "should this be equal to DIRECT_RENDERER_ID ?",
+      "range": {
+        "startLine": 115,
+        "startChar": 41,
+        "endLine": 115,
+        "endChar": 44
+      },
+      "revId": "e51aaada0d6aa0803ebcbb75599416133b713fca",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_41b076f4",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-23T20:29:29Z",
+      "side": 1,
+      "message": "Related to comment below",
+      "range": {
+        "startLine": 197,
+        "startChar": 14,
+        "endLine": 197,
+        "endChar": 32
+      },
+      "revId": "e51aaada0d6aa0803ebcbb75599416133b713fca",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_61881223",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-23T20:29:29Z",
+      "side": 1,
+      "message": "Related to comments below",
+      "range": {
+        "startLine": 277,
+        "startChar": 8,
+        "endLine": 277,
+        "endChar": 33
+      },
+      "revId": "e51aaada0d6aa0803ebcbb75599416133b713fca",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
