@@ -22,6 +22,30 @@
       "revId": "cdd2cb4c03098b44a8503daed4a8f7bfd86e9dba",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_a1fb7a46",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T18:55:00Z",
+      "side": 1,
+      "message": "I think this error handling or warning belong to however called that, that\u0027s a utility getter function. The caller should handle the fact that the account was not found or that the id was empty. That would provide way more context as to why and how it happened.",
+      "parentUuid": "1a9dcd25_21e8ca7b",
+      "range": {
+        "startLine": 672,
+        "startChar": 3,
+        "endLine": 673,
+        "endChar": 22
+      },
+      "revId": "cdd2cb4c03098b44a8503daed4a8f7bfd86e9dba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
