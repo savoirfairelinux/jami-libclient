@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_44aac4d5",
+        "filename": "src/callmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T21:17:49Z",
+      "side": 1,
+      "message": "It was my mistake to build it that way. This is really old code and I would definitely do it differently now.\n\nTo directly answer the question, yes, I think the information should be stored in Call:: rather than CallModel:: private representation. I was thinking I could get away with this (and did for years), but it make no conceptual sense to isolate Calls from their siblings. The very behaviour of Call are affected by their siblings and the API totally fail to represent that.",
+      "parentUuid": "1a9dcd25_04103c4d",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_a105ba15",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 29
