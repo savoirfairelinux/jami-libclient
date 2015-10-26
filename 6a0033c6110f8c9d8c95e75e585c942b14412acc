@@ -19,6 +19,47 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_644d8072",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T21:02:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_21120a63",
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_24577804",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T21:02:43Z",
+      "side": 1,
+      "message": "Done for this",
+      "range": {
+        "startLine": 31,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_61181285",
         "filename": "src/recentmodel.h",
         "patchSetId": 3
@@ -36,6 +77,29 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_84520c12",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T21:02:43Z",
+      "side": 1,
+      "message": "RecentViewNode is defined in.cpp",
+      "range": {
+        "startLine": 32,
+        "startChar": 6,
+        "endLine": 32,
+        "endChar": 20
+      },
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_811d1e76",
         "filename": "src/recentmodel.h",
         "patchSetId": 3
@@ -47,6 +111,24 @@
       "writtenOn": "2015-10-26T20:12:30Z",
       "side": 1,
       "message": "Please move into a private API as this handle private structures",
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_4473a4b1",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T21:02:43Z",
+      "side": 1,
+      "message": "Doesn\u0027t really make sense as we only access q_ptr in the two line it takes but done anyway",
+      "parentUuid": "1a9dcd25_811d1e76",
       "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
