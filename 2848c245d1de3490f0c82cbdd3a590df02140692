@@ -46,6 +46,30 @@
       "revId": "2848c245d1de3490f0c82cbdd3a590df02140692",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_e188a2c8",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-26T19:01:22Z",
+      "side": 1,
+      "message": "I would put the position (row) that it is trying to move it to followed by the row count of the parent, since presumably the problem is that it tries to to move it to beyond the number of rows + 1",
+      "parentUuid": "1a9dcd25_e101823a",
+      "range": {
+        "startLine": 483,
+        "startChar": 6,
+        "endLine": 484,
+        "endChar": 17
+      },
+      "revId": "2848c245d1de3490f0c82cbdd3a590df02140692",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
