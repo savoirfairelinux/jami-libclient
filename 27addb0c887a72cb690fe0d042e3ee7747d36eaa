@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_64ffc002",
+        "filename": "src/call.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T20:38:40Z",
+      "side": 1,
+      "message": "Yeah missed that one",
+      "parentUuid": "1a9dcd25_e10bc229",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_01090e31",
         "filename": "src/callmodel.h",
         "patchSetId": 29
@@ -30,6 +48,24 @@
       "writtenOn": "2015-10-26T20:22:19Z",
       "side": 1,
       "message": "I still think this should be moved to Call:: itself is \"QList\u003cCall*\u003e Call::siblings() const\"\n\nIt would be more useful as you could get the siblings of any call or conf",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_04103c4d",
+        "filename": "src/callmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T20:38:40Z",
+      "side": 1,
+      "message": "You mean modifying how call are constructed ? Because for now it\u0027s just a function accessing the internal of callmodel.",
+      "parentUuid": "1a9dcd25_01090e31",
       "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
