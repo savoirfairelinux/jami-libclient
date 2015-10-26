@@ -22,6 +22,30 @@
       "revId": "2848c245d1de3490f0c82cbdd3a590df02140692",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_e101823a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-26T18:50:14Z",
+      "side": 1,
+      "message": "Hum well i\u0027m not against it but what information would you put in that qWarning ?",
+      "parentUuid": "1a9dcd25_61eed28d",
+      "range": {
+        "startLine": 483,
+        "startChar": 6,
+        "endLine": 484,
+        "endChar": 17
+      },
+      "revId": "2848c245d1de3490f0c82cbdd3a590df02140692",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
