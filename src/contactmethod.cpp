@@ -38,6 +38,7 @@
 #include "private/numbercategorymodel_p.h"
 #include "numbercategory.h"
 #include "certificate.h"
+#include "accountmodel.h"
 #include "certificatemodel.h"
 
 //Private
@@ -734,7 +735,40 @@ Media::TextRecording* ContactMethod::textRecording() const
    return d_ptr->m_pTextRecording;
 }
 
-Certificate*  ContactMethod::certificate() const
+bool ContactMethod::isReachable() const
+{
+   AccountModel* m = AccountModel::instance();
+
+   const bool hasSip   = m->isSipSupported  ();
+   const bool hasIAX   = m->isIAXSupported  ();
+   const bool hasIP2IP = m->isIP2IPSupported();
+   const bool hasRing  = m->isRingSupported ();
+
+   switch (protocolHint()) {
+      case URI::ProtocolHint::SIP_HOST :
+      case URI::ProtocolHint::IP       :
+         if (hasIP2IP)
+            return true;
+         //no break
+         [[clang::fallthrough]];
+      case URI::ProtocolHint::SIP_OTHER:
+         if (hasSip)
+            return true;
+         break;
+      case URI::ProtocolHint::IAX      :
+         if (hasIAX)
+            return true;
+         break;
+      case URI::ProtocolHint::RING     :
+         if (hasRing)
+            return true;
+         break;
+   }
+
+   return false;
+}
+
+Certificate* ContactMethod::certificate() const
 {
    if (protocolHint() == URI::ProtocolHint::RING) {
        d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(uid(), account());

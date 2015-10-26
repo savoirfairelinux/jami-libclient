@@ -84,6 +84,7 @@ public:
    Q_PROPERTY(QVariant          icon             READ icon                                            )
    Q_PROPERTY(int               totalSpentTime   READ totalSpentTime                                  )
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
+   Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
@@ -124,7 +125,8 @@ public:
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
    Media::TextRecording* textRecording   () const;
-   Certificate*          certificate  () const;
+   bool                  isReachable     () const;
+   Certificate*          certificate     () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles

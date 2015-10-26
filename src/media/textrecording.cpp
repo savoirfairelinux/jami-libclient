@@ -171,6 +171,11 @@ QAbstractListModel* Media::TextRecording::instantMessagingModel() const
    return d_ptr->m_pImModel;
 }
 
+bool Media::TextRecording::isEmpty() const
+{
+   return !d_ptr->m_lNodes.size();
+}
+
 QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
 {
    QHash<QByteArray,QByteArray> ret;

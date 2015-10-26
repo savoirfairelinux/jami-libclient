@@ -63,6 +63,7 @@ public:
 
    //Getter
    QAbstractListModel* instantMessagingModel() const;
+   bool isEmpty() const;
 
 private:
    TextRecordingPrivate* d_ptr;
