@@ -26,11 +26,13 @@
 #include "callmodel.h"
 #include "account.h"
 #include "accountmodel.h"
+#include "contactmethod.h"
 #include "availableaccountmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "private/useractions.h"
 #include "private/matrixutils.h"
+#include "media/textrecording.h"
 
 #define UAM UserActionModel
 
@@ -67,25 +69,34 @@ public:
    static const Matrix2D< UAM::Action, Account::RegistrationState, bool  > availableAccountActionMap ;
    static const Matrix2D< UAM::Action, SelectionState            , bool  > multi_call_options        ;
    static const Matrix2D< UAM::Action, Account::Protocol         , bool  > availableProtocolActions  ;
-   static const Matrix1D< UAM::Action, FlagPack<UAM::Context>> actionContext             ;
-   static const Matrix1D< UAM::Action, FlagPack<UAM::Asset>  > availableByAsset          ;
+   static const Matrix1D< UAM::Action, FlagPack<UAM::Context>            > actionContext             ;
+   static const Matrix1D< UAM::Action, FlagPack<UAM::Asset>              > availableByAsset          ;
+   static const Matrix2D< UAM::Action, Ring::ObjectType          , bool  > availableObjectActions    ;
+   static const Matrix1D< UAM::Action, bool(*)(const Person*       )     > personActionAvailability  ;
+   static const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)     > cmActionAvailability      ;
 
    static const Matrix2D< UAM::Action, SelectionState, UAM::ActionStatfulnessLevel > actionStatefulness;
 
+
    //Helpers
-   bool updateAction   (UAM::Action action                          );
-   bool updateByCall   (UAM::Action action, const Call* c           );
-   void updateCheckMask(int& ret, UAM::Action action, const Call* c );
+   bool updateAction         (UAM::Action action                          );
+   bool updateByCall         (UAM::Action action, const Call* c           );
+   bool updateByContactMethod(UAM::Action action, const ContactMethod* cm );
+   bool updateByAccount      (UAM::Action action, const Account* a        );
+   bool updateByPerson       (UAM::Action action, const Person* p         );
+   void updateCheckMask      (int& ret, UAM::Action action, const Call* c );
 
    //Attributes
-   Call*                                                             m_pCall              ;
-   UserActionModelMode                                               m_Mode               ;
-   SelectionState                                                    m_SelectionState     ;
-   TypedStateMachine< bool, UAM::Action>                 m_CurrentActions     ;
-   Matrix1D< UAM::Action, Qt::CheckState>                m_CurrentActionsState;
-   Matrix1D< UAM::Action, QString>                       m_ActionNames        ;
-   ActiveUserActionModel*                                            m_pActiveModel       ;
-   FlagPack<UAM::Context>                                m_fContext           ;
+   Call*                                  m_pCall              ;
+   UserActionModelMode                    m_Mode               ;
+   SelectionState                         m_SelectionState     ;
+   TypedStateMachine< bool, UAM::Action>  m_CurrentActions     ;
+   Matrix1D< UAM::Action, Qt::CheckState> m_CurrentActionsState;
+   Matrix1D< UAM::Action, QString>        m_ActionNames        ;
+   ActiveUserActionModel*                 m_pActiveModel       ;
+   FlagPack<UAM::Context>                 m_fContext           ;
+   QItemSelectionModel*                   m_pSelectionModel {nullptr};
+   QAbstractItemModel*                    m_pSourceModel    {nullptr};
 
 private:
    UserActionModel* q_ptr;
@@ -368,6 +379,110 @@ const Matrix1D< UAMA, FlagPack<UAM::Asset>> UserActionModelPrivate::availableByA
    { UAMA::REMOVE_HISTORY    , UAM::Asset::CALL           },
 };
 
+/**
+ * Different objects type have access to a different subset of actions
+ */
+const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availableObjectActions = {
+   /*                            Person ContactMethod  Call    Media   */
+   { UAMA::ACCEPT            , {{ false,    false,     true ,  false }}},
+   { UAMA::HOLD              , {{ false,    false,     true ,  true  }}},
+   { UAMA::MUTE_AUDIO        , {{ false,    false,     true ,  true  }}},
+   { UAMA::MUTE_VIDEO        , {{ false,    false,     true ,  true  }}},
+   { UAMA::SERVER_TRANSFER   , {{ false,    false,     true ,  false }}},
+   { UAMA::RECORD            , {{ false,    false,     true ,  true  }}},
+   { UAMA::HANGUP            , {{ false,    false,     true ,  false }}},
+   { UAMA::JOIN              , {{ false,    false,     true ,  false }}},
+   { UAMA::ADD_NEW           , {{ false,    false,     true ,  false }}},
+   { UAMA::TOGGLE_VIDEO      , {{ false,    false,     true ,  true  }}},
+   { UAMA::ADD_CONTACT       , {{ false,    true ,     true ,  false }}},
+   { UAMA::ADD_TO_CONTACT    , {{ false,    true ,     true ,  false }}},
+   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     true ,  false }}},
+   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,  false }}},
+   { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,  false }}},
+   { UAMA::BOOKMARK          , {{ true ,    true ,     true ,  false }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  false }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,  false }}},
+   { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,  false }}},
+   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,  false }}},
+};
+
+#define P_CB [](const Person* p) -> bool
+
+/**
+ * Persons aren't stateful but rather have a series of properties. Therefore a
+ * series of state machines cannot properly represent that state of every
+ * actions.
+ */
+const Matrix1D< UAM::Action, bool(*)(const Person*)> UserActionModelPrivate::personActionAvailability = {
+   { UAMA::ACCEPT            , nullptr                                         },
+   { UAMA::HOLD              , nullptr                                         },
+   { UAMA::MUTE_AUDIO        , nullptr                                         },
+   { UAMA::MUTE_VIDEO        , nullptr                                         },
+   { UAMA::SERVER_TRANSFER   , nullptr                                         },
+   { UAMA::RECORD            , nullptr                                         },
+   { UAMA::HANGUP            , nullptr                                         },
+   { UAMA::JOIN              , nullptr                                         },
+   { UAMA::ADD_NEW           , nullptr                                         },
+   { UAMA::TOGGLE_VIDEO      , nullptr                                         },
+   { UAMA::ADD_CONTACT       , nullptr                                         },
+   { UAMA::ADD_TO_CONTACT    , nullptr                                         },
+   { UAMA::DELETE_CONTACT    , P_CB { return p->collection() &&
+      p->collection()->supportedFeatures() &
+         CollectionInterface::SupportedFeatures::REMOVE;
+   }},
+   { UAMA::EMAIL_CONTACT     , P_CB { return ! p->preferredEmail().isEmpty(); }},
+   { UAMA::COPY_CONTACT      , nullptr                                         },
+   { UAMA::BOOKMARK          , nullptr                                         },
+   { UAMA::VIEW_CHAT_HISTORY , P_CB { return p->hasRecording(
+         Media::Media::Type::TEXT,
+         Media::Media::Direction::OUT
+      );
+   }},
+   { UAMA::ADD_CONTACT_METHOD, nullptr                                         },
+   { UAMA::CALL_CONTACT      , P_CB { return p->isReachable();                }},
+   { UAMA::REMOVE_HISTORY    , P_CB { return p->isContacted();                }},
+};
+#undef P_C
+
+#define CM_CB [](const ContactMethod* cm) -> bool
+
+/**
+ * ContactMethods aren't stateful but rather have a series of properties.
+ * Therefore a series of state machines cannot properly represent that state of
+ * every actions.
+ */
+const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)> UserActionModelPrivate::cmActionAvailability = {
+   { UAMA::ACCEPT            , nullptr                                         },
+   { UAMA::HOLD              , nullptr                                         },
+   { UAMA::MUTE_AUDIO        , nullptr                                         },
+   { UAMA::MUTE_VIDEO        , nullptr                                         },
+   { UAMA::SERVER_TRANSFER   , nullptr                                         },
+   { UAMA::RECORD            , nullptr                                         },
+   { UAMA::HANGUP            , nullptr                                         },
+   { UAMA::JOIN              , nullptr                                         },
+   { UAMA::ADD_NEW           , nullptr                                         },
+   { UAMA::TOGGLE_VIDEO      , nullptr                                         },
+   { UAMA::ADD_CONTACT       , CM_CB { return !cm->contact();                 }},
+   { UAMA::ADD_TO_CONTACT    , CM_CB { return !cm->contact();                 }},
+   { UAMA::DELETE_CONTACT    , CM_CB { return cm->contact() &&
+      cm->contact()->collection() &&
+      cm->contact()->collection()->supportedFeatures() &
+         CollectionInterface::SupportedFeatures::REMOVE;
+   }},
+   { UAMA::EMAIL_CONTACT     , CM_CB { return cm->contact() &&
+      !cm->contact()->preferredEmail().isEmpty();
+   }},
+   { UAMA::COPY_CONTACT      , CM_CB { return cm->contact();                  }},
+   { UAMA::BOOKMARK          , nullptr                                         },
+   { UAMA::VIEW_CHAT_HISTORY , CM_CB { return cm->textRecording() &&
+      !cm->textRecording()->isEmpty();
+   }},
+   { UAMA::ADD_CONTACT_METHOD, CM_CB { return cm->contact();                  }},
+   { UAMA::CALL_CONTACT      , CM_CB { return cm->isReachable();              }},
+   { UAMA::REMOVE_HISTORY    , CM_CB { return cm->callCount();                }},
+};
+#undef CM_CB
+
 UserActionModelPrivate::UserActionModelPrivate(UserActionModel* parent, const FlagPack<UAM::Context>& c) : QObject(parent),q_ptr(parent),
 m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
 {
@@ -388,11 +503,11 @@ m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
       { UAMA::DELETE_CONTACT    , QObject::tr("Delete contact"         )},
       { UAMA::EMAIL_CONTACT     , QObject::tr("Email contact"          )},
       { UAMA::COPY_CONTACT      , QObject::tr("Copy contact"           )},
-      { UAMA::BOOKMARK          , QObject::tr("Add bookmark"           )},
+      { UAMA::BOOKMARK          , QObject::tr("Bookmark"               )},
       { UAMA::VIEW_CHAT_HISTORY , QObject::tr("View chat history"      )},
       { UAMA::ADD_CONTACT_METHOD, QObject::tr("Add phone number"       )},
       { UAMA::CALL_CONTACT      , QObject::tr("Call again"             )},
-      { UAMA::REMOVE_HISTORY    , QObject::tr("Remove"                 )},
+      { UAMA::REMOVE_HISTORY    , QObject::tr("Remove from history"    )},
    };
 
    m_CurrentActionsState = {
@@ -441,17 +556,22 @@ UserActionModel::UserActionModel(Call* parent, const FlagPack<UserActionModel::C
 /**
  * Create an UserActionModel around the CallModel selected call(s)
  */
-UserActionModel::UserActionModel(CallModel* parent, const FlagPack<UserActionModel::Context> c) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this,c))
+UserActionModel::UserActionModel(QAbstractItemModel* parent, const FlagPack<UserActionModel::Context> c) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this,c))
 {
    Q_ASSERT(parent != nullptr);
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALLMODEL;
    d_ptr->m_SelectionState = UserActionModelPrivate::SelectionState::UNIQUE;
+   d_ptr->m_pSourceModel = parent;
 
-   connect(parent->selectionModel(),  &QItemSelectionModel::currentRowChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent->selectionModel(),  &QItemSelectionModel::selectionChanged  , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent,                    &CallModel::callStateChanged            , d_ptr.data(), &UserActionModelPrivate::updateActions);
-   connect(parent,                    &CallModel::mediaStateChanged           , d_ptr.data(), &UserActionModelPrivate::updateActions);
    connect(&AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
+
+   if (auto callmodel = qobject_cast<CallModel*>(parent)) {
+      setSelectionModel(callmodel->selectionModel());
+      connect(callmodel, &CallModel::callStateChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
+      connect(callmodel, &CallModel::mediaStateChanged, d_ptr.data(), &UserActionModelPrivate::updateActions);
+   }
+   //TODO add other relevant models here Categorized*, RecentModel, etc
+
    d_ptr->updateActions();
 }
 
@@ -538,6 +658,13 @@ void UserActionModelPrivate::slotStateChanged()
 
 void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action action, const Call* c)
 {
+   //TODO c will be nullptr if the selection is a person or a contact method
+   //there is still a need to update the check mask, but it is less relevant
+   //so it can wait for later. This will cause some weird issues with the
+   //recent model
+   if (!c)
+      return;
+
    switch(action) {
       case UserActionModel::Action::ACCEPT          :
          ret += 0;
@@ -656,13 +783,35 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
 bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const Call* c)
 {
    Account* a = c->account() ? c->account() : AvailableAccountModel::instance().currentDefaultAccount();
+
    return (!c) ? false : (
       availableActionMap        [action] [c->state()             ] &&
-      availableAccountActionMap [action] [a->registrationState() ] &&
       multi_call_options        [action] [m_SelectionState       ] &&
-      availableProtocolActions  [action] [a->protocol()          ] &&
-      actionContext             [action] & m_fContext              //
+      actionContext             [action] & m_fContext              &&
+      updateByAccount(action, a)
    );
+}
+
+bool UserActionModelPrivate::updateByAccount(UserActionModel::Action action, const Account* a)
+{
+   return (
+      availableAccountActionMap [action] [a->registrationState() ] &&
+      availableProtocolActions  [action] [a->protocol()          ] //
+   );
+}
+
+bool UserActionModelPrivate::updateByContactMethod(UserActionModel::Action action, const ContactMethod* cm)
+{
+   Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance().currentDefaultAccount();
+
+   return updateByAccount(action, a) && (
+      (!cmActionAvailability[action]) || cmActionAvailability[action](cm)
+   );
+}
+
+bool UserActionModelPrivate::updateByPerson(UserActionModel::Action action, const Person* p)
+{
+   return (!personActionAvailability[action]) || personActionAvailability[action](p);
 }
 
 bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
@@ -677,14 +826,64 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
       case UserActionModelMode::CALLMODEL: {
          bool ret = true;
 
-         m_SelectionState = CallModel::instance().selectionModel()->selectedRows().size() > 1 ? SelectionState::MULTI : SelectionState::UNIQUE;
+         m_SelectionState = m_pSelectionModel ? (
+            m_pSelectionModel->selectedRows().size() > 1 ?
+               SelectionState::MULTI :
+               SelectionState::UNIQUE
+         ) : SelectionState::NONE ;
 
          //Aggregate and reduce the action state for each selected calls
-         if (CallModel::instance().selectionModel()->selectedRows().size()) {
-            for (const QModelIndex& idx : CallModel::instance().selectionModel()->selectedRows()) {
-               const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
-               updateCheckMask    ( state ,action, c );
-               ret &= updateByCall( action       , c );
+         if (m_pSelectionModel && m_pSelectionModel->selectedRows().size()) {
+            foreach (const QModelIndex& idx, m_pSelectionModel->selectedRows()) {
+
+               const QVariant objTv = idx.data(static_cast<int>(Ring::Role::ObjectType));
+
+               //Be sure the model support the UAM abstraction
+               if (!objTv.canConvert<Ring::ObjectType>()) {
+                  qWarning() << "Cannot determine object type";
+                  continue;
+               }
+
+               const Ring::ObjectType objT =  qvariant_cast<Ring::ObjectType>(objTv);
+
+               ret &= availableObjectActions[action][objT];
+
+               //There is no point in doing further checks
+               if (!ret) {
+                  continue;
+               }
+
+               switch(objT) {
+                  case Ring::ObjectType::Person         : {
+
+                     const Person* p = qvariant_cast<Person*>(idx.data(static_cast<int>(Ring::Role::Object)));
+
+                     ret &= updateByPerson( action, p );
+
+                     break;
+                  }
+                  case Ring::ObjectType::ContactMethod  : {
+
+                     const ContactMethod* cm = qvariant_cast<ContactMethod*>(idx.data(static_cast<int>(Ring::Role::Object)));
+
+                     ret &= updateByContactMethod( action, cm );
+
+                     break;
+                  }
+                  case Ring::ObjectType::Call           : {
+
+                     const Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Ring::Role::Object)));
+
+                     ret &= updateByCall( action, c );
+
+                     updateCheckMask( state ,action, c ); //TODO abstract this out
+
+                     break;
+                  }
+                  case Ring::ObjectType::Media          : //TODO
+                  case Ring::ObjectType::COUNT__        :
+                     break;
+               }
             }
          }
          else {
@@ -734,9 +933,8 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          selected << d_ptr->m_pCall;
          break;
       case UserActionModelPrivate::UserActionModelMode::CALLMODEL: {
-         for (const QModelIndex& idx : CallModel::instance().selectionModel()->selectedRows()) {
-            Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Call::Role::Object)));
-            if (c)
+         foreach (const QModelIndex& idx, d_ptr->m_pSelectionModel->selectedRows()) {
+            if (Call* c = qvariant_cast<Call*>(idx.data(static_cast<int>(Ring::Role::Object))))
                selected << c;
          }
          break;
@@ -863,6 +1061,14 @@ QSortFilterProxyModel* UserActionModel::activeActionModel() const
 bool ActiveUserActionModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
    return sourceModel()->index(source_row,0,source_parent).flags() & Qt::ItemIsEnabled;
+}
+
+///Use a custom selection model
+void UserActionModel::setSelectionModel(QItemSelectionModel* sm)
+{
+   d_ptr->m_pSelectionModel = sm;
+   connect(sm, &QItemSelectionModel::currentRowChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(sm, &QItemSelectionModel::selectionChanged  , d_ptr.data(), &UserActionModelPrivate::updateActions);
 }
 
 #include <useractionmodel.moc>
