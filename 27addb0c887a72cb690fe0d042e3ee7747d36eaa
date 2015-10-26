@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_e10bc229",
+        "filename": "src/call.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T20:22:19Z",
+      "side": 1,
+      "message": "Maybe move to the \"mutator\" section for this as it isn\u0027t a getter?",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_01090e31",
+        "filename": "src/callmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T20:22:19Z",
+      "side": 1,
+      "message": "I still think this should be moved to Call:: itself is \"QList\u003cCall*\u003e Call::siblings() const\"\n\nIt would be more useful as you could get the siblings of any call or conf",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_a105ba15",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T20:22:19Z",
+      "side": 1,
+      "message": "Could be simplified/replaced with the \"siblings()\" function described above.",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
