@@ -100,6 +100,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_649b40ca",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T21:13:08Z",
+      "side": 1,
+      "message": "And therefor not exported. Only stuff defined in .h/.hpp with LIB_EXPORT are exported. class/structs defined in .cpp/.c are not exported and left to the compiled to optimize the way it wants (almost)",
+      "parentUuid": "1a9dcd25_84520c12",
+      "range": {
+        "startLine": 32,
+        "startChar": 6,
+        "endLine": 32,
+        "endChar": 20
+      },
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_811d1e76",
         "filename": "src/recentmodel.h",
         "patchSetId": 3
@@ -129,6 +153,24 @@
       "side": 1,
       "message": "Doesn\u0027t really make sense as we only access q_ptr in the two line it takes but done anyway",
       "parentUuid": "1a9dcd25_811d1e76",
+      "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_84a0ccf5",
+        "filename": "src/recentmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-26T21:13:08Z",
+      "side": 1,
+      "message": "This would the only (?) private helper method in the whole API. Please make a little effort and setup the private API. I took great care to do it until now and it was worth it. I know enforcing policies for the sake of it may seem silly, but in the end building a quality product involve doing silly things for the sake of maintainability and consistency.",
+      "parentUuid": "1a9dcd25_4473a4b1",
       "revId": "6a0033c6110f8c9d8c95e75e585c942b14412acc",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
