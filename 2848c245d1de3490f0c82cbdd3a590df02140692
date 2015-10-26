@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_61eed28d",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-26T18:43:59Z",
+      "side": 1,
+      "message": "maybe we should then emit a qWarning() in this case with some info, so that we can try to detect why this happens exactly eventually",
+      "range": {
+        "startLine": 483,
+        "startChar": 6,
+        "endLine": 484,
+        "endChar": 17
+      },
+      "revId": "2848c245d1de3490f0c82cbdd3a590df02140692",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
