@@ -480,7 +480,11 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
    if (!isNew) {
       if (newPos == n->m_Index)
          return; //Nothing to do
-      q_ptr->beginMoveRows(QModelIndex(), n->m_Index, n->m_Index, QModelIndex(), newPos ? newPos+1 : newPos );
+      if (not q_ptr->beginMoveRows(QModelIndex(), n->m_Index, n->m_Index, QModelIndex(), newPos ? newPos+1 : newPos )) {
+          qWarning() << "RecentModel: Invalid move detected index : " << n->m_Index
+                     << "newPos: " << (newPos ? newPos+1 : newPos) << "size: " << m_lTopLevelReverted.size();
+          return;
+      }
       m_lTopLevelReverted.removeAt(m_lTopLevelReverted.size()-1-n->m_Index);
    }
    else
