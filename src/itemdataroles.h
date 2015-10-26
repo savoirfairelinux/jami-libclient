@@ -60,6 +60,7 @@ enum class ObjectType
     ContactMethod,
     Call,
     Media,
+    COUNT__
 };
 
 } // namespace Ring
