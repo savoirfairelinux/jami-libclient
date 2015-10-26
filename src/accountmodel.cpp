@@ -669,7 +669,8 @@ void AccountModelPrivate::slotMediaParametersChanged(const QString& accountId)
  */
 Account* AccountModel::getById(const QByteArray& id, bool usePlaceHolder) const
 {
-   Q_ASSERT(!id.isEmpty());
+   if (id.isEmpty())
+       return nullptr;
    //This function use a loop as the expected size is < 5
    for (int i = 0; i < d_ptr->m_lAccounts.size(); i++) {
       Account* acc = d_ptr->m_lAccounts[i];
