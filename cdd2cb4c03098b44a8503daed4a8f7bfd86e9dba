@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_21e8ca7b",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-26T18:47:00Z",
+      "side": 1,
+      "message": "again, maybe emit a qWarning in this case, as this should not happen",
+      "range": {
+        "startLine": 672,
+        "startChar": 3,
+        "endLine": 673,
+        "endChar": 22
+      },
+      "revId": "cdd2cb4c03098b44a8503daed4a8f7bfd86e9dba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
