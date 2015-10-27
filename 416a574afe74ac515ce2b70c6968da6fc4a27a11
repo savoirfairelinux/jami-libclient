@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_441164ab",
+        "filename": "src/qtwrapper/videomanager_wrap.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-27T15:58:35Z",
+      "side": 0,
+      "message": "This existed because the daemon thread emiting the signals wasn\u0027t the LRC mainthread. This proxy avoided re-entry/races issues by scheduling the event to be sent later.\n\nUp to you to decide if it is safe to drop in all case",
+      "revId": "416a574afe74ac515ce2b70c6968da6fc4a27a11",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
