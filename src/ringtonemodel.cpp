@@ -69,7 +69,7 @@ RingtoneModel::RingtoneModel(QObject* parent)
   , CollectionManagerInterface<Ringtone>(this)
   , d_ptr(new RingtoneModelPrivate(this))
 {
-//    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+//    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    addCollection<LocalRingtoneCollection>();
 }
@@ -204,7 +204,7 @@ void RingtoneModel::play(const QModelIndex& idx)
          d_ptr->slotStopTimer();
          return;
       }
-      CallManagerInterface& callManager = DBus::CallManager::instance();
+      CallManagerInterface& callManager = CallManager::instance();
       Q_NOREPLY callManager.startRecordedFilePlayback(info->path().path());
       if (!d_ptr->m_pTimer) {
          d_ptr->m_pTimer = new QTimer(this);
@@ -224,7 +224,7 @@ void RingtoneModel::play(const QModelIndex& idx)
 void RingtoneModelPrivate::slotStopTimer()
 {
    if (m_pCurrent) {
-      CallManagerInterface& callManager = DBus::CallManager::instance();
+      CallManagerInterface& callManager = CallManager::instance();
       callManager.stopRecordedFilePlayback(m_pCurrent->path().path());
       m_pCurrent->setIsPlaying(false);
       const QModelIndex& idx = q_ptr->index(m_lRingtone.indexOf(m_pCurrent),0);

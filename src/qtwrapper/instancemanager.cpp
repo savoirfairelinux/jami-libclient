@@ -29,7 +29,7 @@ static int ringFlags = 0;
 
 void pollEvents();
 
-InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
+InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
 {
    using namespace std::placeholders;
 
@@ -48,7 +48,7 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 #ifdef Q_OS_WIN
    connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
 #else
-   connect(m_pTimer,&QTimer::timeout,this,&InstanceInterface::pollEvents);
+   connect(m_pTimer,&QTimer::timeout,this,&InstanceManagerInterface::pollEvents);
 #endif
    m_pTimer->start();
 
@@ -59,11 +59,11 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
 
    DRing::init(static_cast<DRing::InitFlag>(ringFlags));
 
-   registerCallHandlers(DBus::CallManager::instance().callHandlers);
-   registerConfHandlers(DBus::ConfigurationManager::instance().confHandlers);
-   registerPresHandlers(DBus::PresenceManager::instance().presHandlers);
+   registerCallHandlers(CallManager::instance().callHandlers);
+   registerConfHandlers(ConfigurationManager::instance().confHandlers);
+   registerPresHandlers(PresenceManager::instance().presHandlers);
 #ifdef ENABLE_VIDEO
-   registerVideoHandlers(DBus::VideoManager::instance().videoHandlers);
+   registerVideoHandlers(VideoManager::instance().videoHandlers);
 #endif
 
    if (!DRing::start())
@@ -72,17 +72,17 @@ InstanceInterface::InstanceInterface() : m_pTimer(nullptr)
       printf("Daemon is running\n");
 }
 
-InstanceInterface::~InstanceInterface()
+InstanceManagerInterface::~InstanceManagerInterface()
 {
 
 }
 
-void InstanceInterface::pollEvents()
+void InstanceManagerInterface::pollEvents()
 {
    DRing::pollEvents();
 }
 
-bool InstanceInterface::isConnected()
+bool InstanceManagerInterface::isConnected()
 {
    return true;
 }

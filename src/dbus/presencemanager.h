@@ -23,24 +23,10 @@
  #include "presencemanager_dbus_interface.h"
  #include <QDBusPendingReply>
 #endif
-
 #include <typedefs.h>
 
-namespace DBus {
+namespace PresenceManager {
 
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT PresenceManager
-   {
-
-   private:
-      static PresenceManagerInterface* interface;
-
-   public:
-      static PresenceManagerInterface& instance();
-
-   };
+PresenceManagerInterface& LIB_EXPORT instance();
 
 }
-

@@ -205,7 +205,7 @@ void CredentialModelPrivate::clear()
 ///Save all credentials
 void CredentialModelPrivate::save()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    VectorMapStringString toReturn;
    for (int i=0; i < q_ptr->rowCount();i++) {
       const QModelIndex& idx = q_ptr->index(i,0);
@@ -235,7 +235,7 @@ void CredentialModelPrivate::reload()
    if (!m_pAccount->isNew()) {
       clear();
       m_EditState = CredentialModel::EditState::LOADING;
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const VectorMapStringString credentials = configurationManager.getCredentials(m_pAccount->id());
       for (int i=0; i < credentials.size(); i++) {
          const QModelIndex& idx = q_ptr->addCredentials();
