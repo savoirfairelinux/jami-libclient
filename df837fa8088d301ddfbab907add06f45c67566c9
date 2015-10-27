@@ -22,6 +22,30 @@
       "revId": "df837fa8088d301ddfbab907add06f45c67566c9",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_84c1ace6",
+        "filename": "src/person.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-27T17:29:47Z",
+      "side": 1,
+      "message": "Could also be \"hasCalls()\" if its to be used for just that, unless in the future we also want this to be \u0027true\u0027 if the Person has received any messages or otherwise.",
+      "parentUuid": "1a9dcd25_24e8d87b",
+      "range": {
+        "startLine": 523,
+        "startChar": 13,
+        "endLine": 523,
+        "endChar": 24
+      },
+      "revId": "df837fa8088d301ddfbab907add06f45c67566c9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
