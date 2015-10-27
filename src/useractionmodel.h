@@ -23,11 +23,11 @@
 
 //Qt
 class QSortFilterProxyModel;
+class QItemSelectionModel;
 
 //Ring
 #include "call.h"
 class Call;
-class CallModel;
 class UserActionModelPrivate;
 
 /**
@@ -122,8 +122,8 @@ public:
    Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel)
 
    //Constructor
-   explicit UserActionModel(Call* parent, const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
-   UserActionModel(CallModel* parent    , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
+   explicit UserActionModel(Call* parent     , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
+   UserActionModel(QAbstractItemModel* parent, const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
    virtual ~UserActionModel();
 
    //Abstract model members
@@ -137,6 +137,9 @@ public:
    Q_INVOKABLE bool isActionEnabled ( UserActionModel::Action action ) const;
    Q_INVOKABLE uint relativeIndex   ( UserActionModel::Action action ) const;
    QSortFilterProxyModel* activeActionModel() const;
+
+   //Setters
+   void setSelectionModel(QItemSelectionModel* sm);
 
    //Mutators
    bool execute( const Action action    ) const;
