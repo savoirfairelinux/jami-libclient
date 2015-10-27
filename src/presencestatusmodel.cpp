@@ -333,7 +333,7 @@ void PresenceStatusModel::setCurrentIndex  (const QModelIndex& index)
    emit currentMessageChanged(d_ptr->m_pCurrentStatus->message);
    emit currentStatusChanged(d_ptr->m_pCurrentStatus->status);
    for (int i=0; i < AccountModel::instance().size(); i++) {
-      DBus::PresenceManager::instance().publish(
+      PresenceManager::instance().publish(
          AccountModel::instance()[i]->id(), d_ptr->m_pCurrentStatus->status,d_ptr->m_pCurrentStatus->message
       );
    }

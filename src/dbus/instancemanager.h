@@ -26,19 +26,8 @@
 #endif
 #include <typedefs.h>
 
-namespace DBus {
+namespace InstanceManager {
 
-   /**
-   * @author Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>
-   */
-   class LIB_EXPORT InstanceManager
-   {
-   public:
-      static InstanceInterface& instance();
-
-   private:
-      static InstanceInterface* interface;
-   };
+InstanceManagerInterface& LIB_EXPORT instance();
 
 }
-

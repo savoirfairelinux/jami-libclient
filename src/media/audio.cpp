@@ -40,13 +40,13 @@ Media::Media::Type Media::Audio::type()
 
 bool Media::Audio::mute()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,true);
 }
 
 bool Media::Audio::unmute()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,false);
 }
 

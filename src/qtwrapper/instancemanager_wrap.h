@@ -34,12 +34,12 @@
 /*
  * Proxy class for interface org.ring.Ring.Instance
  */
-class InstanceInterface: public QObject
+class InstanceManagerInterface: public QObject
 {
    Q_OBJECT
 public:
-   InstanceInterface();
-   ~InstanceInterface();
+   InstanceManagerInterface();
+   ~InstanceManagerInterface();
 
 // TODO: These are not present in dring.h
 
@@ -70,8 +70,7 @@ Q_SIGNALS: // SIGNALS
 namespace cx {
   namespace Ring {
     namespace Ring {
-      typedef ::InstanceInterface Instance;
+      typedef ::InstanceManagerInterface Instance;
     }
   }
 }
-
