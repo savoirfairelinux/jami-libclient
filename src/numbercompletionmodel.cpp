@@ -199,6 +199,10 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
                if (needAcc)
                   return QVariant::fromValue(n->account());
                break;
+            case static_cast<int>(Ring::Role::ObjectType):
+               return QVariant::fromValue(Ring::ObjectType::ContactMethod);
+            case static_cast<int>(Ring::Role::Object):
+               return QVariant::fromValue(const_cast<ContactMethod*>(n));
          };
          break;
       case NumberCompletionModelPrivate::Columns::NAME:
