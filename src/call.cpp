@@ -330,7 +330,7 @@ Call::Call(const QString& confId, const QString& account)
    if (type() == Call::Type::CONFERENCE) {
       d_ptr->setStartTimeStamp();
       d_ptr->initTimer();
-      CallManagerInterface& callManager = DBus::CallManager::instance();
+      CallManagerInterface& callManager = CallManager::instance();
       MapStringString        details    = callManager.getConferenceDetails(dringId())  ;
       d_ptr->m_CurrentState             = d_ptr->confStatetoCallState(details[CallPrivate::ConfDetailsMapFields::CONF_STATE]);
       emit stateChanged(state(),Call::State::NEW);
@@ -376,7 +376,7 @@ void CallPrivate::deleteCall(Call* call)
 
 MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
 
    MapStringString details = callManager.getCallDetails(callId);
 
@@ -428,7 +428,7 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
     call->d_ptr->m_Direction    = callDirection;
 
     //Set the recording state
-    if (DBus::CallManager::instance().getIsRecording(callId)) {
+    if (CallManager::instance().getIsRecording(callId)) {
         call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , true);
         call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , true);
         call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , true);
@@ -1411,7 +1411,7 @@ void CallPrivate::accept()
 {
    Q_ASSERT_IS_IN_PROGRESS
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Accepting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    Q_NOREPLY callManager.accept(m_DringId);
    setStartTimeStamp();
@@ -1421,7 +1421,7 @@ void CallPrivate::accept()
 ///Refuse the call
 void CallPrivate::refuse()
 {
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Refusing call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    const bool ret = callManager.refuse(m_DringId);
    setStartTimeStamp();
@@ -1441,7 +1441,7 @@ void CallPrivate::acceptTransf()
       qDebug() << "Trying to transfer to no one";
       return;
    }
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Accepting call and transferring it to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr  << "ConfId:" << q_ptr;
    callManager.accept(m_DringId);
    Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
@@ -1452,7 +1452,7 @@ void CallPrivate::acceptHold()
 {
    Q_ASSERT_IS_IN_PROGRESS
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Accepting call and holding it. callId : " << q_ptr  << "ConfId:" << q_ptr;
    callManager.accept(m_DringId);
    Q_NOREPLY callManager.hold(m_DringId);
@@ -1464,7 +1464,7 @@ void CallPrivate::hangUp()
 {
    Q_ASSERT_IS_IN_PROGRESS
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    time_t curTime;
    ::time(&curTime);
    m_pStopTimeStamp = curTime;
@@ -1491,7 +1491,7 @@ void CallPrivate::remove()
    if (q_ptr->lifeCycleState() != Call::LifeCycleState::FINISHED)
       FORCE_ERROR_STATE_P()
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
 
    //HACK Call hang up again to make sure the busytone stop, this should
    //return true or false, both are valid, no point to check the result
@@ -1560,7 +1560,7 @@ void CallPrivate::sendProfile()
 void CallPrivate::cancel()
 {
    //This one can be over if the peer server failed to comply with the correct sequence
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Canceling call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->dialNumberChanged(QString());
    if (!callManager.hangUp(m_DringId)) {
@@ -1574,7 +1574,7 @@ void CallPrivate::hold()
 {
    Q_ASSERT_IS_IN_PROGRESS
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Holding call. callId : " << q_ptr << "ConfId:" << q_ptr;
 
    if ( m_fHoldFlags & Call::HoldFlags::OUT ) {
@@ -1650,7 +1650,7 @@ void CallPrivate::call()
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
 
-    m_DringId = DBus::CallManager::instance().placeCall(m_Account->id(), uri);
+    m_DringId = CallManager::instance().placeCall(m_Account->id(), uri);
 
     // This can happen when the daemon cannot allocate memory
     if (m_DringId.isEmpty()) {
@@ -1682,7 +1682,7 @@ void CallPrivate::transfer()
 
     if (!m_pTransferNumber)
         return;
-    CallManagerInterface & callManager = DBus::CallManager::instance();
+    CallManagerInterface & callManager = CallManager::instance();
     qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
     Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
     time_t curTime;
@@ -1695,7 +1695,7 @@ void CallPrivate::unhold()
 {
    Q_ASSERT_IS_IN_PROGRESS
 
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    qDebug() << "Unholding call. callId : " << q_ptr << "ConfId:" << q_ptr;
 
    if ( !(m_fHoldFlags & Call::HoldFlags::OUT) ) {
@@ -1730,7 +1730,7 @@ void CallPrivate::peerHoldChanged(bool onPeerHold)
 ///Record the call
 void CallPrivate::toggleAudioRecord()
 {
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    const bool wasRecording = m_mIsRecording[ Media::Media::Type::AUDIO ][Media::Media::Direction::IN];
    qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
@@ -1744,7 +1744,7 @@ void CallPrivate::toggleAudioRecord()
 void CallPrivate::toggleVideoRecord()
 {
    //TODO upgrade once the video recording is implemented
-   CallManagerInterface & callManager = DBus::CallManager::instance();
+   CallManagerInterface & callManager = CallManager::instance();
    const bool wasRecording = m_mIsRecording[ Media::Media::Type::VIDEO ][Media::Media::Direction::IN];
    qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
@@ -2136,7 +2136,7 @@ QVariant Call::roleData(int role) const
 
 void Call::playDTMF(const QString& str)
 {
-   Q_NOREPLY DBus::CallManager::instance().playDTMF(str);
+   Q_NOREPLY CallManager::instance().playDTMF(str);
    emit dtmfPlayed(str);
 }
 

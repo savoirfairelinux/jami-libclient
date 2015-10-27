@@ -844,7 +844,7 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
       return true;
 
    //Notify the daemon
-   DBus::ConfigurationManager::instance().setCertificateStatus(
+   ConfigurationManager::instance().setCertificateStatus(
       a->id      (),
       c->remoteId(),
       DRing::Certificate::Status::ALLOWED
@@ -883,7 +883,7 @@ bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
       return true;
 
    //Notify the daemon
-   DBus::ConfigurationManager::instance().setCertificateStatus(
+   ConfigurationManager::instance().setCertificateStatus(
       a->id      (),
       c->remoteId(),
       DRing::Certificate::Status::BANNED

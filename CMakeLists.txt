@@ -536,7 +536,7 @@ ELSE()
    SET_SOURCE_FILES_PROPERTIES(
       ${instance_xml}
       PROPERTIES
-      CLASSNAME InstanceInterface
+      CLASSNAME InstanceManagerInterface
       INCLUDE ${dbus_metatype_path}
    )
 

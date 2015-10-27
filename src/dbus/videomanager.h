@@ -26,21 +26,8 @@
 
 #include <typedefs.h>
 
-namespace DBus {
+namespace VideoManager {
 
-   /**
-   * @author Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
-   */
-   class LIB_EXPORT VideoManager
-   {
-
-   private:
-      static VideoManagerInterface* interface;
-
-   public:
-      static VideoManagerInterface& instance();
-
-   };
+VideoManagerInterface& LIB_EXPORT instance();
 
 }
-

@@ -81,7 +81,7 @@ m_BufferSize(0),m_PreviewState(false)
 ///Constructor
 VideoRendererManager::VideoRendererManager():QObject(QCoreApplication::instance()), d_ptr(new VideoRendererManagerPrivate(this))
 {
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    connect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
    connect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
 }
@@ -154,7 +154,7 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 void VideoRendererManager::stopPreview()
 {
 
-   DBus::VideoManager::instance().stopCamera();
+   VideoManager::instance().stopCamera();
 
    d_ptr->m_PreviewState = false;
 
@@ -167,7 +167,7 @@ void VideoRendererManager::startPreview()
    if (d_ptr->m_PreviewState)
       return;
 
-   DBus::VideoManager::instance().startCamera();
+   VideoManager::instance().startCamera();
 
    d_ptr->m_PreviewState = true;
 
@@ -206,7 +206,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       m_hRenderers[rid] = r;
       m_hRendererIds[r]=rid;
 
-      DBus::VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+      VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
 
 #else //ENABLE_LIBWRAP
 
@@ -232,7 +232,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       r->setSize(res);
 
 #ifdef ENABLE_LIBWRAP
-    DBus::VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+    VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
 #else //ENABLE_LIBWRAP
 
       static_cast<Video::ShmRenderer*>(r)->setShmPath(shmPath);
@@ -329,7 +329,7 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
 
 void VideoRendererManager::switchDevice(const Video::Device* device) const
 {
-   VideoManagerInterface& interface = DBus::VideoManager::instance();
+   VideoManagerInterface& interface = VideoManager::instance();
    interface.switchInput(device->id());
 }
 

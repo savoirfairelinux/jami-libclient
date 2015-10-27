@@ -209,10 +209,10 @@ void CertificatePrivate::loadDetails(bool reload)
       MapStringString d;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            d = DBus::ConfigurationManager::instance().getCertificateDetailsPath(m_Path, m_PrivateKey, m_PrivateKeyPassword);
+            d = ConfigurationManager::instance().getCertificateDetailsPath(m_Path, m_PrivateKey, m_PrivateKeyPassword);
             break;
          case LoadingType::FROM_ID:
-            d = DBus::ConfigurationManager::instance().getCertificateDetails(m_Id);
+            d = ConfigurationManager::instance().getCertificateDetails(m_Id);
             break;
       }
       m_pDetailsCache = new DetailsCache(d);
@@ -225,10 +225,10 @@ void CertificatePrivate::loadChecks(bool reload)
       MapStringString checks;
       switch(m_LoadingType) {
          case LoadingType::FROM_PATH:
-            checks = DBus::ConfigurationManager::instance().validateCertificatePath(QString(),m_Path,m_PrivateKey, m_PrivateKeyPassword, {});
+            checks = ConfigurationManager::instance().validateCertificatePath(QString(),m_Path,m_PrivateKey, m_PrivateKeyPassword, {});
             break;
          case LoadingType::FROM_ID:
-            checks = DBus::ConfigurationManager::instance().validateCertificate(QString(),m_Id);
+            checks = ConfigurationManager::instance().validateCertificate(QString(),m_Id);
             break;
       }
       if (reload && m_pCheckCache)
@@ -757,7 +757,7 @@ bool Certificate::setStatus(const Account* a, Status s)
 
    d_ptr->m_Statuses[position] = static_cast<int>(s) << offset;
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    //Notify the daemon
    if (hasRemote()) {

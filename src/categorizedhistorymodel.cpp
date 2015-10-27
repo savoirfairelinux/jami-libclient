@@ -264,25 +264,25 @@ void CategorizedHistoryModelPrivate::add(Call* call)
 void CategorizedHistoryModel::setHistoryLimited(bool isLimited)
 {
    if (!isLimited)
-      DBus::ConfigurationManager::instance().setHistoryLimit(0);
+      ConfigurationManager::instance().setHistoryLimit(0);
 }
 
 ///Set the number of days before history items are discarded
 void CategorizedHistoryModel::setHistoryLimit(int numberOfDays)
 {
-   DBus::ConfigurationManager::instance().setHistoryLimit(numberOfDays);
+   ConfigurationManager::instance().setHistoryLimit(numberOfDays);
 }
 
 ///Is history items are being deleted after "historyLimit()" days
 bool CategorizedHistoryModel::isHistoryLimited() const
 {
-   return DBus::ConfigurationManager::instance().getHistoryLimit() != 0;
+   return ConfigurationManager::instance().getHistoryLimit() != 0;
 }
 
 ///Number of days before items are discarded (0 = never)
 int CategorizedHistoryModel::historyLimit() const
 {
-   return DBus::ConfigurationManager::instance().getHistoryLimit();
+   return ConfigurationManager::instance().getHistoryLimit();
 }
 
 
