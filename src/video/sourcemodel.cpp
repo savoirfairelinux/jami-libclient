@@ -146,10 +146,10 @@ void Video::SourceModel::switchTo(const int idx)
    auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
    switch (newIdx) {
       case ExtendedDeviceList::NONE:
-         DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
+         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
          break;
       case ExtendedDeviceList::SCREEN:
-         DBus::VideoManager::instance().switchInput( QString(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1+%2,%3 %4x%5")
+         VideoManager::instance().switchInput( QString(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1+%2,%3 %4x%5")
             .arg(d_ptr->m_Display.index)
             .arg(d_ptr->m_Display.rect.x())
             .arg(d_ptr->m_Display.rect.y())
@@ -157,12 +157,12 @@ void Video::SourceModel::switchTo(const int idx)
             .arg(d_ptr->m_Display.rect.height()));
          break;
       case ExtendedDeviceList::FILE:
-         DBus::VideoManager::instance().switchInput(
+         VideoManager::instance().switchInput(
             !d_ptr->m_CurrentFile.isEmpty()?+Video::SourceModelPrivate::ProtocolPrefix::FILE+d_ptr->m_CurrentFile.toLocalFile():Video::SourceModelPrivate::ProtocolPrefix::NONE
          );
          break;
       default:
-         DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
+         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          Video::DeviceModel::instance().setActive(idx-ExtendedDeviceList::COUNT__);
          newIdx = -1;

@@ -57,7 +57,7 @@ ManagerModelPrivate::ManagerModelPrivate(Audio::ManagerModel* parent) : q_ptr(pa
 Audio::ManagerModel::ManagerModel(const QObject* parent) : QAbstractListModel(const_cast<QObject*>(parent)),
 d_ptr(new ManagerModelPrivate(this))
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList managers = configurationManager.getSupportedAudioManagers();
    foreach(const QString& m,managers) {
       if (m == ManagerModelPrivate::ManagerName::PULSEAUDIO) {
@@ -139,7 +139,7 @@ QItemSelectionModel* Audio::ManagerModel::selectionModel() const
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::ManagerModel*>(this));
       connect(d_ptr->m_pSelectionModel,&QItemSelectionModel::currentChanged,d_ptr.data(),&ManagerModelPrivate::slotSelectionChanged);
 
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QString manager = configurationManager.getAudioManager();
 
       if (manager == ManagerModelPrivate::ManagerName::PULSEAUDIO)
@@ -159,7 +159,7 @@ void ManagerModelPrivate::slotSelectionChanged(const QModelIndex& idx)
       return;
 
    bool ret = true;
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    switch (m_lSupportedManagers[idx.row()]) {
       case Audio::ManagerModel::Manager::PULSE:
          ret = configurationManager.setAudioManager(ManagerModelPrivate::ManagerName::PULSEAUDIO);

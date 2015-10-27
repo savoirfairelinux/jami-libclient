@@ -26,17 +26,9 @@
 #endif
 #include <typedefs.h>
 
-namespace DBus {
+namespace ConfigurationManager {
 
-   ///Singleton to access the ConfigurationManager dbus interface
-   class LIB_EXPORT ConfigurationManager
-   {
-   public:
-      static ConfigurationManagerInterface& instance();
-
-   private:
-      static ConfigurationManagerInterface* interface;
-   };
+///Singleton to access the ConfigurationManager dbus interface
+ConfigurationManagerInterface& LIB_EXPORT instance();
 
 }
-

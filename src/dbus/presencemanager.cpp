@@ -20,17 +20,16 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-PresenceManagerInterface* DBus::PresenceManager::interface = nullptr;
-
-PresenceManagerInterface& DBus::PresenceManager::instance()
+PresenceManagerInterface& PresenceManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new PresenceManagerInterface();
+    static auto interface = new PresenceManagerInterface();
 #else
     if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new PresenceManagerInterface("cx.ring.Ring", "/cx/ring/Ring/PresenceManager", QDBusConnection::sessionBus());
+    static auto interface = new PresenceManagerInterface("cx.ring.Ring",
+                                                        "/cx/ring/Ring/PresenceManager",
+                                                        QDBusConnection::sessionBus());
+
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
             "Error : dring not connected. Service " + interface->service() + " not connected. From presence interface."
