@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_cf302deb",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-27T22:05:09Z",
+      "side": 1,
+      "message": "But viewing history messages is, and this is what its all about",
+      "revId": "13c24b85bacd26fc3ffc64f352615bdd51b5d329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
