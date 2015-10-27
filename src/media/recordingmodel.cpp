@@ -279,28 +279,28 @@ void Media::RecordingModel::collectionAddedCallback(CollectionInterface* backend
 ///Set where the call recordings will be saved
 void Media::RecordingModel::setRecordPath(const QUrl& path)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setRecordPath(path.path());
 }
 
 ///Return the path where recordings are going to be saved
 QUrl Media::RecordingModel::recordPath() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return QUrl(configurationManager.getRecordPath());
 }
 
 ///are all calls recorded by default
 bool Media::RecordingModel::isAlwaysRecording() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return configurationManager.getIsAlwaysRecording();
 }
 
 ///Set if all calls needs to be recorded
 void Media::RecordingModel::setAlwaysRecording(bool record)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setIsAlwaysRecording   ( record );
 }
 

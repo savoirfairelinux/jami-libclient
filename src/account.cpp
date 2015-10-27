@@ -136,7 +136,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 
    //Load the pending trust requests
    if (a->protocol() == Account::Protocol::RING) {
-      const QMap<QString,QString> requests = DBus::ConfigurationManager::instance().getTrustRequests(a->id());
+      const QMap<QString,QString> requests = ConfigurationManager::instance().getTrustRequests(a->id());
 
       QMapIterator<QString, QString> iter(requests);
       while (iter.hasNext()) {
@@ -154,7 +154,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
 {
    qDebug() << "Building an account from alias: " << alias;
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    Account* a = new Account();
    a->setProtocol(proto);
    a->d_ptr->m_hAccountDetails.clear();
@@ -1291,7 +1291,7 @@ bool Account::requestTrust( Certificate* c )
       payload = contactMethod()->contact()->toVCard();
    }
 
-   DBus::ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
+   ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
 
    return true;
 }
@@ -2252,7 +2252,7 @@ Account::RoleStatus Account::roleStatus(Account::Role role) const
 bool AccountPrivate::updateState()
 {
    if(! q_ptr->isNew()) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const MapStringString details        = configurationManager.getVolatileAccountDetails(q_ptr->id());
       const QString         status         = details[DRing::Account::VolatileProperties::Registration::STATUS];
       const Account::RegistrationState cst = q_ptr->registrationState();
@@ -2272,7 +2272,7 @@ bool AccountPrivate::updateState()
 ///Save the current account to the daemon
 void AccountPrivate::save()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    if (q_ptr->isNew()) {
       MapStringString details;
       QMutableHashIterator<QString,QString> iter(m_hAccountDetails);
@@ -2332,7 +2332,7 @@ void AccountPrivate::reload()
          qDebug() << "Reloading" << q_ptr->id() << q_ptr->alias();
       else
          qDebug() << "Loading" << q_ptr->id();
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       QMap<QString,QString> aDetails = configurationManager.getAccountDetails(q_ptr->id());
 
       if (!aDetails.count()) {

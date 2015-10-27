@@ -66,11 +66,11 @@ AccountModel::AccountModel()
 
 void AccountModelPrivate::init()
 {
-    DBus::InstanceManager::instance(); // Make sure the daemon is running before calling updateAccounts()
+    InstanceManager::instance(); // Make sure the daemon is running before calling updateAccounts()
     q_ptr->updateAccounts();
 
-    CallManagerInterface& callManager = DBus::CallManager::instance();
-    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+    CallManagerInterface& callManager = CallManager::instance();
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
     connect(&configurationManager, &ConfigurationManagerInterface::registrationStateChanged,this ,
             &AccountModelPrivate::slotDaemonAccountChanged);
@@ -286,7 +286,7 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
    if (a)
       a->d_ptr->m_LastSipRegistrationStatus = status;
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    //The account may have been deleted by the user, but 'apply' have not been pressed
    if (!a) {
@@ -418,7 +418,7 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
 ///Update accounts
 void AccountModel::update()
 {
-   ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface & configurationManager = ConfigurationManager::instance();
    QList<Account*> tmp;
    for (int i = 0; i < d_ptr->m_lAccounts.size(); i++)
       tmp << d_ptr->m_lAccounts[i];
@@ -453,7 +453,7 @@ void AccountModel::update()
 void AccountModel::updateAccounts()
 {
    qDebug() << "Updating all accounts";
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    QStringList accountIds = configurationManager.getAccountList();
    //m_lAccounts.clear();
    for (int i = 0; i < accountIds.size(); ++i) {
@@ -481,7 +481,7 @@ void AccountModel::updateAccounts()
 ///Save accounts details and reload it
 void AccountModel::save()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList accountIds = QStringList(configurationManager.getAccountList());
 
    //create or update each account from accountList
@@ -540,7 +540,7 @@ bool AccountModel::moveDown()
 ///Try to register all enabled accounts
 void AccountModel::registerAllAccounts()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.registerAllAccounts();
 }
 
