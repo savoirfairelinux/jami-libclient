@@ -116,6 +116,13 @@ public:
       MANAGEMENT    = 0x1 << 3, /*!< Manage the data related to this (bookmark, add contact...) */
       CONTACT       = 0x1 << 4, /*!< Actions related to contacting this person (email, call...) */
       TREE_ELEMENTS = 0x1 << 5, /*!< All actions that require a second dimension to manage      */
+      ALL =
+         Context::MINIMAL       |
+         Context::RECOMMANDED   |
+         Context::ADVANCED      |
+         Context::MANAGEMENT    |
+         Context::CONTACT       |
+         Context::TREE_ELEMENTS
    };
    Q_FLAGS(Context)
 
