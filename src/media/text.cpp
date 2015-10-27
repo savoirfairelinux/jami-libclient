@@ -84,8 +84,8 @@ QHash<QString, ProfileChunk*> ProfileChunk::m_hRequest;
 
 IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QObject(parent)
 {
-   CallManagerInterface& callManager                   = DBus::CallManager::instance();
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   CallManagerInterface& callManager                   = CallManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    connect(&configurationManager, &ConfigurationManagerInterface::incomingAccountMessage, this, &IMConversationManagerPrivate::newAccountMessage);
    connect(&callManager         , &CallManagerInterface::incomingMessage                , this, &IMConversationManagerPrivate::newMessage       );
@@ -233,7 +233,7 @@ Media::TextRecording* Media::Text::recording() const
  */
 void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message, isMixed);
 
    //Make sure the recording exist

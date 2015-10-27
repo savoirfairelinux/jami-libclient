@@ -20,7 +20,7 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-VideoManagerInterface& DBus::VideoManager::instance()
+VideoManagerInterface& VideoManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
     static auto interface = new VideoManagerInterface();

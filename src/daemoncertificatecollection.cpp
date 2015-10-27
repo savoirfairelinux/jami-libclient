@@ -66,7 +66,7 @@ public Q_SLOTS:
 DaemonCertificateCollectionPrivate::DaemonCertificateCollectionPrivate(DaemonCertificateCollection* parent, Account* a, DaemonCertificateCollection::Mode mode) : QObject(), q_ptr(parent),
 m_pAccount(a), m_Mode(mode)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    connect(&configurationManager, &ConfigurationManagerInterface::certificatePinned     , this, &DaemonCertificateCollectionPrivate::slotCertificatePinned    );
 
@@ -121,7 +121,7 @@ bool DaemonCertificateCollection::load()
    const QString mode = d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
       DRing::Certificate::Status::ALLOWED : DRing::Certificate::Status::BANNED;
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    const QStringList certs = configurationManager.getCertificatesByStatus(
       d_ptr->m_pAccount->id(), mode

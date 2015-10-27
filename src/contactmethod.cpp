@@ -295,7 +295,7 @@ void ContactMethod::setTracked(bool track)
       //You can't subscribe without account
       if (track && !d_ptr->m_pAccount) return;
       d_ptr->m_Tracked = track;
-      DBus::PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),uri().fullUri(),track);
+      PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),uri().fullUri(),track);
       d_ptr->changed();
       d_ptr->trackedChanged(track);
    }
@@ -756,7 +756,7 @@ bool ContactMethod::sendOfflineTextMessage(const QString& text)
    if (!account())
       return false;
 
-   DBus::ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
+   ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
    return true;
 }
 

@@ -351,7 +351,7 @@ void BackgroundLoader::run()
             cert->addOrigin(Certificate::OriginHint::ROOT_AUTORITY);
       }
 
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       //qDebug() << "\n\nPINING PATH TODO remove extra /" << m_pCurrentFolder->path();
       configurationManager.pinCertificatePath(m_pCurrentFolder->path().path()+'/');
    }
