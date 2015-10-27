@@ -102,6 +102,7 @@ public:
    URI                   uri             () const;
    NumberCategory*       category        () const;
    bool                  isTracked       () const;
+   bool                  isReachable     () const;
    bool                  isPresent       () const;
    QString               presenceMessage () const;
    Account*              account         () const;

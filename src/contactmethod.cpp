@@ -28,6 +28,7 @@
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
+#include "accountmodel.h"
 #include "media/recordingmodel.h"
 #include "private/account_p.h"
 #include "private/person_p.h"
@@ -127,6 +128,39 @@ bool ContactMethod::isTracked() const
 {
    //If the number doesn't support it, ignore the flag
    return supportPresence() && d_ptr->m_Tracked;
+}
+
+///Return true if there is a change one if the account can be used to reach that person
+bool ContactMethod::isReachable() const
+{
+   auto& m = AccountModel::instance();
+
+   const bool hasSip   = m.isSipSupported  ();
+   const bool hasIAX   = m.isIAXSupported  ();
+   const bool hasIP2IP = m.isIP2IPSupported();
+   const bool hasRing  = m.isRingSupported ();
+
+    switch (protocolHint()) {
+        case URI::ProtocolHint::SIP_HOST :
+        case URI::ProtocolHint::IP       :
+            if (hasIP2IP)
+                return true;
+            //no break
+            [[clang::fallthrough]];
+        case URI::ProtocolHint::SIP_OTHER:
+            if (hasSip)
+                return true;
+            break;
+        case URI::ProtocolHint::IAX      :
+            if (hasIAX)
+                return true;
+            break;
+        case URI::ProtocolHint::RING     :
+            if (hasRing)
+            return true;
+        break;
+    }
+    return false;
 }
 
 ///Is this number present
