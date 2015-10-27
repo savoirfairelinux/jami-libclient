@@ -40,13 +40,13 @@ Media::Media::Type Media::Video::type()
 
 bool Media::Video::mute()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_VIDEO,true);
 }
 
 bool Media::Video::unmute()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_VIDEO,false);
 }
 

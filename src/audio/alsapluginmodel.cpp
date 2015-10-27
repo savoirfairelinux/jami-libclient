@@ -49,7 +49,7 @@ m_pSelectionModel(nullptr)
 Audio::AlsaPluginModel::AlsaPluginModel(const QObject* parent) : QAbstractListModel(const_cast<QObject*>(parent)),
 d_ptr(new AlsaPluginModelPrivate(this))
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioPluginList();
 }
 
@@ -122,7 +122,7 @@ QItemSelectionModel* Audio::AlsaPluginModel::selectionModel() const
 ///Return the current index
 QModelIndex Audio::AlsaPluginModel::currentPlugin() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const int idx = d_ptr->m_lDeviceList.indexOf(configurationManager.getCurrentAudioOutputPlugin());
    qDebug() << "Invalid current audio plugin";
    if (idx == -1)
@@ -137,7 +137,7 @@ void AlsaPluginModelPrivate::setCurrentPlugin(const QModelIndex& idx)
    if (!idx.isValid())
       return;
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setAudioPlugin(m_lDeviceList[idx.row()]);
 }
 
@@ -150,7 +150,7 @@ void AlsaPluginModelPrivate::setCurrentPlugin(int idx)
 ///Reload to current daemon state
 void Audio::AlsaPluginModel::reload()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioPluginList();
    endResetModel();
