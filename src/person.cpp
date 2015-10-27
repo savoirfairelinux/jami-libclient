@@ -38,6 +38,7 @@
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "private/person_p.h"
+#include "media/textrecording.h"
 
 
 class AddressPrivate
@@ -480,6 +481,7 @@ bool Person::isPlaceHolder() const
 
 /** Get the last time this person was contacted
  *  @warning This method complexity is O(N)
+ *  @todo Implement some caching
  */
 time_t Person::lastUsedTime() const
 {
@@ -511,35 +513,51 @@ bool Person::isReachable() const
    if (!d_ptr->m_Numbers.size())
       return false;
 
-   auto& m = AccountModel::instance();
-
-   const bool hasSip   = m.isSipSupported  ();
-   const bool hasIAX   = m.isIAXSupported  ();
-   const bool hasIP2IP = m.isIP2IPSupported();
-   const bool hasRing  = m.isRingSupported ();
-
-   for (const ContactMethod* n : d_ptr->m_Numbers) {
-      switch (n->protocolHint()) {
-         case URI::ProtocolHint::SIP_HOST :
-         case URI::ProtocolHint::IP       :
-            if (hasIP2IP)
-               return true;
-            //no break
-            [[clang::fallthrough]];
-         case URI::ProtocolHint::SIP_OTHER:
-            if (hasSip)
-               return true;
-            break;
-         case URI::ProtocolHint::IAX      :
-            if (hasIAX)
-               return true;
-            break;
-         case URI::ProtocolHint::RING     :
-            if (hasRing)
-               return true;
-            break;
-      }
+   foreach (const ContactMethod* n, d_ptr->m_Numbers) {
+      if (n->isReachable())
+         return true;
    }
+   return false;
+}
+
+bool Person::hasBeenCalled() const
+{
+   foreach( ContactMethod* cm, phoneNumbers()) {
+      if (cm->callCount())
+         return true;
+   }
+
+   return false;
+}
+
+/**
+ * Return if one of the contact method has a recording
+ *
+ * @todo Implement AUDIO, VIDEO and FILE, The information can be obtained by \
+ * foreach looping the contact methods calls, but this is overly expensive. \
+ * some ContactMethod level caching need to be implemented and connected to new\
+ * recording signals.
+ */
+bool Person::hasRecording(Media::Media::Type type, Media::Media::Direction direction) const
+{
+   Q_UNUSED(direction) //TODO implement
+
+   switch (type) {
+      case Media::Media::Type::AUDIO:
+      case Media::Media::Type::VIDEO:
+         return false; //TODO implement
+      case Media::Media::Type::TEXT:
+         foreach( ContactMethod* cm, phoneNumbers()) {
+            if (cm->textRecording() && !cm->textRecording()->isEmpty())
+               return true;
+         }
+
+         return false;
+      case Media::Media::Type::FILE:
+      case Media::Media::Type::COUNT__:
+         break;
+   }
+
    return false;
 }
 

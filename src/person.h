@@ -22,6 +22,7 @@
 #include <QtCore/QVariant>
 #include <time.h>
 #include <itembase.h>
+#include <media/media.h>
 
 //Ring
 #include "itemdataroles.h"
@@ -93,17 +94,19 @@ public:
    typedef QVector<ContactMethod*> ContactMethods;
 
    //Properties
-   Q_PROPERTY( ContactMethods        phoneNumbers   READ phoneNumbers   WRITE setContactMethods                      )
-   Q_PROPERTY( QString               nickName       READ nickName       WRITE setNickName                            )
-   Q_PROPERTY( QString               firstName      READ firstName      WRITE setFirstName                           )
-   Q_PROPERTY( QString               secondName     READ secondName     WRITE setFamilyName                          )
-   Q_PROPERTY( QString               formattedName  READ formattedName  WRITE setFormattedName                       )
-   Q_PROPERTY( QString               organization   READ organization   WRITE setOrganization                        )
-   Q_PROPERTY( QByteArray            uid            READ uid            WRITE setUid                                 )
-   Q_PROPERTY( QString               preferredEmail READ preferredEmail WRITE setPreferredEmail                      )
-   Q_PROPERTY( QVariant              photo          READ photo          WRITE setPhoto                               )
-   Q_PROPERTY( QString               group          READ group          WRITE setGroup                               )
-   Q_PROPERTY( QString               department     READ department     WRITE setDepartment                          )   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                                                )
+   Q_PROPERTY( ContactMethods        phoneNumbers   READ phoneNumbers   WRITE setContactMethods )
+   Q_PROPERTY( QString               nickName       READ nickName       WRITE setNickName       )
+   Q_PROPERTY( QString               firstName      READ firstName      WRITE setFirstName      )
+   Q_PROPERTY( QString               secondName     READ secondName     WRITE setFamilyName     )
+   Q_PROPERTY( QString               formattedName  READ formattedName  WRITE setFormattedName  )
+   Q_PROPERTY( QString               organization   READ organization   WRITE setOrganization   )
+   Q_PROPERTY( QByteArray            uid            READ uid            WRITE setUid            )
+   Q_PROPERTY( QString               preferredEmail READ preferredEmail WRITE setPreferredEmail )
+   Q_PROPERTY( QVariant              photo          READ photo          WRITE setPhoto          )
+   Q_PROPERTY( QString               group          READ group          WRITE setGroup          )
+   Q_PROPERTY( QString               department     READ department     WRITE setDepartment     )
+   Q_PROPERTY( time_t                lastUsedTime   READ lastUsedTime                           )
+   Q_PROPERTY( bool                  hasBeenCalled  READ hasBeenCalled                          )
 
    //Mutator
    Q_INVOKABLE void addAddress(const Address& addr);
@@ -149,6 +152,9 @@ public:
    bool supportPresence            () const;
    bool isReachable                () const;
    bool isPlaceHolder              () const;
+   bool hasBeenCalled              () const;
+
+   bool hasRecording(Media::Media::Type type, Media::Media::Direction direction) const;
 
    //Setters
    void setContactMethods ( ContactMethods           );
