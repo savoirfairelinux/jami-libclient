@@ -24,20 +24,11 @@
  #include "callmanager_dbus_interface.h"
  #include <QDBusPendingReply>
 #endif
-
 #include <typedefs.h>
 
-namespace DBus {
+namespace CallManager {
 
-   ///Singleton to access dbus "CallManager" interface
-   class LIB_EXPORT CallManager
-   {
-   public:
-      static CallManagerInterface& instance();
-
-   private:
-      static CallManagerInterface* interface;
-   };
+///Singleton to access dbus "CallManager" interface
+CallManagerInterface& LIB_EXPORT instance();
 
 }
-

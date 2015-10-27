@@ -51,7 +51,7 @@ QHash<const QString,int>  CipherModelPrivate::m_shMapping;
 CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_UseDefault(true)
 {
    if (!CipherModelPrivate::m_sIsLoaded) {
-      const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers(DRing::Account::ProtocolNames::IP2IP);
+      const QStringList cs = ConfigurationManager::instance().getSupportedCiphers(DRing::Account::ProtocolNames::IP2IP);
       foreach(const QString& c, cs) {
          m_shMapping[c] = m_slSupportedCiphers.size();
          m_slSupportedCiphers << c.toLatin1();
@@ -76,7 +76,7 @@ CipherModelPrivate::~CipherModelPrivate()
 
 void CipherModelPrivate::loadCiphers()
 {
-   const QStringList cs = DBus::ConfigurationManager::instance().getSupportedCiphers("IP2IP");
+   const QStringList cs = ConfigurationManager::instance().getSupportedCiphers("IP2IP");
    foreach(const QString& c, cs)
       m_slSupportedCiphers << c.toLatin1();
    m_sIsLoaded = true;

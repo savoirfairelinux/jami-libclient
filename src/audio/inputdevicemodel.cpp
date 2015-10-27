@@ -61,7 +61,7 @@ QHash<int,QByteArray> Audio::InputDeviceModel::roleNames() const
 Audio::InputDeviceModel::InputDeviceModel(const QObject* parent) : QAbstractListModel(const_cast<QObject*>(parent)),
 d_ptr(new InputDeviceModelPrivate(this))
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
 }
 
@@ -112,7 +112,7 @@ QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::InputDeviceModel*>(this));
 
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
       const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::INPUT)].toInt();
       if (!(idx >= d_ptr->m_lDeviceList.size()))
@@ -128,7 +128,7 @@ QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
 void InputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
    if (index.isValid()) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       configurationManager.setAudioInputDevice(index.row());
    }
 }
@@ -142,7 +142,7 @@ void InputDeviceModelPrivate::setCurrentDevice(int idx)
 ///Reload input device list
 void Audio::InputDeviceModel::reload()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
    endResetModel();

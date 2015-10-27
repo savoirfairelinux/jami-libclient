@@ -147,7 +147,7 @@ m_pUserActionModel(nullptr)
 CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(new CallModelPrivate(this))
 {
    //Register with the daemon
-   DBus::InstanceManager::instance();
+   InstanceManager::instance();
    setObjectName("CallModel");
    #ifdef ENABLE_VIDEO
    VideoRendererManager::instance();
@@ -160,7 +160,7 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 ///Constructor (there fix an initializationn loop)
 void CallModelPrivate::init()
 {
-    CallManagerInterface& callManager = DBus::CallManager::instance();
+    CallManagerInterface& callManager = CallManager::instance();
 #ifdef ENABLE_VIDEO
     DBus::VideoManager::instance();
 #endif
@@ -209,7 +209,7 @@ CallModel::~CallModel()
    d_ptr->m_shDringId.clear();
 
    //Unregister from the daemon
-   InstanceInterface& instance = DBus::InstanceManager::instance();
+   InstanceManagerInterface& instance = InstanceManager::instance();
    Q_NOREPLY instance.Unregister(getpid());
 #ifdef ENABLE_LIBWRAP
 
@@ -331,7 +331,7 @@ CallList CallModel::getActiveConferences()
    CallList confList;
 
    //That way it can not be invalid
-   const QStringList confListS = DBus::CallManager::instance().getConferenceList();
+   const QStringList confListS = CallManager::instance().getConferenceList();
    foreach (const QString& confId, confListS) {
       InternalStruct* internalS = d_ptr->m_shDringId[confId];
       if (!internalS) {
@@ -358,15 +358,15 @@ bool CallModel::hasConference() const
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
-   return DBus::InstanceManager::instance().isConnected();
+   return InstanceManager::instance().isConnected();
 #else
-   return DBus::InstanceManager::instance().connection().isConnected();
+   return InstanceManager::instance().connection().isConnected();
 #endif //ENABLE_LIBWRAP
 }
 
 bool CallModel::isValid()
 {
-   return DBus::CallManager::instance().isValid();
+   return CallManager::instance().isValid();
 }
 
 
@@ -549,7 +549,7 @@ void CallModelPrivate::removeInternal(InternalStruct* internal)
  */
 QStringList CallModelPrivate::getCallList()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    const QStringList callList = callManager.getCallList();
    QStringList ret;
 
@@ -631,7 +631,7 @@ QModelIndex CallModel::getIndex(Call* call) const
 void CallModel::attendedTransfer(Call* toTransfer, Call* target)
 {
    if ((!toTransfer) || (!target)) return;
-   Q_NOREPLY DBus::CallManager::instance().attendedTransfer(toTransfer->dringId(),target->dringId());
+   Q_NOREPLY CallManager::instance().attendedTransfer(toTransfer->dringId(),target->dringId());
 
    //TODO [Daemon] Implement this correctly
    toTransfer->d_ptr->changeCurrentState(Call::State::OVER);
@@ -660,7 +660,7 @@ void CallModel::transfer(Call* toTransfer, const ContactMethod* target)
 Call* CallModelPrivate::addConference(const QString& confID)
 {
    qDebug() << "Notified of a new conference " << confID;
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    const QStringList callList = callManager.getParticipantList(confID);
    qDebug() << "Paticiapants are:" << callList;
 
@@ -722,7 +722,7 @@ bool CallModel::createConferenceFromCall(Call* call1, Call* call2)
 {
   if (!call1 || !call2) return false;
   qDebug() << "Joining call: " << call1 << " and " << call2;
-  Q_NOREPLY DBus::CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
+  Q_NOREPLY CallManager::instance().joinParticipant(call1->dringId(),call2->dringId());
   return true;
 } //createConferenceFromCall
 
@@ -730,7 +730,7 @@ bool CallModel::createConferenceFromCall(Call* call1, Call* call2)
 bool CallModel::addParticipant(Call* call2, Call* conference)
 {
    if (conference->type() == Call::Type::CONFERENCE) {
-      Q_NOREPLY DBus::CallManager::instance().addParticipant(call2->dringId(), conference->dringId());
+      Q_NOREPLY CallManager::instance().addParticipant(call2->dringId(), conference->dringId());
       return true;
    }
    else {
@@ -742,14 +742,14 @@ bool CallModel::addParticipant(Call* call2, Call* conference)
 ///Remove a participant from a conference
 bool CallModel::detachParticipant(Call* call)
 {
-   Q_NOREPLY DBus::CallManager::instance().detachParticipant(call->dringId());
+   Q_NOREPLY CallManager::instance().detachParticipant(call->dringId());
    return true;
 }
 
 ///Merge two conferences
 bool CallModel::mergeConferences(Call* conf1, Call* conf2)
 {
-   Q_NOREPLY DBus::CallManager::instance().joinConference(conf1->dringId(),conf2->dringId());
+   Q_NOREPLY CallManager::instance().joinConference(conf1->dringId(),conf2->dringId());
    return true;
 }
 
@@ -1178,7 +1178,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
       }
 
       conf->d_ptr->stateChanged(state);
-      CallManagerInterface& callManager = DBus::CallManager::instance();
+      CallManagerInterface& callManager = CallManager::instance();
       const QStringList participants = callManager.getParticipantList(confID);
 
       qDebug() << "The conf has" << confInt->m_lChildren.size() << "calls, daemon has" <<participants.size();

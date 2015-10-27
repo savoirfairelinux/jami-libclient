@@ -83,7 +83,7 @@ public Q_SLOTS:
 
 RecordingPlaybackManager::RecordingPlaybackManager() : QObject(&CallModel::instance())
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    connect(&callManager,&CallManagerInterface::recordPlaybackStopped , this, &RecordingPlaybackManager::slotRecordPlaybackStopped );
    connect(&callManager,&CallManagerInterface::updatePlaybackScale   , this, &RecordingPlaybackManager::slotUpdatePlaybackScale   );
    connect(&callManager,&CallManagerInterface::recordPlaybackFilepath, this, &RecordingPlaybackManager::slotRecordPlaybackFilepath);
@@ -174,7 +174,7 @@ void Media::AVRecording::play()
 {
    RecordingPlaybackManager::instance().activateRecording(this);
 
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    const bool retval = callManager.startRecordedFilePlayback(path().path());
    if (retval)
       emit started();
@@ -188,7 +188,7 @@ void Media::AVRecording::play()
 ///Stop the playback, cancel any pause point
 void Media::AVRecording::stop()
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.stopRecordedFilePlayback(path().path());
    emit stopped();
 
@@ -215,7 +215,7 @@ void Media::AVRecording::pause()
  */
 void Media::AVRecording::seek(AVRecording::Position pos)
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.recordPlaybackSeek(pos);
 }
 

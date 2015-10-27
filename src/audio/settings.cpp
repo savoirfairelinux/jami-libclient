@@ -64,7 +64,7 @@ Audio::SettingsPrivate::SettingsPrivate(Audio::Settings* parent) : q_ptr(parent)
 Audio::Settings::Settings() : QObject(), d_ptr(new Audio::SettingsPrivate(this))
 {
    d_ptr->m_pRingtoneDeviceModel = new RingtoneDeviceModel (this);
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    connect(&configurationManager,SIGNAL(volumeChanged(QString,double)),d_ptr.data(),SLOT(slotVolumeChanged(QString,double)));
 }
 
@@ -144,7 +144,7 @@ void Audio::Settings::reload()
 ///Play room tone
 Audio::Settings::ToneType Audio::Settings::playRoomTone() const
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    callManager.startTone(true,static_cast<int>(Audio::Settings::ToneType::WITHOUT_MESSAGE));
    //TODO support voicemail
    return Audio::Settings::ToneType::WITHOUT_MESSAGE;
@@ -153,7 +153,7 @@ Audio::Settings::ToneType Audio::Settings::playRoomTone() const
 ///Stop room tone if it is playing
 void Audio::Settings::stopRoomTone() const
 {
-   CallManagerInterface& callManager = DBus::CallManager::instance();
+   CallManagerInterface& callManager = CallManager::instance();
    callManager.startTone(false,0);
 }
 
@@ -166,65 +166,65 @@ void Audio::Settings::setEnableRoomTone(bool enable)
 ///Enable noise suppress code, may make things worst
 void Audio::Settings::setNoiseSuppressState(bool enabled)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setNoiseSuppressState(enabled);
 }
 
 ///Enable noise suppress code, may make things worst
 bool Audio::Settings::isNoiseSuppressEnabled() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return configurationManager.getNoiseSuppressState();
 }
 
 ///Mute playback
 void Audio::Settings::mutePlayback(bool m)
 {
-   DBus::ConfigurationManager::instance().mutePlayback(m);
+   ConfigurationManager::instance().mutePlayback(m);
    emit playbackMuted(m);
 }
 
 ///Mute capture
 void Audio::Settings::muteCapture(bool m)
 {
-   DBus::ConfigurationManager::instance().muteCapture(m);
+   ConfigurationManager::instance().muteCapture(m);
    emit captureMuted(m);
 }
 
 ///is mute playback
 bool Audio::Settings::isPlaybackMuted() const
 {
-   return DBus::ConfigurationManager::instance().isPlaybackMuted();
+   return ConfigurationManager::instance().isPlaybackMuted();
 }
 
 ///is mute capture
 bool Audio::Settings::isCaptureMuted() const
 {
-   return DBus::ConfigurationManager::instance().isCaptureMuted();
+   return ConfigurationManager::instance().isCaptureMuted();
 }
 
 int Audio::Settings::playbackVolume() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return static_cast<int>(configurationManager.getVolume(DeviceKey::PLAYBACK)*100);
 }
 
 int Audio::Settings::captureVolume() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return static_cast<int>(configurationManager.getVolume(DeviceKey::CAPTURE)*100);
 }
 
 void Audio::Settings::setPlaybackVolume(int volume)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setVolume(DeviceKey::PLAYBACK,volume/100.0f);
    emit playbackVolumeChanged(volume);
 }
 
 void Audio::Settings::setCaptureVolume(int volume)
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setVolume(DeviceKey::CAPTURE,volume/100.0f);
    emit captureVolumeChanged(volume);
 }
@@ -232,13 +232,13 @@ void Audio::Settings::setCaptureVolume(int volume)
 void Audio::Settings::setDTMFMuted(bool muted)
 {
    //TODO
-   DBus::ConfigurationManager::instance().muteDtmf(muted);
+   ConfigurationManager::instance().muteDtmf(muted);
    emit DTMFMutedChanged(muted);
 }
 
 bool Audio::Settings::areDTMFMuted() const
 {
-   return DBus::ConfigurationManager::instance().isDtmfMuted();
+   return ConfigurationManager::instance().isDtmfMuted();
 }
 
 ///Called when the volume change for external reasons
