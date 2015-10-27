@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_84a68cc0",
+        "filename": "src/callmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-10-27T14:18:48Z",
+      "side": 1,
+      "message": "yeah i agree with you but that would be another patch entirely as we need to go forward with conference and transfer it already took a lot of time.",
+      "parentUuid": "1a9dcd25_44aac4d5",
+      "revId": "27addb0c887a72cb690fe0d042e3ee7747d36eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_a105ba15",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 29
