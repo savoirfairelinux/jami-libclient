@@ -20,6 +20,7 @@
 #include <QtCore/QAbstractTableModel>
 #include "typedefs.h"
 #include "phonedirectorymodel.h"
+#include <itemdataroles.h>
 
 //Qt
 class QItemSelectionModel;
@@ -41,10 +42,10 @@ public:
    Q_PROPERTY(bool displayMostUsedNumbers READ displayMostUsedNumbers WRITE setDisplayMostUsedNumbers)
 
    enum Role {
-      ALTERNATE_ACCOUNT= 100,
-      FORCE_ACCOUNT    = 101,
-      ACCOUNT          = 102,
-      PEER_NAME        = 103,
+      ALTERNATE_ACCOUNT= (int)Ring::Role::UserRole,
+      FORCE_ACCOUNT,
+      ACCOUNT      ,
+      PEER_NAME    ,
    };
 
    NumberCompletionModel();
