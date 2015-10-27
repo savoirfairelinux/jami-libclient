@@ -50,7 +50,7 @@ m_pSelectionModel(nullptr)
 Audio::RingtoneDeviceModel::RingtoneDeviceModel(const QObject* parent) : QAbstractListModel(const_cast<QObject*>(parent)),
 d_ptr(new RingtoneDeviceModelPrivate(this))
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
 }
 
@@ -112,7 +112,7 @@ QItemSelectionModel* Audio::RingtoneDeviceModel::selectionModel() const
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::RingtoneDeviceModel*>(this));
 
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
       const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::RINGTONE)].toInt();
       if (!(idx >= d_ptr->m_lDeviceList.size()))
@@ -127,7 +127,7 @@ QItemSelectionModel* Audio::RingtoneDeviceModel::selectionModel() const
 ///Return the current ringtone device
 QModelIndex Audio::RingtoneDeviceModel::currentDevice() const
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
    const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::RINGTONE)].toInt();
    if (idx >= d_ptr->m_lDeviceList.size())
@@ -139,7 +139,7 @@ QModelIndex Audio::RingtoneDeviceModel::currentDevice() const
 void RingtoneDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
    if (index.isValid()) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       configurationManager.setAudioRingtoneDevice(index.row());
    }
 }
@@ -153,7 +153,7 @@ void RingtoneDeviceModelPrivate::setCurrentDevice(int idx)
 ///Reload ringtone device list
 void Audio::RingtoneDeviceModel::reload()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
    endResetModel();

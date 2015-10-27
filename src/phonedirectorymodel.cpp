@@ -50,7 +50,7 @@ PhoneDirectoryModel::PhoneDirectoryModel(QObject* parent) :
    QAbstractTableModel(parent?parent:QCoreApplication::instance()), d_ptr(new PhoneDirectoryModelPrivate(this))
 {
    setObjectName("PhoneDirectoryModel");
-   connect(&DBus::PresenceManager::instance(),SIGNAL(newBuddyNotification(QString,QString,bool,QString)),d_ptr.data(),
+   connect(&PresenceManager::instance(),SIGNAL(newBuddyNotification(QString,QString,bool,QString)),d_ptr.data(),
            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 }
 

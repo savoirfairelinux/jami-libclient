@@ -24,17 +24,17 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-InstanceInterface* DBus::InstanceManager::interface = nullptr;
-
-InstanceInterface& DBus::InstanceManager::instance()
+InstanceManagerInterface& InstanceManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
-    if (!interface)
-        interface = new InstanceInterface();
+    static auto interface = new InstanceManagerInterface();
 #else
     if (!dbus_metaTypeInit) registerCommTypes();
-    if (!interface)
-        interface = new InstanceInterface("cx.ring.Ring", "/cx/ring/Ring/Instance", QDBusConnection::sessionBus());
+
+    static auto interface = new InstanceManagerInterface("cx.ring.Ring",
+                                                "/cx/ring/Ring/Instance",
+                                                QDBusConnection::sessionBus());
+
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
             "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface."

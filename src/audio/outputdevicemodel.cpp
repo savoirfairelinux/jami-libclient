@@ -52,7 +52,7 @@ OutputDeviceModelPrivate::OutputDeviceModelPrivate(Audio::OutputDeviceModel* par
 Audio::OutputDeviceModel::OutputDeviceModel(const QObject* parent) : QAbstractListModel(const_cast<QObject*>(parent)),
 d_ptr(new OutputDeviceModelPrivate(this))
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
 }
 
@@ -113,7 +113,7 @@ QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
 {
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::OutputDeviceModel*>(this));
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
       const int idx = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
 
@@ -130,7 +130,7 @@ QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
 void OutputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
    if (index.isValid()) {
-      ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       configurationManager.setAudioOutputDevice(index.row());
    }
 }
@@ -144,7 +144,7 @@ void OutputDeviceModelPrivate::setCurrentDevice(int idx)
 ///reload output devices list
 void Audio::OutputDeviceModel::reload()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
    endResetModel();
@@ -154,7 +154,7 @@ void Audio::OutputDeviceModel::reload()
 
 void Audio::OutputDeviceModel::playDTMF(const QString& str)
 {
-   Q_NOREPLY DBus::CallManager::instance().playDTMF(str);
+   Q_NOREPLY CallManager::instance().playDTMF(str);
 }
 
 
