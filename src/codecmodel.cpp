@@ -270,7 +270,7 @@ void CodecModelPrivate::clear()
 ///Reload the codeclist
 void CodecModelPrivate::reload()
 {
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    QVector<uint> codecIdList = configurationManager.getCodecList();
    QVector<uint> activeCodecList = configurationManager.getActiveCodecList(m_pAccount->id());
    QStringList tmpNameList;
@@ -335,7 +335,7 @@ void CodecModelPrivate::save()
       }
    }
 
-   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setActiveCodecList(m_pAccount->id(), _codecList);
 
    //Update codec details

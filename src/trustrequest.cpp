@@ -66,7 +66,7 @@ Account* TrustRequest::account() const
 
 bool TrustRequest::accept()
 {
-   if (DBus::ConfigurationManager::instance().acceptTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
+   if (ConfigurationManager::instance().acceptTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestAccepted();
       return true;
    }
@@ -75,7 +75,7 @@ bool TrustRequest::accept()
 
 bool TrustRequest::discard()
 {
-   if (DBus::ConfigurationManager::instance().discardTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
+   if (ConfigurationManager::instance().discardTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestDiscarded();
       return true;
    }

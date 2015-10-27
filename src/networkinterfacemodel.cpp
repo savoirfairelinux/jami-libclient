@@ -57,7 +57,7 @@ d_ptr(new NetworkInterfaceModelPrivate(this))
 {
    //TODO get updates from the daemon
    d_ptr->m_pAccount = a;
-   d_ptr->m_Interfaces = DBus::ConfigurationManager::instance().getAllIpInterfaceByName();
+   d_ptr->m_Interfaces = ConfigurationManager::instance().getAllIpInterfaceByName();
 }
 
 NetworkInterfaceModel::~NetworkInterfaceModel()

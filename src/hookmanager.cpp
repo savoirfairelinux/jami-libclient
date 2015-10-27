@@ -46,7 +46,7 @@ public:
 
 HookManager::HookManager() : QObject(QCoreApplication::instance()),d_ptr(new HookManagerPrivate())
 {
-   ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface & configurationManager = ConfigurationManager::instance();
    QMap<QString,QString> hooks = configurationManager.getHookSettings();
    d_ptr->m_AddPrefix          = hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ADD_PREFIX];
    d_ptr->m_SipFeild           = hooks[HookManagerPrivate::Names::URLHOOK_SIP_FIELD           ];
@@ -63,7 +63,7 @@ HookManager::~HookManager()
 
 void HookManagerPrivate::save()
 {
-   ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
+   ConfigurationManagerInterface & configurationManager = ConfigurationManager::instance();
    QMap<QString,QString> hooks;
 
    hooks[HookManagerPrivate::Names::PHONE_NUMBER_HOOK_ADD_PREFIX] = m_AddPrefix;
