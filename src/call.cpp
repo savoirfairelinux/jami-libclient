@@ -1049,6 +1049,63 @@ void Call::setTransferNumber(const QString& number)
     d_ptr->m_pTransferNumber->setUri(number);
 }
 
+///Set a call for attanded transfer
+bool Call::setTransferCall( Call* call)
+{
+   if (lifeCycleState() != Call::LifeCycleState::PROGRESS
+    && lifeCycleState() != Call::LifeCycleState::CREATION)
+      return false;
+
+
+   //TODO check for the possible supported mismatch account
+   // DHT accounts should support attended transfer across accounts,
+   // for SIP ones probably don't unless ICE is supported?
+
+   //Client should avoid doing this as LRC doesn't support roolback from
+   //the TRANSFERRED state
+   if (!call) {
+      d_ptr->m_pTransferCall = nullptr;
+
+      //TODO TRANSFERRED isn't correctly implemented in that daemon and LRC.
+      //Technically, a call stay alive until the peer or the registrar ACK
+      //the transfer, the call then become TRANSFERRED. However, sflphone
+      //implementation was at some point changed to remove this and
+      //LRC (and the Gnome client) TRANSFERRED state become used in the
+      //GUI as the transfer number input mode. This is wrong, as implemented,
+      //it is an attribute and not a state. This cause the current or hold
+      //state to be lost when canceling the transfer. This API bug will
+      //eventually need to be solved. Here, a hack is used as a workaround.
+      //
+      //To fix this, the daemon need to emit the proper TRANSFER and
+      //TRANSFERRED state change.
+      //Dring TRANSFER: When the transfer request is sent, but the operation
+      // is still in progress
+      //Dring TRANSFERRED: When the transfer has been completed successfully
+      //The daemon should restore CURRENT or HOLD if the transfer fail
+
+      //TODO this is technically wrong, the call could be on hold
+      //this require fixing the previous TODO
+      if (state() == Call::State::TRANSFERRED)
+         d_ptr->changeCurrentState(Call::State::CURRENT);//HACK
+      else if (state() == Call::State::TRANSF_HOLD)
+         d_ptr->changeCurrentState(Call::State::HOLD);//HACK
+
+      return true;
+   }
+
+   if (call->lifeCycleState() != Call::LifeCycleState::PROGRESS)
+      return false;
+
+   d_ptr->m_pTransferCall = call;
+
+   if (state() == Call::State::HOLD)
+      d_ptr->changeCurrentState(Call::State::TRANSF_HOLD); //HACK
+   else
+      d_ptr->changeCurrentState(Call::State::TRANSFERRED); //HACK
+
+   return true;
+}
+
 ///Set the call number
 void Call::setDialNumber(const QString& number)
 {
@@ -1678,16 +1735,26 @@ void CallPrivate::call()
 ///Transfer the call
 void CallPrivate::transfer()
 {
-    Q_ASSERT_IS_IN_PROGRESS;
+   Q_ASSERT_IS_IN_PROGRESS;
 
-    if (!m_pTransferNumber)
-        return;
-    CallManagerInterface & callManager = DBus::CallManager::instance();
-    qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
-    Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
-    time_t curTime;
-    ::time(&curTime);
-    m_pStopTimeStamp = curTime;
+   CallManagerInterface & callManager = DBus::CallManager::instance();
+
+   if (m_pTransferNumber) {
+      qDebug() << "Transferring call to number : " << m_pTransferNumber->uri() << ". callId : " << q_ptr;
+      Q_NOREPLY callManager.transfer(m_DringId, m_pTransferNumber->uri());
+      time_t curTime;
+      ::time(&curTime);
+      m_pStopTimeStamp = curTime;
+   }
+   else if (m_pTransferCall && m_pTransferCall->lifeCycleState() == Call::LifeCycleState::PROGRESS) {
+
+      Q_NOREPLY callManager.attendedTransfer(q_ptr->dringId(), m_pTransferCall->dringId());
+
+      m_pTransferCall = nullptr;
+   }
+
+   //TODO handle the case where the target call isn't PROGRESS yet
+
 }
 
 ///Unhold the call

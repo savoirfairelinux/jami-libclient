@@ -633,6 +633,23 @@ void CallModel::attendedTransfer(Call* toTransfer, Call* target)
    if ((!toTransfer) || (!target)) return;
    Q_NOREPLY DBus::CallManager::instance().attendedTransfer(toTransfer->dringId(),target->dringId());
 
+   //TODO TRANSFERRED isn't correctly implemented in that daemon and LRC
+   //technically, a call stay alive until the peer or the registrar ACK
+   //the transfer, the call then become TRANSFERRED. However, sflphone
+   //implementation was at some point changed to remove this and
+   //LRC (and the Gnome client) TRANSFERRED state become used in the
+   //GUI as the transfer number input mode. This is wrong, as implemented,
+   //it is an attribute and not a state. This cause the current or hold
+   //state to be lost when canceling the transfer. This API bug will
+   //eventually need to be solved. Here, a hack is used as a workaround.
+   //
+   //To fix this, the daemon need to emit the proper TRANSFER and
+   //TRANSFERRED state change.
+   //Dring TRANSFER: When the transfer request is sent, but the operation
+   // is still in progress
+   //Dring TRANSFERRED: When the transfer has been completed successfully
+   //The daemon should restore CURRENT or HOLD if the transfer fail
+
    //TODO [Daemon] Implement this correctly
    toTransfer->d_ptr->changeCurrentState(Call::State::OVER);
    target->d_ptr->changeCurrentState(Call::State::OVER);

@@ -320,12 +320,13 @@ public:
    Call::State performAction(Call::Action action);
 
    //Setters
-   void setTransferNumber ( const QString&     number     );
-   void setDialNumber     ( const QString&     number     );
-   void setDialNumber     ( const ContactMethod* number   );
-   void setPeerContactMethod( ContactMethod* cm           );
-   void setPeerName       ( const QString&     name       );
-   void setAccount        ( Account*           account    );
+   void setTransferNumber   ( const QString&       number  );
+   bool setTransferCall     ( Call*                call    );
+   void setDialNumber       ( const QString&       number  );
+   void setDialNumber       ( const ContactMethod* number  );
+   void setPeerContactMethod( ContactMethod*       cm      );
+   void setPeerName         ( const QString&       name    );
+   void setAccount          ( Account*             account );
 
    //Mutators
    template<typename T>

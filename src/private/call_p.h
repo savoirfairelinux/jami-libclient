@@ -143,6 +143,7 @@ public:
    Call::Type                m_Type              ;
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
+   Call*                     m_pTransferCall {nullptr};
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
