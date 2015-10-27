@@ -833,8 +833,14 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
          ) : SelectionState::NONE ;
 
          //Aggregate and reduce the action state for each selected calls
-         if (m_pSelectionModel && m_pSelectionModel->selectedRows().size()) {
-            foreach (const QModelIndex& idx, m_pSelectionModel->selectedRows()) {
+         if (m_pSelectionModel && (m_pSelectionModel->selectedRows().size() || m_pSelectionModel->currentIndex().isValid())) {
+
+            auto selected = m_pSelectionModel->selectedRows();
+
+            if (selected.isEmpty() && m_pSelectionModel->currentIndex().isValid())
+               selected << m_pSelectionModel->currentIndex();
+
+            foreach (const QModelIndex& idx, selected) {
 
                const QVariant objTv = idx.data(static_cast<int>(Ring::Role::ObjectType));
 
