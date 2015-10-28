@@ -229,6 +229,11 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    else {
       r = m_hRenderers[rid];
 
+      QThread* t = m_hThreads[r];
+
+      if (t && !t->isRunning())
+         t->start();
+
       r->setSize(res);
 
 #ifdef ENABLE_LIBWRAP
@@ -293,7 +298,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 
    Call* c = CallModel::instance().getCall(id);
 
-   if (c) {
+   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       c->d_ptr->removeRenderer(r);
    }
 
@@ -312,20 +317,25 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
       emit q_ptr->previewStopped(r);
    }
 
-   m_hRendererIds.remove(r);
-   m_hRenderers.remove(id);
-
    QThread* t = m_hThreads[r];
-   m_hThreads[r] = nullptr;
 
    if (t) {
-      t->quit();
-      t->wait();
+       t->quit();
+       t->wait();
    }
 
-   delete r;
+   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
 
-   t->deleteLater();
+       m_hRendererIds.remove(r);
+       m_hRenderers.remove(id);
+
+       m_hThreads[r] = nullptr;
+       if (t) {
+           t->deleteLater();
+       }
+
+       delete r;
+   }
 }
 
 ///A video stopped being rendered
