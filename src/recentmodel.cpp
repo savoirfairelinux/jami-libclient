@@ -94,8 +94,7 @@ protected:
 public Q_SLOTS:
     void slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
                                 const QModelIndex & destinationParent, int destinationRow);
-    void slotRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                       const QModelIndex & destinationParent, int destinationRow);
+    void slotLayoutChanged(const QList<QPersistentModelIndex> & parents, QAbstractItemModel::LayoutChangeHint hint);
 };
 
 class RecentModelPrivate : public QObject
@@ -772,7 +771,7 @@ PeopleProxy::PeopleProxy(RecentModel* sourceModel)
     // this is needed for the OSX and GNOME clients because they do not handle the layoutChanged
     // signal which is emited by the QSortFilterProxyModel when rows are moved in the source model
     connect(sourceModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &PeopleProxy::slotRowsAboutToBeMoved);
-    connect(sourceModel, &QAbstractItemModel::rowsMoved, this, &PeopleProxy::slotRowsMoved);
+    connect(this, &QAbstractItemModel::layoutChanged, this, &PeopleProxy::slotLayoutChanged);
 }
 
 bool
@@ -816,6 +815,7 @@ void
 PeopleProxy::slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
                                     const QModelIndex & destinationParent, int destinationRow)
 {
+    qDebug() << "***\t\t\tproxy rowsAboutToBeMoved";
     const auto proxySourceParent = mapFromSource(sourceParent);
     const auto proxyDestinationParent = mapFromSource(destinationParent);
 
@@ -825,14 +825,11 @@ PeopleProxy::slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int source
 }
 
 void
-PeopleProxy::slotRowsMoved(const QModelIndex & parent, int start, int end,
-                           const QModelIndex & destination, int row)
+PeopleProxy::slotLayoutChanged(const QList<QPersistentModelIndex> & parents, QAbstractItemModel::LayoutChangeHint hint)
 {
-    Q_UNUSED(parent)
-    Q_UNUSED(start)
-    Q_UNUSED(end)
-    Q_UNUSED(destination)
-    Q_UNUSED(row)
+    qDebug() << "***\t\t\tproxy rowsMoved";
+    Q_UNUSED(parents)
+    Q_UNUSED(hint)
     endMoveRows();
 }
 
