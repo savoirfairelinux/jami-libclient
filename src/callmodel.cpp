@@ -723,6 +723,12 @@ Call* CallModelPrivate::addConference(const QString& confID)
       emit q_ptr->dataChanged(idx, idx);
       emit q_ptr->layoutChanged();
       connect(newConf, &Call::changed, [this, newConf]{ slotCallChanged(newConf); });
+      connect(newConf,&Call::videoStarted,[this,newConf](Video::Renderer* r) {
+         emit q_ptr->rendererAdded(newConf, r);
+      });
+      connect(newConf,&Call::videoStopped,[this,newConf](Video::Renderer* r) {
+         emit q_ptr->rendererRemoved(newConf, r);
+      });
    }
 
    return newConf;
