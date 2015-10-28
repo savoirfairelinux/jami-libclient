@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_cfba6d0a",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-28T15:27:08Z",
+      "side": 1,
+      "message": "UserActionModelMode should be updated as well ?\nFor now m_Mode is only set in the constructor\n\nConnections and model used detection should be made instead of constructor",
+      "range": {
+        "startLine": 1076,
+        "startChar": 3,
+        "endLine": 1076,
+        "endChar": 33
+      },
+      "revId": "00bff5dfa060c04e2e97ca18cd823824aa26f5f0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
