@@ -561,7 +561,7 @@ void RecentModelPrivate::slotPersonAdded(const Person* p)
 
 void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
 {
-   RecentViewNode* n = m_hPersonsToNodes[p];
+   RecentViewNode* n = m_hPersonsToNodes.value(p);
    const bool isNew = !n;
 
    if (isNew) {
@@ -573,7 +573,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
       m_hPersonsToNodes[p]    = n                           ;
       connect(p, &Person::changed, this, &RecentModelPrivate::slotChanged);
       Q_FOREACH(auto cm, p->phoneNumbers()) {
-         if (auto cmNode = m_hCMsToNodes[cm])
+         if (auto cmNode = m_hCMsToNodes.value(cm))
             n->m_lChildren.append(cmNode->m_lChildren);
       }
 
@@ -586,7 +586,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 {
    //ContactMethod with a Person are handled elsewhere
    if (!cm->contact() || cm->contact()->isPlaceHolder()) {
-      RecentViewNode* n = m_hCMsToNodes[cm];
+      RecentViewNode* n = m_hCMsToNodes.value(cm);
       const bool isNew = !n;
 
       if (isNew) {
