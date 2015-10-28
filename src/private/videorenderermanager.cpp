@@ -254,7 +254,18 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       Call* c = CallModel::instance().getCall(id);
 
       if (c)
-         c->d_ptr->registerRenderer(r);
+          c->d_ptr->registerRenderer(r);
+      else {
+          //We don't have the conference yet
+          QObject::connect(&CallModel::instance(), &CallModel::conferenceCreated, [=](Call* conf) {
+              Q_UNUSED(conf)
+              Call* c = CallModel::instance().getCall(id);
+
+              if (c) {
+                  c->d_ptr->registerRenderer(r);
+              }
+          });
+      }
 
    }
    else {
