@@ -16,6 +16,24 @@
       "revId": "13c24b85bacd26fc3ffc64f352615bdd51b5d329",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_ef95e988",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-28T13:41:10Z",
+      "side": 1,
+      "message": "When I took this patch it wasn\u0027t compiling because I didn\u0027t see the previous one adding multiple getters.\nI\u0027m uncommenting these calls.",
+      "parentUuid": "1a9dcd25_cf302deb",
+      "revId": "13c24b85bacd26fc3ffc64f352615bdd51b5d329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
