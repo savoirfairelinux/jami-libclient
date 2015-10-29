@@ -63,6 +63,7 @@ struct RecentViewNode
    virtual ~RecentViewNode();
 
    //Attributes
+   RecentModelPrivate*    m_Model    ;
    long int               m_Index    ;
    Type                   m_Type     ;
    RecentViewNode*        m_pParent  ;
@@ -566,6 +567,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
 
    if (isNew) {
       n = new RecentViewNode();
+      n->m_Model              = this                        ;
       n->m_Type               = RecentViewNode::Type::PERSON;
       n->m_uContent.m_pPerson = p                           ;
       n->m_pParent            = nullptr                     ;
@@ -586,6 +588,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 
       if (isNew) {
          n = new RecentViewNode();
+         n->m_Model                     = this                                ;
          n->m_Type                      = RecentViewNode::Type::CONTACT_METHOD;
          n->m_uContent.m_pContactMethod = cm                                  ;
          n->m_pParent                   = nullptr                             ;
@@ -613,6 +616,7 @@ RecentModelPrivate::insertCallNode(RecentViewNode *parent, Call* call)
     Q_ASSERT(parent && call);
 
     auto callNode = new RecentViewNode();
+    callNode->m_Model = this;
     callNode->m_Type = RecentViewNode::Type::CALL;
     callNode->m_uContent.m_pCall = call;
     callNode->m_pParent = parent;
