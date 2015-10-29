@@ -572,11 +572,6 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
       n->m_Index              = 0                           ;
       m_hPersonsToNodes[p]    = n                           ;
       connect(p, &Person::changed, this, &RecentModelPrivate::slotChanged);
-      Q_FOREACH(auto cm, p->phoneNumbers()) {
-         if (auto cmNode = m_hCMsToNodes.value(cm))
-            n->m_lChildren.append(cmNode->m_lChildren);
-      }
-
    }
 
    insertNode(n, t, isNew);
