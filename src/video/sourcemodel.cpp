@@ -143,8 +143,8 @@ void Video::SourceModel::switchTo(const QModelIndex& idx)
 ///This model is designed for "live" switching rather than configuration
 void Video::SourceModel::switchTo(const int idx)
 {
-   auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
-   switch (newIdx) {
+   // auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
+   switch (idx) {
       case ExtendedDeviceList::NONE:
          DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
          break;
@@ -164,11 +164,11 @@ void Video::SourceModel::switchTo(const int idx)
       default:
          DBus::VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
-         Video::DeviceModel::instance().setActive(idx-ExtendedDeviceList::COUNT__);
-         newIdx = -1;
+        //  Video::DeviceModel::instance().setActive(idx-ExtendedDeviceList::COUNT__);
+        //  newIdx = -1;
          break;
    };
-   d_ptr->m_CurrentSelection = newIdx;
+   d_ptr->m_CurrentSelection = idx;
 }
 
 void Video::SourceModel::switchTo(Video::Device* device)

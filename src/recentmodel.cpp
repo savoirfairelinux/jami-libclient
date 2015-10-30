@@ -26,6 +26,7 @@
 //Qt
 #include <QtCore/QCoreApplication>
 #include <QtCore/QSortFilterProxyModel>
+#include <QtCore/QDateTime>
 
 //Ring
 #include <call.h>
@@ -72,6 +73,7 @@ struct RecentViewNode
    RecentViewNode*        m_pParent  ;
    QList<RecentViewNode*> m_lChildren;
    QMetaObject::Connection m_ConnectionChanged;
+   QMetaObject::Connection m_ConnectionLastUsedChanged;
    union {
       const Person*  m_pPerson       ;
       ContactMethod* m_pContactMethod;
@@ -96,12 +98,6 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const override;
 protected:
     virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
-
-public Q_SLOTS:
-    void slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                                const QModelIndex & destinationParent, int destinationRow);
-    void slotRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                       const QModelIndex & destinationParent, int destinationRow);
 };
 
 class RecentModelPrivate : public QObject
@@ -111,12 +107,11 @@ public:
    RecentModelPrivate(RecentModel* p);
 
    /*
-   * m_lTopLevelReverted hold the elements in the reverse order of
-   * QAbstractItemModel::index. This cause most of the energy to be
-   * in the bottom half of the vector, preventing std::move every time
-   * someone is contacted
+   * m_lTopLevel holds the elements in the order they are added to the
+   * model. The PeoplProxy QSortFilterProxyModel is then used to sort this
+   * list by last used time (most recent at the top)
    */
-   QList<RecentViewNode*>                m_lTopLevelReverted;
+   QList<RecentViewNode*>                m_lTopLevel        ;
    QHash<const Person*,RecentViewNode*>  m_hPersonsToNodes  ;
    QHash<ContactMethod*,RecentViewNode*> m_hCMsToNodes      ;
    QHash<Call*,RecentViewNode*>          m_hCallsToNodes    ;
@@ -124,8 +119,8 @@ public:
    QItemSelectionModel*                  m_pSelectionModel  ;
 
    //Helper
-   void            insertNode    (RecentViewNode* n, time_t t, bool isNew);
-   void            removeNode    (RecentViewNode* n                      );
+   void            insertTopNode (RecentViewNode* n                      );
+   void            removeTopNode (RecentViewNode* n                      );
    RecentViewNode* parentNode    (Call *call                             )  const;
    void            insertCallNode(RecentViewNode *parent, RecentViewNode* callNode);
    void            removeCall    (RecentViewNode *callNode               );
@@ -135,13 +130,13 @@ private:
    RecentModel* q_ptr;
 
 public Q_SLOTS:
-   void slotLastUsedTimeChanged(const Person*  p , time_t t              );
    void slotPersonAdded        (const Person*  p                         );
-   void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
+   void slotContactMethodAdded (ContactMethod* cm                        );
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotChanged            (RecentViewNode* node                     );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
+   void slotPhoneDirectoryRowsInserted(const QModelIndex& parent, int first, int last);
 };
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
@@ -167,9 +162,8 @@ void RecentModelPrivate::selectNode(RecentViewNode* node) const
 
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
-   connect(&PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
    connect(&PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
-   connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
+   connect(&PhoneDirectoryModel::instance(), &QAbstractItemModel::rowsInserted    , d_ptr, &RecentModelPrivate::slotPhoneDirectoryRowsInserted);
    connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
    connect(&CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
    connect(&CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
@@ -181,8 +175,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
          static_cast<int>(Person::Role::Object)
       ));
 
-      if (person && person->lastUsedTime())
-         d_ptr->slotLastUsedTimeChanged(person, person->lastUsedTime());
+      d_ptr->slotPersonAdded(person);
    }
 
    //Fill the "orphan" contact methods
@@ -192,8 +185,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
          static_cast<int>(PhoneDirectoryModel::Role::Object)
       ));
 
-      if (cm && cm->lastUsed() && (!cm->contact() || cm->contact()->isPlaceHolder()))
-         d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
+      d_ptr->slotContactMethodAdded(cm);
    }
 
    //Fill node with history data
@@ -205,7 +197,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
 
 RecentModel::~RecentModel()
 {
-   for (RecentViewNode* n : d_ptr->m_lTopLevelReverted)
+   for (RecentViewNode* n : d_ptr->m_lTopLevel)
       delete n;
 
    delete d_ptr;
@@ -234,6 +226,7 @@ RecentViewNode::RecentViewNode(const Person* p, RecentModelPrivate *model)
     m_pParent            = nullptr                     ;
     m_Index              = 0                           ;
     m_ConnectionChanged  = QObject::connect(p, &Person::changed, [this](){this->slotChanged();});
+    m_ConnectionLastUsedChanged = QObject::connect(p, &Person::lastUsedTimeChanged, [this](){this->slotChanged();});
 }
 
 RecentViewNode::RecentViewNode(ContactMethod *cm, RecentModelPrivate *model)
@@ -244,11 +237,13 @@ RecentViewNode::RecentViewNode(ContactMethod *cm, RecentModelPrivate *model)
     m_pParent                   = nullptr                             ;
     m_Index                     = 0                                   ;
     m_ConnectionChanged         = QObject::connect(cm, &ContactMethod::changed, [this](){this->slotChanged();});
+    m_ConnectionLastUsedChanged = QObject::connect(cm, &ContactMethod::lastUsedChanged, [this](){this->slotChanged();});
 }
 
 RecentViewNode::~RecentViewNode()
 {
     QObject::disconnect(m_ConnectionChanged);
+    QObject::disconnect(m_ConnectionLastUsedChanged);
     for (RecentViewNode* n : m_lChildren) {
         delete n;
     }
@@ -448,7 +443,7 @@ QVariant RecentModel::data( const QModelIndex& index, int role ) const
 int RecentModel::rowCount( const QModelIndex& parent ) const
 {
    if (!parent.isValid())
-      return d_ptr->m_lTopLevelReverted.size();
+      return d_ptr->m_lTopLevel.size();
 
    RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
    return node->m_lChildren.size();
@@ -480,13 +475,18 @@ QModelIndex RecentModel::parent( const QModelIndex& index ) const
 
 QModelIndex RecentModel::index( int row, int column, const QModelIndex& parent) const
 {
-   if (!parent.isValid() && row >= 0 && row < d_ptr->m_lTopLevelReverted.size() && !column)
-      return createIndex(row, 0, d_ptr->m_lTopLevelReverted[d_ptr->m_lTopLevelReverted.size() - 1 - row]);
+   if (!parent.isValid() && row >= 0 && row < d_ptr->m_lTopLevel.size() && !column)
+      return createIndex(row, 0, d_ptr->m_lTopLevel[row]);
 
    if (!parent.isValid())
       return QModelIndex();
 
-   RecentViewNode* node = static_cast<RecentViewNode*>(parent.internalPointer());
+   auto node = static_cast<RecentViewNode*>(parent.internalPointer());
+
+   if (!d_ptr->m_lTopLevel.contains(node)) {
+       qWarning() << "parent is no longer in the model";
+       return QModelIndex();
+   }
 
    if (row >= 0 && row < node->m_lChildren.size())
       return createIndex(row, 0, node->m_lChildren[row]);
@@ -502,134 +502,93 @@ QVariant RecentModel::headerData( int section, Qt::Orientation orientation, int 
    return QVariant();
 }
 
-/*
- * Move rows around to keep the person/contactmethods ordered
- *
- * Further optimization:
- *  * Invert m_Index to avoid the O(N) loop when adding an item
- */
-void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
+void RecentModelPrivate::insertTopNode(RecentViewNode* node)
 {
-   //Don't bother with the sorted insertion and indexes housekeeping
-   if (m_lTopLevelReverted.isEmpty()) {
-      q_ptr->beginInsertRows(QModelIndex(),0,0);
-      m_lTopLevelReverted << n;
-      q_ptr->endInsertRows();
+    if (!node) {
+        qWarning() << "trying to insert null node";
+        return;
+    }
+
+    // make sure this is a top node
+    if (node->m_pParent) {
+        qWarning() << "trying to insert top node, but it has a parent";
+        return;
+    }
+
+    node->m_Index = m_lTopLevel.size();
+
+    q_ptr->beginInsertRows(QModelIndex(), node->m_Index, node->m_Index);
+    m_lTopLevel << node;
+    q_ptr->endInsertRows();
+}
+
+void RecentModelPrivate::removeTopNode(RecentViewNode* n)
+{
+   if (!n) {
+      qWarning() << "trying to remove null node";
       return;
    }
 
-   //Compute the bounds, this is needed to use beginMoveRows
-   int newPos = 0;
-
-   if (m_lTopLevelReverted.last()->lastUsed() > t) {
-      //NOTE std::lower_bound need the "value" argument to be the same type as the iterator
-      //this use the m_Index field to hold the time_t
-      static RecentViewNode fake;
-      fake.m_Index = static_cast<long int>(t);
-
-      //NOTE Using std::lower_bound is officially supported on QList on all platforms
-      auto lower = std::lower_bound(m_lTopLevelReverted.begin(), m_lTopLevelReverted.end(), &fake,
-      [t](const RecentViewNode* a, const RecentViewNode* t2) -> bool {
-         return a->lastUsed() < t2->m_Index;
-      });
-
-      // the value pointed by the iterator returned by this function may also
-      // be equivalent to val, and not only greater
-      if (!isNew && n->m_Index == (*lower)->m_Index) {
-         newPos = (*lower)->m_Index;
-      } else
-         newPos = (*lower)->m_Index+1;
+   // make sure this is a top node
+   if (n->m_pParent) {
+      qWarning() << "trying to remove top node, but it has a parent";
+      return;
    }
 
-   //Begin the transaction
-   if (!isNew) {
-      if (newPos == n->m_Index)
-         return; //Nothing to do
-      if (not q_ptr->beginMoveRows(QModelIndex(), n->m_Index, n->m_Index, QModelIndex(), newPos)) {
-          qWarning() << "RecentModel: Invalid move detected index : " << n->m_Index
-                     << "newPos: " << newPos << "size: " << m_lTopLevelReverted.size();
-          return;
-      }
-      m_lTopLevelReverted.removeAt(m_lTopLevelReverted.size()-1-n->m_Index);
-   }
-   else
-      q_ptr->beginInsertRows(QModelIndex(),newPos,newPos);
-
-   //Apply the transaction
-   m_lTopLevelReverted.insert(m_lTopLevelReverted.size() - newPos,n);
-   for (int i = 0 ; i < m_lTopLevelReverted.size(); ++i) {
-      m_lTopLevelReverted[i]->m_Index = m_lTopLevelReverted.size() - 1 - i;
-   }
-
-   //Notify that the transaction is complete
-   if (!isNew)
-      q_ptr->endMoveRows();
-   else
-      q_ptr->endInsertRows();
-   q_ptr->selectionModel()->select(q_ptr->index(n->m_Index, 0), QItemSelectionModel::ClearAndSelect);
-
-#if 0
-    //Uncomment if there is issues
-    qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
-    for (int i = 0; i<m_lTopLevelReverted.size();i++) {
-        qDebug() << "|||" << m_lTopLevelReverted[i]->lastUsed() << m_lTopLevelReverted[i]->m_Index << q_ptr->data(q_ptr->index(m_lTopLevelReverted.size()-1-i,0),Qt::DisplayRole);
-        for (auto child : m_lTopLevelReverted[i]->m_lChildren) {
-            qDebug() << "|||" << "|||" << child << child->m_uContent.m_pCall->formattedName();
-        }
-     }
-#endif
-}
-
-void RecentModelPrivate::removeNode(RecentViewNode* n)
-{
-   const int idx  = n->m_Index;
+   const int idx = n->m_Index;
 
    q_ptr->beginRemoveRows(QModelIndex(), idx, idx);
 
-   m_lTopLevelReverted.removeOne(n);
+   m_lTopLevel.removeAt(idx);
 
    delete n;
 
-   if (idx < m_lTopLevelReverted.size()) {
-      for (int i = 0; i <= idx; i++) {
-         m_lTopLevelReverted[i]->m_Index--;
-      }
-   }
+   for (int row = idx; row < m_lTopLevel.size(); ++row) {
+       m_lTopLevel[row]->m_Index = row;
+  }
+
+
    q_ptr->endRemoveRows();
 }
 
 void RecentModelPrivate::slotPersonAdded(const Person* p)
 {
-   if (p)
-      slotLastUsedTimeChanged(p, p->lastUsedTime());
+    if (p) {
+        if (m_hPersonsToNodes.contains(p)) {
+            qWarning() << "Person is already in the RecentModel";
+        } else {
+            auto n = new RecentViewNode(p, this);
+            m_hPersonsToNodes[p] = n;
+            insertTopNode(n);
+        }
+    }
 }
 
-void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
+void RecentModelPrivate::slotContactMethodAdded(ContactMethod *cm)
 {
-   RecentViewNode* n = m_hPersonsToNodes.value(p);
-   const bool isNew = !n;
-
-   if (isNew) {
-      n = new RecentViewNode(p, this);
-      m_hPersonsToNodes[p] = n;
-   }
-
-   insertNode(n, t, isNew);
+    // only add CM if it doesn't have a Person or the Person is placeholder
+    if (cm && cm->lastUsed() && (!cm->contact() || cm->contact()->isPlaceHolder())) {
+        if (m_hCMsToNodes.contains(cm)) {
+            qWarning() << "ContactMethod is already in the RecentModel";
+        } else {
+            auto n = new RecentViewNode(cm, this);
+            m_hCMsToNodes[cm] = n;
+            insertTopNode(n);
+        }
+    }
 }
 
-void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
+void RecentModelPrivate::slotPhoneDirectoryRowsInserted(const QModelIndex& parent, int first, int last)
 {
-   //ContactMethod with a Person are handled elsewhere
-   if (!cm->contact() || cm->contact()->isPlaceHolder()) {
-      RecentViewNode* n = m_hCMsToNodes.value(cm);
-      const bool isNew = !n;
-
-      if (isNew) {
-         n = new RecentViewNode(cm, this);
-         m_hCMsToNodes[cm] = n;
-      }
-      insertNode(n, t, isNew);
-   }
+    for (int row = first; row < last; ++row) {
+        auto idx = PhoneDirectoryModel::instance().index(row, 0, parent);
+        if (idx.isValid()) {
+            auto cm = qvariant_cast<ContactMethod*>(idx.data(static_cast<int>(PhoneDirectoryModel::Role::Object)));
+            slotContactMethodAdded(cm);
+        } else {
+            qWarning() << "PhoneDirectoryModel inserting invlid row";
+        }
+    }
 }
 
 ///Remove the contact method once they are associated with a contact
@@ -644,7 +603,7 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
             cmNode->m_pParent = nullptr;
         }
         n->m_lChildren.clear();
-        removeNode(n);
+        removeTopNode(n);
     }
 }
 
@@ -842,21 +801,18 @@ RecentModel::peopleProxy() const
 PeopleProxy::PeopleProxy(RecentModel* sourceModel)
 {
     setSourceModel(sourceModel);
-
-    // forward the rowsAboutToBeMoved and rowsMoved signals from the source model
-    // this is needed for the OSX and GNOME clients because they do not handle the layoutChanged
-    // signal which is emited by the QSortFilterProxyModel when rows are moved in the source model
-    connect(sourceModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &PeopleProxy::slotRowsAboutToBeMoved);
-    connect(sourceModel, &QAbstractItemModel::rowsMoved, this, &PeopleProxy::slotRowsMoved);
+    setSortRole(static_cast<int>(Ring::Role::LastUsed));
+    sort(0, Qt::DescendingOrder);
 }
 
 bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-    //Always show the top nodes; in the case of childre, only show if there is more than one
-    if (!source_parent.isValid())
+    // show all top nodes
+    if (!source_parent.isValid()) {
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-    else if (sourceModel()->rowCount(source_parent) > 1 )
+    // show children if there is more than one
+    } else if (sourceModel()->rowCount(source_parent) > 1 )
         return true;
     return false;
 }
@@ -885,30 +841,6 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     }
 
     return sourceModel()->data(indexSource, role);
-}
-
-void
-PeopleProxy::slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                                    const QModelIndex & destinationParent, int destinationRow)
-{
-    const auto proxySourceParent = mapFromSource(sourceParent);
-    const auto proxyDestinationParent = mapFromSource(destinationParent);
-
-    // since the PeopleProxy doesn't do any sorting or filtering on the top nodes and they are the
-    // only ones being moved, we can assume the row numbers stay the same
-    beginMoveRows(proxySourceParent, sourceStart, sourceEnd, proxyDestinationParent, destinationRow);
-}
-
-void
-PeopleProxy::slotRowsMoved(const QModelIndex & parent, int start, int end,
-                           const QModelIndex & destination, int row)
-{
-    Q_UNUSED(parent)
-    Q_UNUSED(start)
-    Q_UNUSED(end)
-    Q_UNUSED(destination)
-    Q_UNUSED(row)
-    endMoveRows();
 }
 
 #include <recentmodel.moc>
