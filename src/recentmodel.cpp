@@ -60,6 +60,9 @@ struct RecentViewNode
 
    //Constructor
    explicit RecentViewNode();
+   RecentViewNode(Call* c, RecentModelPrivate* model);
+   RecentViewNode(const Person *p, RecentModelPrivate* model);
+   RecentViewNode(ContactMethod *cm, RecentModelPrivate* model);
    virtual ~RecentViewNode();
 
    //Attributes
@@ -211,6 +214,36 @@ RecentModel::~RecentModel()
 RecentViewNode::RecentViewNode()
 {
 
+}
+
+RecentViewNode::RecentViewNode(Call* c, RecentModelPrivate *model)
+{
+    m_pModel            = model                     ;
+    m_Type              = RecentViewNode::Type::CALL;
+    m_uContent.m_pCall  = c                         ;
+    m_pParent           = nullptr                   ;
+    m_Index             = 0                         ;
+    m_ConnectionChanged = QObject::connect(c, &Call::changed, [this](){this->slotChanged();});
+}
+
+RecentViewNode::RecentViewNode(const Person* p, RecentModelPrivate *model)
+{
+    m_pModel             = model                       ;
+    m_Type               = RecentViewNode::Type::PERSON;
+    m_uContent.m_pPerson = p                           ;
+    m_pParent            = nullptr                     ;
+    m_Index              = 0                           ;
+    m_ConnectionChanged  = QObject::connect(p, &Person::changed, [this](){this->slotChanged();});
+}
+
+RecentViewNode::RecentViewNode(ContactMethod *cm, RecentModelPrivate *model)
+{
+    m_pModel                    = model                               ;
+    m_Type                      = RecentViewNode::Type::CONTACT_METHOD;
+    m_uContent.m_pContactMethod = cm                                  ;
+    m_pParent                   = nullptr                             ;
+    m_Index                     = 0                                   ;
+    m_ConnectionChanged         = QObject::connect(cm, &ContactMethod::changed, [this](){this->slotChanged();});
 }
 
 RecentViewNode::~RecentViewNode()
@@ -577,14 +610,8 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
    const bool isNew = !n;
 
    if (isNew) {
-      n = new RecentViewNode();
-      n->m_pModel             = this                        ;
-      n->m_Type               = RecentViewNode::Type::PERSON;
-      n->m_uContent.m_pPerson = p                           ;
-      n->m_pParent            = nullptr                     ;
-      n->m_Index              = 0                           ;
-      n->m_ConnectionChanged  = connect(p, &Person::changed, [n](){n->slotChanged();});
-      m_hPersonsToNodes[p]    = n                           ;
+      n = new RecentViewNode(p, this);
+      m_hPersonsToNodes[p] = n;
    }
 
    insertNode(n, t, isNew);
@@ -598,14 +625,8 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
       const bool isNew = !n;
 
       if (isNew) {
-         n = new RecentViewNode();
-         n->m_pModel                    = this                                ;
-         n->m_Type                      = RecentViewNode::Type::CONTACT_METHOD;
-         n->m_uContent.m_pContactMethod = cm                                  ;
-         n->m_pParent                   = nullptr                             ;
-         n->m_Index                     = 0                                   ;
-         n->m_ConnectionChanged         = connect(cm, &ContactMethod::changed, [n](){n->slotChanged();});
-         m_hCMsToNodes[cm]              = n                                   ;
+         n = new RecentViewNode(cm, this);
+         m_hCMsToNodes[cm] = n;
       }
       insertNode(n, t, isNew);
    }
@@ -716,13 +737,8 @@ RecentModelPrivate::slotCallAdded(Call* call, Call* parent)
 
     // new call, create Call node and try to find its parent
     // if we find a parent, insert the Call node into the model, otherwise it will be done in slotChanged
-    auto callNode = new RecentViewNode();
-    callNode->m_pModel = this;
-    callNode->m_Type = RecentViewNode::Type::CALL;
-    callNode->m_uContent.m_pCall = call;
-    callNode->m_pParent = nullptr;
+    auto callNode = new RecentViewNode(call, this);
     m_hCallsToNodes[call] = callNode;
-    callNode->m_ConnectionChanged = connect(call, &Call::changed, [callNode](){callNode->slotChanged();});
 
     // check if call is associated with a Person or CM yet
     if (auto parent = parentNode(call))
