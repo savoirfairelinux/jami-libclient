@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_2af3bf0b",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-30T21:36:26Z",
+      "side": 1,
+      "message": "[Assuming you ignore the this should be in Media::Video, not Call:: part]\n\nIt would be better to create the sourcemodel here if nullptr and if the call has video. Many calls wont have video (the vast majority of SIP accounts wont, as the call corporate phone network or landline). This will avoid a bunch of useless dbus calls",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_4af88be5",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-30T21:36:26Z",
+      "side": 1,
+      "message": "If you add a QObject* parent to the sourcemodel constructor, this isn\u0027t necessary",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_eadcf776",
+        "filename": "src/call.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-30T21:36:26Z",
+      "side": 1,
+      "message": "I think this belong to the Media::Video:: object, not the Call:: one. A call is an abstract communication object. The media handling has now been moved to the Media:: namespace.\n\nAny trace of media handling in Call:: is an artefact from the legacy design (in sflphone, the client had no control over the media beside the codecs priority, they daemon did everything, to disable video, you had to disable all codecs).",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_0ada8378",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-30T21:36:26Z",
+      "side": 1,
+      "message": "If the singleton is dropped, the object has to have a QObject* parent \u003d nullptr argument to the explicit constructor. This is a Qt policy. See Qt memory handling doc for details.",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
