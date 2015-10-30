@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_ea6717e9",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-10-30T20:45:28Z",
+      "side": 1,
+      "message": "this should be removed as well, or else it will use the \"default\" index form the DeviceModel",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 88
+      },
+      "revId": "ea5915377742a57e4f6af5f442b764be04d134bd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
