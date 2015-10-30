@@ -22,6 +22,30 @@
       "revId": "4335e7ff88aefac2c101c5f0dad2797d44a91175",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_6ad0e753",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-10-30T21:42:01Z",
+      "side": 1,
+      "message": "Because this mostly work with the model itself and not the selectionModel? But yes, it is a little bit hacky. I propose merging that for now. The next few patches will probably address this anyway",
+      "parentUuid": "1a9dcd25_4a0e4b36",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 71
+      },
+      "revId": "4335e7ff88aefac2c101c5f0dad2797d44a91175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
