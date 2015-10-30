@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_4a0e4b36",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-10-30T15:59:46Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this is done here, shouldn\u0027t it be done in setSelectionModel ?",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 71
+      },
+      "revId": "4335e7ff88aefac2c101c5f0dad2797d44a91175",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
