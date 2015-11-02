@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_4a03ab73",
+        "filename": "src/call.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-02T23:04:29Z",
+      "side": 1,
+      "message": "Well, it is created a few seconds later because the daemon isn\u0027t ready to start the video yet. If I recall, it was discussed long ago and it was an issue of dropped packets at the beginning of the stream before the next keyframe. This is old (~2013) so the reasons why ::videoStarted is emitted late may have changed, but it remain the case, the delay is still there.\n\nThis in itself kind of solve the problem. There is no point in having the menu enabled early as it will probably (sometime) fail to take effect because of the race condition created by ::videoStarted vs. ::applySettings. So having the menu disabled until the daemon send videoStarted is probably the right thing to do anyway.",
+      "parentUuid": "1a9dcd25_caa9fb7c",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_0ada8378",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 6
