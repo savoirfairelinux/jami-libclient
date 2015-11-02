@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_caa9fb7c",
+        "filename": "src/call.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-02T22:38:59Z",
+      "side": 1,
+      "message": "There is a little practical issue with this solution. The Media::Video is created a few seconds after the call ( why ?), when the video is displayed. So if I put the sourcemodel instance into Media::Video it will only exists later. But the sourcemodel may be used earlier.\n\nFor instance it is requested when the user right click on the video on the gnome client. This can happen before the video is displayed.\n\nAny suggestion ?",
+      "parentUuid": "1a9dcd25_eadcf776",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_0ada8378",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 6
