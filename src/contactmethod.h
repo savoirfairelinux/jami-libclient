@@ -113,6 +113,7 @@ public:
    uint                  weekCount       () const;
    uint                  trimCount       () const;
    bool                  haveCalled      () const;
+   bool                  hasBeenCalled   () const;
    QList<Call*>          calls           () const;
    int                   popularityIndex () const;
    QHash<QString,int>    alternativeNames() const;
