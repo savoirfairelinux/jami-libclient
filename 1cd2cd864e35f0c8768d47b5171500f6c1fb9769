@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_d530bcea",
+        "filename": "src/call.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-03T22:44:02Z",
+      "side": 1,
+      "message": "You have a good point about the potential lack of Media::Video. However, this is due to the simple fact this it wasn\u0027t previously needed to handle the Media lifecycle in such a fine grained way (an other example is how the Audio media are assumed to exist without even checking). This is simply a side effect of the tight schedule being imposed at the time of the first Ring release (and it also caused some \"unhealthy heated argument\" at the time between devs and ops). So, the corners of the Media subsystem were cut short, some of the legacy (from libQtSFLPhone days) code codepaths remain and issues like that exist.\n\nSi I would tend to prefer if that issue was fixed rather than worked around. It isn\u0027t really hard to fix anyway. Right now one way I could think of is adding something in callDetails (in dring) so the client can pick it up. Otherwise it can also be implemented using the current dring API with the preview renderer trick, but that\u0027s not very clean and can cause ambiguity when there is multiple calls (only the current one can have the current Media::Video, but the race condition mentioned in the last comment will apply)",
+      "parentUuid": "1a9dcd25_0a74c3cd",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_0ada8378",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 6
