@@ -89,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_0a74c3cd",
+        "filename": "src/call.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-03T21:26:32Z",
+      "side": 1,
+      "message": "You are right about this point.\n\nBut I think again it is only possible to put the sourceModel instance into Call :\nWhen there is only outgoing video (no incomming stream) no Media:: is not created. Because it is related to a renderer (through allPrivate::registerRenderer) but this only called for incoming video.\n\nIt would make sense to link the sourceModel to the preview somehow, but there is only one renderer for preview so...",
+      "parentUuid": "1a9dcd25_4a03ab73",
+      "revId": "1cd2cd864e35f0c8768d47b5171500f6c1fb9769",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_0ada8378",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 6
