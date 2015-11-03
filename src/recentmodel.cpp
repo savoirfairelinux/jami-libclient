@@ -70,8 +70,11 @@ struct RecentViewNode
    long int               m_Index    ;
    Type                   m_Type     ;
    RecentViewNode*        m_pParent  ;
+   bool                   m_Visible  ;
    QList<RecentViewNode*> m_lChildren;
    QMetaObject::Connection m_ConnectionChanged;
+   QMetaObject::Connection m_PhoneNumbersChanged;
+
    union {
       const Person*  m_pPerson       ;
       ContactMethod* m_pContactMethod;
@@ -85,6 +88,8 @@ struct RecentViewNode
    inline time_t   lastUsed (          ) const;
    RecentViewNode* childNode(Call *call) const;
    void            slotChanged(        );
+   void            slotPhoneNumbersChanged(  );
+
 };
 
 class PeopleProxy : public QSortFilterProxyModel
@@ -141,6 +146,7 @@ public Q_SLOTS:
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotChanged            (RecentViewNode* node                     );
+   void slotPhoneNumbersChanged(RecentViewNode* node                     );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
 };
 
@@ -218,6 +224,7 @@ RecentViewNode::RecentViewNode()
 
 RecentViewNode::RecentViewNode(Call* c, RecentModelPrivate *model)
 {
+    m_Visible           = true                      ;
     m_pModel            = model                     ;
     m_Type              = RecentViewNode::Type::CALL;
     m_uContent.m_pCall  = c                         ;
@@ -234,6 +241,7 @@ RecentViewNode::RecentViewNode(const Person* p, RecentModelPrivate *model)
     m_pParent            = nullptr                     ;
     m_Index              = 0                           ;
     m_ConnectionChanged  = QObject::connect(p, &Person::changed, [this](){this->slotChanged();});
+    m_PhoneNumbersChanged = QObject::connect(p, &Person::phoneNumbersChanged, [this](){this->slotPhoneNumbersChanged();});
 }
 
 RecentViewNode::RecentViewNode(ContactMethod *cm, RecentModelPrivate *model)
@@ -300,6 +308,12 @@ void
 RecentViewNode::slotChanged()
 {
     m_pModel->slotChanged(this);
+}
+
+void
+RecentViewNode::slotPhoneNumbersChanged()
+{
+    m_pModel->slotPhoneNumbersChanged(this);
 }
 
 RecentModel& RecentModel::instance()
@@ -456,7 +470,15 @@ int RecentModel::rowCount( const QModelIndex& parent ) const
 
 Qt::ItemFlags RecentModel::flags( const QModelIndex& index ) const
 {
-   return index.isValid() ? Qt::ItemIsEnabled | Qt::ItemIsSelectable : Qt::NoItemFlags;
+    if (!index.isValid())
+       return Qt::NoItemFlags;
+
+   RecentViewNode* node = static_cast<RecentViewNode*>(index.internalPointer());
+   if (node && node->m_Visible) {
+       return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+   }
+
+   return Qt::NoItemFlags;
 }
 
 int RecentModel::columnCount( const QModelIndex& parent ) const
@@ -613,6 +635,7 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
       n = new RecentViewNode(p, this);
       m_hPersonsToNodes[p] = n;
    }
+   n->m_Visible = p->isActive() && (p->isReachable() || p->hasBeenCalled());
 
    insertNode(n, t, isNew);
 }
@@ -628,6 +651,8 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
          n = new RecentViewNode(cm, this);
          m_hCMsToNodes[cm] = n;
       }
+      n->m_Visible = (cm->isReachable() || cm->hasBeenCalled());
+
       insertNode(n, t, isNew);
    }
 }
@@ -636,6 +661,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
 {
     Q_UNUSED(np)
+    Q_UNUSED(op)
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
     if (auto n = m_hCMsToNodes.take(cm)) {
@@ -762,6 +788,19 @@ RecentModelPrivate::parentNode(Call *call) const
 }
 
 void
+RecentModelPrivate::slotPhoneNumbersChanged(RecentViewNode *node)
+{
+    if(!node || node->m_Type != RecentViewNode::Type::PERSON) {
+        qWarning() << "phoneNumbersChanged called on an invalid RecentViewNode" << node;
+        return;
+    }
+    node->m_Visible = node->m_uContent.m_pPerson->isActive() &&
+                        (node->m_uContent.m_pPerson->isReachable() || node->m_uContent.m_pPerson->hasBeenCalled());
+    auto idx = q_ptr->index(node->m_Index, 0);
+    emit q_ptr->dataChanged(idx, idx);
+}
+
+void
 RecentModelPrivate::slotChanged(RecentViewNode *node)
 {
     if(!node) {
@@ -855,7 +894,8 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
 {
     //Always show the top nodes; in the case of childre, only show if there is more than one
     if (!source_parent.isValid())
-        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent) &&
+        (sourceModel()->index(source_row,0,source_parent).flags() & Qt::ItemIsEnabled);
     else if (sourceModel()->rowCount(source_parent) > 1 )
         return true;
     return false;

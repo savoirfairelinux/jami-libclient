@@ -765,6 +765,11 @@ bool ContactMethod::isReachable() const
    return false;
 }
 
+bool ContactMethod::hasBeenCalled() const
+{
+    return callCount();
+}
+
 Certificate* ContactMethod::certificate() const
 {
    if (protocolHint() == URI::ProtocolHint::RING) {
