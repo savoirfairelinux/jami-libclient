@@ -390,6 +390,38 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
 }
 
 /**
+ * Helper function to extract all ContactMethod from a given index
+ * The index must be of type ContactMethod or Person
+ */
+QVector<ContactMethod*>
+RecentModel::extractContactMethodsFromIndex(const QModelIndex& idx)
+{
+    auto result = QVector<ContactMethod*>();
+
+    RecentViewNode* node = static_cast<RecentViewNode*>(idx.internalPointer());
+    if (!idx.isValid() || !node) {
+        return result;
+    }
+
+    switch(node->m_Type) {
+        case RecentViewNode::Type::PERSON            :
+            result.append(node->m_uContent.m_pPerson->phoneNumbers());
+            return result;
+        case RecentViewNode::Type::CONTACT_METHOD    :
+            result.append(node->m_uContent.m_pContactMethod);
+            return result;
+        case RecentViewNode::Type::CALL              :
+            result.append(node->m_uContent.m_pCall->peerContactMethod());
+            return result;
+        case RecentViewNode::Type::CALL_GROUP        :
+        case RecentViewNode::Type::TEXT_MESSAGE      :
+        case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
+            break;
+    }
+    return result;
+}
+
+/**
  * Return the first found ongoing call of the given index
  * Index can be the call itself or the associated parent
  */
