@@ -590,11 +590,11 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
    delete n;
 
-   if (idx < m_lTopLevelReverted.size()) {
-      for (int i = 0; i <= idx; i++) {
-         m_lTopLevelReverted[i]->m_Index--;
-      }
+   // update all indeces after this one
+   for (int i = m_lTopLevelReverted.size() - 1 - idx; i >= 0; --i) {
+      --m_lTopLevelReverted[i]->m_Index;
    }
+
    q_ptr->endRemoveRows();
 }
 
