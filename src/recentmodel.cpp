@@ -46,11 +46,9 @@ struct CallGroup
    time_t          m_LastUsed ;
 };
 
-class RecentViewNode : public QObject
+struct RecentViewNode
 {
-    Q_OBJECT
    //Types
-public:
    enum class Type {
       PERSON            ,
       CONTACT_METHOD    ,
@@ -247,7 +245,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
 RecentModel::~RecentModel()
 {
    for (RecentViewNode* n : d_ptr->m_lTopLevelReverted)
-      n->deleteLater();
+      delete n;
 
    delete d_ptr;
 }
@@ -260,7 +258,7 @@ RecentViewNode::RecentViewNode()
 RecentViewNode::RecentViewNode(Call* c, RecentModelPrivate *model)
 {
     m_pModel            = model                     ;
-    m_Type              = RecentViewNode::Type::CALL;
+    m_Type = c->type() == Call::Type::CONFERENCE ? RecentViewNode::Type::CONFERENCE : RecentViewNode::Type::CALL;
     m_uContent.m_pCall  = c                         ;
     m_pParent           = nullptr                   ;
     m_Index             = 0                         ;
@@ -291,7 +289,7 @@ RecentViewNode::~RecentViewNode()
 {
     QObject::disconnect(m_ConnectionChanged);
     for (RecentViewNode* n : m_lChildren) {
-        n->deleteLater();
+        delete n;
     }
 }
 
@@ -357,6 +355,10 @@ RecentModel& RecentModel::instance()
 QModelIndex
 RecentModel::getIndex(Call *call) const
 {
+    // first check if it is a conference
+    if (auto confNode = d_ptr->m_hConfToNodes.value(call))
+        return index(confNode->m_Index, 0);
+
     if (auto callNode = d_ptr->m_hCallsToNodes.value(call)) {
         if (callNode->m_pParent)
             return index(callNode->m_Index, 0, index(callNode->m_pParent->m_Index, 0));
@@ -395,6 +397,20 @@ RecentModel::getIndex(ContactMethod *cm) const
     return {};
 }
 
+
+/**
+ * Returns if the given index corresponds to an item in the RecentModel which is a conference
+ */
+bool
+RecentModel::isConference(const QModelIndex& idx) const
+{
+    if (idx.isValid()) {
+        auto object = idx.data(static_cast<int>(Ring::Role::Object));
+        if (auto call = object.value<Call *>())
+            return call->type() == Call::Type::CONFERENCE;
+    }
+    return false;
+}
 
 /**
  * Check if given index has an ongoing call
@@ -444,6 +460,7 @@ RecentModel::getContactMethods(const QModelIndex& idx) const
         case RecentViewNode::Type::CALL_GROUP        :
         case RecentViewNode::Type::TEXT_MESSAGE      :
         case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
+        case RecentViewNode::Type::CONFERENCE        :
             break;
     }
     return result;
@@ -664,7 +681,7 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
    m_lTopLevelReverted.removeOne(n);
 
-   n->deleteLater();
+   delete n;
 
    // update all indices after this one
    for (int i = m_lTopLevelReverted.size() - 1 - idx; i >= 0; --i) {
@@ -841,7 +858,7 @@ RecentModelPrivate::removeCall(RecentViewNode* callNode)
         // emit dataChanted on the parent since the number of children has changed
         emit q_ptr->dataChanged(parent, parent);
     }
-    callNode->deleteLater();
+    delete callNode;
 }
 
 void
@@ -889,6 +906,7 @@ RecentModelPrivate::slotChanged(RecentViewNode *node)
     switch (node->m_Type) {
         case RecentViewNode::Type::PERSON:
         case RecentViewNode::Type::CONTACT_METHOD:
+        case RecentViewNode::Type::CONFERENCE:
         {
             auto idx = q_ptr->index(node->m_Index, 0);
             emit q_ptr->dataChanged(idx, idx);
@@ -912,7 +930,6 @@ RecentModelPrivate::slotChanged(RecentViewNode *node)
         case RecentViewNode::Type::CALL_GROUP:
         case RecentViewNode::Type::TEXT_MESSAGE:
         case RecentViewNode::Type::TEXT_MESSAGE_GROUP:
-        case RecentViewNode::Type::CONFERENCE:
             // nothing to do for now
             break;
     }
@@ -975,26 +992,26 @@ RecentModelPrivate::slotConferenceAdded(Call* conf)
     const bool isNew = !n;
 
     if (isNew) {
-        n = new RecentViewNode();
-        n->m_Type                      = RecentViewNode::Type::CONFERENCE    ;
-        n->m_uContent.m_pCall          = conf                                ;
-        n->m_pParent                   = nullptr                             ;
-        n->m_Index                     = 0                                   ;
-        m_hConfToNodes[conf]           = n                                   ;
-        auto pList = CallModel::instance().getConferenceParticipants(conf);
-        foreach (Call* p, pList) {
-            moveCallNode(n, m_hCallsToNodes.value(p));
-        }
+        n = new RecentViewNode(conf, this);
+        m_hConfToNodes[conf] = n;
     }
     insertNode(n, conf->startTimeStamp(), isNew);
+
+    // move the participants after inserting the node
+    auto pList = CallModel::instance().getConferenceParticipants(conf);
+    foreach (Call* p, pList) {
+        moveCallNode(n, m_hCallsToNodes.value(p));
+    }
 }
 
 void RecentModelPrivate::slotConferenceChanged(Call* conf)
 {
     if (auto confNode = m_hConfToNodes.value(conf)) {
         auto pSet = QSet<Call*>::fromList(CallModel::instance().getConferenceParticipants(conf));
-        if (pSet.isEmpty())
+        if (pSet.isEmpty()) {
             slotConferenceRemoved(conf);
+            return;
+        }
         if (confNode->m_lChildren.size() == pSet.size())
             return;
         QSet<Call*> confPSet;
@@ -1037,10 +1054,12 @@ PeopleProxy::PeopleProxy(RecentModel* sourceModel)
 bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-    //Always show the top nodes; in the case of childre, only show if there is more than one
+    //Always show the top nodes;
     if (!source_parent.isValid())
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-    else if (sourceModel()->rowCount(source_parent) > 1 )
+    //in the case of children, only show if there is more than one unless it is a conference
+    if (static_cast<RecentModel *>(sourceModel())->isConference(source_parent)
+        || sourceModel()->rowCount(source_parent) > 1 )
         return true;
     return false;
 }
@@ -1057,8 +1076,7 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     //from the call to its parent
     RecentViewNode* node = static_cast<RecentViewNode*>(indexSource.internalPointer());
     bool topNode = node->m_Type == RecentViewNode::Type::PERSON         ||
-                   node->m_Type == RecentViewNode::Type::CONTACT_METHOD ||
-                   node->m_Type == RecentViewNode::Type::CONFERENCE;
+                   node->m_Type == RecentViewNode::Type::CONTACT_METHOD;
     bool forwardRole = role == static_cast<int>(Ring::Role::State)          ||
                        role == static_cast<int>(Ring::Role::FormattedState) ||
                        role == static_cast<int>(Ring::Role::Length);
