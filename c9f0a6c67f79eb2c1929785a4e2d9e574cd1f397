@@ -22,6 +22,30 @@
       "revId": "c9f0a6c67f79eb2c1929785a4e2d9e574cd1f397",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_953c7495",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-11-04T19:03:30Z",
+      "side": 1,
+      "message": "or indices\n\nhttp://dictionary.reference.com/browse/indices",
+      "parentUuid": "1a9dcd25_d5e3dc31",
+      "range": {
+        "startLine": 593,
+        "startChar": 17,
+        "endLine": 593,
+        "endChar": 24
+      },
+      "revId": "c9f0a6c67f79eb2c1929785a4e2d9e574cd1f397",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
