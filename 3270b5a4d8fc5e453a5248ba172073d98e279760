@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_359fa005",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 58
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-11-04T22:24:15Z",
+      "side": 1,
+      "message": "you must return after doing this, or else you delete the conf node, but continue to use it later... I think this is why the \"deleteLater\" fixed this issue, because this way it wasn\u0027t deleted right away\n\nadding a return after this line makes it work for me without making the nodes into qobjects",
+      "range": {
+        "startLine": 965,
+        "startChar": 0,
+        "endLine": 965,
+        "endChar": 40
+      },
+      "revId": "3270b5a4d8fc5e453a5248ba172073d98e279760",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
