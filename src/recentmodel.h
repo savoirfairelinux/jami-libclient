@@ -56,6 +56,7 @@ public:
    QModelIndex          getIndex     (Person *p                ) const;
    QModelIndex          getIndex     (ContactMethod *cm        ) const;
    bool                 hasActiveCall(const QModelIndex& parent)      ;
+   QVector<ContactMethod*> getContactMethods(const QModelIndex& idx) const;
    Call*                getActiveCall(const QModelIndex& parent)      ;
    QItemSelectionModel* selectionModel(                        ) const;
 
