@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_90948238",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2015-11-06T18:54:13Z",
+      "side": 1,
+      "message": "Why? And why to not make it now?",
+      "range": {
+        "startLine": 737,
+        "startChar": 3,
+        "endLine": 737,
+        "endChar": 39
+      },
+      "revId": "fd3bc10c9f03b4a5167774f737014776eeb3774e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
