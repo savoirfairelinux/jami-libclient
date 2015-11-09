@@ -148,6 +148,7 @@ public Q_SLOTS:
    void slotConferenceAdded    (Call* conf                               );
    void slotConferenceRemoved  (Call* conf                               );
    void slotConferenceChanged  (Call* conf                               );
+   void slotCurrentCallChanged (const QModelIndex &current, const QModelIndex &previous);
 };
 
 RecentModelPrivate::RecentModelPrivate(RecentModel* p) : q_ptr(p)
@@ -212,6 +213,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    connect(&CallModel::instance()          , &CallModel::conferenceCreated        , d_ptr, &RecentModelPrivate::slotConferenceAdded    );
    connect(&CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
    connect(&CallModel::instance()          , &CallModel::conferenceChanged        , d_ptr, &RecentModelPrivate::slotConferenceChanged  );
+   connect(CallModel::instance().selectionModel(), &QItemSelectionModel::currentChanged, d_ptr, &RecentModelPrivate::slotCurrentCallChanged);
 
    //Fill the contacts
    for (int i=0; i < PersonModel::instance().rowCount(); i++) {
@@ -1029,6 +1031,17 @@ void RecentModelPrivate::slotConferenceChanged(Call* conf)
                 moveCallNode(confNode, m_hCallsToNodes.value(call));
             }
         }
+    }
+}
+
+void
+RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
+    if (callIdx.isValid()) {
+        m_pSelectionModel->setCurrentIndex(callIdx.parent(), QItemSelectionModel::ClearAndSelect);
+    } else {
+        m_pSelectionModel->clearCurrentIndex();
     }
 }
 
