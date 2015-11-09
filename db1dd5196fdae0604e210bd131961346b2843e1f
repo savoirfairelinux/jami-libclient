@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_24da1379",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-09T21:49:38Z",
+      "side": 1,
+      "message": "Is it really the RecentModel job to set the CallModel selection? Would it make sense to move that code elsewhere given this slot is initiated from callmodel anyway? This create a strange coupling",
+      "revId": "db1dd5196fdae0604e210bd131961346b2843e1f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
