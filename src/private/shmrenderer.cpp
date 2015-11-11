@@ -279,6 +279,9 @@ void ShmRenderer::stopShm()
       d_ptr->m_pTimer = nullptr;
    }
 
+   // reset the frame so it doesn't point to an old value
+   Video::Renderer::d_ptr->m_pFrame.reset();
+
    //Emit the signal before closing the file, this lower the risk of invalid
    //memory access
    emit stopped();
