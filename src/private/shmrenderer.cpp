@@ -371,9 +371,10 @@ Frame ShmRenderer::currentFrame() const
         return {};
 
     QMutexLocker lk {mutex()};
-    d_ptr->getNewFrame(false);
-    if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
-        return std::move(*frame_ptr);
+    if (d_ptr->getNewFrame(false)) {
+        if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
+            return std::move(*frame_ptr);
+    }
     return {};
 }
 
