@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_07a3599f",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 884,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-11-12T20:47:14Z",
+      "side": 1,
+      "message": "would it not be better to move this inside ::insertCallNode() method? because sometimes a call is added but not inserted right away since its not associated with a Person/CM yet... in this case, would we want to have it be selected once it is, since that is the moment at which it will be inserted into the RecentModel",
+      "range": {
+        "startLine": 884,
+        "startChar": 0,
+        "endLine": 884,
+        "endChar": 103
+      },
+      "revId": "de18570f8f631b49bf139ef43c251c6373c6a2fe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
