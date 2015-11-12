@@ -2051,6 +2051,9 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::TurnServerUsername):
        setTurnServerUsername(value.toString());
        break;
+      case CAST(Account::Role::TurnServerEnabled):
+       setTurnEnabled(value.toBool());
+       break;
    }
 }
 #undef CAST
