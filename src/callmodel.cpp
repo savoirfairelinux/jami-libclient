@@ -82,6 +82,7 @@ public:
       void  removeConference ( const QString& confId                              );
       void  removeCall       ( Call* call       , bool noEmit = false             );
       Call* addIncomingCall  ( const QString& callId                              );
+      Call* addExistingCall  ( const QString& callId, const QString& state);
 
       //Attributes
       QList<InternalStruct*> m_lInternalModel;
@@ -531,6 +532,30 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
       throw tr("Invalid account");
    }
    return call;
+}
+
+Call* CallModelPrivate::addExistingCall(const QString& callId, const QString& state)
+{
+    qDebug() << "New foreign call:" << callId;
+    auto call = CallPrivate::buildExistingCall(callId);
+
+    //The call can already have been invalidated by the daemon, then do nothing
+    if (!call)
+        return {};
+
+    call = addCall2(call);
+
+    //The call can already have been invalidated by the daemon, then do nothing
+    if (!call)
+        return {};
+
+    //Call without account is not possible
+    if (not call->account()) {
+        qDebug() << "Foreign call from an invalid account";
+        throw tr("Invalid account");
+    }
+
+    return call;
 }
 
 ///Properly remove an internal from the Qt model
@@ -1124,7 +1149,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
 
    if(!internal) {
       qDebug() << "Call not found" << callID << "new state" << stateName;
-      addIncomingCall(callID);
+      addExistingCall(callID, stateName);
       return;
    }
    else {

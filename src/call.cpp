@@ -466,9 +466,10 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 Call* CallPrivate::buildExistingCall(const QString& callId)
 {
     const auto& details = getCallDetailsCommon(callId);
-    auto startState = startStateFromDaemonCallState(details[CallPrivate::DetailsMapFields::STATE],
-                                                    details[CallPrivate::DetailsMapFields::TYPE]);
-    return buildCall(callId, Call::Direction::INCOMING, startState);
+    const auto daemon_state = details[CallPrivate::DetailsMapFields::STATE];
+    const auto daemon_type = details[CallPrivate::DetailsMapFields::TYPE];
+    const auto direction = daemon_type == CallPrivate::CallDirection::OUTGOING ? Call::Direction::OUTGOING : Call::Direction::INCOMING;
+    return buildCall(callId, direction, startStateFromDaemonCallState(daemon_state, daemon_type));
 }
 
 ///Build a call from a dbus event
