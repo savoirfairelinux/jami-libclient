@@ -1124,6 +1124,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
 
    if(!internal) {
       qDebug() << "Call not found" << callID << "new state" << stateName;
+      addIncomingCall(callID);
       return;
    }
    else {
