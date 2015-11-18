@@ -249,14 +249,17 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    r->startRendering();
 
    Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+   
+   printf("\x1b[31m DEBUG:\x1b[0m""RENDERER !!!!!!!!!!!!!!!!!      |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+   Call* c = CallModel::instance().getCall(id);
+
+
 
    if (dev)
       emit dev->renderingStarted(r);
 
    if (id != PREVIEW_RENDERER_ID) {
       qDebug() << "Starting video for call" << id;
-
-      Call* c = CallModel::instance().getCall(id);
 
       if (c)
           c->d_ptr->registerRenderer(r);

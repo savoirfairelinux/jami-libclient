@@ -378,6 +378,32 @@ void CallPrivate::deleteCall(Call* call)
     delete call;
 }
 
+void CallPrivate::UpdateCallOutgoingMedia(MapStringString details){
+   auto list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   QString video_source  = details[ CallPrivate::DetailsMapFields::VIDEO_SOURCE];
+
+   if(video_source.length() <= 0 && list.size() <=0 ){ //Means there is no video, and there never was. Nothing to do.
+       return;
+   }
+
+   if(list.size() <=0){
+       printf("\x1b[31m DEBUG:\x1b[0m""ADDING OUTGOING MEDIA !!!!!!!!!!!!!!      |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+       Media::Media::Direction direction = Media::Media::Direction::OUT;
+       //c->d_ptr->mediaFactory<Media::Video>(d);
+       mediaFactory<Media::Video>(direction);
+   }
+   printf("\x1b[31m DEBUG:\x1b[0m""      |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+    //todo info update
+   list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   Media::Video* media_video = (Media::Video*)list[0];
+   printf("\x1b[31m DEBUG:\x1b[0m""      |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+   media_video->sourceModel()->setUsedIndex(&video_source);
+
+   //printf("\x1b[31m DEBUG:\x1b[0m""%s      |function:%s file:%s line:%d\n", video_source.toStdString().c_str() ,__FUNCTION__,__FILE__,__LINE__);
+
+   return;
+}
+
 MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 {
    CallManagerInterface& callManager = CallManager::instance();
@@ -415,7 +441,8 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
     const auto& peerNumber    = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
     const auto& peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
     const auto& account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
-
+    const auto& VIDEO_SOURCE   = details[ CallPrivate::DetailsMapFields::VIDEO_SOURCE];
+printf("\x1b[31m DEBUG:\x1b[0m""%s      |function:%s file:%s line:%d\n", VIDEO_SOURCE.toStdString().c_str() ,__FUNCTION__,__FILE__,__LINE__);
     //It may be possible that the call has already been invalidated
     if (account.isEmpty()) {
         qWarning() << "Building call" << callId << "failed, it may already have been destroyed by the daemon";
@@ -427,6 +454,7 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     auto call = std::unique_ptr<Call, decltype(deleteCall)&>( new Call(startState, peerName, nb, acc),
                                                              deleteCall );
+    call->d_ptr->UpdateCallOutgoingMedia(details);
 
     call->d_ptr->m_DringId      = callId;
     call->d_ptr->m_Direction    = callDirection;
@@ -1205,6 +1233,10 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       if (!q_ptr->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
          m_pCertificate = CertificateModel::instance().getCertificateFromId(details[DRing::TlsTransport::TLS_PEER_CERT], q_ptr->account());
       }
+ const auto& VIDEO_SOURCE   = details[ CallPrivate::DetailsMapFields::VIDEO_SOURCE];
+   printf("\x1b[31m DEBUG:\x1b[0m""%s      |function:%s file:%s line:%d\n", VIDEO_SOURCE.toStdString().c_str() ,__FUNCTION__,__FILE__,__LINE__);
+
+      CallPrivate::UpdateCallOutgoingMedia(details);
 
       try {
          (this->*(stateChangedFunctionMap[previousState][dcs]))();

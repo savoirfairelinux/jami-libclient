@@ -57,7 +57,7 @@ public:
    int activeIndex() const;
    Video::Device* getDevice(const QString& devId) const;
    QList<Video::Device*> devices() const;
-
+   int getIndex(QString *deviceStr);
 private:
    const QScopedPointer<DeviceModelPrivate> d_ptr;
 
