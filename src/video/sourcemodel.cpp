@@ -16,6 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "sourcemodel.h"
+#include <QString>
 #include <QtCore/QUrl>
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
@@ -160,7 +161,39 @@ void Video::SourceModel::switchTo(const int idx)
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          break;
    };
-   d_ptr->m_CurrentSelection = idx;
+}
+
+void Video::SourceModel::setUsedIndex(QString *deviceStr)
+{
+    printf("\x1b[31m DEBUG:\x1b[0m"" SET INDEX  %s     |function:%s file:%s line:%d\n",deviceStr->toStdString().c_str(), __FUNCTION__,__FILE__,__LINE__);
+    printf("\x1b[31m DEBUG:\x1b[0m""            TEST  %s     |function:%s file:%s line:%d\n",Video::SourceModelPrivate::ProtocolPrefix::DISPLAY, __FUNCTION__,__FILE__,__LINE__);
+    printf("\x1b[31m DEBUG:\x1b[0m""            TEST  %s     |function:%s file:%s line:%d\n",Video::SourceModelPrivate::ProtocolPrefix::FILE, __FUNCTION__,__FILE__,__LINE__);
+    printf("\x1b[31m DEBUG:\x1b[0m""            TEST  %s     |function:%s file:%s line:%d\n",Video::SourceModelPrivate::ProtocolPrefix::CAMERA, __FUNCTION__,__FILE__,__LINE__);
+    int idx = 0;
+    //find out index here 
+    if(deviceStr->length() <= 0){
+        idx = ExtendedDeviceList::NONE;
+         printf("\x1b[31m DEBUG:\x1b[0m""  NONE DETECTED    |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY) == 0){//look for the display string into the incomming device string
+        printf("\x1b[31m DEBUG:\x1b[0m""  DISPLAY DETECTED    |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+        idx = ExtendedDeviceList::SCREEN; 
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::FILE) == 0){
+        printf("\x1b[31m DEBUG:\x1b[0m""  FILE DETECTED    |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+        idx = ExtendedDeviceList::FILE; 
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::CAMERA) == 0 ){ //By default it is a Camera
+        printf("\x1b[31m DEBUG:\x1b[0m"" CAMERA DETECTED     |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+        idx = ExtendedDeviceList::COUNT__ + Video::DeviceModel::instance().getIndex(deviceStr);
+    }
+    else{
+        printf("\x1b[31m DEBUG:\x1b[0m"" NOTHING FOUND     |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+        idx = ExtendedDeviceList::NONE;
+    }
+
+    printf("\x1b[31m DEBUG:\x1b[0m""SETING CURRENT SELECTION index=%d      |function:%s file:%s line:%d\n",idx,__FUNCTION__,__FILE__,__LINE__);
+    d_ptr->m_CurrentSelection = idx;
 }
 
 void Video::SourceModel::switchTo(Video::Device* device)

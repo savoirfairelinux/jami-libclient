@@ -94,6 +94,7 @@ public:
       constexpr static const char* TYPE              = "CALL_TYPE"      ;
       constexpr static const char* TIMESTAMP_START   = "TIMESTAMP_START";
       constexpr static const char* CONF_ID           = "CONF_ID"        ;
+      constexpr static const char* VIDEO_SOURCE      = "VIDEO_SOURCE"   ;
    };
 
    ///"getConferenceDetails()" fields

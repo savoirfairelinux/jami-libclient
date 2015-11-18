@@ -52,7 +52,7 @@ public:
    int activeIndex() const;
 
    int getDeviceIndex(Video::Device* device);
-
+   void setUsedIndex(QString *deviceStr);
 private:
    Video::SourceModelPrivate* d_ptr;
 

@@ -144,6 +144,22 @@ void Video::DeviceModel::setActive(const QModelIndex& idx)
    }
 }
 
+///Returns index from a give
+int Video::DeviceModel::getIndex(QString *deviceStr) 
+{
+    int dev_index;
+
+    for(dev_index = 0 ; dev_index < d_ptr->m_lDevices.size() ; dev_index++){
+        printf("\x1b[31m DEBUG:\x1b[0m"" search if %s is %s      |function:%s file:%s line:%d\n",d_ptr->m_lDevices[dev_index]->name().toLatin1().data(), deviceStr->toLatin1().data(),__FUNCTION__,__FILE__,__LINE__);
+        if(deviceStr->indexOf( d_ptr->m_lDevices[dev_index]->name()) >= 0){
+            printf("\x1b[31m DEBUG:\x1b[0m""    FOUND INDEX !      |function:%s file:%s line:%d\n",__FUNCTION__,__FILE__,__LINE__);
+            return dev_index;
+        }
+    }
+
+    return 0;
+}
+
 ///Convenience
 void Video::DeviceModel::setActive(const int idx)
 {

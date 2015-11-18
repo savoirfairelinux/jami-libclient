@@ -45,6 +45,7 @@ Video::Device::Device(const QString &id) : QAbstractListModel(nullptr),
 d_ptr(new VideoDevicePrivate(this))
 {
    d_ptr->m_DeviceId = id;
+printf("\x1b[31m DEBUG:\x1b[0m"" create device:%s      |function:%s file:%s line:%d\n",id.toLatin1().data(),__FUNCTION__,__FILE__,__LINE__);
    VideoManagerInterface& interface = VideoManager::instance();
    MapStringMapStringVectorString cap = interface.getCapabilities(id);
    QMapIterator<QString, MapStringVectorString> channels(cap);
