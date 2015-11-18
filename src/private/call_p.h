@@ -94,6 +94,7 @@ public:
       constexpr static const char* TYPE              = "CALL_TYPE"      ;
       constexpr static const char* TIMESTAMP_START   = "TIMESTAMP_START";
       constexpr static const char* CONF_ID           = "CONF_ID"        ;
+      constexpr static const char* VIDEO_SOURCE      = "VIDEO_SOURCE"   ;
    };
 
    ///"getConferenceDetails()" fields
@@ -252,6 +253,7 @@ public:
    void peerHoldChanged(bool onPeerHold);
    template<typename T>
    T* mediaFactory(Media::Media::Direction dir);
+   void UpdateCallOutgoingMedia();
 
    //Static getters
    static Call::State        startStateFromDaemonCallState ( const QString& daemonCallState, const QString& daemonCallType );

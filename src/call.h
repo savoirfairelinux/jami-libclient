@@ -311,6 +311,7 @@ public:
    QVariant                 roleData         (int  role) const;
    QVariant                 roleData         (Role role) const;
    bool                     hasParentCall    () const;
+   Media::Video*            GetOutgoingVideoMedia() const;
 
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;

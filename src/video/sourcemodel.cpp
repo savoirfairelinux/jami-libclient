@@ -16,6 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "sourcemodel.h"
+#include <QString>
 #include <QtCore/QUrl>
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
@@ -160,7 +161,30 @@ void Video::SourceModel::switchTo(const int idx)
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          break;
    };
-   d_ptr->m_CurrentSelection = idx;
+}
+
+///Set the index of the currenlty used source
+void Video::SourceModel::setUsedIndex(QString *deviceStr)
+{
+    int idx = 0;
+    //find out index here 
+    if(deviceStr->length() <= 0){
+        idx = ExtendedDeviceList::NONE;
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY) == 0){//look for the display string into the incomming device string
+        idx = ExtendedDeviceList::SCREEN; 
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::FILE) == 0){
+        idx = ExtendedDeviceList::FILE; 
+    }
+    else if(deviceStr->indexOf(Video::SourceModelPrivate::ProtocolPrefix::CAMERA) == 0 ){ //By default it is a Camera
+        idx = ExtendedDeviceList::COUNT__ + Video::DeviceModel::instance().getIndex(deviceStr);
+    }
+    else{
+        idx = ExtendedDeviceList::NONE;
+    }
+
+    d_ptr->m_CurrentSelection = idx;
 }
 
 void Video::SourceModel::switchTo(Video::Device* device)
