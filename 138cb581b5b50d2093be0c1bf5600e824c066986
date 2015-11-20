@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_b8bf20d0",
+        "filename": "src/call.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "lower \"U\" in update, see the API naming guidelines (and Qt ones)",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_98ba64e0",
+        "filename": "src/call.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "Unnecessary, use firstMedia\u003cMedia::Text\u003e(Media::Direction::Outgoing). If you need further processing, place the code in the private (call_p.h) API and find ways to make sure it\u0027s called (probably when the call details change).",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_38cb1074",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "please rename to m_pSourceModel, see naming guidelines",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_18ce5484",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "Move this into Media::Video::sourceModel with if (!m_pSourceModel) new...\n\nGiven the source model is rarely necessary, there is no point in always creating one. The source model call dbus a few time and this cause significant latency with the system I/O load is high.",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_58b4dcf1",
+        "filename": "src/media/video.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "Use forward declaration\n\nnamespace Video {\nclass SourceModel;\n}\n\nThis speed up compilation significantly",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_78b998e8",
+        "filename": "src/media/video.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "The first :: is uncessasary",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_d8c78c63",
+        "filename": "src/private/call_p.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "lower \"U\" in update, see the API naming guidelines (and Qt ones)",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_98a104ac",
+        "filename": "src/video/devicemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "C++ allow variables declarations in for loops, this is ANSI C syntax. But, as said in previous comment, I am not sure at all about this method. Also, please return a QModelIndex, not an integer.",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_f8c4c860",
+        "filename": "src/video/devicemodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "please use const QString\u0026 rather than QString*, see Qt guidelines. \n\nAlso, why does this exist? I am not sure this make sense at all. LRC have a \"no magic string\" policy. Devices are objects, not strings.",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_1895f43f",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "Unnecessary, also, please add the QtCore prefix with including stuff, otherwise it might compile if you include files from other Qt modules that are not linked and this will cause problems down the line",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_78b0b8f4",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-20T23:55:12Z",
+      "side": 1,
+      "message": "As said in other comments\n* Please don\u0027t use QString*\n* Please don\u0027t use magic strings\n* I am still not sure this API make sense\n\n\nAs said in some comments of previous patch, this should really be ported to use  a QItemSelectionModel, this would solve what your trying to do in a much, much cleaner way. QItemSelectionModel allow you to get and set the current selection and easily bind them to combobox, listview and context menu. I guess it is exactly what your trying to do, so this would make a lot of sense.\n\nThere is plenty of examples in the Gnome client and LRC of selectionModels (it\u0027s only about 8 line of code but have a little learning curve)",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
