@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_f3e38b31",
+        "filename": "src/call.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_b8bf20d0",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_98ba64e0",
         "filename": "src/call.h",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2015-11-20T23:55:12Z",
       "side": 1,
       "message": "Unnecessary, use firstMedia\u003cMedia::Text\u003e(Media::Direction::Outgoing). If you need further processing, place the code in the private (call_p.h) API and find ways to make sure it\u0027s called (probably when the call details change).",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_130cf741",
+        "filename": "src/call.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "The thing is: if LRS\u0027s clients use firstMedia then the sourceModel data is not refreshed.\n\nCall details are requested with  CallPrivate::getCallDetailsCommon. They are not pushed by the daemon when something changes ( or I missed where ). To call getCallDetailsCommon I need to know the call Id, and I don\u0027t know it into sourcemodel.\n\nThe other way would be to try to call getCallDetailsCommon in some cicumstances, like some call status or so. But I did not found any proper place to be certain this data will be up to date when the user request it.\n\nBy design I think it is bad to do a dbus calls to request that data only when the user ask for it. But it works surprisingly well.",
+      "parentUuid": "1a9dcd25_98ba64e0",
       "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_33da5379",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_38cb1074",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_18ce5484",
         "filename": "src/media/video.cpp",
         "patchSetId": 5
@@ -64,6 +118,24 @@
       "writtenOn": "2015-11-20T23:55:12Z",
       "side": 1,
       "message": "Move this into Media::Video::sourceModel with if (!m_pSourceModel) new...\n\nGiven the source model is rarely necessary, there is no point in always creating one. The source model call dbus a few time and this cause significant latency with the system I/O load is high.",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_d3e68f44",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_18ce5484",
       "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_4e573603",
+        "filename": "src/media/video.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_58b4dcf1",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_78b998e8",
         "filename": "src/media/video.h",
         "patchSetId": 5
@@ -98,6 +188,24 @@
       "writtenOn": "2015-11-20T23:55:12Z",
       "side": 1,
       "message": "The first :: is uncessasary",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_6e5c7226",
+        "filename": "src/media/video.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "I think it is. We are into a class called Video and it has nothing common with the Video namespace where the sourceModel is.",
+      "parentUuid": "1a9dcd25_78b998e8",
       "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_0e412e39",
+        "filename": "src/private/call_p.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_d8c78c63",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_98a104ac",
         "filename": "src/video/devicemodel.cpp",
         "patchSetId": 5
@@ -132,6 +258,24 @@
       "writtenOn": "2015-11-20T23:55:12Z",
       "side": 1,
       "message": "C++ allow variables declarations in for loops, this is ANSI C syntax. But, as said in previous comment, I am not sure at all about this method. Also, please return a QModelIndex, not an integer.",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_2e3e6ab9",
+        "filename": "src/video/devicemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_98a104ac",
       "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_73177b52",
+        "filename": "src/video/devicemodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_f8c4c860",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_1895f43f",
         "filename": "src/video/sourcemodel.cpp",
         "patchSetId": 5
@@ -166,6 +328,24 @@
       "writtenOn": "2015-11-20T23:55:12Z",
       "side": 1,
       "message": "Unnecessary, also, please add the QtCore prefix with including stuff, otherwise it might compile if you include files from other Qt modules that are not linked and this will cause problems down the line",
+      "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_ee47224a",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-24T21:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_1895f43f",
       "revId": "138cb581b5b50d2093be0c1bf5600e824c066986",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
