@@ -783,7 +783,7 @@ RecentModelPrivate::insertCallNode(RecentViewNode *parent, RecentViewNode* callN
     }
 
     // Select the newly inserted call
-    m_pSelectionModel->setCurrentIndex(q_ptr->index(callNode->m_Index, 0), QItemSelectionModel::ClearAndSelect);
+    q_ptr->selectionModel()->setCurrentIndex(q_ptr->index(callNode->m_Index, 0), QItemSelectionModel::ClearAndSelect);
 }
 
 void
@@ -1009,7 +1009,7 @@ RecentModelPrivate::slotConferenceAdded(Call* conf)
     }
 
     // Select the newly created conference
-    m_pSelectionModel->setCurrentIndex(q_ptr->getIndex(conf), QItemSelectionModel::ClearAndSelect);
+    q_ptr->selectionModel()->setCurrentIndex(q_ptr->getIndex(conf), QItemSelectionModel::ClearAndSelect);
 }
 
 void RecentModelPrivate::slotConferenceChanged(Call* conf)
@@ -1037,7 +1037,7 @@ void RecentModelPrivate::slotConferenceChanged(Call* conf)
                 moveCallNode(confNode, m_hCallsToNodes.value(call));
             }
             // Reselect the conference
-            m_pSelectionModel->setCurrentIndex(q_ptr->getIndex(conf), QItemSelectionModel::ClearAndSelect);
+            q_ptr->selectionModel()->setCurrentIndex(q_ptr->getIndex(conf), QItemSelectionModel::ClearAndSelect);
 
         }
     }
@@ -1048,9 +1048,9 @@ RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QMo
 {
     auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
     if (callIdx.isValid()) {
-        m_pSelectionModel->setCurrentIndex(q_ptr->isConference(callIdx) ? callIdx : callIdx.parent(), QItemSelectionModel::ClearAndSelect);
+        q_ptr->selectionModel()->setCurrentIndex(q_ptr->isConference(callIdx) ? callIdx : callIdx.parent(), QItemSelectionModel::ClearAndSelect);
     } else {
-        m_pSelectionModel->clearCurrentIndex();
+        q_ptr->selectionModel()->clearCurrentIndex();
     }
 }
 
