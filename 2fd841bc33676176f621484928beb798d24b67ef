@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_536d9f03",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-24T16:30:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_73bbfb72",
+      "range": {
+        "startLine": 786,
+        "startChar": 4,
+        "endLine": 786,
+        "endChar": 21
+      },
+      "revId": "2fd841bc33676176f621484928beb798d24b67ef",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_53b6ff8b",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_b368a3f6",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-24T16:30:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_53b6ff8b",
+      "range": {
+        "startLine": 1012,
+        "startChar": 4,
+        "endLine": 1012,
+        "endChar": 23
+      },
+      "revId": "2fd841bc33676176f621484928beb798d24b67ef",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_b3c183e6",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2015-11-24T16:22:35Z",
       "side": 1,
       "message": "should this also be done here, and the other places in the code, to be sure?",
+      "range": {
+        "startLine": 1040,
+        "startChar": 12,
+        "endLine": 1040,
+        "endChar": 31
+      },
+      "revId": "2fd841bc33676176f621484928beb798d24b67ef",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_d3a9af25",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-24T16:30:17Z",
+      "side": 1,
+      "message": "Yeah you\u0027re right even if in Conference related code the probability is pretty much zero.",
+      "parentUuid": "1a9dcd25_b3c183e6",
       "range": {
         "startLine": 1040,
         "startChar": 12,
