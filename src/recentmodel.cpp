@@ -1048,9 +1048,9 @@ RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QMo
 {
     auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
     if (callIdx.isValid()) {
-        m_pSelectionModel->setCurrentIndex(q_ptr->isConference(callIdx) ? callIdx : callIdx.parent(), QItemSelectionModel::ClearAndSelect);
+        q_ptr->selectionModel()->setCurrentIndex(q_ptr->isConference(callIdx) ? callIdx : callIdx.parent(), QItemSelectionModel::ClearAndSelect);
     } else {
-        m_pSelectionModel->clearCurrentIndex();
+        q_ptr->selectionModel()->clearCurrentIndex();
     }
 }
 
