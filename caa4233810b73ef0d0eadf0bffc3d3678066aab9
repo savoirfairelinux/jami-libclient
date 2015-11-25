@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_2e1d0a10",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-25T20:45:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_ee688289",
+      "range": {
+        "startLine": 647,
+        "startChar": 20,
+        "endLine": 647,
+        "endChar": 22
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_6e5d52e9",
         "filename": "src/call.cpp",
         "patchSetId": 6
@@ -36,6 +60,30 @@
       "writtenOn": "2015-11-25T19:26:36Z",
       "side": 1,
       "message": "static_cast\u003cMedia::Video*\u003e(list[0]);",
+      "range": {
+        "startLine": 654,
+        "startChar": 10,
+        "endLine": 654,
+        "endChar": 25
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_ce190624",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-25T20:45:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_6e5d52e9",
       "range": {
         "startLine": 654,
         "startChar": 10,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_ee1642f1",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-25T20:45:07Z",
+      "side": 1,
+      "message": "Removed, this was usefull previously when the currentselection was set when the user was requesting a change.",
+      "parentUuid": "1a9dcd25_ce6b4684",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 112
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_2e6f4a94",
         "filename": "src/video/sourcemodel.h",
         "patchSetId": 6
@@ -82,6 +154,30 @@
       "writtenOn": "2015-11-25T19:26:36Z",
       "side": 1,
       "message": "QString\u0026 deviceStr",
+      "range": {
+        "startLine": 55,
+        "startChar": 29,
+        "endLine": 55,
+        "endChar": 30
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_8ed3fe37",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-11-25T20:45:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_2e6f4a94",
       "range": {
         "startLine": 55,
         "startChar": 29,
