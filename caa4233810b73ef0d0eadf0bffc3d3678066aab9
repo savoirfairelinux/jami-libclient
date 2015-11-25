@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_ee688289",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-25T19:26:36Z",
+      "side": 1,
+      "message": "mini-g",
+      "range": {
+        "startLine": 647,
+        "startChar": 20,
+        "endLine": 647,
+        "endChar": 22
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_6e5d52e9",
+        "filename": "src/call.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-25T19:26:36Z",
+      "side": 1,
+      "message": "static_cast\u003cMedia::Video*\u003e(list[0]);",
+      "range": {
+        "startLine": 654,
+        "startChar": 10,
+        "endLine": 654,
+        "endChar": 25
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_ce6b4684",
+        "filename": "src/video/sourcemodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-25T19:26:36Z",
+      "side": 1,
+      "message": "Check that",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 112
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_2e6f4a94",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-25T19:26:36Z",
+      "side": 1,
+      "message": "QString\u0026 deviceStr",
+      "range": {
+        "startLine": 55,
+        "startChar": 29,
+        "endLine": 55,
+        "endChar": 30
+      },
+      "revId": "caa4233810b73ef0d0eadf0bffc3d3678066aab9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
