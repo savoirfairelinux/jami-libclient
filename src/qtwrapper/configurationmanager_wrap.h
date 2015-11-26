@@ -125,9 +125,9 @@ public:
          }),
 
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
-               [this] (const std::string& account_id, const std::string& from, const std::string& message) {
+               [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& message) {
                      QTimer::singleShot(0, [this, account_id,from,message] {
-                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), QString(message.c_str()));
+                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(message));
                      });
          }),
 
@@ -600,9 +600,9 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
-   void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
+   void sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& message)
    {
-      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message.toStdString());
+      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), convertMap(message));
    }
 
    bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
@@ -623,7 +623,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
-   void incomingAccountMessage(const QString& accountId, const QString& from, const QString& message);
+   void incomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString, QString>& message);
    void mediaParametersChanged(const QString& accountId);
 
 };
@@ -635,4 +635,3 @@ namespace org {
       }
    }
 }
-
