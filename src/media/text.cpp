@@ -36,6 +36,7 @@
 #include <private/vcardutils.h>
 #include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
+#include <accountmodel.h>
 
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
@@ -169,9 +170,12 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    emit media->messageReceived(message);
 }
 
-void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
+void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-   qDebug() << "GOT MESSAGE" << accountId << from << message;
+   if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
+       auto txtRecording = cm->textRecording();
+       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
+   }
 }
 
 MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
@@ -210,7 +214,10 @@ Media::TextRecording* Media::Text::recording() const
    }
 
    if ((!wasChecked) && !d_ptr->m_pRecording) {
-      d_ptr->m_pRecording = RecordingModel::instance().createTextRecording(call()->peerContactMethod());
+       if (auto otherRecording = call()->peerContactMethod()->textRecording())
+           d_ptr->m_pRecording = otherRecording;
+       else
+           d_ptr->m_pRecording = RecordingModel::instance().createTextRecording(call()->peerContactMethod());
    }
 
    return d_ptr->m_pRecording;

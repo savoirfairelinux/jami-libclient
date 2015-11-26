@@ -104,6 +104,6 @@ private:
 Q_SIGNALS:
    void lastUsedChanged(ContactMethod* cm, time_t t);
    void contactChanged(ContactMethod* cm, Person* newContact, Person* oldContact);
+   void incomingMessage(ContactMethod* cm, const QMap<QString, QString>& payloads);
 };
 Q_DECLARE_METATYPE(PhoneDirectoryModel*)
-
