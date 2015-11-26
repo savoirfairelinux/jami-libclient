@@ -100,6 +100,7 @@ private Q_SLOTS:
    void slotChanged();
    void slotLastUsedChanged(time_t t);
    void slotContactChanged(Person* newContact, Person* oldContact);
+   void slotIncomingAccountMessage(const QString& account, const QString& from, const QString& msg);
 
    //From DBus
    void slotNewBuddySubscription(const QString& uri, const QString& accountId, bool status, const QString& message);
