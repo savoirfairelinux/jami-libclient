@@ -40,9 +40,11 @@
 #include "certificate.h"
 #include "accountmodel.h"
 #include "certificatemodel.h"
+#include "media/textrecording.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
+#include "private/textrecording_p.h"
 
 void ContactMethodPrivate::callAdded(Call* call)
 {
@@ -724,12 +726,11 @@ bool ContactMethod::operator==(const ContactMethod& other) const
 
 Media::TextRecording* ContactMethod::textRecording() const
 {
-   if ((!d_ptr->m_hasTriedTextRec) && (!d_ptr->m_pTextRecording)) {
-      d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
-      d_ptr->m_hasTriedTextRec = true;
-   }
+    if (!d_ptr->m_pTextRecording) {
+        d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
+    }
 
-   return d_ptr->m_pTextRecording;
+    return d_ptr->m_pTextRecording;
 }
 
 bool ContactMethod::isReachable() const
@@ -785,12 +786,13 @@ void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
    m_pTextRecording = r;
 }
 
-bool ContactMethod::sendOfflineTextMessage(const QString& text)
+bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads)
 {
    if (!account())
       return false;
-
-   ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
+   auto txtRecording = textRecording();
+   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
+   ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),payloads);
    return true;
 }
 
