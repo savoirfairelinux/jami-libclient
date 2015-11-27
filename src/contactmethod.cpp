@@ -787,7 +787,7 @@ void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
    m_pTextRecording = r;
 }
 
-bool ContactMethod::sendOfflineTextMessage(const QString& text)
+bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& text)
 {
    if (!account())
       return false;
@@ -796,9 +796,7 @@ bool ContactMethod::sendOfflineTextMessage(const QString& text)
        txtRecording = Media::RecordingModel::instance().createTextRecording(this);
        d_ptr->setTextRecording(txtRecording);
    }
-   QMap<QString, QString> map;
-   map["text/plain"] = text;
-   txtRecording->d_ptr->insertNewMessage(map, this, Media::Media::Direction::OUT);
+   txtRecording->d_ptr->insertNewMessage(text, this, Media::Media::Direction::OUT);
    ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
    return true;
 }

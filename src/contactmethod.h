@@ -191,7 +191,7 @@ private Q_SLOTS:
    void contactRebased(Person* other);
 
 public Q_SLOTS:
-   bool sendOfflineTextMessage(const QString& text);
+   bool sendOfflineTextMessage(const QMap<QString, QString> &text);
 
 Q_SIGNALS:
    ///A new call have used this ContactMethod
