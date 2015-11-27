@@ -600,9 +600,10 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
-   void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
+   void sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& message)
    {
-      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message.toStdString());
+      //TODO Change DAEMON API
+      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message["text/plain"].toStdString());
    }
 
    bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
@@ -635,4 +636,3 @@ namespace org {
       }
    }
 }
-
