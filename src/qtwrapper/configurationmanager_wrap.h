@@ -600,9 +600,9 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
-   void sendTextMessage(const QString& accountId, const QString& to, const QString& message)
+   void sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& message)
    {
-      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), message.toStdString());
+      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), convertMap(message));
    }
 
    bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
@@ -635,4 +635,3 @@ namespace org {
       }
    }
 }
-
