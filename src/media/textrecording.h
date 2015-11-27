@@ -43,6 +43,8 @@ class LIB_EXPORT TextRecording : public Recording
    friend class ::IMConversationManagerPrivate;
    friend class ::LocalTextRecordingEditor;
    friend class Text;
+   friend class ::ContactMethod;
+
 public:
 
    enum class Role {
@@ -71,4 +73,3 @@ private:
 };
 
 }
-
