@@ -170,7 +170,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    emit media->messageReceived(message);
 }
 
-void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
+void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& message)
 {
    if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1())))
    {
@@ -178,9 +178,7 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
        if (!txtRecording) {
            txtRecording = Media::RecordingModel::instance().createTextRecording(cm);
        }
-       QMap<QString, QString> map;
-       map["text/plain"] = message;
-       txtRecording->d_ptr->insertNewMessage(map, cm, Media::Media::Direction::IN);
+       txtRecording->d_ptr->insertNewMessage(message, cm, Media::Media::Direction::IN);
    }
 }
 
