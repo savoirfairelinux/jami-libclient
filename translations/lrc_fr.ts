@@ -96,104 +96,104 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="658"/>
+        <location filename="../src/call.cpp" line="666"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="660"/>
+        <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
         <translation>Sonnerie (entrante)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="662"/>
+        <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
         <translation>Sonnerie (sortante)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="664"/>
+        <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
         <translation>En cours</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="666"/>
+        <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
         <translation>Composition</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="668"/>
+        <location filename="../src/call.cpp" line="676"/>
         <source>Hold</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="670"/>
+        <location filename="../src/call.cpp" line="678"/>
         <source>Failed</source>
         <translation>Échec</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="672"/>
+        <location filename="../src/call.cpp" line="680"/>
         <source>Busy</source>
         <translation>Occupé</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="674"/>
+        <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
         <translation>Transférer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="676"/>
+        <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
         <translation>Transfert sur garde</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="678"/>
+        <location filename="../src/call.cpp" line="686"/>
         <source>Over</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="680"/>
+        <location filename="../src/call.cpp" line="688"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="682"/>
-        <location filename="../src/call.cpp" line="764"/>
-        <location filename="../src/call.cpp" line="2030"/>
+        <location filename="../src/call.cpp" line="690"/>
+        <location filename="../src/call.cpp" line="772"/>
+        <location filename="../src/call.cpp" line="2059"/>
         <source>Conference</source>
         <translation>Conférence</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="684"/>
+        <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
         <translation>Conférence (sur pause)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="686"/>
+        <location filename="../src/call.cpp" line="694"/>
         <source>ERROR</source>
         <translation>ERREUR</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="688"/>
+        <location filename="../src/call.cpp" line="696"/>
         <source>Searching for</source>
         <translation>Recherche de </translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="690"/>
+        <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
         <translation>Interrompu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="692"/>
+        <location filename="../src/call.cpp" line="700"/>
         <source>Communication established</source>
         <translation>Communication établie</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="774"/>
+        <location filename="../src/call.cpp" line="782"/>
         <source>Unknown</source>
         <translation>Inconnu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2035"/>
+        <location filename="../src/call.cpp" line="2064"/>
         <source>Account: </source>
         <translation>Compte:</translation>
     </message>
@@ -201,7 +201,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="856"/>
+        <location filename="../src/callmodel.cpp" line="891"/>
         <source>Calls</source>
         <translation>Appels</translation>
     </message>
@@ -209,7 +209,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="528"/>
+        <location filename="../src/callmodel.cpp" line="532"/>
+        <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
         <translation>Compte invalide</translation>
     </message>
@@ -217,12 +218,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1610"/>
+        <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
         <translation>Interrompu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1631"/>
+        <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
         <translation>Pas de compte enregistré</translation>
     </message>
@@ -230,12 +231,12 @@
 <context>
     <name>CategorizedBookmarkModel</name>
     <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="183"/>
+        <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
         <translation>Plus populaire</translation>
     </message>
     <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="302"/>
+        <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>
@@ -243,7 +244,7 @@
 <context>
     <name>CategorizedContactModel</name>
     <message>
-        <location filename="../src/categorizedcontactmodel.cpp" line="414"/>
+        <location filename="../src/categorizedcontactmodel.cpp" line="390"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>
@@ -272,7 +273,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="467"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="376"/>
         <source>History</source>
         <translation>Historique</translation>
     </message>
@@ -288,7 +289,7 @@
 <context>
     <name>CollectionModel</name>
     <message>
-        <location filename="../src/collectionmodel.cpp" line="263"/>
+        <location filename="../src/collectionmodel.cpp" line="260"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
@@ -455,7 +456,7 @@
 <context>
     <name>InstantMessagingModel</name>
     <message>
-        <location filename="../src/media/textrecording.cpp" line="496"/>
+        <location filename="../src/media/textrecording.cpp" line="501"/>
         <source>Me</source>
         <translation>Moi</translation>
     </message>
@@ -463,17 +464,17 @@
 <context>
     <name>MacroModel</name>
     <message>
-        <location filename="../src/macromodel.cpp" line="163"/>
+        <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
         <translation>Macros</translation>
     </message>
     <message>
-        <location filename="../src/macromodel.cpp" line="266"/>
+        <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../src/macromodel.cpp" line="267"/>
+        <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
         <translation>Autre</translation>
     </message>
@@ -481,7 +482,7 @@
 <context>
     <name>MacroModelPrivate</name>
     <message>
-        <location filename="../src/macromodel.cpp" line="83"/>
+        <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
         <translation>Autre</translation>
     </message>
@@ -489,17 +490,17 @@
 <context>
     <name>Media::RecordingModel</name>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="149"/>
+        <location filename="../src/media/recordingmodel.cpp" line="145"/>
         <source>Recordings</source>
         <translation>Enregistrements</translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="219"/>
+        <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
         <translation>Messages texte</translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="224"/>
+        <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
         <translation>Audio/Video</translation>
     </message>
@@ -507,7 +508,7 @@
 <context>
     <name>NumberCategoryModel</name>
     <message>
-        <location filename="../src/numbercategorymodel.cpp" line="60"/>
+        <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
         <translation>Non catégorisé</translation>
     </message>
@@ -515,22 +516,22 @@
 <context>
     <name>NumberCompletionModel</name>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="257"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="257"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="257"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="257"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Weight</source>
         <translation>Poid</translation>
     </message>
@@ -538,7 +539,7 @@
 <context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="178"/>
+        <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
         <translation>Personnes</translation>
     </message>
@@ -649,41 +650,41 @@
 <context>
     <name>PresenceStatusModel</name>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="200"/>
+        <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="200"/>
+        <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
         <translation>Message</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="200"/>
+        <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
         <translation>Couleur</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="200"/>
+        <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
         <translation>Présent</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="200"/>
+        <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="313"/>
-        <location filename="../src/presencestatusmodel.cpp" line="366"/>
+        <location filename="../src/presencestatusmodel.cpp" line="308"/>
+        <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
         <translation>Spécifique</translation>
     </message>
     <message>
-        <location filename="../src/presencestatusmodel.cpp" line="313"/>
-        <location filename="../src/presencestatusmodel.cpp" line="315"/>
-        <location filename="../src/presencestatusmodel.cpp" line="359"/>
-        <location filename="../src/presencestatusmodel.cpp" line="366"/>
+        <location filename="../src/presencestatusmodel.cpp" line="308"/>
+        <location filename="../src/presencestatusmodel.cpp" line="310"/>
+        <location filename="../src/presencestatusmodel.cpp" line="354"/>
+        <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -691,17 +692,17 @@
 <context>
     <name>ProfileContentBackend</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="222"/>
+        <location filename="../src/profilemodel.cpp" line="292"/>
         <source>Profile backend</source>
         <translation>Profil de machinerie</translation>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="227"/>
+        <location filename="../src/profilemodel.cpp" line="297"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="318"/>
+        <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -709,9 +710,17 @@
 <context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="873"/>
+        <location filename="../src/profilemodel.cpp" line="912"/>
         <source>Profiles</source>
         <translation>Profils</translation>
+    </message>
+</context>
+<context>
+    <name>ProfileModelPrivate</name>
+    <message>
+        <location filename="../src/profilemodel.cpp" line="980"/>
+        <source>New profile</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -932,52 +941,52 @@
         <translation>Serveur de sortie</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="182"/>
+        <location filename="../src/certificatemodel.cpp" line="180"/>
         <source>Local certificate store</source>
         <translation>Stockage des certificats locaux</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="258"/>
+        <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="258"/>
+        <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
         <translation>Le certificat n&apos;est pas associé à un groupe</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="386"/>
+        <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
         <translation>Un certificat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="386"/>
+        <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
         <translation>Une organisation</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="403"/>
+        <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
         <translation>Détails</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="403"/>
+        <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
         <translation>Le contenu du certificat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="404"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
         <translation>Vérifications</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="404"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
         <translation>Informations diverses de sécurité</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="548"/>
+        <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
         <translation>L&apos;entête</translation>
     </message>
@@ -1019,7 +1028,7 @@
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
-        <location filename="../src/transitionalpersonbackend.cpp" line="154"/>
+        <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation>Contact</translation>
     </message>
@@ -1030,6 +1039,7 @@
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
+        <location filename="../src/useractionmodel.cpp" line="507"/>
         <source>Bookmark</source>
         <translation>Signet</translation>
     </message>
@@ -1054,13 +1064,13 @@
         <translation>Macro</translation>
     </message>
     <message>
-        <location filename="../src/localrecordingcollection.cpp" line="102"/>
+        <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
         <translation>Enregistrements locaux</translation>
     </message>
     <message>
-        <location filename="../src/localrecordingcollection.cpp" line="107"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="160"/>
+        <location filename="../src/localrecordingcollection.cpp" line="106"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
         <translation>Enregistrement</translation>
     </message>
@@ -1075,7 +1085,7 @@
         <translation>Sonnerie</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="155"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
         <translation>Enregistrements textuels locaux</translation>
     </message>
@@ -1085,7 +1095,7 @@
         <translation>Types de numéro de téléphone</translation>
     </message>
     <message>
-        <location filename="../src/numbercategorymodel.cpp" line="191"/>
+        <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
         <translation>Autre</translation>
     </message>
@@ -1171,126 +1181,125 @@
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../src/transitionalpersonbackend.cpp" line="149"/>
+        <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
         <translation>Dépôt du contact</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="376"/>
-        <location filename="../src/useractionmodel.cpp" line="599"/>
+        <location filename="../src/useractionmodel.cpp" line="492"/>
+        <location filename="../src/useractionmodel.cpp" line="727"/>
         <source>Accept</source>
         <translation>Accepter</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="377"/>
-        <location filename="../src/useractionmodel.cpp" line="611"/>
+        <location filename="../src/useractionmodel.cpp" line="493"/>
+        <location filename="../src/useractionmodel.cpp" line="739"/>
         <source>Hold</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="378"/>
+        <location filename="../src/useractionmodel.cpp" line="494"/>
         <source>Mute audio</source>
         <translation>Désactiver l&apos;audio</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="379"/>
+        <location filename="../src/useractionmodel.cpp" line="495"/>
         <source>Mute video</source>
         <translation>Désactiver la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="380"/>
+        <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
         <translation>Transfert du serveur</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="381"/>
+        <location filename="../src/useractionmodel.cpp" line="497"/>
         <source>Record</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="382"/>
-        <location filename="../src/useractionmodel.cpp" line="629"/>
+        <location filename="../src/useractionmodel.cpp" line="498"/>
+        <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Hangup</source>
         <translation>Raccrocher</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="383"/>
+        <location filename="../src/useractionmodel.cpp" line="499"/>
         <source>Join</source>
         <translation>Joindre</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="384"/>
+        <location filename="../src/useractionmodel.cpp" line="500"/>
         <source>Add new</source>
         <translation>Ajouter nouveau</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="385"/>
+        <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
         <translation>Basculer la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="386"/>
+        <location filename="../src/useractionmodel.cpp" line="502"/>
         <source>Add a contact</source>
         <translation>Ajouter un contact</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="387"/>
+        <location filename="../src/useractionmodel.cpp" line="503"/>
         <source>Add to existing contact</source>
         <translation>Ajouter à un contact existant</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="388"/>
+        <location filename="../src/useractionmodel.cpp" line="504"/>
         <source>Delete contact</source>
         <translation>Supprimer contact</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="389"/>
+        <location filename="../src/useractionmodel.cpp" line="505"/>
         <source>Email contact</source>
         <translation>Courriel du contact</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="390"/>
+        <location filename="../src/useractionmodel.cpp" line="506"/>
         <source>Copy contact</source>
         <translation>Copier le contact</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="391"/>
-        <source>Add bookmark</source>
-        <translation>Ajouter un signet</translation>
-    </message>
-    <message>
-        <location filename="../src/useractionmodel.cpp" line="392"/>
+        <location filename="../src/useractionmodel.cpp" line="508"/>
         <source>View chat history</source>
-        <translation>Voir l&apos;historique de chat</translation>
+        <translation>Voir l&apos;historique de clavardage</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="393"/>
+        <location filename="../src/useractionmodel.cpp" line="509"/>
         <source>Add phone number</source>
         <translation>Ajouter un numéro de téléphone</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="394"/>
+        <location filename="../src/useractionmodel.cpp" line="510"/>
         <source>Call again</source>
         <translation>Rappeler</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="395"/>
-        <location filename="../src/useractionmodel.cpp" line="626"/>
+        <location filename="../src/useractionmodel.cpp" line="511"/>
+        <source>Remove from history</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/useractionmodel.cpp" line="754"/>
         <source>Remove</source>
         <translation>Enlever</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="596"/>
+        <location filename="../src/useractionmodel.cpp" line="724"/>
         <source>Call</source>
         <translation>Appel</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="608"/>
+        <location filename="../src/useractionmodel.cpp" line="736"/>
         <source>Unhold</source>
         <translation>Reprendre</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="619"/>
+        <location filename="../src/useractionmodel.cpp" line="747"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -1298,7 +1307,7 @@
 <context>
     <name>RecentModel</name>
     <message>
-        <location filename="../src/recentmodel.cpp" line="344"/>
+        <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
         <translation>Personnes récentes</translation>
     </message>
@@ -1322,17 +1331,17 @@
 <context>
     <name>Video::SourceModel</name>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="93"/>
+        <location filename="../src/video/sourcemodel.cpp" line="90"/>
         <source>NONE</source>
         <translation>AUCUN</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="99"/>
+        <location filename="../src/video/sourcemodel.cpp" line="96"/>
         <source>SCREEN</source>
         <translation>ÉCRAN</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="105"/>
+        <location filename="../src/video/sourcemodel.cpp" line="102"/>
         <source>FILE</source>
         <translation>FICHIER</translation>
     </message>
