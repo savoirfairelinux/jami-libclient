@@ -38,6 +38,7 @@
 #include "interfaces/pixmapmanipulatori.h"
 #include "personmodel.h"
 #include "dbus/configurationmanager.h"
+#include "media/recordingmodel.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
