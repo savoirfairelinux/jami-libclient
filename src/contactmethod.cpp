@@ -40,9 +40,11 @@
 #include "certificate.h"
 #include "accountmodel.h"
 #include "certificatemodel.h"
+#include "media/textrecording.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
+#include "private/textrecording_p.h"
 
 void ContactMethodPrivate::callAdded(Call* call)
 {
@@ -789,7 +791,14 @@ bool ContactMethod::sendOfflineTextMessage(const QString& text)
 {
    if (!account())
       return false;
-
+   auto txtRecording = textRecording();
+   if (!txtRecording) {
+       txtRecording = Media::RecordingModel::instance().createTextRecording(this);
+       d_ptr->setTextRecording(txtRecording);
+   }
+   QMap<QString, QString> map;
+   map["text/plain"] = text;
+   txtRecording->d_ptr->insertNewMessage(map, this, Media::Media::Direction::OUT);
    ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
    return true;
 }

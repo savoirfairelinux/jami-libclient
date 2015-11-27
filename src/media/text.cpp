@@ -36,6 +36,7 @@
 #include <private/vcardutils.h>
 #include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
+#include <accountmodel.h>
 
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
@@ -171,7 +172,16 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QString& message)
 {
-   qDebug() << "GOT MESSAGE" << accountId << from << message;
+   if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1())))
+   {
+       auto txtRecording = cm->textRecording();
+       if (!txtRecording) {
+           txtRecording = Media::RecordingModel::instance().createTextRecording(cm);
+       }
+       QMap<QString, QString> map;
+       map["text/plain"] = message;
+       txtRecording->d_ptr->insertNewMessage(map, cm, Media::Media::Direction::IN);
+   }
 }
 
 MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
