@@ -235,17 +235,19 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
 void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction)
 {
 
-   //Only create it if none was found on the disk
-   if (!m_pCurrentGroup) {
-      m_pCurrentGroup = new Serializable::Group();
-      Q_ASSERT(q_ptr->call());
-      Serializable::Peers* p = SerializableEntityManager::peer(q_ptr->call()->peerContactMethod());
+    //Only create it if none was found on the disk
+    if (!m_pCurrentGroup) {
+        m_pCurrentGroup = new Serializable::Group();
 
-      if (m_lAssociatedPeers.indexOf(p) == -1) {
-         m_lAssociatedPeers << p;
-      }
+        if (q_ptr->call()) {
+            Serializable::Peers* p = SerializableEntityManager::peer(q_ptr->call()->peerContactMethod());
 
-      p->groups << m_pCurrentGroup;
+            if (m_lAssociatedPeers.indexOf(p) == -1) {
+                m_lAssociatedPeers << p;
+            }
+
+            p->groups << m_pCurrentGroup;
+        }
    }
 
    //Create the message
