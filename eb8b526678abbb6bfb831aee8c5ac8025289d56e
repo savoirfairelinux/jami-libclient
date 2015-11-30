@@ -16,6 +16,24 @@
       "revId": "eb8b526678abbb6bfb831aee8c5ac8025289d56e",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_c94a6055",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-11-30T20:55:08Z",
+      "side": 1,
+      "message": "That\u0027s not here to stay, the daemon api is currently being reworked for that. Look to the last patch.",
+      "parentUuid": "1a9dcd25_c93340f5",
+      "revId": "eb8b526678abbb6bfb831aee8c5ac8025289d56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
