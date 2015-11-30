@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_e9b5dc31",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "there is a .isEmpty() that\u0027s faster",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_c9b8202d",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "static const (or use it directly inline, it is a constant)",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_69aa2cd6",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "Please do not use C style cast, use qobject_cast when possible or static_cast/const_cast.\n\nPlease use firstMedia, it is type safe already",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_a987d460",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "I would rather see this being done internally rather than add an API call that conflict with firstMedia. Firstmedia is supposed to get you the first media. Right now, with this, it is now \"buggy\" and you add a new call to fix that bug instead of fixing it deeper in the stack. This also wont work for code that access the medias in an abstract manner using the type",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_497c1073",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "I think \u003cvideo/sourcemodel.h\u003e work too, but as this is a private file, it is not really an issue.",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_6981cc49",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "space before \"{\" and after \"if\"",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_09960895",
+        "filename": "src/video/sourcemodel.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T22:07:52Z",
+      "side": 1,
+      "message": "Please use QModelIndex if you don\u0027t implement the selection model",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
