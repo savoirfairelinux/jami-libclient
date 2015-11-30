@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_c93340f5",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-11-30T20:49:42Z",
+      "side": 1,
+      "message": "As this is unsed more and more often, it should use the one from mimes.h and that should used QStringLiteral builders to avoid allocating the same string multiple time",
+      "revId": "eb8b526678abbb6bfb831aee8c5ac8025289d56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
