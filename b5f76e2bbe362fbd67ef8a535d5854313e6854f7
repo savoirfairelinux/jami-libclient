@@ -22,6 +22,30 @@
       "revId": "b5f76e2bbe362fbd67ef8a535d5854313e6854f7",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_2992e457",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-01T18:51:09Z",
+      "side": 1,
+      "message": "Not this one, it\u0027s there to catch memory corruption. It can only happen if there is internal corruption in parent() and index(). That will caused invalid pointers in internalIndex() to be casted a few function later and the app will crash/misbehave anyway. Beside clearing the ProfileModel and re-generating it, there is nothing to do, it is too late. If \u003d\u003d Node::Type::PROFILE and -\u003eparent !\u003d nullptr, there is an infinite loop in the tree, again, too late to fix beside rebuilding the whole tree.\n\nI am fine with removing asserts caused by \"external use\" of a method, like invalid arguments, but this one is really about a fatal bug in the internal logic. I want the app to stop (in debug builds) and be able to analyse the memory.",
+      "parentUuid": "1a9dcd25_89ba18e0",
+      "range": {
+        "startLine": 626,
+        "startChar": 3,
+        "endLine": 626,
+        "endChar": 80
+      },
+      "revId": "b5f76e2bbe362fbd67ef8a535d5854313e6854f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
