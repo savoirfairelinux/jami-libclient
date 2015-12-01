@@ -22,6 +22,30 @@
       "revId": "240dcfffcd663b3c581c194573bf089fb1b24318",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_29cbc473",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-01T18:40:02Z",
+      "side": 1,
+      "message": "It save a line of code? But yea, ok, I will change it. I hacked some ANSI C projects to fix some bugs this summer and this kind of syntax grew on me.",
+      "parentUuid": "1a9dcd25_c9f020cc",
+      "range": {
+        "startLine": 228,
+        "startChar": 6,
+        "endLine": 241,
+        "endChar": 7
+      },
+      "revId": "240dcfffcd663b3c581c194573bf089fb1b24318",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
