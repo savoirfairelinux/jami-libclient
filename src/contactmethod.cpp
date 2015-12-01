@@ -726,12 +726,11 @@ bool ContactMethod::operator==(const ContactMethod& other) const
 
 Media::TextRecording* ContactMethod::textRecording() const
 {
-   if ((!d_ptr->m_hasTriedTextRec) && (!d_ptr->m_pTextRecording)) {
-      d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
-      d_ptr->m_hasTriedTextRec = true;
-   }
+    if (!d_ptr->m_pTextRecording) {
+        d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
+    }
 
-   return d_ptr->m_pTextRecording;
+    return d_ptr->m_pTextRecording;
 }
 
 bool ContactMethod::isReachable() const
@@ -792,10 +791,6 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& text)
    if (!account())
       return false;
    auto txtRecording = textRecording();
-   if (!txtRecording) {
-       txtRecording = Media::RecordingModel::instance().createTextRecording(this);
-       d_ptr->setTextRecording(txtRecording);
-   }
    txtRecording->d_ptr->insertNewMessage(text, this, Media::Media::Direction::OUT);
    ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),text);
    return true;
