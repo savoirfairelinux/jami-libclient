@@ -175,9 +175,6 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
    if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1())))
    {
        auto txtRecording = cm->textRecording();
-       if (!txtRecording) {
-           txtRecording = Media::RecordingModel::instance().createTextRecording(cm);
-       }
        txtRecording->d_ptr->insertNewMessage(message, cm, Media::Media::Direction::IN);
    }
 }
