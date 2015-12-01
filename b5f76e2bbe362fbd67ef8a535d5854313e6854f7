@@ -46,6 +46,30 @@
       "revId": "b5f76e2bbe362fbd67ef8a535d5854313e6854f7",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_e99b9c70",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-01T18:56:28Z",
+      "side": 1,
+      "message": "Ok but then prefer the use of Q_ASSERT_X to give some kind of explanation as to what is happening",
+      "parentUuid": "1a9dcd25_2992e457",
+      "range": {
+        "startLine": 626,
+        "startChar": 3,
+        "endLine": 626,
+        "endChar": 80
+      },
+      "revId": "b5f76e2bbe362fbd67ef8a535d5854313e6854f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
