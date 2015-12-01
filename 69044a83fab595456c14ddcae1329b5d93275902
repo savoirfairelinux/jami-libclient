@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_49b410f2",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-01T18:38:25Z",
+      "side": 1,
+      "message": "I think it\u0027s time to stop putting assert everywhere instead of doing a proper error handling",
+      "range": {
+        "startLine": 860,
+        "startChar": 6,
+        "endLine": 860,
+        "endChar": 20
+      },
+      "revId": "69044a83fab595456c14ddcae1329b5d93275902",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_69b9cce8",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-01T18:38:25Z",
+      "side": 1,
+      "message": "How ? Why ?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 64,
+        "endLine": 1029,
+        "endChar": 69
+      },
+      "revId": "69044a83fab595456c14ddcae1329b5d93275902",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
