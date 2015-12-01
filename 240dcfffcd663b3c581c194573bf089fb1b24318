@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_c9f020cc",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-01T18:34:52Z",
+      "side": 1,
+      "message": "Why use for loop when you clearly mean to use a while",
+      "range": {
+        "startLine": 228,
+        "startChar": 6,
+        "endLine": 241,
+        "endChar": 7
+      },
+      "revId": "240dcfffcd663b3c581c194573bf089fb1b24318",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
