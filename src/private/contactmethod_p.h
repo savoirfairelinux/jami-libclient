@@ -45,7 +45,6 @@ public:
    QByteArray         m_Sha1             ;
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
-   bool               m_hasTriedTextRec  ;
    Media::TextRecording* m_pTextRecording;
    Certificate*       m_pCertificate;
 
@@ -68,4 +67,3 @@ public:
  private:
    ContactMethod* q_ptr;
 };
-
