@@ -94,6 +94,7 @@ public:
       VIEW_CHAT_HISTORY , /*!< View the text recording associated with the CM         */
       ADD_CONTACT_METHOD, /*!< Add a contact method to a contact                      */
       CALL_CONTACT      , /*!< Call this contact [method]                             */
+      EDIT_CONTACT      , /*!< Edit fields of the contact (may involve GUI editor)    */
 
       //Call model
       ADD_NEW           , /*!< Add a new call                                         */
