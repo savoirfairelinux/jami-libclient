@@ -53,6 +53,7 @@ bool callAgain        ( ContactMethod* cm      );
 bool bookmark         ( ContactMethod* cm      );
 bool deleteContact    ( Person* p              );
 bool removeFromHistory( Call* c                );
+bool editPerson       ( Person* p              );
 
 bool addNew()
 {
@@ -353,6 +354,18 @@ bool removeFromHistory(Call* c)
    }
 
    return false;
+}
+
+/**
+ * If the client want GUI edition, this can be implemented as part of the
+ * collection edition features themselves.
+ */
+bool editPerson( Person* p )
+{
+   if (!p)
+      return false;
+
+   return p->edit();
 }
 
 } //namespace UserActions

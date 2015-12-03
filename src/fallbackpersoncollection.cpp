@@ -35,6 +35,7 @@
 #include "collectioneditor.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
+#include "interfaces/actionextenderi.h"
 #include "interfaces/itemmodelstateserializeri.h"
 #include "private/threadworker.h"
 
@@ -148,8 +149,8 @@ bool FallbackPersonBackendEditor::remove(const Person* item)
 
 bool FallbackPersonBackendEditor::edit( Person* item)
 {
-   Q_UNUSED(item)
-   return false;
+   GlobalInstances::actionExtender().editPerson(item);
+   return true;
 }
 
 bool FallbackPersonBackendEditor::addNew( Person* item)
