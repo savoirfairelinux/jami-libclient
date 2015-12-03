@@ -158,6 +158,7 @@ const Matrix2D< UAM::Action, Call::State, bool > UserActionModelPrivate::availab
  { UAMA::VIEW_CHAT_HISTORY , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::ADD_CONTACT_METHOD, {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::CALL_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::EDIT_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::REMOVE_HISTORY    , {{co, { false, false , false, false, false, false, true , true , false, false, true , false, false, false, false, false, false }}}},
 };
 #undef CS
@@ -189,6 +190,7 @@ const Matrix2D< UAMA, Account::RegistrationState, bool > UserActionModelPrivate:
    { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,    true   }}},
    { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,    true   }}},
    { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,    true   }}},
    { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,    true   }}},
 };
 
@@ -218,6 +220,7 @@ const Matrix2D< UAMA, UserActionModelPrivate::SelectionState, bool > UserActionM
    { UAMA::VIEW_CHAT_HISTORY , {{ false,  true ,  false }}},
    { UAMA::ADD_CONTACT_METHOD, {{ false,  true ,  false }}},
    { UAMA::CALL_CONTACT      , {{ false,  true ,  false }}},
+   { UAMA::EDIT_CONTACT      , {{ false,  true ,  false }}},
    { UAMA::REMOVE_HISTORY    , {{ false,  true ,  true  }}},
 };
 
@@ -246,6 +249,7 @@ const Matrix1D< UAMA, bool > UserActionModelPrivate::heterogenous_call_options =
    { UAMA::VIEW_CHAT_HISTORY , false },
    { UAMA::ADD_CONTACT_METHOD, false },
    { UAMA::CALL_CONTACT      , false },
+   { UAMA::EDIT_CONTACT      , false },
    { UAMA::REMOVE_HISTORY    , false },
 };
 
@@ -276,6 +280,7 @@ const Matrix2D< UAMA, Account::Protocol, bool > UserActionModelPrivate::availabl
    { UAMA::VIEW_CHAT_HISTORY , {{ true,  true , true  }}},
    { UAMA::ADD_CONTACT_METHOD, {{ true,  true , true  }}},
    { UAMA::CALL_CONTACT      , {{ true,  true , true  }}},
+   { UAMA::EDIT_CONTACT      , {{ true,  true , true  }}},
    { UAMA::REMOVE_HISTORY    , {{ true,  true , true  }}},
 };
 
@@ -309,6 +314,7 @@ const Matrix2D< UAMA, UserActionModelPrivate::SelectionState, UserActionModel::A
    { UAMA::VIEW_CHAT_HISTORY , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
    { UAMA::ADD_CONTACT_METHOD, {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
    { UAMA::CALL_CONTACT      , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
+   { UAMA::EDIT_CONTACT      , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
    { UAMA::REMOVE_HISTORY    , {{ ST UNISTATE,  ST UNISTATE     ,  ST UNISTATE  }}},
 };
 #undef ST
@@ -353,6 +359,7 @@ const Matrix1D< UAMA, FlagPack<UAM::Context>> UserActionModelPrivate::actionCont
    { UAMA::VIEW_CHAT_HISTORY , UAM::Context::MANAGEMENT  },
    { UAMA::ADD_CONTACT_METHOD, UAM::Context::MANAGEMENT  },
    { UAMA::CALL_CONTACT      , UAM::Context::CONTACT     },
+   { UAMA::EDIT_CONTACT      , UAM::Context::CONTACT     },
    { UAMA::REMOVE_HISTORY    , UAM::Context::MANAGEMENT  },
 };
 
@@ -376,6 +383,7 @@ const Matrix1D< UAMA, FlagPack<UAM::Asset>> UserActionModelPrivate::availableByA
    { UAMA::VIEW_CHAT_HISTORY , UAM::Asset::CONTACT_METHOD },
    { UAMA::ADD_CONTACT_METHOD, UAM::Asset::PERSON         },
    { UAMA::CALL_CONTACT      , UAM::Asset::PERSON         },
+   { UAMA::EDIT_CONTACT      , UAM::Asset::PERSON         },
    { UAMA::REMOVE_HISTORY    , UAM::Asset::CALL           },
 };
 
@@ -403,6 +411,7 @@ const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availab
    { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  false }}},
    { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,  false }}},
    { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,  false }}},
+   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,  false }}},
    { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,  false }}},
 };
 
@@ -441,6 +450,10 @@ const Matrix1D< UAM::Action, bool(*)(const Person*)> UserActionModelPrivate::per
    }},
    { UAMA::ADD_CONTACT_METHOD, nullptr                                         },
    { UAMA::CALL_CONTACT      , P_CB { return p->isReachable();                 }},
+   { UAMA::EDIT_CONTACT    , P_CB { return p->collection() &&
+      p->collection()->supportedFeatures() &
+         CollectionInterface::SupportedFeatures::EDIT;
+   }},
    { UAMA::REMOVE_HISTORY    , P_CB { return p->hasBeenCalled();               }},
 };
 #undef P_C
@@ -480,6 +493,7 @@ const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)> UserActionModelPriva
    }},
    { UAMA::ADD_CONTACT_METHOD, CM_CB { return cm->contact();                  }},
    { UAMA::CALL_CONTACT      , CM_CB { return cm->isReachable();              }},
+   { UAMA::EDIT_CONTACT      , CM_CB { return cm->contact();                  }},
    { UAMA::REMOVE_HISTORY    , CM_CB { return cm->callCount();                }},
 };
 #undef CM_CB
@@ -508,6 +522,7 @@ m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
       { UAMA::VIEW_CHAT_HISTORY , QObject::tr("View chat history"      )},
       { UAMA::ADD_CONTACT_METHOD, QObject::tr("Add phone number"       )},
       { UAMA::CALL_CONTACT      , QObject::tr("Call again"             )},
+      { UAMA::EDIT_CONTACT      , QObject::tr("Edit contact details"   )},
       { UAMA::REMOVE_HISTORY    , QObject::tr("Remove from history"    )},
    };
 
@@ -531,6 +546,7 @@ m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
       { UAMA::VIEW_CHAT_HISTORY , Qt::Unchecked},
       { UAMA::ADD_CONTACT_METHOD, Qt::Unchecked},
       { UAMA::CALL_CONTACT      , Qt::Unchecked},
+      { UAMA::EDIT_CONTACT      , Qt::Unchecked},
       { UAMA::REMOVE_HISTORY    , Qt::Unchecked},
    };
 }
@@ -708,6 +724,7 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::VIEW_CHAT_HISTORY :
       case UserActionModel::Action::ADD_CONTACT_METHOD:
       case UserActionModel::Action::CALL_CONTACT      :
+      case UserActionModel::Action::EDIT_CONTACT      :
       case UserActionModel::Action::REMOVE_HISTORY    :
       case UserActionModel::Action::COUNT__:
          break;
@@ -775,6 +792,7 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
       case UserActionModel::Action::VIEW_CHAT_HISTORY :
       case UserActionModel::Action::ADD_CONTACT_METHOD:
       case UserActionModel::Action::CALL_CONTACT      :
+      case UserActionModel::Action::EDIT_CONTACT      :
       case UserActionModel::Action::REMOVE_HISTORY    :
          break;
    }
@@ -1057,6 +1075,9 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             break;
          case UserActionModel::Action::CALL_CONTACT      :
             UserActions::callAgain(cm);
+            break;
+         case UserActionModel::Action::EDIT_CONTACT      :
+            UserActions::editPerson(p);
             break;
          case UserActionModel::Action::REMOVE_HISTORY    :
             UserActions::removeFromHistory(c);
