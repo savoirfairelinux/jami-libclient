@@ -27,12 +27,14 @@
 #include "interfaces/presenceserializeri.h"
 #include "interfaces/profilepersisteri.h"
 #include "interfaces/shortcutcreatori.h"
+#include "interfaces/actionextenderi.h"
 
 #include "accountlistcolorizerdefault.h"
 #include "dbuserrorhandlerdefault.h"
 #include "pixmapmanipulatordefault.h"
 #include "presenceserializerdefault.h"
 #include "shortcutcreatordefault.h"
+#include "actionextenderdefault.h"
 
 namespace GlobalInstances {
 
@@ -46,6 +48,7 @@ struct InstanceManager
     std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
     std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
     std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
+    std::unique_ptr<Interfaces::ActionExtenderI>           m_actionExtender;
 };
 
 static InstanceManager&
@@ -220,6 +223,25 @@ setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
     instanceManager().m_shortcutCreator = std::move(instance);
 }
 
+Interfaces::ActionExtenderI&
+actionExtender()
+{
+    if (!instanceManager().m_shortcutCreator)
+        instanceManager().m_actionExtender.reset(new Interfaces::ActionExtenderDefault);
+    return *instanceManager().m_actionExtender.get();
+}
+
+void
+setActionExtenderI(std::unique_ptr<Interfaces::ActionExtenderI> instance)
+{
+    // do not allow empty pointers
+    if (!instance) {
+        qWarning() << "ignoring empty unique_ptr";
+        return;
+    }
+    instanceManager().m_actionExtender = std::move(instance);
+}
+
 
 /*
  * This API have some advantage over a more "explicit" one
@@ -249,6 +271,7 @@ REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator   
 REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
 REGISTER_INTERFACE(Interfaces::ProfilePersisterI        , m_profilePersister        )
 REGISTER_INTERFACE(Interfaces::ShortcutCreatorI         , m_shortcutCreator         )
+REGISTER_INTERFACE(Interfaces::ActionExtenderI          , m_actionExtender          )
 
 #pragma GCC diagnostic pop
 
