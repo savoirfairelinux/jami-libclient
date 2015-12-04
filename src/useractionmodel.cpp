@@ -23,6 +23,7 @@
 
 //Ring
 #include "call.h"
+#include "mime.h"
 #include "callmodel.h"
 #include "account.h"
 #include "accountmodel.h"
@@ -30,6 +31,7 @@
 #include "availableaccountmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
+#include "interfaces/actionextenderi.h"
 #include "private/useractions.h"
 #include "private/matrixutils.h"
 #include "media/textrecording.h"
@@ -1057,6 +1059,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             break;
          case UserActionModel::Action::TOGGLE_VIDEO      :
          case UserActionModel::Action::ADD_CONTACT       :
+            break;
          case UserActionModel::Action::ADD_TO_CONTACT    :
             break;
          case UserActionModel::Action::DELETE_CONTACT    :
@@ -1066,11 +1069,16 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             UserActions::sendEmail(p);
             break;
          case UserActionModel::Action::COPY_CONTACT      :
+            GlobalInstances::actionExtender().copyInformation(
+               RingMimes::payload(c, cm, p)
+            );
             break;
          case UserActionModel::Action::BOOKMARK          :
             UserActions::bookmark(cm);
             break;
          case UserActionModel::Action::VIEW_CHAT_HISTORY :
+            GlobalInstances::actionExtender().viewChatHistory(cm);
+            break;
          case UserActionModel::Action::ADD_CONTACT_METHOD:
             break;
          case UserActionModel::Action::CALL_CONTACT      :
