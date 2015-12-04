@@ -1005,21 +1005,20 @@ QStringList CallModel::mimeTypes() const
 
 QMimeData* CallModel::mimeData(const QModelIndexList& indexes) const
 {
-   QMimeData* mData = new QMimeData();
-   foreach (const QModelIndex &idx, indexes) {
+
+   if (indexes.size() == 1) {
+      const QModelIndex idx = indexes.first();
       if (idx.isValid()) {
-         const QString text = data(idx, static_cast<int>(Call::Role::Number)).toString();
-         mData->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
          Call* call = getCall(idx);
          if (call) {
-            mData->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());
-            qDebug() << "Setting mime" << getMime(call);
-            mData->setData(RingMimes::CALLID  , getMime(call));
+            return call->mimePayload();
          }
-         return mData;
       }
    }
-   return mData;
+
+   //TODO handle/hardcode something for multiple selections / composite MIME
+
+   return new QMimeData();
 }
 
 bool CallModelPrivate::isPartOf(const QModelIndex& confIdx, Call* call)
@@ -1033,15 +1032,6 @@ bool CallModelPrivate::isPartOf(const QModelIndex& confIdx, Call* call)
       }
    }
    return false;
-}
-
-///Try to isolate the MIME id from the dringId() to eventually use something else
-QByteArray CallModel::getMime(const Call* call) const
-{
-   if ((!call) || (!call->hasRemote()))
-      return {};
-
-   return call->dringId().toLatin1();
 }
 
 Call* CallModel::fromMime( const QByteArray& fromMime) const
