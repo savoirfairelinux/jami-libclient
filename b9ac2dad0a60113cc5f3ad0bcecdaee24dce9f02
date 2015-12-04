@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_6db6b78c",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-04T19:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_ed196723",
+      "range": {
+        "startLine": 628,
+        "startChar": 7,
+        "endLine": 628,
+        "endChar": 78
+      },
+      "revId": "b9ac2dad0a60113cc5f3ad0bcecdaee24dce9f02",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_4d1dfb0e",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 2
