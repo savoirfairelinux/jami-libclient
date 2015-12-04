@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_ed196723",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-04T16:29:44Z",
+      "side": 1,
+      "message": "Maybe something less generic more specific, it\u0027s firstly destined to be read by devs (if one day we distribute with a release build the assert will not happen)",
+      "range": {
+        "startLine": 628,
+        "startChar": 7,
+        "endLine": 628,
+        "endChar": 78
+      },
+      "revId": "b9ac2dad0a60113cc5f3ad0bcecdaee24dce9f02",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_4d1dfb0e",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-04T16:29:44Z",
+      "side": 1,
+      "message": "Should not i guess ? :)",
+      "range": {
+        "startLine": 629,
+        "startChar": 19,
+        "endLine": 629,
+        "endChar": 37
+      },
+      "revId": "b9ac2dad0a60113cc5f3ad0bcecdaee24dce9f02",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
