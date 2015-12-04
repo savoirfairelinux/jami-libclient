@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_ad059fc3",
+        "filename": "src/private/useractions.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-04T16:10:48Z",
+      "side": 1,
+      "message": "Use mailto: uri would be better for Cross Platform",
+      "range": {
+        "startLine": 308,
+        "startChar": 3,
+        "endLine": 308,
+        "endChar": 58
+      },
+      "revId": "724768a39a1106f533cd51c6435e544e19954ae0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
