@@ -49,6 +49,29 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_ed572725",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-04T20:21:46Z",
+      "side": 1,
+      "message": "while(not isFound \u0026\u0026 nodeIdx \u003c m_lProfiles.size()) {\nisFound \u003d m_lProfiles[nodeIdx]-\u003econtact \u003d\u003d item;\nnodeIdx++\n}\nNot really blacklisting it but not if some other way are cleaner. \nAnd lastly you already have a boolean condition so no reason to use a break here.",
+      "range": {
+        "startLine": 228,
+        "startChar": 4,
+        "endLine": 232,
+        "endChar": 10
+      },
+      "revId": "d01cb1b6f8c3b91f39a48111939715c741dd153b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_8d2b0330",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 2
