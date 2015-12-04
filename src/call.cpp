@@ -595,23 +595,25 @@ Call* operator<<(Call* c, Call::Action action)
 ///Get the start sate from the daemon state
 Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCallState, const QString& daemonCallType)
 {
-   if(daemonCallState      == CallPrivate::DaemonStateInit::CURRENT  )
+   if(daemonCallState      == DRing::Call::StateEvent::CURRENT  )
       return Call::State::CURRENT  ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::HOLD     )
+   else if(daemonCallState == DRing::Call::StateEvent::HOLD     )
       return Call::State::HOLD     ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::BUSY     )
+   else if(daemonCallState == DRing::Call::StateEvent::BUSY     )
       return Call::State::BUSY     ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INACTIVE && daemonCallType == CallPrivate::CallDirection::INCOMING )
+   else if(daemonCallState == DRing::Call::StateEvent::INACTIVE && daemonCallType == CallPrivate::CallDirection::INCOMING )
       return Call::State::INCOMING ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INACTIVE && daemonCallType == CallPrivate::CallDirection::OUTGOING )
+   else if(daemonCallState == DRing::Call::StateEvent::INACTIVE && daemonCallType == CallPrivate::CallDirection::OUTGOING )
       return Call::State::RINGING  ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INCOMING )
+   else if(daemonCallState == DRing::Call::StateEvent::INCOMING )
       return Call::State::INCOMING ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::RINGING  )
+   else if(daemonCallState == DRing::Call::StateEvent::CONNECTING )
+      return Call::State::INITIALIZATION ;
+   else if(daemonCallState == DRing::Call::StateEvent::RINGING  )
       return Call::State::RINGING  ;
    else
       return Call::State::FAILURE  ;
-} //getStartStateFromDaemonCallState
+} //startStateFromDaemonCallState
 
 
 /*****************************************************************************
