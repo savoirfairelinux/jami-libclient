@@ -141,7 +141,8 @@ public:
    const  QString& department       () const;
    time_t lastUsedTime              () const;
 
-   QVariant roleData(int role) const;
+   Q_INVOKABLE QVariant   roleData   (int role) const;
+   Q_INVOKABLE QMimeData* mimePayload(        ) const;
 
    //Cache
    QString filterString            () const;
