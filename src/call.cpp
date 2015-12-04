@@ -1443,6 +1443,11 @@ bool Call::joinToParent()
     return success;
 }
 
+QMimeData* Call::mimePayload() const
+{
+   return RingMimes::payload(this, nullptr, nullptr);
+}
+
 
 /*****************************************************************************
  *                                                                           *

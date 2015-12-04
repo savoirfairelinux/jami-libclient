@@ -83,7 +83,6 @@ public:
    Q_INVOKABLE Call*       dialingCall       (ContactMethod* cm                 , Call* parent = nullptr);
    Q_INVOKABLE void        attendedTransfer  ( Call* toTransfer , Call* target                             );
    Q_INVOKABLE void        transfer          ( Call* toTransfer , const ContactMethod* target              );
-   Q_INVOKABLE QByteArray  getMime           ( const Call* call                                            ) const;
    Q_INVOKABLE QModelIndex getIndex          ( Call* call                                                  ) const;
    Q_INVOKABLE Call*       fromMime          ( const QByteArray& fromMime                                  ) const;
    Q_INVOKABLE Call*       selectedCall      (                                                             ) const;
