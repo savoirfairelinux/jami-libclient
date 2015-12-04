@@ -130,47 +130,47 @@ const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::St
 
 const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
 {{
-//                        RINGING                   CONNECTING                 CURRENT                   BUSY                  HOLD                        HUNGUP                 FAILURE           /**/
-/*NEW          */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
-/*INCOMING     */ {{Call::State::INCOMING    , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*RINGING      */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*CURRENT      */ {{Call::State::CURRENT     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*DIALING      */ {{Call::State::RINGING     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*HOLD         */ {{Call::State::HOLD        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*FAILURE      */ {{Call::State::FAILURE     , Call::State::ERROR     , Call::State::FAILURE    , Call::State::BUSY   , Call::State::FAILURE      ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*BUSY         */ {{Call::State::BUSY        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::BUSY         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*TRANSFER     */ {{Call::State::TRANSFERRED , Call::State::ERROR     , Call::State::TRANSFERRED, Call::State::BUSY   , Call::State::TRANSF_HOLD  ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*TRANSF_HOLD  */ {{Call::State::TRANSF_HOLD , Call::State::ERROR     , Call::State::TRANSFERRED, Call::State::BUSY   , Call::State::TRANSF_HOLD  ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*OVER         */ {{Call::State::OVER        , Call::State::OVER      , Call::State::OVER       , Call::State::OVER   , Call::State::OVER         ,  Call::State::OVER  ,  Call::State::OVER     }},/**/
-/*ERROR        */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
-/*CONF         */ {{Call::State::CURRENT     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*CONF_HOLD    */ {{Call::State::HOLD        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*INIT         */ {{Call::State::RINGING     , Call::State::INITIALIZATION, Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-/*ABORTED      */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR        ,  Call::State::ERROR ,  Call::State::ERROR    }},/**/
-/*CONNECTED    */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD         ,  Call::State::OVER  ,  Call::State::FAILURE  }},/**/
-}};//                                                                                                                                                                                                 */
+//                        RINGING                   CONNECTING                 CURRENT                   BUSY                  HOLD                        HUNGUP              FAILURE               OVER                      INACTIVE              /**/
+/*NEW          */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR       , Call::State::ERROR , Call::State::ERROR   , Call::State::ERROR    , Call::State::INITIALIZATION}},/**/
+/*INCOMING     */ {{Call::State::INCOMING    , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::INCOMING      }},/**/
+/*RINGING      */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::RINGING       }},/**/
+/*CURRENT      */ {{Call::State::CURRENT     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*DIALING      */ {{Call::State::RINGING     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*HOLD         */ {{Call::State::HOLD        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*FAILURE      */ {{Call::State::FAILURE     , Call::State::ERROR     , Call::State::FAILURE    , Call::State::BUSY   , Call::State::FAILURE     , Call::State::OVER  , Call::State::FAILURE , Call::State::FAILURE  , Call::State::ERROR         }},/**/
+/*BUSY         */ {{Call::State::BUSY        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::BUSY        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*TRANSFER     */ {{Call::State::TRANSFERRED , Call::State::ERROR     , Call::State::TRANSFERRED, Call::State::BUSY   , Call::State::TRANSF_HOLD , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*TRANSF_HOLD  */ {{Call::State::TRANSF_HOLD , Call::State::ERROR     , Call::State::TRANSFERRED, Call::State::BUSY   , Call::State::TRANSF_HOLD , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*OVER         */ {{Call::State::OVER        , Call::State::OVER      , Call::State::OVER       , Call::State::OVER   , Call::State::OVER        , Call::State::OVER  , Call::State::OVER    , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*ERROR        */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR       , Call::State::ERROR , Call::State::ERROR   , Call::State::ERROR    , Call::State::ERROR         }},/**/
+/*CONF         */ {{Call::State::CURRENT     , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*CONF_HOLD    */ {{Call::State::HOLD        , Call::State::ERROR     , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::ERROR         }},/**/
+/*INIT         */ {{Call::State::RINGING     , Call::State::INITIALIZATION, Call::State::CURRENT, Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::INITIALIZATION}},/**/
+/*ABORTED      */ {{Call::State::ERROR       , Call::State::ERROR     , Call::State::ERROR      , Call::State::ERROR  , Call::State::ERROR       , Call::State::ERROR , Call::State::ERROR   , Call::State::ERROR    , Call::State::ERROR         }},/**/
+/*CONNECTED    */ {{Call::State::RINGING     , Call::State::CONNECTED , Call::State::CURRENT    , Call::State::BUSY   , Call::State::HOLD        , Call::State::OVER  , Call::State::FAILURE , Call::State::OVER     , Call::State::CONNECTED     }},/**/
+}};//                                                                                                                                                                                                                                                  */
 
 const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState > , Call::State > CallPrivate::stateChangedFunctionMap =
 {{
-//                      RINGING          CONNECTING      CURRENT            BUSY                 HOLD                HUNGUP            FAILURE     /**/
-/*NEW            */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing        , CP::nothing      ,  CP::nothing      , CP::nothing }},/**/
-/*INCOMING       */  {{CP::nothing    , CP::nothing   , CP::start     , CP::startWeird     , CP::startWeird   ,  CP::startStop    , CP::failure }},/**/
-/*RINGING        */  {{CP::nothing    , CP::nothing   , CP::start     , CP::failure        , CP::start        ,  CP::startStop    , CP::failure }},/**/
-/*CURRENT        */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*DIALING        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
-/*HOLD           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*FAILURE        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::nothing }},/**/
-/*BUSY           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing        , CP::warning      ,  CP::stop         , CP::nothing }},/**/
-/*TRANSFERT      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*TRANSFERT_HOLD */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*OVER           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
-/*ERROR          */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::stop         , CP::error   }},/**/
-/*CONF           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning        , CP::nothing      ,  CP::stop         , CP::nothing }},/**/
-/*INIT           */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
-/*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error          , CP::error        ,  CP::error        , CP::error   }},/**/
-/*CONNECTED      */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning        , CP::warning      ,  CP::stop         , CP::warning }},/**/
-}};//                                                                                                                                                */
+//                      RINGING          CONNECTING      CURRENT            BUSY               HOLD               HUNGUP         FAILURE          OVER        INACTIVE     /**/
+/*NEW            */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing      , CP::nothing      , CP::nothing    , CP::nothing  , CP::nothing , CP::nothing}}, /**/
+/*INCOMING       */  {{CP::nothing    , CP::nothing   , CP::start     , CP::startWeird   , CP::startWeird   , CP::startStop  , CP::failure  , CP::nothing , CP::nothing}}, /**/
+/*RINGING        */  {{CP::nothing    , CP::nothing   , CP::start     , CP::failure      , CP::start        , CP::startStop  , CP::failure  , CP::nothing , CP::nothing}}, /**/
+/*CURRENT        */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*DIALING        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
+/*HOLD           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*FAILURE        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::nothing  , CP::nothing , CP::nothing}}, /**/
+/*BUSY           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing      , CP::warning      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*TRANSFERT      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*TRANSFERT_HOLD */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*OVER           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::nothing , CP::nothing}}, /**/
+/*ERROR          */  {{CP::error      , CP::error     , CP::error     , CP::error        , CP::error        , CP::stop       , CP::error    , CP::error   , CP::nothing}}, /**/
+/*CONF           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
+/*INIT           */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
+/*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error        , CP::error        , CP::error      , CP::error    , CP::error   , CP::nothing}}, /**/
+/*CONNECTED      */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
+}};//                                                                                                                                                                        */
 
 //There is no point to have a 2D matrix, only one transition per state is possible
 const Matrix1D<Call::LifeCycleState,function> CallPrivate::m_mLifeCycleStateChanges = {{
@@ -212,16 +212,16 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 /*CURRENT        */  {{     false    ,     true     ,    true     ,    false }},/**/
 /*DIALING        */  {{     true     ,     true     ,    false    ,    false }},/**/
 /*HOLD           */  {{     false    ,     true     ,    true     ,    false }},/**/
-/*FAILURE        */  {{     false    ,     true     ,    true     ,    false }},/**/
-/*BUSY           */  {{     false    ,     true     ,    false    ,    false }},/**/
+/*FAILURE        */  {{     false    ,     true     ,    true     ,    true  }},/**/
+/*BUSY           */  {{     false    ,     true     ,    false    ,    true  }},/**/
 /*TRANSFERT      */  {{     false    ,     false    ,    true     ,    false }},/**/
 /*TRANSFERT_HOLD */  {{     false    ,     false    ,    true     ,    false }},/**/
 /*OVER           */  {{     false    ,     true     ,    true     ,    true  }},/**/
-/*ERROR          */  {{     true     ,     true     ,    true     ,    false }},/**/
+/*ERROR          */  {{     true     ,     true     ,    true     ,    true  }},/**/
 /*CONF           */  {{     false    ,     true     ,    false    ,    false }},/**/
 /*CONF_HOLD      */  {{     false    ,     true     ,    false    ,    false }},/**/
 /*INIT           */  {{     true     ,     true     ,    false    ,    false }},/**/
-/*ABORTED        */  {{     true     ,     true     ,    false    ,    false }},/**/
+/*ABORTED        */  {{     true     ,     true     ,    false    ,    true  }},/**/
 /*INITIALIZATION */  {{     true     ,     true     ,    false    ,    false }},/**/
 }};/*                                                                            **/
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
@@ -595,23 +595,25 @@ Call* operator<<(Call* c, Call::Action action)
 ///Get the start sate from the daemon state
 Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCallState, const QString& daemonCallType)
 {
-   if(daemonCallState      == CallPrivate::DaemonStateInit::CURRENT  )
+   if(daemonCallState      == DRing::Call::StateEvent::CURRENT  )
       return Call::State::CURRENT  ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::HOLD     )
+   else if(daemonCallState == DRing::Call::StateEvent::HOLD     )
       return Call::State::HOLD     ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::BUSY     )
+   else if(daemonCallState == DRing::Call::StateEvent::BUSY     )
       return Call::State::BUSY     ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INACTIVE && daemonCallType == CallPrivate::CallDirection::INCOMING )
+   else if(daemonCallState == DRing::Call::StateEvent::INCOMING )
       return Call::State::INCOMING ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INACTIVE && daemonCallType == CallPrivate::CallDirection::OUTGOING )
+      else if(daemonCallState == DRing::Call::StateEvent::CONNECTING && daemonCallType == CallPrivate::CallDirection::INCOMING )
+         return Call::State::INCOMING ;
+      else if(daemonCallState == DRing::Call::StateEvent::CONNECTING && daemonCallType == CallPrivate::CallDirection::OUTGOING )
+         return Call::State::RINGING  ;
+   else if(daemonCallState == DRing::Call::StateEvent::RINGING  )
       return Call::State::RINGING  ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::INCOMING )
-      return Call::State::INCOMING ;
-   else if(daemonCallState == CallPrivate::DaemonStateInit::RINGING  )
-      return Call::State::RINGING  ;
+   else if(daemonCallState == DRing::Call::StateEvent::INACTIVE )
+      return Call::State::INITIALIZATION;
    else
       return Call::State::FAILURE  ;
-} //getStartStateFromDaemonCallState
+} //startStateFromDaemonCallState
 
 
 /*****************************************************************************
@@ -623,11 +625,14 @@ Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCall
 ///Transfer state from internal to daemon internal syntaz
 CallPrivate::DaemonState CallPrivate::toDaemonCallState(const QString& stateName)
 {
+   //TODO use a hash for this as it grow larger
    if(stateName == CallPrivate::StateChange::HUNG_UP        )
       return CallPrivate::DaemonState::HUNG_UP ;
-   if(stateName == CallPrivate::StateChange::CONNECTING      )
+   if(stateName == CallPrivate::StateChange::CONNECTING     )
        return CallPrivate::DaemonState::CONNECTING ;
    if(stateName == CallPrivate::StateChange::RINGING        )
+      return CallPrivate::DaemonState::RINGING ;
+   if(stateName == CallPrivate::StateChange::INCOMING       )
       return CallPrivate::DaemonState::RINGING ;
    if(stateName == CallPrivate::StateChange::CURRENT        )
       return CallPrivate::DaemonState::CURRENT ;
@@ -640,7 +645,9 @@ CallPrivate::DaemonState CallPrivate::toDaemonCallState(const QString& stateName
    if(stateName == CallPrivate::StateChange::FAILURE        )
       return CallPrivate::DaemonState::FAILURE ;
    if(stateName == CallPrivate::StateChange::INACTIVE       )
-      return CallPrivate::DaemonState::HUNG_UP ;
+      return CallPrivate::DaemonState::INACTIVE ;
+   if(stateName == CallPrivate::StateChange::OVER           )
+      return CallPrivate::DaemonState::OVER ;
 
    qDebug() << "stateChanged signal received with unknown state: " << stateName;
    return CallPrivate::DaemonState::FAILURE    ;
