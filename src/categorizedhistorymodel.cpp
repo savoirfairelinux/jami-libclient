@@ -475,6 +475,7 @@ QMimeData* CategorizedHistoryModel::mimeData(const QModelIndexList &indexes) con
          const QString      text = data(idx, static_cast<int>(Call::Role::Number)).toString();
          const Call*        call = node->m_pCall;
 
+         //TODO use RingMimes::payload once the multi selection is investigated
          mimeData2->setData(RingMimes::PLAIN_TEXT , text.toUtf8());
 
          mimeData2->setData(RingMimes::PHONENUMBER, call->peerContactMethod()->toHash().toUtf8());

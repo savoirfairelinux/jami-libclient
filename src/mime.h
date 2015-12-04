@@ -17,7 +17,16 @@
  ***************************************************************************/
 #pragma once
 
+// Qt
+class QMimeData;
+
+// LRC
+class Call;
+class ContactMethod;
+class Person;
+
 namespace RingMimes {
+   //TODO use QStringLiteral
    constexpr static const char* CALLID      = "text/ring.call.id"        ;
    constexpr static const char* CONTACT     = "text/ring.contact"        ;
    constexpr static const char* HISTORYID   = "text/ring.history.id"     ;
@@ -29,4 +38,10 @@ namespace RingMimes {
    constexpr static const char* AUDIO_CODEC = "text/ring.codec.audio"    ;
    constexpr static const char* VIDEO_CODEC = "text/ring.codec.video"    ;
    constexpr static const char* PROFILE_VCF = "x-ring/ring.profile.vcard";
+   constexpr static const char* VCF         = "text/vcard"               ;
+   constexpr static const char* XVCF        = "text/x-vcard"             ;
+   constexpr static const char* MAC_VCF     = "application/vcard"        ;
+   constexpr static const char* URI_LIST    = "text/uri-list"            ;
+
+   QMimeData* payload(const Call* c, const ContactMethod* cm, const Person* p);
 }

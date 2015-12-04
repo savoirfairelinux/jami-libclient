@@ -40,6 +40,7 @@
 #include "certificate.h"
 #include "accountmodel.h"
 #include "certificatemodel.h"
+#include "mime.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -530,6 +531,11 @@ QVariant ContactMethod::roleData(int role) const
          return QVariant::fromValue(Call::LifeCycleState::FINISHED);
    }
    return cat;
+}
+
+QMimeData* ContactMethod::mimePayload() const
+{
+   return RingMimes::payload(nullptr, this, nullptr);
 }
 
 ///Add a call to the call list, notify listener
