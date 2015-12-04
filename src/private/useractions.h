@@ -19,10 +19,13 @@
 
 // Qt
 #include <QtCore/QProcess>
+#include <QtCore/QMimeData>
+#include <QtCore/QStringBuilder>
 
 // LRC
 #include <categorizedbookmarkmodel.h>
 #include <categorizedhistorymodel.h>
+#include <mime.h>
 
 #include "media/media.h"
 #include "media/audio.h"

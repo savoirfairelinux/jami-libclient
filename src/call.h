@@ -38,6 +38,7 @@ class ContactMethod         ;
 class TemporaryContactMethod;
 class CollectionInterface   ;
 class Certificate           ;
+class Person                ;
 
 namespace Video {
    class Manager;
@@ -57,6 +58,11 @@ class Call;
 
 //Private
 class CallPrivate;
+
+namespace RingMimes
+{
+   QMimeData* payload(const Call*, const ContactMethod*, const Person*);
+}
 
 
 /**
@@ -89,6 +95,7 @@ public:
    friend class Media::Text;
    friend class MediaTypeInference;
    friend class IMConversationManagerPrivate;
+   friend QMimeData* RingMimes::payload(const Call*, const ContactMethod*, const Person*);
 
    //Enum
 
@@ -306,9 +313,11 @@ public:
    bool                     hasRemote        () const;
    Certificate*             certificate      () const;
    FlagPack<HoldFlags>      holdFlags        () const;
-   QVariant                 roleData         (int  role) const;
-   QVariant                 roleData         (Role role) const;
    bool                     hasParentCall    () const;
+
+   Q_INVOKABLE QVariant   roleData         (int  role) const;
+   Q_INVOKABLE QVariant   roleData         (Role role) const;
+   Q_INVOKABLE QMimeData* mimePayload      (         ) const;
 
    template<typename T>
    T* firstMedia(Media::Media::Direction direction) const;
