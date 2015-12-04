@@ -63,8 +63,9 @@ public:
 
    //Attributes
    QList<Node*> m_lProfiles;
-   QHash<QByteArray,Node*> m_hProfileByAccountId;
-   QHash<QByteArray,Node*> m_hAccountIdToNode;
+   QHash<Account*,Node*> m_hProfileByAccount;
+   QHash<Person*,Node*> m_hProfileByPerson;
+   QHash<Account*,Node*> m_hAccountToNode;
    QVector<Person*> m_lProfilePersons;
    QSet<Person*> m_bSaveBuffer;
 
@@ -424,8 +425,9 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    ProfileModel::instance().beginInsertRows(ProfileModel::instance().index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
    ProfileModel::instance().endInsertRows();
-   m_pEditor->m_hProfileByAccountId[acc->id()] = parent;
-   m_pEditor->m_hAccountIdToNode[acc->id()] = account_pro;
+   m_pEditor->m_hProfileByAccount[acc] = parent;
+
+   m_pEditor->m_hAccountToNode[acc] = account_pro;
 
    if (parent->contact)
       acc->contactMethod()->setPerson(parent->contact);
@@ -530,7 +532,7 @@ QList<Account*> ProfileEditor::getAccountsForProfile(const QString& id)
 
 Node* ProfileEditor::getProfileById(const QByteArray& id)
 {
-   foreach(Node* p, m_lProfiles) {
+   foreach(Node* p, m_lProfiles) { //TODO rewrite using a hash
       if(p->contact->uid() == id)
          return p;
    }
@@ -615,12 +617,16 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
       return QModelIndex();
 
    Account* acc = AccountModel::instance().getAccountByModelIndex(idx);
-   Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountIdToNode[acc->id()];
+   Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
 
    //Something is wrong, there is an orphan
    if (!accNode) {
       d_ptr->m_pProfileBackend->setupDefaultProfile();
-      accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountIdToNode[acc->id()];
+      accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
+   }
+
+   if (!accNode) {
+      qDebug() << "No profile is assigned to this account" << acc->alias();
    }
 
    Q_ASSERT(accNode && accNode->parent && accNode->type == Node::Type::ACCOUNT);
@@ -849,10 +855,15 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       }
 
       // Use the account ID to locate the original location
-      Node* accountProfile = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId];
-      foreach (Node* acc, accountProfile->children) {
-         if(acc->account->id() == accountId) {
-            indexOfAccountToMove = acc->m_Index;
+      Account* acc = AccountModel::instance().getById(accountId);
+
+      if (!acc)
+         return false;
+
+      Node* accountProfile = d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccount[acc];
+      foreach (Node* accNode, accountProfile->children) {
+         if(accNode->account->id() == accountId) {
+            indexOfAccountToMove = accNode->m_Index;
             break;
          }
       }
@@ -870,7 +881,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       qDebug() << "Moving:" << accountToMove->account->alias();
       accountProfile->children.remove(indexOfAccountToMove);
       accountToMove->parent = newProfile;
-      d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccountId[accountId] = newProfile;
+      d_ptr->m_pProfileBackend->m_pEditor->m_hProfileByAccount[acc] = newProfile;
       newProfile->children.insert(destIdx, accountToMove);
       d_ptr->updateIndexes();
       d_ptr->m_pProfileBackend->saveAll();
@@ -1002,7 +1013,7 @@ QModelIndex ProfileModelPrivate::addProfile(Person* person, const QString& name)
 
    }
 
-   if (auto n = m_pProfileBackend->m_pEditor->m_hProfileByAccountId[p->uid()]) {
+   if (auto n = m_pProfileBackend->m_pEditor->m_hProfileByPerson[p]) {
       return q_ptr->index(n->m_Index, 0);
    }
 
@@ -1016,7 +1027,7 @@ Node* ProfileModelPrivate::insertProfile(Person* p)
    pro->contact = p                  ;
    pro->m_Index = m_pProfileBackend->m_pEditor->m_lProfiles.size();
 
-   m_pProfileBackend->m_pEditor->m_hProfileByAccountId[p->uid()] = pro;
+   m_pProfileBackend->m_pEditor->m_hProfileByPerson[p] = pro;
 
    q_ptr->beginInsertRows({}, m_pProfileBackend->m_pEditor->m_lProfiles.size(), m_pProfileBackend->m_pEditor->m_lProfiles.size());
    m_pProfileBackend->m_pEditor->m_lProfiles << pro;
@@ -1091,7 +1102,7 @@ void ProfileModelPrivate::regenParentIndexes()
 
 void ProfileModelPrivate::slotAccountRemoved(Account* a)
 {
-   auto n = m_pProfileBackend->m_pEditor->m_hAccountIdToNode[a->id()];
+   auto n = m_pProfileBackend->m_pEditor->m_hAccountToNode[a];
 
    if (n && n->parent) {
       const QModelIndex profIdx = q_ptr->index(n->parent->m_Index, 0);
@@ -1104,7 +1115,7 @@ void ProfileModelPrivate::slotAccountRemoved(Account* a)
          for (int i = accIdx; i < n->parent->children.size(); i++)
             n->parent->children[i]->m_Index--;
 
-         m_pProfileBackend->m_pEditor->m_hAccountIdToNode[a->id()] = nullptr;
+         m_pProfileBackend->m_pEditor->m_hAccountToNode[a] = nullptr;
          delete n;
 
          q_ptr->endRemoveRows();
