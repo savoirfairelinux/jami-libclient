@@ -132,7 +132,8 @@ public:
     * Returns roles associated on ContactMethod based on Call::Roles
     * Returns last call info when querying info on call associated to this contact method
     */
-   QVariant roleData(int role) const;
+   Q_INVOKABLE QVariant   roleData   (int role) const;
+   Q_INVOKABLE QMimeData* mimePayload(        ) const;
 
    //Setters
    Q_INVOKABLE void setAccount   (Account*            account   );

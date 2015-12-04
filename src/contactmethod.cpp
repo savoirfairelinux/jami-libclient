@@ -539,6 +539,11 @@ QVariant ContactMethod::roleData(int role) const
    return cat;
 }
 
+QMimeData* ContactMethod::mimePayload() const
+{
+   return RingMimes::payload(nullptr, this, nullptr);
+}
+
 ///Add a call to the call list, notify listener
 void ContactMethod::addCall(Call* call)
 {
