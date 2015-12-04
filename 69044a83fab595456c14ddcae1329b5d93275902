@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_ed6167d4",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-04T07:14:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_49b410f2",
+      "range": {
+        "startLine": 860,
+        "startChar": 6,
+        "endLine": 860,
+        "endChar": 20
+      },
+      "revId": "69044a83fab595456c14ddcae1329b5d93275902",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_69b9cce8",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2015-12-01T18:38:25Z",
       "side": 1,
       "message": "How ? Why ?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 64,
+        "endLine": 1029,
+        "endChar": 69
+      },
+      "revId": "69044a83fab595456c14ddcae1329b5d93275902",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_69b0ecf4",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-04T07:14:43Z",
+      "side": 1,
+      "message": "Oops, I fixed it and forgot to remove the //FIXME, I commented the line because it put a Person UID in m_hProfileBy*ACCOUNTID*, (/me lazy me)\n\nDone",
+      "parentUuid": "1a9dcd25_69b9cce8",
       "range": {
         "startLine": 1029,
         "startChar": 64,
