@@ -1058,9 +1058,12 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
                d_ptr->updateActions();
             break;
          case UserActionModel::Action::TOGGLE_VIDEO      :
+            break;
          case UserActionModel::Action::ADD_CONTACT       :
+            UserActions::addPerson(cm);
             break;
          case UserActionModel::Action::ADD_TO_CONTACT    :
+            UserActions::addToPerson(cm);
             break;
          case UserActionModel::Action::DELETE_CONTACT    :
             UserActions::deleteContact(p);

@@ -25,6 +25,8 @@
 // LRC
 #include <categorizedbookmarkmodel.h>
 #include <categorizedhistorymodel.h>
+#include <personmodel.h>
+#include <interfaces/actionextenderi.h>
 #include <mime.h>
 
 #include "media/media.h"
@@ -57,6 +59,10 @@ bool bookmark         ( ContactMethod* cm      );
 bool deleteContact    ( Person* p              );
 bool removeFromHistory( Call* c                );
 bool editPerson       ( Person* p              );
+bool addToPerson      ( ContactMethod* cm      );
+bool addToPerson      ( Person* p              );
+
+bool addPerson(ContactMethod* cm, CollectionInterface* col = nullptr);
 
 bool addNew()
 {
@@ -344,16 +350,20 @@ bool deleteContact(Person* p)
    if (!p)
       return false;
 
-   return p->remove();
+   if (GlobalInstances::actionExtender().warnDeletePerson(p))
+      return p->remove();
+
+   return false;
 }
 
 bool removeFromHistory(Call* c)
 {
    if (c && c->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
 
-      CategorizedHistoryModel::instance().deleteItem(c); //TODO add add and remove to the manager
-
-      return true;
+      if (GlobalInstances::actionExtender().warnDeleteCall(c)) {
+         CategorizedHistoryModel::instance().deleteItem(c); //TODO add add and remove to the manager
+         return true;
+      }
    }
 
    return false;
@@ -369,6 +379,79 @@ bool editPerson( Person* p )
       return false;
 
    return p->edit();
+}
+
+bool addPerson(ContactMethod* cm, CollectionInterface* col)
+{
+   if (cm->contact())
+      return false;
+
+   if (!col) {
+      const QVector<CollectionInterface*> cols = PersonModel::instance()
+         .collections(CollectionInterface::SupportedFeatures::ADD);
+
+         if (cols.isEmpty())
+            return false;
+
+         //TODO support collection selection
+         col = cols.first();
+   }
+
+   Person* p = new Person();
+
+   p->setFormattedName(cm->primaryName());
+   p->setContactMethods({cm});
+
+   cm->setPerson(p);
+
+   col->add(p);
+
+   Q_ASSERT_X(p->collection() == col,
+      "addPerson",
+      "The collection doesn't match. This is an internal Ring bug, please "
+      "report it"
+   );
+
+   p->save();
+
+   editPerson(p);
+}
+
+bool addToPerson(ContactMethod* cm)
+{
+   if (!cm)
+      return false;
+
+   Person* p = GlobalInstances::actionExtender().selectPerson();
+
+   if (!p || !(p->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::EDIT))
+      return false;
+
+   auto numbers = p->phoneNumbers();
+   numbers << cm;
+   p->setContactMethods(numbers);
+
+   return p->save();
+}
+
+bool addToPerson(Person* p)
+{
+   if (!p || !(p->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::EDIT))
+      return false;
+
+   ContactMethod* cm = GlobalInstances::actionExtender().selectContactMethod(
+      Interfaces::ActionExtenderI::SelectContactMethodHint::RECENT |
+      Interfaces::ActionExtenderI::SelectContactMethodHint::WITHOUT_PERSON
+   );
+
+   if (!cm)
+      return false;
+
+   auto numbers = p->phoneNumbers();
+   numbers << cm;
+   p->setContactMethods(numbers);
+
+   return p->save();
 }
 
 } //namespace UserActions
