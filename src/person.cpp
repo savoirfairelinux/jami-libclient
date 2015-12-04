@@ -39,7 +39,7 @@
 #include "interfaces/pixmapmanipulatori.h"
 #include "private/person_p.h"
 #include "media/textrecording.h"
-
+#include "mime.h"
 
 class AddressPrivate
 {
@@ -604,6 +604,11 @@ QVariant Person::roleData(int role) const
    }
 
    return QVariant();
+}
+
+QMimeData* Person::mimePayload() const
+{
+   return RingMimes::payload(nullptr, nullptr, this);
 }
 
 ///Callback when one of the phone number presence change
