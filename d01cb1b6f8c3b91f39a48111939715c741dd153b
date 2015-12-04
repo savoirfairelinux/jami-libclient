@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_0d4b73b1",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-04T19:25:37Z",
+      "side": 1,
+      "message": "Well, technically, this _is_ a for loop. I just declared the variable outside of the loop to be able to keep it. Even for the other one, I less or more agree it wasn\u0027t ok, but changed it anyway.\n\nIf the definition of a for loop is \"go from A to B by incrementing an iterator\", this is a typical for loop. It is no different than GTK code doing\nfor (; node; node-\u003enext) {} as a foreach loop\n\nThe only thing this syntax changed is that instead of haveing a single for loop with an \"if\" inside, the for loop was split in \"before condition\" and \"after condition\".\n\nIf you really want me to change this, I will, but I don\u0027t really see the point of blacklisting this syntax. I think it\u0027s cleaner",
+      "parentUuid": "1a9dcd25_6d26b76a",
+      "range": {
+        "startLine": 228,
+        "startChar": 6,
+        "endLine": 232,
+        "endChar": 10
+      },
+      "revId": "d01cb1b6f8c3b91f39a48111939715c741dd153b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_8d2b0330",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 2
