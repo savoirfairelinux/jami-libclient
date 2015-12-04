@@ -52,6 +52,7 @@
 #include "media/audio.h"
 #include "media/video.h"
 #include "private/media_p.h"
+#include "call_const.h"
 
 //System
 #include <unistd.h>
@@ -591,7 +592,7 @@ QStringList CallModelPrivate::getCallList()
 
    for (const QString& callId : callList) {
       QMap<QString, QString> details = callManager.getCallDetails(callId);
-      if (details[CallPrivate::DetailsMapFields::STATE] != CallPrivate::DaemonStateInit::INACTIVE)
+      if (details[CallPrivate::DetailsMapFields::STATE] != DRing::Call::StateEvent::INACTIVE)
          ret << callId;
    }
 

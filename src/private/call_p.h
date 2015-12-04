@@ -74,16 +74,6 @@ public:
       constexpr static const char* INACTIVE       = "INACTIVE";
    };
 
-   class DaemonStateInit {
-   public:
-      constexpr static const char* CURRENT  = "CURRENT"  ;
-      constexpr static const char* HOLD     = "HOLD"     ;
-      constexpr static const char* BUSY     = "BUSY"     ;
-      constexpr static const char* INCOMING = "INCOMING" ;
-      constexpr static const char* RINGING  = "RINGING"  ;
-      constexpr static const char* INACTIVE = "INACTIVE" ;
-   };
-
    ///"getCallDetails()" fields
    class DetailsMapFields {
    public:
