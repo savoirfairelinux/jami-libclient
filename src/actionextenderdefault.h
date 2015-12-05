@@ -40,6 +40,8 @@ public:
    virtual void copyInformation(QMimeData* data) override;
    virtual bool warnDeletePerson(Person* p) override;
    virtual bool warnDeleteCall(Call* c) override;
+   virtual Person* selectPerson(FlagPack<SelectPersonHint> hints) const override;
+   virtual ContactMethod* selectContactMethod(FlagPack<SelectContactMethodHint> hints) const override;
 };
 
 } // namespace Interfaces
