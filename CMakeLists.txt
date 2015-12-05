@@ -296,6 +296,7 @@ SET( libringclient_LIB_SRCS
   src/pixmapmanipulatordefault.cpp
   src/profilepersisterdefault.cpp
   src/shortcutcreatordefault.cpp
+  src/actionextenderdefault.cpp
   src/dbuserrorhandlerdefault.cpp
 
   #Other
@@ -452,6 +453,7 @@ SET(libringclient_interface_LIB_HDRS
   src/interfaces/pixmapmanipulatori.h
   src/interfaces/profilepersisteri.h
   src/interfaces/shortcutcreatori.h
+  src/interfaces/actionextenderi.h
   src/interfaces/dbuserrorhandleri.h
 )
 
