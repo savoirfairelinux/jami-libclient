@@ -100,15 +100,7 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
    const ContactMethod* number = d_ptr->m_lNumbers[index.row()];
    switch (static_cast<PhoneDirectoryModelPrivate::Columns>(index.column())) {
       case PhoneDirectoryModelPrivate::Columns::URI:
-         switch (role) {
-            case Qt::DisplayRole:
-               return number->uri();
-            case Qt::DecorationRole :
-               return GlobalInstances::pixmapManipulator().callPhoto(number,QSize(16,16));
-            case (int) Role::Object:
-               return QVariant::fromValue(const_cast<ContactMethod*>(number));
-         }
-         break;
+         return number->roleData(role);
       case PhoneDirectoryModelPrivate::Columns::TYPE:
          switch (role) {
             case Qt::DisplayRole:
