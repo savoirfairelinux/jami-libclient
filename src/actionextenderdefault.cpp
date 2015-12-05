@@ -48,5 +48,18 @@ bool ActionExtenderDefault::warnDeleteCall(Call* c)
    return true;
 }
 
+Person* ActionExtenderDefault::selectPerson(FlagPack<SelectPersonHint> hints, const QVariant& hintVar) const
+{
+   Q_UNUSED(hintVar)
+   Q_UNUSED(hints)
+   return nullptr;
+}
+
+ContactMethod* ActionExtenderDefault::selectContactMethod(FlagPack<SelectContactMethodHint> hints, const QVariant& hintVar) const
+{
+   Q_UNUSED(hintVar)
+   Q_UNUSED(hints)
+   return nullptr;
+}
 
 } // namespace Interfaces
