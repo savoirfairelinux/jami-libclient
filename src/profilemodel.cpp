@@ -222,10 +222,19 @@ bool ProfileEditor::remove(const Person* item)
    if (QFile::remove(path(item))) {
       mediator()->removeItem(item);
 
-      foreach (Node* n, m_lProfiles) {
-         if (n->contact == item) {
-            m_lProfiles.removeAll(n);
-            break;
+      int nodeIdx = -1;
+      bool isFound = false;
+
+      while (not isFound && ++nodeIdx < m_lProfiles.size()) {
+         isFound = (m_lProfiles[nodeIdx]->contact == item)
+      }
+
+      // Remove the node and update all other indices
+      if (isFound) {
+         m_lProfiles.removeAt(nodeIdx);
+         while (nodeIdx < m_lProfiles.size()) {
+            m_lProfiles[nodeIdx]->m_Index--;
+            nodeIdx++;
          }
       }
 
@@ -364,7 +373,7 @@ void ProfileContentBackend::setupDefaultProfile()
    //hidden as low as possible for now
    //TODO remove this atrocity when the profile before available in Account::
    //BUG this doesn't work with new accounts
-   for (int i=0; i < AccountModel::instance().size();i++) {
+   for (int i=0; i < AccountModel::instance().size(); i++) {
       accounts[AccountModel::instance()[i]] = false;
    }
 
@@ -382,11 +391,12 @@ void ProfileContentBackend::setupDefaultProfile()
 
    if (orphans.size() && (!m_pDefault)) {
       qDebug() << "No profile found, creating one";
+
       Person* profile = new Person(this, QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8());
       m_pEditor->addNew(profile);
       profile->setFormattedName(tr("Default"));
 
-      m_pDefault = ProfileModel::instance().d_ptr->insertProfile(profile);
+      m_pDefault = m_pEditor->m_lProfiles.last();
    }
 
    foreach(Account* a, orphans) {
@@ -551,11 +561,11 @@ ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent)
 ///Avoid creating an initialization loop
 void ProfileModelPrivate::slotDelayedInit()
 {
-   connect(&AccountModel::instance(),SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(slotDataChanged(QModelIndex,QModelIndex)));
-   connect(&AccountModel::instance(),&QAbstractItemModel::rowsRemoved, this, &ProfileModelPrivate::slotRowsRemoved);
-   connect(&AccountModel::instance(),&QAbstractItemModel::rowsInserted, this, &ProfileModelPrivate::slotRowsInserted);
-   connect(&AccountModel::instance(),&QAbstractItemModel::rowsMoved, this, &ProfileModelPrivate::slotRowsMoved);
-   connect(&AccountModel::instance(),SIGNAL(layoutChanged()),this,SLOT(slotLayoutchanged()));
+   connect(&AccountModel::instance(), &QAbstractItemModel::dataChanged  , this, &ProfileModelPrivate::slotDataChanged  );
+   connect(&AccountModel::instance(), &QAbstractItemModel::rowsRemoved  , this, &ProfileModelPrivate::slotRowsRemoved  );
+   connect(&AccountModel::instance(), &QAbstractItemModel::rowsInserted , this, &ProfileModelPrivate::slotRowsInserted );
+   connect(&AccountModel::instance(), &QAbstractItemModel::rowsMoved    , this, &ProfileModelPrivate::slotRowsMoved    );
+   connect(&AccountModel::instance(), &QAbstractItemModel::layoutChanged, this, &ProfileModelPrivate::slotLayoutchanged);
 }
 
 ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new ProfileModelPrivate(this))
@@ -1048,9 +1058,12 @@ void ProfileModelPrivate::slotDataChanged(const QModelIndex& tl,const QModelInde
 {
    Q_UNUSED(br)
 
+   if (!tl.isValid() || (!br.isValid()))
+      return;
+
    const QModelIndex& idx = q_ptr->mapFromSource(tl);
 
-   emit q_ptr->dataChanged(idx,idx);
+   emit q_ptr->dataChanged(idx, idx);
 }
 
 void ProfileModelPrivate::slotLayoutchanged()
