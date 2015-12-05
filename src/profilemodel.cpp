@@ -62,8 +62,6 @@ public:
    virtual bool addExisting( const Person* item ) override;
 
    //Attributes
-   Node* getProfileById(const QByteArray& id);
-   QList<Account*> getAccountsForProfile(const QString& id);
    QList<Node*> m_lProfiles;
    QHash<QByteArray,Node*> m_hProfileByAccountId;
    QHash<QByteArray,Node*> m_hAccountIdToNode;
@@ -71,6 +69,8 @@ public:
    QSet<Person*> m_bSaveBuffer;
 
    //Helpers
+   QList<Account*> getAccountsForProfile(const QString& id);
+   Node* getProfileById(const QByteArray& id);
    QString path(const Person* p) const;
 
 private:
@@ -117,7 +117,7 @@ public Q_SLOTS:
    void loadProfiles();
 };
 
-struct Node
+struct Node final
 {
    explicit Node(): account(nullptr),contact(nullptr),type(Node::Type::PROFILE), parent(nullptr),m_Index(0) {}
 
@@ -161,9 +161,9 @@ private Q_SLOTS:
    void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);
    void slotLayoutchanged();
    void slotDelayedInit();
-   void slotRowsRemoved (const QModelIndex& index, int first, int last);
    void slotRowsInserted(const QModelIndex& index, int first, int last);
    void slotRowsMoved   (const QModelIndex& index, int first, int last, const QModelIndex& newPar, int newIdx);
+   void slotAccountRemoved(Account* a);
 
 private:
    ProfileModel* q_ptr;
@@ -563,11 +563,11 @@ ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent)
 ///Avoid creating an initialization loop
 void ProfileModelPrivate::slotDelayedInit()
 {
-   connect(&AccountModel::instance(), &QAbstractItemModel::dataChanged  , this, &ProfileModelPrivate::slotDataChanged  );
-   connect(&AccountModel::instance(), &QAbstractItemModel::rowsRemoved  , this, &ProfileModelPrivate::slotRowsRemoved  );
-   connect(&AccountModel::instance(), &QAbstractItemModel::rowsInserted , this, &ProfileModelPrivate::slotRowsInserted );
-   connect(&AccountModel::instance(), &QAbstractItemModel::rowsMoved    , this, &ProfileModelPrivate::slotRowsMoved    );
-   connect(&AccountModel::instance(), &QAbstractItemModel::layoutChanged, this, &ProfileModelPrivate::slotLayoutchanged);
+   connect(&AccountModel::instance(), &QAbstractItemModel::dataChanged  , this, &ProfileModelPrivate::slotDataChanged   );
+   connect(&AccountModel::instance(), &QAbstractItemModel::rowsInserted , this, &ProfileModelPrivate::slotRowsInserted  );
+   connect(&AccountModel::instance(), &QAbstractItemModel::rowsMoved    , this, &ProfileModelPrivate::slotRowsMoved     );
+   connect(&AccountModel::instance(), &QAbstractItemModel::layoutChanged, this, &ProfileModelPrivate::slotLayoutchanged );
+   connect(&AccountModel::instance(), &AccountModel::accountRemoved     , this, &ProfileModelPrivate::slotAccountRemoved);
 }
 
 ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new ProfileModelPrivate(this))
@@ -623,7 +623,17 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
       accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountIdToNode[acc->id()];
    }
 
-   Q_ASSERT(accNode->parent && accNode->type == Node::Type::ACCOUNT);
+   Q_ASSERT_X(accNode && accNode->parent && accNode->type == Node::Type::ACCOUNT,
+      "ProfileModel::mapFromSource",
+      "A tree structure corruption has been detected. The memory can no longer "
+      "be trusted. This should happen. Please report a bug if you encouter this"
+      "\n\n"
+      "If the node is not found, then a row wasn't removed correctly or there "
+      "is a race condition in the addition"
+      "\n\n"
+      "If there is a parent node and the type is PROFILE, then the nodes are "
+      "arranged in a loop and this may induce a stack overflow at runtime"
+   );
 
    return ProfileModel::instance().index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
 }
@@ -686,10 +696,10 @@ QModelIndex ProfileModel::parent(const QModelIndex& idx ) const
 QModelIndex ProfileModel::index( int row, int column, const QModelIndex& parent ) const
 {
    Node* current = static_cast<Node*>(parent.internalPointer());
-   if(parent.isValid() && current && !column && row < current->children.size()) {
+   if(parent.isValid() && current && !column && row >= 0 && row < current->children.size()) {
       return createIndex(row, 0, current->children[row]);
    }
-   else if(row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size() && !column) {
+   else if(row < d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles.size() && row >= 0&& !column) {
       return createIndex(row, 0, d_ptr->m_pProfileBackend->m_pEditor->m_lProfiles[row]);
    }
    return QModelIndex();
@@ -966,6 +976,10 @@ bool ProfileModel::remove(const QModelIndex& idx)
 
    // Remove the profile
    beginRemoveRows(QModelIndex(), n->m_Index, n->m_Index);
+
+   if (n == d_ptr->m_pProfileBackend->m_pDefault)
+      d_ptr->m_pProfileBackend->m_pDefault = nullptr;
+
    d_ptr->m_pProfileBackend->disableAndRemove(n->contact);
    delete n;
    endRemoveRows();
@@ -1085,12 +1099,27 @@ void ProfileModelPrivate::regenParentIndexes()
    }
 }
 
-void ProfileModelPrivate::slotRowsRemoved(const QModelIndex& index, int first, int last)
+void ProfileModelPrivate::slotAccountRemoved(Account* a)
 {
-   Q_UNUSED(index)
-   Q_UNUSED(first)
-   Q_UNUSED(last)
-   //TODO implement removing
+   auto n = m_pProfileBackend->m_pEditor->m_hAccountIdToNode[a->id()];
+
+   if (n && n->parent) {
+      const QModelIndex profIdx = q_ptr->index(n->parent->m_Index, 0);
+      if (profIdx.isValid()) {
+         const int accIdx = n->m_Index;
+         q_ptr->beginRemoveRows(profIdx, accIdx, accIdx);
+
+         n->parent->children.removeAt(accIdx);
+
+         for (int i = accIdx; i < n->parent->children.size(); i++)
+            n->parent->children[i]->m_Index--;
+
+         m_pProfileBackend->m_pEditor->m_hAccountIdToNode[a->id()] = nullptr;
+         delete n;
+
+         q_ptr->endRemoveRows();
+      }
+   }
    regenParentIndexes();
 }
 
