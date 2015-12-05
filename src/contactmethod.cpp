@@ -41,6 +41,9 @@
 #include "accountmodel.h"
 #include "certificatemodel.h"
 #include "media/textrecording.h"
+#include "mime.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -480,6 +483,8 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Call::Role::Number):
          cat = uri();
          break;
+      case Qt::DecorationRole:
+         return GlobalInstances::pixmapManipulator().decorationRole(this);
       case static_cast<int>(Call::Role::Direction):
          cat = cat = !lastCall ? QVariant() : QVariant::fromValue(lastCall->direction());
          break;
