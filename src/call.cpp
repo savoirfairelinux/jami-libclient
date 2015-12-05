@@ -65,7 +65,6 @@
 #include "media/text.h"
 #include "media/file.h"
 
-//TODO remove
 #include "securityevaluationmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
@@ -2111,6 +2110,8 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
          return peerContactMethod()->uri();
+      case Qt::DecorationRole:
+         return GlobalInstances::pixmapManipulator().decorationRole(this);
       case static_cast<int>(Call::Role::Direction):
          return QVariant::fromValue(d_ptr->m_Direction);
       case static_cast<int>(Call::Role::Date):
