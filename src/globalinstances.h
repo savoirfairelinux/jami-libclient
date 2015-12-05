@@ -30,6 +30,7 @@ class PixmapManipulatorI;
 class PresenceSerializerI;
 class ProfilePersisterI;
 class ShortcutCreatorI;
+class ActionExtenderI;
 } // namespace Interfaces
 
 /**
@@ -79,6 +80,10 @@ void setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance
 Interfaces::ShortcutCreatorI& shortcutCreator();
 void setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
+Interfaces::ActionExtenderI& actionExtender();
+void setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
+
+
 
 //Private use only
 void setInterfaceInternal(Interfaces::AccountListColorizerI    *);
@@ -89,6 +94,7 @@ void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
 void setInterfaceInternal(Interfaces::PresenceSerializerI      *);
 void setInterfaceInternal(Interfaces::ProfilePersisterI        *);
 void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
+void setInterfaceInternal(Interfaces::ActionExtenderI          *);
 
 /**
  * Generic interface setter. This metamethod can set any type of interface
