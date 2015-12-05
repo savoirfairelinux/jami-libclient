@@ -797,23 +797,23 @@ bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const 
 
 bool UserActionModelPrivate::updateByAccount(UserActionModel::Action action, const Account* a)
 {
-    if (!a)
-       return false;
-    return (
-        availableAccountActionMap [action] [a->registrationState() ] &&
-        availableProtocolActions  [action] [a->protocol()          ] //
-    );
+   if (!a)
+      return false;
+   return (
+      availableAccountActionMap [action] [a->registrationState() ] &&
+      availableProtocolActions  [action] [a->protocol()          ] //
+   );
 }
 
 bool UserActionModelPrivate::updateByContactMethod(UserActionModel::Action action, const ContactMethod* cm)
 {
-    if (!cm)
-       return false;
-    Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance().currentDefaultAccount();
+   if (!cm)
+      return false;
+   Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance().currentDefaultAccount();
 
-    return updateByAccount(action, a) && (
-        (!cmActionAvailability[action]) || cmActionAvailability[action](cm)
-    );
+   return updateByAccount(action, a) && (
+      (!cmActionAvailability[action]) || cmActionAvailability[action](cm)
+   );
 }
 
 bool UserActionModelPrivate::updateByPerson(UserActionModel::Action action, const Person* p)
@@ -932,95 +932,139 @@ uint UserActionModel::relativeIndex( UserActionModel::Action action ) const
 
 bool UserActionModel::execute(const UserActionModel::Action action) const
 {
-   /*
-    * The rational behind not expanding Call::Actions to handle this are:
-    *
-    * 1) There is some actions that apply _only_ to multiple calls
-    * 2) There is still a need to abstract the multi call use case
-    */
 
-   //1) Build the list of all selected calls
-   QList<Call*> selected;
-   switch(d_ptr->m_Mode) {
-      case UserActionModelPrivate::UserActionModelMode::CALL:
-         selected << d_ptr->m_pCall;
-         break;
-      case UserActionModelPrivate::UserActionModelMode::GENERIC: {
-         foreach (const QModelIndex& idx, d_ptr->m_pSelectionModel->selectedRows()) {
-            if (auto c = qvariant_cast<Call*>(idx.data(static_cast<int>(Ring::Role::Object))))
-               selected << c;
-         }
-         break;
+   // For now, only handle single selection, multi-selection could be
+   // re-enabled later
+
+   // TODO This will be cleaned up later
+   if (! d_ptr->m_pSelectionModel->hasSelection () && action == UserActionModel::Action::ADD_NEW) {
+      if (UserActions::addNew()) {
+         d_ptr->updateActions();
+         return true;
       }
-   };
+   }
 
-   //2) Perform the actions
-   switch(action) {
-      case UserActionModel::Action::ACCEPT          :
-         if (UserActions::accept(selected))
-            d_ptr->updateActions();
-         break;
-      case UserActionModel::Action::HOLD            :
-         switch(d_ptr->m_CurrentActionsState[UserActionModel::Action::HOLD]) {
-            case Qt::Checked:
-               if (UserActions::unhold(selected))
-                  d_ptr->updateActions();
-               break;
-            case Qt::Unchecked:
-               if (UserActions::hold(selected))
-                  d_ptr->updateActions();
-               break;
-            case Qt::PartiallyChecked:
-               //Invalid
-               break;
-         };
-         break;
-      case UserActionModel::Action::MUTE_AUDIO      :
-         {
-            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_AUDIO] != Qt::Checked;
-            UserActions::muteAudio(selected, mute);
-            d_ptr->updateActions();
-         }
-         break;
-      case UserActionModel::Action::MUTE_VIDEO      :
-         {
-            bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_VIDEO] != Qt::Checked;
-            UserActions::muteVideo(selected, mute);
-            d_ptr->updateActions();
-         }
-         break;
-      case UserActionModel::Action::SERVER_TRANSFER :
-         UserActions::transfer(selected);
-         break;
-      case UserActionModel::Action::RECORD          :
-         if (UserActions::recordAudio(selected)) //TODO handle other recording types
-            d_ptr->updateActions();
-         break;
-      case UserActionModel::Action::HANGUP          :
-         if (UserActions::hangup(selected))
-            d_ptr->updateActions();
-         break;
-      case UserActionModel::Action::JOIN            :
-         //TODO unimplemented
-         break;
-      case UserActionModel::Action::ADD_NEW         :
-         if (UserActions::addNew())
-            d_ptr->updateActions();
-         break;
-      case UserActionModel::Action::TOGGLE_VIDEO      :
-      case UserActionModel::Action::ADD_CONTACT       :
-      case UserActionModel::Action::ADD_TO_CONTACT    :
-      case UserActionModel::Action::DELETE_CONTACT    :
-      case UserActionModel::Action::EMAIL_CONTACT     :
-      case UserActionModel::Action::COPY_CONTACT      :
-      case UserActionModel::Action::BOOKMARK          :
-      case UserActionModel::Action::VIEW_CHAT_HISTORY :
-      case UserActionModel::Action::ADD_CONTACT_METHOD:
-      case UserActionModel::Action::CALL_CONTACT      :
-      case UserActionModel::Action::REMOVE_HISTORY    :
-      case UserActionModel::Action::COUNT__:
-         break;
-   };
+   foreach (const QModelIndex& idx, d_ptr->m_pSelectionModel->selectedRows()) {
+      const QVariant objTv = idx.data(static_cast<int>(Ring::Role::ObjectType));
+
+      //Be sure the model support the UAM abstraction
+      if (!objTv.canConvert<Ring::ObjectType>()) {
+         qWarning() << "Cannot determine object type";
+         continue;
+      }
+
+      const auto objT = qvariant_cast<Ring::ObjectType>(objTv);
+
+      Call*          c  = nullptr;
+      Account*       a  = nullptr;
+      ContactMethod* cm = nullptr;
+      Person*        p  = nullptr;
+
+      // Deduce each kind of objects from the relations
+      switch(objT) {
+         case Ring::ObjectType::Person         :
+            p  = qvariant_cast<Person*>(idx.data(static_cast<int>(Ring::Role::Object)));
+            cm = p->phoneNumbers().size() == 1 ? p->phoneNumbers()[0] : nullptr;
+            a  = cm ? cm->account() : nullptr;
+            break;
+         case Ring::ObjectType::ContactMethod  :
+            cm = qvariant_cast<ContactMethod*>(idx.data(static_cast<int>(Ring::Role::Object)));
+            a  = cm->account();
+            p  = cm->contact();
+            //TODO maybe add "QList<Call*> currentCalls()" const to ContactMethod::?
+            break;
+         case Ring::ObjectType::Call           :
+            c  = qvariant_cast<Call*>(idx.data(static_cast<int>(Ring::Role::Object)));
+            cm = c->peerContactMethod();
+            p  = cm ? cm->contact() : nullptr;
+            a  = c->account();
+            break;
+         case Ring::ObjectType::Media          : //TODO
+         case Ring::ObjectType::COUNT__        :
+            break;
+      }
+
+      // Perform the actions
+      switch(action) {
+         case UserActionModel::Action::ACCEPT          :
+            if (UserActions::accept(c))
+               d_ptr->updateActions();
+            break;
+         case UserActionModel::Action::HOLD            :
+            switch(d_ptr->m_CurrentActionsState[UserActionModel::Action::HOLD]) {
+               case Qt::Checked:
+                  if (UserActions::unhold(c))
+                     d_ptr->updateActions();
+                  break;
+               case Qt::Unchecked:
+                  if (UserActions::hold(c))
+                     d_ptr->updateActions();
+                  break;
+               case Qt::PartiallyChecked:
+                  //Invalid
+                  break;
+            };
+            break;
+         case UserActionModel::Action::MUTE_AUDIO      :
+            {
+               bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_AUDIO] != Qt::Checked;
+               UserActions::muteAudio(c, mute);
+               d_ptr->updateActions();
+            }
+            break;
+         case UserActionModel::Action::MUTE_VIDEO      :
+            {
+               bool mute = d_ptr->m_CurrentActionsState[UserActionModel::Action::MUTE_VIDEO] != Qt::Checked;
+               UserActions::muteVideo(c, mute);
+               d_ptr->updateActions();
+            }
+            break;
+         case UserActionModel::Action::SERVER_TRANSFER :
+            UserActions::transfer(c);
+            break;
+         case UserActionModel::Action::RECORD          :
+            if (UserActions::recordAudio(c)) //TODO handle other recording types
+               d_ptr->updateActions();
+            break;
+         case UserActionModel::Action::HANGUP          :
+            if (UserActions::hangup(c))
+               d_ptr->updateActions();
+            break;
+         case UserActionModel::Action::JOIN            :
+            //TODO unimplemented
+            break;
+         case UserActionModel::Action::ADD_NEW         :
+            if (UserActions::addNew())
+               d_ptr->updateActions();
+            break;
+         case UserActionModel::Action::TOGGLE_VIDEO      :
+         case UserActionModel::Action::ADD_CONTACT       :
+         case UserActionModel::Action::ADD_TO_CONTACT    :
+            break;
+         case UserActionModel::Action::DELETE_CONTACT    :
+            UserActions::deleteContact(p);
+            break;
+         case UserActionModel::Action::EMAIL_CONTACT     :
+            UserActions::sendEmail(p);
+            break;
+         case UserActionModel::Action::COPY_CONTACT      :
+            break;
+         case UserActionModel::Action::BOOKMARK          :
+            UserActions::bookmark(cm);
+            break;
+         case UserActionModel::Action::VIEW_CHAT_HISTORY :
+         case UserActionModel::Action::ADD_CONTACT_METHOD:
+            break;
+         case UserActionModel::Action::CALL_CONTACT      :
+            UserActions::callAgain(cm);
+            break;
+         case UserActionModel::Action::REMOVE_HISTORY    :
+            UserActions::removeFromHistory(c);
+            break;
+         case UserActionModel::Action::COUNT__:
+            break;
+      };
+   }
 
    return true; //TODO handle errors
 }
