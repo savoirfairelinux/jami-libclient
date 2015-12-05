@@ -23,28 +23,43 @@ namespace Interfaces {
 
 void ActionExtenderDefault::editPerson(Person* p)
 {
-   
+   Q_UNUSED(p)
 }
 
 void ActionExtenderDefault::viewChatHistory(ContactMethod* cm)
 {
-   
+   Q_UNUSED(cm)
 }
 
 void ActionExtenderDefault::copyInformation(QMimeData* data)
 {
-   
+   Q_UNUSED(data)
 }
 
 bool ActionExtenderDefault::warnDeletePerson(Person* p)
 {
+   Q_UNUSED(p)
    return true;
 }
 
 bool ActionExtenderDefault::warnDeleteCall(Call* c)
 {
+   Q_UNUSED(c)
    return true;
 }
 
+Person* ActionExtenderDefault::selectPerson(FlagPack<SelectPersonHint> hints, const QVariant& hintVar) const
+{
+   Q_UNUSED(hintVar)
+   Q_UNUSED(hints)
+   return nullptr;
+}
+
+ContactMethod* ActionExtenderDefault::selectContactMethod(FlagPack<SelectContactMethodHint> hints, const QVariant& hintVar) const
+{
+   Q_UNUSED(hintVar)
+   Q_UNUSED(hints)
+   return nullptr;
+}
 
 } // namespace Interfaces
