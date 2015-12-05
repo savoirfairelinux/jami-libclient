@@ -110,4 +110,29 @@ QVariant PixmapManipulatorDefault::contactSortingCategoryIcon(const CategorizedC
     return QVariant();
 }
 
+QVariant PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
+{
+   Q_UNUSED(index)
+   return QVariant();
+}
+
+QVariant PixmapManipulatorDefault::decorationRole(const Call* c)
+{
+   Q_UNUSED(c)
+   return QVariant();
+}
+
+QVariant PixmapManipulatorDefault::decorationRole(const ContactMethod* cm)
+{
+   Q_UNUSED(cm)
+   return QVariant();
+}
+
+QVariant PixmapManipulatorDefault::decorationRole(const Person* p)
+{
+   Q_UNUSED(p)
+   return QVariant();
+}
+
+
 } // namespace Interfaces
