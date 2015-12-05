@@ -35,7 +35,10 @@ public:
     QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const override;
     QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const override;
     QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const override;
-
+    QVariant   decorationRole(const QModelIndex& index) override;
+    QVariant   decorationRole(const Call*              c    ) override;
+    QVariant   decorationRole(const ContactMethod*     cm   ) override;
+    QVariant   decorationRole(const Person*            p    ) override;
     /**
      * Return the icons associated with the action and its state
      */
