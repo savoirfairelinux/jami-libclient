@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_505b5054",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-07T20:40:00Z",
+      "side": 1,
+      "message": "I don\u0027t think it should be ::nothing for all of them. Transition like CURRENT-\u003eOVER without doing anything will keep the second counter timer running and the call wont be added to history (without calling ::stop). ERROR-\u003eOVER should also be ::error, as it is supposed to be impossible. FAILURE-\u003eOVER is really ::nothing as it is a normal transition.\n\nOf course it depend on when the daemon send that state change. If there is always an HUNGUP call before OVER, then yea, there will be a lot of ::nothing. I haven\u0027t checked. This has to be correctly tested, LRC has a lot of state machines buried into it, messing the the \"big ones\" such as Call:: can have cascading effects.",
+      "revId": "cd0e6526d346c87fdbbbe125ff0dffd835ea56ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_f057fc24",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-07T20:40:00Z",
+      "side": 1,
+      "message": "I don\u0027t know if LRC can be started while some calls are over (maybe a weird race condition when starting from a running daemon at exactly the moment between over and removed? But at least for consistency, this should be updated too.",
+      "revId": "cd0e6526d346c87fdbbbe125ff0dffd835ea56ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
