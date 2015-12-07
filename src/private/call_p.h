@@ -72,6 +72,7 @@ public:
       constexpr static const char* FAILURE        = "FAILURE";
       constexpr static const char* UNHOLD_CURRENT = "UNHOLD" ;
       constexpr static const char* INACTIVE       = "INACTIVE";
+      constexpr static const char* OVER           = "OVER";
    };
 
    class DaemonStateInit {
@@ -122,6 +123,7 @@ public:
       HOLD,        /*!< Call is on hold                           */
       HUNG_UP,     /*!< Call is over                              */
       FAILURE,     /*!< Call has failed                           */
+      OVER,        /*!< Call is over                              */
       COUNT__,
    };
 
