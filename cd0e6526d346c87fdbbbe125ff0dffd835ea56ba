@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_302564c2",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2015-12-07T21:19:22Z",
+      "side": 1,
+      "message": "There is always at least one OVER event when a call is removed.\n\n*** The \"OVER\" event is the point in time from which the daemon won\u0027t know about this call ID anymore. ***\n\nPressing \"hangup\" will make LRC put the call in its \"Done\" state anyway, so the benefit is mostly to preserve coherence with multiple clients (and for Android).\n\nIn some cases, a call could become \"over\" (for dring) without a previous \"hangup\", \"busy\" or \"failure\", for instance if the call is user-cancelled before the SIP session is started (nothing to \"hangup\").",
+      "parentUuid": "1a9dcd25_505b5054",
+      "revId": "cd0e6526d346c87fdbbbe125ff0dffd835ea56ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_f057fc24",
         "filename": "src/call.cpp",
         "patchSetId": 1
