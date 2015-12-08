@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_53c7da45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:07:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_f3c70663",
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_b3badedf",
         "filename": "src/contactmethod.cpp",
         "patchSetId": 6
