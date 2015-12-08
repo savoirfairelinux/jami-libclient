@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_d33c4a96",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-12-08T15:57:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_e9b5dc31",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_c9b8202d",
         "filename": "src/call.cpp",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_7341b60a",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-12-08T15:57:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_c9b8202d",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_69aa2cd6",
         "filename": "src/call.cpp",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2015-11-30T22:07:52Z",
       "side": 1,
       "message": "Please do not use C style cast, use qobject_cast when possible or static_cast/const_cast.\n\nPlease use firstMedia, it is type safe already",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_9346c222",
+        "filename": "src/call.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-12-08T15:57:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_69aa2cd6",
       "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_334b2e2d",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-12-08T15:57:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_497c1073",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_6981cc49",
         "filename": "src/media/video.cpp",
         "patchSetId": 8
@@ -98,6 +170,24 @@
       "writtenOn": "2015-11-30T22:07:52Z",
       "side": 1,
       "message": "space before \"{\" and after \"if\"",
+      "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_53483a2d",
+        "filename": "src/media/video.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 82
+      },
+      "writtenOn": "2015-12-08T15:57:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_6981cc49",
       "revId": "940db84c0f0e4c3eb07b68f49491c859c5e298be",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
