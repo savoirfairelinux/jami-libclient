@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_73abf689",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_b3badedf",
+      "range": {
+        "startLine": 789,
+        "startChar": 72,
+        "endLine": 789,
+        "endChar": 76
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_d3bf6acf",
         "filename": "src/contactmethod.cpp",
         "patchSetId": 6
@@ -65,6 +89,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_d3a68ac1",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_d3bf6acf",
+      "range": {
+        "startLine": 794,
+        "startChar": 41,
+        "endLine": 794,
+        "endChar": 45
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_73b456f2",
         "filename": "src/contactmethod.cpp",
         "patchSetId": 6
@@ -76,6 +124,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 795,
+        "startChar": 74,
+        "endLine": 795,
+        "endChar": 78
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_93b002f6",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_73b456f2",
       "range": {
         "startLine": 795,
         "startChar": 74,
@@ -134,6 +206,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_33956e40",
+        "filename": "src/media/text.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_13ee32ed",
+      "range": {
+        "startLine": 173,
+        "startChar": 129,
+        "endLine": 173,
+        "endChar": 136
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_53e4ba0c",
         "filename": "src/media/text.cpp",
         "patchSetId": 6
@@ -145,6 +241,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "no LR",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 4
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_53927a58",
+        "filename": "src/media/text.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_53e4ba0c",
       "range": {
         "startLine": 176,
         "startChar": 0,
@@ -180,6 +300,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_f39e2663",
+        "filename": "src/media/text.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_f3f066cb",
+      "range": {
+        "startLine": 178,
+        "startChar": 45,
+        "endLine": 178,
+        "endChar": 52
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_73dd3642",
         "filename": "src/phonedirectorymodel.cpp",
         "patchSetId": 6
@@ -191,6 +335,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 677,
+        "startChar": 135,
+        "endLine": 677,
+        "endChar": 138
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_b3889e23",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_73dd3642",
       "range": {
         "startLine": 677,
         "startChar": 135,
@@ -226,6 +394,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_d38d2a33",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_93e24202",
+      "range": {
+        "startLine": 680,
+        "startChar": 40,
+        "endLine": 680,
+        "endChar": 43
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_33e7ae14",
         "filename": "src/phonedirectorymodel.h",
         "patchSetId": 6
@@ -237,6 +429,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 107,
+        "startChar": 73,
+        "endLine": 107,
+        "endChar": 76
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_139cf268",
+        "filename": "src/phonedirectorymodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_33e7ae14",
       "range": {
         "startLine": 107,
         "startChar": 73,
@@ -272,6 +488,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_73821602",
+        "filename": "src/private/imconversationmanagerprivate.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_b3d3be37",
+      "range": {
+        "startLine": 42,
+        "startChar": 102,
+        "endLine": 42,
+        "endChar": 109
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_d3d8ca55",
         "filename": "src/private/imconversationmanagerprivate.h",
         "patchSetId": 6
@@ -283,6 +523,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 43,
+        "startChar": 102,
+        "endLine": 43,
+        "endChar": 109
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_9387a20f",
+        "filename": "src/private/imconversationmanagerprivate.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_d3d8ca55",
       "range": {
         "startLine": 43,
         "startChar": 102,
@@ -318,6 +582,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_337c8e20",
+        "filename": "src/private/phonedirectorymodel_p.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_131712ef",
+      "range": {
+        "startLine": 103,
+        "startChar": 110,
+        "endLine": 103,
+        "endChar": 113
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_531d9a0e",
         "filename": "src/qtwrapper/configurationmanager_wrap.h",
         "patchSetId": 6
@@ -329,6 +617,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 128,
+        "startChar": 121,
+        "endLine": 128,
+        "endChar": 128
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_f375c632",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_531d9a0e",
       "range": {
         "startLine": 128,
         "startChar": 121,
@@ -364,6 +676,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_53791a2e",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_f3194623",
+      "range": {
+        "startLine": 130,
+        "startChar": 126,
+        "endLine": 130,
+        "endChar": 133
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_932b2230",
         "filename": "src/qtwrapper/configurationmanager_wrap.h",
         "patchSetId": 6
@@ -375,6 +711,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 603,
+        "startChar": 98,
+        "endLine": 603,
+        "endChar": 105
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_1373924e",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_932b2230",
       "range": {
         "startLine": 603,
         "startChar": 98,
@@ -410,6 +770,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_b38f3e23",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_33200e49",
+      "range": {
+        "startLine": 605,
+        "startChar": 90,
+        "endLine": 605,
+        "endChar": 97
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_7326966a",
         "filename": "src/qtwrapper/configurationmanager_wrap.h",
         "patchSetId": 6
@@ -421,6 +805,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 626,
+        "startChar": 108,
+        "endLine": 626,
+        "endChar": 115
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_d3944a39",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_7326966a",
       "range": {
         "startLine": 626,
         "startChar": 108,
@@ -456,6 +864,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_7399b66d",
+        "filename": "xml/callmanager-introspec.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_130072a9",
+      "range": {
+        "startLine": 449,
+        "startChar": 36,
+        "endLine": 449,
+        "endChar": 44
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_b32c1e4c",
         "filename": "xml/configurationmanager-introspec.xml",
         "patchSetId": 6
@@ -479,6 +911,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_939ec255",
+        "filename": "xml/configurationmanager-introspec.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_b32c1e4c",
+      "range": {
+        "startLine": 243,
+        "startChar": 35,
+        "endLine": 243,
+        "endChar": 43
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_d331aaa3",
         "filename": "xml/configurationmanager-introspec.xml",
         "patchSetId": 6
@@ -490,6 +946,30 @@
       "writtenOn": "2015-12-08T18:34:19Z",
       "side": 1,
       "message": "payloads",
+      "range": {
+        "startLine": 254,
+        "startChar": 35,
+        "endLine": 254,
+        "endChar": 43
+      },
+      "revId": "7f4470034b975f2f60c911f51a39b0dd79685fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_33a32ea0",
+        "filename": "xml/configurationmanager-introspec.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-08T19:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_d331aaa3",
       "range": {
         "startLine": 254,
         "startChar": 35,
