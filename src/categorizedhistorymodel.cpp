@@ -94,6 +94,7 @@ struct HistoryNode final
    Call*        m_pCall   {  nullptr  };
    Type         m_Type    { Type::CAT };
    QString      m_Name                ;
+   int          m_AbsIdx  { 0         };
    QVector<HistoryNode*> m_lChildren  ;
 };
 
@@ -182,26 +183,37 @@ HistoryNode* CategorizedHistoryModelPrivate::getCategory(const Call* call)
    HistoryNode* category = nullptr;
    static QString name;
    int index = -1;
+   const QVariant var = call->roleData(m_Role);
+
    if (m_Role == static_cast<int>(Call::Role::FuzzyDate)) {
-      index = call->roleData(Call::Role::FuzzyDate).toInt();
-      name = HistoryTimeCategoryModel::indexToName(index);
+      index    = var.toInt();
+      name     = HistoryTimeCategoryModel::indexToName(index);
+      category = m_hCategories[index];
+   }
+   else if (var.type() == QVariant::Int || var.type() == QVariant::UInt) {
+      index    = var.toInt();
+      name     = var.toString();
       category = m_hCategories[index];
    }
    else {
-      name = call->roleData(m_Role).toString();
-
+      name     = var.toString();
       category = m_hCategoryByName[name];
    }
+
    if (!category) {
       category = new HistoryNode();
-      category->m_Name = name;
-      category->m_Index = m_lCategoryCounter.size();
+      category->m_Name   = name;
+      category->m_AbsIdx = index;
+      category->m_Index  = m_lCategoryCounter.size();
 
       CategorizedHistoryModel::instance().beginInsertRows(QModelIndex(),m_lCategoryCounter.size(),m_lCategoryCounter.size());
 
       m_lCategoryCounter << category;
-      m_hCategories    [index] = category;
-      m_hCategoryByName[name ] = category;
+
+      if (index != -1)
+         m_hCategories    [index] = category;
+
+      m_hCategoryByName   [name ] = category;
       CategorizedHistoryModel::instance().endInsertRows();
 
    }
@@ -358,13 +370,21 @@ QVariant CategorizedHistoryModel::data( const QModelIndex& idx, int role) const
                return modelItem->m_Name;
             case static_cast<int>(Call::Role::FuzzyDate):
             case static_cast<int>(Call::Role::Date):
-               return modelItem->m_Index;
+            case static_cast<int>(Call::Role::CallCount):
+               return modelItem->m_AbsIdx;
             default:
                break;
          }
          break;
       case HistoryNode::Type::CALL:
-         return modelItem->m_pCall->roleData(role);
+         switch (role) {
+            // Dates need to be sorted from newest to oldest
+            case static_cast<int>(Call::Role::FuzzyDate):
+            case static_cast<int>(Call::Role::Date):
+               return -modelItem->m_pCall->roleData(static_cast<int>(Call::Role::Date)).toInt();
+            default:
+               return modelItem->m_pCall->roleData(role);
+         }
    };
    return QVariant();
 }
