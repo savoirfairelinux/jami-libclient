@@ -256,16 +256,16 @@ bool HistorySortingCategoryModel::setData( const QModelIndex& index, const QVari
 }
 
 template<typename T>
-SortingCategory::ModelTuple* createModels(QAbstractItemModel* src, int role, std::function<void(QSortFilterProxyModel*,const QModelIndex&)> callback)
+SortingCategory::ModelTuple* createModels(QAbstractItemModel* src, int filterRole, int sortRole, std::function<void(QSortFilterProxyModel*,const QModelIndex&)> callback)
 {
    SortingCategory::ModelTuple* ret = new SortingCategory::ModelTuple;
 
    ret->categories = new T(src);
 
    QSortFilterProxyModel* proxy = new RemoveDisabledProxy(src);
-   proxy->setSortRole              ( Qt::DisplayRole           );
+   proxy->setSortRole              ( sortRole                  );
    proxy->setSortLocaleAware       ( true                      );
-   proxy->setFilterRole            ( role );
+   proxy->setFilterRole            ( filterRole                );
    proxy->setSortCaseSensitivity   ( Qt::CaseInsensitive       );
    proxy->setFilterCaseSensitivity ( Qt::CaseInsensitive       );
    ret->model = proxy;
@@ -281,7 +281,7 @@ SortingCategory::ModelTuple* createModels(QAbstractItemModel* src, int role, std
 
 SortingCategory::ModelTuple* SortingCategory::getContactProxy()
 {
-   return createModels<ContactSortingCategoryModel>(&CategorizedContactModel::instance(),(int)Person::Role::Filter, [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
+   return createModels<ContactSortingCategoryModel>(&CategorizedContactModel::instance(),(int)Person::Role::Filter, Qt::DisplayRole, [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
       if (idx.isValid()) {
          qDebug() << "Selection changed" << idx.row();
          sortContact(proxy,idx.row());
@@ -291,7 +291,7 @@ SortingCategory::ModelTuple* SortingCategory::getContactProxy()
 
 SortingCategory::ModelTuple* SortingCategory::getHistoryProxy()
 {
-   return createModels<HistorySortingCategoryModel>(&CategorizedHistoryModel::instance(),static_cast<int>(Call::Role::Date), [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
+   return createModels<HistorySortingCategoryModel>(&CategorizedHistoryModel::instance(),static_cast<int>(Call::Role::Filter), static_cast<int>(Call::Role::Date), [](QSortFilterProxyModel* proxy,const QModelIndex& idx) {
      if (idx.isValid()) {
          qDebug() << "Selection changed" << idx.row();
          sortHistory(proxy,idx.row());
