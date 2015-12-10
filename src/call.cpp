@@ -344,10 +344,18 @@ Call::Call(const QString& confId, const QString& account)
 ///Destructor
 Call::~Call()
 {
-   if (d_ptr->m_pTimer) delete d_ptr->m_pTimer;
+   if (d_ptr->m_pTimer)
+      delete d_ptr->m_pTimer;
+
    this->disconnect();
 
    d_ptr->terminateMedia();
+
+   if (d_ptr->m_pDateOnly)
+      delete d_ptr->m_pDateOnly;
+
+   if (d_ptr->m_pDateTime)
+      delete d_ptr->m_pDateTime;
 
    delete d_ptr;
 }
@@ -717,6 +725,24 @@ time_t Call::stopTimeStamp() const
 time_t Call::startTimeStamp() const
 {
    return d_ptr->m_pStartTimeStamp;
+}
+
+///Get the call date and time
+QDateTime Call::dateTime() const
+{
+   if (!d_ptr->m_pDateTime)
+      d_ptr->m_pDateTime = new QDateTime(QDateTime::fromTime_t(startTimeStamp()));
+
+   return *d_ptr->m_pDateTime;
+}
+
+///Get the call date
+QDate Call::date() const
+{
+   if (!d_ptr->m_pDateOnly)
+      d_ptr->m_pDateOnly = new QDate(dateTime().date());
+
+   return *d_ptr->m_pDateOnly;
 }
 
 ///Get the number where the call have been transferred
@@ -2075,7 +2101,13 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::Length):
          return length();
       case static_cast<int>(Call::Role::FormattedDate):
-         return QDateTime::fromTime_t(startTimeStamp()).toString();
+         if (d_ptr->m_FormattedDate.isEmpty())
+            d_ptr->m_FormattedDate = dateTime().toString();
+         return d_ptr->m_FormattedDate;
+      case static_cast<int>(Call::Role::DateOnly):
+         return date();
+      case static_cast<int>(Call::Role::DateTime):
+         return dateTime();
       case static_cast<int>(Call::Role::HasAVRecording):
          return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size()
             + d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
