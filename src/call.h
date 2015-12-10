@@ -138,6 +138,8 @@ public:
       DTMFAnimState      , /*!< GUI related state to hold animation key(s)                          */
       LastDTMFidx        , /*!< The last DTMF (button) sent on this call                            */
       DropPosition       , /*!< GUI related state to keep track of metadata during drag and drop    */
+      DateOnly           ,
+      DateTime           ,
       SecurityLevel      , //TODO REMOVE use the extensions
       SecurityLevelIcon  , //TODO REMOVE use the extensions
       DropState          = static_cast<int>(Ring::Role::DropState), /*!< GUI related state to keep track of metadata during drag and drop */
@@ -314,6 +316,8 @@ public:
    Certificate*             certificate      () const;
    FlagPack<HoldFlags>      holdFlags        () const;
    bool                     hasParentCall    () const;
+   QDateTime                dateTime         () const;
+   QDate                    date             () const;
 
    Q_INVOKABLE QVariant   roleData         (int  role) const;
    Q_INVOKABLE QVariant   roleData         (Role role) const;

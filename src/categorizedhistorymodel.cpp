@@ -160,6 +160,8 @@ QHash<int,QByteArray> CategorizedHistoryModel::roleNames() const
       roles.insert(static_cast<int>(Call::Role::DTMFAnimState   ) ,QByteArray("dTMFAnimState" ));
       roles.insert(static_cast<int>(Call::Role::LastDTMFidx     ) ,QByteArray("lastDTMFidx"   ));
       roles.insert(static_cast<int>(Call::Role::IsAVRecording   ) ,QByteArray("isAVRecording" ));
+      roles.insert(static_cast<int>(Call::Role::DateOnly        ) ,QByteArray("dateOnly"      ));
+      roles.insert(static_cast<int>(Call::Role::DateTime        ) ,QByteArray("dateTime"      ));
    }
    return roles;
 }

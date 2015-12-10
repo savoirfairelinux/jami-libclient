@@ -145,6 +145,9 @@ public:
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
    Call*                     m_pParentCall       ;
+   QDateTime*                m_pDateTime {nullptr};
+   QDate*                    m_pDateOnly {nullptr};
+   QString                   m_FormattedDate     ;
 
    //Cache
    HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
