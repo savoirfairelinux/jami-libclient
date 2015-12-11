@@ -66,12 +66,14 @@ public:
       constexpr static const char* HUNG_UP        = "HUNGUP" ;
       constexpr static const char* CONNECTING     = "CONNECTING";
       constexpr static const char* RINGING        = "RINGING";
+      constexpr static const char* INCOMING       = "INCOMING";
       constexpr static const char* CURRENT        = "CURRENT";
       constexpr static const char* HOLD           = "HOLD"   ;
       constexpr static const char* BUSY           = "BUSY"   ;
       constexpr static const char* FAILURE        = "FAILURE";
       constexpr static const char* UNHOLD_CURRENT = "UNHOLD" ;
       constexpr static const char* INACTIVE       = "INACTIVE";
+      constexpr static const char* OVER           = "OVER";
    };
 
    class DaemonStateInit {
@@ -122,6 +124,8 @@ public:
       HOLD,        /*!< Call is on hold                           */
       HUNG_UP,     /*!< Call is over                              */
       FAILURE,     /*!< Call has failed                           */
+      OVER,        /*!< Call is over                              */
+      INACTIVE,    /*!< The call exist, but is not ready          */
       COUNT__,
    };
 

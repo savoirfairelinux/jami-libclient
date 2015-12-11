@@ -509,6 +509,15 @@ Call* CallModel::dialingCall(const QString& peerName, Account* account, Call* pa
 Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
    qDebug() << "New incoming call:" << callId;
+
+   // Since november 2015, calls are alowed to be declared with a state change
+   // if it has been done, then they should be ignored
+   if (m_shDringId.contains(callId)) {
+      qDebug() << "The call" << callId << "already exist, avoiding re-creation";
+
+      return m_shDringId[callId]->call_real;
+   }
+
    Call* call = CallPrivate::buildIncomingCall(callId);
 
    //The call can already have been invalidated by the daemon, then do nothing
