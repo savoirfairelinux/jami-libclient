@@ -155,6 +155,8 @@ public:
    QVector<::TextMessageNode*> m_lNodes          ;
    Serializable::Group*        m_pCurrentGroup   ;
    QList<Serializable::Peers*> m_lAssociatedPeers;
+   QHash<QString,bool>         m_hMimeTypes      ;
+   QStringList                 m_lMimeTypes      ;
 
    //Helper
    void insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction);
