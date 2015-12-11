@@ -62,7 +62,12 @@ public:
 
    //Attributes
    Media::TextRecording* m_pRecording;
-   bool m_HasChecked;
+   bool                  m_HasChecked;
+   QHash<QString,bool>   m_hMimeTypes;
+   QStringList           m_lMimeTypes;
+
+   //Helper
+   void updateMimeList(const QMap<QString,QString>& payloads);
 
 private:
    Media::Text* q_ptr;
@@ -167,6 +172,9 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
    media->recording()->setCall(call);
    media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
+
+   media->d_ptr->updateMimeList(message);
+
    emit media->messageReceived(message);
 }
 
@@ -223,6 +231,49 @@ Media::TextRecording* Media::Text::recording() const
    return d_ptr->m_pRecording;
 }
 
+
+bool Media::Text::hasMimeType( const QString& mimeType ) const
+{
+   return d_ptr->m_hMimeTypes.contains(mimeType);
+}
+
+QStringList Media::Text::mimeTypes() const
+{
+   if (d_ptr->m_lMimeTypes.size() == d_ptr->m_hMimeTypes.size())
+      return d_ptr->m_lMimeTypes;
+
+   // Regen the list
+   d_ptr->m_lMimeTypes.clear();
+
+   QHashIterator<QString, bool> iter(d_ptr->m_hMimeTypes);
+   while (iter.hasNext())
+      d_ptr->m_lMimeTypes << iter.key();
+
+   return d_ptr->m_lMimeTypes;
+}
+
+
+void MediaTextPrivate::updateMimeList(const QMap<QString,QString>& payloads)
+{
+   const int prevSize = m_hMimeTypes.size();
+
+   QMapIterator<QString, QString> iter(payloads);
+
+   while (iter.hasNext()) {
+      iter.next();
+
+      // Mime types can have some arguments after ';'
+      const QString mimeType = iter.key();
+      const int hasArgs = mimeType.indexOf(';');
+
+      m_hMimeTypes[hasArgs != -1 ? mimeType.left(hasArgs) : mimeType] = true;
+   }
+
+   if (prevSize != m_hMimeTypes.size())
+      emit q_ptr->mimeTypesChanged();
+
+}
+
 /**
  * Send a message to the peer.
  *
@@ -248,6 +299,8 @@ void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
 
    d_ptr->m_pRecording->setCall(call());
    d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->account()->contactMethod(),Media::Direction::OUT);
+
+   d_ptr->updateMimeList(message);
 
    emit messageSent(message);
 }
