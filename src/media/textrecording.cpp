@@ -161,6 +161,26 @@ Media::TextRecording::~TextRecording()
    delete d_ptr;
 }
 
+bool Media::TextRecording::hasMimeType(const QString& mimeType) const
+{
+   return d_ptr->m_hMimeTypes[mimeType];
+}
+
+QStringList Media::TextRecording::mimeTypes() const
+{
+   if (d_ptr->m_lMimeTypes.size() == d_ptr->m_hMimeTypes.size())
+      return d_ptr->m_lMimeTypes;
+
+   // Regen the list
+   d_ptr->m_lMimeTypes.clear();
+
+   QHashIterator<QString, bool> iter(d_ptr->m_hMimeTypes);
+   while (iter.hasNext())
+      d_ptr->m_lMimeTypes << iter.key();
+
+   return d_ptr->m_lMimeTypes;
+}
+
 ///Get the instant messaging model associated with this recording
 QAbstractListModel* Media::TextRecording::instantMessagingModel() const
 {
@@ -271,6 +291,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
             m->m_PlainText = p->payload;
          else if (p->mimeType == "text/html")
             m->m_HTML = p->payload;
+
+         // Make the clients life easier and tell the payload type
+         m_hMimeTypes[iter.key()] = true;
       }
    }
    m_pCurrentGroup->messages << m;
