@@ -18,6 +18,7 @@
 #pragma once
 
 #include <media/recording.h>
+#include <media/media.h>
 
 //Qt
 class QJsonObject;
@@ -70,6 +71,9 @@ public:
    bool                isEmpty                  (                         ) const;
    bool                hasMimeType              ( const QString& mimeType ) const;
    QStringList         mimeTypes                (                         ) const;
+
+Q_SIGNALS:
+   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Direction direction);
 
 private:
    TextRecordingPrivate* d_ptr;
