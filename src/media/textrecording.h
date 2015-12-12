@@ -18,6 +18,7 @@
 #pragma once
 
 #include <media/recording.h>
+#include <media/media.h>
 
 //Qt
 class QJsonObject;
@@ -66,6 +67,9 @@ public:
    //Getter
    QAbstractListModel* instantMessagingModel() const;
    bool isEmpty() const;
+
+Q_SIGNALS:
+   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Direction direction);
 
 private:
    TextRecordingPrivate* d_ptr;

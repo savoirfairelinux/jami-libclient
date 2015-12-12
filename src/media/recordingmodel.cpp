@@ -24,6 +24,8 @@
 
 //Ring
 #include "recording.h"
+#include "textrecording.h"
+#include "media.h"
 #include "localtextrecordingcollection.h"
 
 //DRing
@@ -50,8 +52,9 @@ struct RecordingNode
 
 };
 
-class RecordingModelPrivate
+class RecordingModelPrivate : public QObject
 {
+   Q_OBJECT
 public:
    RecordingModelPrivate(Media::RecordingModel* parent);
 
@@ -61,6 +64,8 @@ public:
    RecordingNode*                 m_pAudioVideo             ;
    LocalTextRecordingCollection*  m_pTextRecordingCollection;
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
+
+   void forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
 
 private:
    Media::RecordingModel* q_ptr;
@@ -78,12 +83,17 @@ m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 
 }
 
+void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
+{
+   emit q_ptr->newTextMessage(static_cast<Media::TextRecording*>(sender()), cm);
+}
+
 Media::RecordingModel::~RecordingModel()
 {
    delete d_ptr;
 }
 
-Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Media::Recording>(this),
+Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Recording>(this),
 d_ptr(new RecordingModelPrivate(this))
 {
    setObjectName("RecordingModel");
@@ -205,7 +215,7 @@ QModelIndex Media::RecordingModel::index(int row, int column, const QModelIndex&
    return createIndex(row,0,modelItem->m_lChildren[row]);
 }
 
-bool Media::RecordingModel::addItemCallback(const Media::Recording* item)
+bool Media::RecordingModel::addItemCallback(const Recording* item)
 {
    Q_UNUSED(item)
 
@@ -230,11 +240,11 @@ bool Media::RecordingModel::addItemCallback(const Media::Recording* item)
    //Categorize by general media group
    RecordingNode* parent = nullptr;
 
-   if (item->type() == Media::Recording::Type::TEXT)
+   if (item->type() == Recording::Type::TEXT)
       parent = d_ptr->m_pText;
-   else if (item->type() == Media::Recording::Type::AUDIO_VIDEO)
+   else if (item->type() == Recording::Type::AUDIO_VIDEO)
       parent = d_ptr->m_pAudioVideo;
-   /*else if (item->type() == Media::Recording::Type::FILE))
+   /*else if (item->type() == Recording::Type::FILE))
       parent = d_ptr->m_pFiles;*/
 
    //Insert the item
@@ -249,13 +259,18 @@ bool Media::RecordingModel::addItemCallback(const Media::Recording* item)
 
       endInsertRows();
 
+      if (item->type() == Recording::Type::TEXT) {
+         const TextRecording* r = static_cast<const TextRecording*>(item);
+         connect(r, &TextRecording::messageInserted, d_ptr, &RecordingModelPrivate::forwardInsertion);
+      }
+
       return true;
    }
 
    return false;
 }
 
-bool Media::RecordingModel::removeItemCallback(const Media::Recording* item)
+bool Media::RecordingModel::removeItemCallback(const Recording* item)
 {
    Q_UNUSED(item)
    return false;
@@ -307,7 +322,10 @@ void Media::RecordingModel::setAlwaysRecording(bool record)
 ///Create or load the recording associated with the ContactMethod cm
 Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
 {
-   Media::TextRecording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
+   TextRecording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
 
    return r;
 }
+
+#include <recordingmodel.moc>
+

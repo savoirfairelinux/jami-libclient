@@ -239,6 +239,7 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
 
    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm);
 
+   editor<Media::Recording>()->addExisting(r);
    r->setCollection(this);
 
    return r;

@@ -84,6 +84,9 @@ public:
    //Singleton
    static RecordingModel& instance();
 
+Q_SIGNALS:
+   void newTextMessage(TextRecording* t, ContactMethod* cm);
+
 private:
    RecordingModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(RecordingModel)

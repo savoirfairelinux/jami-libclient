@@ -289,6 +289,8 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
 
    //Save the conversation
    q_ptr->save();
+
+   emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
 }
 
 void Serializable::Payload::read(const QJsonObject &json)
