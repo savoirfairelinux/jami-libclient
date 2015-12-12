@@ -321,6 +321,7 @@ public:
    bool                     hasMedia    (Media::Media::Type type, Media::Media::Direction direction) const;
    bool                     hasRecording(Media::Media::Type type, Media::Media::Direction direction) const;
    bool                     isRecording (Media::Media::Type type, Media::Media::Direction direction) const;
+   QList<Media::Media*>     allMedia    (                                                          ) const;
 
    //Automated function
    Call::State performAction(Call::Action action);

@@ -481,6 +481,9 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
          emit q_ptr->mediaStateChanged(call,media,s,m);
       });
 
+      foreach(auto m, call->allMedia())
+         emit q_ptr->mediaAdded(call, m);
+
       emit q_ptr->layoutChanged();
    }
    return call;

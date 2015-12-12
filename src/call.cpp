@@ -989,6 +989,24 @@ QList<Media::Recording*> Call::recordings(Media::Media::Type type, Media::Media:
    return *d_ptr->m_mRecordings[type][direction];
 }
 
+/**
+ * An iffecient way to list all media. If this ever become used elsewhere,
+ * add caching.
+ */
+QList<Media::Media*> Call::allMedia() const
+{
+   QList<Media::Media*> ret;
+
+   for (const auto t : EnumIterator<Media::Media::Type>() ) {
+      for (const auto d : EnumIterator<Media::Media::Direction>() ) {
+         foreach(Media::Media* m, *(d_ptr->m_mMedias[t][d]))
+            ret << m;
+      }
+   }
+
+   return ret;
+}
+
 
 /*****************************************************************************
  *                                                                           *
