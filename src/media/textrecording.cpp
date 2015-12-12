@@ -182,13 +182,53 @@ QStringList Media::TextRecording::mimeTypes() const
 }
 
 ///Get the instant messaging model associated with this recording
-QAbstractListModel* Media::TextRecording::instantMessagingModel() const
+QAbstractItemModel* Media::TextRecording::instantMessagingModel() const
 {
    if (!d_ptr->m_pImModel) {
       d_ptr->m_pImModel = new InstantMessagingModel(const_cast<TextRecording*>(this));
    }
 
    return d_ptr->m_pImModel;
+}
+
+/**
+ * I (Emmanuel Lepage) is in the process of writing a better one for this that
+ * can be upstreamed into Qt (there is interest in merging a generic QVariant
+   filter model), however, it is too complex to merge into LRC for such basic
+   use case. So, for the sake of simplicity until upstream have this feature,
+   here is a subset of the generic filter proxy. The time between now and the
+   Qt review + Qt release + LRC drop old version of Qt is too long anyway.
+
+   A copy of the code (copyrighted by me) is available in the ring-kde
+   next release for those interested. In 2016-2017, this code could probably
+   be replaced by the new one, be it in KItemModels (the KDE abstract proxy
+   library) or QtCore.
+ */
+class BooleanProxyModel : public QSortFilterProxyModel
+{
+public:
+   explicit BooleanProxyModel(QObject* parent) : QSortFilterProxyModel(parent){}
+   virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override
+   {
+      const QModelIndex srcIdx = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
+
+      return srcIdx.data((int)Media::TextRecording::Role::HasText).toBool();
+   }
+};
+
+/**
+ * Subset of the instantMessagingModel() with only plain text and HTML
+ * messages. This model can be displayed directly to the user.
+ */
+QAbstractItemModel* Media::TextRecording::instantTextMessagingModel() const
+{
+   if (!d_ptr->m_pTextMessagesModels) {
+      auto p = new BooleanProxyModel(const_cast<TextRecording*>(this));
+      p->setSourceModel(instantMessagingModel());
+      d_ptr->m_pTextMessagesModels = p;
+   }
+
+   return d_ptr->m_pTextMessagesModels;
 }
 
 bool Media::TextRecording::isEmpty() const
@@ -282,7 +322,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    QMapIterator<QString, QString> iter(message);
    while (iter.hasNext()) {
       iter.next();
-      if (iter.value() != "application/resource-lists+xml") { //This one is useless
+      if (iter.value() != QLatin1String("application/resource-lists+xml")) { //This one is useless
          const QString mimeType = iter.key();
 
          Serializable::Payload* p = new Serializable::Payload();
@@ -290,10 +330,14 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
          p->payload  = iter.value();
          m->payloads << p;
 
-         if (p->mimeType == QLatin1String("text/plain"))
+         if (p->mimeType == QLatin1String("text/plain")) {
             m->m_PlainText = p->payload;
-         else if (p->mimeType == QLatin1String("text/html"))
-            m->m_HTML = p->payload;
+            m->m_HasText   = true;
+         }
+         else if (p->mimeType == QLatin1String("text/html")) {
+            m->m_HTML    = p->payload;
+            m->m_HasText = true;
+         }
 
          // Make the clients life easier and tell the payload type
          const int hasArgs = mimeType.indexOf(';');
@@ -346,10 +390,14 @@ void Serializable::Message::read (const QJsonObject &json)
       p->read(o);
       payloads << p;
 
-      if (p->mimeType == "text/plain")
+      if (p->mimeType == "text/plain") {
          m_PlainText = p->payload;
-      else if (p->mimeType == "text/html")
-         m_HTML = p->payload;
+         m_HasText   = true;
+      }
+      else if (p->mimeType == "text/html") {
+         m_HTML    = p->payload;
+         m_HasText = true;
+      }
    }
 
    //Load older conversation from a time when only 1 mime/payload pair was supported
@@ -359,6 +407,7 @@ void Serializable::Message::read (const QJsonObject &json)
       p->mimeType = json["mimeType" ].toString();
       payloads << p;
       m_PlainText = p->payload;
+      m_HasText   = true;
    }
 }
 
@@ -556,6 +605,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return n->m_pMessage->type == Serializable::Message::Type::STATUS;
          case (int)Media::TextRecording::Role::HTML                 :
             return QVariant(n->m_pMessage->m_HTML);
+         case (int)Media::TextRecording::Role::HasText              :
+            return n->m_pMessage->m_HasText;
          default:
             break;
       }
