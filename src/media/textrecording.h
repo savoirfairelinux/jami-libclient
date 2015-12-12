@@ -21,7 +21,7 @@
 
 //Qt
 class QJsonObject;
-class QAbstractListModel;
+class QAbstractItemModel;
 
 //Ring
 class IMConversationManagerPrivate;
@@ -54,6 +54,7 @@ public:
       FormattedDate                         ,
       IsStatus                              ,
       HTML                                  ,
+      HasText                               ,
    };
 
    //Constructor
@@ -62,10 +63,11 @@ public:
    static TextRecording* fromJson(const QList<QJsonObject>& items, const ContactMethod* cm = nullptr);
 
    //Getter
-   QAbstractListModel* instantMessagingModel(                         ) const;
-   bool                isEmpty              (                         ) const;
-   bool                hasMimeType          ( const QString& mimeType ) const;
-   QStringList         mimeTypes            (                         ) const;
+   QAbstractItemModel* instantMessagingModel    (                         ) const;
+   QAbstractItemModel* instantTextMessagingModel(                         ) const;
+   bool                isEmpty                  (                         ) const;
+   bool                hasMimeType              ( const QString& mimeType ) const;
+   QStringList         mimeTypes                (                         ) const;
 
 private:
    TextRecordingPrivate* d_ptr;

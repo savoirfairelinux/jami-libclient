@@ -74,6 +74,7 @@ public:
    //Cache the most common payload to avoid lookup
    QString m_PlainText;
    QString m_HTML;
+   bool    m_HasText;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
@@ -148,15 +149,16 @@ namespace Media {
  */
 class TextRecordingPrivate {
 public:
-   TextRecordingPrivate(TextRecording* r);
+   explicit TextRecordingPrivate(TextRecording* r);
 
    //Attributes
-   InstantMessagingModel*      m_pImModel        ;
-   QVector<::TextMessageNode*> m_lNodes          ;
-   Serializable::Group*        m_pCurrentGroup   ;
-   QList<Serializable::Peers*> m_lAssociatedPeers;
-   QHash<QString,bool>         m_hMimeTypes      ;
-   QStringList                 m_lMimeTypes      ;
+   InstantMessagingModel*      m_pImModel           ;
+   QVector<::TextMessageNode*> m_lNodes             ;
+   Serializable::Group*        m_pCurrentGroup      ;
+   QList<Serializable::Peers*> m_lAssociatedPeers   ;
+   QHash<QString,bool>         m_hMimeTypes         ;
+   QStringList                 m_lMimeTypes         ;
+   QAbstractItemModel*         m_pTextMessagesModels {nullptr};
 
    //Helper
    void insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction);
