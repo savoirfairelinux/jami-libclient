@@ -568,17 +568,32 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
          case Qt::DecorationRole         :
             if (n->m_pMessage->direction == Media::Media::Direction::IN)
                return GlobalInstances::pixmapManipulator().callPhoto(n->m_pContactMethod,QSize(48,48));
+            else if (m_pRecording->call() && m_pRecording->call()->account()
+              && m_pRecording->call()->account()->contactMethod()->contact()) {
+               auto cm = m_pRecording->call()->account()->contactMethod();
+               return GlobalInstances::pixmapManipulator().callPhoto(cm,QSize(48,48));
+            }
             break;
          case (int)Media::TextRecording::Role::Direction            :
             return QVariant::fromValue(n->m_pMessage->direction);
          case (int)Media::TextRecording::Role::AuthorDisplayname    :
-            return n->m_pMessage->direction == Media::Media::Direction::IN ?
-               n->m_pContactMethod->primaryName() : tr("Me");
+            if (n->m_pMessage->direction == Media::Media::Direction::IN)
+               return n->m_pContactMethod->primaryName();
+            else if (m_pRecording->call() && m_pRecording->call()->account()
+              && m_pRecording->call()->account()->contactMethod()->contact()) {
+               return m_pRecording->call()->account()->contactMethod()->primaryName();
+            }
+            else
+               return tr("Me");
          case (int)Media::TextRecording::Role::AuthorUri            :
             return n->m_pContactMethod->uri();
          case (int)Media::TextRecording::Role::AuthorPresenceStatus :
-            return n->m_pContactMethod->contact() ?
-               n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
+            // Always consider "self" as present
+            if (n->m_pMessage->direction == Media::Media::Direction::OUT)
+               return true;
+            else
+               return n->m_pContactMethod->contact() ?
+                  n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
          case (int)Media::TextRecording::Role::Timestamp            :
             return (int)n->m_pMessage->timestamp;
          case (int)Media::TextRecording::Role::FormattedDate        :
