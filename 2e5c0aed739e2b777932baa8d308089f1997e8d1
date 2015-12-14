@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_a12608b9",
+        "filename": "src/media/text.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-14T19:26:32Z",
+      "side": 1,
+      "message": "I don\u0027t see where you use that",
+      "range": {
+        "startLine": 37,
+        "startChar": 18,
+        "endLine": 37,
+        "endChar": 46
+      },
+      "revId": "2e5c0aed739e2b777932baa8d308089f1997e8d1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
