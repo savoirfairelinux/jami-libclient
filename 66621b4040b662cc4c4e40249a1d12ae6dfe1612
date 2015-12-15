@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_21267817",
+        "filename": "src/call.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-12-15T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_c130f458",
+      "revId": "66621b4040b662cc4c4e40249a1d12ae6dfe1612",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_61356045",
         "filename": "src/call.cpp",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2015-12-15T18:51:59Z",
       "side": 1,
       "message": "Same here,\n\nYou can take the version from the other patch, I tested it properly (I hope)",
+      "revId": "66621b4040b662cc4c4e40249a1d12ae6dfe1612",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_41238405",
+        "filename": "src/call.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2015-12-15T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_61356045",
       "revId": "66621b4040b662cc4c4e40249a1d12ae6dfe1612",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
