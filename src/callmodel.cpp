@@ -606,7 +606,7 @@ QStringList CallModelPrivate::getCallList()
 
    for (const QString& callId : callList) {
       QMap<QString, QString> details = callManager.getCallDetails(callId);
-      if (details[CallPrivate::DetailsMapFields::STATE] != DRing::Call::StateEvent::INACTIVE)
+      if (details[DRing::Call::Details::CALL_STATE] != DRing::Call::StateEvent::INACTIVE)
          ret << callId;
    }
 
@@ -1292,7 +1292,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
          const QMap<QString,QString> callDetails = callManager.getCallDetails(callId);
          InternalStruct* callInt = m_shDringId[callId];
          if (callInt) {
-            const QString confId = callDetails[CallPrivate::DetailsMapFields::CONF_ID];
+            const QString confId = callDetails[DRing::Call::Details::CONF_ID];
             if (callInt->m_pParent) {
                if (!confId.isEmpty()  && callInt->m_pParent->call_real->dringId() != confId) {
                   qWarning() << "Conference parent mismatch";

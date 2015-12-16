@@ -76,18 +76,6 @@ public:
       constexpr static const char* OVER           = "OVER";
    };
 
-   ///"getCallDetails()" fields
-   class DetailsMapFields {
-   public:
-      constexpr static const char* PEER_NAME         = "DISPLAY_NAME"   ;
-      constexpr static const char* PEER_NUMBER       = "PEER_NUMBER"    ;
-      constexpr static const char* ACCOUNT_ID        = "ACCOUNTID"      ;
-      constexpr static const char* STATE             = "CALL_STATE"     ;
-      constexpr static const char* TYPE              = "CALL_TYPE"      ;
-      constexpr static const char* TIMESTAMP_START   = "TIMESTAMP_START";
-      constexpr static const char* CONF_ID           = "CONF_ID"        ;
-   };
-
    ///"getConferenceDetails()" fields
    class ConfDetailsMapFields {
    public:
