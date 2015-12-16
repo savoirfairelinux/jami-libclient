@@ -392,7 +392,7 @@ MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 
    MapStringString details = callManager.getCallDetails(callId);
 
-   const QString account = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID ];
+   const QString account = details[ DRing::Call::Details::ACCOUNTID ];
 
    if (account.isEmpty())
       return details;
@@ -401,12 +401,12 @@ MapStringString CallPrivate::getCallDetailsCommon(const QString& callId)
 
    //Only keep the useful part of the URI
    if (acc && acc->protocol() == Account::Protocol::RING)
-      details[DetailsMapFields::PEER_NUMBER] = URI(details[DetailsMapFields::PEER_NUMBER]).format(
+      details[DRing::Call::Details::PEER_NUMBER] = URI(details[DRing::Call::Details::PEER_NUMBER]).format(
          URI::Section::SCHEME    |
          URI::Section::USER_INFO
       );
    else
-      details[DetailsMapFields::PEER_NUMBER] = URI(details[DetailsMapFields::PEER_NUMBER]).format(
+      details[DRing::Call::Details::PEER_NUMBER] = URI(details[DRing::Call::Details::PEER_NUMBER]).format(
          URI::Section::SCHEME    |
          URI::Section::USER_INFO |
          URI::Section::HOSTNAME
@@ -420,9 +420,9 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 {
     const auto& details = getCallDetailsCommon(callId);
 
-    const auto& peerNumber    = details[ CallPrivate::DetailsMapFields::PEER_NUMBER ];
-    const auto& peerName      = details[ CallPrivate::DetailsMapFields::PEER_NAME   ];
-    const auto& account       = details[ CallPrivate::DetailsMapFields::ACCOUNT_ID  ];
+    const auto& peerNumber    = details[ DRing::Call::Details::PEER_NUMBER ];
+    const auto& peerName      = details[ DRing::Call::Details::DISPLAY_NAME];
+    const auto& account       = details[ DRing::Call::Details::ACCOUNTID   ];
 
     //It may be possible that the call has already been invalidated
     if (account.isEmpty()) {
@@ -448,8 +448,8 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
         call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , true);
     }
 
-    if (!details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].isEmpty())
-        call->d_ptr->setStartTimeStamp(details[ CallPrivate::DetailsMapFields::TIMESTAMP_START ].toInt());
+    if (!details[ DRing::Call::Details::TIMESTAMP_START ].isEmpty())
+        call->d_ptr->setStartTimeStamp(details[ DRing::Call::Details::TIMESTAMP_START ].toInt());
     else
         call->d_ptr->setStartTimeStamp();
 
@@ -474,8 +474,8 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 Call* CallPrivate::buildExistingCall(const QString& callId)
 {
     const auto& details = getCallDetailsCommon(callId);
-    const auto daemon_state = details[CallPrivate::DetailsMapFields::STATE];
-    const auto daemon_type = details[CallPrivate::DetailsMapFields::TYPE];
+    const auto daemon_state = details[DRing::Call::Details::CALL_STATE];
+    const auto daemon_type = details[DRing::Call::Details::CALL_TYPE];
     const auto direction = daemon_type == CallPrivate::CallDirection::OUTGOING ? Call::Direction::OUTGOING : Call::Direction::INCOMING;
     return buildCall(callId, direction, startStateFromDaemonCallState(daemon_state, daemon_type));
 }
@@ -1248,9 +1248,9 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       }
 
       MapStringString details = getCallDetailsCommon(m_DringId);
-      if (!details[CallPrivate::DetailsMapFields::PEER_NAME].isEmpty()
-          and ( details[CallPrivate::DetailsMapFields::PEER_NAME] != m_PeerName) )
-         m_PeerName = details[CallPrivate::DetailsMapFields::PEER_NAME];
+      if (!details[DRing::Call::Details::DISPLAY_NAME].isEmpty()
+          and ( details[DRing::Call::Details::DISPLAY_NAME] != m_PeerName) )
+         m_PeerName = details[DRing::Call::Details::DISPLAY_NAME];
 
       //Load the certificate if it's now available
       if (!q_ptr->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
@@ -1378,6 +1378,12 @@ void CallPrivate::changeCurrentState(Call::State newState)
    qDebug() << "State changing from"<<previousState << "to" << m_CurrentState << "on" << q_ptr;
 
    emit q_ptr->stateChanged(newState, previousState);
+
+    if (q_ptr->account()) {
+        if (q_ptr->account()->isAutoAnswer()) {
+            q_ptr->performAction(Call::Action::ACCEPT);
+        }
+    }
 
    if (CallPrivate::metaStateMap[newState] != CallPrivate::metaStateMap[previousState]) {
       const Call::LifeCycleState oldLCS = CallPrivate::metaStateMap[ previousState ];
