@@ -61,6 +61,7 @@ public:
    QList<CollectionConfigurationInterface*> m_lConfigurator;
    QList<CollectionCreationInterface*>      m_lCreator;
    QMutex                                   m_NewCollectionMutex;
+   QHash<CollectionInterface*,bool>         m_hPendingChanges;
 
    //Helper
    void registerNew(CollectionInterface* col);
