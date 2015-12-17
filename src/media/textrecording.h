@@ -69,7 +69,7 @@ public:
    bool isEmpty() const;
 
 Q_SIGNALS:
-   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Direction direction);
+   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
 
 private:
    TextRecordingPrivate* d_ptr;
