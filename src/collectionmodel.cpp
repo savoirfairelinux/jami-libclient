@@ -196,7 +196,15 @@ bool CollectionModel::setData (const QModelIndex& idx, const QVariant &value, in
          try {
             GlobalInstances::itemModelStateSerializer().setChecked(item->collection,value==Qt::Checked);
             emit dataChanged(index(idx.row(),0),index(idx.row(),columnCount()-1));
-            if (old != (value==Qt::Checked)) {
+
+            // The state change has been cached in the interface, but is not applied yet.
+            // it is necessary to keep track of the collection states that changed
+            if (d_ptr->m_hPendingChanges.contains(item->collection)) {
+               d_ptr->m_hPendingChanges.remove(item->collection);
+               emit checkStateChanged();
+            }
+            else if (old != (value==Qt::Checked)) {
+               d_ptr->m_hPendingChanges[item->collection] = true;
                emit checkStateChanged();
             }
             return true;
@@ -266,31 +274,13 @@ bool CollectionModel::save()
 {
    try {
 
-      //Load newly enabled collections
-      foreach(CollectionModelPrivate::ProxyItem* top, d_ptr->m_lTopLevelBackends) {
-         CollectionInterface* current = top->collection;
-         bool check,wasChecked;
-         if (current) {
-            check = GlobalInstances::itemModelStateSerializer().isChecked(current);
-            wasChecked = current->isEnabled();
-            if (check && !wasChecked)
-               current->enable(true);
-            else if ((!check) && wasChecked)
-               current->enable(false);
-         }
-
-         //TODO implement real tree digging
-         foreach(CollectionModelPrivate::ProxyItem* leaf ,top->m_Children) {
-            current = leaf->collection;
-            check = GlobalInstances::itemModelStateSerializer().isChecked(current);
-            wasChecked = current->isEnabled();
-            if (check && !wasChecked)
-               current->enable(true);
-            else if ((!check) && wasChecked)
-               current->enable(false);
-            //else: do nothing
-         }
+      // Enable/disabled collections that changed
+      for (QHash<CollectionInterface*,bool>::const_iterator i = d_ptr->m_hPendingChanges.begin(); i != d_ptr->m_hPendingChanges.end(); ++i) {
+         i.key()->enable(GlobalInstances::itemModelStateSerializer().isChecked(i.key()));
       }
+
+      d_ptr->m_hPendingChanges.clear();
+
       return GlobalInstances::itemModelStateSerializer().save();
    } catch (...) {
       qDebug() << "no ItemModelStateSerializer exists";
