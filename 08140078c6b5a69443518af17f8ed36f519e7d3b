@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_7c1183ab",
+        "filename": "src/interfaces/itemmodelstateserializeri.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2015-12-17T18:02:06Z",
+      "side": 1,
+      "message": "Double negative ?",
+      "range": {
+        "startLine": 42,
+        "startChar": 6,
+        "endLine": 42,
+        "endChar": 21
+      },
+      "revId": "08140078c6b5a69443518af17f8ed36f519e7d3b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
