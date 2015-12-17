@@ -27,6 +27,7 @@
 #include <categorizedhistorymodel.h>
 #include <personmodel.h>
 #include <interfaces/actionextenderi.h>
+#include <interfaces/itemmodelstateserializeri.h>
 #include <mime.h>
 
 #include "media/media.h"
@@ -387,9 +388,19 @@ bool editPerson( Person* p )
 
 bool addPerson(ContactMethod* cm, CollectionInterface* col)
 {
-   if (cm->contact())
+   // If the placeholder has not yet been replaced, it might point to a
+   // deleted contact, as the user initiated this action, lets comply
+   if (cm->contact() && !cm->contact()->isPlaceHolder())
       return false;
 
+   // Try to get the best collection for this
+   if (!col)
+      col = GlobalInstances::itemModelStateSerializer().preferredCollection(
+         &PersonModel::instance(),
+         CollectionInterface::SupportedFeatures::ADD
+      );
+
+   // Take a random collection that match
    if (!col) {
       const QVector<CollectionInterface*> cols = PersonModel::instance()
          .collections(CollectionInterface::SupportedFeatures::ADD);
