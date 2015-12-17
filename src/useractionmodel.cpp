@@ -478,7 +478,9 @@ const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)> UserActionModelPriva
    { UAMA::JOIN              , nullptr                                         },
    { UAMA::ADD_NEW           , nullptr                                         },
    { UAMA::TOGGLE_VIDEO      , nullptr                                         },
-   { UAMA::ADD_CONTACT       , CM_CB { return !cm->contact();                 }},
+   { UAMA::ADD_CONTACT       , CM_CB { return (!cm->contact())
+      || cm->contact()->isPlaceHolder();
+   }},
    { UAMA::ADD_TO_CONTACT    , CM_CB { return !cm->contact();                 }},
    { UAMA::DELETE_CONTACT    , CM_CB { return cm->contact() &&
       cm->contact()->collection() &&
