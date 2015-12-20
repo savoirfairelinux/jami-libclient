@@ -31,6 +31,11 @@ void ActionExtenderDefault::viewChatHistory(ContactMethod* cm)
    Q_UNUSED(cm)
 }
 
+void ActionExtenderDefault::viewChatHistory(Person* p)
+{
+   Q_UNUSED(p)
+}
+
 void ActionExtenderDefault::copyInformation(QMimeData* data)
 {
    Q_UNUSED(data)

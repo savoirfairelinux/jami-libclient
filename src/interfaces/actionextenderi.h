@@ -49,6 +49,7 @@ public:
 
    virtual void editPerson(Person* p) = 0;
    virtual void viewChatHistory(ContactMethod* cm) = 0;
+   virtual void viewChatHistory(Person* p) = 0;
    virtual void copyInformation(QMimeData* data) = 0;
    virtual bool warnDeletePerson(Person* p) = 0;
    virtual bool warnDeleteCall(Call* c) = 0;
