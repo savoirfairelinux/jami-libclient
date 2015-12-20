@@ -24,6 +24,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
 #include <QtCore/QMimeData>
+#include <QtCore/QMutex>
 
 //Ring
 #include "phonedirectorymodel.h"
@@ -58,9 +59,19 @@ struct VCardMapper;
 
 typedef void (VCardMapper:: *mapToProperty)(Person*, const QString&, const QByteArray&);
 
-struct VCardMapper {
+struct VCardMapper final {
 
    QHash<QByteArray, mapToProperty> m_hHash;
+
+   // Calling getNumber before the Contact is finalized will create duplicates
+   struct GetNumberFuture {
+      QByteArray uri;
+      Person*    c;
+      QString    category;
+   };
+
+   QHash<Person*, QList<GetNumberFuture> > m_hDelayedCMInserts;
+   static QMutex* m_pMutex;
 
    VCardMapper() {
       m_hHash[VCardUtils::Property::UID] = &VCardMapper::setUid;
@@ -71,6 +82,27 @@ struct VCardMapper {
       m_hHash[VCardUtils::Property::TELEPHONE] = &VCardMapper::addContactMethod;
       m_hHash[VCardUtils::Property::ADDRESS] = &VCardMapper::addAddress;
       m_hHash[VCardUtils::Property::PHOTO] = &VCardMapper::setPhoto;
+   }
+
+   void apply() {
+      // Finalize the transaction, set the ContactsMethods
+      // it is done at the end to make sure UID has been set and all CMs
+      // are there at once not to mess PhoneDirectoryModel detection
+
+      QMutexLocker locker(m_pMutex);
+
+      for (QHash<Person*, QList<GetNumberFuture>>::iterator i = m_hDelayedCMInserts.begin(); i != m_hDelayedCMInserts.end(); ++i) {
+         Person::ContactMethods m = i.key()->phoneNumbers();
+
+         foreach(const GetNumberFuture& v, i.value()) {
+            ContactMethod* cm = PhoneDirectoryModel::instance().getNumber(v.uri,v.c,nullptr,v.category);
+
+            m << cm;
+         }
+         i.key()->setContactMethods(m);
+      }
+
+      m_hDelayedCMInserts.clear();
    }
 
    void setFormattedName(Person* c,  const QString&, const QByteArray& fn) {
@@ -100,7 +132,7 @@ struct VCardMapper {
    void setPhoto(Person* c, const QString& key, const QByteArray& fn) {
       QByteArray type = "PNG";
 
-      QRegExp rx("TYPE=([A-Za-z]*)");
+      QRegExp rx(QStringLiteral("TYPE=([A-Za-z]*)"));
 
       while ((rx.indexIn(key, 0)) != -1) {
          type = rx.cap(1).toLatin1();
@@ -114,7 +146,7 @@ struct VCardMapper {
    void addContactMethod(Person* c, const QString& key, const QByteArray& fn) {
       QByteArray type;
 
-      QRegExp rx("TYPE=([A-Za-z,]*)");
+      QRegExp rx(QStringLiteral("TYPE=([A-Za-z,]*)"));
 
       //VCard spec: it is RECOMMENDED that property and parameter names
       // be upper-case on output.
@@ -128,10 +160,11 @@ struct VCardMapper {
       // TODO: Currently we only support one type (the first on the line) TYPE=WORK,VOICE: <number>
       const QStringList categories = QString(type).split(',');
 
-      ContactMethod* cm = PhoneDirectoryModel::instance().getNumber(fn,c,nullptr,categories.size()?categories[0]:QString());
-      Person::ContactMethods m = c->phoneNumbers();
-      m << cm;
-      c->setContactMethods(m);
+      m_hDelayedCMInserts[c] << GetNumberFuture {
+         fn,
+         c,
+         categories.size()?categories[0]:QString()
+      };
    }
 
    void addAddress(Person* c, const QString& key, const QByteArray& fn) {
@@ -182,6 +215,8 @@ struct VCardMapper {
       return true;
    }
 };
+
+QMutex* VCardMapper::m_pMutex = new QMutex();
 static VCardMapper* vc_mapper = new VCardMapper;
 
 VCardUtils::VCardUtils()
@@ -283,7 +318,12 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
 {
 //    bool propertyInserted = false;
    QByteArray previousKey,previousValue;
-   for (const QByteArray& property : all.split('\n')) {
+
+   const QList<QByteArray> lines = all.split('\n');
+
+   QHash<QByteArray,QByteArray> fields;
+
+   foreach (const QByteArray& property, lines) {
 
       //Ignore empty lines
       if (property.size()) {
@@ -293,12 +333,8 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
             previousValue += property.right(property.size()-1);
          }
          else {
-            if (previousKey.size()) {
-               /*propertyInserted = */vc_mapper->metacall(p,previousKey,previousValue.trimmed());
-
-//                if(!propertyInserted)
-//                   qDebug() << "Could not extract: " << previousKey;
-            }
+            if (previousKey.size())
+               vc_mapper->metacall(p,previousKey,previousValue.trimmed());
 
             //Do not use split, URIs can have : in them
             const int dblptPos = property.indexOf(':');
@@ -324,6 +360,9 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
       }
 
    }
+
+   vc_mapper->apply();
+
    return true;
 }
 
