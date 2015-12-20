@@ -1082,7 +1082,10 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             UserActions::bookmark(cm);
             break;
          case UserActionModel::Action::VIEW_CHAT_HISTORY :
-            GlobalInstances::actionExtender().viewChatHistory(cm);
+            if (p)
+               GlobalInstances::actionExtender().viewChatHistory(p);
+            else
+               GlobalInstances::actionExtender().viewChatHistory(cm);
             break;
          case UserActionModel::Action::ADD_CONTACT_METHOD:
             UserActions::addToPerson(p);
