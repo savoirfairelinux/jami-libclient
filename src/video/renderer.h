@@ -49,9 +49,9 @@ class DirectRenderer;
  * If shared data is carried, only "ptr" and "size" are set.
  */
 struct Frame {
-    uint8_t* ptr;
-    std::size_t size;
-    std::vector<uint8_t> storage;
+   uint8_t*             ptr     { nullptr };
+   std::size_t          size    { 0       };
+   std::vector<uint8_t> storage {         };
 };
 
 /**
