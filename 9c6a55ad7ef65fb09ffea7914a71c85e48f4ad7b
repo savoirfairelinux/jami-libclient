@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_a7ddb816",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-21T21:19:48Z",
+      "side": 1,
+      "message": "This is the payload section, the message can have multiple ones, but a payload can only have 1 MIME",
+      "parentUuid": "1a9dcd25_e7750033",
+      "range": {
+        "startLine": 337,
+        "startChar": 9,
+        "endLine": 337,
+        "endChar": 13
+      },
+      "revId": "9c6a55ad7ef65fb09ffea7914a71c85e48f4ad7b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_07734c4e",
         "filename": "src/media/textrecording.cpp",
         "patchSetId": 3
