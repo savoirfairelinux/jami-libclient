@@ -39,11 +39,13 @@ public:
    RingtoneModelPrivate(RingtoneModel*);
 
    //Attributes
-   QVector<Ringtone*>                   m_lRingtone       ;
-   QTimer*                              m_pTimer          ;
-   Ringtone*                            m_pCurrent        ;
-   QHash<Account*,int>                  m_hCurrent        ;
-   QHash<Account*,QItemSelectionModel*> m_hSelectionModels;
+   QVector<Ringtone*>                   m_lRingtone        ;
+   QTimer*                              m_pTimer           ;
+   Ringtone*                            m_pCurrent         ;
+   QHash<Account*,int>                  m_hCurrent         ;
+   QHash<Account*,QItemSelectionModel*> m_hSelectionModels ;
+   LocalRingtoneCollection*             m_pCollection      ;
+   QHash<const Ringtone*,Account*>      m_hPendingSelection;
 
    //Helpers
    int currentIndex(Account* a) const;
@@ -71,7 +73,7 @@ RingtoneModel::RingtoneModel(QObject* parent)
 {
 //    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
-   addCollection<LocalRingtoneCollection>();
+   d_ptr->m_pCollection = addCollection<LocalRingtoneCollection>();
 }
 
 RingtoneModel& RingtoneModel::instance()
@@ -139,7 +141,7 @@ int RingtoneModel::columnCount( const QModelIndex& parent ) const
 {
    if (parent.isValid())
       return 0;
-   return 2; //Name, then an empty one for widgets
+   return 1;
 }
 
 Qt::ItemFlags RingtoneModel::flags( const QModelIndex& index ) const
@@ -245,12 +247,40 @@ bool RingtoneModel::addItemCallback(const Ringtone* item)
    beginInsertRows(QModelIndex(),d_ptr->m_lRingtone.size(),d_ptr->m_lRingtone.size());
    d_ptr->m_lRingtone << const_cast<Ringtone*>(item);
    endInsertRows();
+
+   if (Account* a = d_ptr->m_hPendingSelection[item]) {
+
+      if (auto sm = d_ptr->m_hSelectionModels[a])
+         sm->setCurrentIndex(index(rowCount()-1,0), QItemSelectionModel::ClearAndSelect);
+      else
+         a->setRingtonePath(item->path().path());
+
+      d_ptr->m_hPendingSelection[item] = nullptr;
+   }
+
    return true;
 }
 
 bool RingtoneModel::removeItemCallback(const Ringtone* item)
 {
    Q_UNUSED(item)
+   return true;
+}
+
+bool RingtoneModel::add(const QUrl& path, Account* autoSelect)
+{
+   auto r = new Ringtone(this);
+   r->setPath(path);
+   r->setName(QFile(path.path()).fileName());
+
+   if (autoSelect)
+      d_ptr->m_hPendingSelection[r] = autoSelect;
+
+   d_ptr->m_pCollection->add(r);
+
+   //TODO check the file type
+   //TODO avoid duplicates
+
    return true;
 }
 
