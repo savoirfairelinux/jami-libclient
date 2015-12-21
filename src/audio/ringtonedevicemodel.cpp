@@ -37,7 +37,6 @@ private:
 
 public Q_SLOTS:
    void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
 };
 
 RingtoneDeviceModelPrivate::RingtoneDeviceModelPrivate(Audio::RingtoneDeviceModel* parent) : q_ptr(parent),
@@ -144,21 +143,21 @@ void RingtoneDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
    }
 }
 
-///QCombobox -> QModelIndex shim
-void RingtoneDeviceModelPrivate::setCurrentDevice(int idx)
-{
-   setCurrentDevice(q_ptr->index(idx,0));
-}
-
 ///Reload ringtone device list
 void Audio::RingtoneDeviceModel::reload()
 {
+   const int currentRow = selectionModel()->currentIndex().row();
+
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
    endResetModel();
    emit layoutChanged();
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
+
+   // Restore the selection
+   d_ptr->m_pSelectionModel->setCurrentIndex(index(currentRow,0), QItemSelectionModel::ClearAndSelect);
+
 }
 
 #include <ringtonedevicemodel.moc>
