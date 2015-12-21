@@ -35,16 +35,10 @@ typedef void (CredentialModelPrivate::*CredModelFct)();
 
 struct CredentialNode final
 {
-   union {
-      struct {
-         Credential* m_pCredential = {nullptr};
-         CredentialNode* m_pParent = {nullptr};
-      } m_Cred;
-      struct {
-         QString* m_CategoryName = {nullptr};
-         QVector<CredentialNode*>* m_lChildren;
-      } m_Category;
-   } m_uContent;
+   Credential*               m_pCredential  {nullptr};
+   CredentialNode*           m_pParent      {nullptr};
+   QString*                  m_CategoryName {nullptr};
+   QVector<CredentialNode*>  m_lChildren             ;
 
    enum class Level {
       CATEGORY,
@@ -54,7 +48,6 @@ struct CredentialNode final
    short int m_Index = {-1};
    Level m_Level;
 };
-void free_node(CredentialNode* n);
 
 /**
  * Display the types of credentials that can be added
@@ -92,9 +85,9 @@ public:
    CredentialModel*           q_ptr          ;
    uint                       m_TopLevelCount = {3};
    static Matrix2D<CredentialModel::EditState, CredentialModel::EditAction,CredModelFct> m_mStateMachine;
-   CredentialNode* m_pSipCat  = {nullptr};
-   CredentialNode* m_pTurnCat = {nullptr};
-   CredentialNode* m_pStunCat = {nullptr};
+   CredentialNode* m_pSipCat   {nullptr};
+   CredentialNode* m_pTurnCat  {nullptr};
+   CredentialNode* m_pStunCat  {nullptr};
    NewCredentialTypeModel* m_pTypeModel {nullptr};
 
    //Callbacks
@@ -136,7 +129,7 @@ d_ptr(new CredentialModelPrivate())
 CredentialModel::~CredentialModel()
 {
    foreach (CredentialNode* data, d_ptr->m_lCategories) {
-      free(data); //delete doesn't support non-trivial structures
+      delete data;
    }
 }
 
@@ -164,7 +157,7 @@ QModelIndex CredentialModel::parent( const QModelIndex& index) const
    if ((!node) || node->m_Level == CredentialNode::Level::CATEGORY)
       return QModelIndex();
 
-   return createIndex(node->m_uContent.m_Cred.m_pParent->m_Index,0,node->m_uContent.m_Cred.m_pParent);
+   return createIndex(node->m_pParent->m_Index,0,node->m_pParent);
 }
 
 ///Get the column count
@@ -184,10 +177,10 @@ QModelIndex CredentialModel::index( int row, int column, const QModelIndex& pare
       const CredentialNode* node = static_cast<CredentialNode*>(parent.internalPointer());
 
       if (node->m_Level != CredentialNode::Level::CATEGORY
-       || row >= node->m_uContent.m_Category.m_lChildren->size())
+       || row >= node->m_lChildren.size())
          return QModelIndex();
 
-      return createIndex(row, column, node->m_uContent.m_Category.m_lChildren->at(row));
+      return createIndex(row, column, node->m_lChildren.at(row));
    }
 
    if (row >= d_ptr->m_lCategories.size())
@@ -207,18 +200,18 @@ QVariant CredentialModel::data(const QModelIndex& idx, int role) const {
       case CredentialNode::Level::CATEGORY:
          switch(role) {
             case Qt::DisplayRole:
-               return *node->m_uContent.m_Category.m_CategoryName;
+               return *node->m_CategoryName;
          }
          break;
       case CredentialNode::Level::CREDENTIAL:
          switch (role) {
             case Qt::DisplayRole:
             case CredentialModel::Role::NAME:
-               return node->m_uContent.m_Cred.m_pCredential->username();
+               return node->m_pCredential->username();
             case CredentialModel::Role::PASSWORD:
-               return node->m_uContent.m_Cred.m_pCredential->password();
+               return node->m_pCredential->password();
             case CredentialModel::Role::REALM:
-               return node->m_uContent.m_Cred.m_pCredential->realm();
+               return node->m_pCredential->realm();
             default:
                break;
          }
@@ -237,7 +230,7 @@ int CredentialModel::rowCount(const QModelIndex& par) const {
    if (node->m_Level == CredentialNode::Level::CREDENTIAL)
       return 0;
 
-   return d_ptr->m_lCategories[par.row()]->m_uContent.m_Category.m_lChildren->size();
+   return d_ptr->m_lCategories[par.row()]->m_lChildren.size();
 }
 
 ///Model flags
@@ -270,21 +263,21 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
       return false;
 
    if (idx.column() == 0 && role == CredentialModel::Role::NAME) {
-      node->m_uContent.m_Cred.m_pCredential->setUsername(value.toString());
+      node->m_pCredential->setUsername(value.toString());
       emit dataChanged(idx, idx);
       this << EditAction::MODIFY;
       return true;
    }
    else if (idx.column() == 0 && role == CredentialModel::Role::PASSWORD) {
-      if (node->m_uContent.m_Cred.m_pCredential->password() != value.toString()) {
-         node->m_uContent.m_Cred.m_pCredential->setPassword(value.toString());
+      if (node->m_pCredential->password() != value.toString()) {
+         node->m_pCredential->setPassword(value.toString());
          emit dataChanged(idx, idx);
          this << EditAction::MODIFY;
          return true;
       }
    }
    else if (idx.column() == 0 && role == CredentialModel::Role::REALM) {
-      node->m_uContent.m_Cred.m_pCredential->setRealm(value.toString());
+      node->m_pCredential->setRealm(value.toString());
       emit dataChanged(idx, idx);
       this << EditAction::MODIFY;
       return true;
@@ -294,31 +287,16 @@ bool CredentialModel::setData( const QModelIndex& idx, const QVariant &value, in
 
 CredentialNode* CredentialModelPrivate::createCat(const QString& name)
 {
-   CredentialNode* n = (CredentialNode*) malloc(sizeof(CredentialNode));
+   CredentialNode* n = new CredentialNode();
    n->m_Level = CredentialNode::Level::CATEGORY;
    n->m_Index = q_ptr->rowCount();
-   n->m_uContent.m_Category.m_CategoryName = new QString(name);
-   n->m_uContent.m_Category.m_lChildren = new QVector<CredentialNode*>();
+   n->m_CategoryName = new QString(name);
 
    q_ptr->beginInsertRows(QModelIndex(),m_lCategories.size(),0);
    m_lCategories << n;
    q_ptr->endInsertRows();
 
    return n;
-}
-
-void free_node(CredentialNode* n)
-{
-   switch (n->m_Level) {
-      case CredentialNode::Level::CATEGORY:
-         delete n->m_uContent.m_Category.m_CategoryName;
-         delete n->m_uContent.m_Category.m_lChildren;
-         break;
-      case CredentialNode::Level::CREDENTIAL:
-         delete n->m_uContent.m_Cred.m_pCredential;
-         break;
-   }
-   free(n);
 }
 
 CredentialNode* CredentialModelPrivate::getCategory(Credential::Type type)
@@ -361,24 +339,24 @@ QModelIndex CredentialModel::addCredentials()
 QModelIndex CredentialModel::addCredentials(Credential::Type type)
 {
    CredentialNode* par = d_ptr->getCategory(type);
-   const int count = par->m_uContent.m_Category.m_lChildren->size();
+   const int count = par->m_lChildren.size();
    const QModelIndex parIdx = index(par->m_Index,0);
    beginInsertRows(parIdx, count, count);
 
-   CredentialNode* node = (CredentialNode*) malloc(sizeof(CredentialNode));
+   CredentialNode* node = new CredentialNode();
    node->m_Level = CredentialNode::Level::CREDENTIAL;
-   node->m_uContent.m_Cred.m_pCredential = new Credential(type);
-   node->m_uContent.m_Cred.m_pParent = par;
-   node->m_Index = par->m_uContent.m_Category.m_lChildren->size();
-   par->m_uContent.m_Category.m_lChildren->append(node);
+   node->m_pCredential = new Credential(type);
+   node->m_pParent = par;
+   node->m_Index = par->m_lChildren.size();
+   par->m_lChildren.append(node);
 
-   connect(node->m_uContent.m_Cred.m_pCredential, &Credential::changed,[this, node, par, type]() {
+   connect(node->m_pCredential, &Credential::changed,[this, node, par, type]() {
       const QModelIndex parIdx = index(par->m_Index,0);
       const QModelIndex idx    = index(node->m_Index,0,parIdx);
       emit dataChanged(idx, idx);
 
       if (!node->m_Index) {
-         Credential* c = node->m_uContent.m_Cred.m_pCredential;
+         Credential* c = node->m_pCredential;
          emit primaryCredentialChanged(type, c);
       }
    });
@@ -398,11 +376,11 @@ void CredentialModel::removeCredentials(const QModelIndex& idx)
 
       CredentialNode* node = static_cast<CredentialNode*>(idx.internalPointer());
 
-      for (int i = node->m_Index+1; i < node->m_uContent.m_Cred.m_pParent->m_uContent.m_Category.m_lChildren->size();i++) {
-         node->m_uContent.m_Cred.m_pParent->m_uContent.m_Category.m_lChildren->at(i)->m_Index--;
+      for (int i = node->m_Index+1; i < node->m_pParent->m_lChildren.size();i++) {
+         node->m_pParent->m_lChildren.at(i)->m_Index--;
       }
-      node->m_uContent.m_Cred.m_pParent->m_uContent.m_Category.m_lChildren->removeAt(node->m_Index);
-      free_node(node);
+      node->m_pParent->m_lChildren.removeAt(node->m_Index);
+      delete node;
       endRemoveRows();
 
       this << EditAction::MODIFY;
@@ -416,8 +394,11 @@ void CredentialModel::removeCredentials(const QModelIndex& idx)
 void CredentialModelPrivate::clear()
 {
    q_ptr->beginRemoveRows(QModelIndex(),0,q_ptr->rowCount());
+   m_pSipCat  = nullptr;
+   m_pTurnCat = nullptr;
+   m_pSipCat  = nullptr;
    foreach(CredentialNode* data2, m_lCategories) {
-      free_node(data2);
+      delete data2;
    }
    m_lCategories.clear();
    q_ptr->endRemoveRows();
@@ -433,8 +414,8 @@ void CredentialModelPrivate::save()
    if (m_pSipCat) {
       VectorMapStringString toReturn;
 
-      foreach (CredentialNode* n, *m_pSipCat->m_uContent.m_Category.m_lChildren) {
-         Credential* cred = n->m_uContent.m_Cred.m_pCredential;
+      foreach (CredentialNode* n, m_pSipCat->m_lChildren) {
+         Credential* cred = n->m_pCredential;
 
          if (cred->username().isEmpty())
             cred->setUsername(m_pAccount->username());
@@ -453,8 +434,8 @@ void CredentialModelPrivate::save()
 
    //TURN creds
    if (m_pTurnCat) {
-      foreach (CredentialNode* n, *m_pSipCat->m_uContent.m_Category.m_lChildren) {
-         Credential* cred = n->m_uContent.m_Cred.m_pCredential;
+      foreach (CredentialNode* n, m_pSipCat->m_lChildren) {
+         Credential* cred = n->m_pCredential;
 
          m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME , cred->username());
          m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_PWD   , cred->password());
@@ -538,16 +519,16 @@ Credential* CredentialModel::primaryCredential(Credential::Type type) const
 {
    switch(type) {
       case Credential::Type::STUN:
-         if (d_ptr->m_pStunCat && d_ptr->m_pStunCat->m_uContent.m_Category.m_lChildren->size())
-            return d_ptr->m_pStunCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         if (d_ptr->m_pStunCat && d_ptr->m_pStunCat->m_lChildren.size())
+            return d_ptr->m_pStunCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::TURN:
-         if (d_ptr->m_pTurnCat && d_ptr->m_pTurnCat->m_uContent.m_Category.m_lChildren->size())
-            return d_ptr->m_pTurnCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         if (d_ptr->m_pTurnCat && d_ptr->m_pTurnCat->m_lChildren.size())
+            return d_ptr->m_pTurnCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::SIP:
-         if (d_ptr->m_pSipCat && d_ptr->m_pSipCat->m_uContent.m_Category.m_lChildren->size())
-            return d_ptr->m_pSipCat->m_uContent.m_Category.m_lChildren->first()->m_uContent.m_Cred.m_pCredential;
+         if (d_ptr->m_pSipCat && d_ptr->m_pSipCat->m_lChildren.size())
+            return d_ptr->m_pSipCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::COUNT__:
          break;
