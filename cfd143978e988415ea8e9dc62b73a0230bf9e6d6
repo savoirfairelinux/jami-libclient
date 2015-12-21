@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_277c4820",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-12-21T16:18:37Z",
+      "side": 1,
+      "message": "same question as the previous patch, can\u0027t we update the list here easily as well?",
+      "range": {
+        "startLine": 298,
+        "startChar": 8,
+        "endLine": 300,
+        "endChar": 80
+      },
+      "revId": "cfd143978e988415ea8e9dc62b73a0230bf9e6d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
