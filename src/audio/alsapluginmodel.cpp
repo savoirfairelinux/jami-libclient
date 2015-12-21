@@ -36,7 +36,6 @@ private:
 
 public Q_SLOTS:
    void setCurrentPlugin(const QModelIndex& idx);
-   void setCurrentPlugin(int idx);
 };
 
 AlsaPluginModelPrivate::AlsaPluginModelPrivate(Audio::AlsaPluginModel* parent) : q_ptr(parent),
@@ -113,7 +112,7 @@ QItemSelectionModel* Audio::AlsaPluginModel::selectionModel() const
 
       d_ptr->m_pSelectionModel->setCurrentIndex(currentPlugin(), QItemSelectionModel::ClearAndSelect);
 
-      connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentPlugin(QModelIndex)));
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr.data(), &AlsaPluginModelPrivate::setCurrentPlugin);
    }
 
    return d_ptr->m_pSelectionModel;
@@ -141,21 +140,21 @@ void AlsaPluginModelPrivate::setCurrentPlugin(const QModelIndex& idx)
    configurationManager.setAudioPlugin(m_lDeviceList[idx.row()]);
 }
 
-///Set the current index (qcombobox compatibility shim)
-void AlsaPluginModelPrivate::setCurrentPlugin(int idx)
-{
-   setCurrentPlugin(q_ptr->index(idx,0));
-}
-
 ///Reload to current daemon state
 void Audio::AlsaPluginModel::reload()
 {
+   const int currentRow = selectionModel()->currentIndex().row();
+
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioPluginList();
    endResetModel();
    emit layoutChanged();
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
+
+   // Restore the selection
+   d_ptr->m_pSelectionModel->setCurrentIndex(index(currentRow,0), QItemSelectionModel::ClearAndSelect);
+
 }
 
 #include <alsapluginmodel.moc>

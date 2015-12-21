@@ -38,7 +38,6 @@ private:
 
 public Q_SLOTS:
    void setCurrentDevice(const QModelIndex& index);
-   void setCurrentDevice(int idx);
 };
 
 
@@ -135,21 +134,21 @@ void OutputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
    }
 }
 
-///QCombobox index -> QModelIndex shim
-void OutputDeviceModelPrivate::setCurrentDevice(int idx)
-{
-   setCurrentDevice(q_ptr->index(idx,0));
-}
-
 ///reload output devices list
 void Audio::OutputDeviceModel::reload()
 {
+   const int currentRow = selectionModel()->currentIndex().row();
+
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
    endResetModel();
    emit layoutChanged();
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
+
+   // Restore the selection
+   d_ptr->m_pSelectionModel->setCurrentIndex(index(currentRow,0), QItemSelectionModel::ClearAndSelect);
+
 }
 
 void Audio::OutputDeviceModel::playDTMF(const QString& str)
