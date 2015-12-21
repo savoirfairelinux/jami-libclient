@@ -265,11 +265,13 @@ void Serializable::RingtoneNode::read(const QJsonObject &json)
 {
    ringtone = new Ringtone();
    ringtone->setPath(json["path"].toString());
+   ringtone->setName(json["name"].toString());
 }
 
 void Serializable::RingtoneNode::write(QJsonObject& json)
 {
    json["path"] = ringtone->path().path();
+   json["name"] = ringtone->name();
 }
 
 #include <localringtonecollection.moc>
