@@ -680,9 +680,9 @@ const QString Call::toHumanStateName(const Call::State cur)
       case Call::State::NEW:
          return tr( "New"                       );
       case Call::State::INCOMING:
-         return tr( "Ringing (in)"              );
+         return tr( "Ringing"                   );
       case Call::State::RINGING:
-         return tr( "Ringing (out)"             );
+         return tr( "Calling"                   );
       case Call::State::CURRENT:
          return tr( "Talking"                   );
       case Call::State::DIALING:
