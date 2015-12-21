@@ -22,6 +22,30 @@
       "revId": "cfd143978e988415ea8e9dc62b73a0230bf9e6d6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_27f8c87b",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-21T21:31:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_277c4820",
+      "range": {
+        "startLine": 298,
+        "startChar": 8,
+        "endLine": 300,
+        "endChar": 80
+      },
+      "revId": "cfd143978e988415ea8e9dc62b73a0230bf9e6d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
