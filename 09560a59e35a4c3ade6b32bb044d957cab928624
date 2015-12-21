@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_a7885823",
+        "filename": "src/media/text.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-12-21T15:48:52Z",
+      "side": 1,
+      "message": "any reason why we can\u0027t just append the mime type (if it wasn\u0027t in the hash table) to the list here?",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 270,
+        "endChar": 4
+      },
+      "revId": "09560a59e35a4c3ade6b32bb044d957cab928624",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
