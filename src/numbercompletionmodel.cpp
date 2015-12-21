@@ -78,6 +78,7 @@ public:
 
    QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
    QHash<Account*,TemporaryContactMethod*> m_hRingTemporaryNumbers;
+   TemporaryContactMethod*                 m_pIp2IpTemporaryNumber;
    QHash<int, TemporaryContactMethod*> m_pPreferredTemporaryNumbers;
 
 public Q_SLOTS:
@@ -109,11 +110,13 @@ m_pSelectionModel(nullptr),m_HasCustomSelection(false)
       }
    }
 
+   //Add IP2IP if the number prefix match an IP address
+   m_pIp2IpTemporaryNumber = new TemporaryContactMethod();
+   m_pIp2IpTemporaryNumber->setAccount(ip2ip);
+
    //If SIP accounts are present, IP2IP is not needed
    if (!hasNonIp2Ip) {
-      TemporaryContactMethod* cm = new TemporaryContactMethod();
-      cm->setAccount(ip2ip);
-      m_hSipIaxTemporaryNumbers[ip2ip] = cm;
+      m_hSipIaxTemporaryNumbers[ip2ip] = m_pIp2IpTemporaryNumber;
    }
 
    connect(&AccountModel::instance(), &AccountModel::accountAdded  , this, &NumberCompletionModelPrivate::accountAdded  );
@@ -171,8 +174,7 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
    const ContactMethod* n = i.value();
    const int weight     = i.key  ();
 
-   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account() /*&& n->account() != AvailableAccountModel::currentDefaultAccount()*/
-                  && n->account()->alias() != DRing::Account::ProtocolNames::IP2IP;
+   bool needAcc = (role>=100 || role == Qt::UserRole) && n->account();
 
    switch (static_cast<NumberCompletionModelPrivate::Columns>(index.column())) {
       case NumberCompletionModelPrivate::Columns::CONTENT:
@@ -308,15 +310,23 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
       q_ptr->endRemoveRows();
    }
 
-   if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
-      for(TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
-         cm->setUri(m_Prefix);
-      }
-   } else {
-      for(auto cm : m_hSipIaxTemporaryNumbers) {
-         if (cm)
+   switch(m_Prefix.protocolHint()) {
+      case URI::ProtocolHint::RING:
+         for(TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
             cm->setUri(m_Prefix);
-      }
+         }
+         break;
+      case URI::ProtocolHint::IP:
+         m_pIp2IpTemporaryNumber->setUri(m_Prefix);
+         [[clang::fallthrough]];
+      case URI::ProtocolHint::SIP_OTHER:
+      case URI::ProtocolHint::IAX:
+      case URI::ProtocolHint::SIP_HOST:
+         for(auto cm : m_hSipIaxTemporaryNumbers) {
+            if (cm)
+               cm->setUri(m_Prefix);
+         }
+         break;
    }
 }
 
@@ -349,25 +359,41 @@ void NumberCompletionModelPrivate::updateModel()
       locateNameRange  ( m_Prefix, numbers );
       locateNumberRange( m_Prefix, numbers );
 
-      if (m_Prefix.protocolHint() == URI::ProtocolHint::RING) {
-         for (TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
-            const int weight = getWeight(cm->account());
-            if (weight) {
+      switch(m_Prefix.protocolHint()) {
+         case URI::ProtocolHint::RING:
+            for (TemporaryContactMethod* cm : m_hRingTemporaryNumbers) {
+               const int weight = getWeight(cm->account());
+               if (weight) {
+                  q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+                  m_hNumbers.insert(weight,cm);
+                  q_ptr->endInsertRows();
+               }
+            }
+            break;
+         case URI::ProtocolHint::IP:
+            if (auto weight = getWeight(m_pIp2IpTemporaryNumber->account())) {
                q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
-               m_hNumbers.insert(weight,cm);
+               m_hNumbers.insert(weight, m_pIp2IpTemporaryNumber);
                q_ptr->endInsertRows();
             }
-         }
-      } else {
-         for (auto cm : m_hSipIaxTemporaryNumbers) {
-            if (!cm) continue;
-            if (auto weight = getWeight(cm->account())) {
-               q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
-               m_hNumbers.insert(weight, cm);
-               q_ptr->endInsertRows();
+            [[clang::fallthrough]];
+         case URI::ProtocolHint::SIP_OTHER:
+         case URI::ProtocolHint::IAX:
+         case URI::ProtocolHint::SIP_HOST:
+            // [corner case] IP2IP may be shown twice if there is no other accounts
+            // given almost nobody use Ring that way, it is currently not handled
+            // for simplicity sake
+            for (auto cm : m_hSipIaxTemporaryNumbers) {
+               if (!cm) continue;
+               if (auto weight = getWeight(cm->account())) {
+                  q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
+                  m_hNumbers.insert(weight, cm);
+                  q_ptr->endInsertRows();
+               }
             }
-         }
+            break;
       }
+
 
       for (ContactMethod* n : numbers) {
          if (m_UseUnregisteredAccount || ((n->account() && n->account()->registrationState() == Account::RegistrationState::READY)
