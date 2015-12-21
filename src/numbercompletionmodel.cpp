@@ -64,7 +64,7 @@ public:
    void locateNumberRange(const QString& prefix, QSet<ContactMethod*>& set);
    uint getWeight(ContactMethod* number);
    uint getWeight(Account* account);
-   void getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const;
+   void getRange(const QMap<QString,NumberWrapper*>& map, const QString& prefix, QSet<ContactMethod*>& set) const;
 
    //Attributes
    QMultiMap<int,ContactMethod*> m_hNumbers              ;
@@ -391,13 +391,13 @@ void NumberCompletionModelPrivate::updateModel()
    }
 }
 
-void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, const QString& prefix, QSet<ContactMethod*>& set) const
+void NumberCompletionModelPrivate::getRange(const QMap<QString,NumberWrapper*>& map, const QString& prefix, QSet<ContactMethod*>& set) const
 {
    if (prefix.isEmpty() || map.isEmpty())
       return;
 
-   QMap<QString,NumberWrapper*>::iterator iBeg = map.begin();
-   QMap<QString,NumberWrapper*>::iterator iEnd = map.end  ()-1;
+   QMap<QString,NumberWrapper*>::const_iterator iBeg = map.begin();
+   QMap<QString,NumberWrapper*>::const_iterator iEnd = map.end  ();
 
    const QString pref = prefix.toLower();
 
@@ -406,7 +406,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
    bool startOk(false),endOk(false);
 
    while (size > 1 && !(startOk&&endOk)) {
-      QMap<QString,NumberWrapper*>::iterator mid;
+      QMap<QString,NumberWrapper*>::const_iterator mid;
 
       if (size > 7)
          mid = (iBeg+size);
@@ -438,11 +438,11 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
          iEnd = mid;
       }
 
-      while ((iEnd).key().left(prefixLen) == pref && iEnd+1 != map.end()) {
+      while (iEnd != map.end() && (iEnd).key().left(prefixLen) == pref && iEnd+1 != map.end()) {
          ++iEnd;
       }
 
-      endOk = (iEnd.key().left(prefixLen) == pref);
+      endOk = (iEnd != map.end()) || (iEnd.key().left(prefixLen) == pref);
 
       size = ::ceil((static_cast<float>(size))/2.0f);
    }
