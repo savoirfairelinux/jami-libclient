@@ -57,6 +57,7 @@ public:
 
    //Mutator
    void play(const QModelIndex& index);
+   bool add(const QUrl& path, Account* autoSelect = nullptr);
 
    static RingtoneModel& instance();
 
