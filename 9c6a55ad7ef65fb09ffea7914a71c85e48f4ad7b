@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_e7750033",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-12-21T17:06:16Z",
+      "side": 1,
+      "message": "not related to this patch, but does this else need to be there? isn\u0027t there a possibility of the message containing both plain and html?",
+      "range": {
+        "startLine": 337,
+        "startChar": 9,
+        "endLine": 337,
+        "endChar": 13
+      },
+      "revId": "9c6a55ad7ef65fb09ffea7914a71c85e48f4ad7b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_07734c4e",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-12-21T17:06:16Z",
+      "side": 1,
+      "message": "same comment as above",
+      "range": {
+        "startLine": 397,
+        "startChar": 6,
+        "endLine": 397,
+        "endChar": 10
+      },
+      "revId": "9c6a55ad7ef65fb09ffea7914a71c85e48f4ad7b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
