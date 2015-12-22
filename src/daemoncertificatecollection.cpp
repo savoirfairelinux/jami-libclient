@@ -115,7 +115,7 @@ void DaemonCertificateCollectionPrivate::slotCertificatePathPinned(const QString
 
 bool DaemonCertificateCollection::load()
 {
-   if (!d_ptr->m_pAccount)
+   if (!d_ptr->m_pAccount || d_ptr->m_pAccount->isNew())
       return false;
 
    const QString mode = d_ptr->m_Mode == DaemonCertificateCollection::Mode::ALLOWED ?
@@ -126,7 +126,6 @@ bool DaemonCertificateCollection::load()
    const QStringList certs = configurationManager.getCertificatesByStatus(
       d_ptr->m_pAccount->id(), mode
    );
-   //qDebug() << "\n\nLOADING CERTS" << d_ptr->m_pAccount << certs;
 
    for (const QString& id : certs)
       CertificateModel::instance().getCertificateFromId(id,d_ptr->m_pAccount,d_ptr->m_pAccount->id()+"_"+mode);

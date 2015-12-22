@@ -62,10 +62,11 @@ public:
 
    /// @enum CodecModel::EditState track the changes from both clients and daemon
    enum class EditState {
-      LOADING  = 0, /*!< The codecs are being loaded, they are not ready yet       */
-      READY    = 1, /*!< Both side are synchronized                                */
-      MODIFIED = 2, /*!< Our version differ from the remote one                    */
-      OUTDATED = 3, /*!< The remote version differ from ours                       */
+      LOADING   = 0, /*!< The codecs are being loaded, they are not ready yet       */
+      READY     = 1, /*!< Both side are synchronized                                */
+      MODIFIED  = 2, /*!< Our version differ from the remote one                    */
+      OUTDATED  = 3, /*!< The remote version differ from ours                       */
+      RELOADING = 4, /*!< During a reload                                           */
       COUNT__
    };
 
