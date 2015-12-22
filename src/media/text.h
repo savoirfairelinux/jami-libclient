@@ -24,6 +24,7 @@ class MediaTextPrivate;
 class Call;
 class CallPrivate;
 class InstantMessagingModel;
+class IMConversationManagerPrivate;
 
 namespace Media {
 
@@ -33,12 +34,15 @@ class LIB_EXPORT Text : public Media::Media
 {
    Q_OBJECT
    friend class ::CallPrivate;
+   friend class ::IMConversationManagerPrivate;
 public:
 
    virtual Media::Type type() override;
 
    //Getter
-   TextRecording* recording() const;
+   TextRecording* recording   (                         ) const;
+   bool           hasMimeType ( const QString& mimeType ) const;
+   QStringList    mimeTypes   (                         ) const;
 
    //Mutator
    void send(const QMap<QString,QString>& message, const bool isMixed = false);
@@ -52,6 +56,7 @@ private:
 Q_SIGNALS:
    void messageSent    (const QMap<QString,QString>& m);
    void messageReceived(const QMap<QString,QString>& m);
+   void mimeTypesChanged();
 };
 
 }
