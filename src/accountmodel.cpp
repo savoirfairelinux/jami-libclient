@@ -634,8 +634,11 @@ AccountModel::EditState AccountModel::editState() const
    if (!isInit) {
       isInit = true;
 
-      for (const Account* a : d_ptr->m_lAccounts)
+      for (const Account* a : d_ptr->m_lAccounts) {
+         const int mmmm =  (qint64)((void*)a);
+         qDebug() << mmmm << (int)a->editState();
          genState(a,a->editState(),a->editState());
+      }
 
       connect(this, &AccountModel::accountEditStateChanged, genState);
    }
@@ -877,10 +880,12 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
       d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
    }
 
-   if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+   if (a->isNew() || a->id() != DRing::Account::ProtocolNames::IP2IP)
       d_ptr->enableProtocol(proto);
 
    emit accountAdded(a);
+
+   editState();
 
    return a;
 }
