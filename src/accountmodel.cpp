@@ -544,11 +544,27 @@ void AccountModel::registerAllAccounts()
 ///Cancel all modifications
 void AccountModel::cancel() {
    foreach (Account* a, d_ptr->m_lAccounts) {
-      if (a->editState() == Account::EditState::MODIFIED_COMPLETE
-       || a->editState() == Account::EditState::MODIFIED_INCOMPLETE
-       || a->editState() == Account::EditState::OUTDATED
-      )
-         a->performAction(Account::EditAction::CANCEL);
+      // Account::EditState::NEW is only for new and unmodified accounts
+      if (a->isNew())
+         remove(a);
+      else {
+         switch(a->editState()) {
+            case Account::EditState::NEW                :
+               remove(a);
+            case Account::EditState::MODIFIED_INCOMPLETE:
+            case Account::EditState::MODIFIED_COMPLETE  :
+               a << Account::EditAction::CANCEL;
+               break;
+            case Account::EditState::OUTDATED           :
+               a << Account::EditAction::RELOAD;
+               break;
+            case Account::EditState::READY              :
+            case Account::EditState::REMOVED            :
+            case Account::EditState::EDITING            :
+            case Account::EditState::COUNT__            :
+               break;
+         }
+      }
    }
    d_ptr->m_lDeletedAccounts.clear();
 }
