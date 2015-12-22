@@ -482,7 +482,7 @@ QAbstractItemModel* Account::knownCertificateModel() const
 
 QAbstractItemModel* Account::bannedCertificatesModel() const
 {
-   if (protocol() != Account::Protocol::RING)
+   if (protocol() != Account::Protocol::RING || isNew())
       return nullptr;
 
    if (!d_ptr->m_pBannedCerts) {
@@ -502,7 +502,7 @@ QAbstractItemModel* Account::bannedCertificatesModel() const
 
 QAbstractItemModel* Account::allowedCertificatesModel() const
 {
-   if (protocol() != Account::Protocol::RING)
+   if (protocol() != Account::Protocol::RING || isNew())
       return nullptr;
 
    if (!d_ptr->m_pAllowedCerts) {
@@ -2074,7 +2074,7 @@ Account::RoleState Account::roleState(Account::Role role) const
    #pragma GCC diagnostic ignored "-Wswitch"
 
    //Hide unsupported IP2IP fields
-   if (id() == DRing::Account::ProtocolNames::IP2IP) {
+   if ((!isNew()) && id() == DRing::Account::ProtocolNames::IP2IP) {
       switch(role) {
          case Account::Role::Password:
          case Account::Role::RegistrationExpire:
@@ -2413,11 +2413,15 @@ void AccountPrivate::modify()  {
          }
          break;
       case Account::Protocol::RING:
-         //Only the alias is necessary, the username cannot be removed
-         m_hRoleStatus[(int)R::Username] = m_hRoleStatus[(int)R::Username] != ST::OK && q_ptr->isNew() ?
-            ST::OK : m_hRoleStatus[(int)R::Username];
          m_hRoleStatus[(int)R::Hostname] = ST::OK;
          m_hRoleStatus[(int)R::Password] = ST::OK;
+
+         //New accounts will get the hash later
+         if (q_ptr->isNew() && q_ptr->username().isEmpty())
+            m_hRoleStatus[(int)R::Username] = ST::OK     ;
+         else if (q_ptr->isNew() && !q_ptr->username().isEmpty())
+            m_hRoleStatus[(int)R::Username] = ST::INVALID;
+
          break;
       case Account::Protocol::IAX:
       case Account::Protocol::COUNT__:

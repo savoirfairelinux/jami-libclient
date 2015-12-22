@@ -81,11 +81,12 @@ private:
 
 #define CMP &CodecModelPrivate
 Matrix2D<CodecModel::EditState, CodecModel::EditAction,CodecModelFct> CodecModelPrivate::m_mStateMachine ={{
-   /*                    SAVE         MODIFY        RELOAD        CLEAR      */
-   /* LOADING  */ {{ CMP::nothing, CMP::nothing, CMP::reload, CMP::nothing  }},
-   /* READY    */ {{ CMP::nothing, CMP::modify , CMP::reload, CMP::clear    }},
-   /* MODIFIED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
-   /* OUTDATED */ {{ CMP::save   , CMP::nothing, CMP::reload, CMP::clear    }},
+   /*                     SAVE         MODIFY        RELOAD        CLEAR      */
+   /* LOADING   */ {{ CMP::nothing, CMP::nothing, CMP::reload , CMP::nothing  }},
+   /* READY     */ {{ CMP::nothing, CMP::modify , CMP::reload , CMP::clear    }},
+   /* MODIFIED  */ {{ CMP::save   , CMP::nothing, CMP::reload , CMP::clear    }},
+   /* OUTDATED  */ {{ CMP::save   , CMP::nothing, CMP::reload , CMP::clear    }},
+   /* RELOADING */ {{ CMP::nothing, CMP::nothing, CMP::nothing, CMP::nothing  }},
 }};
 #undef CMP
 
@@ -102,7 +103,11 @@ QAbstractListModel(account?(QObject*)account:(QObject*)QCoreApplication::instanc
    Q_ASSERT(account);
    d_ptr->m_EditState = CodecModel::EditState::LOADING;
    d_ptr->m_pAccount = account;
-   setObjectName("CodecModel: "+(account?account->id():"Unknown"));
+
+   // New accounts don't have ID yet, avoid a warning
+   if (account && !account->isNew())
+      setObjectName("CodecModel: "+(account?account->id():"Unknown"));
+
    d_ptr->m_lMimes << RingMimes::AUDIO_CODEC << RingMimes::VIDEO_CODEC;
    this << EditAction::RELOAD;
    d_ptr->m_EditState = CodecModel::EditState::READY;
@@ -270,9 +275,14 @@ void CodecModelPrivate::clear()
 ///Reload the codeclist
 void CodecModelPrivate::reload()
 {
+   m_EditState = CodecModel::EditState::RELOADING;
+
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    QVector<uint> codecIdList = configurationManager.getCodecList();
-   QVector<uint> activeCodecList = configurationManager.getActiveCodecList(m_pAccount->id());
+
+   QVector<uint> activeCodecList = m_pAccount->isNew() ? codecIdList :
+      configurationManager.getActiveCodecList(m_pAccount->id());
+
    QStringList tmpNameList;
 
    //TODO: the following method cannot update the order of the codecs if it
@@ -281,7 +291,9 @@ void CodecModelPrivate::reload()
    // load the active codecs first to get the correct order
    foreach (const int aCodec, activeCodecList) {
 
-      const QMap<QString,QString> codec = configurationManager.getCodecDetails(m_pAccount->id(),aCodec);
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(
+         m_pAccount->isNew()? QString() : m_pAccount->id(), aCodec
+      );
 
       if (!findCodec(aCodec)) {
          const QModelIndex& idx = add();
@@ -305,7 +317,9 @@ void CodecModelPrivate::reload()
    // now add add/update remaining (inactive) codecs
    foreach (const int aCodec, codecIdList) {
 
-      const QMap<QString,QString> codec = configurationManager.getCodecDetails(m_pAccount->id(),aCodec);
+      const QMap<QString,QString> codec = configurationManager.getCodecDetails(
+         m_pAccount->isNew()? QString() : m_pAccount->id(), aCodec
+      );
 
       if (!findCodec(aCodec)) {
          const QModelIndex& idx = add();
@@ -320,12 +334,15 @@ void CodecModelPrivate::reload()
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
       q_ptr->setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
    }
+
    m_EditState = CodecModel::EditState::READY;
 }
 
 ///Save details
 void CodecModelPrivate::save()
 {
+   //TODO there is a race condition, the account has to be saved first
+
    //Update active codec list
    VectorUInt _codecList;
    for (int i = 0; i < q_ptr->rowCount();i++) {
