@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_673b30ec",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-22T22:42:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_475b9454",
+      "range": {
+        "startLine": 413,
+        "startChar": 7,
+        "endLine": 413,
+        "endChar": 72
+      },
+      "revId": "5290d12599bcaf0ab2fc1303b34c880bf66b8cfb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_87499c8d",
         "filename": "src/callmodel.cpp",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_8740bc57",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-22T22:42:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_87499c8d",
+      "range": {
+        "startLine": 524,
+        "startChar": 43,
+        "endLine": 524,
+        "endChar": 62
+      },
+      "revId": "5290d12599bcaf0ab2fc1303b34c880bf66b8cfb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_275e8846",
         "filename": "src/callmodel.cpp",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2015-12-22T22:35:45Z",
       "side": 1,
       "message": "is this part necessary? it will only execute if m_shDringId.contains(callList[0]) evaluates to \u0027false\u0027, which means it will always just insert a nullptr... no?",
+      "range": {
+        "startLine": 729,
+        "startChar": 42,
+        "endLine": 729,
+        "endChar": 69
+      },
+      "revId": "5290d12599bcaf0ab2fc1303b34c880bf66b8cfb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_272528c2",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-22T22:42:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_275e8846",
       "range": {
         "startLine": 729,
         "startChar": 42,
