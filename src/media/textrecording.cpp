@@ -161,6 +161,16 @@ Media::TextRecording::~TextRecording()
    delete d_ptr;
 }
 
+bool Media::TextRecording::hasMimeType(const QString& mimeType) const
+{
+   return d_ptr->m_hMimeTypes.contains(mimeType);
+}
+
+QStringList Media::TextRecording::mimeTypes() const
+{
+   return d_ptr->m_lMimeTypes;
+}
+
 ///Get the instant messaging model associated with this recording
 QAbstractListModel* Media::TextRecording::instantMessagingModel() const
 {
@@ -263,15 +273,27 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    while (iter.hasNext()) {
       iter.next();
       if (iter.value() != "application/resource-lists+xml") { //This one is useless
+         const QString mimeType = iter.key();
+
          Serializable::Payload* p = new Serializable::Payload();
-         p->mimeType = iter.key  ();
+         p->mimeType = mimeType    ;
          p->payload  = iter.value();
          m->payloads << p;
 
-         if (p->mimeType == "text/plain")
+         if (p->mimeType == QLatin1String("text/plain"))
             m->m_PlainText = p->payload;
-         else if (p->mimeType == "text/html")
+         else if (p->mimeType == QLatin1String("text/html"))
             m->m_HTML = p->payload;
+
+         // Make the clients life easier and tell the payload type
+         const int hasArgs = mimeType.indexOf(';');
+         const QString strippedMimeType = hasArgs != -1 ? mimeType.left(hasArgs) : mimeType;
+         const int currentSize = m_hMimeTypes.size();
+
+         m_hMimeTypes[strippedMimeType] = true;
+
+         if (currentSize != m_hMimeTypes.size())
+            m_lMimeTypes << strippedMimeType;
       }
    }
    m_pCurrentGroup->messages << m;

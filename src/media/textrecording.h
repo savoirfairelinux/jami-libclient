@@ -65,8 +65,10 @@ public:
    static TextRecording* fromJson(const QList<QJsonObject>& items, const ContactMethod* cm = nullptr);
 
    //Getter
-   QAbstractListModel* instantMessagingModel() const;
-   bool isEmpty() const;
+   QAbstractListModel* instantMessagingModel(                         ) const;
+   bool                isEmpty              (                         ) const;
+   bool                hasMimeType          ( const QString& mimeType ) const;
+   QStringList         mimeTypes            (                         ) const;
 
 Q_SIGNALS:
    void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
