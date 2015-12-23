@@ -410,7 +410,7 @@ Call* CallModel::getCall( const QModelIndex& idx ) const
 ///Get the call associated with this ID
 Call* CallModel::getCall( const QString& callId ) const
 {
-   if (d_ptr->m_shDringId[callId]) {
+   if (d_ptr->m_shDringId.contains(callId) && d_ptr->m_shDringId[callId]) {
       return d_ptr->m_shDringId[callId]->call_real;
    }
    return nullptr;
@@ -518,20 +518,22 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
 
    // Since november 2015, calls are alowed to be declared with a state change
    // if it has been done, then they should be ignored
+   // contains can be true and contain nullptr if it was accessed without
+   // contains() first
    Call* call = nullptr;
-   if (not m_shDringId.contains(callId)) {
+   if (not m_shDringId.contains(callId) || m_shDringId[callId] == nullptr) {
 
-   call = CallPrivate::buildIncomingCall(callId);
+      call = CallPrivate::buildIncomingCall(callId);
 
-   //The call can already have been invalidated by the daemon, then do nothing
-   if (!call)
-      return nullptr;
+      //The call can already have been invalidated by the daemon, then do nothing
+      if (!call)
+         return nullptr;
 
-   call = addCall2(call);
+      call = addCall2(call);
 
-   //The call can already have been invalidated by the daemon, then do nothing
-   if (!call)
-      return nullptr;
+      //The call can already have been invalidated by the daemon, then do nothing
+      if (!call)
+         return nullptr;
 
    } else {
        qDebug() << "The call" << callId << "already exist, avoiding re-creation";
@@ -724,7 +726,7 @@ Call* CallModelPrivate::addConference(const QString& confID)
       return nullptr;
    }
 
-   if (!m_shDringId[callList[0]]) {
+   if (!m_shDringId.contains(callList[0]) && m_shDringId[callList[0]]) {
       qDebug() << "Invalid call";
       return nullptr;
    }
@@ -823,7 +825,7 @@ bool CallModel::mergeConferences(Call* conf1, Call* conf2)
 ///Remove a conference from the model and the TreeView
 void CallModelPrivate::removeConference(const QString &confId)
 {
-   if (m_shDringId[confId])
+   if (m_shDringId.contains(confId) && m_shDringId[confId])
       qDebug() << "Ending conversation containing " << m_shDringId[confId]->m_lChildren.size() << " participants";
    removeConference(q_ptr->getCall(confId));
 }
