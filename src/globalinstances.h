@@ -78,7 +78,7 @@ Interfaces::ProfilePersisterI& profilePersister();
 void setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance);
 
 Interfaces::ShortcutCreatorI& shortcutCreator();
-void setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
+void setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
 Interfaces::ActionExtenderI& actionExtender();
 void setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
