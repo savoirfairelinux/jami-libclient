@@ -22,6 +22,30 @@
       "revId": "0a969da35f721bd6dde6db8038e80f0d82eca96a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_c2bb12c3",
+        "filename": "src/audio/alsapluginmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-24T20:01:30Z",
+      "side": 1,
+      "message": "Right. Do you think this could be merged as is and fixed in another commit? I don\u0027t have the hardware to test this. This commit fix 95% of the invalid indices, but your totally right I forgot about this corner case.",
+      "parentUuid": "1a9dcd25_62579e03",
+      "range": {
+        "startLine": 156,
+        "startChar": 51,
+        "endLine": 156,
+        "endChar": 61
+      },
+      "revId": "0a969da35f721bd6dde6db8038e80f0d82eca96a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
