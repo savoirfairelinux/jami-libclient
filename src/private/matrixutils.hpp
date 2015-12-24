@@ -109,8 +109,7 @@ EnumClassReordering<Enum>::EnumClassReordering(std::initializer_list<Enum> s)
    int i=0;
    for (auto& p : s) {
       const int val = static_cast<int>(p);
-      const bool isNotPresent = !(usedElements[val/longSize] & (0x1 << (val%longSize)));
-      Q_ASSERT(isNotPresent);
+      Q_ASSERT(!(usedElements[val/longSize] & (0x1 << (val%longSize)))); // isNotPresent
       usedElements[val/longSize] |= (0x1 << (val%longSize));
       m_lData[i++] = p;
    }
@@ -161,9 +160,7 @@ Matrix1D<Row,Value,Accessor>::Matrix1D(std::initializer_list< Matrix1D<Row,Value
    for (auto& pair : s) {
       //Avoid a value being here twice
       const int val = static_cast<int>(pair.key);
-      const bool isNotPresent = !(usedElements[val/longSize] & (0x1 << (val%longSize)));
-
-      Q_ASSERT(isNotPresent);
+      Q_ASSERT(!(usedElements[val/longSize] & (0x1 << (val%longSize)))); // isNotPresent
 
       usedElements[val/longSize] |= (0x1 << (val%longSize));
 
