@@ -804,7 +804,7 @@ const QString Call::formattedName() const
    if (type() == Call::Type::CONFERENCE)
       return tr("Conference");
    else if (!peerContactMethod())
-      return "Error";
+      return tr("Error");
    else if (peerContactMethod()->contact() && !peerContactMethod()->contact()->formattedName().isEmpty())
       return peerContactMethod()->contact()->formattedName();
    else if (!peerName().isEmpty())
