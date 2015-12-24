@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_62579e03",
+        "filename": "src/audio/alsapluginmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2015-12-24T15:21:40Z",
+      "side": 1,
+      "message": "this could still be an invalid row, if for example a device was disconnected... though I\u0027m not sure what should be done in that case... if the model is re-loaded, should be also check what the current selection in the daemon is, to make sure it matches?\n\n(same comment for the other source files, obviously)",
+      "range": {
+        "startLine": 156,
+        "startChar": 51,
+        "endLine": 156,
+        "endChar": 61
+      },
+      "revId": "0a969da35f721bd6dde6db8038e80f0d82eca96a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
