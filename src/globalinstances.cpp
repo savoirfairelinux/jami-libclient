@@ -213,7 +213,7 @@ shortcutCreator()
 }
 
 void
-setShortcutCreatorI(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
+setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
 {
     // do not allow empty pointers
     if (!instance) {
@@ -232,7 +232,7 @@ actionExtender()
 }
 
 void
-setActionExtenderI(std::unique_ptr<Interfaces::ActionExtenderI> instance)
+setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance)
 {
     // do not allow empty pointers
     if (!instance) {
