@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_4279422e",
+        "filename": "src/codecmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2015-12-24T19:48:49Z",
+      "side": 1,
+      "message": "Yes, it is used. It is a little tricky to read an automata like this without some background theory. Basically, when moving to RELOADING, all other actions, such as MODIFY will fall into ::nothing() rather than into ::modify(). So, while reloading, the state machine wont fall back into MODIFIED.\n\nAs for the column, no, columns are for actions, rows for states",
+      "parentUuid": "1a9dcd25_2268b6b9",
+      "range": {
+        "startLine": 89,
+        "startChar": 3,
+        "endLine": 89,
+        "endChar": 81
+      },
+      "revId": "0b86a7d4deca9ff648c8241b99e3487375bac911",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_8273cab0",
         "filename": "src/codecmodel.h",
         "patchSetId": 3
