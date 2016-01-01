@@ -132,7 +132,7 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    /*
    * Struct tm description of fields used below:
-   *  tm_yday   int   days since January 1  1-31
+   *  tm_yday   int   days since January 1  0-365
    *  tm_mon    int   months since January  0-11
    *  tm_year   int   years since 1900
    *  tm_wday   int   days since Sunday     0-6
@@ -149,9 +149,14 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 
    if (diffYears == 1 && diffMonths < 0) {
       diffMonths += 12;
+      diffDays += 365;
       diffYears = 0;
    }
 
+   //Sanity check for future dates
+   if (diffYears < 0 || (diffYears == 0 && (diffDays < 0 || diffMonths < 0))) {
+       return HistoryTimeCategoryModel::HistoryConst::Never;
+   }
    //Check for past 6 days
    if (diffYears == 0 && diffDays < 7) {
       return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
@@ -174,7 +179,7 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
 QString HistoryTimeCategoryModel::indexToName(int idx)
 {
    static int size = HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.size();
-   if (idx >= size)
+   if (idx < 0 || idx >= size)
       return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.last();
    return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories[idx];
 }
