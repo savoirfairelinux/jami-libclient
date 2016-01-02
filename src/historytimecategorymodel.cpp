@@ -19,6 +19,7 @@
 #include "historytimecategorymodel.h"
 
 #include <QtCore/QDate>
+#include <QtCore/QTimeZone>
 #include <time.h>
 
 class HistoryTimeCategoryModelPrivate
@@ -127,44 +128,64 @@ HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryCo
    if (!time || time < 0)
       return HistoryTimeCategoryModel::HistoryConst::Never;
 
+   // Months are not 28 days, but using the right number of days would
+   // not change the algoritm output, so 28 is correct
+   // Years are also assumed at 365, the impact wont be visible
+
+   constexpr static const int day   = 3600*24;
+   constexpr static const int week  = day*7  ;
+   constexpr static const int month = week*4 ;
+   constexpr static const int year  = 365*day;
+
+   // Please note that this code ignore daylight saving time change
+   // There will be a +/- 1 hour offset for calls made during the
+   // other timezone used. This will introduce mis categorizing of
+   // older calls.
+   //
+   // However, it can be ignored as the older calls will be grouped
+   // in larger categories, reducing the impact of the issue as time
+   // goes by. Trying to detect it is pointless.
+
+   static QTimeZone timeZone = QTimeZone::systemTimeZone();
+   static int offset = timeZone.offsetFromUtc(QDateTime::currentDateTime());
+
+   // Get working values
+   time_t time2 = time;
    time_t currentTime;
    ::time(&currentTime);
 
-   /*
-   * Struct tm description of fields used below:
-   *  tm_yday   int   days since January 1  1-31
-   *  tm_mon    int   months since January  0-11
-   *  tm_year   int   years since 1900
-   *  tm_wday   int   days since Sunday     0-6
-   */
-   struct tm localCurrentTime;
-   struct tm localPastTime;
+   // Align the time to midnight instead of using Nychthemeron based categories
+   currentTime -= currentTime % (day); //Reset to midnight
+   time2       -= time        % (day); //Reset to midnight
 
-   ::localtime_r(&currentTime, &localCurrentTime);
-   ::localtime_r(&time, &localPastTime);
+   // The time_t are aligned to UTC, bring them back to the right timezones
+   time2       -= offset;
+   currentTime -= offset;
 
-   int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
-   int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
-   int diffDays = localCurrentTime.tm_yday - localPastTime.tm_yday;
-
-   if (diffYears == 1 && diffMonths < 0) {
-      diffMonths += 12;
-      diffYears = 0;
-   }
-
-   //Check for past 6 days
-   if (diffYears == 0 && diffDays < 7) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
+   //Check for last week
+   if ((currentTime-time2) / day < 7) {
+      return (HistoryTimeCategoryModel::HistoryConst)(
+         ((currentTime-time2) / day)
+      ); //Yesterday to Six_days_ago
    }
    //Check for last month
-   else if (diffYears == 0 && diffMonths <= 1 && (diffDays / 7 <= 4)) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago) - 1); //A_week_ago to Three_weeks_ago
+   else if (currentTime - month < time2) {
+      return (HistoryTimeCategoryModel::HistoryConst)(
+         ((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago)
+            +
+         ((currentTime-time2-week) / week)
+      ); //A week ago to 3 weeks ago
    }
    //Check for last year
-   else if (diffYears == 0 && diffMonths > 0) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago) - 1); //A_month_ago to Twelve_months ago
+   else if (currentTime-(12)*30.4f*day < time2) {
+      return (HistoryTimeCategoryModel::HistoryConst)(
+         ((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago)
+            +
+         ((currentTime-time2-month) / (30.4f*day))
+      ); //A week ago to 3 weeks ago
    }
-   else if (diffYears == 1)
+   //if (QDate::currentDate().addYears(-1)  >= date && QDate::currentDate().addYears(-2)  < date)
+   else if (currentTime - year < time2)
       return HistoryConst::A_year_ago;
 
    //Every other senario
