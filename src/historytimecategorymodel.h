@@ -74,8 +74,10 @@ public:
    static QString indexToName(int idx);
 
    //Helpers
-   static HistoryConst timeToHistoryConst   (const time_t time);
    static QString      timeToHistoryCategory(const time_t time);
+   static QString      timeToHistoryCategory(const QDateTime& time);
+   static HistoryConst timeToHistoryConst   (const time_t time);
+   static HistoryConst timeToHistoryConst   (const QDateTime& time);
 
 private:
    HistoryTimeCategoryModelPrivate* d_ptr;

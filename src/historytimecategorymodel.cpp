@@ -19,12 +19,14 @@
 #include "historytimecategorymodel.h"
 
 #include <QtCore/QDate>
-#include <time.h>
+#include <QtCore/QTimeZone>
 
 class HistoryTimeCategoryModelPrivate
 {
 public:
    QVector<QString> m_lCategories;
+   QTimeZone m_tz;
+   QDate m_date;
    static HistoryTimeCategoryModel& instance();
 };
 
@@ -37,6 +39,8 @@ HistoryTimeCategoryModel& HistoryTimeCategoryModelPrivate::instance()
 HistoryTimeCategoryModel::HistoryTimeCategoryModel(QObject* parent) : QAbstractListModel(parent),
 d_ptr(new HistoryTimeCategoryModelPrivate)
 {
+   d_ptr->m_tz = QTimeZone(QTimeZone::systemTimeZoneId());
+   d_ptr->m_date = QDate::currentDate();
    d_ptr->m_lCategories << tr("Today")                                 ;//0
    d_ptr->m_lCategories << tr("Yesterday")                             ;//1
    d_ptr->m_lCategories << QDate::currentDate().addDays(-2).toString("dddd");//2
@@ -111,8 +115,12 @@ bool HistoryTimeCategoryModel::setData(const QModelIndex& index, const QVariant 
    return false;
 }
 
-
 QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
+{
+   return timeToHistoryCategory(QDateTime::fromTime_t(time, HistoryTimeCategoryModelPrivate::instance().d_ptr->m_tz));
+}
+
+QString HistoryTimeCategoryModel::timeToHistoryCategory(const QDateTime& time)
 {
    static int categoriesSize = HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories.size();
    int period = (int)HistoryTimeCategoryModel::timeToHistoryConst(time);
@@ -124,56 +132,38 @@ QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
 
 HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
 {
-   if (!time || time < 0)
-      return HistoryTimeCategoryModel::HistoryConst::Never;
+   return timeToHistoryConst(QDateTime::fromTime_t(time, HistoryTimeCategoryModelPrivate::instance().d_ptr->m_tz));
+}
 
-   time_t currentTime;
-   ::time(&currentTime);
+HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const QDateTime& time)
+{
+   const auto date = time.date();
+   const auto& now = HistoryTimeCategoryModelPrivate::instance().d_ptr->m_date;
 
-   /*
-   * Struct tm description of fields used below:
-   *  tm_yday   int   days since January 1  0-365
-   *  tm_mon    int   months since January  0-11
-   *  tm_year   int   years since 1900
-   *  tm_wday   int   days since Sunday     0-6
-   */
-   struct tm localCurrentTime;
-   struct tm localPastTime;
-
-   ::localtime_r(&currentTime, &localCurrentTime);
-   ::localtime_r(&time, &localPastTime);
-
-   int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
-   int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
-   int diffDays = localCurrentTime.tm_yday - localPastTime.tm_yday;
-
-   if (diffYears == 1 && diffMonths < 0) {
-      diffMonths += 12;
-      diffDays += 365;
-      diffYears = 0;
-   }
-
-   //Sanity check for future dates
-   if (diffYears < 0 || (diffYears == 0 && (diffDays < 0 || diffMonths < 0))) {
-       return HistoryTimeCategoryModel::HistoryConst::Never;
-   }
-   //Check for past 6 days
-   if (diffYears == 0 && diffDays < 7) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
-   }
-   //Check for last month
-   else if (diffYears == 0 && diffMonths <= 1 && (diffDays / 7 <= 4)) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago) - 1); //A_week_ago to Three_weeks_ago
-   }
-   //Check for last year
-   else if (diffYears == 0 && diffMonths > 0) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago) - 1); //A_month_ago to Twelve_months ago
-   }
-   else if (diffYears == 1)
+   if (date < now.addYears(-2))
+      return HistoryTimeCategoryModel::HistoryConst::Very_long_time_ago;
+   else if (date < now.addYears(-1))
       return HistoryConst::A_year_ago;
-
-   //Every other senario
-   return HistoryTimeCategoryModel::HistoryConst::Very_long_time_ago;
+   else if (date <= now.addMonths(-1)) {
+      // last year
+      for (int i=1;i<12;i++) {
+         if (now.addMonths((-i) - 1)  < date)
+            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago)-1); //Last_month to Twelve_months ago
+      }
+   } else if (date <= now.addDays(-7)) {
+      // last month
+      for (int i=1;i<4;i++) {
+         if (now.addDays(-(i*7) - 7)  < date)
+            return (HistoryTimeCategoryModel::HistoryConst)(i+((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago)-1); //Last_week to Three_weeks_ago
+      }
+   } else if (date <= now.addDays(-1)) {
+      // last week
+      for (int i=1;i<7;i++) {
+         if (now.addDays(-i)  == date)
+            return (HistoryTimeCategoryModel::HistoryConst)i; //Yesterday to Six_days_ago
+      }
+   } else
+      return HistoryConst::Today;
 }
 
 QString HistoryTimeCategoryModel::indexToName(int idx)
