@@ -289,6 +289,7 @@ SET( libringclient_LIB_SRCS
   src/localmacrocollection.cpp
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
+  src/sqlitehistorycollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -373,6 +374,7 @@ SET( libringclient_LIB_HDRS
   src/localmacrocollection.h
   src/localhistorycollection.h
   src/localtextrecordingcollection.h
+  src/sqlitehistorycollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
