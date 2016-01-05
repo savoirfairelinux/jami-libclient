@@ -18,6 +18,7 @@
 #include <transfer.h>
 
 #include <private/transfer_p.h>
+#include <accountmodel.h>
 
 #include "dbus/datatransfermanager.h"
 
@@ -233,4 +234,20 @@ Transfer::dataTransferCodeToString()
         default:
             return tr("Unknown");
     }
+}
+
+///Build a transfer that is already over
+Transfer* Transfer::buildHistoryTransfer(const QMap<QString,QString>& ht)
+{
+   const QString& id          = ht[ Transfer::HistoryMapFields::ID ];
+   const QString& name        = ht[ Transfer::HistoryMapFields::DISPLAY_NAME ];
+   const QString& number      = ht[ Transfer::HistoryMapFields::PEER_NUMBER ];
+   const bool outgoing        = (ht[Transfer::HistoryMapFields::OUTGOING] == "1");
+   const QString& path        = ht[ Transfer::HistoryMapFields::PATH  ];
+   time_t timeStamp           = ht[ Transfer::HistoryMapFields::TIMESTAMP ].toUInt() ;
+   QByteArray accId           = ht[ Transfer::HistoryMapFields::ACCOUNT_ID ].toLatin1();
+
+   auto transfer = new Transfer(AccountModel::instance().getById(accId), id, outgoing);
+
+   return transfer;
 }
