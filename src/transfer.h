@@ -82,6 +82,20 @@ public:
 
     QString dataTransferCodeToString();
 
+    class HistoryMapFields {
+    public:
+        constexpr static const char* ID                = "id"             ;
+        constexpr static const char* ACCOUNT_ID        = "accountid"      ;
+        constexpr static const char* DISPLAY_NAME      = "display_name"   ;
+        constexpr static const char* PEER_NUMBER       = "peer_number"    ;
+        constexpr static const char* PATH              = "path"           ;
+        constexpr static const char* STATE             = "state"          ;
+        constexpr static const char* TIMESTAMP         = "timestamp"      ;
+        constexpr static const char* OUTGOING          = "outgoing"       ;
+    };
+
+    static Transfer* buildHistoryTransfer(const QMap<QString,QString>& ht);
+
 Q_SIGNALS:
     void changed();
     void statusChanged(const QString&, int);
