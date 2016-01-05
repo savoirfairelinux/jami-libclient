@@ -19,6 +19,7 @@
 #include "historytimecategorymodel.h"
 
 #include <QtCore/QDate>
+#include <QtCore/QTimeZone>
 #include <time.h>
 
 class HistoryTimeCategoryModelPrivate
@@ -122,59 +123,79 @@ QString HistoryTimeCategoryModel::timeToHistoryCategory(const time_t time)
       return HistoryTimeCategoryModelPrivate::instance().d_ptr->m_lCategories[categoriesSize - 1];
 }
 
-HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time)
+#define TO_INT(a) (int)(HistoryTimeCategoryModel::HistoryConst:: a)
+#define CAST (HistoryTimeCategoryModel::HistoryConst)
+HistoryTimeCategoryModel::HistoryConst HistoryTimeCategoryModel::timeToHistoryConst(const time_t time3)
 {
-   if (!time || time < 0)
+   if (!time3 || time3 < 0)
       return HistoryTimeCategoryModel::HistoryConst::Never;
 
-   time_t currentTime;
+   // Months are not 28 days, but using the right number of days would
+   // not change the algoritm output, so 28 is correct
+   // Years are also assumed at 365, the impact wont be visible
+
+   constexpr static const int day   = 3600 * 24  ;
+   constexpr static const int week  = day  * 7   ;
+   constexpr static const int month = week * 4   ;
+
+   // Please note that this code ignore daylight saving time change
+   // There will be a +/- 1 hour offset for calls made during the
+   // other timezone used. This will introduce mis categorizing of
+   // older calls.
+   //
+   // However, it can be ignored as the older calls will be grouped
+   // in larger categories, reducing the impact of the issue as time
+   // goes by. Trying to detect it is pointless.
+
+   static QByteArray timeZoneId ( QTimeZone::systemTimeZoneId() );
+   static QTimeZone  timeZone   ( timeZoneId                    );
+   static int        offset     ( timeZone.offsetFromUtc(
+                                     QDateTime::currentDateTime()
+                                  )
+                                );
+
+   // Get working values
+   time_t time        = time3;
+   time_t currentTime = 0    ;
+
    ::time(&currentTime);
 
-   /*
-   * Struct tm description of fields used below:
-   *  tm_yday   int   days since January 1  0-365
-   *  tm_mon    int   months since January  0-11
-   *  tm_year   int   years since 1900
-   *  tm_wday   int   days since Sunday     0-6
-   */
-   struct tm localCurrentTime;
-   struct tm localPastTime;
+   // Align the time to midnight instead of using Nychthemeron based categories
+   currentTime -= currentTime % (day); //Reset to midnight
+   time        -= time3       % (day); //Reset to midnight
 
-   ::localtime_r(&currentTime, &localCurrentTime);
-   ::localtime_r(&time, &localPastTime);
+   // The time_t are aligned to UTC, bring them back to the right timezones
+   time        -= offset;
+   currentTime -= offset;
 
-   int diffYears = localCurrentTime.tm_year - localPastTime.tm_year;
-   int diffMonths = localCurrentTime.tm_mon - localPastTime.tm_mon;
-   int diffDays = localCurrentTime.tm_yday - localPastTime.tm_yday;
+   // Compute the time delta, use unsigned so the overflow will cause a very
+   // marge number and wont enter in the "if"
+   uint elapsed_seconds = (uint) currentTime - time;
+   uint elapsed_days    = (uint) (elapsed_seconds          ) / (  1    * day  );
+   uint elapsed_weeks   = (uint) (elapsed_seconds - 1*week ) / (  1    * week );
+   uint elapsed_months  = (uint) (elapsed_seconds - 1*month) / ( 30.4f * day  );
 
-   if (diffYears == 1 && diffMonths < 0) {
-      diffMonths += 12;
-      diffDays += 365;
-      diffYears = 0;
-   }
+   //Today to Six_days_ago
+   if (elapsed_days < 7)
+      return  CAST( TO_INT( Today      ) + elapsed_days   );
 
-   //Sanity check for future dates
-   if (diffYears < 0 || (diffYears == 0 && (diffDays < 0 || diffMonths < 0))) {
-       return HistoryTimeCategoryModel::HistoryConst::Never;
-   }
-   //Check for past 6 days
-   if (diffYears == 0 && diffDays < 7) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays); //Today to Six_days_ago
-   }
    //Check for last month
-   else if (diffYears == 0 && diffMonths <= 1 && (diffDays / 7 <= 4)) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffDays / 7 + ((int)HistoryTimeCategoryModel::HistoryConst::A_week_ago) - 1); //A_week_ago to Three_weeks_ago
-   }
+   if (currentTime - 1*month < time)
+      return CAST (TO_INT( A_week_ago  ) + elapsed_weeks  );
+
    //Check for last year
-   else if (diffYears == 0 && diffMonths > 0) {
-      return (HistoryTimeCategoryModel::HistoryConst)(diffMonths + ((int)HistoryTimeCategoryModel::HistoryConst::A_month_ago) - 1); //A_month_ago to Twelve_months ago
-   }
-   else if (diffYears == 1)
+   if (elapsed_days <= 365 * 1)
+      return CAST( TO_INT( A_month_ago ) + elapsed_months );
+
+   //A year ago
+   if (elapsed_days <= 365 * 2)
       return HistoryConst::A_year_ago;
 
    //Every other senario
    return HistoryTimeCategoryModel::HistoryConst::Very_long_time_ago;
 }
+#undef TO_INT
+#undef CAST
 
 QString HistoryTimeCategoryModel::indexToName(int idx)
 {
