@@ -185,6 +185,10 @@ IF(NOT (${ENABLE_VIDEO} MATCHES false))
    add_definitions( -DENABLE_VIDEO=true )
 ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 
+FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5DBus)
+FIND_PACKAGE(Qt5LinguistTools) # translations
+FIND_PACKAGE(Qt5Sql)
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
 
 SET(GENERIC_LIB_VERSION "0.4.0")
@@ -286,6 +290,7 @@ SET( libringclient_LIB_SRCS
   src/localmacrocollection.cpp
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
+  src/sqlitehistorycollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -365,6 +370,7 @@ SET( libringclient_LIB_HDRS
   src/localmacrocollection.h
   src/localhistorycollection.h
   src/localtextrecordingcollection.h
+  src/sqlitehistorycollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
@@ -596,18 +602,19 @@ ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-   QT5_USE_MODULES(ringclient_static Core)
+   QT5_USE_MODULES(ringclient_static Core Sql)
    TARGET_LINK_LIBRARIES( ringclient_static
       -lpthread
       ${QT_QTDBUS_LIBRARY}
       ${QT_QTCORE_LIBRARY}
+      ${QT_QTSQL_LIBRARY}
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
    )
 ENDIF()
 
-QT5_USE_MODULES(ringclient Core)
+QT5_USE_MODULES(ringclient Core Sql)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   QT5_USE_MODULES(ringclient DBus)
@@ -625,6 +632,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
+   ${QT_QTSQL_LIBRARY}
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
