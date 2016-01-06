@@ -41,13 +41,19 @@ class CodecModelPrivate final : public QObject
    Q_OBJECT
 public:
    CodecModelPrivate(CodecModel* parent);
-   ///@struct CodecData store audio codec information
+   ///@struct CodecData store audio/video codec information
    struct CodecData {
-      int              id        ;
-      QString          name      ;
-      QString          bitrate   ;
-      QString          samplerate;
-      QString          type      ;
+      int              id         ;
+      QString          name       ;
+      QString          bitrate    ;
+      QString          min_bitrate;
+      QString          max_bitrate;
+      QString          samplerate ;
+      QString          type       ;
+      QString          quality    ;
+      QString          min_quality;
+      QString          max_quality;
+      QString          auto_quality_enabled;
    };
 
    //Attributes
@@ -128,11 +134,17 @@ QHash<int,QByteArray> CodecModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert(CodecModel::Role::ID        ,QByteArray("id"));
-      roles.insert(CodecModel::Role::NAME      ,QByteArray("name"));
-      roles.insert(CodecModel::Role::BITRATE   ,QByteArray("bitrate"));
-      roles.insert(CodecModel::Role::SAMPLERATE,QByteArray("samplerate"));
-      roles.insert(CodecModel::Role::TYPE      ,QByteArray("type"));
+      roles.insert(CodecModel::Role::ID         ,QByteArray("id"));
+      roles.insert(CodecModel::Role::NAME       ,QByteArray("name"));
+      roles.insert(CodecModel::Role::BITRATE    ,QByteArray("bitrate"));
+      roles.insert(CodecModel::Role::MIN_BITRATE,QByteArray("min_bitrate"));
+      roles.insert(CodecModel::Role::MAX_BITRATE,QByteArray("max_bitrate"));
+      roles.insert(CodecModel::Role::SAMPLERATE ,QByteArray("samplerate"));
+      roles.insert(CodecModel::Role::TYPE       ,QByteArray("type"));
+      roles.insert(CodecModel::Role::QUALITY    ,QByteArray("quality"));
+      roles.insert(CodecModel::Role::MIN_QUALITY,QByteArray("min_quality"));
+      roles.insert(CodecModel::Role::MAX_QUALITY,QByteArray("max_quality"));
+      roles.insert(CodecModel::Role::AUTO_QUALITY_ENABLED,QByteArray("autoQualityEnabled"));
    }
    return roles;
 }
@@ -147,28 +159,40 @@ QItemSelectionModel* CodecModel::selectionModel() const
 ///Model data
 QVariant CodecModel::data(const QModelIndex& idx, int role) const
 {
-   if(idx.column() == 0      && role == Qt::DisplayRole                   ) {
-      return QVariant(d_ptr->m_lCodecs[idx.row()]->name);
-   }
-   else if(idx.column() == 0 && role == Qt::CheckStateRole                ) {
-      return QVariant(d_ptr->m_lEnabledCodecs[d_ptr->m_lCodecs[idx.row()]->id] ? Qt::Checked : Qt::Unchecked);
-   }
-   else if (idx.column() == 0 && role == CodecModel::Role::NAME       ) {
-      return d_ptr->m_lCodecs[idx.row()]->name;
-   }
-   else if (idx.column() == 0 && role == CodecModel::Role::BITRATE    ) {
-      return d_ptr->m_lCodecs[idx.row()]->bitrate;
-   }
-   else if (idx.column() == 0 && role == CodecModel::Role::SAMPLERATE ) {
-      return d_ptr->m_lCodecs[idx.row()]->samplerate;
-   }
-   else if (idx.column() == 0 && role == CodecModel::Role::ID         ) {
-      return d_ptr->m_lCodecs[idx.row()]->id;
-   }
-   else if (idx.column() == 0 && role == CodecModel::Role::TYPE         ) {
-      return d_ptr->m_lCodecs[idx.row()]->type;
-   }
-   return QVariant();
+    if (idx.column() != 0)
+        return QVariant();
+
+    switch (role) {
+        case Qt::DisplayRole:
+            return QVariant(d_ptr->m_lCodecs[idx.row()]->name);
+        case Qt::CheckStateRole:
+            return QVariant(d_ptr->m_lEnabledCodecs[d_ptr->m_lCodecs[idx.row()]->id] ? Qt::Checked : Qt::Unchecked);
+        case CodecModel::Role::NAME:
+            return d_ptr->m_lCodecs[idx.row()]->name;
+        case CodecModel::Role::BITRATE:
+            return d_ptr->m_lCodecs[idx.row()]->bitrate;
+        case CodecModel::Role::MIN_BITRATE:
+            return d_ptr->m_lCodecs[idx.row()]->min_bitrate;
+        case CodecModel::Role::MAX_BITRATE:
+            return d_ptr->m_lCodecs[idx.row()]->max_bitrate;
+        case CodecModel::Role::SAMPLERATE:
+            return d_ptr->m_lCodecs[idx.row()]->samplerate;
+        case CodecModel::Role::ID:
+            return d_ptr->m_lCodecs[idx.row()]->id;
+        case CodecModel::Role::TYPE:
+            return d_ptr->m_lCodecs[idx.row()]->type;
+        case CodecModel::Role::QUALITY:
+            return d_ptr->m_lCodecs[idx.row()]->quality;
+        case CodecModel::Role::MIN_QUALITY:
+            return d_ptr->m_lCodecs[idx.row()]->min_quality;
+        case CodecModel::Role::MAX_QUALITY:
+            return d_ptr->m_lCodecs[idx.row()]->max_quality;
+        case CodecModel::Role::AUTO_QUALITY_ENABLED:
+            return d_ptr->m_lCodecs[idx.row()]->auto_quality_enabled;
+        default:
+            return QVariant();
+    }
+    return QVariant();
 }
 
 ///Number of audio codecs
@@ -192,43 +216,54 @@ Qt::ItemFlags CodecModel::flags(const QModelIndex& idx) const
 ///Set audio codec data
 bool CodecModel::setData( const QModelIndex& idx, const QVariant &value, int role)
 {
-   if (idx.column() == 0 && role == CodecModel::NAME) {
-      d_ptr->m_lCodecs[idx.row()]->name = value.toString();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   else if (idx.column() == 0 && role == CodecModel::BITRATE) {
-      d_ptr->m_lCodecs[idx.row()]->bitrate = value.toString();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   else if(idx.column() == 0 && role == Qt::CheckStateRole) {
-      d_ptr->m_lEnabledCodecs[d_ptr->m_lCodecs[idx.row()]->id] = value.toBool();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   else if (idx.column() == 0 && role == CodecModel::SAMPLERATE) {
-      d_ptr->m_lCodecs[idx.row()]->samplerate = value.toString();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   else if (idx.column() == 0 && role == CodecModel::ID) {
-      d_ptr->m_lCodecs[idx.row()]->id = value.toInt();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   else if (idx.column() == 0 && role == CodecModel::TYPE) {
-      d_ptr->m_lCodecs[idx.row()]->type = value.toString();
-      emit dataChanged(idx, idx);
-      this << EditAction::MODIFY;
-      return true;
-   }
-   return false;
+    if (idx.column() != 0)
+        return false;
+
+    switch (role) {
+        case CodecModel::NAME :
+            d_ptr->m_lCodecs[idx.row()]->name = value.toString();
+            break;
+        case CodecModel::BITRATE :
+            d_ptr->m_lCodecs[idx.row()]->bitrate = value.toString();
+            break;
+        case CodecModel::MIN_BITRATE :
+            d_ptr->m_lCodecs[idx.row()]->min_bitrate = value.toString();
+            break;
+        case CodecModel::MAX_BITRATE :
+            d_ptr->m_lCodecs[idx.row()]->max_bitrate = value.toString();
+            break;
+        case Qt::CheckStateRole :
+            d_ptr->m_lEnabledCodecs[d_ptr->m_lCodecs[idx.row()]->id] = value.toBool();
+            break;
+        case CodecModel::SAMPLERATE :
+            d_ptr->m_lCodecs[idx.row()]->samplerate = value.toString();
+            break;
+        case CodecModel::ID :
+            d_ptr->m_lCodecs[idx.row()]->id = value.toInt();
+            break;
+        case CodecModel::TYPE :
+            d_ptr->m_lCodecs[idx.row()]->type = value.toString();
+            break;
+        case CodecModel::QUALITY :
+            d_ptr->m_lCodecs[idx.row()]->quality = value.toString();
+            break;
+        case CodecModel::MIN_QUALITY :
+            d_ptr->m_lCodecs[idx.row()]->min_quality = value.toString();
+            break;
+        case CodecModel::MAX_QUALITY :
+            d_ptr->m_lCodecs[idx.row()]->max_quality = value.toString();
+            break;
+        case CodecModel::AUTO_QUALITY_ENABLED :
+            d_ptr->m_lCodecs[idx.row()]->auto_quality_enabled = value.toString();
+            break;
+        default:
+            return false;
+    }
+
+    //if we did not return yet, then we modified the codec
+    emit dataChanged(idx, idx);
+    this << EditAction::MODIFY;
+    return true;
 }
 
 ///Add a new audio codec
@@ -306,7 +341,13 @@ void CodecModelPrivate::reload()
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE ] ,CodecModel::Role::MIN_BITRATE);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE ] ,CodecModel::Role::MAX_BITRATE);
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::QUALITY     ] ,CodecModel::Role::QUALITY    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY ] ,CodecModel::Role::MIN_QUALITY);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] ,CodecModel::Role::MAX_QUALITY);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] ,CodecModel::Role::AUTO_QUALITY_ENABLED);
       q_ptr->setData(idx, Qt::Checked ,Qt::CheckStateRole);
 
       // remove from list of all codecs, since we have already updated it
@@ -331,7 +372,13 @@ void CodecModelPrivate::reload()
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::NAME        ] ,CodecModel::Role::NAME       );
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] ,CodecModel::Role::SAMPLERATE );
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] ,CodecModel::Role::BITRATE    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE ] ,CodecModel::Role::MIN_BITRATE);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE ] ,CodecModel::Role::MAX_BITRATE);
       q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] ,CodecModel::Role::TYPE       );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::QUALITY     ] ,CodecModel::Role::QUALITY    );
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY ] ,CodecModel::Role::MIN_QUALITY);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] ,CodecModel::Role::MAX_QUALITY);
+      q_ptr->setData(idx,codec[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] ,CodecModel::Role::AUTO_QUALITY_ENABLED);
       q_ptr->setData(idx, Qt::Unchecked ,Qt::CheckStateRole);
    }
 
@@ -362,7 +409,13 @@ void CodecModelPrivate::save()
       codecDetails[ DRing::Account::ConfProperties::CodecInfo::NAME        ] = q_ptr->data(idx,CodecModel::Role::NAME).toString();
       codecDetails[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] = q_ptr->data(idx,CodecModel::Role::SAMPLERATE).toString();
       codecDetails[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] = q_ptr->data(idx,CodecModel::Role::BITRATE).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE ] = q_ptr->data(idx,CodecModel::Role::MIN_BITRATE).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE ] = q_ptr->data(idx,CodecModel::Role::MAX_BITRATE).toString();
       codecDetails[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] = q_ptr->data(idx,CodecModel::Role::TYPE).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::QUALITY     ] = q_ptr->data(idx,CodecModel::Role::QUALITY).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY ] = q_ptr->data(idx,CodecModel::Role::MIN_QUALITY).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] = q_ptr->data(idx,CodecModel::Role::MAX_QUALITY).toString();
+      codecDetails[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] = q_ptr->data(idx,CodecModel::Role::AUTO_QUALITY_ENABLED).toString();
 
       qDebug() << "setting codec details for " << q_ptr->data(idx,CodecModel::Role::NAME).toString();
 
