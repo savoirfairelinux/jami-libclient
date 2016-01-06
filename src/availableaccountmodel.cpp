@@ -159,7 +159,8 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
    m_spPriorAccount = const_cast<Account*>(account);
    if (changed) {
       auto& self = AvailableAccountModel::instance();
-      Account* a = self.currentDefaultAccount();
+
+      Account* a = account ? const_cast<Account*>(account) : self.currentDefaultAccount();
 
       emit self.currentDefaultAccountChanged(a);
 
