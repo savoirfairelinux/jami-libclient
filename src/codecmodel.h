@@ -44,11 +44,17 @@ public:
 
    //Roles
    enum Role {
-      ID         = 103,
-      NAME       = 100,
-      BITRATE    = 101,
-      SAMPLERATE = 102,
-      TYPE       = 104,
+      ID          = 103,
+      NAME        = 100,
+      BITRATE     = 101,
+      MIN_BITRATE = 105,
+      MAX_BITRATE = 106,
+      SAMPLERATE  = 102,
+      TYPE        = 104,
+      QUALITY     = 107,
+      MIN_QUALITY = 108,
+      MAX_QUALITY = 109,
+      AUTO_QUALITY_ENABLED = 110,
    };
 
    /// @enum CodecModel::Action Manage a CodecModel lifecycle
@@ -119,4 +125,3 @@ private:
 Q_DECLARE_METATYPE(CodecModel*)
 
 CodecModel* LIB_EXPORT operator<<(CodecModel* a, CodecModel::EditAction action);
-
