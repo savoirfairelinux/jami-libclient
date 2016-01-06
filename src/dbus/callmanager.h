@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2009-2014 by Savoir-Faire Linux                          *
+ *   Copyright (C) 2009-2016 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *                                                                          *
