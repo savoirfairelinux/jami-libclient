@@ -613,8 +613,9 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
 ///Number of row
 int InstantMessagingModel::rowCount(const QModelIndex& parentIdx) const
 {
-   Q_UNUSED(parentIdx)
-   return m_pRecording->d_ptr->m_lNodes.size();
+   if (!parentIdx.isValid())
+      return m_pRecording->d_ptr->m_lNodes.size();
+   return 0;
 }
 
 ///Model flags
