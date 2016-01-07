@@ -1048,7 +1048,15 @@ RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QMo
 {
     auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
     if (callIdx.isValid()) {
-        q_ptr->selectionModel()->setCurrentIndex(q_ptr->isConference(callIdx) ? callIdx : callIdx.parent(), QItemSelectionModel::ClearAndSelect);
+        /* in the case of a conference, we select the call;
+         * in case the parent only has one call, we select the parent;
+         * in case the parent has multiple calls, we select the call;
+         */
+        auto parentIdx = callIdx.parent();
+        if (q_ptr->isConference(callIdx) || q_ptr->isConference(parentIdx) || q_ptr->rowCount(parentIdx) > 1)
+            q_ptr->selectionModel()->setCurrentIndex(callIdx, QItemSelectionModel::ClearAndSelect);
+        else
+            q_ptr->selectionModel()->setCurrentIndex(callIdx.parent(), QItemSelectionModel::ClearAndSelect);
     } else {
         q_ptr->selectionModel()->clearCurrentIndex();
     }
