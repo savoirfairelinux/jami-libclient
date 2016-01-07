@@ -55,7 +55,7 @@ public:
    virtual bool edit       ( Media::Recording*       item ) override;
    virtual bool addNew     ( Media::Recording*       item ) override;
    virtual bool addExisting( const Media::Recording* item ) override;
-   QByteArray fetch(const QByteArray& sha1);
+   QString fetch(const QByteArray& sha1);
 
 private:
    virtual QVector<Media::Recording*> items() const override;
@@ -96,6 +96,7 @@ bool LocalTextRecordingEditor::save(const Media::Recording* recording)
 
       if ( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
          QTextStream streamFileOut(&file);
+         streamFileOut.setCodec("UTF-8");
          streamFileOut << i.value();
          streamFileOut.flush();
          file.close();
@@ -132,7 +133,7 @@ bool LocalTextRecordingEditor::addExisting(const Media::Recording* item)
    return false;
 }
 
-QByteArray LocalTextRecordingEditor::fetch(const QByteArray& sha1)
+QString LocalTextRecordingEditor::fetch(const QByteArray& sha1)
 {
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/" + sha1 + ".json");
 
@@ -141,7 +142,7 @@ QByteArray LocalTextRecordingEditor::fetch(const QByteArray& sha1)
       return QByteArray();
    }
 
-   return file.readAll();
+   return QString::fromUtf8(file.readAll());
 }
 
 QVector<Media::Recording*> LocalTextRecordingEditor::items() const
@@ -230,12 +231,18 @@ bool LocalTextRecordingCollection::fetch(const Element& e)
 Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
 {
    const QByteArray& sha1 = cm->sha1();
-   const QByteArray content = static_cast<LocalTextRecordingEditor*>(editor<Media::Recording>())->fetch(sha1);
+   const QString content = static_cast<LocalTextRecordingEditor*>(editor<Media::Recording>())->fetch(sha1);
 
    if (content.isEmpty())
       return nullptr;
 
-   QJsonDocument loadDoc = QJsonDocument::fromJson(content);
+   QJsonParseError err;
+   QJsonDocument loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err);
+
+   if (err.error != QJsonParseError::ParseError::NoError) {
+       qWarning() << "Error Decoding Text Message History Json" << err.errorString();
+       return nullptr;
+   }
 
    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm);
 
