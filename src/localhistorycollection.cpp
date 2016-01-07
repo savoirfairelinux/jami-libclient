@@ -80,6 +80,7 @@ LocalHistoryCollection::~LocalHistoryCollection()
 
 void LocalHistoryEditor::saveCall(QTextStream& stream, const Call* call)
 {
+   stream.setCodec("UTF-8");
    const QString direction = (call->direction()==Call::Direction::INCOMING)?
       Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
 
