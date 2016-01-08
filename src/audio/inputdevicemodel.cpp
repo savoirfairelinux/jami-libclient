@@ -31,6 +31,7 @@ public:
    InputDeviceModelPrivate(Audio::InputDeviceModel* parent);
    QStringList m_lDeviceList;
    mutable QItemSelectionModel* m_pSelectionModel;
+   QModelIndex currentDevice() const;
 
 private:
    Audio::InputDeviceModel* q_ptr;
@@ -62,6 +63,7 @@ d_ptr(new InputDeviceModelPrivate(this))
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
+   connect(&configurationManager, SIGNAL(audioDeviceEvent()), this, SLOT(reload()));
 }
 
 ///Destructor
@@ -123,10 +125,23 @@ QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
    return d_ptr->m_pSelectionModel;
 }
 
+///Return the current ringtone device
+QModelIndex InputDeviceModelPrivate::currentDevice() const
+{
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+   const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
+   qDebug() << "currentDevices" << currentDevices;
+   const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::INPUT)].toInt();
+   qDebug() << "currentDevices" << idx;
+   if (idx >= m_lDeviceList.size())
+      return QModelIndex();
+   return q_ptr->index(idx,0);
+}
+
 ///Set the current input device
 void InputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
-   if (index.isValid()) {
+   if (index.isValid() and index != currentDevice()) {
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       configurationManager.setAudioInputDevice(index.row());
    }
@@ -135,7 +150,6 @@ void InputDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 ///Reload input device list
 void Audio::InputDeviceModel::reload()
 {
-   const int currentRow = selectionModel()->currentIndex().row();
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
@@ -144,7 +158,7 @@ void Audio::InputDeviceModel::reload()
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
 
    // Restore the selection
-   d_ptr->m_pSelectionModel->setCurrentIndex(index(currentRow,0), QItemSelectionModel::ClearAndSelect);
+   selectionModel()->setCurrentIndex(d_ptr->currentDevice(), QItemSelectionModel::ClearAndSelect);
 }
 
 #include <inputdevicemodel.moc>

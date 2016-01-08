@@ -44,10 +44,9 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getters
-   QModelIndex currentDevice() const;
    QItemSelectionModel* selectionModel() const;
 
-   //Mutator
+public Q_SLOTS:
    void reload();
 
 private:

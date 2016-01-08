@@ -46,7 +46,7 @@ public:
    //Getters
    QItemSelectionModel* selectionModel() const;
 
-   //Mutator
+public Q_SLOTS:
    void reload();
 
 private:
