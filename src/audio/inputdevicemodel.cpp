@@ -63,6 +63,7 @@ d_ptr(new InputDeviceModelPrivate(this))
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioInputDeviceList  ();
+   connect(&configurationManager, SIGNAL(audioDeviceEvent()), this, SLOT(reload()));
 }
 
 ///Destructor

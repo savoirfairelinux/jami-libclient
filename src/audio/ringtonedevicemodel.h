@@ -47,7 +47,7 @@ public:
    QModelIndex currentDevice() const;
    QItemSelectionModel* selectionModel() const;
 
-   //Mutator
+public Q_SLOTS:
    void reload();
 
 private:

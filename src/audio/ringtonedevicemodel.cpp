@@ -52,6 +52,7 @@ d_ptr(new RingtoneDeviceModelPrivate(this))
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
+   connect(&configurationManager, SIGNAL(audioDeviceEvent()), this, SLOT(reload()));
 }
 
 ///Destructor
