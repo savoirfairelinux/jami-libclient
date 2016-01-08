@@ -46,11 +46,11 @@ public:
    //Getters
    QItemSelectionModel* selectionModel() const;
 
-   //Mutator
-   void reload();
-
    //Static methods
    static void playDTMF(const QString& str);
+
+public Q_SLOTS:
+   void reload();
 
 private:
    QScopedPointer<OutputDeviceModelPrivate> d_ptr;

@@ -31,6 +31,7 @@ public:
    RingtoneDeviceModelPrivate(Audio::RingtoneDeviceModel* parent);
    QStringList m_lDeviceList;
    mutable QItemSelectionModel* m_pSelectionModel;
+   QModelIndex currentDevice() const;
 
 private:
    Audio::RingtoneDeviceModel* q_ptr;
@@ -51,6 +52,7 @@ d_ptr(new RingtoneDeviceModelPrivate(this))
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
+   connect(&configurationManager, SIGNAL(audioDeviceEvent()), this, SLOT(reload()));
 }
 
 ///Destructor
@@ -124,20 +126,20 @@ QItemSelectionModel* Audio::RingtoneDeviceModel::selectionModel() const
 }
 
 ///Return the current ringtone device
-QModelIndex Audio::RingtoneDeviceModel::currentDevice() const
+QModelIndex RingtoneDeviceModelPrivate::currentDevice() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
    const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::RINGTONE)].toInt();
-   if (idx >= d_ptr->m_lDeviceList.size())
+   if (idx >= m_lDeviceList.size())
       return QModelIndex();
-   return index(idx,0);
+   return q_ptr->index(idx,0);
 }
 
 ///Set the current ringtone device
 void RingtoneDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 {
-   if (index.isValid()) {
+   if (index.isValid() and index != currentDevice()) {
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       configurationManager.setAudioRingtoneDevice(index.row());
    }
@@ -146,8 +148,6 @@ void RingtoneDeviceModelPrivate::setCurrentDevice(const QModelIndex& index)
 ///Reload ringtone device list
 void Audio::RingtoneDeviceModel::reload()
 {
-   const int currentRow = selectionModel()->currentIndex().row();
-
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
@@ -156,7 +156,7 @@ void Audio::RingtoneDeviceModel::reload()
    emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
 
    // Restore the selection
-   d_ptr->m_pSelectionModel->setCurrentIndex(index(currentRow,0), QItemSelectionModel::ClearAndSelect);
+   selectionModel()->setCurrentIndex(d_ptr->currentDevice(), QItemSelectionModel::ClearAndSelect);
 
 }
 
