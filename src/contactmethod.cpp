@@ -294,6 +294,15 @@ bool ContactMethod::setType(ContactMethod::Type t)
    return false;
 }
 
+///Update the last time used only if t is more recent than m_LastUsed
+void ContactMethod::setLastUsed(time_t t)
+{
+    if (t > d_ptr->m_LastUsed) {
+       d_ptr->m_LastUsed = t;
+       emit lastUsedChanged(t);
+    }
+}
+
 ///Set if this number is tracking presence information
 void ContactMethod::setTracked(bool track)
 {
@@ -490,7 +499,7 @@ QVariant ContactMethod::roleData(int role) const
          break;
       case static_cast<int>(Ring::Role::LastUsed):
       case static_cast<int>(Call::Role::Date):
-         cat = cat = !lastCall ? QVariant() : QDateTime::fromTime_t(lastCall->startTimeStamp());
+         cat = d_ptr->m_LastUsed <= 0 ? QVariant() : QDateTime::fromTime_t(d_ptr->m_LastUsed);
          break;
       case static_cast<int>(Ring::Role::Length):
       case static_cast<int>(Call::Role::Length):
@@ -498,15 +507,13 @@ QVariant ContactMethod::roleData(int role) const
          break;
       case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Call::Role::FormattedDate):
-         cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
+      case static_cast<int>(Call::Role::FuzzyDate):
+         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_LastUsed);
          break;
       case static_cast<int>(Ring::Role::IndexedLastUsed):
-         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastCall->startTimeStamp())));
+         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(d_ptr->m_LastUsed)));
       case static_cast<int>(Call::Role::HasAVRecording):
          cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
-         break;
-      case static_cast<int>(Call::Role::FuzzyDate):
-         cat = cat = !lastCall ? QVariant() : HistoryTimeCategoryModel::timeToHistoryCategory(lastCall->startTimeStamp());
          break;
       case static_cast<int>(Call::Role::ContactMethod):
       case static_cast<int>(Ring::Role::Object):

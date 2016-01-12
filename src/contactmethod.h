@@ -143,6 +143,7 @@ public:
    void             setBookmarked(bool                bookmarked);
    void             setUid       (const QString&      uri       );
    bool             setType      (ContactMethod::Type t         );
+   void             setLastUsed  (time_t              t         );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);

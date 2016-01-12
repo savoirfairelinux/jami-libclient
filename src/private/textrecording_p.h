@@ -161,7 +161,7 @@ public:
    QAbstractItemModel*         m_pTextMessagesModels {nullptr};
 
    //Helper
-   void insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction);
+   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
    QHash<QByteArray,QByteArray> toJsons() const;
 
 private:
