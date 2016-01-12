@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_0f6cbe9b",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-01-12T23:08:52Z",
+      "side": 1,
+      "message": "Ok, I looked at call.cpp, and you\u0027re right it should be a QDateTime.\n\nProblem is, we use FormattedLastUsed in clients to display the last interaction in the smartlist. If we change it for a QDateTime we will have to update clients to use the FuzzyDate role instead. \n\nWe don\u0027t have time right now to do it I think, and it\u0027s pretty minor.",
+      "parentUuid": "1a9dcd25_6fac62ee",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_0fb91e2e",
         "filename": "src/contactmethod.cpp",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_2f697a8b",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-01-12T23:08:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_0fb91e2e",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_2fb65a3e",
         "filename": "src/contactmethod.cpp",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2016-01-12T19:44:03Z",
       "side": 1,
       "message": "Maybe merge this into setLastUsed? The account part is technically still required",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_4f72c67d",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-01-12T23:08:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_2fb65a3e",
       "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
