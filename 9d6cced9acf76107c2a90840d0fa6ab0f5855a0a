@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_6fac62ee",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-01-12T19:44:03Z",
+      "side": 1,
+      "message": "It was wrong before too, but this should return a QString version of the QDateTime to be consistent with call. (I don\u0027t think it is currently used)",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_0fb91e2e",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-01-12T19:44:03Z",
+      "side": 1,
+      "message": "See Call::roleData()",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_2fb65a3e",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-01-12T19:44:03Z",
+      "side": 1,
+      "message": "Maybe merge this into setLastUsed? The account part is technically still required",
+      "revId": "9d6cced9acf76107c2a90840d0fa6ab0f5855a0a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
