@@ -282,9 +282,8 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
    return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, const ContactMethod* cm, Media::Media::Direction direction)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
 {
-
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
         m_pCurrentGroup = new Serializable::Group();
@@ -356,6 +355,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    //Save the conversation
    q_ptr->save();
 
+   cm->setLastUsed(currentTime);
    emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
 }
 
