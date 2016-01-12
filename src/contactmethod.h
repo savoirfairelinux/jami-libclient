@@ -65,7 +65,7 @@ public:
    //Properties
    Q_PROPERTY(Account*          account          READ account           WRITE setAccount              )
    Q_PROPERTY(Person*           person           READ contact           WRITE setPerson               )
-   Q_PROPERTY(int               lastUsed         READ lastUsed                                        )
+   Q_PROPERTY(int               lastUsed         READ lastUsed          WRITE setLastUsed             )
    Q_PROPERTY(QString           uri              READ uri                                             )
    Q_PROPERTY(int               callCount        READ callCount                                       )
    Q_PROPERTY(QList<Call*>      calls            READ calls                                           )
@@ -143,6 +143,7 @@ public:
    void             setBookmarked(bool                bookmarked);
    void             setUid       (const QString&      uri       );
    bool             setType      (ContactMethod::Type t         );
+   void             setLastUsed  (time_t              t         );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
