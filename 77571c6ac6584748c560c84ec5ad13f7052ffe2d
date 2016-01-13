@@ -22,6 +22,30 @@
       "revId": "77571c6ac6584748c560c84ec5ad13f7052ffe2d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_0fc83e73",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-01-13T17:11:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a9dcd25_8fb44ef3",
+      "range": {
+        "startLine": 1060,
+        "startChar": 6,
+        "endLine": 1066,
+        "endChar": 5
+      },
+      "revId": "77571c6ac6584748c560c84ec5ad13f7052ffe2d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
