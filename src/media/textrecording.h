@@ -73,6 +73,9 @@ public:
    bool                hasMimeType              ( const QString& mimeType ) const;
    QStringList         mimeTypes                (                         ) const;
 
+   //Helper
+   void setAllRead();
+
 Q_SIGNALS:
    void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
 
