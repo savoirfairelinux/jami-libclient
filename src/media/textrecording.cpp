@@ -181,6 +181,24 @@ QAbstractItemModel* Media::TextRecording::instantMessagingModel() const
    return d_ptr->m_pImModel;
 }
 
+///Set all messages as read and then save the recording
+void Media::TextRecording::setAllRead()
+{
+    bool changed = false;
+    for(int row = 0; row < d_ptr->m_lNodes.size(); ++row) {
+        if (!d_ptr->m_lNodes[row]->m_pMessage->isRead) {
+            d_ptr->m_lNodes[row]->m_pMessage->isRead = true;
+            if (d_ptr->m_pImModel) {
+                auto idx = d_ptr->m_pImModel->index(row, 0);
+                emit d_ptr->m_pImModel->dataChanged(idx,idx);
+            }
+            changed = true;
+        }
+    }
+    if (changed)
+        save();
+}
+
 /**
  * I (Emmanuel Lepage) is in the process of writing a better one for this that
  * can be upstreamed into Qt (there is interest in merging a generic QVariant
