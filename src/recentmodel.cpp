@@ -775,8 +775,8 @@ RecentModelPrivate::insertCallNode(RecentViewNode *parent, RecentViewNode* callN
     // emit dataChanged on parent, since number of children has changed
     emit q_ptr->dataChanged(parentIdx, parentIdx);
 
-    if (callNode->m_Index == 2) {
-        // we went from 1 to 2 calls, emit a dataChanged on the first call so that the PeopleProxy
+    if (parent->m_lChildren.size() > 1) {
+        // emit a dataChanged on the first call so that the PeopleProxy
         // now shows the first call (otherwise it will only show the 2nd +)
         auto firstChild = q_ptr->index(0, 0, parentIdx);
         emit q_ptr->dataChanged(firstChild, firstChild);
