@@ -54,6 +54,7 @@ public:
       AuthorUri                             ,
       AuthorPresenceStatus                  ,
       Timestamp                             ,
+      IsRead                                ,
       FormattedDate                         ,
       IsStatus                              ,
       HTML                                  ,

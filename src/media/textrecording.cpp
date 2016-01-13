@@ -550,6 +550,7 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
       roles.insert((int)Media::TextRecording::Role::AuthorUri           , "authorUri"           );
       roles.insert((int)Media::TextRecording::Role::AuthorPresenceStatus, "authorPresenceStatus");
       roles.insert((int)Media::TextRecording::Role::Timestamp           , "timestamp"           );
+      roles.insert((int)Media::TextRecording::Role::IsRead              , "isRead"              );
       roles.insert((int)Media::TextRecording::Role::FormattedDate       , "formattedDate"       );
       roles.insert((int)Media::TextRecording::Role::IsStatus            , "isStatus"            );
    }
@@ -595,6 +596,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                   n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
          case (int)Media::TextRecording::Role::Timestamp            :
             return (int)n->m_pMessage->timestamp;
+         case (int)Media::TextRecording::Role::IsRead               :
+            return (int)n->m_pMessage->isRead;
          case (int)Media::TextRecording::Role::FormattedDate        :
             return QDateTime::fromTime_t(n->m_pMessage->timestamp).toString();
          case (int)Media::TextRecording::Role::IsStatus             :
@@ -628,10 +631,22 @@ Qt::ItemFlags InstantMessagingModel::flags(const QModelIndex& idx) const
 ///Set model data
 bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &value, int role)
 {
-   Q_UNUSED(idx)
-   Q_UNUSED(value)
-   Q_UNUSED(role)
-   return false;
+    if (idx.column() || !idx.isValid())
+        return false;
+
+    ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
+    switch (role) {
+        case (int)Media::TextRecording::Role::IsRead               :
+            n->m_pMessage->isRead = value.toBool();
+            emit dataChanged(idx,idx);
+            break;
+        default:
+            return false;
+    }
+
+    //Save the conversation
+    m_pRecording->save();
+    return true;
 }
 
 void InstantMessagingModel::addRowBegin()
