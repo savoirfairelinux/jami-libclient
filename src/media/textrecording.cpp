@@ -571,6 +571,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
               && m_pRecording->call()->account()->contactMethod()->contact()) {
                auto cm = m_pRecording->call()->account()->contactMethod();
                return GlobalInstances::pixmapManipulator().callPhoto(cm,QSize(48,48));
+            } else if (n->m_pMessage->direction == Media::Media::Direction::OUT){
+                return GlobalInstances::pixmapManipulator().callPhoto(m_pRecording->call(),QSize(48,48));
             }
             break;
          case (int)Media::TextRecording::Role::Direction            :

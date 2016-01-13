@@ -44,14 +44,14 @@ class ActionExtenderI;
 namespace GlobalInstances {
 
 Interfaces::AccountListColorizerI& accountListColorizer();
-void setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
+void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
 Interfaces::ContactMethodSelectorI& contactMethodSelector();
-void setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
+void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
 Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
@@ -61,13 +61,13 @@ void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance
  * if this getter is called without an instance being set by the client
  */
 Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
-void setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
+void LIB_EXPORT setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
 
 Interfaces::PixmapManipulatorI& pixmapManipulator();
-void setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
+void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
 
 Interfaces::PresenceSerializerI& presenceSerializer();
-void setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
+void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
 
 /**
  * TODO: LRC has a default implementation of this interface; however profiles are still in an
@@ -75,13 +75,13 @@ void setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> inst
  * client
  */
 Interfaces::ProfilePersisterI& profilePersister();
-void setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance);
+void LIB_EXPORT setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance);
 
 Interfaces::ShortcutCreatorI& shortcutCreator();
-void setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
+void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
 Interfaces::ActionExtenderI& actionExtender();
-void setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
+void LIB_EXPORT setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
 
 
 
@@ -106,7 +106,7 @@ void setInterfaceInternal(Interfaces::ActionExtenderI          *);
  * can be passed.
  */
 template<class I, typename ...Ts>
-void setInterface(Ts... args)
+void LIB_EXPORT setInterface(Ts... args)
 {
    try {
       auto i = new I(args...);
