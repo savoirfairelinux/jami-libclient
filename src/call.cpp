@@ -63,6 +63,7 @@
 #include "media/audio.h"
 #include "media/video.h"
 #include "media/text.h"
+#include "media/textrecording.h"
 #include "media/file.h"
 
 #include "securityevaluationmodel.h"
@@ -2219,6 +2220,12 @@ QVariant Call::roleData(int role) const
          return QVariant::fromValue(account()->securityEvaluationModel()->securityLevel());
       case static_cast<int>(Call::Role::SecurityLevelIcon): //TODO remove
          return GlobalInstances::pixmapManipulator().securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
+      case static_cast<int>(Ring::Role::UnreadTextMessageCount):
+         if (peerContactMethod() && peerContactMethod()->textRecording())
+            return peerContactMethod()->textRecording()->unreadInstantTextMessagingModel()->rowCount();
+         else
+            return 0;
+         break;
       default:
          break;
    };
