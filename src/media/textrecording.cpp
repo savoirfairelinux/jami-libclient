@@ -212,10 +212,10 @@ void Media::TextRecording::setAllRead()
    be replaced by the new one, be it in KItemModels (the KDE abstract proxy
    library) or QtCore.
  */
-class BooleanProxyModel : public QSortFilterProxyModel
+class TextProxyModel : public QSortFilterProxyModel
 {
 public:
-   explicit BooleanProxyModel(QObject* parent) : QSortFilterProxyModel(parent){}
+   explicit TextProxyModel(QObject* parent) : QSortFilterProxyModel(parent){}
    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override
    {
       const QModelIndex srcIdx = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
@@ -230,14 +230,45 @@ public:
  */
 QAbstractItemModel* Media::TextRecording::instantTextMessagingModel() const
 {
-   if (!d_ptr->m_pTextMessagesModels) {
-      auto p = new BooleanProxyModel(const_cast<TextRecording*>(this));
+   if (!d_ptr->m_pTextMessagesModel) {
+      auto p = new TextProxyModel(const_cast<TextRecording*>(this));
       p->setSourceModel(instantMessagingModel());
-      d_ptr->m_pTextMessagesModels = p;
+      d_ptr->m_pTextMessagesModel = p;
    }
 
-   return d_ptr->m_pTextMessagesModels;
+   return d_ptr->m_pTextMessagesModel;
 }
+
+/**
+ * Proxy model to get the unread text messages, as well as their number (rowCount)
+ */
+class UnreadProxyModel : public QSortFilterProxyModel
+{
+public:
+    explicit UnreadProxyModel(QObject* parent) : QSortFilterProxyModel(parent){}
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override
+    {
+        const QModelIndex srcIdx = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
+
+        return !srcIdx.data((int)Media::TextRecording::Role::IsRead).toBool();
+    }
+};
+
+/**
+ * Subset of the instantTextMessagingModel() with only unread plain text and HTML
+ * messages. This model can be used to get the number of unread messages.
+ */
+QAbstractItemModel* Media::TextRecording::unreadInstantTextMessagingModel() const
+{
+    if (!d_ptr->m_pUnreadTextMessagesModel) {
+       auto p = new UnreadProxyModel(instantTextMessagingModel());
+       p->setSourceModel(instantTextMessagingModel());
+       d_ptr->m_pUnreadTextMessagesModel = p;
+    }
+
+    return d_ptr->m_pUnreadTextMessagesModel;
+}
+
 
 bool Media::TextRecording::isEmpty() const
 {
