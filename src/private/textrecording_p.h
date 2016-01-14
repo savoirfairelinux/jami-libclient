@@ -158,7 +158,8 @@ public:
    QList<Serializable::Peers*> m_lAssociatedPeers   ;
    QHash<QString,bool>         m_hMimeTypes         ;
    QStringList                 m_lMimeTypes         ;
-   QAbstractItemModel*         m_pTextMessagesModels {nullptr};
+   QAbstractItemModel*         m_pTextMessagesModel {nullptr};
+   QAbstractItemModel*         m_pUnreadTextMessagesModel {nullptr};
 
    //Helper
    void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);

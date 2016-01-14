@@ -69,6 +69,7 @@ public:
    //Getter
    QAbstractItemModel* instantMessagingModel    (                         ) const;
    QAbstractItemModel* instantTextMessagingModel(                         ) const;
+   QAbstractItemModel* unreadInstantTextMessagingModel(                   ) const;
    bool                isEmpty                  (                         ) const;
    bool                hasMimeType              ( const QString& mimeType ) const;
    QStringList         mimeTypes                (                         ) const;
