@@ -601,6 +601,16 @@ QVariant Person::roleData(int role) const
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));
       case static_cast<int>(Person::Role::Filter):
          return filterString();
+      case static_cast<int>(Ring::Role::NumberUnreadTextMessages):
+         {
+            int unread = 0;
+            for (int i = 0; i < d_ptr->m_Numbers.size(); ++i) {
+               if (auto rec = d_ptr->m_Numbers.at(i)->textRecording())
+                  unread += rec->unreadInstantTextMessagingModel()->rowCount();
+            }
+            return unread;
+         }
+         break;
       default:
          break;
    }
