@@ -357,6 +357,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
 
+   if (direction == Media::Media::Direction::OUT)
+      m->isRead = true; // assume outgoing messages are read, since we're sending them
+
    QMapIterator<QString, QString> iter(message);
    while (iter.hasNext()) {
       iter.next();
