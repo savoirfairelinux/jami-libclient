@@ -195,8 +195,13 @@ void Media::TextRecording::setAllRead()
             changed = true;
         }
     }
-    if (changed)
+    if (changed) {
+        // TODO: we assume that the CM is the same for now, and that at least some of the messages
+        //       are text
+        emit d_ptr->m_lNodes[0]->m_pContactMethod->unreadTextMessageCountChanged();
+        emit d_ptr->m_lNodes[0]->m_pContactMethod->changed();
         save();
+    }
 }
 
 /**
@@ -409,6 +414,10 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
 
    cm->setLastUsed(currentTime);
    emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
+   if (!m->isRead) {
+      emit cm->unreadTextMessageCountChanged();
+      emit cm->changed();
+   }
 }
 
 void Serializable::Payload::read(const QJsonObject &json)
@@ -689,8 +698,14 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
     ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
     switch (role) {
         case (int)Media::TextRecording::Role::IsRead               :
-            n->m_pMessage->isRead = value.toBool();
-            emit dataChanged(idx,idx);
+            if (n->m_pMessage->isRead != value.toBool()) {
+                n->m_pMessage->isRead = value.toBool();
+                if (n->m_pMessage->m_HasText) {
+                    emit n->m_pContactMethod->unreadTextMessageCountChanged();
+                    emit n->m_pContactMethod->changed();
+                }
+                emit dataChanged(idx,idx);
+            }
             break;
         default:
             return false;

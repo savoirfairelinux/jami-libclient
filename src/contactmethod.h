@@ -223,6 +223,8 @@ Q_SIGNALS:
    void lastUsedChanged(time_t t);
    ///The person attached to this CM has changed
    void contactChanged(Person* newContact, Person* oldContact);
+   /// The number of unread text messages has changed
+   void unreadTextMessageCountChanged();
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)

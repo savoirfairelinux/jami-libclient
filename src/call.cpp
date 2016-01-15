@@ -313,6 +313,8 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
    d_ptr->m_Account          = account;
    d_ptr->m_PeerName         = peerName;
    d_ptr->m_pPeerContactMethod = number;
+   if (number)
+      connect(number, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &CallPrivate::updated);
    d_ptr->m_pParentCall      = nullptr;
 
    emit changed();
@@ -1146,6 +1148,7 @@ void Call::setPeerContactMethod(ContactMethod* cm)
       return;
    }
    d_ptr->m_pPeerContactMethod = cm;
+   connect(cm, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &CallPrivate::updated);
    setDialNumber(cm->uri());
 }
 
@@ -1288,8 +1291,10 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
 
    }
    if (q_ptr->lifeCycleState() != Call::LifeCycleState::CREATION && m_pDialNumber) {
-      if (!m_pPeerContactMethod)
+      if (!m_pPeerContactMethod) {
           m_pPeerContactMethod = PhoneDirectoryModel::instance().fromTemporary(m_pDialNumber);
+          connect(m_pPeerContactMethod, &ContactMethod::unreadTextMessageCountChanged, this, &CallPrivate::updated);
+      }
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
@@ -1724,8 +1729,10 @@ void CallPrivate::call()
 
     // Warning: m_pDialNumber can become nullptr when linking directly
     URI uri {peerCM->uri()};
-    if (!m_pPeerContactMethod)
+    if (!m_pPeerContactMethod) {
         m_pPeerContactMethod = PhoneDirectoryModel::instance().getNumber(uri, q_ptr->account());
+        connect(m_pPeerContactMethod, &ContactMethod::unreadTextMessageCountChanged, this, &CallPrivate::updated);
+    }
 
     // m_pDialNumber is now discarded
     m_pDialNumber->deleteLater();
@@ -1844,8 +1851,10 @@ void CallPrivate::start()
    qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    emit q_ptr->changed();
    if (m_pDialNumber) {
-      if (!m_pPeerContactMethod)
+      if (!m_pPeerContactMethod) {
           m_pPeerContactMethod = PhoneDirectoryModel::instance().fromTemporary(m_pDialNumber);
+          connect(m_pPeerContactMethod, &ContactMethod::unreadTextMessageCountChanged, this, &CallPrivate::updated);
+      }
       m_pDialNumber->deleteLater();
       m_pDialNumber = nullptr;
    }
