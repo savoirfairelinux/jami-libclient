@@ -697,6 +697,8 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
     if (idx.column() || !idx.isValid())
         return false;
 
+    bool changed = false;
+
     ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
     switch (role) {
         case (int)Media::TextRecording::Role::IsRead               :
@@ -707,6 +709,7 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
                     emit n->m_pContactMethod->changed();
                 }
                 emit dataChanged(idx,idx);
+                changed = true;
             }
             break;
         default:
@@ -714,7 +717,8 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
     }
 
     //Save the conversation
-    m_pRecording->save();
+    if (changed)
+        m_pRecording->save();
     return true;
 }
 
