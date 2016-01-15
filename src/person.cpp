@@ -352,12 +352,14 @@ void Person::setContactMethods(ContactMethods numbers)
    for (ContactMethod* n : d_ptr->m_Numbers) {
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       disconnect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
+      disconnect(n, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &PersonPrivate::changed);
    }
    d_ptr->m_Numbers = numbers;
 
    for (ContactMethod* n : d_ptr->m_Numbers) {
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       connect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
+      connect(n, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &PersonPrivate::changed);
    }
 
    d_ptr->phoneNumbersChanged();
