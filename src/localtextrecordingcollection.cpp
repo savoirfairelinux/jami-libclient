@@ -138,7 +138,6 @@ QString LocalTextRecordingEditor::fetch(const QByteArray& sha1)
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/" + sha1 + ".json");
 
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      qDebug() << "Conversation not found" << sha1 << (QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/" + sha1 + ".json");
       return QByteArray();
    }
 
