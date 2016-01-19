@@ -978,7 +978,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
       const auto objT = qvariant_cast<Ring::ObjectType>(objTv);
 
       Call*          c  = nullptr;
-      Account*       a  = nullptr;
+      // Account*       a  = nullptr; TODO: uncomment when account is needed
       ContactMethod* cm = nullptr;
       Person*        p  = nullptr;
 
@@ -987,11 +987,11 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
          case Ring::ObjectType::Person         :
             p  = qvariant_cast<Person*>(idx.data(static_cast<int>(Ring::Role::Object)));
             cm = p->phoneNumbers().size() == 1 ? p->phoneNumbers()[0] : nullptr;
-            a  = cm ? cm->account() : nullptr;
+            // a  = cm ? cm->account() : nullptr; TODO: uncomment when account is needed
             break;
          case Ring::ObjectType::ContactMethod  :
             cm = qvariant_cast<ContactMethod*>(idx.data(static_cast<int>(Ring::Role::Object)));
-            a  = cm->account();
+            // a  = cm->account(); TODO: uncomment when account is needed
             p  = cm->contact();
             //TODO maybe add "QList<Call*> currentCalls()" const to ContactMethod::?
             break;
@@ -999,7 +999,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             c  = qvariant_cast<Call*>(idx.data(static_cast<int>(Ring::Role::Object)));
             cm = c->peerContactMethod();
             p  = cm ? cm->contact() : nullptr;
-            a  = c->account();
+            // a  = c->account(); TODO: uncomment when account is needed
             break;
          case Ring::ObjectType::Media          : //TODO
          case Ring::ObjectType::COUNT__        :

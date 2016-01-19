@@ -303,13 +303,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    Q_DECL_DEPRECATED QString getCurrentAudioCodecName(const QString &callID)
-    {
-        QString temp(
-            DRing::getCurrentAudioCodecName(callID.toStdString()).c_str());
-        return temp;
-    }
-
     QStringList getDisplayNames(const QString &confID)
     {
         QStringList temp =

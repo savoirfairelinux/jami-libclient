@@ -177,6 +177,12 @@ QList<CollectionInterface::Element> FolderCertificateCollection::listId() const
    return d_ptr->getCertificateList();
 }
 
+bool FolderCertificateCollection::listId(std::function<void(const QList<CollectionInterface::Element>)> callback) const
+{
+   Q_UNUSED(callback)
+   return false;
+}
+
 bool FolderCertificateCollection::clear()
 {
    return false;

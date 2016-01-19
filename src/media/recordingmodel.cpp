@@ -85,6 +85,8 @@ m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 
 void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
 {
+   Q_UNUSED(message)
+   Q_UNUSED(direction)
    emit q_ptr->newTextMessage(static_cast<Media::TextRecording*>(sender()), cm);
 }
 
@@ -328,4 +330,3 @@ Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMe
 }
 
 #include <recordingmodel.moc>
-

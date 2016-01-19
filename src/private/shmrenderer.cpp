@@ -193,7 +193,7 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
    auto currentTime = std::chrono::system_clock::now();
    const std::chrono::duration<double> seconds = currentTime - m_lastFrameDebug;
    if (seconds.count() >= FPS_RATE_SEC) {
-      m_Fps = m_fpsC / seconds.count();
+      m_Fps = (int)(m_fpsC / seconds.count());
       m_fpsC = 0;
       m_lastFrameDebug = currentTime;
 #ifdef DEBUG_FPS

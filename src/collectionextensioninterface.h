@@ -53,7 +53,7 @@ Q_SIGNALS:
 #define DECLARE_COLLECTION_EXTENSION_M1(x, y) x ## y
 #define DECLARE_COLLECTION_EXTENSION_M2(x, y) DECLARE_COLLECTION_EXTENSION_M1(x, y)
 
-#define DECLARE_COLLECTION_EXTENSION(T) \
+#define DECLARE_COLLECTION_EXTENSION(T) __attribute__ ((unused)) \
 static auto DECLARE_COLLECTION_EXTENSION_M2(val,__COUNTER__) = []{\
    CollectionExtensionModel::registerExtension<T>();\
    return 0;\

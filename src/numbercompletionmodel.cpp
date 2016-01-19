@@ -444,7 +444,7 @@ void NumberCompletionModelPrivate::getRange(QMap<QString,NumberWrapper*> map, co
 
       endOk = (iEnd.key().left(prefixLen) == pref);
 
-      size = ::ceil((static_cast<float>(size))/2.0f);
+      size = (int)::ceil((static_cast<float>(size))/2.0f);
    }
 
    while (iBeg.key().left(prefixLen) != pref && iBeg != map.end() && iBeg != iEnd)

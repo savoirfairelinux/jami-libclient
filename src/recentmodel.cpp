@@ -730,6 +730,7 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
 {
     Q_UNUSED(np)
+    Q_UNUSED(op)
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
     if (auto n = m_hCMsToNodes.take(cm)) {
@@ -1053,6 +1054,8 @@ void RecentModelPrivate::slotConferenceChanged(Call* conf)
 void
 RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+    Q_UNUSED(previous)
+
     auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
     if (callIdx.isValid()) {
         /* in the case of a conference, we select the call;

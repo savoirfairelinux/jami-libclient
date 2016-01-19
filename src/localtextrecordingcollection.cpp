@@ -221,9 +221,20 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
    return true;
 }
 
+QList<CollectionInterface::Element> LocalTextRecordingCollection::listId() const
+{
+   return {};
+}
+
 bool LocalTextRecordingCollection::fetch(const Element& e)
 {
    Q_UNUSED(e);
+   return false;
+}
+
+bool LocalTextRecordingCollection::fetch( const QList<CollectionInterface::Element>& elements)
+{
+   Q_UNUSED(elements)
    return false;
 }
 
