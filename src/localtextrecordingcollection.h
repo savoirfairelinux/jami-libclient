@@ -43,7 +43,9 @@ public:
    virtual bool       isEnabled() const override;
    virtual QByteArray id       () const override;
    virtual bool fetch(const Element& e) override;
+   virtual bool fetch(const QList<CollectionInterface::Element>& elements) override;
    virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
+   virtual QList<Element> listId() const override;
 
    Media::TextRecording* fetchFor (const ContactMethod* cm);
    Media::TextRecording* createFor(const ContactMethod* cm);
