@@ -33,6 +33,7 @@
 #include "private/person_p.h"
 #include "private/contactmethod_p.h"
 #include "call.h"
+#include "availableaccountmodel.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
 #include "private/numbercategorymodel_p.h"
@@ -806,8 +807,14 @@ void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
 
 bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads)
 {
-   if (!account())
-      return false;
+    if (!account()) {
+        qDebug() << "Account is not set, taking the first registered.";
+        setAccount(AvailableAccountModel::currentDefaultAccount(this));
+        if (!account()) {
+            qDebug() << "No account registered for this contactmethod!";
+            return false;
+        }
+    }
    auto txtRecording = textRecording();
    txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
    ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),payloads);
