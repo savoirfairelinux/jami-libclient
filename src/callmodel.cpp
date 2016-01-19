@@ -557,6 +557,8 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
 
 Call* CallModelPrivate::addExistingCall(const QString& callId, const QString& state)
 {
+    Q_UNUSED(state)
+
     qDebug() << "New foreign call:" << callId;
     auto call = CallPrivate::buildExistingCall(callId);
 

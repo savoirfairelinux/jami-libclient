@@ -64,6 +64,7 @@ public:
    virtual bool           isEnabled() const override;
    virtual QByteArray     id       () const override;
    virtual QList<Element> listId   () const override;
+   virtual bool           listId   (std::function<void(const QList<Element>)> callback) const override;
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
    //Getter
