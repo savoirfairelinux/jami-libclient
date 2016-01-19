@@ -73,6 +73,7 @@ public:
    //Getter
    bool isAlwaysRecording() const;
    QUrl recordPath       () const;
+   int  unreadCount      () const;
 
    //Setter
    void setAlwaysRecording( bool        record );
@@ -86,6 +87,7 @@ public:
 
 Q_SIGNALS:
    void newTextMessage(TextRecording* t, ContactMethod* cm);
+   void unreadMessagesCountChanged(int unreadCount);
 
 private:
    RecordingModelPrivate* d_ptr;
@@ -98,4 +100,3 @@ private:
 };
 
 }
-
