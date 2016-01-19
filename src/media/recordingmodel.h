@@ -26,13 +26,13 @@
 #include "collectioninterface.h"
 #include "typedefs.h"
 #include "contactmethod.h"
+#include "textrecording.h"
 
 class RecordingModelPrivate;
 class ContactMethod;
 
 namespace Media {
    class Recording;
-   class TextRecording;
    class AVRecording;
 
 /**
@@ -85,7 +85,7 @@ public:
    static RecordingModel& instance();
 
 Q_SIGNALS:
-   void newTextMessage(TextRecording* t, ContactMethod* cm);
+   void newTextMessage(::Media::TextRecording* t, ContactMethod* cm);
 
 private:
    RecordingModelPrivate* d_ptr;
@@ -98,4 +98,3 @@ private:
 };
 
 }
-
