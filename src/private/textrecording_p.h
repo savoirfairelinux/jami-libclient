@@ -157,6 +157,7 @@ public:
    Serializable::Group*        m_pCurrentGroup      ;
    QList<Serializable::Peers*> m_lAssociatedPeers   ;
    QHash<QString,bool>         m_hMimeTypes         ;
+   int                         m_UnreadCount        ;
    QStringList                 m_lMimeTypes         ;
    QAbstractItemModel*         m_pTextMessagesModel {nullptr};
    QAbstractItemModel*         m_pUnreadTextMessagesModel {nullptr};
