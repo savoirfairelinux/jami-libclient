@@ -147,7 +147,7 @@ Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json
    return p;
 }
 
-Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr)
+Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr),m_UnreadCount(0)
 {
 
 }
@@ -198,6 +198,9 @@ void Media::TextRecording::setAllRead()
     if (changed) {
         // TODO: we assume that the CM is the same for now, and that at least some of the messages
         //       are text
+        int oldVal = d_ptr->m_UnreadCount;
+        d_ptr->m_UnreadCount = 0;
+        emit unreadCountChange(-oldVal);
         emit d_ptr->m_lNodes[0]->m_pContactMethod->unreadTextMessageCountChanged();
         emit d_ptr->m_lNodes[0]->m_pContactMethod->changed();
         save();
@@ -415,6 +418,8 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    cm->setLastUsed(currentTime);
    emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
    if (!m->isRead) {
+      m_UnreadCount += 1;
+      emit q_ptr->unreadCountChange(1);
       emit cm->unreadTextMessageCountChanged();
       emit cm->changed();
    }
@@ -705,6 +710,9 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
             if (n->m_pMessage->isRead != value.toBool()) {
                 n->m_pMessage->isRead = value.toBool();
                 if (n->m_pMessage->m_HasText) {
+                    int val = value.toBool() ? -1 : +1;
+                    m_pRecording->d_ptr->m_UnreadCount += val;
+                    emit m_pRecording->unreadCountChange(val);
                     emit n->m_pContactMethod->unreadTextMessageCountChanged();
                     emit n->m_pContactMethod->changed();
                 }

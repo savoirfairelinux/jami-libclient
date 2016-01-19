@@ -63,9 +63,12 @@ public:
    RecordingNode*                 m_pText                   ;
    RecordingNode*                 m_pAudioVideo             ;
    LocalTextRecordingCollection*  m_pTextRecordingCollection;
+   int                            m_UnreadCount             ;
+
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
 
    void forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
+   void updateUnreadCount(const int count);
 
 private:
    Media::RecordingModel* q_ptr;
@@ -85,7 +88,18 @@ m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 
 void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
 {
+   Q_UNUSED(message);
+   Q_UNUSED(direction);
    emit q_ptr->newTextMessage(static_cast<Media::TextRecording*>(sender()), cm);
+}
+
+void RecordingModelPrivate::updateUnreadCount(const int count)
+{
+    m_UnreadCount += count;
+    if (m_UnreadCount <= 0) {
+        m_UnreadCount = 0;
+    }
+    emit q_ptr->unreadMessagesCountChanged(m_UnreadCount);
 }
 
 Media::RecordingModel::~RecordingModel()
@@ -262,6 +276,7 @@ bool Media::RecordingModel::addItemCallback(const Recording* item)
       if (item->type() == Recording::Type::TEXT) {
          const TextRecording* r = static_cast<const TextRecording*>(item);
          connect(r, &TextRecording::messageInserted, d_ptr, &RecordingModelPrivate::forwardInsertion);
+         connect(r, &TextRecording::unreadCountChange, d_ptr, &RecordingModelPrivate::updateUnreadCount);
       }
 
       return true;
@@ -319,6 +334,11 @@ void Media::RecordingModel::setAlwaysRecording(bool record)
    configurationManager.setIsAlwaysRecording   ( record );
 }
 
+int  Media::RecordingModel::unreadCount() const
+{
+    return d_ptr->m_UnreadCount;
+}
+
 ///Create or load the recording associated with the ContactMethod cm
 Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
 {
@@ -328,4 +348,3 @@ Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMe
 }
 
 #include <recordingmodel.moc>
-

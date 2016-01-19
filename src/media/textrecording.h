@@ -79,6 +79,7 @@ public:
 
 Q_SIGNALS:
    void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
+   void unreadCountChange(int count);
 
 private:
    TextRecordingPrivate* d_ptr;
