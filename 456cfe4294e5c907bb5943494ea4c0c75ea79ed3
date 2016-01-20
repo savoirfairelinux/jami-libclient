@@ -34,6 +34,24 @@
       "revId": "456cfe4294e5c907bb5943494ea4c0c75ea79ed3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa0d159_9031e4a4",
+        "filename": "src/video/renderer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-01-20T16:58:38Z",
+      "side": 1,
+      "message": "finally I cannot put Frame into Renderer due to Renderer class is forwarded in videorenderer_p.h header. I can\u0027t forward Renderer::Frame.\nSo I proposed a new patchset with Video::Frame class",
+      "parentUuid": "3aa0d159_f0f868c6",
+      "revId": "456cfe4294e5c907bb5943494ea4c0c75ea79ed3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
