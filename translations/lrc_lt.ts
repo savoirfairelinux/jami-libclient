@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Naujas profilis</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>Viešo rakto id</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
@@ -933,7 +933,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation type="unfinished"/>
+        <translation>Kitas laukiamas atnaujinimas</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
@@ -1261,7 +1261,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="506"/>
         <source>Copy contact</source>
-        <translation>Kopijuoti adresatą</translation>
+        <translation>Kopijuoti kontaktą</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="508"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Šalinti iš istorijos</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>

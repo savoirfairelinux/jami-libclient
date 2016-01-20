@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Новый профиль</translation>
     </message>
 </context>
 <context>
@@ -1162,7 +1162,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Не было предоставлено сертификата. Пока что это не поддерживается Ring.</translation>
+        <translation>Сертификат не был предоставлен. Пока что это не поддерживается Ring.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Удалить из журнала</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>

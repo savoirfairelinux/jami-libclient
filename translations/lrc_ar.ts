@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>لمحة جديدة</translation>
     </message>
 </context>
 <context>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>إحذف من التاريخ</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
