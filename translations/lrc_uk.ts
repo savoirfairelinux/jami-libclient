@@ -44,32 +44,32 @@
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка конфігурації STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Stun server invalid</source>
-        <translation type="unfinished"/>
+        <translation>Недійсний STUN сервер</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Сервіс недоступний</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation type="unfinished"/>
+        <translation>Неприємлимо</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation type="unfinished"/>
+        <translation>Неправильний</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Очікування після запросу</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Конфігурація</translation>
     </message>
 </context>
 <context>
@@ -103,22 +103,22 @@
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation type="unfinished"/>
+        <translation>Здійснення звінка (вхідні)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation type="unfinished"/>
+        <translation>Здійснення звінка (вихідні)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Розмовляння</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
-        <translation type="unfinished"/>
+        <translation>Набір</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="676"/>
@@ -138,12 +138,12 @@
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
-        <translation type="unfinished"/>
+        <translation>Переадресація</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation type="unfinished"/>
+        <translation>Утримання переадресації</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
-        <translation type="unfinished"/>
+        <translation>Конференція (утримування)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="694"/>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>Неправильний обліковий запис</translation>
     </message>
 </context>
 <context>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>Відсутні зареєстровані облікові записи</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation type="unfinished"/>
+        <translation>Найбільш популярне</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
@@ -342,7 +342,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Тривалість</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
@@ -466,7 +466,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>Макрос</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
@@ -594,7 +594,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Кількість триместрів (3 місяці)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -609,7 +609,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>Кількість контактів</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Індекс популярності</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>Ідентифікатор користувача UID</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Кастомізація</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -686,7 +686,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>Недоступно</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Новий профіль</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Has strong signing</source>
-        <translation type="unfinished"/>
+        <translation>Має сильний підпис</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
@@ -768,52 +768,52 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>Має співпадаючу ключову пару</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні дозволи до приватного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні дозволи до публічного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні дозволи до директорії з приватним ключом</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні дозволи до директорії з публічним ключом</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Має правильний шлях до директорії з приватним ключом</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Має правильний шлях до директорії з публічним ключом</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні атрибути SELinux для приватного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Має правильні атрибути SELinux для публічного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>Файл сертифікату присутній і читаємий</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
@@ -823,12 +823,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат має правильну авторизацію</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат має відому авторизацію</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
@@ -838,7 +838,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>Авторизація сертифікату співпадає</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
@@ -853,7 +853,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Дата завершення</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
@@ -893,7 +893,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Спільне ім’я (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
@@ -923,7 +923,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>Ідентифікатор публічного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
@@ -938,7 +938,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Вихідний сервер</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
@@ -993,12 +993,12 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
         <source>%1 %2 list</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 список</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Місце зберігання сертифікатів демона</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1008,7 +1008,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
-        <translation type="unfinished"/>
+        <translation>дозволено</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
@@ -1046,7 +1046,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Локальна історія</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
@@ -1056,33 +1056,33 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>Локальні макроси</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>Макрос</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation type="unfinished"/>
+        <translation>Локальні записи</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
-        <translation type="unfinished"/>
+        <translation>Записування</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>Локальні рингтони</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Рингтон</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
@@ -1183,7 +1183,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Тримачі контакту</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="492"/>
@@ -1221,7 +1221,7 @@
         <location filename="../src/useractionmodel.cpp" line="498"/>
         <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Hangup</source>
-        <translation type="unfinished"/>
+        <translation>Відновлення виклику</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
@@ -1236,7 +1236,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation type="unfinished"/>
+        <translation>Ввімкнути відео</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Видалити з журналу</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
@@ -1296,7 +1296,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Зняти з утримування</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="747"/>

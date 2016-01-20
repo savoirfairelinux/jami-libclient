@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Nouveau profile</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation>Stockage démon des certificats</translation>
+        <translation>Stockage interne des certificats</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1152,12 +1152,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Aucun de vos certificats ne contient de clés privées, ce qui est requis. Merci de sélectionner une clé privée ou d&apos;utiliser un certificat avec une clé privée interne</translation>
+        <translation>Aucun de vos certificats ne contient de clés privées, ce qui est requis. Merci de sélectionner une clé privée ou d&apos;utiliser un certificat possédant une clé privée</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Aucune autorité de certification n&apos;est indiquée, ce qui rend impossible de  valider les réponses des certificats. Certains comptes peuvent même dysfonctionner.</translation>
+        <translation>Aucune autorité de certification n&apos;est indiquée, ce qui rend impossible de  valider les réponses des certificats. Certains comptes peuvent dysfonctionner.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer de l&apos;historique</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
