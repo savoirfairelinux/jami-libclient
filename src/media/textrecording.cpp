@@ -639,7 +639,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                auto cm = m_pRecording->call()->account()->contactMethod();
                return GlobalInstances::pixmapManipulator().decorationRole(cm);
             } else if (n->m_pMessage->direction == Media::Media::Direction::OUT){
-                return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod->account()->contactMethod());
+                return GlobalInstances::pixmapManipulator().decorationRole((ContactMethod*)nullptr);
             }
             break;
          case (int)Media::TextRecording::Role::Direction            :
