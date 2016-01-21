@@ -638,7 +638,12 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
               && m_pRecording->call()->account()->contactMethod()->contact()) {
                auto cm = m_pRecording->call()->account()->contactMethod();
                return GlobalInstances::pixmapManipulator().decorationRole(cm);
-            } else if (n->m_pMessage->direction == Media::Media::Direction::OUT){
+            } else if (n->m_pMessage->direction == Media::Media::Direction::OUT && n->m_pContactMethod->account()){
+                return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod->account()->contactMethod());
+            } else {
+                /* It's most likely an account that doesn't exist anymore
+                 * Use a fallback image in pixmapManipulator
+                */
                 return GlobalInstances::pixmapManipulator().decorationRole((ContactMethod*)nullptr);
             }
             break;
