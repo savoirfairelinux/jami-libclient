@@ -343,7 +343,7 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
             //Link with accounts
             if(k == VCardUtils::Property::X_RINGACCOUNT) {
                   if (accounts) {
-                  Account* a = AccountModel::instance().getById(v.trimmed(),true);
+                  Account* a = AccountModel::instance().getById(v.trimmed());
                   if(!a) {
                      qDebug() << "Could not find account: " << v.trimmed();
                      continue;

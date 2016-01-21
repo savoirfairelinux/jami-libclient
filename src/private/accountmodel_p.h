@@ -61,9 +61,6 @@ public:
    QList<Account*>                   m_lRingAccounts      ;
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
 
-   //Future account cache
-   static QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
-
 public Q_SLOTS:
    void slotDaemonAccountChanged(const QString& account, const QString&  registration_state, unsigned code, const QString& status);
    void slotAccountChanged(Account* a);

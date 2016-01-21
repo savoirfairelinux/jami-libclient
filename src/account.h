@@ -46,7 +46,6 @@ class PendingTrustRequestModel;
 
 //Private
 class AccountPrivate;
-class AccountPlaceHolderPrivate;
 
 
 ///@enum DtmfType Different method to send the DTMF (key sound) to the peer
@@ -552,17 +551,3 @@ Q_DECLARE_METATYPE(Account::Protocol)
 Q_DECLARE_METATYPE(DtmfType)
 
 Account* operator<<(Account* a, Account::EditAction action);
-
-/**
- * Some accounts can be loaded at later time. This object will be upgraded
- * to an account when it arrive
- */
-class LIB_EXPORT AccountPlaceHolder : public Account {
-   Q_OBJECT
-   friend class AccountModel;
-private:
-   explicit AccountPlaceHolder(const QByteArray& uid);
-
-   AccountPlaceHolderPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(AccountPlaceHolder)
-};

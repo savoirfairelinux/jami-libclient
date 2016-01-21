@@ -65,7 +65,7 @@ public:
    static AccountModel& instance();
 
    //Getters
-   Q_INVOKABLE Account* getById                     ( const QByteArray& id, bool ph = false) const;
+   Q_INVOKABLE Account* getById                     (const QByteArray& id) const;
    int                  size                        (                                      ) const;
    Account*             getAccountByModelIndex      ( const QModelIndex& item              ) const;
    static QString       getSimilarAliasIndex        ( const QString& alias                 )      ;

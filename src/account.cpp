@@ -129,11 +129,6 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 
    a->performAction(Account::EditAction::RELOAD);
 
-   //If a placeholder exist for this account, upgrade it
-   if (AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]) {
-      AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
-   }
-
    //Load the pending trust requests
    if (a->protocol() == Account::Protocol::RING) {
       const QMap<QString,QString> requests = ConfigurationManager::instance().getTrustRequests(a->id());
@@ -2526,13 +2521,6 @@ bool Account::operator==(const Account& a)const
  *                                                                           *
  ****************************************************************************/
 
-///Constructor
-AccountPlaceHolder::AccountPlaceHolder(const QByteArray& uid) : Account(),
-d_ptr(nullptr)
-{
-   Account::d_ptr->m_AccountId = uid  ;
-   Account::d_ptr->m_isLoaded  = false;
-}
 
 ///Merge an existing account into this temporary one
 bool AccountPrivate::merge(Account* account)

@@ -47,8 +47,6 @@
 #include "codecmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
 
-QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
-
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
 m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
 m_lSupportedProtocols {{
@@ -688,7 +686,7 @@ void AccountModelPrivate::slotMediaParametersChanged(const QString& accountId)
  * @param usePlaceHolder Return a placeholder for a future account instead of nullptr
  * @return an account if it exist, a placeholder if usePlaceHolder==true or nullptr
  */
-Account* AccountModel::getById(const QByteArray& id, bool usePlaceHolder) const
+Account* AccountModel::getById(const QByteArray& id) const
 {
    if (id.isEmpty())
        return nullptr;
@@ -700,15 +698,6 @@ Account* AccountModel::getById(const QByteArray& id, bool usePlaceHolder) const
    }
 
    //The account doesn't exist (yet)
-   if (usePlaceHolder) {
-      AccountPlaceHolder* ph =  d_ptr->m_hsPlaceHolder[id];
-      if (!ph) {
-         ph = new AccountPlaceHolder(id);
-         d_ptr->m_hsPlaceHolder[id] = ph;
-      }
-      return ph;
-   }
-
    return nullptr;
 }
 
