@@ -1090,8 +1090,10 @@ PeopleProxy::PeopleProxy(RecentModel* sourceModel)
     // forward the rowsAboutToBeMoved and rowsMoved signals from the source model
     // this is needed for the OSX and GNOME clients because they do not handle the layoutChanged
     // signal which is emited by the QSortFilterProxyModel when rows are moved in the source model
+#ifndef Q_OS_WIN
     connect(sourceModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &PeopleProxy::slotRowsAboutToBeMoved);
     connect(sourceModel, &QAbstractItemModel::rowsMoved, this, &PeopleProxy::slotRowsMoved);
+#endif
 }
 
 bool
