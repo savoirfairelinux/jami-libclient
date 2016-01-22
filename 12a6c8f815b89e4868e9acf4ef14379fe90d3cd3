@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_7fc40b92",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-01-22T19:28:50Z",
+      "side": 1,
+      "message": "you probably don\u0027t want to connect to this one either then...\n\nalso, maybe another solution is to somehow disconnect from the layoutChanged signal instead, if possible?",
+      "range": {
+        "startLine": 1093,
+        "startChar": 0,
+        "endLine": 1093,
+        "endChar": 110
+      },
+      "revId": "12a6c8f815b89e4868e9acf4ef14379fe90d3cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
