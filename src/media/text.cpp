@@ -293,7 +293,7 @@ void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
    recording();
 
    d_ptr->m_pRecording->setCall(call());
-   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->account()->contactMethod(),Media::Direction::OUT);
+   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->peerContactMethod(),Media::Direction::OUT);
 
    d_ptr->updateMimeList(message);
 
