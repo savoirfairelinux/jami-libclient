@@ -22,6 +22,30 @@
       "revId": "12a6c8f815b89e4868e9acf4ef14379fe90d3cd3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_7f4bab2b",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-01-22T19:44:32Z",
+      "side": 1,
+      "message": "Done, i would prefer not to mess with something in how Qt handle thing :(",
+      "parentUuid": "1a9dcd25_7fc40b92",
+      "range": {
+        "startLine": 1093,
+        "startChar": 0,
+        "endLine": 1093,
+        "endChar": 110
+      },
+      "revId": "12a6c8f815b89e4868e9acf4ef14379fe90d3cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
