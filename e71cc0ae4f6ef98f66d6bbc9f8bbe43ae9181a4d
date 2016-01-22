@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_bf5a9381",
+        "filename": "src/call.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-01-22T22:51:01Z",
+      "side": 1,
+      "message": "maybe this should take the call details as an argument instead of calling getCallDetailsCommon(), since getCallDetailsCommon is usually called before this function anyways... this would avoid unnecessary dbus calls for info we already have...",
+      "range": {
+        "startLine": 392,
+        "startChar": 18,
+        "endLine": 392,
+        "endChar": 38
+      },
+      "revId": "e71cc0ae4f6ef98f66d6bbc9f8bbe43ae9181a4d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
