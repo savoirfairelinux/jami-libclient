@@ -807,17 +807,15 @@ void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
 
 bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads)
 {
-    if (!account()) {
-        qDebug() << "Account is not set, taking the first registered.";
-        setAccount(AvailableAccountModel::currentDefaultAccount(this));
-        if (!account()) {
-            qDebug() << "No account registered for this contactmethod!";
-            return false;
-        }
+    auto selectedAccount = account() ? account() : AvailableAccountModel::currentDefaultAccount(this);
+
+    if (!selectedAccount) {
+        qDebug() << "No account available for this contactmethod!";
+        return false;
     }
    auto txtRecording = textRecording();
    txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
-   ConfigurationManager::instance().sendTextMessage(account()->id(),uri(),payloads);
+   ConfigurationManager::instance().sendTextMessage(selectedAccount->id(),uri(),payloads);
    return true;
 }
 
