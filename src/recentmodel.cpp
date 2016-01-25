@@ -661,7 +661,6 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
       q_ptr->endMoveRows();
    else
       q_ptr->endInsertRows();
-   q_ptr->selectionModel()->select(q_ptr->index(n->m_Index, 0), QItemSelectionModel::ClearAndSelect);
 
 #if 0
     //Uncomment if there is issues
