@@ -25,6 +25,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QUrl>
+#include <QtCore/QDateTime>
 
 //Ring
 #include "call.h"
@@ -207,6 +208,13 @@ bool LocalHistoryCollection::isEnabled() const
    return true;
 }
 
+int daysSince(time_t past)
+{
+    QDateTime current = QDateTime::currentDateTime();
+    QDateTime history = QDateTime::fromTime_t(past);
+    return history.daysTo(current);
+}
+
 bool LocalHistoryCollection::load()
 {
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
@@ -218,14 +226,17 @@ bool LocalHistoryCollection::load()
          lines << file.readLine().trimmed();
       file.close();
 
+      int dayLimit = CategorizedHistoryModel::instance().historyLimit();
       for (const QString& line : lines) {
          //The item is complete
          if ((line.isEmpty() || !line.size()) && hc.size()) {
             Call* pastCall = Call::buildHistoryCall(hc);
 
-            pastCall->setCollection(this);
+            if (daysSince(pastCall->startTimeStamp()) < dayLimit) {
+               pastCall->setCollection(this);
+               editor<Call>()->addExisting(pastCall);
+            }
 
-            editor<Call>()->addExisting(pastCall);
             hc.clear();
          }
          // Add to the current set
