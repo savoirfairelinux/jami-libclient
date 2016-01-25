@@ -20,22 +20,13 @@
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
-#include "callmodel.h"
+#include <media_const.h>
 
 namespace Video {
 class SourceModelPrivate
 {
 public:
    SourceModelPrivate();
-
-   //Constants
-   class ProtocolPrefix {
-   public:
-      constexpr static const char* NONE    = ""          ;
-      constexpr static const char* DISPLAY = "display://";
-      constexpr static const char* FILE    = "file://"   ;
-      constexpr static const char* CAMERA  = "camera://"   ;
-   };
 
    struct Display {
       Display() : rect(0,0,0,0),index(0){}
@@ -137,26 +128,36 @@ void Video::SourceModel::switchTo(const QModelIndex& idx)
 ///This model is designed for "live" switching rather than configuration
 void Video::SourceModel::switchTo(const int idx)
 {
-   switch (idx) {
+   auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
+   QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+   switch (newIdx) {
       case ExtendedDeviceList::NONE:
-         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
+         VideoManager::instance().switchInput(DRing::Media::VideoProtocolPrefix::NONE);
          break;
       case ExtendedDeviceList::SCREEN:
-         VideoManager::instance().switchInput( QString(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1+%2,%3 %4x%5")
-            .arg(d_ptr->m_Display.index)
-            .arg(d_ptr->m_Display.rect.x())
-            .arg(d_ptr->m_Display.rect.y())
-            .arg(d_ptr->m_Display.rect.width())
-            .arg(d_ptr->m_Display.rect.height()));
+         VideoManager::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
+                  .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+                  .arg(sep)
+                  .arg(d_ptr->m_Display.index)
+                  .arg(d_ptr->m_Display.rect.x())
+                  .arg(d_ptr->m_Display.rect.y())
+                  .arg(d_ptr->m_Display.rect.width())
+                  .arg(d_ptr->m_Display.rect.height()));
          break;
       case ExtendedDeviceList::FILE:
          VideoManager::instance().switchInput(
-            !d_ptr->m_CurrentFile.isEmpty()?+Video::SourceModelPrivate::ProtocolPrefix::FILE+d_ptr->m_CurrentFile.toLocalFile():Video::SourceModelPrivate::ProtocolPrefix::NONE
+            !d_ptr->m_CurrentFile.isEmpty() ? QString("%1%2%3")
+               .arg(DRing::Media::VideoProtocolPrefix::FILE)
+               .arg(sep)
+               .arg(d_ptr->m_CurrentFile.toLocalFile())
+            : DRing::Media::VideoProtocolPrefix::NONE
          );
          break;
       default:
-         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
-            Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
+         VideoManager::instance().switchInput(QString("%1%2%3")
+            .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+            .arg(sep)
+            .arg(Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString()));
          break;
    };
 }
@@ -169,15 +170,19 @@ void Video::SourceModel::setUsedIndex(QString &deviceStr)
     if (deviceStr.length() <= 0) {
         idx = ExtendedDeviceList::NONE;
     }
-    else if (deviceStr.indexOf(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY) == 0) {
-        // Look for the display string into the incomming device string
+    else if (deviceStr.indexOf(DRing::Media::VideoProtocolPrefix::DISPLAY) == 0) {
+        // Look for the display string into the incoming device string
         idx = ExtendedDeviceList::SCREEN;
     }
-    else if (deviceStr.indexOf(Video::SourceModelPrivate::ProtocolPrefix::FILE) == 0) {
+    else if (deviceStr.indexOf(DRing::Media::VideoProtocolPrefix::FILE) == 0) {
         idx = ExtendedDeviceList::FILE;
     }
-    else if (deviceStr.indexOf(Video::SourceModelPrivate::ProtocolPrefix::CAMERA) == 0) {
-        Video::Device* dev = Video::DeviceModel::instance().getDevice(deviceStr.replace(Video::SourceModelPrivate::ProtocolPrefix::CAMERA,""));
+    else if (deviceStr.indexOf(DRing::Media::VideoProtocolPrefix::CAMERA) == 0) {
+        QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+        auto fullPrefix = QString("%1%2")
+           .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+           .arg(DRing::Media::VideoProtocolPrefix::SEPARATOR);
+        Video::Device* dev = Video::DeviceModel::instance().getDevice(deviceStr.replace(fullPrefix,""));
         if (dev == nullptr) {
             // Device not found we dont know what camera is used
             idx = ExtendedDeviceList::NONE;
