@@ -20,21 +20,13 @@
 #include <QtCore/QCoreApplication>
 #include "../dbus/videomanager.h"
 #include "devicemodel.h"
+#include <media_const.h>
 
 namespace Video {
 class SourceModelPrivate
 {
 public:
    SourceModelPrivate();
-
-   //Constants
-   class ProtocolPrefix {
-   public:
-      constexpr static const char* NONE    = ""          ;
-      constexpr static const char* DISPLAY = "display://";
-      constexpr static const char* FILE    = "file://"   ;
-      constexpr static const char* CAMERA  = "camera://"   ;
-   };
 
    struct Display {
       Display() : rect(0,0,0,0),index(0){}
@@ -144,12 +136,13 @@ void Video::SourceModel::switchTo(const QModelIndex& idx)
 void Video::SourceModel::switchTo(const int idx)
 {
    auto newIdx = idx > -1 ? idx : ExtendedDeviceList::NONE;
+   QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
    switch (newIdx) {
       case ExtendedDeviceList::NONE:
-         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::NONE);
+         VideoManager::instance().switchInput(DRing::Media::VideoProtocolPrefix::NONE);
          break;
       case ExtendedDeviceList::SCREEN:
-         VideoManager::instance().switchInput( QString(Video::SourceModelPrivate::ProtocolPrefix::DISPLAY)+QString(":%1+%2,%3 %4x%5")
+         VideoManager::instance().switchInput(QString(DRing::Media::VideoProtocolPrefix::DISPLAY) + sep + QString(":%1+%2,%3 %4x%5")
             .arg(d_ptr->m_Display.index)
             .arg(d_ptr->m_Display.rect.x())
             .arg(d_ptr->m_Display.rect.y())
@@ -158,11 +151,12 @@ void Video::SourceModel::switchTo(const int idx)
          break;
       case ExtendedDeviceList::FILE:
          VideoManager::instance().switchInput(
-            !d_ptr->m_CurrentFile.isEmpty()?+Video::SourceModelPrivate::ProtocolPrefix::FILE+d_ptr->m_CurrentFile.toLocalFile():Video::SourceModelPrivate::ProtocolPrefix::NONE
+            !d_ptr->m_CurrentFile.isEmpty() ? + DRing::Media::VideoProtocolPrefix::FILE + sep + d_ptr->m_CurrentFile.toLocalFile()
+                                            : DRing::Media::VideoProtocolPrefix::NONE
          );
          break;
       default:
-         VideoManager::instance().switchInput(Video::SourceModelPrivate::ProtocolPrefix::CAMERA +
+         VideoManager::instance().switchInput(DRing::Media::VideoProtocolPrefix::CAMERA + sep +
             Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString());
          Video::DeviceModel::instance().setActive(idx-ExtendedDeviceList::COUNT__);
          newIdx = -1;
