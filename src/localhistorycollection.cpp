@@ -25,6 +25,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QUrl>
+#include <QtCore/QDateTime>
 
 //Ring
 #include "call.h"
@@ -218,14 +219,19 @@ bool LocalHistoryCollection::load()
          lines << file.readLine().trimmed();
       file.close();
 
+      int dayLimit = CategorizedHistoryModel::instance().historyLimit() * 24 * 3600;
+      time_t now = time(0); // get time now
+
       for (const QString& line : lines) {
          //The item is complete
          if ((line.isEmpty() || !line.size()) && hc.size()) {
             Call* pastCall = Call::buildHistoryCall(hc);
 
-            pastCall->setCollection(this);
+            if ((now - pastCall->startTimeStamp()) < dayLimit) {
+               pastCall->setCollection(this);
+               editor<Call>()->addExisting(pastCall);
+            }
 
-            editor<Call>()->addExisting(pastCall);
             hc.clear();
          }
          // Add to the current set
