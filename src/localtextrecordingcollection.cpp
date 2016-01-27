@@ -173,6 +173,56 @@ bool LocalTextRecordingCollection::load()
 {
    //This collection is special as it use the history collection
    //as its source, there is no loading
+
+    // load stuff
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/");
+    if (dir.exists()) {
+        QStringList filters;
+        filters << "*.json";
+
+        auto list = dir.entryInfoList(filters, QDir::Files | QDir::NoSymLinks | QDir::Readable);
+        for (int i = 0; i < list.size(); ++i) {
+           QFileInfo fileInfo = list.at(i);
+           qDebug() << "got text recording file" << fileInfo.fileName();
+
+           // load using the base name (no .json extension)
+           QString content;
+
+           QFile file(fileInfo.absoluteFilePath());
+
+           if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+              content = QString::fromUtf8(file.readAll());
+          } else {
+              qWarning() << "could not open file";
+          }
+
+           if (!content.isEmpty()) {
+               QJsonParseError err;
+               QJsonDocument loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err);
+
+               if (err.error == QJsonParseError::ParseError::NoError) {
+                   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()});
+
+                   editor<Media::Recording>()->addExisting(r);
+                   r->setCollection(this);
+
+                   // get CMs from recording
+                   for (ContactMethod *cm : r->peers()) {
+                       if (!cm->d_ptr->m_pTextRecording) {
+                           cm->d_ptr->setTextRecording(r);
+                       } else {
+                           qWarning() << "CM already has text recording" << cm;
+                       }
+                   }
+
+               } else {
+                   qWarning() << "Error Decoding Text Message History Json" << err.errorString();
+               }
+           } else {
+               qWarning() << "text recording file is empty";
+           }
+        }
+    }
    return true;
 }
 
@@ -264,6 +314,7 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
 
 Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
 {
+    qDebug() << "TR createFor" << cm->uri();
    Media::TextRecording* r = fetchFor(cm);
 
    if (!r) {
