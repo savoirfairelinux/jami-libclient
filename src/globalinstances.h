@@ -43,30 +43,30 @@ class ActionExtenderI;
  */
 namespace GlobalInstances {
 
-Interfaces::AccountListColorizerI& accountListColorizer();
+LIB_EXPORT Interfaces::AccountListColorizerI& accountListColorizer();
 void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-Interfaces::ContactMethodSelectorI& contactMethodSelector();
+LIB_EXPORT Interfaces::ContactMethodSelectorI& contactMethodSelector();
 void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
-Interfaces::DBusErrorHandlerI& dBusErrorHandler();
+LIB_EXPORT Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
+LIB_EXPORT Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
 void LIB_EXPORT setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
 
-Interfaces::PixmapManipulatorI& pixmapManipulator();
+LIB_EXPORT Interfaces::PixmapManipulatorI& pixmapManipulator();
 void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
 
-Interfaces::PresenceSerializerI& presenceSerializer();
+LIB_EXPORT Interfaces::PresenceSerializerI& presenceSerializer();
 void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
 
 /**
@@ -74,13 +74,13 @@ void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerial
  * experimental state, so this getter will throw an exception unless an instance is set by the
  * client
  */
-Interfaces::ProfilePersisterI& profilePersister();
+LIB_EXPORT Interfaces::ProfilePersisterI& profilePersister();
 void LIB_EXPORT setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance);
 
-Interfaces::ShortcutCreatorI& shortcutCreator();
+LIB_EXPORT Interfaces::ShortcutCreatorI& shortcutCreator();
 void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
-Interfaces::ActionExtenderI& actionExtender();
+LIB_EXPORT Interfaces::ActionExtenderI& actionExtender();
 void LIB_EXPORT setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
 
 
