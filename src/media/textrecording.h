@@ -19,6 +19,7 @@
 
 #include <media/recording.h>
 #include <media/media.h>
+#include <itemdataroles.h>
 
 //Qt
 class QJsonObject;
@@ -49,16 +50,16 @@ class LIB_EXPORT TextRecording : public Recording
 public:
 
    enum class Role {
-      Direction            = Qt::UserRole +1,
-      AuthorDisplayname                     ,
-      AuthorUri                             ,
-      AuthorPresenceStatus                  ,
-      Timestamp                             ,
-      IsRead                                ,
-      FormattedDate                         ,
-      IsStatus                              ,
-      HTML                                  ,
-      HasText                               ,
+      Direction            = static_cast<int>(Ring::Role::UserRole) + 1,
+      AuthorDisplayname    ,
+      AuthorUri            ,
+      AuthorPresenceStatus ,
+      Timestamp            ,
+      IsRead               ,
+      FormattedDate        ,
+      IsStatus             ,
+      HTML                 ,
+      HasText              ,
    };
 
    //Constructor

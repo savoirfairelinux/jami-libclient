@@ -35,6 +35,7 @@
 #include <private/textrecording_p.h>
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
+#include <itemdataroles.h>
 
 //Std
 #include <ctime>
@@ -650,15 +651,13 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
          case (int)Media::TextRecording::Role::Direction            :
             return QVariant::fromValue(n->m_pMessage->direction);
          case (int)Media::TextRecording::Role::AuthorDisplayname    :
+         case (int)Ring::Role::Name                                 :
             if (n->m_pMessage->direction == Media::Media::Direction::IN)
-               return n->m_pContactMethod->primaryName();
-            else if (m_pRecording->call() && m_pRecording->call()->account()
-              && m_pRecording->call()->account()->contactMethod()->contact()) {
-               return m_pRecording->call()->account()->contactMethod()->primaryName();
-            }
+               return n->m_pContactMethod->roleData(static_cast<int>(Ring::Role::Name));
             else
                return tr("Me");
          case (int)Media::TextRecording::Role::AuthorUri            :
+         case (int)Ring::Role::Number                               :
             return n->m_pContactMethod->uri();
          case (int)Media::TextRecording::Role::AuthorPresenceStatus :
             // Always consider "self" as present
