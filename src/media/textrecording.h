@@ -75,6 +75,7 @@ public:
    bool                isEmpty                  (                         ) const;
    bool                hasMimeType              ( const QString& mimeType ) const;
    QStringList         mimeTypes                (                         ) const;
+   QVector<ContactMethod*> peers                (                         ) const;
 
    //Helper
    void setAllRead();

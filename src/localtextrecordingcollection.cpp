@@ -171,9 +171,57 @@ bool LocalTextRecordingCollection::isEnabled() const
 
 bool LocalTextRecordingCollection::load()
 {
-   //This collection is special as it use the history collection
-   //as its source, there is no loading
-   return true;
+    // load all text recordings so we can recover CMs that are not in the call history
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/");
+    if (dir.exists()) {
+        // get .json files, sorted by time, latest first
+        QStringList filters;
+        filters << "*.json";
+        auto list = dir.entryInfoList(filters, QDir::Files | QDir::NoSymLinks | QDir::Readable, QDir::Time);
+
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+
+            QString content;
+            QFile file(fileInfo.absoluteFilePath());
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                content = QString::fromUtf8(file.readAll());
+            } else {
+                qWarning() << "Could not open text recording json file";
+            }
+
+            if (!content.isEmpty()) {
+                QJsonParseError err;
+                QJsonDocument loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err);
+
+                if (err.error == QJsonParseError::ParseError::NoError) {
+                    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()});
+
+                    editor<Media::Recording>()->addExisting(r);
+                    r->setCollection(this);
+
+                    // get CMs from recording
+                    for (ContactMethod *cm : r->peers()) {
+                        // since we load the recordings in order from newest to oldest, if there is
+                        // more than one found associated with a CM, we take the newest one
+                        if (!cm->d_ptr->m_pTextRecording) {
+                            cm->d_ptr->setTextRecording(r);
+                        } else {
+                            qWarning() << "CM already has text recording" << cm;
+                        }
+                    }
+                } else {
+                    qWarning() << "Error Decoding Text Message History Json" << err.errorString();
+                }
+            } else {
+                qWarning() << "Text recording file is empty";
+            }
+        }
+    }
+
+    // always return true, even if noting was loaded, since the collection can still be used to
+    // save files
+    return true;
 }
 
 bool LocalTextRecordingCollection::reload()

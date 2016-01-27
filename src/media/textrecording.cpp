@@ -208,6 +208,19 @@ void Media::TextRecording::setAllRead()
     }
 }
 
+QVector<ContactMethod*> Media::TextRecording::peers() const
+{
+    QVector<ContactMethod*> cms;
+
+    for (const Serializable::Peers* peers : d_ptr->m_lAssociatedPeers) {
+        for (const Serializable::Peer* peer : peers->peers) {
+            cms << peer->m_pContactMethod;
+        }
+    }
+
+    return cms;
+}
+
 /**
  * I (Emmanuel Lepage) is in the process of writing a better one for this that
  * can be upstreamed into Qt (there is interest in merging a generic QVariant
@@ -304,40 +317,61 @@ QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
 
 Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items, const ContactMethod* cm)
 {
-   TextRecording* t = new TextRecording();
+    TextRecording* t = new TextRecording();
 
-   //Load the history data
-   for (const QJsonObject& obj : items) {
-      Serializable::Peers* p = SerializableEntityManager::fromJson(obj,cm);
-      t->d_ptr->m_lAssociatedPeers << p;
-   }
+    //Load the history data
+    for (const QJsonObject& obj : items) {
+        Serializable::Peers* p = SerializableEntityManager::fromJson(obj,cm);
+        t->d_ptr->m_lAssociatedPeers << p;
+    }
 
-   //Create the model
-   t->instantMessagingModel();
+    //Create the model
+    t->instantMessagingModel();
 
-   //Reconstruct the conversation
-   //TODO do it right, right now it flatten the graph
-   for (const Serializable::Peers* p : t->d_ptr->m_lAssociatedPeers) {
-      for (const Serializable::Group* g : p->groups) {
-         for (Serializable::Message* m : g->messages) {
-            ::TextMessageNode* n  = new ::TextMessageNode();
-            n->m_pMessage         = m                      ;
-            if (!n->m_pMessage->contactMethod) {
-               n->m_pMessage->contactMethod = const_cast<ContactMethod*>(cm); //TODO remove in 2016
-               n->m_pMessage->authorSha1 = cm->sha1();
+    //Reconstruct the conversation
+    //TODO do it right, right now it flatten the graph
+    for (const Serializable::Peers* p : t->d_ptr->m_lAssociatedPeers) {
+        // TODO: for now assume the convo is with only 1 CM at a time
+        auto peerCM = p->peers.at(0)->m_pContactMethod;
 
-               if (p->peers.isEmpty())
-                  addPeer(const_cast<Serializable::Peers*>(p), cm);
+        // get the latest timestamp to set last used
+        time_t lastUsed = 0;
+        for (const Serializable::Group* g : p->groups) {
+            for (Serializable::Message* m : g->messages) {
+                ::TextMessageNode* n  = new ::TextMessageNode();
+                n->m_pMessage         = m                      ;
+                if (!n->m_pMessage->contactMethod) {
+                    if (cm) {
+                        n->m_pMessage->contactMethod = const_cast<ContactMethod*>(cm); //TODO remove in 2016
+                        n->m_pMessage->authorSha1 = cm->sha1();
+
+                        if (p->peers.isEmpty())
+                        addPeer(const_cast<Serializable::Peers*>(p), cm);
+                    } else {
+                        if (p->m_hSha1.contains(n->m_pMessage->authorSha1)) {
+                            n->m_pMessage->contactMethod = p->m_hSha1[n->m_pMessage->authorSha1];
+                        } else {
+                            // message was outgoing and author sha1 was set to that of the sending account
+                            n->m_pMessage->contactMethod = peerCM;
+                            n->m_pMessage->authorSha1 = peerCM->sha1();
+                        }
+                    }
+                }
+                n->m_pContactMethod   = m->contactMethod;
+                t->d_ptr->m_pImModel->addRowBegin();
+                t->d_ptr->m_lNodes << n;
+                t->d_ptr->m_pImModel->addRowEnd();
+
+                if (lastUsed < n->m_pMessage->timestamp)
+                    lastUsed = n->m_pMessage->timestamp;
             }
-            n->m_pContactMethod   = m->contactMethod;
-            t->d_ptr->m_pImModel->addRowBegin();
-            t->d_ptr->m_lNodes << n;
-            t->d_ptr->m_pImModel->addRowEnd();
-         }
-      }
-   }
+        }
 
-   return t;
+        // update the timestamp of the CM
+        peerCM->setLastUsed(lastUsed);
+    }
+
+    return t;
 }
 
 void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
