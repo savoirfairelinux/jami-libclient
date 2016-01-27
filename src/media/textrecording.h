@@ -60,6 +60,7 @@ public:
       IsStatus             ,
       HTML                 ,
       HasText              ,
+      ContactMethod        ,
    };
 
    //Constructor

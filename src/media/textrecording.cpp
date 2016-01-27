@@ -678,6 +678,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return QVariant(n->m_pMessage->m_HTML);
          case (int)Media::TextRecording::Role::HasText              :
             return n->m_pMessage->m_HasText;
+         case (int)Media::TextRecording::Role::ContactMethod        :
+            return QVariant::fromValue(n->m_pContactMethod);
          default:
             break;
       }
