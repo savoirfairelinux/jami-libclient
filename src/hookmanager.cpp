@@ -44,6 +44,8 @@ public:
    bool m_ContactMethodEnabled;
 };
 
+HookManager* HookManager::m_spInstance = nullptr;
+
 HookManager::HookManager() : QObject(QCoreApplication::instance()),d_ptr(new HookManagerPrivate())
 {
    ConfigurationManagerInterface & configurationManager = DBus::ConfigurationManager::instance();
@@ -75,10 +77,11 @@ void HookManagerPrivate::save()
    configurationManager.setHookSettings(hooks);
 }
 
-HookManager& HookManager::instance()
+HookManager* HookManager::instance()
 {
-   static auto instance = new HookManager;
-   return *instance;
+   if (!m_spInstance)
+      m_spInstance = new HookManager();
+   return m_spInstance;
 }
 
 QString HookManager::prefix() const

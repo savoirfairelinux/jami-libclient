@@ -19,9 +19,6 @@
 //Parent
 #include "accountmodel.h"
 
-//Std
-#include <atomic>
-
 //Qt
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
@@ -48,6 +45,7 @@
 #include "private/pendingtrustrequestmodel_p.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
+AccountModel*     AccountModelPrivate::m_spAccountList;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
 m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
@@ -56,34 +54,37 @@ m_lSupportedProtocols {{
    /* IAX  */ false,
    /* RING */ false,
 }}
-{}
+{
+}
 
 ///Constructors
-AccountModel::AccountModel()
-    : QAbstractListModel(QCoreApplication::instance())
-    , d_ptr(new AccountModelPrivate(this))
-{}
+AccountModel::AccountModel() : QAbstractListModel(QCoreApplication::instance())
+,d_ptr(new AccountModelPrivate(this))
+{
+   //Make sure the daemon is running as this can be called first
+   DBus::InstanceManager::instance();
+}
 
+///Prevent constructor loop
 void AccountModelPrivate::init()
 {
-    DBus::InstanceManager::instance(); // Make sure the daemon is running before calling updateAccounts()
-    q_ptr->updateAccounts();
+   q_ptr->updateAccounts();
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
 
-    CallManagerInterface& callManager = DBus::CallManager::instance();
-    ConfigurationManagerInterface& configurationManager = DBus::ConfigurationManager::instance();
+   connect(&configurationManager, &ConfigurationManagerInterface::registrationStateChanged,this ,
+      &AccountModelPrivate::slotDaemonAccountChanged);
+   connect(&configurationManager, SIGNAL(accountsChanged())                               ,q_ptr,
+      SLOT(updateAccounts())                  );
+   connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
+      SLOT(slotVoiceMailNotify(QString,int))  );
+   connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
+      SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
+   connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
+      SLOT(slotMediaParametersChanged(QString)));
+   connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
+           &AccountModelPrivate::slotIncomingTrustRequest);
 
-    connect(&configurationManager, &ConfigurationManagerInterface::registrationStateChanged,this ,
-            &AccountModelPrivate::slotDaemonAccountChanged);
-    connect(&configurationManager, SIGNAL(accountsChanged())                               ,q_ptr,
-            SLOT(updateAccounts())                  );
-    connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
-            SLOT(slotVoiceMailNotify(QString,int))  );
-    connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
-            SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
-    connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
-            SLOT(slotMediaParametersChanged(QString)));
-    connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
-            &AccountModelPrivate::slotIncomingTrustRequest);
 }
 
 ///Destructor
@@ -214,16 +215,13 @@ Account* AccountModel::ip2ip() const
 }
 
 ///Singleton
-AccountModel& AccountModel::instance()
+AccountModel* AccountModel::instance()
 {
-    static auto instance = new AccountModel;
-
-    // Upload account configuration only once in re-entrant way
-    static std::atomic_flag init_flag {ATOMIC_FLAG_INIT};
-    if (not init_flag.test_and_set())
-        instance->d_ptr->init();
-
-    return *instance;
+   if (! AccountModelPrivate::m_spAccountList) {
+      AccountModelPrivate::m_spAccountList = new AccountModel();
+      AccountModelPrivate::m_spAccountList->d_ptr->init();
+   }
+   return AccountModelPrivate::m_spAccountList;
 }
 
 QItemSelectionModel* AccountModel::selectionModel() const
@@ -732,27 +730,25 @@ Account* AccountModel::getAccountByModelIndex(const QModelIndex& item) const
 ///Generate an unique suffix to prevent multiple account from sharing alias
 QString AccountModel::getSimilarAliasIndex(const QString& alias)
 {
-    auto& self = instance();
-
-    int count = 0;
-    foreach (Account* a, self.d_ptr->m_lAccounts) {
-        if (a->alias().left(alias.size()) == alias)
+   int count = 0;
+   foreach (Account* a, instance()->d_ptr->m_lAccounts) {
+      if (a->alias().left(alias.size()) == alias)
+         count++;
+   }
+   bool found = true;
+   do {
+      found = false;
+      foreach (Account* a, instance()->d_ptr->m_lAccounts) {
+         if (a->alias() == alias+QString(" (%1)").arg(count)) {
             count++;
-    }
-    bool found = true;
-    do {
-        found = false;
-        foreach (Account* a, self.d_ptr->m_lAccounts) {
-            if (a->alias() == alias+QString(" (%1)").arg(count)) {
-                count++;
-                found = false;
-                break;
-            }
-        }
-    } while(found);
-    if (count)
-        return QString(" (%1)").arg(count);
-    return QString();
+            found = false;
+            break;
+         }
+      }
+   } while(found);
+   if (count)
+      return QString(" (%1)").arg(count);
+   return QString();
 }
 
 QList<Account*> AccountModel::getAccountsByProtocol( const Account::Protocol protocol ) const
@@ -810,9 +806,8 @@ bool AccountModel::isIAXSupported() const
 
 bool AccountModel::isIP2IPSupported() const
 {
-    if (auto a = ip2ip())
-        return a->isEnabled();
-    return false;
+   //When this account isn't enable, it is as it wasn't there at all
+   return ip2ip()->isEnabled();
 }
 
 bool AccountModel::isRingSupported() const

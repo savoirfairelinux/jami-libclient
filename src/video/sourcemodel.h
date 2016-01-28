@@ -51,12 +51,13 @@ public:
    int getDeviceIndex(Video::Device* device);
 
    //Singleton
-   static Video::SourceModel& instance();
+   static Video::SourceModel* instance();
 private:
    explicit SourceModel();
    virtual ~SourceModel();
 
    Video::SourceModelPrivate* d_ptr;
+   static Video::SourceModel* m_spInstance;
 
 public Q_SLOTS:
    void switchTo(const QModelIndex& idx);

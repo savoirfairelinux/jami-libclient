@@ -20,6 +20,9 @@
 #include "uri.h"
 #include "contactmethod.h"
 
+LastUsedNumberModel* LastUsedNumberModel::m_spInstance = nullptr;
+
+
 struct ChainedContactMethod {
    ChainedContactMethod(ContactMethod* n) : m_pPrevious(nullptr),m_pNext(nullptr),m_pSelf(n){}
    ChainedContactMethod* m_pPrevious;
@@ -56,10 +59,12 @@ LastUsedNumberModel::~LastUsedNumberModel()
    delete d_ptr;
 }
 
-LastUsedNumberModel& LastUsedNumberModel::instance()
+LastUsedNumberModel* LastUsedNumberModel::instance()
 {
-    static auto instance = new LastUsedNumberModel();
-    return *instance;
+   if (!m_spInstance) {
+      m_spInstance = new LastUsedNumberModel();
+   }
+   return m_spInstance;
 }
 
 QHash<int,QByteArray> LastUsedNumberModel::roleNames() const

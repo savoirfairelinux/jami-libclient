@@ -17,9 +17,6 @@
  ***************************************************************************/
 #include "callmodel.h"
 
-//Std
-#include <atomic>
-
 //Qt
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
@@ -70,6 +67,9 @@ struct InternalStruct {
    bool                   conference ;
    InternalStruct*        m_pParent  ;
 };
+
+//Static member
+CallModel*   CallModel::m_spInstance = nullptr;
 
 class CallModelPrivate final : public QObject
 {
@@ -125,16 +125,12 @@ public:
  ****************************************************************************/
 
 ///Singleton
-CallModel& CallModel::instance()
-{
-    static auto instance = new CallModel();
-
-    // Fix loop-dependency issue between constructors
-    static std::atomic_flag init_flag {ATOMIC_FLAG_INIT};
-    if (not init_flag.test_and_set())
-        instance->d_ptr->init();
-
-    return *instance;
+CallModel* CallModel::instance() {
+   if (!m_spInstance) {
+      m_spInstance = new CallModel();
+      m_spInstance->d_ptr->init();
+   }
+   return m_spInstance;
 }
 
 CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),
@@ -155,45 +151,56 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
 
    //Necessary to receive text message
    IMConversationManagerPrivate::instance();
+
 } //CallModel
 
 ///Constructor (there fix an initializationn loop)
 void CallModelPrivate::init()
 {
-    CallManagerInterface& callManager = DBus::CallManager::instance();
-#ifdef ENABLE_VIDEO
-    DBus::VideoManager::instance();
-#endif
+   static bool dbusInit = false;
+   if (!dbusInit) {
+      CallManagerInterface& callManager = DBus::CallManager::instance();
+      #ifdef ENABLE_VIDEO
+      DBus::VideoManager::instance();
+      #endif
 
-    //SLOTS
-    /*             SENDER                          SIGNAL                     RECEIVER                    SLOT                   */
-    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))  , this , SLOT(slotCallStateChanged(QString,QString,int)));
-    /**/connect(&callManager, SIGNAL(incomingCall(QString,QString,QString))   , this , SLOT(slotIncomingCall(QString,QString))       );
-    /**/connect(&callManager, SIGNAL(conferenceCreated(QString))              , this , SLOT(slotIncomingConference(QString))         );
-    /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)) );
-    /**/connect(&callManager, SIGNAL(conferenceRemoved(QString))              , this , SLOT(slotConferenceRemoved(QString))          );
-    /**/connect(&callManager, SIGNAL(recordPlaybackFilepath(QString,QString)) , this , SLOT(slotNewRecordingAvail(QString,QString))  );
-    /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this , SLOT(slotRecordStateChanged(QString,bool)));
-    /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)));
-    /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)));
-    /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)));
-    /*                                                                                                                           */
+      //SLOTS
+      /*             SENDER                          SIGNAL                     RECEIVER                    SLOT                   */
+      /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))  , this , SLOT(slotCallStateChanged(QString,QString,int)));
+      /**/connect(&callManager, SIGNAL(incomingCall(QString,QString,QString))   , this , SLOT(slotIncomingCall(QString,QString))       );
+      /**/connect(&callManager, SIGNAL(conferenceCreated(QString))              , this , SLOT(slotIncomingConference(QString))         );
+      /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)) );
+      /**/connect(&callManager, SIGNAL(conferenceRemoved(QString))              , this , SLOT(slotConferenceRemoved(QString))          );
+      /**/connect(&callManager, SIGNAL(recordPlaybackFilepath(QString,QString)) , this , SLOT(slotNewRecordingAvail(QString,QString))  );
+      /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this , SLOT(slotRecordStateChanged(QString,bool)));
+      /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)));
+      /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)));
+      /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)));
+      /*                                                                                                                           */
 
-    connect(&CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
+      connect(CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
 
-    registerCommTypes();
+      dbusInit = true;
 
-    const QStringList callList = getCallList();
-    foreach (const QString& callId, callList) {
-        Call* tmpCall = CallPrivate::buildExistingCall(callId);
-        addCall2(tmpCall);
-    }
+      CategorizedHistoryModel::instance();
+   }
+   static bool m_sInstanceInit = false;
+   if (!m_sInstanceInit)
+      registerCommTypes();
+   m_sInstanceInit = true;
 
-    const QStringList confList = callManager.getConferenceList();
-    foreach (const QString& confId, confList) {
-        Call* conf = addConference(confId);
-        emit q_ptr->conferenceCreated(conf);
-    }
+   CallManagerInterface& callManager = DBus::CallManager::instance();
+   const QStringList callList = getCallList();
+   foreach (const QString& callId, callList) {
+      Call* tmpCall = CallPrivate::buildExistingCall(callId);
+      addCall2(tmpCall);
+   }
+
+   const QStringList confList = callManager.getConferenceList();
+   foreach (const QString& confId, confList) {
+      Call* conf = addConference(confId);
+      emit q_ptr->conferenceCreated(conf);
+   }
 }
 
 ///Destructor
@@ -207,6 +214,7 @@ CallModel::~CallModel()
       delete s;
    d_ptr->m_shInternalMapping.clear  ();
    d_ptr->m_shDringId.clear();
+   m_spInstance = nullptr;
 
    //Unregister from the daemon
    InstanceInterface& instance = DBus::InstanceManager::instance();
@@ -1054,7 +1062,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       Call* target = getCall(targetIdx);
       qDebug() << "Phone number" << encodedContactMethod << "on call" << target;
       Call* newCall = dialingCall(QString(),target->account());
-      ContactMethod* nb = PhoneDirectoryModel::instance().fromHash(encodedContactMethod);
+      ContactMethod* nb = PhoneDirectoryModel::instance()->fromHash(encodedContactMethod);
       newCall->setDialNumber(nb);
       newCall->performAction(Call::Action::ACCEPT);
       createConferenceFromCall(newCall,target);
@@ -1065,7 +1073,7 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
       qDebug() << "Contact" << encodedPerson << "on call" << target;
       try {
          const ContactMethod* number = GlobalInstances::contactMethodSelector().number(
-         PersonModel::instance().getPersonByUid(encodedPerson));
+         PersonModel::instance()->getPersonByUid(encodedPerson));
          if (!number->uri().isEmpty()) {
             Call* newCall = dialingCall();
             newCall->setDialNumber(number);
@@ -1131,7 +1139,7 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    //Add to history
    if (call->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       if (!call->collection()) {
-         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
+         foreach (CollectionInterface* backend, CategorizedHistoryModel::instance()->collections(CollectionInterface::SupportedFeatures::ADD)) {
             if (backend->editor<Call>()->addNew(call))
                call->setCollection(backend);
          }

@@ -43,6 +43,10 @@
 //Private
 #include "private/phonedirectorymodel_p.h"
 
+QHash<int,Call*> ContactMethod::m_shMostUsed = QHash<int,Call*>();
+
+const ContactMethod* ContactMethod::m_spBlank = nullptr;
+
 void ContactMethodPrivate::callAdded(Call* call)
 {
    foreach (ContactMethod* n, m_lParents)
@@ -88,12 +92,11 @@ void ContactMethodPrivate::rebased(ContactMethod* other)
 
 const ContactMethod* ContactMethod::BLANK()
 {
-    static auto instance = []{
-        auto instance = new ContactMethod(QString(), NumberCategoryModel::other());
-        instance->d_ptr->m_Type = ContactMethod::Type::BLANK;
-        return instance;
-    }();
-    return instance;
+   if (!m_spBlank) {
+      m_spBlank = new ContactMethod(QString(),NumberCategoryModel::other());
+      const_cast<ContactMethod*>(m_spBlank)->d_ptr->m_Type = ContactMethod::Type::BLANK;
+   }
+   return m_spBlank;
 }
 
 ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, ContactMethod::Type st, ContactMethod* q) :
@@ -104,13 +107,13 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
 {}
 
 ///Constructor
-ContactMethod::ContactMethod(const URI& number, NumberCategory* cat, Type st) : ItemBase(&PhoneDirectoryModel::instance()),
+ContactMethod::ContactMethod(const URI& number, NumberCategory* cat, Type st) : ItemBase(PhoneDirectoryModel::instance()),
 d_ptr(new ContactMethodPrivate(number,cat,st,this))
 {
    setObjectName(d_ptr->m_Uri);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
    if (d_ptr->m_hasType) {
-      NumberCategoryModel::instance().d_ptr->registerNumber(this);
+      NumberCategoryModel::instance()->d_ptr->registerNumber(this);
    }
    d_ptr->m_lParents << this;
 }
@@ -221,7 +224,7 @@ void ContactMethod::setPerson(Person* contact)
    contact->d_ptr->registerContactMethod(this);
 
    if (contact && d_ptr->m_Type != ContactMethod::Type::TEMPORARY) {
-      PhoneDirectoryModel::instance().d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+QStringList(contact->formattedName()));
+      PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+QStringList(contact->formattedName()));
       d_ptr->m_PrimaryName_cache = contact->formattedName();
       d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);
       connect(contact,SIGNAL(rebased(Person*)),this,SLOT(contactRebased(Person*)));
@@ -253,11 +256,11 @@ void ContactMethod::setCategory(NumberCategory* cat)
 {
    if (cat == d_ptr->m_pCategory) return;
    if (d_ptr->m_hasType)
-      NumberCategoryModel::instance().d_ptr->unregisterNumber(this);
+      NumberCategoryModel::instance()->d_ptr->unregisterNumber(this);
    d_ptr->m_hasType = cat != NumberCategoryModel::other();
    d_ptr->m_pCategory = cat;
    if (d_ptr->m_hasType)
-      NumberCategoryModel::instance().d_ptr->registerNumber(this);
+      NumberCategoryModel::instance()->d_ptr->registerNumber(this);
    d_ptr->changed();
 }
 
@@ -623,7 +626,7 @@ void ContactMethod::incrementAlternativeName(const QString& name)
    const bool needReIndexing = !d_ptr->m_hNames[name];
    d_ptr->m_hNames[name]++;
    if (needReIndexing && d_ptr->m_Type != ContactMethod::Type::TEMPORARY) {
-      PhoneDirectoryModel::instance().d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+(d_ptr->m_pPerson?(QStringList(d_ptr->m_pPerson->formattedName())):QStringList()));
+      PhoneDirectoryModel::instance()->d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+(d_ptr->m_pPerson?(QStringList(d_ptr->m_pPerson->formattedName())):QStringList()));
       //Invalid m_PrimaryName_cache
       if (!d_ptr->m_pPerson)
          d_ptr->m_PrimaryName_cache.clear();
@@ -724,7 +727,7 @@ bool ContactMethod::operator==(const ContactMethod& other) const
 Media::TextRecording* ContactMethod::textRecording() const
 {
    if ((!d_ptr->m_hasTriedTextRec) && (!d_ptr->m_pTextRecording)) {
-      d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
+      d_ptr->m_pTextRecording = Media::RecordingModel::instance()->createTextRecording(this);
       d_ptr->m_hasTriedTextRec = true;
    }
 
@@ -734,7 +737,7 @@ Media::TextRecording* ContactMethod::textRecording() const
 Certificate*  ContactMethod::certificate() const
 {
    if (protocolHint() == URI::ProtocolHint::RING) {
-       d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(uid(), account());
+       d_ptr->m_pCertificate = CertificateModel::instance()->getCertificateFromId(uid(), account());
    }
    return d_ptr->m_pCertificate;
 }

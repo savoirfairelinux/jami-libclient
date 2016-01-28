@@ -45,6 +45,9 @@
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 
+//Static member
+VideoRendererManager* VideoRendererManager::m_spInstance = nullptr;
+
 class VideoRendererManagerPrivate final : public QObject
 {
    Q_OBJECT
@@ -93,11 +96,15 @@ VideoRendererManager::~VideoRendererManager()
 }
 
 ///Singleton
-VideoRendererManager& VideoRendererManager::instance()
+VideoRendererManager* VideoRendererManager::instance()
 {
-    static auto instance = new VideoRendererManager;
-    return *instance;
+   if (!m_spInstance) {
+      m_spInstance = new VideoRendererManager();
+   }
+
+   return m_spInstance;
 }
+
 
 int VideoRendererManager::size() const
 {
@@ -118,12 +125,12 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 {
    if (!d_ptr->m_hRenderers.contains(PREVIEW_RENDERER_ID)) {
 
-      if ((!Video::DeviceModel::instance().activeDevice()) || (!Video::DeviceModel::instance().activeDevice()->activeChannel())) {
+      if ((!Video::DeviceModel::instance()->activeDevice()) || (!Video::DeviceModel::instance()->activeDevice()->activeChannel())) {
          qWarning() << "No device found";
          return nullptr;
       }
 
-      Video::Resolution* res = Video::DeviceModel::instance().activeDevice()->activeChannel()->activeResolution();
+      Video::Resolution* res = Video::DeviceModel::instance()->activeDevice()->activeChannel()->activeResolution();
 
       if (!res) {
          qWarning() << "Misconfigured video device";
@@ -243,7 +250,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
    r->startRendering();
 
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+   Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
 
    if (dev)
       emit dev->renderingStarted(r);
@@ -251,7 +258,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    if (id != PREVIEW_RENDERER_ID) {
       qDebug() << "Starting video for call" << id;
 
-      Call* c = CallModel::instance().getCall(id);
+      Call* c = CallModel::instance()->getCall(id);
 
       if (c)
          c->d_ptr->registerRenderer(r);
@@ -280,7 +287,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
       return;
    }
 
-   Call* c = CallModel::instance().getCall(id);
+   Call* c = CallModel::instance()->getCall(id);
 
    if (c) {
       c->d_ptr->removeRenderer(r);
@@ -290,7 +297,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 
    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
 
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+   Video::Device* dev = Video::DeviceModel::instance()->getDevice(id);
 
    if (dev)
       emit dev->renderingStopped(r);
