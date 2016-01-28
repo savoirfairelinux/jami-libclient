@@ -73,7 +73,10 @@ public:
    void desactivateRecording(Media::AVRecording* r);
 
    //Singleton
-   static RecordingPlaybackManager& instance();
+   static RecordingPlaybackManager* instance();
+
+private:
+   static RecordingPlaybackManager* m_spInstance;
 
 public Q_SLOTS:
    void slotRecordPlaybackFilepath(const QString& callID, const QString& filepath );
@@ -81,7 +84,10 @@ public Q_SLOTS:
    void slotUpdatePlaybackScale   (const QString& filepath, int position, int size);
 };
 
-RecordingPlaybackManager::RecordingPlaybackManager() : QObject(&CallModel::instance())
+RecordingPlaybackManager* RecordingPlaybackManager::m_spInstance = nullptr;
+
+
+RecordingPlaybackManager::RecordingPlaybackManager() : QObject(CallModel::instance())
 {
    CallManagerInterface& callManager = CallManager::instance();
    connect(&callManager,&CallManagerInterface::recordPlaybackStopped , this, &RecordingPlaybackManager::slotRecordPlaybackStopped );
@@ -90,10 +96,12 @@ RecordingPlaybackManager::RecordingPlaybackManager() : QObject(&CallModel::insta
 }
 
 ///Singleton
-RecordingPlaybackManager& RecordingPlaybackManager::instance()
+RecordingPlaybackManager* RecordingPlaybackManager::instance()
 {
-    static auto instance = new RecordingPlaybackManager;
-    return *instance;
+   if (!m_spInstance)
+      m_spInstance = new RecordingPlaybackManager();
+
+   return m_spInstance;
 }
 
 
@@ -172,7 +180,7 @@ void Media::AVRecording::setPath(const QUrl& path)
 ///Play (or resume) the playback
 void Media::AVRecording::play()
 {
-   RecordingPlaybackManager::instance().activateRecording(this);
+   RecordingPlaybackManager::instance()->activateRecording(this);
 
    CallManagerInterface& callManager = CallManager::instance();
    const bool retval = callManager.startRecordedFilePlayback(path().path());
@@ -192,7 +200,7 @@ void Media::AVRecording::stop()
    Q_NOREPLY callManager.stopRecordedFilePlayback(path().path());
    emit stopped();
 
-   RecordingPlaybackManager::instance().desactivateRecording(this);
+   RecordingPlaybackManager::instance()->desactivateRecording(this);
    d_ptr->m_IsPaused = false;
 }
 

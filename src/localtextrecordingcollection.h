@@ -52,6 +52,6 @@ public:
 
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
-   static LocalTextRecordingCollection& instance();
+   static LocalTextRecordingCollection* instance();
 
 };

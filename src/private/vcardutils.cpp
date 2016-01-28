@@ -95,7 +95,7 @@ struct VCardMapper final {
          Person::ContactMethods m = i.key()->phoneNumbers();
 
          foreach(const GetNumberFuture& v, i.value()) {
-            ContactMethod* cm = PhoneDirectoryModel::instance().getNumber(v.uri,v.c,nullptr,v.category);
+            ContactMethod* cm = PhoneDirectoryModel::instance()->getNumber(v.uri,v.c,nullptr,v.category);
 
             m << cm;
          }
@@ -343,7 +343,7 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
             //Link with accounts
             if(k == VCardUtils::Property::X_RINGACCOUNT) {
                   if (accounts) {
-                  Account* a = AccountModel::instance().getById(v.trimmed(),true);
+                  Account* a = AccountModel::instance()->getById(v.trimmed(),true);
                   if(!a) {
                      qDebug() << "Could not find account: " << v.trimmed();
                      continue;

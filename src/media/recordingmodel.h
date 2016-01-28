@@ -83,7 +83,7 @@ public:
    TextRecording* createTextRecording(const ContactMethod* cm);
 
    //Singleton
-   static RecordingModel& instance();
+   static RecordingModel* instance();
 
 Q_SIGNALS:
    void newTextMessage(::Media::TextRecording* t, ContactMethod* cm);

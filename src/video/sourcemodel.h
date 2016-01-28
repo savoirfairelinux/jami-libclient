@@ -56,6 +56,7 @@ public:
 
 private:
    Video::SourceModelPrivate* d_ptr;
+   static Video::SourceModel* m_spInstance;
 
 public Q_SLOTS:
    void switchTo(const QModelIndex& idx);

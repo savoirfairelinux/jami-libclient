@@ -570,7 +570,7 @@ UserActionModel::UserActionModel(Call* parent, const FlagPack<UserActionModel::C
    d_ptr->m_Mode = UserActionModelPrivate::UserActionModelMode::CALL;
    d_ptr->m_pCall = parent;
 
-   connect(&AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(slotStateChanged()));
+   connect(AccountModel::instance(), SIGNAL(accountStateChanged(Account*,Account::RegistrationState)), d_ptr.data(), SLOT(slotStateChanged()));
    d_ptr->updateActions();
 }
 
@@ -584,7 +584,7 @@ UserActionModel::UserActionModel(QAbstractItemModel* parent, const FlagPack<User
    d_ptr->m_SelectionState = UserActionModelPrivate::SelectionState::UNIQUE;
    d_ptr->m_pSourceModel = parent;
 
-   connect(&AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
+   connect(AccountModel::instance(), &AccountModel::accountStateChanged      , d_ptr.data(), &UserActionModelPrivate::updateActions);
 
    if (auto callmodel = qobject_cast<CallModel*>(parent)) {
       setSelectionModel(callmodel->selectionModel());
@@ -807,7 +807,7 @@ bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const 
 {
    if (!c)
       return false;
-   Account* a = c->account() ? c->account() : AvailableAccountModel::instance().currentDefaultAccount();
+   Account* a = c->account() ? c->account() : AvailableAccountModel::instance()->currentDefaultAccount();
 
    return (
       availableActionMap        [action] [c->state()             ] &&
@@ -831,7 +831,7 @@ bool UserActionModelPrivate::updateByContactMethod(UserActionModel::Action actio
 {
    if (!cm)
       return false;
-   Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance().currentDefaultAccount();
+   Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance()->currentDefaultAccount();
 
    return updateByAccount(action, a) && (
       (!cmActionAvailability[action]) || cmActionAvailability[action](cm)
@@ -922,7 +922,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
             }
          }
          else {
-            Account* a = AvailableAccountModel::instance().currentDefaultAccount();
+            Account* a = AvailableAccountModel::instance()->currentDefaultAccount();
             ret = multi_call_options[action][UserActionModelPrivate::SelectionState::NONE]
                && (a?availableAccountActionMap[action][a->registrationState()]:false);
          }

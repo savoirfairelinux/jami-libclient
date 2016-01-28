@@ -204,21 +204,21 @@ void RecentModelPrivate::selectNode(RecentViewNode* node) const
 
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
-   connect(&PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
-   connect(&PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
-   connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
-   connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
-   connect(&CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
-   connect(&CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
-   connect(&CallModel::instance()          , &CallModel::conferenceCreated        , d_ptr, &RecentModelPrivate::slotConferenceAdded    );
-   connect(&CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
-   connect(&CallModel::instance()          , &CallModel::conferenceChanged        , d_ptr, &RecentModelPrivate::slotConferenceChanged  );
-   connect(CallModel::instance().selectionModel(), &QItemSelectionModel::currentChanged, d_ptr, &RecentModelPrivate::slotCurrentCallChanged);
+   connect(PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
+   connect(PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
+   connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
+   connect(PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
+   connect(CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
+   connect(CallModel::instance()          , &CallModel::callStateChanged         , d_ptr, &RecentModelPrivate::slotCallStateChanged   );
+   connect(CallModel::instance()          , &CallModel::conferenceCreated        , d_ptr, &RecentModelPrivate::slotConferenceAdded    );
+   connect(CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
+   connect(CallModel::instance()          , &CallModel::conferenceChanged        , d_ptr, &RecentModelPrivate::slotConferenceChanged  );
+   connect(CallModel::instance()->selectionModel(), &QItemSelectionModel::currentChanged, d_ptr, &RecentModelPrivate::slotCurrentCallChanged);
 
    //Fill the contacts
-   for (int i=0; i < PersonModel::instance().rowCount(); i++) {
-      auto person = qvariant_cast<Person*>(PersonModel::instance().data(
-         PersonModel::instance().index(i,0),
+   for (int i=0; i < PersonModel::instance()->rowCount(); i++) {
+      auto person = qvariant_cast<Person*>(PersonModel::instance()->data(
+         PersonModel::instance()->index(i,0),
          static_cast<int>(Person::Role::Object)
       ));
 
@@ -227,9 +227,9 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    }
 
    //Fill the "orphan" contact methods
-   for (int i = 0; i < PhoneDirectoryModel::instance().rowCount(); i++) {
-      auto cm = qvariant_cast<ContactMethod*>(PhoneDirectoryModel::instance().data(
-         PhoneDirectoryModel::instance().index(i,0),
+   for (int i = 0; i < PhoneDirectoryModel::instance()->rowCount(); i++) {
+      auto cm = qvariant_cast<ContactMethod*>(PhoneDirectoryModel::instance()->data(
+         PhoneDirectoryModel::instance()->index(i,0),
          static_cast<int>(PhoneDirectoryModel::Role::Object)
       ));
 
@@ -238,7 +238,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
    }
 
    //Fill node with history data
-   //const CallMap callMap = CategorizedHistoryModel::instance().getHistoryCalls();
+   //const CallMap callMap = CategorizedHistoryModel::instance()->getHistoryCalls();
    //Q_FOREACH(auto const &call , callMap) {
    //    d_ptr->slotCallAdded(call, nullptr);
    //}
@@ -344,10 +344,10 @@ RecentViewNode::slotChanged()
     m_pModel->slotChanged(this);
 }
 
-RecentModel& RecentModel::instance()
+RecentModel* RecentModel::instance()
 {
-    static auto instance = new RecentModel(QCoreApplication::instance());
-    return *instance;
+   static RecentModel* instance = new RecentModel(QCoreApplication::instance());
+   return instance;
 }
 
 /**
@@ -429,7 +429,7 @@ bool RecentModel::hasActiveCall(const QModelIndex &idx)
    while (lIterator.hasPrevious()) {
       auto child = lIterator.previous();
       if (child->m_Type == RecentViewNode::Type::CALL) {
-         return  CallModel::instance().getIndex(child->m_uContent.m_pCall).isValid();
+         return  CallModel::instance()->getIndex(child->m_uContent.m_pCall).isValid();
       }
    }
    return false;
@@ -1010,7 +1010,7 @@ RecentModelPrivate::slotConferenceAdded(Call* conf)
     insertNode(n, conf->startTimeStamp(), isNew);
 
     // move the participants after inserting the node
-    auto pList = CallModel::instance().getConferenceParticipants(conf);
+    auto pList = CallModel::instance()->getConferenceParticipants(conf);
     foreach (Call* p, pList) {
         moveCallNode(n, m_hCallsToNodes.value(p));
     }
@@ -1022,7 +1022,7 @@ RecentModelPrivate::slotConferenceAdded(Call* conf)
 void RecentModelPrivate::slotConferenceChanged(Call* conf)
 {
     if (auto confNode = m_hConfToNodes.value(conf)) {
-        auto pSet = QSet<Call*>::fromList(CallModel::instance().getConferenceParticipants(conf));
+        auto pSet = QSet<Call*>::fromList(CallModel::instance()->getConferenceParticipants(conf));
         if (pSet.isEmpty()) {
             slotConferenceRemoved(conf);
             return;
@@ -1055,7 +1055,7 @@ RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QMo
 {
     Q_UNUSED(previous)
 
-    auto callIdx = q_ptr->getIndex(CallModel::instance().getCall(current));
+    auto callIdx = q_ptr->getIndex(CallModel::instance()->getCall(current));
     if (callIdx.isValid()) {
         /* in the case of a conference, we select the call;
          * in case the parent only has one call, we select the parent;

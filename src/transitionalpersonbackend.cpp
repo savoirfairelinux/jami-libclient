@@ -78,10 +78,14 @@ QVector<Person*> TransitionalPersonEditor::items() const
    return QVector<Person*>();
 }
 
-CollectionInterface& TransitionalPersonBackend::instance()
+CollectionInterface* TransitionalPersonBackend::m_spInstance = nullptr;
+
+CollectionInterface* TransitionalPersonBackend::instance()
 {
-    static auto instance = PersonModel::instance().addCollection<TransitionalPersonBackend>();
-    return *instance;
+   if (!m_spInstance) {
+      m_spInstance = PersonModel::instance()->addCollection<TransitionalPersonBackend>();
+   }
+   return m_spInstance;
 }
 
 TransitionalPersonBackend::~TransitionalPersonBackend()

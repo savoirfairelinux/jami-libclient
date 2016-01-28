@@ -67,8 +67,8 @@ bool addPerson(ContactMethod* cm, CollectionInterface* col = nullptr);
 
 bool addNew()
 {
-   Call* call = CallModel::instance().dialingCall();
-   CallModel::instance().selectionModel()->setCurrentIndex(CallModel::instance().getIndex(call), QItemSelectionModel::ClearAndSelect);
+   Call* call = CallModel::instance()->dialingCall();
+   CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(call), QItemSelectionModel::ClearAndSelect);
    return true;
 }
 
@@ -86,8 +86,8 @@ bool accept(Call* call)
    if (state == Call::State::RINGING || state == Call::State::CURRENT || state == Call::State::HOLD
       || state == Call::State::BUSY || state == Call::State::FAILURE || state == Call::State::ERROR) {
       qDebug() << "Calling when item currently ringing, current, hold or busy. Opening an item.";
-      Call* c2 = CallModel::instance().dialingCall();
-      CallModel::instance().selectionModel()->setCurrentIndex(CallModel::instance().getIndex(c2), QItemSelectionModel::ClearAndSelect);
+      Call* c2 = CallModel::instance()->dialingCall();
+      CallModel::instance()->selectionModel()->setCurrentIndex(CallModel::instance()->getIndex(c2), QItemSelectionModel::ClearAndSelect);
    }
    else {
       try {
@@ -330,7 +330,7 @@ bool callAgain(ContactMethod* cm)
    if (!cm)
       return false;
 
-   Call* call = CallModel::instance().dialingCall(cm);
+   Call* call = CallModel::instance()->dialingCall(cm);
 
    if (call) {
       call->performAction(Call::Action::ACCEPT);
@@ -345,7 +345,7 @@ bool bookmark(ContactMethod* cm)
    if (!cm)
       return false;
 
-   CategorizedBookmarkModel::instance().addBookmark(cm);
+   CategorizedBookmarkModel::instance()->addBookmark(cm);
 
    return true;
 }
@@ -366,7 +366,7 @@ bool removeFromHistory(Call* c)
    if (c && c->collection()->supportedFeatures() & CollectionInterface::SupportedFeatures::REMOVE) {
 
       if (GlobalInstances::actionExtender().warnDeleteCall(c)) {
-         CategorizedHistoryModel::instance().deleteItem(c); //TODO add add and remove to the manager
+         CategorizedHistoryModel::instance()->deleteItem(c); //TODO add add and remove to the manager
          return true;
       }
    }
@@ -396,14 +396,14 @@ bool addPerson(ContactMethod* cm, CollectionInterface* col)
    // Try to get the best collection for this
    if (!col)
       col = GlobalInstances::itemModelStateSerializer().preferredCollection(
-         &PersonModel::instance(),
+         PersonModel::instance(),
          CollectionInterface::SupportedFeatures::ADD
       );
 
    // Take a random collection that match
    if (!col) {
       const QVector<CollectionInterface*> cols = PersonModel::instance()
-         .collections(CollectionInterface::SupportedFeatures::ADD);
+         ->collections(CollectionInterface::SupportedFeatures::ADD);
 
          if (cols.isEmpty())
             return false;

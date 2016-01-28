@@ -21,6 +21,8 @@
 
 class CollectionExtensionModelPrivate
 {
+public:
+   static CollectionExtensionModel* m_spInstance;
 };
 
 CollectionExtensionModel::~CollectionExtensionModel()
@@ -35,10 +37,14 @@ QList<CollectionExtensionInterface*>& CollectionExtensionModelSpecific::entries(
    return m_slEntries;
 }
 
-CollectionExtensionModel& CollectionExtensionModel::instance()
+CollectionExtensionModel* CollectionExtensionModelPrivate::m_spInstance = nullptr;
+
+CollectionExtensionModel* CollectionExtensionModel::instance()
 {
-    static auto instance = new CollectionExtensionModel;
-    return *instance;
+   if (!CollectionExtensionModelPrivate::m_spInstance)
+      CollectionExtensionModelPrivate::m_spInstance = new CollectionExtensionModel();
+
+   return CollectionExtensionModelPrivate::m_spInstance;
 }
 
 QVariant CollectionExtensionModel::data( const QModelIndex& index, int role ) const

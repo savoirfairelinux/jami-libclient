@@ -97,10 +97,11 @@ IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QO
    connect(&callManager         , &CallManagerInterface::incomingMessage                , this, &IMConversationManagerPrivate::newMessage       );
 }
 
-IMConversationManagerPrivate& IMConversationManagerPrivate::instance()
+IMConversationManagerPrivate* IMConversationManagerPrivate::instance()
 {
-   static auto instance = new IMConversationManagerPrivate(nullptr);
-   return *instance;
+   static IMConversationManagerPrivate* ins = new IMConversationManagerPrivate(nullptr);
+
+   return ins;
 }
 
 Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload)
@@ -140,7 +141,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 {
    Q_UNUSED(from)
 
-   Call* call = CallModel::instance().getCall(callId);
+   Call* call = CallModel::instance()->getCall(callId);
 
    Q_ASSERT(call);
 
@@ -180,7 +181,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-   if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
+   if (auto cm = PhoneDirectoryModel::instance()->getNumber(from, AccountModel::instance()->getById(accountId.toLatin1()))) {
        auto txtRecording = cm->textRecording();
        txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
    }
@@ -225,7 +226,7 @@ Media::TextRecording* Media::Text::recording() const
        if (auto otherRecording = call()->peerContactMethod()->textRecording())
            d_ptr->m_pRecording = otherRecording;
        else
-           d_ptr->m_pRecording = RecordingModel::instance().createTextRecording(call()->peerContactMethod());
+           d_ptr->m_pRecording = RecordingModel::instance()->createTextRecording(call()->peerContactMethod());
    }
 
    return d_ptr->m_pRecording;

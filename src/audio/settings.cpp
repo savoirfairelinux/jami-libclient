@@ -52,6 +52,8 @@ private:
 };
 }
 
+Audio::Settings* Audio::Settings::m_spInstance = nullptr;
+
 Audio::SettingsPrivate::SettingsPrivate(Audio::Settings* parent) : q_ptr(parent),m_EnableRoomTone(false),
  m_pAlsaPluginModel  (nullptr), m_pInputDeviceModel   (nullptr),
  m_pAudioManagerModel(nullptr), m_pRingtoneDeviceModel(nullptr),
@@ -79,11 +81,13 @@ Audio::Settings::~Settings()
 }
 
 ///Singleton
-Audio::Settings& Audio::Settings::instance()
+Audio::Settings* Audio::Settings::instance()
 {
-    static auto instance = new Settings;
-    return *instance;
+   if (!m_spInstance)
+      m_spInstance = new Settings();
+   return m_spInstance;
 }
+
 
 ///Return plugin model (alsa only for the time being)
 Audio::AlsaPluginModel* Audio::Settings::alsaPluginModel() const

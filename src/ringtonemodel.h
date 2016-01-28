@@ -59,7 +59,7 @@ public:
    void play(const QModelIndex& index);
    bool add(const QUrl& path, Account* autoSelect = nullptr);
 
-   static RingtoneModel& instance();
+   static RingtoneModel* instance();
 
 private:
    explicit RingtoneModel(QObject* parent = nullptr);

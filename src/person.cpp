@@ -201,7 +201,7 @@ Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nul
    if (!uid.isEmpty())
       d_ptr->m_Uid = uid;
 
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+   setCollection(parent?parent:TransitionalPersonBackend::instance());
 
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
@@ -210,7 +210,7 @@ Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nul
 Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionInterface* parent)
  : ItemBase(nullptr), d_ptr(new PersonPrivate(this))
 {
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+   setCollection(parent?parent:TransitionalPersonBackend::instance());
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
    switch (encoding) {
@@ -366,7 +366,7 @@ void Person::setContactMethods(ContactMethods numbers)
    d_ptr->changed();
 
    //Allow incoming calls from those numbers
-   const QList<Account*> ringAccounts = AccountModel::instance().getAccountsByProtocol(Account::Protocol::RING);
+   const QList<Account*> ringAccounts = AccountModel::instance()->getAccountsByProtocol(Account::Protocol::RING);
    QStringList ringUris;
    for (ContactMethod* n : d_ptr->m_Numbers) {
       if (n->uri().protocolHint() == URI::ProtocolHint::RING)
@@ -374,7 +374,7 @@ void Person::setContactMethods(ContactMethods numbers)
    }
 
    foreach(const QString& hash , ringUris) {
-      Certificate* cert = CertificateModel::instance().getCertificateFromId(hash);
+      Certificate* cert = CertificateModel::instance()->getCertificateFromId(hash);
       if (cert) {
          for (Account* a : ringAccounts) {
             if (a->allowIncomingFromContact())

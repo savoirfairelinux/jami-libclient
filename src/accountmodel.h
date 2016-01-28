@@ -61,8 +61,8 @@ public:
       COUNT__
    };
 
-   //Singleton
-   static AccountModel& instance();
+   //Static getter and destructor
+   static AccountModel* instance();
 
    //Getters
    Q_INVOKABLE Account* getById                     ( const QByteArray& id, bool ph = false) const;

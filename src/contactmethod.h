@@ -188,6 +188,10 @@ protected:
 private:
    friend class ContactMethodPrivate;
 
+   //Static attributes
+   static QHash<int,Call*> m_shMostUsed  ;
+   static const ContactMethod* m_spBlank   ;
+
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);

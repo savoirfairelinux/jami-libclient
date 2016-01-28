@@ -32,6 +32,9 @@
 #include "globalinstances.h"
 #include "interfaces/shortcutcreatori.h"
 
+///Init static attributes
+MacroModel*  MacroModelPrivate::m_pInstance = nullptr;
+
 MacroModelPrivate::MacroModelPrivate(MacroModel* parent) : q_ptr(parent),
 m_pCurrentMacro(nullptr),m_pCurrentMacroMemento(nullptr)
 {
@@ -49,15 +52,18 @@ MacroModel::~MacroModel()
 }
 
 ///Singleton
-MacroModel& MacroModel::instance()
+MacroModel* MacroModel::instance()
 {
-    static auto instance = new MacroModel(0);
-    return *instance;
+   if (MacroModelPrivate::m_pInstance == nullptr) {
+      MacroModelPrivate::m_pInstance = new MacroModel(0);
+   }
+   return MacroModelPrivate::m_pInstance;
 }
 
 void MacroModel::addListener(MacroListener* interface)
 {
-   instance().d_ptr->m_lListeners << interface;
+   MacroModel* m = instance();
+   m->d_ptr->m_lListeners << interface;
 }
 
 MacroModelPrivate::MacroCategory* MacroModelPrivate::createCategory(const QString& name)

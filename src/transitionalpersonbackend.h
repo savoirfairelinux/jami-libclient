@@ -44,6 +44,7 @@ class LIB_EXPORT TransitionalPersonBackend : public CollectionInterface {
 public:
    template<typename T>
    explicit TransitionalPersonBackend(CollectionMediator<T>* mediator);
+   static CollectionInterface* m_spInstance;
 
    virtual ~TransitionalPersonBackend();
 
@@ -60,7 +61,7 @@ public:
    virtual bool reload     (                            ) override;
 
    //Singleton
-   static CollectionInterface& instance();
+   static CollectionInterface* instance();
 
 private:
 

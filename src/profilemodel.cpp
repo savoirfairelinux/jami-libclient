@@ -267,7 +267,7 @@ bool ProfileEditor::addNew( Person* contact)
    mediator()->addItem(contact);
    save(contact);
 
-   ProfileModel::instance().d_ptr->insertProfile(contact);
+   ProfileModel::instance()->d_ptr->insertProfile(contact);
 //    load(); //FIXME
    return true;
 }
@@ -288,6 +288,8 @@ int ProfileContentBackend::size() const
 {
    return m_pEditor->m_lProfiles.size();
 }
+
+ProfileModel* ProfileModel::m_spInstance = nullptr;
 
 template<typename T>
 ProfileContentBackend::ProfileContentBackend(CollectionMediator<T>* mediator) :
@@ -374,8 +376,8 @@ void ProfileContentBackend::setupDefaultProfile()
    //hidden as low as possible for now
    //TODO remove this atrocity when the profile before available in Account::
    //BUG this doesn't work with new accounts
-   for (int i=0; i < AccountModel::instance().size(); i++) {
-      accounts[AccountModel::instance()[i]] = false;
+   for (int i=0; i < AccountModel::instance()->size();i++) {
+         accounts[(*AccountModel::instance())[i]] = false;
    }
 
    foreach (Node* node, m_pEditor->m_lProfiles) {
@@ -420,11 +422,10 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
    account_pro->m_Index = parent->children.size();
    account_pro->m_ParentIndex = acc->index().row();
 
-   ProfileModel::instance().beginInsertRows(ProfileModel::instance().index(parent->m_Index,0), parent->children.size(), parent->children.size());
+   ProfileModel::instance()->beginInsertRows(ProfileModel::instance()->index(parent->m_Index,0), parent->children.size(), parent->children.size());
    parent->children << account_pro;
-   ProfileModel::instance().endInsertRows();
+   ProfileModel::instance()->endInsertRows();
    m_pEditor->m_hProfileByAccount[acc] = parent;
-
    m_pEditor->m_hAccountToNode[acc] = account_pro;
 
    if (parent->contact)
@@ -449,13 +450,13 @@ void ProfileContentBackend::loadProfiles()
          QList<Account*> accs;
          VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
 
-         Node* pro = ProfileModel::instance().d_ptr->insertProfile(profile);
+         Node* pro = ProfileModel::instance()->d_ptr->insertProfile(profile);
 
          /* must be done after inserting profile, or else we try to insert to non existing parent */
          foreach(Account* a, accs)
             addAccount(pro,a);
 
-         PersonModel::instance().addPerson(profile);
+         PersonModel::instance()->addPerson(profile);
       }
 
       //Ring need a profile for all account
@@ -549,10 +550,11 @@ void ProfileContentBackend::save()
    load();
 }
 
-ProfileModel& ProfileModel::instance()
+ProfileModel* ProfileModel::instance()
 {
-    static auto instance = new ProfileModel(QCoreApplication::instance());
-    return *instance;
+   if (!m_spInstance)
+      m_spInstance = new ProfileModel(QCoreApplication::instance());
+   return m_spInstance;
 }
 
 ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent), q_ptr(parent),m_pProfileBackend(nullptr)
@@ -563,11 +565,11 @@ ProfileModelPrivate::ProfileModelPrivate(ProfileModel* parent) : QObject(parent)
 ///Avoid creating an initialization loop
 void ProfileModelPrivate::slotDelayedInit()
 {
-   connect(&AccountModel::instance(), &QAbstractItemModel::dataChanged  , this, &ProfileModelPrivate::slotDataChanged   );
-   connect(&AccountModel::instance(), &QAbstractItemModel::rowsInserted , this, &ProfileModelPrivate::slotRowsInserted  );
-   connect(&AccountModel::instance(), &QAbstractItemModel::rowsMoved    , this, &ProfileModelPrivate::slotRowsMoved     );
-   connect(&AccountModel::instance(), &QAbstractItemModel::layoutChanged, this, &ProfileModelPrivate::slotLayoutchanged );
-   connect(&AccountModel::instance(), &AccountModel::accountRemoved     , this, &ProfileModelPrivate::slotAccountRemoved);
+   connect(AccountModel::instance(), &QAbstractItemModel::dataChanged  , this, &ProfileModelPrivate::slotDataChanged   );
+   connect(AccountModel::instance(), &QAbstractItemModel::rowsInserted , this, &ProfileModelPrivate::slotRowsInserted  );
+   connect(AccountModel::instance(), &QAbstractItemModel::rowsMoved    , this, &ProfileModelPrivate::slotRowsMoved     );
+   connect(AccountModel::instance(), &QAbstractItemModel::layoutChanged, this, &ProfileModelPrivate::slotLayoutchanged );
+   connect(AccountModel::instance(), &AccountModel::accountRemoved     , this, &ProfileModelPrivate::slotAccountRemoved);
 }
 
 ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new ProfileModelPrivate(this))
@@ -576,7 +578,7 @@ ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
 
    //Creating the profile contact backend
-   d_ptr->m_pProfileBackend = PersonModel::instance().addCollection<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
+   d_ptr->m_pProfileBackend = PersonModel::instance()->addCollection<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
 
    //Once LibRingClient is ready, start listening
    QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));
@@ -590,7 +592,7 @@ ProfileModel::~ProfileModel()
 
 QHash<int,QByteArray> ProfileModel::roleNames() const
 {
-   static QHash<int, QByteArray> roles = AccountModel::instance().roleNames();
+   static QHash<int, QByteArray> roles = AccountModel::instance()->roleNames();
    /*static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
@@ -611,10 +613,10 @@ QModelIndex ProfileModel::mapToSource(const QModelIndex& idx) const
 #include <unistd.h>
 QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
 {
-   if (!idx.isValid() || idx.model() != &AccountModel::instance())
+   if (!idx.isValid() || idx.model() != AccountModel::instance())
       return QModelIndex();
 
-   Account* acc = AccountModel::instance().getAccountByModelIndex(idx);
+   Account* acc = AccountModel::instance()->getAccountByModelIndex(idx);
    Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
 
    //Something is wrong, there is an orphan
@@ -639,7 +641,7 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
       "arranged in a loop and this may induce a stack overflow at runtime"
    );
 
-   return ProfileModel::instance().index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
+   return ProfileModel::instance()->index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
 }
 
 QVariant ProfileModel::data(const QModelIndex& index, int role ) const
@@ -768,7 +770,7 @@ QItemSelectionModel* ProfileModel::selectionModel() const
 
       connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, [this](const QModelIndex& i) {
          const QModelIndex& accIdx = mapToSource(i);
-         AccountModel::instance().selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
+         AccountModel::instance()->selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
       });
    }
 
@@ -784,7 +786,7 @@ QItemSelectionModel* ProfileModel::sortedProxySelectionModel() const
          const QModelIndex& accIdx = mapToSource(
             static_cast<QSortFilterProxyModel*>(sortedProxyModel())->mapToSource(i)
          );
-         AccountModel::instance().selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
+         AccountModel::instance()->selectionModel()->setCurrentIndex(accIdx, QItemSelectionModel::ClearAndSelect);
       });
    }
 
@@ -794,7 +796,7 @@ QItemSelectionModel* ProfileModel::sortedProxySelectionModel() const
 QAbstractItemModel* ProfileModel::sortedProxyModel() const
 {
    if (!d_ptr->m_pSortedProxyModel) {
-      d_ptr->m_pSortedProxyModel = new QSortFilterProxyModel(&ProfileModel::instance());
+      d_ptr->m_pSortedProxyModel = new QSortFilterProxyModel(ProfileModel::instance());
       d_ptr->m_pSortedProxyModel->setSourceModel(const_cast<ProfileModel*>(this));
       d_ptr->m_pSortedProxyModel->setSortRole(9999);
       d_ptr->m_pSortedProxyModel->sort(0);
@@ -863,7 +865,7 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
       }
 
       // Use the account ID to locate the original location
-      Account* acc = AccountModel::instance().getById(accountId);
+      Account* acc = AccountModel::instance()->getById(accountId);
 
       if (!acc)
          return false;
@@ -931,7 +933,7 @@ bool ProfileModel::setData(const QModelIndex& index, const QVariant &value, int 
    Node* current = static_cast<Node*>(index.internalPointer());
 
    if (current->parent) {
-      return AccountModel::instance().setData(mapToSource(index),value,role);
+      return AccountModel::instance()->setData(mapToSource(index),value,role);
    }
    return false;
 }

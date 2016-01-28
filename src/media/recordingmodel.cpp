@@ -60,6 +60,7 @@ public:
 
    //Attributes
    QVector<RecordingNode*>        m_lCategories             ;
+   static Media::RecordingModel*  m_spInstance              ;
    RecordingNode*                 m_pText                   ;
    RecordingNode*                 m_pAudioVideo             ;
    LocalTextRecordingCollection*  m_pTextRecordingCollection;
@@ -73,6 +74,8 @@ public:
 private:
    Media::RecordingModel* q_ptr;
 };
+
+Media::RecordingModel* RecordingModelPrivate::m_spInstance = nullptr;
 
 RecordingNode::RecordingNode(RecordingNode::Type type) :
    m_Type(type),m_pParent(nullptr), m_pRec(nullptr), m_Index(-1)
@@ -120,10 +123,11 @@ d_ptr(new RecordingModelPrivate(this))
    });
 }
 
-Media::RecordingModel& Media::RecordingModel::instance()
+Media::RecordingModel* Media::RecordingModel::instance()
 {
-    static auto instance = new RecordingModel(QCoreApplication::instance());
-    return *instance;
+   if (! RecordingModelPrivate::m_spInstance )
+      RecordingModelPrivate::m_spInstance = new RecordingModel(QCoreApplication::instance());
+   return RecordingModelPrivate::m_spInstance;
 }
 
 QHash<int,QByteArray> Media::RecordingModel::roleNames() const

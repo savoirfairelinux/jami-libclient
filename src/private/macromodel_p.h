@@ -49,6 +49,7 @@ public:
    QList<MacroCategory*> m_lCategories           ;
    Macro*                m_pCurrentMacro         ;
    Macro*                m_pCurrentMacroMemento  ;
+   static MacroModel*    m_pInstance             ;
    QList<MacroModel::MacroListener*> m_lListeners;
 
    //Helper

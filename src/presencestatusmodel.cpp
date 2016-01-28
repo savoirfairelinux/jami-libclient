@@ -26,6 +26,9 @@
 #include "globalinstances.h"
 #include "interfaces/presenceserializeri.h"
 
+//Static
+PresenceStatusModel* PresenceStatusModel::m_spInstance = nullptr;
+
 class PresenceStatusModelPrivate
 {
 public:
@@ -237,10 +240,12 @@ void PresenceStatusModel::save()
 }
 
 ///Singleton
-PresenceStatusModel& PresenceStatusModel::instance()
+PresenceStatusModel* PresenceStatusModel::instance()
 {
-    static auto instance = new PresenceStatusModel;
-    return *instance;
+   if (!m_spInstance) {
+      m_spInstance = new PresenceStatusModel();
+   }
+   return m_spInstance;
 }
 
 ///Move idx up
@@ -332,9 +337,9 @@ void PresenceStatusModel::setCurrentIndex  (const QModelIndex& index)
    emit currentNameChanged(d_ptr->m_pCurrentStatus->name);
    emit currentMessageChanged(d_ptr->m_pCurrentStatus->message);
    emit currentStatusChanged(d_ptr->m_pCurrentStatus->status);
-   for (int i=0; i < AccountModel::instance().size(); i++) {
+   for (int i=0; i < AccountModel::instance()->size(); i++) {
       PresenceManager::instance().publish(
-         AccountModel::instance()[i]->id(), d_ptr->m_pCurrentStatus->status,d_ptr->m_pCurrentStatus->message
+         (*AccountModel::instance())[i]->id(), d_ptr->m_pCurrentStatus->status,d_ptr->m_pCurrentStatus->message
       );
    }
 }
