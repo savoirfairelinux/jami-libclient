@@ -556,8 +556,8 @@ void Serializable::Peers::read (const QJsonObject &json)
    for (int i = 0; i < a2.size(); ++i) {
       QJsonObject o = a2[i].toObject();
       Peer* peer = new Peer();
-      m_hSha1[peer->sha1] = peer->m_pContactMethod;
       peer->read(o);
+      m_hSha1[peer->sha1] = peer->m_pContactMethod;
       peers.append(peer);
    }
 
