@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa6b99d7_7d2bd382",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-01-29T18:54:03Z",
+      "side": 1,
+      "message": "actually, its possible to compile on linux with libwrap as well, so we shoulnd\u0027t assume that if the system is linux that we need dbus... maybe check for linux AND check if libwrap is already enabled?",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 43
+      },
+      "revId": "cc5188d0269a2ec1e4febf6cf572808f7c98a975",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
