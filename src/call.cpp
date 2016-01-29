@@ -1197,6 +1197,10 @@ void CallPrivate::setRecordingPath(const QString& path)
 void Call::setPeerName(const QString& name)
 {
    d_ptr->m_PeerName = name;
+
+   // its possible that this is not set at the begining of a call, so we should update the CM here
+   if (peerContactMethod())
+      peerContactMethod()->incrementAlternativeName(name);
 }
 
 ///Set the account (DIALING only, may be ignored)
@@ -1280,7 +1284,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
 
       if (!details[DRing::Call::Details::DISPLAY_NAME].isEmpty()
           and ( details[DRing::Call::Details::DISPLAY_NAME] != m_PeerName) )
-         m_PeerName = details[DRing::Call::Details::DISPLAY_NAME];
+         q_ptr->setPeerName(details[DRing::Call::Details::DISPLAY_NAME]);
 
       //Load the certificate if it's now available
       if (!q_ptr->certificate() && !details[DRing::TlsTransport::TLS_PEER_CERT].isEmpty()) {
