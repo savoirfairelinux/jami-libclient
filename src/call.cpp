@@ -1783,11 +1783,6 @@ void CallPrivate::call()
     }
     setObjectName("Call:"+m_DringId);
 
-    if (PersonModel::instance().hasCollections()) {
-        if (auto contact = peerCM->contact())
-            m_PeerName = contact->formattedName();
-    }
-
     setStartTimeStamp();
     CallModel::instance().registerCall(q_ptr);
 
