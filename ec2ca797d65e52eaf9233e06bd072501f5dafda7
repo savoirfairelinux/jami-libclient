@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa6b99d7_bda96b7d",
+        "filename": "src/localhistorycollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-01T15:14:52Z",
+      "side": 1,
+      "message": "This is bothering me, this is a huge performance siphon especially because it\u0027s called a lot... But i don\u0027t see any viable way of doing it with the actual file \"mess\" we have.",
+      "range": {
+        "startLine": 213,
+        "startChar": 3,
+        "endLine": 215,
+        "endChar": 35
+      },
+      "revId": "ec2ca797d65e52eaf9233e06bd072501f5dafda7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
