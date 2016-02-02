@@ -160,6 +160,7 @@ void Video::SourceModel::switchTo(const int idx)
             .arg(Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString()));
          break;
    };
+   d_ptr->m_CurrentSelection = newIdx;
 }
 
 ///Set the index of the currently used source
