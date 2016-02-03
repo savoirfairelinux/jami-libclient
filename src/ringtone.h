@@ -30,12 +30,12 @@ public:
    virtual ~Ringtone();
 
    //Getter
-   QUrl    path     () const;
+   QString path     () const;
    QString name     () const;
    bool    isPlaying() const;
 
    //Setter
-   void setPath     (const QUrl&    url  );
+   void setPath     (const QString& path );
    void setName     (const QString& name );
    void setIsPlaying(const bool     value);
 
