@@ -75,6 +75,7 @@ public:
    static const Matrix1D< UAM::Action, FlagPack<UAM::Asset>              > availableByAsset          ;
    static const Matrix2D< UAM::Action, Ring::ObjectType          , bool  > availableObjectActions    ;
    static const Matrix1D< UAM::Action, bool(*)(const Person*       )     > personActionAvailability  ;
+   static const Matrix1D< UAM::Action, bool(*)(const Call*         )     > callActionAvailability    ;
    static const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)     > cmActionAvailability      ;
 
    static const Matrix2D< UAM::Action, SelectionState, UAM::ActionStatfulnessLevel > actionStatefulness;
@@ -416,6 +417,36 @@ const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availab
    { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,  false,    true    }}},
    { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,  false,    true    }}},
 };
+
+#define C_CB [](const Call* c) -> bool
+
+/**
+ * Some actions on calls are properties dependent
+ */
+const Matrix1D< UAM::Action, bool(*)(const Call*)> UserActionModelPrivate::callActionAvailability = {
+   { UAMA::ACCEPT            , nullptr                                         },
+   { UAMA::HOLD              , nullptr                                         },
+   { UAMA::MUTE_AUDIO        , nullptr                                         },
+   { UAMA::MUTE_VIDEO        , C_CB {return c->firstMedia<Media::Video>(Media::Media::Direction::OUT);}},
+   { UAMA::SERVER_TRANSFER   , nullptr                                         },
+   { UAMA::RECORD            , nullptr                                         },
+   { UAMA::HANGUP            , nullptr                                         },
+   { UAMA::JOIN              , C_CB {return c->hasParentCall();}               },
+   { UAMA::ADD_NEW           , nullptr                                         },
+   { UAMA::TOGGLE_VIDEO      , nullptr                                         },
+   { UAMA::ADD_CONTACT       , nullptr                                         },
+   { UAMA::ADD_TO_CONTACT    , nullptr                                         },
+   { UAMA::DELETE_CONTACT    , nullptr                                         },
+   { UAMA::EMAIL_CONTACT     , nullptr                                         },
+   { UAMA::COPY_CONTACT      , nullptr                                         },
+   { UAMA::BOOKMARK          , nullptr                                         },
+   { UAMA::VIEW_CHAT_HISTORY , nullptr                                         },
+   { UAMA::ADD_CONTACT_METHOD, nullptr                                         },
+   { UAMA::CALL_CONTACT      , nullptr                                         },
+   { UAMA::EDIT_CONTACT      , nullptr                                         },
+   { UAMA::REMOVE_HISTORY    , nullptr                                         },
+};
+#undef C_C
 
 #define P_CB [](const Person* p) -> bool
 
@@ -811,6 +842,7 @@ bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const 
 
    return (
       availableActionMap        [action] [c->state()             ] &&
+      ((!callActionAvailability[action]) || callActionAvailability[action](c)) &&
       multi_call_options        [action] [m_SelectionState       ] &&
       actionContext             [action] & m_fContext              &&
       updateByAccount(action, a)
