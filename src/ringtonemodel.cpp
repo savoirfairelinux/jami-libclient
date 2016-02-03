@@ -71,8 +71,6 @@ RingtoneModel::RingtoneModel(QObject* parent)
   , CollectionManagerInterface<Ringtone>(this)
   , d_ptr(new RingtoneModelPrivate(this))
 {
-//    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-
    d_ptr->m_pCollection = addCollection<LocalRingtoneCollection>();
 }
 
@@ -173,12 +171,11 @@ Ringtone* RingtoneModel::currentRingTone(Account* a) const
 int RingtoneModelPrivate::currentIndex(Account* a) const
 {
    const QString rt = a->ringtonePath();
-   for (int i=0;i<m_lRingtone.size();i++) {
-      Ringtone* info = m_lRingtone[i];
-      if (info->path().path() == rt)
-         return i;
+   Q_FOREACH(auto info, m_lRingtone) {
+       if (info->path() == rt)
+          return i;
    }
-   return -1;
+   return 0;
 }
 
 QItemSelectionModel* RingtoneModel::selectionModel(Account* a) const
@@ -189,7 +186,7 @@ QItemSelectionModel* RingtoneModel::selectionModel(Account* a) const
 
       connect(d_ptr->m_hSelectionModels[a],&QItemSelectionModel::currentChanged, [a,this](const QModelIndex& idx) {
          if (idx.isValid()) {
-            a->setRingtonePath(d_ptr->m_lRingtone[idx.row()]->path().path());
+            a->setRingtonePath(d_ptr->m_lRingtone[idx.row()]->path());
          }
       });
 
@@ -207,7 +204,7 @@ void RingtoneModel::play(const QModelIndex& idx)
          return;
       }
       CallManagerInterface& callManager = CallManager::instance();
-      Q_NOREPLY callManager.startRecordedFilePlayback(info->path().path());
+      Q_NOREPLY callManager.startRecordedFilePlayback(info->path());
       if (!d_ptr->m_pTimer) {
          d_ptr->m_pTimer = new QTimer(this);
          d_ptr->m_pTimer->setInterval(10000);
@@ -227,7 +224,7 @@ void RingtoneModelPrivate::slotStopTimer()
 {
    if (m_pCurrent) {
       CallManagerInterface& callManager = CallManager::instance();
-      callManager.stopRecordedFilePlayback(m_pCurrent->path().path());
+      callManager.stopRecordedFilePlayback(m_pCurrent->path());
       m_pCurrent->setIsPlaying(false);
       const QModelIndex& idx = q_ptr->index(m_lRingtone.indexOf(m_pCurrent),0);
       emit q_ptr->dataChanged(idx,q_ptr->index(idx.row(),1));
@@ -248,12 +245,12 @@ bool RingtoneModel::addItemCallback(const Ringtone* item)
    d_ptr->m_lRingtone << const_cast<Ringtone*>(item);
    endInsertRows();
 
-   if (Account* a = d_ptr->m_hPendingSelection[item]) {
+   if (auto a = d_ptr->m_hPendingSelection[item]) {
 
       if (auto sm = d_ptr->m_hSelectionModels[a])
          sm->setCurrentIndex(index(rowCount()-1,0), QItemSelectionModel::ClearAndSelect);
       else
-         a->setRingtonePath(item->path().path());
+         a->setRingtonePath(item->path());
 
       d_ptr->m_hPendingSelection[item] = nullptr;
    }
@@ -270,8 +267,8 @@ bool RingtoneModel::removeItemCallback(const Ringtone* item)
 bool RingtoneModel::add(const QUrl& path, Account* autoSelect)
 {
    auto r = new Ringtone(this);
-   r->setPath(path);
-   r->setName(QFile(path.path()).fileName());
+   r->setPath(path.toLocalFile());
+   r->setName(QFile(path.toLocalFile()).fileName());
 
    if (autoSelect)
       d_ptr->m_hPendingSelection[r] = autoSelect;
