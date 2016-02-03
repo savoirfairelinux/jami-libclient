@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QUrl>
+#include <QtCore/QDir>
 
 class RingtonePrivate
 {
@@ -44,7 +45,7 @@ Ringtone::~Ringtone()
    delete d_ptr;
 }
 
-QUrl Ringtone::path() const
+QString Ringtone::path() const
 {
    return d_ptr->m_Path;
 }
@@ -55,9 +56,9 @@ QString Ringtone::name() const
 }
 
 
-void Ringtone::setPath(const QUrl& url)
+void Ringtone::setPath(const QString& path)
 {
-   d_ptr->m_Path = url.path();
+   d_ptr->m_Path = QDir::toNativeSeparators(path);
 }
 
 void Ringtone::setName(const QString& name)

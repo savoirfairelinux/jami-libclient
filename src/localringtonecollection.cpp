@@ -120,15 +120,16 @@ bool LocalRingtoneCollection::load()
 #elif defined(Q_OS_WIN)
    QDir ringtonesDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/ringtones/");
 #elif defined(Q_OS_OSX)
-   QDir ringtonesDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/ringtones/"); //FIXME
+   QDir ringtonesDir(QCoreApplication::applicationDirPath());
+   ringtonesDir.cdUp();
+   ringtonesDir.cd("Resources/ringtones/");
 #endif
 
    if(!ringtonesDir.exists())
       return true;
-
-   const QStringList entries = ringtonesDir.entryList({"*.wav", "*.ul", "*.au", ".mp3", ".flac"}, QDir::Files);
+   const QStringList entries = ringtonesDir.entryList({"*.wav", "*.ul", "*.au", "*.flac"}, QDir::Files);
    for (const QString& item : entries) {
-      QFileInfo fileinfo(ringtonesDir.absolutePath()+item);
+      QFileInfo fileinfo(ringtonesDir.absolutePath()+"/"+item);
       Ringtone* info = new Ringtone();
       info->setPath(fileinfo.absoluteFilePath());
       info->setName(item);
@@ -270,7 +271,7 @@ void Serializable::RingtoneNode::read(const QJsonObject &json)
 
 void Serializable::RingtoneNode::write(QJsonObject& json)
 {
-   json["path"] = ringtone->path().path();
+   json["path"] = ringtone->path();
    json["name"] = ringtone->name();
 }
 
