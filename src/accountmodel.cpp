@@ -27,6 +27,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QMimeData>
+#include <QtCore/QDir>
 
 //Ring daemon
 #include <account_const.h>
@@ -896,6 +897,14 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 
    if (a->isNew() || a->id() != DRing::Account::ProtocolNames::IP2IP)
       d_ptr->enableProtocol(proto);
+
+// Override ringtone path
+#if defined(Q_OS_OSX)
+    QDir ringtonesDir(QCoreApplication::applicationDirPath());
+    ringtonesDir.cdUp();
+    ringtonesDir.cd("Resources/ringtones/");
+    a->setRingtonePath(ringtonesDir.path()+"/default.wav");
+#endif
 
    emit accountAdded(a);
 
