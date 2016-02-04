@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa6b99d7_604a4685",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-04T02:35:52Z",
+      "side": 1,
+      "message": "Are you sure of this one? While AFAIK it\u0027s not implemeted, join/split conference work in both case. I think it would be \"CallModel::instance().rowCount() \u003e 1\"",
+      "revId": "fd81d6067d629bee4f975db880f81ce4c201144b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
