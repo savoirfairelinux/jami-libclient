@@ -446,36 +446,35 @@ void CredentialModelPrivate::save()
    m_EditState = CredentialModel::EditState::READY;
 }
 
-///Reload credentials from DBUS
+///Reload credentials
 void CredentialModelPrivate::reload()
 {
-   if (!m_pAccount->isNew()) {
-      clear();
-      m_EditState = CredentialModel::EditState::LOADING;
+   clear();
+   m_EditState = CredentialModel::EditState::LOADING;
 
-      ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
-      //SIP
-      const VectorMapStringString credentials = configurationManager.getCredentials(m_pAccount->id());
-      for (int i=0; i < credentials.size(); i++) {
-         const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::SIP);
-         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
-         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
-         q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
-      }
-
-      //TURN
-      const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::TURN);
-      const QString usern = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
-      const QString passw = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD  );
-      const QString realm = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
-
-      if (!(usern.isEmpty() && passw.isEmpty() && realm.isEmpty())) {
-         q_ptr->setData(idx, usern, CredentialModel::Role::NAME    );
-         q_ptr->setData(idx, passw, CredentialModel::Role::PASSWORD);
-         q_ptr->setData(idx, realm, CredentialModel::Role::REALM   );
-      }
+   //SIP
+   const VectorMapStringString credentials = configurationManager.getCredentials(m_pAccount->id());
+   for (int i=0; i < credentials.size(); i++) {
+      const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::SIP);
+      q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::USERNAME ],CredentialModel::Role::NAME    );
+      q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::PASSWORD ],CredentialModel::Role::PASSWORD);
+      q_ptr->setData(idx,credentials[i][ DRing::Account::ConfProperties::REALM    ],CredentialModel::Role::REALM   );
    }
+
+   //TURN
+   const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::TURN);
+   const QString usern = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
+   const QString passw = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD  );
+   const QString realm = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
+
+   if (!(usern.isEmpty() && passw.isEmpty() && realm.isEmpty())) {
+      q_ptr->setData(idx, usern, CredentialModel::Role::NAME    );
+      q_ptr->setData(idx, passw, CredentialModel::Role::PASSWORD);
+      q_ptr->setData(idx, realm, CredentialModel::Role::REALM   );
+   }
+
    m_EditState = CredentialModel::EditState::READY;
 }
 
