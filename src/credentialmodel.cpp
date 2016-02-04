@@ -515,20 +515,27 @@ bool CredentialModel::performAction(const CredentialModel::EditAction action)
    return curState != d_ptr->m_EditState;
 }
 
-Credential* CredentialModel::primaryCredential(Credential::Type type) const
+/*
+ * Return the primary credential's set of specified type
+ * @return credential object, new empty one if none existed.
+ */
+Credential* CredentialModel::primaryCredential(Credential::Type type)
 {
    switch(type) {
       case Credential::Type::STUN:
-         if (d_ptr->m_pStunCat && d_ptr->m_pStunCat->m_lChildren.size())
-            return d_ptr->m_pStunCat->m_lChildren.first()->m_pCredential;
+         if (!d_ptr->m_pStunCat || !d_ptr->m_pStunCat->m_lChildren.size())
+            addCredentials(Credential::Type::STUN);
+         return d_ptr->m_pStunCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::TURN:
-         if (d_ptr->m_pTurnCat && d_ptr->m_pTurnCat->m_lChildren.size())
-            return d_ptr->m_pTurnCat->m_lChildren.first()->m_pCredential;
+         if (!d_ptr->m_pTurnCat || !d_ptr->m_pTurnCat->m_lChildren.size())
+            addCredentials(Credential::Type::TURN);
+         return d_ptr->m_pTurnCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::SIP:
-         if (d_ptr->m_pSipCat && d_ptr->m_pSipCat->m_lChildren.size())
-            return d_ptr->m_pSipCat->m_lChildren.first()->m_pCredential;
+         if (!d_ptr->m_pSipCat || !d_ptr->m_pSipCat->m_lChildren.size())
+            addCredentials(Credential::Type::SIP);
+         return d_ptr->m_pSipCat->m_lChildren.first()->m_pCredential;
          break;
       case Credential::Type::COUNT__:
          break;

@@ -87,7 +87,7 @@ public:
    CredentialModel::EditState editState() const;
    QAbstractItemModel* availableTypeModel() const;
    QItemSelectionModel* availableTypeSelectionModel() const;
-   Credential* primaryCredential(Credential::Type type = Credential::Type::SIP) const;
+   Credential* primaryCredential(Credential::Type type = Credential::Type::SIP);
 
    //Operator
    CredentialModel* operator<<(CredentialModel::EditAction& action);
@@ -102,4 +102,3 @@ private:
 Q_DECLARE_METATYPE(CredentialModel*)
 
 CredentialModel* LIB_EXPORT operator<<(CredentialModel* a, CredentialModel::EditAction action);
-
