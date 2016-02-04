@@ -16,6 +16,24 @@
       "revId": "fd81d6067d629bee4f975db880f81ce4c201144b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa6b99d7_e02416c8",
+        "filename": "src/useractionmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-04T15:10:23Z",
+      "side": 1,
+      "message": "You\u0027re right didn\u0027t see if it was implemented. But the hasParentCall was written exactly to know if the call was initiated with the intent to join it in a conference so i\u0027m not really understanding the second part of your comment",
+      "parentUuid": "fa6b99d7_604a4685",
+      "revId": "fd81d6067d629bee4f975db880f81ce4c201144b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
