@@ -72,12 +72,12 @@ public:
 
    //Getter
    bool isAlwaysRecording() const;
-   QUrl recordPath       () const;
+   QString recordPath       () const;
    int  unreadCount      () const;
 
    //Setter
    void setAlwaysRecording( bool        record );
-   void setRecordPath     ( const QUrl& path   );
+   void setRecordPath     ( const QString& path   );
 
    //Mutator
    TextRecording* createTextRecording(const ContactMethod* cm);
