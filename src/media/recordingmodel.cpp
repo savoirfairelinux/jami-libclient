@@ -307,17 +307,17 @@ void Media::RecordingModel::collectionAddedCallback(CollectionInterface* backend
 }
 
 ///Set where the call recordings will be saved
-void Media::RecordingModel::setRecordPath(const QUrl& path)
+void Media::RecordingModel::setRecordPath(const QString& path)
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-   configurationManager.setRecordPath(path.path());
+   configurationManager.setRecordPath(path);
 }
 
 ///Return the path where recordings are going to be saved
-QUrl Media::RecordingModel::recordPath() const
+QString Media::RecordingModel::recordPath() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-   return QUrl(configurationManager.getRecordPath());
+   return configurationManager.getRecordPath();
 }
 
 ///are all calls recorded by default
