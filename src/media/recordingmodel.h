@@ -71,13 +71,13 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
-   bool isAlwaysRecording() const;
-   QUrl recordPath       () const;
-   int  unreadCount      () const;
+   bool     isAlwaysRecording() const;
+   QString  recordPath       () const;
+   int      unreadCount      () const;
 
    //Setter
-   void setAlwaysRecording( bool        record );
-   void setRecordPath     ( const QUrl& path   );
+   void setAlwaysRecording( bool            record );
+   void setRecordPath     ( const QString&  path   );
 
    //Mutator
    TextRecording* createTextRecording(const ContactMethod* cm);
