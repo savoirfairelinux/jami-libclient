@@ -32,12 +32,10 @@ public:
    //Getter
    QString path     () const;
    QString name     () const;
-   bool    isPlaying() const;
 
    //Setter
    void setPath     (const QString& path );
    void setName     (const QString& name );
-   void setIsPlaying(const bool     value);
 
 private:
    RingtonePrivate* d_ptr;

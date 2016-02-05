@@ -28,6 +28,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "account.h"
+#include "accountmodel.h"
 #include "ringtone.h"
 #include <localringtonecollection.h>
 
@@ -46,6 +47,7 @@ public:
    QHash<Account*,QItemSelectionModel*> m_hSelectionModels ;
    LocalRingtoneCollection*             m_pCollection      ;
    QHash<const Ringtone*,Account*>      m_hPendingSelection;
+   bool                                 m_isPlaying        ;
 
    //Helpers
    int currentIndex(Account* a) const;
@@ -72,6 +74,16 @@ RingtoneModel::RingtoneModel(QObject* parent)
   , d_ptr(new RingtoneModelPrivate(this))
 {
    d_ptr->m_pCollection = addCollection<LocalRingtoneCollection>();
+   QObject::connect(AccountModel::instance().selectionModel(),
+                 &QItemSelectionModel::currentChanged,
+                 [=](const QModelIndex &current, const QModelIndex &previous) {
+                     Q_UNUSED(current)
+                    if (d_ptr->m_isPlaying && previous.isValid()) {
+                        auto acc = AccountModel::instance().getAccountByModelIndex(previous);
+                        auto qIdx = d_ptr->m_hSelectionModels[acc]->currentIndex();
+                        play(qIdx);
+                    }
+                 });
 }
 
 RingtoneModel& RingtoneModel::instance()
@@ -96,10 +108,14 @@ QHash<int,QByteArray> RingtoneModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles[Role::IsPlaying ] = "IsPlaying";
       roles[Role::FullPath  ] = "FullPath";
    }
    return roles;
+}
+
+bool RingtoneModel::isPlaying()
+{
+    return d_ptr->m_isPlaying;
 }
 
 QVariant RingtoneModel::data( const QModelIndex& index, int role ) const
@@ -112,8 +128,6 @@ QVariant RingtoneModel::data( const QModelIndex& index, int role ) const
          switch (role) {
             case Qt::DisplayRole:
                return info->name();
-            case Role::IsPlaying:
-               return info->isPlaying();
             case Role::FullPath:
                return info->path();
          };
@@ -215,7 +229,7 @@ void RingtoneModel::play(const QModelIndex& idx)
          d_ptr->m_pTimer->stop();
       }
       d_ptr->m_pTimer->start();
-      info->setIsPlaying(true);
+      d_ptr->m_isPlaying = true;
       emit dataChanged(index(idx.row(),0),index(idx.row(),1));
       d_ptr->m_pCurrent = info;
    }
@@ -226,7 +240,7 @@ void RingtoneModelPrivate::slotStopTimer()
    if (m_pCurrent) {
       CallManagerInterface& callManager = CallManager::instance();
       callManager.stopRecordedFilePlayback(m_pCurrent->path());
-      m_pCurrent->setIsPlaying(false);
+      m_isPlaying = false;
       const QModelIndex& idx = q_ptr->index(m_lRingtone.indexOf(m_pCurrent),0);
       emit q_ptr->dataChanged(idx,q_ptr->index(idx.row(),1));
       m_pCurrent = nullptr;
