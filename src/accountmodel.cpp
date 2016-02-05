@@ -237,6 +237,11 @@ QItemSelectionModel* AccountModel::selectionModel() const
    return d_ptr->m_pSelectionModel;
 }
 
+Account* AccountModel::selectedAccount() const
+{
+    return AccountModel::instance().getAccountByModelIndex(d_ptr->m_pSelectionModel->currentIndex());
+}
+
 /**
  * The client have a different point of view when it come to the account
  * state. All the different errors are also handled elsewhere

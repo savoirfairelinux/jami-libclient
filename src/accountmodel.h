@@ -80,6 +80,7 @@ public:
    bool                 isIP2IPSupported            (                                      ) const;
    bool                 isRingSupported             (                                      ) const;
    EditState            editState                   (                                      ) const;
+   Account*             selectedAccount             (                                      ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
 
@@ -156,4 +157,3 @@ Q_SIGNALS:
    void editStateChanged(const EditState state, const EditState previous) const;
 };
 Q_DECLARE_METATYPE(AccountModel*)
-
