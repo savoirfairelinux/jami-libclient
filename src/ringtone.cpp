@@ -27,10 +27,9 @@ public:
    RingtonePrivate();
    QString m_Path;
    QString m_Name;
-   bool    m_IsPlaying;
 };
 
-RingtonePrivate::RingtonePrivate() : m_IsPlaying(false)
+RingtonePrivate::RingtonePrivate()
 {
 
 }
@@ -55,7 +54,6 @@ QString Ringtone::name() const
    return d_ptr->m_Name;
 }
 
-
 void Ringtone::setPath(const QString& path)
 {
    d_ptr->m_Path = QDir::toNativeSeparators(path);
@@ -64,14 +62,4 @@ void Ringtone::setPath(const QString& path)
 void Ringtone::setName(const QString& name)
 {
    d_ptr->m_Name = name;
-}
-
-bool Ringtone::isPlaying() const
-{
-   return d_ptr->m_IsPlaying;
-}
-
-void Ringtone::setIsPlaying(const bool value)
-{
-   d_ptr->m_IsPlaying = value;
 }

@@ -37,8 +37,7 @@ class LIB_EXPORT RingtoneModel : public QAbstractTableModel, public CollectionMa
 public:
 
    enum Role {
-      IsPlaying = 100,
-      FullPath  = 101,
+      FullPath  = 100,
    };
 
    virtual ~RingtoneModel();
@@ -54,6 +53,7 @@ public:
    //Getters
    Ringtone* currentRingTone(Account* a) const;
    QItemSelectionModel* selectionModel(Account* a) const;
+   bool isPlaying();
 
    //Mutator
    void play(const QModelIndex& index);
