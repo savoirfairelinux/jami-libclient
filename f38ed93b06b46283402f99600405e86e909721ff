@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fa6b99d7_e9a2c199",
+        "filename": "src/media/recordingmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-08T15:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa6b99d7_2958b9f9",
+      "revId": "f38ed93b06b46283402f99600405e86e909721ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa6b99d7_495dede8",
         "filename": "src/media/recordingmodel.h",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2016-02-05T21:37:01Z",
       "side": 1,
       "message": "Idem",
+      "revId": "f38ed93b06b46283402f99600405e86e909721ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa6b99d7_09a0558f",
+        "filename": "src/media/recordingmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-08T15:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa6b99d7_495dede8",
       "revId": "f38ed93b06b46283402f99600405e86e909721ff",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
