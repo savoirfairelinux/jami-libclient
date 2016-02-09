@@ -1099,8 +1099,13 @@ bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
     //Always show the top nodes;
-    if (!source_parent.isValid())
+    if (!source_parent.isValid() && filterRegExp().isEmpty())
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+    else if (!source_parent.isValid()) {
+        auto idx = sourceModel()->index(source_row, 0);
+        return idx.data(static_cast<int>(Ring::Role::Name)).toString().contains(filterRegExp()) ||
+                idx.data(static_cast<int>(Ring::Role::Number)).toString().contains(filterRegExp());
+    }
     //in the case of children, only show if there is more than one unless it is a conference
     if (static_cast<RecentModel *>(sourceModel())->isConference(source_parent)
         || sourceModel()->rowCount(source_parent) > 1 )
