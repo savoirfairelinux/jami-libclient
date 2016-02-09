@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa6b99d7_09093531",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-09T18:36:00Z",
+      "side": 1,
+      "message": "i think more soething like : libringclient is a client library for Ring. Official API is the daemon API",
+      "range": {
+        "startLine": 3,
+        "startChar": 21,
+        "endLine": 3,
+        "endChar": 33
+      },
+      "revId": "3f1d514c9b0e1d0382f108e7943d535db4a27d04",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
