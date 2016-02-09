@@ -98,11 +98,6 @@ public:
 protected:
     virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
 
-public Q_SLOTS:
-    void slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                                const QModelIndex & destinationParent, int destinationRow);
-    void slotRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                       const QModelIndex & destinationParent, int destinationRow);
 };
 
 class RecentModelPrivate : public QObject
@@ -1116,22 +1111,52 @@ RecentModel::peopleProxy() const
 PeopleProxy::PeopleProxy(RecentModel* sourceModel)
 {
     setSourceModel(sourceModel);
-
-    // forward the rowsAboutToBeMoved and rowsMoved signals from the source model
-    // this is needed for the OSX and GNOME clients because they do not handle the layoutChanged
-    // signal which is emited by the QSortFilterProxyModel when rows are moved in the source model
-#ifndef Q_OS_WIN
-    connect(sourceModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &PeopleProxy::slotRowsAboutToBeMoved);
-    connect(sourceModel, &QAbstractItemModel::rowsMoved, this, &PeopleProxy::slotRowsMoved);
-#endif
 }
 
 bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
-    //Always show the top nodes;
-    if (!source_parent.isValid())
+    //we filter only on top nodes
+    if (!source_parent.isValid() && filterRegExp().isEmpty())
         return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+    else if (!source_parent.isValid()) {
+        auto idx = sourceModel()->index(source_row, 0);
+
+        //we want to filter on name and number; note that Person object may have many numbers
+        if (idx.data(static_cast<int>(Ring::Role::Name)).toString().contains(filterRegExp())) {
+            return true;
+        } else {
+            auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
+            auto object = idx.data(static_cast<int>(Ring::Role::Object));
+
+            switch (type) {
+                case Ring::ObjectType::Person:
+                {
+                    auto p = object.value<Person *>();
+                    for (auto cm : p->phoneNumbers()) {
+                        if (cm->uri().full().contains(filterRegExp()))
+                            return true;
+                    }
+                    return false;
+                }
+                break;
+                case Ring::ObjectType::ContactMethod:
+                {
+                    auto cm = object.value<ContactMethod *>();
+                    return cm->uri().full().contains(filterRegExp());
+                }
+                break;
+                // top nodes are only of type Person or ContactMethod
+                case Ring::ObjectType::Call:
+                case Ring::ObjectType::Media:
+                case Ring::ObjectType::Certificate:
+                case Ring::ObjectType::COUNT__:
+                break;
+            }
+
+        }
+        return false; // no matches
+    }
     //in the case of children, only show if there is more than one unless it is a conference
     if (static_cast<RecentModel *>(sourceModel())->isConference(source_parent)
         || sourceModel()->rowCount(source_parent) > 1 )
@@ -1163,30 +1188,6 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     }
 
     return sourceModel()->data(indexSource, role);
-}
-
-void
-PeopleProxy::slotRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd,
-                                    const QModelIndex & destinationParent, int destinationRow)
-{
-    const auto proxySourceParent = mapFromSource(sourceParent);
-    const auto proxyDestinationParent = mapFromSource(destinationParent);
-
-    // since the PeopleProxy doesn't do any sorting or filtering on the top nodes and they are the
-    // only ones being moved, we can assume the row numbers stay the same
-    beginMoveRows(proxySourceParent, sourceStart, sourceEnd, proxyDestinationParent, destinationRow);
-}
-
-void
-PeopleProxy::slotRowsMoved(const QModelIndex & parent, int start, int end,
-                           const QModelIndex & destination, int row)
-{
-    Q_UNUSED(parent)
-    Q_UNUSED(start)
-    Q_UNUSED(end)
-    Q_UNUSED(destination)
-    Q_UNUSED(row)
-    endMoveRows();
 }
 
 #include <recentmodel.moc>
