@@ -54,6 +54,7 @@ public:
       setObjectName("ConfigurationManagerInterface");
       using DRing::exportable_callback;
       using DRing::ConfigurationSignal;
+      using DRing::AudioSignal;
 
       setObjectName("ConfigurationManagerInterface");
       confHandlers = {
@@ -135,6 +136,13 @@ public:
                [this] (const std::string& account_id) {
                      QTimer::singleShot(0, [this, account_id] {
                            Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
+                     });
+         }),
+
+         exportable_callback<AudioSignal::DeviceEvent>(
+               [this] () {
+                     QTimer::singleShot(0, [this] {
+                           Q_EMIT this->audioDeviceEvent();
                      });
          }),
       };
@@ -625,6 +633,7 @@ Q_SIGNALS: // SIGNALS
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString, QString>& payloads);
    void mediaParametersChanged(const QString& accountId);
+   void audioDeviceEvent();
 
 };
 
