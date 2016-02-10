@@ -54,6 +54,7 @@ public:
       setObjectName("ConfigurationManagerInterface");
       using DRing::exportable_callback;
       using DRing::ConfigurationSignal;
+      using DRing::AudioSignal;
 
       setObjectName("ConfigurationManagerInterface");
       confHandlers = {
@@ -102,39 +103,40 @@ public:
                            Q_EMIT this->certificateExpired(QString(certId.c_str()));
                      });
          }),
-
          exportable_callback<ConfigurationSignal::CertificatePinned>(
                [this] (const std::string &certId) {
                      QTimer::singleShot(0, [this, certId] {
                            Q_EMIT this->certificatePinned(QString(certId.c_str()));
                      });
          }),
-
          exportable_callback<ConfigurationSignal::CertificatePathPinned>(
                [this] (const std::string &certPath, const std::vector<std::string>& list) {
                      QTimer::singleShot(0, [this, certPath, list] {
                            Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
                      });
          }),
-
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
                      QTimer::singleShot(0, [this, certId,accountId,payload,timestamp] {
                            Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
                      });
          }),
-
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
                      QTimer::singleShot(0, [this, account_id,from,payloads] {
                            Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads));
                      });
          }),
-
          exportable_callback<ConfigurationSignal::MediaParametersChanged>(
                [this] (const std::string& account_id) {
                      QTimer::singleShot(0, [this, account_id] {
                            Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
+                     });
+         }),
+         exportable_callback<AudioSignal::DeviceEvent>(
+               [this] () {
+                     QTimer::singleShot(0, [this] {
+                           Q_EMIT this->audioDeviceEvent();
                      });
          }),
       };
@@ -625,6 +627,7 @@ Q_SIGNALS: // SIGNALS
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString, QString>& payloads);
    void mediaParametersChanged(const QString& accountId);
+   void audioDeviceEvent();
 
 };
 
