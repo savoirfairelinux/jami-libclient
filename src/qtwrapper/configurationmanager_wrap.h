@@ -433,6 +433,16 @@ public Q_SLOTS: // METHODS
       DRing::removeAccount(accountID.toStdString());
    }
 
+   void exportAccounts(const QStringList& accountIDs, const QString& dirPath, const QString& password)
+   {
+      DRing::exportAccounts(convertStringList(accountIDs), dirPath.toStdString(), password.toStdString());
+   }
+
+   void importAccounts(const QString& filePath, const QString& password)
+   {
+      DRing::importAccounts(filePath.toStdString(), password.toStdString());
+   }
+
    void sendRegister(const QString& accountID, bool enable)
    {
       DRing::sendRegister(accountID.toStdString(), enable);
