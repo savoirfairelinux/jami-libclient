@@ -103,6 +103,8 @@ public:
    void                 remove   ( const QModelIndex& index                                                       );
    void                 save     (                                                                                );
    Q_INVOKABLE void     cancel   (                                                                                );
+   int                  exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password);
+   int                  importAccounts(const QString& filePath, const QString& password);
 
    //Operators
    Account*       operator[] (int               i)      ;

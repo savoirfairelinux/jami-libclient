@@ -511,6 +511,18 @@ void AccountModel::save()
    d_ptr->m_lDeletedAccounts.clear();
 }
 
+int AccountModel::exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password)
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    return configurationManager.exportAccounts(accountIDs, filePath, password);
+}
+
+int AccountModel::importAccounts(const QString& filePath, const QString& password)
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    return configurationManager.importAccounts(filePath, password);
+}
+
 ///Move account up
 bool AccountModel::moveUp()
 {
