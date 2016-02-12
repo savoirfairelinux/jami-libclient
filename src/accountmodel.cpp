@@ -27,6 +27,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QMimeData>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QDir>
 
 //Ring daemon
@@ -509,6 +510,18 @@ void AccountModel::save()
       order += d_ptr->m_lAccounts[i]->id() + '/';
    configurationManager.setAccountsOrder(order);
    d_ptr->m_lDeletedAccounts.clear();
+}
+
+void AccountModel::exportAccounts(const QStringList& accountIDs, const QString& dirPath, const QString& password)
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    configurationManager.exportAccounts(accountIDs, dirPath, password);
+}
+
+void AccountModel::importAccounts(const QString& filePath, const QString& password)
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    configurationManager.importAccounts(filePath, password);
 }
 
 ///Move account up
