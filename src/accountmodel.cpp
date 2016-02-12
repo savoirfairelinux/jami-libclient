@@ -27,7 +27,9 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QMimeData>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QDir>
+#include <QtCore/QThread>
 
 //Ring daemon
 #include <account_const.h>
@@ -509,6 +511,55 @@ void AccountModel::save()
       order += d_ptr->m_lAccounts[i]->id() + '/';
    configurationManager.setAccountsOrder(order);
    d_ptr->m_lDeletedAccounts.clear();
+}
+
+class TestThread : public QThread
+{
+    QStringList _accountIDs;
+    QString _filePath;
+    QString _password;
+Q_OBJECT
+public:
+
+    TestThread(const QStringList accountIDs, const QString filePath, const QString password) : QThread(QCoreApplication::instance()),
+    _filePath(filePath), _password(password)
+    {
+        _accountIDs = QStringList(accountIDs);
+        qDebug()<<"From worker thread: "<< _accountIDs;
+
+    }
+
+    Q_SIGNALS:
+       void exportFinish(int statusCode, QString filePath);
+
+private:
+    void run()
+    {
+        qDebug()<<"From worker thread: "<< currentThreadId();
+        ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+        int status = configurationManager.exportAccounts(_accountIDs, _filePath, _password);
+        emit exportFinish(status, _filePath);
+    }
+};
+
+void AccountModel::exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password)
+{
+    test = new TestThread(accountIDs, filePath, password);
+    QObject::connect(test, &TestThread::exportFinish, this, &AccountModel::exportFinished);
+    test->start();
+}
+
+void AccountModel::exportFinished(int statusCode, QString filepath)
+{
+    qDebug()<<"exportFinished: " << statusCode << filepath;
+    emit exportComplete(statusCode,filepath);
+}
+
+
+void AccountModel::importAccounts(const QString& filePath, const QString& password)
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    configurationManager.importAccounts(filePath, password);
 }
 
 ///Move account up

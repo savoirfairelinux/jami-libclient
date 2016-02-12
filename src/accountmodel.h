@@ -26,6 +26,7 @@
 #include "typedefs.h"
 
 class TrustRequest;
+class TestThread;
 
 //Private
 class AccountModelPrivate;
@@ -103,6 +104,8 @@ public:
    void                 remove   ( const QModelIndex& index                                                       );
    void                 save     (                                                                                );
    Q_INVOKABLE void     cancel   (                                                                                );
+   void                 exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password);
+   void                 importAccounts(const QString& filePath, const QString& password);
 
    //Operators
    Account*       operator[] (int               i)      ;
@@ -114,6 +117,7 @@ private:
    explicit AccountModel ();
    virtual  ~AccountModel();
 
+   TestThread* test;
    //Helpers
    void add(Account* acc);
 
@@ -127,6 +131,9 @@ public Q_SLOTS:
    bool moveUp             ();
    bool moveDown           ();
 
+
+private Q_SLOTS:
+   void exportFinished(int statusCode, QString filePath);
 
 Q_SIGNALS:
    ///The account list changed
@@ -155,5 +162,7 @@ Q_SIGNALS:
    void accountEditStateChanged(Account* account, const Account::EditState state, const Account::EditState prev);
    ///The global AccountModel edit state changed
    void editStateChanged(const EditState state, const EditState previous) const;
+   void exportComplete(const int status, const QString filepath) const;
+
 };
 Q_DECLARE_METATYPE(AccountModel*)
