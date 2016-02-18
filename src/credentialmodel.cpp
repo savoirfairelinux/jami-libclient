@@ -434,7 +434,7 @@ void CredentialModelPrivate::save()
 
    //TURN creds
    if (m_pTurnCat) {
-      foreach (CredentialNode* n, m_pSipCat->m_lChildren) {
+      foreach (CredentialNode* n, m_pTurnCat->m_lChildren) {
          Credential* cred = n->m_pCredential;
 
          m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME , cred->username());
