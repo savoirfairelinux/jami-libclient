@@ -80,6 +80,9 @@ LocalHistoryCollection::~LocalHistoryCollection()
 
 void LocalHistoryEditor::saveCall(QTextStream& stream, const Call* call)
 {
+   if (!CategorizedHistoryModel::instance().isHistoryEnabled())
+      return;
+
    stream.setCodec("UTF-8");
    const QString direction = (call->direction()==Call::Direction::INCOMING)?
       Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
@@ -209,6 +212,9 @@ bool LocalHistoryCollection::isEnabled() const
 
 bool LocalHistoryCollection::load()
 {
+   if (!CategorizedHistoryModel::instance().isHistoryEnabled())
+      return false;
+
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
       QMap<QString,QString> hc;
@@ -218,7 +224,10 @@ bool LocalHistoryCollection::load()
          lines << file.readLine().trimmed();
       file.close();
 
-      int dayLimit = CategorizedHistoryModel::instance().historyLimit() * 24 * 3600;
+      const bool      isEnabled = CategorizedHistoryModel::instance().isHistoryEnabled();
+      const bool      isLimited = CategorizedHistoryModel::instance().isHistoryLimited();
+      const long long dayLimit  = CategorizedHistoryModel::instance().historyLimit() * 24 * 3600;
+
       time_t now = time(0); // get time now
 
       for (const QString& line : lines) {
@@ -226,7 +235,7 @@ bool LocalHistoryCollection::load()
          if ((line.isEmpty() || !line.size()) && hc.size()) {
             Call* pastCall = Call::buildHistoryCall(hc);
 
-            if ((now - pastCall->startTimeStamp()) < dayLimit) {
+            if (isEnabled && ( !isLimited || ( (now - pastCall->startTimeStamp()) < dayLimit) ) ) {
                pastCall->setCollection(this);
                editor<Call>()->addExisting(pastCall);
             }

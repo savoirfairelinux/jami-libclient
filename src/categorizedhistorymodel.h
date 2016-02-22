@@ -53,6 +53,8 @@ public:
 
    //Properties
    Q_PROPERTY(bool hasCollections   READ hasCollections  )
+   Q_PROPERTY(bool historyEnabled   READ isHistoryEnabled WRITE setHistoryEnabled)
+   Q_PROPERTY(bool historyLimited   READ isHistoryLimited WRITE setHistoryLimited)
 
    //Singleton
    static CategorizedHistoryModel& instance();
@@ -60,6 +62,7 @@ public:
    //Getters
    int  acceptedPayloadTypes       () const;
    bool isHistoryLimited           () const;
+   bool isHistoryEnabled           () const;
    int  historyLimit               () const;
    const CallMap getHistoryCalls   () const;
 
@@ -70,6 +73,7 @@ public:
    void setCategoryRole(int role);
    void setHistoryLimited(bool isLimited);
    void setHistoryLimit(int numberOfDays);
+   void setHistoryEnabled(bool isEnabled);
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
@@ -120,4 +124,3 @@ Q_SIGNALS:
    ///Emitted when a new item is added to prevent full reload
    void newHistoryCall          ( Call* call );
 };
-
