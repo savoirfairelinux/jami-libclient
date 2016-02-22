@@ -293,6 +293,7 @@ SET( libringclient_LIB_SRCS
   src/dbus/instancemanager.cpp
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
+  src/dbus/datatransfermanager.cpp
 
   #Default interface implementations
   src/globalinstances.cpp
@@ -586,6 +587,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
       src/qtwrapper/instancemanager_wrap.h
       src/qtwrapper/presencemanager_wrap.h
       src/qtwrapper/videomanager_wrap.h
+      src/qtwrapper/datatransfermanager_wrap.h
    )
 ENDIF()
 

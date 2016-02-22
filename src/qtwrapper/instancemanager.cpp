@@ -21,6 +21,7 @@
 #include "callmanager.h"
 #include "presencemanager.h"
 #include "configurationmanager.h"
+#include "datatransfermanager.h"
 #ifdef ENABLE_VIDEO
  #include "videomanager.h"
 #endif //ENABLE_VIDEO
@@ -38,6 +39,7 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
    using DRing::CallSignal;
    using DRing::ConfigurationSignal;
    using DRing::PresenceSignal;
+   using DRing::DataTransferSignal;
 
 #ifdef ENABLE_VIDEO
    using DRing::VideoSignal;
@@ -62,6 +64,7 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
    registerCallHandlers(CallManager::instance().callHandlers);
    registerConfHandlers(ConfigurationManager::instance().confHandlers);
    registerPresHandlers(PresenceManager::instance().presHandlers);
+   registerDataXferHandlers(DataTransferManager::instance().dataHandlers);
 #ifdef ENABLE_VIDEO
    registerVideoHandlers(VideoManager::instance().videoHandlers);
 #endif
