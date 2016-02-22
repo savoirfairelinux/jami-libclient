@@ -41,11 +41,15 @@ public:
    std::function<bool(ItemBase*)>  m_fSave      ;
    std::function<bool(ItemBase*)>  m_fEdit      ;
    std::function<bool(ItemBase*)>  m_fRemove    ;
-   std::function<int()                   >  m_fSize      ;
+   std::function<int()          >  m_fSize      ;
+   std::function<void()         >  m_fDestruct  ;
 
    std::function<CollectionConfigurationInterface*()> m_fConfigurator;
 };
 
+/**
+ * The collection from now on take ownership of the editor
+ */
 template<typename T>
 CollectionInterface::CollectionInterface(CollectionEditor<T>* editor, CollectionInterface* parent) :
 d_ptr(new CollectionInterfacePrivateT())
@@ -71,6 +75,9 @@ d_ptr(new CollectionInterfacePrivateT())
    };
    d_ptr->m_fSize = [editor]()->int {
       return editor?editor->items().size() : 0;
+   };
+   d_ptr->m_fDestruct = [editor]() {
+      delete editor;
    };
 }
 

@@ -41,9 +41,11 @@
 #include "media/textrecording.h"
 #include "mime.h"
 
-class AddressPrivate
+class AddressPrivate final
 {
 public:
+   ~AddressPrivate() {}
+
    QString addressLine;
    QString city;
    QString zipCode;
@@ -55,6 +57,11 @@ public:
 Person::Address::Address() : d_ptr(new AddressPrivate())
 {
 
+}
+
+Person::Address::~Address()
+{
+   //delete d_ptr; //FIXME ASAN doesn't like for some reasons, but also report a leak
 }
 
 QString Person::Address::addressLine() const

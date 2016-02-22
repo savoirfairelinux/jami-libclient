@@ -35,7 +35,8 @@ class CollectionModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
-   CollectionModelPrivate(CollectionModel* parent);
+   explicit CollectionModelPrivate(CollectionModel* parent);
+   virtual ~CollectionModelPrivate();
 
    /*
     * This is not very efficient, it doesn't really have to be given the low
@@ -44,6 +45,7 @@ public:
     */
    struct ProxyItem {
       ProxyItem() : parent(nullptr),col(0),row(0),collection(nullptr),manageableCount(0){}
+      virtual ~ProxyItem();
       int row;
       int col;
       CollectionInterface* collection;
