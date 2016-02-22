@@ -213,6 +213,7 @@ SET( libringclient_LIB_SRCS
   src/video/device.cpp
   src/video/renderer.cpp
   src/certificate.cpp
+  src/transfer.cpp
   src/securityflaw.cpp
   src/ringtone.cpp
   src/trustrequest.cpp
@@ -253,6 +254,7 @@ SET( libringclient_LIB_SRCS
   src/collectionextensionmodel.cpp
   src/collectionmanagerinterface.cpp
   src/networkinterfacemodel.cpp
+  src/filetransfermodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
   src/accountstatusmodel.cpp
@@ -369,6 +371,7 @@ SET( libringclient_LIB_HDRS
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
+  src/transfer.h
   src/personmodel.h
   src/transitionalpersonbackend.h
   src/collectionmodel.h
@@ -386,6 +389,7 @@ SET( libringclient_LIB_HDRS
   src/collectionmanagerinterface.h
   src/collectionmanagerinterface.hpp
   src/networkinterfacemodel.h
+  src/filetransfermodel.h
   src/certificatemodel.h
   src/ciphermodel.h
   src/accountstatusmodel.h
@@ -572,6 +576,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/securityflaw_p.h
    src/private/macromodel_p.h
    src/private/person_p.h
+   src/private/transfer_p.h
    src/collectioncreationinterface.h
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
