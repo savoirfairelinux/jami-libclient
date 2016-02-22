@@ -80,6 +80,8 @@ void CollectionInterface::init()
 ///Destructor
 CollectionInterface::~CollectionInterface()
 {
+   d_ptr->m_fDestruct();
+   delete d_ptr2;
    delete d_ptr;
 }
 

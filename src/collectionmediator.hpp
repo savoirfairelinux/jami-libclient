@@ -35,6 +35,12 @@ CollectionMediator<T>::CollectionMediator(CollectionManagerInterface<T>* parentM
 }
 
 template<typename T>
+CollectionMediator<T>::~CollectionMediator()
+{
+   delete d_ptr;
+}
+
+template<typename T>
 bool CollectionMediator<T>::addItem(const T* item)
 {
    QMutexLocker l(&d_ptr->m_pParent->m_InsertionMutex);

@@ -124,6 +124,8 @@ struct Node final
 
    virtual ~Node() {
       QObject::disconnect(m_ChangedConn);
+      foreach( Node* n, children)
+         delete n;
    }
 
    enum class Type : bool {

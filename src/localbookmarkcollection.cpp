@@ -80,7 +80,7 @@ public:
 constexpr const char LocalBookmarkCollectionPrivate::FILENAME[];
 
 LocalBookmarkCollection::LocalBookmarkCollection(CollectionMediator<ContactMethod>* mediator) :
-   CollectionInterface(new LocalBookmarkEditor(mediator))
+   CollectionInterface(new LocalBookmarkEditor(mediator)), d_ptr(new LocalBookmarkCollectionPrivate())
 {
    load();
 }
