@@ -293,6 +293,7 @@ SET( libringclient_LIB_SRCS
   src/dbus/instancemanager.cpp
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
+  src/dbus/datatransfermanager.cpp
 
   #Default interface implementations
   src/globalinstances.cpp
@@ -326,6 +327,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
 ELSE()
    SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
       src/private/shmrenderer.cpp
+      src/dbus/datatransferdbusmanager.cpp
    )
 ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
@@ -555,6 +557,22 @@ ELSE()
       instance_dbus_interface
    )
 
+   # data transfer dbus interface
+   SET ( datatransfer_xml  ${dbus_xml_introspecs_path}/datatransfer-introspec.xml )
+
+   SET_SOURCE_FILES_PROPERTIES(
+      ${datatransfer_xml}
+      PROPERTIES
+      CLASSNAME DataTransferManagerDBusInterface
+      INCLUDE ${dbus_metatype_path}
+   )
+
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${datatransfer_xml}
+      datatransfer_dbus_interface
+   )
+
 ENDIF()
 
 # Manually wrap private files and interfaces
@@ -586,6 +604,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
       src/qtwrapper/instancemanager_wrap.h
       src/qtwrapper/presencemanager_wrap.h
       src/qtwrapper/videomanager_wrap.h
+      src/qtwrapper/datatransfermanager_wrap.h
    )
 ENDIF()
 
