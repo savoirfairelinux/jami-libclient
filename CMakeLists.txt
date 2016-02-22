@@ -253,6 +253,7 @@ SET( libringclient_LIB_SRCS
   src/collectionextensionmodel.cpp
   src/collectionmanagerinterface.cpp
   src/networkinterfacemodel.cpp
+  src/filetransfermodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
   src/accountstatusmodel.cpp
@@ -386,6 +387,7 @@ SET( libringclient_LIB_HDRS
   src/collectionmanagerinterface.h
   src/collectionmanagerinterface.hpp
   src/networkinterfacemodel.h
+  src/filetransfermodel.h
   src/certificatemodel.h
   src/ciphermodel.h
   src/accountstatusmodel.h
