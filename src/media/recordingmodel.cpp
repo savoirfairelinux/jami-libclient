@@ -31,8 +31,9 @@
 //DRing
 #include "dbus/configurationmanager.h"
 
-struct RecordingNode
+struct RecordingNode final
 {
+   ~RecordingNode();
 
    enum class Type {
       TOP_LEVEL,
@@ -52,16 +53,17 @@ struct RecordingNode
 
 };
 
-class RecordingModelPrivate : public QObject
+class RecordingModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
-   RecordingModelPrivate(Media::RecordingModel* parent);
+   explicit RecordingModelPrivate(Media::RecordingModel* parent);
+   ~RecordingModelPrivate();
 
    //Attributes
    QVector<RecordingNode*>        m_lCategories             ;
-   RecordingNode*                 m_pText                   ;
-   RecordingNode*                 m_pAudioVideo             ;
+   RecordingNode*                 m_pText          {nullptr};
+   RecordingNode*                 m_pAudioVideo    {nullptr};
    LocalTextRecordingCollection*  m_pTextRecordingCollection;
    int                            m_UnreadCount             ;
 
@@ -80,10 +82,28 @@ RecordingNode::RecordingNode(RecordingNode::Type type) :
 
 }
 
+RecordingNode::~RecordingNode()
+{
+   foreach(RecordingNode* c, m_lChildren)
+      delete c;
+}
+
 RecordingModelPrivate::RecordingModelPrivate(Media::RecordingModel* parent) : q_ptr(parent),m_pText(nullptr),
 m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 {
 
+}
+
+RecordingModelPrivate::~RecordingModelPrivate()
+{
+   if (m_pTextRecordingCollection)
+      delete m_pTextRecordingCollection;
+
+   if (m_pText)
+      delete m_pText;
+
+   if (m_pAudioVideo)
+      delete m_pAudioVideo;
 }
 
 void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)

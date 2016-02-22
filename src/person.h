@@ -69,7 +69,8 @@ public:
    ///Represent the physical address of a contact
    class Address {
       public:
-         Address();
+         explicit Address();
+         virtual ~Address();
 
          //Getters
          QString addressLine() const;
