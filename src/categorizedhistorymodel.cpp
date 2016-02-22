@@ -62,7 +62,7 @@ public:
    QVector<HistoryNode*>        m_lCategoryCounter ;
    QHash<int,HistoryNode*>      m_hCategories      ;
    QHash<QString,HistoryNode*>  m_hCategoryByName  ;
-   SortingCategory::ModelTuple* m_pSortedProxy     ;
+   SortingCategory::ModelTuple* m_pSortedProxy {nullptr};
    int                          m_Role             ;
    QStringList                  m_lMimes           ;
    CategorizedHistoryModel::SortedProxy m_pProxies;
@@ -128,6 +128,9 @@ CategorizedHistoryModel::~CategorizedHistoryModel()
 
       delete item;
    }
+
+   if (d_ptr->m_pSortedProxy)
+      delete d_ptr->m_pSortedProxy;
 }
 
 QHash<int,QByteArray> CategorizedHistoryModel::roleNames() const

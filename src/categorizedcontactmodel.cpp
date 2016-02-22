@@ -99,7 +99,7 @@ public:
    bool                                 m_SortAlphabetical ;
    QString                              m_DefaultCategory  ;
    bool                                 m_UnreachableHidden;
-   SortingCategory::ModelTuple*         m_pSortedProxy     ;
+   SortingCategory::ModelTuple*         m_pSortedProxy {nullptr};
    CategorizedContactModel::SortedProxy m_pProxies         ;
 
    //Helper
@@ -260,6 +260,9 @@ CategorizedContactModel::~CategorizedContactModel()
    foreach(ContactTreeNode* item,d_ptr->m_lCategoryCounter) {
       delete item;
    }
+
+   if (d_ptr->m_pSortedProxy)
+      delete d_ptr->m_pSortedProxy;
 }
 
 CategorizedContactModel& CategorizedContactModel::instance()

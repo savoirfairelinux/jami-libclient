@@ -39,6 +39,7 @@ template<typename T>
 class LIB_EXPORT CollectionMediator {
 public:
    CollectionMediator(CollectionManagerInterface<T>* parentManager, QAbstractItemModel* m);
+   virtual ~CollectionMediator();
    bool addItem   (const T* item);
    bool removeItem(const T* item);
 

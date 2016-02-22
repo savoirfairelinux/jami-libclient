@@ -42,6 +42,17 @@ CollectionModelPrivate::CollectionModelPrivate(CollectionModel* parent) : QObjec
 m_pManageableProxy(nullptr),m_NewCollectionMutex(QMutex::Recursive)
 {}
 
+
+CollectionModelPrivate::~CollectionModelPrivate()
+{
+}
+
+CollectionModelPrivate::ProxyItem::~ProxyItem()
+{
+   foreach(ProxyItem* i, m_Children)
+      delete i;
+}
+
 CollectionModel::CollectionModel(QObject* parent) : QAbstractTableModel(parent), d_ptr(new CollectionModelPrivate(this))
 {
    load();
