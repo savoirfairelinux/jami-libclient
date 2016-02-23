@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da7095c5_5c4db171",
+        "filename": "src/localhistorycollection.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-02-23T16:59:59Z",
+      "side": 1,
+      "message": "the assert is a false positive: historyLimit returns a int,\nwithout bounding, so all the int range is possible. Then you apply a multiplication operand on it, so sure, a static analyser will warn you on the possible overflow.\nusing a long long here stop the warn, but will not increase performance nor fix anythings, as historyLimit can be bounded by checking the setHistoryLimit to not permit \"overflowing\" input.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 97
+      },
+      "revId": "029dcb25a3873e4b8c1b1f1bf6f249e690b53072",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
