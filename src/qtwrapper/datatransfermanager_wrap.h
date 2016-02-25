@@ -50,18 +50,14 @@ public:
             exportable_callback<DataTransferSignal::DataConnectionStatus>(
                 [this] (const DRing::DataConnectionId& connectionID,
                         int code) {
-                       QTimer::singleShot(0, [this, connectionID, code] {
-                             Q_EMIT this->dataConnectionStatusChanged(QString(connectionID.c_str()),
-                                                                    code);
-                       });
+                        Q_EMIT this->dataConnectionStatusChanged(QString(connectionID.c_str()),
+                                                                code);
             }),
             exportable_callback<DataTransferSignal::DataTransferStatus>(
                 [this] (const DRing::DataTransferId& transferID,
                         int code) {
-                       QTimer::singleShot(0, [this, transferID, code] {
-                             Q_EMIT this->dataTransferStatusChanged(QString(transferID.c_str()),
-                                                                    code);
-                       });
+                        Q_EMIT this->dataTransferStatusChanged(QString(transferID.c_str()),
+                                                                code);
             })
          };
     }
