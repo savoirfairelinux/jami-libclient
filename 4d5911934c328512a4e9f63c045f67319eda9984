@@ -22,6 +22,30 @@
       "revId": "4d5911934c328512a4e9f63c045f67319eda9984",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_38aa49d5",
+        "filename": "src/transfer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-02-25T20:59:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_78520115",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "4d5911934c328512a4e9f63c045f67319eda9984",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
