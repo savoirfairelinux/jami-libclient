@@ -22,6 +22,30 @@
       "revId": "aee886e5a87f89fd49683096c8b1d79985222aa8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_9f76db05",
+        "filename": "src/transfer.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-02-25T16:55:36Z",
+      "side": 1,
+      "message": "Not sure I understand, I\u0027ve looked around LRC and it seems that it\u0027s the normal way to include it, even if I agree the dbus/ is horrifying.\n\nThe ifdef logic is inside dbus/datatransfermanager.h.",
+      "parentUuid": "da7095c5_df6c5339",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "aee886e5a87f89fd49683096c8b1d79985222aa8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
