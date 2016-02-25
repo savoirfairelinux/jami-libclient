@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da7095c5_3f9eaf57",
+        "filename": "src/filetransfermodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "enum class",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_dfa2139a",
+        "filename": "src/filetransfermodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "I would prefer STATUS (upper case, for consistency)\nOf course, eventually add more role (progression, account and so on), but this is a draft and it can wait.",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_9fc33b38",
+        "filename": "src/transfer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "m_pAccount {nullptr};\nm_pPeer {nullptr};",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_ffc6f748",
+        "filename": "src/transfer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "Please remove the Media::File concept. At least for now, Ring wont implement SIP file transfer, so this become dead code.",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_bfc07f2b",
+        "filename": "src/transfer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "I would see a nice little state machine here with actions are so on like the other ones. If you wish, I can take care of it, but I will have hard time testing this.",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_bfa95f7d",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "Is the final really a good idea? Maybe this could be subclassed for some MIME class. I usually really like final, but I mostly use them for private classes.",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_7fbbc7c4",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "This should be private + friend FileTrasferModel right?\n\nAlso, const QString\u0026",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_5fb603de",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "virtual",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_3fb54fcd",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "Should this be private? (and setSize, setProgress)",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_dfc9b35b",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "I am not sure being able to change the account after the constructor make sense. Does it?",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_1fb08bdc",
+        "filename": "src/transfer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-02-25T00:34:13Z",
+      "side": 1,
+      "message": "const QString\u0026",
+      "revId": "3839cd297d3e8972f3769f83e1dd0cda3ff003e6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
