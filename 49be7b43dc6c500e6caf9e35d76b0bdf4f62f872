@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_1858a5f9",
+        "filename": "src/transfer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-02-26T14:53:46Z",
+      "side": 1,
+      "message": "That\u0027s weird to cast all to float then return an int, isn\u0027t it ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 3
+      },
+      "revId": "49be7b43dc6c500e6caf9e35d76b0bdf4f62f872",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
