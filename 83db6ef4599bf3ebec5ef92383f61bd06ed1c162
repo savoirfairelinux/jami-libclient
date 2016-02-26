@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_58ddbd13",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-02-26T21:21:15Z",
+      "side": 1,
+      "message": "do we want to check the result here? it returns a bool",
+      "range": {
+        "startLine": 88,
+        "startChar": 24,
+        "endLine": 88,
+        "endChar": 40
+      },
+      "revId": "83db6ef4599bf3ebec5ef92383f61bd06ed1c162",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_78e201d7",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-02-26T21:21:15Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 91,
+        "startChar": 24,
+        "endLine": 91,
+        "endChar": 42
+      },
+      "revId": "83db6ef4599bf3ebec5ef92383f61bd06ed1c162",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
