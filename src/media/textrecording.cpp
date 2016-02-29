@@ -331,6 +331,9 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     //Reconstruct the conversation
     //TODO do it right, right now it flatten the graph
     for (const Serializable::Peers* p : t->d_ptr->m_lAssociatedPeers) {
+        //Seems old version didn't store that
+        if (p->peers.isEmpty())
+            continue;
         // TODO: for now assume the convo is with only 1 CM at a time
         auto peerCM = p->peers.at(0)->m_pContactMethod;
 
