@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_d8da2de9",
+        "filename": "src/qtwrapper/datatransfermanager_wrap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-02-29T13:54:43Z",
+      "side": 1,
+      "message": "is this necessary, I thought the api takes an std::string",
+      "range": {
+        "startLine": 70,
+        "startChar": 91,
+        "endLine": 70,
+        "endChar": 99
+      },
+      "revId": "a6d9f311eabb4c952f87f5fb9508999fd790ba96",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_f8d7f1bd",
+        "filename": "src/qtwrapper/datatransfermanager_wrap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-02-29T13:54:43Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 88,
+        "startChar": 66,
+        "endLine": 88,
+        "endChar": 74
+      },
+      "revId": "a6d9f311eabb4c952f87f5fb9508999fd790ba96",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
