@@ -31,6 +31,7 @@
 #include <transfer.h>
 #include <accountmodel.h>
 #include <private/account_p.h>
+#include  <contactmethod.h>
 
 class FileTransferModelPrivate final : public QObject {
     Q_OBJECT
@@ -195,8 +196,12 @@ QVariant FileTransferModel::data( const QModelIndex& index, int role) const
             return d_ptr->m_lTransfers[index.row()]->dataTransferCodeToString();
         case (int)Role::Progress:
             return d_ptr->m_lTransfers[index.row()]->progress();
-        case  (int)Role::isWaitingAcceptance:
+        case (int)Role::isWaitingAcceptance:
             return d_ptr->m_lTransfers[index.row()]->isPending();
+        case (int)Ring::Role::Name:
+            return d_ptr->m_lTransfers[index.row()]->contactMethod()
+                   ? d_ptr->m_lTransfers[index.row()]->contactMethod()->roleData(role)
+                   : tr("Unknown");
     };
     return QVariant();
 }
