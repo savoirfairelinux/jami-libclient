@@ -93,6 +93,30 @@
       "revId": "de2afd7d78f86fea4f006fbae7d18519748bb245",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_1e6e4dca",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-03-03T19:01:19Z",
+      "side": 1,
+      "message": "oh, whoops, misread that",
+      "parentUuid": "ba65a107_fe3d99bc",
+      "range": {
+        "startLine": 204,
+        "startChar": 19,
+        "endLine": 204,
+        "endChar": 35
+      },
+      "revId": "de2afd7d78f86fea4f006fbae7d18519748bb245",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
