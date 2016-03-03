@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_1e096d2c",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-03-03T17:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_7be2fbd6",
+      "range": {
+        "startLine": 201,
+        "startChar": 17,
+        "endLine": 201,
+        "endChar": 36
+      },
+      "revId": "6076ee0a29744a280ede819bd7a34e4d382e639d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_1be73fe6",
         "filename": "src/filetransfermodel.cpp",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2016-03-02T17:34:31Z",
       "side": 1,
       "message": "maybe use -\u003econtactMethod()-\u003eroleData(role); instead, so its consistent?",
+      "range": {
+        "startLine": 202,
+        "startChar": 19,
+        "endLine": 204,
+        "endChar": 35
+      },
+      "revId": "6076ee0a29744a280ede819bd7a34e4d382e639d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_de121558",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-03-03T17:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_1be73fe6",
       "range": {
         "startLine": 202,
         "startChar": 19,
