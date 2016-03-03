@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_5e4da571",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-03-03T18:56:18Z",
+      "side": 1,
+      "message": "name",
+      "range": {
+        "startLine": 7,
+        "startChar": 19,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "de2afd7d78f86fea4f006fbae7d18519748bb245",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_be3081e9",
+        "filename": "src/filetransfermodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-03-03T18:56:18Z",
+      "side": 1,
+      "message": "don\u0027t think this will ever get executed because at worst roleData will return an empty QVariant. In the case of Role::Name it will fallback to the uri, actually",
+      "range": {
+        "startLine": 204,
+        "startChar": 19,
+        "endLine": 204,
+        "endChar": 35
+      },
+      "revId": "de2afd7d78f86fea4f006fbae7d18519748bb245",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
