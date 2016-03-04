@@ -309,6 +309,9 @@ SET( libringclient_LIB_SRCS
   src/actionextenderdefault.cpp
   src/dbuserrorhandlerdefault.cpp
 
+  #Database
+  src/database/sqlmanager.cpp
+
   #Other
   src/hookmanager.cpp
   src/itembase.cpp
