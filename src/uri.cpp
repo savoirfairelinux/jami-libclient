@@ -497,9 +497,20 @@ QString URI::userinfo() const
  */
 QString URI::fullUri() const
 {
-   return QString("<%1%2>")
-      .arg(URIPrivate::schemeNames[d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType])
-      .arg(*this);
+    auto header_type = d_ptr->m_HeaderType;
+
+    // Determinate the scheme type by using the protocol hint if former is NONE
+    if (header_type == SchemeType::NONE) {
+        switch (protocolHint()) {
+            case ProtocolHint::IAX: header_type = SchemeType::IAX; break;
+            case ProtocolHint::RING: header_type = SchemeType::RING; break;
+            default: header_type = SchemeType::SIP; break;
+        }
+    }
+
+    return QString("<%1%2>")
+        .arg(URIPrivate::schemeNames[header_type])
+        .arg(*this);
 }
 
 /**
