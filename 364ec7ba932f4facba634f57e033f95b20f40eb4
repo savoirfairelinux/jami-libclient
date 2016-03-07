@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_ecdc1377",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1775,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-03-07T21:54:35Z",
+      "side": 1,
+      "message": "Please use uri.format()",
+      "revId": "364ec7ba932f4facba634f57e033f95b20f40eb4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
