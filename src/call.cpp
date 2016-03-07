@@ -1772,7 +1772,7 @@ void CallPrivate::call()
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
 
-    m_DringId = CallManager::instance().placeCall(m_Account->id(), uri);
+    m_DringId = CallManager::instance().placeCall(m_Account->id(), uri.format(URI::Section::SCHEME | URI::Section::USER_INFO));
 
     // This can happen when the daemon cannot allocate memory
     if (m_DringId.isEmpty()) {
