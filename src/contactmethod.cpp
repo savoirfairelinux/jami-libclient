@@ -311,7 +311,14 @@ void ContactMethod::setTracked(bool track)
       //You can't subscribe without account
       if (track && !d_ptr->m_pAccount) return;
       d_ptr->m_Tracked = track;
-      PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),uri().fullUri(),track);
+      PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),
+                                                 uri().format(URI::Section::CHEVRONS |
+                                                              URI::Section::SCHEME |
+                                                              URI::Section::HOSTNAME |
+                                                              URI::Section::PORT |
+                                                              URI::Section::TRANSPORT |
+                                                              URI::Section::TAG),
+                                                 track);
       d_ptr->changed();
       d_ptr->trackedChanged(track);
    }
