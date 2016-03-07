@@ -493,16 +493,6 @@ QString URI::userinfo() const
 }
 
 /**
- * Some feature, like SIP presence, require a properly formatted URI
- */
-QString URI::fullUri() const
-{
-   return QString("<%1%2>")
-      .arg(URIPrivate::schemeNames[d_ptr->m_HeaderType == SchemeType::NONE?SchemeType::SIP:d_ptr->m_HeaderType])
-      .arg(*this);
-}
-
-/**
  * Generate a new URI formatted with the sections passed in `sections`
  *
  * It is kept as a QString to avoid the URI class to start reformatting
@@ -519,8 +509,24 @@ QString URI::format(FlagPack<URI::Section> sections) const
    if (sections & URI::Section::CHEVRONS)
       ret += '<';
 
-   if (sections & URI::Section::SCHEME)
-      ret += URIPrivate::schemeNames[d_ptr->m_HeaderType];
+   if (sections & URI::Section::SCHEME) {
+       auto header_type = d_ptr->m_HeaderType;
+
+       // Try to use the protocol hint on undeterminated header type.
+       // Use SIP scheme type on last resort
+       if (header_type == SchemeType::NONE) {
+           switch (protocolHint()) {
+               case ProtocolHint::IAX: header_type = SchemeType::IAX; break;
+               case ProtocolHint::RING: header_type = SchemeType::RING; break;
+               case ProtocolHint::SIP_HOST:
+               case ProtocolHint::SIP_OTHER:
+               case ProtocolHint::IP:
+               default: header_type = SchemeType::SIP; break;
+           }
+       }
+
+      ret += URIPrivate::schemeNames[header_type];
+   }
 
    if (sections & URI::Section::USER_INFO)
       ret += d_ptr->m_Userinfo;

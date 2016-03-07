@@ -176,7 +176,6 @@ public:
 
    //Getter
    QString    hostname      () const;
-   QString    fullUri       () const;
    QString    userinfo      () const;
    bool       hasHostname   () const;
    bool       hasPort       () const;
