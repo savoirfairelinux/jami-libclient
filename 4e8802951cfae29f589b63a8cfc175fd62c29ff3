@@ -16,6 +16,24 @@
       "revId": "4e8802951cfae29f589b63a8cfc175fd62c29ff3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_6cd00354",
+        "filename": "src/uri.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-03-07T22:01:41Z",
+      "side": 1,
+      "message": "Example usage?\nHow format() (I\u0027ve checked the code) can solve the problem?\nRead the ticket please",
+      "parentUuid": "ba65a107_ec95f388",
+      "revId": "4e8802951cfae29f589b63a8cfc175fd62c29ff3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
