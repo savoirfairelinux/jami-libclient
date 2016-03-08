@@ -18,18 +18,65 @@
  ***********************************************************************************/
 
 #include "sqlmanager.h"
+#include "sqlmigratorhelper.h"
 
 SqlManager::SqlManager() {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::DataLocation)
-                       + QDir::separator() +"lrc.db3");
+    auto dbFilePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+            + QDir::separator();
+    db.setDatabaseName(dbFilePath + "lrc.db3");
     db.open();
     if (not verifySchemaVersion()) {
-        //TODO: Handle schema migration somehow
-        /*
-         * We could use QSqlRecord and some sort of file to describe database
-         * then handle migration that way
-         */
+        auto noError = true;
+
+        //0 - Open logfile
+        QFile logFile(QString("%1migrationFromV%2.log").arg(dbFilePath).arg(actualVersion_));
+        logFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+        QTextStream logStream(&logFile);
+
+        //1 - Backup the old database
+        logStream << "Starting DB backup" << endl;
+        noError = QFile::copy(dbFilePath + "lrc.db3",
+                    dbFilePath + QString("lrc_backupFromV%1.db3").arg(actualVersion_));
+        if (noError) {
+            logStream << "DB backup complete" << endl;
+            //2 - Migrate going trough modification by one version until done
+            SqlMigratorHelper helper;
+            for (int i = actualVersion_; i < version_ && noError; i++) {
+                logStream << "Starting migration from "  << actualVersion_ << " to " << i + 1 << endl;
+                auto instructions = helper.getMigrateInstructions(i + 1);
+                for (auto instr : instructions) {
+                    QSqlQuery migrateInstru(instr);
+                    logStream << migrateInstru.lastQuery() << endl;
+                    noError = migrateInstru.exec();
+                    if (not noError) {
+                        logStream << migrateInstru.lastError().text() << endl;
+                        break;
+                    }
+                }
+            }
+        }
+        //3a - If it worked, we re good supress backup
+        if (noError) {
+            logStream << "Updating new schema version number" << endl;
+            //setSchemaVersion(version_);
+            logStream << "Schema version number updated" << endl;
+            logStream << "Migration complete removing backup" << endl;
+            QFile::remove(dbFilePath + QString("lrc_backupFromV%1.db3").arg(actualVersion_));
+            logStream << "Backup removed" << endl;
+            logStream << "Migration Success" << endl;
+
+        } else { //3b - Else we re in deep shit
+            db.close();
+            logStream << "Removing corrupted database" << endl;
+            QFile::remove(dbFilePath + QString("lrc.db3"));
+            logStream << "Reinstating old database" << endl;
+            QFile::rename(dbFilePath + QString("lrc_backupFromV%1.db3").arg(actualVersion_),
+                          dbFilePath + QString("lrc.db3"));
+            logStream << "Migration Failed" << endl;
+            throw std::runtime_error("Database could not be migrated");
+        }
+
     }
 }
 
@@ -39,10 +86,8 @@ SqlManager::~SqlManager() {
 }
 
 ///Singleton
-SqlManager& SqlManager::instance()
-{
+SqlManager& SqlManager::instance() {
     static auto instance = new SqlManager();
-
     return *instance;
 }
 
@@ -50,16 +95,16 @@ bool SqlManager::isOpen() const {
     return db.isOpen();
 }
 
-bool SqlManager::verifySchemaVersion() const {
-    if (db.record("_info").isEmpty()) {
-        QSqlQuery createInfoTable("CREATE TABLE _info (version INTEGER)");
-        createInfoTable.exec();
-        QSqlQuery insertDbInfo(QString("INSERT INTO _info (version) VALUES (%1)").arg(version_));
-        insertDbInfo.exec();
-    } else {
-        QSqlQuery schemaVersion("SELECT * FROM _info");
-        schemaVersion.exec();
-        return (schemaVersion.first() && schemaVersion.value(0).toInt() == version_);
-    }
-    return true;
+bool SqlManager::verifySchemaVersion() {
+    QSqlQuery schemaVersion("PRAGMA user_version");
+    schemaVersion.exec();
+    if (not schemaVersion.first())
+        return false;
+    actualVersion_ = schemaVersion.value(0).toInt();
+    return version_ == actualVersion_;
+}
+
+bool SqlManager::setSchemaVersion(int version) const {
+    QSqlQuery setVersionQuery(QString("PRAGMA user_version = %1").arg(version));
+    return setVersionQuery.exec();
 }

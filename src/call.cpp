@@ -28,6 +28,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 #include <QtCore/QDateTime>
+#include <QtCore/QByteArray>
 
 //DRing
 #include <account_const.h>
@@ -66,6 +67,7 @@
 #include "media/text.h"
 #include "media/textrecording.h"
 #include "media/file.h"
+#include "media/avrecording.h"
 
 #include "securityevaluationmodel.h"
 #include "globalinstances.h"
@@ -534,19 +536,19 @@ Call* CallPrivate::buildDialingCall(const QString& peerName, Account* account, C
  ****************************************************************************/
 
 ///Build a call that is already over
-Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
+Call* Call::buildHistoryCall(const QMap<QString, QVariant>& hc)
 {
-   const QString& callId          = hc[ Call::HistoryMapFields::CALLID          ]          ;
-   const QString& name            = hc[ Call::HistoryMapFields::DISPLAY_NAME    ]          ;
-   const QString& number          = hc[ Call::HistoryMapFields::PEER_NUMBER     ]          ;
+   const QString& callId          = hc[ Call::HistoryMapFields::CALLID          ].toString();
+   const QString& name            = hc[ Call::HistoryMapFields::DISPLAY_NAME    ].toString();
+   const QString& number          = hc[ Call::HistoryMapFields::PEER_NUMBER     ].toString();
    //const QString& type            = hc[ Call::HistoryMapFields::STATE           ]          ;
-   const QString& direction       = hc[ Call::HistoryMapFields::DIRECTION       ]          ;
-   const QString& rec_path        = hc[ Call::HistoryMapFields::RECORDING_PATH  ]          ;
-   const QString& cert_path       = hc[ Call::HistoryMapFields::CERT_PATH       ]          ;
+   const QString& direction       = hc[ Call::HistoryMapFields::DIRECTION       ].toString();
+   const QString& rec_path        = hc[ Call::HistoryMapFields::RECORDING_PATH  ].toString();
+   const QString& cert_path       = hc[ Call::HistoryMapFields::CERT_PATH       ].toString();
    const bool     missed          = hc[ Call::HistoryMapFields::MISSED          ] == "1"   ;
    time_t         startTimeStamp  = hc[ Call::HistoryMapFields::TIMESTAMP_START ].toUInt() ;
    time_t         stopTimeStamp   = hc[ Call::HistoryMapFields::TIMESTAMP_STOP  ].toUInt() ;
-   QByteArray accId               = hc[ Call::HistoryMapFields::ACCOUNT_ID      ].toLatin1();
+   QByteArray accId               = hc[ Call::HistoryMapFields::ACCOUNT_ID      ].toByteArray();
 
    if (accId.isEmpty()) {
       qWarning() << "An history call has an invalid account identifier";
@@ -559,7 +561,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Try to assiciate a contact now, the real contact object is probably not
    //loaded yet, but we can get a placeholder for now
-   const QString& contactUid = hc[ Call::HistoryMapFields::CONTACT_UID ];
+   const QString& contactUid = hc[ Call::HistoryMapFields::CONTACT_UID ].toString();
    Person* ct = nullptr;
    if (!contactUid.isEmpty())
       ct = PersonModel::instance().getPlaceHolder(contactUid.toLatin1());
@@ -2271,6 +2273,30 @@ void Call::playDTMF(const QString& str)
 {
    Q_NOREPLY CallManager::instance().playDTMF(str);
    emit dtmfPlayed(str);
+}
+
+QMap<QString, QVariant> Call::serialize() const
+{
+    QMap<QString, QVariant> obj;
+    obj[Call::HistoryMapFields::CALLID] = this->historyId();
+    obj[Call::HistoryMapFields::TIMESTAMP_START] = QString::number(this->startTimeStamp());
+    obj[Call::HistoryMapFields::TIMESTAMP_STOP] = QString::number(this->stopTimeStamp());
+    obj[Call::HistoryMapFields::ACCOUNT_ID] = this->account()?QString(this->account()->id()):"";
+    obj[Call::HistoryMapFields::DISPLAY_NAME] = this->peerName();
+    obj[Call::HistoryMapFields::PEER_NUMBER] = this->peerContactMethod()->uri();
+    obj[Call::HistoryMapFields::DIRECTION] = (this->direction()==Call::Direction::INCOMING)?
+                Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
+    obj[Call::HistoryMapFields::MISSED] = this->isMissed();
+    obj[Call::HistoryMapFields::CONTACT_USED] = false;
+    obj[Call::HistoryMapFields::RECORDING_PATH] = this->hasRecording(Media::Media::Type::AUDIO,Media::Media::Direction::IN) ? ((Media::AVRecording*)this->recordings(Media::Media::Type::AUDIO,Media::Media::Direction::IN)[0])->path().path() : "";
+    obj[Call::HistoryMapFields::CONTACT_UID] = this->peerContactMethod()->contact() ? this->peerContactMethod()->contact()->uid() : "";
+    obj[Call::HistoryMapFields::CERT_PATH] = this->certificate() ? this->certificate()->path() : "";
+    return obj;
+}
+
+Call* Call::unserialize(QMap<QString, QVariant> obj)
+{
+    return Call::buildHistoryCall(obj);
 }
 
 #undef Q_ASSERT_IS_IN_PROGRESS
