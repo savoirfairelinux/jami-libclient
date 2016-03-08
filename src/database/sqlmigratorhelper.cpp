@@ -17,44 +17,16 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA *
  ***********************************************************************************/
 
-#pragma once
+#include "sqlmigratorhelper.h"
 
-#include <QtCore/QObject>
-#include <QtSql/QtSql>
 
-class ItemBase;
-
-class SqlManager : QObject {
-    Q_OBJECT
-public:
-    static SqlManager& instance();
-    bool isOpen() const;
-
-    template<typename T>
-    bool createTable() const;
-    template<typename T>
-    bool saveItem(const ItemBase& obj) const;
-    template<typename T>
-    QList<QMap<QString, QVariant>> loadItems() const;
-    template<typename T>
-    bool deleteAll() const;
-    template<typename T>
-    bool deleteItem(const T* obj) const;
-    template<typename T>
-    bool deleteTable() const;
-
-private:
-    SqlManager();
-    ~SqlManager();
-    bool verifySchemaVersion();
-    bool setSchemaVersion(int version) const;
-
-    template<typename T>
-    QString getTableName() const;
-
-    QSqlDatabase db;
-    constexpr static const int version_ { 1 };
-    int actualVersion_ = 0;
-};
-
-#include "sqlmanager.hpp"
+QList<QString> SqlMigratorHelper::getMigrateInstructions(int toVersion)
+{
+    QList<QString> migrateInstructions;
+    switch (toVersion) {
+        case 2:
+        migrateInstructions =  {"PRAGMA user_version"};
+        break;
+    }
+    return migrateInstructions;
+}
