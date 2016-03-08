@@ -311,6 +311,7 @@ SET( libringclient_LIB_SRCS
 
   #Database
   src/database/sqlmanager.cpp
+  src/database/sqlmigratorhelper.cpp
 
   #Other
   src/hookmanager.cpp
