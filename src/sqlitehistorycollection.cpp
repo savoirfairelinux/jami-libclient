@@ -117,37 +117,40 @@ SqliteHistoryCollection::~SqliteHistoryCollection()
 
 void SqliteHistoryEditor::saveCall(const Call* call)
 {
-    if (SqlManager::instance().isOpen()) {
+//    if (SqlManager::instance().isOpen()) {
 
-        const QString direction = (call->direction()==Call::Direction::INCOMING)?
-                    Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
+//        const QString direction = (call->direction()==Call::Direction::INCOMING)?
+//                    Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
 
-        const Account* a = call->account();
+//        const Account* a = call->account();
 
-        QSqlQuery query;
-        query.prepare(QString("INSERT INTO call_history (%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12) "
-                              "VALUES (:%1, :%2, :%3, :%4, :%5, :%6, :%7, :%8, :%9, :%10, :%11, :%12)")
-                      .arg(Call::HistoryMapFields::CALLID, Call::HistoryMapFields::TIMESTAMP_START, Call::HistoryMapFields::TIMESTAMP_STOP, Call::HistoryMapFields::ACCOUNT_ID,
-                           Call::HistoryMapFields::DISPLAY_NAME, Call::HistoryMapFields::PEER_NUMBER, Call::HistoryMapFields::DIRECTION, Call::HistoryMapFields::MISSED,
-                           Call::HistoryMapFields::CONTACT_USED).arg(Call::HistoryMapFields::RECORDING_PATH, Call::HistoryMapFields::CONTACT_UID, Call::HistoryMapFields::CERT_PATH));
+//        QSqlQuery query;
+//        query.prepare(QString("INSERT INTO call_history (%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12) "
+//                              "VALUES (:%1, :%2, :%3, :%4, :%5, :%6, :%7, :%8, :%9, :%10, :%11, :%12)")
+//                      .arg(Call::HistoryMapFields::CALLID, Call::HistoryMapFields::TIMESTAMP_START, Call::HistoryMapFields::TIMESTAMP_STOP, Call::HistoryMapFields::ACCOUNT_ID,
+//                           Call::HistoryMapFields::DISPLAY_NAME, Call::HistoryMapFields::PEER_NUMBER, Call::HistoryMapFields::DIRECTION, Call::HistoryMapFields::MISSED,
+//                           Call::HistoryMapFields::CONTACT_USED).arg(Call::HistoryMapFields::RECORDING_PATH, Call::HistoryMapFields::CONTACT_UID, Call::HistoryMapFields::CERT_PATH));
 
-        query.bindValue(0, call->historyId());
-        query.bindValue(1, QString::number(call->startTimeStamp()));
-        query.bindValue(2, QString::number(call->stopTimeStamp()));
-        query.bindValue(3, a?QString(a->id()):"");
-        query.bindValue(4, call->peerName());
-        query.bindValue(5, call->peerContactMethod()->uri());
-        query.bindValue(6, direction);
-        query.bindValue(7, call->isMissed());
-        query.bindValue(8, false);
-        query.bindValue(9, call->hasRecording(Media::Media::Type::AUDIO,Media::Media::Direction::IN) ? ((Media::AVRecording*)call->recordings(Media::Media::Type::AUDIO,Media::Media::Direction::IN)[0])->path().path() : "");
-        query.bindValue(10, call->peerContactMethod()->contact() ? call->peerContactMethod()->contact()->uid() : "");
-        query.bindValue(11, call->certificate() ? call->certificate()->path() : "");
-        if (!query.exec()) {
-            qWarning() << "Unable to save history";
-        }
-    } else
-        qWarning() << "Unable to save history";
+//        query.bindValue(0, call->historyId());
+//        query.bindValue(1, QString::number(call->startTimeStamp()));
+//        query.bindValue(2, QString::number(call->stopTimeStamp()));
+//        query.bindValue(3, a?QString(a->id()):"");
+//        query.bindValue(4, call->peerName());
+//        query.bindValue(5, call->peerContactMethod()->uri());
+//        query.bindValue(6, direction);
+//        query.bindValue(7, call->isMissed());
+//        query.bindValue(8, false);
+//        query.bindValue(9, call->hasRecording(Media::Media::Type::AUDIO,Media::Media::Direction::IN) ? ((Media::AVRecording*)call->recordings(Media::Media::Type::AUDIO,Media::Media::Direction::IN)[0])->path().path() : "");
+//        query.bindValue(10, call->peerContactMethod()->contact() ? call->peerContactMethod()->contact()->uid() : "");
+//        query.bindValue(11, call->certificate() ? call->certificate()->path() : "");
+//        if (!query.exec()) {
+//            qWarning() << "Unable to save history";
+//        }
+//    } else
+//        qWarning() << "Unable to save history";
+    if (not SqlManager::instance().saveItem(*call)) {
+        qWarning() << "Unable to save history call";
+    }
 }
 
 bool SqliteHistoryEditor::removeCall(const Call* toRemove)

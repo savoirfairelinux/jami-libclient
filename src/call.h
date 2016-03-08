@@ -352,6 +352,10 @@ public:
    void reset();
    bool joinToParent();
 
+   //Serialize method
+   QString getDBName() const {return QStringLiteral("call_history");}
+   QMap<QString, QVariant> serialize() const;
+
    //syntactic sugar
    Call* operator<<( Call::Action& c);
 

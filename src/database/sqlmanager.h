@@ -22,11 +22,14 @@
 #include <QtCore/QObject>
 #include <QtSql/QtSql>
 
+class ItemBase;
+
 class SqlManager : QObject {
     Q_OBJECT
 public:
     static SqlManager& instance();
     bool isOpen() const;
+    bool saveItem(const ItemBase& obj) const;
 private:
     SqlManager();
     ~SqlManager();

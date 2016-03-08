@@ -35,6 +35,10 @@ public:
    virtual ~ItemBase();
    virtual CollectionInterface* collection() const final;
 
+   //Database methods
+   virtual QString getDBName() const {return QStringLiteral("");}
+   virtual QMap<QString, QVariant> serialize() const {return QMap<QString, QVariant>();}
+
    //Extension system
    template<typename T2>
    bool hasExtenstion() const;

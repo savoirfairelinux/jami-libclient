@@ -66,6 +66,7 @@
 #include "media/text.h"
 #include "media/textrecording.h"
 #include "media/file.h"
+#include "media/avrecording.h"
 
 #include "securityevaluationmodel.h"
 #include "globalinstances.h"
@@ -2271,6 +2272,25 @@ void Call::playDTMF(const QString& str)
 {
    Q_NOREPLY CallManager::instance().playDTMF(str);
    emit dtmfPlayed(str);
+}
+
+QMap<QString, QVariant> Call::serialize() const
+{
+    QMap<QString, QVariant> obj;
+    obj[Call::HistoryMapFields::CALLID] = this->historyId();
+    obj[Call::HistoryMapFields::TIMESTAMP_START] = QString::number(this->startTimeStamp());
+    obj[Call::HistoryMapFields::TIMESTAMP_STOP] = QString::number(this->stopTimeStamp());
+    obj[Call::HistoryMapFields::ACCOUNT_ID] = this->account()?QString(this->account()->id()):"";
+    obj[Call::HistoryMapFields::DISPLAY_NAME] = this->peerName();
+    obj[Call::HistoryMapFields::PEER_NUMBER] = this->peerContactMethod()->uri();
+    obj[Call::HistoryMapFields::DIRECTION] = (this->direction()==Call::Direction::INCOMING)?
+                Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
+    obj[Call::HistoryMapFields::MISSED] = this->isMissed();
+    obj[Call::HistoryMapFields::CONTACT_USED] = false;
+    obj[Call::HistoryMapFields::RECORDING_PATH] = this->hasRecording(Media::Media::Type::AUDIO,Media::Media::Direction::IN) ? ((Media::AVRecording*)this->recordings(Media::Media::Type::AUDIO,Media::Media::Direction::IN)[0])->path().path() : "";
+    obj[Call::HistoryMapFields::CONTACT_UID] = this->peerContactMethod()->contact() ? this->peerContactMethod()->contact()->uid() : "";
+    obj[Call::HistoryMapFields::CERT_PATH] = this->certificate() ? this->certificate()->path() : "";
+    return obj;
 }
 
 #undef Q_ASSERT_IS_IN_PROGRESS

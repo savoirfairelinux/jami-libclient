@@ -19,6 +19,8 @@
 
 #include "sqlmanager.h"
 
+#include "itembase.h"
+
 SqlManager::SqlManager() {
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::DataLocation)
@@ -39,8 +41,7 @@ SqlManager::~SqlManager() {
 }
 
 ///Singleton
-SqlManager& SqlManager::instance()
-{
+SqlManager& SqlManager::instance() {
     static auto instance = new SqlManager();
 
     return *instance;
@@ -62,4 +63,26 @@ bool SqlManager::verifySchemaVersion() const {
         return (schemaVersion.first() && schemaVersion.value(0).toInt() == version_);
     }
     return true;
+}
+
+bool SqlManager::saveItem(const ItemBase& obj) const {
+    if (db.isOpen()) {
+        auto serialObj = obj.serialize();
+        QString field = serialObj.keys().join(", ");
+        QStringList valuesList;
+        for (auto v : serialObj.keys()) {
+            valuesList << ":" + v;
+        }
+        QSqlQuery query;
+        query.prepare(QString("INSERT INTO %1 (%2) VALUES (%3)").arg(obj.getDBName(), field, valuesList.join(", ")));
+        for (auto k : serialObj.keys()) {
+           query.bindValue(":"+k, serialObj[k]);
+        }
+        auto ret = query.exec();
+        qDebug() << "\n\n\n\n" << query.lastQuery() << "\n\n\n\n";
+        if (not ret)
+            qWarning() << query.lastError();
+        return ret;
+    }
+    return false;
 }
