@@ -35,6 +35,11 @@ public:
    virtual ~ItemBase();
    virtual CollectionInterface* collection() const final;
 
+   //Database methods
+   virtual QMap<QString, QVariant> serialize() const {return QMap<QString, QVariant>();}
+   virtual ItemBase* unserialize(QMap<QString, QVariant> obj) {Q_UNUSED(obj) return nullptr;}
+   virtual QPair<QString, QVariant> getPrimaryIndex() const {return QPair<QString, QVariant>();}
+
    //Extension system
    template<typename T2>
    bool hasExtenstion() const;
