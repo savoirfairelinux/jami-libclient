@@ -211,7 +211,7 @@ bool LocalHistoryCollection::load()
 {
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      QMap<QString,QString> hc;
+      QMap<QString,QVariant> hc;
       QStringList lines;
 
       while (!file.atEnd())

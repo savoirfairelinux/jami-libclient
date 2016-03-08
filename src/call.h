@@ -284,7 +284,7 @@ public:
    Q_PROPERTY( QString            dialNumber         READ dialNumber        WRITE setDialNumber      NOTIFY dialNumberChanged(QString))
 
    //Constructors & Destructors
-   static Call* buildHistoryCall  (const QMap<QString,QString>& hc);
+   static Call* buildHistoryCall  (const QMap<QString, QVariant>& hc);
 
    //Static getters
    static const QString      toHumanStateName ( const Call::State );
@@ -351,6 +351,10 @@ public:
    void backspaceItemText();
    void reset();
    bool joinToParent();
+
+   //Serialize method
+   QMap<QString, QVariant> serialize() const;
+   Call* unserialize(QMap<QString, QVariant> obj);
 
    //syntactic sugar
    Call* operator<<( Call::Action& c);

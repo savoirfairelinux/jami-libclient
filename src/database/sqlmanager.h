@@ -22,16 +22,29 @@
 #include <QtCore/QObject>
 #include <QtSql/QtSql>
 
+class ItemBase;
+
 class SqlManager : QObject {
     Q_OBJECT
 public:
     static SqlManager& instance();
     bool isOpen() const;
+
+    template<typename T>
+    bool saveItem(const ItemBase& obj) const;
+    template<typename T>
+    QList<QMap<QString, QVariant>> loadItems() const;
+
 private:
     SqlManager();
     ~SqlManager();
     bool verifySchemaVersion() const;
-    QSqlDatabase db;
 
+    template<typename T>
+    QString getTableName() const;
+
+    QSqlDatabase db;
     constexpr static const int version_ { 1 };
 };
+
+#include "sqlmanager.hpp"

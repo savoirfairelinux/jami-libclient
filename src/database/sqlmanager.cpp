@@ -39,8 +39,7 @@ SqlManager::~SqlManager() {
 }
 
 ///Singleton
-SqlManager& SqlManager::instance()
-{
+SqlManager& SqlManager::instance() {
     static auto instance = new SqlManager();
 
     return *instance;
