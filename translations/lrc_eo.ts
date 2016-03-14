@@ -1,75 +1,75 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="eo" sourcelanguage="en" version="2.1">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="270"/>
         <source>Ready</source>
-        <translation>Prêt</translation>
+        <translation>Preta</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="271"/>
         <source>Registered</source>
-        <translation>Enregistré</translation>
+        <translation>Registrita</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="272"/>
         <source>Not Registered</source>
-        <translation>Pas enregistré</translation>
+        <translation>Neregistrita</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Trying...</source>
-        <translation>Connexion en cours...</translation>
+        <translation>Provanta...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="274"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation>Eraro</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation>Échec d&apos;authentification</translation>
+        <translation>Aŭtentigo fiaskis</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
         <source>Network unreachable</source>
-        <translation>Réseau injoignable</translation>
+        <translation>Reto neatingebla</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Host unreachable</source>
-        <translation>Serveur injoignable</translation>
+        <translation>Gastiga komputilo netingebla</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation>Erreur de configuration STUN</translation>
+        <translation>Eraro de STUN agordo</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Stun server invalid</source>
-        <translation>Serveur STUN invalide</translation>
+        <translation>STUN servilo nevalida</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation>Service non disponible</translation>
+        <translation>Servo maldisponebla</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation>Inacceptable</translation>
+        <translation>Neakceptebla</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation>Compte invalide</translation>
+        <translation>Nevalida</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation>Requête expirée</translation>
+        <translation>Eltempiĝo de peto</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Configuration</translation>
+        <translation>Agordo</translation>
     </message>
 </context>
 <context>
@@ -85,12 +85,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>Nom de machine</translation>
+        <translation>Nomo de gastiga komputilo</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation>Port</translation>
+        <translation>Pordo</translation>
     </message>
 </context>
 <context>
@@ -98,104 +98,104 @@
     <message>
         <location filename="../src/call.cpp" line="666"/>
         <source>New</source>
-        <translation>Nouveau</translation>
+        <translation>Nova</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation>Sonnerie (entrante)</translation>
+        <translation>Sonoriĝanta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation>Sonnerie (sortante)</translation>
+        <translation>Sonoriganta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
-        <translation>En cours</translation>
+        <translation>Parolanta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
-        <translation>Numérotation en cours</translation>
+        <translation>Diskanta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="676"/>
         <source>Hold</source>
-        <translation>Mettre en attente</translation>
+        <translation>Deteni</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="678"/>
         <source>Failed</source>
-        <translation>Échec</translation>
+        <translation>Fiaskinta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="680"/>
         <source>Busy</source>
-        <translation>Occupé</translation>
+        <translation>Okupita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
-        <translation>Transférer</translation>
+        <translation>Transmeti</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation>Transfert sur garde</translation>
+        <translation>Deteni transmeton</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
         <source>Over</source>
-        <translation>Terminé</translation>
+        <translation>Finita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="688"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation>Eraro</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="690"/>
         <location filename="../src/call.cpp" line="772"/>
         <location filename="../src/call.cpp" line="2059"/>
         <source>Conference</source>
-        <translation>Conférence</translation>
+        <translation>Konferenco</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
-        <translation>Conférence (en attente)</translation>
+        <translation>Konference (detenita)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="694"/>
         <source>ERROR</source>
-        <translation>ERREUR</translation>
+        <translation>ERARO</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="696"/>
         <source>Searching for</source>
-        <translation>Recherche de </translation>
+        <translation>Serĉanta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
-        <translation>Interrompu</translation>
+        <translation>Ĉesita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="700"/>
         <source>Communication established</source>
-        <translation>Communication établie</translation>
+        <translation>Konektita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="782"/>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation>Nekonata</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2064"/>
         <source>Account: </source>
-        <translation>Compte :</translation>
+        <translation>Konto:</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="891"/>
         <source>Calls</source>
-        <translation>Appels</translation>
+        <translation>Alvokoj</translation>
     </message>
 </context>
 <context>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation>Compte invalide</translation>
+        <translation>Nevalida konto</translation>
     </message>
 </context>
 <context>
@@ -220,12 +220,12 @@
     <message>
         <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
-        <translation>Interrompu</translation>
+        <translation>Ĉesita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation>Pas de compte enregistré</translation>
+        <translation>Neniu konto registrita!</translation>
     </message>
 </context>
 <context>
@@ -233,12 +233,12 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation>Populaire</translation>
+        <translation>Plej kontaktitaj</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
         <source>Contacts</source>
-        <translation>Contacts</translation>
+        <translation>Kontaktoj</translation>
     </message>
 </context>
 <context>
@@ -246,28 +246,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="390"/>
         <source>Contacts</source>
-        <translation>Contacts</translation>
+        <translation>Kontaktoj</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Vide</translation>
+        <translation>Malplena</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation>Nekonata</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Jamais</translation>
+        <translation>Neniam</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Alia</translation>
     </message>
 </context>
 <context>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="376"/>
         <source>History</source>
-        <translation>Historique</translation>
+        <translation>Historio</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Chaîne de confiance</translation>
+        <translation>Ĉeno de fido</translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="260"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Nomo</translation>
     </message>
 </context>
 <context>
@@ -299,27 +299,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Organisation</translation>
+        <translation>Organizacio</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Récemment utilisé</translation>
+        <translation>Lastatempe uzitaj</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Groupe</translation>
+        <translation>Grupo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Département</translation>
+        <translation>Fako</translation>
     </message>
 </context>
 <context>
@@ -327,27 +327,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>Date</translation>
+        <translation>Dato</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Popularité</translation>
+        <translation>Kontaktado</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Durée</translation>
+        <translation>Daŭro</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Temps total</translation>
+        <translation>Tuta daŭro</translation>
     </message>
 </context>
 <context>
@@ -355,102 +355,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation>Aujourd&apos;hui</translation>
+        <translation>Hodiaŭ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation>Hier</translation>
+        <translation>Hieraŭ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation>Il y a deux semaines</translation>
+        <translation>Antaŭ du semajnoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation>Il y a trois semaines</translation>
+        <translation>Antaŭ tri semajnoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation>Il y a une semaine</translation>
+        <translation>Antaŭ semajno</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation>Il y a un mois</translation>
+        <translation>Antaŭ monato</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation>Il y a deux mois</translation>
+        <translation>Antaŭ du monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation>Il y a trois mois</translation>
+        <translation>Antaŭ tri monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation>Il y a quatre mois</translation>
+        <translation>Antaŭ kvar monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation>Il y a cinq mois</translation>
+        <translation>Antaŭ kvin monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation>Il y a six mois</translation>
+        <translation>Antaŭ ses monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation>Il y a sept mois</translation>
+        <translation>Antaŭ sep monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation>Il y a huit mois</translation>
+        <translation>Antaŭ ok monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation>Il y a neuf mois</translation>
+        <translation>Antaŭ naŭ monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation>Il y a dix mois</translation>
+        <translation>Antaŭ dek monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation>Il y a onze mois</translation>
+        <translation>Antaŭ dek unu monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation>Il y a douze mois</translation>
+        <translation>Antaŭ dek du monatoj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation>Il y a une année</translation>
+        <translation>Antaŭ jaro</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation>Il y a très longtemps</translation>
+        <translation>Antaŭ tre longe</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation>Jamais</translation>
+        <translation>Neniam</translation>
     </message>
 </context>
 <context>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="501"/>
         <source>Me</source>
-        <translation>Moi</translation>
+        <translation>Mi</translation>
     </message>
 </context>
 <context>
@@ -466,17 +466,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Macros</translation>
+        <translation>Makrooj</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation>Nouveau</translation>
+        <translation>Nova</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Alia</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Alia</translation>
     </message>
 </context>
 <context>
@@ -492,17 +492,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="145"/>
         <source>Recordings</source>
-        <translation>Enregistrements</translation>
+        <translation>Registraĵoj</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
-        <translation>Chat</translation>
+        <translation>Tekstmesaĝoj</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Audio/Video</translation>
+        <translation>Aŭdio/Video</translation>
     </message>
 </context>
 <context>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Non classé</translation>
+        <translation>Neorditaj</translation>
     </message>
 </context>
 <context>
@@ -523,17 +523,17 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation>Compte</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Pezo</translation>
     </message>
 </context>
 <context>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation>Personnes</translation>
+        <translation>Uloj</translation>
     </message>
 </context>
 <context>
@@ -549,12 +549,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="222"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ce compte ne supporte pas le suivi de la présence</translation>
+        <translation>Tiu ĉi konto ne subtenas spuradon de ĉeesto</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="225"/>
         <source>No associated account</source>
-        <translation>Pas de compte associé</translation>
+        <translation>Neniu asocia konto</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
@@ -564,82 +564,82 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Person</source>
-        <translation>Personne</translation>
+        <translation>Ulo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Account</source>
-        <translation>Compte</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>State</source>
-        <translation>État</translation>
+        <translation>Stato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Call count</source>
-        <translation>Nombre d&apos;appels</translation>
+        <translation>Nombro de alvokoj</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
-        <translation>Nombre de semaines</translation>
+        <translation>Nombro de semajnoj</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation>Nombre de trimestres</translation>
+        <translation>Nombro de trimonatoj</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Have Called</source>
-        <translation>A appelé</translation>
+        <translation>Alvokita</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Last used</source>
-        <translation>Dernier utilisé</translation>
+        <translation>Laste uzita</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation>Compteur de nom</translation>
+        <translation>Name_count</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Total (in seconds)</source>
-        <translation>Total (en secondes)</translation>
+        <translation>Tuto (da sekundoj)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
-        <translation>Index de popularité</translation>
+        <translation>Popularity_index</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Bookmarked</source>
-        <translation>Enregistré dans la liste des signets</translation>
+        <translation>Legosignita</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Tracked</source>
-        <translation>Suivi</translation>
+        <translation>Suprita</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
-        <translation>Présent</translation>
+        <translation>Ĉeestanta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Presence message</source>
-        <translation>Message de présence</translation>
+        <translation>Mesaĝo de ĉeesto</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -652,33 +652,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Message</translation>
+        <translation>Mesaĝo</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Couleur</translation>
+        <translation>Koloro</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Présent</translation>
+        <translation>Ĉeesta</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Defaŭlta</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Spécifique</translation>
+        <translation>Propra</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -694,17 +694,17 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="292"/>
         <source>Profile backend</source>
-        <translation>Profil de machinerie</translation>
+        <translation>Interna profilo</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="297"/>
         <source>Profile</source>
-        <translation>Profil</translation>
+        <translation>Profilo</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Defaŭlta</translation>
     </message>
 </context>
 <context>
@@ -712,7 +712,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="912"/>
         <source>Profiles</source>
-        <translation>Profils</translation>
+        <translation>Profiloj</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation>Nouveau profile</translation>
+        <translation>Nova profilo</translation>
     </message>
 </context>
 <context>
@@ -728,580 +728,580 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation>Message</translation>
+        <translation>Mesaĝo</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Code</source>
-        <translation>Code</translation>
+        <translation>Kodo</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Time</source>
-        <translation>Durée</translation>
+        <translation>Horo</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation>Compteur</translation>
+        <translation>Nombrilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation>Possède une clé privé</translation>
+        <translation>Havas privatan ŝlosilon</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation>N&apos;est pas périmé</translation>
+        <translation>Ne estas posttempa</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Has strong signing</source>
-        <translation>Possède une signature élevée</translation>
+        <translation>Havas robustan subskribon</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Is not self signed</source>
-        <translation>N&apos;est pas auto-signé</translation>
+        <translation>Ne estas memsubskribita</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation>Possède une double clé correspondante</translation>
+        <translation>Havas kongruan ŝlosilan paron</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé privée</translation>
+        <translation>Havas ĝustajn doseirajn permesojn de privata ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé publique</translation>
+        <translation>Havas ĝustajn doseirajn permesojn de publika ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé privée</translation>
+        <translation>Havas ĝustajn doseirujajn permesojn de privata ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé publiques</translation>
+        <translation>Havas ĝustajn doseirujajn permesojn de publika ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé privée</translation>
+        <translation>Havas ĝustan doseirujan lokon de privata ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé publiques</translation>
+        <translation>Havas ĝustan doseirujan lokon de publika ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé privée correctes</translation>
+        <translation>Havas ĝustajn SELinux atributojn de privata ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé publique correctes</translation>
+        <translation>Havas ĝustajn SELinux atributojn de publika ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Le certificat existe et est lisible</translation>
+        <translation>Atestila dosiero ekzistas kaj legeblas</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The file is a valid certificate</source>
-        <translation>Le fichier est un certificat valide</translation>
+        <translation>La dosiero estas valida atestilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation>Le certificat a une autorité valide</translation>
+        <translation>La atestilo havas validan aŭtoritaton</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation>Le certificat possède une autorité de certification connue</translation>
+        <translation>La atestilo havas konitan aŭtoritaton</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation>Le certificat n&apos;a pas été révoqué</translation>
+        <translation>La atestilo ne estas senvalidiga</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation>L&apos;autorité de certification coïncide</translation>
+        <translation>La atestila aŭtoritato ne kongruas</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation>Le certificat possède le propriétaire attendu</translation>
+        <translation>La atestilo havas la atenditan posedanton</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation>Le certificat est dans sa période active</translation>
+        <translation>La atestilo estas en sia aktiva periodo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation>Date d&apos;expiration</translation>
+        <translation>Limdato</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation>Date d&apos;activation</translation>
+        <translation>Aktivigodato</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation>Nécessite un mot de passe sur la clé privée</translation>
+        <translation>Postuli pasvorton de privata ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Public signature</source>
-        <translation>Signature publique</translation>
+        <translation>Publika subskribo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation>Version</translation>
+        <translation>Eldono</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation>Numéro de série</translation>
+        <translation>Seria numero</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation>Émetteur</translation>
+        <translation>Eldonato</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation>Algorithme de la clé du sujet</translation>
+        <translation>Tema ŝlosila algoritmo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation>Nom commun (CN)</translation>
+        <translation>Kutima nomo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Name (N)</source>
-        <translation>Nom (N)</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation>Organisation (O)</translation>
+        <translation>Organizacio</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation>Algorithme de signature</translation>
+        <translation>Subskriba algoritmo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>Emprunte MD5</translation>
+        <translation>Md5 subskribo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>Emprunte SHA1</translation>
+        <translation>Sha1 subskribo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation>Identifiant de clé publique</translation>
+        <translation>Identigilo de publika ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation>Émetteur du nom de domaine</translation>
+        <translation>Nomo de eldonanta domajno</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation>Prochaine mise-à-jour prévue</translation>
+        <translation>Sekva atendita ĝisdatigo</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation>Serveur de sortie</translation>
+        <translation>Eliranta servilo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
         <source>Local certificate store</source>
-        <translation>Stockage des certificats locaux</translation>
+        <translation>Loka atestila memoro</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Defaŭlta</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation>Le certificat n&apos;est pas associé à un groupe</translation>
+        <translation>Atestilo ne asociigita kun grupo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation>Un certificat</translation>
+        <translation>Atestilo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation>Une organisation</translation>
+        <translation>Organizacio</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation>Détails</translation>
+        <translation>Detaloj</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation>Le contenu du certificat</translation>
+        <translation>La enhavo de la atestilo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
-        <translation>Vérifications</translation>
+        <translation>Kontroloj</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation>Informations diverses de sécurité</translation>
+        <translation>Diversaj informaĵoj pri sekurigo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation>Entête</translation>
+        <translation>Ĉapo</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
         <source>%1 %2 list</source>
-        <translation>%1 %2 liste</translation>
+        <translation>%1 %2 listo</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation>Stockage interne des certificats</translation>
+        <translation>Dajmona atestila memoro</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
-        <translation>Banni</translation>
+        <translation>forbarita</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
-        <translation>Autorisé</translation>
+        <translation>permesita</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
         <location filename="../src/foldercertificatecollection.cpp" line="192"/>
         <source>Certificate</source>
-        <translation>Certificat</translation>
+        <translation>Atestilo</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Suivi des présences</translation>
+        <translation>Spurado de ĉeesto</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>Évaluation de la sécurité</translation>
+        <translation>Sekuriga taksado</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation>Contact</translation>
+        <translation>Kontakto</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation>Signets locaux</translation>
+        <translation>Lokaj legosignoj</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="507"/>
         <source>Bookmark</source>
-        <translation>Signet</translation>
+        <translation>Legosigno</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation>Historique local</translation>
+        <translation>Loka historio</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>History</source>
-        <translation>Historique</translation>
+        <translation>Historio</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation>Macros locales</translation>
+        <translation>Lokaj makrooj</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation>Macro</translation>
+        <translation>Makroo</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation>Enregistrements locaux</translation>
+        <translation>Lokaj registraĵoj</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
-        <translation>Enregistrement</translation>
+        <translation>Registraĵo</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation>Sonnerie stockée localement</translation>
+        <translation>Lokaj vokosonoj</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation>Sonnerie</translation>
+        <translation>Vokosono</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation>Enregistrements textuels locaux</translation>
+        <translation>Lokaj tekstaj registraĵoj</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Types de numéro de téléphone</translation>
+        <translation>Telefonnumeraj tipoj</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Alia</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation>Compte Ring</translation>
+        <translation>Ring konto</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation>Compte SIP</translation>
+        <translation>SIP konto</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation>Compte IAX2</translation>
+        <translation>IAX2 konto</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
         <source>Me</source>
-        <translation>Moi</translation>
+        <translation>Mi</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>Vos flux médias ne sont pas chiffrés, activez les protocoles ZRTP ou SDES</translation>
+        <translation>Viaj aŭdvidaĵaj fluoj ne estas ĉifritaj, bonvole ŝalti ZRTP aŭ SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>Le protocole TLS est désactivé. La négociation de communication ne sera pas chiffrée et sera donc vulnérable.</translation>
+        <translation>TLES estas malŝaltita, la intertraktado ne estos ĉifrita. Via komunikado estos vundebla al spionado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Votre certificat et l&apos;autorité de certification ne coïncident pas, si votre certificat nécessite une autorité, cela ne fonctionnera pas</translation>
+        <translation>Via atestilo kaj aŭtoritato ne kongruas. Se via atestilo bezonas aŭtoritaton, ĝi ne funkcios</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Le serveur sortant provisionné ne coïncide pas avec l&apos;adresse réseau ou celle indiquée dans le certificat</translation>
+        <translation>La elira servilo difinita ne kongruas la nomon de gastiga komputilo aŭ la unu en la atestilo</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>L&apos;option «vérifier les certificats entrants» est désactivée, ceci vous laisse vulnérable à une attaque de type «homme-du-milieu»</translation>
+        <translation>La agordo &quot;kontroli envenajn atestilojn&quot; estas malŝaltita, tial vi estas vundebla al kaŝa interkapto de komunikado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>L&apos;option «vérifier les réponses des certificats» est désactivée, ceci vous laisse vulnérable à une attaque de type «homme-du-milieu»</translation>
+        <translation>La agordo &quot;kontroli respondajn atestilojn&quot; estas malŝaltita, tial vi estas vundebla al kaŝa interkapto de komunikado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Aucun de vos certificats ne contient de clés privées, ce qui est requis. Merci de sélectionner une clé privée ou d&apos;utiliser un certificat possédant une clé privée</translation>
+        <translation>Neniu el viaj atestiloj provizas privatan ŝlosilon. Tio estas nepra. Bonvole elektu privatan ŝlosilon aŭ uzu atestilon kun integrita ŝlosilo</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Aucune autorité de certification n&apos;est indiquée, ce qui rend impossible de  valider les réponses des certificats. Certains comptes peuvent dysfonctionner.</translation>
+        <translation>Nenia atestila aŭtoritato provizitas, ne eblos kontroli ĉu la respondaj atestiloj estas validaj. Ia konto ankaŭ povas nefunkcii.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Aucun certificat n&apos;a été provisionné. Ceci n&apos;est pas, pour l&apos;instant, supporté par Ring</translation>
+        <translation>Nenia atestilo provizita. Tio estas ankoraŭ nesubtenata de Ring</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Votre certificat à expiré, merci de contacter votre administrateur système.</translation>
+        <translation>Via atestilo senvalidiĝis, bonvole kontaktu vian sistemestron.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Votre certificat est auto-signé. Cela brise la chaîne de confiance.</translation>
+        <translation>Via atestilo estas memsubskribita. Tio rompas la ĉenon de fido.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Défaut</translation>
+        <translation>Defaŭlta</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation>Dépôt du contact</translation>
+        <translation>Kontaktaj lokokupiloj</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="492"/>
         <location filename="../src/useractionmodel.cpp" line="727"/>
         <source>Accept</source>
-        <translation>Accepter</translation>
+        <translation>Akcepti</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="493"/>
         <location filename="../src/useractionmodel.cpp" line="739"/>
         <source>Hold</source>
-        <translation>Mettre en attente</translation>
+        <translation>Deteni</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="494"/>
         <source>Mute audio</source>
-        <translation>Couper le micro</translation>
+        <translation>Silentigi aŭdion</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="495"/>
         <source>Mute video</source>
-        <translation>Désactiver la vidéo</translation>
+        <translation>Kaŝi videon</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
-        <translation>Transfert du serveur</translation>
+        <translation>Senasista transmeto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="497"/>
         <source>Record</source>
-        <translation>Enregistrer</translation>
+        <translation>Registri</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="498"/>
         <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Hangup</source>
-        <translation>Raccrocher</translation>
+        <translation>Finigi alvokon</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
         <source>Join</source>
-        <translation>Rejoindre un appel</translation>
+        <translation>Kupli</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="500"/>
         <source>Add new</source>
-        <translation>Ajouter un nouveau contact</translation>
+        <translation>Aldoni novan</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation>Basculer la vidéo</translation>
+        <translation>(El)ŝalti videon</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
         <source>Add a contact</source>
-        <translation>Ajouter un contact</translation>
+        <translation>Aldoni kontakton</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="503"/>
         <source>Add to existing contact</source>
-        <translation>Ajouter à un contact existant</translation>
+        <translation>Aldoni al ekzistanta kontakto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="504"/>
         <source>Delete contact</source>
-        <translation>Supprimer le contact</translation>
+        <translation>Forigi kontakton</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="505"/>
         <source>Email contact</source>
-        <translation>E-mail du contact</translation>
+        <translation>Retpoŝti al kontakto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="506"/>
         <source>Copy contact</source>
-        <translation>Copier le contact</translation>
+        <translation>Kopii kontakton</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="508"/>
         <source>View chat history</source>
-        <translation>Voir l&apos;historique de clavardage</translation>
+        <translation>Vidigi babilan historion</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="509"/>
         <source>Add phone number</source>
-        <translation>Ajouter un numéro de téléphone</translation>
+        <translation>Aldoni telefonnumeron</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <source>Call again</source>
-        <translation>Rappeler</translation>
+        <translation>Realvoki</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation>Supprimer de l&apos;historique</translation>
+        <translation>Forigi el historio</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
         <source>Remove</source>
-        <translation>Enlever</translation>
+        <translation>Forigi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="724"/>
         <source>Call</source>
-        <translation>Appel</translation>
+        <translation>Alvoki</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
         <source>Unhold</source>
-        <translation>Reprendre</translation>
+        <translation>Maldeteni</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="747"/>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation>Rezigni</translation>
     </message>
 </context>
 <context>
@@ -1309,7 +1309,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation>Personnes récentes</translation>
+        <translation>Lastaj personoj</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1317,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation>Autorité</translation>
+        <translation>Aŭtoritato</translation>
     </message>
 </context>
 <context>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation>Automatique</translation>
+        <translation>Aŭtomata</translation>
     </message>
 </context>
 <context>
@@ -1333,17 +1333,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="90"/>
         <source>NONE</source>
-        <translation>AUCUN</translation>
+        <translation>NENIU</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="96"/>
         <source>SCREEN</source>
-        <translation>ÉCRAN</translation>
+        <translation>EKRANO</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="102"/>
         <source>FILE</source>
-        <translation>FICHIER</translation>
+        <translation>DOSIERO</translation>
     </message>
 </context>
 </TS>

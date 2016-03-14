@@ -594,7 +594,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Conteo trimestrial</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo perfil</translation>
     </message>
 </context>
 <context>
@@ -823,12 +823,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>Este certificado tiene una autoridad valida</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>Este certificado tiene una autoridad conocida</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>Requerir una contraseña de clave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
@@ -958,12 +958,12 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation type="unfinished"/>
+        <translation>Un certificado</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>Una organización</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
@@ -973,7 +973,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>El contenido del certificado</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
@@ -1014,7 +1014,7 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
         <location filename="../src/foldercertificatecollection.cpp" line="192"/>
         <source>Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Certificado</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar del historial</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>

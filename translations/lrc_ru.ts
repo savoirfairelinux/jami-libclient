@@ -1024,7 +1024,7 @@
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>оценка безопасности</translation>
+        <translation>Оценка безопасности</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
@@ -1087,7 +1087,7 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation>запись текста локально</translation>
+        <translation>Сохранять текст локально</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>

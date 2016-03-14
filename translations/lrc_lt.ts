@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation>Tapatybės Nustatymas Nepavyko</translation>
+        <translation>Tapatybės nustatymas nepavyko</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation>Užklausos Laikas Baigėsi</translation>
+        <translation>Užklausos laikas baigėsi</translation>
     </message>
 </context>
 <context>
@@ -1102,17 +1102,17 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation>Ring Paskyra</translation>
+        <translation>Ring paskyra</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation>SIP Paskyra</translation>
+        <translation>SIP paskyra</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation>IAX2 Paskyra</translation>
+        <translation>IAX2 paskyra</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>

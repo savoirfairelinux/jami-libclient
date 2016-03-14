@@ -1,75 +1,75 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs_CZ" sourcelanguage="en" version="2.1">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="270"/>
         <source>Ready</source>
-        <translation>Prêt</translation>
+        <translation>Připraven</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="271"/>
         <source>Registered</source>
-        <translation>Enregistré</translation>
+        <translation>Registrován</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="272"/>
         <source>Not Registered</source>
-        <translation>Pas enregistré</translation>
+        <translation>Neregistrován</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Trying...</source>
-        <translation>Connexion en cours...</translation>
+        <translation>Zkouška...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="274"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation>Échec d&apos;authentification</translation>
+        <translation>Ověření selhalo</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
         <source>Network unreachable</source>
-        <translation>Réseau injoignable</translation>
+        <translation>Síť nedosažitelná</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Host unreachable</source>
-        <translation>Serveur injoignable</translation>
+        <translation>Hostitel nedosažitelný</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation>Erreur de configuration STUN</translation>
+        <translation>Chyba konfigurace STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Stun server invalid</source>
-        <translation>Serveur STUN invalide</translation>
+        <translation>Neplatný STUN server</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation>Service non disponible</translation>
+        <translation>Služba nedostupná</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation>Inacceptable</translation>
+        <translation>Nepřijatelné</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation>Compte invalide</translation>
+        <translation>Neplatný</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation>Requête expirée</translation>
+        <translation>Vypršení žádosti</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Configuration</translation>
+        <translation>Konfigurace</translation>
     </message>
 </context>
 <context>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>Nom de machine</translation>
+        <translation>Jméno hostitele</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
@@ -98,104 +98,104 @@
     <message>
         <location filename="../src/call.cpp" line="666"/>
         <source>New</source>
-        <translation>Nouveau</translation>
+        <translation>Nový</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation>Sonnerie (entrante)</translation>
+        <translation>Vyzvánění (tam)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation>Sonnerie (sortante)</translation>
+        <translation>Vyzvánění (sem)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
-        <translation>En cours</translation>
+        <translation>Probíhá hovor</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
-        <translation>Numérotation en cours</translation>
+        <translation>Vytáčení</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="676"/>
         <source>Hold</source>
-        <translation>Mettre en attente</translation>
+        <translation>Hovor pozastaven</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="678"/>
         <source>Failed</source>
-        <translation>Échec</translation>
+        <translation>Hovor selhal</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="680"/>
         <source>Busy</source>
-        <translation>Occupé</translation>
+        <translation>Zaneprázdněn</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
-        <translation>Transférer</translation>
+        <translation>Přenos dat</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation>Transfert sur garde</translation>
+        <translation>Přenos dat pozastaven</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
         <source>Over</source>
-        <translation>Terminé</translation>
+        <translation>Hovor skončil</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="688"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="690"/>
         <location filename="../src/call.cpp" line="772"/>
         <location filename="../src/call.cpp" line="2059"/>
         <source>Conference</source>
-        <translation>Conférence</translation>
+        <translation>Konference</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
-        <translation>Conférence (en attente)</translation>
+        <translation>Konference pozastavena</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="694"/>
         <source>ERROR</source>
-        <translation>ERREUR</translation>
+        <translation>CHYBA</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="696"/>
         <source>Searching for</source>
-        <translation>Recherche de </translation>
+        <translation>Hledám</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
-        <translation>Interrompu</translation>
+        <translation>Hovor přerušen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="700"/>
         <source>Communication established</source>
-        <translation>Communication établie</translation>
+        <translation>Spojení navázáno</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="782"/>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2064"/>
         <source>Account: </source>
-        <translation>Compte :</translation>
+        <translation>Účet: </translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="891"/>
         <source>Calls</source>
-        <translation>Appels</translation>
+        <translation>Hovory</translation>
     </message>
 </context>
 <context>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation>Compte invalide</translation>
+        <translation>Neplatný účet</translation>
     </message>
 </context>
 <context>
@@ -220,12 +220,12 @@
     <message>
         <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
-        <translation>Interrompu</translation>
+        <translation>Hovor přerušen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation>Pas de compte enregistré</translation>
+        <translation>Žádný účet není registrován!</translation>
     </message>
 </context>
 <context>
@@ -233,12 +233,12 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation>Populaire</translation>
+        <translation>Nejoblíbenější</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
         <source>Contacts</source>
-        <translation>Contacts</translation>
+        <translation>Kontakty</translation>
     </message>
 </context>
 <context>
@@ -246,28 +246,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="390"/>
         <source>Contacts</source>
-        <translation>Contacts</translation>
+        <translation>Kontakty</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Vide</translation>
+        <translation>Prázdný</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Jamais</translation>
+        <translation>Nikdy</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Jiný</translation>
     </message>
 </context>
 <context>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="376"/>
         <source>History</source>
-        <translation>Historique</translation>
+        <translation>Historie</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Chaîne de confiance</translation>
+        <translation>Řetězec důvěry</translation>
     </message>
 </context>
 <context>
@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="260"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Jméno</translation>
     </message>
 </context>
 <context>
@@ -299,27 +299,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Jméno</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Organisation</translation>
+        <translation>Organizace</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Récemment utilisé</translation>
+        <translation>Nedávno použité</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Groupe</translation>
+        <translation>Skupina</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Département</translation>
+        <translation>Oddělení</translation>
     </message>
 </context>
 <context>
@@ -327,27 +327,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>Date</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Jméno</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Popularité</translation>
+        <translation>Obliba</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Durée</translation>
+        <translation>Doba trvání</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Temps total</translation>
+        <translation>Celkový čas</translation>
     </message>
 </context>
 <context>
@@ -355,102 +355,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation>Aujourd&apos;hui</translation>
+        <translation>Dnes</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation>Hier</translation>
+        <translation>Včera</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation>Il y a deux semaines</translation>
+        <translation>Před dvěma týdny</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation>Il y a trois semaines</translation>
+        <translation>Před třema týdny</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation>Il y a une semaine</translation>
+        <translation>Před týdnem</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation>Il y a un mois</translation>
+        <translation>Před měsícem</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation>Il y a deux mois</translation>
+        <translation>Před dvěma měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation>Il y a trois mois</translation>
+        <translation>Před třema měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation>Il y a quatre mois</translation>
+        <translation>Před čtyřmi měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation>Il y a cinq mois</translation>
+        <translation>Před pěti</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation>Il y a six mois</translation>
+        <translation>Před šesti měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation>Il y a sept mois</translation>
+        <translation>Před sedmi měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation>Il y a huit mois</translation>
+        <translation>Před osmi měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation>Il y a neuf mois</translation>
+        <translation>Před devíti měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation>Il y a dix mois</translation>
+        <translation>Před deseti měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation>Il y a onze mois</translation>
+        <translation>Před jedenácti měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation>Il y a douze mois</translation>
+        <translation>Před dvanácti měsíci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation>Il y a une année</translation>
+        <translation>Před rokem</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation>Il y a très longtemps</translation>
+        <translation>Dávno</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation>Jamais</translation>
+        <translation>Nikdy</translation>
     </message>
 </context>
 <context>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="501"/>
         <source>Me</source>
-        <translation>Moi</translation>
+        <translation>Já</translation>
     </message>
 </context>
 <context>
@@ -466,17 +466,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Macros</translation>
+        <translation>Makra</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation>Nouveau</translation>
+        <translation>Nové</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Jiné</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Jiné</translation>
     </message>
 </context>
 <context>
@@ -492,17 +492,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="145"/>
         <source>Recordings</source>
-        <translation>Enregistrements</translation>
+        <translation>Nahrávky</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
-        <translation>Chat</translation>
+        <translation>Textové zprávy</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Audio/Video</translation>
+        <translation>Obraz/Zvuk</translation>
     </message>
 </context>
 <context>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Non classé</translation>
+        <translation>Netříděné</translation>
     </message>
 </context>
 <context>
@@ -523,17 +523,17 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Jméno</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation>Compte</translation>
+        <translation>Účet</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Weight</source>
-        <translation>Poids</translation>
+        <translation>Váha</translation>
     </message>
 </context>
 <context>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation>Personnes</translation>
+        <translation>Osoby</translation>
     </message>
 </context>
 <context>
@@ -549,12 +549,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="222"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ce compte ne supporte pas le suivi de la présence</translation>
+        <translation>Tento účet nepodporuje sledování přítomnosti</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="225"/>
         <source>No associated account</source>
-        <translation>Pas de compte associé</translation>
+        <translation>Žádný účet není přiřazen</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
@@ -564,82 +564,82 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Person</source>
-        <translation>Personne</translation>
+        <translation>Osoba</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Account</source>
-        <translation>Compte</translation>
+        <translation>Účet</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>State</source>
-        <translation>État</translation>
+        <translation>Stav</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Call count</source>
-        <translation>Nombre d&apos;appels</translation>
+        <translation>Počet hovorů</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
-        <translation>Nombre de semaines</translation>
+        <translation>Počet týdnů</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation>Nombre de trimestres</translation>
+        <translation>Počet trimestrů</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Have Called</source>
-        <translation>A appelé</translation>
+        <translation>Volané</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Last used</source>
-        <translation>Dernier utilisé</translation>
+        <translation>Naposledy použité</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation>Compteur de nom</translation>
+        <translation>Name_count</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Total (in seconds)</source>
-        <translation>Total (en secondes)</translation>
+        <translation>Celkem (v sekundách)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
-        <translation>Index de popularité</translation>
+        <translation>Popularity_index</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Bookmarked</source>
-        <translation>Enregistré dans la liste des signets</translation>
+        <translation>V záložce</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Tracked</source>
-        <translation>Suivi</translation>
+        <translation>Sledované</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
-        <translation>Présent</translation>
+        <translation>Přítomné</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Presence message</source>
-        <translation>Message de présence</translation>
+        <translation>Zpráva o přítomnosti</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -652,33 +652,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation>Jméno</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Message</translation>
+        <translation>Zpráva</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Couleur</translation>
+        <translation>Barva</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Présent</translation>
+        <translation>Přítomnost</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Spécifique</translation>
+        <translation>Vlastní</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -694,7 +694,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="292"/>
         <source>Profile backend</source>
-        <translation>Profil de machinerie</translation>
+        <translation>Backend profilu</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="297"/>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Výchozí</translation>
     </message>
 </context>
 <context>
@@ -712,7 +712,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="912"/>
         <source>Profiles</source>
-        <translation>Profils</translation>
+        <translation>Profily</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation>Nouveau profile</translation>
+        <translation>Nový profil</translation>
     </message>
 </context>
 <context>
@@ -728,580 +728,580 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation>Message</translation>
+        <translation>Zpráva</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Code</source>
-        <translation>Code</translation>
+        <translation>Kód</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Time</source>
-        <translation>Durée</translation>
+        <translation>Čas</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation>Compteur</translation>
+        <translation>Počítání</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation>Possède une clé privé</translation>
+        <translation>Má soukromý klíč</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation>N&apos;est pas périmé</translation>
+        <translation>Nevypršel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Has strong signing</source>
-        <translation>Possède une signature élevée</translation>
+        <translation>Je silně podepsán</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Is not self signed</source>
-        <translation>N&apos;est pas auto-signé</translation>
+        <translation>Není podepsán sám sebou</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation>Possède une double clé correspondante</translation>
+        <translation>Má příslušný pár klíčů</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé privée</translation>
+        <translation>Má správná povolení k soukromému klíči</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé publique</translation>
+        <translation>Má správná povolení k veřejnému klíči</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé privée</translation>
+        <translation>Má správná povolení k adresáři soukromého klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé publiques</translation>
+        <translation>Má správná povolení k adresáři veřejného klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé privée</translation>
+        <translation>Má správnou lokaci adresáře soukromého klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé publiques</translation>
+        <translation>Má správnou lokaci adresáře veřejného klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé privée correctes</translation>
+        <translation>Má správné SELinux atributy soukromého klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé publique correctes</translation>
+        <translation>Má správné SELinux atributy veřejného klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Le certificat existe et est lisible</translation>
+        <translation>Soubor certifikátu existuje a je čitelný</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The file is a valid certificate</source>
-        <translation>Le fichier est un certificat valide</translation>
+        <translation>Soubor je platným certifikátem</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation>Le certificat a une autorité valide</translation>
+        <translation>Certifikát má platnou autoritu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation>Le certificat possède une autorité de certification connue</translation>
+        <translation>Certifikát má známou autoritu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation>Le certificat n&apos;a pas été révoqué</translation>
+        <translation>Certifikát není odvolán</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation>L&apos;autorité de certification coïncide</translation>
+        <translation>Shoda certifikátu s autoritou</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation>Le certificat possède le propriétaire attendu</translation>
+        <translation>Certifikát má očekávaného vlastníka</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation>Le certificat est dans sa période active</translation>
+        <translation>Certifikát je ve svém aktivním období</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation>Date d&apos;expiration</translation>
+        <translation>Datum vypršení</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation>Date d&apos;activation</translation>
+        <translation>Datum aktivace</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation>Nécessite un mot de passe sur la clé privée</translation>
+        <translation>Vyžadovat heslo k soukromému klíči</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Public signature</source>
-        <translation>Signature publique</translation>
+        <translation>Veřejný podpis</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation>Version</translation>
+        <translation>Verze</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation>Numéro de série</translation>
+        <translation>Sériový kód</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation>Émetteur</translation>
+        <translation>Emitent</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation>Algorithme de la clé du sujet</translation>
+        <translation>Subject key algorithm</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation>Nom commun (CN)</translation>
+        <translation>Běžné jméno (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Name (N)</source>
-        <translation>Nom (N)</translation>
+        <translation>Jméno (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation>Organisation (O)</translation>
+        <translation>Organizace (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation>Algorithme de signature</translation>
+        <translation>Algoritmus podpisu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>Emprunte MD5</translation>
+        <translation>Otisk Md5</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>Emprunte SHA1</translation>
+        <translation>Otisk Sha1</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation>Identifiant de clé publique</translation>
+        <translation>ID veřejného klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation>Émetteur du nom de domaine</translation>
+        <translation>Jméno domény emitenta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation>Prochaine mise-à-jour prévue</translation>
+        <translation>Příští očekávaná aktualizace</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation>Serveur de sortie</translation>
+        <translation>Výchozí server</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
         <source>Local certificate store</source>
-        <translation>Stockage des certificats locaux</translation>
+        <translation>Místní úložiště certifikátů</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation>Le certificat n&apos;est pas associé à un groupe</translation>
+        <translation>Certifikát není spojen se skupinou</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation>Un certificat</translation>
+        <translation>Certifikát</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation>Une organisation</translation>
+        <translation>Organizace</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation>Détails</translation>
+        <translation>Detaily</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation>Le contenu du certificat</translation>
+        <translation>Obsah certifikátu</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
-        <translation>Vérifications</translation>
+        <translation>Kontroly</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation>Informations diverses de sécurité</translation>
+        <translation>Různé informace ohledně bezpečnosti</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation>Entête</translation>
+        <translation>Hlavička</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
         <source>%1 %2 list</source>
-        <translation>%1 %2 liste</translation>
+        <translation>%1 %2 seznam</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation>Stockage interne des certificats</translation>
+        <translation>Úložiště certifikátů démona</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
-        <translation>Banni</translation>
+        <translation>zakázaný</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
-        <translation>Autorisé</translation>
+        <translation>povolený</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
         <location filename="../src/foldercertificatecollection.cpp" line="192"/>
         <source>Certificate</source>
-        <translation>Certificat</translation>
+        <translation>Certifikát</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Suivi des présences</translation>
+        <translation>Sledování přítomnosti</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>Évaluation de la sécurité</translation>
+        <translation>Bezpečnostní vyhodnocení</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation>Contact</translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation>Signets locaux</translation>
+        <translation>Místní záložky</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="507"/>
         <source>Bookmark</source>
-        <translation>Signet</translation>
+        <translation>Záložka</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation>Historique local</translation>
+        <translation>Místní historie</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>History</source>
-        <translation>Historique</translation>
+        <translation>Historie</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation>Macros locales</translation>
+        <translation>Místní makra</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation>Macro</translation>
+        <translation>Makro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation>Enregistrements locaux</translation>
+        <translation>Místní nahrávky</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
-        <translation>Enregistrement</translation>
+        <translation>Nahrávka</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation>Sonnerie stockée localement</translation>
+        <translation>Místní vyzvánění</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation>Sonnerie</translation>
+        <translation>Vyzvánění</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation>Enregistrements textuels locaux</translation>
+        <translation>Místní textové záznamy</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Types de numéro de téléphone</translation>
+        <translation>Typy telefonních čísel</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Autre</translation>
+        <translation>Ostatní</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation>Compte Ring</translation>
+        <translation>Účet Ring</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation>Compte SIP</translation>
+        <translation>Účet SIP</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation>Compte IAX2</translation>
+        <translation>Účet IAX2</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
         <source>Me</source>
-        <translation>Moi</translation>
+        <translation>Já</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>Vos flux médias ne sont pas chiffrés, activez les protocoles ZRTP ou SDES</translation>
+        <translation>Vaše toky médií nejsou šifrovány, prosíme povolte ZRTP nebo SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>Le protocole TLS est désactivé. La négociation de communication ne sera pas chiffrée et sera donc vulnérable.</translation>
+        <translation>TLS je zakázané, vyjednávání nebude šifrováno. Vaše komunikace bude zranitelná vůči odposlouchávání</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Votre certificat et l&apos;autorité de certification ne coïncident pas, si votre certificat nécessite une autorité, cela ne fonctionnera pas</translation>
+        <translation>Váš certifikát a autorita se neshodují. Pokud váš certifikát vyžaduje autoritu, nebude fungovat.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Le serveur sortant provisionné ne coïncide pas avec l&apos;adresse réseau ou celle indiquée dans le certificat</translation>
+        <translation>Zadaný výchozí server se neshoduje se jménem hostitele, ani z tím z certifikátu</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>L&apos;option «vérifier les certificats entrants» est désactivée, ceci vous laisse vulnérable à une attaque de type «homme-du-milieu»</translation>
+        <translation>Nastavení &quot;ověřit příchozí certifikáty&quot; je vypnuto, což ohrožuje vaši bezpečnost před infiltrací spojení.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>L&apos;option «vérifier les réponses des certificats» est désactivée, ceci vous laisse vulnérable à une attaque de type «homme-du-milieu»</translation>
+        <translation>Nastavení &quot;ověřit odpovídající certifikáty&quot; je vypnuto, což ohrožuje vaši bezpečnost před infiltrací spojení.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Aucun de vos certificats ne contient de clés privées, ce qui est requis. Merci de sélectionner une clé privée ou d&apos;utiliser un certificat possédant une clé privée</translation>
+        <translation>Žádný z vašich certifikátů nemá soukromý klíč, jenž je vyžadován. Prosíme vyberte soukromý klíč nebo použijte certifikát s vestavěným klíčem.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Aucune autorité de certification n&apos;est indiquée, ce qui rend impossible de  valider les réponses des certificats. Certains comptes peuvent dysfonctionner.</translation>
+        <translation>Nebyla poskytnuta žádná autorita certifikátů, nebude tedy možné odpovídající certifikáty ověřit. Některé účty také mohou být nefunkční.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Aucun certificat n&apos;a été provisionné. Ceci n&apos;est pas, pour l&apos;instant, supporté par Ring</translation>
+        <translation>Žádný certifikát nebyl poskytnut. Toto Ring zatím nepodporuje.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Votre certificat à expiré, merci de contacter votre administrateur système.</translation>
+        <translation>Váš certifikát vypršel. Prosíme kontaktujte vašeho administrátora systému.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Votre certificat est auto-signé. Cela brise la chaîne de confiance.</translation>
+        <translation>Váš certifikát je vámi podepsaný. To narušuje řetězec důvěry.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Défaut</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation>Dépôt du contact</translation>
+        <translation>Zástupný kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="492"/>
         <location filename="../src/useractionmodel.cpp" line="727"/>
         <source>Accept</source>
-        <translation>Accepter</translation>
+        <translation>Přijmout</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="493"/>
         <location filename="../src/useractionmodel.cpp" line="739"/>
         <source>Hold</source>
-        <translation>Mettre en attente</translation>
+        <translation>Pozastavit</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="494"/>
         <source>Mute audio</source>
-        <translation>Couper le micro</translation>
+        <translation>Ztlumit zvuk</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="495"/>
         <source>Mute video</source>
-        <translation>Désactiver la vidéo</translation>
+        <translation>Vypnout obraz</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
-        <translation>Transfert du serveur</translation>
+        <translation>Převod bez dozoru</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="497"/>
         <source>Record</source>
-        <translation>Enregistrer</translation>
+        <translation>Nahrávat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="498"/>
         <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Hangup</source>
-        <translation>Raccrocher</translation>
+        <translation>Zavěsit</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
         <source>Join</source>
-        <translation>Rejoindre un appel</translation>
+        <translation>Spojit</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="500"/>
         <source>Add new</source>
-        <translation>Ajouter un nouveau contact</translation>
+        <translation>Přidat nový</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation>Basculer la vidéo</translation>
+        <translation>Povolit/zakázat obraz</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
         <source>Add a contact</source>
-        <translation>Ajouter un contact</translation>
+        <translation>Přidat kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="503"/>
         <source>Add to existing contact</source>
-        <translation>Ajouter à un contact existant</translation>
+        <translation>Přidat k existujícímu kontaktu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="504"/>
         <source>Delete contact</source>
-        <translation>Supprimer le contact</translation>
+        <translation>Smazat kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="505"/>
         <source>Email contact</source>
-        <translation>E-mail du contact</translation>
+        <translation>Poslat kontaktu e-mail</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="506"/>
         <source>Copy contact</source>
-        <translation>Copier le contact</translation>
+        <translation>Zkopírovat kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="508"/>
         <source>View chat history</source>
-        <translation>Voir l&apos;historique de clavardage</translation>
+        <translation>Zobrazit historii chatu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="509"/>
         <source>Add phone number</source>
-        <translation>Ajouter un numéro de téléphone</translation>
+        <translation>Přidat telefonní číslo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <source>Call again</source>
-        <translation>Rappeler</translation>
+        <translation>Volat znovu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation>Supprimer de l&apos;historique</translation>
+        <translation>Odstranit z historie</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
         <source>Remove</source>
-        <translation>Enlever</translation>
+        <translation>Odstranit</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="724"/>
         <source>Call</source>
-        <translation>Appel</translation>
+        <translation>Volat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
         <source>Unhold</source>
-        <translation>Reprendre</translation>
+        <translation>Pokračovat v hovoru</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="747"/>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1309,7 +1309,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation>Personnes récentes</translation>
+        <translation>Nedávné osoby</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1317,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation>Autorité</translation>
+        <translation>Autorita</translation>
     </message>
 </context>
 <context>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation>Automatique</translation>
+        <translation>Automaticky</translation>
     </message>
 </context>
 <context>
@@ -1333,17 +1333,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="90"/>
         <source>NONE</source>
-        <translation>AUCUN</translation>
+        <translation>NIC</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="96"/>
         <source>SCREEN</source>
-        <translation>ÉCRAN</translation>
+        <translation>OBRAZOVKA</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="102"/>
         <source>FILE</source>
-        <translation>FICHIER</translation>
+        <translation>SOUBOR</translation>
     </message>
 </context>
 </TS>
