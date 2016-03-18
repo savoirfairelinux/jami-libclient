@@ -256,7 +256,7 @@ SET( libringclient_LIB_SRCS
   src/certificatemodel.cpp
   src/ciphermodel.cpp
   src/accountstatusmodel.cpp
-  src/codecmodel.cpp
+  src/audio/codecmodel.cpp
   src/recentmodel.cpp
   src/chainoftrustmodel.cpp
   src/pendingtrustrequestmodel.cpp
@@ -427,7 +427,7 @@ SET(libringclient_video_LIB_HDRS
 
 SET(libringclient_audio_LIB_HDRS
   src/audio/alsapluginmodel.h
-  src/codecmodel.h
+  src/audio/codecmodel.h
   src/audio/inputdevicemodel.h
   src/audio/managermodel.h
   src/audio/outputdevicemodel.h
