@@ -353,6 +353,7 @@ SET( libringclient_LIB_HDRS
   src/historytimecategorymodel.h
   src/numbercategorymodel.h
   src/keyexchangemodel.h
+  src/codecmodel.h
   src/tlsmethodmodel.h
   src/protocolmodel.h
   src/numbercompletionmodel.h
@@ -427,7 +428,6 @@ SET(libringclient_video_LIB_HDRS
 
 SET(libringclient_audio_LIB_HDRS
   src/audio/alsapluginmodel.h
-  src/codecmodel.h
   src/audio/inputdevicemodel.h
   src/audio/managermodel.h
   src/audio/outputdevicemodel.h
