@@ -1200,7 +1200,7 @@ void Call::setPeerName(const QString& name)
 
    // its possible that this is not set at the begining of a call, so we should update the CM here
    if (peerContactMethod())
-      peerContactMethod()->incrementAlternativeName(name);
+      peerContactMethod()->incrementAlternativeName(name, startTimeStamp());
 }
 
 ///Set the account (DIALING only, may be ignored)

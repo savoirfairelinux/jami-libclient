@@ -115,7 +115,7 @@ public:
    bool                  haveCalled      () const;
    QList<Call*>          calls           () const;
    int                   popularityIndex () const;
-   QHash<QString,int>    alternativeNames() const;
+   QHash<QString, time_t> alternativeNames() const;
    QString               primaryName     () const;
    bool                  isBookmarked    () const;
    bool                  supportPresence () const;
@@ -147,7 +147,7 @@ public:
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
-   Q_INVOKABLE void incrementAlternativeName(const QString& name);
+   Q_INVOKABLE void incrementAlternativeName(const QString& name, const time_t lastUsed);
 
    //Static
    static const ContactMethod* BLANK();
