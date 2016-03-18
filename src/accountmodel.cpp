@@ -45,7 +45,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
-#include "codecmodel.h"
+#include "audio/codecmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
