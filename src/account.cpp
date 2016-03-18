@@ -51,7 +51,7 @@
 #include "pendingtrustrequestmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
 #include "accountstatusmodel.h"
-#include "codecmodel.h"
+#include "audio/codecmodel.h"
 #include "networkinterfacemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
