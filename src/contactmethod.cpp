@@ -375,12 +375,18 @@ QString ContactMethod::primaryName() const
          ret =  d_ptr->m_hNames.constBegin().key();
       else {
          QString toReturn = uri();
-         int max = 0;
-         for (QHash<QString,int>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
-            if (i.value() > max) {
-               max      = i.value();
-               toReturn = i.key  ();
-            }
+         QPair<int, time_t> max = {0, 0};
+
+         for (QHash<QString,QPair<int, time_t>>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
+             if (this->protocolHint() == URI::ProtocolHint::RING &&
+                     i.value().second > max.second) {
+                 max.second = i.value().second;
+                 toReturn = i.key  ();
+             }
+             else if (i.value().first > max.first) {
+                 max.first = i.value().first;
+                 toReturn = i.key  ();
+             }
          }
          ret = toReturn;
       }
@@ -465,7 +471,7 @@ int ContactMethod::popularityIndex() const
    return d_ptr->m_PopularityIndex;
 }
 
-QHash<QString,int> ContactMethod::alternativeNames() const
+QHash<QString,QPair<int, time_t>> ContactMethod::alternativeNames() const
 {
    return d_ptr->m_hNames;
 }
@@ -644,10 +650,12 @@ QString ContactMethod::toHash() const
 }
 
 ///Increment name counter and update indexes
-void ContactMethod::incrementAlternativeName(const QString& name)
+void ContactMethod::incrementAlternativeName(const QString& name, const time_t lastUsed)
 {
-   const bool needReIndexing = !d_ptr->m_hNames[name];
-   d_ptr->m_hNames[name]++;
+   const bool needReIndexing = !d_ptr->m_hNames[name].first;
+   if (d_ptr->m_hNames[name].second < lastUsed)
+      d_ptr->m_hNames[name].second = lastUsed;
+   d_ptr->m_hNames[name].first++;
    if (needReIndexing && d_ptr->m_Type != ContactMethod::Type::TEMPORARY) {
       PhoneDirectoryModel::instance().d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+(d_ptr->m_pPerson?(QStringList(d_ptr->m_pPerson->formattedName())):QStringList()));
       //Invalid m_PrimaryName_cache

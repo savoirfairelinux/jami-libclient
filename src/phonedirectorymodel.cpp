@@ -158,10 +158,10 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                break;
             case Qt::ToolTipRole: {
                QString out = "<table>";
-               QHashIterator<QString, int> iter(number->alternativeNames());
+               QHashIterator<QString, QPair<int, time_t>> iter(number->alternativeNames());
                while (iter.hasNext()) {
                   iter.next();
-                  out += QString("<tr><td>%1</td><td>%2</td></tr>").arg(iter.value()).arg(iter.key());
+                  out += QString("<tr><td>%1</td><td>%2</td></tr>").arg(iter.value().first).arg(iter.key());
                }
                out += "</table>";
                return out;
@@ -640,7 +640,7 @@ void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
 
       //Now check for new peer names
       if (!call->peerName().isEmpty()) {
-         number->incrementAlternativeName(call->peerName());
+         number->incrementAlternativeName(call->peerName(), call->startTimeStamp());
       }
    }
 }

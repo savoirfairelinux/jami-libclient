@@ -31,7 +31,7 @@ public:
    QList<Call*>       m_lCalls           ;
    int                m_PopularityIndex  ;
    QString            m_MostCommonName   ;
-   QHash<QString,int> m_hNames           ;
+   QHash<QString,QPair<int,time_t>> m_hNames;
    bool               m_hasType          ;
    uint               m_LastWeekCount    ;
    uint               m_LastTrimCount    ;
