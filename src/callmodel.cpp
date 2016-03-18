@@ -1160,12 +1160,14 @@ void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString
    InternalStruct* internal = m_shDringId[callID];
    Call* call = nullptr;
 
+   if (!internal && stateName == DRing::Call::StateEvent::CONNECTING)
+       return;
+
    if(!internal) {
       qDebug() << "Call not found" << callID << "new state" << stateName;
       addExistingCall(callID, stateName);
       return;
-   }
-   else {
+   } else {
       call = internal->call_real;
 
       QString sn = stateName;
