@@ -34,6 +34,7 @@ class Account;
 class Person;
 class Call;
 class ContactMethodPrivate;
+class ContactMethodNamePrivate;
 class TemporaryContactMethod;
 class NumberCategory;
 class TemporaryContactMethodPrivate;
@@ -62,6 +63,23 @@ public:
       //TODO implement all others
    };
 
+   ///Storage container for various display name related properties
+   class name_t {
+   public:
+      QString name        () const;
+      int     counter     () const;
+      time_t  lastUsed    () const;
+      bool    isMostRecent() const;
+      bool    isPrimary   () const;
+      bool    isMostUsed  () const;
+
+      bool operator==(const QString& other) const;
+      bool operator==(const name_t& other) const;
+   private:
+      ContactMethodNamePrivate* d_ptr;
+   };
+   typedef QSharedPointer<ContactMethod::name_t> Name;
+
    //Properties
    Q_PROPERTY(Account*          account          READ account           WRITE setAccount              )
    Q_PROPERTY(Person*           person           READ contact           WRITE setPerson               )
@@ -86,8 +104,8 @@ public:
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
-
-//    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
+   Q_PROPERTY(QString           mostRecentName   READ mostRecentName)
+   Q_PROPERTY(QString           mostUsedName     READ mostUsedName)
 
    ///@enum Type: Is this temporary, blank, used or unused
    enum class Type {
@@ -115,8 +133,10 @@ public:
    bool                  haveCalled      () const;
    QList<Call*>          calls           () const;
    int                   popularityIndex () const;
-   QHash<QString,int>    alternativeNames() const;
+   QList<Name>           alternativeNames() const;//TODO user pointers so they will be updated if stored, maybe use QSharedPointer for this
    QString               primaryName     () const;
+   QString               mostRecentName  () const;//TODO
+   QString               mostUsedName    () const;//TODO
    bool                  isBookmarked    () const;
    bool                  supportPresence () const;
    virtual QVariant      icon            () const;
@@ -146,8 +166,8 @@ public:
    void             setLastUsed  (time_t              t         );
 
    //Mutator
-   Q_INVOKABLE void addCall(Call* call);
-   Q_INVOKABLE void incrementAlternativeName(const QString& name);
+   Q_INVOKABLE void addCall(Call* call); //TODO make private
+   Q_INVOKABLE void incrementAlternativeName(const QString& name); //TODO make private
 
    //Static
    static const ContactMethod* BLANK();
@@ -228,6 +248,17 @@ Q_SIGNALS:
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)
+Q_DECLARE_METATYPE(ContactMethod::Name*)
+
+bool operator==(const ContactMethod::name_t& name, const QString& other)
+{
+   //TODO
+}
+
+QString operator=(const ContactMethod::name_t& name)
+{
+   //TODO
+}
 
 ///@class TemporaryContactMethod: An incomplete phone number
 class LIB_EXPORT TemporaryContactMethod : public ContactMethod {

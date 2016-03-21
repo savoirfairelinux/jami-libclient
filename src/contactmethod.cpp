@@ -461,9 +461,10 @@ int ContactMethod::popularityIndex() const
    return d_ptr->m_PopularityIndex;
 }
 
-QHash<QString,int> ContactMethod::alternativeNames() const
+QList<ContactMethod::Name> ContactMethod::alternativeNames() const
 {
-   return d_ptr->m_hNames;
+   //FIXME return d_ptr->m_hNames;
+    return {};
 }
 
 QVariant ContactMethod::roleData(int role) const
