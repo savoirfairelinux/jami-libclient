@@ -300,9 +300,8 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 
    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
       c->d_ptr->removeRenderer(r);
+      r->stopRendering();
    }
-
-   r->stopRendering();
 
    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
 
