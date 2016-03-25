@@ -298,44 +298,41 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 
    Call* c = CallModel::instance().getCall(id);
 
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-      c->d_ptr->removeRenderer(r);
-   }
+    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+        c->d_ptr->removeRenderer(r);
 
-   r->stopRendering();
+        r->stopRendering();
 
-   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
+        qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
 
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+        Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
 
-   if (dev)
-      emit dev->renderingStopped(r);
+        if (dev)
+            emit dev->renderingStopped(r);
 
-   if (id == PREVIEW_RENDERER_ID) {
-      m_PreviewState = false;
-      emit q_ptr->previewStateChanged(false);
-      emit q_ptr->previewStopped(r);
-   }
+        if (id == PREVIEW_RENDERER_ID) {
+            m_PreviewState = false;
+            emit q_ptr->previewStateChanged(false);
+            emit q_ptr->previewStopped(r);
+        }
 
-   QThread* t = m_hThreads[r];
+        QThread* t = m_hThreads[r];
 
-   if (t) {
-       t->quit();
-       t->wait();
-   }
+        if (t) {
+            t->quit();
+            t->wait();
+        }
 
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+        m_hRendererIds.remove(r);
+        m_hRenderers.remove(id);
 
-       m_hRendererIds.remove(r);
-       m_hRenderers.remove(id);
+        m_hThreads[r] = nullptr;
+        if (t) {
+            t->deleteLater();
+        }
 
-       m_hThreads[r] = nullptr;
-       if (t) {
-           t->deleteLater();
-       }
-
-       delete r;
-   }
+        delete r;
+    }
 }
 
 ///A video stopped being rendered
