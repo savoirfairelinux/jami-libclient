@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_53a59302",
+        "filename": "src/private/videorenderermanager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2016-03-26T14:39:58Z",
+      "side": 0,
+      "message": "culprit!",
+      "range": {
+        "startLine": 305,
+        "startChar": 3,
+        "endLine": 305,
+        "endChar": 22
+      },
+      "revId": "1cb65b3fe9f9000ff7f625413b49232a2ab88a06",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
