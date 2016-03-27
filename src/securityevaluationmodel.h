@@ -89,9 +89,9 @@ public:
    enum class Severity {
       UNSUPPORTED   = 0, /*!< This severity is unsupported, to be ignored                  */
       INFORMATION   = 1, /*!< Tip and tricks to have better security                       */
-      WARNING       = 2, /*!< It is a problem, but it wont have other side effects         */
+      WARNING       = 2, /*!< It is a problem, but it won't have other side effects         */
       ISSUE         = 3, /*!< The security is compromised                                  */
-      ERROR         = 4, /*!< It simply wont work (REGISTER)                               */
+      ERROR         = 4, /*!< It simply won't work (REGISTER)                               */
       FATAL_WARNING = 5, /*!< Registration may work, but it render everything else useless */
       COUNT__,
    };

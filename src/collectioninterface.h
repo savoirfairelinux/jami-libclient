@@ -47,7 +47,7 @@ class ItemBase;
  * MyBackend::MyBackend<Person>(CollectionMediator<Person>* mediator, CollectionInterface* parent = nullptr) :
  *    CollectionMediator<Person>(mediator,parent) {}
  *
- * Each collections also need to implement that constructor or they wont load.
+ * Each collections also need to implement that constructor or they won't load.
  */
 class LIB_EXPORT CollectionInterface
 {

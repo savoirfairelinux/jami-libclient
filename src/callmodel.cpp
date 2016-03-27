@@ -435,7 +435,7 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       Q_ASSERT(false);
 
       //WARNING this will trigger an assert later on, but isn't critical enough in release mode.
-      //HACK This return an invalid object that should be equivalent to NULL but wont require
+      //HACK This return an invalid object that should be equivalent to NULL but won't require
       //nullptr check everywhere in the code. It is safer to use an invalid object rather than
       //causing a NULL dereference
       return new Call(QString(),QString());

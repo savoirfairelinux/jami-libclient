@@ -559,7 +559,7 @@ m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
 #undef UAM
 
 /**
- * Create an UserActionModel around a single call. This wont take advantage
+ * Create an UserActionModel around a single call. This won't take advantage
  * of the multiselection feature.
  */
 UserActionModel::UserActionModel(Call* parent, const FlagPack<UserActionModel::Context> c) : QAbstractListModel(parent),d_ptr(new UserActionModelPrivate(this,c))
@@ -645,7 +645,7 @@ int UserActionModel::rowCount(const QModelIndex& parent ) const
    return parent.isValid() ? 0 : static_cast<int>(Action::COUNT__);
 }
 
-///For now, this model probably wont be used that way
+///For now, this model probably won't be used that way
 Qt::ItemFlags UserActionModel::flags(const QModelIndex& idx ) const
 {
    if ((!idx.isValid()) || !(idx.row()>=0 && idx.row() < enum_class_size<UserActionModel::Action>()))

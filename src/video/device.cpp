@@ -119,7 +119,7 @@ void Video::Device::save()
 {
    if (!d_ptr->m_RequireSave) {
       d_ptr->m_RequireSave = true;
-      //A little delay wont hurt
+      //A little delay won't hurt
       QTimer::singleShot(100,d_ptr.data(),SLOT(saveIdle()));
    }
 }

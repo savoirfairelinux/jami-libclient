@@ -308,7 +308,7 @@ void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* acco
 
       //Let make sure none is created in the future for nothing
       if (!wrap) {
-         //It wont be a duplicate as none exist for this URI
+         //It won't be a duplicate as none exist for this URI
          const QString extendedUri = strippedUri+'@'+account->hostname();
          wrap = new NumberWrapper();
          m_hDirectory    [extendedUri] = wrap;

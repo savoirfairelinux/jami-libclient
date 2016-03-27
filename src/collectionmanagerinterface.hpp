@@ -20,7 +20,7 @@ template <class T>
 class CollectionManagerInterfacePrivate
 {
 public:
-   ///All manager should be QAbstractItemModel, this wont compile (on purpose) if the aren't
+   ///All manager should be QAbstractItemModel, this won't compile (on purpose) if the aren't
    CollectionManagerInterfacePrivate(QAbstractItemModel* p2, CollectionManagerInterface<T>* p) :
    m_pMediator(nullptr),q_ptr(p2),i_ptr(p)
    {}

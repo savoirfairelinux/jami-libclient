@@ -35,7 +35,7 @@
 
 const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()] = {
    /*SRTP_ENABLED                */QObject::tr("Your media streams are not encrypted, please enable ZRTP or SDES"),
-   /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to "
+   /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation won't be encrypted. Your communication will be vulnerable to "
                                    "snooping"),
    /*CERTIFICATE_MATCH           */QObject::tr("Your certificate and authority don't match, if your certificate require an authority, it won't work"),
    /*OUTGOING_SERVER_MATCH       */QObject::tr("The outgoing server specified doesn't match the hostname or the one included in the certificate"),
@@ -60,7 +60,7 @@ SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
    /* VERIFY_ANSWER_ENABLED            */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
    /* REQUIRE_CERTIFICATE_ENABLED      */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
    /* NOT_MISSING_CERTIFICATE          */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
-   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::NONE        , //This wont work
+   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::NONE        , //This won't work
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityChecks >
@@ -338,7 +338,7 @@ QVariant PrefixAndSeverityProxyModel::data(const QModelIndex& index, int role) c
       Certificate::Checks c = Certificate::Checks::HAS_PRIVATE_KEY;
       if (QIdentityProxyModel::data(index,(int)CertificateModel::Role::isCheck).toBool() == true)
          c = qvariant_cast<Certificate::Checks>(QIdentityProxyModel::data(index,(int)CertificateModel::Role::check));
-      else if (index.column() != 2) //That column doesn't exist in the source, the wont exist
+      else if (index.column() != 2) //That column doesn't exist in the source, the won't exist
          return QVariant();
 
       switch (index.column()) {
@@ -416,7 +416,7 @@ QVariant AccountChecksModel::data( const QModelIndex& index, int role ) const
          );
       case (int)SecurityEvaluationModel::Role::SecurityLevel:
          return QVariant::fromValue(
-            //If the check is unsupported then using "COMPLETE" wont affect the algorithm output
+            //If the check is unsupported then using "COMPLETE" won't affect the algorithm output
             // if n < current then n else current end will always be "current" when n == maximum
             m_lCachedResults[f] == Certificate::CheckValues::UNSUPPORTED ?
                SecurityEvaluationModel::SecurityLevel::COMPLETE : SecurityEvaluationModelPrivate::maximumSecurityLevel[f]

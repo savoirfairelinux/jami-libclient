@@ -61,7 +61,7 @@ Q_ENUMS(DtmfType)
  *
  * This class represent an account based around a protocol and a bunch of properties.
  *
- * Using the setters on this object wont cause the changes to take effect immediately.
+ * Using the setters on this object won't cause the changes to take effect immediately.
  *
  * To save the changes, use the "<<" operator on the account with Account::EditAction::SAVE.
  * Similarly, the Account::EditAction::RELOAD action will reset the changes to match the
