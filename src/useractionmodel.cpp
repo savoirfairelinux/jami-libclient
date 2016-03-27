@@ -328,28 +328,28 @@ const Matrix2D< UAMA, UserActionModelPrivate::SelectionState, UserActionModel::A
  */
 const Matrix1D< UAMA, FlagPack<UAM::Context>> UserActionModelPrivate::actionContext = {
    { UAMA::ACCEPT            , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
    { UAMA::HOLD              , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
-   { UAMA::MUTE_AUDIO        , UAM::Context::RECOMMANDED },
+   { UAMA::MUTE_AUDIO        , UAM::Context::RECOMMENDED },
 
-   { UAMA::MUTE_VIDEO        , UAM::Context::RECOMMANDED },
+   { UAMA::MUTE_VIDEO        , UAM::Context::RECOMMENDED },
 
    { UAMA::SERVER_TRANSFER   , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
-   { UAMA::RECORD            , UAM::Context::RECOMMANDED },
+   { UAMA::RECORD            , UAM::Context::RECOMMENDED },
 
    { UAMA::HANGUP            , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
    { UAMA::JOIN              , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
    { UAMA::ADD_NEW           , UAM::Context::MINIMAL     |
-                               UAM::Context::RECOMMANDED },
+                               UAM::Context::RECOMMENDED },
 
    { UAMA::TOGGLE_VIDEO      , UAM::Context::ADVANCED    },
    { UAMA::ADD_CONTACT       , UAM::Context::MANAGEMENT  },
