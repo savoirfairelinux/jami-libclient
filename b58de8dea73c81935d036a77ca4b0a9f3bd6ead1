@@ -34,6 +34,24 @@
       "revId": "b58de8dea73c81935d036a77ca4b0a9f3bd6ead1",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_33cb3f74",
+        "filename": "src/useractionmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-03-27T15:41:14Z",
+      "side": 1,
+      "message": "I didn\u0027t find it used in the clients.\n\ngrep -r \"RECOMMANDED\" -\u003e no output.",
+      "parentUuid": "ba65a107_b3d8af54",
+      "revId": "b58de8dea73c81935d036a77ca4b0a9f3bd6ead1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
