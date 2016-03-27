@@ -112,14 +112,14 @@ public:
    enum class Context {
       NONE          = 0x0 << 0, /*!< Nothing                                                    */
       MINIMAL       = 0x1 << 0, /*!< The bare minimum required to work with the asset           */
-      RECOMMANDED   = 0x1 << 1, /*!< Commonly useful actions related to an asset                */
+      RECOMMENDED   = 0x1 << 1, /*!< Commonly useful actions related to an asset                */
       ADVANCED      = 0x1 << 2, /*!< Uncommon actions that can be performed on the asset        */
       MANAGEMENT    = 0x1 << 3, /*!< Manage the data related to this (bookmark, add contact...) */
       CONTACT       = 0x1 << 4, /*!< Actions related to contacting this person (email, call...) */
       TREE_ELEMENTS = 0x1 << 5, /*!< All actions that require a second dimension to manage      */
       ALL =
          Context::MINIMAL       |
-         Context::RECOMMANDED   |
+         Context::RECOMMENDED   |
          Context::ADVANCED      |
          Context::MANAGEMENT    |
          Context::CONTACT       |
@@ -130,8 +130,8 @@ public:
    Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel)
 
    //Constructor
-   explicit UserActionModel(Call* parent     , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
-   UserActionModel(QAbstractItemModel* parent, const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMANDED);
+   explicit UserActionModel(Call* parent     , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMENDED);
+   UserActionModel(QAbstractItemModel* parent, const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMENDED);
    virtual ~UserActionModel();
 
    //Abstract model members
