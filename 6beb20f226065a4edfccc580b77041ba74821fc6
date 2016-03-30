@@ -16,6 +16,24 @@
       "revId": "6beb20f226065a4edfccc580b77041ba74821fc6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_8ec78412",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-03-30T21:18:32Z",
+      "side": 1,
+      "message": "What happens if we want to edit a profile? We click on it, it gets selected, but when the UI will try to use this helper to update itself, it will not be synchronized. Instead you will get the profile of the last account selected (which may differ)",
+      "parentUuid": "ba65a107_6e5f9073",
+      "revId": "6beb20f226065a4edfccc580b77041ba74821fc6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
