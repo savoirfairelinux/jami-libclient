@@ -28,7 +28,6 @@ class DBusErrorHandlerI;
 class ItemModelStateSerializerI;
 class PixmapManipulatorI;
 class PresenceSerializerI;
-class ProfilePersisterI;
 class ShortcutCreatorI;
 class ActionExtenderI;
 } // namespace Interfaces
@@ -69,14 +68,6 @@ void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulat
 LIB_EXPORT Interfaces::PresenceSerializerI& presenceSerializer();
 void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
 
-/**
- * TODO: LRC has a default implementation of this interface; however profiles are still in an
- * experimental state, so this getter will throw an exception unless an instance is set by the
- * client
- */
-LIB_EXPORT Interfaces::ProfilePersisterI& profilePersister();
-void LIB_EXPORT setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance);
-
 LIB_EXPORT Interfaces::ShortcutCreatorI& shortcutCreator();
 void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
@@ -92,7 +83,6 @@ void setInterfaceInternal(Interfaces::DBusErrorHandlerI        *);
 void setInterfaceInternal(Interfaces::ItemModelStateSerializerI*);
 void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
 void setInterfaceInternal(Interfaces::PresenceSerializerI      *);
-void setInterfaceInternal(Interfaces::ProfilePersisterI        *);
 void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
 void setInterfaceInternal(Interfaces::ActionExtenderI          *);
 
