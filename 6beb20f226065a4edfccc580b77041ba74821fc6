@@ -34,6 +34,24 @@
       "revId": "6beb20f226065a4edfccc580b77041ba74821fc6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_4ed16ccc",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-03-30T21:21:21Z",
+      "side": 1,
+      "message": "Good point. So far I am quite sure I fixed all of those issues in the KDE client. Profiles currently work quite well, your probably right it is a better idea to leave the clients handle this themselves to avoid such issue.",
+      "parentUuid": "ba65a107_8ec78412",
+      "revId": "6beb20f226065a4edfccc580b77041ba74821fc6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
