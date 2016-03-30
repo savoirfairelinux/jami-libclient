@@ -25,7 +25,6 @@
 #include "interfaces/itemmodelstateserializeri.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "interfaces/presenceserializeri.h"
-#include "interfaces/profilepersisteri.h"
 #include "interfaces/shortcutcreatori.h"
 #include "interfaces/actionextenderi.h"
 
@@ -46,7 +45,6 @@ struct InstanceManager
     std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
     std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
     std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
-    std::unique_ptr<Interfaces::ProfilePersisterI>         m_profilePersister;
     std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
     std::unique_ptr<Interfaces::ActionExtenderI>           m_actionExtender;
 };
@@ -180,30 +178,6 @@ setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance)
     instanceManager().m_presenceSerializer = std::move(instance);
 }
 
-/**
- * TODO: LRC has a default implementation of this interface; however profiles are still in an
- * experimental state, so this getter will throw an exception unless an instance is set by the
- * client
- */
-Interfaces::ProfilePersisterI&
-profilePersister()
-{
-    if (!instanceManager().m_profilePersister)
-        throw "no instance of ProfilePersister available";
-    return *instanceManager().m_profilePersister.get();
-}
-
-void
-setProfilePersister(std::unique_ptr<Interfaces::ProfilePersisterI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_profilePersister = std::move(instance);
-}
-
 Interfaces::ShortcutCreatorI&
 shortcutCreator()
 {
@@ -269,7 +243,6 @@ REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler    
 REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)
 REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
 REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
-REGISTER_INTERFACE(Interfaces::ProfilePersisterI        , m_profilePersister        )
 REGISTER_INTERFACE(Interfaces::ShortcutCreatorI         , m_shortcutCreator         )
 REGISTER_INTERFACE(Interfaces::ActionExtenderI          , m_actionExtender          )
 

@@ -299,7 +299,6 @@ SET( libringclient_LIB_SRCS
   src/accountlistcolorizerdefault.cpp
   src/presenceserializerdefault.cpp
   src/pixmapmanipulatordefault.cpp
-  src/profilepersisterdefault.cpp
   src/shortcutcreatordefault.cpp
   src/actionextenderdefault.cpp
   src/dbuserrorhandlerdefault.cpp
@@ -407,7 +406,6 @@ SET( libringclient_LIB_HDRS
   src/accountlistcolorizerdefault.h
   src/presenceserializerdefault.h
   src/pixmapmanipulatordefault.h
-  src/profilepersisterdefault.h
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
@@ -458,7 +456,6 @@ SET(libringclient_interface_LIB_HDRS
   src/interfaces/presenceserializeri.h
   src/interfaces/itemmodelstateserializeri.h
   src/interfaces/pixmapmanipulatori.h
-  src/interfaces/profilepersisteri.h
   src/interfaces/shortcutcreatori.h
   src/interfaces/actionextenderi.h
   src/interfaces/dbuserrorhandleri.h

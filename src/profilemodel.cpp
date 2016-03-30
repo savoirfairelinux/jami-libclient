@@ -28,6 +28,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QDir>
+#include <QtCore/QStandardPaths>
 
 //Ring
 #include "accountmodel.h"
@@ -38,7 +39,6 @@
 #include "contactmethod.h"
 #include "person.h"
 #include "globalinstances.h"
-#include "interfaces/profilepersisteri.h"
 #include "private/vcardutils.h"
 #include "mime.h"
 
@@ -168,7 +168,7 @@ private:
 
 QString ProfileEditor::path(const Person* p) const
 {
-   const QDir profilesDir = GlobalInstances::profilePersister().profilesDir();
+   const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
    profilesDir.mkpath(profilesDir.path());
    return QString("%1/%2.vcf")
       .arg(profilesDir.absolutePath())
@@ -429,39 +429,31 @@ void ProfileContentBackend::addAccount(Node* parent, Account* acc)
 
 void ProfileContentBackend::loadProfiles()
 {
-   try {
-      m_pEditor->m_lProfiles.clear();
+    m_pEditor->m_lProfiles.clear();
+    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+    qDebug() << "Loading vcf from:" << profilesDir;
 
-      const QDir profilesDir = GlobalInstances::profilePersister().profilesDir();
+    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
-      qDebug() << "Loading vcf from:" << profilesDir;
+    foreach (const QString& item , entries) {
+        Person* profile = new Person(this);
 
-      const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
+        QList<Account*> accs;
+        VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
 
-      foreach (const QString& item , entries) {
+        Node* pro = ProfileModel::instance().d_ptr->insertProfile(profile);
 
-         Person* profile = new Person(this);
-
-         QList<Account*> accs;
-         VCardUtils::mapToPerson(profile,QUrl(profilesDir.path()+'/'+item),&accs);
-
-         Node* pro = ProfileModel::instance().d_ptr->insertProfile(profile);
-
-         /* must be done after inserting profile, or else we try to insert to non existing parent */
-         foreach(Account* a, accs)
+        /* must be done after inserting profile, or else we try to insert to non existing parent */
+        foreach(Account* a, accs)
             addAccount(pro,a);
 
-         PersonModel::instance().addPerson(profile);
-      }
+        PersonModel::instance().addPerson(profile);
+    }
 
-      if (m_pEditor->m_lProfiles.size() == 0) {
-          //Ring need a profile for all account
-          setupDefaultProfile();
-      }
-   }
-   catch (...) {
-      qDebug() << "No ProfilePersistor loaded!";
-   }
+    if (m_pEditor->m_lProfiles.size() == 0) {
+        //Ring need a profile for all account
+        setupDefaultProfile();
+    }
 }
 
 bool ProfileContentBackend::load()
