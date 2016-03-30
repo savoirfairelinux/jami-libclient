@@ -62,8 +62,9 @@ public:
    int acceptedPayloadTypes() const;
    QItemSelectionModel* selectionModel() const;
    QItemSelectionModel* sortedProxySelectionModel() const;
-   QAbstractItemModel* sortedProxyModel() const;
-   Person* getPerson(const QModelIndex& idx);
+   QAbstractItemModel*  sortedProxyModel() const;
+   Person* getPerson(const QModelIndex& idx) const;
+   Person* selectedProfile() const;
 
 private:
    ProfileModelPrivate* d_ptr;
@@ -74,4 +75,3 @@ public Q_SLOTS:
    QModelIndex add(Person* person = nullptr);
    QModelIndex add(const QString& name);
 };
-

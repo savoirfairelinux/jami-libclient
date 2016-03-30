@@ -29,7 +29,7 @@
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QDir>
 
-//SFLPhone library
+//Ring
 #include "accountmodel.h"
 #include "collectioninterface.h"
 #include "collectioneditor.h"
@@ -42,12 +42,6 @@
 #include "private/vcardutils.h"
 #include "mime.h"
 
-//Qt
-class QObject;
-
-//SFLPhone
-class Person;
-class Account;
 struct Node;
 
 class ProfileEditor final : public CollectionEditor<Person>
@@ -175,7 +169,7 @@ private:
 QString ProfileEditor::path(const Person* p) const
 {
    const QDir profilesDir = GlobalInstances::profilePersister().profilesDir();
-
+   profilesDir.mkpath(profilesDir.path());
    return QString("%1/%2.vcf")
       .arg(profilesDir.absolutePath())
       .arg(QString(p->uid()));
@@ -457,11 +451,12 @@ void ProfileContentBackend::loadProfiles()
          foreach(Account* a, accs)
             addAccount(pro,a);
 
-         PersonModel::instance().addPerson(profile);
       }
 
-      //Ring need a profile for all account
-      setupDefaultProfile();
+      if (m_pEditor->m_lProfiles.size() == 0) {
+          //Ring need a profile for all account
+          setupDefaultProfile();
+      }
    }
    catch (...) {
       qDebug() << "No ProfilePersistor loaded!";
@@ -621,8 +616,7 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
 
    //Something is wrong, there is an orphan
    if (!accNode) {
-      d_ptr->m_pProfileBackend->setupDefaultProfile();
-      accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
+      return QModelIndex();
    }
 
    if (!accNode) {
@@ -1095,7 +1089,6 @@ void ProfileModelPrivate::slotDataChanged(const QModelIndex& tl,const QModelInde
 
 void ProfileModelPrivate::slotLayoutchanged()
 {
-   m_pProfileBackend->setupDefaultProfile();
    emit q_ptr->layoutChanged();
 }
 
@@ -1153,7 +1146,12 @@ void ProfileModelPrivate::slotRowsMoved(const QModelIndex& index, int first, int
    regenParentIndexes();
 }
 
-Person* ProfileModel::getPerson(const QModelIndex& idx)
+Person* ProfileModel::selectedProfile() const
+{
+    return getPerson(ProfileModel::instance().selectionModel()->currentIndex());
+}
+
+Person* ProfileModel::getPerson(const QModelIndex& idx) const
 {
    if ((!idx.isValid()) || (idx.model() != this))
       return nullptr;
