@@ -55,6 +55,7 @@ public:
    virtual QMimeData*    mimeData    ( const QModelIndexList &indexes                               ) const override;
    virtual bool          dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
    virtual QHash<int,QByteArray> roleNames() const override;
+   Person*               selectedProfile(                                                           ) const;
 
    //Getter
    QModelIndex mapToSource  (const QModelIndex& idx) const;
@@ -62,8 +63,8 @@ public:
    int acceptedPayloadTypes() const;
    QItemSelectionModel* selectionModel() const;
    QItemSelectionModel* sortedProxySelectionModel() const;
-   QAbstractItemModel* sortedProxyModel() const;
-   Person* getPerson(const QModelIndex& idx);
+   QAbstractItemModel*  sortedProxyModel() const;
+   Person* getPerson(const QModelIndex& idx) const;
 
 private:
    ProfileModelPrivate* d_ptr;
@@ -74,4 +75,3 @@ public Q_SLOTS:
    QModelIndex add(Person* person = nullptr);
    QModelIndex add(const QString& name);
 };
-

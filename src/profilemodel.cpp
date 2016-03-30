@@ -175,7 +175,7 @@ private:
 QString ProfileEditor::path(const Person* p) const
 {
    const QDir profilesDir = GlobalInstances::profilePersister().profilesDir();
-
+   profilesDir.mkpath(profilesDir.path());
    return QString("%1/%2.vcf")
       .arg(profilesDir.absolutePath())
       .arg(QString(p->uid()));
@@ -460,8 +460,10 @@ void ProfileContentBackend::loadProfiles()
          PersonModel::instance().addPerson(profile);
       }
 
-      //Ring need a profile for all account
-      setupDefaultProfile();
+      if (!ProfileModel::instance().selectedProfile()) {
+          //Ring need a profile for all account
+          setupDefaultProfile();
+      }
    }
    catch (...) {
       qDebug() << "No ProfilePersistor loaded!";
@@ -1043,6 +1045,8 @@ Node* ProfileModelPrivate::insertProfile(Person* p)
    m_pProfileBackend->m_pEditor->m_lProfiles << pro;
    q_ptr->endInsertRows();
 
+    q_ptr->selectionModel()->setCurrentIndex(q_ptr->index(pro->m_Index, 0), QItemSelectionModel::ClearAndSelect);
+
    pro->m_ChangedConn = connect(p, &Person::changed, [this, pro]() {
       if (pro->contact->isActive()) {
          const QModelIndex idx = q_ptr->index(pro->m_Index, 0);
@@ -1153,7 +1157,12 @@ void ProfileModelPrivate::slotRowsMoved(const QModelIndex& index, int first, int
    regenParentIndexes();
 }
 
-Person* ProfileModel::getPerson(const QModelIndex& idx)
+Person* ProfileModel::selectedProfile() const
+{
+    return getPerson(ProfileModel::instance().selectionModel()->currentIndex());
+}
+
+Person* ProfileModel::getPerson(const QModelIndex& idx) const
 {
    if ((!idx.isValid()) || (idx.model() != this))
       return nullptr;
