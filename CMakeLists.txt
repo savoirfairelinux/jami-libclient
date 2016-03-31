@@ -215,6 +215,7 @@ SET( libringclient_LIB_SRCS
   src/certificate.cpp
   src/securityflaw.cpp
   src/ringtone.cpp
+  src/profile.cpp
   src/trustrequest.cpp
   src/media/media.cpp
   src/media/audio.cpp
@@ -378,6 +379,7 @@ SET( libringclient_LIB_HDRS
   src/uri.h
   src/macro.h
   src/ringtone.h
+  src/profile.h
   src/itembase.h
   src/itembase.hpp
   src/mime.h
