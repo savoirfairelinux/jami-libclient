@@ -37,6 +37,7 @@
 #include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
 #include <accountmodel.h>
+#include <personmodel.h>
 
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
@@ -158,13 +159,13 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    while (iter.hasNext()) {
       iter.next();
       if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
-         //For now only add the profile for the CM without person.
-         //Eventually this should be upgraded to save the vCards in the folder and
-         //update them.
          if (!call->peerContactMethod()->contact()) {
             const auto& args = VCardUtils::parseMimeAttributes(iter.key());
-            if (auto person = ProfileChunk::addChunk(args, iter.value()))
-               call->peerContactMethod()->setPerson(person);
+            if (auto person = ProfileChunk::addChunk(args, iter.value())) {
+                person->setContactMethods(QVector<ContactMethod*>{call->peerContactMethod()});
+                PersonModel::instance().addPeerProfile(person);
+                call->peerContactMethod()->setPerson(person);
+            }
          }
          return;
       }
