@@ -491,8 +491,6 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
         nb->d_ptr->setCertificate(cert);
     }
 
-    call->d_ptr->sendProfile();
-
     return call.release();
 } //buildCall
 
