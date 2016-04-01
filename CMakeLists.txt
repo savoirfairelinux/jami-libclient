@@ -284,6 +284,7 @@ SET( libringclient_LIB_SRCS
   src/localrecordingcollection.cpp
   src/localtextrecordingcollection.cpp
   src/localhistorycollection.cpp
+  src/localprofilecollection.cpp
   src/localmacrocollection.cpp
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
@@ -365,6 +366,7 @@ SET( libringclient_LIB_HDRS
   src/localringtonecollection.h
   src/localmacrocollection.h
   src/localhistorycollection.h
+  src/localprofilecollection.h
   src/localtextrecordingcollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h

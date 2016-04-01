@@ -41,6 +41,7 @@
 #include "globalinstances.h"
 #include "private/vcardutils.h"
 #include "mime.h"
+#include "profile.h"
 
 struct Node;
 
@@ -300,7 +301,7 @@ QString ProfileContentBackend::name () const
 
 QString ProfileContentBackend::category () const
 {
-   return tr("Profile");
+   return tr("Profile Model");
 }
 
 QVariant ProfileContentBackend::icon() const
@@ -559,13 +560,14 @@ void ProfileModelPrivate::slotDelayedInit()
    connect(&AccountModel::instance(), &AccountModel::accountRemoved     , this, &ProfileModelPrivate::slotAccountRemoved);
 }
 
-ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new ProfileModelPrivate(this))
+ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent),
+CollectionManagerInterface<Profile>(this), d_ptr(new ProfileModelPrivate(this))
 {
 
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::HTML_TEXT << RingMimes::ACCOUNT << RingMimes::PROFILE;
 
    //Creating the profile contact backend
-   d_ptr->m_pProfileBackend = PersonModel::instance().addCollection<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
+   //d_ptr->m_pProfileBackend = PersonModel::instance().addCollection<ProfileContentBackend>(LoadOptions::FORCE_ENABLED);
 
    //Once LibRingClient is ready, start listening
    QTimer::singleShot(0,d_ptr,SLOT(slotDelayedInit()));
@@ -603,31 +605,21 @@ QModelIndex ProfileModel::mapFromSource(const QModelIndex& idx) const
    if (!idx.isValid() || idx.model() != &AccountModel::instance())
       return QModelIndex();
 
-   Account* acc = AccountModel::instance().getAccountByModelIndex(idx);
-   Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
+   //Account* acc = AccountModel::instance().getAccountByModelIndex(idx);
+   //Node* accNode = d_ptr->m_pProfileBackend->m_pEditor->m_hAccountToNode[acc];
 
    //Something is wrong, there is an orphan
-   if (!accNode) {
+   //if (!accNode) {
       return QModelIndex();
-   }
+   //}
 
-   if (!accNode) {
-      qDebug() << "No profile is assigned to this account" << acc->alias();
-   }
+   //if (!accNode) {
+   //   qDebug() << "No profile is assigned to this account" << acc->alias();
+   //}
 
-   Q_ASSERT_X(accNode && accNode->parent && accNode->type == Node::Type::ACCOUNT,
-      "ProfileModel::mapFromSource",
-      "A tree structure corruption has been detected. The memory can no longer "
-      "be trusted. This should happen. Please report a bug if you encouter this"
-      "\n\n"
-      "If the node is not found, then a row wasn't removed correctly or there "
-      "is a race condition in the addition"
-      "\n\n"
-      "If there is a parent node and the type is PROFILE, then the nodes are "
-      "arranged in a loop and this may induce a stack overflow at runtime"
-   );
 
-   return ProfileModel::instance().index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
+
+   //return ProfileModel::instance().index(accNode->m_Index, 0, index(accNode->parent->m_Index,0,QModelIndex()));
 }
 
 QVariant ProfileModel::data(const QModelIndex& index, int role ) const
@@ -932,6 +924,21 @@ QVariant ProfileModel::headerData(int section, Qt::Orientation orientation, int 
    return QVariant();
 }
 
+void ProfileModel::collectionAddedCallback(CollectionInterface* backend)
+{
+   Q_UNUSED(backend)
+}
+
+bool ProfileModel::addItemCallback(const Profile* c)
+{
+   return true;
+}
+
+bool ProfileModel::removeItemCallback(const Profile* item)
+{
+    return true;
+}
+
 /**
  * Remove an unused profile
  *
@@ -1086,13 +1093,13 @@ void ProfileModelPrivate::slotLayoutchanged()
 
 void ProfileModelPrivate::regenParentIndexes()
 {
-   foreach(Node* n, m_pProfileBackend->m_pEditor->m_lProfiles) {
-      foreach(Node* a, n->children) {
-         a->m_ParentIndex = a->account->index().row();
-      }
-      const QModelIndex par = q_ptr->index(n->m_Index,0,QModelIndex());
-      emit q_ptr->dataChanged(q_ptr->index(0,0,par),q_ptr->index(n->children.size()-1,0,par));
-   }
+   //foreach(Node* n, m_pProfileBackend->m_pEditor->m_lProfiles) {
+   //   foreach(Node* a, n->children) {
+   //      a->m_ParentIndex = a->account->index().row();
+   //   }
+   //   const QModelIndex par = q_ptr->index(n->m_Index,0,QModelIndex());
+   //   emit q_ptr->dataChanged(q_ptr->index(0,0,par),q_ptr->index(n->children.size()-1,0,par));
+   //}
 }
 
 void ProfileModelPrivate::slotAccountRemoved(Account* a)
@@ -1138,22 +1145,22 @@ void ProfileModelPrivate::slotRowsMoved(const QModelIndex& index, int first, int
    regenParentIndexes();
 }
 
-Person* ProfileModel::selectedProfile() const
+Profile* ProfileModel::selectedProfile() const
 {
-    return getPerson(ProfileModel::instance().selectionModel()->currentIndex());
+    return getProfile(ProfileModel::instance().selectionModel()->currentIndex());
 }
 
-Person* ProfileModel::getPerson(const QModelIndex& idx) const
+Profile* ProfileModel::getProfile(const QModelIndex& idx) const
 {
-   if ((!idx.isValid()) || (idx.model() != this))
+   /*if ((!idx.isValid()) || (idx.model() != this))
       return nullptr;
 
    const Node* account_node = static_cast<Node*>(idx.internalPointer());
 
    if (account_node->account)
       return nullptr;
-
-   return account_node->contact;
+      */
+   return nullptr;
 }
 
 #include "profilemodel.moc"
