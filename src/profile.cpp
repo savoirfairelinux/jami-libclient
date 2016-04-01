@@ -29,7 +29,6 @@ class ProfilePrivate
 {
 public:
    ProfilePrivate();
-   QString m_Name;
    Profile::Accounts m_Accounts;
    Person* m_Person;
 
@@ -43,7 +42,7 @@ ProfilePrivate::ProfilePrivate()
 Profile::Profile(CollectionInterface* parent, Person* p) : ItemBase(nullptr),
 d_ptr(new ProfilePrivate())
 {
-    setCollection(parent);
+    //setCollection(parent);
     d_ptr->m_Person = p;
 }
 
@@ -57,12 +56,7 @@ const Profile::Accounts& Profile::accounts() const
    return d_ptr->m_Accounts;
 }
 
-const QString Profile::name() const
-{
-   return d_ptr->m_Name;
-}
-
-const Person* Profile::person() const
+Person* Profile::person() const
 {
    return d_ptr->m_Person;
 }

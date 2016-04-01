@@ -25,15 +25,18 @@ class QItemSelectionModel;
 class QStringList;
 
 // Ring
+#include "collectionmanagerinterface.h"
 class Person;
 class ProfileContentBackend;
 class VCardMapper;
 class ProfileModelPrivate;
-
+class Profile;
+class Account;
 
 template<typename T> class CollectionMediator;
 
-class LIB_EXPORT ProfileModel : public QAbstractItemModel {
+class LIB_EXPORT ProfileModel :
+    public QAbstractItemModel, public CollectionManagerInterface<Profile> {
    Q_OBJECT
    friend class ProfileContentBackend;
    friend class ProfileEditor;
@@ -63,15 +66,25 @@ public:
    QItemSelectionModel* selectionModel() const;
    QItemSelectionModel* sortedProxySelectionModel() const;
    QAbstractItemModel*  sortedProxyModel() const;
-   Person* getPerson(const QModelIndex& idx) const;
-   Person* selectedProfile() const;
+   Profile* getProfile(const QModelIndex& idx) const;
+   Profile* selectedProfile() const;
+
+   QList<Account*> getAccountsForProfile(const QString& id);
+   Profile* getProfileById(const QByteArray& id);
+
 
 private:
    ProfileModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(ProfileModel)
 
+   //Backend interface
+   virtual void collectionAddedCallback(CollectionInterface* backend) override;
+   virtual bool addItemCallback(const Profile* item) override;
+   virtual bool removeItemCallback(const Profile* item) override;
+
+
 public Q_SLOTS:
    bool remove(const QModelIndex& idx);
-   QModelIndex add(Person* person = nullptr);
-   QModelIndex add(const QString& name);
+   bool add(Person* person = nullptr);
+   bool add(const QString& name);
 };
