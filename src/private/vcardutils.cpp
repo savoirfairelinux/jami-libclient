@@ -284,12 +284,12 @@ void VCardUtils::addPhoto(const QByteArray img)
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
                "ENCODING=BASE64" +
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-               "TYPE=JPEG:" + img.toBase64().trimmed());
+               "TYPE=PNG:" + img.toBase64().trimmed());
 }
 
 const QByteArray VCardUtils::endVCard()
 {
-   m_vCard << Delimiter::END_TOKEN;
+   m_vCard << Delimiter::END_TOKEN << Delimiter::END_LINE_TOKEN;
    const QString result = m_vCard.join(QString::fromUtf8(Delimiter::END_LINE_TOKEN));
    return result.toUtf8();
 }

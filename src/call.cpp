@@ -491,8 +491,6 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
         nb->d_ptr->setCertificate(cert);
     }
 
-    call->d_ptr->sendProfile();
-
     return call.release();
 } //buildCall
 
@@ -1631,6 +1629,9 @@ void CallPrivate::abort()
 
 }
 
+
+#include "profilemodel.h"
+#include "profile.h"
 /**
  * Send your profile to the peer, assume the other use RING
  *
@@ -1641,9 +1642,14 @@ void CallPrivate::abort()
  */
 void CallPrivate::sendProfile()
 {
-    if (not q_ptr->account()->contactMethod()->contact())
+    qDebug() << "SEND PROFILE INIT";
+    auto profile = ProfileModel::instance().selectedProfile();
+    if (not profile) {
+        qDebug() << "SEND PROFILE FAIL";
         return;
+    }
 
+    qDebug() << "SEND PROFILE";
     /*
      * SIP messages need to be very small ( < 2kB ) not to hit some hardcoded
      * buffer size in the PJ_SIP. As profile photo tend to hover around 10kB,
@@ -1653,7 +1659,9 @@ void CallPrivate::sendProfile()
      * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
      */
     auto t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
-    auto vCard = q_ptr->account()->contactMethod()->contact()->toVCard();
+    auto vCard = profile->person()->toVCard();
+
+    qDebug() << vCard;
 
 
     qsrand(time(nullptr));
