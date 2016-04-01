@@ -130,7 +130,7 @@ struct VCardMapper final {
    }
 
    void setPhoto(Person* c, const QString& key, const QByteArray& fn) {
-      QByteArray type = "PNG";
+      QByteArray type = "JPG";
 
       QRegExp rx(QStringLiteral("TYPE=([A-Za-z]*)"));
 
@@ -284,7 +284,7 @@ void VCardUtils::addPhoto(const QByteArray img)
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
                "ENCODING=BASE64" +
                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-               "TYPE=JPEG:" + img.toBase64().trimmed());
+               "TYPE=JPG:" + img.toBase64().trimmed());
 }
 
 const QByteArray VCardUtils::endVCard()
