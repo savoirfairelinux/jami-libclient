@@ -446,7 +446,6 @@ void ProfileContentBackend::loadProfiles()
         /* must be done after inserting profile, or else we try to insert to non existing parent */
         foreach(Account* a, accs)
             addAccount(pro,a);
-
     }
 
     if (m_pEditor->m_lProfiles.size() == 0) {
