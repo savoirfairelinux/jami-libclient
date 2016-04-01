@@ -17,35 +17,31 @@
  ***************************************************************************/
 #pragma once
 
-#include <typedefs.h>
-#include <itembase.h>
+#include "collectioninterface.h"
+#include "collectioneditor.h"
 
-class ProfilePrivate;
-class Person;
-class Account;
+class Profile;
 
-class LIB_EXPORT Profile : public ItemBase
+template<typename T> class CollectionMediator;
+
+class LIB_EXPORT LocalProfileCollection : public CollectionInterface
 {
-    Q_OBJECT
 public:
-    typedef QVector<Account*> Accounts;
+    explicit LocalProfileCollection(CollectionMediator<Profile>* mediator);
+    virtual ~LocalProfileCollection();
 
-    explicit Profile(CollectionInterface* parent = nullptr, Person* p = nullptr);
-    virtual ~Profile();
+    virtual bool load  () override;
+    virtual bool reload() override;
+    virtual bool clear () override;
 
-    Q_PROPERTY( Accounts  accounts   READ accounts WRITE setAccounts )
-    Q_PROPERTY( Person    person     READ person                     )
+    virtual QString    name     () const override;
+    virtual QString    category () const override;
+    virtual QVariant   icon     () const override;
+    virtual bool       isEnabled() const override;
+    virtual QByteArray id       () const override;
 
-    //Getters
-    const Accounts& accounts()  const;
-          Person*   person()    const;
-
-    //Setters
-    void setAccounts(Accounts);
+    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
 private:
-    ProfilePrivate* d_ptr;
-    Q_DECLARE_PRIVATE(Profile)
+    void setupDefaultProfile();
 };
-
-Q_DECLARE_METATYPE(Profile*)
