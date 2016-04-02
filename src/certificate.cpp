@@ -135,7 +135,8 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssDescripti
 CertificatePrivate::CertificatePrivate(Certificate* p, LoadingType _type) :
 q_ptr(p), m_pCheckCache(nullptr), m_pDetailsCache(nullptr), m_LoadingType(_type),
 m_Statuses{0,0,0},m_RequirePrivateKey(false),m_RequireStrictPermissions(true),
-m_pSignedBy(nullptr),m_pChainOfTrust(nullptr),m_pSeverityProxy(nullptr)
+m_pSignedBy(nullptr),m_pChainOfTrust(nullptr),m_pSeverityProxy(nullptr),
+m_pContactMethod(nullptr)
 {
 }
 
