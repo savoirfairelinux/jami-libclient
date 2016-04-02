@@ -69,9 +69,10 @@ public:
       POPULARITY_INDEX = 12,
       BOOKMARED        = 13,
       TRACKED          = 14,
-      PRESENT          = 15,
-      PRESENCE_MESSAGE = 16,
-      UID              = 17,
+      HAS_CERTIFICATE  = 15,
+      PRESENT          = 16,
+      PRESENCE_MESSAGE = 17,
+      UID              = 18,
    };
 
 
