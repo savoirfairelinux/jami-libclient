@@ -204,6 +204,12 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                return number->isBookmarked()?Qt::Checked:Qt::Unchecked;
          }
          break;
+      case PhoneDirectoryModelPrivate::Columns::HAS_CERTIFICATE:
+         switch (role) {
+            case Qt::CheckStateRole:
+               return number->certificate()?Qt::Checked:Qt::Unchecked;
+         }
+         break;
       case PhoneDirectoryModelPrivate::Columns::TRACKED:
          switch (role) {
             case Qt::CheckStateRole:
@@ -253,7 +259,7 @@ int PhoneDirectoryModel::rowCount(const QModelIndex& parent ) const
 int PhoneDirectoryModel::columnCount(const QModelIndex& parent ) const
 {
    Q_UNUSED(parent)
-   return 18;
+   return 19;
 }
 
 Qt::ItemFlags PhoneDirectoryModel::flags(const QModelIndex& index ) const
@@ -287,8 +293,8 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
    Q_UNUSED(section)
    Q_UNUSED(orientation)
    static const QString headers[] = {tr("URI"), tr("Type"), tr("Person"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
-   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"), tr("Bookmarked"), tr("Tracked"), tr("Present"),
-   tr("Presence message"), tr("Uid") };
+   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"), 
+   tr("Bookmarked"), tr("Tracked"), tr("Has certificate"), tr("Present"), tr("Presence message"), tr("Uid") };
    if (role == Qt::DisplayRole) return headers[section];
    return QVariant();
 }
