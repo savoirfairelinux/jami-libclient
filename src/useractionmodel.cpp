@@ -393,28 +393,28 @@ const Matrix1D< UAMA, FlagPack<UAM::Asset>> UserActionModelPrivate::availableByA
  * Different objects type have access to a different subset of actions
  */
 const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availableObjectActions = {
-   /*                            Person ContactMethod  Call    Media   */
-   { UAMA::ACCEPT            , {{ false,    false,     true ,  false }}},
-   { UAMA::HOLD              , {{ false,    false,     true ,  true  }}},
-   { UAMA::MUTE_AUDIO        , {{ false,    false,     true ,  true  }}},
-   { UAMA::MUTE_VIDEO        , {{ false,    false,     true ,  true  }}},
-   { UAMA::SERVER_TRANSFER   , {{ false,    false,     true ,  false }}},
-   { UAMA::RECORD            , {{ false,    false,     true ,  true  }}},
-   { UAMA::HANGUP            , {{ false,    false,     true ,  false }}},
-   { UAMA::JOIN              , {{ false,    false,     true ,  false }}},
-   { UAMA::ADD_NEW           , {{ false,    false,     true ,  false }}},
-   { UAMA::TOGGLE_VIDEO      , {{ false,    false,     true ,  true  }}},
-   { UAMA::ADD_CONTACT       , {{ false,    true ,     true ,  false }}},
-   { UAMA::ADD_TO_CONTACT    , {{ false,    true ,     true ,  false }}},
-   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     true ,  false }}},
-   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,  false }}},
-   { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,  false }}},
-   { UAMA::BOOKMARK          , {{ true ,    true ,     true ,  false }}},
-   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  false }}},
-   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,  false }}},
-   { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,  false }}},
-   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,  false }}},
-   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,  false }}},
+   /*                            Person ContactMethod  Call    Media  Certificate */
+   { UAMA::ACCEPT            , {{ false,    false,     true ,  false,    false   }}},
+   { UAMA::HOLD              , {{ false,    false,     true ,  true ,    false   }}},
+   { UAMA::MUTE_AUDIO        , {{ false,    false,     true ,  true ,    false   }}},
+   { UAMA::MUTE_VIDEO        , {{ false,    false,     true ,  true ,    false   }}},
+   { UAMA::SERVER_TRANSFER   , {{ false,    false,     true ,  false,    false   }}},
+   { UAMA::RECORD            , {{ false,    false,     true ,  true ,    false   }}},
+   { UAMA::HANGUP            , {{ false,    false,     true ,  false,    false   }}},
+   { UAMA::JOIN              , {{ false,    false,     true ,  false,    false   }}},
+   { UAMA::ADD_NEW           , {{ false,    false,     true ,  false,    false   }}},
+   { UAMA::TOGGLE_VIDEO      , {{ false,    false,     true ,  true ,    false   }}},
+   { UAMA::ADD_CONTACT       , {{ false,    true ,     true ,  false,    true    }}},
+   { UAMA::ADD_TO_CONTACT    , {{ false,    true ,     true ,  false,    true    }}},
+   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::BOOKMARK          , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,  false,    true    }}},
+   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,  false,    true    }}},
 };
 
 #define P_CB [](const Person* p) -> bool
@@ -916,6 +916,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
                      break;
                   }
                   case Ring::ObjectType::Media          : //TODO
+                  case Ring::ObjectType::Certificate    : //TODO
                   case Ring::ObjectType::COUNT__        :
                      break;
                }
@@ -1002,6 +1003,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             // a  = c->account(); TODO: uncomment when account is needed
             break;
          case Ring::ObjectType::Media          : //TODO
+         case Ring::ObjectType::Certificate    : //TODO
          case Ring::ObjectType::COUNT__        :
             break;
       }

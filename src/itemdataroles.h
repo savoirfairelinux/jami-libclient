@@ -61,6 +61,7 @@ enum class ObjectType
     ContactMethod,
     Call,
     Media,
+    Certificate,
     COUNT__
 };
 

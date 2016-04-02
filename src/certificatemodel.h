@@ -21,6 +21,7 @@
 #include "typedefs.h"
 
 #include "certificate.h"
+#include "itemdataroles.h"
 
 class Account;
 
@@ -39,12 +40,14 @@ public:
    friend class DaemonCertificateCollection;
 
    enum class Role {
-      NodeType          = 100,
-      isDetail          = 101,
-      isCheck           = 102,
-      detail            = 103,
-      check             = 104,
-      requirePrivateKey = 105,
+      NodeType          = static_cast<int>(Ring::Role::UserRole) + 100,
+      isDetail          ,
+      isCheck           ,
+      detail            ,
+      check             ,
+      requirePrivateKey ,
+
+      // "Virtual" roles for each certificate values
       DetailRoleBase    = 1000,
    };
 
