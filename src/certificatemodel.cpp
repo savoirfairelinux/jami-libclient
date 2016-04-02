@@ -35,6 +35,7 @@
 
 //Ring
 #include "certificate.h"
+#include "contactmethod.h"
 #include "account.h"
 #include "foldercertificatecollection.h"
 #include "daemoncertificatecollection.h"
@@ -444,6 +445,34 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
    if (!node)
       return QVariant();
 
+   if (node->m_Level == NodeType::CERTIFICATE) {
+
+      // If the certificate has a contactMethod, implement the generic LRC roles
+      // this is used to match trust requests or white/blacklist entries with
+      // peoples.
+      if (node->m_pCertificate && node->m_pCertificate->contactMethod() && (
+          role == Qt::DisplayRole || role == Qt::DecorationRole || (
+             role > static_cast<int>(Ring::Role::Object)
+              && role < static_cast<int>(Ring::Role::UnreadTextMessageCount)
+          )
+      )) {
+         switch(role) {
+            case static_cast<int>(Ring::Role::Object):
+               return QVariant::fromValue(node->m_pCertificate);
+            case static_cast<int>(Ring::Role::ObjectType):
+               return QVariant::fromValue(Ring::ObjectType::Certificate);
+            default:
+               return node->m_pCertificate->contactMethod()->roleData(role);
+         }
+      }
+      // Add the details as roles for certificates
+      else if (role >= static_cast<int>(Role::DetailRoleBase) && role < static_cast<int>(Role::DetailRoleBase)+enum_class_size<Certificate::Details>()) {
+         Certificate* cert = node->m_pCertificate;
+         if (cert) {
+            return cert->detailResult(static_cast<Certificate::Details>(role - static_cast<int>(Role::DetailRoleBase)));
+         }
+      }
+   }
 
    switch(role) {
       case Qt::DisplayRole:
@@ -454,14 +483,6 @@ QVariant CertificateModel::data( const QModelIndex& index, int role) const
       case static_cast<int>(Role::NodeType):
          return QVariant::fromValue(node->m_Level);
    };
-
-   //Add the details as roles for certificates
-   if (node->m_Level == NodeType::CERTIFICATE && role >= static_cast<int>(Role::DetailRoleBase) && role < static_cast<int>(Role::DetailRoleBase)+enum_class_size<Certificate::Details>()) {
-      Certificate* cert = node->m_pCertificate;
-      if (cert) {
-         return cert->detailResult(static_cast<Certificate::Details>(role - static_cast<int>(Role::DetailRoleBase)));
-      }
-   }
 
    switch (node->m_Level) {
       case CertificateModel::NodeType::DETAILS         :
