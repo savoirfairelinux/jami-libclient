@@ -788,7 +788,10 @@ bool ContactMethod::isReachable() const
 Certificate* ContactMethod::certificate() const
 {
    if (protocolHint() == URI::ProtocolHint::RING) {
-       d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(uid(), account());
+      d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(uid(), account());
+
+      if (d_ptr->m_pCertificate && !d_ptr->m_pCertificate->contactMethod())
+         d_ptr->m_pCertificate->setContactMethod(const_cast<ContactMethod*>(this));
    }
    return d_ptr->m_pCertificate;
 }
