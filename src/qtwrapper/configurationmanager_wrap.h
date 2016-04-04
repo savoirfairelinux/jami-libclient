@@ -287,13 +287,6 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
-   MapStringString getIp2IpDetails()
-   {
-      MapStringString temp =
-         convertMap(DRing::getIp2IpDetails());
-      return temp;
-   }
-
    bool getIsAlwaysRecording()
    {
       return DRing::getIsAlwaysRecording();
