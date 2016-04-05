@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_84d3e337",
+        "filename": "src/profile.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-05T15:03:29Z",
+      "side": 1,
+      "message": "Default value of parent is nullptr. Maybe check it before calling that (hint: this is SEGFAULTTTTTT)",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 26
+      },
+      "revId": "f06f13756ce19a26177ff4013237fd79fe37a2fd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
