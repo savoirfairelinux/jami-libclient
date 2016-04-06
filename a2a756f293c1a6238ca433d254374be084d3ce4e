@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_e4a65f53",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-06T20:27:33Z",
+      "side": 1,
+      "message": "TRANSPORT and TAG should be omitted. I am not sure about the port. The presence is rather fragile. It only work as long as the URI is exactly what it expect. It is why fullUri() existed. It long pre-date format() and was necessary to make this work.",
+      "range": {
+        "startLine": 319,
+        "startChar": 61,
+        "endLine": 319,
+        "endChar": 67
+      },
+      "revId": "a2a756f293c1a6238ca433d254374be084d3ce4e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
