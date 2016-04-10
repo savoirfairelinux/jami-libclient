@@ -369,8 +369,6 @@ bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* 
 bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accounts)
 {
 
-   qDebug() << "file" << path.toString();
-
    QFile file(path.toString());
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       qDebug() << "Error opening vcard: " << path;
