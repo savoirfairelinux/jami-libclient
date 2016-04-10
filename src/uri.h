@@ -192,6 +192,7 @@ public:
 private:
    const QScopedPointer<URIPrivate> d_ptr;
 };
+Q_DECLARE_METATYPE(URI)
 
 Q_DECLARE_METATYPE(URI::ProtocolHint)
 
