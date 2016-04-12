@@ -32,6 +32,7 @@
 #include "accountmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
+#include "personmodel.h"
 
 /* https://www.ietf.org/rfc/rfc2045.txt
  * https://www.ietf.org/rfc/rfc2047.txt
@@ -316,12 +317,9 @@ QList< Person* > VCardUtils::loadDir (const QUrl& path, bool& ok, QHash<const Pe
 
 bool VCardUtils::mapToPerson(Person* p, const QByteArray& all, QList<Account*>* accounts)
 {
-//    bool propertyInserted = false;
    QByteArray previousKey,previousValue;
 
    const QList<QByteArray> lines = all.split('\n');
-
-   QHash<QByteArray,QByteArray> fields;
 
    foreach (const QByteArray& property, lines) {
 
@@ -378,6 +376,62 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
    const QByteArray all = file.readAll();
 
    return mapToPerson(p,all,accounts);
+}
+
+Person* VCardUtils::mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QList<Account*>* accounts)
+{
+    auto existingPerson = PersonModel::instance().getPersonByUid(vCard[Property::UID]);
+    Person *p = existingPerson == nullptr ? new Person() : existingPerson;
+
+    QHashIterator<QByteArray, QByteArray> it(vCard);
+    while (it.hasNext()) {
+        it.next();
+
+        if(it.key() == VCardUtils::Property::X_RINGACCOUNT) {
+              if (accounts) {
+              Account* a = AccountModel::instance().getById(it.value().trimmed(),true);
+              if(!a) {
+                 qDebug() << "Could not find account: " << it.value().trimmed();
+                 continue;
+              }
+
+              (*accounts) << a;
+           }
+        }
+        vc_mapper->metacall(p, it.key(), it.value().trimmed());
+    }
+
+    vc_mapper->apply();
+
+    return p;
+}
+
+QHash<QByteArray, QByteArray> VCardUtils::toHashMap(const QByteArray& content)
+{
+    QHash<QByteArray, QByteArray> vCard;
+    QByteArray previousKey,previousValue;
+
+    const QList<QByteArray> lines = content.split('\n');
+
+    foreach (const QByteArray& property, lines) {
+
+        //Ignore empty lines
+        if (property.size()) {
+
+            //Some properties are over multiple lines
+            if (property[0] == ' ' && previousKey.size()) {
+                previousValue += property.right(property.size()-1);
+            }
+
+            //Do not use split, URIs can have : in them
+            const int dblptPos = property.indexOf(':');
+            const QByteArray k(property.left(dblptPos)),v(property.right(property.size()-dblptPos-1));
+
+            vCard[k] = v;
+        }
+
+    }
+    return vCard;
 }
 
 //TODO get the daemon implementation, port it to Qt
