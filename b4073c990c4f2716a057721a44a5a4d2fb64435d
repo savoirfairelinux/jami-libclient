@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_7099a66d",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-12T15:40:25Z",
+      "side": 1,
+      "message": "Set but not used ? Should we keep it",
+      "range": {
+        "startLine": 712,
+        "startChar": 4,
+        "endLine": 712,
+        "endChar": 24
+      },
+      "revId": "b4073c990c4f2716a057721a44a5a4d2fb64435d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_30a32ea0",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-12T15:40:25Z",
+      "side": 1,
+      "message": "See above",
+      "range": {
+        "startLine": 723,
+        "startChar": 8,
+        "endLine": 723,
+        "endChar": 109
+      },
+      "revId": "b4073c990c4f2716a057721a44a5a4d2fb64435d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_50a02290",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-12T15:40:25Z",
+      "side": 1,
+      "message": "See above",
+      "range": {
+        "startLine": 725,
+        "startChar": 34,
+        "endLine": 725,
+        "endChar": 54
+      },
+      "revId": "b4073c990c4f2716a057721a44a5a4d2fb64435d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
