@@ -54,7 +54,7 @@ public:
    virtual ~PersonModel();
 
    //Mutator
-   bool addPerson(Person* c);
+   bool addPeerProfile(Person* c);
 
    //Getters
    Person* getPersonByUid   ( const QByteArray& uid );
