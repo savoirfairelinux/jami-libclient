@@ -103,8 +103,10 @@ bool PeerProfileEditor::edit( Person* item)
 bool PeerProfileEditor::addNew( Person* pers)
 {
     qDebug() << "Adding new peer profile" << pers->uid();
-    m_lItems << pers;
-    mediator()->addItem(pers);
+    if (not m_lItems.contains(pers)) {
+        m_lItems << pers;
+        mediator()->addItem(pers);
+    }
     save(pers);
     return true;
 }
