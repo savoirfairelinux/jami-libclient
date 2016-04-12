@@ -315,12 +315,15 @@ bool PersonModel::removeItemCallback(const Person* item)
    return item;
 }
 
-bool PersonModel::addPerson(Person* c)
+bool PersonModel::addPeerProfile(Person* c)
 {
    if (!c)
       return false;
-   if (collections().size()) //TODO this is wrong, it work for now because profilemodel is [0]
-      collections()[0]->add(c);
+
+   for (CollectionInterface* col :collections(CollectionInterface::SupportedFeatures::ADD)) {
+       if (col->id() == "ppc") //Only add profile to peer profile collection
+           col->add(c);
+   }
    return true;
 }
 
