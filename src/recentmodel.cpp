@@ -705,8 +705,10 @@ void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
 
    if (isNew) {
       n = new RecentViewNode(p, this);
+      n->m_pParent = nullptr;
       m_hPersonsToNodes[p] = n;
    }
+
    insertNode(n, t, isNew);
 }
 
@@ -728,14 +730,22 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 ///Remove the contact method once they are associated with a contact
 void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
 {
-    Q_UNUSED(np)
     Q_UNUSED(op)
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
     if (auto n = m_hCMsToNodes.take(cm)) {
         // remove its child calls from the list first, they will be destroyed when the call is over
+        auto newParentNode = np != nullptr ? m_hPersonsToNodes[np] : nullptr;
         Q_FOREACH(auto cmNode, n->m_lChildren) {
-            cmNode->m_pParent = nullptr;
+            if (newParentNode) {
+                cmNode->m_pParent = newParentNode;
+                newParentNode->m_lChildren.append(cmNode);
+            } else
+                cmNode->m_pParent = nullptr;
+        }
+        if (newParentNode && newParentNode->m_lChildren.size()) {
+            q_ptr->selectionModel()->clear();
+            q_ptr->selectionModel()->select(q_ptr->getIndex(const_cast<Person*>(newParentNode->m_uContent.m_pPerson)), QItemSelectionModel::ClearAndSelect);
         }
         n->m_lChildren.clear();
         removeNode(n);
