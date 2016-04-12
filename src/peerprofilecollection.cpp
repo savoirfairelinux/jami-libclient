@@ -35,7 +35,7 @@
 class PeerProfileEditor final : public CollectionEditor<Person>
 {
 public:
-   PeerProfileEditor(CollectionMediator<Person>* m, PeerProfileCollection* parent);
+   PeerProfileEditor(CollectionMediator<Person>* m);
    virtual bool save       (const Person* pers ) override;
    virtual bool remove     ( const Person* item ) override;
    virtual bool edit       ( Person*       item ) override;
@@ -50,17 +50,14 @@ private:
 
     //Attributes
     QVector<Person*> m_lItems;
-    PeerProfileCollection* m_pCollection;
 };
 
-PeerProfileEditor::PeerProfileEditor(CollectionMediator<Person>* m, PeerProfileCollection* parent) :
-CollectionEditor<Person>(m),m_pCollection(parent)
+PeerProfileEditor::PeerProfileEditor(CollectionMediator<Person>* m) : CollectionEditor<Person>(m)
 {
 
 }
 
 PeerProfileCollection::PeerProfileCollection(CollectionMediator<Person>* mediator) :
-CollectionInterface(new PeerProfileEditor(mediator,this))
 {
 
 }
@@ -100,8 +97,10 @@ bool PeerProfileEditor::edit( Person* item)
 
 bool PeerProfileEditor::addNew( Person* pers)
 {
-    m_lItems << pers;
-    mediator()->addItem(pers);
+    if (not m_lItems.contains(pers)) {
+        m_lItems << pers;
+        mediator()->addItem(pers);
+    }
     save(pers);
     return true;
 }
