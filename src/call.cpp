@@ -71,6 +71,9 @@
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
+#include "profilemodel.h"
+#include "profile.h"
+
 //Track where state changes are performed on finished (over, error, failed) calls
 //while not really problematic, it is technically wrong
 #define Q_ASSERT_IS_IN_PROGRESS Q_ASSERT(m_CurrentState != Call::State::OVER);
@@ -490,8 +493,6 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
         call->d_ptr->m_pCertificate = cert;
         nb->d_ptr->setCertificate(cert);
     }
-
-    call->d_ptr->sendProfile();
 
     return call.release();
 } //buildCall
@@ -1641,7 +1642,8 @@ void CallPrivate::abort()
  */
 void CallPrivate::sendProfile()
 {
-    if (not q_ptr->account()->contactMethod()->contact())
+    auto profile = ProfileModel::instance().selectedProfile();
+    if (not profile)
         return;
 
     /*
@@ -1653,8 +1655,7 @@ void CallPrivate::sendProfile()
      * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
      */
     auto t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
-    auto vCard = q_ptr->account()->contactMethod()->contact()->toVCard();
-
+    auto vCard = profile->person()->toVCard();
 
     qsrand(time(nullptr));
     const auto& key = QString::number(qrand());

@@ -37,6 +37,7 @@
 #include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
 #include <accountmodel.h>
+#include <personmodel.h>
 
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
@@ -144,30 +145,35 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
    Q_ASSERT(call);
 
-   qDebug() << "Creating messaging model for call" << callId;
-   Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
-
-   if (!media) {
-      media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
-   }
-
    static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
 
    //Intercept some messages early, those are intended for internal Ring usage
    QMapIterator<QString, QString> iter(message);
    while (iter.hasNext()) {
       iter.next();
+
       if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
-         //For now only add the profile for the CM without person.
-         //Eventually this should be upgraded to save the vCards in the folder and
-         //update them.
-         if (!call->peerContactMethod()->contact()) {
-            const auto& args = VCardUtils::parseMimeAttributes(iter.key());
-            if (auto person = ProfileChunk::addChunk(args, iter.value()))
-               call->peerContactMethod()->setPerson(person);
-         }
+          const auto& args = VCardUtils::parseMimeAttributes(iter.key());
+          if (auto person = ProfileChunk::addChunk(args, iter.value())) {
+              person->setContactMethods(QVector<ContactMethod*>{call->peerContactMethod()});
+              if (auto existingPerson = PersonModel::instance().getPersonByUid(person->uid())) {
+                  //FIXME: This is the proof of concept we should do better than that
+                  existingPerson->setPhoto(person->photo());
+                  delete person;
+              } else {
+                  PersonModel::instance().addPeerProfile(person);
+                  call->peerContactMethod()->setPerson(person);
+              }
+          }
          return;
       }
+   }
+
+   qDebug() << "Creating messaging model for call" << callId;
+   Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
+
+   if (!media) {
+      media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
    }
 
    media->recording()->setCall(call);
