@@ -82,6 +82,8 @@ public:
    //Mapping
    static bool mapToPerson(Person* p, const QUrl& url, QList<Account*>* accounts = nullptr);
    static bool mapToPerson(Person* p, const QByteArray& content, QList<Account*>* accounts = nullptr);
+   static Person* mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QList<Account*>* accounts = nullptr);
+   static QHash<QByteArray, QByteArray> toHashMap(const QByteArray& content);
 
    //Serialization
    static QByteArray wrapInMime(const QString& mimeType, const QByteArray& payload);

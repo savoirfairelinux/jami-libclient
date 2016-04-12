@@ -36,6 +36,7 @@
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include <itemdataroles.h>
+#include <mime.h>
 
 //Std
 #include <ctime>
@@ -406,9 +407,13 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    if (direction == Media::Media::Direction::OUT)
       m->isRead = true; // assume outgoing messages are read, since we're sending them
 
+   static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
+
    QMapIterator<QString, QString> iter(message);
    while (iter.hasNext()) {
       iter.next();
+      if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF)
+          return;
       if (iter.value() != QLatin1String("application/resource-lists+xml")) { //This one is useless
          const QString mimeType = iter.key();
 

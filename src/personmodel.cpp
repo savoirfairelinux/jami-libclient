@@ -321,10 +321,12 @@ bool PersonModel::addPeerProfile(Person* c)
       return false;
 
    for (CollectionInterface* col :collections(CollectionInterface::SupportedFeatures::ADD)) {
-       if (col->id() == "ppc") //Only add profile to peer profile collection
+       if (col->id() == "ppc") {//Only add profile to peer profile collection
            col->add(c);
+           return true;
+       }
    }
-   return true;
+   return false;
 }
 
 ///@deprecated
