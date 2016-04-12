@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_506fc292",
+        "filename": "src/profilemodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-04-12T13:50:04Z",
+      "side": 1,
+      "message": "Would be better to either remove this if we don\u0027t need it or implement it",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 10
+      },
+      "revId": "9195f42c4bfc55caf7896f77a8878b2caa389bc3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
