@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_be04ef15",
+        "filename": "src/media/text.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-14T15:00:18Z",
+      "side": 1,
+      "message": "I\u0027m working on that to try to avoid the vCard to Person to vCard mess",
+      "range": {
+        "startLine": 159,
+        "startChar": 14,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "6287bdfd95c7047f618b42bc85be30988348759e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
