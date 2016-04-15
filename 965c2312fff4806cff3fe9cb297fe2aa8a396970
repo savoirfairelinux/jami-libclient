@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_9e048b7f",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-15T15:09:03Z",
+      "side": 1,
+      "message": "Not really happy about that but idf another way of dealing with the selection problem",
+      "range": {
+        "startLine": 746,
+        "startChar": 8,
+        "endLine": 749,
+        "endChar": 9
+      },
+      "revId": "965c2312fff4806cff3fe9cb297fe2aa8a396970",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
