@@ -1408,8 +1408,10 @@ void Account::setUsername(const QString& detail)
          //nothing to do
          break;
       case Account::Protocol::SIP:
-         if (credentialModel()->rowCount())
-            credentialModel()->setData(credentialModel()->index(0,0),detail,CredentialModel::Role::NAME);
+         if (credentialModel()->primaryCredential(Credential::Type::SIP)) {
+            credentialModel()->primaryCredential(Credential::Type::SIP)->setUsername(detail);
+            credentialModel() << CredentialModel::EditAction::MODIFY;
+         }
          else {
             const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
             credentialModel()->setData(idx,detail,CredentialModel::Role::NAME);
