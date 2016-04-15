@@ -41,5 +41,4 @@ public:
 private Q_SLOTS:
    void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& payloads);
    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
-
 };
