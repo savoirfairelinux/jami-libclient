@@ -177,6 +177,7 @@ void CategorizedBookmarkModel::reloadCategories()
 
    //Load most used contacts
    if (d_ptr->displayFrequentlyUsed()) {
+                                                      //: Most popular contacts
       NumberTreeBackend* item = new NumberTreeBackend(tr("Most popular"));
       d_ptr->m_hCategories["mp"] = item;
       item->m_Index = d_ptr->m_lCategoryCounter.size();
