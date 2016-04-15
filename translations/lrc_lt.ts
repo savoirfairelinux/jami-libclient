@@ -1082,7 +1082,7 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Skambučio melodija</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
@@ -1200,7 +1200,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="494"/>
         <source>Mute audio</source>
-        <translation>Išjungti garsą</translation>
+        <translation>Nutildyti garsą</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="495"/>

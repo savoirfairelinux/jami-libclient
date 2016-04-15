@@ -59,12 +59,12 @@
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation type="unfinished"/>
+        <translation>Неприемливо</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation type="unfinished"/>
+        <translation>Грешно</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
@@ -98,17 +98,17 @@
     <message>
         <location filename="../src/call.cpp" line="666"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Нов</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation type="unfinished"/>
+        <translation>Звънене (входящо)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation type="unfinished"/>
+        <translation>Звънене (изходящо)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation type="unfinished"/>
+        <translation>Задържано прехвърляне</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Прекъснат</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="700"/>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Прекъснат</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1659"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation type="unfinished"/>
+        <translation>Любими</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Други</translation>
     </message>
 </context>
 <context>
@@ -471,12 +471,12 @@
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Нова</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Други</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Други</translation>
     </message>
 </context>
 <context>
@@ -1097,7 +1097,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Други</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
@@ -1107,12 +1107,12 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>Акаунт за SIP</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation type="unfinished"/>
+        <translation>Акаунт за IAX2</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
@@ -1127,7 +1127,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS е изключен; договарянето няма да бъде шифровано. Общуването Ви няма да бъде защитено срещу подслушване</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>

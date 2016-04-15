@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Trying...</source>
-        <translation>Попытка...</translation>
+        <translation>Пытаемся...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="274"/>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation>Ошибка настройки Stun</translation>
+        <translation>Ошибка настройки STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation>Недопустимо</translation>
+        <translation>Недопустимый</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
@@ -103,12 +103,12 @@
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation>Звонок (Вх)</translation>
+        <translation>Звонок (Входящий)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation>Звонок (Исх)</translation>
+        <translation>Звонок (Исходящий)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
@@ -138,12 +138,12 @@
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
-        <translation>Передача</translation>
+        <translation>Перевод</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation>Приостановить передачу</translation>
+        <translation>Удержание перевода</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
-        <translation>Конференция (приостановлена)</translation>
+        <translation>Конференция (удержание)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="694"/>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation>Нет зарегистрированных учётных записей!</translation>
+        <translation>Отсутствуют зарегистрированные учетные записи!</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation>Наиболее полярные</translation>
+        <translation>Наиболее популярные</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Цепочка доверия</translation>
+        <translation>Доверенная цепочка</translation>
     </message>
 </context>
 <context>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Некаталогизированный</translation>
+        <translation>Без категории</translation>
     </message>
 </context>
 <context>
@@ -614,7 +614,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Total (in seconds)</source>
-        <translation>Всего (в секундах)</translation>
+        <translation>Всего (сек)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>по умолчанию</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
-        <translation>по умолчанию</translation>
+        <translation>По умолчанию</translation>
     </message>
 </context>
 <context>
@@ -848,12 +848,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation>Сертификат в своем активном периоде</translation>
+        <translation>Сертификат активен</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation>Дата истечения</translation>
+        <translation>Дата окончания</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
@@ -883,7 +883,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation>Эмитент</translation>
+        <translation>Издатель</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -893,7 +893,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation>Общее название (CN)</translation>
+        <translation>Общее название (ОН)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
@@ -913,12 +913,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>Отпечаток MD5</translation>
+        <translation>MD5 отпечаток</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>Sha1 отпечаток</translation>
+        <translation>SHA-1 отпечаток</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -928,7 +928,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation>Доменное имя эмитента</translation>
+        <translation>Доменное имя издателя</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
@@ -953,7 +953,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation>Сертификат не связанные с группой</translation>
+        <translation>Сертификат, не связанный с группой</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
@@ -1087,7 +1087,7 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation>Сохранять текст локально</translation>
+        <translation>Локальные текстовые записи</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
@@ -1102,17 +1102,17 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation>Ring аккаунт</translation>
+        <translation>Учетная запись Ring</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation>SIP Аккаунт</translation>
+        <translation>Учетная запись SIP</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation>IAX2 Аккаунт</translation>
+        <translation>Учетная запись IAX2</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>

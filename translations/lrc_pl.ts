@@ -502,7 +502,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Audio/Video</translation>
+        <translation>Audio/Wideo</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1205,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="495"/>
         <source>Mute video</source>
-        <translation>Wyłącz video</translation>
+        <translation>Wyłącz wideo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
@@ -1221,7 +1221,7 @@
         <location filename="../src/useractionmodel.cpp" line="498"/>
         <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Hangup</source>
-        <translation>Odłożyć słuchawkę</translation>
+        <translation>Odłoż słuchawkę</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
@@ -1236,7 +1236,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation>Włącz video</translation>
+        <translation>Włącz wideo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="503"/>
         <source>Add to existing contact</source>
-        <translation>Dodaj do istniejących kontaków</translation>
+        <translation>Dodaj do istniejącyczego kontaku</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="504"/>

@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation>Aŭtentigo fiaskis</translation>
+        <translation>Aŭtentokontrolo Fiaskis</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation>Eltempiĝo de peto</translation>
+        <translation>Eltempiĝo de Peto</translation>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/call.cpp" line="680"/>
         <source>Busy</source>
-        <translation>Okupita</translation>
+        <translation>Okupata</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="682"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/call.cpp" line="696"/>
         <source>Searching for</source>
-        <translation>Serĉanta</translation>
+        <translation>Serĉanta je</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="698"/>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Kontaktado</translation>
+        <translation>Kontaktemo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
@@ -599,7 +599,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Have Called</source>
-        <translation>Alvokita</translation>
+        <translation>Vokita</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -634,7 +634,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
-        <translation>Ĉeestanta</translation>
+        <translation>Ĉeesta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -833,7 +833,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation>La atestilo ne estas senvalidiga</translation>
+        <translation>La atestilo ne estas senvalidiĝa</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
@@ -883,7 +883,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation>Eldonato</translation>
+        <translation>Eldonanto</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -913,12 +913,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>Md5 subskribo</translation>
+        <translation>Md5 fingrospuro</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>Sha1 subskribo</translation>
+        <translation>Sha1 fingrospuro</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1102,17 +1102,17 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation>Ring konto</translation>
+        <translation>Ring Konto</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation>SIP konto</translation>
+        <translation>SIP Konto</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation>IAX2 konto</translation>
+        <translation>IAX2 Konto</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
@@ -1122,7 +1122,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>Viaj aŭdvidaĵaj fluoj ne estas ĉifritaj, bonvole ŝalti ZRTP aŭ SDES</translation>
+        <translation>Viaj aŭdvidfluoj ne estas ĉifritaj, bonvole ŝaltu ZRTP aŭ SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
@@ -1157,7 +1157,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Nenia atestila aŭtoritato provizitas, ne eblos kontroli ĉu la respondaj atestiloj estas validaj. Ia konto ankaŭ povas nefunkcii.</translation>
+        <translation>Nenia atestila aŭtoritato estas provizita, ne eblos kontroli ĉu la respondaj atestiloj estas validaj. Ia konto ankaŭ povas nefunkcii.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1226,7 +1226,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
         <source>Join</source>
-        <translation>Kupli</translation>
+        <translation>Kunigi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="500"/>
@@ -1236,7 +1236,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation>(El)ŝalti videon</translation>
+        <translation>Ŝalti videon</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
@@ -1276,7 +1276,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <source>Call again</source>
-        <translation>Realvoki</translation>
+        <translation>Revoki</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
@@ -1291,7 +1291,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="724"/>
         <source>Call</source>
-        <translation>Alvoki</translation>
+        <translation>Voki</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
