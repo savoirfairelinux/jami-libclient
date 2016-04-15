@@ -145,12 +145,14 @@ bool DaemonCertificateCollection::clear()
 
 QString DaemonCertificateCollection::name() const
 {
-   return QObject::tr("%1 %2 list")
-      .arg(d_ptr->m_pAccount ? d_ptr->m_pAccount->alias() : QObject::tr("Daemon certificate store"))
-      .arg(d_ptr->m_Mode == Mode::BANNED ?
-         QObject::tr( "banned"  ) :
-         QObject::tr( "allowed" )
-      );
+    auto name = d_ptr->m_pAccount ? d_ptr->m_pAccount->alias() : QObject::tr("Daemon certificate store");
+
+    if (d_ptr->m_Mode == Mode::BANNED) {
+        //: The list of banned certificates for this account
+        return QObject::tr("%1 banned list").arg(name);
+    }
+    //: The list of allowed certificates for this account
+    return QObject::tr("%1 allowed list").arg(name);
 }
 
 QString DaemonCertificateCollection::category() const
