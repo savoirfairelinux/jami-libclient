@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_3910f94d",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-15T19:27:49Z",
+      "side": 1,
+      "message": "unrelated but std::numeric_limits\u003cINT_MAX\u003e::max()",
+      "range": {
+        "startLine": 71,
+        "startChar": 34,
+        "endLine": 71,
+        "endChar": 42
+      },
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_5957ed02",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-15T19:27:49Z",
+      "side": 1,
+      "message": "indent or brace error",
+      "range": {
+        "startLine": 248,
+        "startChar": 12,
+        "endLine": 249,
+        "endChar": 46
+      },
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_19417539",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-15T19:27:49Z",
+      "side": 1,
+      "message": "Maybe to remove",
+      "range": {
+        "startLine": 287,
+        "startChar": 3,
+        "endLine": 287,
+        "endChar": 29
+      },
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
