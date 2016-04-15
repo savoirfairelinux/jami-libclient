@@ -95,6 +95,7 @@ IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QO
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
    connect(&configurationManager, &ConfigurationManagerInterface::incomingAccountMessage, this, &IMConversationManagerPrivate::newAccountMessage);
+   connect(&configurationManager, &ConfigurationManagerInterface::accountMessageStatus, this, &IMConversationManagerPrivate::accountMessageStatusChanged);
    connect(&callManager         , &CallManagerInterface::incomingMessage                , this, &IMConversationManagerPrivate::newMessage       );
 }
 
@@ -184,6 +185,14 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
        auto txtRecording = cm->textRecording();
        txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
    }
+}
+
+void IMConversationManagerPrivate::accountMessageStatusChanged(uint64_t id, const QString& to, const QString& status)
+{
+    if (auto cm = PhoneDirectoryModel::instance().getNumber(to)) {
+        auto txtRecording = cm->textRecording();
+        txtRecording->accountMessageStatusChanged(id, status);
+    }
 }
 
 MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
