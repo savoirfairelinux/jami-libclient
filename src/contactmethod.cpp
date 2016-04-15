@@ -821,10 +821,10 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads
         return false;
     }
    auto txtRecording = textRecording();
-   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
-   ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
+   auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
                                                     ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME)
                                                     ,payloads);
+   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT, id);
    return true;
 }
 
