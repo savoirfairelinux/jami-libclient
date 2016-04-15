@@ -36,6 +36,8 @@
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include <itemdataroles.h>
+#include "dbus/configurationmanager.h"
+#include "account_const.h"
 
 //Std
 #include <ctime>
@@ -150,16 +152,28 @@ Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json
 
 Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr),m_UnreadCount(0)
 {
-
 }
 
 Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
 {
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    connect(&configurationManager, &ConfigurationManagerInterface::accountMessageStatusChanged, this, &TextRecording::accountMessageStatusChanged);
 }
 
 Media::TextRecording::~TextRecording()
 {
    delete d_ptr;
+}
+
+void Media::TextRecording::accountMessageStatusChanged(const uint64_t id, const QString& status)
+{
+    auto node = d_ptr->m_pPendingMessage.value(id, nullptr);
+    if (node) {
+        node->m_pStatus = status;
+        if (status == DRing::Account::MessageStates::READ
+                || status == DRing::Account::MessageStates::SENT)
+            d_ptr->m_pPendingMessage.remove(id);
+    }
 }
 
 bool Media::TextRecording::hasMimeType(const QString& mimeType) const
@@ -377,7 +391,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id)
 {
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
@@ -402,6 +416,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
+   m->id = id;
 
    if (direction == Media::Media::Direction::OUT)
       m->isRead = true; // assume outgoing messages are read, since we're sending them
@@ -449,6 +464,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m_pImModel->addRowBegin();
    m_lNodes << n;
    m_pImModel->addRowEnd();
+
+   if (m->id > 0)
+       m_pPendingMessage[id] = n;
 
    //Save the conversation
    q_ptr->save();
