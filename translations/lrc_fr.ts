@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation>Service non disponible</translation>
+        <translation>Service indisponible</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
@@ -64,7 +64,7 @@
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation>Compte invalide</translation>
+        <translation>Invalide</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>Nom de machine</translation>
+        <translation>Nom d&apos;hôte</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation>Transfert sur garde</translation>
+        <translation>Transfert en attente</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation>Populaire</translation>
+        <translation>Fréquent</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
@@ -497,12 +497,12 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
-        <translation>Chat</translation>
+        <translation>Tchat</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Audio/Video</translation>
+        <translation>Audio/Vidéo</translation>
     </message>
 </context>
 <context>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="222"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ce compte ne supporte pas le suivi de la présence</translation>
+        <translation>Ce compte ne supporte pas le suivi de présence</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="225"/>
@@ -609,7 +609,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation>Compteur de nom</translation>
+        <translation>Nombre de noms</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -624,7 +624,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Bookmarked</source>
-        <translation>Enregistré dans la liste des signets</translation>
+        <translation>Enregistré dans les marque-pages</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Uid</source>
-        <translation>Uid</translation>
+        <translation>UID</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Spécifique</translation>
+        <translation>Personnalisé</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -686,7 +686,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>N/A</translation>
+        <translation>Pas de réponse</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation>Nouveau profile</translation>
+        <translation>Nouveau profil</translation>
     </message>
 </context>
 <context>
@@ -748,12 +748,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation>Possède une clé privé</translation>
+        <translation>A une clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation>N&apos;est pas périmé</translation>
+        <translation>N&apos;est pas expiré</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
@@ -768,52 +768,52 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation>Possède une double clé correspondante</translation>
+        <translation>A une paire de clés assorties</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé privée</translation>
+        <translation>A les droits sur les fichiers de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation>Possède les permissions correctes de fichier de clé publique</translation>
+        <translation>A les droits sur les fichiers de clé publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé privée</translation>
+        <translation>A les droits sur le répertoire de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Possède les permissions correctes sur le répertoire de clé publiques</translation>
+        <translation>A les droits sur le répertoire de clé publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé privée</translation>
+        <translation>L&apos;emplacement est correct dans le répertoire de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation>Possède un chemin correcte sur le répertoire de clé publiques</translation>
+        <translation>L&apos; emplacement est correct dans le répertoire de clé publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé privée correctes</translation>
+        <translation>A les attributs SELinux de clé privée</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Possède les attributs SELinux de clé publique correctes</translation>
+        <translation>A les attributs SELinux de clé publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Le certificat existe et est lisible</translation>
+        <translation>Le certificat existant est lisible</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
@@ -828,7 +828,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation>Le certificat possède une autorité de certification connue</translation>
+        <translation>Le certificat est validé par une autorité connue</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
@@ -913,12 +913,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>Emprunte MD5</translation>
+        <translation>Empreinte MD5</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>Emprunte SHA1</translation>
+        <translation>Empreinte SHA1</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1003,7 +1003,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
-        <translation>Banni</translation>
+        <translation>Exclu</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
@@ -1019,7 +1019,7 @@
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Suivi des présences</translation>
+        <translation>Suivi de présence</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
@@ -1035,13 +1035,13 @@
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation>Signets locaux</translation>
+        <translation>Marque-pages locaux</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="507"/>
         <source>Bookmark</source>
-        <translation>Signet</translation>
+        <translation>Marque-page</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
@@ -1077,7 +1077,7 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation>Sonnerie stockée localement</translation>
+        <translation>Sonneries stockées localement</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
@@ -1087,7 +1087,7 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation>Enregistrements textuels locaux</translation>
+        <translation>Enregistrement du texte en local</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
@@ -1122,7 +1122,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>Vos flux médias ne sont pas chiffrés, activez les protocoles ZRTP ou SDES</translation>
+        <translation>Vos flux médias ne sont pas chiffrés. Activez les protocoles ZRTP ou SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
@@ -1132,12 +1132,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Votre certificat et l&apos;autorité de certification ne coïncident pas, si votre certificat nécessite une autorité, cela ne fonctionnera pas</translation>
+        <translation>Votre certificat et l&apos;autorité de certification ne coïncident pas. Si votre certificat nécessite une autorité, il ne fonctionnera pas.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Le serveur sortant provisionné ne coïncide pas avec l&apos;adresse réseau ou celle indiquée dans le certificat</translation>
+        <translation>Le serveur sortant indiqué ne coïncide pas avec l&apos;adresse réseau ou le certificat existant.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
@@ -1210,7 +1210,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
-        <translation>Transfert du serveur</translation>
+        <translation>Transfert de serveur</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="497"/>

@@ -4,72 +4,72 @@
     <message>
         <location filename="../src/account.cpp" line="270"/>
         <source>Ready</source>
-        <translation type="unfinished"/>
+        <translation>Hazır</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="271"/>
         <source>Registered</source>
-        <translation type="unfinished"/>
+        <translation>Kayıtlı</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="272"/>
         <source>Not Registered</source>
-        <translation type="unfinished"/>
+        <translation>Kayıtlı Değil</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Trying...</source>
-        <translation type="unfinished"/>
+        <translation>Deniyor...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="274"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Hata</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation type="unfinished"/>
+        <translation>Yetkilendirme Başarısız</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
         <source>Network unreachable</source>
-        <translation type="unfinished"/>
+        <translation>Ağa erişilemiyor</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Host unreachable</source>
-        <translation type="unfinished"/>
+        <translation>Ana sunucuya erişilemiyor</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Stun yapılandırma hatası</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Stun server invalid</source>
-        <translation type="unfinished"/>
+        <translation>Stun sunucusu geçersiz</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Hizmet erişilebilir değil</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation type="unfinished"/>
+        <translation>Kabul edilemez</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation type="unfinished"/>
+        <translation>İstek Zaman Aşımına Uğradı</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Yapılandırma</translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Delik</translation>
     </message>
 </context>
 <context>
@@ -98,27 +98,27 @@
     <message>
         <location filename="../src/call.cpp" line="666"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Yeni</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation type="unfinished"/>
+        <translation>Çalıyor (iç)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation type="unfinished"/>
+        <translation>Çalıyor (dış)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Konuşuyor</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
-        <translation type="unfinished"/>
+        <translation>Çevriliyor</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="676"/>
@@ -128,17 +128,17 @@
     <message>
         <location filename="../src/call.cpp" line="678"/>
         <source>Failed</source>
-        <translation type="unfinished"/>
+        <translation>Başarısız</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="680"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Meşgul</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="682"/>
         <source>Transfer</source>
-        <translation type="unfinished"/>
+        <translation>Aktarım</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="684"/>
@@ -153,14 +153,14 @@
     <message>
         <location filename="../src/call.cpp" line="688"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Hata</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="690"/>
         <location filename="../src/call.cpp" line="772"/>
         <location filename="../src/call.cpp" line="2059"/>
         <source>Conference</source>
-        <translation type="unfinished"/>
+        <translation>Toplantı</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="692"/>
@@ -170,32 +170,32 @@
     <message>
         <location filename="../src/call.cpp" line="694"/>
         <source>ERROR</source>
-        <translation type="unfinished"/>
+        <translation>HATA</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="696"/>
         <source>Searching for</source>
-        <translation type="unfinished"/>
+        <translation>Şu aranıyor</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Kesildi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="700"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı sağlandı</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="782"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2064"/>
         <source>Account: </source>
-        <translation type="unfinished"/>
+        <translation>Hesap:</translation>
     </message>
 </context>
 <context>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz hesap</translation>
     </message>
 </context>
 <context>
@@ -220,12 +220,12 @@
     <message>
         <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Kesildi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>Kayıtlı hesap yok</translation>
     </message>
 </context>
 <context>
@@ -251,23 +251,23 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>Boş</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Asla</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Diğer</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation type="unfinished"/>
+        <translation>Güven zinciri</translation>
     </message>
 </context>
 <context>
@@ -309,12 +309,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation type="unfinished"/>
+        <translation>Son kullanılan</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation type="unfinished"/>
+        <translation>Küme</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
@@ -342,12 +342,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Süre</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Toplam zaman</translation>
     </message>
 </context>
 <context>
@@ -355,102 +355,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Bugün</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Dün</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>İki hafta önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Üç hafta önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation type="unfinished"/>
+        <translation>Bir hafta önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation type="unfinished"/>
+        <translation>Bir ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation type="unfinished"/>
+        <translation>İki ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation type="unfinished"/>
+        <translation>Üç ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation type="unfinished"/>
+        <translation>Dört ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation type="unfinished"/>
+        <translation>Beş ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation type="unfinished"/>
+        <translation>Altı ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation type="unfinished"/>
+        <translation>Yedi ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation type="unfinished"/>
+        <translation>Sekiz ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation type="unfinished"/>
+        <translation>Dokuz ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation type="unfinished"/>
+        <translation>On ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation type="unfinished"/>
+        <translation>On bir ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation type="unfinished"/>
+        <translation>On iki ay önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation type="unfinished"/>
+        <translation>Bir yıl önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation type="unfinished"/>
+        <translation>Çok uzun zaman önce</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Asla</translation>
     </message>
 </context>
 <context>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="501"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Ben</translation>
     </message>
 </context>
 <context>
@@ -471,12 +471,12 @@
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Yeni</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Diğer</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Diğer</translation>
     </message>
 </context>
 <context>
@@ -492,17 +492,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="145"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Kayıtlar</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
-        <translation type="unfinished"/>
+        <translation>Metin iletileri</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Ses/Görüntü</translation>
     </message>
 </context>
 <context>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>Kişiler</translation>
     </message>
 </context>
 <context>
@@ -554,7 +554,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="225"/>
         <source>No associated account</source>
-        <translation type="unfinished"/>
+        <translation>İlişkili hesap yok</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
@@ -569,27 +569,27 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Kişi</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Durum</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>Arama sayısı</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>Hafta sayısı</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -657,12 +657,12 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>İleti</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Renk</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -672,13 +672,13 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Özel</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Yeni profil</translation>
     </message>
 </context>
 <context>
@@ -728,32 +728,32 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>İleti</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Code</source>
-        <translation type="unfinished"/>
+        <translation>Kod</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Zaman</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>Sayaç</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation type="unfinished"/>
+        <translation>Özel anahtarı var</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation type="unfinished"/>
+        <translation>Süresi dolmamış</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
@@ -853,12 +853,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş Tarihi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Etkinleştirme tarihi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
@@ -873,17 +873,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Sürüm</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Dizisel numara</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Veren</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -908,17 +908,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>İmzalama algoritması</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Md5 parmak izi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Sha1 parmak izi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -938,7 +938,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Giden sunucu</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
@@ -948,7 +948,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
@@ -968,7 +968,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Ayrıntılar</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
@@ -1003,12 +1003,12 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
-        <translation type="unfinished"/>
+        <translation>engellendi</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
-        <translation type="unfinished"/>
+        <translation>izin verildi</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
@@ -1046,7 +1046,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Yerel geçmiş</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
@@ -1077,47 +1077,47 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>Yerel zil sesleri</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Zil sesi</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Yerel ileti kayıtları</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>Telefon numarası türleri</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Diğer</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation type="unfinished"/>
+        <translation>Ring Hesabı</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>SIP Hesabı</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation type="unfinished"/>
+        <translation>IAX2 Hesabı</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Ben</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1178,7 +1178,7 @@
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>Varsayılan</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
@@ -1189,7 +1189,7 @@
         <location filename="../src/useractionmodel.cpp" line="492"/>
         <location filename="../src/useractionmodel.cpp" line="727"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Kabul et</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="493"/>
@@ -1200,12 +1200,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="494"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Sesi kıs</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="495"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>Görüntüyü kapat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
@@ -1226,12 +1226,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="499"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Katıl</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="500"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Yeni ekle</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
@@ -1241,17 +1241,17 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
         <source>Add a contact</source>
-        <translation type="unfinished"/>
+        <translation>Bir kişi ekle</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="503"/>
         <source>Add to existing contact</source>
-        <translation type="unfinished"/>
+        <translation>Var olan kişiye ekle</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="504"/>
         <source>Delete contact</source>
-        <translation type="unfinished"/>
+        <translation>Kişiyi sil</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="505"/>
@@ -1261,37 +1261,37 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="506"/>
         <source>Copy contact</source>
-        <translation type="unfinished"/>
+        <translation>Kişiyi kopyala</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="508"/>
         <source>View chat history</source>
-        <translation type="unfinished"/>
+        <translation>Sohbet geçmişini gör</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="509"/>
         <source>Add phone number</source>
-        <translation type="unfinished"/>
+        <translation>Telefon numarası ekle</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <source>Call again</source>
-        <translation type="unfinished"/>
+        <translation>Tekrar ara</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Geçmişten kaldır</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="724"/>
         <source>Call</source>
-        <translation>Ar</translation>
+        <translation>Ara</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
@@ -1301,7 +1301,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="747"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1309,7 +1309,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Son kişiler</translation>
     </message>
 </context>
 <context>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>Kendiliğinden</translation>
     </message>
 </context>
 <context>
@@ -1333,17 +1333,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="90"/>
         <source>NONE</source>
-        <translation type="unfinished"/>
+        <translation>HİÇBİRİ</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="96"/>
         <source>SCREEN</source>
-        <translation type="unfinished"/>
+        <translation>EKRAN</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="102"/>
         <source>FILE</source>
-        <translation type="unfinished"/>
+        <translation>DOSYA</translation>
     </message>
 </context>
 </TS>

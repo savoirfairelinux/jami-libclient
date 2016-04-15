@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/call.cpp" line="686"/>
         <source>Over</source>
-        <translation type="unfinished"/>
+        <translation>Terminado</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="688"/>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/call.cpp" line="700"/>
         <source>Communication established</source>
-        <translation>Comunicación establecidad</translation>
+        <translation>Comunicación establecida</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="782"/>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation>Cuenta inválidad</translation>
+        <translation>Cuenta inválida</translation>
     </message>
 </context>
 <context>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/call.cpp" line="1659"/>
         <source>No account registered!</source>
-        <translation>No hay cuentas registradas!</translation>
+        <translation>No hay cuentas registradas</translation>
     </message>
 </context>
 <context>
@@ -609,7 +609,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>Recuento de nombres</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Índice de popularidad</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -629,12 +629,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>Seguido</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -667,7 +667,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -686,7 +686,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>N/A</translation>
+        <translation>N/D</translation>
     </message>
 </context>
 <context>
@@ -768,52 +768,52 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>Posee el par de claves correspondiente</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>El fichero de clave privada tiene los permisos adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>El fichero de clave pública tiene los permisos adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>El directorio de la clave privada tiene los permisos adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>El directorio de la clave pública tiene los permisos adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>La ruta de la clave privada es la adecuada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>La ruta de la clave pública es la adecuada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>La clave privada tiene atributos SELinux adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>La clave pública tiene atributos SELinux adecuados</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>El certificado existe y es legible</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
@@ -833,22 +833,22 @@
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>El certificado no está revocado</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>La autoridad de certificación coincide</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>El propietario del certificado es el que se esperaba</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>El certificado está dentro del periodo de vigencia</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
@@ -883,12 +883,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Emisor</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo de la clave del sujeto</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
@@ -908,32 +908,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo de firma</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Huella MD5</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Huella SHA1</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>Identificador de la clave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de dominio del emisor</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation type="unfinished"/>
+        <translation>Próxima actualización esperada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
@@ -943,7 +943,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Depósito local de certificados</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
@@ -953,7 +953,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>El certificado no está asociado a un grupo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
@@ -978,17 +978,17 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Comprobaciones</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>Información diversa de seguridad</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Cabecera</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Depósito de certificados del demonio</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1019,12 +1019,12 @@
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Seguimiento de presencia</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
+        <translation>Evaluación de seguridad</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
@@ -1087,12 +1087,12 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Registros locales de conversaciones</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>Tipos de número de teléfono</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
@@ -1122,57 +1122,57 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation type="unfinished"/>
+        <translation>El tráfico multimedia no está cifrado, active los protocolos ZRTP o SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS está desactivado. La negociación de las comunicaciones se hará sin cifrar y será vulnerable a escuchas</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Su certificado no coincide con la autoridad de certificación, si el certificado precisa de ella no funcionará</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>El servidor saliente no coincide con el nombre del host indicado en el certificado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>La opción &quot;verificar certificados entrantes&quot; está desactivada, dejándole vulnerable a un ataque de intermediación (man-in-the-middle)</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>La opción &quot;verificar certificados de respuesta&quot; está desactivada, dejándole vulnerable a un ataque de intermediación (man-in-the-middle)</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Ninguno de sus certificados contiene la clave privada necesaria. Seleccione una clave privada o un certificado que ya la incluya</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>No se indica la autoridad de certificación, no será posible comprobar si el certificado de respuesta es válido. Además algunas cuentas podrían dejar de funcionar</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation type="unfinished"/>
+        <translation>No se indicó un certificado. Ring no admite esto, por ahora</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Su certificado ha caducado, póngase en contacto con su administrador del sistema.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation type="unfinished"/>
+        <translation>Su certificado está autofirmado. Esto rompe la cadena de confianza.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
@@ -1210,7 +1210,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transferencia de servidor</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="497"/>

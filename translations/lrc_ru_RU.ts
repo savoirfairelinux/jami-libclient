@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/account.cpp" line="272"/>
         <source>Not Registered</source>
-        <translation>Регистрация отсутствует</translation>
+        <translation>Не зарегистрирован</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Authentication Failed</source>
-        <translation>Проблема аутентификации</translation>
+        <translation>Ошибка аутентификации</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="276"/>
@@ -44,32 +44,32 @@
     <message>
         <location filename="../src/account.cpp" line="278"/>
         <source>Stun configuration error</source>
-        <translation>Ошибка конфигурации STUN</translation>
+        <translation>Ошибка настройки STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Stun server invalid</source>
-        <translation>Неверный STUN сервер</translation>
+        <translation>Неверный сервер STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="280"/>
         <source>Service unavailable</source>
-        <translation>Сервис недоступен</translation>
+        <translation>Служба недоступна</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Unacceptable</source>
-        <translation>Неприемлемо</translation>
+        <translation>Недопустимый</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="282"/>
         <source>Invalid</source>
-        <translation>Неверно</translation>
+        <translation>Неверный</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Request Timeout</source>
-        <translation>Таймаут запроса</translation>
+        <translation>Время ожидания запроса</translation>
     </message>
 </context>
 <context>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Конфигурация</translation>
+        <translation>Настройка</translation>
     </message>
 </context>
 <context>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>Узел</translation>
+        <translation>Имя компьютера</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
@@ -103,32 +103,32 @@
     <message>
         <location filename="../src/call.cpp" line="668"/>
         <source>Ringing (in)</source>
-        <translation>Входящий</translation>
+        <translation>Звонок (Входящий)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="670"/>
         <source>Ringing (out)</source>
-        <translation>Исходящий</translation>
+        <translation>Звонок (Исходящий)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="672"/>
         <source>Talking</source>
-        <translation>Разговор</translation>
+        <translation>Говорить</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="674"/>
         <source>Dialing</source>
-        <translation>Удержание</translation>
+        <translation>Звонить</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="676"/>
         <source>Hold</source>
-        <translation>Удержание</translation>
+        <translation>Удержать</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="678"/>
         <source>Failed</source>
-        <translation>Ошибка</translation>
+        <translation>Сбой</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="680"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/call.cpp" line="686"/>
         <source>Over</source>
-        <translation>Через</translation>
+        <translation>Окончен</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="688"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../src/call.cpp" line="698"/>
         <source>Aborted</source>
-        <translation>Отмена</translation>
+        <translation>Прервано</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="700"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../src/call.cpp" line="2064"/>
         <source>Account: </source>
-        <translation>Учетная запись:</translation>
+        <translation>Учётная запись:</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="891"/>
         <source>Calls</source>
-        <translation>Вызовы</translation>
+        <translation>Звонки</translation>
     </message>
 </context>
 <context>
@@ -212,7 +212,7 @@
         <location filename="../src/callmodel.cpp" line="532"/>
         <location filename="../src/callmodel.cpp" line="555"/>
         <source>Invalid account</source>
-        <translation>Ошибочный эккаунт</translation>
+        <translation>Неверная учётная запись</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/call.cpp" line="1638"/>
         <source>Aborted</source>
-        <translation>Отмена</translation>
+        <translation>Прервано</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1659"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
         <source>Most popular</source>
-        <translation>Самый популярный</translation>
+        <translation>Наиболее популярные</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Иное</translation>
+        <translation>Другие</translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Последнее использование</translation>
+        <translation>Недавно использованный</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="501"/>
         <source>Me</source>
-        <translation>Мне</translation>
+        <translation>Я</translation>
     </message>
 </context>
 <context>
@@ -466,7 +466,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Макрос</translation>
+        <translation>Макросы</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation>Иное</translation>
+        <translation>Другой</translation>
     </message>
 </context>
 <context>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Иное</translation>
+        <translation>Другой</translation>
     </message>
 </context>
 <context>
@@ -497,12 +497,12 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="215"/>
         <source>Text messages</source>
-        <translation>Тестовые сообщения</translation>
+        <translation>Текстовые сообщения</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Аудио/видео</translation>
+        <translation>Звук/Видео</translation>
     </message>
 </context>
 <context>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation>Учетная запись</translation>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="222"/>
         <source>This account does not support presence tracking</source>
-        <translation>Эта учетная запись не поддерживает отслеживания присутствия</translation>
+        <translation>Эта учётная запись не поддерживает отслеживание присутствия</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="225"/>
@@ -574,7 +574,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Account</source>
-        <translation>Учетная запись</translation>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
@@ -584,22 +584,22 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Call count</source>
-        <translation>Количество вызовов</translation>
+        <translation>Количество звонков</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
-        <translation>Количество недель</translation>
+        <translation>Недельный счетчик</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation>Количество триместров</translation>
+        <translation>Триместровый счетчик</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Have Called</source>
-        <translation>Назвать</translation>
+        <translation>Пропущенные</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -609,7 +609,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Name_count</source>
-        <translation>Количество_имен</translation>
+        <translation>Счётчик имён</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -619,22 +619,22 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Popularity_index</source>
-        <translation>Индекс_популярности</translation>
+        <translation>Индекс популярности</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Bookmarked</source>
-        <translation>Закладка</translation>
+        <translation>Закладки</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Tracked</source>
-        <translation>Отслеживание</translation>
+        <translation>Отслеживаются</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Present</source>
-        <translation>Присутствие</translation>
+        <translation>Текущий</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Uid</source>
-        <translation>UID</translation>
+        <translation>Uid</translation>
     </message>
 </context>
 <context>
@@ -667,18 +667,18 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Присутствует</translation>
+        <translation>Текущий</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Умолчание</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Заказной</translation>
+        <translation>Своё</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -686,7 +686,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>N/A</translation>
+        <translation>Недоступно</translation>
     </message>
 </context>
 <context>
@@ -694,7 +694,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="292"/>
         <source>Profile backend</source>
-        <translation>Профиль бэкенд</translation>
+        <translation>Базовый профиль</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="297"/>
@@ -704,7 +704,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="387"/>
         <source>Default</source>
-        <translation>Умолчание</translation>
+        <translation>По умолчанию</translation>
     </message>
 </context>
 <context>
@@ -748,7 +748,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation>Имеет закрытый ключ</translation>
+        <translation>Имеет приватный ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Has strong signing</source>
-        <translation>Имеет сильную сигнатуру</translation>
+        <translation>Имеет точную подпись</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
@@ -768,321 +768,321 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>Имеет совпадающую пару ключей</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Имеет правильные разрешения на файл приватного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Имеет правильные разрешения на файл публичного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Имеет правильные разрешения на папку приватного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Имеет правильные разрешения на папку публичного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Папка приватного ключа в правильном месте</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Папка публичного ключа в правильном месте</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>SELinux атрибуты для приватного ключа правильны</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>SELinux атрибуты для публичного ключа правильны</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>Файл сертификата существует и доступен для чтения</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The file is a valid certificate</source>
-        <translation type="unfinished"/>
+        <translation>Файл с действующим сертификатом</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат имеет действительную авторизацию</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат авторизован</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат не отозван</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>Авторизованные сертификаты совпадают</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат имеет правильного владельца</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат активен</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Дата окончания</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Дата активации</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>Требуется пароль для приватного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Public signature</source>
-        <translation type="unfinished"/>
+        <translation>Публичная подпись</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Версия</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Серийный номер</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Издатель</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Алгоритм ключа субъекта</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Общее название (ОН)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Name (N)</source>
-        <translation type="unfinished"/>
+        <translation>Имя (И)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>Организация (О)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Алгоритм подписи</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>MD5 отпечаток</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1 отпечаток</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>ID публичного ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Доменное имя издателя</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation type="unfinished"/>
+        <translation>Следующее ожидаемое обновление</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Сервер исходящих</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Локальное хранилище сертификатов</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation>Умолчание</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат, не связанный с группой</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>Организация</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Детали</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Содержимое сертификата</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Проверки</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>Различная информация, связанная с безопасностью</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
         <source>%1 %2 list</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 список</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Служба хранения сертификатов</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>banned</source>
-        <translation type="unfinished"/>
+        <translation>запрещен</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
         <source>allowed</source>
-        <translation type="unfinished"/>
+        <translation>разрешен</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
         <location filename="../src/foldercertificatecollection.cpp" line="192"/>
         <source>Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Наличие отслеживания</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
+        <translation>Оценка безопасности</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>Контакт</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Локальные закладки</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="507"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Закладка</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Локальная история</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>History</source>
-        <translation>Журнал</translation>
+        <translation>История</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>Локальные макросы</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>Макро</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation type="unfinished"/>
+        <translation>Локальные записи</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
-        <translation type="unfinished"/>
+        <translation>Запись</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="219"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>Локальные мелодии звонков</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="224"/>
         <source>Ringtone</source>
-        <translation>Рингтон</translation>
+        <translation>Мелодия звонка</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
@@ -1092,12 +1092,12 @@
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Тип телефонного номера</translation>
+        <translation>Типы телефонных номеров</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Иное</translation>
+        <translation>Другие</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
@@ -1122,68 +1122,68 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation type="unfinished"/>
+        <translation>Ваш медиа поток не зашифрован, пожалуйста, включите ZRTP или SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS выключен, ваши переговоры не шифруются. Ваше общение может быть прослушано</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Ваш сертификат и авторизация не совпадают, если ваш сертификат не авторизован, он не будет работат</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Указанный исходящий сервер не совпадает с именем хоста или с именем, указанным в сертификат</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Опция проверки входящего сертификата  отключена, это делает вас уязвимым для атаки среднего уровня</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Опция &quot;проверка ответного сертификата&quot; отключена, это делает вас уязвимым для атаки среднего уровня</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Ни один из сертификатов не содержится в частном ключе, это необходимо. Пожалуйста, выберите секретный ключ или используйте один из встроеных сертификатов</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>Сертификации не предусмотрено, с этим будет невозможно проверить является ли ответный сертификат действительным. Некоторые учетные записи также могут  не работать.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат не был предоставлен. Пока что это не поддерживается Ring</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Ваш сертификат истёк, пожалуйста, свяжитесь с администратором.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation type="unfinished"/>
+        <translation>Ваш сертификат самостоятельно сгенерированный. Он будет недовершенным.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Умолчание</translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation>Файл валидного сертификата</translation>
+        <translation>Держатели контактов</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="492"/>
@@ -1210,7 +1210,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="496"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Сервер передачи</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="497"/>
@@ -1309,7 +1309,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Недавние люди</translation>
     </message>
 </context>
 <context>

@@ -123,7 +123,7 @@
     <message>
         <location filename="../src/call.cpp" line="676"/>
         <source>Hold</source>
-        <translation>I kø</translation>
+        <translation>Parkeret</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="678"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/call.cpp" line="684"/>
         <source>Transfer hold</source>
-        <translation>Overførsel i kø</translation>
+        <translation>Parkeret for overførsel</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="686"/>
@@ -165,7 +165,7 @@
     <message>
         <location filename="../src/call.cpp" line="692"/>
         <source>Conference (hold)</source>
-        <translation>Konference (i kø)</translation>
+        <translation>Konference (parkeret)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="694"/>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="376"/>
         <source>History</source>
-        <translation>Historie</translation>
+        <translation>Historik</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Tillidskæde</translation>
+        <translation>Troværdighedskæde</translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Senst brugte</translation>
+        <translation>Senest brugte</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
@@ -390,7 +390,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation>For tree måneder siden</translation>
+        <translation>For tre måneder siden</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
@@ -502,7 +502,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="220"/>
         <source>Audio/Video</source>
-        <translation>Lyd/video</translation>
+        <translation>Lyd/Video</translation>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>State</source>
-        <translation>Stat</translation>
+        <translation>Tilstand</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
@@ -589,12 +589,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="285"/>
         <source>Week count</source>
-        <translation>Antal uger</translation>
+        <translation>Antal seneste uge</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
         <source>Trimester count</source>
-        <translation>Antal trimestre</translation>
+        <translation>Antal seneste kvartal</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="286"/>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
         <source>Presence message</source>
-        <translation>Statusbeskede</translation>
+        <translation>Statusbesked</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="287"/>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="980"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Ny profil</translation>
     </message>
 </context>
 <context>
@@ -848,7 +848,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation>Certifikatet er indenfor dets aktive periode</translation>
+        <translation>Certifikatet er i dets aktive periode</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation>Forskellig sikkerhedsrelateret information</translation>
+        <translation>Diverse sikkerhedsrelateret information</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
@@ -1046,7 +1046,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="191"/>
         <source>Local history</source>
-        <translation>Lokal historik</translation>
+        <translation>Lokalhistorik</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="196"/>
@@ -1137,32 +1137,32 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Den udgående server angivet passer ikke med værtsnavnet eller det i certifikatet inkluderede</translation>
+        <translation>Den angivne udgående server passer ikke med værtsnavnet eller det i certifikatet inkluderede</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Valgmuligheden &quot;bekræft indgående certikat&quot; er deaktiveret, dette efterlader dig sårbar over for &quot;man in the middle&quot;-angreb</translation>
+        <translation>Valgmuligheden &quot;bekræft indgående certikat&quot; er deaktiveret, dette gør dig sårbar over for &quot;man in the middle&quot;-angreb</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Valgmuligheden &quot;bekræft svarcertikat&quot; er deaktiveret, dette efterlader dig sårbar over for &quot;man in the middle&quot;-angreb</translation>
+        <translation>Valgmuligheden &quot;bekræft svarcertikat&quot; er deaktiveret, dette gør dig sårbar over for &quot;man in the middle&quot;-angreb</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Ingen af dine certifikater udbyder en privat nøgle, dette er krævet. Vælg venligst en privat nøgle eller brug et certifikat med en indbygget</translation>
+        <translation>Ingen af dine certifikater tilbyder en privat nøgle, dette er krævet. Vælg venligst en privat nøgle eller brug et certifikat med en indbygget</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Ingen certifikatsautoritet er udbudt, det vil ikke være muligt at validere om svarcertifikatet er gyldigt. Nogle konti vil måske heller ikke virke.</translation>
+        <translation>Ingen certifikatautoritet er tilgængelig, det vil ikke være muligt at validere om svarcertifikatet er gyldigt. Nogle konti vil måske heller ikke virke.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Intet certifikat er udbudt. Dette er, for øjeblikket, ikke understøttet af Ring</translation>
+        <translation>Intet certifikat er tilgængeligt. Dette er, for øjeblikket, ikke understøttet af Ring</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1172,7 +1172,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Dit certifikat er selvsigneret. Dette bryder tillidskæden.</translation>
+        <translation>Dit certifikat er selvsigneret. Dette bryder troværdighedskæden.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
@@ -1183,7 +1183,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktstedfortræder</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="492"/>
@@ -1195,7 +1195,7 @@
         <location filename="../src/useractionmodel.cpp" line="493"/>
         <location filename="../src/useractionmodel.cpp" line="739"/>
         <source>Hold</source>
-        <translation>Sæt i kø</translation>
+        <translation>Parker</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="494"/>
@@ -1236,7 +1236,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="501"/>
         <source>Toggle video</source>
-        <translation>Toggle video</translation>
+        <translation>Video til/fra</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="502"/>
@@ -1256,7 +1256,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="505"/>
         <source>Email contact</source>
-        <translation>E-mail-kontakt</translation>
+        <translation>E-mail til kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="506"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Fjern fra historik</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="754"/>
@@ -1296,7 +1296,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="736"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Uparker</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="747"/>
