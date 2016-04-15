@@ -267,19 +267,33 @@ const QString Account::toHumanStateName() const
 {
    const QString s = d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::Registration::STATUS];
 
+                                                 //: Account state
    static const QString ready                  = tr("Ready"                    );
+                                                 //: Account state
    static const QString registered             = tr("Registered"               );
+                                                 //: Account state
    static const QString notRegistered          = tr("Not Registered"           );
+                                                 //: Account state
    static const QString trying                 = tr("Trying..."                );
+                                                 //: Account state
    static const QString error                  = tr("Error"                    );
+                                                 //: Account state
    static const QString authenticationFailed   = tr("Authentication Failed"    );
+                                                 //: Account state
    static const QString networkUnreachable     = tr("Network unreachable"      );
+                                                 //: Account state
    static const QString hostUnreachable        = tr("Host unreachable"         );
+                                                 //: Account state
    static const QString stunConfigurationError = tr("Stun configuration error" );
+                                                 //: Account state
    static const QString stunServerInvalid      = tr("Stun server invalid"      );
+                                                 //: Account state
    static const QString serviceUnavailable     = tr("Service unavailable"      );
+                                                 //: Account state
    static const QString notAcceptable          = tr("Unacceptable"             );
+                                                 //: Account state
    static const QString invalid                = tr("Invalid"                  );
+                                                 //: Account state
    static const QString requestTimeout         = tr("Request Timeout"          );
 
    if(s == DRing::Account::States::READY            )

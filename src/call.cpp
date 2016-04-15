@@ -704,40 +704,58 @@ const QString Call::toHumanStateName(const Call::State cur)
 {
    switch (cur) {
       case Call::State::NEW:
+         //: Call state
          return tr( "New"                       );
       case Call::State::INCOMING:
+         //: Call state
          return tr( "Ringing"                   );
       case Call::State::RINGING:
+         //: Call state
          return tr( "Calling"                   );
       case Call::State::CURRENT:
+         //: Call state
          return tr( "Talking"                   );
       case Call::State::DIALING:
+         //: Call state
          return tr( "Dialing"                   );
       case Call::State::HOLD:
+         //: Call state
          return tr( "Hold"                      );
       case Call::State::FAILURE:
+         //: Call state
          return tr( "Failed"                    );
       case Call::State::BUSY:
+         //: Call state
          return tr( "Busy"                      );
       case Call::State::TRANSFERRED:
+         //: Call state
          return tr( "Transfer"                  );
       case Call::State::TRANSF_HOLD:
+         //: Call state
          return tr( "Transfer hold"             );
       case Call::State::OVER:
+         //: Call state
          return tr( "Over"                      );
       case Call::State::ERROR:
+         //: Call state
          return tr( "Error"                     );
       case Call::State::CONFERENCE:
+         //: Call state
          return tr( "Conference"                );
       case Call::State::CONFERENCE_HOLD:
+         //: Call state
          return tr( "Conference (hold)"         );
       case Call::State::COUNT__:
+         //: Call state
          return tr( "ERROR"                     );
       case Call::State::INITIALIZATION:
+         //: Call state
          return tr( "Searching for"             );
       case Call::State::ABORTED:
+         //: Call state
          return tr( "Aborted"                   );
       case Call::State::CONNECTED:
+         //: Call state
          return tr( "Communication established" );
    }
    return QString::number(static_cast<int>(cur));
