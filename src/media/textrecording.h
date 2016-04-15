@@ -61,6 +61,7 @@ public:
       HTML                 ,
       HasText              ,
       ContactMethod        ,
+      DeliveryStatus       ,
    };
 
    //Constructor
@@ -87,6 +88,8 @@ Q_SIGNALS:
 private:
    TextRecordingPrivate* d_ptr;
    Q_DECLARE_PRIVATE(TextRecording)
+private slots:
+   void accountMessageStatusChanged(const uint64_t id, const QString& status);
 };
 
 }
