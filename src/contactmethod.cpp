@@ -821,8 +821,8 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads
         return false;
     }
    auto txtRecording = textRecording();
-   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
-   ConfigurationManager::instance().sendTextMessage(selectedAccount->id(),uri(),payloads);
+   auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id(),uri(),payloads);
+   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT, id);
    return true;
 }
 
