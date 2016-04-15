@@ -20,6 +20,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QHash>
 
+#include <account_const.h>
+
 class Account;
 class Call;
 class ContactMethod;
@@ -41,5 +43,5 @@ public:
 private Q_SLOTS:
    void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& payloads);
    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
-
+   void accountMessageStatusChanged(uint64_t id, const QString& to, DRing::Account::MessageStates status);
 };
