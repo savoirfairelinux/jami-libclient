@@ -30,13 +30,10 @@
 #include <future>
 
 #include <configurationmanager_interface.h>
+#include <account_const.h>
 
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
-
-// TEMPORARY
-#include <iostream>
-
 
 /*
  * Proxy class for interface org.ring.Ring.ConfigurationManager
@@ -114,6 +111,12 @@ public:
                      QTimer::singleShot(0, [this, certPath, list] {
                            Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
                      });
+         }),
+         exportable_callback<DRing::ConfigurationSignal::AccountMessageStatus>(
+               [this] (const std::string& accountID, uint64_t id, const std::string& to, int status) {
+               QTimer::singleShot(0, [this, accountID, id, to, status] {
+                     Q_EMIT this->accountMessageStatus(QString(accountID.c_str()), id, QString(to.c_str()), status);
+               });
          }),
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
@@ -605,14 +608,19 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
-   void sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
+   uint64_t sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
    {
-      DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), convertMap(payloads));
+      return DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), convertMap(payloads));
    }
 
    bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details)
    {
       return DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
+   }
+
+   DRing::Account::MessageStates getMessageStatus(uint64_t id)
+   {
+       return static_cast<DRing::Account::MessageStates>(DRing::getMessageStatus(id));
    }
 
 Q_SIGNALS: // SIGNALS
@@ -631,6 +639,7 @@ Q_SIGNALS: // SIGNALS
    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
    void mediaParametersChanged(const QString& accountId);
    void audioDeviceEvent();
+   void accountMessageStatus(const QString& accountId, const uint64_t id, const QString& to, int status);
 
 };
 
