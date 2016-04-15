@@ -61,6 +61,7 @@ public:
       HTML                 ,
       HasText              ,
       ContactMethod        ,
+      DeliveryStatus       ,
    };
 
    //Constructor
