@@ -61,6 +61,8 @@ public:
       HTML                 ,
       HasText              ,
       ContactMethod        ,
+      IsSending            ,
+      HasSucceeded         ,
    };
 
    //Constructor
