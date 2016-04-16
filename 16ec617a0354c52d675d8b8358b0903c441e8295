@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "ba65a107_f9728148",
+        "filename": "src/localprofilecollection.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T21:59:19Z",
+      "side": 1,
+      "message": "Duplicated",
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_998fc523",
+        "filename": "src/profile.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T21:59:19Z",
+      "side": 1,
+      "message": "const \u0026",
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_59992d6d",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T21:59:19Z",
+      "side": 1,
+      "message": "Oops. sorry about that, idk how your name wasn\u0027t there in the first place. Maybe a bad copy paste when importing this work.",
+      "revId": "16ec617a0354c52d675d8b8358b0903c441e8295",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_3910f94d",
         "filename": "src/profilemodel.cpp",
         "patchSetId": 18
