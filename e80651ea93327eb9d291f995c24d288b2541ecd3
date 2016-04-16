@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_19a3b59f",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:02:15Z",
+      "side": 1,
+      "message": "Duplicated",
+      "revId": "e80651ea93327eb9d291f995c24d288b2541ecd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_39a0f98f",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:02:15Z",
+      "side": 1,
+      "message": "Please remove this, it is noisy",
+      "revId": "e80651ea93327eb9d291f995c24d288b2541ecd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_d9ac5d8f",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:02:15Z",
+      "side": 1,
+      "message": "Idem",
+      "revId": "e80651ea93327eb9d291f995c24d288b2541ecd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_f9a9217c",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:02:15Z",
+      "side": 1,
+      "message": "Idem",
+      "revId": "e80651ea93327eb9d291f995c24d288b2541ecd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_99b6e5db",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:02:15Z",
+      "side": 1,
+      "message": "\"/peers/\"?",
+      "revId": "e80651ea93327eb9d291f995c24d288b2541ecd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
