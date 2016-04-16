@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "ba65a107_79b511cc",
+        "filename": "src/call.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1645,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-04-16T22:11:38Z",
+      "side": 1,
+      "message": "Is this on purpose? Old(?) ideas about profiles was to be able to assign accounts to them so \"at work\" RING account could have a diffeent set of info that \"at home\" (or \"evil anonymous hacker\").",
+      "revId": "965c2312fff4806cff3fe9cb297fe2aa8a396970",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_9e048b7f",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 11
