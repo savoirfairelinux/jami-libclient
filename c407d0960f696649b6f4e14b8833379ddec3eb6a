@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_f9ee01b4",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-18T14:33:21Z",
+      "side": 1,
+      "message": "Well i have only the id of the message i don\u0027t have the contactMethod or anything else so i guess i should query each model to find it... Anyway i\u0027ll continue working on that",
+      "parentUuid": "ba65a107_79875110",
+      "revId": "c407d0960f696649b6f4e14b8833379ddec3eb6a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_197c1520",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_39f55983",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-18T14:33:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_197c1520",
+      "revId": "c407d0960f696649b6f4e14b8833379ddec3eb6a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_3979d92f",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2016-04-16T21:46:23Z",
       "side": 1,
       "message": "If the text is for internal use only, please use QByteArray (best) or QLatin1String (almost as fast)\n\nBoth are  much faster and take 25% of the memory.",
+      "revId": "c407d0960f696649b6f4e14b8833379ddec3eb6a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_d9f1bd96",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-18T14:33:21Z",
+      "side": 1,
+      "message": "Nope this should be displayed one way or another to the user. I\u0027m not find of the fact that it\u0027s a string to begin with (daemon side) but i\u0027ll have to discuss that we the other",
+      "parentUuid": "ba65a107_3979d92f",
       "revId": "c407d0960f696649b6f4e14b8833379ddec3eb6a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
