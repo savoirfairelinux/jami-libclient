@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_c42b1481",
+        "filename": "src/call.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1645,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-04-19T13:39:53Z",
+      "side": 1,
+      "message": "Yes this is done on purpose. For now we only want a \"basic\" profile tied to all account we\u0027ll see about what was originally intended later.",
+      "parentUuid": "ba65a107_79b511cc",
+      "revId": "965c2312fff4806cff3fe9cb297fe2aa8a396970",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_9e048b7f",
         "filename": "src/recentmodel.cpp",
         "patchSetId": 11
