@@ -134,5 +134,11 @@ QVariant PixmapManipulatorDefault::decorationRole(const Person* p)
    return QVariant();
 }
 
+QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
+{
+   Q_UNUSED(acc)
+   return QVariant();
+}
+
 
 } // namespace Interfaces
