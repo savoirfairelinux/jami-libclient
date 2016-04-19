@@ -32,6 +32,7 @@ class  Person             ;
 class  ContactMethod      ;
 class  Call               ;
 class  CollectionInterface;
+class  Account;
 struct UserActionElement  ;
 
 namespace Interfaces {
@@ -79,6 +80,7 @@ public:
     virtual QVariant   decorationRole(const Call*          c    ) = 0;
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;
+    virtual QVariant   decorationRole(const Account*       acc  ) = 0;
 
     /**
      * Return the icons associated with the action and its state
