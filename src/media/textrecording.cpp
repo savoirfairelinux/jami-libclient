@@ -677,7 +677,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                auto cm = m_pRecording->call()->account()->contactMethod();
                return GlobalInstances::pixmapManipulator().decorationRole(cm);
             } else if (n->m_pMessage->direction == Media::Media::Direction::OUT && n->m_pContactMethod->account()){
-                return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod->account()->contactMethod());
+                return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod->account());
             } else {
                 /* It's most likely an account that doesn't exist anymore
                  * Use a fallback image in pixmapManipulator
