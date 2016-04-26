@@ -2,73 +2,87 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="270"/>
-        <source>Ready</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="271"/>
-        <source>Registered</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="272"/>
-        <source>Not Registered</source>
-        <translation type="unfinished"/>
+        <source>Ready</source>
+        <extracomment>Account state</extracomment>
+        <translation>آماده</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
-        <source>Trying...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="274"/>
-        <source>Error</source>
-        <translation type="unfinished"/>
+        <source>Registered</source>
+        <extracomment>Account state</extracomment>
+        <translation>ثبت شده</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
-        <source>Authentication Failed</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="276"/>
-        <source>Network unreachable</source>
-        <translation type="unfinished"/>
+        <source>Not Registered</source>
+        <extracomment>Account state</extracomment>
+        <translation>ثبت نشده</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
-        <source>Host unreachable</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="278"/>
-        <source>Stun configuration error</source>
-        <translation type="unfinished"/>
+        <source>Trying...</source>
+        <extracomment>Account state</extracomment>
+        <translation>در حال نوشتن…</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
-        <source>Stun server invalid</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="280"/>
-        <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <source>Error</source>
+        <extracomment>Account state</extracomment>
+        <translation>خطا</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
-        <source>Unacceptable</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="282"/>
-        <source>Invalid</source>
-        <translation type="unfinished"/>
+        <source>Authentication Failed</source>
+        <extracomment>Account state</extracomment>
+        <translation>تأیید هویت شکست خورد</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
+        <source>Network unreachable</source>
+        <extracomment>Account state</extracomment>
+        <translation>شبکه در دسترس نیست</translation>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="285"/>
+        <source>Host unreachable</source>
+        <extracomment>Account state</extracomment>
+        <translation>میزبان در دسترس نیست</translation>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="287"/>
+        <source>Stun configuration error</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="289"/>
+        <source>Stun server invalid</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="291"/>
+        <source>Service unavailable</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="293"/>
+        <source>Unacceptable</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="295"/>
+        <source>Invalid</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="297"/>
         <source>Request Timeout</source>
+        <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -85,115 +99,134 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>نام میزبان</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>درگاه</translation>
     </message>
 </context>
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="666"/>
+        <location filename="../src/call.cpp" line="708"/>
         <source>New</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="668"/>
-        <source>Ringing (in)</source>
+        <location filename="../src/call.cpp" line="711"/>
+        <source>Ringing</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="670"/>
-        <source>Ringing (out)</source>
+        <location filename="../src/call.cpp" line="714"/>
+        <source>Calling</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="672"/>
+        <location filename="../src/call.cpp" line="717"/>
         <source>Talking</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="674"/>
+        <location filename="../src/call.cpp" line="720"/>
         <source>Dialing</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="676"/>
+        <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <extracomment>Call state</extracomment>
+        <translation>نگه داشتن</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="678"/>
+        <location filename="../src/call.cpp" line="726"/>
         <source>Failed</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="680"/>
+        <location filename="../src/call.cpp" line="729"/>
         <source>Busy</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="682"/>
+        <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="684"/>
+        <location filename="../src/call.cpp" line="735"/>
         <source>Transfer hold</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="686"/>
+        <location filename="../src/call.cpp" line="738"/>
         <source>Over</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="688"/>
+        <location filename="../src/call.cpp" line="741"/>
+        <location filename="../src/call.cpp" line="851"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <extracomment>Call state</extracomment>
+        <translation>خطا</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="690"/>
-        <location filename="../src/call.cpp" line="772"/>
-        <location filename="../src/call.cpp" line="2059"/>
+        <location filename="../src/call.cpp" line="744"/>
+        <location filename="../src/call.cpp" line="849"/>
+        <location filename="../src/call.cpp" line="2168"/>
         <source>Conference</source>
+        <extracomment>Call state</extracomment>
         <translation>نشست</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="692"/>
+        <location filename="../src/call.cpp" line="747"/>
         <source>Conference (hold)</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="694"/>
+        <location filename="../src/call.cpp" line="750"/>
         <source>ERROR</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="696"/>
+        <location filename="../src/call.cpp" line="753"/>
         <source>Searching for</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="698"/>
+        <location filename="../src/call.cpp" line="756"/>
         <source>Aborted</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="700"/>
+        <location filename="../src/call.cpp" line="759"/>
         <source>Communication established</source>
+        <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="782"/>
+        <location filename="../src/call.cpp" line="859"/>
         <source>Unknown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2064"/>
+        <location filename="../src/call.cpp" line="2173"/>
         <source>Account: </source>
         <translation type="unfinished"/>
     </message>
@@ -201,7 +234,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="891"/>
+        <location filename="../src/callmodel.cpp" line="914"/>
         <source>Calls</source>
         <translation type="unfinished"/>
     </message>
@@ -209,8 +242,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="532"/>
-        <location filename="../src/callmodel.cpp" line="555"/>
+        <location filename="../src/callmodel.cpp" line="553"/>
+        <location filename="../src/callmodel.cpp" line="578"/>
         <source>Invalid account</source>
         <translation type="unfinished"/>
     </message>
@@ -218,12 +251,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1638"/>
+        <location filename="../src/call.cpp" line="1748"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1659"/>
+        <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
         <translation type="unfinished"/>
     </message>
@@ -231,22 +264,23 @@
 <context>
     <name>CategorizedBookmarkModel</name>
     <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="180"/>
+        <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
+        <extracomment>Most popular contacts</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="298"/>
+        <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>مخاطبین</translation>
     </message>
 </context>
 <context>
     <name>CategorizedContactModel</name>
     <message>
-        <location filename="../src/categorizedcontactmodel.cpp" line="390"/>
+        <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>مخاطبین</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -273,7 +307,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="376"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
         <translation>تاریخچه</translation>
     </message>
@@ -289,9 +323,9 @@
 <context>
     <name>CollectionModel</name>
     <message>
-        <location filename="../src/collectionmodel.cpp" line="260"/>
+        <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>نام</translation>
     </message>
 </context>
 <context>
@@ -299,7 +333,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>نام</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -327,12 +361,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>تاریخ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>نام</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -456,7 +490,7 @@
 <context>
     <name>InstantMessagingModel</name>
     <message>
-        <location filename="../src/media/textrecording.cpp" line="501"/>
+        <location filename="../src/media/textrecording.cpp" line="695"/>
         <source>Me</source>
         <translation>من</translation>
     </message>
@@ -490,17 +524,17 @@
 <context>
     <name>Media::RecordingModel</name>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="145"/>
+        <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="215"/>
+        <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="220"/>
+        <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
         <translation type="unfinished"/>
     </message>
@@ -523,7 +557,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>نام</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -547,102 +581,102 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="222"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="226"/>
         <source>This account does not support presence tracking</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="225"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="229"/>
         <source>No associated account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>URI</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>نوع</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Person</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>State</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Call count</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="285"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Week count</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Trimester count</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Have Called</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Last used</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Name_count</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Total (in seconds)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Popularity_index</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Bookmarked</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Tracked</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="286"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Present</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="287"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Presence message</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="287"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Uid</source>
         <translation type="unfinished"/>
     </message>
@@ -652,7 +686,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>نام</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -672,7 +706,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>پیش‌گزیده</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -692,25 +726,25 @@
 <context>
     <name>ProfileContentBackend</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="292"/>
+        <location filename="../src/profilemodel.cpp" line="298"/>
         <source>Profile backend</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="297"/>
+        <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/profilemodel.cpp" line="387"/>
+        <location filename="../src/profilemodel.cpp" line="394"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>پیش‌گزیده</translation>
     </message>
 </context>
 <context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="912"/>
+        <location filename="../src/profilemodel.cpp" line="931"/>
         <source>Profiles</source>
         <translation type="unfinished"/>
     </message>
@@ -718,7 +752,7 @@
 <context>
     <name>ProfileModelPrivate</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="980"/>
+        <location filename="../src/profilemodel.cpp" line="1003"/>
         <source>New profile</source>
         <translation type="unfinished"/>
     </message>
@@ -948,7 +982,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>پیش‌گزیده</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
@@ -991,28 +1025,25 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="149"/>
-        <source>%1 %2 list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="150"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
-        <source>banned</source>
+        <source>%1 banned list</source>
+        <extracomment>The list of banned certificates for this account</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="153"/>
-        <source>allowed</source>
+        <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
+        <source>%1 allowed list</source>
+        <extracomment>The list of allowed certificates for this account</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="159"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="192"/>
+        <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
         <translation type="unfinished"/>
     </message>
@@ -1027,7 +1058,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="185"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="186"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation type="unfinished"/>
@@ -1039,17 +1070,17 @@
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
-        <location filename="../src/useractionmodel.cpp" line="507"/>
+        <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Bookmark</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="191"/>
+        <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="196"/>
+        <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
         <translation>تاریخچه</translation>
     </message>
@@ -1075,12 +1106,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="219"/>
+        <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="224"/>
+        <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
         <translation type="unfinished"/>
     </message>
@@ -1115,7 +1146,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="406"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
         <source>Me</source>
         <translation>من</translation>
     </message>
@@ -1126,7 +1157,7 @@
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
-        <source>TLS is disabled, the negotiation wont be encrypted. Your communication will be vulnerable to snooping</source>
+        <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1178,7 +1209,7 @@
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>پیش‌گزیده</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
@@ -1186,120 +1217,125 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="492"/>
-        <location filename="../src/useractionmodel.cpp" line="727"/>
+        <location filename="../src/useractionmodel.cpp" line="510"/>
+        <location filename="../src/useractionmodel.cpp" line="748"/>
         <source>Accept</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="493"/>
-        <location filename="../src/useractionmodel.cpp" line="739"/>
+        <location filename="../src/useractionmodel.cpp" line="511"/>
+        <location filename="../src/useractionmodel.cpp" line="760"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>نگه داشتن</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="494"/>
+        <location filename="../src/useractionmodel.cpp" line="512"/>
         <source>Mute audio</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="495"/>
+        <location filename="../src/useractionmodel.cpp" line="513"/>
         <source>Mute video</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="496"/>
+        <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="497"/>
+        <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="498"/>
-        <location filename="../src/useractionmodel.cpp" line="757"/>
+        <location filename="../src/useractionmodel.cpp" line="516"/>
+        <location filename="../src/useractionmodel.cpp" line="778"/>
         <source>Hangup</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="499"/>
+        <location filename="../src/useractionmodel.cpp" line="517"/>
         <source>Join</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="500"/>
+        <location filename="../src/useractionmodel.cpp" line="518"/>
         <source>Add new</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="501"/>
+        <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Toggle video</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="502"/>
+        <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Add a contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="503"/>
+        <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Add to existing contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="504"/>
+        <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Delete contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="505"/>
+        <location filename="../src/useractionmodel.cpp" line="523"/>
         <source>Email contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="506"/>
+        <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Copy contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="508"/>
+        <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>View chat history</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="509"/>
+        <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add phone number</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="510"/>
+        <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Call again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="511"/>
+        <location filename="../src/useractionmodel.cpp" line="529"/>
+        <source>Edit contact details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Remove from history</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="754"/>
+        <location filename="../src/useractionmodel.cpp" line="775"/>
         <source>Remove</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="724"/>
+        <location filename="../src/useractionmodel.cpp" line="745"/>
         <source>Call</source>
         <translation>تماس</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="736"/>
+        <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Unhold</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="747"/>
+        <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
@@ -1331,17 +1367,17 @@
 <context>
     <name>Video::SourceModel</name>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="90"/>
+        <location filename="../src/video/sourcemodel.cpp" line="75"/>
         <source>NONE</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="96"/>
+        <location filename="../src/video/sourcemodel.cpp" line="81"/>
         <source>SCREEN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="102"/>
+        <location filename="../src/video/sourcemodel.cpp" line="87"/>
         <source>FILE</source>
         <translation type="unfinished"/>
     </message>
