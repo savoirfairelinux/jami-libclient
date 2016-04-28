@@ -743,12 +743,13 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
             } else
                 cmNode->m_pParent = nullptr;
         }
-        if (newParentNode && newParentNode->m_lChildren.size()) {
-            q_ptr->selectionModel()->clear();
-            q_ptr->selectionModel()->select(q_ptr->getIndex(const_cast<Person*>(newParentNode->m_uContent.m_pPerson)), QItemSelectionModel::ClearAndSelect);
-        }
+
         n->m_lChildren.clear();
         removeNode(n);
+
+        if (newParentNode && newParentNode->m_lChildren.size()) {
+            q_ptr->selectionModel()->select(q_ptr->getIndex(const_cast<Person*>(newParentNode->m_uContent.m_pPerson)), QItemSelectionModel::ClearAndSelect);
+        }
     }
 }
 
