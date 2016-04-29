@@ -348,6 +348,7 @@ class LIB_EXPORT Account : public ItemBase {
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
 
+      QMap<QString,QString>     getAutodiscoveryList       () const;
       CredentialModel*          credentialModel            () const;
       CodecModel*               codecModel                 () const;
       KeyExchangeModel*         keyExchangeModel           () const;
