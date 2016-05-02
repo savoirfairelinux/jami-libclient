@@ -422,6 +422,9 @@ void URIPrivate::parseHostname()
 
    URI::Section section = URI::Section::HOSTNAME;
 
+   // in case no port, attributes, etc are provided
+   m_Hostname2 = q_ptr->hostname();
+
    for (int i = 0; i < length; i++) {
       const char c = extHn[i];
       switch (c) {
