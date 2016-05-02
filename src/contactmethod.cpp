@@ -822,7 +822,9 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads
     }
    auto txtRecording = textRecording();
    txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT);
-   ConfigurationManager::instance().sendTextMessage(selectedAccount->id(),uri(),payloads);
+   ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
+                                                    ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME))
+                                                    ,payloads);
    return true;
 }
 
