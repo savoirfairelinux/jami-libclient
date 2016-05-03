@@ -62,6 +62,7 @@ public:
       HasText              ,
       ContactMethod        ,
       DeliveryStatus       ,
+      FormattedHtml        ,
    };
 
     ///Possible messages states
