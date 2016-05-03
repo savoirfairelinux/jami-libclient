@@ -19,6 +19,8 @@
 
 //Qt
 #include <QtCore/QAbstractListModel>
+#include <QtCore/QRegExp>
+#include <QtCore/QRegularExpression>
 
 //Daemon
 #include <account_const.h>
@@ -79,13 +81,18 @@ public:
    //Delivery Status
    Media::TextRecording::Status deliveryStatus;
 
+   static const QRegularExpression m_linkRegex;
+
    //Cache the most common payload to avoid lookup
    QString m_PlainText;
    QString m_HTML;
+   QString m_FormattedHtml;
+   QList<QUrl> m_LinkList;
    bool    m_HasText;
 
    void read (const QJsonObject &json);
    void write(QJsonObject       &json) const;
+   const QString& getFormattedHtml();
 };
 
 class Peer {
