@@ -24,6 +24,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QDateTime>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QUrl>
 
 //Daemon
 #include <account_const.h>
@@ -578,6 +579,38 @@ void Serializable::Message::write(QJsonObject &json) const
    json["payloads"] = a;
 }
 
+const QRegularExpression Serializable::Message::m_linkRegex = QRegularExpression(QStringLiteral("((?>(?>https|http|ftp|ring):|www\\.)(?>[^\\s,.);!>]|[,.);!>](?!\\s|$))+)"),
+                                                                                 QRegularExpression::CaseInsensitiveOption);
+
+const QString& Serializable::Message::getFormattedHtml()
+{
+    if (m_FormattedHtml.isEmpty())
+    {
+        QString re;
+        auto p = 0;
+        auto it = m_linkRegex.globalMatch(m_PlainText);
+        while (it.hasNext()) {
+            QRegularExpressionMatch match = it.next();
+            auto start = match.capturedStart();
+
+            auto url = QUrl::fromUserInput(match.capturedRef().toString());
+
+            if (start > p)
+                re.append(m_PlainText.mid(p, start - p).toHtmlEscaped().replace(QLatin1Char('\n'),
+                                                                                QStringLiteral("<br/>")));
+            re.append(QStringLiteral("<a href=\"%1\">%2</a>")
+                      .arg(QString::fromLatin1(url.toEncoded()).toHtmlEscaped(),
+                           match.capturedRef().toString().toHtmlEscaped()));
+            p = match.capturedEnd();
+        }
+        if (p < m_PlainText.size())
+            re.append(m_PlainText.mid(p, m_PlainText.size() - p));
+
+        m_FormattedHtml = QString("<body>%1</body>").arg(re);
+    }
+    return m_FormattedHtml;
+}
+
 void Serializable::Group::read (const QJsonObject &json, const QHash<QString,ContactMethod*> sha1s)
 {
    id            = json["id"           ].toInt   ();
@@ -708,6 +741,7 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
       roles.insert((int)Media::TextRecording::Role::FormattedDate       , "formattedDate"       );
       roles.insert((int)Media::TextRecording::Role::IsStatus            , "isStatus"            );
       roles.insert((int)Media::TextRecording::Role::DeliveryStatus      , "deliveryStatus"      );
+      roles.insert((int)Media::TextRecording::Role::FormattedHtml       , "formattedHtml"       );
    }
    return roles;
 }
@@ -770,6 +804,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return QVariant::fromValue(n->m_pContactMethod);
          case (int)Media::TextRecording::Role::DeliveryStatus       :
             return QVariant::fromValue(n->m_pMessage->deliveryStatus);
+         case (int)Media::TextRecording::Role::FormattedHtml        :
+            return QVariant::fromValue(n->m_pMessage->getFormattedHtml());
          default:
             break;
       }
