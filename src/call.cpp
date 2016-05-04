@@ -846,18 +846,13 @@ const QString Call::peerName() const
 ///Generate the best possible peer name
 const QString Call::formattedName() const
 {
-   if (type() == Call::Type::CONFERENCE)
-      return tr("Conference");
-   else if (!peerContactMethod())
-      return tr("Error");
-   else if (peerContactMethod()->contact() && !peerContactMethod()->contact()->formattedName().isEmpty())
-      return peerContactMethod()->contact()->formattedName();
-   else if (!peerName().isEmpty())
-      return d_ptr->m_PeerName;
-   else if (peerContactMethod())
-      return peerContactMethod()->uri();
-   else
-      return tr("Unknown");
+    if (type() == Call::Type::CONFERENCE)
+        return tr("Conference");
+
+    auto name = peerContactMethod()->roleData(static_cast<int>(Ring::Role::Name)).toString();
+    if (name.isEmpty())
+        return tr("Unknown");
+    return name;
 }
 
 ///If this call is encrypted, return the certificate associated with it
@@ -2167,10 +2162,6 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Ring::Role::Name):
       case static_cast<int>(Call::Role::Name):
       case Qt::DisplayRole:
-         if (type() == Call::Type::CONFERENCE)
-            return tr("Conference");
-         else if (lifeCycleState() == Call::LifeCycleState::CREATION)
-            return dialNumber();
          return formattedName();
       case Qt::ToolTipRole:
          return tr("Account: ") + (account()?account()->alias():QString());
