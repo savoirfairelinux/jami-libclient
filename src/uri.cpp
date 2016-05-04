@@ -19,6 +19,8 @@
 
 #include "private/matrixutils.h"
 
+#include <QRegularExpression> 
+
 class URIPrivate
 {
 public:
@@ -27,6 +29,11 @@ public:
 
    ///String associated with the transport name
    static const Matrix1D<URI::Transport, const char*> transportNames;
+
+   static const QString whitespaceCharClass;
+
+   static const QRegularExpression startWhitespaceMatcher;
+   static const QRegularExpression endWhitespaceMatcher;
 
    ///Attributes names
    struct Constants {
@@ -92,6 +99,14 @@ const Matrix1D<URI::SchemeType, const char*> URIPrivate::schemeNames = {{
    /*RING = */ "ring:",
 }};
 
+const QString URIPrivate::whitespaceCharClass = QStringLiteral("[\\h\\x{200B}\\x{200C}\\x{200D}\\x{FEFF}]+");
+
+const QRegularExpression URIPrivate::startWhitespaceMatcher = QRegularExpression(
+                                                   "^" + URIPrivate::whitespaceCharClass,
+                                                   QRegularExpression::UseUnicodePropertiesOption);
+const QRegularExpression URIPrivate::endWhitespaceMatcher = QRegularExpression(
+                                                   URIPrivate::whitespaceCharClass + "$",
+                                                   QRegularExpression::UseUnicodePropertiesOption);
 
 URIPrivate::URIPrivate(URI* uri) : m_Parsed(false),m_HeaderType(URI::SchemeType::NONE),q_ptr(uri),
 m_hasChevrons(false),m_HasAt(false),m_ProtocolHint(URI::ProtocolHint::SIP_OTHER),m_HintParsed(false),
@@ -159,7 +174,9 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
       return {};
 
    /* remove whitespace at the start and end */
-   auto uriTrimmed = uri.trimmed();
+   auto uriTrimmed = uri;
+   uriTrimmed.replace(startWhitespaceMatcher, "");
+   uriTrimmed.replace(endWhitespaceMatcher, "");
 
    int start(uriTrimmed[0] == '<'?1:0),end(uriTrimmed.size()-1); //Other type of comparisons were too slow
 
