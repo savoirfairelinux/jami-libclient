@@ -20,8 +20,12 @@
 //Qt
 #include <QtCore/QAbstractListModel>
 
+//Daemon
+#include <account_const.h>
+
 //Ring
-#include <media/media.h>
+#include "media/media.h"
+#include "media/textrecording.h"
 
 class SerializableEntityManager;
 struct TextMessageNode;
@@ -65,11 +69,15 @@ public:
    ///The direction
    Media::Media::Direction direction ;
    ///The message Type
-   Type type                         ;
+   Type                    type      ;
    ///If the message have been read
-   bool isRead                       ;
+   bool                    isRead    ;
    ///The contact method (incoming messages only)
    ContactMethod* contactMethod      ;
+   //The token of the message
+   uint64_t                id        ;
+   //Delivery Status
+   Media::TextRecording::Status deliveryStatus;
 
    //Cache the most common payload to avoid lookup
    QString m_PlainText;
@@ -161,10 +169,12 @@ public:
    QStringList                 m_lMimeTypes         ;
    QAbstractItemModel*         m_pTextMessagesModel {nullptr};
    QAbstractItemModel*         m_pUnreadTextMessagesModel {nullptr};
+   QHash<uint64_t, TextMessageNode*> m_hPendingMessages;
 
    //Helper
-   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
+   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id = 0);
    QHash<QByteArray,QByteArray> toJsons() const;
+   void accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status);
 
 private:
    TextRecording* q_ptr;
