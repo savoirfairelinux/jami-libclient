@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_65379fe4",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-05-04T17:34:49Z",
+      "side": 1,
+      "message": "Well, if you look at how it was two patchsets ago you will find just what you are saying. But problem is, the message states enum in the daemon is not accessible in the client, only in the private part of LRC.\n\nThis means that if LRC transfers the int received from the daemon to the client, the client can\u0027t compare the status value to the one in the daemon.\n\ntwo solutions: \n- first expose daemon headers to the client. I don\u0027t really know how this could be done and if this is a good idea. It would be ok to expose only contants I guess, not whole API.\n- Make LRC respond to \u0027yes/no\u0027 question like I did. Easier to do, but more frustrating in a way.",
+      "parentUuid": "ba65a107_a50e1733",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_45137b5c",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 25
