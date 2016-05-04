@@ -618,9 +618,9 @@ public Q_SLOTS: // METHODS
       return DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
    }
 
-   DRing::Account::MessageStates getMessageStatus(uint64_t id)
+   int getMessageStatus(uint64_t id)
    {
-       return static_cast<DRing::Account::MessageStates>(DRing::getMessageStatus(id));
+       return DRing::getMessageStatus(id);
    }
 
 Q_SIGNALS: // SIGNALS

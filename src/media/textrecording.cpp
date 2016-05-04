@@ -25,18 +25,22 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QCryptographicHash>
 
+//Daemon
+#include <account_const.h>
+
 //Ring
-#include <callmodel.h>
-#include <contactmethod.h>
-#include <account.h>
-#include <phonedirectorymodel.h>
-#include <accountmodel.h>
-#include <personmodel.h>
-#include <private/textrecording_p.h>
+#include "callmodel.h"
+#include "contactmethod.h"
+#include "account.h"
+#include "phonedirectorymodel.h"
+#include "accountmodel.h"
+#include "personmodel.h"
+#include "private/textrecording_p.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
-#include <itemdataroles.h>
-#include <mime.h>
+#include "itemdataroles.h"
+#include "mime.h"
+#include "dbus/configurationmanager.h"
 
 //Std
 #include <ctime>
@@ -151,7 +155,6 @@ Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json
 
 Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr),m_UnreadCount(0)
 {
-
 }
 
 Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
@@ -161,6 +164,28 @@ Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(
 Media::TextRecording::~TextRecording()
 {
    delete d_ptr;
+}
+
+void Media::TextRecordingPrivate::accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status)
+{
+    if (auto node = m_hPendingMessages.value(id, nullptr)) {
+        if (static_cast<int>(status) >= static_cast<int>(TextRecording::Status::COUNT__)) {
+            qWarning() << "Unknown message status with code: " << static_cast<int>(status);
+            node->m_pMessage->deliveryStatus = TextRecording::Status::UNKNOWN;
+        } else {
+            node->m_pMessage->deliveryStatus = static_cast<TextRecording::Status>(status);
+        }
+        //READ status is not used yet it'll be the final state when it is
+        if (status == DRing::Account::MessageStates::READ
+                || status == DRing::Account::MessageStates::SENT
+                || status == DRing::Account::MessageStates::FAILURE) {
+            m_hPendingMessages.remove(id);
+            node->m_pMessage->id = 0;
+        }
+        //You're looking at why local file storage is a "bad" idea
+        q_ptr->save();
+        m_pImModel->dataChanged(QModelIndex(), QModelIndex());
+    }
 }
 
 bool Media::TextRecording::hasMimeType(const QString& mimeType) const
@@ -319,6 +344,7 @@ QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
 Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items, const ContactMethod* cm)
 {
     TextRecording* t = new TextRecording();
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
     //Load the history data
     for (const QJsonObject& obj : items) {
@@ -350,7 +376,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
                         n->m_pMessage->authorSha1 = cm->sha1();
 
                         if (p->peers.isEmpty())
-                        addPeer(const_cast<Serializable::Peers*>(p), cm);
+                            addPeer(const_cast<Serializable::Peers*>(p), cm);
                     } else {
                         if (p->m_hSha1.contains(n->m_pMessage->authorSha1)) {
                             n->m_pMessage->contactMethod = p->m_hSha1[n->m_pMessage->authorSha1];
@@ -368,6 +394,16 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
 
                 if (lastUsed < n->m_pMessage->timestamp)
                     lastUsed = n->m_pMessage->timestamp;
+                if (m->id) {
+                    t->d_ptr->m_hPendingMessages[m->id] = n;
+#ifdef Q_OS_LINUX
+                    auto status = configurationManager.getMessageStatus(m->id).value();
+#else
+                    auto status = configurationManager.getMessageStatus(m->id);
+#endif
+                    if (static_cast<DRing::Account::MessageStates>(status) != DRing::Account::MessageStates::UNKNOWN)
+                        n->m_pMessage->deliveryStatus = static_cast<Status>(status);
+                }
             }
         }
 
@@ -378,7 +414,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id)
 {
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
@@ -403,6 +439,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
+   m->id = id;
 
    if (direction == Media::Media::Direction::OUT)
       m->isRead = true; // assume outgoing messages are read, since we're sending them
@@ -455,6 +492,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m_lNodes << n;
    m_pImModel->addRowEnd();
 
+   if (m->id > 0)
+       m_hPendingMessages[id] = n;
+
    //Save the conversation
    q_ptr->save();
 
@@ -487,6 +527,8 @@ void Serializable::Message::read (const QJsonObject &json)
    isRead     = json["isRead"    ].toBool               (                           );
    direction  = static_cast<Media::Media::Direction>    ( json["direction"].toInt() );
    type       = static_cast<Serializable::Message::Type>( json["type"     ].toInt() );
+   id         = json["id"        ].toVariant().value<uint64_t>(                     );
+   deliveryStatus = static_cast<Media::TextRecording::Status>(json["deliveryStatus"].toInt());
 
    QJsonArray a = json["payloads"].toArray();
    for (int i = 0; i < a.size(); ++i) {
@@ -523,6 +565,8 @@ void Serializable::Message::write(QJsonObject &json) const
    json["direction"  ] = static_cast<int>(direction);
    json["type"       ] = static_cast<int>(type)     ;
    json["isRead"     ] = isRead                     ;
+   json["id"         ] = QString::number(id);
+   json["deliveryStatus"         ] = static_cast<int>(deliveryStatus);
 
    QJsonArray a;
    foreach (const Payload* p, payloads) {
@@ -662,6 +706,7 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
       roles.insert((int)Media::TextRecording::Role::IsRead              , "isRead"              );
       roles.insert((int)Media::TextRecording::Role::FormattedDate       , "formattedDate"       );
       roles.insert((int)Media::TextRecording::Role::IsStatus            , "isStatus"            );
+      roles.insert((int)Media::TextRecording::Role::DeliveryStatus      , "deliveryStatus"      );
    }
    return roles;
 }
@@ -709,7 +754,7 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                return n->m_pContactMethod->contact() ?
                   n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
          case (int)Media::TextRecording::Role::Timestamp            :
-            return (int)n->m_pMessage->timestamp;
+            return (uint)n->m_pMessage->timestamp;
          case (int)Media::TextRecording::Role::IsRead               :
             return (int)n->m_pMessage->isRead;
          case (int)Media::TextRecording::Role::FormattedDate        :
@@ -722,6 +767,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return n->m_pMessage->m_HasText;
          case (int)Media::TextRecording::Role::ContactMethod        :
             return QVariant::fromValue(n->m_pContactMethod);
+         case (int)Media::TextRecording::Role::DeliveryStatus       :
+            return QVariant::fromValue(n->m_pMessage->deliveryStatus);
          default:
             break;
       }
