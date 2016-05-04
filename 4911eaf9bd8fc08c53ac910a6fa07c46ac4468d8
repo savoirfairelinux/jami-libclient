@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_6510ff4e",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-04T17:20:16Z",
+      "side": 1,
+      "message": "extra new line",
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_a50e1733",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-04T17:20:16Z",
+      "side": 1,
+      "message": "this is kinda weird? why not just have a \"Status\" role which exposes the same (or similar) roles given by the daemon... otherwise if you check \"HasSucceeded\" it could be \u0027false\u0027 because it still sending, or because it failed, or (later) because it was read, so you need additional layers of conditionals to know what the actual status is..",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_45137b5c",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-04T17:20:16Z",
+      "side": 1,
+      "message": "extra new line",
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_051d8366",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-04T17:20:16Z",
+      "side": 1,
+      "message": "should be an enum",
+      "range": {
+        "startLine": 78,
+        "startChar": 3,
+        "endLine": 78,
+        "endChar": 43
+      },
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
