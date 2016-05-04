@@ -66,6 +66,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_c5822b52",
+        "filename": "src/media/textrecording.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-04T18:13:14Z",
+      "side": 1,
+      "message": "third solution: create another enum in LRC corresponding to the one in the daemon (like its done for the call states)",
+      "parentUuid": "ba65a107_65379fe4",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_45137b5c",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 25
