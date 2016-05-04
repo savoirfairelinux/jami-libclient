@@ -17,9 +17,9 @@
  ***************************************************************************/
 #pragma once
 
-#include <media/recording.h>
-#include <media/media.h>
-#include <itemdataroles.h>
+#include "media/recording.h"
+#include "media/media.h"
+#include "itemdataroles.h"
 
 //Qt
 class QJsonObject;
@@ -61,7 +61,20 @@ public:
       HTML                 ,
       HasText              ,
       ContactMethod        ,
+      DeliveryStatus       ,
    };
+
+    ///Possible messages states
+    ///Order is important and reflected on order in Daemon
+    enum class Status : unsigned int{
+        UNKNOWN = 0,
+        SENDING,
+        SENT,
+        READ,
+        FAILURE,
+        COUNT__,
+    };
+    Q_ENUMS(Status)
 
    //Constructor
    explicit TextRecording();
@@ -90,3 +103,5 @@ private:
 };
 
 }
+
+Q_DECLARE_METATYPE(Media::TextRecording::Status)
