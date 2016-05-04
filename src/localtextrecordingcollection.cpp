@@ -195,10 +195,9 @@ bool LocalTextRecordingCollection::load()
                 QJsonDocument loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err);
 
                 if (err.error == QJsonParseError::ParseError::NoError) {
-                    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()});
+                    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, nullptr, this);
 
                     editor<Media::Recording>()->addExisting(r);
-                    r->setCollection(this);
 
                     // get CMs from recording
                     for (ContactMethod *cm : r->peers()) {
@@ -302,10 +301,9 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
        return nullptr;
    }
 
-   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm);
+   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm, this);
 
    editor<Media::Recording>()->addExisting(r);
-   r->setCollection(this);
 
    return r;
 }
