@@ -83,6 +83,24 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_e552cf12",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-05-04T17:39:46Z",
+      "side": 1,
+      "message": "not sure to understand.\nthere was a line between :\n24: #include \u003cmedia/media.h\u003e\n25:\n26: class SerializableEntityManager;\n\nnow we have:\n24: #include \u003cmedia/media.h\u003e\n25:\n26: #include \u003caccount_const.h\u003e\n27:\n28:class SerializableEntityManager;\n\nI think I see what you mean. But media/media.h is not from the daemon but from LRC. It feels normal to separate them.\n\nI will fix this by replacing \u003c \u003e by \" \" for the media line",
+      "parentUuid": "ba65a107_45137b5c",
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_051d8366",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 25
