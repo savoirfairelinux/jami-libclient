@@ -145,6 +145,30 @@
       "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_2569a78b",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-05-04T19:52:42Z",
+      "side": 1,
+      "message": "Well, I\u0027ve added the enum in the exported header textrecording.h.\n\nProblem is, this int is in the private class Message, and when I try adding it Media::TextRecording::Status, I have an error since TextRecording is only a forwarded declaration.\n\nMaybe you could try something",
+      "parentUuid": "ba65a107_051d8366",
+      "range": {
+        "startLine": 78,
+        "startChar": 3,
+        "endLine": 78,
+        "endChar": 43
+      },
+      "revId": "4911eaf9bd8fc08c53ac910a6fa07c46ac4468d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
