@@ -140,6 +140,30 @@
       "revId": "7fdc939b02d2ead2da36fe82c29b9610c5f8d842",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_8512f360",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-05T20:12:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_456dbb31",
+      "range": {
+        "startLine": 172,
+        "startChar": 37,
+        "endLine": 172,
+        "endChar": 55
+      },
+      "revId": "7fdc939b02d2ead2da36fe82c29b9610c5f8d842",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
