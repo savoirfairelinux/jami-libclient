@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_8583d3cb",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-05T14:13:47Z",
+      "side": 1,
+      "message": "Yes you\u0027re right if the client crash but not the daemon (didnt think of that for obvious reason). I guess we could use the getMessageStatus at load time to keep in sync with the daemon (except once the message has been sent you\u0027ll get an UNKNOWN status)",
+      "parentUuid": "ba65a107_85abd388",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 60
+      },
+      "revId": "7fdc939b02d2ead2da36fe82c29b9610c5f8d842",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_059fc360",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 29
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_a58857e8",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-05T14:13:47Z",
+      "side": 1,
+      "message": "No there is no need a message sent doesnt have an id anymore",
+      "parentUuid": "ba65a107_059fc360",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 47
+      },
+      "revId": "7fdc939b02d2ead2da36fe82c29b9610c5f8d842",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_e5a64fc1",
         "filename": "src/private/textrecording_p.h",
         "patchSetId": 29
@@ -59,6 +107,30 @@
       "writtenOn": "2016-05-04T21:35:16Z",
       "side": 1,
       "message": "should be m_hPendingMessages, since its a hash, to keep naming convention",
+      "range": {
+        "startLine": 172,
+        "startChar": 37,
+        "endLine": 172,
+        "endChar": 55
+      },
+      "revId": "7fdc939b02d2ead2da36fe82c29b9610c5f8d842",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_456dbb31",
+        "filename": "src/private/textrecording_p.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-05T14:13:47Z",
+      "side": 1,
+      "message": "You re right",
+      "parentUuid": "ba65a107_e5a64fc1",
       "range": {
         "startLine": 172,
         "startChar": 37,
