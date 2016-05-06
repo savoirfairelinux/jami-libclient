@@ -124,7 +124,7 @@ URI::URI() : QString(), d_ptr(new URIPrivate(this))
 URI::URI(const QString& other) : URI()
 {
    d_ptr->m_Stripped              = URIPrivate::strip(other,d_ptr->m_HeaderType);
-   (*static_cast<QString*>(this)) = d_ptr->m_Stripped                           ;
+   (*static_cast<QString*>(this)) = other                                       ;
 }
 
 ///Copy constructor
@@ -157,7 +157,7 @@ void URIPrivate::commonCopyConstructor(const URI& o)
    m_Transport    = o.d_ptr->m_Transport   ;
    m_Tag          = o.d_ptr->m_Tag         ;
 
-   (*static_cast<QString*>(q_ptr)) = o.d_ptr->m_Stripped;
+   (*static_cast<QString*>(q_ptr)) = o;
 }
 
 /// Copy operator, make sure the cache is also copied
@@ -409,8 +409,14 @@ void URIPrivate::parse()
       m_Userinfo    = split[0];
       m_Parsed      = true;
    }
-   else
+   else if (q_ptr->indexOf(':') != -1) {
+      const QStringList split = q_ptr->split(':');
+      m_Userinfo = split[1];
+      m_Parsed = true;
+   }
+   else {
       m_Userinfo = (*q_ptr);
+  }
 }
 
 void URIPrivate::parseAttribute(const QByteArray& extHn, const int start, const int pos)
