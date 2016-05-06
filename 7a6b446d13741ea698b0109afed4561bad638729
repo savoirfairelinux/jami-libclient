@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_4077e9d4",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-06T19:16:30Z",
+      "side": 1,
+      "message": "actually... couldn\u0027t we just just replace these lines with:\nd_ptr-\u003eaccountMessageStatusChanged(m-\u003eid, static_cast\u003cDRing::Account::MessageStates\u003e(status));\n\nor something like that... or at least, these lines should basically look the same as that function... right now there are some slight behaviour differences:\n1. accountMessageStatusChanged() accepts UNKNOWN as a status and sets it)\n2. here id is not removed from pendingMessags\n3. READ status should also set the id to 0\n4. the model is not saved (though, this shouldn\u0027t be done at every message, but just at the end)\n5. same with data changed signal... not sure if its needed since we\u0027re still reading the messages...",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 17
+      },
+      "revId": "7a6b446d13741ea698b0109afed4561bad638729",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
