@@ -22,6 +22,30 @@
       "revId": "7a6b446d13741ea698b0109afed4561bad638729",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_405e0947",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-06T19:26:41Z",
+      "side": 1,
+      "message": "Sadly it\u0027s a static function we have no d_ptr. So i\u0027ll just add 2 and 3. Saving and data change signal doesnt seem necessary",
+      "parentUuid": "ba65a107_4077e9d4",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 17
+      },
+      "revId": "7a6b446d13741ea698b0109afed4561bad638729",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
