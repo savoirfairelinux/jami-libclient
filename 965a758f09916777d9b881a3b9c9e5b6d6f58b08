@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_4002893f",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-06T18:42:07Z",
+      "side": 1,
+      "message": "Oh ok, so that\u0027s auto\u0027s fault.",
+      "parentUuid": "ba65a107_c0ee998b",
+      "range": {
+        "startLine": 399,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 6
+      },
+      "revId": "965a758f09916777d9b881a3b9c9e5b6d6f58b08",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_80e8a17d",
         "filename": "src/media/textrecording.cpp",
         "patchSetId": 39
@@ -36,6 +60,30 @@
       "writtenOn": "2016-05-06T18:37:13Z",
       "side": 1,
       "message": "maybe we should the id to 0 in this case... there is no point in checking this id more than once, if it gave us UNKNOWN the first time...",
+      "range": {
+        "startLine": 404,
+        "startChar": 20,
+        "endLine": 405,
+        "endChar": 84
+      },
+      "revId": "965a758f09916777d9b881a3b9c9e5b6d6f58b08",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_60ff8d35",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-06T18:42:07Z",
+      "side": 1,
+      "message": "On Mac and Windows it will always return UNKNOW at this point so no we don\u0027t want to throw away our saved valid state.",
+      "parentUuid": "ba65a107_80e8a17d",
       "range": {
         "startLine": 404,
         "startChar": 20,
