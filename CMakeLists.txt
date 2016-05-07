@@ -127,6 +127,15 @@ IF (CMAKE_COMPILER_IS_GNUCC)
       )
    ENDIF()
 
+   IF (GCC_VERSION VERSION_GREATER 6.0 OR GCC_VERSION VERSION_EQUAL 6.0)
+      ADD_DEFINITIONS(
+         -Wnull-dereference
+         -Wshift-negative-value
+         -Wshift-overflow
+         -Wduplicated-cond
+         -Wmisleading-indentation
+      )
+   ENDIF()
 ENDIF()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
