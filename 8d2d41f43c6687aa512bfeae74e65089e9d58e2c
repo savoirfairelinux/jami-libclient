@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_7bcadea2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-09T14:01:13Z",
+      "side": 1,
+      "message": "we no longer need issue ids for external contribs :)",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 79
+      },
+      "revId": "8d2d41f43c6687aa512bfeae74e65089e9d58e2c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_dbd52a44",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-09T14:01:13Z",
+      "side": 1,
+      "message": "I think the release notes said that this is enabled by -Wall:\nhttps://gcc.gnu.org/gcc-6/changes.html",
+      "range": {
+        "startLine": 133,
+        "startChar": 9,
+        "endLine": 133,
+        "endChar": 31
+      },
+      "revId": "8d2d41f43c6687aa512bfeae74e65089e9d58e2c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
