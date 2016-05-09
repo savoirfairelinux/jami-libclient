@@ -46,6 +46,30 @@
       "revId": "7a6b446d13741ea698b0109afed4561bad638729",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_5bf59a81",
+        "filename": "src/media/textrecording.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-09T19:06:21Z",
+      "side": 1,
+      "message": "Gosh, i guess my friday headache was worst than i thought (d_ptr ....)",
+      "parentUuid": "ba65a107_405e0947",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 17
+      },
+      "revId": "7a6b446d13741ea698b0109afed4561bad638729",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
