@@ -22,6 +22,30 @@
       "revId": "3ceacf5d4d4e2142986167bea8bc35f3dd0c4317",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_967307b1",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-05-10T15:12:28Z",
+      "side": 1,
+      "message": "that\u0027s not an else if but the no bracket things definitely make it weird",
+      "parentUuid": "ba65a107_965c6727",
+      "range": {
+        "startLine": 387,
+        "startChar": 13,
+        "endLine": 388,
+        "endChar": 19
+      },
+      "revId": "3ceacf5d4d4e2142986167bea8bc35f3dd0c4317",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
