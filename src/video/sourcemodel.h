@@ -56,6 +56,7 @@ public:
 
 private:
    Video::SourceModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(SourceModel)
 
 public Q_SLOTS:
    void switchTo(const QModelIndex& idx);
@@ -66,4 +67,3 @@ public Q_SLOTS:
 };
 
 }
-

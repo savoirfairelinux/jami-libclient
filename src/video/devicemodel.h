@@ -75,4 +75,3 @@ Q_SIGNALS:
 
 }
 Q_DECLARE_METATYPE(Video::DeviceModel*)
-
