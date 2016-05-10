@@ -68,7 +68,7 @@ CollectionEditor<Call>(m),m_pCollection(parent)
 }
 
 LocalHistoryCollection::LocalHistoryCollection(CollectionMediator<Call>* mediator) :
-CollectionInterface(new LocalHistoryEditor(mediator,this)),m_pMediator(mediator)
+CollectionInterface(new LocalHistoryEditor(mediator,this))
 {
 //    setObjectName("LocalHistoryCollection");
 }
@@ -217,7 +217,7 @@ bool LocalHistoryCollection::load()
 
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      QMap<QString,QString> hc;
+      QMap<QString,QVariant> hc;
       QStringList lines;
 
       while (!file.atEnd())

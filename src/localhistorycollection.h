@@ -43,7 +43,4 @@ public:
 
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
-private:
-   CollectionMediator<Call>*  m_pMediator;
 };
-
