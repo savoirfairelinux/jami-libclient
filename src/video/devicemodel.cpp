@@ -179,6 +179,9 @@ void Video::DeviceModel::reload()
          devicesHash[deviceName] = d_ptr->m_hDevices[deviceName];
       }
    }
+
+   // remove all old devices
+   beginResetModel();
    foreach(Video::Device* dev, d_ptr->m_hDevices) {
       if (dev && devicesHash.key(dev).isEmpty()) {
          dev->deleteLater();
@@ -186,18 +189,14 @@ void Video::DeviceModel::reload()
    }
    d_ptr->m_pActiveDevice = nullptr;
    d_ptr->m_hDevices.clear();
-   d_ptr->m_hDevices = devicesHash;
 
-   beginResetModel();
+   // add all new devices
+   d_ptr->m_hDevices = devicesHash;
    d_ptr->m_lDevices = d_ptr->m_hDevices.values();
    endResetModel();
 
-   emit layoutChanged();
-//    channelModel   ()->reload();
-
    //Avoid a possible infinite loop by using a reload event
    QTimer::singleShot(0,d_ptr.data(),SLOT(idleReload()));
-
 }
 
 
