@@ -23,31 +23,51 @@
 #include <media_const.h>
 
 namespace Video {
-class SourceModelPrivate
+class SourceModelPrivate : public QObject
 {
+    Q_OBJECT
 public:
-   SourceModelPrivate();
+    explicit SourceModelPrivate(SourceModel *parent);
 
-   struct Display {
-      Display() : rect(0,0,0,0),index(0){}
-      QRect rect;
-      int index ; /* X11 display ID, usually 0 */
-   };
+    struct Display {
+        Display() : rect(0,0,0,0),index(0){}
+        QRect rect;
+        int index ; /* X11 display ID, usually 0 */
+    };
 
-   QUrl m_CurrentFile;
-   Display m_Display;
-   int m_CurrentSelection;
+    QUrl m_CurrentFile;
+    Display m_Display;
+    int m_CurrentSelection;
+    QString m_CurrentSelectionId; // if the current selection is a camera, store the device id here
+    bool m_DeviceModelReloading;
+
+private:
+    SourceModel* q_ptr;
+
+private Q_SLOTS:
+    void devicesAboutToReload();
+    void devicesReloaded();
 };
 }
 
-Video::SourceModelPrivate::SourceModelPrivate() : m_CurrentSelection(-1)
+Video::SourceModelPrivate::SourceModelPrivate(SourceModel *parent) : QObject(parent), q_ptr(parent),
+m_CurrentSelection(-1), m_DeviceModelReloading(false)
 {
+    connect(&Video::DeviceModel::instance(), &QAbstractItemModel::modelAboutToBeReset, this, &SourceModelPrivate::devicesAboutToReload);
+    connect(&Video::DeviceModel::instance(), &QAbstractItemModel::modelReset, this, &SourceModelPrivate::devicesReloaded);
 }
 
 Video::SourceModel::SourceModel(QObject* parent) : QAbstractListModel(parent),
-d_ptr(new Video::SourceModelPrivate())
+d_ptr(new Video::SourceModelPrivate(this))
 {
-   d_ptr->m_Display.rect = QRect(0,0,0,0);
+    d_ptr->m_Display.rect = QRect(0,0,0,0);
+
+    // set the active device to the default one, if it exists
+    auto deviceIdx = Video::DeviceModel::instance().activeIndex();
+    if (deviceIdx > -1) {
+        d_ptr->m_CurrentSelection = deviceIdx + ExtendedDeviceList::COUNT__;
+        d_ptr->m_CurrentSelectionId = Video::DeviceModel::instance().activeDevice()->id();
+    }
 }
 
 Video::SourceModel::~SourceModel()
@@ -95,8 +115,9 @@ QVariant Video::SourceModel::data( const QModelIndex& index, int role ) const
 
 int Video::SourceModel::rowCount( const QModelIndex& parent ) const
 {
-   Q_UNUSED(parent)
-   return Video::DeviceModel::instance().rowCount() + ExtendedDeviceList::COUNT__;
+    Q_UNUSED(parent)
+    return d_ptr->m_DeviceModelReloading ?
+        ExtendedDeviceList::COUNT__ : Video::DeviceModel::instance().rowCount() + ExtendedDeviceList::COUNT__;
 }
 
 Qt::ItemFlags Video::SourceModel::flags( const QModelIndex& idx ) const
@@ -132,9 +153,11 @@ void Video::SourceModel::switchTo(const int idx)
    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
    switch (newIdx) {
       case ExtendedDeviceList::NONE:
+         d_ptr->m_CurrentSelectionId = QString();
          VideoManager::instance().switchInput(DRing::Media::VideoProtocolPrefix::NONE);
          break;
       case ExtendedDeviceList::SCREEN:
+         d_ptr->m_CurrentSelectionId = QString();
          VideoManager::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
                   .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
                   .arg(sep)
@@ -145,6 +168,7 @@ void Video::SourceModel::switchTo(const int idx)
                   .arg(d_ptr->m_Display.rect.height()));
          break;
       case ExtendedDeviceList::FILE:
+         d_ptr->m_CurrentSelectionId = QString();
          VideoManager::instance().switchInput(
             !d_ptr->m_CurrentFile.isEmpty() ? QString("%1%2%3")
                .arg(DRing::Media::VideoProtocolPrefix::FILE)
@@ -154,10 +178,11 @@ void Video::SourceModel::switchTo(const int idx)
          );
          break;
       default:
+         d_ptr->m_CurrentSelectionId = Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString();
          VideoManager::instance().switchInput(QString("%1%2%3")
             .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
             .arg(sep)
-            .arg(Video::DeviceModel::instance().index(idx-ExtendedDeviceList::COUNT__,0).data(Qt::DisplayRole).toString()));
+            .arg(d_ptr->m_CurrentSelectionId));
          break;
    };
    d_ptr->m_CurrentSelection = newIdx;
@@ -220,7 +245,9 @@ Video::Device* Video::SourceModel::deviceAt(const QModelIndex& idx) const
 
 int Video::SourceModel::activeIndex() const
 {
-    return d_ptr->m_CurrentSelection;
+    /* its possible for the saved selection to be invalid if the device model is in the process
+     * of being reloaded */
+    return d_ptr->m_CurrentSelection >= rowCount() ? -1 : d_ptr->m_CurrentSelection;
 }
 
 void Video::SourceModel::setFile(const QUrl& url)
@@ -241,3 +268,42 @@ int Video::SourceModel::getDeviceIndex(Video::Device* device)
     int index = Video::DeviceModel::instance().devices().indexOf(device);
     return index > -1 ? ExtendedDeviceList::COUNT__ + index : -1;
 }
+
+void Video::SourceModelPrivate::devicesAboutToReload()
+{
+    // are there any camera devices to reload?
+    if (q_ptr->rowCount() > SourceModel::ExtendedDeviceList::COUNT__) {
+        int first = SourceModel::ExtendedDeviceList::COUNT__;
+        int last = q_ptr->rowCount() - 1;
+        q_ptr->beginRemoveRows(QModelIndex(), first, last);
+        /* we keep the current selection until the device model is reloaded, so we can try to select
+         * the same one */
+        m_DeviceModelReloading = true;
+        q_ptr->removeRows(first, last);
+    }
+}
+
+void Video::SourceModelPrivate::devicesReloaded()
+{
+    // insert rows if we have any devices
+    if (Video::DeviceModel::instance().rowCount() > 0) {
+        int first = SourceModel::ExtendedDeviceList::COUNT__;
+        int last = SourceModel::ExtendedDeviceList::COUNT__ + Video::DeviceModel::instance().rowCount() - 1;
+        q_ptr->beginInsertRows(QModelIndex(), first, last);
+        m_DeviceModelReloading = false;
+        if (m_CurrentSelection >= SourceModel::ExtendedDeviceList::COUNT__) {
+            // the device order may have changed, try to get the same one as before
+            if (auto device = Video::DeviceModel::instance().getDevice(m_CurrentSelectionId)) {
+                m_CurrentSelection = q_ptr->getDeviceIndex(device);
+            } else {
+                m_CurrentSelectionId = QString();
+                m_CurrentSelection = -1;
+            }
+        }
+        q_ptr->insertRows(first, last);
+    } else {
+        m_DeviceModelReloading = false;
+    }
+}
+
+#include <sourcemodel.moc>
