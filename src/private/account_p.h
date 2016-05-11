@@ -103,7 +103,7 @@ public:
    bool merge(Account* account);
    //Constructors
    static Account* buildExistingAccountFromId(const QByteArray& _accountId);
-   static Account* buildNewAccountFromAlias  (Account::Protocol proto, const QString& alias);
+   static Account* buildNewAccountFromAlias  (Account::Protocol proto, const QString& alias, const QString& password);
 
    //Helpers
    inline void changeState(Account::EditState state);

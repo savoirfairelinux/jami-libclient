@@ -153,7 +153,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 } //buildExistingAccountFromId
 
 ///Build an account from it's name / alias
-Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
+Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias, const QString& password)
 {
    qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
@@ -171,6 +171,10 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::IAX);
          break;
       case Account::Protocol::RING:
+         /* if the user want to signup on the blockchain the password has to be set */
+         if (!password.isEmpty()) {
+             a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ARCHIVE_PASSWORD] = password;
+         }
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::RING);
          break;
       case Account::Protocol::COUNT__:
@@ -379,6 +383,12 @@ const QString AccountPrivate::accountDetail(const QString& param) const
 const QString Account::alias() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ALIAS);
+}
+
+///Get the alias
+const QString Account::archivePassword() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PASSWORD);
 }
 
 ///Return the model index of this item
@@ -611,6 +621,12 @@ void Account::setAlias(const QString& detail)
 
    if (accChanged)
       emit aliasChanged(detail);
+}
+
+void Account::setArchivePassword(const QString& detail)
+{
+   const bool accChanged = detail != archivePassword();
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PASSWORD,detail);
 }
 
 ///Return the account hostname
