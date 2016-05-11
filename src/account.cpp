@@ -157,7 +157,6 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 ///Build an account from it's name / alias
 Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
 {
-   qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    Account* a = new Account();
    a->setProtocol(proto);
