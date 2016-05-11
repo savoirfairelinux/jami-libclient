@@ -191,6 +191,7 @@ private:
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);
+   void nameFound(const QString& name, const QString& address);
 
 public Q_SLOTS:
    bool sendOfflineTextMessage(const QMap<QString, QString>& payloads);
