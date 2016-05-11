@@ -97,8 +97,9 @@ public:
    virtual Qt::DropActions       supportedDropActions() const override;
 
    //Mutators
-   Q_INVOKABLE Account* add      ( const QString& alias, const Account::Protocol protocol = Account::Protocol::SIP);
-   Q_INVOKABLE Account* add      ( const QString& alias, const QModelIndex&      protocol                         );
+   Q_INVOKABLE Account* add      ( const QString& alias, const QString& password
+                                                       , const Account::Protocol protocol = Account::Protocol::SIP);
+   Q_INVOKABLE Account* add      ( const QString& alias, const QString& password, const QModelIndex& protocol     );
    Q_INVOKABLE void     remove   ( Account* account                                                               );
    void                 remove   ( const QModelIndex& index                                                       );
    void                 save     (                                                                                );
