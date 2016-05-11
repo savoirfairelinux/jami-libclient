@@ -425,6 +425,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString turnServerUsername           () const;
       QString turnServerPassword           () const;
       QString turnServerRealm              () const;
+      QPair <int, QString> testAccountICEInitialization () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
       RegistrationState  registrationState () const;
