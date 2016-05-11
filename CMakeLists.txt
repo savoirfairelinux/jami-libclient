@@ -298,6 +298,7 @@ SET( libringclient_LIB_SRCS
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
   src/peerprofilecollection.cpp
+  src/namedirectory.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -619,7 +620,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    )
 ENDIF()
 
-QT5_USE_MODULES(ringclient Core)
+QT5_USE_MODULES(ringclient Core Network)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   QT5_USE_MODULES(ringclient DBus)
