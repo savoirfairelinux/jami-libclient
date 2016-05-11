@@ -95,6 +95,7 @@ class LIB_EXPORT Account : public ItemBase {
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
+   Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
    Q_PROPERTY(QString        username                     READ username                      WRITE setUsername                    )
@@ -218,6 +219,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       enum class Role {
          Alias                       = static_cast<int>(Ring::Role::UserRole) + 100,
+         ArchivePassword             ,
          Proto                       ,
          Hostname                    ,
          Username                    ,
@@ -346,6 +348,7 @@ class LIB_EXPORT Account : public ItemBase {
       const QByteArray id              () const;
       const QString    toHumanStateName() const;
       const QString    alias           () const;
+      const QString    archivePassword () const;
       QModelIndex      index           () const;
       QString          stateColorName  () const;
       QVariant         stateColor      () const;
@@ -456,6 +459,7 @@ class LIB_EXPORT Account : public ItemBase {
       //Setters
       void setId                            (const QByteArray& id   );
       void setAlias                         (const QString& detail  );
+      void setArchivePassword               (const QString& detail  );
       void setProtocol                      (Account::Protocol proto);
       void setHostname                      (const QString& detail  );
       void setUsername                      (const QString& detail  );

@@ -899,9 +899,9 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
    }
 }
 
-Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
+Account* AccountModel::add(const QString& alias, const QString& password, const Account::Protocol proto)
 {
-   Account* a = AccountPrivate::buildNewAccountFromAlias(proto,alias);
+   Account* a = AccountPrivate::buildNewAccountFromAlias(proto, alias, password);
    connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
    d_ptr->insertAccount(a,d_ptr->m_lAccounts.size());
    connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
@@ -931,9 +931,9 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
    return a;
 }
 
-Account* AccountModel::add(const QString& alias, const QModelIndex& idx)
+Account* AccountModel::add(const QString& alias, const QString& password, const QModelIndex& idx)
 {
-   return add(alias, qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
+   return add(alias, password, qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
 }
 
 ///Remove an account
