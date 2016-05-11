@@ -20,6 +20,7 @@
 
 //libstdc++
 #include <vector>
+#include <memory>
 
 //Qt
 #include <QtCore/QMutex>
@@ -227,9 +228,9 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
    }
    else {
-      r = m_hRenderers[rid];
+      r = m_hRenderers.value(rid);
 
-      QThread* t = m_hThreads[r];
+      QThread* t = m_hThreads.value(r);
 
       if (t && !t->isRunning())
          t->start();
@@ -278,74 +279,97 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       emit q_ptr->previewStateChanged(true);
       emit q_ptr->previewStarted(r);
    }
+
+   qDebug() << "!!!!!!!!!!!!!!!!! inserted" << id << "rendereers now: " << m_hRenderers.size();
+
+   QHashIterator<QByteArray,Video::Renderer*> i(m_hRenderers);
+    while (i.hasNext()) {
+        i.next();
+        qDebug() << i.key() << ": " << i.value();
+    }
+}
+
+/// Deletes the renderer and related resources
+void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
+{
+    const auto id = m_hRendererIds.value(r);
+    auto t = m_hThreads.value(r);
+
+    qDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!! deleting renderer" << id;
+
+    m_hRendererIds.remove(r);
+    m_hRenderers.remove(id);
+    m_hThreads.remove(r);
+
+    qDebug() << "remaining: " << m_hRenderers.size();
+
+    if (t) {
+        t->deleteLater();
+    }
+
+    delete r;
 }
 
 /**
+ * A video stopped being rendered
+ *
  * @warning This method can be called multiple time for the same renderer
  */
-void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
-{
-   if (!r || !m_hRenderers.contains(m_hRendererIds[r]))
-      return;
-
-   const QByteArray id = m_hRendererIds[r];
-
-   //Quit if for some reasons the renderer is not found
-   if ( !r ) {
-      qWarning() << "Cannot stop rendering, renderer" << id << "not found";
-      return;
-   }
-
-   Call* c = CallModel::instance().getCall(id);
-
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-      c->d_ptr->removeRenderer(r);
-   }
-
-   r->stopRendering();
-
-   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
-
-   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
-
-   if (dev)
-      emit dev->renderingStopped(r);
-
-   if (id == PREVIEW_RENDERER_ID) {
-      m_PreviewState = false;
-      emit q_ptr->previewStateChanged(false);
-      emit q_ptr->previewStopped(r);
-   }
-
-   QThread* t = m_hThreads[r];
-
-   if (t) {
-       t->quit();
-       t->wait();
-   }
-
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-
-       m_hRendererIds.remove(r);
-       m_hRenderers.remove(id);
-
-       m_hThreads[r] = nullptr;
-       if (t) {
-           t->deleteLater();
-       }
-
-       delete r;
-   }
-}
-
-///A video stopped being rendered
 void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
 {
-   Q_UNUSED(shmPath)
+    Q_UNUSED(shmPath)
 
-   if (m_hRenderers.contains(id.toLatin1())) {
-      removeRenderer(m_hRenderers[id.toLatin1()]);
-   }
+    if (!m_hRenderers.contains(id.toLatin1()) || !m_hRenderers.contains(id.toLatin1())) {
+        qWarning() << "Cannot stop decoding, renderer" << id << "not found";
+        return; // nothing to do
+    }
+
+    auto r = m_hRenderers.value(id.toLatin1());
+
+    Call* c = CallModel::instance().getCall(id);
+
+    // TODO: the current implementeation of CallPrivate::removeRenderer() does nothing
+    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+        c->d_ptr->removeRenderer(r);
+    }
+
+    r->stopRendering();
+
+    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id.toLatin1());
+
+    Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+
+    if (dev)
+        emit dev->renderingStopped(r);
+
+    if (id == PREVIEW_RENDERER_ID) {
+        m_PreviewState = false;
+        emit q_ptr->previewStateChanged(false);
+        emit q_ptr->previewStopped(r);
+    }
+
+    QThread* t = m_hThreads.value(r);
+
+    if (t) {
+        t->quit();
+        t->wait();
+    }
+
+    // decoding stopped; remove the renderer, if/when call is over
+    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+        removeRenderer(r);
+    } else if (c) {
+        // we capture the Connection object in a shared_ptr so that we can disconnect from it in the
+        // lambda (otherwise it will get destroyed when this function exits)
+        auto conn = std::make_shared<QMetaObject::Connection>();
+        *conn = connect(c, &Call::isOver, [this, id, conn] () {
+            if (auto r = m_hRenderers.value(id.toLatin1()))
+                removeRenderer(r);
+            else
+                qDebug() << "Could not delete renderer, it no longer exists:" << id;
+           disconnect(*conn);
+        });
+    }
 }
 
 void VideoRendererManager::switchDevice(const Video::Device* device) const
