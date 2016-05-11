@@ -46,6 +46,8 @@
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
+#include "namedirectory.h"
+
 //Private
 #include "private/phonedirectorymodel_p.h"
 #include "private/textrecording_p.h"
@@ -107,7 +109,8 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
-   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q)
+   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q),
+   m_ns(NameDirectory::instance())
 {}
 
 ///Constructor
@@ -120,6 +123,11 @@ d_ptr(new ContactMethodPrivate(number,cat,st,this))
       NumberCategoryModel::instance().d_ptr->registerNumber(this);
    }
    d_ptr->m_lParents << this;
+   if (d_ptr->m_Uri.protocolHint() == URI::ProtocolHint::RING) {
+      connect(&d_ptr->m_ns, &NameDirectory::addrFound, this, &ContactMethod::nameFound);
+      auto ring_id = d_ptr->m_Uri.userinfo();
+      d_ptr->m_ns.addrLookup(ring_id);
+   }
 }
 
 ContactMethod::~ContactMethod()
@@ -127,6 +135,16 @@ ContactMethod::~ContactMethod()
    d_ptr->m_lParents.removeAll(this);
    if (!d_ptr->m_lParents.size())
       delete d_ptr;
+}
+
+void ContactMethod::nameFound(const QString& name, const QString& address)
+{
+   if (name == d_ptr->m_Uri.userinfo()) {
+      d_ptr->m_lookupName = address;
+      d_ptr->m_PrimaryName_cache.clear();
+      disconnect(&d_ptr->m_ns, &NameDirectory::addrFound, this, &ContactMethod::nameFound);
+      emit changed();
+   }
 }
 
 ///Return if this number presence is being tracked
@@ -374,7 +392,7 @@ QString ContactMethod::primaryName() const
       if (d_ptr->m_hNames.size() == 1)
          ret =  d_ptr->m_hNames.constBegin().key();
       else {
-         QString toReturn = uri();
+         QString toReturn = d_ptr->m_lookupName.isEmpty() ? uri() : d_ptr->m_lookupName;
          QPair<int, time_t> max = {0, 0};
 
          for (QHash<QString,QPair<int, time_t>>::const_iterator i = d_ptr->m_hNames.begin(); i != d_ptr->m_hNames.end(); ++i) {
@@ -383,10 +401,10 @@ QString ContactMethod::primaryName() const
                  max.second = i.value().second;
                  toReturn = i.key  ();
              }
-             else if (i.value().first > max.first) {
-                 max.first = i.value().first;
-                 toReturn = i.key  ();
-             }
+            if (i.value() > max) {
+               max      = i.value();
+               toReturn = i.key  ();
+            }
          }
          ret = toReturn;
       }
@@ -395,7 +413,7 @@ QString ContactMethod::primaryName() const
    }
    //Fallback: Use the URI
    if (d_ptr->m_PrimaryName_cache.isEmpty()) {
-      return uri();
+      return d_ptr->m_lookupName.isEmpty() ? uri() : d_ptr->m_lookupName;
    }
 
    //Return the cached primaryname
