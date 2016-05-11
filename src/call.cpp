@@ -1606,9 +1606,6 @@ void CallPrivate::hangUp()
    m_pStopTimeStamp = curTime;
    qDebug() << "Hanging up call. callId : " << q_ptr << "ConfId:" << q_ptr;
    bool ret;
-   if (q_ptr->videoRenderer()) { //TODO remove, cheap hack
-      q_ptr->videoRenderer()->stopRendering();
-   }
    if (q_ptr->type() != Call::Type::CONFERENCE)
       ret = callManager.hangUp(m_DringId);
    else
@@ -1919,9 +1916,6 @@ void CallPrivate::startStop()
 void CallPrivate::stop()
 {
    qDebug() << "Stoping call. callId : " << q_ptr  << "ConfId:" << q_ptr;
-   if (q_ptr->videoRenderer()) { //TODO remove, cheap hack
-      q_ptr->videoRenderer()->stopRendering();
-   }
    time_t curTime;
    ::time(&curTime);
    m_pStopTimeStamp = curTime;
