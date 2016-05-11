@@ -106,6 +106,23 @@
             </arg>
         </method>
 
+        <method name="setAccountActive" tp:name-for-bindings="setAccountActive">
+            <tp:docstring>
+              Set if this account is currently enabled (can be used).
+              It is only a runtime proprety with no impact on the "enabled" state of the account.
+            </tp:docstring>
+           <arg type="s" name="accountID" direction="in">
+               <tp:docstring>
+                    The account ID
+               </tp:docstring>
+           </arg>
+           <arg type="b" name="enable" direction="in">
+               <tp:docstring>
+                    <p>Set if enabled.</p>
+               </tp:docstring>
+           </arg>
+        </method>
+
         <method name="setCredentials" tp:name-for-bindings="setCredentials">
             <arg type="s" name="accountID" direction="in">
             </arg>
@@ -138,6 +155,13 @@
                <tp:docstring>
                     A new account ID
                </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="testAccountTurnCredentials" tp:name-for-bindings="testAccountTurnCredentials">
+           <arg type="s" name="accountID" direction="in">
+           </arg>
+           <arg type="s" name="message" direction="out">
            </arg>
        </method>
 
@@ -176,7 +200,7 @@
            </arg>
        </method>
 
-       <method name="importAccounts" tp:name-for-bindings="importAccounts">
+        <method name="importAccounts" tp:name-for-bindings="importAccounts">
             <tp:docstring>
               Import previously exported accounts
             </tp:docstring>
@@ -248,7 +272,7 @@
            </arg>
        </method>
 
-       <method name="sendTextMessage" tp:name-for-bindings="sendTextMessage">
+      <method name="sendTextMessage" tp:name-for-bindings="sendTextMessage">
           <arg type="s" name="accountID" direction="in"/>
           <arg type="s" name="to" direction="in"/>
           <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="MapStringString"/>
@@ -262,33 +286,33 @@
        </method>
 
        <method name="getMessageStatus" tp:name-for-bindings="getMessageStatus">
-         <arg type="t" name="id" direction="in"/>
-         <arg type="i" name="status" direction="out">
-            <tp:docstring>
-              The message status.
-               <ul>
-                   <li>UNKNOWN = 0    unknown message or message status</li>
-                   <li>SENDING = 1    message is being sent or waiting for peer confirmation.</li>
-                   <li>SENT = 2      message have been received from the other end.</li>
-                   <li>READ = 3       message have been read by the peer.</li>
-                   <li>FAILURE = 4    the message coudn't be delivered.</li>
-               </ul>
-            </tp:docstring>
-         </arg>
+          <arg type="t" name="id" direction="in"/>
+          <arg type="i" name="status" direction="out">
+             <tp:docstring>
+               The message status.
+                <ul>
+                    <li>UNKNOWN = 0    unknown message or message status</li>
+                    <li>SENDING = 1    message is being sent or waiting for peer confirmation.</li>
+                    <li>SENT = 2      message have been received from the other end.</li>
+                    <li>READ = 3       message have been read by the peer.</li>
+                    <li>FAILURE = 4    the message coudn't be delivered.</li>
+                </ul>
+             </tp:docstring>
+          </arg>
        </method>
 
-        <signal name="incomingAccountMessage" tp:name-for-bindings="incomingAccountMessage">
-            <tp:added version="2.2.0"/>
-            <tp:docstring>
-                Notify clients that a new text message has been received at the account level.
-            </tp:docstring>
-            <arg type="s" name="accountID"/>
-            <arg type="s" name="from"/>
-            <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="MapStringString"/>
-            <arg type="a{ss}" name="payloads"/>
-        </signal>
+       <signal name="incomingAccountMessage" tp:name-for-bindings="incomingAccountMessage">
+           <tp:added version="2.2.0"/>
+           <tp:docstring>
+               Notify clients that a new text message has been received at the account level.
+           </tp:docstring>
+           <arg type="s" name="accountID"/>
+           <arg type="s" name="from"/>
+           <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="MapStringString"/>
+          <arg type="a{ss}" name="payloads"/>
+       </signal>
 
-        <signal name="accountMessageStatusChanged" tp:name-for-bindings="accountMessageStatusChanged">
+       <signal name="accountMessageStatusChanged" tp:name-for-bindings="accountMessageStatusChanged">
            <tp:added version="2.3.0"/>
            <tp:docstring>
                Notify clients that a sent text message status have changed
@@ -388,6 +412,22 @@
            <arg type="b" name="muted" direction="out">
                <tp:docstring>
                    Returns true if audio playback is muted, false otherwise.
+               </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="muteRingtone" tp:name-for-bindings="muteRingtone">
+           <arg type="b" name="mute" direction="in">
+               <tp:docstring>
+                   True to mute ringtone, false otherwise.
+               </tp:docstring>
+           </arg>
+       </method>
+
+       <method name="isRingtoneMuted" tp:name-for-bindings="isRingtoneMuted">
+           <arg type="b" name="muted" direction="out">
+               <tp:docstring>
+                   Returns true if ringtone is muted, false otherwise.
                </tp:docstring>
            </arg>
        </method>
@@ -746,15 +786,15 @@
               </tp:docstring>
            </arg>
            <arg type="s" name="privateKeyPath" direction="in">
-             <tp:docstring>
-              <p>An optional path a the private key for the certificate</p>
-             </tp:docstring>
-          </arg>
-          <arg type="s" name="privateKeyPasswd" direction="in">
-             <tp:docstring>
-              <p>An optional private key password</p>
-             </tp:docstring>
-          </arg>
+              <tp:docstring>
+               <p>An optional path a the private key for the certificate</p>
+              </tp:docstring>
+           </arg>
+           <arg type="s" name="privateKeyPasswd" direction="in">
+              <tp:docstring>
+               <p>An optional private key password</p>
+              </tp:docstring>
+           </arg>
            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="MapStringString"/>
            <arg type="a{ss}" name="details" direction="out">
               <tp:docstring>

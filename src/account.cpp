@@ -1818,6 +1818,13 @@ void Account::setTurnServerRealm(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM, value);
 }
 
+QString Account::testTurnConnection() const
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    const QString message = configurationManager.testAccountTurnCredentials(id());
+    return  message;
+}
+
 void Account::setDisplayName(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);

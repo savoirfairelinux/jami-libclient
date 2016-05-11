@@ -446,6 +446,11 @@ public Q_SLOTS: // METHODS
       DRing::sendRegister(accountID.toStdString(), enable);
    }
 
+   QString testAccountTurnCredentials(const Qstring& accountID)
+   {
+       return DRing::testAccountTurnCredentials(accountID.toStdString());
+   }
+
    void setAccountDetails(const QString& accountID, MapStringString details)
    {
       DRing::setAccountDetails(accountID.toStdString(),
