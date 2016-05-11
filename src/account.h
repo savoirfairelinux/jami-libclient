@@ -24,6 +24,9 @@
 //Qt
 class QString;
 
+//Daemon
+#include <account_const.h>
+
 //Ring
 #include "itembase.h"
 #include "keyexchangemodel.h"
@@ -516,6 +519,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setProfile                       (Profile* p );
 
       void setRoleData(int role, const QVariant& value);
+
+      QPair <DRing::Account::testAccountICEInitializationStatus, QString> testAccountICEInitialization () const;
 
       //Operators
       bool operator==(const Account&)const;
