@@ -17,6 +17,8 @@
  ***************************************************************************/
 #pragma once
 
+#include "namedirectory.h"
+
 class ContactMethodPrivate {
 public:
    ContactMethodPrivate(const URI& number, NumberCategory* cat, ContactMethod::Type st,
@@ -46,7 +48,9 @@ public:
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
    Media::TextRecording* m_pTextRecording;
-   Certificate*       m_pCertificate;
+   Certificate*       m_pCertificate     ;
+   QString            m_lookupName       ;
+   NameDirectory&     m_ns               ;
 
    //Parents
    QList<ContactMethod*> m_lParents;
@@ -64,6 +68,13 @@ public:
    void setTextRecording(Media::TextRecording* r);
    void setCertificate (Certificate*);
 
+   void nameFound(const QString& name);
+
+/*
+ private slots:
+   void nameFound(const QString& name, const QString& address);
+*/
  private:
+
    ContactMethod* q_ptr;
 };
