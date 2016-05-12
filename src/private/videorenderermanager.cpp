@@ -334,7 +334,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
            t->deleteLater();
        }
 
-       delete r;
+       r->deleteLater();
    }
 }
 
