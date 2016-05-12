@@ -1344,7 +1344,7 @@ Call::State CallPrivate::stateChanged(const QString& newStateName)
       m_pDialNumber = nullptr;
    }
    emit q_ptr->changed();
-   qDebug() << "Calling stateChanged " << newStateName << " -> " << toDaemonCallState(newStateName) << " on call with state " << previousState << ". Become " << m_CurrentState;
+   qDebug() << "Calling stateChanged ("<< m_DringId << ")"  << newStateName << " -> " << toDaemonCallState(newStateName) << " on call with state " << previousState << ". Become " << m_CurrentState;
    return m_CurrentState;
 } //stateChanged
 
