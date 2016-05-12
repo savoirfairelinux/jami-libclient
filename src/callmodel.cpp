@@ -842,6 +842,11 @@ void CallModelPrivate::removeConference(Call* call)
       return;
    }
    removeCall(call,true);
+
+   // currently the daemon does not emit a  Call/Conference changed signal to indicate that the
+   // conference is over so we change the conf state here (since this is called when we get the
+   // "removeConference" signal from the daemon)
+   call->d_ptr->changeCurrentState(Call::State::OVER);
 }
 
 
