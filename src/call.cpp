@@ -1526,9 +1526,9 @@ void CallPrivate::error()
       //Well, in this case we have no choice, it still doesn't belong here
       q_ptr->videoRenderer()->stopRendering();
    }
-   throw QString("There was an error handling your call, please restart Ring.Is you encounter this problem often, \
-   please open Ring-KDE in a terminal and send this last 100 lines before this message in a bug report at \
-   https://projects.savoirfairelinux.com/projects/sflphone/issues");
+   throw QString("There was an error handling your call, please restart Ring. If you encounter this problem often, \
+   please open Ring in a terminal and send the last 100 lines before this message in a bug report at \
+   https://tuleap.ring.cx");
 }
 
 ///Change history state to failure
