@@ -49,6 +49,8 @@ QHash<const QString,int>  CipherModelPrivate::m_shMapping;
 
 CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_UseDefault(true)
 {
+   m_lChecked = new bool[m_slSupportedCiphers.size()]{};
+
    foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
       if (!cipher.trimmed().isEmpty()) {
          m_lChecked[m_shMapping[cipher]] = true;
