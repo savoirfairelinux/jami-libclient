@@ -217,7 +217,11 @@ QVariant NumberCompletionModel::data(const QModelIndex& index, int role ) const
       case NumberCompletionModelPrivate::Columns::ACCOUNT:
          switch (role) {
             case Qt::DisplayRole:
-               return n->account()?n->account()->alias():AvailableAccountModel::currentDefaultAccount()->alias();
+            {
+                auto acc = n->account() ? n->account() : AvailableAccountModel::currentDefaultAccount();
+                if (acc)
+                    return acc->alias();
+            }
          };
          break;
       case NumberCompletionModelPrivate::Columns::WEIGHT:
