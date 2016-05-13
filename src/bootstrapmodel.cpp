@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "bootstrapmodel.h"
 
+//Qt
+#include <QtCore/QSortFilterProxyModel>
+
 //Ring daemon
 #include <account_const.h>
 
@@ -41,9 +44,11 @@ public:
    Account* m_pAccount;
    QVector<Lines*> m_lines;
    BootstrapModel* q_ptr;
+   QSortFilterProxyModel* m_pBootstrapServersProxy;
 };
 
-BootstrapModelPrivate::BootstrapModelPrivate(BootstrapModel* q,Account* a) : q_ptr(q),m_pAccount(a)
+BootstrapModelPrivate::BootstrapModelPrivate(BootstrapModel* q,Account* a) : q_ptr(q),
+m_pAccount(a),m_pBootstrapServersProxy(nullptr)
 {
 
 }
@@ -198,6 +203,15 @@ QVariant BootstrapModel::headerData( int section, Qt::Orientation ori, int role)
       }
    }
    return QVariant();
+}
+
+QSortFilterProxyModel* BootstrapModel::boostrapServers() const
+{
+   if (!d_ptr->m_pBootstrapServersProxy) {
+      d_ptr->m_pBootstrapServersProxy = new QSortFilterProxyModel(const_cast<BootstrapModel*>(this));
+      d_ptr->m_pBootstrapServersProxy->setSourceModel(const_cast<BootstrapModel*>(this));
+   }
+   return d_ptr->m_pBootstrapServersProxy;
 }
 
 bool BootstrapModel::isCustom() const
