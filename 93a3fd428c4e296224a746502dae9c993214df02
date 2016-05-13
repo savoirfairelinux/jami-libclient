@@ -22,6 +22,30 @@
       "revId": "93a3fd428c4e296224a746502dae9c993214df02",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_d7873a0e",
+        "filename": "src/call.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-13T19:21:44Z",
+      "side": 1,
+      "message": "but which one? we could check for an ip2ip account, but it might not exits... and it would not make sense to associate it with a Ring or SIP account, because then we will have ContactMethods which potentially don\u0027t make any sense",
+      "parentUuid": "ba65a107_97922256",
+      "range": {
+        "startLine": 555,
+        "startChar": 6,
+        "endLine": 556,
+        "endChar": 56
+      },
+      "revId": "93a3fd428c4e296224a746502dae9c993214df02",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
