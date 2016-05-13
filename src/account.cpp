@@ -248,6 +248,12 @@ bool Account::isNew() const
    return (d_ptr->m_AccountId == nullptr) || d_ptr->m_AccountId.isEmpty();
 }
 
+///Is this an IP2IP account
+bool Account::isIp2ip() const
+{
+    return protocol() == Protocol::SIP && hostname().isEmpty();
+}
+
 ///Get this account ID
 const QByteArray Account::id() const
 {
@@ -2136,7 +2142,7 @@ Account::RoleState Account::roleState(Account::Role role) const
    #pragma GCC diagnostic ignored "-Wswitch"
 
    //Hide unsupported IP2IP fields
-   if ((!isNew()) && id() == DRing::Account::ProtocolNames::IP2IP) {
+   if ((!isNew()) && isIp2ip()) {
       switch(role) {
          case Account::Role::Password:
          case Account::Role::RegistrationExpire:
@@ -2466,7 +2472,7 @@ void AccountPrivate::modify()  {
    switch (q_ptr->protocol()) {
       case Account::Protocol::SIP:
          //IP2IP is very permissive about missing fields
-         if (q_ptr->alias() == DRing::Account::ProtocolNames::IP2IP) {
+         if (q_ptr->isIp2ip()) {
             m_hRoleStatus[(int)R::Alias   ] = ST::OK;
             m_hRoleStatus[(int)R::Username] = ST::OK;
             m_hRoleStatus[(int)R::Hostname] = ST::OK;

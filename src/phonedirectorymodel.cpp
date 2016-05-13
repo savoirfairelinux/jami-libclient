@@ -353,7 +353,7 @@ ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, cons
                /* Has hostname */
                    strippedUri == number->uri()
                    /* Something with an hostname can be used with IP2IP */ //TODO support DHT here
-               || (account && account->id() == DRing::Account::ProtocolNames::IP2IP)
+               || (account && account->isIp2ip())
             ) : ( /* Has no hostname */
                   number->account() && number->uri()+'@'+number->account()->hostname() == strippedUri
             ));
@@ -365,7 +365,7 @@ ContactMethod* PhoneDirectoryModelPrivate::fillDetails(NumberWrapper* wrap, cons
             || (account == number->account())
             /* IP2IP is a special case */ //TODO support DHT here
             || (
-                  account->id() == DRing::Account::ProtocolNames::IP2IP
+                  account->isIp2ip()
                   && strippedUri.hasHostname()
                ));
 

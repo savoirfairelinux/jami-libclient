@@ -204,12 +204,12 @@ QHash<int,QByteArray> AccountModel::roleNames() const
 }
 #undef CAST
 
-///Get the IP2IP account
+///Get the first IP2IP account
 Account* AccountModel::ip2ip() const
 {
    if (!d_ptr->m_pIP2IP) {
       foreach(Account* a, d_ptr->m_lAccounts) {
-         if (a->id() == DRing::Account::ProtocolNames::IP2IP)
+         if (a->isIp2ip())
             d_ptr->m_pIP2IP = a;
       }
    }
@@ -307,7 +307,7 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
             emit q_ptr->dataChanged(q_ptr->index(i,0),q_ptr->index(q_ptr->size()-1));
             emit q_ptr->layoutChanged();
 
-            if (acc->id() != DRing::Account::ProtocolNames::IP2IP)
+            if (!acc->isIp2ip())
                enableProtocol(acc->protocol());
 
          }
@@ -449,7 +449,7 @@ void AccountModel::update()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
 
-         if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+         if (a->isIp2ip())
             d_ptr->enableProtocol(a->protocol());
       }
    }
@@ -472,7 +472,7 @@ void AccountModel::updateAccounts()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
 
-         if (a->id() != DRing::Account::ProtocolNames::IP2IP)
+         if (a->isIp2ip())
             d_ptr->enableProtocol(a->protocol());
 
          emit accountAdded(a);
@@ -912,7 +912,7 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
       d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
    }
 
-   if (a->isNew() || a->id() != DRing::Account::ProtocolNames::IP2IP)
+   if (a->isIp2ip())
       d_ptr->enableProtocol(proto);
 
 // Override ringtone path

@@ -347,6 +347,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString          stateColorName  () const;
       QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
+      bool             isIp2ip         () const;
 
       CredentialModel*          credentialModel            () const;
       CodecModel*               codecModel                 () const;

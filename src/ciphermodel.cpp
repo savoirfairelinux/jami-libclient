@@ -41,7 +41,6 @@ public:
    static bool                      m_sIsLoaded         ;
    bool                             m_UseDefault        ;
 
-   static void loadCiphers();
 };
 
 bool CipherModelPrivate::m_sIsLoaded = false;
@@ -50,17 +49,6 @@ QHash<const QString,int>  CipherModelPrivate::m_shMapping;
 
 CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_UseDefault(true)
 {
-   if (!CipherModelPrivate::m_sIsLoaded) {
-      const QStringList cs = ConfigurationManager::instance().getSupportedCiphers(DRing::Account::ProtocolNames::IP2IP);
-      foreach(const QString& c, cs) {
-         m_shMapping[c] = m_slSupportedCiphers.size();
-         m_slSupportedCiphers << c.toLatin1();
-      }
-      m_sIsLoaded = true;
-   }
-
-   m_lChecked = new bool[m_slSupportedCiphers.size()]{};
-
    foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
       if (!cipher.trimmed().isEmpty()) {
          m_lChecked[m_shMapping[cipher]] = true;
@@ -72,14 +60,6 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_U
 CipherModelPrivate::~CipherModelPrivate()
 {
    delete[] m_lChecked;
-}
-
-void CipherModelPrivate::loadCiphers()
-{
-   const QStringList cs = ConfigurationManager::instance().getSupportedCiphers("IP2IP");
-   foreach(const QString& c, cs)
-      m_slSupportedCiphers << c.toLatin1();
-   m_sIsLoaded = true;
 }
 
 CipherModel::CipherModel(Account* parent) : QAbstractListModel(parent),
