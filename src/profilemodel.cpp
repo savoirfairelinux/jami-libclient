@@ -173,6 +173,9 @@ void ProfileModelPrivate::slotDelayedInit()
     connect(&AccountModel::instance(), &AccountModel::accountRemoved     , this, &ProfileModelPrivate::slotAccountRemoved);
     connect(&AccountModel::instance(), &AccountModel::accountAdded       , this, &ProfileModelPrivate::slotAccountAdded);
 
+    // Load existing accounts
+    for (int i = 0; i < AccountModel::instance().rowCount(); i++)
+        slotAccountAdded(AccountModel::instance()[i]);
 }
 
 ProfileModel::ProfileModel(QObject* parent) : QAbstractItemModel(parent),
