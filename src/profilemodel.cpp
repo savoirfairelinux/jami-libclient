@@ -93,6 +93,9 @@ public:
     Node* profileNodeForAccount(const Account* a);
     Node* nodeForAccount(const Account* a);
 
+    //Constants
+    constexpr static const int c_OrderRole = 9999;
+
 private Q_SLOTS:
     void slotDataChanged(const QModelIndex& tl,const QModelIndex& br);
     void slotLayoutchanged();
@@ -339,7 +342,12 @@ QVariant ProfileModel::data(const QModelIndex& index, int role ) const
         case Node::Type::PROFILE:
             return currentNode->m_uContent.m_pProfile->person()->roleData(role);
         case Node::Type::ACCOUNT:
-            return currentNode->m_uContent.m_pAccount->roleData(role);
+            switch(role) {
+                case ProfileModelPrivate::c_OrderRole:
+                    return currentNode->m_ParentIndex;
+                default:
+                    return currentNode->m_uContent.m_pAccount->roleData(role);
+            }
     }
 
    return QVariant();
@@ -482,7 +490,7 @@ QAbstractItemModel* ProfileModel::sortedProxyModel() const
     if (!d_ptr->m_pSortedProxyModel) {
         d_ptr->m_pSortedProxyModel = new QSortFilterProxyModel(&ProfileModel::instance());
         d_ptr->m_pSortedProxyModel->setSourceModel(const_cast<ProfileModel*>(this));
-        d_ptr->m_pSortedProxyModel->setSortRole(9999);
+        d_ptr->m_pSortedProxyModel->setSortRole(ProfileModelPrivate::c_OrderRole);
         d_ptr->m_pSortedProxyModel->sort(0);
     }
 
