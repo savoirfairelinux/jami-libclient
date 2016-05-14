@@ -427,8 +427,10 @@ QMimeData* ProfileModel::mimeData(const QModelIndexList &indexes) const
         switch (current->type) {
             case Node::Type::PROFILE:
                 mMimeData->setData(RingMimes::PROFILE , current->m_uContent.m_pProfile->person()->uid());
+                break;
             case Node::Type::ACCOUNT:
                 mMimeData->setData(RingMimes::ACCOUNT , current->m_uContent.m_pAccount->id());
+                break;
             default:
                 qWarning() << "Unknown node type to create mimedata";
                 return nullptr;
