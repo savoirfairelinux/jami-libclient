@@ -111,13 +111,12 @@ QHash<int,QByteArray> BootstrapModel::roleNames() const
 
 bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
+    Q_UNUSED(role);
+
    if (!index.isValid())
       return false;
 
    BootstrapModelPrivate::Lines* l = index.row() < d_ptr->m_lines.size() ? d_ptr->m_lines[index.row()] : nullptr;
-
-   if (!(role == Qt::DisplayRole || role == Qt::EditRole))
-      return false;
 
    if (!l) {
       l = new BootstrapModelPrivate::Lines();
@@ -127,13 +126,13 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
       endInsertRows();
    }
 
-   switch (index.column()) {
-      case static_cast<int>(BootstrapModel::Columns::HOSTNAME):
+   switch (static_cast<BootstrapModel::Columns>(index.column())) {
+      case BootstrapModel::Columns::HOSTNAME:
          l->hostname = value.toString();
          if (d_ptr->save())
             emit dataChanged(index,index);
          break;
-      case static_cast<int>(BootstrapModel::Columns::PORT):
+      case BootstrapModel::Columns::PORT:
          l->port = value.toInt();
          if (l->port <= 0 || l->port > 65534)
             l->port = -1;
@@ -147,6 +146,8 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
 
 QVariant BootstrapModel::data( const QModelIndex& index, int role) const
 {
+   Q_UNUSED(role);
+
    if (!index.isValid())
       return QVariant();
 
@@ -155,10 +156,11 @@ QVariant BootstrapModel::data( const QModelIndex& index, int role) const
    if (!l)
       return QVariant();
 
-   switch (role) {
-      case Qt::DisplayRole:
-      case Qt::EditRole:
-         return index.column()?QVariant(l->port == -1?QVariant():l->port):QVariant(l->hostname);
+   switch (static_cast<BootstrapModel::Columns>(index.column())) {
+      case BootstrapModel::Columns::PORT:
+         return QVariant(l->port == -1?QVariant():l->port);
+      case BootstrapModel::Columns::HOSTNAME:
+         return l->hostname;
    };
 
    return QVariant();
@@ -179,10 +181,10 @@ Qt::ItemFlags BootstrapModel::flags( const QModelIndex& index) const
    return index.isValid() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable) : Qt::NoItemFlags;
 }
 
-QModelIndex BootstrapModel::index( int row, int column, const QModelIndex& parent) const
-{
-   return parent.isValid()? QModelIndex() : createIndex(row,column);
-}
+//QModelIndex BootstrapModel::index( int row, int column, const QModelIndex& parent) const
+//{
+//   return parent.isValid()? QModelIndex(): createIndex(row, column);
+//}
 
 QVariant BootstrapModel::headerData( int section, Qt::Orientation ori, int role) const
 {
