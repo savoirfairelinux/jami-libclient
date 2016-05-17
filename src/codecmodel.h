@@ -124,4 +124,4 @@ private:
 
 Q_DECLARE_METATYPE(CodecModel*)
 
-CodecModel* LIB_EXPORT operator<<(CodecModel* a, CodecModel::EditAction action);
+CodecModel LIB_EXPORT *operator<<(CodecModel* a, CodecModel::EditAction action);
