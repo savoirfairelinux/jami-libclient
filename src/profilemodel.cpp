@@ -111,6 +111,10 @@ private:
 void ProfileModelPrivate::slotAccountAdded(Account* acc)
 {
     auto currentProfile = q_ptr->selectedProfile();
+    if (!currentProfile) {
+        qWarning() << "No prolfile selected or none exists";
+        return;
+    }
     auto currentNode =  profileNodeById(q_ptr->selectedProfile()->id());
     if (!currentNode) {
         qWarning() << "Account must have a profile parent, doing nothing";
