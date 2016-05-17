@@ -599,7 +599,9 @@ bool ProfileModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
          destinationRow = row;
       }
 
-      Node* moving = d_ptr->profileNodeById(data->data(RingMimes::PROFILE));
+      auto moving = d_ptr->profileNodeById(data->data(RingMimes::PROFILE));
+      if(!moving)
+         return false;
 
       if(!beginMoveRows(QModelIndex(), moving->m_Index, moving->m_Index, QModelIndex(), destinationRow)) {
          return false;
