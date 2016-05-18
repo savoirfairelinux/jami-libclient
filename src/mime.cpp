@@ -80,12 +80,7 @@ QMimeData* RingMimes::payload(const Call* c, const ContactMethod* cm, const Pers
    if (cm) {
 
       // This is the format used by URI list I found
-      d->setData(RingMimes::URI_LIST, cm->uri().format(
-         URI::Section::SCHEME    |
-         URI::Section::USER_INFO |
-         URI::Section::HOSTNAME  |
-         URI::Section::PORT
-      ).toUtf8());
+      d->setData(RingMimes::URI_LIST, cm->uri().full().toUtf8());
 
    }
    else if (p) {
