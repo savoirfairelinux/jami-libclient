@@ -611,8 +611,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
    }
 
    //Allow the certificate
-   if (acc && acc->allowIncomingFromHistory() && acc->protocol() == Account::Protocol::RING)
-      acc->allowCertificate(CertificateModel::instance().getCertificateFromId(number, acc));
+   if (acc && acc->allowIncomingFromHistory() && acc->protocol() == Account::Protocol::RING) {
+       auto certid = nb->uri().format(URI::Section::USER_INFO); // certid must only contain the hash, no scheme
+       acc->allowCertificate(CertificateModel::instance().getCertificateFromId(certid, acc));
+   }
 
    return call;
 }

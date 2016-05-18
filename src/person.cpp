@@ -374,13 +374,13 @@ void Person::setContactMethods(ContactMethods numbers)
 
    //Allow incoming calls from those numbers
    const QList<Account*> ringAccounts = AccountModel::instance().getAccountsByProtocol(Account::Protocol::RING);
-   QStringList ringUris;
+   QStringList certIds;
    for (ContactMethod* n : d_ptr->m_Numbers) {
       if (n->uri().protocolHint() == URI::ProtocolHint::RING)
-         ringUris << n->uri();
+         certIds << n->uri().format(URI::Section::USER_INFO); // certid must only contain the hash, no scheme
    }
 
-   foreach(const QString& hash , ringUris) {
+   foreach(const QString& hash , certIds) {
       Certificate* cert = CertificateModel::instance().getCertificateFromId(hash);
       if (cert) {
          for (Account* a : ringAccounts) {
