@@ -186,6 +186,12 @@ public:
    //Converter
    QString format(FlagPack<URI::Section> sections) const;
 
+   /**
+    * Helper function which returns a QString containing a uri formatted to include at minimum the
+    * SCHEME and USER_INFO, and also the HOSTNAME and PORT, if available.
+    */
+   QString full() const;
+
    URI& operator=(const URI&);
 
 private:

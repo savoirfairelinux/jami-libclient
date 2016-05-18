@@ -569,6 +569,15 @@ QString URI::format(FlagPack<URI::Section> sections) const
    return ret;
 }
 
+/**
+ * Helper function which returns a QString containing a uri formatted to include at minimum the
+ * SCHEME and USER_INFO, and also the HOSTNAME and PORT, if available.
+ */
+QString URI::full() const
+{
+    return format(URI::Section::SCHEME | URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT);
+}
+
 QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
 {
    switch(ph) {
