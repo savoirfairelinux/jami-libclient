@@ -715,7 +715,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
    maker->addEmail("PREF", preferredEmail());
 
    foreach (ContactMethod* phone , phoneNumbers()) {
-      maker->addContactMethod(phone->category()->name(), phone->uri());
+      maker->addContactMethod(phone->category()->name(), phone->uri().full());
    }
 
    foreach (const Address& addr , d_ptr->m_lAddresses) {
