@@ -377,7 +377,7 @@ void Person::setContactMethods(ContactMethods numbers)
    QStringList certIds;
    for (ContactMethod* n : d_ptr->m_Numbers) {
       if (n->uri().protocolHint() == URI::ProtocolHint::RING)
-         certIds << n->uri().format(URI::Section::USER_INFO); // certid must only contain the hash, no scheme
+         certIds << n->uri().userinfo(); // certid must only contain the hash, no scheme
    }
 
    foreach(const QString& hash , certIds) {

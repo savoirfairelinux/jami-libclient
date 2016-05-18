@@ -612,7 +612,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    //Allow the certificate
    if (acc && acc->allowIncomingFromHistory() && acc->protocol() == Account::Protocol::RING) {
-       auto certid = nb->uri().format(URI::Section::USER_INFO); // certid must only contain the hash, no scheme
+       auto certid = nb->uri().userinfo(); // certid must only contain the hash, no scheme
        acc->allowCertificate(CertificateModel::instance().getCertificateFromId(certid, acc));
    }
 
@@ -1787,9 +1787,7 @@ void CallPrivate::call()
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
 
-    m_DringId = CallManager::instance().placeCall(m_Account->id(), uri.format(URI::Section::SCHEME |
-                                                                            URI::Section::USER_INFO |
-                                                                            URI::Section::HOSTNAME));
+    m_DringId = CallManager::instance().placeCall(m_Account->id(), uri.full());
 
     // This can happen when the daemon cannot allocate memory
     if (m_DringId.isEmpty()) {
