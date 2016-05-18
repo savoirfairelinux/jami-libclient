@@ -715,7 +715,12 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
    maker->addEmail("PREF", preferredEmail());
 
    foreach (ContactMethod* phone , phoneNumbers()) {
-      maker->addContactMethod(phone->category()->name(), phone->uri());
+      QString uri = phone->uri();
+      // in the case of a RingID, we want to make sure that the uri contains "ring:" so that the user
+      // can tell it is a RING number and not some other hash
+      if (phone->uri().protocolHint() == URI::ProtocolHint::RING)
+         uri = phone->uri().full();
+      maker->addContactMethod(phone->category()->name(), uri);
    }
 
    foreach (const Address& addr , d_ptr->m_lAddresses) {
