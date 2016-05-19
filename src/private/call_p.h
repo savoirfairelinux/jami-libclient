@@ -265,4 +265,5 @@ private:
 
 private Q_SLOTS:
    void updated();
+   void videoStopped();
 };

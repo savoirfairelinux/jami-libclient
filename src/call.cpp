@@ -988,6 +988,12 @@ Video::Renderer* Call::videoRenderer() const
    #endif
 }
 
+void CallPrivate::videoStopped()
+{
+    if (auto renderer = qobject_cast<Video::Renderer*>(sender())) {
+        emit q_ptr->videoStopped(renderer);
+    }
+}
 
 void CallPrivate::registerRenderer(Video::Renderer* renderer)
 {
@@ -998,9 +1004,8 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
    for (const auto d : EnumIterator<Media::Media::Direction>())
       mediaFactory<Media::Video>(d);
 
-   connect(renderer,&Video::Renderer::stopped,[this,renderer]() {
-      emit q_ptr->videoStopped(renderer);
-   });
+   connect(renderer, &Video::Renderer::stopped, this, &CallPrivate::videoStopped);
+
    #else
    Q_UNUSED(renderer)
    return;
