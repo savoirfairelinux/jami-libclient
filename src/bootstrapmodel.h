@@ -41,7 +41,6 @@ public:
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
    virtual Qt::ItemFlags flags       ( const QModelIndex& index                                    ) const override;
    virtual int           columnCount ( const QModelIndex& parent = QModelIndex()                   ) const override;
-   virtual QModelIndex   index       ( int row, int column, const QModelIndex& parent=QModelIndex()) const override;
    virtual QVariant      headerData  ( int section, Qt::Orientation, int role = Qt::DisplayRole    ) const override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
@@ -57,5 +56,7 @@ private:
 
    BootstrapModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(BootstrapModel)
-};
 
+public Q_SLOTS:
+   void removeRow         ( int row );
+};
