@@ -127,13 +127,13 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
       endInsertRows();
    }
 
-   switch (index.column()) {
-      case static_cast<int>(BootstrapModel::Columns::HOSTNAME):
+   switch (static_cast<BootstrapModel::Columns>(index.column())) {
+      case BootstrapModel::Columns::HOSTNAME:
          l->hostname = value.toString();
          if (d_ptr->save())
             emit dataChanged(index,index);
          break;
-      case static_cast<int>(BootstrapModel::Columns::PORT):
+      case BootstrapModel::Columns::PORT:
          l->port = value.toInt();
          if (l->port <= 0 || l->port > 65534)
             l->port = -1;
@@ -147,6 +147,8 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
 
 QVariant BootstrapModel::data( const QModelIndex& index, int role) const
 {
+   Q_UNUSED(role);
+
    if (!index.isValid())
       return QVariant();
 
@@ -155,10 +157,11 @@ QVariant BootstrapModel::data( const QModelIndex& index, int role) const
    if (!l)
       return QVariant();
 
-   switch (role) {
-      case Qt::DisplayRole:
-      case Qt::EditRole:
-         return index.column()?QVariant(l->port == -1?QVariant():l->port):QVariant(l->hostname);
+   switch (static_cast<BootstrapModel::Columns>(index.column())) {
+      case BootstrapModel::Columns::PORT:
+         return QVariant(l->port == -1?QVariant():l->port);
+      case BootstrapModel::Columns::HOSTNAME:
+         return l->hostname;
    };
 
    return QVariant();
@@ -174,14 +177,32 @@ int BootstrapModel::columnCount( const QModelIndex& parent) const
    return parent.isValid()?0:2;
 }
 
+bool BootstrapModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    if (parent.isValid())
+        return false;
+
+    if ((row+count) > d_ptr->m_lines.size())
+        return false;
+
+    this->beginRemoveRows(QModelIndex(), row, row+count-1);
+
+    for (int i = 0; i < count; i++)
+    {
+        BootstrapModelPrivate::Lines* l = d_ptr->m_lines[row+i];
+        d_ptr->m_lines.remove(row);
+        delete l;
+    }
+
+    d_ptr->save();
+    this->endRemoveRows();
+
+    return true;
+}
+
 Qt::ItemFlags BootstrapModel::flags( const QModelIndex& index) const
 {
    return index.isValid() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable) : Qt::NoItemFlags;
-}
-
-QModelIndex BootstrapModel::index( int row, int column, const QModelIndex& parent) const
-{
-   return parent.isValid()? QModelIndex() : createIndex(row,column);
 }
 
 QVariant BootstrapModel::headerData( int section, Qt::Orientation ori, int role) const
