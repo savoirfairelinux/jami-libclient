@@ -343,6 +343,7 @@ class LIB_EXPORT Account : public ItemBase {
       virtual bool     isLoaded        () const;
       bool             isIp2ip         () const;
 
+      QMap<QString,QString>     getAutodiscoveryList       () const;
       CredentialModel*          credentialModel            () const;
       CodecModel*               codecModel                 () const;
       KeyExchangeModel*         keyExchangeModel           () const;
