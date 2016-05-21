@@ -155,6 +155,18 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
+   bool registerRingDevice(const QString& accountID, const QString& accountUsername)
+   {
+      return DRing::registerRingDevice(accountID.toStdString(), accountUsername.toStdString());
+   }
+
+   MapStringString getAutodiscoveryList()
+   {
+      MapStringString temp =
+         convertMap(DRing::getAutoDiscoveryList());
+      return temp;
+   }
+
    MapStringString getAccountDetails(const QString& accountID)
    {
       MapStringString temp =

@@ -953,6 +953,12 @@ int Account::audioPortMax() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 }
 
+QMap<QString,QString> Account::getAutodiscoveryList() const
+{
+   ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+   return configurationManager.getAutodiscoveryList();
+}
+
 bool Account::isUpnpEnabled() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::UPNP_ENABLED) IS_TRUE;
