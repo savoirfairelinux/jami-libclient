@@ -16,6 +16,24 @@
       "revId": "42099ada51dc51ccfe37a1ffa8390c2a56d6e9c9",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_63e4703b",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T21:16:27Z",
+      "side": 0,
+      "message": "Not 100% sure... possibly it should be doing something like this:\ncreateIndex(row,column,d_ptr-\u003em_lines[row]) after also double checking that the row is valid\n\n... otherwise the created QModelIndex() maybe has no internal pointer, which is what the GtkQTreeModel implementation relies on to map between the GtkTreeIter and QModelIndex\n\ndoes it work well without implementing this method?",
+      "parentUuid": "ba65a107_039c94bf",
+      "revId": "42099ada51dc51ccfe37a1ffa8390c2a56d6e9c9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
