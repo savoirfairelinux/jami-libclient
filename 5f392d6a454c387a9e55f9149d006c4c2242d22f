@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba65a107_e381604b",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-05-24T20:46:42Z",
+      "side": 1,
+      "message": "Thanks for the link, I fixed the issue.",
+      "parentUuid": "ba65a107_e3aac0d3",
+      "range": {
+        "startLine": 188,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 18
+      },
+      "revId": "5f392d6a454c387a9e55f9149d006c4c2242d22f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba65a107_83af44e3",
         "filename": "src/bootstrapmodel.cpp",
         "patchSetId": 12
@@ -36,6 +60,30 @@
       "writtenOn": "2016-05-24T20:38:29Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 198,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 18
+      },
+      "revId": "5f392d6a454c387a9e55f9149d006c4c2242d22f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_c37c5c75",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-05-24T20:46:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba65a107_83af44e3",
       "range": {
         "startLine": 198,
         "startChar": 4,
