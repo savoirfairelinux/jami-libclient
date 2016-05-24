@@ -48,6 +48,8 @@
 #include "bootstrapmodel.h"
 #include "trustrequest.h"
 #include "person.h"
+#include "profile.h"
+#include "profilemodel.h"
 #include "pendingtrustrequestmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
 #include "accountstatusmodel.h"
@@ -1870,6 +1872,39 @@ void Account::setDTMFType(DtmfType type)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
 }
+
+void Account::setProfile(Profile* p)
+{
+   if (d_ptr->m_pProfile)
+      d_ptr->m_pProfile->removeAccount(this);
+
+   if (p->addAccount(this))
+      p->save();
+
+   d_ptr->m_pProfile = p;
+}
+
+Profile* Account::profile() const
+{
+   // Make sure all accounts belong to a profile
+   if (!d_ptr->m_pProfile) {
+      Profile* p = ProfileModel::instance().selectedProfile();
+
+      if (!p)
+         p = ProfileModel::instance().getProfile(ProfileModel::instance().index(0,0));
+
+      if (!p)
+         return nullptr;
+
+      // Use a const cast rather than a mutable to make sure the logic is the
+      // same between "automatic" default profile" and the setProfile
+      // implementation.
+      const_cast<Account*>(this)->setProfile(p);
+   }
+
+   return d_ptr->m_pProfile;
+}
+
 
 #define CAST(item) static_cast<int>(item)
 ///Proxy for AccountModel::setData
