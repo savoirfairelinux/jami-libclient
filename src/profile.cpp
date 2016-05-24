@@ -77,6 +77,10 @@ bool Profile::addAccount(Account* acc)
     if (d_ptr->m_Accounts.indexOf(acc) == -1) {
        d_ptr->m_Accounts << acc;
 
+       // The Account::setProfile logic should take care of removing the old
+       // profile.
+       acc->setProfile(this);
+
        return true;
     }
 

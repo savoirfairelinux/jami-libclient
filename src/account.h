@@ -43,6 +43,7 @@ class BootstrapModel          ;
 class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
 class PendingTrustRequestModel;
+class Profile;
 
 //Private
 class AccountPrivate;
@@ -143,6 +144,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
    Q_PROPERTY(bool           upnpEnabled                  READ isUpnpEnabled                 WRITE setUpnpEnabled                 )
    Q_PROPERTY(bool           hasCustomUserAgent           READ hasCustomUserAgent            WRITE setHasCustomUserAgent          )
+   Q_PROPERTY(Profile*       profile                      READ profile                       WRITE setProfile                     )
 
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
@@ -431,6 +433,7 @@ class LIB_EXPORT Account : public ItemBase {
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
+      Profile*           profile           () const;
       bool    allowIncomingFromUnknown     () const;
       bool    allowIncomingFromHistory     () const;
       bool    allowIncomingFromContact     () const;
@@ -510,6 +513,7 @@ class LIB_EXPORT Account : public ItemBase {
       void setAllowIncomingFromContact      (bool value );
       void setAllowIncomingFromUnknown      (bool value );
       void setHasActiveCallLimit            (bool value );
+      void setProfile                       (Profile* p );
 
       void setRoleData(int role, const QVariant& value);
 
