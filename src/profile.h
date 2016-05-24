@@ -44,7 +44,7 @@ public:
 
     //Setters
     void setAccounts(const Accounts&);
-    void addAccount(Account* acc);
+    bool addAccount(Account* acc);
     bool removeAccount(Account* acc);
 
 private:

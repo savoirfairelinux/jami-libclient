@@ -72,9 +72,15 @@ void Profile::setAccounts(const Profile::Accounts& accounts)
    d_ptr->m_Accounts = accounts;
 }
 
-void Profile::addAccount(Account* acc)
+bool Profile::addAccount(Account* acc)
 {
-    d_ptr->m_Accounts << acc;
+    if (d_ptr->m_Accounts.indexOf(acc) == -1) {
+       d_ptr->m_Accounts << acc;
+
+       return true;
+    }
+
+    return false;
 }
 
 bool Profile::removeAccount(Account* acc)

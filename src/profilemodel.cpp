@@ -120,7 +120,7 @@ void ProfileModelPrivate::slotAccountAdded(Account* acc)
         qWarning() << "Account must have a profile parent, doing nothing";
         return;
     }
-    currentProfile->addAccount(acc);
+    const bool changed = currentProfile->addAccount(acc);
 
     Node* account_pro = new Node;
     account_pro->type    = Node::Type::ACCOUNT;
@@ -134,7 +134,9 @@ void ProfileModelPrivate::slotAccountAdded(Account* acc)
     q_ptr->endInsertRows();
 
     acc->contactMethod()->setPerson(currentProfile->person());
-    currentProfile->save();
+
+    if (changed)
+        currentProfile->save();
 }
 
 QList<Account*> ProfileModel::getAccountsForProfile(const QString& id)
