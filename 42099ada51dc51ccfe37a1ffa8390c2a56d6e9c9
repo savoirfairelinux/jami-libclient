@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_039c94bf",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-05-24T20:35:23Z",
+      "side": 0,
+      "message": "This breaks GtkTreeModel. I\u0027d like insight on this, as I couldn\u0027t find a fix other than removing the method.",
+      "revId": "42099ada51dc51ccfe37a1ffa8390c2a56d6e9c9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
