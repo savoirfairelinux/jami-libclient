@@ -22,6 +22,30 @@
       "revId": "e767268322e0cf7603fe25975f53f953b9949e97",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_2353d818",
+        "filename": "src/bootstrapmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-05-24T19:03:23Z",
+      "side": 1,
+      "message": "I just implemented RemoveRows.\n\nShould I have also implemented RemoveRow?\n\nI don\u0027t know what is the use we have for the QModelIndex in that case, so I just ignored it.",
+      "parentUuid": "ba65a107_833ae4cb",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "e767268322e0cf7603fe25975f53f953b9949e97",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
