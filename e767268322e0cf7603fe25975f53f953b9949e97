@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_833ae4cb",
+        "filename": "src/bootstrapmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T17:50:28Z",
+      "side": 1,
+      "message": "I think you should override the QAbstractItemModel::removeRows() functions instead, to keep the API consistent:\nhttp://doc.qt.io/qt-5/qabstractitemmodel.html#removeRows\n\nalso see;\nhttp://doc.qt.io/qt-5/qabstractitemmodel.html#removeRow",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "e767268322e0cf7603fe25975f53f953b9949e97",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
