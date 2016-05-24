@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_e3aac0d3",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T20:38:29Z",
+      "side": 1,
+      "message": "the q_ptr is \u0027this\u0027, so you can just call beginRemoveRows() directly\n\nsee this for more info about d_ptr/q_ptr:\nhttps://community.kde.org/Policies/Library_Code_Policy",
+      "range": {
+        "startLine": 188,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 18
+      },
+      "revId": "5f392d6a454c387a9e55f9149d006c4c2242d22f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_83af44e3",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T20:38:29Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 198,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 18
+      },
+      "revId": "5f392d6a454c387a9e55f9149d006c4c2242d22f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
