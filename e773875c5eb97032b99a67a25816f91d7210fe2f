@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba65a107_6803ef0f",
+        "filename": "src/account.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T15:41:16Z",
+      "side": 1,
+      "message": "should this emit a changed, since a property has potentially changed?",
+      "range": {
+        "startLine": 1876,
+        "startChar": 0,
+        "endLine": 1885,
+        "endChar": 1
+      },
+      "revId": "e773875c5eb97032b99a67a25816f91d7210fe2f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba65a107_03001400",
+        "filename": "src/account.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1894,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-05-24T15:41:16Z",
+      "side": 1,
+      "message": "hmm, if the user already has multiple profiles, can we assume the first one is the \"default\" one?",
+      "range": {
+        "startLine": 1894,
+        "startChar": 0,
+        "endLine": 1894,
+        "endChar": 86
+      },
+      "revId": "e773875c5eb97032b99a67a25816f91d7210fe2f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
