@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "bootstrapmodel.h"
 
+//Qt
+#include <QtCore/QDir>
+
 //Ring daemon
 #include <account_const.h>
 
@@ -77,6 +80,26 @@ bool BootstrapModelPrivate::save()
    m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME,ret);
    return val;
 }
+
+static QVector<Lines*> BootstrapModelPrivate::getDefaultBootstrapServers()
+{
+    static auto defaultBootStrapServers = BootStrapModelPrivate::loadDefaultBootstrapServers();
+    return return defaultBootStrapServers;
+}
+
+static QVector<Lines*> BootstrapModelPrivate::loadDefaultBootstrapServers()
+{
+    auto servers = new QVector<Lines*>();
+
+    BootstrapModelPrivate::Lines* l2 = new BootstrapModelPrivate::Lines();
+    l2->hostname = "loaded.bootstrap.server";
+    l2->port = 2;
+    servers << l2;
+
+    return servers
+}
+
+
 
 BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
 {
@@ -233,18 +256,42 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModel::reset()
 {
-   BootstrapModelPrivate::Lines* l = d_ptr->m_lines[0];
-   l->hostname = "bootstrap.ring.cx";
-   l->port = -1;
+    qDebug() << "resetting boostrapmodel...";
 
-   if (d_ptr->m_lines.size() > 1) {
-      beginRemoveRows(QModelIndex(),1,d_ptr->m_lines.size());
+   /* clean lines */
+   if (d_ptr->m_lines.size() > 0) {
+      beginRemoveRows(QModelIndex(),0,d_ptr->m_lines.size());
 
-      for (int i =1; i < d_ptr->m_lines.size(); i++)
+      for (int i =0; i < d_ptr->m_lines.size(); i++)
          delete d_ptr->m_lines[i];
 
       d_ptr->m_lines.clear();
-      d_ptr->m_lines << l;
       endRemoveRows();
    }
+
+   BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
+   l->hostname = "bootstrap.ring.cx";
+   l->port = -1;
+   d_ptr->m_lines << l;
+
+    /* get the bootstrap directory */
+    #ifdef Q_OS_LINUX
+    QDir bootstrapDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/../share/ring/bootstrap/");
+    #elif defined(Q_OS_WIN)
+    QDir bootstrapDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/bootstrap/");
+    #elif defined(Q_OS_OSX)
+    QDir bootstrapDir(QCoreApplication::applicationDirPath());
+    bootstrapDir.cdUp();
+    bootstrapDir.cd("Resources/bootstrap/");
+    #endif
+    qDebug() << "bootstrapdir: " << bootstrapDir.path().toStdString().c_str();
+
+    /* append supplementary bootstrap servers */
+    auto defaultBootStrapServers = d_ptr->getDefaultBootstrapServers();
+    d_ptr->m_lines.insert(
+        d_ptr->m_lines.end(),
+        defaultBootStrapServers.begin(),
+        defaultBootStrapServers.end()
+    );
+
 }
