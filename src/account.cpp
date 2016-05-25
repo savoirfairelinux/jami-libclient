@@ -179,7 +179,7 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
       iter.next();
       a->d_ptr->m_hAccountDetails[iter.key()] = iter.value();
    }
-   a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+   a->bootstrapModel()->reset();
    a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
    a->d_ptr->m_RemoteEnabledState = a->isEnabled();
    //a->setObjectName(a->id());
