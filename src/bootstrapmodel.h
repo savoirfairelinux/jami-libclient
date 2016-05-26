@@ -36,6 +36,26 @@ public:
       PORT,
    };
 
+   /// @enum BootstrapModel::EditAction Manage a BootstrapModel lifecycle
+   enum class EditAction {
+      SAVE   = 0, /*!< Save the model, if there is a conflict, use "ours"                    */
+      MODIFY = 1, /*!< Notify the state machine that the data has changed                    */
+      RELOAD = 2, /*!< Reload from the account hostname, if there is a conflict, use "their" */
+      CLEAR  = 3, /*!< Remove all bootstrap servers                                          */
+      RESET =  4, /*!< Reset the model with default servers                                  */
+      COUNT__
+   };
+
+   /// @enum BootstrapModel::EditState track the changes from both clients and daemon
+   enum class EditState {
+      LOADING   = 0, /*!< The bootstrap servers are being loaded, they are not ready yet */
+      READY     = 1, /*!< Both side are synchronized                                     */
+      MODIFIED  = 2, /*!< Our version differ from the remote one                         */
+      OUTDATED  = 3, /*!< The remote version differ from ours                            */
+      RELOADING = 4, /*!< During a reload                                                */
+      COUNT__
+   };
+
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
@@ -46,10 +66,17 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
    //Getter
-   bool isCustom() const;
+   bool                      isCustom            () const;
+   BootstrapModel::EditState editState           () const;
 
    //Mutator
-   void reset();
+   void reset          (                                   ); // DEPRECATED
+   bool performAction  ( BootstrapModel::EditAction action );
+
+   //Operator
+   BootstrapModel* operator<<(BootstrapModel::EditAction& action);
+
+   void reload();
 
 private:
    explicit BootstrapModel(Account* a);
@@ -59,3 +86,5 @@ private:
    Q_DECLARE_PRIVATE(BootstrapModel)
 
 };
+
+BootstrapModel LIB_EXPORT *operator<<(BootstrapModel* a, BootstrapModel::EditAction action);
