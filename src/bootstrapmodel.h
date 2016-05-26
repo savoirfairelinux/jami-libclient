@@ -51,6 +51,8 @@ public:
    //Mutator
    void reset();
 
+   void reload();
+
 private:
    explicit BootstrapModel(Account* a);
    virtual ~BootstrapModel();

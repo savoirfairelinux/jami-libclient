@@ -36,6 +36,7 @@ public:
 
    //Helper
    bool save();
+   void clear();
 
    //Attributes
    Account* m_pAccount;
@@ -78,10 +79,28 @@ bool BootstrapModelPrivate::save()
    return val;
 }
 
+void BootstrapModelPrivate::clear()
+{
+    if (m_lines.size() > 0)
+    {
+       q_ptr->beginRemoveRows(QModelIndex(), 0, m_lines.size());
+       for (int i = 0; i < m_lines.size(); i++)
+           delete m_lines[i];
+       m_lines.clear();
+       q_ptr->endRemoveRows();
+   }
+}
+
 BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
 {
+    reload();
+}
 
-   for(const QString& line : d_ptr->m_pAccount->hostname().split(';')) {
+void BootstrapModel::reload()
+{
+    d_ptr->clear();
+
+    for(const QString& line : d_ptr->m_pAccount->hostname().split(';')) {
       const QStringList& fields = line.split(':');
 
       if (line.size() && fields.size() && !(fields[0].isEmpty() && (fields.size()-1 && fields[1].isEmpty()))) {
@@ -89,7 +108,9 @@ BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new B
          l->hostname = fields[0].trimmed();
          l->port     = fields.size()>1?fields[1].toInt():-1; //-1 == default
 
+         beginInsertRows(QModelIndex(),d_ptr->m_lines.size()+1,d_ptr->m_lines.size()+1);
          d_ptr->m_lines << l;
+         endInsertRows();
       }
    }
 }
@@ -233,18 +254,13 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModel::reset()
 {
-   BootstrapModelPrivate::Lines* l = d_ptr->m_lines[0];
+   d_ptr->clear();
+
+   BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
    l->hostname = "bootstrap.ring.cx";
    l->port = -1;
 
-   if (d_ptr->m_lines.size() > 1) {
-      beginRemoveRows(QModelIndex(),1,d_ptr->m_lines.size());
-
-      for (int i =1; i < d_ptr->m_lines.size(); i++)
-         delete d_ptr->m_lines[i];
-
-      d_ptr->m_lines.clear();
-      d_ptr->m_lines << l;
-      endRemoveRows();
-   }
+   beginInsertRows(QModelIndex(),d_ptr->m_lines.size()+1,d_ptr->m_lines.size()+1);
+   d_ptr->m_lines << l;
+   endInsertRows();
 }

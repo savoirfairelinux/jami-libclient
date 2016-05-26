@@ -1399,6 +1399,10 @@ void Account::setHostname(const QString& detail)
 {
    if (d_ptr->m_HostName != detail) {
       d_ptr->m_HostName = detail;
+      if (protocol() == Account::Protocol::RING)
+      {
+          this->bootstrapModel()->reload();
+      }
       d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME, detail);
    }
 }
