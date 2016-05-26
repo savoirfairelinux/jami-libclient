@@ -233,18 +233,18 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModel::reset()
 {
-   BootstrapModelPrivate::Lines* l = d_ptr->m_lines[0];
+   beginRemoveRows(QModelIndex(),0,d_ptr->m_lines.size());
+
+   for (int i = 0; i < d_ptr->m_lines.size(); i++)
+       delete d_ptr->m_lines[i];
+
+   d_ptr->m_lines.clear();
+
+   BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
    l->hostname = "bootstrap.ring.cx";
    l->port = -1;
 
-   if (d_ptr->m_lines.size() > 1) {
-      beginRemoveRows(QModelIndex(),1,d_ptr->m_lines.size());
+   d_ptr->m_lines << l;
 
-      for (int i =1; i < d_ptr->m_lines.size(); i++)
-         delete d_ptr->m_lines[i];
-
-      d_ptr->m_lines.clear();
-      d_ptr->m_lines << l;
-      endRemoveRows();
-   }
+   endRemoveRows();
 }
