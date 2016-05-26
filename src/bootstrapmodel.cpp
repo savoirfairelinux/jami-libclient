@@ -24,6 +24,8 @@
 #include <account.h>
 #include <private/account_p.h>
 
+typedef void (BootstrapModelPrivate::*BootstrapModelPrivateFct)();
+
 class BootstrapModelPrivate
 {
 public:
@@ -34,13 +36,24 @@ public:
 
    BootstrapModelPrivate(BootstrapModel* q,Account* a);
 
+   //Callbacks
+   void  clear   ();
+   void  reload  ();
+   void  save    ();
+   void  nothing ();
+   void  modify  ();
+   void  reset   ();
+
    //Helper
-   bool save();
+   void clearLines();
+   inline void performAction(const BootstrapModel::EditAction action);
 
    //Attributes
-   Account* m_pAccount;
-   QVector<Lines*> m_lines;
-   BootstrapModel* q_ptr;
+   Account*                   m_pAccount ;
+   QVector<Lines*>            m_lines    ;
+   BootstrapModel*            q_ptr      ;
+   BootstrapModel::EditState  m_EditState;
+   static Matrix2D<BootstrapModel::EditState, BootstrapModel::EditAction, BootstrapModelPrivateFct> m_mStateMachine;
 };
 
 BootstrapModelPrivate::BootstrapModelPrivate(BootstrapModel* q,Account* a) : q_ptr(q),m_pAccount(a)
@@ -48,8 +61,29 @@ BootstrapModelPrivate::BootstrapModelPrivate(BootstrapModel* q,Account* a) : q_p
 
 }
 
+#define BMP &BootstrapModelPrivate
+Matrix2D<BootstrapModel::EditState, BootstrapModel::EditAction, BootstrapModelPrivateFct> BootstrapModelPrivate::m_mStateMachine ={{
+   /*                     SAVE         MODIFY        RELOAD        CLEAR           RESET      */
+   /* LOADING   */ {{ BMP::nothing, BMP::nothing, BMP::reload , BMP::nothing , BMP::nothing }},
+   /* READY     */ {{ BMP::nothing, BMP::modify , BMP::reload , BMP::clear,    BMP::reset   }},
+   /* MODIFIED  */ {{ BMP::save   , BMP::nothing, BMP::reload , BMP::clear,    BMP::reset   }},
+   /* OUTDATED  */ {{ BMP::save   , BMP::nothing, BMP::reload , BMP::clear,    BMP::reset   }},
+   /* RELOADING */ {{ BMP::nothing, BMP::nothing, BMP::nothing, BMP::nothing,  BMP::nothing }},
+}};
+#undef BMP
 
-bool BootstrapModelPrivate::save()
+
+void BootstrapModelPrivate::performAction(const BootstrapModel::EditAction action)
+{
+   (this->*(m_mStateMachine[m_EditState][action]))();
+}
+
+void BootstrapModelPrivate::nothing()
+{
+   //nothing
+}
+
+void BootstrapModelPrivate::save()
 {
    QString ret;
    for(const Lines* l : m_lines) {
@@ -61,7 +95,6 @@ bool BootstrapModelPrivate::save()
    }
 
    //Clear empty lines
-   bool val = true;
    for(int i=0;i<m_lines.size();i++) {
       Lines* l = m_lines[i];
       if (l->hostname.isEmpty() && l->port == -1) {
@@ -70,18 +103,25 @@ bool BootstrapModelPrivate::save()
          if (idx >= 0)
             m_lines.removeAt(idx);
          q_ptr->endRemoveRows();
-         val = false;
       }
    }
 
    m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME,ret);
-   return val;
+   m_EditState = BootstrapModel::EditState::READY;
 }
 
-BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
+void BootstrapModelPrivate::modify()
 {
+   m_EditState = BootstrapModel::EditState::MODIFIED;
+   m_pAccount << Account::EditAction::MODIFY;
+}
 
-   for(const QString& line : d_ptr->m_pAccount->hostname().split(';')) {
+void BootstrapModelPrivate::reload()
+{
+    m_EditState = BootstrapModel::EditState::RELOADING;
+    clearLines();
+
+    for(const QString& line : m_pAccount->hostname().split(';')) {
       const QStringList& fields = line.split(':');
 
       if (line.size() && fields.size() && !(fields[0].isEmpty() && (fields.size()-1 && fields[1].isEmpty()))) {
@@ -89,9 +129,36 @@ BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new B
          l->hostname = fields[0].trimmed();
          l->port     = fields.size()>1?fields[1].toInt():-1; //-1 == default
 
-         d_ptr->m_lines << l;
+         q_ptr->beginInsertRows(QModelIndex(),m_lines.size()+1,m_lines.size()+1);
+         m_lines << l;
+         q_ptr->endInsertRows();
       }
    }
+   m_EditState = BootstrapModel::EditState::READY;
+}
+
+void BootstrapModelPrivate::clear()
+{
+   clearLines();
+   q_ptr << BootstrapModel::EditAction::MODIFY;
+}
+
+void BootstrapModelPrivate::clearLines()
+{
+    if (m_lines.size() > 0)
+    {
+       q_ptr->beginRemoveRows(QModelIndex(), 0, m_lines.size());
+       for (int i = 0; i < m_lines.size(); i++)
+           delete m_lines[i];
+       m_lines.clear();
+       q_ptr->endRemoveRows();
+   }
+}
+
+BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
+{
+    d_ptr->m_EditState = BootstrapModel::EditState::LOADING;
+    this << EditAction::RELOAD;
 }
 
 BootstrapModel::~BootstrapModel()
@@ -107,6 +174,12 @@ QHash<int,QByteArray> BootstrapModel::roleNames() const
       initRoles = true;
    }*/
    return roles;
+}
+
+//DEPRECATED
+void BootstrapModel::reset()
+{
+    this << EditAction::RESET;
 }
 
 bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, int role)
@@ -130,17 +203,19 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
    switch (static_cast<BootstrapModel::Columns>(index.column())) {
       case BootstrapModel::Columns::HOSTNAME:
          l->hostname = value.toString();
-         if (d_ptr->save())
+            d_ptr->save();
             emit dataChanged(index,index);
          break;
       case BootstrapModel::Columns::PORT:
          l->port = value.toInt();
          if (l->port <= 0 || l->port > 65534)
             l->port = -1;
-         if (d_ptr->save())
+            d_ptr->save();
             emit dataChanged(index,index);
          break;
    }
+
+   this << EditAction::MODIFY;
 
    return true;
 }
@@ -231,20 +306,36 @@ bool BootstrapModel::isCustom() const
    return false;
 }
 
-void BootstrapModel::reset()
+void BootstrapModelPrivate::reset()
 {
-   BootstrapModelPrivate::Lines* l = d_ptr->m_lines[0];
+   clearLines();
+
+   BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
    l->hostname = "bootstrap.ring.cx";
    l->port = -1;
 
-   if (d_ptr->m_lines.size() > 1) {
-      beginRemoveRows(QModelIndex(),1,d_ptr->m_lines.size());
+   q_ptr->beginInsertRows(QModelIndex(), m_lines.size()+1, m_lines.size()+1);
+   m_lines << l;
+   q_ptr->endInsertRows();
 
-      for (int i =1; i < d_ptr->m_lines.size(); i++)
-         delete d_ptr->m_lines[i];
+   q_ptr << BootstrapModel::EditAction::MODIFY;
+}
 
-      d_ptr->m_lines.clear();
-      d_ptr->m_lines << l;
-      endRemoveRows();
-   }
+BootstrapModel* BootstrapModel::operator<<(BootstrapModel::EditAction& action)
+{
+   performAction(action);
+   return this;
+}
+
+BootstrapModel* operator<<(BootstrapModel* a, BootstrapModel::EditAction action)
+{
+   return (!a)?nullptr : (*a) << action;
+}
+
+///Change the current edition state
+bool BootstrapModel::performAction(const BootstrapModel::EditAction action)
+{
+   BootstrapModel::EditState curState = d_ptr->m_EditState;
+   d_ptr->performAction(action);
+   return curState != d_ptr->m_EditState;
 }
