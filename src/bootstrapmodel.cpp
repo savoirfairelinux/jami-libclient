@@ -208,10 +208,13 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
          break;
       case BootstrapModel::Columns::PORT:
          l->port = value.toInt();
-         if (l->port <= 0 || l->port > 65534)
+
+         if (l->port <= 0 || l->port > 65534) {
             l->port = -1;
             d_ptr->save();
             emit dataChanged(index,index);
+         }
+
          break;
    }
 
