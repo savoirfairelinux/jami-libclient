@@ -53,6 +53,7 @@ public:
       MODIFIED  = 2, /*!< Our version differ from the remote one                         */
       OUTDATED  = 3, /*!< The remote version differ from ours                            */
       RELOADING = 4, /*!< During a reload                                                */
+      RESETING =  5, /*!< During a reset                                                 */
       COUNT__
    };
 
