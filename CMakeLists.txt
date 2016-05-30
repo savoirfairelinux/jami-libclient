@@ -768,6 +768,23 @@ IF( Qt5LinguistTools_FOUND )
    INSTALL(FILES ${QM_FILES} DESTINATION "${CMAKE_INSTALL_PREFIX}/share/libringclient/translations")
 ENDIF()
 
+# bootstrap servers
+INSTALL(
+    FILES
+        ${CMAKE_SOURCE_DIR}/share/ring/bootstrap/servers.json
+    DESTINATION
+        ${CMAKE_INSTALL_PREFIX}/share/ring/bootstrap
+    PERMISSIONS
+        WORLD_READ
+        OWNER_WRITE
+        OWNER_READ
+        GROUP_READ
+        OWNER_EXECUTE
+        GROUP_EXECUTE
+        WORLD_EXECUTE
+)
+INSTALL(DIRECTORY DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ring/bootstrap/servers.json.d)
+
 # uninstall target
 CONFIGURE_FILE(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
