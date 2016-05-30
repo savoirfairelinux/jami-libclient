@@ -17,6 +17,11 @@
  ***************************************************************************/
 #include "bootstrapmodel.h"
 
+//Qt
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QDirIterator>
+
 //Ring daemon
 #include <account_const.h>
 
@@ -47,6 +52,8 @@ public:
    //Helper
    void clearLines();
    inline void performAction(const BootstrapModel::EditAction action);
+   static QVector<Lines*>* loadDefaultBootstrapServers();
+   static QVector<Lines*>* getDefaultBootstrapServers();
 
    //Attributes
    Account*                   m_pAccount ;
@@ -85,6 +92,7 @@ void BootstrapModelPrivate::nothing()
 
 void BootstrapModelPrivate::save()
 {
+   qDebug() << "SAVING BootstrapModel";
    QString ret;
    for(const Lines* l : m_lines) {
       if (!l->hostname.trimmed().isEmpty()) {
@@ -108,6 +116,7 @@ void BootstrapModelPrivate::save()
 
    m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME,ret);
    m_EditState = BootstrapModel::EditState::READY;
+   qDebug() << "SAVED BootstrapModel";
 }
 
 void BootstrapModelPrivate::modify()
@@ -118,6 +127,7 @@ void BootstrapModelPrivate::modify()
 
 void BootstrapModelPrivate::reload()
 {
+    qDebug() << "RELOADING bootstrapmodel";
     m_EditState = BootstrapModel::EditState::RELOADING;
     clearLines();
 
@@ -139,6 +149,7 @@ void BootstrapModelPrivate::reload()
 
 void BootstrapModelPrivate::clear()
 {
+   qDebug() << "CLEARING bootstrapmodel";
    clearLines();
    q_ptr << BootstrapModel::EditAction::MODIFY;
 }
@@ -153,6 +164,72 @@ void BootstrapModelPrivate::clearLines()
        m_lines.clear();
        q_ptr->endRemoveRows();
    }
+}
+
+QVector<BootstrapModelPrivate::Lines*>* BootstrapModelPrivate::getDefaultBootstrapServers()
+{
+    static auto defaultBootStrapServers = loadDefaultBootstrapServers();
+    return defaultBootStrapServers;
+}
+
+QVector<BootstrapModelPrivate::Lines*>* BootstrapModelPrivate::loadDefaultBootstrapServers()
+{
+    auto servers = new QVector<BootstrapModelPrivate::Lines*>();
+
+    BootstrapModelPrivate::Lines* l2 = new BootstrapModelPrivate::Lines();
+    l2->hostname = "loaded.bootstrap.server";
+    l2->port = 2;
+    *servers << l2;
+
+    /* get the bootstrap directory */
+    #ifdef Q_OS_LINUX
+        /* start by trying a relative path */
+        QDir bootstrapDir = QDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/../share/ring/bootstrap/");
+        if (bootstrapDir.exists() == false)
+        {
+            /* revert to using absolute path */
+            bootstrapDir = QDir("/usr/share/ring/bootstrap/");
+        }
+    #elif defined(Q_OS_WIN)
+        QDir bootstrapDir = QDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/bootstrap/"));
+    #elif defined(Q_OS_OSX)
+        QDir bootstrapDir = QDir(QCoreApplication::applicationDirPath()));
+        bootstrapDir.cdUp();
+        bootstrapDir.cd("Resources/bootstrap/");
+    #endif
+
+    auto bootstrapFiles = QVector<QFileInfo>();
+
+    // Main bootstrap servers file
+    auto mainBootstrapFile = QFileInfo(bootstrapDir.path() + "/servers.json");
+    if (mainBootstrapFile.exists() && mainBootstrapFile.isFile())
+    {
+        bootstrapFiles << mainBootstrapFile;
+    }
+
+    // Secondary bootstrap servers files
+    auto secondaryBootstrapServersDir = QFileInfo(bootstrapDir.path() + "/servers.json.d");
+    if (secondaryBootstrapServersDir.exists() && secondaryBootstrapServersDir.isDir())
+    {
+        QDirIterator dirIter(
+            secondaryBootstrapServersDir.path(),
+            QDirIterator::Subdirectories
+        );
+        while (dirIter.hasNext()) {
+            dirIter.next();
+            auto fileInfo = QFileInfo(dirIter.filePath());
+            if (fileInfo.isFile() && fileInfo.suffix() == "json")
+            {
+                qDebug() << "Found secondary bootstrap server: " << fileInfo.filePath();
+            }
+        }
+    }
+
+    bootstrapFiles << QFileInfo("/test");
+
+    qDebug() << "bootstrapdir: " << bootstrapDir.path().toStdString().c_str();
+
+    return servers;
 }
 
 BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
@@ -311,6 +388,8 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModelPrivate::reset()
 {
+   qDebug() << "resetting boostrapmodel...";
+
    clearLines();
 
    BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
@@ -319,6 +398,19 @@ void BootstrapModelPrivate::reset()
 
    q_ptr->beginInsertRows(QModelIndex(), m_lines.size(), m_lines.size());
    m_lines << l;
+   q_ptr->endInsertRows();
+
+   /* append supplementary bootstrap servers */
+   auto defaultBootStrapServers = getDefaultBootstrapServers();
+   if (defaultBootStrapServers->size() <= 1)
+   {
+       q_ptr->beginInsertRows(
+           QModelIndex(),
+           m_lines.size(),
+           m_lines.size() + defaultBootStrapServers->size() - 1
+       );
+   }
+   m_lines << *defaultBootStrapServers;
    q_ptr->endInsertRows();
 
    q_ptr << BootstrapModel::EditAction::MODIFY;
