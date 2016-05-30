@@ -17,6 +17,14 @@
  ***************************************************************************/
 #include "bootstrapmodel.h"
 
+//Qt
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QDirIterator>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+
 //Ring daemon
 #include <account_const.h>
 
@@ -47,6 +55,7 @@ public:
    //Helper
    void clearLines();
    inline void performAction(const BootstrapModel::EditAction action);
+   QVector<Lines*> loadDefaultBootstrapServers();
 
    //Attributes
    Account*                   m_pAccount ;
@@ -69,6 +78,7 @@ Matrix2D<BootstrapModel::EditState, BootstrapModel::EditAction, BootstrapModelPr
    /* MODIFIED  */ {{ BMP::save   , BMP::nothing, BMP::reload , BMP::clear,    BMP::reset   }},
    /* OUTDATED  */ {{ BMP::save   , BMP::nothing, BMP::reload , BMP::clear,    BMP::reset   }},
    /* RELOADING */ {{ BMP::nothing, BMP::nothing, BMP::nothing, BMP::nothing,  BMP::nothing }},
+   /* RESETING  */ {{ BMP::nothing, BMP::nothing, BMP::nothing, BMP::nothing,  BMP::nothing }},
 }};
 #undef BMP
 
@@ -153,6 +163,89 @@ void BootstrapModelPrivate::clearLines()
        m_lines.clear();
        q_ptr->endRemoveRows();
    }
+}
+
+QVector<BootstrapModelPrivate::Lines*> BootstrapModelPrivate::loadDefaultBootstrapServers()
+{
+    auto servers = QVector<BootstrapModelPrivate::Lines*>();
+
+    /* get the bootstrap directory */
+    #ifdef Q_OS_LINUX
+        /* start by trying a relative path */
+        QDir bootstrapDir = QDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/../share/ring/bootstrap/");
+        if (bootstrapDir.exists() == false)
+        {
+            /* revert to using absolute path */
+            bootstrapDir = QDir("/usr/share/ring/bootstrap/");
+        }
+    #elif defined(Q_OS_WIN)
+        QDir bootstrapDir = QDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/bootstrap/"));
+    #elif defined(Q_OS_OSX)
+        QDir bootstrapDir = QDir(QCoreApplication::applicationDirPath()));
+        bootstrapDir.cdUp();
+        bootstrapDir.cd("Resources/bootstrap/");
+    #endif
+
+    auto bootstrapFiles = QVector<QFileInfo>();
+
+    // Main bootstrap servers file
+    auto mainBootstrapFile = QFileInfo(bootstrapDir.path() + "/servers.json");
+    if (mainBootstrapFile.exists() && mainBootstrapFile.isFile())
+    {
+        bootstrapFiles << mainBootstrapFile;
+    }
+
+    // Secondary bootstrap servers files
+    auto secondaryBootstrapServersDir = QFileInfo(bootstrapDir.path() + "/servers.json.d/");
+    if (secondaryBootstrapServersDir.exists() && secondaryBootstrapServersDir.isDir())
+    {
+        QDirIterator dirIter(
+            secondaryBootstrapServersDir.path(),
+            QDirIterator::Subdirectories
+        );
+        while (dirIter.hasNext()) {
+            dirIter.next();
+            auto secBootstrapFileInfo = QFileInfo(dirIter.filePath());
+            if (secBootstrapFileInfo.isFile() && secBootstrapFileInfo.suffix() == "json")
+            {
+                bootstrapFiles << secBootstrapFileInfo;
+            }
+        }
+    }
+
+    //Parse JSON files
+    foreach(const auto fileInfo, bootstrapFiles)
+    {
+        QFile bootstrapFile(fileInfo.filePath());
+        bootstrapFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        auto jsonDoc = QJsonDocument::fromJson(bootstrapFile.readAll());
+        bootstrapFile.close();
+
+        if (jsonDoc.isNull() == false && jsonDoc.isArray() == true)
+        {
+            QJsonArray jsonArray = jsonDoc.array();
+            foreach(const auto jsonValue, jsonArray)
+            {
+                auto hostObject = jsonValue.toObject();
+                auto hostValue = hostObject.value("host");
+                auto portValue = hostObject.value("port");
+
+                if (hostValue.isUndefined() == false &&
+                    hostValue.isString() &&
+                    portValue.isUndefined() == false &&
+                    portValue.isDouble())
+                {
+                    BootstrapModelPrivate::Lines* server = new BootstrapModelPrivate::Lines();
+                    server->hostname = hostValue.toString();
+                    server->port = portValue.toInt(-1);
+                    servers << server;
+                }
+            }
+
+        }
+    }
+
+    return servers;
 }
 
 BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
@@ -311,6 +404,8 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModelPrivate::reset()
 {
+   m_EditState = BootstrapModel::EditState::RESETING;
+
    clearLines();
 
    BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
@@ -320,6 +415,19 @@ void BootstrapModelPrivate::reset()
    q_ptr->beginInsertRows(QModelIndex(), m_lines.size(), m_lines.size());
    m_lines << l;
    q_ptr->endInsertRows();
+
+   /* append supplementary bootstrap servers */
+   auto defaultBootStrapServers = loadDefaultBootstrapServers();
+   if (defaultBootStrapServers.size() >= 1)
+   {
+       q_ptr->beginInsertRows(
+           QModelIndex(),
+           m_lines.size(),
+           m_lines.size() + defaultBootStrapServers.size() - 1
+       );
+       m_lines << defaultBootStrapServers;
+       q_ptr->endInsertRows();
+   }
 
    q_ptr << BootstrapModel::EditAction::MODIFY;
 }
