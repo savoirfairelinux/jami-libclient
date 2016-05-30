@@ -17,6 +17,9 @@
  ***************************************************************************/
 #include "bootstrapmodel.h"
 
+//Qt
+#include <QtCore/QDir>
+
 //Ring daemon
 #include <account_const.h>
 
@@ -153,6 +156,24 @@ void BootstrapModelPrivate::clearLines()
        m_lines.clear();
        q_ptr->endRemoveRows();
    }
+}
+
+static QVector<BootstrapModelPrivate::Lines*> BootstrapModelPrivate::getDefaultBootstrapServers()
+{
+    static auto defaultBootStrapServers = BootStrapModelPrivate::loadDefaultBootstrapServers();
+    return defaultBootStrapServers;
+}
+
+static QVector<BootStrapModelPrivate::Lines*> BootstrapModelPrivate::loadDefaultBootstrapServers()
+{
+    auto servers = new QVector<Lines*>();
+
+    BootstrapModelPrivate::Lines* l2 = new BootstrapModelPrivate::Lines();
+    l2->hostname = "loaded.bootstrap.server";
+    l2->port = 2;
+    servers << l2;
+
+    return servers
 }
 
 BootstrapModel::BootstrapModel(Account* a) : QAbstractTableModel(a), d_ptr(new BootstrapModelPrivate(this,a))
@@ -311,6 +332,8 @@ bool BootstrapModel::isCustom() const
 
 void BootstrapModelPrivate::reset()
 {
+   qDebug() << "resetting boostrapmodel...";
+
    clearLines();
 
    BootstrapModelPrivate::Lines* l = new BootstrapModelPrivate::Lines();
@@ -320,6 +343,26 @@ void BootstrapModelPrivate::reset()
    q_ptr->beginInsertRows(QModelIndex(), m_lines.size()+1, m_lines.size()+1);
    m_lines << l;
    q_ptr->endInsertRows();
+
+   /* get the bootstrap directory */
+   #ifdef Q_OS_LINUX
+   QDir bootstrapDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/../share/ring/bootstrap/");
+   #elif defined(Q_OS_WIN)
+   QDir bootstrapDir(QFileInfo(QCoreApplication::applicationFilePath()).path()+"/bootstrap/");
+   #elif defined(Q_OS_OSX)
+   QDir bootstrapDir(QCoreApplication::applicationDirPath());
+   bootstrapDir.cdUp();
+   bootstrapDir.cd("Resources/bootstrap/");
+   #endif
+   qDebug() << "bootstrapdir: " << bootstrapDir.path().toStdString().c_str();
+
+   /* append supplementary bootstrap servers */
+   auto defaultBootStrapServers = d_ptr->getDefaultBootstrapServers();
+   d_ptr->m_lines.insert(
+       d_ptr->m_lines.end(),
+       defaultBootStrapServers.begin(),
+       defaultBootStrapServers.end()
+   );
 
    q_ptr << BootstrapModel::EditAction::MODIFY;
 }
