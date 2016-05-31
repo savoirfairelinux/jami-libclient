@@ -129,7 +129,7 @@ void BootstrapModelPrivate::reload()
          l->hostname = fields[0].trimmed();
          l->port     = fields.size()>1?fields[1].toInt():-1; //-1 == default
 
-         q_ptr->beginInsertRows(QModelIndex(),m_lines.size()+1,m_lines.size()+1);
+         q_ptr->beginInsertRows(QModelIndex(),m_lines.size(), m_lines.size());
          m_lines << l;
          q_ptr->endInsertRows();
       }
@@ -195,7 +195,7 @@ bool BootstrapModel::setData( const QModelIndex& index, const QVariant &value, i
    if (!l) {
       l = new BootstrapModelPrivate::Lines();
       l->port = -1;
-      beginInsertRows(QModelIndex(),d_ptr->m_lines.size()+1,d_ptr->m_lines.size()+1);
+      beginInsertRows(QModelIndex(),d_ptr->m_lines.size(), d_ptr->m_lines.size());
       d_ptr->m_lines << l;
       endInsertRows();
    }
@@ -317,7 +317,7 @@ void BootstrapModelPrivate::reset()
    l->hostname = "bootstrap.ring.cx";
    l->port = -1;
 
-   q_ptr->beginInsertRows(QModelIndex(), m_lines.size()+1, m_lines.size()+1);
+   q_ptr->beginInsertRows(QModelIndex(), m_lines.size(), m_lines.size());
    m_lines << l;
    q_ptr->endInsertRows();
 
