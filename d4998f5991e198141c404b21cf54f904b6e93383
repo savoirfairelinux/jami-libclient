@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_daa2219a",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-03T18:21:31Z",
+      "side": 1,
+      "message": "FYI, you could probably make use of this, which is cross platform: http://doc.qt.io/qt-5/qstandardpaths.html",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 48
+      },
+      "revId": "d4998f5991e198141c404b21cf54f904b6e93383",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
