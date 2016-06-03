@@ -204,7 +204,13 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
 # Build dbus interfaces
-SET ( dbus_xml_introspecs_path ${CMAKE_CURRENT_SOURCE_DIR}/xml/)
+IF(DEFINED RING_XML_INTERFACES_DIR)
+    SET (dbus_xml_introspecs_path ${RING_XML_INTERFACES_DIR})
+ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
+    SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
+ELSE()
+    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
+ENDIF()
 
 #File to compile
 SET( libringclient_LIB_SRCS
@@ -485,7 +491,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    # (not necessary in 3.0+)
 ELSE()
    # presence manager interface
-   SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/presencemanager-introspec.xml )
+   SET ( presencemanager_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.PresenceManager.xml )
 
    SET( dbus_metatype_path "${CMAKE_CURRENT_SOURCE_DIR}/src/dbus/metatypes.h")
 
@@ -503,7 +509,7 @@ ELSE()
    )
 
    # configuration manager interface
-   SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/configurationmanager-introspec.xml )
+   SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.ConfigurationManager.xml )
 
    SET_SOURCE_FILES_PROPERTIES(
       ${configurationmanager_xml}
@@ -519,7 +525,7 @@ ELSE()
    )
 
    # call manager interface
-   SET ( callmanager_xml  ${dbus_xml_introspecs_path}/callmanager-introspec.xml )
+   SET ( callmanager_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.CallManager.xml )
 
    SET_SOURCE_FILES_PROPERTIES(
       ${callmanager_xml}
@@ -535,7 +541,7 @@ ELSE()
    )
 
    # video manager interface
-   SET ( video_xml  ${dbus_xml_introspecs_path}/videomanager-introspec.xml )
+   SET ( video_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.VideoManager.xml )
 
    SET_SOURCE_FILES_PROPERTIES(
       ${video_xml}
@@ -552,7 +558,7 @@ ELSE()
 
 
    # instance interface
-   SET ( instance_xml  ${dbus_xml_introspecs_path}/instance-introspec.xml )
+   SET ( instance_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.Instance.xml )
 
    SET_SOURCE_FILES_PROPERTIES(
       ${instance_xml}
