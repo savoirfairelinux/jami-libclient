@@ -1248,6 +1248,8 @@ QVariant Account::roleData(int role) const
             return extension<SecurityEvaluationExtension>()->securityLevelIcon(this);
          }
          break;
+      case CAST(Account::Role::LastStatusChangeTimeStamp):
+         return QVariant::fromValue(statusModel()->lastTimeStamp());
       default:
          return QVariant();
    }
