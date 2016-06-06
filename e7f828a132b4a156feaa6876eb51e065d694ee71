@@ -46,6 +46,30 @@
       "revId": "e7f828a132b4a156feaa6876eb51e065d694ee71",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_fd9fdf4e",
+        "filename": "src/account.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-06T20:30:49Z",
+      "side": 1,
+      "message": "\u003e Calling this method can take time, I don\u0027t know if we want to call it every time the settings are updated.\n\nYes, you\u0027re right. I guess ideally maybe there should be a non-blocking version of this call the result of which is sent from the daemon via a signal. For now we\u0027ll just do it this way.\n\nHowever, you should rename the method to just \"testICEInitialization()\", since its already in the Account class. Also, I think the QPair should either be a \u003cbool, QString\u003e or and \u003cenum, Qstring\u003e, where the enum is one which is defined in account.h and is basically a copy of whats in dring/account_const.h, so that the clients know what the statuses mean.",
+      "parentUuid": "9a6a9dd7_fd911f53",
+      "range": {
+        "startLine": 520,
+        "startChar": 6,
+        "endLine": 520,
+        "endChar": 65
+      },
+      "revId": "e7f828a132b4a156feaa6876eb51e065d694ee71",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
