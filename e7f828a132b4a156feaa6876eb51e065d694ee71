@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_5da12ba8",
+        "filename": "src/account.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-06T19:35:19Z",
+      "side": 1,
+      "message": "hmm, this is not very LRC like, thought I\u0027m having a bit of trouble deciding how this should be done, mostly because most things in LRC are either object properties/states or else actions which change the properties/states of the object...\n\nThus, I\u0027m wondering if it would make more sense, in terms of LRC, to automatically call this daemon method (testAccountICEInitialization) any time that the account credentials (SIP, STUN, or TURN) are updates and then add an \"ICE initialization success\" property, or something like that, which can be queried. This way this property could also be accessed via the AccountModel as well.\n\nWe could still have a method which lets the user force an ICE check at any time, since its possible for the TURN server or internet to be momentarily down or something.",
+      "range": {
+        "startLine": 520,
+        "startChar": 6,
+        "endLine": 520,
+        "endChar": 65
+      },
+      "revId": "e7f828a132b4a156feaa6876eb51e065d694ee71",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
