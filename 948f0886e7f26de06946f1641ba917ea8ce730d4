@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_9d1ca36c",
+        "filename": "src/account.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-06T03:07:32Z",
+      "side": 1,
+      "message": "Hello, \nGiven nobody seem to comment of your (very useful) work, here is some comments: \n\nIf those are strings ring as a Qt model filled with \nLibRingClient is there to format it into models for \nURIS, then this should be exposed ContactMethods objects. \nhandle this kind of information and the client. \n\nTo get the ContactMethod objects from an URI, use Phonepirectorriodel::instance().getNumber(uri) \nto create a model, take a look Qt documentation or something like the BootstrapModel or CredentialModels (because they are simple enough). Basically, you have to keep the list up-to-date in LRC and notify the clients using dataChanged/rowsInserted/rowsBemoved. \n\nI know it is a little more work, but once it is done, then all clients can use the data with one line of code and avoid synchronization issues and boilerplate code.",
+      "revId": "948f0886e7f26de06946f1641ba917ea8ce730d4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
