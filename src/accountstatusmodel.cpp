@@ -56,6 +56,7 @@ struct AccountStatusRow {
    QString                  description;
    int                      code       ;
    QDateTime                time       ;
+   time_t                   timestamp  ;
    uint                     counter    ;
    AccountStatusModel::Type type       ;
 };
@@ -68,6 +69,7 @@ public:
    //Attributes
    Account* m_pAccount;
    QVector<AccountStatusRow*> m_lRows;
+   time_t m_FallbackTime_t;
 };
 
 
@@ -76,9 +78,11 @@ code(_code),counter(0),
 time(QDateTime::currentDateTime()),type(_type)
 {
     description = _description;
+    timestamp   = time.toTime_t();
 }
 
-AccountStatusModelPrivate::AccountStatusModelPrivate(Account* parent) : m_pAccount(parent)
+AccountStatusModelPrivate::AccountStatusModelPrivate(Account* parent) : m_pAccount(parent),
+m_FallbackTime_t(QDateTime::currentDateTime().toTime_t())
 {
 }
 
@@ -220,4 +224,12 @@ int AccountStatusModel::lastErrorCode() const
       return -1;
 
    return d_ptr->m_lRows.last()->code;
+}
+
+time_t AccountStatusModel::lastTimeStamp() const
+{
+   if (d_ptr->m_lRows.isEmpty())
+      return d_ptr->m_FallbackTime_t;
+
+   return d_ptr->m_lRows.last()->timestamp;
 }
