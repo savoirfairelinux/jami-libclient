@@ -65,6 +65,7 @@ public:
    //Getter
    QString lastErrorMessage() const;
    int     lastErrorCode   () const;
+   time_t  lastTimeStamp   () const;
 
 private:
    //Private mutators

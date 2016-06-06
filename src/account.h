@@ -307,6 +307,7 @@ class LIB_EXPORT Account : public ItemBase {
          HasActiveCallLimit          ,
          SecurityLevel               ,
          SecurityLevelIcon           ,
+         LastStatusChangeTimeStamp   ,
       };
 
       ///@enum RoleState Whether a role can be used in a certain context
