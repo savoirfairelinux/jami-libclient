@@ -22,6 +22,30 @@
       "revId": "d4998f5991e198141c404b21cf54f904b6e93383",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_1de733e6",
+        "filename": "src/bootstrapmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-06-06T21:22:29Z",
+      "side": 1,
+      "message": "Done.\n\nThanks for the tip.\n\nThis will depend on the following changeset for the gnome client: 4374",
+      "parentUuid": "9a6a9dd7_daa2219a",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 48
+      },
+      "revId": "d4998f5991e198141c404b21cf54f904b6e93383",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
