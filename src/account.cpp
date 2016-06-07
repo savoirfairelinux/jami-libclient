@@ -105,6 +105,14 @@ m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p
 m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
 m_pRingDeviceModel(nullptr)
 {
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    connect(&configurationManager, &ConfigurationManagerInterface::testAccountICEInitializationResult, [this]
+        (const QString& accountId, const MapStringString& result) {
+        if (m_AccountId == accountId) {
+            bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
+            emit q_ptr->iceInitTestResult(success, result["MESSAGE"]);
+        }
+    });
 }
 
 void AccountPrivate::changeState(Account::EditState state) {
@@ -1805,6 +1813,14 @@ void Account::setTurnServerPassword(const QString& value)
 void Account::setTurnServerRealm(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM, value);
+}
+
+void Account::testICEInitialization() const
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    configurationManager.testAccountICEInitialization(id());
+    //bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
+    //return qMakePair(success, result["MESSAGE"]);
 }
 
 void Account::setDisplayName(const QString& value)
