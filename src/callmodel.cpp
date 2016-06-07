@@ -53,6 +53,8 @@
 #include "media/video.h"
 #include "private/media_p.h"
 #include "call_const.h"
+#include "./smartInfoHub.h"
+
 
 //System
 #include <unistd.h>
@@ -117,6 +119,7 @@ public:
       void slotAudioMuted         ( const QString& callId    , bool state             );
       void slotVideoMutex         ( const QString& callId    , bool state             );
       void slotPeerHold           ( const QString& callId    , bool state             );
+      void slotSmartInfo          ( int   val                                         );
 };
 
 
@@ -169,7 +172,7 @@ void CallModelPrivate::init()
 
     //SLOTS
     /*             SENDER                          SIGNAL                     RECEIVER                    SLOT                   */
-    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))  , this , SLOT(slotCallStateChanged(QString,QString,int)));
+    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))   , this , SLOT(slotCallStateChanged(QString,QString,int)));
     /**/connect(&callManager, SIGNAL(incomingCall(QString,QString,QString))   , this , SLOT(slotIncomingCall(QString,QString))       );
     /**/connect(&callManager, SIGNAL(conferenceCreated(QString))              , this , SLOT(slotIncomingConference(QString))         );
     /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)) );
@@ -179,6 +182,7 @@ void CallModelPrivate::init()
     /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)));
     /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)));
     /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)));
+    /**/connect(&callManager, SIGNAL(SmartInfo(int))                          , this , SLOT(slotSmartInfo(int)));
     /*                                                                                                                           */
 
     connect(&CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
@@ -684,8 +688,7 @@ QModelIndex CallModel::getIndex(Call* call) const
       }
    }
    return QModelIndex();
-}
-
+ }
 ///Transfer "toTransfer" to "target" and wait to see it it succeeded
 void CallModel::attendedTransfer(Call* toTransfer, Call* target)
 {
@@ -1151,10 +1154,16 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
  *                                                                           *
  ****************************************************************************/
 
+ void CallModelPrivate::slotSmartInfo(int val)
+ {
+   qDebug() << "Send signal from callmodel" << val;
+   SmartInfoHub::setAnswer(val);
+ }
+
 ///When a call state change
 void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString& stateName, int code)
 {
-
+  SmartInfoHub::setCallID(callID);
    //This code is part of the CallModel interface too
    qDebug() << "Call State Changed for call  " << callID << " . New state : " << stateName;
    InternalStruct* internal = m_shDringId[callID];
