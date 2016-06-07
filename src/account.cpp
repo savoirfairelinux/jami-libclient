@@ -181,7 +181,18 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
       iter.next();
       a->d_ptr->m_hAccountDetails[iter.key()] = iter.value();
    }
-   a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+
+   if (proto == Account::Protocol::RING)
+   {
+       /* Set LRC-provided bootstrap servers */
+       a->bootstrapModel() << BootstrapModel::EditAction::RESET;
+       a->bootstrapModel() << BootstrapModel::EditAction::SAVE;
+   }
+   else
+   {
+       a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
+   }
+
    a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
    a->d_ptr->m_RemoteEnabledState = a->isEnabled();
    //a->setObjectName(a->id());
@@ -2189,21 +2200,6 @@ Account::RoleState Account::roleState(Account::Role role) const
    #pragma GCC diagnostic ignored "-Wswitch-enum"
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wswitch"
-
-   //Hide unsupported IP2IP fields
-   if ((!isNew()) && isIp2ip()) {
-      switch(role) {
-         case Account::Role::Password:
-         case Account::Role::RegistrationExpire:
-         case Account::Role::Hostname:
-         case Account::Role::Mailbox:
-         case Account::Role::Username:
-         case Account::Role::Alias:
-            return Account::RoleState::UNAVAILABLE;
-         default:
-            break;
-      }
-   }
 
    //Hide unsupported fields by protocol
    switch(protocol()) {
