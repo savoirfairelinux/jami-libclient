@@ -298,7 +298,8 @@ SET( libringclient_LIB_SRCS
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
   src/peerprofilecollection.cpp
-
+  src/smartInfoHub.cpp
+  
   #Communication
   src/dbus/configurationmanager.cpp
   src/dbus/callmanager.cpp
