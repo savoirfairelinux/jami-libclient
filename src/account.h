@@ -526,6 +526,8 @@ class LIB_EXPORT Account : public ItemBase {
 
       void setRoleData(int role, const QVariant& value);
 
+      int testICEInitialization () const;
+
       //Operators
       bool operator==(const Account&)const;
       Account* operator<<(Account::EditAction& action);
@@ -559,6 +561,8 @@ class LIB_EXPORT Account : public ItemBase {
       void editStateChanged(const EditState state, const EditState previous);
       ///Export on Ring has ended
       void exportOnRingEnded(Account::ExportOnRingStatus status, const QString& pin);
+      //Result of ice initialization test
+      void iceInitTestResult(int request_id, bool hasSucceeded, const QString& error);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
