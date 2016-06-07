@@ -40,6 +40,7 @@ Q_DECLARE_METATYPE(VectorUInt)
 Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 Q_DECLARE_METATYPE(VectorVectorByte)
+Q_DECLARE_METATYPE(MapStringMapStringString)
 
 #ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
@@ -55,10 +56,10 @@ inline void registerCommTypes() {
    qDBusRegisterMetaType<VectorString>                  ();
    qDBusRegisterMetaType<MapStringVectorString>         ();
    qDBusRegisterMetaType<VectorVectorByte>              ();
+   qDBusRegisterMetaType<MapStringMapStringString>      ();
    dbus_metaTypeInit = true;
 #endif
 }
 
 
 #pragma GCC diagnostic pop
-

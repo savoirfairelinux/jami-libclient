@@ -50,6 +50,7 @@ public:
          callHandlers = {
             exportable_callback<CallSignal::StateChange>(
                 [this] (const std::string &callID, const std::string &state, int code) {
+                    printf("test \n");
                     QTimer::singleShot(0, [this,callID, state, code] {
                         LOG_DRING_SIGNAL3("callStateChanged",QString(callID.c_str()) , QString(state.c_str()) , code);
                         Q_EMIT callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
@@ -60,6 +61,14 @@ public:
                        QTimer::singleShot(0, [this] {
                              LOG_DRING_SIGNAL("transferFailed","");
                              Q_EMIT transferFailed();
+                       });
+            }),
+            exportable_callback<CallSignal::SmartInfo>(
+                [this] () {
+                        printf("smartinfo callback \n");
+                       QTimer::singleShot(0, [this] {
+                             LOG_DRING_SIGNAL("smartInfo","");
+                             Q_EMIT smartInfo();
                        });
             }),
             exportable_callback<CallSignal::TransferSucceeded>(
@@ -128,7 +137,7 @@ public:
             exportable_callback<CallSignal::ConferenceRemoved>(
                 [this] (const std::string &confID) {
                        QTimer::singleShot(0, [this,confID] {
-                             LOG_DRING_SIGNAL("conferenceRemoved",QString(confID.c_str()));
+                             LOG_DRING_SIGNAL("conferenceRemoved",QstartCameraString(confID.c_str()));
                              Q_EMIT conferenceRemoved(QString(confID.c_str()));
                        });
             }),
@@ -266,6 +275,10 @@ public Q_SLOTS: // METHODS
     bool detachParticipant(const QString &callID)
     {
         return DRing::detachParticipant(callID.toStdString());
+    }
+
+    void smartInfo(int refresh){
+        DRing::smartInfo(refresh);
     }
 
     MapStringString getCallDetails(const QString &callID)
@@ -453,6 +466,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    void smartInfo(const QMap<QString,QMap<QString,QString>> &);
     void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();
     void transferSucceeded();
