@@ -441,6 +441,13 @@ public Q_SLOTS: // METHODS
       DRing::sendRegister(accountID.toStdString(), enable);
    }
 
+   MapStringString testAccountICEInitialization(const QString& accountID)
+   {
+       MapStringString temp = convertMap(
+           DRing::testAccountICEInitialization(accountID.toStdString()));
+       return temp;
+   }
+
    void setAccountDetails(const QString& accountID, MapStringString details)
    {
       DRing::setAccountDetails(accountID.toStdString(),
