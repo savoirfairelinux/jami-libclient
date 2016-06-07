@@ -1830,6 +1830,14 @@ void Account::setTurnServerRealm(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM, value);
 }
 
+QPair <bool, QString> Account::testAccountICEInitialization() const
+{
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    const QMap<QString, QString> result = configurationManager.testAccountICEInitialization(id());
+    bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
+    return qMakePair(success, result["MESSAGE"]);
+}
+
 void Account::setDisplayName(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
