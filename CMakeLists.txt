@@ -330,6 +330,7 @@ SET( libringclient_LIB_SRCS
   src/private/sortproxies.cpp
   src/private/threadworker.cpp
   src/mime.cpp
+  src/smartInfoHub.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
@@ -430,6 +431,7 @@ SET( libringclient_LIB_HDRS
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
+  src/smartInfoHub.h
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -593,6 +595,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
    src/private/imconversationmanagerprivate.h
+   src/private/smartInfoHub_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
