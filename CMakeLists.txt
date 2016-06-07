@@ -311,7 +311,7 @@ SET( libringclient_LIB_SRCS
   src/dbus/instancemanager.cpp
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
-
+  
   #Default interface implementations
   src/globalinstances.cpp
   src/accountlistcolorizerdefault.cpp
@@ -330,6 +330,7 @@ SET( libringclient_LIB_SRCS
   src/private/sortproxies.cpp
   src/private/threadworker.cpp
   src/mime.cpp
+  src/smartInfoHub.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
@@ -430,6 +431,7 @@ SET( libringclient_LIB_HDRS
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
+  src/smartInfoHub.h
 )
 
 SET(libringclient_video_LIB_HDRS
