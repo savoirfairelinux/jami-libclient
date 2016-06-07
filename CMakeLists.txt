@@ -304,6 +304,7 @@ SET( libringclient_LIB_SRCS
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
   src/peerprofilecollection.cpp
+  src/smartInfoHub.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -430,6 +431,7 @@ SET( libringclient_LIB_HDRS
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
+  src/smartInfoHub.h
 )
 
 SET(libringclient_video_LIB_HDRS
