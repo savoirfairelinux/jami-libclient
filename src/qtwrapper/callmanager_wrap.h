@@ -62,6 +62,13 @@ public:
                              Q_EMIT transferFailed();
                        });
             }),
+            exportable_callback<CallSignal::SmartInfo>(
+                [this] () {
+                       QTimer::singleShot(0, [this] {
+                             LOG_DRING_SIGNAL("smartInfo","");
+                             Q_EMIT smartInfo();
+                       });
+            }),
             exportable_callback<CallSignal::TransferSucceeded>(
                 [this] () {
                        QTimer::singleShot(0, [this] {
@@ -128,7 +135,7 @@ public:
             exportable_callback<CallSignal::ConferenceRemoved>(
                 [this] (const std::string &confID) {
                        QTimer::singleShot(0, [this,confID] {
-                             LOG_DRING_SIGNAL("conferenceRemoved",QString(confID.c_str()));
+                             LOG_DRING_SIGNAL("conferenceRemoved",QstartCameraString(confID.c_str()));
                              Q_EMIT conferenceRemoved(QString(confID.c_str()));
                        });
             }),
@@ -266,6 +273,10 @@ public Q_SLOTS: // METHODS
     bool detachParticipant(const QString &callID)
     {
         return DRing::detachParticipant(callID.toStdString());
+    }
+
+    void smartInfo(int refresh){
+        DRing::smartInfo(refresh);
     }
 
     MapStringString getCallDetails(const QString &callID)
@@ -453,6 +464,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    void smartInfo(int answer);
     void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();
     void transferSucceeded();
