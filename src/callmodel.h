@@ -159,5 +159,7 @@ Q_SIGNALS:
    void mediaAdded              ( Call* call, Media::Media* media         );
    ///Notify when a media state change
    void mediaStateChanged( Call* call, Media::Media* media, const Media::Media::State s, const Media::Media::State m);
+   ///Update information of smartInfo
+   void updateInfo(MapStringString info);
 };
 Q_DECLARE_METATYPE(CallModel*)
