@@ -54,6 +54,7 @@
 #include "private/media_p.h"
 #include "call_const.h"
 
+
 //System
 #include <unistd.h>
 #include <errno.h>
@@ -169,7 +170,7 @@ void CallModelPrivate::init()
 
     //SLOTS
     /*             SENDER                          SIGNAL                     RECEIVER                    SLOT                   */
-    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))  , this , SLOT(slotCallStateChanged(QString,QString,int)));
+    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))   , this , SLOT(slotCallStateChanged(QString,QString,int)));
     /**/connect(&callManager, SIGNAL(incomingCall(QString,QString,QString))   , this , SLOT(slotIncomingCall(QString,QString))       );
     /**/connect(&callManager, SIGNAL(conferenceCreated(QString))              , this , SLOT(slotIncomingConference(QString))         );
     /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)) );
@@ -684,8 +685,7 @@ QModelIndex CallModel::getIndex(Call* call) const
       }
    }
    return QModelIndex();
-}
-
+ }
 ///Transfer "toTransfer" to "target" and wait to see it it succeeded
 void CallModel::attendedTransfer(Call* toTransfer, Call* target)
 {
@@ -1154,7 +1154,6 @@ bool CallModel::dropMimeData(const QMimeData* mimedata, Qt::DropAction action, i
 ///When a call state change
 void CallModelPrivate::slotCallStateChanged(const QString& callID, const QString& stateName, int code)
 {
-
    //This code is part of the CallModel interface too
    qDebug() << "Call State Changed for call  " << callID << " . New state : " << stateName;
    InternalStruct* internal = m_shDringId[callID];
