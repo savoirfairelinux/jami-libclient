@@ -36,6 +36,7 @@ typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVe
 typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
 typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
 typedef QMap< QString, QStringList >                        MapStringStringList           ;
+typedef QMap< QString, QMap< QString, QString > >           MapStringMapStringString      ;
 typedef QVector< QByteArray >                               VectorVectorByte              ;
 
 /**
