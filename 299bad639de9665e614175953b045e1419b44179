@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_e04ad826",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 21
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-08T21:12:48Z",
+      "side": 1,
+      "message": "another solution is to simply have the client(s) do the install, since they depend on lrc, or to have it be done at the packaging level, so that we still only maintain it in lrc, but it gets installed into, eg: \u003cprefix\u003e/share/gnome-ring/bootstrap...",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 792,
+        "endChar": 90
+      },
+      "revId": "299bad639de9665e614175953b045e1419b44179",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
