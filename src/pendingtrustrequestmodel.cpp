@@ -101,7 +101,7 @@ void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
 {
    q_ptr->beginInsertRows(QModelIndex(),m_lRequests.size(),m_lRequests.size());
    m_lRequests << r;
-   q_ptr->endRemoveRows();
+   q_ptr->endInsertRows();
 
    QObject::connect(r, &TrustRequest::requestAccepted, [this,r]() {
       emit q_ptr->requestAccepted(r);
