@@ -70,6 +70,30 @@
       "revId": "299bad639de9665e614175953b045e1419b44179",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_8b8d3d34",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 21
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-10T19:38:15Z",
+      "side": 1,
+      "message": "They might not have the sources, but eg: an lrc-dev package would have this file and so the clients can then either link to it or copy and move it wherever, no?\n\nAnother option is to bypass the \"QStandardPaths\" and just have a config option in the clients for where to look for this file... or maybe Qt has some support for that. Its just that from my perspective we\u0027re moving a bunch of files and adding code in order to be able to read one more file, rather than just moving that one file...",
+      "parentUuid": "9a6a9dd7_4bb085f4",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 792,
+        "endChar": 90
+      },
+      "revId": "299bad639de9665e614175953b045e1419b44179",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
