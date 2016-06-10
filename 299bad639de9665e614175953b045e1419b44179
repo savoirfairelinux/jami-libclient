@@ -46,6 +46,30 @@
       "revId": "299bad639de9665e614175953b045e1419b44179",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_4bb085f4",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 21
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-06-10T19:10:28Z",
+      "side": 1,
+      "message": "If we merge this as-is and don\u0027t merge 4401, this would mean that clients ship symlinks like the following:\n - share/gnome-ring/bootstrap -\u003e share/ring/bootstrap.\n\nIf we merge this as-is and merge 4401, then the clients would load /share/ring/bootstrap by default.",
+      "parentUuid": "9a6a9dd7_6004887e",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 792,
+        "endChar": 90
+      },
+      "revId": "299bad639de9665e614175953b045e1419b44179",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
