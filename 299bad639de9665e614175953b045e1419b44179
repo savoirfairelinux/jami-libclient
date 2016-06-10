@@ -94,6 +94,30 @@
       "revId": "299bad639de9665e614175953b045e1419b44179",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_4b872510",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 21
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-06-10T19:49:10Z",
+      "side": 1,
+      "message": "\u003e an lrc-dev package would have this file and so the clients can then either link to it or copy and move it wherever, no?\n\nYou are right.\n\nI\u0027ll update the patch to:\n - keep shipping the file in the sources\n - no longer install it",
+      "parentUuid": "9a6a9dd7_8b8d3d34",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 792,
+        "endChar": 90
+      },
+      "revId": "299bad639de9665e614175953b045e1419b44179",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
