@@ -236,7 +236,7 @@ void CertificateNode::setStrings(const QString& col1, const QVariant& col2, cons
 
 CertificateNode* CertificateModelPrivate::createCategory(const QString& name, const QString& col2, const QString& tooltip )
 {
-   const int idx = m_hCertificates.size();
+   const int idx = m_lTopLevelNodes.size();
 
    CertificateNode* n = new CertificateNode(idx, CertificateModel::NodeType::CATEGORY, nullptr, nullptr);
    n->setStrings(name,col2,tooltip);
@@ -333,8 +333,6 @@ void CertificateModelPrivate::regenChecks(Certificate* cert)
 //[Re]generate the checks
 void CertificateModelPrivate::loadChecks(CertificateNode* checks, Certificate* cert)
 {
-   static const int checksC(enum_class_size<Certificate::Checks>());
-
    const QModelIndex checksI(q_ptr->createIndex(checks->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),checks));
 
    //Clear the existing nodes
@@ -351,18 +349,20 @@ void CertificateModelPrivate::loadChecks(CertificateNode* checks, Certificate* c
    }
 
    //Add the new ones
-   q_ptr->beginInsertRows(checksI, static_cast<int>(CertificateModel::Columns::NAME ), checksC);
    for (const Certificate::Checks check : EnumIterator<Certificate::Checks>()) {
       if (cert->checkResult(check) != Certificate::CheckValues::UNSUPPORTED) {
+         q_ptr->beginInsertRows(checksI, checks->m_lChildren.size(), checks->m_lChildren.size());
          CertificateNode* d = new CertificateNode(checks->m_lChildren.size(), CertificateModel::NodeType::DETAILS, checks, nullptr);
          d->setStrings(cert->getName(check),static_cast<bool>(cert->checkResult(check)),cert->getDescription(check));
          d->m_DetailType = DetailType::CHECK;
          d->m_pCertificate = cert;
          d->m_EnumClassDetail = static_cast<int>(check);
          checks->m_lChildren << d;
+         q_ptr->endInsertRows();
+      } else {
+         // unsupported check, not inserting
       }
    }
-   q_ptr->endInsertRows();
 }
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
@@ -395,22 +395,23 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
       const QModelIndex index = q_ptr->createIndex(node->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),node);
 
       //Insert the check and details categories
-      q_ptr->beginInsertRows(index, 0, static_cast<int>(CertificateModel::Columns::NAME ));
+      q_ptr->beginInsertRows(index, 0, 1);
       CertificateNode* details = new CertificateNode(static_cast<int>(CertificateModel::Columns::NAME ), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
       CertificateNode* checks  = new CertificateNode(static_cast<int>(CertificateModel::Columns::VALUE), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
       details->setStrings(QObject::tr("Details"),QString(),QObject::tr("The content of the certificate")       );
       checks ->setStrings(QObject::tr("Checks") ,QString(),QObject::tr("Various security related information") );
-      node->m_lChildren << details; node->m_lChildren << checks;
+      node->m_lChildren << details;
+      node->m_lChildren << checks;
       q_ptr->endInsertRows();
 
       static const int detailsC(enum_class_size<Certificate::Details>());
 
       //Insert the details
       const QModelIndex detailsI(q_ptr->createIndex(details->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),details));
-      q_ptr->beginInsertRows(detailsI, static_cast<int>(CertificateModel::Columns::NAME ), detailsC);
+      q_ptr->beginInsertRows(detailsI, 0, detailsC - 1);
       for (const Certificate::Details detail : EnumIterator<Certificate::Details>()) {
          CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateModel::NodeType::DETAILS, details, nullptr);
-         d->setStrings(cert->getName(detail),cert->detailResult(detail),cert->getDescription(detail)       );
+         d->setStrings(cert->getName(detail),cert->detailResult(detail),cert->getDescription(detail));
          d->m_DetailType = DetailType::DETAIL;
          d->m_pCertificate = cert;
          d->m_EnumClassDetail = static_cast<int>(detail);
