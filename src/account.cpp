@@ -2201,21 +2201,6 @@ Account::RoleState Account::roleState(Account::Role role) const
    #pragma GCC diagnostic push
    #pragma GCC diagnostic ignored "-Wswitch"
 
-   //Hide unsupported IP2IP fields
-   if ((!isNew()) && isIp2ip()) {
-      switch(role) {
-         case Account::Role::Password:
-         case Account::Role::RegistrationExpire:
-         case Account::Role::Hostname:
-         case Account::Role::Mailbox:
-         case Account::Role::Username:
-         case Account::Role::Alias:
-            return Account::RoleState::UNAVAILABLE;
-         default:
-            break;
-      }
-   }
-
    //Hide unsupported fields by protocol
    switch(protocol()) {
       case Account::Protocol::RING:
