@@ -450,7 +450,7 @@ void AccountModel::update()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit layoutChanged();
 
-         if (a->isIp2ip())
+         if (!a->isIp2ip())
             d_ptr->enableProtocol(a->protocol());
       }
    }
@@ -473,7 +473,7 @@ void AccountModel::updateAccounts()
          connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
          emit dataChanged(index(size()-1,0),index(size()-1,0));
 
-         if (a->isIp2ip())
+         if (!a->isIp2ip())
             d_ptr->enableProtocol(a->protocol());
 
          emit accountAdded(a);
@@ -913,7 +913,7 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
       d_ptr->m_pSelectionModel->setCurrentIndex(index(d_ptr->m_lAccounts.size()-1,0), QItemSelectionModel::ClearAndSelect);
    }
 
-   if (a->isIp2ip())
+   if (!a->isIp2ip())
       d_ptr->enableProtocol(proto);
 
 // Override ringtone path
