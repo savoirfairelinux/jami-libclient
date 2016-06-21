@@ -65,6 +65,7 @@
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
+#include "private/vcardutils.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -1326,8 +1327,8 @@ bool Account::requestTrust( Certificate* c )
 
    QByteArray payload;
 
-   if (contactMethod() && contactMethod()->contact()) {
-      payload = contactMethod()->contact()->toVCard();
+   if (profile()) {
+      payload = profile()->person()->toVCard();
    }
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);

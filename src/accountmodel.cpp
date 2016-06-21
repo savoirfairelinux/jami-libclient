@@ -47,6 +47,9 @@
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
+#include "private/vcardutils.h"
+#include "phonedirectorymodel.h"
+#include "contactmethod.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -409,7 +412,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 ///When a Ring-DHT trust request arrive
 void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
-   Q_UNUSED(payload);
+   // Q_UNUSED(payload);
    qDebug() << "INCOMING REQUEST" << accountId << hash << time;
    Account* a = q_ptr->getById(accountId.toLatin1());
 
@@ -417,6 +420,13 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
       qWarning() << "Incoming trust request for unknown account" << accountId;
       return;
    }
+
+   // create CM from hash (ringID) and possible person
+   auto p = VCardUtils::mapToPerson(VCardUtils::toHashMap(payload));
+   auto cm = PhoneDirectoryModel::instance().getNumber(hash, p, a);
+   cm->setLastUsed(time);
+
+   // TODO: are we sure the created Person contains the CM?
 
    TrustRequest* r = new TrustRequest(a, hash, time);
    a->pendingTrustRequestModel()->d_ptr->addRequest(r);
