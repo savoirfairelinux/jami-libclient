@@ -596,6 +596,7 @@ SET(libringclient_PRIVATE_HDRS
    src/collectionconfigurationinterface.h
    src/private/imconversationmanagerprivate.h
    src/private/certificatemodel_p.h
+   src/private/pendingtrustrequestmodel_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

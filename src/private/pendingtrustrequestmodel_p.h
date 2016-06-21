@@ -1,6 +1,7 @@
 /****************************************************************************
- *   Copyright (C) 2015-2016 by Savoir-faire Linux                               *
+ *   Copyright (C) 2015-2016 by Savoir-faire Linux                          *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -17,23 +18,44 @@
  ***************************************************************************/
 #pragma once
 
+//Qt
+#include <QtCore/QObject>
+
+//Ring
+#include "account.h"
+
 class PendingTrustRequestModel;
 class TrustRequest;
+class CollectionInterface;
+class Person;
 
-class PendingTrustRequestModelPrivate
+class PendingTrustRequestModelPrivate final : public QObject
 {
+    Q_OBJECT
 public:
    //Constructor
-   PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+   explicit PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+   ~PendingTrustRequestModelPrivate();
 
    //Attributes
-   QVector<TrustRequest*> m_lRequests;
-   Account*               m_pAccount ;
+   QVector<TrustRequest*>        m_lRequests;
+   Account*                      m_pAccount ;
+   QHash<const Person*, TrustRequest*> m_hPersonsToTrustRequests;
+
+   //Pending person collection from which the trust requests will be reconstructed/tied to
+   // is this a hack? I don't know...
+   CollectionInterface*          m_pPendingCollection;
 
    //Helper
-   void addRequest   (TrustRequest* r);
-   void removeRequest(TrustRequest* r);
+   void newTrustRequest                  (Account *a, const QString& hash, const QByteArray& payload, time_t time);
+   void addRequest                       (TrustRequest* r);
+   void removeRequest                    (TrustRequest* r);
+   CollectionInterface* pendingCollection();
 
 private:
    PendingTrustRequestModel* q_ptr;
+
+public Q_SLOTS:
+    void requestAccepted();
+    void requestDiscarded();
 };

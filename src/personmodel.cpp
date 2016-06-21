@@ -323,6 +323,7 @@ bool PersonModel::addPeerProfile(Person* c)
    for (auto col : collections(CollectionInterface::SupportedFeatures::ADD)) {
        //Only add profile to peer profile collection
        if (col->id() == "ppc") {
+           c->setCollection(col);
            col->add(c);
            return true;
        }
