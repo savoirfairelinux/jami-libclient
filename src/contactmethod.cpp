@@ -797,13 +797,13 @@ bool ContactMethod::isReachable() const
 
 Certificate* ContactMethod::certificate() const
 {
-   if (protocolHint() == URI::ProtocolHint::RING) {
-      d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(uri().userinfo(), account());
+    if (!d_ptr->m_pCertificate && protocolHint() == URI::ProtocolHint::RING)
+        d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(uri().userinfo(), account());
 
-      if (d_ptr->m_pCertificate && !d_ptr->m_pCertificate->contactMethod())
-         d_ptr->m_pCertificate->setContactMethod(const_cast<ContactMethod*>(this));
-   }
-   return d_ptr->m_pCertificate;
+    if (d_ptr->m_pCertificate && !d_ptr->m_pCertificate->contactMethod())
+        d_ptr->m_pCertificate->setContactMethod(const_cast<ContactMethod*>(this));
+
+    return d_ptr->m_pCertificate;
 }
 
 void ContactMethodPrivate::setCertificate(Certificate* certificate)
