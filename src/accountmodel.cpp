@@ -409,7 +409,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 ///When a Ring-DHT trust request arrive
 void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
-   Q_UNUSED(payload);
+   // Q_UNUSED(payload);
    qDebug() << "INCOMING REQUEST" << accountId << hash << time;
    Account* a = q_ptr->getById(accountId.toLatin1());
 
@@ -417,6 +417,18 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
       qWarning() << "Incoming trust request for unknown account" << accountId;
       return;
    }
+
+   // try to create the Person if we got a payload
+   Person *p = nullptr;
+   if (payload) {
+       p = VCardUtils::mapToPerson(VCardUtils::toHashMap(payload));
+   }
+
+   // create CM
+   auto cm = PhoneDirectoryModel::instance().getNumber(hash, p, a);
+   cm->setLastUsed(time);
+
+   // TODO: are we sure the created Person contains the CM?
 
    TrustRequest* r = new TrustRequest(a, hash, time);
    a->pendingTrustRequestModel()->d_ptr->addRequest(r);

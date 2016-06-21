@@ -1326,8 +1326,8 @@ bool Account::requestTrust( Certificate* c )
 
    QByteArray payload;
 
-   if (contactMethod() && contactMethod()->contact()) {
-      payload = contactMethod()->contact()->toVCard();
+   if (profile()) {
+      payload = profile()->toVCard();
    }
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
