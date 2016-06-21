@@ -24,6 +24,7 @@
 #include <account.h>
 #include <certificate.h>
 #include <certificatemodel.h>
+#include "person.h"
 
 //DRing
 #include "dbus/configurationmanager.h"
@@ -35,13 +36,15 @@ public:
    QDateTime    m_Time        ;
    Certificate* m_pCertificate;
    Account*     m_pAccount    ;
+   Person*      m_pPerson     ;
 };
 
-TrustRequest::TrustRequest(Account* a, const QString& id, time_t time) : QObject(a), d_ptr(new TrustRequestPrivate)
+TrustRequest::TrustRequest(Account* a, const QString& id, time_t time, Person *p) : QObject(a), d_ptr(new TrustRequestPrivate)
 {
    d_ptr->m_pAccount     = a;
    d_ptr->m_Time         = QDateTime::fromTime_t(time);
    d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(id, a);
+   d_ptr->m_pPerson      = p;
 }
 
 TrustRequest::~TrustRequest()
@@ -62,6 +65,11 @@ QDateTime TrustRequest::date() const
 Account* TrustRequest::account() const
 {
    return d_ptr->m_pAccount;
+}
+
+Person* TrustRequest::person() const
+{
+    return d_ptr->m_pPerson;
 }
 
 bool TrustRequest::accept()

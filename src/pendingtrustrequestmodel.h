@@ -23,6 +23,7 @@
 class Account;
 class PendingTrustRequestModelPrivate;
 class TrustRequest;
+class Person;
 
 /**
  * List the pending (incoming) trust request for an account
@@ -44,6 +45,11 @@ public:
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 
+   //Helpers
+   //TODO: hmm, this seems bad since a person could have multiple ringIDs and thus multiple trust requests
+   // maybe should be by CM instead?
+   TrustRequest* getByPerson(const Person *p) const;
+
 private:
    explicit PendingTrustRequestModel(Account* a);
    virtual ~PendingTrustRequestModel();
@@ -55,4 +61,3 @@ Q_SIGNALS:
    void requestAccepted (TrustRequest* r);
    void requestDiscarded(TrustRequest* r);
 };
-

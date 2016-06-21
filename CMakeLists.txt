@@ -599,6 +599,7 @@ SET(libringclient_PRIVATE_HDRS
    src/private/imconversationmanagerprivate.h
    src/private/smartInfoHub_p.h
    src/private/certificatemodel_p.h
+   src/private/pendingtrustrequestmodel_p.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

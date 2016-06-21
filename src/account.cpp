@@ -65,6 +65,7 @@
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
+#include "private/vcardutils.h"
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -136,18 +137,19 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
       AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
    }
 
-   //Load the pending trust requests
-   if (a->protocol() == Account::Protocol::RING) {
-      const QMap<QString,QString> requests = ConfigurationManager::instance().getTrustRequests(a->id());
-
-      QMapIterator<QString, QString> iter(requests);
-      while (iter.hasNext()) {
-         iter.next();
-         qDebug() << "REQUEST" << iter.key() << iter.value();
-         TrustRequest* r = new TrustRequest(a, iter.key(), 0);
-         a->pendingTrustRequestModel()->d_ptr->addRequest(r);
-      }
-   }
+   // TODO: move to PendingTrustRequestModel
+   // //Load the pending trust requests
+   // if (a->protocol() == Account::Protocol::RING) {
+   //    const QMap<QString,QString> requests = ConfigurationManager::instance().getTrustRequests(a->id());
+   //
+   //    QMapIterator<QString, QString> iter(requests);
+   //    while (iter.hasNext()) {
+   //       iter.next();
+   //       qDebug() << "REQUEST" << iter.key() << iter.value();
+   //       TrustRequest* r = new TrustRequest(a, iter.key(), 0);
+   //       a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+   //    }
+   // }
 
    return a;
 } //buildExistingAccountFromId
@@ -1279,8 +1281,8 @@ bool Account::requestTrust( Certificate* c )
 
    QByteArray payload;
 
-   if (contactMethod() && contactMethod()->contact()) {
-      payload = contactMethod()->contact()->toVCard();
+   if (profile()) {
+      payload = profile()->person()->toVCard();
    }
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);

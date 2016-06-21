@@ -21,19 +21,15 @@
 #include <typedefs.h>
 
 class TrustRequestPrivate;
-class AccountModel;
-class AccountModelPrivate;
 class Certificate;
 class Account;
-class AccountPrivate;
+class Person;
 
 class LIB_EXPORT TrustRequest : public QObject
 {
    Q_OBJECT
 
-friend class AccountModel;
-friend class AccountModelPrivate;
-friend class AccountPrivate;
+friend class PendingTrustRequestModelPrivate;
 
 public:
 
@@ -41,13 +37,14 @@ public:
    Certificate* certificate() const;
    QDateTime    date       () const;
    Account*     account    () const;
+   Person*      person     () const;
 
    //Mutator
    Q_INVOKABLE bool accept ();
    Q_INVOKABLE bool discard();
 
 private:
-   explicit TrustRequest(Account* a, const QString& id, time_t time);
+   explicit TrustRequest(Account* a, const QString& id, time_t time, Person *p = nullptr);
    virtual ~TrustRequest();
 
    TrustRequestPrivate* d_ptr;
@@ -57,4 +54,3 @@ Q_SIGNALS:
    void requestAccepted ();
    void requestDiscarded();
 };
-

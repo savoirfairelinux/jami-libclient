@@ -47,6 +47,10 @@
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
+#include "private/vcardutils.h"
+#include "phonedirectorymodel.h"
+#include "contactmethod.h"
+#include "personmodel.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -404,17 +408,16 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 ///When a Ring-DHT trust request arrive
 void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
-   Q_UNUSED(payload);
-   qDebug() << "INCOMING REQUEST" << accountId << hash << time;
-   Account* a = q_ptr->getById(accountId.toLatin1());
+    // Q_UNUSED(payload);
+    qDebug() << "INCOMING REQUEST" << accountId << hash << time;
+    Account* a = q_ptr->getById(accountId.toLatin1());
 
-   if (!a) {
-      qWarning() << "Incoming trust request for unknown account" << accountId;
-      return;
-   }
+    if (!a) {
+        qWarning() << "Incoming trust request for unknown account" << accountId;
+        return;
+    }
 
-   TrustRequest* r = new TrustRequest(a, hash, time);
-   a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+    a->pendingTrustRequestModel()->d_ptr->newTrustRequest(a, hash, payload, time);
 }
 
 ///Update accounts

@@ -387,8 +387,11 @@ void Person::setContactMethods(ContactMethods numbers)
       Certificate* cert = CertificateModel::instance().getCertificateFromId(hash);
       if (cert) {
          for (Account* a : ringAccounts) {
-            if (a->allowIncomingFromContact())
-               a->allowCertificate(cert);
+            if (a->allowIncomingFromContact()) {
+               // allow as long as this person is not from the PendingProfileCollection
+               if (this->collection()->id() != "pppc")
+                  a->allowCertificate(cert);
+            }
          }
       }
    }
