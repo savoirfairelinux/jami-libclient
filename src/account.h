@@ -487,6 +487,7 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
       Q_INVOKABLE bool requestTrust    ( Certificate* c       )      ;
       Q_INVOKABLE QString accountDetail(const QString& param) const;
+      Q_INVOKABLE bool requestTrust    ( const ContactMethod* c)     ;
 
       //Setters
       void setId                            (const QByteArray& id   );
