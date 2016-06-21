@@ -1320,6 +1320,15 @@ bool Account::requestTrust( Certificate* c )
    return true;
 }
 
+///Helper method to send trust request to the certificate of this CM
+bool Account::requestTrust(const ContactMethod* c)
+{
+    if (!c)
+        return false;
+
+    return requestTrust(c->certificate());
+}
+
 uint AccountPrivate::internalId() const
 {
    return m_InternalId;
