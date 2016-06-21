@@ -1661,7 +1661,7 @@ void CallPrivate::abort()
  */
 void CallPrivate::sendProfile()
 {
-    auto profile = ProfileModel::instance().selectedProfile();
+    auto profile = q_ptr->account()->profile();
     if (not profile)
         return;
 
