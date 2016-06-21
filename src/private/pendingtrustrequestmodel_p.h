@@ -17,23 +17,37 @@
  ***************************************************************************/
 #pragma once
 
+#include <QtCore/QObject>
+
 class PendingTrustRequestModel;
 class TrustRequest;
 
-class PendingTrustRequestModelPrivate
+class PendingTrustRequestModelPrivate final : public QObject
 {
 public:
    //Constructor
-   PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+   explicit PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+   ~PendingTrustRequestModelPrivate();
 
    //Attributes
-   QVector<TrustRequest*> m_lRequests;
-   Account*               m_pAccount ;
+   QVector<TrustRequest*>        m_lRequests;
+   Account*                      m_pAccount ;
+   QHash<Person*, TrustRequest*> m_hPersonsToTrustRequests;
+
+   //Pending person collection from which the trust requests will be reconstructed/tied to
+   // is this a hack? I don't know...
+   CollectionInterface*          m_pPendingCollection;
 
    //Helper
-   void addRequest   (TrustRequest* r);
-   void removeRequest(TrustRequest* r);
+   void newTrustRequest                  (Account *a, const QString& hash, const QByteArray& payload, time_t time);
+   void addRequest                       (TrustRequest* r);
+   void removeRequest                    (TrustRequest* r);
+   CollectionInterface* pendingCollection();
 
 private:
    PendingTrustRequestModel* q_ptr;
+
+public Q_SLOTS:
+    void requestAccepted();
+    void requestDiscarded();
 };
