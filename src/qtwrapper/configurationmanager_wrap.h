@@ -112,6 +112,12 @@ public:
                            Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
                      });
          }),
+         exportable_callback<ConfigurationSignal::CertificateStateChanged>(
+               [this] (const std::string &accountID, const std::string &certId, const std::string &state) {
+                     QTimer::singleShot(0, [this, accountID, certId, state] {
+                           Q_EMIT this->certificateStateChanged(QString(accountID.c_str()), QString(certId.c_str()), QString(state.c_str()));
+                     });
+         }),
          exportable_callback<DRing::ConfigurationSignal::AccountMessageStatusChanged>(
                [this] (const std::string& accountID, uint64_t id, const std::string& to, int status) {
                QTimer::singleShot(0, [this, accountID, id, to, status] {
@@ -137,6 +143,12 @@ public:
                      });
          }),
          exportable_callback<AudioSignal::DeviceEvent>(
+               [this] () {
+                     QTimer::singleShot(0, [this] {
+                           Q_EMIT this->audioDeviceEvent();
+                     });
+         }),
+         exportable_callback<ConfigurationSignal::DeviceEvent>(
                [this] () {
                      QTimer::singleShot(0, [this] {
                            Q_EMIT this->audioDeviceEvent();
@@ -635,6 +647,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePinned(const QString& certId);
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
+   void certificateStateChanged(const QString& accountId, const QString& certId, const QString& status);
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
    void mediaParametersChanged(const QString& accountId);
