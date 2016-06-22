@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_23a0d58f",
+        "filename": "src/account.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2016-06-22T16:37:31Z",
+      "side": 1,
+      "message": "Comment to update",
+      "range": {
+        "startLine": 174,
+        "startChar": 12,
+        "endLine": 174,
+        "endChar": 86
+      },
+      "revId": "b7122cb5b4b29bda8d0b3ed6220b988fca91bb19",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_c3ac798f",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2016-06-22T16:37:31Z",
+      "side": 1,
+      "message": "enum class,\nCould be \"NameDirectoryResponse\" for consistency.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 4
+      },
+      "revId": "b7122cb5b4b29bda8d0b3ed6220b988fca91bb19",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
