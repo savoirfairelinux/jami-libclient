@@ -48,6 +48,40 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_99eeee21",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Can this be removed? (see the .h comment)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_59f856e5",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "please move ret to the function scope and set it to this instead of copy-pasting this line.",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_595db6e8",
         "filename": "src/namedirectory.cpp",
         "patchSetId": 12
@@ -65,6 +99,57 @@
         "endLine": 29,
         "endChar": 18
       },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_5914d6f4",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "What is addr? Is there a better object that a string?",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_19f65ed8",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Use QString(), not \"\", this is much faster (see KDE guidelines)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_b902d2b2",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "first, it is missing the tr(), second, I disagree with this string parameter. It does 3 different things.\n\n * an address\n * nothing\n * an error message\n\nThis break LRC \"no magic strings\" guideline.",
       "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -94,6 +179,125 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_99634eb1",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "No include in .h, favor pointers and forward declarations (anyway, this will go away once it is in a d_ptr)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_d9e30632",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Missing export",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_19c17e80",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Do not put the constructor in the .h file, this is exported and will cause linking errors (blame the C++ creator for that).\n\nalso, this is a singleton, right? Then the constructor should be private and have \"explicit\" in front.",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_59cff6b0",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "enum class, upper case FOUND, NOT_FOUND, ERROR (constants are upper case)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_d951c6d9",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Please use QFuture, not callbacks (usual thread issues and so on)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_b9bdf204",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Missing virtual destructor.",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_39ca42a2",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "add static and use QStringLiteral, use upper case for constants.",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_795e7aeb",
         "filename": "src/namedirectory.h",
         "patchSetId": 12
@@ -111,6 +315,40 @@
         "endLine": 51,
         "endChar": 38
       },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_99d58e45",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "Please add a d_ptr, private attributes are prohibited in exported classes. See the LRC code guidelines and Qt guideline for \"why on earth did you add that to the guidelines\".\n\nAlso, please comply with the documented LRC naming guidelines.",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_79e99a19",
+        "filename": "src/private/contactmethod_p.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T19:46:18Z",
+      "side": 1,
+      "message": "It is a singleton, so this can be removed right?",
       "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
