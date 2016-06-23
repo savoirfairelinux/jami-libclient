@@ -105,6 +105,23 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_39e7a2e6",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-23T20:29:59Z",
+      "side": 1,
+      "message": "QStringLiteral(\"http://\")\n\nThis will create the string builder at compile time rather than runtime (much more efficient)",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_5914d6f4",
         "filename": "src/namedirectory.cpp",
         "patchSetId": 12
