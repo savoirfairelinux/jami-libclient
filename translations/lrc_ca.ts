@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;amfitrió</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
 </context>
 <context>
@@ -143,7 +143,7 @@
         <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mantenir</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contactes</translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contactes</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
 </context>
 <context>
@@ -361,7 +361,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tipus</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -1082,7 +1082,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
@@ -1226,17 +1226,17 @@
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <location filename="../src/useractionmodel.cpp" line="760"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>Mantenir</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="512"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Silencia l&apos;àudio</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="513"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>Silencia el vídeo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
-        <translation type="unfinished"/>
+        <translation>Grava</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="516"/>
@@ -1327,7 +1327,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="757"/>

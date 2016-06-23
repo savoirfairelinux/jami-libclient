@@ -119,13 +119,13 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>يرنّ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>يتّصل</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -987,7 +987,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation>الشهادة ليسة تابعة لمجموعة</translation>
+        <translation>الشهادة ليست تابعة لمجموعة</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 قائمة محظورة</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 قائمة مسموح بها</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1188,7 +1188,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>لا سلطة شهادة، لن يمكن التحقق من صلوحية شهادات الإجابة. يمكن أيضا أن لا يشتغل بعض الحسابات</translation>
+        <translation>لا سلطة شهادة، لن يمكن التحقق من صلاحية شهادات الإجابة. يمكن أيضا أن لا يشتغل بعض الحسابات</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1220,7 +1220,7 @@
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <location filename="../src/useractionmodel.cpp" line="748"/>
         <source>Accept</source>
-        <translation>إقبل</translation>
+        <translation>اقبل</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
@@ -1267,12 +1267,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Toggle video</source>
-        <translation>غير حالة الفيديو</translation>
+        <translation>غيّر حالة الفيديو</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Add a contact</source>
-        <translation>أضف إتصال </translation>
+        <translation>أضف اتصال </translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
@@ -1282,7 +1282,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Delete contact</source>
-        <translation>إحذف الإتصال</translation>
+        <translation>احذف الإتصال</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
@@ -1292,7 +1292,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Copy contact</source>
-        <translation>إنسخ الإتصال</translation>
+        <translation>انسخ الإتصال</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>تعديل تفاصيل جهة الإتصال</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
@@ -1322,7 +1322,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="775"/>
         <source>Remove</source>
-        <translation>إحذف</translation>
+        <translation>احذف</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
@@ -1337,7 +1337,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Cancel</source>
-        <translation>ألغي</translation>
+        <translation>ألغِ</translation>
     </message>
 </context>
 <context>

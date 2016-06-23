@@ -119,13 +119,13 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sonando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Llamando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS está deshabilitado, por lo que la negociación de las claves no será cifrada. Su comunicación será vulnerable a snooping</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Editar detalles de contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>

@@ -733,7 +733,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Profilis</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="394"/>
@@ -1002,12 +1002,12 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Išsamiau</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Liudijimo turinys</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
@@ -1017,7 +1017,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>Įvairi su saugumu susijusi informacija</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS yra išjungta, derėjimasis nebus užšifruotas. Jūsų ryšys bus pažeidžiamas šnipinėjimui</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1198,7 +1198,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Pasibaigė jūsų liudijimo galiojimo laikas, prašome susisiekti su savo sistemos administratoriumi.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>

@@ -125,7 +125,7 @@
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Звъни</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>

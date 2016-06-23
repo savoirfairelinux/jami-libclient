@@ -11,25 +11,25 @@
         <location filename="../src/account.cpp" line="273"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Registriran</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nije registriran...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pokušavam...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Greška</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="283"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mreža je nedostupna</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="285"/>
@@ -65,19 +65,19 @@
         <location filename="../src/account.cpp" line="291"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Usluga je nedostupna</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="293"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neprihvatljivo</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="295"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neispravno</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="297"/>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguracija</translation>
     </message>
 </context>
 <context>
@@ -113,7 +113,7 @@
         <location filename="../src/call.cpp" line="708"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Novi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="711"/>
@@ -125,13 +125,13 @@
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Zovem</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Razgovaram</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="720"/>
@@ -149,13 +149,13 @@
         <location filename="../src/call.cpp" line="726"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neuspjelo</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="729"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Zauzeto</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="732"/>
@@ -180,7 +180,7 @@
         <location filename="../src/call.cpp" line="851"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Greška</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="744"/>
@@ -200,7 +200,7 @@
         <location filename="../src/call.cpp" line="750"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>GREŠKA</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="753"/>
@@ -212,7 +212,7 @@
         <location filename="../src/call.cpp" line="756"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Prekinuto</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="759"/>
@@ -223,12 +223,12 @@
     <message>
         <location filename="../src/call.cpp" line="859"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Nepoznato</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2173"/>
         <source>Account: </source>
-        <translation type="unfinished"/>
+        <translation>Račun:</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="914"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Pozivi</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
         <location filename="../src/callmodel.cpp" line="553"/>
         <location filename="../src/callmodel.cpp" line="578"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>Neispravan račun</translation>
     </message>
 </context>
 <context>
@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/call.cpp" line="1748"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Prekinuto</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>Nema registriranih računa!</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation type="unfinished"/>
+        <translation>Najpopularnije</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Kontakti</translation>
     </message>
 </context>
 <context>
@@ -280,28 +280,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Kontakti</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>Prazno</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Nepoznato</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Nikada</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Ostalo</translation>
     </message>
 </context>
 <context>
@@ -317,7 +317,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation type="unfinished"/>
+        <translation>Lanac povjerenja</translation>
     </message>
 </context>
 <context>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
 </context>
 <context>
@@ -333,22 +333,22 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation type="unfinished"/>
+        <translation>Organizacija</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation type="unfinished"/>
+        <translation>Nedavno korišteno</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation type="unfinished"/>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
@@ -361,27 +361,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation type="unfinished"/>
+        <translation>Popularnost</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Trajanje</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Ukupno vrijeme</translation>
     </message>
 </context>
 <context>
@@ -389,102 +389,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Danas</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Jučer</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije dva tjedna</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije tri tjedna</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije tjedan dana</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije mjesec dana</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije dva mjeseca</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije tri mjeseca</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije četiri mjeseca</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije pet mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije šest mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije sedam mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije osam mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije devet mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije deset mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije jedanaest mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije dvanaest mjeseci</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation type="unfinished"/>
+        <translation>Prije godinu dana</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation type="unfinished"/>
+        <translation>Vrlo davno</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Nikada</translation>
     </message>
 </context>
 <context>
@@ -492,7 +492,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="695"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -505,12 +505,12 @@
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Novi</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Ostalo</translation>
     </message>
 </context>
 <context>
@@ -518,7 +518,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Ostalo</translation>
     </message>
 </context>
 <context>
@@ -526,17 +526,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Snimke</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation type="unfinished"/>
+        <translation>Tekstualne poruke</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Audio/Video</translation>
     </message>
 </context>
 <context>
@@ -544,7 +544,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>Nekategorizirano</translation>
     </message>
 </context>
 <context>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -575,7 +575,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>Osobe</translation>
     </message>
 </context>
 <context>
@@ -598,12 +598,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Vrsta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Osoba</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -658,7 +658,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Zabilježeno</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>Uid</translation>
     </message>
 </context>
 <context>
@@ -686,17 +686,17 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Poruka</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Boja</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -706,13 +706,13 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Zadano</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Prilagođeno</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -733,12 +733,12 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Profil</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="394"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Zadano</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="931"/>
         <source>Profiles</source>
-        <translation type="unfinished"/>
+        <translation>Profili</translation>
     </message>
 </context>
 <context>
@@ -754,7 +754,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="1003"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Novi profil</translation>
     </message>
 </context>
 <context>
@@ -762,7 +762,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Poruka</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
@@ -892,7 +892,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Datum aktivacije</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
@@ -907,12 +907,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Verzija</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Serijski broj</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
@@ -937,7 +937,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>Organizacija (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
@@ -947,12 +947,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Md5 otisak prsta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Sha1 otisak prsta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -972,7 +972,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Odlazni poslužitelj</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="180"/>
@@ -982,7 +982,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Zadano</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
@@ -1002,7 +1002,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Pojedinosti</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
@@ -1022,7 +1022,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Zaglavlje</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
@@ -1061,23 +1061,23 @@
         <location filename="../src/fallbackpersoncollection.cpp" line="186"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Lokalne zabilješke</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Zabilješka</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Lokalna povijest</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
@@ -1108,12 +1108,12 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>Lokalne melodije zvona</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Melodija zvona</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
@@ -1128,7 +1128,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Ostalo</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
@@ -1138,17 +1138,17 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>SIP račun</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation type="unfinished"/>
+        <translation>IAX2 račun</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1209,7 +1209,7 @@
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>Zadano</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
@@ -1220,7 +1220,7 @@
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <location filename="../src/useractionmodel.cpp" line="748"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prihvati</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
-        <translation type="unfinished"/>
+        <translation>Snimaj</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="516"/>
@@ -1257,12 +1257,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Pridruži se</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj novi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1272,17 +1272,17 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Add a contact</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Add to existing contact</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj u postojeće kontakte</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Delete contact</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
@@ -1292,7 +1292,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Copy contact</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
@@ -1302,27 +1302,27 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add phone number</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj telefonski broj</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Call again</source>
-        <translation type="unfinished"/>
+        <translation>Nazovi ponovno</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Uredi pojedinosti kontakta</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni iz povijesti</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="775"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
@@ -1345,7 +1345,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Trenutne osobe</translation>
     </message>
 </context>
 <context>
@@ -1361,7 +1361,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>Automatski</translation>
     </message>
 </context>
 <context>
@@ -1379,7 +1379,7 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="87"/>
         <source>FILE</source>
-        <translation type="unfinished"/>
+        <translation>DATOTEKA</translation>
     </message>
 </context>
 </TS>
