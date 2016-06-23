@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a6a9dd7_39f3220c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 12
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-23T19:42:51Z",
+      "side": 1,
+      "message": "mmm, this should be discussed... normally LRC depends only on Qt::Core",
+      "range": {
+        "startLine": 630,
+        "startChar": 32,
+        "endLine": 630,
+        "endChar": 39
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_f9c36a88",
+        "filename": "src/account.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-23T19:42:51Z",
+      "side": 1,
+      "message": "new role needs to be added in this function",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1069,
+        "endChar": 42
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_595db6e8",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-23T19:42:51Z",
+      "side": 1,
+      "message": "does this compile on linux?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_990a6ed1",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-23T19:42:51Z",
+      "side": 1,
+      "message": "since this is a QObject, would be cleaner to use the signal \u0026 slot mechanism instead of a lambda",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 7
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_795e7aeb",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-06-23T19:42:51Z",
+      "side": 1,
+      "message": "public APIs shouldn\u0027t have private members, see:\nhttps://community.kde.org/Policies/Library_Code_Policy",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 38
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
