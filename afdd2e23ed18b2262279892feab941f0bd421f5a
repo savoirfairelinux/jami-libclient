@@ -173,6 +173,24 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_af0a84d0",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2016-06-28T21:08:39Z",
+      "side": 1,
+      "message": "The string parameter only has meaning when the state is Response::found. It is the address (ring ID).",
+      "parentUuid": "9a6a9dd7_b902d2b2",
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_990a6ed1",
         "filename": "src/namedirectory.cpp",
         "patchSetId": 12
@@ -184,6 +202,30 @@
       "writtenOn": "2016-06-23T19:42:51Z",
       "side": 1,
       "message": "since this is a QObject, would be cleaner to use the signal \u0026 slot mechanism instead of a lambda",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 7
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a6a9dd7_2f6f5494",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2016-06-28T21:08:39Z",
+      "side": 1,
+      "message": "This makes use of signals and slots (using ::connect).\n\nTo my knowledge, the signal and slot mechanism doesn\u0027t allow to call the callback for the name we registered only. I initially started with S\u0026S but each slot would then receive the result for every request. Avoiding that would mean to increase code complexity a lot.\n\nIMHO, in general lambdas are more generic and powerful than S\u0026S, that where created when lambdas did not existed.",
+      "parentUuid": "9a6a9dd7_990a6ed1",
       "range": {
         "startLine": 77,
         "startChar": 4,
