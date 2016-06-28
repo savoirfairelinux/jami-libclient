@@ -238,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_af3124a4",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-06-28T21:36:48Z",
+      "side": 1,
+      "message": "As said in another comment somewhere, QFuture would be a better fit. Callbacks have their fair share of issues (mostly the thread safety, re-entrance and event loop inconsistency ones) and I would also prefer not to use them here.",
+      "parentUuid": "9a6a9dd7_2f6f5494",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 7
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_99634eb1",
         "filename": "src/namedirectory.h",
         "patchSetId": 12
