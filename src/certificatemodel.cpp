@@ -41,6 +41,7 @@
 #include "daemoncertificatecollection.h"
 #include "private/matrixutils.h"
 #include "private/certificatemodel_p.h"
+#include "accountmodel.h"
 
 /*
  * This data structure is a graph wrapping the certificates in different contexts.
@@ -166,9 +167,10 @@ CertificateNode::~CertificateNode()
       delete c;
 }
 
-CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : q_ptr(parent),
- m_pDefaultCategory(nullptr),m_CertLoader(),m_GroupCounter(-1)
+CertificateModelPrivate::CertificateModelPrivate(CertificateModel* parent) : QObject(parent), q_ptr(parent),
+ m_pDefaultCategory(nullptr), m_CertLoader(), m_GroupCounter(-1)
 {
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::certificateStateChanged, this, &CertificateModelPrivate::slotCertificateStateChanged);
 }
 
 CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Certificate>(this),
@@ -190,7 +192,6 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
 
 CertificateModel::~CertificateModel()
 {
-   delete d_ptr;
 }
 
 CertificateModel& CertificateModel::instance()
@@ -375,7 +376,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
    //Do not add it twice
    CertificateNode* node = CertificateModel::instance().d_ptr->m_hNodes[cert];
 
-   if (node && node->m_fIsPartOf & (0x01 << category->m_CatIdx))
+   if (isPartOf(node, category))
       return node;
 
    const int idx = category->m_lChildren.size();
@@ -425,6 +426,16 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
    node->m_IsLoaded = false;
 
    return node;
+}
+
+bool CertificateModelPrivate::isPartOf(CertificateNode* sibling, CertificateNode* list)
+{
+    if (!list) {
+        qWarning() << "CertificateModelPrivate::isPartOf called on empty list";
+        return false;
+    }
+
+    return sibling && sibling->m_fIsPartOf & (1 << list->m_CatIdx);
 }
 
 bool CertificateModel::setData( const QModelIndex& index, const QVariant &value, int role)
@@ -862,7 +873,7 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
    CertificateNode* sibling = m_hNodes       [ c ];
 
    //Check if it's already there
-   if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
+   if (isPartOf(sibling, allow))
       return true;
 
    //Notify the daemon
@@ -873,7 +884,7 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
    );
 
    //Check if the certificate isn't banned
-   if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
+   if (isPartOf(sibling, ban))
       removeFromTree(c, ban);
 
    //Add it
@@ -901,7 +912,7 @@ bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
    CertificateNode* sibling = m_hNodes       [ c ];
 
    //Check if it's already there
-   if (sibling && sibling->m_fIsPartOf & (0x01 << ban->m_CatIdx))
+   if (isPartOf(sibling, ban))
       return true;
 
    //Notify the daemon
@@ -912,13 +923,54 @@ bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
    );
 
    //Check if the certificate isn't allowed
-   if (sibling && sibling->m_fIsPartOf & (0x01 << allow->m_CatIdx))
+   if (isPartOf(sibling, allow))
       removeFromTree(c, allow);
 
    //Add it
    addToTree(c, ban);
 
    return true;
+}
+
+void CertificateModelPrivate::slotCertificateStateChanged(const QString& accountId, const QString& certId, const QString& state)
+{
+    if( auto a = AccountModel::instance().getById(accountId.toLatin1())) {
+        auto c = q_ptr->getCertificateFromId(certId, a);
+
+        //Make sure the lists exist
+        createAllowedList(a);
+        createBannedList(a);
+
+        CertificateNode* allow   = m_hAccAllowCat.value(a);
+        CertificateNode* ban     = m_hAccBanCat.value(a) ;
+        CertificateNode* sibling = m_hNodes.value(c);
+
+        if (state == DRing::Certificate::Status::ALLOWED) {
+            //Remove it from the ban list
+            if (isPartOf(sibling, ban))
+                removeFromTree(c, ban);
+
+            //Add it to the allow list
+            if (not isPartOf(sibling, allow) )
+                addToTree(c, allow);
+        } else if (state == DRing::Certificate::Status::BANNED) {
+            //Remove it from the allow list
+            if (isPartOf(sibling, allow))
+                removeFromTree(c, allow);
+
+            //Add it to the ban list
+            if (not isPartOf(sibling, ban) )
+                addToTree(c, ban);
+        } else if (state == DRing::Certificate::Status::UNDEFINED) {
+            //should not happen
+            qWarning() << "certificate status changed to UNDEFINED" << certId << "for account" << accountId;
+        } else {
+            //should not happen either
+            qWarning() << "unknown certificate status" << certId << state << "for account" << accountId;
+        }
+    } else {
+        qWarning() << "certificate status changed for unknown account" << accountId << certId;
+    }
 }
 
 void CertificateModel::collectionAddedCallback(CollectionInterface* collection)
