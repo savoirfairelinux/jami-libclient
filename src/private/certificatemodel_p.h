@@ -18,15 +18,19 @@
 #pragma once
 
 #include "matrixutils.h"
+#include "certificatemodel.h"
 
 #include <QtCore/QMutex>
+#include <QtCore/QObject>
+
 struct CertificateNode;
 class Account;
 class Certificate;
 class DaemonCertificateCollection;
 
-class CertificateModelPrivate
+class CertificateModelPrivate final : public QObject
 {
+   Q_OBJECT
 public:
    CertificateModelPrivate(CertificateModel* parent);
    virtual ~CertificateModelPrivate();
@@ -45,6 +49,7 @@ public:
    bool banCertificate(Certificate* c, Account* a);
    void loadChecks(CertificateNode* checks, Certificate* cert);
    void regenChecks(Certificate* cert);
+   bool isPartOf(CertificateNode* sibling, CertificateNode* list);
 
    //Attributes
    QVector<CertificateNode*>        m_lTopLevelNodes    ;
@@ -70,5 +75,7 @@ public:
 
 private:
    CertificateModel* q_ptr;
-};
 
+private Q_SLOTS:
+   void slotCertificateStateChanged(const QString& accountId, const QString& certId, const QString& state);
+};
