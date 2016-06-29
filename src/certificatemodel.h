@@ -100,4 +100,3 @@ private:
    Q_DECLARE_PRIVATE(CertificateModel)
 };
 Q_DECLARE_METATYPE(CertificateModel::NodeType)
-
