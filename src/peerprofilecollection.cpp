@@ -173,10 +173,7 @@ FlagPack<CollectionInterface::SupportedFeatures> PeerProfileCollection::supporte
    return
       CollectionInterface::SupportedFeatures::NONE       |
       CollectionInterface::SupportedFeatures::LOAD       |
-      CollectionInterface::SupportedFeatures::CLEAR      |
-      CollectionInterface::SupportedFeatures::REMOVE     |
-      CollectionInterface::SupportedFeatures::MANAGEABLE |
-      CollectionInterface::SupportedFeatures::ADD        ;
+      CollectionInterface::SupportedFeatures::MANAGEABLE ;
 }
 
 bool PeerProfileCollection::clear()
