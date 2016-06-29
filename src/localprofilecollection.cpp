@@ -186,10 +186,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalProfileCollection::support
    return
       CollectionInterface::SupportedFeatures::NONE       |
       CollectionInterface::SupportedFeatures::LOAD       |
-      CollectionInterface::SupportedFeatures::CLEAR      |
-      CollectionInterface::SupportedFeatures::REMOVE     |
-      CollectionInterface::SupportedFeatures::MANAGEABLE |
-      CollectionInterface::SupportedFeatures::ADD        ;
+      CollectionInterface::SupportedFeatures::MANAGEABLE ;
 }
 
 bool LocalProfileCollection::clear()
