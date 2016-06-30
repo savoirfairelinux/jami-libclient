@@ -304,6 +304,7 @@ SET( libringclient_LIB_SRCS
   src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
   src/peerprofilecollection.cpp
+  src/pendingpeerprofilecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -386,6 +387,7 @@ SET( libringclient_LIB_HDRS
   src/localprofilecollection.h
   src/localtextrecordingcollection.h
   src/peerprofilecollection.h
+  src/pendingpeerprofilecollection.h
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
