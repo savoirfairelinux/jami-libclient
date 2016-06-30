@@ -94,8 +94,6 @@ const Matrix1D<URI::SchemeType, const char*> URIPrivate::schemeNames = {{
    /*NONE = */ ""     ,
    /*SIP  = */ "sip:" ,
    /*SIPS = */ "sips:",
-   /*IAX  = */ "iax:" ,
-   /*IAX2 = */ "iax2:",
    /*RING = */ "ring:",
 }};
 
@@ -185,14 +183,11 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
 
    const char c = uriTrimmed[start].toLatin1();
 
-   //Assume the scheme is either iax, sip or ring using the first letter and length, this
+   //Assume the scheme is either sip or ring using the first letter and length, this
    //is dangerous and can cause undefined behaviour that will cause the call to fail
    //later on, but this is not really a problem for now
    if (end > start+3 && uriTrimmed[start+3] == ':') {
       switch (c) {
-         case 'i':
-            scheme = URI::SchemeType::IAX;
-            break;
          case 's':
             scheme = URI::SchemeType::SIP;
             break;
@@ -201,9 +196,6 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
    }
    else if (end > start+4 && uriTrimmed[start+4] == ':') {
       switch (c) {
-         case 'i':
-            scheme = URI::SchemeType::IAX2;
-            break;
          case 'r':
             scheme = URI::SchemeType::RING;
             break;
@@ -346,24 +338,19 @@ URI::ProtocolHint URI::protocolHint() const
       bool isHash = d_ptr->m_Userinfo.size() == 40;
       d_ptr->m_ProtocolHint = \
         (
-         //Step one    : Check IAX protocol, is has already been detected at this point
-         d_ptr->m_HeaderType == URI::SchemeType::IAX2 || d_ptr->m_HeaderType == URI::SchemeType::IAX
-            ? URI::ProtocolHint::IAX
-
-      : (
-         //Step two  : check IP
+         //Step one   : check IP
          URIPrivate::checkIp(d_ptr->m_Userinfo,isHash,d_ptr->m_HeaderType) ? URI::ProtocolHint::IP
 
       : (
-         //Step three    : Check RING protocol, is has already been detected at this point
+         //Step two   : Check RING protocol, is has already been detected at this point
          (d_ptr->m_HeaderType == URI::SchemeType::RING && isHash) || (isHash && d_ptr->m_Userinfo.size() == 40)
             ? URI::ProtocolHint::RING
 
       : (
-         //Step four   : Differentiate between ***@*** and *** type URIs
+         //Step three : Differentiate between ***@*** and *** type URIs
          d_ptr->m_HasAt ? URI::ProtocolHint::SIP_HOST : URI::ProtocolHint::SIP_OTHER
 
-        ))));
+        )));
 
         d_ptr->m_HintParsed = true;
    }
@@ -536,7 +523,6 @@ QString URI::format(FlagPack<URI::Section> sections) const
        // Use SIP scheme type on last resort
        if (header_type == SchemeType::NONE) {
            switch (protocolHint()) {
-               case ProtocolHint::IAX: header_type = SchemeType::IAX; break;
                case ProtocolHint::RING: header_type = SchemeType::RING; break;
                case ProtocolHint::SIP_HOST:
                case ProtocolHint::SIP_OTHER:
@@ -583,9 +569,6 @@ QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
    switch(ph) {
       case URI::ProtocolHint::SIP_OTHER:
          stream << QStringLiteral("SIP_OTHER");
-         break;
-      case URI::ProtocolHint::IAX      :
-         stream << QStringLiteral("IAX");
          break;
       case URI::ProtocolHint::RING     :
          stream << QStringLiteral("RING");
