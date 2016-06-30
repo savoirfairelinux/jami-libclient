@@ -57,7 +57,6 @@ public:
    QItemSelectionModel*              m_pSelectionModel    ;
    QStringList                       m_lMimes             ;
    QList<Account*>                   m_lSipAccounts       ;
-   QList<Account*>                   m_lIAXAccounts       ;
    QList<Account*>                   m_lRingAccounts      ;
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
 
@@ -74,4 +73,3 @@ public Q_SLOTS:
    void slotMediaParametersChanged(const QString& accountId);
    void slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
 };
-
