@@ -322,6 +322,30 @@
     },
     {
       "key": {
+        "uuid": "9a6a9dd7_afbb64c3",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2016-06-30T12:51:26Z",
+      "side": 1,
+      "message": "[1] QFuture : I never used QFuture, so I have first to learn what is it. (will do my \"home\"work)\n\n[2] signal/slot : I came to signal slot on some other part of the code (not on gerrit yet). The whole thing has to be rewritten anyway...",
+      "parentUuid": "9a6a9dd7_af3124a4",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 7
+      },
+      "revId": "afdd2e23ed18b2262279892feab941f0bd421f5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a6a9dd7_99634eb1",
         "filename": "src/namedirectory.h",
         "patchSetId": 12
