@@ -76,7 +76,7 @@ public:
    QItemSelectionModel*          m_pSelectionModel       ;
    bool                          m_HasCustomSelection    ;
 
-   QHash<Account*,TemporaryContactMethod*> m_hSipIaxTemporaryNumbers;
+   QHash<Account*,TemporaryContactMethod*> m_hSipTemporaryNumbers;
    QHash<Account*,TemporaryContactMethod*> m_hRingTemporaryNumbers;
    QHash<int, TemporaryContactMethod*> m_pPreferredTemporaryNumbers;
 
@@ -113,7 +113,7 @@ m_pSelectionModel(nullptr),m_HasCustomSelection(false)
    if (!hasNonIp2Ip) {
       TemporaryContactMethod* cm = new TemporaryContactMethod();
       cm->setAccount(ip2ip);
-      m_hSipIaxTemporaryNumbers[ip2ip] = cm;
+      m_hSipTemporaryNumbers[ip2ip] = cm;
    }
 
    connect(&AccountModel::instance(), &AccountModel::accountAdded  , this, &NumberCompletionModelPrivate::accountAdded  );
@@ -127,9 +127,9 @@ NumberCompletionModel::NumberCompletionModel() : QAbstractTableModel(&PhoneDirec
 
 NumberCompletionModel::~NumberCompletionModel()
 {
-   QList<TemporaryContactMethod*> l = d_ptr->m_hSipIaxTemporaryNumbers.values();
+   QList<TemporaryContactMethod*> l = d_ptr->m_hSipTemporaryNumbers.values();
 
-   d_ptr->m_hSipIaxTemporaryNumbers.clear();
+   d_ptr->m_hSipTemporaryNumbers.clear();
 
    while(l.size()) {
       TemporaryContactMethod* cm = l.takeAt(0);
@@ -317,7 +317,7 @@ void NumberCompletionModelPrivate::setPrefix(const QString& str)
          cm->setUri(m_Prefix);
       }
    } else {
-      for(auto cm : m_hSipIaxTemporaryNumbers) {
+      for(auto cm : m_hSipTemporaryNumbers) {
          if (cm)
             cm->setUri(m_Prefix);
       }
@@ -363,7 +363,7 @@ void NumberCompletionModelPrivate::updateModel()
             }
          }
       } else {
-         for (auto cm : m_hSipIaxTemporaryNumbers) {
+         for (auto cm : m_hSipTemporaryNumbers) {
             if (!cm) continue;
             if (auto weight = getWeight(cm->account())) {
                q_ptr->beginInsertRows(QModelIndex(), m_hNumbers.size(), m_hNumbers.size());
@@ -598,18 +598,15 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
    bool hasNonIp2Ip = false;
 
    switch(a->protocol()) {
-      case Account::Protocol::SIP :
+      case Account::Protocol::SIP : {
          hasNonIp2Ip = true;
-         //no break
-         [[clang::fallthrough]];
-      case Account::Protocol::IAX : {
          TemporaryContactMethod* cm = new TemporaryContactMethod();
 
          if (!m_pPreferredTemporaryNumbers[(int)a->protocol()])
             m_pPreferredTemporaryNumbers[(int)a->protocol()] = cm;
 
          cm->setAccount(a);
-         m_hSipIaxTemporaryNumbers[a] = cm;
+         m_hSipTemporaryNumbers[a] = cm;
          }
          break;
       case Account::Protocol::RING: {
@@ -631,12 +628,12 @@ bool NumberCompletionModelPrivate::accountAdded(Account* a)
 
 void NumberCompletionModelPrivate::accountRemoved(Account* a)
 {
-   TemporaryContactMethod* cm = m_hSipIaxTemporaryNumbers[a];
+   TemporaryContactMethod* cm = m_hSipTemporaryNumbers[a];
 
    if (!cm)
       cm = m_hRingTemporaryNumbers[a];
 
-   m_hSipIaxTemporaryNumbers[a] = nullptr;
+   m_hSipTemporaryNumbers[a] = nullptr;
    m_hRingTemporaryNumbers  [a] = nullptr;
 
    setPrefix(q_ptr->prefix());

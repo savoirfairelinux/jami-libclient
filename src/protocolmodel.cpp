@@ -42,7 +42,6 @@ public:
    struct ToolTips {
       static const QString RING_ACCOUNT_TOOLTIP;
       static const QString SIP_ACCOUNT_TOOLTIP ;
-      static const QString IAX2_ACCOUNT_TOOLTIP;
    };
 
 public Q_SLOTS:
@@ -51,7 +50,6 @@ public Q_SLOTS:
 
 const QString ProtocolModelPrivate::ToolTips::RING_ACCOUNT_TOOLTIP = QObject::tr("Ring Account");
 const QString ProtocolModelPrivate::ToolTips::SIP_ACCOUNT_TOOLTIP  = QObject::tr("SIP Account" );
-const QString ProtocolModelPrivate::ToolTips::IAX2_ACCOUNT_TOOLTIP = QObject::tr("IAX2 Account");
 
 
 ProtocolModelPrivate::ProtocolModelPrivate(Account* a) : m_pSelectionModel(nullptr), m_pAccount(a)
@@ -90,8 +88,6 @@ QVariant ProtocolModel::data( const QModelIndex& index, int role) const
       switch (proto) {
          case Account::Protocol::SIP    :
             return DRing::Account::ProtocolNames::SIP;
-         case Account::Protocol::IAX    :
-            return DRing::Account::ProtocolNames::IAX;
          case Account::Protocol::RING   :
             return DRing::Account::ProtocolNames::RING;
          case Account::Protocol::COUNT__:
@@ -117,8 +113,7 @@ Qt::ItemFlags ProtocolModel::flags( const QModelIndex& index ) const
    //Account type cannot be changed, the daemon doesn't support that and crash
    //it was considered a client responsibility to disallow it. It is not worth
    //fixing
-   return (static_cast<Account::Protocol>(index.row()) == Account::Protocol::IAX ?
-   Qt::NoItemFlags : (Qt::ItemIsEnabled|Qt::ItemIsSelectable));
+   return (Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 }
 
 bool ProtocolModel::setData( const QModelIndex& index, const QVariant &value, int role)

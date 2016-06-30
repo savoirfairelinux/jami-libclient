@@ -328,8 +328,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       enum class Protocol {
          SIP  = 0, /*!< Used for both SIP and IP2IP calls */
-         IAX  = 1, /*!< Inter Asterisk exchange protocol  */
-         RING = 2, /*!< Used for RING-DHT calls           */
+         RING = 1, /*!< Used for RING-DHT calls           */
          COUNT__,
       };
       Q_ENUMS(Protocol)

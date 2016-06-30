@@ -116,9 +116,6 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
          case URI::ProtocolHint::SIP_HOST:
             type = URI::SchemeType::SIP;
             break;
-         case URI::ProtocolHint::IAX:
-            type = URI::SchemeType::IAX;
-            break;
          case URI::ProtocolHint::IP:
             break;
          case URI::ProtocolHint::RING:

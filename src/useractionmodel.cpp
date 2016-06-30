@@ -259,31 +259,31 @@ const Matrix1D< UAMA, bool > UserActionModelPrivate::heterogenous_call_options =
  * This matrix allow to enable/disable actions depending on the call protocol
  */
 const Matrix2D< UAMA, Account::Protocol, bool > UserActionModelPrivate::availableProtocolActions = {
-   /*                              SIP    IAX    DHT   */
-   { UAMA::ACCEPT            , {{ true , true , true  }}},
-   { UAMA::HOLD              , {{ true , true , true  }}},
-   { UAMA::MUTE_AUDIO        , {{ true , true , true  }}},
-   { UAMA::MUTE_VIDEO        , {{ true , true , true  }}},
-   { UAMA::SERVER_TRANSFER   , {{ true , false, false }}},
-   { UAMA::RECORD            , {{ true , true , true  }}},
-   { UAMA::HANGUP            , {{ true , true , true  }}},
+   /*                              SIP   DHT   */
+   { UAMA::ACCEPT            , {{ true , true  }}},
+   { UAMA::HOLD              , {{ true , true  }}},
+   { UAMA::MUTE_AUDIO        , {{ true , true  }}},
+   { UAMA::MUTE_VIDEO        , {{ true , true  }}},
+   { UAMA::SERVER_TRANSFER   , {{ true , false }}},
+   { UAMA::RECORD            , {{ true , true  }}},
+   { UAMA::HANGUP            , {{ true , true  }}},
 
-   { UAMA::JOIN              , {{ true , true , true  }}},
+   { UAMA::JOIN              , {{ true , true  }}},
 
-   { UAMA::ADD_NEW           , {{ true , true , true  }}},
+   { UAMA::ADD_NEW           , {{ true , true  }}},
 
-   { UAMA::TOGGLE_VIDEO      , {{ true,  true , true  }}},
-   { UAMA::ADD_CONTACT       , {{ true,  true , true  }}},
-   { UAMA::ADD_TO_CONTACT    , {{ true,  true , true  }}},
-   { UAMA::DELETE_CONTACT    , {{ true,  true , true  }}},
-   { UAMA::EMAIL_CONTACT     , {{ true,  true , true  }}},
-   { UAMA::COPY_CONTACT      , {{ true,  true , true  }}},
-   { UAMA::BOOKMARK          , {{ true,  true , true  }}},
-   { UAMA::VIEW_CHAT_HISTORY , {{ true,  true , true  }}},
-   { UAMA::ADD_CONTACT_METHOD, {{ true,  true , true  }}},
-   { UAMA::CALL_CONTACT      , {{ true,  true , true  }}},
-   { UAMA::EDIT_CONTACT      , {{ true,  true , true  }}},
-   { UAMA::REMOVE_HISTORY    , {{ true,  true , true  }}},
+   { UAMA::TOGGLE_VIDEO      , {{ true,  true  }}},
+   { UAMA::ADD_CONTACT       , {{ true,  true  }}},
+   { UAMA::ADD_TO_CONTACT    , {{ true,  true  }}},
+   { UAMA::DELETE_CONTACT    , {{ true,  true  }}},
+   { UAMA::EMAIL_CONTACT     , {{ true,  true  }}},
+   { UAMA::COPY_CONTACT      , {{ true,  true  }}},
+   { UAMA::BOOKMARK          , {{ true,  true  }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true,  true  }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true,  true  }}},
+   { UAMA::CALL_CONTACT      , {{ true,  true  }}},
+   { UAMA::EDIT_CONTACT      , {{ true,  true  }}},
+   { UAMA::REMOVE_HISTORY    , {{ true,  true  }}},
 };
 
 /**
