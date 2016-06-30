@@ -550,10 +550,10 @@ Credential* CredentialModel::primaryCredential(Credential::Type type)
 
 ///Is a credential type available for an account protocol
 const Matrix2D<Credential::Type, Account::Protocol, bool> NewCredentialTypeModel::m_smAvailableInProtocol = {
-   /*                          SIP   IAX    RING */
-   { Credential::Type::SIP , {{true, false, false}}},
-   { Credential::Type::STUN, {{true, false, true }}},
-   { Credential::Type::TURN, {{true, false, true }}},
+   /*                          SIP   RING */
+   { Credential::Type::SIP , {{true, false}}},
+   { Credential::Type::STUN, {{true, true }}},
+   { Credential::Type::TURN, {{true, true }}},
 };
 
 ///The maximum number of credentials (-1 = inf), this could be protocol dependent

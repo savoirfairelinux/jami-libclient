@@ -624,7 +624,6 @@ QString ContactMethod::toHash() const
          uristr = uri().userinfo();
          break;
       case URI::ProtocolHint::SIP_OTHER:
-      case URI::ProtocolHint::IAX      :
       case URI::ProtocolHint::IP       :
       case URI::ProtocolHint::SIP_HOST :
          //Some URI have port number in them. They have to be stripped prior to the hash creation
@@ -769,7 +768,6 @@ bool ContactMethod::isReachable() const
    auto& m = AccountModel::instance();
 
    const bool hasSip   = m.isSipSupported  ();
-   const bool hasIAX   = m.isIAXSupported  ();
    const bool hasIP2IP = m.isIP2IPSupported();
    const bool hasRing  = m.isRingSupported ();
 
@@ -782,10 +780,6 @@ bool ContactMethod::isReachable() const
          [[clang::fallthrough]];
       case URI::ProtocolHint::SIP_OTHER:
          if (hasSip)
-            return true;
-         break;
-      case URI::ProtocolHint::IAX      :
-         if (hasIAX)
             return true;
          break;
       case URI::ProtocolHint::RING     :

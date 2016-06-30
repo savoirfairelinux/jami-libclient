@@ -45,9 +45,6 @@ class QDataStream;
     *  * <sip:c8oqz84zk7z@privacy.org>;tag=hyh8
     *  * 1 800 123-4567
     *  * 18001234567
-    *  * iax:example.com/alice
-    *  * iax:johnQ@example.com/12022561414
-    *  * iax:example.com:4570/alice?friends
     *
     * @ref http://tools.ietf.org/html/rfc5456#page-8
     * @ref http://tools.ietf.org/html/rfc3986
@@ -94,11 +91,9 @@ public:
 
    ///@enum SchemeType The very first part of the URI followed by a ':'
    enum class SchemeType {
-      NONE , //Implicit SIP or IAX, use account type as reference
+      NONE , //Implicit SIP, use account type as reference
       SIP  ,
       SIPS ,
-      IAX  ,
-      IAX2 ,
       RING ,
       COUNT__
    };
@@ -167,10 +162,9 @@ public:
     */
    enum class ProtocolHint {
       SIP_OTHER = 0, /*!< Anything non empty that doesn't fit in other categories */
-      IAX       = 1, /*!< Start with "iax:" or "iax2:"                            */
-      RING      = 2, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars */
-      IP        = 3, /*!< Match an IPv4 address                                   */
-      SIP_HOST  = 4, /*!< Has an @ and no "ring:" prefix                          */
+      RING      = 1, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars */
+      IP        = 2, /*!< Match an IPv4 address                                   */
+      SIP_HOST  = 3, /*!< Has an @ and no "ring:" prefix                          */
    };
    Q_ENUMS(URI::ProtocolHint)
 

@@ -54,7 +54,6 @@ AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent)
 m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
 m_lSupportedProtocols {{
    /* SIP  */ false,
-   /* IAX  */ false,
    /* RING */ false,
 }}
 {}
@@ -798,8 +797,6 @@ QList<Account*> AccountModel::getAccountsByProtocol( const Account::Protocol pro
    switch(protocol) {
       case Account::Protocol::SIP:
          return d_ptr->m_lSipAccounts;
-      case Account::Protocol::IAX:
-         return d_ptr->m_lIAXAccounts;
       case Account::Protocol::RING:
          return d_ptr->m_lRingAccounts;
       case Account::Protocol::COUNT__:
@@ -839,11 +836,6 @@ bool AccountModel::isPresenceSubscribeSupported() const
 bool AccountModel::isSipSupported() const
 {
    return d_ptr->m_lSupportedProtocols[Account::Protocol::SIP];
-}
-
-bool AccountModel::isIAXSupported() const
-{
-   return d_ptr->m_lSupportedProtocols[Account::Protocol::IAX];
 }
 
 bool AccountModel::isIP2IPSupported() const
@@ -887,9 +879,6 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
    switch(a->protocol()) {
       case Account::Protocol::SIP:
          m_lSipAccounts  << a;
-         break;
-      case Account::Protocol::IAX:
-         m_lIAXAccounts  << a;
          break;
       case Account::Protocol::RING:
          m_lRingAccounts << a;
