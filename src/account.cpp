@@ -167,9 +167,6 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
       case Account::Protocol::SIP:
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::SIP);
          break;
-      case Account::Protocol::IAX:
-         tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::IAX);
-         break;
       case Account::Protocol::RING:
          tmp = configurationManager.getAccountTemplate(DRing::Account::ProtocolNames::RING);
          break;
@@ -360,12 +357,10 @@ const QString AccountPrivate::accountDetail(const QString& param) const
       if (param == DRing::Account::ConfProperties::Registration::STATUS) { //If an account is new, then it is unregistered
          return DRing::Account::States::UNREGISTERED;
       }
-      if (q_ptr->protocol() != Account::Protocol::IAX) {//IAX accounts lack some fields, be quiet
-         static QHash<QString,bool> alreadyWarned;
-         if (!alreadyWarned[param]) {
-            alreadyWarned[param] = true;
-            qDebug() << "Account parameter \"" << param << "\" not found";
-         }
+      static QHash<QString,bool> alreadyWarned;
+      if (!alreadyWarned[param]) {
+         alreadyWarned[param] = true;
+         qDebug() << "Account parameter \"" << param << "\" not found";
       }
       return QString();
    }
@@ -657,8 +652,6 @@ QString Account::password() const
          if (credentialModel()->primaryCredential(Credential::Type::SIP))
             return credentialModel()->primaryCredential(Credential::Type::SIP)->password();
          break;
-      case Account::Protocol::IAX:
-         return d_ptr->accountDetail(DRing::Account::ConfProperties::PASSWORD);
       case Account::Protocol::RING:
          return tlsPassword();
       case Account::Protocol::COUNT__:
@@ -860,7 +853,6 @@ int Account::localPort() const
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-      case Account::Protocol::IAX:
          if (isTlsEnabled())
             return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
          else
@@ -892,8 +884,6 @@ Account::Protocol Account::protocol() const
 
    if (str.isEmpty() || str == DRing::Account::ProtocolNames::SIP)
       return Account::Protocol::SIP;
-   else if (str == DRing::Account::ProtocolNames::IAX)
-      return Account::Protocol::IAX;
    else if (str == DRing::Account::ProtocolNames::RING)
       return Account::Protocol::RING;
    qDebug() << "Warning: unhandled protocol name" << str << ", defaulting to SIP";
@@ -1287,11 +1277,6 @@ bool Account::supportScheme( URI::SchemeType type )
          if (protocol() == Account::Protocol::SIP)
             return true;
          break;
-      case URI::SchemeType::IAX  :
-      case URI::SchemeType::IAX2 :
-         if (protocol() == Account::Protocol::IAX)
-            return true;
-         break;
       case URI::SchemeType::RING :
          if (protocol() == Account::Protocol::RING)
             return true;
@@ -1390,16 +1375,13 @@ void Account::setId(const QByteArray& id)
    d_ptr->m_AccountId = id;
 }
 
-///Set the account type, SIP or IAX
+///Set the account type, SIP or RING
 void Account::setProtocol(Account::Protocol proto)
 {
    //TODO prevent this if the protocol has been saved
    switch (proto) {
       case Account::Protocol::SIP:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::SIP );
-         break;
-      case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::IAX );
          break;
       case Account::Protocol::RING:
          d_ptr->setAccountProperty(DRing::Account::ConfProperties::TYPE ,DRing::Account::ProtocolNames::RING);
@@ -1427,7 +1409,6 @@ void Account::setUsername(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::USERNAME, detail);
    switch (protocol()) {
-      case Account::Protocol::IAX:
       case Account::Protocol::RING:
       case Account::Protocol::COUNT__:
          //nothing to do
@@ -1470,9 +1451,6 @@ void Account::setPassword(const QString& detail)
             const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
             credentialModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
          }
-         break;
-      case Account::Protocol::IAX:
-         d_ptr->setAccountProperty(DRing::Account::ConfProperties::PASSWORD, detail);
          break;
       case Account::Protocol::RING:
          setTlsPassword(detail);
@@ -1600,12 +1578,11 @@ void Account::setTlsNegotiationTimeoutSec(int detail)
    d_ptr->regenSecurityValidation();
 }
 
-///Set the local port for SIP/IAX communications
+///Set the local port for SIP/RING communications
 void Account::setLocalPort(unsigned short detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-      case Account::Protocol::IAX:
          if (isTlsEnabled())
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
          else
@@ -1805,7 +1782,6 @@ void Account::setUseDefaultPort(bool value)
    if (value) {
       switch (protocol()) {
          case Account::Protocol::SIP:
-         case Account::Protocol::IAX:
             setLocalPort(5060); //FIXME check is TLS is used
             break;
          case Account::Protocol::RING:
@@ -2233,7 +2209,6 @@ Account::RoleState Account::roleState(Account::Role role) const
                   Account::RoleState::READ_WRITE : Account::RoleState::UNAVAILABLE;
          }
          [[clang::fallthrough]];
-      case Account::Protocol::IAX     :
       case Account::Protocol::COUNT__ :
          switch(role) {
             case Account::Role::BannedCertificatesModel :
@@ -2508,7 +2483,7 @@ void AccountPrivate::modify()  {
    /* ALIAS   : While valid, an account without one cause usability issues */
    /* HOSTNAME: Without hostname, an account cannot be "READY"             */
    /* USERNAME: All protocols but IP2IP require an username                */
-   /* PASSWORD: SIP and IAX accounts require a password                    */
+   /* PASSWORD: SIP accounts require a password (unless used as IP2IP)     */
 
    m_hRoleStatus[(int)R::Alias   ] = q_ptr->alias   ().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
    m_hRoleStatus[(int)R::Hostname] = q_ptr->hostname().isEmpty() ? ST::REQUIRED_EMPTY : ST::OK;
@@ -2537,7 +2512,6 @@ void AccountPrivate::modify()  {
             m_hRoleStatus[(int)R::Username] = ST::INVALID;
 
          break;
-      case Account::Protocol::IAX:
       case Account::Protocol::COUNT__:
          //No changes needed
          break;

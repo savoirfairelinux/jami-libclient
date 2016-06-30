@@ -396,11 +396,6 @@ public Q_SLOTS: // METHODS
       return DRing::isDtmfMuted();
    }
 
-   int isIax2Enabled()
-   {
-      return DRing::isIax2Enabled();
-   }
-
    bool isPlaybackMuted()
    {
       return DRing::isPlaybackMuted();
