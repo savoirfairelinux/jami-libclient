@@ -198,10 +198,13 @@ QModelIndex MacroModel::parent( const QModelIndex& index) const
 
 QModelIndex MacroModel::index( int row, int column, const QModelIndex& parent) const
 {
-   if (!parent.isValid() && d_ptr->m_lCategories.size() > row) {
+   if (column != 0 || parent.parent().isValid())
+      return QModelIndex();
+
+   if ((!parent.isValid()) && d_ptr->m_lCategories.size() > row && row >= 0) {
       return createIndex(row,column,d_ptr->m_lCategories[row]->m_pPointer);
    }
-   else if (parent.isValid() && d_ptr->m_lCategories[parent.row()]->m_lContent.size() > row) {
+   else if (parent.isValid() && d_ptr->m_lCategories[parent.row()]->m_lContent.size() > row && row >= 0) {
       return createIndex(row,column,d_ptr->m_lCategories[parent.row()]->m_lContent[row]->d_ptr->m_pPointer);
    }
    return QModelIndex();
