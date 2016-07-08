@@ -196,7 +196,7 @@ RecentModel::getParticipantNumber(Call *call) const
 
 void RecentModelPrivate::selectNode(RecentViewNode* node) const
 {
-   const auto idx = q_ptr->createIndex(node->m_Index, 0, node->m_pParent);
+   const auto idx = q_ptr->createIndex(node->m_Index, 0, node);
 
    q_ptr->selectionModel()->setCurrentIndex(idx, QItemSelectionModel::ClearAndSelect);
 }
@@ -748,7 +748,7 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Perso
         removeNode(n);
 
         if (newParentNode && newParentNode->m_lChildren.size()) {
-            q_ptr->selectionModel()->select(q_ptr->getIndex(const_cast<Person*>(newParentNode->m_uContent.m_pPerson)), QItemSelectionModel::ClearAndSelect);
+            selectNode(newParentNode);
         }
     }
 }
