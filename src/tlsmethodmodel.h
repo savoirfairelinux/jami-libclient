@@ -46,7 +46,7 @@ public:
       TLSv1_0   = 1,
       TLSv1_1   = 2,
       TLSv1_2   = 3,
-      SSLv3     = 4,
+      COUNT__
    };
 
    //Private constructor, can only be called by 'Account'
@@ -70,4 +70,3 @@ private:
 
 };
 Q_DECLARE_METATYPE(TlsMethodModel*)
-

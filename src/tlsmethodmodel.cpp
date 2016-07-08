@@ -40,7 +40,6 @@ public:
       constexpr static const char* TLSv1   = "TLSv1"  ;
       constexpr static const char* TLSv1_1 = "TLSv1.1";
       constexpr static const char* TLSv1_2 = "TLSv1.2";
-      constexpr static const char* SSLv3   = "SSLv3"  ;
    };
 
 
@@ -50,7 +49,6 @@ public:
       constexpr static const char* TLSv1   = "TLSv1"  ;
       constexpr static const char* TLSv1_1 = "TLSv1.1";
       constexpr static const char* TLSv1_2 = "TLSv1.2";
-      constexpr static const char* SSLv3   = "SSLv3"  ;
    };
 
    static const char* toDaemonName(TlsMethodModel::Type type);
@@ -112,16 +110,18 @@ QVariant TlsMethodModel::data( const QModelIndex& index, int role) const
             return TlsMethodModelPrivate::Name::TLSv1_1;
          case TlsMethodModel::Type::TLSv1_2:
             return TlsMethodModelPrivate::Name::TLSv1_2;
-         case TlsMethodModel::Type::SSLv3:
-            return TlsMethodModelPrivate::Name::SSLv3;
+         case TlsMethodModel::Type::COUNT__:
+            break;
       };
    }
    return QVariant();
 }
 
 int TlsMethodModel::rowCount( const QModelIndex& parent ) const
+
 {
-   return parent.isValid()?0: d_ptr->isRing ? 1 : 4;
+    // In the RING case, only the "default" encryption type can be used
+    return parent.isValid() ? 0 : d_ptr->isRing ? 1 : static_cast<int>(TlsMethodModel::Type::COUNT__);
 }
 
 Qt::ItemFlags TlsMethodModel::flags( const QModelIndex& index ) const
@@ -181,8 +181,9 @@ const char* TlsMethodModelPrivate::toDaemonName(TlsMethodModel::Type type)
          return TlsMethodModelPrivate::DaemonName::TLSv1_1;
       case TlsMethodModel::Type::TLSv1_2:
          return TlsMethodModelPrivate::DaemonName::TLSv1_2;
-      case TlsMethodModel::Type::SSLv3:
-         return TlsMethodModelPrivate::DaemonName::SSLv3;
+      case TlsMethodModel::Type::COUNT__:
+         // default
+         break;
    };
    return TlsMethodModelPrivate::DaemonName::DEFAULT;
 }
@@ -198,8 +199,6 @@ TlsMethodModel::Type TlsMethodModelPrivate::fromDaemonName(const QString& name)
       return TlsMethodModel::Type::TLSv1_1;
    else if (name == TlsMethodModelPrivate::DaemonName::TLSv1_2)
       return TlsMethodModel::Type::TLSv1_2;
-   else if (name == TlsMethodModelPrivate::DaemonName::SSLv3)
-      return TlsMethodModel::Type::SSLv3;
    qDebug() << "Unknown TLS method" << name;
    return TlsMethodModel::Type::DEFAULT;
 }
