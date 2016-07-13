@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_35d6d0c6",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "make this connection in the SmartInfoHub object directly... there doesn\u0027t really  need to be any code in the CallModel, as far as I can tell",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 125
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_d553dc6a",
+        "filename": "src/callmodel.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "SmartInfoHub is not a property of the CallModel, so it doesn\u0027t make much sense to have this signal here. I think its enough having SmartInfoHub emit a signal when it has changed, a user who is interested in the info of SmartInfoHub will connect to its signal, there isn\u0027t really much point in having another signal in the CallModel.",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 41
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_55c7cc12",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "this is not a very nice API... the LRC API doesn\u0027t need to match the daemon API.  You should probably have a something like a \"setUpdateInterval(int)\" method, and a default interval already set, and then start() and stop() methods.",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_954d64c7",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "setMapInfo should not be public, otherwise this means that a client can do setMapInfo() and this doesn\u0027t make sense",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 53
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_f5505860",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "this doesn\u0027t conform with the LRC conventions, ie: getters should not have the word \u0027get\u0027 in them: eg:\ngetLocalFps() should just be localFps().",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 67,
+        "endChar": 39
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_75cc4836",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "you should probably just have a \"changed()\" signal with no parameters, since this is a singleton, everytime the \"changed\" signal is emitted, the clients can just use the getters to get the new values\n\nthis will also make it more consistent with the rest of the LRC API",
+      "range": {
+        "startLine": 73,
+        "startChar": 7,
+        "endLine": 73,
+        "endChar": 37
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_b54ae0aa",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-13T16:05:42Z",
+      "side": 1,
+      "message": "there should be no private members in a pulbic header in LRCc API, see:\nhttps://community.kde.org/Policies/Library_Code_Policy\n\nYou should create a SmartInfoHubPrivate object in the .cpp, or else in a smartinfohub_p.h private header if the private API needs to be accessible elsewhere in LRC",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 61
+      },
+      "revId": "ecefc5503bfc7f059617f3f5b7009dc2b2f3bd38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
