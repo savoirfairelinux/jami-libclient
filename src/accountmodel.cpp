@@ -1074,4 +1074,10 @@ Qt::DropActions AccountModel::supportedDropActions() const
    return Qt::MoveAction | Qt::TargetMoveAction;
 }
 
+void AccountModel::slotConnectivityChanged()
+{
+    ConfigurationManager::instance().connectivityChanged();
+}
+
+
 #include <accountmodel.moc>

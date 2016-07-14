@@ -126,7 +126,8 @@ public Q_SLOTS:
    void registerAllAccounts();
    bool moveUp             ();
    bool moveDown           ();
-
+   ///Notifies the Ring daemon that the connectivity (network status) has changed
+   void slotConnectivityChanged();
 
 Q_SIGNALS:
    ///The account list changed
