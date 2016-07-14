@@ -126,6 +126,7 @@ public Q_SLOTS:
    void registerAllAccounts();
    bool moveUp             ();
    bool moveDown           ();
+   void connectivityChanged();
 
 
 Q_SIGNALS:
