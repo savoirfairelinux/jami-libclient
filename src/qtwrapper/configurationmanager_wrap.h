@@ -618,6 +618,11 @@ public Q_SLOTS: // METHODS
        return DRing::getMessageStatus(id);
    }
 
+   void connectivityChanged(bool online)
+   {
+       DRing::connectivityChanged(online);
+   }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();
