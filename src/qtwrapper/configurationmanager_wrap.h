@@ -51,6 +51,7 @@ public:
       setObjectName("ConfigurationManagerInterface");
       using DRing::exportable_callback;
       using DRing::ConfigurationSignal;
+      using DRing::AccountSignal;
       using DRing::AudioSignal;
 
       setObjectName("ConfigurationManagerInterface");
@@ -134,6 +135,12 @@ public:
                [this] (const std::string& account_id) {
                      QTimer::singleShot(0, [this, account_id] {
                            Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
+                     });
+         }),
+         exportable_callback<AccountSignal::TestAccountICEInitializationResult>(
+               [this] (const std::string& account_id, const std::map<std::string, std::string>& result) {
+                     QTimer::singleShot(0, [this, account_id, result] {
+                           Q_EMIT this->testAccountICEInitializationResult(QString(account_id.c_str()), convertMap(result));
                      });
          }),
          exportable_callback<AudioSignal::DeviceEvent>(
@@ -441,11 +448,9 @@ public Q_SLOTS: // METHODS
       DRing::sendRegister(accountID.toStdString(), enable);
    }
 
-   MapStringString testAccountICEInitialization(const QString& accountID)
+   void testAccountICEInitialization(const QString& accountID)
    {
-       MapStringString temp = convertMap(
-           DRing::testAccountICEInitialization(accountID.toStdString()));
-       return temp;
+       DRing::testAccountICEInitialization(accountID.toStdString());
    }
 
    void setAccountDetails(const QString& accountID, MapStringString details)
@@ -642,7 +647,7 @@ Q_SIGNALS: // SIGNALS
    void mediaParametersChanged(const QString& accountId);
    void audioDeviceEvent();
    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
-
+   void testAccountICEInitializationResult(const QString& accountId, const MapStringString& result);
 };
 
 namespace org {

@@ -517,7 +517,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       void setRoleData(int role, const QVariant& value);
 
-      QPair <bool, QString> testICEInitialization () const;
+      void testICEInitialization () const;
 
       //Operators
       bool operator==(const Account&)const;
@@ -550,6 +550,8 @@ class LIB_EXPORT Account : public ItemBase {
       void enabled(bool);
       ///The account edit state changed
       void editStateChanged(const EditState state, const EditState previous);
+      //Result of ice initialization test
+      void iceInitTestResult(bool hasSucceeded, const QString& error);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)

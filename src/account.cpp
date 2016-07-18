@@ -103,6 +103,14 @@ m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_Last
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
 m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr)
 {
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    connect(&configurationManager, &ConfigurationManagerInterface::testAccountICEInitializationResult, [this]
+        (const QString& accountId, const MapStringString& result) {
+        if (m_AccountId == accountId) {
+            bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
+            emit q_ptr->iceInitTestResult(success, result["MESSAGE"]);
+        }
+    });
 }
 
 void AccountPrivate::changeState(Account::EditState state) {
@@ -1819,12 +1827,12 @@ void Account::setTurnServerRealm(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM, value);
 }
 
-QPair <bool, QString> Account::testICEInitialization() const
+void Account::testICEInitialization() const
 {
     ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-    const QMap<QString, QString> result = configurationManager.testAccountICEInitialization(id());
-    bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
-    return qMakePair(success, result["MESSAGE"]);
+    configurationManager.testAccountICEInitialization(id());
+    //bool success = (result["STATUS"].toInt() == static_cast<int>(DRing::Account::testAccountICEInitializationStatus::SUCCESS));
+    //return qMakePair(success, result["MESSAGE"]);
 }
 
 void Account::setDisplayName(const QString& value)
