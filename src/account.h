@@ -517,7 +517,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       void setRoleData(int role, const QVariant& value);
 
-      QPair <bool, QString> testICEInitialization () const;
+      void testICEInitialization () const;
 
       //Operators
       bool operator==(const Account&)const;
