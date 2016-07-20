@@ -16,6 +16,24 @@
       "revId": "5baaa795bf232c119d689702f8a63c5688c56e1b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_de40d937",
+        "filename": "src/accountmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-20T23:28:03Z",
+      "side": 1,
+      "message": "yes, but its annoying to write this in the daemon in a cross platfrom manner, the high level APIs available to the clients are easy to use... of course nothing stops us from doing it in the daemon at some point...",
+      "parentUuid": "5a7ca5a3_fe36f5e6",
+      "revId": "5baaa795bf232c119d689702f8a63c5688c56e1b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
