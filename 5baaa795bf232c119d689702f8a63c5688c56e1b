@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_fe36f5e6",
+        "filename": "src/accountmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-20T23:20:16Z",
+      "side": 1,
+      "message": "Wouldn\u0027t this be \"changeConnectivity()\" or \"notifyConnectivityChanges\"? Written like this, it looks like a signal name.\n\nAlso, why does this have to be in the client? Isn\u0027t hardware the daemon job?",
+      "revId": "5baaa795bf232c119d689702f8a63c5688c56e1b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
