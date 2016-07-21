@@ -438,7 +438,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, const qint64 timestamp, uint64_t id)
 {
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
@@ -455,11 +455,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    }
 
    //Create the message
-   time_t currentTime;
-   ::time(&currentTime);
    Serializable::Message* m = new Serializable::Message();
 
-   m->timestamp = currentTime                      ;
+   m->timestamp = timestamp                        ;
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
@@ -522,7 +520,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    //Save the conversation
    q_ptr->save();
 
-   cm->setLastUsed(currentTime);
+   cm->setLastUsed(timestamp);
    emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
    if (!m->isRead) {
       m_UnreadCount += 1;

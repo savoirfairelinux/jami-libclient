@@ -17,6 +17,8 @@
  ***************************************************************************/
 #include "text.h"
 
+#include <QtCore/QDateTime>
+
 //Dring
 #include <media_const.h>
 #include "dbus/callmanager.h"
@@ -138,7 +140,7 @@ Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString
 }
 
 ///Called when a new message is incoming
-void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QMap<QString,QString>& message)
+void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QMap<QString,QString>& message, const qint64 timestamp)
 {
    Q_UNUSED(from)
 
@@ -172,18 +174,18 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    }
 
    media->recording()->setCall(call);
-   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
+   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN, timestamp);
 
    media->d_ptr->updateMimeList(message);
 
    emit media->messageReceived(message);
 }
 
-void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
+void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads, const qint64 timestamp)
 {
    if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
        auto txtRecording = cm->textRecording();
-       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
+       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN, timestamp);
    }
 }
 
@@ -302,7 +304,7 @@ void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
    recording();
 
    d_ptr->m_pRecording->setCall(call());
-   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->peerContactMethod(),Media::Direction::OUT);
+   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->peerContactMethod(),Media::Direction::OUT, QDateTime::currentMSecsSinceEpoch());
 
    d_ptr->updateMimeList(message);
 
