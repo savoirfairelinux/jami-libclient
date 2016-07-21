@@ -39,7 +39,7 @@ public:
    static IMConversationManagerPrivate& instance();
 
 private Q_SLOTS:
-   void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& payloads);
-   void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
+   void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& payloads, const time_t timestamp);
+   void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads, const time_t timestamp);
    void accountMessageStatusChanged(const QString& accountId, uint64_t id, const QString& to, int status);
 };

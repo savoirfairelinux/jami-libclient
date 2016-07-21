@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtCore/QTimer>
+#include <QtCore/QDateTime>
 
 #include <callmanager_interface.h>
 #include "typedefs.h"
@@ -87,7 +88,8 @@ public:
                 [this] (const std::string &callID, const std::string &from, const std::map<std::string,std::string> &message) {
                        QTimer::singleShot(0, [this,callID, from, message] {
                              LOG_DRING_SIGNAL3("incomingMessage",QString(callID.c_str()),QString(from.c_str()),convertMap(message));
-                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), convertMap(message));
+                             //TODO: We should modify the daemon API to get the timestamp from PJSIP
+                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), convertMap(message), QDateTime::currentMSecsSinceEpoch());
                        });
             }),
             exportable_callback<CallSignal::IncomingCall>(
@@ -458,7 +460,7 @@ Q_SIGNALS: // SIGNALS
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
     void voiceMailNotify(const QString &accountID, int count);
-    void incomingMessage(const QString &callID, const QString &from, const MapStringString &message);
+    void incomingMessage(const QString &callID, const QString &from, const MapStringString &message, const time_t timestamp);
     void incomingCall(const QString &accountID, const QString &callID, const QString &from);
     void recordPlaybackFilepath(const QString &callID, const QString &filepath);
     void conferenceCreated(const QString &confID);
