@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtCore/QTimer>
+#include <QtCore/QDateTime>
 
 #include <callmanager_interface.h>
 #include "typedefs.h"
@@ -84,10 +85,10 @@ public:
                        });
             }),
             exportable_callback<CallSignal::IncomingMessage>(
-                [this] (const std::string &callID, const std::string &from, const std::map<std::string,std::string> &message) {
-                       QTimer::singleShot(0, [this,callID, from, message] {
+                [this] (const std::string &callID, const std::string &from, const std::map<std::string,std::string> &message, const long timestamp) {
+                       QTimer::singleShot(0, [this, callID, from, message, timestamp] {
                              LOG_DRING_SIGNAL3("incomingMessage",QString(callID.c_str()),QString(from.c_str()),convertMap(message));
-                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), convertMap(message));
+                             Q_EMIT incomingMessage(QString(callID.c_str()), QString(from.c_str()), convertMap(message), timestamp);
                        });
             }),
             exportable_callback<CallSignal::IncomingCall>(
@@ -458,7 +459,7 @@ Q_SIGNALS: // SIGNALS
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
     void voiceMailNotify(const QString &accountID, int count);
-    void incomingMessage(const QString &callID, const QString &from, const MapStringString &message);
+    void incomingMessage(const QString &callID, const QString &from, const MapStringString &message, const qint64 timestamp);
     void incomingCall(const QString &accountID, const QString &callID, const QString &from);
     void recordPlaybackFilepath(const QString &callID, const QString &filepath);
     void conferenceCreated(const QString &confID);

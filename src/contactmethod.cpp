@@ -826,7 +826,7 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads
    auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
                                                     ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME)
                                                     ,payloads);
-   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT, id);
+   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT, QDateTime::currentMSecsSinceEpoch()/1000, id);
    return true;
 }
 
