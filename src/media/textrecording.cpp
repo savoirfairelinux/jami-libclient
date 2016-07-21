@@ -428,6 +428,12 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
             }
         }
 
+        std::sort(t->d_ptr->m_lNodes.begin(), t->d_ptr->m_lNodes.end(), []
+        (const TextMessageNode* e1, const TextMessageNode* e2) -> bool
+        {
+           return e1->m_pMessage->timestamp < e2->m_pMessage->timestamp;
+        });
+
         if (statusChanged)
             t->save();
 
@@ -438,7 +444,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id)
+void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, const qint64 timestamp, uint64_t id)
 {
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
@@ -455,11 +461,9 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    }
 
    //Create the message
-   time_t currentTime;
-   ::time(&currentTime);
    Serializable::Message* m = new Serializable::Message();
 
-   m->timestamp = currentTime                      ;
+   m->timestamp = timestamp                        ;
    m->direction = direction                        ;
    m->type      = Serializable::Message::Type::CHAT;
    m->authorSha1= cm->sha1()                       ;
@@ -514,6 +518,13 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    n->m_pContactMethod   = const_cast<ContactMethod*>(cm);
    m_pImModel->addRowBegin();
    m_lNodes << n;
+
+   std::sort(m_lNodes.begin(), m_lNodes.end(), []
+   (const TextMessageNode* e1, const TextMessageNode* e2) -> bool
+   {
+       return e1->m_pMessage->timestamp < e2->m_pMessage->timestamp;
+   });
+
    m_pImModel->addRowEnd();
 
    if (m->id > 0)
@@ -522,7 +533,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    //Save the conversation
    q_ptr->save();
 
-   cm->setLastUsed(currentTime);
+   cm->setLastUsed(timestamp);
    emit q_ptr->messageInserted(message, const_cast<ContactMethod*>(cm), direction);
    if (!m->isRead) {
       m_UnreadCount += 1;

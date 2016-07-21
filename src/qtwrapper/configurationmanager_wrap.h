@@ -125,9 +125,9 @@ public:
                      });
          }),
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
-               [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
-                     QTimer::singleShot(0, [this, account_id,from,payloads] {
-                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads));
+               [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads, const long timestamp) {
+                     QTimer::singleShot(0, [this, account_id,from,payloads, timestamp] {
+                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads), timestamp);
                      });
          }),
          exportable_callback<ConfigurationSignal::MediaParametersChanged>(
@@ -631,7 +631,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
-   void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
+   void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads, const qint64 timestamp);
    void mediaParametersChanged(const QString& accountId);
    void audioDeviceEvent();
    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);

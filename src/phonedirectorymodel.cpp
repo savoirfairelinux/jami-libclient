@@ -293,7 +293,7 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
    Q_UNUSED(section)
    Q_UNUSED(orientation)
    static const QString headers[] = {tr("URI"), tr("Type"), tr("Person"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
-   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"), 
+   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"),
    tr("Bookmarked"), tr("Tracked"), tr("Has certificate"), tr("Present"), tr("Presence message"), tr("Uid") };
    if (role == Qt::DisplayRole) return headers[section];
    return QVariant();
@@ -680,10 +680,10 @@ void PhoneDirectoryModelPrivate::slotContactChanged(Person* newContact, Person* 
       emit q_ptr->contactChanged(cm, newContact, oldContact);
 }
 
-void PhoneDirectoryModelPrivate::slotIncomingAccountMessage(const QString& account, const QString& from, const MapStringString& msg)
+void PhoneDirectoryModelPrivate::slotIncomingAccountMessage(const QString& account, const QString& from, const MapStringString& msg, const qint64 timestamp)
 {
     if(auto cm = q_ptr->getNumber(from, AccountModel::instance().getById(account.toLatin1()))) {
-        emit q_ptr->incomingMessage(cm, msg);
+        emit q_ptr->incomingMessage(cm, msg, timestamp);
     }
 }
 
