@@ -19,7 +19,6 @@
 
 //Qt
 #include <QtCore/QTimer>
-#include <QtWidgets/QAction>
 
 //Ring
 #include "audio/outputdevicemodel.h"
