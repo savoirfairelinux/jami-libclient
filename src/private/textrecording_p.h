@@ -179,7 +179,7 @@ public:
    QHash<uint64_t, TextMessageNode*> m_hPendingMessages;
 
    //Helper
-   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id = 0);
+   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, const qint64 timestamp, uint64_t id = 0);
    QHash<QByteArray,QByteArray> toJsons() const;
    void accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status);
    bool updateMessageStatus(Serializable::Message* m, TextRecording::Status status);
