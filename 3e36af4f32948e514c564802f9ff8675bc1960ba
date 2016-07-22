@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_495c1126",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-22T17:49:04Z",
+      "side": 1,
+      "message": "is that an issue though? its emitted from the public PhoneDirectoryModel, so a client could potentially use it...",
+      "range": {
+        "startLine": 686,
+        "startChar": 8,
+        "endLine": 686,
+        "endChar": 53
+      },
+      "revId": "3e36af4f32948e514c564802f9ff8675bc1960ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
