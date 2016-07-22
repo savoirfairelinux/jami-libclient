@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_bee15d9c",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-22T14:40:24Z",
+      "side": 1,
+      "message": "SmartInfoHubPrivate only seems to be used inside of SmartInfoHub... in this case you don\u0027t need to put it in a separate file, since you don\u0027t need to include it anywhere else. You can simply copy/paste this whole class inside of \"smatrInfoHub.cpp\", see for example \"recentmodel.cpp\", the RecentModelPrivate class is defined inside of it.",
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_7ef3c573",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-22T14:40:24Z",
+      "side": 1,
+      "message": "these should be marked as \u0027const\u0027, eg:\nfloat localFps() const;\n\nthis is because this function does not modify the object (since its a getter), see:\nhttp://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 43
+      },
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_9efb4147",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-07-22T14:40:24Z",
+      "side": 1,
+      "message": "is this a getter? it looks like a signal name...",
+      "range": {
+        "startLine": 82,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 37
+      },
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
