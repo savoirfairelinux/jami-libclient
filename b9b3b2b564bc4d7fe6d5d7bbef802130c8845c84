@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_fe5a754f",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-22T16:21:17Z",
+      "side": 1,
+      "message": "I think to use it in LRC to retrieve SecurityLevel. If I don\u0027t do it before the merge with the master, I will remove it.",
+      "parentUuid": "5a7ca5a3_bee15d9c",
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_7ef3c573",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 19
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_be54fd21",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-22T16:21:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_7ef3c573",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 43
+      },
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_9efb4147",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 19
@@ -53,6 +95,30 @@
       "writtenOn": "2016-07-22T14:40:24Z",
       "side": 1,
       "message": "is this a getter? it looks like a signal name...",
+      "range": {
+        "startLine": 82,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 37
+      },
+      "revId": "b9b3b2b564bc4d7fe6d5d7bbef802130c8845c84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_fe2115b5",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-22T16:21:17Z",
+      "side": 1,
+      "message": "Yes, it\u0027s a getter who return a QList\u003cs\u003e contain the name of information who change between the penultimate signal and the last one. The idea is to only change the information who change. \nUnfortunately, I have no idea of better name. Any idea?",
+      "parentUuid": "5a7ca5a3_9efb4147",
       "range": {
         "startLine": 82,
         "startChar": 9,
