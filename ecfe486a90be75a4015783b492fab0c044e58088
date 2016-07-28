@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_4ab07ff4",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_0a6fe793",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_ea714b78",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -30,6 +48,24 @@
       "writtenOn": "2016-07-28T20:45:55Z",
       "side": 1,
       "message": "#include \u003cQtCore/QList\u003e",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_aa9ef361",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_ea714b78",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_caed6ff1",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "\"Don\u0027t define global constants like this\" Done\n\nI put them in a public class because in my client I use keyChanged() to know what information change and what I need to refresh. After that, I extract informations of this key by using: if(keyChanged.at(i) \u003d\u003d global_constants) (https://gerrit-ring.savoirfairelinux.com/#/c/4384/29/src/currentcallview.cpp)",
+      "parentUuid": "5a7ca5a3_ca51efd9",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_4a14fff4",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -64,6 +118,24 @@
       "writtenOn": "2016-07-28T20:45:55Z",
       "side": 1,
       "message": "Other LRC headers use // Getters, but I don\u0027t mind much.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_2a266369",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "I took this one in callmodel.cpp",
+      "parentUuid": "5a7ca5a3_4a14fff4",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_6ad3fb38",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "Just a getter to having the call ID",
+      "parentUuid": "5a7ca5a3_6a5e9beb",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_2a58a3f9",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -98,6 +188,24 @@
       "writtenOn": "2016-07-28T20:45:55Z",
       "side": 1,
       "message": "Please use Codec objects, no magic strings",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_6a88db22",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "What do you mean by \"Codec objects\"? I can wrap the audio, video into a Codec object that can receive as an argument local or remote for the data type request. However, even if you access CodecObj-\u003e Video (type\u003dlocal) you will still get a string representation of the codec type. Otherwise, what do you consider a codec? Could you refer me to a codec object definition to help me follow its data structure?",
+      "parentUuid": "5a7ca5a3_2a58a3f9",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_8a8d3734",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_2a0f43e3",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_4a5ddfe8",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -132,6 +258,24 @@
       "writtenOn": "2016-07-28T20:45:55Z",
       "side": 1,
       "message": "explicit SmartInfoHub();",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_2a99836e",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-07-28T22:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_4a5ddfe8",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
