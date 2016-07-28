@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_0a6fe793",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "Remove all the include not used in the .h and put them in the .cpp. Remember that all \"#include\" copy paste code into the processed file recursively. This both add dependencies to your code (evil), make compilation slower (jenkins builds need to be fast or you slow down everybody) and increase your exposure to API changes (not a concern here).",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_ea714b78",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "#include \u003cQtCore/QList\u003e",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_ca51efd9",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "Don\u0027t define global constants like this, keep them in either a \nconstexpr static const char[] //not recommended for QMap/QHash as it forces a QString to be created on the heap every single time you index something.\n\nor a \nstatic QString mycosnt \u003d QStringLiteral(\"value\"); //better, QLatin1String is also good enough, see Clazy README.md\n\nalso, put them in the private class, not globally, and not in the exported .h.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_4a14fff4",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "Other LRC headers use // Getters, but I don\u0027t mind much.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_6a5e9beb",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "What\u0027s this and could it be a \"Call\" object? There is a \"no magic string\" guideline for LRC.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_2a58a3f9",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "Please use Codec objects, no magic strings",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_2a0f43e3",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "use Q_SIGNALS instead of \"signals\" in exported headers. Some 3rd party libraries sometime also have something called \"signals\" and it will conflict. See Qt (and KDE, and Krazy2) library guidelines.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_4a5ddfe8",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T20:45:55Z",
+      "side": 1,
+      "message": "explicit SmartInfoHub();",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
