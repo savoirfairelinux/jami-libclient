@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_aaacb38d",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T23:07:10Z",
+      "side": 1,
+      "message": "Sorry, but I don\u0027t see any use of these constants in the file you linked. Also, if you want to know a key changed, then add a signal for each one. Adding magic string (keys/ids/constants) is an anti pattern and usually hide a deeper design problem.",
+      "parentUuid": "5a7ca5a3_caed6ff1",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_4a14fff4",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -177,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_caa9ef7c",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T23:07:10Z",
+      "side": 1,
+      "message": "There is no call id (or any kind of IDs) in LRC API, there is Call objects. All callId map to an object, always return that object, the ID is only for the IPC layer.",
+      "parentUuid": "5a7ca5a3_6ad3fb38",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_2a58a3f9",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -212,6 +248,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_6ab69bde",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T23:07:10Z",
+      "side": 1,
+      "message": "CodecData is currently a private structure in codecmodel.h. It is private because it was currently the only place such object was used.\n\nNow that your SmartInfoHub also need to expose the codec data, the structure will have to become public. Just make sure you have a private CodecFactory in CodecModel to create the codec objects (you should not be allowed to create new instances of them. This will be save memory and make \u003d\u003d work on pointers).",
+      "parentUuid": "5a7ca5a3_6a88db22",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_2a0f43e3",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -241,6 +295,23 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "5a7ca5a3_2a0f43e3",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_8abbf7c3",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-07-28T23:07:10Z",
+      "side": 1,
+      "message": "Missing virtual destructor (Krazy2 guideline)",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
