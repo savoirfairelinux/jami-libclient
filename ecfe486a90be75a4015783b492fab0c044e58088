@@ -143,6 +143,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_9eeedc21",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-01T16:31:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_eac94b5b",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_4a14fff4",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -249,6 +267,42 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_7ed0a053",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-01T16:31:10Z",
+      "side": 1,
+      "message": "The idea is just to display callID because it can be cool know what we speak about when we debug something.",
+      "parentUuid": "5a7ca5a3_caa9ef7c",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_9ed57c45",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-01T16:31:10Z",
+      "side": 1,
+      "message": "I will keep that in mind but for the moment I will focus on display the other information I don\u0027t display yet",
+      "parentUuid": "5a7ca5a3_4ab5dfcb",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_2a58a3f9",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -302,6 +356,24 @@
     },
     {
       "key": {
+        "uuid": "5a7ca5a3_1edacc78",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-01T16:31:10Z",
+      "side": 1,
+      "message": "I will just use the name in this structure... I don\u0027t understand what the advantage of using that",
+      "parentUuid": "5a7ca5a3_6ab69bde",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_2a0f43e3",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -348,6 +420,24 @@
       "writtenOn": "2016-07-28T23:07:10Z",
       "side": 1,
       "message": "Missing virtual destructor (Krazy2 guideline)",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_fedcb076",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-01T16:31:10Z",
+      "side": 1,
+      "message": "Done, but there is a goal behind doing that?",
+      "parentUuid": "5a7ca5a3_8abbf7c3",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
