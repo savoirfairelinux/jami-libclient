@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5a7ca5a3_d4c0b52c",
+        "filename": "src/smartInfoHub.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-08-05T00:35:05Z",
+      "side": 1,
+      "message": "Please move  the \"{\" on another line. This is true only for functions, methods and classes. I have no idea why it was decided to be so, but it\u0027s part of Qt guidelines.\nhttp://wiki.qt.io/Qt_Coding_Style#Braces\n\nWe tried hard-ish so far to keep LRC codebase consistent. I know some guidelines seems (and some indeed are) pointless. The important part isn\u0027t to have a perfect style, it is only to be consistent.",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_0a6fe793",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
@@ -438,6 +455,24 @@
       "side": 1,
       "message": "Done, but there is a goal behind doing that?",
       "parentUuid": "5a7ca5a3_8abbf7c3",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_b4c3b937",
+        "filename": "src/smartInfoHub.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-08-05T00:35:05Z",
+      "side": 1,
+      "message": "From Google C++ guidelines (the Krazy2 explaination is less or more \"because we say so\"):\n\n\u003e To make sure all implementations of the interface can be destroyed correctly, the interface must also declare a virtual destructor (in an exception to the first rule, this should not be pure). See Stroustrup, The C++ Programming Language, 3rd edition, section 12.4 for details.\n\nSo, unless the class is final, add a virtual destructor even if it\u0027s unused. The second reason is that, if the destructor ever become necessary, then it wont break the ABI.",
+      "parentUuid": "5a7ca5a3_fedcb076",
       "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
