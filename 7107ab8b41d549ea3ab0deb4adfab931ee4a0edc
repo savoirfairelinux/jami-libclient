@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7ca5a3_74dd2114",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-08-05T00:34:41Z",
+      "side": 1,
+      "message": "Please move this into the private class (avoid unscoped constants/enums/flags guideline)",
+      "revId": "7107ab8b41d549ea3ab0deb4adfab931ee4a0edc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_34e7a9e6",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-08-05T00:34:41Z",
+      "side": 1,
+      "message": "const \u0026",
+      "revId": "7107ab8b41d549ea3ab0deb4adfab931ee4a0edc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a7ca5a3_94e23dd4",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-08-05T00:34:41Z",
+      "side": 1,
+      "message": "const \u0026",
+      "revId": "7107ab8b41d549ea3ab0deb4adfab931ee4a0edc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
