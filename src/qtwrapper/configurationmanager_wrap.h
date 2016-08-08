@@ -155,6 +155,13 @@ public Q_SLOTS: // METHODS
       return temp;
    }
 
+   QString addRingDevice(const Qstring& accountID, const QString& password)
+   {
+       QString temp(
+           DRing:addRingDevice(accountID, password);
+       )
+   }
+
    MapStringString getAccountDetails(const QString& accountID)
    {
       MapStringString temp =
