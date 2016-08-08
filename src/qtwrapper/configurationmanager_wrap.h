@@ -124,6 +124,18 @@ public:
                            Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
                      });
          }),
+         exportable_callback<ConfigurationSignal::KnownDevicesChanged>(
+               [this] (const std::string &accountId, const std::map<std::string, std::string>& devices) {
+                     QTimer::singleShot(0, [this, accountId, devices] {
+                           Q_EMIT this->knownDevicesChanged(QString(accountId.c_str()), convertMap(devices)));
+                     });
+         }),
+         exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
+               [this] (const std::string &accountId, int status, const std::string &pin) {
+                     QTimer::singleShot(0, [this, accountId, status, pin] {
+                           Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str())));
+                     });
+         }),
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
                      QTimer::singleShot(0, [this, account_id,from,payloads] {
@@ -153,6 +165,18 @@ public Q_SLOTS: // METHODS
       QString temp(
          DRing::addAccount(convertMap(details)).c_str());
       return temp;
+   }
+
+   bool exportOnRing(const QString& accountID, const QString& password)
+   {
+       return DRing::exportOnRing(accountID.toStdString(), password.toStdString());
+   }
+
+   MapStringString getKnownRingDevices(const QString& accountID)
+   {
+       MapStringString temp =
+           convertMap(DRing::getKnownRingDevices(accountID.toStdString()));
+       return temp;
    }
 
    MapStringString getAccountDetails(const QString& accountID)
@@ -636,6 +660,8 @@ Q_SIGNALS: // SIGNALS
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
+   void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
+   void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
    void mediaParametersChanged(const QString& accountId);
    void audioDeviceEvent();
