@@ -79,6 +79,7 @@ public:
    bool                 isRingSupported             (                                      ) const;
    EditState            editState                   (                                      ) const;
    Account*             selectedAccount             (                                      ) const;
+   QList<Account*>      accountsToMigrate           (                                      ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
 
