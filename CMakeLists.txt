@@ -217,6 +217,7 @@ SET( libringclient_LIB_SRCS
   #Data objects
   src/call.cpp
   src/uri.cpp
+  src/ringdevice.cpp
   src/account.cpp
   src/credential.cpp
   src/person.cpp
@@ -243,6 +244,7 @@ SET( libringclient_LIB_SRCS
 
   #Models
   src/bootstrapmodel.cpp
+  src/ringdevicemodel.cpp
   src/accountmodel.cpp
   src/availableaccountmodel.cpp
   src/callmodel.cpp
@@ -350,6 +352,7 @@ ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 # Public API
 SET( libringclient_LIB_HDRS
   src/account.h
+  src/ringdevice.h
   src/credential.h
   src/accountmodel.h
   src/availableaccountmodel.h
@@ -359,6 +362,7 @@ SET( libringclient_LIB_HDRS
   src/categorizedhistorymodel.h
   src/person.h
   src/bootstrapmodel.h
+  src/ringdevicemodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
   src/categorizedbookmarkmodel.h
@@ -580,6 +584,7 @@ ENDIF()
 # Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
+   src/private/ringdevicemodel_p.h
    src/private/account_p.h
    src/private/sortproxies.h
    src/private/accountmodel_p.h
