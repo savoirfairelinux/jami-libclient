@@ -40,6 +40,7 @@ class AccountStatusModel      ;
 class ProtocolModel           ;
 class CodecModel              ;
 class BootstrapModel          ;
+class RingDeviceModel         ;
 class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
 class PendingTrustRequestModel;
@@ -85,6 +86,7 @@ class LIB_EXPORT Account : public ItemBase {
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
+   friend class RingDeviceModelPrivate;
    friend class KeyExchangeModel;
    friend class KeyExchangeModelPrivate;
    friend class ContactMethod;
@@ -94,6 +96,7 @@ class LIB_EXPORT Account : public ItemBase {
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
+   Q_PROPERTY(QString        deviceId                     READ deviceId                                                           )
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
@@ -145,6 +148,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
+   Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
+   Q_PROPERTY(QString        archivePin                   READ archivePin                    WRITE setArchivePin                  )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
@@ -165,6 +170,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(TlsMethodModel*          tlsMethodModel              READ tlsMethodModel                                            )
    Q_PROPERTY(ProtocolModel*           protocolModel               READ protocolModel                                             )
    Q_PROPERTY(BootstrapModel*          bootstrapModel              READ bootstrapModel                                            )
+   Q_PROPERTY(RingDeviceModel*         ringDeviceModel             READ ringDeviceModel                                           )
    Q_PROPERTY(NetworkInterfaceModel*   networkInterfaceModel       READ networkInterfaceModel                                     )
    Q_PROPERTY(QAbstractItemModel*      knownCertificateModel       READ knownCertificateModel                                     )
    Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
@@ -288,6 +294,7 @@ class LIB_EXPORT Account : public ItemBase {
          TlsMethodModel              ,
          ProtocolModel               ,
          BootstrapModel              ,
+         RingDeviceModel             ,
          NetworkInterfaceModel       ,
          KnownCertificateModel       ,
          BannedCertificatesModel     ,
@@ -325,6 +332,14 @@ class LIB_EXPORT Account : public ItemBase {
       };
       Q_ENUMS(Protocol)
 
+      ///Possible account export status
+      enum class ExportOnRingStatus {
+          SUCCESS = 0,
+          WRONG_PASSWORD = 1 ,
+          NETWORK_ERROR = 2
+      };
+      Q_ENUMS(ExportOnRingStatus)
+
       /**
        *Perform an action
        * @return If the state changed
@@ -352,6 +367,7 @@ class LIB_EXPORT Account : public ItemBase {
       TlsMethodModel*           tlsMethodModel             () const;
       ProtocolModel*            protocolModel              () const;
       BootstrapModel*           bootstrapModel             () const;
+      RingDeviceModel*          ringDeviceModel            () const;
       NetworkInterfaceModel*    networkInterfaceModel      () const;
       QAbstractItemModel*       knownCertificateModel      () const;
       QAbstractItemModel*       bannedCertificatesModel    () const;
@@ -363,6 +379,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       //Getters
       QString hostname                     () const;
+      QString deviceId                     () const;
       bool    isEnabled                    () const;
       bool    isAutoAnswer                 () const;
       QString username                     () const;
@@ -418,6 +435,8 @@ class LIB_EXPORT Account : public ItemBase {
       QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
+      QString archivePassword              () const;
+      QString archivePin                   () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
@@ -427,6 +446,9 @@ class LIB_EXPORT Account : public ItemBase {
       bool    allowIncomingFromContact     () const;
       int     activeCallLimit              () const;
       bool    hasActiveCallLimit           () const;
+      bool    needsMigration               () const;
+
+      bool    exportOnRing      (QString password) const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -465,6 +487,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setTurnServerPassword            (const QString& value   );
       void setTurnServerRealm               (const QString& value   );
       void setDisplayName                   (const QString& value   );
+      void setArchivePassword               (const QString& value   );
+      void setArchivePin                    (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
       void setTlsNegotiationTimeoutSec      (int  detail);
@@ -532,6 +556,8 @@ class LIB_EXPORT Account : public ItemBase {
       void enabled(bool);
       ///The account edit state changed
       void editStateChanged(const EditState state, const EditState previous);
+      ///Export on Ring has ended
+      void exportOnRingEnded(Account::ExportOnRingStatus status, const QString& pin);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
