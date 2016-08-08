@@ -39,6 +39,7 @@
 #include "protocolmodel.h"
 #include "trustrequest.h"
 #include "pendingtrustrequestmodel.h"
+#include "ringdevicemodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "accountstatusmodel.h"
@@ -84,6 +85,8 @@ void AccountModelPrivate::init()
             SLOT(slotMediaParametersChanged(QString)));
     connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
             &AccountModelPrivate::slotIncomingTrustRequest);
+    connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
+            &AccountModelPrivate::slotKownDevicesChanged);
 }
 
 ///Destructor
@@ -255,7 +258,8 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
    else if( st == DRing::Account::States::UNREGISTERED             )
       return Account::RegistrationState::UNREGISTERED;
 
-   else if( st == DRing::Account::States::TRYING                   )
+   else if( st == DRing::Account::States::TRYING
+       || st == DRing::Account::States::INITIALIZING                )
       return Account::RegistrationState::TRYING;
 
    else if( st == DRing::Account::States::ERROR
@@ -267,6 +271,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
         ||  st == DRing::Account::States::ERROR_EXIST_STUN
         ||  st == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE
         ||  st == DRing::Account::States::ERROR_NOT_ACCEPTABLE
+        ||  st == DRing::Account::States::ERROR_NEED_MIGRATION
         ||  st == DRing::Account::States::REQUEST_TIMEOUT          )
       return Account::RegistrationState::ERROR;
 
@@ -419,6 +424,31 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
 
    TrustRequest* r = new TrustRequest(a, hash, time);
    a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+}
+
+///Known Ring devices have changed
+void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const MapStringString& accountDevices)
+{
+   qDebug() << "Known devices changed" << accountId;
+
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+   qWarning() << "slotKnownDevicesChanged!!!!!!!!!!" << accountId;
+
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+      qWarning() << "Known devices changed for unknown account" << accountId;
+      return;
+  }
+
+   a->ringDeviceModel()->reload(accountDevices);
 }
 
 ///Update accounts

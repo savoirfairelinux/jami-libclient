@@ -243,6 +243,7 @@ SET( libringclient_LIB_SRCS
 
   #Models
   src/bootstrapmodel.cpp
+  src/ringdevicemodel.cpp
   src/accountmodel.cpp
   src/availableaccountmodel.cpp
   src/callmodel.cpp
@@ -358,6 +359,7 @@ SET( libringclient_LIB_HDRS
   src/categorizedhistorymodel.h
   src/person.h
   src/bootstrapmodel.h
+  src/ringdevicemodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
   src/categorizedbookmarkmodel.h
