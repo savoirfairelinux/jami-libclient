@@ -131,6 +131,7 @@ public:
    TlsMethodModel*              m_pTlsMethodModel         ;
    ProtocolModel*               m_pProtocolModel          ;
    BootstrapModel*              m_pBootstrapModel         ;
+   RingDeviceModel*             m_pRingDeviceModel        ;
    QAbstractItemModel*          m_pKnownCertificates      ;
    QAbstractItemModel*          m_pBannedCertificates     ;
    QAbstractItemModel*          m_pAllowedCertificates    ;
@@ -161,4 +162,3 @@ public Q_SLOTS:
       void slotPresenceMessageChanged(const QString& );
       void slotUpdateCertificate     (               );
 };
-

@@ -170,30 +170,30 @@ const Matrix2D< UAM::Action, Call::State, bool > UserActionModelPrivate::availab
  * this will impact the available actions
  */
 const Matrix2D< UAMA, Account::RegistrationState, bool > UserActionModelPrivate::availableAccountActionMap = {
-   /*                             READY  UNREGISTERED  TRYING    ERROR   */
-   { UAMA::ACCEPT            , {{ true ,    false,     false,    false  }}},
-   { UAMA::HOLD              , {{ true ,    false,     false,    false  }}},
-   { UAMA::MUTE_AUDIO        , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::MUTE_VIDEO        , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::SERVER_TRANSFER   , {{ true ,    false,     false,    false  }}},
-   { UAMA::RECORD            , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::HANGUP            , {{ true ,    true ,     true ,    true   }}},
+   /*                             READY  UNREGISTERED  INITIALIZING  TRYING  ERROR   */
+   { UAMA::ACCEPT            , {{ true ,    false,     false,        false,  false  }}},
+   { UAMA::HOLD              , {{ true ,    false,     false,        false,  false  }}},
+   { UAMA::MUTE_AUDIO        , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::MUTE_VIDEO        , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::SERVER_TRANSFER   , {{ true ,    false,     false,        false,  false  }}},
+   { UAMA::RECORD            , {{ true ,    true ,     false,        true,   true   }}},
+   { UAMA::HANGUP            , {{ true ,    true ,     false,        true,   true   }}},
 
-   { UAMA::JOIN              , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::JOIN              , {{ true ,    true ,     false,        true ,  true   }}},
 
-   { UAMA::ADD_NEW           , {{ true ,    false,     true ,    true   }}},
-   { UAMA::TOGGLE_VIDEO      , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::ADD_CONTACT       , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::ADD_TO_CONTACT    , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::BOOKMARK          , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,    true   }}},
-   { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,    true   }}},
-   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     true ,    true   }}},
+   { UAMA::ADD_NEW           , {{ true ,    false,     false,        true ,  true   }}},
+   { UAMA::TOGGLE_VIDEO      , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::ADD_CONTACT       , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::ADD_TO_CONTACT    , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::DELETE_CONTACT    , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::COPY_CONTACT      , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::BOOKMARK          , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::CALL_CONTACT      , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::EDIT_CONTACT      , {{ true ,    true ,     false,        true ,  true   }}},
+   { UAMA::REMOVE_HISTORY    , {{ true ,    true ,     false,        true ,  true   }}},
 };
 
 /**
