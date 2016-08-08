@@ -149,6 +149,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
+   Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
@@ -430,6 +431,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
+      QString archivePassword              () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
