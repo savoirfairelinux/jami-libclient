@@ -1008,6 +1008,11 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
+QString Account::archivePassword() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PASSWORD);
+}
+
 bool Account::allowIncomingFromUnknown() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
@@ -1824,6 +1829,11 @@ void Account::setDisplayName(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
 }
 
+void Account::setArchivePassword(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PASSWORD, value);
+}
+
 void Account::setAllowIncomingFromUnknown(bool value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS, (value)TO_BOOL);
@@ -2334,6 +2344,9 @@ void AccountPrivate::save()
          iter.next();
          details[iter.key()] = iter.value();
       }
+
+      //TODO: clear the archive password
+
 
       const QString currentId = configurationManager.addAccount(details);
 
