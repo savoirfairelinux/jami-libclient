@@ -39,8 +39,10 @@
 #include "protocolmodel.h"
 #include "trustrequest.h"
 #include "pendingtrustrequestmodel.h"
+#include "ringdevicemodel.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
+#include "private/ringdevicemodel_p.h"
 #include "accountstatusmodel.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -84,6 +86,10 @@ void AccountModelPrivate::init()
             SLOT(slotMediaParametersChanged(QString)));
     connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
             &AccountModelPrivate::slotIncomingTrustRequest);
+    connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
+            &AccountModelPrivate::slotKownDevicesChanged);
+    connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
+            &AccountModelPrivate::slotExportOnRingEnded);
 }
 
 ///Destructor
@@ -254,6 +260,9 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
    else if( st == DRing::Account::States::TRYING                   )
       return Account::RegistrationState::TRYING;
 
+   else if (st == DRing::Account::States::INITIALIZING             )
+      return Account::RegistrationState::INITIALIZING;
+
    else if( st == DRing::Account::States::ERROR
         ||  st == DRing::Account::States::ERROR_GENERIC
         ||  st == DRing::Account::States::ERROR_AUTH
@@ -263,6 +272,7 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
         ||  st == DRing::Account::States::ERROR_EXIST_STUN
         ||  st == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE
         ||  st == DRing::Account::States::ERROR_NOT_ACCEPTABLE
+        ||  st == DRing::Account::States::ERROR_NEED_MIGRATION
         ||  st == DRing::Account::States::REQUEST_TIMEOUT          )
       return Account::RegistrationState::ERROR;
 
@@ -271,6 +281,16 @@ Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st
       return Account::RegistrationState::ERROR;
    }
 
+}
+
+QList<Account*> AccountModel::accountsToMigrate() const
+{
+    QList<Account*> accounts;
+    foreach(Account* account, d_ptr->m_lAccounts) {
+        if (account->needsMigration())
+            accounts << account;
+    }
+    return accounts;
 }
 
 ///Account status changed
@@ -415,6 +435,36 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
 
    TrustRequest* r = new TrustRequest(a, hash, time);
    a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+}
+
+///Known Ring devices have changed
+void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const MapStringString& accountDevices)
+{
+   qDebug() << "Known devices changed" << accountId;
+
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+      qWarning() << "Known devices changed for unknown account" << accountId;
+      return;
+  }
+
+   a->ringDeviceModel()->d_ptr->reload(accountDevices);
+}
+
+///Export on Ring ended
+void AccountModelPrivate::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin)
+{
+   qDebug() << "Export on ring ended" << accountId;
+
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+      qWarning() << "export on Ring ended for unknown account" << accountId;
+      return;
+  }
+
+  emit a->exportOnRingEnded(static_cast<Account::ExportOnRingStatus>(status), pin);
 }
 
 ///Update accounts
