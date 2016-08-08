@@ -46,6 +46,7 @@
 #include "ciphermodel.h"
 #include "protocolmodel.h"
 #include "bootstrapmodel.h"
+#include "ringdevicemodel.h"
 #include "trustrequest.h"
 #include "person.h"
 #include "profile.h"
@@ -101,7 +102,8 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
+m_pRingDeviceModel(nullptr)
 {
 }
 
@@ -500,6 +502,15 @@ BootstrapModel* Account::bootstrapModel() const
    return d_ptr->m_pBootstrapModel;
 }
 
+RingDeviceModel* Account::ringDeviceModel() const
+{
+    if (!d_ptr->m_pRingDeviceModel)
+    {
+      d_ptr->m_pRingDeviceModel = new RingDeviceModel(const_cast<Account*>(this));
+    }
+   return d_ptr->m_pRingDeviceModel;
+}
+
 QAbstractItemModel* Account::knownCertificateModel() const
 {
    if (!d_ptr->m_pKnownCertificates) {
@@ -624,6 +635,14 @@ bool Account::isEnabled() const
 bool Account::isAutoAnswer() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::AUTOANSWER) IS_TRUE;
+}
+
+//Return if the accounts needs to migrate
+bool Account::needsMigration() const
+{
+    const MapStringString details = ConfigurationManager::instance().getVolatileAccountDetails(id());
+    const QString status = details[DRing::Account::VolatileProperties::Registration::STATUS];
+    return status == DRing::Account::States::ERROR_NEED_MIGRATION;
 }
 
 ///Return the account user name
@@ -1008,6 +1027,16 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
+QString Account::archivePassword() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PASSWORD);
+}
+
+QString Account::archivePin() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PIN);
+}
+
 bool Account::allowIncomingFromUnknown() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
@@ -1037,6 +1066,11 @@ int Account::activeCallLimit() const
 bool Account::hasActiveCallLimit() const
 {
    return activeCallLimit() > -1;
+}
+
+QString Account::deviceInitializationPin(QString password) const
+{
+    return ConfigurationManager::instance().addRingDevice(id(), password);
 }
 
 
@@ -1824,6 +1858,16 @@ void Account::setDisplayName(const QString& value)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
 }
 
+void Account::setArchivePassword(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PASSWORD, value);
+}
+
+void Account::setArchivePin(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PIN, value);
+}
+
 void Account::setAllowIncomingFromUnknown(bool value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS, (value)TO_BOOL);
@@ -2334,6 +2378,9 @@ void AccountPrivate::save()
          iter.next();
          details[iter.key()] = iter.value();
       }
+
+      //Clear the password
+      q_ptr->setArchivePassword("");
 
       const QString currentId = configurationManager.addAccount(details);
 
