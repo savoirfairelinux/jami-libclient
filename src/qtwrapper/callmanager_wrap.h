@@ -62,6 +62,13 @@ public:
                              Q_EMIT transferFailed();
                        });
             }),
+            exportable_callback<CallSignal::SmartInfo>(
+                [this] () {
+                       QTimer::singleShot(0, [this] {
+                             LOG_DRING_SIGNAL("smartInfo","");
+                             Q_EMIT smartInfo(); //TODO implement Qmap
+                       });
+            }),
             exportable_callback<CallSignal::TransferSucceeded>(
                 [this] () {
                        QTimer::singleShot(0, [this] {
@@ -268,6 +275,11 @@ public Q_SLOTS: // METHODS
         return DRing::detachParticipant(callID.toStdString());
     }
 
+    void smartInfo(int refresh)
+    {
+        DRing::smartInfo(refresh);
+    }
+
     MapStringString getCallDetails(const QString &callID)
     {
         MapStringString temp =
@@ -453,6 +465,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    void smartInfo(const QMap<QString,QString> &);
     void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();
     void transferSucceeded();
