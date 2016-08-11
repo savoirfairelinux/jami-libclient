@@ -173,7 +173,14 @@ public:
                              LOG_DRING_SIGNAL2("videoMuted",QString(callID.c_str()), state);
                              Q_EMIT videoMuted(QString(callID.c_str()), state);
                        });
-			})
+            }),
+            exportable_callback<CallSignal::SmartInfo>(
+                [this] (const std::map<std::string, std::string>& info) {
+                       QTimer::singleShot(0, [this,info] {
+                             LOG_DRING_SIGNAL("smartInfo","");
+                             Q_EMIT smartInfo(convertMap(info));
+                       });
+            })
          };
      }
 
@@ -379,6 +386,16 @@ public Q_SLOTS: // METHODS
         return DRing::muteLocalMedia(callid.toStdString(), mediaType.toStdString(), mute);
     }
 
+    void startSmartInfo(int refresh)
+    {
+        DRing::startSmartInfo(refresh);
+    }
+
+    void stopSmartInfo()
+    {
+        DRing::stopSmartInfo();
+    }
+
 Q_SIGNALS: // SIGNALS
     void callStateChanged(const QString &callID, const QString &state, int code);
     void transferFailed();
@@ -398,6 +415,7 @@ Q_SIGNALS: // SIGNALS
     void audioMuted(const QString &callID, bool state);
     void videoMuted(const QString &callID, bool state);
     void peerHold(const QString &callID, bool state);
+    void smartInfo(const std::map<std::string, std::string> &info);
 };
 
 namespace org {
