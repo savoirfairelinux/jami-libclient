@@ -5,85 +5,85 @@
         <location filename="../src/account.cpp" line="271"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Valmis</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Rekistöröity</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ei rekistöröity</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Yritetään...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Virhe</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Todennusvirhe</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Verkko tavoitamattomissa</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="285"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Palvelin tavoittamattomissa</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="287"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Stun määrittelyvirhe</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="289"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Stun palvelin virheellinen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="291"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Plavelu tavoittamattomissa</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="293"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Epäkelpo</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="295"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Virheellinen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="297"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pyyntö aikakatkaistu</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Määrittelyt</translation>
     </message>
 </context>
 <context>
@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Yhteysosoite</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Portti</translation>
     </message>
 </context>
 <context>
@@ -113,74 +113,75 @@
         <location filename="../src/call.cpp" line="708"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Uusi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Soi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Soittaa</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Puhuu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="720"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Valinta käynnissä</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pidossa</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="729"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kiireinen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Lähetys</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Siirto pidossa</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="738"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Katkaistu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="741"/>
         <location filename="../src/call.cpp" line="851"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>
+Virhe</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="744"/>
@@ -188,47 +189,47 @@
         <location filename="../src/call.cpp" line="2168"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kokous</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kokous (pidossa)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="750"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>VIRHE</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="753"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Etsitään </translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="756"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Peruttu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="759"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Yhteys muodostettu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="859"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Tuntematon</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2173"/>
         <source>Account: </source>
-        <translation type="unfinished"/>
+        <translation>Tunnus:</translation>
     </message>
 </context>
 <context>
@@ -236,7 +237,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="914"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Puhelut</translation>
     </message>
 </context>
 <context>
@@ -245,7 +246,7 @@
         <location filename="../src/callmodel.cpp" line="553"/>
         <location filename="../src/callmodel.cpp" line="578"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>Epäkelpo tunnus</translation>
     </message>
 </context>
 <context>
@@ -253,12 +254,12 @@
     <message>
         <location filename="../src/call.cpp" line="1748"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Peruttu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>Ei rekistöröityä tunnusta!</translation>
     </message>
 </context>
 <context>
@@ -267,12 +268,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation type="unfinished"/>
+        <translation>Suosituin</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Yhteystiedot</translation>
     </message>
 </context>
 <context>
@@ -280,28 +281,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Yhteystiedot</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>Tyhjä</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Tuntematon</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Ei koskaan</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Muu</translation>
     </message>
 </context>
 <context>
@@ -309,7 +310,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historia</translation>
     </message>
 </context>
 <context>
@@ -317,7 +318,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation type="unfinished"/>
+        <translation>Luottamusketju</translation>
     </message>
 </context>
 <context>
@@ -338,22 +339,22 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation type="unfinished"/>
+        <translation>Järjestö</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation type="unfinished"/>
+        <translation>Hetki sitten käytetty</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation type="unfinished"/>
+        <translation>Ryhmä</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation type="unfinished"/>
+        <translation>Osasto</translation>
     </message>
 </context>
 <context>
@@ -361,7 +362,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Päivämäärä</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
@@ -371,17 +372,17 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation type="unfinished"/>
+        <translation>Suosittuvuus</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Kesto</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>Aika yhteensä</translation>
     </message>
 </context>
 <context>
@@ -389,102 +390,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Tänään</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Eilen</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Kaksi viikkoa sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>Kolme viikkoa sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation type="unfinished"/>
+        <translation>Viikko sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation type="unfinished"/>
+        <translation>Kuukausi sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kaksi kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kolme kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation type="unfinished"/>
+        <translation>Neljä kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation type="unfinished"/>
+        <translation>Viisi kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kuusi kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation type="unfinished"/>
+        <translation>Seitsemän kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kahdeksan kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation type="unfinished"/>
+        <translation>Yhdeksän kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kymmenen kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation type="unfinished"/>
+        <translation>Yksitoista kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation type="unfinished"/>
+        <translation>Kaksitoistas kuukautta sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation type="unfinished"/>
+        <translation>Vuosi sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation type="unfinished"/>
+        <translation>Kauan aikaa sitten</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Ei koskaan</translation>
     </message>
 </context>
 <context>
@@ -492,7 +493,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="695"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Minä</translation>
     </message>
 </context>
 <context>
@@ -500,17 +501,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>Makrot</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Uusi</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Muu</translation>
     </message>
 </context>
 <context>
@@ -518,7 +519,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Muu</translation>
     </message>
 </context>
 <context>
@@ -526,17 +527,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Tallenteet</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation type="unfinished"/>
+        <translation>Tekstiviestit</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Ääni/Video</translation>
     </message>
 </context>
 <context>
@@ -544,7 +545,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>Luokittelematon</translation>
     </message>
 </context>
 <context>
@@ -552,7 +553,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -562,7 +563,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Tunnus</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -575,7 +576,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>Henkilöt</translation>
     </message>
 </context>
 <context>
@@ -583,7 +584,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="226"/>
         <source>This account does not support presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Tämä tunnus ei tue läsnäolon seurantaa</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="229"/>
@@ -593,52 +594,52 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Tyyppi</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Henkilö</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Tunnus</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Tila</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>Soittokerrat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>Viikon soittokerrat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Kolmen kuukauden soittokerrat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Have Called</source>
-        <translation type="unfinished"/>
+        <translation>On soittanut</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Last used</source>
-        <translation type="unfinished"/>
+        <translation>Viimeksi käytetty</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
@@ -648,32 +649,32 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Total (in seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Yhteensä (sekuneissa)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Suottavuus indeksi</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Kirjanmerkeissä</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>Seurattu</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Läsnäoleva</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Presence message</source>
-        <translation type="unfinished"/>
+        <translation>Läsnäoloviesti</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="291"/>
@@ -691,22 +692,22 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Viesti</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Väri</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Läsnäoleva</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Vakio</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -720,7 +721,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>Ei saatavissa</translation>
     </message>
 </context>
 <context>
@@ -733,12 +734,12 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Profiili</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="394"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Vakio</translation>
     </message>
 </context>
 <context>
@@ -746,7 +747,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="931"/>
         <source>Profiles</source>
-        <translation type="unfinished"/>
+        <translation>Profiilit</translation>
     </message>
 </context>
 <context>
@@ -754,7 +755,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="1003"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Uusi profiili</translation>
     </message>
 </context>
 <context>
@@ -762,32 +763,32 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Viesti</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Code</source>
-        <translation type="unfinished"/>
+        <translation>Koodi</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Aika</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>Laskuri</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation type="unfinished"/>
+        <translation>On salausavain</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation type="unfinished"/>
+        <translation>Ei ole vanhentunut</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
@@ -797,12 +798,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Is not self signed</source>
-        <translation type="unfinished"/>
+        <translation>Ei itse varmennettu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>On vastaava avainpari</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
@@ -852,57 +853,57 @@
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The file is a valid certificate</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto on kelpo sertifikaatti</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatilla on kelpo myöntäjä</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatilla on tunnettu myöntäjä</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattia ei ole kumottu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatin myöntäjä vastaa</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaati on oikealla omistajallaan</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatti on voimassa</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Vanhenemispäivä</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Aktivointipäivä</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>Vaadi salausavaimen salasana</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Public signature</source>
-        <translation type="unfinished"/>
+        <translation>Julkinen avain</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
@@ -912,12 +913,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Sarjanumero</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Myöntäjä</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -927,32 +928,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Yksilöivä nimi (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Name (N)</source>
-        <translation type="unfinished"/>
+        <translation>Nimi (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>Organisaatio (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Varmennusalgoritmi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>MD5 sormenjälki</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>SHA1 avain</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -962,12 +963,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Myöntäjän domain nimi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Next expected update</source>
-        <translation type="unfinished"/>
+        <translation>Seuraava odotettu päivitys</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="108"/>
@@ -982,47 +983,47 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Vakio</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattia ei ole liitetty ryhmään</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatti</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>Organisaatio</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Tiedot</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatin sisältö</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Tarkistukset</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>Erilaista turvallisuuteen liittyvää tietoa</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Ylätunniste</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
@@ -1033,311 +1034,311 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 musta lista</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 sallittujen lista</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaatti</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Läsnäoloseuranta</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
+        <translation>Turvallisuusarviointi</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="186"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>Yhteystieto</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset kirjanmerkit</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Kirjanmerkki</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen historia</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historia</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset makrot</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>Makro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset tallenteet</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
         <source>Recording</source>
-        <translation type="unfinished"/>
+        <translation>Tallenne</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset soittoäänet</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Soittoääni</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen tekstitallenne</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>Puhelinnumero tyypit</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Muu</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>Ring Account</source>
-        <translation type="unfinished"/>
+        <translation>Ring tunnus</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="53"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>SIP tunnus</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="54"/>
         <source>IAX2 Account</source>
-        <translation type="unfinished"/>
+        <translation>IAX2 tunnus</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Minä</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation type="unfinished"/>
+        <translation>Mediavirtasi ei ole salattu, kytke päälle ZRTP tai SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS ei ole kytketty päälle, neuvottelu ei tapahdu salattuna. Yhteyttäsi voidaan haistella.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattisi myöntäjä ei täsmää.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Lähtevä palvelin ei täsmää isäntänimeen eikä sertifikaatin yhteysnimeen</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Saapuvan sertifikaatin varmennus ei ole päällä, tämä jättää sinut haavoittuvaksi &quot;mies välissä -hyökkäykselle&quot;.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Lähtevän sertifikaatin varmennus ei ole päällä, tämä jättää sinut haavoittuvaksi &quot;mies välissä -hyökkäykselle&quot;.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaateistasi ainutkaan ei sisältänyt salausavainta, tämä vaaditaan. Valitse salausavain tai käytä sertifikaattiin sisällytettyä salausavainta.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>Ei sertifikaatin myöntäjää. Ilman tätä ei ole mahdollista varmistaa onko sertifikaatit kelvollisia. Jotkin tunnukset eivät välttämättä toimi tästä johtuen.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation type="unfinished"/>
+        <translation>Ring ei tue käyttöä ilman sertifikaattia.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattisi on vanhentunut, ota yhteyttä järjestelmänvalvojaasi.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattisi on itse allekirjoitettu. Tämä rikkoo luottamusketjun.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>Vakio</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Yhteystiedon paikanpitäjät</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <location filename="../src/useractionmodel.cpp" line="748"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Hyväksy</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <location filename="../src/useractionmodel.cpp" line="760"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>Pidossa</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="512"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Vaimenna ääni</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="513"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>Pysäytä video</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Palvelinsiirto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
-        <translation type="unfinished"/>
+        <translation>Tallenne</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="516"/>
         <location filename="../src/useractionmodel.cpp" line="778"/>
         <source>Hangup</source>
-        <translation type="unfinished"/>
+        <translation>Katkaistu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Liity</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Toggle video</source>
-        <translation type="unfinished"/>
+        <translation>Kytke video</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Add a contact</source>
-        <translation type="unfinished"/>
+        <translation>Lisää yhteystieto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Add to existing contact</source>
-        <translation type="unfinished"/>
+        <translation>Lisää olemassa oleva yhteystieto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Delete contact</source>
-        <translation type="unfinished"/>
+        <translation>Poista yhteystieto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <source>Email contact</source>
-        <translation type="unfinished"/>
+        <translation>Sähköpostiyhteystieto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Copy contact</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi yhteystieto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>View chat history</source>
-        <translation type="unfinished"/>
+        <translation>Tarkastele keskusteluhistoriaa</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add phone number</source>
-        <translation type="unfinished"/>
+        <translation>Lisää puhelinnumero</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Call again</source>
-        <translation type="unfinished"/>
+        <translation>Soita uudelleen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa yhteystiedon yksityiskohtia</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Poista historiasta</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="775"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>Soita</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="757"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Poista pidosta</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Peru</translation>
     </message>
 </context>
 <context>
@@ -1345,7 +1346,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Viimeisimmät henkilt</translation>
     </message>
 </context>
 <context>
@@ -1361,7 +1362,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>Automaattinen</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1370,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="75"/>
         <source>NONE</source>
-        <translation type="unfinished"/>
+        <translation>EI MITÄÄN</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="81"/>
         <source>SCREEN</source>
-        <translation type="unfinished"/>
+        <translation>NÄYTTÖ</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="87"/>
         <source>FILE</source>
-        <translation type="unfinished"/>
+        <translation>TIEDOSTO</translation>
     </message>
 </context>
 </TS>

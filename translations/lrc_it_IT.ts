@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" sourcelanguage="en" version="2.1">
 <context>
     <name>Account</name>
     <message>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>設定</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>主機名稱</translation>
+        <translation>Hostname</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation>埠</translation>
+        <translation>Porta</translation>
     </message>
 </context>
 <context>
@@ -125,7 +125,7 @@
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>撥打</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -143,7 +143,7 @@
         <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>保持通話</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
@@ -161,7 +161,7 @@
         <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>傳送</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/call.cpp" line="859"/>
         <source>Unknown</source>
-        <translation>未知</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2173"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>聯絡人</translation>
+        <translation>Contatti</translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation>聯絡人</translation>
+        <translation>Contatti</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -291,7 +291,7 @@
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>未知</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation>歷史記錄</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
 </context>
 <context>
@@ -333,7 +333,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -361,12 +361,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>音訊/視訊</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -557,12 +557,12 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation>型</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -686,7 +686,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -733,7 +733,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
-        <translation>個人檔案</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="394"/>
@@ -1082,7 +1082,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>歷史記錄</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
@@ -1226,17 +1226,17 @@
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <location filename="../src/useractionmodel.cpp" line="760"/>
         <source>Hold</source>
-        <translation>保持通話</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="512"/>
         <source>Mute audio</source>
-        <translation>靜音</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="513"/>
         <source>Mute video</source>
-        <translation>視訊靜音</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
-        <translation>錄製</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="516"/>
@@ -1327,7 +1327,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
         <source>Call</source>
-        <translation>播打</translation>
+        <translation>Chiamata</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="757"/>
@@ -1337,7 +1337,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

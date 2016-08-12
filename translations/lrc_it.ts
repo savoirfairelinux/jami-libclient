@@ -1,53 +1,53 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" sourcelanguage="en" version="2.1">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="271"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pronto</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Registrato</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="275"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non registrato</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="277"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tentando...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="279"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Errore</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="281"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Autenticazione fallita</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Rete non trovata</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="285"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Host irraggiungibile</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="287"/>
@@ -65,7 +65,7 @@
         <location filename="../src/account.cpp" line="291"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Servizio non disponibile</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="293"/>
@@ -77,13 +77,13 @@
         <location filename="../src/account.cpp" line="295"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non valido</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="297"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Richiedi Timeout</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>設定</translation>
+        <translation>Configurazione</translation>
     </message>
 </context>
 <context>
@@ -99,12 +99,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation>主機名稱</translation>
+        <translation>Nome Host</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
         <source>Port</source>
-        <translation>埠</translation>
+        <translation>Porta</translation>
     </message>
 </context>
 <context>
@@ -113,55 +113,55 @@
         <location filename="../src/call.cpp" line="708"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nuovo</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Suonando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>撥打</translation>
+        <translation>Chiamando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Parlando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="720"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Componendo il numero</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>保持通話</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Fallito</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="729"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Occupato</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>傳送</translation>
+        <translation>Trasferimento</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
@@ -180,7 +180,7 @@
         <location filename="../src/call.cpp" line="851"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Errore</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="744"/>
@@ -188,7 +188,7 @@
         <location filename="../src/call.cpp" line="2168"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Conferenza</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
@@ -218,17 +218,17 @@
         <location filename="../src/call.cpp" line="759"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Comunicazione stabilita</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="859"/>
         <source>Unknown</source>
-        <translation>未知</translation>
+        <translation>Sconosciuto</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2173"/>
         <source>Account: </source>
-        <translation type="unfinished"/>
+        <translation>Profilo</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="914"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Chiamate</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
         <location filename="../src/callmodel.cpp" line="553"/>
         <location filename="../src/callmodel.cpp" line="578"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>Profilo non valido</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>Nessun profilo registrato</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation type="unfinished"/>
+        <translation>Più popolare</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>聯絡人</translation>
+        <translation>Contatti</translation>
     </message>
 </context>
 <context>
@@ -280,28 +280,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
         <source>Contacts</source>
-        <translation>聯絡人</translation>
+        <translation>Contatti</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>Vuoto</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>未知</translation>
+        <translation>Sconosciuto</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Mai</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Altro</translation>
     </message>
 </context>
 <context>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation>歷史記錄</translation>
+        <translation>Cronologia</translation>
     </message>
 </context>
 <context>
@@ -317,7 +317,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation type="unfinished"/>
+        <translation>Catena di fiducia</translation>
     </message>
 </context>
 <context>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
 </context>
 <context>
@@ -333,27 +333,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation type="unfinished"/>
+        <translation>Organizzazione</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation type="unfinished"/>
+        <translation>Usato di recente</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation type="unfinished"/>
+        <translation>Gruppo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation type="unfinished"/>
+        <translation>Dipartimento</translation>
     </message>
 </context>
 <context>
@@ -361,12 +361,12 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -474,17 +474,17 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation type="unfinished"/>
+        <translation>Un anno fa</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation type="unfinished"/>
+        <translation>Molto tempo fa</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Mai</translation>
     </message>
 </context>
 <context>
@@ -492,7 +492,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="695"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Io</translation>
     </message>
 </context>
 <context>
@@ -500,17 +500,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>Mai</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="261"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Altro</translation>
     </message>
 </context>
 <context>
@@ -518,7 +518,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Altro</translation>
     </message>
 </context>
 <context>
@@ -526,17 +526,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Registrando</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation type="unfinished"/>
+        <translation>Messagio di testo</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>音訊/視訊</translation>
+        <translation>Audio/Video</translation>
     </message>
 </context>
 <context>
@@ -544,7 +544,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>Non categorizzato</translation>
     </message>
 </context>
 <context>
@@ -552,22 +552,22 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation>Profilo</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Peso</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="175"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>Persona</translation>
     </message>
 </context>
 <context>
@@ -583,102 +583,102 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="226"/>
         <source>This account does not support presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Questo profilo non supporta il rilevamento delle presenze</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="229"/>
         <source>No associated account</source>
-        <translation type="unfinished"/>
+        <translation>Nessun profilo associato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Type</source>
-        <translation>型</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Persona</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation>Profilo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Stato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>Conta chiamate</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>Conta settimane</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Conta trimestre</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Have Called</source>
-        <translation type="unfinished"/>
+        <translation>Hai chiamato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Last used</source>
-        <translation type="unfinished"/>
+        <translation>Ultimo usato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>Name_count</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Total (in seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Totale (in secondi)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Popularity_index</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Registrato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>Tracciato</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Presence message</source>
-        <translation type="unfinished"/>
+        <translation>Messaggio presenza</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="291"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>Uid</translation>
     </message>
 </context>
 <context>
@@ -686,33 +686,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>姓名</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Messaggio</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Colore</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Default</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Personalizzato</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -733,12 +733,12 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
         <source>Profile</source>
-        <translation>個人檔案</translation>
+        <translation>Profilo</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="394"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Default</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="931"/>
         <source>Profiles</source>
-        <translation type="unfinished"/>
+        <translation>Profili</translation>
     </message>
 </context>
 <context>
@@ -754,7 +754,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="1003"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo profilo</translation>
     </message>
 </context>
 <context>
@@ -762,67 +762,67 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="175"/>
         <source>Message</source>
-        <translation type="unfinished"/>
+        <translation>Messaggio</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Code</source>
-        <translation type="unfinished"/>
+        <translation>Codice</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Ora</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>Contatore</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Has a private key</source>
-        <translation type="unfinished"/>
+        <translation>Ha una chiave privata</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Is not expired</source>
-        <translation type="unfinished"/>
+        <translation>Non scaduto</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Has strong signing</source>
-        <translation type="unfinished"/>
+        <translation>Ha una firma forte</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Is not self signed</source>
-        <translation type="unfinished"/>
+        <translation>Non è autofirmato</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>Ha un paio di chiavi corrispondenti</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha i permessi al file della chiave privata</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha i permessi al file della chiave pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha i permessi alla cartella della chiave privata</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha i permessi alla cartella della chiave pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
@@ -847,27 +847,27 @@
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>File certificato esistente e leggibile</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The file is a valid certificate</source>
-        <translation type="unfinished"/>
+        <translation>Il file è una certificato valido</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>Certificato emesso da autority valida</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>Certificato con autorità riconosciuta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>Certificato non revocato</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
@@ -877,7 +877,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>Certificato ha il proprietario atteso</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
@@ -887,37 +887,37 @@
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Data di scadenza</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Data di attivazione</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>Richiede una pasword di chiave privata</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Public signature</source>
-        <translation type="unfinished"/>
+        <translation>Firma pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versione</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Numero di serie</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Emissore</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -927,32 +927,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Nome Comune (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Name (N)</source>
-        <translation type="unfinished"/>
+        <translation>Nome (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>Organizzazione (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo di firma</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Md5 fingerprint</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Sha1 fingerprint</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -982,7 +982,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Default</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="255"/>
@@ -992,22 +992,22 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>A certificate</source>
-        <translation type="unfinished"/>
+        <translation>Un certificato</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="383"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>Un&apos;organizzazione</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="400"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Il contenuto del certificato</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="401"/>
@@ -1022,7 +1022,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="545"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Intestazione</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
@@ -1033,19 +1033,19 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista esclusi</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista consentiti</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Certificato</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
@@ -1061,28 +1061,28 @@
         <location filename="../src/fallbackpersoncollection.cpp" line="186"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>Contatto</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Preferiti locale</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Preferiti</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>Cronologia locale</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>歷史記錄</translation>
+        <translation>Cronologia</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
@@ -1128,7 +1128,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Altro</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="52"/>
@@ -1148,7 +1148,7 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Io</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1209,7 +1209,7 @@
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>Default</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
@@ -1226,17 +1226,17 @@
         <location filename="../src/useractionmodel.cpp" line="511"/>
         <location filename="../src/useractionmodel.cpp" line="760"/>
         <source>Hold</source>
-        <translation>保持通話</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="512"/>
         <source>Mute audio</source>
-        <translation>靜音</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="513"/>
         <source>Mute video</source>
-        <translation>視訊靜音</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
         <source>Record</source>
-        <translation>錄製</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="516"/>
@@ -1312,22 +1312,22 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Modifica i dettagli del contatto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi dalla cronologia</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="775"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="745"/>
         <source>Call</source>
-        <translation>播打</translation>
+        <translation>Chiama</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="757"/>
@@ -1337,7 +1337,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>Cancella</translation>
     </message>
 </context>
 <context>
@@ -1345,7 +1345,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="595"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Persona recente</translation>
     </message>
 </context>
 <context>
@@ -1353,7 +1353,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation type="unfinished"/>
+        <translation>Autorità</translation>
     </message>
 </context>
 <context>
@@ -1361,7 +1361,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>Automatico</translation>
     </message>
 </context>
 <context>
@@ -1369,17 +1369,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="75"/>
         <source>NONE</source>
-        <translation type="unfinished"/>
+        <translation>NESSUNO</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="81"/>
         <source>SCREEN</source>
-        <translation type="unfinished"/>
+        <translation>SCHERMO</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="87"/>
         <source>FILE</source>
-        <translation type="unfinished"/>
+        <translation>FILE</translation>
     </message>
 </context>
 </TS>

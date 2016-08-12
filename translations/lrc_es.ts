@@ -728,7 +728,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="298"/>
         <source>Profile backend</source>
-        <translation type="unfinished"/>
+        <translation>Administración del perfil</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista de prohibidos</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista de permitidos</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1214,7 +1214,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Contenedores de contactos</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>

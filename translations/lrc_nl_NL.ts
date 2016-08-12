@@ -907,7 +907,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versie</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>

@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>Le protocole TLS est désactivé. La négociation de communication ne sera pas chiffrée et sera donc vulnérable.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Éditer les détails du contact</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>

@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS غير مفعل، التفاوض لن يكون مشفراً. الإتصال سيكون عرضة للتجسس</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1198,12 +1198,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>إنتهت مدة صلوحية شهادتك ، الرجاء الإتصال بمسؤول النظام</translation>
+        <translation>إنتهت مدة صلاحية شهادتك ، الرجاء الإتصال بمسؤول النظام.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>شهادتك موقعة ذاتية. هذا يقطع سلسلة الثقة.</translation>
+        <translation>شهادتك موقعة ذاتياً. هذا يقطع سلسلة الثقة.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>

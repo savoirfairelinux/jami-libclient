@@ -119,7 +119,7 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tocando</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista negada</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista permitida</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS está desativada, a negociação não será criptografada. Sua comunicação estará vulnerável à espionagem  </translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Editar detalhes do contato</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>

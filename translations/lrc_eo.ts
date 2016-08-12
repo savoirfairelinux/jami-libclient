@@ -119,13 +119,13 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sonoriĝanta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sonoriganta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -161,13 +161,13 @@
         <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Transmeti</translation>
+        <translation>Transigi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Deteni transmeton</translation>
+        <translation>Deteni transigon</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="738"/>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="914"/>
         <source>Calls</source>
-        <translation>Alvokoj</translation>
+        <translation>Vokoj</translation>
     </message>
 </context>
 <context>
@@ -618,7 +618,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
         <source>Call count</source>
-        <translation>Nombro de alvokoj</translation>
+        <translation>Nombro de vokoj</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 listo de forbaritaj</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 listo de permesitaj</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS estas malŝaltita, la intertraktado ne estos ĉifrata. Via komunikado estos vundebla je spionado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1168,12 +1168,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>La elira servilo difinita ne kongruas la nomon de gastiga komputilo aŭ la unu en la atestilo</translation>
+        <translation>La eliranta servilo difinita ne kongruas la nomon de gastiga komputilo aŭ la unu en la atestilo</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>La agordo &quot;kontroli envenajn atestilojn&quot; estas malŝaltita, tial vi estas vundebla al kaŝa interkapto de komunikado</translation>
+        <translation>La agordo &quot;kontroli enirantajn atestilojn&quot; estas malŝaltita, tial vi estas vundebla al kaŝa interkapto de komunikado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
@@ -1241,7 +1241,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
-        <translation>Senasista transmeto</translation>
+        <translation>Senasista transigo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
@@ -1252,7 +1252,7 @@
         <location filename="../src/useractionmodel.cpp" line="516"/>
         <location filename="../src/useractionmodel.cpp" line="778"/>
         <source>Hangup</source>
-        <translation>Finigi alvokon</translation>
+        <translation>Finigi vokon</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Redakti detatalojn de kontakto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>

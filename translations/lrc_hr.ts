@@ -5,7 +5,7 @@
         <location filename="../src/account.cpp" line="271"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Spreman</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="273"/>
@@ -35,7 +35,7 @@
         <location filename="../src/account.cpp" line="281"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Greška pri autentifikaciji</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="283"/>
@@ -47,19 +47,19 @@
         <location filename="../src/account.cpp" line="285"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Poslužitelj nije dostupan</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="287"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Greška Stun konfiguracije</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="289"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neispravan Stun poslužitelj</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="291"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="195"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Ime poslužitelja</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="197"/>
@@ -119,7 +119,7 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Zvonjenje</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
@@ -137,7 +137,7 @@
         <location filename="../src/call.cpp" line="720"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Biranje</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="723"/>
@@ -188,7 +188,7 @@
         <location filename="../src/call.cpp" line="2168"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Konferencija</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
@@ -206,7 +206,7 @@
         <location filename="../src/call.cpp" line="753"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tražim</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="756"/>
@@ -218,7 +218,7 @@
         <location filename="../src/call.cpp" line="759"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Poziv uspostavljen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="859"/>
@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation type="unfinished"/>
+        <translation>Odjel</translation>
     </message>
 </context>
 <context>
@@ -588,7 +588,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="229"/>
         <source>No associated account</source>
-        <translation type="unfinished"/>
+        <translation>Nema povezanog računa</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="289"/>
@@ -720,7 +720,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>Nije dostupno</translation>
     </message>
 </context>
 <context>
@@ -777,7 +777,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>Brojač</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>

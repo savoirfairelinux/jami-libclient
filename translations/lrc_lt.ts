@@ -119,7 +119,7 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Skambina</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
@@ -492,7 +492,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="695"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Aš</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1148,7 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Aš</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1361,7 +1361,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="104"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>Automatinis</translation>
     </message>
 </context>
 <context>

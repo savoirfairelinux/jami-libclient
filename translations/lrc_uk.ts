@@ -119,13 +119,13 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Дзвінок</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Дзвінок</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -728,7 +728,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="298"/>
         <source>Profile backend</source>
-        <translation type="unfinished"/>
+        <translation>Бекенд профілю</translation>
     </message>
     <message>
         <location filename="../src/profilemodel.cpp" line="303"/>
@@ -867,7 +867,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат не анульовано</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
@@ -882,7 +882,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="63"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат знаходиться в межах активного періоду</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
@@ -922,7 +922,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Алгоритм ключа суб&apos;єкту</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
@@ -962,7 +962,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Видавець доменного імені</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 список заблокованих</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 список дозволених</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1118,7 +1118,7 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Локальні текстові записи</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
@@ -1153,42 +1153,42 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation type="unfinished"/>
+        <translation>Ваші медіа-потоки не зашифровані, будь ласка ввімкніть SRTP або сSDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS шифрування вимкнено, переговори не будуть зашифровані. Ваше повідомлення буде вразливим для перехоплення</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Ваш сертифікат і повноваження не збігаються, якщо вашому сертифікату потрібні повноваження, він не буде працювати</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Зазначений вихідний сервер не відповідає імені хоста або один включений в сертифікат</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Опція &quot;перевірити вхідний сертифікат&quot; вимкнена, це залишає вас вразливим для осіб під час атак</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>Опція &quot;перевірити вхідний сертифікат&quot; вимкнена, це залишає вас вразливим для осіб під час атак</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Жоден з вашого сертифіката не дають секретний ключ, але це є необхідним. Будь ласка, оберіть секретний ключ або використовуйту сертифікат з одним із вбудованих</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>Не передбачений жоден орган сертифікації, то не буде неможливо перевірити, якщо відповіді сртифікатів вірні. Деякі акаунти можуть не працювати.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1241,7 +1241,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Сервер обміну</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Змінити деталі контакту</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
@@ -1353,7 +1353,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation type="unfinished"/>
+        <translation>Повноваження</translation>
     </message>
 </context>
 <context>

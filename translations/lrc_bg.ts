@@ -53,13 +53,13 @@
         <location filename="../src/account.cpp" line="287"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Грешна настройка на Stun</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="289"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Сървърът за Stun е грешен</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="291"/>
@@ -119,13 +119,13 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Позвъняване</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Звъни</translation>
+        <translation>Обаждане</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="717"/>
@@ -544,7 +544,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>Без категория</translation>
     </message>
 </context>
 <context>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
         <source>Name</source>
-        <translation>ИмеИме</translation>
+        <translation>Име</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="261"/>
@@ -643,7 +643,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>Име_брой</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="290"/>
@@ -1241,7 +1241,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Сървърно прехвърляне</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>Редактиране на инф. за контакта</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
