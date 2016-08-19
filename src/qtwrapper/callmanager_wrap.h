@@ -146,82 +146,34 @@ public:
                              Q_EMIT recordingStateChanged(QString(callID.c_str()), recordingState);
                        });
             }),
-            exportable_callback<CallSignal::SecureSdesOn>(
-                [this] (const std::string &callID) {
-                       QTimer::singleShot(0, [this,callID] {
-                             LOG_DRING_SIGNAL("secureSdesOn",QString(callID.c_str()));
-                             Q_EMIT secureSdesOn(QString(callID.c_str()));
-                       });
-            }),
-            exportable_callback<CallSignal::SecureSdesOff>(
-                [this] (const std::string &callID) {
-                       QTimer::singleShot(0, [this,callID] {
-                             LOG_DRING_SIGNAL("secureSdesOff",QString(callID.c_str()));
-                             Q_EMIT secureSdesOff(QString(callID.c_str()));
-                       });
-            }),
-            exportable_callback<CallSignal::SecureZrtpOn>(
-                [this] (const std::string &callID, const std::string &cipher) {
-                       QTimer::singleShot(0, [this,callID,cipher] {
-                             LOG_DRING_SIGNAL2("secureZrtpOn",QString(callID.c_str()), QString(cipher.c_str()));
-                             Q_EMIT secureZrtpOn(QString(callID.c_str()), QString(cipher.c_str()));
-                       });
-            }),
-            exportable_callback<CallSignal::SecureZrtpOff>(
-                [this] (const std::string &callID) {
-                       QTimer::singleShot(0, [this,callID] {
-                             Q_EMIT secureZrtpOff(QString(callID.c_str()));
-                       });
-            }),
-            exportable_callback<CallSignal::ShowSAS>(
-                [this] (const std::string &callID, const std::string &sas, bool verified) {
-                       QTimer::singleShot(0, [this,callID, sas, verified] {
-                             LOG_DRING_SIGNAL3("showSAS",QString(callID.c_str()), QString(sas.c_str()), verified);
-                             Q_EMIT showSAS(QString(callID.c_str()), QString(sas.c_str()), verified);
-                       });
-            }),
-            exportable_callback<CallSignal::ZrtpNotSuppOther>(
-                [this] (const std::string &callID) {
-                       QTimer::singleShot(0, [this,callID] {
-                             LOG_DRING_SIGNAL("zrtpNotSuppOther",QString(callID.c_str()));
-                             Q_EMIT zrtpNotSuppOther(QString(callID.c_str()));
-                       });
-             }),
-             exportable_callback<CallSignal::ZrtpNegotiationFailed>(
-                 [this] (const std::string &callID, const std::string &reason, const std::string &severity) {
-                       QTimer::singleShot(0, [this,callID, reason, severity] {
-                             LOG_DRING_SIGNAL3("zrtpNegotiationFailed",QString(callID.c_str()), QString(reason.c_str()), QString(severity.c_str()));
-                             Q_EMIT zrtpNegotiationFailed(QString(callID.c_str()), QString(reason.c_str()), QString(severity.c_str()));
-                       });
-             }),
-             exportable_callback<CallSignal::RtcpReportReceived>(
-                 [this] (const std::string &callID, const std::map<std::string, int>& report) {
+			exportable_callback<CallSignal::RtcpReportReceived>(
+				[this] (const std::string &callID, const std::map<std::string, int>& report) {
                        QTimer::singleShot(0, [this,callID, report] {
                              LOG_DRING_SIGNAL2("onRtcpReportReceived",QString(callID.c_str()), convertStringInt(report));
                              Q_EMIT onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
                        });
-             }),
-             exportable_callback<CallSignal::PeerHold>(
-                 [this] (const std::string &callID, bool state) {
+			}),
+			exportable_callback<CallSignal::PeerHold>(
+				[this] (const std::string &callID, bool state) {
                        QTimer::singleShot(0, [this,callID, state] {
                              LOG_DRING_SIGNAL2("peerHold",QString(callID.c_str()), state);
                              Q_EMIT peerHold(QString(callID.c_str()), state);
                        });
-             }),
-             exportable_callback<CallSignal::AudioMuted>(
-                 [this] (const std::string &callID, bool state) {
+            }),
+			exportable_callback<CallSignal::AudioMuted>(
+				[this] (const std::string &callID, bool state) {
                        QTimer::singleShot(0, [this,callID, state] {
                              LOG_DRING_SIGNAL2("audioMuted",QString(callID.c_str()), state);
                              Q_EMIT audioMuted(QString(callID.c_str()), state);
                        });
-             }),
-             exportable_callback<CallSignal::VideoMuted>(
-                 [this] (const std::string &callID, bool state) {
+			}),
+			exportable_callback<CallSignal::VideoMuted>(
+				[this] (const std::string &callID, bool state) {
                        QTimer::singleShot(0, [this,callID, state] {
                              LOG_DRING_SIGNAL2("videoMuted",QString(callID.c_str()), state);
                              Q_EMIT videoMuted(QString(callID.c_str()), state);
                        });
-             })
+			})
          };
      }
 
@@ -233,11 +185,6 @@ public Q_SLOTS: // METHODS
     bool accept(const QString &callID)
     {
         return DRing::accept(callID.toStdString());
-    }
-
-    void acceptEnrollment(const QString &callID, bool accepted)
-    {
-        DRing::acceptEnrollment(callID.toStdString(), accepted);
     }
 
     bool addMainParticipant(const QString &confID)
@@ -383,31 +330,11 @@ public Q_SLOTS: // METHODS
         return DRing::refuse(callID.toStdString());
     }
 
-    void requestGoClear(const QString &callID)
-    {
-        DRing::requestGoClear(callID.toStdString());
-    }
-
-    void resetSASVerified(const QString &callID)
-    {
-        DRing::resetSASVerified(callID.toStdString());
-    }
-
     void sendTextMessage(const QString &callID, const QMap<QString,QString> &message, bool isMixed)
     {
         DRing::sendTextMessage(
             callID.toStdString(), convertMap(message), QObject::tr("Me").toStdString(), isMixed
         );
-    }
-
-    void setConfirmGoClear(const QString &callID)
-    {
-        DRing::setConfirmGoClear(callID.toStdString());
-    }
-
-    void setSASVerified(const QString &callID)
-    {
-        DRing::setSASVerified(callID.toStdString());
     }
 
     bool startRecordedFilePlayback(const QString &filepath)
@@ -467,15 +394,7 @@ Q_SIGNALS: // SIGNALS
     void conferenceRemoved(const QString &confID);
     void newCallCreated(const QString &accountID, const QString &callID, const QString &to);
     void recordingStateChanged(const QString &callID, bool recordingState);
-    void secureSdesOn(const QString &callID);
-    void secureSdesOff(const QString &callID);
-    void secureZrtpOn(const QString &callID, const QString &cipher);
-    void secureZrtpOff(const QString &callID);
-    void showSAS(const QString &callID, const QString &sas, bool verified);
-    void zrtpNotSuppOther(const QString &callID);
-    void zrtpNegotiationFailed(const QString &callID, const QString &reason, const QString &severity);
     void onRtcpReportReceived(const QString &callID, MapStringInt report);
-    void confirmGoClear(const QString &callID);
     void audioMuted(const QString &callID, bool state);
     void videoMuted(const QString &callID, bool state);
     void peerHold(const QString &callID, bool state);

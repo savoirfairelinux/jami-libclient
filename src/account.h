@@ -119,11 +119,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(bool           tlsVerifyClient              READ isTlsVerifyClient             WRITE setTlsVerifyClient             )
    Q_PROPERTY(bool           tlsRequireClientCertificate  READ isTlsRequireClientCertificate WRITE setTlsRequireClientCertificate )
    Q_PROPERTY(bool           tlsEnabled                   READ isTlsEnabled                  WRITE setTlsEnabled                  )
-   Q_PROPERTY(bool           displaySasOnce               READ isDisplaySasOnce              WRITE setDisplaySasOnce              )
    Q_PROPERTY(bool           srtpRtpFallback              READ isSrtpRtpFallback             WRITE setSrtpRtpFallback             )
-   Q_PROPERTY(bool           zrtpDisplaySas               READ isZrtpDisplaySas              WRITE setZrtpDisplaySas              )
-   Q_PROPERTY(bool           zrtpNotSuppWarning           READ isZrtpNotSuppWarning          WRITE setZrtpNotSuppWarning          )
-   Q_PROPERTY(bool           zrtpHelloHash                READ isZrtpHelloHash               WRITE setZrtpHelloHash               )
    Q_PROPERTY(bool           sipStunEnabled               READ isSipStunEnabled              WRITE setSipStunEnabled              )
    Q_PROPERTY(bool           publishedSameAsLocal         READ isPublishedSameAsLocal        WRITE setPublishedSameAsLocal        )
    Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled             )
@@ -243,11 +239,7 @@ class LIB_EXPORT Account : public ItemBase {
          TlsVerifyClient             ,
          TlsRequireClientCertificate ,
          TlsEnabled                  ,
-         DisplaySasOnce              ,
          SrtpRtpFallback             ,
-         ZrtpDisplaySas              ,
-         ZrtpNotSuppWarning          ,
-         ZrtpHelloHash               ,
          SipStunEnabled              ,
          PublishedSameAsLocal        ,
          RingtoneEnabled             ,
@@ -377,12 +369,8 @@ class LIB_EXPORT Account : public ItemBase {
       QString mailbox                      () const;
       QString proxy                        () const;
       QString password                     () const;
-      bool    isDisplaySasOnce             () const;
       bool    isSrtpRtpFallback            () const;
       bool    isSrtpEnabled                () const;
-      bool    isZrtpDisplaySas             () const;
-      bool    isZrtpNotSuppWarning         () const;
-      bool    isZrtpHelloHash              () const;
       bool    isSipStunEnabled             () const;
       QString sipStunServer                () const;
       int     registrationExpire           () const;
@@ -488,12 +476,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setTlsVerifyClient               (bool detail);
       void setTlsRequireClientCertificate   (bool detail);
       void setTlsEnabled                    (bool detail);
-      void setDisplaySasOnce                (bool detail);
       void setSrtpRtpFallback               (bool detail);
       void setSrtpEnabled                   (bool detail);
-      void setZrtpDisplaySas                (bool detail);
-      void setZrtpNotSuppWarning            (bool detail);
-      void setZrtpHelloHash                 (bool detail);
       void setSipStunEnabled                (bool detail);
       void setPublishedSameAsLocal          (bool detail);
       void setRingtoneEnabled               (bool detail);

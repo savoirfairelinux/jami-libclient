@@ -37,14 +37,12 @@ public:
    class Name {
    public:
       constexpr static const char* NONE = "None";
-      constexpr static const char* ZRTP = "ZRTP";
       constexpr static const char* SDES = "SDES";
    };
 
    class DaemonName {
    public:
       constexpr static const char* NONE = ""    ;
-      constexpr static const char* ZRTP = "zrtp";
       constexpr static const char* SDES = "sdes";
    };
 
@@ -106,8 +104,6 @@ QVariant KeyExchangeModel::data( const QModelIndex& index, int role) const
       switch (method) {
          case KeyExchangeModel::Type::NONE:
             return KeyExchangeModelPrivate::Name::NONE;
-         case KeyExchangeModel::Type::ZRTP:
-            return KeyExchangeModelPrivate::Name::ZRTP;
          case KeyExchangeModel::Type::SDES:
             return KeyExchangeModelPrivate::Name::SDES;
          case KeyExchangeModel::Type::COUNT__:
@@ -128,7 +124,7 @@ int KeyExchangeModel::rowCount( const QModelIndex& parent ) const
 Qt::ItemFlags KeyExchangeModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid()) return Qt::NoItemFlags;
-   return index.row()!=(int)KeyExchangeModel::Type::ZRTP?(Qt::ItemIsEnabled|Qt::ItemIsSelectable):Qt::NoItemFlags;
+   return index.row()!=(int)Qt::NoItemFlags;
 }
 
 bool KeyExchangeModel::setData( const QModelIndex& index, const QVariant &value, int role)
@@ -151,8 +147,6 @@ const char* KeyExchangeModelPrivate::toDaemonName(KeyExchangeModel::Type type)
    switch (type) {
       case KeyExchangeModel::Type::NONE:
          return KeyExchangeModelPrivate::DaemonName::NONE;
-      case KeyExchangeModel::Type::ZRTP:
-         return KeyExchangeModelPrivate::DaemonName::ZRTP;
       case KeyExchangeModel::Type::SDES:
          return KeyExchangeModelPrivate::DaemonName::SDES;
       case KeyExchangeModel::Type::COUNT__:
@@ -167,8 +161,6 @@ KeyExchangeModel::Type KeyExchangeModelPrivate::fromDaemonName(const QString& na
       return KeyExchangeModel::Type::NONE;
    else if (name == KeyExchangeModelPrivate::DaemonName::SDES)
       return KeyExchangeModel::Type::SDES;
-   else if (name == KeyExchangeModelPrivate::DaemonName::ZRTP)
-      return KeyExchangeModel::Type::ZRTP;
    qDebug() << "Undefined Key exchange mechanism" << name;
    return KeyExchangeModel::Type::NONE;
 }

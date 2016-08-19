@@ -43,19 +43,14 @@ public:
 
    ///@enum Type Every supported encryption types
    enum class Type {
-      ZRTP = 0,
-      SDES = 1,
-      NONE = 2,
+	  NONE = 0,
+	  SDES = 1,
       COUNT__,
    };
 
    ///@enum Options Every Key exchange options
    enum class Options {
       RTP_FALLBACK     = 0,
-      DISPLAY_SAS      = 1,
-      NOT_SUPP_WARNING = 2,
-      HELLO_HASH       = 3,
-      DISPLAY_SAS_ONCE = 4,
       COUNT__,
    };
 

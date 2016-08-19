@@ -660,12 +660,6 @@ QString Account::password() const
    return "";
 }
 
-///
-bool Account::isDisplaySasOnce() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS_ONCE) IS_TRUE;
-}
-
 ///Return the account security fallback
 bool Account::isSrtpRtpFallback() const
 {
@@ -676,24 +670,6 @@ bool Account::isSrtpRtpFallback() const
 bool Account::isSrtpEnabled() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::SRTP::ENABLED) IS_TRUE;
-}
-
-///
-bool Account::isZrtpDisplaySas         () const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS) IS_TRUE;
-}
-
-///Return if the other side support warning
-bool Account::isZrtpNotSuppWarning() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::NOT_SUPP_WARNING) IS_TRUE;
-}
-
-///
-bool Account::isZrtpHelloHash() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ZRTP::HELLO_HASH) IS_TRUE;
 }
 
 ///Return if the account is using a STUN server
@@ -1109,16 +1085,8 @@ QVariant Account::roleData(int role) const
          return isTlsRequireClientCertificate();
       case CAST(Account::Role::TlsEnabled):
          return isTlsEnabled();
-      case CAST(Account::Role::DisplaySasOnce):
-         return isDisplaySasOnce();
       case CAST(Account::Role::SrtpRtpFallback):
          return isSrtpRtpFallback();
-      case CAST(Account::Role::ZrtpDisplaySas):
-         return isZrtpDisplaySas();
-      case CAST(Account::Role::ZrtpNotSuppWarning):
-         return isZrtpNotSuppWarning();
-      case CAST(Account::Role::ZrtpHelloHash):
-         return isZrtpHelloHash();
       case CAST(Account::Role::SipStunEnabled):
          return isSipStunEnabled();
       case CAST(Account::Role::PublishedSameAsLocal):
@@ -1647,12 +1615,6 @@ void Account::setTlsEnabled(bool detail)
    d_ptr->regenSecurityValidation();
 }
 
-void Account::setDisplaySasOnce(bool detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS_ONCE, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
-}
-
 void Account::setSrtpRtpFallback(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::RTP_FALLBACK, (detail)TO_BOOL);
@@ -1662,24 +1624,6 @@ void Account::setSrtpRtpFallback(bool detail)
 void Account::setSrtpEnabled(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::SRTP::ENABLED, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
-}
-
-void Account::setZrtpDisplaySas(bool detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::DISPLAY_SAS, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
-}
-
-void Account::setZrtpNotSuppWarning(bool detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::NOT_SUPP_WARNING, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
-}
-
-void Account::setZrtpHelloHash(bool detail)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ZRTP::HELLO_HASH, (detail)TO_BOOL);
    d_ptr->regenSecurityValidation();
 }
 
@@ -1992,20 +1936,8 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::TlsEnabled):
          setTlsEnabled(value.toBool());
          break;
-      case CAST(Account::Role::DisplaySasOnce):
-         setDisplaySasOnce(value.toBool());
-         break;
       case CAST(Account::Role::SrtpRtpFallback):
          setSrtpRtpFallback(value.toBool());
-         break;
-      case CAST(Account::Role::ZrtpDisplaySas):
-         setZrtpDisplaySas(value.toBool());
-         break;
-      case CAST(Account::Role::ZrtpNotSuppWarning):
-         setZrtpNotSuppWarning(value.toBool());
-         break;
-      case CAST(Account::Role::ZrtpHelloHash):
-         setZrtpHelloHash(value.toBool());
          break;
       case CAST(Account::Role::SipStunEnabled):
          setSipStunEnabled(value.toBool());
@@ -2165,11 +2097,11 @@ Account::EditState Account::editState() const
 /**
  * This method can be used to query if a field is available or not in current
  * context. This could be extended over time. For now, it only handle the fields
- * related to SDES and ZRTP.
+ * related to SDES.
  *
  * @todo Support of the private key password is necessary
  *
- * @param role An sdes or zrtp related Account::Role
+ * @param role An SDES related Account::Role
  * @return if the field is available in the current context
  */
 Account::RoleState Account::roleState(Account::Role role) const
@@ -2225,30 +2157,14 @@ Account::RoleState Account::roleState(Account::Role role) const
    //Supported security fields
    enum class Fields {
       SDES_FALLBACK_RTP  ,
-      ZRTP_SAS_ONCE      ,
-      ZRTP_DISPLAY_SAS   ,
-      ZRTP_WARN_SUPPORTED,
-      ZTRP_SEND_HELLO    ,
       COUNT__
    };
 
    //Mapping between the roles and the fields
    Fields f = Fields::COUNT__;
    switch(role) {
-      case Account::Role::DisplaySasOnce    :
-         f = Fields::ZRTP_SAS_ONCE      ;
-         break;
       case Account::Role::SrtpRtpFallback   :
          f = Fields::SDES_FALLBACK_RTP  ;
-         break;
-      case Account::Role::ZrtpDisplaySas    :
-         f = Fields::ZRTP_DISPLAY_SAS   ;
-         break;
-      case Account::Role::ZrtpNotSuppWarning:
-         f = Fields::ZRTP_WARN_SUPPORTED;
-         break;
-      case Account::Role::ZrtpHelloHash     :
-         f = Fields::ZTRP_SEND_HELLO    ;
          break;
    }
    #pragma GCC diagnostic pop
@@ -2264,16 +2180,11 @@ Account::RoleState Account::roleState(Account::Role role) const
    //Matrix used to define if a field is enabled
    static const Matrix2D<KeyExchangeModel::Type, Fields, Account::RoleState>
    enabledFields={{
-      /*                     ______________________> SDES_FALLBACK_RTP        */
-      /*                    /      ________________> ZRTP_ASK_USER            */
-      /*                   /      /     ___________> ZRTP_DISPLAY_SAS         */
-      /*                  /      /     /     ______> ZRTP_WARN_SUPPORTED      */
-      /*                 /      /     /     /     _> ZTRP_SEND_HELLO          */
-      /*                /      /     /     /     /                            */
-      /*               \/     \/    \/    \/    \/                            */
-      /*Type::ZRTP*/ {{un   ,rw   ,rw   ,rw   ,rw   }},
-      /*Type::SDES*/ {{rw   ,un   ,un   ,un   ,un   }},
-      /*Type::NONE*/ {{un   ,un   ,un   ,un   ,un   }},
+      /*                 ______________________> SDES_FALLBACK_RTP  */
+      /*                /                                           */
+      /*               \/                                           */
+      /*Type::SDES*/ {{rw}},
+      /*Type::NONE*/ {{un}},
    }};
 
    const QModelIndex idx = keyExchangeModel()->selectionModel()->currentIndex();

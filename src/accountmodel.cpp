@@ -132,11 +132,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TlsVerifyClient             ) ,QByteArray("tlsVerifyClient"               ));
       roles.insert(CAST(Account::Role::TlsRequireClientCertificate ) ,QByteArray("tlsRequireClientCertificate"   ));
       roles.insert(CAST(Account::Role::TlsEnabled                  ) ,QByteArray("tlsEnabled"                    ));
-      roles.insert(CAST(Account::Role::DisplaySasOnce              ) ,QByteArray("displaySasOnce"                ));
       roles.insert(CAST(Account::Role::SrtpRtpFallback             ) ,QByteArray("srtpRtpFallback"               ));
-      roles.insert(CAST(Account::Role::ZrtpDisplaySas              ) ,QByteArray("zrtpDisplaySas"                ));
-      roles.insert(CAST(Account::Role::ZrtpNotSuppWarning          ) ,QByteArray("zrtpNotSuppWarning"            ));
-      roles.insert(CAST(Account::Role::ZrtpHelloHash               ) ,QByteArray("zrtpHelloHash"                 ));
       roles.insert(CAST(Account::Role::SipStunEnabled              ) ,QByteArray("sipStunEnabled"                ));
       roles.insert(CAST(Account::Role::PublishedSameAsLocal        ) ,QByteArray("publishedSameAsLocal"          ));
       roles.insert(CAST(Account::Role::RingtoneEnabled             ) ,QByteArray("ringtoneEnabled"               ));
