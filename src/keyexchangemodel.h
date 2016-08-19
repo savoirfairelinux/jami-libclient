@@ -43,19 +43,14 @@ public:
 
    ///@enum Type Every supported encryption types
    enum class Type {
-      ZRTP = 0,
+      NONE = 0,
       SDES = 1,
-      NONE = 2,
       COUNT__,
    };
 
    ///@enum Options Every Key exchange options
    enum class Options {
       RTP_FALLBACK     = 0,
-      DISPLAY_SAS      = 1,
-      NOT_SUPP_WARNING = 2,
-      HELLO_HASH       = 3,
-      DISPLAY_SAS_ONCE = 4,
       COUNT__,
    };
 
@@ -66,7 +61,6 @@ public:
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
-   virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
    virtual bool          setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
 

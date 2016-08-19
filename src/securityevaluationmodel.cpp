@@ -34,7 +34,7 @@
 #include <QtAlgorithms>
 
 const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityEvaluationModel::AccountSecurityChecks>()] = {
-   /*SRTP_ENABLED                */QObject::tr("Your media streams are not encrypted, please enable ZRTP or SDES"),
+   /*SRTP_ENABLED                */QObject::tr("Your media streams are not encrypted, please enable SDES"),
    /*TLS_ENABLED                 */QObject::tr("TLS is disabled, the negotiation won't be encrypted. Your communication will be vulnerable to "
                                    "snooping"),
    /*CERTIFICATE_MATCH           */QObject::tr("Your certificate and authority don't match, if your certificate require an authority, it won't work"),
