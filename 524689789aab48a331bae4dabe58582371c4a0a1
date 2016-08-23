@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_ccb58332",
+        "filename": "src/keyexchangemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-08-23T15:31:19Z",
+      "side": 1,
+      "message": "this was part of the ternary conditional, this function doesn\u0027t return a bool but a Qt::ItemFlags... in this case I guess it will always just return Qt::NoItemFlags... so possibly we don\u0027t even need to override it anymore at all as thats probably what the default implementation does...",
+      "range": {
+        "startLine": 127,
+        "startChar": 3,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "524689789aab48a331bae4dabe58582371c4a0a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_6c825754",
+        "filename": "src/keyexchangemodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-08-23T15:31:19Z",
+      "side": 1,
+      "message": "tabs!!!",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "524689789aab48a331bae4dabe58582371c4a0a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
