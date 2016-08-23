@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_bb7ddbb3",
+        "filename": "src/smartInfoHub.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2016-08-23T15:10:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7ca5a3_d4c0b52c",
+      "revId": "ecfe486a90be75a4015783b492fab0c044e58088",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a7ca5a3_0a6fe793",
         "filename": "src/smartInfoHub.h",
         "patchSetId": 21
