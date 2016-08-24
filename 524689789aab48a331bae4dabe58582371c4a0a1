@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_6c5ed7eb",
+        "filename": "src/keyexchangemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-24T14:25:28Z",
+      "side": 1,
+      "message": "oups 2...",
+      "parentUuid": "fad0f9df_ccb58332",
+      "range": {
+        "startLine": 127,
+        "startChar": 3,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "524689789aab48a331bae4dabe58582371c4a0a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_6c825754",
         "filename": "src/keyexchangemodel.h",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-08-23T15:31:19Z",
       "side": 1,
       "message": "tabs!!!",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "524689789aab48a331bae4dabe58582371c4a0a1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_cc5103da",
+        "filename": "src/keyexchangemodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-24T14:25:28Z",
+      "side": 1,
+      "message": "oups..",
+      "parentUuid": "fad0f9df_6c825754",
       "range": {
         "startLine": 46,
         "startChar": 0,
