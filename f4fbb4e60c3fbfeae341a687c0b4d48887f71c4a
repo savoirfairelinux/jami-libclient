@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_e7e66016",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "indent + collapse { on previous line",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 509,
+        "endChar": 6
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_a7f058ca",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 89,
+        "startChar": 38,
+        "endLine": 89,
+        "endChar": 42
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_67ba70e3",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "you can use auto",
+      "range": {
+        "startLine": 288,
+        "startChar": 12,
+        "endLine": 288,
+        "endChar": 20
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_c7ed5cf1",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "collapse on previous line",
+      "range": {
+        "startLine": 290,
+        "startChar": 8,
+        "endLine": 290,
+        "endChar": 9
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_47b96ce8",
+        "filename": "src/ringdevicemodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "I think we should expose a real object to facilitate manipulation by the client.\n\nRight now we only need to display information but at some point we will need to manipulate these objects (edit their display name, revoke them...)\nIt may be easier to do that on a real object (something like RingDevice)\n\nYou can see what has been done for Ringtones for example.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 5
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_27b468f1",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "Why choosing QAbstractTableModel?\n\nI know some models use this already but until now the vast majority use only QAbstractItemModel.",
+      "range": {
+        "startLine": 28,
+        "startChar": 42,
+        "endLine": 28,
+        "endChar": 61
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_67a110a9",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-08-25T21:35:31Z",
+      "side": 1,
+      "message": "We normally use Roles in LRC. OSX client does not handle columns yet, and it will take more time to add necessary adaptations. \nWe use Roles normally.",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
