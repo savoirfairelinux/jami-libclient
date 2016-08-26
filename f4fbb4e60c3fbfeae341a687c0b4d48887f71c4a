@@ -213,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_f9a28899",
+        "filename": "src/ringdevicemodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T19:31:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_47b96ce8",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 5
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_27b468f1",
         "filename": "src/ringdevicemodel.h",
         "patchSetId": 4
@@ -236,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_3999f06e",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T19:31:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_27b468f1",
+      "range": {
+        "startLine": 28,
+        "startChar": 42,
+        "endLine": 28,
+        "endChar": 61
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_67a110a9",
         "filename": "src/ringdevicemodel.h",
         "patchSetId": 4
@@ -247,6 +295,30 @@
       "writtenOn": "2016-08-25T21:35:31Z",
       "side": 1,
       "message": "We normally use Roles in LRC. OSX client does not handle columns yet, and it will take more time to add necessary adaptations. \nWe use Roles normally.",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_599e3458",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T19:31:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_67a110a9",
       "range": {
         "startLine": 34,
         "startChar": 3,
