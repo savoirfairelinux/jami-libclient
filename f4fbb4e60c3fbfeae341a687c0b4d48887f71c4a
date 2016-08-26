@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_19f66cd8",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T15:47:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_e7e66016",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 509,
+        "endChar": 6
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_a7f058ca",
         "filename": "src/accountmodel.cpp",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2016-08-25T21:35:31Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 89,
+        "startChar": 38,
+        "endLine": 89,
+        "endChar": 42
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_b902c0b2",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T15:47:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_a7f058ca",
       "range": {
         "startLine": 89,
         "startChar": 38,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_792c584b",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T15:47:51Z",
+      "side": 1,
+      "message": "Okay, but why would I?",
+      "parentUuid": "fad0f9df_67ba70e3",
+      "range": {
+        "startLine": 288,
+        "startChar": 12,
+        "endLine": 288,
+        "endChar": 20
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_c7ed5cf1",
         "filename": "src/accountmodel.cpp",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2016-08-25T21:35:31Z",
       "side": 1,
       "message": "collapse on previous line",
+      "range": {
+        "startLine": 290,
+        "startChar": 8,
+        "endLine": 290,
+        "endChar": 9
+      },
+      "revId": "f4fbb4e60c3fbfeae341a687c0b4d48887f71c4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_9931fca4",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-08-26T15:47:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_c7ed5cf1",
       "range": {
         "startLine": 290,
         "startChar": 8,
