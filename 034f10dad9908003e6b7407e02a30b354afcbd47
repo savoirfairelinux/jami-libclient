@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_399fb005",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 32
+      },
+      "writtenOn": "2016-08-29T18:08:41Z",
+      "side": 1,
+      "message": "This should be a QAbstractTableModel like the bootstrap model",
+      "range": {
+        "startLine": 28,
+        "startChar": 42,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "034f10dad9908003e6b7407e02a30b354afcbd47",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
