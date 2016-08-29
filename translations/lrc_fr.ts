@@ -119,7 +119,7 @@
         <location filename="../src/call.cpp" line="711"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Sonne</translation>
+        <translation>Appel entrant</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="714"/>
@@ -143,7 +143,7 @@
         <location filename="../src/call.cpp" line="723"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Mettre en attente</translation>
+        <translation>En attente</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
@@ -161,7 +161,7 @@
         <location filename="../src/call.cpp" line="732"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Transférer</translation>
+        <translation>Transféré</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
@@ -206,7 +206,7 @@
         <location filename="../src/call.cpp" line="753"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Recherche de </translation>
+        <translation>Recherche du correspondant</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="756"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/call.cpp" line="2173"/>
         <source>Account: </source>
-        <translation>Compte :</translation>
+        <translation>Compte : </translation>
     </message>
 </context>
 <context>
@@ -474,7 +474,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation>Il y a une année</translation>
+        <translation>Il y a un an</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
@@ -1033,13 +1033,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>liste noire de %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>liste blanche de %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
