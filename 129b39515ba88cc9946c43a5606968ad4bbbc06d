@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_5caaa2d5",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "I agree",
+      "parentUuid": "fad0f9df_fc403637",
+      "range": {
+        "startLine": 1169,
+        "startChar": 0,
+        "endLine": 1171,
+        "endChar": 4
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_1c3e5ab9",
         "filename": "src/private/smartInfoHub_p.h",
         "patchSetId": 42
@@ -36,6 +60,30 @@
       "writtenOn": "2016-08-30T12:53:15Z",
       "side": 1,
       "message": "I don\u0027t think any of these are needed here...",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_fcaef6e6",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_1c3e5ab9",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_1cac1aed",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_bc4aae53",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_dc47724a",
         "filename": "src/private/smartInfoHub_p.h",
         "patchSetId": 42
@@ -82,6 +154,30 @@
       "writtenOn": "2016-08-30T12:53:15Z",
       "side": 1,
       "message": "these should probably be defined in the dring API, but we can fix that in another patch",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 62
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_bcb86e2b",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "I agree",
+      "parentUuid": "fad0f9df_dc47724a",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_dcb53232",
+        "filename": "src/private/smartInfoHub_p.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_3c6ebeca",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 59
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_7c74469c",
         "filename": "src/smartinfohub.h",
         "patchSetId": 42
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_1c93baa4",
+        "filename": "src/smartinfohub.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_7c74469c",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 27
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_9c79ea95",
         "filename": "src/smartinfohub.h",
         "patchSetId": 42
@@ -151,6 +295,30 @@
       "writtenOn": "2016-08-30T12:53:15Z",
       "side": 1,
       "message": "this is because it is not defined in the .cpp...",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 115
+      },
+      "revId": "129b39515ba88cc9946c43a5606968ad4bbbc06d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_bc8f0e75",
+        "filename": "src/smartinfohub.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2016-08-30T14:36:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_9c79ea95",
       "range": {
         "startLine": 58,
         "startChar": 0,
