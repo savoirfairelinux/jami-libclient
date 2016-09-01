@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_0fadba31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T17:15:14Z",
+      "side": 1,
+      "message": "Could you add to the commit msg body something like:\n\"This fix is only applied for windows because the gnome and osx clients don\u0027t yet support the layoutChanged signals which are emitted when move operations are performed on the source models of proxy models.\"",
+      "revId": "67c1079d4a18fcf1bc018e9ae879b7d826706fe3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
