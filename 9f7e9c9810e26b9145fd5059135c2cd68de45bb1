@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_6f79e6fb",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "extra space",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_2f83decd",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "not pointers, so should be just m_ID instead of m_pID",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 33,
+        "endChar": 26
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_8f7e8ae3",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "space",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 2
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_0f6a9a1a",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "(see comments in .h file) if you make the constructor private, then you should add \":ItemBase(\u0026RingDeviceModel::instance())\" to the initializer list, this way this object which get destroyed when the RingDeviceModel is destroyed",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 62
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_4f88a2e7",
+        "filename": "src/ringdevice.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "If the RingDevice object is only supposed to be created by the RingDeviceModel (ie: only when it is created in the daemon), then it is LRC convention to make the constructor private (see for example account.h) and make its corresponding model class a friend",
+      "range": {
+        "startLine": 44,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 54
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_cf1c92c4",
+        "filename": "src/ringdevice.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-01T14:51:04Z",
+      "side": 1,
+      "message": "indentation",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 3
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
