@@ -281,6 +281,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 }
 
 /// Deletes the renderer and related resources
+#ifndef Q_OS_WIN
 void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 {
     const auto id = m_hRendererIds.value(r);
@@ -362,6 +363,77 @@ void VideoRendererManagerPrivate::callIsOver()
         disconnect(call, &Call::isOver, this, 0);
     }
 }
+
+#else
+
+void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
+{
+   if (!r || !m_hRenderers.contains(m_hRendererIds[r]))
+      return;
+
+   const QByteArray id = m_hRendererIds[r];
+
+   //Quit if for some reasons the renderer is not found
+   if ( !r ) {
+      qWarning() << "Cannot stop rendering, renderer" << id << "not found";
+      return;
+   }
+
+   Call* c = CallModel::instance().getCall(id);
+
+   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+      c->d_ptr->removeRenderer(r);
+   }
+
+   r->stopRendering();
+
+   qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);
+
+   Video::Device* dev = Video::DeviceModel::instance().getDevice(id);
+
+   if (dev)
+      emit dev->renderingStopped(r);
+
+   if (id == PREVIEW_RENDERER_ID) {
+      m_PreviewState = false;
+      emit q_ptr->previewStateChanged(false);
+      emit q_ptr->previewStopped(r);
+   }
+
+   QThread* t = m_hThreads[r];
+
+   if (t) {
+       t->quit();
+       t->wait();
+   }
+
+   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+
+       m_hRendererIds.remove(r);
+       m_hRenderers.remove(id);
+
+       m_hThreads[r] = nullptr;
+       if (t) {
+           t->deleteLater();
+       }
+
+       r->deleteLater();
+   }
+}
+
+void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
+{
+   Q_UNUSED(shmPath)
+
+   if (m_hRenderers.contains(id.toLatin1())) {
+      removeRenderer(m_hRenderers[id.toLatin1()]);
+   }
+}
+
+//The moc is generated before preprocessing so we need an implementation too
+void VideoRendererManagerPrivate::callIsOver() {}
+
+#endif
 
 void VideoRendererManager::switchDevice(const Video::Device* device) const
 {
