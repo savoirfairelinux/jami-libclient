@@ -573,14 +573,10 @@ bool CodecModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int 
 
       const QModelIndex codecIdx = d_ptr->getIndexofCodecByID(codecId);
 
-      beginRemoveRows(QModelIndex(), codecIdx.row(), codecIdx.row());
-      CodecModelPrivate::CodecData* codecInfo = d_ptr->m_lCodecs[codecIdx.row()];
-      d_ptr->m_lCodecs.removeAt(codecIdx.row());
-      endRemoveRows();
-
-      beginInsertRows(QModelIndex(), destinationRow, destinationRow);
-      d_ptr->m_lCodecs.insert(destinationRow,codecInfo);
-      endInsertRows();
+      auto qtDestinationRow = destinationRow > codecIdx.row() ? destinationRow+1 : destinationRow;
+      beginMoveRows(parent, codecIdx.row(), codecIdx.row(), parent, qtDestinationRow);
+      d_ptr->m_lCodecs.move(codecIdx.row(), destinationRow);
+      endMoveRows();
 
       this << EditAction::MODIFY;
 
