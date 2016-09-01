@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_0f861aba",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_6f79e6fb",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_2f83decd",
         "filename": "src/ringdevice.cpp",
         "patchSetId": 29
@@ -36,6 +60,30 @@
       "writtenOn": "2016-09-01T14:51:04Z",
       "side": 1,
       "message": "not pointers, so should be just m_ID instead of m_pID",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 33,
+        "endChar": 26
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_4fa42257",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_2f83decd",
       "range": {
         "startLine": 32,
         "startChar": 17,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_ef8876c8",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_8f7e8ae3",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 2
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_0f6a9a1a",
         "filename": "src/ringdevice.cpp",
         "patchSetId": 29
@@ -82,6 +154,30 @@
       "writtenOn": "2016-09-01T14:51:04Z",
       "side": 1,
       "message": "(see comments in .h file) if you make the constructor private, then you should add \":ItemBase(\u0026RingDeviceModel::instance())\" to the initializer list, this way this object which get destroyed when the RingDeviceModel is destroyed",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 62
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_6fbc866d",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "In this case, the RingDeviceModel isn\u0027t a singleton, its a member of Account.",
+      "parentUuid": "fad0f9df_0f6a9a1a",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -133,6 +229,54 @@
         "startChar": 0,
         "endLine": 44,
         "endChar": 3
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_cf8fb2cb",
+        "filename": "src/ringdevice.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_cf1c92c4",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 3
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_af926ef4",
+        "filename": "src/ringdevice.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-01T17:13:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_4f88a2e7",
+      "range": {
+        "startLine": 44,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 54
       },
       "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
