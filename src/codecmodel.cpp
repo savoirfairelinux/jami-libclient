@@ -573,6 +573,14 @@ bool CodecModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int 
 
       const QModelIndex codecIdx = d_ptr->getIndexofCodecByID(codecId);
 
+#ifdef Q_OS_WIN
+      /* To understand why qtDestinationRow is needed
+      http://doc.qt.io/qt-5/qabstractitemmodel.html#beginMoveRows */
+      auto qtDestinationRow = destinationRow > codecIdx.row() ? destinationRow+1 : destinationRow;
+      beginMoveRows(parent, codecIdx.row(), codecIdx.row(), parent, qtDestinationRow);
+      d_ptr->m_lCodecs.move(codecIdx.row(), destinationRow);
+      endMoveRows();
+#else
       beginRemoveRows(QModelIndex(), codecIdx.row(), codecIdx.row());
       CodecModelPrivate::CodecData* codecInfo = d_ptr->m_lCodecs[codecIdx.row()];
       d_ptr->m_lCodecs.removeAt(codecIdx.row());
@@ -581,6 +589,7 @@ bool CodecModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int 
       beginInsertRows(QModelIndex(), destinationRow, destinationRow);
       d_ptr->m_lCodecs.insert(destinationRow,codecInfo);
       endInsertRows();
+#endif
 
       this << EditAction::MODIFY;
 
