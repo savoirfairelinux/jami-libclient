@@ -22,6 +22,30 @@
       "revId": "410e315887db9a76a5ddde0609505090a0554821",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_d25e7912",
+        "filename": "src/ringdevicemodel.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-02T15:16:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_3257c504",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 1
+      },
+      "revId": "410e315887db9a76a5ddde0609505090a0554821",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
