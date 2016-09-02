@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_b21c156c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-02T14:05:54Z",
+      "side": 1,
+      "message": "not clear in the commit msg what the fix is for, in the subject I would add that it fixes a crash (segfault?), and in the body maybe add that it reverts to using an older version of the code for windows which does not cause the crash...",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 34
+      },
+      "revId": "0266b7ae5af11d99071f1cb58940056807480ef5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
