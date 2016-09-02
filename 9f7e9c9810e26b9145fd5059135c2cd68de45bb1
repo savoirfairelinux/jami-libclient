@@ -190,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "fad0f9df_92523112",
+        "filename": "src/ringdevice.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-09-02T14:25:57Z",
+      "side": 1,
+      "message": "Well, you could still make RingDevices only be constructable from the RingDeviceModel, and then just pass the RingDeviceModel which instantiates it as an argument in the constructor to make it the parent... its not really a big deal to me (I don\u0027t think anything very bad will happen if someone decides to instantiate a RingDevice from somewhere else)... it will though ensure that the RingDevice will get destroyed along with its parent",
+      "parentUuid": "fad0f9df_6fbc866d",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 62
+      },
+      "revId": "9f7e9c9810e26b9145fd5059135c2cd68de45bb1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fad0f9df_4f88a2e7",
         "filename": "src/ringdevice.h",
         "patchSetId": 29
