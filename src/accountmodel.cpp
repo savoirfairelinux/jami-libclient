@@ -457,6 +457,16 @@ void AccountModel::updateAccounts()
    qDebug() << "Updating all accounts";
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    QStringList accountIds = configurationManager.getAccountList();
+
+   // Detect removed accounts
+   foreach(Account* account, d_ptr->m_lAccounts)
+   {
+       if (accountIds.indexOf(account->id()) == -1)
+       {
+           remove(account);
+       }
+   }
+
    //m_lAccounts.clear();
    for (int i = 0; i < accountIds.size(); ++i) {
       Account* acc = getById(accountIds[i].toLatin1());
