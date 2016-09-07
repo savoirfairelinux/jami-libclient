@@ -136,6 +136,22 @@ public:
                            Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
                      });
          }),
+         exportable_callback<ConfigurationSignal::NameRegistrationEnded>(
+               [this] (const std::string &accountId, int status, const std::string &name) {
+                     QTimer::singleShot(0, [this, accountId, status, name] {
+                           Q_EMIT this->nameRegistrationEnded(QString(accountId.c_str()), status, QString(name.c_str()));
+                     });
+         }),
+          
+
+          exportable_callback<ConfigurationSignal::RegisteredNameFound>(
+                [this] (const std::string &accountId, int status, const std::string &address, const std::string &name) {
+                      QTimer::singleShot(0, [this, accountId, status, address, name] {
+                            Q_EMIT this->registeredNameFound(QString(accountId.c_str()), status, QString(address.c_str()), QString(name.c_str()));
+                      });
+         }),
+
+
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
                      QTimer::singleShot(0, [this, account_id,from,payloads] {
@@ -177,6 +193,21 @@ public Q_SLOTS: // METHODS
        MapStringString temp =
            convertMap(DRing::getKnownRingDevices(accountID.toStdString()));
        return temp;
+   }
+
+   bool lookupName(const QString& accountID, const QString& nameServiceURL, const QString& name)
+   {
+       return DRing::lookupName(accountID.toStdString(), nameServiceURL.toStdString(), name.toStdString());
+   }
+
+   bool lookupAddress(const QString& accountID, const QString& nameServiceURL, const QString& address)
+   {
+       return DRing::lookupAddress(accountID.toStdString(), nameServiceURL.toStdString(), address.toStdString());
+   }
+
+   bool registerName(const QString& accountID, const QString& password, const QString& name)
+   {
+      return DRing::registerName(accountID.toStdString(), password.toStdString(), name.toStdString());
    }
 
    MapStringString getAccountDetails(const QString& accountID)
@@ -666,6 +697,9 @@ Q_SIGNALS: // SIGNALS
    void mediaParametersChanged(const QString& accountId);
    void audioDeviceEvent();
    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
+    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
+    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+
 
 };
 
