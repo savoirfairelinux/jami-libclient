@@ -325,6 +325,7 @@ SET( libringclient_LIB_SRCS
 
   #Other
   src/hookmanager.cpp
+  src/namedirectory.cpp
   src/itembase.cpp
   src/private/vcardutils.cpp
   src/private/videorenderermanager.cpp
@@ -400,6 +401,7 @@ SET( libringclient_LIB_HDRS
   src/collectionextensionmodel.hpp
   src/macromodel.h
   src/hookmanager.h
+  src/namedirectory.h
   src/uri.h
   src/macro.h
   src/ringtone.h
@@ -585,6 +587,7 @@ ENDIF()
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
    src/private/ringdevicemodel_p.h
+   src/private/namedirectory_p.h
    src/private/account_p.h
    src/private/sortproxies.h
    src/private/accountmodel_p.h
