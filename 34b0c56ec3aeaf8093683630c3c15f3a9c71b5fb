@@ -70,6 +70,24 @@
       "revId": "34b0c56ec3aeaf8093683630c3c15f3a9c71b5fb",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fad0f9df_0d95c23f",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-09-07T20:18:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fad0f9df_0de70214",
+      "revId": "34b0c56ec3aeaf8093683630c3c15f3a9c71b5fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
