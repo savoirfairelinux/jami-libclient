@@ -90,6 +90,10 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotKownDevicesChanged);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
             &AccountModelPrivate::slotExportOnRingEnded);
+    connect(&configurationManager, &ConfigurationManagerInterface::nameRegistrationEnded, this,
+            &AccountModelPrivate::slotNameRegistrationEnded);
+    connect(&configurationManager, &ConfigurationManagerInterface::registeredNameFound, this,
+            &AccountModelPrivate::slotRegisteredNameFound);
 }
 
 ///Destructor
@@ -465,6 +469,36 @@ void AccountModelPrivate::slotExportOnRingEnded(const QString& accountId, int st
   }
 
   emit a->exportOnRingEnded(static_cast<Account::ExportOnRingStatus>(status), pin);
+}
+
+//Name registration ended
+void AccountModelPrivate::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+{
+    qDebug() << "Name registration ended" << accountId;
+
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+       qWarning() << "name registration ended for unknown account" << accountId;
+       return;
+   }
+
+   emit a->nameRegistrationEnded(static_cast<Account::RegisterNameStatus>(status), name);
+}
+
+//Registered Name found
+void AccountModelPrivate::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+{
+    qDebug() << "Registered name found" << accountId;
+
+   Account* a = q_ptr->getById(accountId.toLatin1());
+
+   if (!a) {
+       qWarning() << "registered name found for unknown account" << accountId;
+       return;
+   }
+
+   emit a->registeredNameFound(static_cast<Account::LookupStatus>(status), address, name);
 }
 
 ///Update accounts
