@@ -661,6 +661,12 @@ QString Account::username() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USERNAME);
 }
 
+//Return the account registered name
+QString Account::registeredName() const
+{
+   return QString("Dummy registered name");
+}
+
 ///Return the account mailbox address
 QString Account::mailbox() const
 {

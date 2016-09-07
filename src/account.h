@@ -100,7 +100,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
-   Q_PROPERTY(QString        username                     READ username                      WRITE setUsername                    )
+   Q_PROPERTY(QString        registeredName               READ registeredName                WRITE setRegisteredName              )
    Q_PROPERTY(QString        mailbox                      READ mailbox                       WRITE setMailbox                     )
    Q_PROPERTY(QString        proxy                        READ proxy                         WRITE setProxy                       )
    Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
@@ -384,6 +384,7 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isEnabled                    () const;
       bool    isAutoAnswer                 () const;
       QString username                     () const;
+      QString registeredName               () const;
       QString mailbox                      () const;
       QString proxy                        () const;
       QString password                     () const;
