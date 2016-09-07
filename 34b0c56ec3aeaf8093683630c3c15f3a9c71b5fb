@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fad0f9df_8d0532c4",
+        "filename": "src/ringdevicemodel.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2016-09-07T18:58:55Z",
+      "side": 1,
+      "message": "This should be in the private class, right? You can have a reload method (in case a state machine is overkill), but if I understand, the argument is the private data. It should not leak into the public API. In case it has to be called from somewhere else, make the private class \"public\" in LRC, but don\u0027t export it (see the _p.h files).",
+      "revId": "34b0c56ec3aeaf8093683630c3c15f3a9c71b5fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
