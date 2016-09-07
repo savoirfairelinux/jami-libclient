@@ -100,7 +100,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
-   Q_PROPERTY(QString        username                     READ username                      WRITE setUsername                    )
+   Q_PROPERTY(QString        nameServiceURL               READ nameServiceURL                WRITE setNameServiceURL              )
+   Q_PROPERTY(QString        registeredName               READ registeredName                WRITE setRegisteredName              )
    Q_PROPERTY(QString        mailbox                      READ mailbox                       WRITE setMailbox                     )
    Q_PROPERTY(QString        proxy                        READ proxy                         WRITE setProxy                       )
    Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
@@ -384,8 +385,10 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isEnabled                    () const;
       bool    isAutoAnswer                 () const;
       QString username                     () const;
+      QString registeredName               () const;
       QString mailbox                      () const;
       QString proxy                        () const;
+      QString nameServiceURL               () const;
       QString password                     () const;
       bool    isSrtpRtpFallback            () const;
       bool    isSrtpEnabled                () const;
@@ -469,8 +472,10 @@ class LIB_EXPORT Account : public ItemBase {
       void setProtocol                      (Account::Protocol proto);
       void setHostname                      (const QString& detail  );
       void setUsername                      (const QString& detail  );
+      void setRegisteredName                (const QString& detail  );
       void setMailbox                       (const QString& detail  );
       void setProxy                         (const QString& detail  );
+      void setNameServiceURL                (const QString& detail  );
       void setPassword                      (const QString& detail  );
       void setTlsPassword                   (const QString& detail  );
       void setTlsCaListCertificate          (Certificate* cert      );
