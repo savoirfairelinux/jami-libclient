@@ -661,6 +661,14 @@ QString Account::username() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USERNAME);
 }
 
+//Return the account registered name
+QString Account::registeredName() const
+{
+    const MapStringString details = ConfigurationManager::instance().getVolatileAccountDetails(id());
+    const QString registeredName = details[DRing::Account::VolatileProperties::REGISTERED_NAME];
+    return registeredName;
+}
+
 ///Return the account mailbox address
 QString Account::mailbox() const
 {
@@ -671,6 +679,13 @@ QString Account::mailbox() const
 QString Account::proxy() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ROUTE);
+}
+
+///Return the name service URL
+QString Account::nameServiceURL() const
+{
+   //return d_ptr->accountDetail(DRing::Account::ConfProperties::NAME_SERVICE_URL);
+   return QString("http://ringns.com/lrc");
 }
 
 
@@ -1416,6 +1431,14 @@ void Account::setHostname(const QString& detail)
    }
 }
 
+
+///Set the account registeredName
+bool Account::registerName(const QString& password, const QString& name) const
+{
+    ConfigurationManager::instance().registerName(id(), password, name);
+    return true; //TODO: registerName should return a bool
+}
+
 ///Set the account username, everything is valid, some might be rejected by the PBX server
 void Account::setUsername(const QString& detail)
 {
@@ -1448,6 +1471,14 @@ void Account::setMailbox(const QString& detail)
 void Account::setProxy(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ROUTE, detail);
+}
+
+//Set the name service URL
+void Account::setNameServiceURL(const QString& detail)
+{
+    Q_UNUSED(detail);
+    //d_ptr->setAccountProperty(DRing::Account::ConfProperties::NAME_SERVICE_URL, detail);
+    return;
 }
 
 ///Set the main credential password

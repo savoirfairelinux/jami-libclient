@@ -100,7 +100,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
-   Q_PROPERTY(QString        username                     READ username                      WRITE setUsername                    )
+   Q_PROPERTY(QString        nameServiceURL               READ nameServiceURL                WRITE setNameServiceURL              )
+   Q_PROPERTY(QString        registeredName               READ registeredName                                                     )
    Q_PROPERTY(QString        mailbox                      READ mailbox                       WRITE setMailbox                     )
    Q_PROPERTY(QString        proxy                        READ proxy                         WRITE setProxy                       )
    Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
@@ -341,6 +342,14 @@ class LIB_EXPORT Account : public ItemBase {
       };
       Q_ENUMS(ExportOnRingStatus)
 
+      //Register name status
+      enum class RegisterNameStatus {
+          SUCCESS = 0,
+          WRONG_PASSWORD = 1,
+          ALREADY_TAKEN = 2,
+          NETWORK_ERROR = 3
+      };
+
       /**
        *Perform an action
        * @return If the state changed
@@ -384,8 +393,10 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isEnabled                    () const;
       bool    isAutoAnswer                 () const;
       QString username                     () const;
+      QString registeredName               () const;
       QString mailbox                      () const;
       QString proxy                        () const;
+      QString nameServiceURL               () const;
       QString password                     () const;
       bool    isSrtpRtpFallback            () const;
       bool    isSrtpEnabled                () const;
@@ -450,6 +461,7 @@ class LIB_EXPORT Account : public ItemBase {
       bool    needsMigration               () const;
 
       bool    exportOnRing      (const QString& password) const;
+      bool    registerName      (const QString& password, const QString& name) const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -471,6 +483,7 @@ class LIB_EXPORT Account : public ItemBase {
       void setUsername                      (const QString& detail  );
       void setMailbox                       (const QString& detail  );
       void setProxy                         (const QString& detail  );
+      void setNameServiceURL                (const QString& detail  );
       void setPassword                      (const QString& detail  );
       void setTlsPassword                   (const QString& detail  );
       void setTlsCaListCertificate          (Certificate* cert      );
@@ -559,6 +572,8 @@ class LIB_EXPORT Account : public ItemBase {
       void editStateChanged(const EditState state, const EditState previous);
       ///Export on Ring has ended
       void exportOnRingEnded(Account::ExportOnRingStatus status, const QString& pin);
+      ///RegisterName has ended
+      void RegisterNameEnded(Account::RegisterNameStatus status, const QString& name);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
