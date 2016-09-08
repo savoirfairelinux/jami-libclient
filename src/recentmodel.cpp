@@ -400,10 +400,15 @@ RecentModel::getIndex(Person *p) const
 QModelIndex
 RecentModel::getIndex(ContactMethod *cm) const
 {
+    // check if the CM is an item the RecentModel
     if (d_ptr->m_hCMsToNodes.contains(cm)) {
         if (auto node = d_ptr->m_hCMsToNodes.value(cm))
             return index(node->m_Index, 0);
     }
+
+    // otherwise, its possible the CM is contained within a Person item
+    if (auto person = cm->contact())
+        return getIndex(person);
 
     return {};
 }
