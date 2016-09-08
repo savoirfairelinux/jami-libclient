@@ -1,4 +1,4 @@
-/****************************************************************************
+l/****************************************************************************
  *   Copyright (C) 2009-2016 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
@@ -184,6 +184,7 @@ void PersonPrivate::registerContactMethod(ContactMethod* m)
 {
    m_HiddenContactMethods << m;
    connect(m, &ContactMethod::lastUsedChanged, this, &PersonPrivate::slotLastUsedTimeChanged);
+   connect(m, &ContactMethod::callAdded, this, &PersonPrivate::slotCallAdded);
 
    if (m->lastUsed() > m_LastUsed)
       slotLastUsedTimeChanged(m->lastUsed());
@@ -360,6 +361,7 @@ void Person::setContactMethods(ContactMethods numbers)
       disconnect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       disconnect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
       disconnect(n, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &PersonPrivate::changed);
+      disconnect(n, &ContactMethod::callAdded, d_ptr, &PersonPrivate::callAdded);
    }
    d_ptr->m_Numbers = numbers;
 
@@ -367,6 +369,7 @@ void Person::setContactMethods(ContactMethods numbers)
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       connect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
       connect(n, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &PersonPrivate::changed);
+      connect(n, &ContactMethod::callAdded, d_ptr, &PersonPrivate::callAdded);
    }
 
    d_ptr->phoneNumbersChanged();
@@ -746,4 +749,11 @@ void PersonPrivate::slotLastUsedTimeChanged(::time_t t)
    foreach (Person* c,m_lParents) {
       emit c->lastUsedTimeChanged(t);
    }
+}
+
+void PersonPrivate::slotCallAdded(Call *call)
+{
+    foreach (Person* c,m_lParents) {
+        emit c->callAdded(call);
+    }
 }

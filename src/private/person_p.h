@@ -84,5 +84,5 @@ public:
 
 public Q_SLOTS:
    void slotLastUsedTimeChanged(::time_t t);
+   void slotCallAdded          (Call *call);
 };
-
