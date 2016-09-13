@@ -28,6 +28,8 @@ namespace Interfaces {
  */
 class DBusErrorHandlerI {
 public:
+    virtual ~DBusErrorHandlerI() = default;
+
     virtual void connectionError(const QString& error) = 0;
     virtual void invalidInterfaceError(const QString& error) = 0;
 };
