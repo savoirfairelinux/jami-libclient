@@ -57,6 +57,8 @@ public:
    virtual bool addExisting( const Media::Recording* item ) override;
    QString fetch(const QByteArray& sha1);
 
+   void clearAll();
+
 private:
    virtual QVector<Media::Recording*> items() const override;
    //Attributes
@@ -104,6 +106,15 @@ bool LocalTextRecordingEditor::save(const Media::Recording* recording)
    }
 
    return true;
+}
+
+void LocalTextRecordingEditor::clearAll()
+{
+    for (Media::Recording *recording : items()) {
+        auto textRecording = qobject_cast<Media::TextRecording*>(recording);
+        textRecording->d_ptr->clear();
+        save(recording);
+    }
 }
 
 bool LocalTextRecordingEditor::remove(const Media::Recording* item)
@@ -238,12 +249,19 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalTextRecordingCollection::s
       CollectionInterface::SupportedFeatures::MANAGEABLE|
       CollectionInterface::SupportedFeatures::SAVE_ALL  |
       CollectionInterface::SupportedFeatures::LISTABLE  |
-      CollectionInterface::SupportedFeatures::REMOVE    ;
+      CollectionInterface::SupportedFeatures::REMOVE    |
+      CollectionInterface::SupportedFeatures::CLEAR     ;
 }
 
 bool LocalTextRecordingCollection::clear()
 {
-   return false;
+    static_cast<LocalTextRecordingEditor *>(editor<Media::Recording>())->clearAll();
+
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text");
+
+    // TODO: the file deletion should be done on each individual file to be able to catch errors
+    // and to prevent us deleting files which are not the recordings
+    return dir.removeRecursively();
 }
 
 QByteArray LocalTextRecordingCollection::id() const

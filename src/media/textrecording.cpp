@@ -898,3 +898,42 @@ void InstantMessagingModel::addRowEnd()
 {
    endInsertRows();
 }
+
+void Media::TextRecordingPrivate::clear()
+{
+    m_pImModel->clear();
+
+    if (m_UnreadCount != 0) {
+        m_UnreadCount = 0;
+        emit q_ptr->unreadCountChange(0);
+    }
+}
+
+void InstantMessagingModel::clear()
+{
+    beginResetModel();
+
+    for ( TextMessageNode *node : m_pRecording->d_ptr->m_lNodes) {
+        for (Serializable::Payload *payload : node->m_pMessage->payloads) {
+            delete payload;
+        }
+        delete node->m_pMessage;
+        delete node;
+    }
+    m_pRecording->d_ptr->m_lNodes.clear();
+
+    for (Serializable::Peers *peers : m_pRecording->d_ptr->m_lAssociatedPeers) {
+        for (Serializable::Group *group : peers->groups) {
+            group->messages.clear();
+        }
+    }
+    m_pRecording->d_ptr->m_lAssociatedPeers.clear();
+
+    //TODO: holly memory leaks batman! what else do we need to delete?
+
+    m_pRecording->d_ptr->m_pCurrentGroup = nullptr;
+    m_pRecording->d_ptr->m_hMimeTypes.clear();
+    m_pRecording->d_ptr->m_lMimeTypes.clear();
+
+    endResetModel();
+}

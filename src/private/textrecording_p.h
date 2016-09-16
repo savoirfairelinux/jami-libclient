@@ -184,6 +184,8 @@ public:
    void accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status);
    bool updateMessageStatus(Serializable::Message* m, TextRecording::Status status);
 
+   void clear();
+
 private:
    TextRecording* q_ptr;
 };
@@ -241,6 +243,8 @@ public:
    virtual Qt::ItemFlags flags    ( const QModelIndex& index                                 ) const override;
    virtual bool  setData  ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
+
+   void clear();
 
    //Attributes
    Media::TextRecording* m_pRecording;

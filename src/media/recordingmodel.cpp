@@ -313,12 +313,18 @@ bool Media::RecordingModel::removeItemCallback(const Recording* item)
 
 bool Media::RecordingModel::clearAllCollections() const
 {
-   foreach (CollectionInterface* backend, collections()) {
-      if (backend->supportedFeatures() & CollectionInterface::SupportedFeatures::ADD) {
-         backend->clear();
-      }
-   }
-   return true;
+    foreach (CollectionInterface* backend, collections(CollectionInterface::SupportedFeatures::CLEAR)) {
+        backend->clear();
+    }
+    return true;
+}
+
+///Deletes all recordings (which are possible to delete) and clears model
+void Media::RecordingModel::clear()
+{
+    beginResetModel();
+    clearAllCollections();
+    endResetModel();
 }
 
 void Media::RecordingModel::collectionAddedCallback(CollectionInterface* backend)
