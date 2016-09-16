@@ -78,6 +78,7 @@ public:
    //Setter
    void setAlwaysRecording( bool            record );
    void setRecordPath     ( const QString&  path   );
+   void clear             (                        );
 
    //Mutator
    TextRecording* createTextRecording(const ContactMethod* cm);

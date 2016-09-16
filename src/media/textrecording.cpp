@@ -898,3 +898,26 @@ void InstantMessagingModel::addRowEnd()
 {
    endInsertRows();
 }
+
+void Media::TextRecordingPrivate::clear()
+{
+    m_pImModel->clear();
+
+    if (m_UnreadCount != 0) {
+        m_UnreadCount = 0;
+        emit q_ptr->unreadCountChange(0);
+    }
+}
+
+void InstantMessagingModel::clear()
+{
+    beginResetModel();
+    for ( TextMessageNode *node : m_pRecording->d_ptr->m_lNodes) {
+        delete node;
+    }
+
+    //TODO: what else do we need to delete from memory?
+
+    m_pRecording->d_ptr->m_lNodes.clear();
+    endResetModel();
+}
