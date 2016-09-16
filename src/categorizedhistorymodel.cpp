@@ -564,12 +564,18 @@ void CategorizedHistoryModel::collectionAddedCallback(CollectionInterface* backe
 ///Call all collections that support clearing
 bool CategorizedHistoryModel::clearAllCollections() const
 {
-   foreach (CollectionInterface* backend, collections()) { //TODO use the filter API
-      if (backend->supportedFeatures() & CollectionInterface::SupportedFeatures::CLEAR) {
-         backend->clear();
-      }
-   }
-   return true;
+    foreach (CollectionInterface* backend, collections(CollectionInterface::SupportedFeatures::CLEAR)) {
+        backend->clear();
+    }
+    return true;
+}
+
+///Delete all history and clear model
+void CategorizedHistoryModel::clear()
+{
+    beginResetModel();
+    clearAllCollections();
+    endResetModel();
 }
 
 bool CategorizedHistoryModel::addItemCallback(const Call* item)

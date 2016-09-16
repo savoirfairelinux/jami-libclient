@@ -74,6 +74,7 @@ public:
    void setHistoryLimited(bool isLimited);
    void setHistoryLimit(int numberOfDays);
    void setHistoryEnabled(bool isEnabled);
+   void clear();
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
