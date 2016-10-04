@@ -1091,12 +1091,18 @@ RecentModelPrivate::slotCurrentCallChanged(const QModelIndex &current, const QMo
             q_ptr->selectionModel()->setCurrentIndex(callIdx, QItemSelectionModel::ClearAndSelect);
         else
             q_ptr->selectionModel()->setCurrentIndex(callIdx.parent(), QItemSelectionModel::ClearAndSelect);
+    } else {
+        /* nothing is selected in the CallModel; however, if we still have a call selected in the
+         * RecentModel, we need to select it in the CallModel, or else all the actions of the call
+         * will be invalid, since the UserActionModel is based on the selection of the CallModel */
+         auto recentIdx = q_ptr->selectionModel()->currentIndex();
+         auto recentCall = q_ptr->getActiveCall(recentIdx);
+         if (recentIdx.isValid() && recentCall) {
+             CallModel::instance().selectCall(recentCall);
+         }
+         /* otherwise do not update the selection in the RecentModel, eg: if a Person was selected
+          * and the Call is over, we still want the Person to be selected */
     }
-    /* do not update the selection in the RecentModel if no calls selected in the CallModel;
-     * eg: if a Call was selected in the RecentModel, when its removed, the seleciton will
-     *     change automatically, so no action is needed;
-     *     if a Person was selected and the Call is over, we still want the Person to be selected;
-     */
 }
 
 ///Filter out every data relevant to a person
