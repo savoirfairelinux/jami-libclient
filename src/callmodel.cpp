@@ -110,7 +110,7 @@ public:
       void slotConferenceRemoved  ( const QString& confId                             );
       void slotAddPrivateCall     ( Call* call                                        );
       void slotNewRecordingAvail  ( const QString& callId    , const QString& filePath);
-      void slotCallChanged        ( Call* call                                        );
+      void slotCallChanged        (                                                   );
       void slotStateChanged       ( Call::State newState, Call::State previousState   );
       void slotDTMFPlayed         ( const QString& str                                );
       void slotRecordStateChanged ( const QString& callId    , bool state             );
@@ -466,7 +466,7 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       emit q_ptr->callAdded(call,parentCall);
       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
       emit q_ptr->dataChanged(idx, idx);
-      connect(call, &Call::changed, [this, call]{ slotCallChanged(call); });
+      connect(call, &Call::changed, this, &CallModelPrivate::slotCallChanged);
       connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
       connect(call,&Call::videoStarted,[this,call](Video::Renderer* r) {
@@ -593,8 +593,9 @@ void CallModelPrivate::removeInternal(InternalStruct* internal)
       return;
    }
 
-   //Using layoutChanged would SEGFAULT when an editor is open
    q_ptr->beginRemoveRows(QModelIndex(),idx,idx);
+   //disconnect from all the signal of this call, since it no longer needs to be updated in the model
+   internal->call_real->disconnect(this);
    m_lInternalModel.removeAt(idx);
    q_ptr->endRemoveRows();
 }
@@ -770,7 +771,7 @@ Call* CallModelPrivate::addConference(const QString& confID)
       const QModelIndex idx = q_ptr->index(m_lInternalModel.size()-1,0,QModelIndex());
       emit q_ptr->dataChanged(idx, idx);
       emit q_ptr->layoutChanged();
-      connect(newConf, &Call::changed, [this, newConf]{ slotCallChanged(newConf); });
+      connect(newConf, &Call::changed, this, &CallModelPrivate::slotCallChanged);
       connect(newConf,&Call::videoStarted,[this,newConf](Video::Renderer* r) {
          emit q_ptr->rendererAdded(newConf, r);
       });
@@ -1365,47 +1366,46 @@ void CallModelPrivate::slotStateChanged(Call::State newState, Call::State previo
 }
 
 ///Update model if the data change
-void CallModelPrivate::slotCallChanged(Call* call)
+void CallModelPrivate::slotCallChanged()
 {
-   switch(call->state()) {
-      //Transfer is "local" state, it doesn't require the daemon, so it need to be
-      //handled "manually" instead of relying on the backend signals
-      case Call::State::TRANSFERRED:
-         emit q_ptr->callStateChanged(call, Call::State::TRANSFERRED);
-         break;
-      //Same goes for some errors
-      case Call::State::COUNT__:
-      case Call::State::ERROR:
-         removeCall(call);
-         break;
-      //Over can be caused by local events
-      case Call::State::ABORTED:
-      case Call::State::OVER:
-         removeCall(call);
-         break;
-      //Let the daemon handle the others
-      case Call::State::INCOMING:
-      case Call::State::RINGING:
-      case Call::State::INITIALIZATION:
-      case Call::State::CONNECTED:
-      case Call::State::CURRENT:
-      case Call::State::DIALING:
-      case Call::State::NEW:
-      case Call::State::HOLD:
-      case Call::State::FAILURE:
-      case Call::State::BUSY:
-      case Call::State::TRANSF_HOLD:
-      case Call::State::CONFERENCE:
-      case Call::State::CONFERENCE_HOLD:
-         break;
-   };
+    auto call = qobject_cast<Call*>(sender());
+    if (!call) return;
 
-   InternalStruct* callInt = m_shInternalMapping[call];
-   if (callInt) {
-      const QModelIndex idx = q_ptr->getIndex(call);
-      if (idx.isValid())
-         emit q_ptr->dataChanged(idx,idx);
-   }
+    switch(call->state()) {
+        //Transfer is "local" state, it doesn't require the daemon, so it need to be
+        //handled "manually" instead of relying on the backend signals
+        case Call::State::TRANSFERRED:
+            emit q_ptr->callStateChanged(call, Call::State::TRANSFERRED);
+            break;
+        //Same goes for some errors
+        case Call::State::COUNT__:
+        case Call::State::ERROR:
+            removeCall(call);
+            break;
+        //Over can be caused by local events
+        case Call::State::ABORTED:
+        case Call::State::OVER:
+            removeCall(call);
+            break;
+        //Let the daemon handle the others
+        case Call::State::INCOMING:
+        case Call::State::RINGING:
+        case Call::State::INITIALIZATION:
+        case Call::State::CONNECTED:
+        case Call::State::CURRENT:
+        case Call::State::DIALING:
+        case Call::State::NEW:
+        case Call::State::HOLD:
+        case Call::State::FAILURE:
+        case Call::State::BUSY:
+        case Call::State::TRANSF_HOLD:
+        case Call::State::CONFERENCE:
+        case Call::State::CONFERENCE_HOLD:
+            break;
+    };
+
+    const QModelIndex idx = q_ptr->getIndex(call);
+    emit q_ptr->dataChanged(idx,idx);
 }
 
 ///Add call slot
