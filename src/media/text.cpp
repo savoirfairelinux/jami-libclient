@@ -164,7 +164,6 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
       }
    }
 
-   qDebug() << "Creating messaging model for call" << callId;
    Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
 
    if (!media) {
