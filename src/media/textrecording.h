@@ -64,6 +64,7 @@ public:
       DeliveryStatus       ,
       FormattedHtml        ,
       LinkList             ,
+      Id                   ,
    };
 
     ///Possible messages states
