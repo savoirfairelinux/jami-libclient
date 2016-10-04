@@ -219,6 +219,7 @@ struct TextMessageNode
    Serializable::Message* m_pMessage      ;
    ContactMethod*         m_pContactMethod;
    TextMessageNode*       m_pNext         ;
+   int                    m_row           ;
 };
 
 ///Model for the Instant Messaging (IM) features
