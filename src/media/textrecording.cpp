@@ -204,7 +204,17 @@ void Media::TextRecordingPrivate::accountMessageStatusChanged(const uint64_t id,
         if (updateMessageStatus(node->m_pMessage, static_cast<TextRecording::Status>(status))) {
             //You're looking at why local file storage is a "bad" idea
             q_ptr->save();
-            m_pImModel->dataChanged(QModelIndex(), QModelIndex());
+
+            auto model_index_match_list = m_pImModel->match(
+                QModelIndex(),
+                (int)TextRecording::Role::Id,
+                QVariant::fromValue(node->m_pMessage->id),
+                1,
+                Qt::MatchFlags(Qt::MatchExactly | Qt::MatchWrap)
+            );
+            auto im_model_match = model_index_match_list.first();
+
+            m_pImModel->dataChanged(im_model_match, im_model_match);
         }
     }
 }
@@ -766,6 +776,7 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
       roles.insert((int)Media::TextRecording::Role::DeliveryStatus      , "deliveryStatus"      );
       roles.insert((int)Media::TextRecording::Role::FormattedHtml       , "formattedHtml"       );
       roles.insert((int)Media::TextRecording::Role::LinkList            , "linkList"            );
+      roles.insert((int)Media::TextRecording::Role::Id                  , "id"                  );
    }
    return roles;
 }
@@ -832,6 +843,8 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
             return QVariant::fromValue(n->m_pMessage->getFormattedHtml());
          case (int)Media::TextRecording::Role::LinkList             :
             return QVariant::fromValue(n->m_pMessage->m_LinkList);
+         case (int)Media::TextRecording::Role::Id                   :
+            return QVariant::fromValue(n->m_pMessage->id);
          default:
             break;
       }
