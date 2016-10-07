@@ -88,15 +88,15 @@ void LocalHistoryEditor::saveCall(QTextStream& stream, const Call* call)
       Call::HistoryStateName::INCOMING : Call::HistoryStateName::OUTGOING;
 
    const Account* a = call->account();
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CALLID          ).arg(call->historyId()                     );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::TIMESTAMP_START ).arg(call->startTimeStamp()         );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::TIMESTAMP_STOP  ).arg(call->stopTimeStamp()          );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::ACCOUNT_ID      ).arg(a?QString(a->id()):""          );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::DISPLAY_NAME    ).arg(call->peerName()               );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::PEER_NUMBER     ).arg(call->peerContactMethod()->uri() );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::DIRECTION       ).arg(direction                      );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::MISSED          ).arg(call->isMissed()               );
-   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CONTACT_USED    ).arg(false                          );//TODO
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CALLID          ).arg(call->historyId()                       );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::TIMESTAMP_START ).arg(call->startTimeStamp()                  );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::TIMESTAMP_STOP  ).arg(call->stopTimeStamp()                   );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::ACCOUNT_ID      ).arg(a?QString(a->id()):""                   );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::DISPLAY_NAME    ).arg(call->peerName()                        );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::PEER_NUMBER     ).arg(call->peerContactMethod()->uri().full() );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::DIRECTION       ).arg(direction                               );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::MISSED          ).arg(call->isMissed()                        );
+   stream << QString("%1=%2\n").arg(Call::HistoryMapFields::CONTACT_USED    ).arg(false                                   );//TODO
 
    //TODO handle more than one recording
    if (call->hasRecording(Media::Media::Type::AUDIO,Media::Media::Direction::IN)) {
