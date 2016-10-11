@@ -1791,6 +1791,7 @@ void CallPrivate::call()
 
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
+    peerCM->addCall(q_ptr);
 
     m_DringId = CallManager::instance().placeCall(m_Account->id(), uri.full());
 
@@ -1807,7 +1808,6 @@ void CallPrivate::call()
     CallModel::instance().registerCall(q_ptr);
 
     connect(peerCM, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
-    peerCM->addCall(q_ptr);
 
     emit q_ptr->dialNumberChanged(QString());
 }
