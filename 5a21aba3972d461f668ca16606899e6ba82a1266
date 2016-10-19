@@ -22,6 +22,30 @@
       "revId": "5a21aba3972d461f668ca16606899e6ba82a1266",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_097cd41f",
+        "filename": "src/account.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-10-19T18:50:55Z",
+      "side": 1,
+      "message": "Alright, feel free to modify it to however you think is best.",
+      "parentUuid": "dad5f5cf_89e9a41c",
+      "range": {
+        "startLine": 565,
+        "startChar": 33,
+        "endLine": 565,
+        "endChar": 43
+      },
+      "revId": "5a21aba3972d461f668ca16606899e6ba82a1266",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
