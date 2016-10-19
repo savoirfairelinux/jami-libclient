@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_89e9a41c",
+        "filename": "src/account.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-19T14:27:10Z",
+      "side": 1,
+      "message": "ideally this shouldn\u0027t be exposed to the clients directly... (its weird for LRC, daemon uids are usually never exposed to the client) as elv suggested in an earlier comment in this patch, it would be nice to have a simple state machine for the credentials... I can do this, if you want",
+      "range": {
+        "startLine": 565,
+        "startChar": 33,
+        "endLine": 565,
+        "endChar": 43
+      },
+      "revId": "5a21aba3972d461f668ca16606899e6ba82a1266",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
