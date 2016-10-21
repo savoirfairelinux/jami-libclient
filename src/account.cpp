@@ -271,9 +271,6 @@ const QByteArray Account::id() const
 {
    if (isNew()) {
       qDebug() << "Error : getting AccountId of a new account.";
-   }
-   if (d_ptr->m_AccountId.isEmpty()) {
-      qDebug() << "Account not configured";
       return QByteArray(); //WARNING May explode
    }
 
@@ -1381,9 +1378,8 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
 ///Set the account id
 void Account::setId(const QByteArray& id)
 {
-   qDebug() << "Setting accountId = " << d_ptr->m_AccountId;
    if (! isNew())
-      qDebug() << "Error : setting AccountId of an existing account.";
+      qDebug() << "Error : setting AccountId of an existing account" << d_ptr->m_AccountId;
    d_ptr->m_AccountId = id;
 }
 
@@ -2329,8 +2325,8 @@ void AccountPrivate::save()
 
    if (!q_ptr->id().isEmpty()) {
       Account* acc =  AccountModel::instance().getById(q_ptr->id());
-      qDebug() << "Adding the new account to the account list (" << q_ptr->id() << ")";
       if (acc != q_ptr) {
+         qDebug() << "Adding the new account to the account list (" << q_ptr->id() << ")";
          AccountModel::instance().add(q_ptr);
       }
 

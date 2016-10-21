@@ -271,7 +271,7 @@ Node* ProfileModelPrivate::nodeForAccount(const Account* a)
 {
     for (auto pro : m_lProfiles) {
         for (auto accNode : pro->children) {
-            if (accNode->m_uContent.m_pAccount->id() == a->id()) {
+            if (accNode->m_uContent.m_pAccount == a) {
                 return accNode;
             }
         }
@@ -283,7 +283,7 @@ Node* ProfileModelPrivate::profileNodeForAccount(const Account* a)
 {
     for (auto pro : m_lProfiles) {
         for (auto accNode : pro->children) {
-            if (accNode->m_uContent.m_pAccount->id() == a->id()) {
+            if (accNode->m_uContent.m_pAccount == a) {
                 return pro;
             }
         }
