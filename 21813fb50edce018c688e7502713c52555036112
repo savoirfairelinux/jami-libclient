@@ -1,0 +1,7 @@
+Code-Review+2: Alexandre Viau <alexandre@alexandreviau.net>
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Submitted-by: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
+Submitted-at: Mon, 24 Oct 2016 18:11:31 -0400
+Reviewed-on: https://gerrit-ring.savoirfairelinux.com/5228
+Project: ring-lrc
+Branch: refs/heads/master
