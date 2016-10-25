@@ -1784,6 +1784,10 @@ void CallPrivate::call()
     m_pDialNumber->deleteLater();
     m_pDialNumber = nullptr;
 
+    //set the start timestamp to now, even if the call fails immediately, so that it has a timestamp
+    //this behaviour is the same as if the call intialized in the daemon but then failed shortly after
+    setStartTimeStamp();
+
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
     peerCM->addCall(q_ptr);
@@ -1799,7 +1803,6 @@ void CallPrivate::call()
     }
     setObjectName("Call:"+m_DringId);
 
-    setStartTimeStamp();
     CallModel::instance().registerCall(q_ptr);
 
     connect(peerCM, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
