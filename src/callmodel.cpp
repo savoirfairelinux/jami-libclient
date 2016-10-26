@@ -594,8 +594,6 @@ void CallModelPrivate::removeInternal(InternalStruct* internal)
    }
 
    q_ptr->beginRemoveRows(QModelIndex(),idx,idx);
-   //disconnect from all the signal of this call, since it no longer needs to be updated in the model
-   internal->call_real->disconnect(this);
    m_lInternalModel.removeAt(idx);
    q_ptr->endRemoveRows();
 }
