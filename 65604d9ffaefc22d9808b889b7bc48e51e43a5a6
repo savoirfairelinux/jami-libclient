@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_73254aaa",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T20:24:07Z",
+      "side": 1,
+      "message": "this should also be Account* ... you can use the AccontModel to do that",
+      "range": {
+        "startLine": 69,
+        "startChar": 46,
+        "endLine": 69,
+        "endChar": 55
+      },
+      "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_133abecd",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T20:24:07Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 72,
+        "startChar": 44,
+        "endLine": 72,
+        "endChar": 53
+      },
+      "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_3337c2e5",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T20:24:07Z",
+      "side": 1,
+      "message": "whats the address? is that the ringID? maybe this should be URI type?",
+      "range": {
+        "startLine": 72,
+        "startChar": 106,
+        "endLine": 72,
+        "endChar": 113
+      },
+      "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
