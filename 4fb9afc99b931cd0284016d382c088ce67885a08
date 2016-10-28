@@ -22,6 +22,30 @@
       "revId": "4fb9afc99b931cd0284016d382c088ce67885a08",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_b3041216",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-10-28T20:11:22Z",
+      "side": 1,
+      "message": "I updated it to use an Account*.\n\nThe NameDirectory must be usable even without an account (pass nullptr as an account), so that is why I am not adding an account as a property.",
+      "parentUuid": "dad5f5cf_c84fa191",
+      "range": {
+        "startLine": 54,
+        "startChar": 46,
+        "endLine": 54,
+        "endChar": 55
+      },
+      "revId": "4fb9afc99b931cd0284016d382c088ce67885a08",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
