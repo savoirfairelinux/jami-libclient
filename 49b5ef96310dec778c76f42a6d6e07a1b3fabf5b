@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_28f8ad7b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T17:44:14Z",
+      "side": 1,
+      "message": "Please add a more detailed descriptions of the changes in this patch, ie: a description of the new features/functions and APIs",
+      "revId": "49b5ef96310dec778c76f42a6d6e07a1b3fabf5b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
