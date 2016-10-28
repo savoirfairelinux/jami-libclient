@@ -68,6 +68,30 @@
       "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_73730ab2",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-10-28T20:38:38Z",
+      "side": 1,
+      "message": "It could. Would it be different?",
+      "parentUuid": "dad5f5cf_3337c2e5",
+      "range": {
+        "startLine": 72,
+        "startChar": 106,
+        "endLine": 72,
+        "endChar": 113
+      },
+      "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
