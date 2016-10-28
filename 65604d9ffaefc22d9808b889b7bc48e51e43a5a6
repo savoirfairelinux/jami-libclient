@@ -92,6 +92,30 @@
       "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_939b0ec9",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T20:45:36Z",
+      "side": 1,
+      "message": "well, the receiver of the signal then wouldn\u0027t have to put it in a URI in order to parse it (eg: print full uri or just the username part)... not really sure whats best...\n\nInitially I wanted to say that this should return the ContactMethod directly instead, but I think its too early for that. ie: I think ideally when we get this signal, the process of determining which contact method it belongs to and updating said contact method with the uri and/or name should happen automatically. But we have to figure that part out first... so I guess this can stay like this for now.",
+      "parentUuid": "dad5f5cf_73730ab2",
+      "range": {
+        "startLine": 72,
+        "startChar": 106,
+        "endLine": 72,
+        "endChar": 113
+      },
+      "revId": "65604d9ffaefc22d9808b889b7bc48e51e43a5a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
