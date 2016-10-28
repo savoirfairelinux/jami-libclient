@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_c84fa191",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2016-10-28T19:20:15Z",
+      "side": 1,
+      "message": "here and in all other instances, this should be a pointer to the account, not a string... the client shouldn\u0027t have to figure out the account from a string or vice versa, thats the job of LRC\n\nEither the NameDirectory should figure out the Account * from the string it gets from the daemon, or else the NameDirectory should be a property of the Account class (ie: and NameDirectory per Account) and then have something like the AccountModel receive the signals from the daemon and figure out which Account/NameDirectory to pass them to",
+      "range": {
+        "startLine": 54,
+        "startChar": 46,
+        "endLine": 54,
+        "endChar": 55
+      },
+      "revId": "4fb9afc99b931cd0284016d382c088ce67885a08",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
