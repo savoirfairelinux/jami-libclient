@@ -619,10 +619,11 @@ QString ContactMethod::toHash() const
    QString uristr;
 
    switch(uri().protocolHint()) {
-      case URI::ProtocolHint::RING     :
+      case URI::ProtocolHint::RING         :
          //There is no point in keeping the full URI, a Ring hash is unique
          uristr = uri().userinfo();
          break;
+      case URI::ProtocolHint::RING_USERNAME:
       case URI::ProtocolHint::SIP_OTHER:
       case URI::ProtocolHint::IP       :
       case URI::ProtocolHint::SIP_HOST :
@@ -782,7 +783,8 @@ bool ContactMethod::isReachable() const
          if (hasSip)
             return true;
          break;
-      case URI::ProtocolHint::RING     :
+      case URI::ProtocolHint::RING:
+      case URI::ProtocolHint::RING_USERNAME:
          if (hasRing)
             return true;
          break;
