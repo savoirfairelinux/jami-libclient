@@ -50,28 +50,20 @@ public:
         presHandlers = {
             exportable_callback<PresenceSignal::NewServerSubscriptionRequest>(
                 [this] (const std::string &buddyUri) {
-                       QTimer::singleShot(0, [this,buddyUri] {
-                             Q_EMIT this->newServerSubscriptionRequest(QString(buddyUri.c_str()));
-                       });
-            }),
+                    Q_EMIT this->newServerSubscriptionRequest(QString(buddyUri.c_str()));
+                }),
             exportable_callback<PresenceSignal::ServerError>(
                 [this] (const std::string &accountID, const std::string &error, const std::string &msg) {
-                       QTimer::singleShot(0, [this,accountID, error, msg] {
-                             Q_EMIT this->serverError(QString(accountID.c_str()), QString(error.c_str()), QString(msg.c_str()));
-                       });
-            }),
+                    Q_EMIT this->serverError(QString(accountID.c_str()), QString(error.c_str()), QString(msg.c_str()));
+                }),
             exportable_callback<PresenceSignal::NewBuddyNotification>(
                 [this] (const std::string &accountID, const std::string &buddyUri, bool status, const std::string &lineStatus) {
-                       QTimer::singleShot(0, [this,accountID, buddyUri, status, lineStatus] {
-                             Q_EMIT this->newBuddyNotification(QString(accountID.c_str()), QString(buddyUri.c_str()), status, QString(lineStatus.c_str()));
-                       });
-            }),
+                    Q_EMIT this->newBuddyNotification(QString(accountID.c_str()), QString(buddyUri.c_str()), status, QString(lineStatus.c_str()));
+                }),
             exportable_callback<PresenceSignal::SubscriptionStateChanged>(
                 [this] (const std::string &accountID, const std::string &buddyUri, bool state) {
-                       QTimer::singleShot(0, [this,accountID, buddyUri, state] {
-                             Q_EMIT this->subscriptionStateChanged(QString(accountID.c_str()), QString(buddyUri.c_str()), state);
-                       });
-            })
+                    Q_EMIT this->subscriptionStateChanged(QString(accountID.c_str()), QString(buddyUri.c_str()), state);
+                })
          };
     }
 
@@ -121,4 +113,3 @@ namespace org {
     }
   }
 }
-

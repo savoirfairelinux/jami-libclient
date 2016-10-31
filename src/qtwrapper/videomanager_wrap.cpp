@@ -25,7 +25,7 @@ VideoManagerInterface::VideoManagerInterface()
     proxy = new VideoManagerSignalProxy(this);
     sender = new VideoManagerProxySender();
 
-    QObject::connect(sender,&VideoManagerProxySender::deviceEvent,proxy,&VideoManagerSignalProxy::slotDeviceEvent);
+    QObject::connect(sender,&VideoManagerProxySender::deviceEvent,proxy,&VideoManagerSignalProxy::slotDeviceEvent, Qt::QueuedConnection);
     QObject::connect(sender,&VideoManagerProxySender::startedDecoding,proxy,&VideoManagerSignalProxy::slotStartedDecoding);
     QObject::connect(sender,&VideoManagerProxySender::stoppedDecoding,proxy,&VideoManagerSignalProxy::slotStoppedDecoding);
 
@@ -60,21 +60,15 @@ m_pParent(parent)
 
 void VideoManagerSignalProxy::slotDeviceEvent()
 {
-    QTimer::singleShot(0, [=] {
-        emit m_pParent->deviceEvent();
-    });
+    emit m_pParent->deviceEvent();
 }
 
 void VideoManagerSignalProxy::slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer)
 {
-    QTimer::singleShot(0, [=] {
         emit m_pParent->startedDecoding(id,shmPath,width,height,isMixer);
-    });
 }
 
 void VideoManagerSignalProxy::slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer)
 {
-    QTimer::singleShot(0, [=] {
         emit m_pParent->stoppedDecoding(id,shmPath,isMixer);
-    });
 }

@@ -28,7 +28,7 @@
 SmartInfoHub::SmartInfoHub()
 {
     d_ptr = new SmartInfoHubPrivate;
-    connect(&CallManager::instance(), SIGNAL(SmartInfo(MapStringString)), d_ptr , SLOT(slotSmartInfo(MapStringString)));
+    connect(&CallManager::instance(), SIGNAL(SmartInfo(MapStringString)), d_ptr , SLOT(slotSmartInfo(MapStringString)), Qt::QueuedConnection);
 }
 
 SmartInfoHub::~SmartInfoHub()

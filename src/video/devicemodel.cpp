@@ -63,7 +63,7 @@ d_ptr(new Video::DeviceModelPrivate())
 {
    reload();
    VideoManagerInterface& interface = VideoManager::instance();
-   connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()));
+   connect(&interface, SIGNAL(deviceEvent()), this, SLOT(reload()), Qt::QueuedConnection);
 }
 
 Video::DeviceModel& Video::DeviceModel::instance()
