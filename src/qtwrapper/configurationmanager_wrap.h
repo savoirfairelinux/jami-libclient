@@ -57,84 +57,59 @@ public:
       confHandlers = {
          exportable_callback<ConfigurationSignal::VolumeChanged>(
                [this] (const std::string &device, double value) {
-                     QTimer::singleShot(0, [this,device,value] {
-                           Q_EMIT this->volumeChanged(QString(device.c_str()), value);
-                     });
-         }),
+                   Q_EMIT this->volumeChanged(QString(device.c_str()), value);
+               }),
          exportable_callback<ConfigurationSignal::AccountsChanged>(
                [this] () {
-                     QTimer::singleShot(0, [this] {
-                           Q_EMIT this->accountsChanged();
-                     });
-            }),
+                   Q_EMIT this->accountsChanged();
+               }),
          exportable_callback<ConfigurationSignal::StunStatusFailed>(
                [this] (const std::string &reason) {
-                     QTimer::singleShot(0, [this, reason] {
                            Q_EMIT this->stunStatusFailure(QString(reason.c_str()));
-                     });
          }),
          exportable_callback<ConfigurationSignal::RegistrationStateChanged>(
-               [this] (const std::string &accountID, const std::string& registration_state, unsigned detail_code, const std::string& detail_str) {
-                     QTimer::singleShot(0, [this, accountID, registration_state, detail_code, detail_str] {
-                           Q_EMIT this->registrationStateChanged(QString(accountID.c_str()),
-                                                               QString(registration_state.c_str()),
-                                                               detail_code,
-                                                               QString(detail_str.c_str()));
-                     });
-         }),
+               [this] (const std::string &accountID, const std::string& registration_state, unsigned detail_code,
+                       const std::string& detail_str) {
+                   Q_EMIT this->registrationStateChanged(QString(accountID.c_str()),
+                                                         QString(registration_state.c_str()),
+                                                         detail_code,
+                                                         QString(detail_str.c_str()));
+               }),
          exportable_callback<ConfigurationSignal::VolatileDetailsChanged>(
                [this] (const std::string &accountID, const std::map<std::string, std::string>& details) {
-                     QTimer::singleShot(0, [this, accountID, details] {
-                        Q_EMIT this->volatileAccountDetailsChanged(QString(accountID.c_str()), convertMap(details));
-                     });
-         }),
+                   Q_EMIT this->volatileAccountDetailsChanged(QString(accountID.c_str()), convertMap(details));
+               }),
          exportable_callback<ConfigurationSignal::Error>(
                [this] (int code) {
-                     QTimer::singleShot(0, [this,code] {
-                        Q_EMIT this->errorAlert(code);
-                     });
-         }),
+                   Q_EMIT this->errorAlert(code);
+               }),
          exportable_callback<ConfigurationSignal::CertificateExpired>(
                [this] (const std::string &certId) {
-                     QTimer::singleShot(0, [this, certId] {
-                           Q_EMIT this->certificateExpired(QString(certId.c_str()));
-                     });
-         }),
+                   Q_EMIT this->certificateExpired(QString(certId.c_str()));
+               }),
          exportable_callback<ConfigurationSignal::CertificatePinned>(
                [this] (const std::string &certId) {
-                     QTimer::singleShot(0, [this, certId] {
-                           Q_EMIT this->certificatePinned(QString(certId.c_str()));
-                     });
-         }),
+                   Q_EMIT this->certificatePinned(QString(certId.c_str()));
+               }),
          exportable_callback<ConfigurationSignal::CertificatePathPinned>(
                [this] (const std::string &certPath, const std::vector<std::string>& list) {
-                     QTimer::singleShot(0, [this, certPath, list] {
-                           Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
-                     });
-         }),
+                   Q_EMIT this->certificatePathPinned(QString(certPath.c_str()),convertStringList(list));
+               }),
          exportable_callback<DRing::ConfigurationSignal::AccountMessageStatusChanged>(
                [this] (const std::string& accountID, uint64_t id, const std::string& to, int status) {
-               QTimer::singleShot(0, [this, accountID, id, to, status] {
-                     Q_EMIT this->accountMessageStatusChanged(QString(accountID.c_str()), id, QString(to.c_str()), status);
-               });
-         }),
+                   Q_EMIT this->accountMessageStatusChanged(QString(accountID.c_str()), id, QString(to.c_str()), status);
+               }),
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
-                     QTimer::singleShot(0, [this, certId,accountId,payload,timestamp] {
-                           Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
-                     });
-         }),
+                   Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
+               }),
          exportable_callback<ConfigurationSignal::KnownDevicesChanged>(
                [this] (const std::string &accountId, const std::map<std::string, std::string>& devices) {
-                     QTimer::singleShot(0, [this, accountId, devices] {
-                           Q_EMIT this->knownDevicesChanged(QString(accountId.c_str()), convertMap(devices));
-                     });
-         }),
+                   Q_EMIT this->knownDevicesChanged(QString(accountId.c_str()), convertMap(devices));
+               }),
          exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
                [this] (const std::string &accountId, int status, const std::string &pin) {
-                     QTimer::singleShot(0, [this, accountId, status, pin] {
-                           Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
-                     });
+                    Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
          }),
          exportable_callback<ConfigurationSignal::NameRegistrationEnded>(
                [this] (const std::string &accountId, int status, const std::string &name) {
@@ -147,22 +122,16 @@ public:
          }),
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
-                     QTimer::singleShot(0, [this, account_id,from,payloads] {
-                           Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads));
-                     });
-         }),
+                   Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads));
+               }),
          exportable_callback<ConfigurationSignal::MediaParametersChanged>(
                [this] (const std::string& account_id) {
-                     QTimer::singleShot(0, [this, account_id] {
-                           Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
-                     });
-         }),
+                   Q_EMIT this->mediaParametersChanged(QString(account_id.c_str()));
+               }),
          exportable_callback<AudioSignal::DeviceEvent>(
                [this] () {
-                     QTimer::singleShot(0, [this] {
-                           Q_EMIT this->audioDeviceEvent();
-                     });
-         }),
+                   Q_EMIT this->audioDeviceEvent();
+               }),
       };
    }
 
