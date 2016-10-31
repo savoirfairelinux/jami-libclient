@@ -419,11 +419,17 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Account* accou
    return getNumber(uri,nullptr,account,type);
 }
 
-///Return/create a number when no information is available
+
 ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString& type)
 {
-   const URI strippedUri(uri);
-   NumberWrapper* wrap = d_ptr->m_hDirectory[strippedUri];
+    const URI strippedUri(uri);
+    return getNumber(strippedUri, type);
+}
+
+///Return/create a number when no information is available
+ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& type)
+{
+   NumberWrapper* wrap = d_ptr->m_hDirectory[uri];
    if (wrap) {
       ContactMethod* nb = wrap->numbers[0];
       if ((!nb->hasType()) && (!type.isEmpty())) {
@@ -433,7 +439,7 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString&
    }
 
    //Too bad, lets create one
-   ContactMethod* number = new ContactMethod(strippedUri,NumberCategoryModel::instance().getCategory(type));
+   ContactMethod* number = new ContactMethod(uri, NumberCategoryModel::instance().getCategory(type));
    number->setIndex(d_ptr->m_lNumbers.size());
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
@@ -446,8 +452,8 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, const QString&
    emit layoutChanged();
    if (!wrap) {
       wrap = new NumberWrapper();
-      d_ptr->m_hDirectory[strippedUri] = wrap;
-      d_ptr->m_hSortedNumbers[strippedUri] = wrap;
+      d_ptr->m_hDirectory[uri] = wrap;
+      d_ptr->m_hSortedNumbers[uri] = wrap;
    }
    wrap->numbers << number;
    return number;

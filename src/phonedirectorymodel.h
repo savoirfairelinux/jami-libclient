@@ -77,6 +77,7 @@ public:
 
    //Factory
    Q_INVOKABLE ContactMethod* getNumber(const QString& uri, const QString& type = QString());
+   Q_INVOKABLE ContactMethod* getNumber(const URI& uri,     const QString& type = QString());
    Q_INVOKABLE ContactMethod* getNumber(const QString& uri, Account* account, const QString& type = QString());
    Q_INVOKABLE ContactMethod* getNumber(const QString& uri, Person* contact, Account* account = nullptr, const QString& type = QString());
    Q_INVOKABLE ContactMethod* fromHash (const QString& hash);
