@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dad5f5cf_ce0249b4",
+        "filename": "src/namedirectory.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-10-31T14:55:11Z",
+      "side": 1,
+      "message": "Specify the ConnectionType to QueuedConnection.\n\nBy default it is AutoConnection and we have threading issues on OSX and Windows.\n\nhttp://doc.qt.io/qt-5/qt.html#ConnectionType-enum",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 60
+      },
+      "revId": "08715288731a99bd4d7d756333251875a6f7e79d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
