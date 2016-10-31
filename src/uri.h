@@ -161,10 +161,11 @@ public:
     * parsing (for performance) and are not definitive.
     */
    enum class ProtocolHint {
-      SIP_OTHER = 0, /*!< Anything non empty that doesn't fit in other categories */
-      RING      = 1, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars */
-      IP        = 2, /*!< Match an IPv4 address                                   */
-      SIP_HOST  = 3, /*!< Has an @ and no "ring:" prefix                          */
+      SIP_OTHER      = 0, /*!< Anything non empty that doesn't fit in other categories                */
+      RING           = 1, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars                */
+      IP             = 2, /*!< Match an IPv4 address                                                  */
+      SIP_HOST       = 3, /*!< Has an @ and no "ring:" prefix                                         */
+      RING_USERNAME  = 4, /*!< Anything that starts with "ring:" and isn't followed by 40 ASCII chars */
    };
    Q_ENUMS(URI::ProtocolHint)
 
