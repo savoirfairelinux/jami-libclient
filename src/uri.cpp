@@ -329,33 +329,51 @@ bool URIPrivate::checkIp(const QString& str, bool &isHash, const URI::SchemeType
  *
  * @warning, this method is O(N) when called for the first time on an URI
  */
-URI::ProtocolHint URI::protocolHint() const
-{
-   if (!d_ptr->m_Parsed)
-      const_cast<URI*>(this)->d_ptr->parse();
+ URI::ProtocolHint URI::protocolHint() const
+ {
+    if (!d_ptr->m_Parsed)
+       const_cast<URI*>(this)->d_ptr->parse();
 
-   if (!d_ptr->m_HintParsed) {
-      bool isHash = d_ptr->m_Userinfo.size() == 40;
-      d_ptr->m_ProtocolHint = \
-        (
-         //Step one   : check IP
-         URIPrivate::checkIp(d_ptr->m_Userinfo,isHash,d_ptr->m_HeaderType) ? URI::ProtocolHint::IP
+    if (!d_ptr->m_HintParsed) {
+       bool isHash = d_ptr->m_Userinfo.size() == 40;
 
-      : (
-         //Step two   : Check RING protocol, is has already been detected at this point
-         (d_ptr->m_HeaderType == URI::SchemeType::RING && isHash) || isHash
-            ? URI::ProtocolHint::RING
+       URI::ProtocolHint hint;
 
-      : (
-         //Step three : Differentiate between ***@*** and *** type URIs
-         d_ptr->m_HasAt ? URI::ProtocolHint::SIP_HOST : URI::ProtocolHint::SIP_OTHER
+       //Step 1: Check IP
+       if (URIPrivate::checkIp(d_ptr->m_Userinfo, isHash, d_ptr->m_HeaderType)) {
+           hint = URI::ProtocolHint::IP;
+       }
+       //Step 2: Check RING hash
+       else if (isHash)
+       {
+           hint = URI::ProtocolHint::RING;
+       }
+       //Step 3: Not a hash but it begins with ring:. This is a username.
+       else if (d_ptr->m_HeaderType == URI::SchemeType::RING){
+           hint = URI::ProtocolHint::RING_USERNAME;
+       }
+       //Step 4: Check for SIP URIs
+       else if (d_ptr->m_HeaderType == URI::SchemeType::SIP)
+       {
+           //Step 4.1: Check for SIP URI with hostname
+           if (d_ptr->m_HasAt) {
+               hint = URI::ProtocolHint::SIP_HOST;
+           }
+           //Step 4.2: Assume SIP URI without hostname
+           else {
+               hint = URI::ProtocolHint::SIP_OTHER;
+           }
+       }
+       //Step 5: Assume SIP
+       else {
+           hint = URI::ProtocolHint::SIP_OTHER;
+       }
 
-        )));
-
-        d_ptr->m_HintParsed = true;
-   }
-   return d_ptr->m_ProtocolHint;
-}
+       d_ptr->m_ProtocolHint = hint;
+       d_ptr->m_HintParsed = true;
+    }
+    return d_ptr->m_ProtocolHint;
+ }
 
 ///Convert the transport name to a string
 URI::Transport URIPrivate::nameToTransport(const QByteArray& name)
