@@ -89,7 +89,7 @@ void AccountModelPrivate::init()
     connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
             &AccountModelPrivate::slotKownDevicesChanged);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
-            &AccountModelPrivate::slotExportOnRingEnded);
+            &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
 }
 
 ///Destructor

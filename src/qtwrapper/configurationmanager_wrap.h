@@ -132,9 +132,7 @@ public:
          }),
          exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
                [this] (const std::string &accountId, int status, const std::string &pin) {
-                     QTimer::singleShot(0, [this, accountId, status, pin] {
-                           Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
-                     });
+                    Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
          }),
          exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
