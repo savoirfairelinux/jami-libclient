@@ -119,6 +119,7 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
          case URI::ProtocolHint::IP:
             break;
          case URI::ProtocolHint::RING:
+         case URI::ProtocolHint::RING_USERNAME:
             type = URI::SchemeType::RING;
             break;
        }
