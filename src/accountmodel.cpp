@@ -75,21 +75,21 @@ void AccountModelPrivate::init()
     ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
     connect(&configurationManager, &ConfigurationManagerInterface::registrationStateChanged,this ,
-            &AccountModelPrivate::slotDaemonAccountChanged);
+            &AccountModelPrivate::slotDaemonAccountChanged, Qt::QueuedConnection);
     connect(&configurationManager, SIGNAL(accountsChanged())                               ,q_ptr,
-            SLOT(updateAccounts())                  );
+            SLOT(updateAccounts()), Qt::QueuedConnection);
     connect(&callManager         , SIGNAL(voiceMailNotify(QString,int))                    ,this ,
             SLOT(slotVoiceMailNotify(QString,int))  );
     connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
-            SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)));
+            SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)), Qt::QueuedConnection);
     connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
-            SLOT(slotMediaParametersChanged(QString)));
+            SLOT(slotMediaParametersChanged(QString)), Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
-            &AccountModelPrivate::slotIncomingTrustRequest);
+            &AccountModelPrivate::slotIncomingTrustRequest, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
-            &AccountModelPrivate::slotKownDevicesChanged);
+            &AccountModelPrivate::slotKownDevicesChanged, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
-            &AccountModelPrivate::slotExportOnRingEnded);
+            &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
 }
 
 ///Destructor
