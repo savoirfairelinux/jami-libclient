@@ -22,6 +22,29 @@
       "revId": "08715288731a99bd4d7d756333251875a6f7e79d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_6e3a3d38",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2016-10-31T16:14:12Z",
+      "side": 1,
+      "message": "See here, you did not wrap the callback in a QTimer (which is good!) so you should specify the ConnectionType in the QObject::connect.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 121
+      },
+      "revId": "08715288731a99bd4d7d756333251875a6f7e79d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
