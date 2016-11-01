@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dad5f5cf_994a4d82",
+        "filename": "src/uri.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-11-01T16:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dad5f5cf_b96871f6",
+      "range": {
+        "startLine": 164,
+        "startChar": 31,
+        "endLine": 164,
+        "endChar": 74
+      },
+      "revId": "68b34c07be7aff9c6716b1c010910cd65db29b70",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dad5f5cf_596dc503",
         "filename": "src/uri.h",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2016-11-01T16:36:42Z",
       "side": 1,
       "message": "anything that starts with \"ring:\" and isn\u0027t followed by 40 ASCII chars?",
+      "range": {
+        "startLine": 168,
+        "startChar": 31,
+        "endLine": 168,
+        "endChar": 78
+      },
+      "revId": "68b34c07be7aff9c6716b1c010910cd65db29b70",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dad5f5cf_b94f1192",
+        "filename": "src/uri.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 66
+      },
+      "writtenOn": "2016-11-01T16:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dad5f5cf_596dc503",
       "range": {
         "startLine": 168,
         "startChar": 31,
