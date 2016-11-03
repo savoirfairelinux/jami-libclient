@@ -47,8 +47,9 @@ public:
    QItemSelectionModel* selectionModel() const;
 
    //Getter
-   static Account* currentDefaultAccount(ContactMethod* method = nullptr);
+   static Account* currentDefaultAccount(ContactMethod* method);
    static Account* currentDefaultAccount(URI::SchemeType schemeType);
+   static Account* currentDefaultAccount();
 
    //Singleton
    static AvailableAccountModel& instance();
@@ -64,4 +65,3 @@ private:
    Q_DECLARE_PRIVATE(AvailableAccountModel)
 };
 Q_DECLARE_METATYPE(AvailableAccountModel*)
-

@@ -147,6 +147,11 @@ Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType
    return AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
 }
 
+Account* AvailableAccountModel::currentDefaultAccount()
+{
+   return AvailableAccountModel::currentDefaultAccount(URI::SchemeType::NONE);
+}
+
 ///Set the previous account used
 void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
 {
