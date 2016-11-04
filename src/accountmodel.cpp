@@ -312,10 +312,12 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
 
    //The account may have been deleted by the user, but 'apply' have not been pressed
    if (!a) {
+      qDebug() << "received account changed for non existing account" << account;
       const QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
          if ((!q_ptr->getById(accountIds[i].toLatin1())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
             Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
+            qDebug() << "building missing account" << accountIds[i];
             insertAccount(acc,i);
             connect(acc, &Account::changed                , this, &AccountModelPrivate::slotAccountChanged                );
             connect(acc, &Account::presenceEnabledChanged , this, &AccountModelPrivate::slotAccountPresenceEnabledChanged );
@@ -328,13 +330,28 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
 
          }
       }
-      foreach (Account* acc, m_lAccounts) {
-         const int idx =accountIds.indexOf(acc->id());
-         if (idx == -1 && (acc->editState() == Account::EditState::READY || acc->editState() == Account::EditState::REMOVED)) {
-            m_lAccounts.remove(idx);
-            emit q_ptr->dataChanged(q_ptr->index(idx - 1, 0), q_ptr->index(m_lAccounts.size()-1, 0));
-            emit q_ptr->layoutChanged();
-         }
+
+      // remove any accounts that are not found in the daemon and which are marked to be REMOVED
+      // its not clear to me why this would ever happen in the first place, but the code does seem
+      // to be able to enter into this state...
+      QMutableVectorIterator<Account *> accIter(m_lAccounts);
+      int modelRow = 0;
+      while (accIter.hasNext()) {
+          auto acc = accIter.next();
+          const int daemonRow = accountIds.indexOf(acc->id());
+
+          if (daemonRow == -1 && (acc->editState() == Account::EditState::READY || acc->editState() == Account::EditState::REMOVED)) {
+              q_ptr->beginRemoveRows(QModelIndex(), modelRow, modelRow);
+              accIter.remove();
+              q_ptr->endRemoveRows();
+
+              // should we put it in the list of deleted accounts? who knows?
+
+              // decrement which row we're on
+              --modelRow;
+          }
+          // we're going to the next row
+          ++modelRow;
       }
    }
    else {
