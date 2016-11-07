@@ -19,7 +19,7 @@
 
 //Qt
 #include <QtCore/QCryptographicHash>
-#include <QDateTime>
+#include <QtCore/QDateTime>
 
 //Ring daemon
 #include "dbus/configurationmanager.h"
