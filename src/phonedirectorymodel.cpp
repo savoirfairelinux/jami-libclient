@@ -46,6 +46,7 @@
 PhoneDirectoryModelPrivate::PhoneDirectoryModelPrivate(PhoneDirectoryModel* parent) : QObject(parent), q_ptr(parent),
 m_CallWithAccount(false),m_pPopularModel(nullptr)
 {
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &PhoneDirectoryModelPrivate::slotRegisteredNameFound);
 }
 
 PhoneDirectoryModel::PhoneDirectoryModel(QObject* parent) :
@@ -332,6 +333,11 @@ void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* acco
       wrap->numbers << number;
 
    }
+
+   // for RingIDs, once we set an account, we should perform (another) name lookup, in case the
+   // account has a different name server set from the default
+   if (number->uri().protocolHint() == URI::ProtocolHint::RING)
+      NameDirectory::instance().lookupAddress(number->account(), QString(), number->uri().userinfo());
 }
 
 ///Add new information to existing numbers and try to merge
@@ -456,6 +462,11 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
       d_ptr->m_hSortedNumbers[uri] = wrap;
    }
    wrap->numbers << number;
+
+   // perform a username lookup for new CM with RingID
+   if (number->uri().protocolHint() == URI::ProtocolHint::RING)
+      NameDirectory::instance().lookupAddress(number->account(), QString(), number->uri().userinfo());
+
    return number;
 }
 
@@ -577,6 +588,10 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    }
    wrap->numbers << number;
    emit layoutChanged();
+
+   // perform a username lookup for new CM with RingID
+   if (number->uri().protocolHint() == URI::ProtocolHint::RING)
+      NameDirectory::instance().lookupAddress(number->account(), QString(), number->uri().userinfo());
 
    return number;
 }
@@ -735,6 +750,37 @@ void PhoneDirectoryModelPrivate::indexNumber(ContactMethod* number, const QStrin
       if (!((numCount == 1 && wrap->numbers[0] == number) || (numCount > 1 && wrap->numbers.indexOf(number) != -1)))
          wrap->numbers << number;
    }
+}
+
+void
+PhoneDirectoryModelPrivate::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+{
+    if (status != NameDirectory::LookupStatus::SUCCESS) {
+        // unsuccessfull lookup, so its useless
+        return;
+    }
+    if (address.isEmpty() || name.isEmpty()) {
+        qDebug() << "registered name address (" << address << ") or name (" << name << ") is empty";
+        return;
+    }
+
+    // update relevant contact methods
+    const URI strippedUri(address);
+
+    //See if the number is already loaded
+    auto wrap  = m_hDirectory.value(strippedUri);
+
+    if (wrap) {
+        foreach (ContactMethod* cm, wrap->numbers) {
+            if (cm->account() == account) {
+                cm->incrementAlternativeName(name, QDateTime::currentDateTime().toTime_t());
+            } else {
+                qDebug() << "registered name: uri matches but not account" << name << address << account << cm->account();
+            }
+        }
+    } else {
+        // got a registered name for a CM which hasn't been created yet
+    }
 }
 
 int PhoneDirectoryModel::count() const {

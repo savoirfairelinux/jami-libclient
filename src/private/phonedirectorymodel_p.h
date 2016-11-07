@@ -22,6 +22,7 @@
 //Ring
 class PhoneDirectoryModel;
 #include "contactmethod.h"
+#include "namedirectory.h"
 
 //Internal data structures
 ///@struct NumberWrapper Wrap phone numbers to prevent collisions
@@ -102,6 +103,7 @@ private Q_SLOTS:
    void slotLastUsedChanged(time_t t);
    void slotContactChanged(Person* newContact, Person* oldContact);
    void slotIncomingAccountMessage(const QString& account, const QString& from, const MapStringString& payloads);
+   void slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
    //From DBus
    void slotNewBuddySubscription(const QString& uri, const QString& accountId, bool status, const QString& message);
