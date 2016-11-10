@@ -662,6 +662,8 @@ void ContactMethod::incrementAlternativeName(const QString& name, const time_t l
       if (!d_ptr->m_pPerson)
          d_ptr->m_PrimaryName_cache.clear();
    }
+
+   emit changed();
 }
 
 void ContactMethod::accountDestroyed(QObject* o)
