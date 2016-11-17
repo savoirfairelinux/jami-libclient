@@ -630,7 +630,7 @@ const QString& Serializable::Message::getFormattedHtml()
             p = match.capturedEnd();
         }
         if (p < m_PlainText.size())
-            re.append(m_PlainText.mid(p, m_PlainText.size() - p));
+            re.append(m_PlainText.mid(p, m_PlainText.size() - p).toHtmlEscaped());
 
         m_FormattedHtml = QString("<body>%1</body>").arg(re);
     }
