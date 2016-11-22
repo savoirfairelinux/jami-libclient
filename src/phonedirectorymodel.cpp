@@ -465,8 +465,12 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
    wrap->numbers << number;
 
    // perform a username lookup for new CM with RingID
+   // and track presence
    if (number->uri().protocolHint() == URI::ProtocolHint::RING)
+   {
       NameDirectory::instance().lookupAddress(number->account(), QString(), number->uri().userinfo());
+      number->setTracked(true);
+   }
 
    return number;
 }
@@ -591,8 +595,13 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    emit layoutChanged();
 
    // perform a username lookup for new CM with RingID
+   // and track presence
    if (number->uri().protocolHint() == URI::ProtocolHint::RING)
+   {
       NameDirectory::instance().lookupAddress(number->account(), QString(), number->uri().userinfo());
+      number->setTracked(true);
+   }
+
 
    return number;
 }

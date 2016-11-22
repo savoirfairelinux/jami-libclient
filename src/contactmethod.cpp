@@ -314,6 +314,7 @@ void ContactMethod::setTracked(bool track)
       PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),
                                                  uri().format(URI::Section::CHEVRONS |
                                                               URI::Section::SCHEME |
+                                                              URI::Section::USER_INFO |
                                                               URI::Section::HOSTNAME),
                                                  track);
       d_ptr->changed();
