@@ -201,6 +201,12 @@ void ContactMethod::setAccount(Account* account)
 
    if (d_ptr->m_pAccount)
       connect (d_ptr->m_pAccount,SIGNAL(destroyed(QObject*)),this,SLOT(accountDestroyed(QObject*)));
+
+   //Track Ring contacts by default
+   if (this->protocolHint() == URI::ProtocolHint::RING || this->protocolHint() == URI::ProtocolHint::RING_USERNAME) {
+       setTracked(true);
+   }
+
    d_ptr->changed();
 }
 
@@ -303,6 +309,7 @@ void ContactMethod::setTracked(bool track)
       PresenceManager::instance().subscribeBuddy(d_ptr->m_pAccount->id(),
                                                  uri().format(URI::Section::CHEVRONS |
                                                               URI::Section::SCHEME |
+                                                              URI::Section::USER_INFO |
                                                               URI::Section::HOSTNAME),
                                                  track);
       d_ptr->changed();
