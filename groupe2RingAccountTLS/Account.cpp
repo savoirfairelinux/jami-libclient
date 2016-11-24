@@ -30,6 +30,10 @@
 //Ring daemon
 #include <account_const.h>
 
+
+// AccountTLS
+#include <AccountTLS.h>
+
 //Ring lib
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -70,6 +74,7 @@
 
 
 #define AP &AccountPrivate
+
 #define EA Account::EditAction
 #define ES Account::EditState
 
@@ -88,6 +93,7 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 #undef ES
 #undef EA
 #undef AP
+#undef ATLS // <-
 
 //Host the current highest interal identifier. The internal id is used for some bitmasks
 //when objects have a different status for each account
@@ -104,6 +110,8 @@ m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p
 m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr)
 {
 }
+
+
 
 void AccountPrivate::changeState(Account::EditState state) {
    const Account::EditState previous = m_CurrentState;
@@ -472,13 +480,15 @@ SecurityEvaluationModel* Account::securityEvaluationModel() const
    return d_ptr->m_pSecurityEvaluationModel;
 }
 
-TlsMethodModel* Account::tlsMethodModel() const
+
+TlsMethodModel* AccountTLS::tlsMethodModel() const
 {
-   if (!d_ptr->m_pTlsMethodModel ) {
-      d_ptr->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
+   if (!_account->(m_acc->d_ptr)->m_pTlsMethodModel ) {
+      (m_acc->d_ptr)->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
    }
-   return d_ptr->m_pTlsMethodModel;
+   return (m_acc->d_ptr)->m_pTlsMethodModel;
 }
+
 
 ProtocolModel* Account::protocolModel() const
 {
@@ -653,7 +663,7 @@ QString Account::password() const
             return credentialModel()->primaryCredential(Credential::Type::SIP)->password();
          break;
       case Account::Protocol::RING:
-         return tlsPassword();
+         return getAccountTLS()->tlsPassword();
       case Account::Protocol::COUNT__:
          break;
    };
@@ -709,83 +719,83 @@ int Account::publishedPort() const
 }
 
 ///Return the account tls password
-QString Account::tlsPassword() const
+QString AccountTLS::tlsPassword() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PASSWORD);
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::PASSWORD);
 }
 
 ///Return the account TLS port
-int Account::bootstrapPort() const
+int AccountTLS::bootstrapPort() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PORT).toInt();
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::DHT::PORT).toInt();
 }
 
 ///Return the account TLS certificate authority list file
-Certificate* Account::tlsCaListCertificate() const
+Certificate* AccountTLS::tlsCaListCertificate() const
 {
-   if (!d_ptr->m_pCaCert) {
-      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
+   if (!(m_acc->d_ptr)->m_pCaCert) {
+      const QString& path = (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pCaCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::AUTHORITY);
-      connect(d_ptr->m_pCaCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
+      (m_acc->d_ptr)->m_pCaCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::AUTHORITY);
+      connect((m_acc->d_ptr)->m_pCaCert,SIGNAL(changed()),(m_acc->d_ptr).data(),SLOT(slotUpdateCertificate()));
    }
-   return d_ptr->m_pCaCert;
+   return (m_acc->d_ptr)->m_pCaCert;
 }
 
 ///Return the account TLS certificate
-Certificate* Account::tlsCertificate() const
+Certificate* AccountTLS::tlsCertificate() const
 {
-   if (!d_ptr->m_pTlsCert) {
-      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
+   if (!(m_acc->d_ptr)->m_pTlsCert) {
+      const QString& path = (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pTlsCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::USER);
-      connect(d_ptr->m_pTlsCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
+      (m_acc->d_ptr)->m_pTlsCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::USER);
+      connect((m_acc->d_ptr)->m_pTlsCert,SIGNAL(changed()),(m_acc->d_ptr).data(),SLOT(slotUpdateCertificate()));
    }
-   return d_ptr->m_pTlsCert;
+   return (m_acc->d_ptr)->m_pTlsCert;
 }
 
 ///Return the account private key
-QString Account::tlsPrivateKey() const
+QString AccountTLS::tlsPrivateKey() const
 {
-   return tlsCertificate() ? tlsCertificate()->privateKeyPath() : QString();
+   return getAccountTLS()->tlsCertificate() ? tlsCertificate()->privateKeyPath() : QString();
 }
 
 ///Return the account TLS server name
-QString Account::tlsServerName() const
+QString AccountTLS::tlsServerName() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::SERVER_NAME);
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::SERVER_NAME);
 }
 
 ///Return the account negotiation timeout in seconds
-int Account::tlsNegotiationTimeoutSec() const
+int AccountTLS::tlsNegotiationTimeoutSec() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
 }
 
 ///Return the account TLS verify server
-bool Account::isTlsVerifyServer() const
+bool AccountTLS::isTlsVerifyServer() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_SERVER) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_SERVER) IS_TRUE);
 }
 
 ///Return the account TLS verify client
-bool Account::isTlsVerifyClient() const
+bool AccountTLS::isTlsVerifyClient() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT) IS_TRUE);
 }
 
 ///Return if it is required for the peer to have a certificate
-bool Account::isTlsRequireClientCertificate() const
+bool AccountTLS::isTlsRequireClientCertificate() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
 }
 
 ///Return the account TLS security is enabled
-bool Account::isTlsEnabled() const
+bool AccountTLS::isTlsEnabled() const
 {
-   return protocol() == Account::Protocol::RING || (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
+   return _account->protocol() == Account::Protocol::RING || ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
 }
 
 /////Return if the ringtone are enabled
@@ -1048,15 +1058,15 @@ QVariant Account::roleData(int role) const
 //       case Password:
 //          return accountPassword();
       case CAST(Account::Role::TlsPassword):
-         return tlsPassword();
+         return getAccountTLS()->tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return tlsCaListCertificate()?tlsCaListCertificate()->path():QVariant();
+         return getAccountTLS()->tlsCaListCertificate()?getAccountTLS()->tlsCaListCertificate()->path():QVariant();
       case CAST(Account::Role::TlsCertificate):
-         return tlsCertificate()?tlsCertificate()->path():QVariant();
+         return getAccountTLS()->tlsCertificate()?getAccountTLS()->tlsCertificate()->path():QVariant();
       case CAST(Account::Role::TlsPrivateKey):
-        return tlsPrivateKey();
+        return getAccountTLS()->tlsPrivateKey();
       case CAST(Account::Role::TlsServerName):
-         return tlsServerName();
+         return getAccountTLS()->tlsServerName();
       case CAST(Account::Role::SipStunServer):
          return sipStunServer();
       case CAST(Account::Role::PublishedAddress):
@@ -1066,7 +1076,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::RegistrationExpire):
          return registrationExpire();
       case CAST(Account::Role::TlsNegotiationTimeoutSec):
-         return tlsNegotiationTimeoutSec();
+         return getAccountTLS()->tlsNegotiationTimeoutSec();
       case CAST(Account::Role::LocalPort):
          return localPort();
       case CAST(Account::Role::BootstrapPort):
@@ -1182,7 +1192,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::SecurityEvaluationModel    ):
          return QVariant::fromValue(securityEvaluationModel());
       case CAST(Account::Role::TlsMethodModel             ):
-         return QVariant::fromValue(tlsMethodModel());
+         return QVariant::fromValue(getAccountTLS()->tlsMethodModel());
       case CAST(Account::Role::ProtocolModel              ):
          return QVariant::fromValue(protocolModel());
       case CAST(Account::Role::BootstrapModel             ):
@@ -1429,44 +1439,44 @@ void Account::setPassword(const QString& detail)
 }
 
 ///Set the TLS (encryption) password
-void Account::setTlsPassword(const QString& detail)
+void AccountTLS::setTlsPassword(const QString& detail)
 {
-   auto cert = tlsCertificate();
+   auto cert = getAccountTLS()->tlsCertificate();
    if (!cert)
       return;
    cert->setPrivateKeyPassword(detail);
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
-void Account::setTlsCaListCertificate(const QString& path)
+void AccountTLS::setTlsCaListCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
-void Account::setTlsCertificate(const QString& path)
+void AccountTLS::setTlsCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    setTlsCertificate(cert);
 }
 
 ///Set the private key
-void Account::setTlsPrivateKey(const QString& path)
+void AccountTLS::setTlsPrivateKey(const QString& path)
 {
-    auto cert = tlsCertificate();
+    auto cert = getAccountTLS()->tlsCertificate();
     if (!cert)
         return;
 
     cert->setPrivateKeyPath(path);
-    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?path:QString());
-    d_ptr->regenSecurityValidation();
+    (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?path:QString());
+    (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
-void Account::setTlsCaListCertificate(Certificate* cert)
+void AccountTLS::setTlsCaListCertificate(Certificate* cert)
 {
    //FIXME it can be a list of multiple certificates
    //this code currently only handle the case where is there is exactly one
@@ -1474,40 +1484,41 @@ void Account::setTlsCaListCertificate(Certificate* cert)
    cert->setRequireStrictPermission(false);
 
    //All calls from the same top level CA are always accepted
-   allowCertificate(cert);
+   _account->allowCertificate(cert);
 
-   d_ptr->m_pCaCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path():QString());
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->m_pCaCert = cert;
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path():QString());
+   (m_acc->d_ptr)->regenSecurityValidation();
 
-   if (d_ptr->m_cTlsCaCert)
-      disconnect(d_ptr->m_cTlsCaCert);
+   if ((m_acc->d_ptr)->m_cTlsCaCert)
+      disconnect((m_acc->d_ptr)->m_cTlsCaCert);
 
    if (cert) {
-      d_ptr->m_cTlsCaCert = connect(cert, &Certificate::changed,[this]() {
-         d_ptr->regenSecurityValidation();
+      (m_acc->d_ptr)->m_cTlsCaCert = connect(cert, &Certificate::changed,[this]() {
+         (m_acc->d_ptr)->regenSecurityValidation();
       });
    }
 
 }
 
 ///Set the certificate
-void Account::setTlsCertificate(Certificate* cert)
+void AccountTLS::setTlsCertificate(Certificate* cert)
 {
    //The private key will be required for this certificate
    cert->setRequirePrivateKey(true);
 
-   d_ptr->m_pTlsCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path():QString());
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->m_pTlsCert = cert;
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path():QString());
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the TLS server
-void Account::setTlsServerName(const QString& detail)
+void AccountTLS::setTlsServerName(const QString& detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
+
 
 ///Set the stun server
 void Account::setSipStunServer(const QString& detail)
@@ -1588,31 +1599,31 @@ void Account::setAutoAnswer(bool detail)
 }
 
 ///Set the TLS verification server
-void Account::setTlsVerifyServer(bool detail)
+void AccountTLS::setTlsVerifyServer(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the TLS verification client
-void Account::setTlsVerifyClient(bool detail)
+void AccountTLS::setTlsVerifyClient(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set if the peer need to be providing a certificate
-void Account::setTlsRequireClientCertificate(bool detail)
+void AccountTLS::setTlsRequireClientCertificate(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set if the security settings are enabled
-void Account::setTlsEnabled(bool detail)
+void AccountTLS::setTlsEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 void Account::setSrtpRtpFallback(bool detail)
@@ -2502,6 +2513,25 @@ bool AccountPrivate::merge(Account* account)
 
    return true;
 }
+
+
+AccountTLS* Account::getAccountTLS(){
+   return new AccountTLS(this);
+}
+
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                               AccountTLS                                 *
+ *                                                                           *
+ ****************************************************************************/
+
+///Constructor
+AccountTLS::AccountTLS(Account* acc){
+   this.m_acc = acc;
+}
+
 
 #undef TO_BOOL
 #undef IS_TRUE
