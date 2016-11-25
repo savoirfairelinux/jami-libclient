@@ -43,7 +43,10 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../dbus)
 
 ADD_LIBRARY( qtwrapper STATIC ${libqtwrapper_LIB_SRCS})
 
-TARGET_LINK_LIBRARIES( qtwrapper
-   ${QT_QTCORE_LIBRARY}
-   ${ring_BIN}
-)
+
+IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
+   TARGET_LINK_LIBRARIES( qtwrapper
+      ${QT_QTCORE_LIBRARY}
+      ${ring_BIN}
+   )
+ENDIF()
