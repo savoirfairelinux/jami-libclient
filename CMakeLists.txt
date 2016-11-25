@@ -636,6 +636,8 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    )
 ENDIF()
 
+SET_TARGET_PROPERTIES( ringclient PROPERTIES LINK_FLAGS "-undefined dynamic_lookup" )
+
 QT5_USE_MODULES(ringclient Core)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -657,10 +659,12 @@ TARGET_LINK_LIBRARIES( ringclient
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
-   TARGET_LINK_LIBRARIES( ringclient
+	 IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
+	   TARGET_LINK_LIBRARIES( ringclient
       qtwrapper
       ${ring_BIN}
    )
+   ENDIF()
    IF(NOT ${ENABLE_STATIC} MATCHES false)
       TARGET_LINK_LIBRARIES( ringclient_static
          qtwrapper
