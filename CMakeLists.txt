@@ -657,10 +657,18 @@ TARGET_LINK_LIBRARIES( ringclient
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
-   TARGET_LINK_LIBRARIES( ringclient
+   IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
+	   TARGET_LINK_LIBRARIES( ringclient
       qtwrapper
       ${ring_BIN}
    )
+   ELSE()
+      # Allow building with undefined symbols when only the daemon headers are provided
+      # It speeds up our CI builds
+      IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+         SET_TARGET_PROPERTIES( ringclient PROPERTIES LINK_FLAGS "-undefined dynamic_lookup" )
+      ENDIF()
+   ENDIF()
    IF(NOT ${ENABLE_STATIC} MATCHES false)
       TARGET_LINK_LIBRARIES( ringclient_static
          qtwrapper
