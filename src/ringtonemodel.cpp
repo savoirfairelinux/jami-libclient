@@ -183,7 +183,7 @@ Ringtone* RingtoneModel::currentRingTone(Account* a) const
    return idx.isValid() ? d_ptr->m_lRingtone[idx.row()] : nullptr;
 }
 
-int RingtoneModelPrivate::currentIndex(Account* a) const
+int RingtoneModelPrivate::currentIndex(AccountMedia* a) const
 {
    const QString rt = a->ringtonePath();
    for (int i=0;i<m_lRingtone.size();i++) {
@@ -194,7 +194,7 @@ int RingtoneModelPrivate::currentIndex(Account* a) const
    return 0;
 }
 
-QItemSelectionModel* RingtoneModel::selectionModel(Account* a) const
+QItemSelectionModel* RingtoneModel::selectionModel(AccountMedia* a) const
 {
    if (!d_ptr->m_hSelectionModels[a]) {
       d_ptr->m_hSelectionModels[a] = new QItemSelectionModel(const_cast<RingtoneModel*>(this));

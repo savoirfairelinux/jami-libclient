@@ -112,7 +112,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
-   Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
+   //Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
    Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
    Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
@@ -127,7 +127,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(bool           srtpRtpFallback              READ isSrtpRtpFallback             WRITE setSrtpRtpFallback             )
    Q_PROPERTY(bool           sipStunEnabled               READ isSipStunEnabled              WRITE setSipStunEnabled              )
    Q_PROPERTY(bool           publishedSameAsLocal         READ isPublishedSameAsLocal        WRITE setPublishedSameAsLocal        )
-   Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled             )
+   //Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled             )
    Q_PROPERTY(DtmfType       dTMFType                     READ DTMFType                      WRITE setDTMFType                    )
    Q_PROPERTY(int            voiceMailCount               READ voiceMailCount                WRITE setVoiceMailCount              )
 //    Q_PROPERTY(QString        typeName                     READ type                          WRITE setType                        )
@@ -138,11 +138,11 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(bool           supportPresencePublish       READ supportPresencePublish                                             )
    Q_PROPERTY(bool           supportPresenceSubscribe     READ supportPresenceSubscribe                                           )
    Q_PROPERTY(bool           presenceEnabled              READ presenceEnabled               WRITE setPresenceEnabled NOTIFY presenceEnabledChanged)
-   Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled                )
-   Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax                )
-   Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
-   Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
-   Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
+   //Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled                )
+   //Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax                )
+   //Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
+   //Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
+   //Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
    Q_PROPERTY(bool           upnpEnabled                  READ isUpnpEnabled                 WRITE setUpnpEnabled                 )
    Q_PROPERTY(bool           hasCustomUserAgent           READ hasCustomUserAgent            WRITE setHasCustomUserAgent          )
    Q_PROPERTY(Profile*       profile                      READ profile                       WRITE setProfile                     )
@@ -235,7 +235,7 @@ class LIB_EXPORT Account : public ItemBase {
          TlsServerName               ,
          SipStunServer               ,
          PublishedAddress            ,
-         RingtonePath                ,
+         //RingtonePath                ,
          RegistrationExpire          ,
          TlsNegotiationTimeoutSec    ,
          TlsNegotiationTimeoutMsec   ,
@@ -251,7 +251,7 @@ class LIB_EXPORT Account : public ItemBase {
          SrtpRtpFallback             ,
          SipStunEnabled              ,
          PublishedSameAsLocal        ,
-         RingtoneEnabled             ,
+         //RingtoneEnabled             ,
          dTMFType                    ,
          Id                          ,
          Object                      ,
@@ -270,11 +270,11 @@ class LIB_EXPORT Account : public ItemBase {
          SupportPresencePublish      ,
          SupportPresenceSubscribe    ,
          PresenceEnabled             ,
-         IsVideoEnabled              ,
-         VideoPortMax                ,
-         VideoPortMin                ,
-         AudioPortMin                ,
-         AudioPortMax                ,
+         //IsVideoEnabled              ,
+         //VideoPortMax                ,
+         //VideoPortMin                ,
+         //AudioPortMin                ,
+         //AudioPortMax                ,
          IsUpnpEnabled               ,
          HasCustomUserAgent          ,
          LastTransportErrorCode      ,
@@ -410,8 +410,8 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isTlsVerifyClient            () const;
       bool    isTlsRequireClientCertificate() const;
       bool    isTlsEnabled                 () const;
-      bool    isRingtoneEnabled            () const;
-      QString ringtonePath                 () const;
+      //bool    isRingtoneEnabled            () const;
+      //QString ringtonePath                 () const;
       QString lastErrorMessage             () const;
       int     lastErrorCode                () const;
       int     localPort                    () const;
@@ -422,11 +422,11 @@ class LIB_EXPORT Account : public ItemBase {
       bool    supportPresencePublish       () const;
       bool    supportPresenceSubscribe     () const;
       bool    presenceEnabled              () const;
-      bool    isVideoEnabled               () const;
-      int     videoPortMax                 () const;
-      int     videoPortMin                 () const;
-      int     audioPortMin                 () const;
-      int     audioPortMax                 () const;
+      //bool    isVideoEnabled               () const;
+      //int     videoPortMax                 () const;
+      //int     videoPortMin                 () const;
+      //int     audioPortMin                 () const;
+      //int     audioPortMax                 () const;
       bool    isUpnpEnabled                () const;
       bool    hasCustomUserAgent           () const;
       int     lastTransportErrorCode       () const;
@@ -489,7 +489,7 @@ class LIB_EXPORT Account : public ItemBase {
       void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
-      void setRingtonePath                  (const QString& detail  );
+      //void setRingtonePath                  (const QString& detail  );
       void setTurnEnabled                   (bool value );
       void setTurnServer                    (const QString& value   );
       void setTurnServerUsername            (const QString& value   );
@@ -513,13 +513,13 @@ class LIB_EXPORT Account : public ItemBase {
       void setSrtpEnabled                   (bool detail);
       void setSipStunEnabled                (bool detail);
       void setPublishedSameAsLocal          (bool detail);
-      void setRingtoneEnabled               (bool detail);
+      //void setRingtoneEnabled               (bool detail);
       void setPresenceEnabled               (bool enable);
-      void setVideoEnabled                  (bool enable);
-      void setAudioPortMax                  (int port   );
-      void setAudioPortMin                  (int port   );
-      void setVideoPortMax                  (int port   );
-      void setVideoPortMin                  (int port   );
+      //void setVideoEnabled                  (bool enable);
+      //void setAudioPortMax                  (int port   );
+      //void setAudioPortMin                  (int port   );
+      //void setVideoPortMax                  (int port   );
+      //void setVideoPortMin                  (int port   );
       void setActiveCallLimit               (int value  );
       void setDTMFType                      (DtmfType type);
       void setUserAgent                     (const QString& agent);
@@ -542,6 +542,7 @@ class LIB_EXPORT Account : public ItemBase {
       void setEnabled(bool checked);
 
    private:
+	   
       //Constructors
       explicit Account();
       ~Account();
@@ -593,4 +594,62 @@ private:
 
    AccountPlaceHolderPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountPlaceHolder)
+};
+
+
+
+
+
+
+
+
+
+
+
+class AccountMedia {
+
+//Properties
+	Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled)
+	Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax)
+	Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin)
+	Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax)
+	Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin)
+	Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath)
+	Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled)
+
+public:
+
+	enum class Role {
+		IsVideoEnabled,
+		AudioPortMax,
+		AudioPortMin,
+		VideoPortMax,
+		VideoPortMin,
+		RingtonePath,
+		RingtoneEnabled,
+	};
+
+	//Getters
+	bool    isVideoEnabled() const;
+	int     audioPortMax() const;
+	int     audioPortMin() const;
+	int     videoPortMax() const;
+	int     videoPortMin() const;	
+	QString ringtonePath() const;
+	bool    isRingtoneEnabled() const;
+
+	Q_INVOKABLE QVariant roleData(int role) const;
+
+
+	//Setters
+	void setVideoEnabled(bool enable);
+	void setAudioPortMax(int port);
+	void setAudioPortMin(int port);
+	void setVideoPortMax(int port);
+	void setVideoPortMin(int port);
+	void setRingtonePath(const QString& detail);
+	void setRingtoneEnabled(bool detail);
+
+	void setRoleData(int role, const QVariant& value);
+
 };
