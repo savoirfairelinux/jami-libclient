@@ -185,7 +185,7 @@ Ringtone* RingtoneModel::currentRingTone(Account* a) const
 
 int RingtoneModelPrivate::currentIndex(AccountMedia* a) const
 {
-   const QString rt = a->ringtonePath();
+   const QString rt = a->getAccountMedia()->ringtonePath()();
    for (int i=0;i<m_lRingtone.size();i++) {
       Ringtone* info = m_lRingtone[i];
       if (info->path() == rt)

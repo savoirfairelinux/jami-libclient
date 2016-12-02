@@ -829,13 +829,13 @@ bool Account::getAccountTLS()->isTlsEnabled() const
 }
 
 /////Return if the ringtone are enabled
-//bool Account::isRingtoneEnabled() const
+//bool Account::isRingtoneEnabled()() const
 //{
 //   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
 //}
 
 /////Return the account ringtone path
-//QString Account::ringtonePath() const
+//QString Account::ringtonePath()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
 //}
@@ -944,27 +944,27 @@ bool Account::presenceEnabled() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::ENABLED) IS_TRUE;
 }
 
-//bool Account::isVideoEnabled() const
+//bool Account::isVideoEnabled()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
 //}
 
-//int Account::videoPortMax() const
+//int Account::videoPortMax()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
 //}
 
-//int Account::videoPortMin() const
+//int Account::videoPortMin()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
 //}
 
-//int Account::audioPortMin() const
+//int Account::audioPortMin()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
 //}
 
-//int Account::audioPortMax() const
+//int Account::audioPortMax()() const
 //{
 //   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 //}
@@ -1117,7 +1117,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::PublishedAddress):
          return publishedAddress();
       //case CAST(Account::Role::RingtonePath):
-      //   return ringtonePath();
+      //   return getAccountMedia()->ringtonePath()();
       case CAST(Account::Role::RegistrationExpire):
          return registrationExpire();
       case CAST(Account::Role::TlsNegotiationTimeoutSec):
@@ -1147,7 +1147,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::PublishedSameAsLocal):
          return isPublishedSameAsLocal();
       //case CAST(Account::Role::RingtoneEnabled):
-      //   return isRingtoneEnabled();
+      //   return getAccountMedia()->isRingtoneEnabled()();
       case CAST(Account::Role::dTMFType):
          return DTMFType();
       case CAST(Account::Role::Id):
@@ -1188,15 +1188,15 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::PresenceEnabled          ):
          return presenceEnabled();
       //case CAST(Account::Role::IsVideoEnabled           ):
-      //   return isVideoEnabled();
+      //   return getAccountMedia()->isVideoEnabled()();
       //case CAST(Account::Role::VideoPortMax             ):
-      //   return videoPortMax();
+      //   return getAccountMedia()->videoPortMax()();
       //case CAST(Account::Role::VideoPortMin             ):
-      //   return videoPortMin();
+      //   return getAccountMedia()->videoPortMin()();
       //case CAST(Account::Role::AudioPortMin             ):
-      //   return audioPortMin();
+      //   return getAccountMedia()->audioPortMin()();
       //case CAST(Account::Role::AudioPortMax             ):
-      //   return audioPortMax();
+      //   return getAccountMedia()->audioPortMax()();
       case CAST(Account::Role::IsUpnpEnabled            ):
          return isUpnpEnabled();
       case CAST(Account::Role::HasCustomUserAgent       ):
@@ -2057,19 +2057,19 @@ void Account::setRoleData(int role, const QVariant& value)
          setPresenceEnabled(value.toBool());
          break;
       //case CAST(Account::Role::IsVideoEnabled           ):
-      //   setVideoEnabled(value.toBool());
+      //   getAccountMedia()->setVideoEnabled(value.toBool());
       //   break;
       //case CAST(Account::Role::VideoPortMax             ):
-      //   setVideoPortMax(value.toInt());
+      //   getAccountMedia()->setVideoPortMax(value.toInt());
       //   break;
       //case CAST(Account::Role::VideoPortMin             ):
-      //   setVideoPortMin(value.toInt());
+      //   getAccountMedia()->setVideoPortMin(value.toInt());
       //   break;
       //case CAST(Account::Role::AudioPortMin             ):
-      //   setAudioPortMin(value.toInt());
+      //   getAccountMedia()->setAudioPortMin(value.toInt());
       //   break;
       //case CAST(Account::Role::AudioPortMax             ):
-      //   setAudioPortMax(value.toInt());
+      //   getAccountMedia()->setAudioPortMax(value.toInt());
       //   break;
       case CAST(Account::Role::IsUpnpEnabled            ):
          setUpnpEnabled(value.toBool());
@@ -2636,39 +2636,39 @@ bool AccountPrivate::merge(Account* account)
 *                                                                             *
 ******************************************************************************/
 
-bool AccountMedia::isVideoEnabled() const
+bool AccountMedia::isVideoEnabled()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
 }
 
-int AccountMedia::videoPortMax() const
+int AccountMedia::videoPortMax()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
 }
 
-int AccountMedia::videoPortMin() const
+int AccountMedia::videoPortMin()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
 }
 
-int AccountMedia::audioPortMin() const
+int AccountMedia::audioPortMin()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
 }
 
-int AccountMedia::audioPortMax() const
+int AccountMedia::audioPortMax()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 }
 
 ///Return if the ringtone are enabled
-bool AccountMedia::isRingtoneEnabled() const
+bool AccountMedia::isRingtoneEnabled()() const
 {
 	return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
 }
 
 ///Return the account ringtone path
-QString AccountMedia::ringtonePath() const
+QString AccountMedia::ringtonePath()() const
 {
 	return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
 }
@@ -2680,19 +2680,19 @@ QVariant AccountMedia::roleData(int role) const
 {
 	switch (role) {
 	case CAST(AccountMedia::Role::IsVideoEnabled):
-		return isVideoEnabled();
+		return getAccountMedia()->isVideoEnabled()();
 	case CAST(AccountMedia::Role::VideoPortMax):
-		return videoPortMax();
+		return getAccountMedia()->videoPortMax()();
 	case CAST(AccountMedia::Role::VideoPortMin):
-		return videoPortMin();
+		return getAccountMedia()->videoPortMin()();
 	case CAST(AccountMedia::Role::AudioPortMin):
-		return audioPortMin();
+		return getAccountMedia()->audioPortMin()();
 	case CAST(AccountMedia::Role::AudioPortMax):
-		return audioPortMax();
+		return getAccountMedia()->audioPortMax()();
 	case CAST(AccountMedia::Role::RingtonePath):
-		return ringtonePath();
+		return getAccountMedia()->ringtonePath()();
 	case CAST(AccountMedia::Role::RingtoneEnabled):
-		return isRingtoneEnabled();
+		return getAccountMedia()->isRingtoneEnabled()();
 	default:
 		return QVariant();
 	}
@@ -2770,19 +2770,19 @@ void AccountMedia::setRoleData(int role, const QVariant& value)
 {
 	switch (role) {
 	case CAST(AccountMedia::Role::IsVideoEnabled):
-		setVideoEnabled(value.toBool());
+		getAccountMedia()->setVideoEnabled(value.toBool());
 		break;
 	case CAST(AccountMedia::Role::VideoPortMax):
-		setVideoPortMax(value.toInt());
+		getAccountMedia()->setVideoPortMax(value.toInt());
 		break;
 	case CAST(AccountMedia::Role::VideoPortMin):
-		setVideoPortMin(value.toInt());
+		getAccountMedia()->setVideoPortMin(value.toInt());
 		break;
 	case CAST(AccountMedia::Role::AudioPortMin):
-		setAudioPortMin(value.toInt());
+		getAccountMedia()->setAudioPortMin(value.toInt());
 		break;
 	case CAST(AccountMedia::Role::AudioPortMax):
-		setAudioPortMax(value.toInt());
+		getAccountMedia()->setAudioPortMax(value.toInt());
 		break;
 	case CAST(AccountMedia::Role::RingtonePath):
 		setRingtonePath(value.toString());

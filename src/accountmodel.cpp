@@ -125,7 +125,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TlsServerName               ) ,QByteArray("tlsServerName"                 ));
       roles.insert(CAST(Account::Role::SipStunServer               ) ,QByteArray("sipStunServer"                 ));
       roles.insert(CAST(Account::Role::PublishedAddress            ) ,QByteArray("publishedAddress"              ));
-      roles.insert(CAST(AccountMedia::Role::RingtonePath                ) ,QByteArray("ringtonePath"                  ));
+      roles.insert(CAST(AccountMedia::Role::RingtonePath                ) ,QByteArray("ringtonePath()"                  ));
       roles.insert(CAST(Account::Role::RegistrationExpire          ) ,QByteArray("registrationExpire"            ));
       roles.insert(CAST(Account::Role::TlsNegotiationTimeoutSec    ) ,QByteArray("tlsNegotiationTimeoutSec"      ));
       roles.insert(CAST(Account::Role::TlsNegotiationTimeoutMsec   ) ,QByteArray("tlsNegotiationTimeoutMsec"     ));
@@ -158,11 +158,11 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::SupportPresencePublish      ) ,QByteArray("supportPresencePublish"        ));
       roles.insert(CAST(Account::Role::SupportPresenceSubscribe    ) ,QByteArray("supportPresenceSubscribe"      ));
       roles.insert(CAST(Account::Role::PresenceEnabled             ) ,QByteArray("presenceEnabled"               ));
-      roles.insert(CAST(AccountMedia::Role::IsVideoEnabled              ) ,QByteArray("isVideoEnabled"                ));
-      roles.insert(CAST(AccountMedia::Role::VideoPortMax                ) ,QByteArray("videoPortMax"                  ));
-      roles.insert(CAST(AccountMedia::Role::VideoPortMin                ) ,QByteArray("videoPortMin"                  ));
-      roles.insert(CAST(AccountMedia::Role::AudioPortMin                ) ,QByteArray("audioPortMin"                  ));
-      roles.insert(CAST(AccountMedia::Role::AudioPortMax                ) ,QByteArray("audioPortMax"                  ));
+      roles.insert(CAST(AccountMedia::Role::IsVideoEnabled              ) ,QByteArray("isVideoEnabled()"                ));
+      roles.insert(CAST(AccountMedia::Role::VideoPortMax                ) ,QByteArray("videoPortMax()"                  ));
+      roles.insert(CAST(AccountMedia::Role::VideoPortMin                ) ,QByteArray("videoPortMin()"                  ));
+      roles.insert(CAST(AccountMedia::Role::AudioPortMin                ) ,QByteArray("audioPortMin()"                  ));
+      roles.insert(CAST(AccountMedia::Role::AudioPortMax                ) ,QByteArray("audioPortMax()"                  ));
       roles.insert(CAST(Account::Role::IsUpnpEnabled               ) ,QByteArray("upnpEnabled"                   ));
       roles.insert(CAST(Account::Role::HasCustomUserAgent          ) ,QByteArray("hasCustomUserAgent"            ));
       roles.insert(CAST(Account::Role::LastTransportErrorCode      ) ,QByteArray("lastTransportErrorCode"        ));

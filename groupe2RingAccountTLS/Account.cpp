@@ -799,13 +799,13 @@ bool AccountTLS::isTlsEnabled() const
 }
 
 ///Return if the ringtone are enabled
-bool Account::isRingtoneEnabled() const
+bool AccountMedia::isRingtoneEnabled() const
 {
    return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
 }
 
 ///Return the account ringtone path
-QString Account::ringtonePath() const
+QString AccountMedia::ringtonePath() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
 }
@@ -914,27 +914,27 @@ bool Account::presenceEnabled() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::ENABLED) IS_TRUE;
 }
 
-bool Account::isVideoEnabled() const
+bool AccountMedia::isVideoEnabled() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
 }
 
-int Account::videoPortMax() const
+int AccountMedia::videoPortMax() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
 }
 
-int Account::videoPortMin() const
+int AccountMedia::videoPortMin() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
 }
 
-int Account::audioPortMin() const
+int AccountMedia::audioPortMin() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
 }
 
-int Account::audioPortMax() const
+int AccountMedia::audioPortMax() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
 }
@@ -1143,9 +1143,9 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::PresenceEnabled          ):
          return presenceEnabled();
       case CAST(Account::Role::IsVideoEnabled           ):
-         return isVideoEnabled();
+         return getAccountMedia()->isVideoEnabled();
       case CAST(Account::Role::VideoPortMax             ):
-         return videoPortMax();
+         return getAccountMedia()->videoPortMax();
       case CAST(Account::Role::VideoPortMin             ):
          return videoPortMin();
       case CAST(Account::Role::AudioPortMin             ):
@@ -1533,7 +1533,7 @@ void Account::setPublishedAddress(const QString& detail)
 }
 
 ///Set the ringtone path, it have to be a valid absolute path
-void Account::setRingtonePath(const QString& detail)
+void AccountMedia::setRingtonePath(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::PATH, detail);
 }
@@ -1551,14 +1551,14 @@ void Account::setRegistrationExpire(int detail)
 }
 
 ///Set TLS negotiation timeout in second
-void Account::getAccountTLS()->setTlsNegotiationTimeoutSec(int detail)
+void Account::setTlsNegotiationTimeoutSec(int detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
    d_ptr->regenSecurityValidation();
 }
 
 ///Set the local port for SIP/RING communications
-void Account::getAccountTLS()->setLocalPort(unsigned short detail)
+void Account::setLocalPort(unsigned short detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
@@ -1575,13 +1575,13 @@ void Account::getAccountTLS()->setLocalPort(unsigned short detail)
 }
 
 ///Set the TLS listener port (0-2^16)
-void Account::getAccountTLS()->setBootstrapPort(unsigned short detail)
+void Account::setBootstrapPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
-void Account::getAccountTLS()->setPublishedPort(unsigned short detail)
+void Account::setPublishedPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_PORT, QString::number(detail));
 }
@@ -1593,7 +1593,7 @@ void Account::setEnabled(bool detail)
 }
 
 ///Set if the account should auto answer
-void Account::getAccountTLS()->setAutoAnswer(bool detail)
+void Account::setAutoAnswer(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::AUTOANSWER, (detail)TO_BOOL);
 }
@@ -1672,7 +1672,7 @@ void Account::setPresenceEnabled(bool enable)
 }
 
 ///Use video by default when available
-void Account::setVideoEnabled(bool enable)
+void AccountMedia::setVideoEnabled(bool enable)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::ENABLED, (enable)TO_BOOL);
 }
@@ -1681,7 +1681,7 @@ void Account::setVideoEnabled(bool enable)
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setAudioPortMax(int port )
+void AccountMedia::setAudioPortMax(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MAX, QString::number(port));
 }
@@ -1690,7 +1690,7 @@ void Account::setAudioPortMax(int port )
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setAudioPortMin(int port )
+void AccountMedia::setAudioPortMin(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MIN, QString::number(port));
 }
@@ -1699,7 +1699,7 @@ void Account::setAudioPortMin(int port )
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setVideoPortMax(int port )
+void AccountMedia::setVideoPortMax(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MAX, QString::number(port));
 }
@@ -1979,19 +1979,19 @@ void Account::setRoleData(int role, const QVariant& value)
          setPresenceEnabled(value.toBool());
          break;
       case CAST(Account::Role::IsVideoEnabled           ):
-         setVideoEnabled(value.toBool());
+         getAccountMedia()->setVideoEnabled(value.toBool());
          break;
       case CAST(Account::Role::VideoPortMax             ):
-         setVideoPortMax(value.toInt());
+         getAccountMedia()->setVideoPortMax(value.toInt());
          break;
       case CAST(Account::Role::VideoPortMin             ):
-         setVideoPortMin(value.toInt());
+         getAccountMedia()->setVideoPortMin(value.toInt());
          break;
       case CAST(Account::Role::AudioPortMin             ):
-         setAudioPortMin(value.toInt());
+         getAccountMedia()->setAudioPortMin(value.toInt());
          break;
       case CAST(Account::Role::AudioPortMax             ):
-         setAudioPortMax(value.toInt());
+         getAccountMedia()->setAudioPortMax(value.toInt());
          break;
       case CAST(Account::Role::IsUpnpEnabled            ):
          setUpnpEnabled(value.toBool());
@@ -2520,6 +2520,10 @@ AccountTLS* Account::getAccountTLS(){
 }
 
 
+AccountMedia* Account::getAccountMedia(){
+   return new AccountMedia(this);
+}
+
 /*****************************************************************************
  *                                                                           *
  *                               AccountTLS                                 *
@@ -2528,6 +2532,18 @@ AccountTLS* Account::getAccountTLS(){
 
 ///Constructor
 AccountTLS::AccountTLS(Account* acc){
+   this.m_acc = acc;
+}
+
+
+/*****************************************************************************
+ *                                                                           *
+ *                               AccountMEDIA                                  *
+ *                                                                           *
+ ****************************************************************************/
+
+///Constructor
+AccountMedia::AccountMedia(Account* acc){
    this.m_acc = acc;
 }
 
