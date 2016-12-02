@@ -577,12 +577,12 @@ class AccountMedia{
    Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
    Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
    Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
+
 private:
    Account* _account;
-
 public:
    AccountMedia(Account* account);
-
+   
    // Getters
    bool    isVideoEnabled               () const;
    int     videoPortMax                 () const;
@@ -591,7 +591,6 @@ public:
    int     audioPortMax                 () const;
    bool    isRingtoneEnabled            () const;
    QString ringtonePath                 () const;
-
    // Setters
    void setVideoEnabled                  (bool enable);
    void setAudioPortMax                  (int port   );

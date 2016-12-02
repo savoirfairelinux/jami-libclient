@@ -30,10 +30,6 @@
 //Ring daemon
 #include <account_const.h>
 
-
-// AccountTLS
-#include <AccountTLS.h>
-
 //Ring lib
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -290,7 +286,6 @@ const QByteArray Account::id() const
 const QString Account::toHumanStateName() const
 {
    const QString s = d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::Registration::STATUS];
-
                                                  //: Account state
    static const QString ready                  = tr("Ready"                    );
                                                  //: Account state
@@ -2546,7 +2541,6 @@ AccountTLS::AccountTLS(Account* acc){
 AccountMedia::AccountMedia(Account* acc){
    this.m_acc = acc;
 }
-
 
 #undef TO_BOOL
 #undef IS_TRUE

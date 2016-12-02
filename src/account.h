@@ -31,7 +31,6 @@ class QString;
 #include "uri.h"
 #include "typedefs.h"
 #include "itemdataroles.h"
-#include "namedirectory.h"
 class CredentialModel         ;
 class ContactMethod           ;
 class SecurityEvaluationModel ;
@@ -41,7 +40,6 @@ class AccountStatusModel      ;
 class ProtocolModel           ;
 class CodecModel              ;
 class BootstrapModel          ;
-class RingDeviceModel         ;
 class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
 class PendingTrustRequestModel;
@@ -50,6 +48,8 @@ class Profile;
 //Private
 class AccountPrivate;
 class AccountPlaceHolderPrivate;
+
+
 
 
 ///@enum DtmfType Different method to send the DTMF (key sound) to the peer
@@ -87,7 +87,6 @@ class LIB_EXPORT Account : public ItemBase {
    friend class TlsMethodModelPrivate;
    friend class TlsMethodModel;
    friend class BootstrapModelPrivate;
-   friend class RingDeviceModelPrivate;
    friend class KeyExchangeModel;
    friend class KeyExchangeModelPrivate;
    friend class ContactMethod;
@@ -97,37 +96,20 @@ class LIB_EXPORT Account : public ItemBase {
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
-   Q_PROPERTY(QString        deviceId                     READ deviceId                                                           )
    Q_PROPERTY(QString        alias                        READ alias                         WRITE setAlias                       )
    Q_PROPERTY(Account::Protocol protocol                  READ protocol                      WRITE setProtocol                    )
    Q_PROPERTY(QString        hostname                     READ hostname                      WRITE setHostname                    )
-   Q_PROPERTY(QString        nameServiceURL               READ nameServiceURL                WRITE setNameServiceURL              )
-   Q_PROPERTY(QString        registeredName               READ registeredName                                                     )
+   Q_PROPERTY(QString        username                     READ username                      WRITE setUsername                    )
    Q_PROPERTY(QString        mailbox                      READ mailbox                       WRITE setMailbox                     )
    Q_PROPERTY(QString        proxy                        READ proxy                         WRITE setProxy                       )
-   Q_PROPERTY(QString        tlsPassword                  READ tlsPassword                   WRITE setTlsPassword                 )
-   Q_PROPERTY(Certificate*   tlsCaListCertificate         READ tlsCaListCertificate          WRITE setTlsCaListCertificate        )
-   Q_PROPERTY(Certificate*   tlsCertificate               READ tlsCertificate                WRITE setTlsCertificate              )
-   Q_PROPERTY(QString        tlsPrivateKey                READ tlsPrivateKey                 WRITE setTlsPrivateKey               )
-   Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
    Q_PROPERTY(QString        sipStunServer                READ sipStunServer                 WRITE setSipStunServer               )
    Q_PROPERTY(QString        publishedAddress             READ publishedAddress              WRITE setPublishedAddress            )
-   //Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
    Q_PROPERTY(int            registrationExpire           READ registrationExpire            WRITE setRegistrationExpire          )
-   Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
-   Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
-   Q_PROPERTY(int            bootstrapPort                READ bootstrapPort                 WRITE setBootstrapPort               )
-   Q_PROPERTY(int            publishedPort                READ publishedPort                 WRITE setPublishedPort               )
    Q_PROPERTY(bool           enabled                      READ isEnabled                     WRITE setEnabled                     )
    Q_PROPERTY(bool           autoAnswer                   READ isAutoAnswer                  WRITE setAutoAnswer                  )
-   Q_PROPERTY(bool           tlsVerifyServer              READ isTlsVerifyServer             WRITE setTlsVerifyServer             )
-   Q_PROPERTY(bool           tlsVerifyClient              READ isTlsVerifyClient             WRITE setTlsVerifyClient             )
-   Q_PROPERTY(bool           tlsRequireClientCertificate  READ isTlsRequireClientCertificate WRITE setTlsRequireClientCertificate )
-   Q_PROPERTY(bool           tlsEnabled                   READ isTlsEnabled                  WRITE setTlsEnabled                  )
    Q_PROPERTY(bool           srtpRtpFallback              READ isSrtpRtpFallback             WRITE setSrtpRtpFallback             )
    Q_PROPERTY(bool           sipStunEnabled               READ isSipStunEnabled              WRITE setSipStunEnabled              )
    Q_PROPERTY(bool           publishedSameAsLocal         READ isPublishedSameAsLocal        WRITE setPublishedSameAsLocal        )
-   //Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled             )
    Q_PROPERTY(DtmfType       dTMFType                     READ DTMFType                      WRITE setDTMFType                    )
    Q_PROPERTY(int            voiceMailCount               READ voiceMailCount                WRITE setVoiceMailCount              )
 //    Q_PROPERTY(QString        typeName                     READ type                          WRITE setType                        )
@@ -138,27 +120,18 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(bool           supportPresencePublish       READ supportPresencePublish                                             )
    Q_PROPERTY(bool           supportPresenceSubscribe     READ supportPresenceSubscribe                                           )
    Q_PROPERTY(bool           presenceEnabled              READ presenceEnabled               WRITE setPresenceEnabled NOTIFY presenceEnabledChanged)
-   //Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled                )
-   //Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax                )
-   //Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
-   //Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
-   //Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
    Q_PROPERTY(bool           upnpEnabled                  READ isUpnpEnabled                 WRITE setUpnpEnabled                 )
    Q_PROPERTY(bool           hasCustomUserAgent           READ hasCustomUserAgent            WRITE setHasCustomUserAgent          )
    Q_PROPERTY(Profile*       profile                      READ profile                       WRITE setProfile                     )
-
    Q_PROPERTY(QString        userAgent                    READ userAgent                     WRITE setUserAgent                   )
    Q_PROPERTY(bool           useDefaultPort               READ useDefaultPort                WRITE setUseDefaultPort              )
    Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
-   Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
-   Q_PROPERTY(QString        archivePin                   READ archivePin                    WRITE setArchivePin                  )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
    Q_PROPERTY(uint           weekCallCount                READ weekCallCount                                                      )
    Q_PROPERTY(uint           trimesterCallCount           READ trimesterCallCount                                                 )
    Q_PROPERTY(time_t         lastUsed                     READ lastUsed                                                           )
-
    Q_PROPERTY(bool           allowIncomingFromHistory     READ allowIncomingFromHistory      WRITE setAllowIncomingFromHistory    )
    Q_PROPERTY(bool           allowIncomingFromContact     READ allowIncomingFromContact      WRITE setAllowIncomingFromContact    )
    Q_PROPERTY(bool           allowIncomingFromUnknown     READ allowIncomingFromUnknown      WRITE setAllowIncomingFromUnknown    )
@@ -169,10 +142,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(CipherModel*             cipherModel                 READ cipherModel                                               )
    Q_PROPERTY(AccountStatusModel*      statusModel                 READ statusModel                                               )
    Q_PROPERTY(SecurityEvaluationModel* securityEvaluationModel     READ securityEvaluationModel                                   )
-   Q_PROPERTY(TlsMethodModel*          tlsMethodModel              READ tlsMethodModel                                            )
    Q_PROPERTY(ProtocolModel*           protocolModel               READ protocolModel                                             )
    Q_PROPERTY(BootstrapModel*          bootstrapModel              READ bootstrapModel                                            )
-   Q_PROPERTY(RingDeviceModel*         ringDeviceModel             READ ringDeviceModel                                           )
    Q_PROPERTY(NetworkInterfaceModel*   networkInterfaceModel       READ networkInterfaceModel                                     )
    Q_PROPERTY(QAbstractItemModel*      knownCertificateModel       READ knownCertificateModel                                     )
    Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
@@ -214,9 +185,8 @@ class LIB_EXPORT Account : public ItemBase {
       enum class RegistrationState {
          READY        = 0, /*!< The account can be used to pass a call   */
          UNREGISTERED = 1, /*!< The account isn't functional voluntarily */
-         INITIALIZING = 2, /*!< The account being created                */
-         TRYING       = 3, /*!< The account is trying to become ready    */
-         ERROR        = 4, /*!< The account failed to become ready       */
+         TRYING       = 2, /*!< The account is trying to become ready    */
+         ERROR        = 3, /*!< The account failed to become ready       */
          COUNT__
       };
       Q_ENUMS(RegistrationState)
@@ -235,7 +205,7 @@ class LIB_EXPORT Account : public ItemBase {
          TlsServerName               ,
          SipStunServer               ,
          PublishedAddress            ,
-         //RingtonePath                ,
+         RingtonePath                ,
          RegistrationExpire          ,
          TlsNegotiationTimeoutSec    ,
          TlsNegotiationTimeoutMsec   ,
@@ -251,7 +221,7 @@ class LIB_EXPORT Account : public ItemBase {
          SrtpRtpFallback             ,
          SipStunEnabled              ,
          PublishedSameAsLocal        ,
-         //RingtoneEnabled             ,
+         RingtoneEnabled             ,
          dTMFType                    ,
          Id                          ,
          Object                      ,
@@ -270,11 +240,11 @@ class LIB_EXPORT Account : public ItemBase {
          SupportPresencePublish      ,
          SupportPresenceSubscribe    ,
          PresenceEnabled             ,
-         //IsVideoEnabled              ,
-         //VideoPortMax                ,
-         //VideoPortMin                ,
-         //AudioPortMin                ,
-         //AudioPortMax                ,
+         IsVideoEnabled              ,
+         VideoPortMax                ,
+         VideoPortMin                ,
+         AudioPortMin                ,
+         AudioPortMax                ,
          IsUpnpEnabled               ,
          HasCustomUserAgent          ,
          LastTransportErrorCode      ,
@@ -297,7 +267,6 @@ class LIB_EXPORT Account : public ItemBase {
          TlsMethodModel              ,
          ProtocolModel               ,
          BootstrapModel              ,
-         RingDeviceModel             ,
          NetworkInterfaceModel       ,
          KnownCertificateModel       ,
          BannedCertificatesModel     ,
@@ -335,14 +304,6 @@ class LIB_EXPORT Account : public ItemBase {
       };
       Q_ENUMS(Protocol)
 
-      ///Possible account export status
-      enum class ExportOnRingStatus {
-          SUCCESS = 0,
-          WRONG_PASSWORD = 1 ,
-          NETWORK_ERROR = 2
-      };
-      Q_ENUMS(ExportOnRingStatus)
-
       /**
        *Perform an action
        * @return If the state changed
@@ -370,7 +331,6 @@ class LIB_EXPORT Account : public ItemBase {
       TlsMethodModel*           tlsMethodModel             () const;
       ProtocolModel*            protocolModel              () const;
       BootstrapModel*           bootstrapModel             () const;
-      RingDeviceModel*          ringDeviceModel            () const;
       NetworkInterfaceModel*    networkInterfaceModel      () const;
       QAbstractItemModel*       knownCertificateModel      () const;
       QAbstractItemModel*       bannedCertificatesModel    () const;
@@ -382,14 +342,11 @@ class LIB_EXPORT Account : public ItemBase {
 
       //Getters
       QString hostname                     () const;
-      QString deviceId                     () const;
       bool    isEnabled                    () const;
       bool    isAutoAnswer                 () const;
       QString username                     () const;
-      QString registeredName               () const;
       QString mailbox                      () const;
       QString proxy                        () const;
-      QString nameServiceURL               () const;
       QString password                     () const;
       bool    isSrtpRtpFallback            () const;
       bool    isSrtpEnabled                () const;
@@ -410,8 +367,6 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isTlsVerifyClient            () const;
       bool    isTlsRequireClientCertificate() const;
       bool    isTlsEnabled                 () const;
-      //bool    isRingtoneEnabled            () const;
-      //QString ringtonePath                 () const;
       QString lastErrorMessage             () const;
       int     lastErrorCode                () const;
       int     localPort                    () const;
@@ -422,11 +377,6 @@ class LIB_EXPORT Account : public ItemBase {
       bool    supportPresencePublish       () const;
       bool    supportPresenceSubscribe     () const;
       bool    presenceEnabled              () const;
-      //bool    isVideoEnabled               () const;
-      //int     videoPortMax                 () const;
-      //int     videoPortMin                 () const;
-      //int     audioPortMin                 () const;
-      //int     audioPortMax                 () const;
       bool    isUpnpEnabled                () const;
       bool    hasCustomUserAgent           () const;
       int     lastTransportErrorCode       () const;
@@ -440,8 +390,6 @@ class LIB_EXPORT Account : public ItemBase {
       QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
-      QString archivePassword              () const;
-      QString archivePin                   () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
@@ -451,12 +399,6 @@ class LIB_EXPORT Account : public ItemBase {
       bool    allowIncomingFromContact     () const;
       int     activeCallLimit              () const;
       bool    hasActiveCallLimit           () const;
-      bool    needsMigration               () const;
-
-      bool    exportOnRing      (const QString& password) const;
-      bool    registerName      (const QString& password, const QString& name) const;
-      bool    lookupName        (const QString& name                         ) const;
-      bool    lookupAddress     (const QString& address                      ) const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -478,48 +420,24 @@ class LIB_EXPORT Account : public ItemBase {
       void setUsername                      (const QString& detail  );
       void setMailbox                       (const QString& detail  );
       void setProxy                         (const QString& detail  );
-      void setNameServiceURL                (const QString& detail  );
       void setPassword                      (const QString& detail  );
-      void setTlsPassword                   (const QString& detail  );
-      void setTlsCaListCertificate          (Certificate* cert      );
-      void setTlsCertificate                (Certificate* cert      );
-      void setTlsCaListCertificate          (const QString& detail  );
-      void setTlsCertificate                (const QString& detail  );
-      void setTlsPrivateKey                 (const QString& path    );
-      void setTlsServerName                 (const QString& detail  );
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
-      //void setRingtonePath                  (const QString& detail  );
+      void setRingtonePath                  (const QString& detail  );
       void setTurnEnabled                   (bool value );
       void setTurnServer                    (const QString& value   );
       void setTurnServerUsername            (const QString& value   );
       void setTurnServerPassword            (const QString& value   );
       void setTurnServerRealm               (const QString& value   );
       void setDisplayName                   (const QString& value   );
-      void setArchivePassword               (const QString& value   );
-      void setArchivePin                    (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
-      void setTlsNegotiationTimeoutSec      (int  detail);
-      void setLocalPort                     (unsigned short detail);
-      void setBootstrapPort                 (unsigned short detail);
-      void setPublishedPort                 (unsigned short detail);
-      void setAutoAnswer                    (bool detail);
-      void setTlsVerifyServer               (bool detail);
-      void setTlsVerifyClient               (bool detail);
-      void setTlsRequireClientCertificate   (bool detail);
-      void setTlsEnabled                    (bool detail);
       void setSrtpRtpFallback               (bool detail);
       void setSrtpEnabled                   (bool detail);
       void setSipStunEnabled                (bool detail);
       void setPublishedSameAsLocal          (bool detail);
-      //void setRingtoneEnabled               (bool detail);
+      void setRingtoneEnabled               (bool detail);
       void setPresenceEnabled               (bool enable);
-      //void setVideoEnabled                  (bool enable);
-      //void setAudioPortMax                  (int port   );
-      //void setAudioPortMin                  (int port   );
-      //void setVideoPortMax                  (int port   );
-      //void setVideoPortMin                  (int port   );
       void setActiveCallLimit               (int value  );
       void setDTMFType                      (DtmfType type);
       void setUserAgent                     (const QString& agent);
@@ -542,7 +460,6 @@ class LIB_EXPORT Account : public ItemBase {
       void setEnabled(bool checked);
 
    private:
-	   
       //Constructors
       explicit Account();
       ~Account();
@@ -566,12 +483,6 @@ class LIB_EXPORT Account : public ItemBase {
       void enabled(bool);
       ///The account edit state changed
       void editStateChanged(const EditState state, const EditState previous);
-      ///Export on Ring has ended
-      void exportOnRingEnded(Account::ExportOnRingStatus status, const QString& pin);
-      ///RegisterName has ended
-      void nameRegistrationEnded(NameDirectory::RegisterNameStatus status, const QString& name);
-      ///Name or address lookup has completed
-      void registeredNameFound(NameDirectory::LookupStatus status, const QString& address, const QString& name);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
@@ -597,59 +508,92 @@ private:
 };
 
 
+class AccountTLS{
+   friend class TlsMethodModelPrivate;
+   friend class TlsMethodModel;
+   private:
+         Account* m_acc;
+   public:
+      //Properties
+      Q_PROPERTY(int            localPort                    READ localPort                     WRITE setLocalPort                   )
+      Q_PROPERTY(TlsMethodModel* tlsMethodModel              READ tlsMethodModel                                                     )
+      Q_PROPERTY(Certificate*   tlsCaListCertificate         READ tlsCaListCertificate          WRITE setTlsCaListCertificate        )
+      Q_PROPERTY(Certificate*   tlsCertificate               READ tlsCertificate                WRITE setTlsCertificate              )
+      Q_PROPERTY(QString        tlsPrivateKey                READ tlsPrivateKey                 WRITE setTlsPrivateKey               )
+      Q_PROPERTY(QString        tlsServerName                READ tlsServerName                 WRITE setTlsServerName               )
+      Q_PROPERTY(bool           tlsVerifyServer              READ isTlsVerifyServer             WRITE setTlsVerifyServer             )
+      Q_PROPERTY(bool           tlsVerifyClient              READ isTlsVerifyClient             WRITE setTlsVerifyClient             )
+      Q_PROPERTY(bool           tlsRequireClientCertificate  READ isTlsRequireClientCertificate WRITE setTlsRequireClientCertificate )
+      Q_PROPERTY(bool           tlsEnabled                   READ isTlsEnabled                  WRITE setTlsEnabled                  )
+      Q_PROPERTY(int            tlsNegotiationTimeoutSec     READ tlsNegotiationTimeoutSec      WRITE setTlsNegotiationTimeoutSec    )
+
+      private:
+        Account* _account;
+      public:
+        AccountTLS();
+        AccountTLS(Account* account);
+        //Getters
+        TlsMethodModel*           tlsMethodModel             () const;
+        QString tlsPassword                  () const;
+        int     bootstrapPort                () const;
+        Certificate* tlsCaListCertificate    () const;
+        Certificate* tlsCertificate          () const;
+        QString tlsPrivateKey                () const;
+        QString tlsServerName                () const;
+        int     tlsNegotiationTimeoutSec     () const;
+        bool    isTlsVerifyServer            () const;
+        bool    isTlsVerifyClient            () const;
+        bool    isTlsRequireClientCertificate() const;
+        bool    isTlsEnabled                 () const;
+
+        //Setters
+        void setTlsPassword                   (const QString& detail  );
+        void setTlsCaListCertificate          (Certificate* cert      );
+        void setTlsCertificate                (Certificate* cert      );
+        void setTlsCaListCertificate          (const QString& detail  );
+        void setTlsCertificate                (const QString& detail  );
+        void setTlsPrivateKey                 (const QString& path    );
+        void setTlsServerName                 (const QString& detail  );
+        void setTlsNegotiationTimeoutSec      (int  detail);
+        void setLocalPort                     (unsigned short detail);
+        void setBootstrapPort                 (unsigned short detail);
+        void setPublishedPort                 (unsigned short detail);
+        void setAutoAnswer                    (bool detail);
+        void setTlsVerifyServer               (bool detail);
+        void setTlsVerifyClient               (bool detail);
+        void setTlsRequireClientCertificate   (bool detail);
+        void setTlsEnabled                    (bool detail);
+
+};
 
 
+class AccountMedia{
+   Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath                )
+   Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled             )
+   Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled                )
+   Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax                )
+   Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin                )
+   Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax                )
+   Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin                )
 
-
-
-
-
-
-
-class AccountMedia {
-
-//Properties
-	Q_PROPERTY(bool           videoEnabled                 READ isVideoEnabled                WRITE setVideoEnabled)
-	Q_PROPERTY(int            audioPortMax                 READ audioPortMax                  WRITE setAudioPortMax)
-	Q_PROPERTY(int            audioPortMin                 READ audioPortMin                  WRITE setAudioPortMin)
-	Q_PROPERTY(int            videoPortMax                 READ videoPortMax                  WRITE setVideoPortMax)
-	Q_PROPERTY(int            videoPortMin                 READ videoPortMin                  WRITE setVideoPortMin)
-	Q_PROPERTY(QString        ringtonePath                 READ ringtonePath                  WRITE setRingtonePath)
-	Q_PROPERTY(bool           ringtoneEnabled              READ isRingtoneEnabled             WRITE setRingtoneEnabled)
-
+private:
+   Account* _account;
 public:
+   AccountMedia(Account* account);
 
-	enum class Role {
-		IsVideoEnabled,
-		AudioPortMax,
-		AudioPortMin,
-		VideoPortMax,
-		VideoPortMin,
-		RingtonePath,
-		RingtoneEnabled,
-	};
+   // Getters
+   bool    isVideoEnabled               () const;
+   int     videoPortMax                 () const;
+   int     videoPortMin                 () const;
+   int     audioPortMin                 () const;
+   int     audioPortMax                 () const;
+   bool    isRingtoneEnabled            () const;
+   QString ringtonePath                 () const;
 
-	//Getters
-	bool    isVideoEnabled() const;
-	int     audioPortMax() const;
-	int     audioPortMin() const;
-	int     videoPortMax() const;
-	int     videoPortMin() const;	
-	QString ringtonePath() const;
-	bool    isRingtoneEnabled() const;
-
-	Q_INVOKABLE QVariant roleData(int role) const;
-
-
-	//Setters
-	void setVideoEnabled(bool enable);
-	void setAudioPortMax(int port);
-	void setAudioPortMin(int port);
-	void setVideoPortMax(int port);
-	void setVideoPortMin(int port);
-	void setRingtonePath(const QString& detail);
-	void setRingtoneEnabled(bool detail);
-
-	void setRoleData(int role, const QVariant& value);
-
+   // Setters
+   void setVideoEnabled                  (bool enable);
+   void setAudioPortMax                  (int port   );
+   void setAudioPortMin                  (int port   );
+   void setVideoPortMax                  (int port   );
+   void setVideoPortMin                  (int port   );
 };

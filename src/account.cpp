@@ -46,7 +46,6 @@
 #include "ciphermodel.h"
 #include "protocolmodel.h"
 #include "bootstrapmodel.h"
-#include "ringdevicemodel.h"
 #include "trustrequest.h"
 #include "person.h"
 #include "profile.h"
@@ -62,7 +61,6 @@
 #include "uri.h"
 #include "private/vcardutils.h"
 #include "mime.h"
-#include "namedirectory.h"
 #include "securityevaluationmodel.h"
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
@@ -72,6 +70,7 @@
 
 
 #define AP &AccountPrivate
+
 #define EA Account::EditAction
 #define ES Account::EditState
 
@@ -90,6 +89,7 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 #undef ES
 #undef EA
 #undef AP
+#undef ATLS // <-
 
 //Host the current highest interal identifier. The internal id is used for some bitmasks
 //when objects have a different status for each account
@@ -103,10 +103,11 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
-m_pRingDeviceModel(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr)
 {
 }
+
+
 
 void AccountPrivate::changeState(Account::EditState state) {
    const Account::EditState previous = m_CurrentState;
@@ -272,31 +273,25 @@ const QByteArray Account::id() const
 {
    if (isNew()) {
       qDebug() << "Error : getting AccountId of a new account.";
+   }
+   if (d_ptr->m_AccountId.isEmpty()) {
+      qDebug() << "Account not configured";
       return QByteArray(); //WARNING May explode
    }
 
    return d_ptr->m_AccountId;
 }
 
-///Get the device ID
-QString Account::deviceId() const
-{
-    return d_ptr->accountDetail(DRing::Account::ConfProperties::RING_DEVICE_ID);
-}
-
 ///Get current state
 const QString Account::toHumanStateName() const
 {
    const QString s = d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::Registration::STATUS];
-
                                                  //: Account state
    static const QString ready                  = tr("Ready"                    );
                                                  //: Account state
    static const QString registered             = tr("Registered"               );
                                                  //: Account state
    static const QString notRegistered          = tr("Not Registered"           );
-                                                 //: Account state
-   static const QString initializing           = tr("Initializing"             );
                                                  //: Account state
    static const QString trying                 = tr("Trying..."                );
                                                  //: Account state
@@ -324,8 +319,6 @@ const QString Account::toHumanStateName() const
       return ready                  ;
    if(s == DRing::Account::States::REGISTERED       )
       return registered             ;
-   if(s == DRing::Account::States::INITIALIZING     )
-      return initializing           ;
    if(s == DRing::Account::States::UNREGISTERED     )
       return notRegistered          ;
    if(s == DRing::Account::States::TRYING           )
@@ -407,7 +400,6 @@ QString Account::stateColorName() const
       case RegistrationState::UNREGISTERED:
          return "black";
       case RegistrationState::TRYING:
-      case RegistrationState::INITIALIZING:
          return "orange";
       case RegistrationState::ERROR:
          return "red";
@@ -483,13 +475,15 @@ SecurityEvaluationModel* Account::securityEvaluationModel() const
    return d_ptr->m_pSecurityEvaluationModel;
 }
 
-TlsMethodModel* Account::tlsMethodModel() const
+
+TlsMethodModel* AccountTLS::tlsMethodModel() const
 {
-   if (!d_ptr->m_pTlsMethodModel ) {
-      d_ptr->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
+   if (!_account->(m_acc->d_ptr)->m_pTlsMethodModel ) {
+      (m_acc->d_ptr)->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
    }
-   return d_ptr->m_pTlsMethodModel;
+   return (m_acc->d_ptr)->m_pTlsMethodModel;
 }
+
 
 ProtocolModel* Account::protocolModel() const
 {
@@ -509,14 +503,6 @@ BootstrapModel* Account::bootstrapModel() const
    }
 
    return d_ptr->m_pBootstrapModel;
-}
-
-RingDeviceModel* Account::ringDeviceModel() const
-{
-    if (!d_ptr->m_pRingDeviceModel)
-      d_ptr->m_pRingDeviceModel = new RingDeviceModel(const_cast<Account*>(this));
-
-   return d_ptr->m_pRingDeviceModel;
 }
 
 QAbstractItemModel* Account::knownCertificateModel() const
@@ -645,26 +631,10 @@ bool Account::isAutoAnswer() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::AUTOANSWER) IS_TRUE;
 }
 
-//Return if the accounts needs to migrate
-bool Account::needsMigration() const
-{
-    const MapStringString details = ConfigurationManager::instance().getVolatileAccountDetails(id());
-    const QString status = details[DRing::Account::VolatileProperties::Registration::STATUS];
-    return status == DRing::Account::States::ERROR_NEED_MIGRATION;
-}
-
 ///Return the account user name
 QString Account::username() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::USERNAME);
-}
-
-//Return the account registered name
-QString Account::registeredName() const
-{
-    const MapStringString details = ConfigurationManager::instance().getVolatileAccountDetails(id());
-    const QString registeredName = details[DRing::Account::VolatileProperties::REGISTERED_NAME];
-    return registeredName;
 }
 
 ///Return the account mailbox address
@@ -679,11 +649,6 @@ QString Account::proxy() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ROUTE);
 }
 
-///Return the name service URL
-QString Account::nameServiceURL() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::RingNS::URI);
-}
 
 QString Account::password() const
 {
@@ -693,7 +658,7 @@ QString Account::password() const
             return credentialModel()->primaryCredential(Credential::Type::SIP)->password();
          break;
       case Account::Protocol::RING:
-         return tlsPassword();
+         return getAccountTLS()->tlsPassword();
       case Account::Protocol::COUNT__:
          break;
    };
@@ -749,96 +714,96 @@ int Account::publishedPort() const
 }
 
 ///Return the account tls password
-QString Account::tlsPassword() const
+QString AccountTLS::tlsPassword() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::PASSWORD);
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::PASSWORD);
 }
 
 ///Return the account TLS port
-int Account::bootstrapPort() const
+int AccountTLS::bootstrapPort() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PORT).toInt();
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::DHT::PORT).toInt();
 }
 
 ///Return the account TLS certificate authority list file
-Certificate* Account::tlsCaListCertificate() const
+Certificate* AccountTLS::tlsCaListCertificate() const
 {
-   if (!d_ptr->m_pCaCert) {
-      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
+   if (!(m_acc->d_ptr)->m_pCaCert) {
+      const QString& path = (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::CA_LIST_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pCaCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::AUTHORITY);
-      connect(d_ptr->m_pCaCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
+      (m_acc->d_ptr)->m_pCaCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::AUTHORITY);
+      connect((m_acc->d_ptr)->m_pCaCert,SIGNAL(changed()),(m_acc->d_ptr).data(),SLOT(slotUpdateCertificate()));
    }
-   return d_ptr->m_pCaCert;
+   return (m_acc->d_ptr)->m_pCaCert;
 }
 
 ///Return the account TLS certificate
-Certificate* Account::tlsCertificate() const
+Certificate* AccountTLS::tlsCertificate() const
 {
-   if (!d_ptr->m_pTlsCert) {
-      const QString& path = d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
+   if (!(m_acc->d_ptr)->m_pTlsCert) {
+      const QString& path = (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE);
       if (path.isEmpty())
          return nullptr;
-      d_ptr->m_pTlsCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::USER);
-      connect(d_ptr->m_pTlsCert,SIGNAL(changed()),d_ptr.data(),SLOT(slotUpdateCertificate()));
+      (m_acc->d_ptr)->m_pTlsCert = CertificateModel::instance().getCertificateFromPath(path,Certificate::Type::USER);
+      connect((m_acc->d_ptr)->m_pTlsCert,SIGNAL(changed()),(m_acc->d_ptr).data(),SLOT(slotUpdateCertificate()));
    }
-   return d_ptr->m_pTlsCert;
+   return (m_acc->d_ptr)->m_pTlsCert;
 }
 
 ///Return the account private key
-QString Account::tlsPrivateKey() const
+QString AccountTLS::tlsPrivateKey() const
 {
-   return tlsCertificate() ? tlsCertificate()->privateKeyPath() : QString();
+   return getAccountTLS()->tlsCertificate() ? tlsCertificate()->privateKeyPath() : QString();
 }
 
 ///Return the account TLS server name
-QString Account::tlsServerName() const
+QString AccountTLS::tlsServerName() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::SERVER_NAME);
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::SERVER_NAME);
 }
 
 ///Return the account negotiation timeout in seconds
-int Account::tlsNegotiationTimeoutSec() const
+int AccountTLS::tlsNegotiationTimeoutSec() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
+   return (m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC).toInt();
 }
 
 ///Return the account TLS verify server
-bool Account::isTlsVerifyServer() const
+bool AccountTLS::isTlsVerifyServer() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_SERVER) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_SERVER) IS_TRUE);
 }
 
 ///Return the account TLS verify client
-bool Account::getAccountTLS()->isTlsVerifyClient() const
+bool AccountTLS::isTlsVerifyClient() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT) IS_TRUE);
 }
 
 ///Return if it is required for the peer to have a certificate
-bool Account::getAccountTLS()->isTlsRequireClientCertificate() const
+bool AccountTLS::isTlsRequireClientCertificate() const
 {
-   return (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
+   return ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE) IS_TRUE);
 }
 
 ///Return the account TLS security is enabled
-bool Account::getAccountTLS()->isTlsEnabled() const
+bool AccountTLS::isTlsEnabled() const
 {
-   return protocol() == Account::Protocol::RING || (d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
+   return _account->protocol() == Account::Protocol::RING || ((m_acc->d_ptr)->accountDetail(DRing::Account::ConfProperties::TLS::ENABLED) IS_TRUE);
 }
 
-/////Return if the ringtone are enabled
-//bool Account::isRingtoneEnabled()() const
-//{
-//   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
-//}
+///Return if the ringtone are enabled
+bool AccountMedia::isRingtoneEnabled() const
+{
+   return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
+}
 
-/////Return the account ringtone path
-//QString Account::ringtonePath()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
-//}
+///Return the account ringtone path
+QString AccountMedia::ringtonePath() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
+}
 
 ///Return the last error message received
 QString Account::lastErrorMessage() const
@@ -944,30 +909,30 @@ bool Account::presenceEnabled() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Presence::ENABLED) IS_TRUE;
 }
 
-//bool Account::isVideoEnabled()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
-//}
+bool AccountMedia::isVideoEnabled() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
+}
 
-//int Account::videoPortMax()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
-//}
+int AccountMedia::videoPortMax() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
+}
 
-//int Account::videoPortMin()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
-//}
+int AccountMedia::videoPortMin() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
+}
 
-//int Account::audioPortMin()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
-//}
+int AccountMedia::audioPortMin() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
+}
 
-//int Account::audioPortMax()() const
-//{
-//   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
-//}
+int AccountMedia::audioPortMax() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
+}
 
 bool Account::isUpnpEnabled() const
 {
@@ -1024,16 +989,6 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
-QString Account::archivePassword() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PASSWORD);
-}
-
-QString Account::archivePin() const
-{
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PIN);
-}
-
 bool Account::allowIncomingFromUnknown() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
@@ -1063,11 +1018,6 @@ int Account::activeCallLimit() const
 bool Account::hasActiveCallLimit() const
 {
    return activeCallLimit() > -1;
-}
-
-bool Account::exportOnRing(const QString& password) const
-{
-    return ConfigurationManager::instance().exportOnRing(id(), password);
 }
 
 
@@ -1103,29 +1053,29 @@ QVariant Account::roleData(int role) const
 //       case Password:
 //          return accountPassword();
       case CAST(Account::Role::TlsPassword):
-         return tlsPassword();
+         return getAccountTLS()->tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return tlsCaListCertificate()?tlsCaListCertificate()->path():QVariant();
+         return getAccountTLS()->tlsCaListCertificate()->path():QVariant();
       case CAST(Account::Role::TlsCertificate):
-         return tlsCertificate()?tlsCertificate()->path():QVariant();
+         return getAccountTLS()->tlsCertificate()?getAccountTLS()->tlsCertificate()->path():QVariant();
       case CAST(Account::Role::TlsPrivateKey):
-        return tlsPrivateKey();
+        return getAccountTLS()->tlsPrivateKey();
       case CAST(Account::Role::TlsServerName):
-         return tlsServerName();
+         return getAccountTLS()->tlsServerName();
       case CAST(Account::Role::SipStunServer):
          return sipStunServer();
       case CAST(Account::Role::PublishedAddress):
          return publishedAddress();
-      //case CAST(Account::Role::RingtonePath):
-      //   return getAccountMedia()->ringtonePath()();
+      case CAST(Account::Role::RingtonePath):
+         return ringtonePath();
       case CAST(Account::Role::RegistrationExpire):
          return registrationExpire();
       case CAST(Account::Role::TlsNegotiationTimeoutSec):
-         return tlsNegotiationTimeoutSec();
+         return getAccountTLS()->tlsNegotiationTimeoutSec();
       case CAST(Account::Role::LocalPort):
          return localPort();
       case CAST(Account::Role::BootstrapPort):
-         return bootstrapPort();
+         return getAccountTLS()->bootstrapPort();
       case CAST(Account::Role::PublishedPort):
          return publishedPort();
       case CAST(Account::Role::Enabled):
@@ -1133,7 +1083,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::AutoAnswer):
          return isAutoAnswer();
       case CAST(Account::Role::TlsVerifyServer):
-         return isTlsVerifyServer();
+         return getAccountTLS()->isTlsVerifyServer();
       case CAST(Account::Role::TlsVerifyClient):
          return getAccountTLS()->isTlsVerifyClient();
       case CAST(Account::Role::TlsRequireClientCertificate):
@@ -1146,8 +1096,8 @@ QVariant Account::roleData(int role) const
          return isSipStunEnabled();
       case CAST(Account::Role::PublishedSameAsLocal):
          return isPublishedSameAsLocal();
-      //case CAST(Account::Role::RingtoneEnabled):
-      //   return getAccountMedia()->isRingtoneEnabled()();
+      case CAST(Account::Role::RingtoneEnabled):
+         return isRingtoneEnabled();
       case CAST(Account::Role::dTMFType):
          return DTMFType();
       case CAST(Account::Role::Id):
@@ -1187,16 +1137,16 @@ QVariant Account::roleData(int role) const
          return supportPresenceSubscribe();
       case CAST(Account::Role::PresenceEnabled          ):
          return presenceEnabled();
-      //case CAST(Account::Role::IsVideoEnabled           ):
-      //   return getAccountMedia()->isVideoEnabled()();
-      //case CAST(Account::Role::VideoPortMax             ):
-      //   return getAccountMedia()->videoPortMax()();
-      //case CAST(Account::Role::VideoPortMin             ):
-      //   return getAccountMedia()->videoPortMin()();
-      //case CAST(Account::Role::AudioPortMin             ):
-      //   return getAccountMedia()->audioPortMin()();
-      //case CAST(Account::Role::AudioPortMax             ):
-      //   return getAccountMedia()->audioPortMax()();
+      case CAST(Account::Role::IsVideoEnabled           ):
+         return getAccountMedia()->isVideoEnabled();
+      case CAST(Account::Role::VideoPortMax             ):
+         return getAccountMedia()->videoPortMax();
+      case CAST(Account::Role::VideoPortMin             ):
+         return videoPortMin();
+      case CAST(Account::Role::AudioPortMin             ):
+         return audioPortMin();
+      case CAST(Account::Role::AudioPortMax             ):
+         return audioPortMax();
       case CAST(Account::Role::IsUpnpEnabled            ):
          return isUpnpEnabled();
       case CAST(Account::Role::HasCustomUserAgent       ):
@@ -1237,7 +1187,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::SecurityEvaluationModel    ):
          return QVariant::fromValue(securityEvaluationModel());
       case CAST(Account::Role::TlsMethodModel             ):
-         return QVariant::fromValue(tlsMethodModel());
+         return QVariant::fromValue(getAccountTLS()->tlsMethodModel());
       case CAST(Account::Role::ProtocolModel              ):
          return QVariant::fromValue(protocolModel());
       case CAST(Account::Role::BootstrapModel             ):
@@ -1392,8 +1342,9 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
 ///Set the account id
 void Account::setId(const QByteArray& id)
 {
+   qDebug() << "Setting accountId = " << d_ptr->m_AccountId;
    if (! isNew())
-      qDebug() << "Error : setting AccountId of an existing account" << d_ptr->m_AccountId;
+      qDebug() << "Error : setting AccountId of an existing account.";
    d_ptr->m_AccountId = id;
 }
 
@@ -1424,25 +1375,6 @@ void Account::setHostname(const QString& detail)
       }
       d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME, detail);
    }
-}
-
-
-///Set the account registeredName
-bool Account::registerName(const QString& password, const QString& name) const
-{
-    return NameDirectory::instance().registerName(this, password, name);
-}
-
-//Lookup a name
-bool Account::lookupName(const QString& name) const
-{
-    return NameDirectory::instance().lookupName(this, QString(), name);
-}
-
-//Lookup an address
-bool Account::lookupAddress(const QString& address) const
-{
-    return NameDirectory::instance().lookupAddress(this, QString(), address);
 }
 
 ///Set the account username, everything is valid, some might be rejected by the PBX server
@@ -1479,12 +1411,6 @@ void Account::setProxy(const QString& detail)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ROUTE, detail);
 }
 
-//Set the name service URL
-void Account::setNameServiceURL(const QString& detail)
-{
-    d_ptr->setAccountProperty(DRing::Account::ConfProperties::RingNS::URI, detail);
-}
-
 ///Set the main credential password
 void Account::setPassword(const QString& detail)
 {
@@ -1500,7 +1426,7 @@ void Account::setPassword(const QString& detail)
          }
          break;
       case Account::Protocol::RING:
-         getAccountTLS()->setTlsPassword(detail);
+         getAccountTLS()->getAccountTLS()->setTlsPassword(detail);
          break;
       case Account::Protocol::COUNT__:
          break;
@@ -1508,44 +1434,44 @@ void Account::setPassword(const QString& detail)
 }
 
 ///Set the TLS (encryption) password
-void Account::getAccountTLS()->setTlsPassword(const QString& detail)
+void AccountTLS::setTlsPassword(const QString& detail)
 {
-   auto cert = tlsCertificate();
+   auto cert = getAccountTLS()->tlsCertificate();
    if (!cert)
       return;
    cert->setPrivateKeyPassword(detail);
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::PASSWORD, detail);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
-void Account::getAccountTLS()->setTlsCaListCertificate(const QString& path)
+void AccountTLS::setTlsCaListCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    getAccountTLS()->setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
-void Account::getAccountTLS()->setTlsCertificate(const QString& path)
+void AccountTLS::setTlsCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
    getAccountTLS()->setTlsCertificate(cert);
 }
 
 ///Set the private key
-void Account::getAccountTLS()->setTlsPrivateKey(const QString& path)
+void AccountTLS::setTlsPrivateKey(const QString& path)
 {
-    auto cert = tlsCertificate();
+    auto cert = getAccountTLS()->tlsCertificate();
     if (!cert)
         return;
 
     cert->setPrivateKeyPath(path);
-    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?path:QString());
-    d_ptr->regenSecurityValidation();
+    (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::PRIVATE_KEY_FILE, cert?path:QString());
+    (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the certificate authority list file
-void Account::getAccountTLS()->setTlsCaListCertificate(Certificate* cert)
+void AccountTLS::setTlsCaListCertificate(Certificate* cert)
 {
    //FIXME it can be a list of multiple certificates
    //this code currently only handle the case where is there is exactly one
@@ -1553,40 +1479,41 @@ void Account::getAccountTLS()->setTlsCaListCertificate(Certificate* cert)
    cert->setRequireStrictPermission(false);
 
    //All calls from the same top level CA are always accepted
-   allowCertificate(cert);
+   _account->allowCertificate(cert);
 
-   d_ptr->m_pCaCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path():QString());
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->m_pCaCert = cert;
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::CA_LIST_FILE, cert?cert->path():QString());
+   (m_acc->d_ptr)->regenSecurityValidation();
 
-   if (d_ptr->m_cTlsCaCert)
-      disconnect(d_ptr->m_cTlsCaCert);
+   if ((m_acc->d_ptr)->m_cTlsCaCert)
+      disconnect((m_acc->d_ptr)->m_cTlsCaCert);
 
    if (cert) {
-      d_ptr->m_cTlsCaCert = connect(cert, &Certificate::changed,[this]() {
-         d_ptr->regenSecurityValidation();
+      (m_acc->d_ptr)->m_cTlsCaCert = connect(cert, &Certificate::changed,[this]() {
+         (m_acc->d_ptr)->regenSecurityValidation();
       });
    }
 
 }
 
 ///Set the certificate
-void Account::getAccountTLS()->setTlsCertificate(Certificate* cert)
+void AccountTLS::setTlsCertificate(Certificate* cert)
 {
    //The private key will be required for this certificate
    cert->setRequirePrivateKey(true);
 
-   d_ptr->m_pTlsCert = cert;
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path():QString());
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->m_pTlsCert = cert;
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::CERTIFICATE_FILE, cert?cert->path():QString());
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the TLS server
-void Account::getAccountTLS()->setTlsServerName(const QString& detail)
+void AccountTLS::setTlsServerName(const QString& detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::SERVER_NAME, detail);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
+
 
 ///Set the stun server
 void Account::setSipStunServer(const QString& detail)
@@ -1601,7 +1528,7 @@ void Account::setPublishedAddress(const QString& detail)
 }
 
 ///Set the ringtone path, it have to be a valid absolute path
-void Account::setRingtonePath(const QString& detail)
+void AccountMedia::setRingtonePath(const QString& detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::PATH, detail);
 }
@@ -1619,14 +1546,14 @@ void Account::setRegistrationExpire(int detail)
 }
 
 ///Set TLS negotiation timeout in second
-void Account::getAccountTLS()->setTlsNegotiationTimeoutSec(int detail)
+void Account::setTlsNegotiationTimeoutSec(int detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
    d_ptr->regenSecurityValidation();
 }
 
 ///Set the local port for SIP/RING communications
-void Account::getAccountTLS()->setLocalPort(unsigned short detail)
+void Account::setLocalPort(unsigned short detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
@@ -1643,13 +1570,13 @@ void Account::getAccountTLS()->setLocalPort(unsigned short detail)
 }
 
 ///Set the TLS listener port (0-2^16)
-void Account::getAccountTLS()->setBootstrapPort(unsigned short detail)
+void Account::setBootstrapPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
-void Account::getAccountTLS()->setPublishedPort(unsigned short detail)
+void Account::setPublishedPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_PORT, QString::number(detail));
 }
@@ -1661,37 +1588,37 @@ void Account::setEnabled(bool detail)
 }
 
 ///Set if the account should auto answer
-void Account::getAccountTLS()->setAutoAnswer(bool detail)
+void Account::setAutoAnswer(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::AUTOANSWER, (detail)TO_BOOL);
 }
 
 ///Set the TLS verification server
-void Account::getAccountTLS()->setTlsVerifyServer(bool detail)
+void AccountTLS::setTlsVerifyServer(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_SERVER, (detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set the TLS verification client
-void Account::getAccountTLS()->setTlsVerifyClient(bool detail)
+void AccountTLS::setTlsVerifyClient(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::VERIFY_CLIENT, (detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set if the peer need to be providing a certificate
-void Account::getAccountTLS()->setTlsRequireClientCertificate(bool detail)
+void AccountTLS::setTlsRequireClientCertificate(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE ,(detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 ///Set if the security settings are enabled
-void Account::getAccountTLS()->setTlsEnabled(bool detail)
+void AccountTLS::setTlsEnabled(bool detail)
 {
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
-   d_ptr->regenSecurityValidation();
+   (m_acc->d_ptr)->setAccountProperty(DRing::Account::ConfProperties::TLS::ENABLED ,(detail)TO_BOOL);
+   (m_acc->d_ptr)->regenSecurityValidation();
 }
 
 void Account::setSrtpRtpFallback(bool detail)
@@ -1740,7 +1667,7 @@ void Account::setPresenceEnabled(bool enable)
 }
 
 ///Use video by default when available
-void Account::setVideoEnabled(bool enable)
+void AccountMedia::setVideoEnabled(bool enable)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::ENABLED, (enable)TO_BOOL);
 }
@@ -1749,7 +1676,7 @@ void Account::setVideoEnabled(bool enable)
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setAudioPortMax(int port )
+void AccountMedia::setAudioPortMax(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MAX, QString::number(port));
 }
@@ -1758,7 +1685,7 @@ void Account::setAudioPortMax(int port )
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setAudioPortMin(int port )
+void AccountMedia::setAudioPortMin(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MIN, QString::number(port));
 }
@@ -1767,7 +1694,7 @@ void Account::setAudioPortMin(int port )
  * This can be used when some routers without UPnP support open a narrow range
  * of ports to allow the stream to go through.
  */
-void Account::setVideoPortMax(int port )
+void AccountMedia::setVideoPortMax(int port )
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MAX, QString::number(port));
 }
@@ -1845,16 +1772,6 @@ void Account::setTurnServerRealm(const QString& value)
 void Account::setDisplayName(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DISPLAYNAME, value);
-}
-
-void Account::setArchivePassword(const QString& value)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PASSWORD, value);
-}
-
-void Account::setArchivePin(const QString& value)
-{
-   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PIN, value);
 }
 
 void Account::setAllowIncomingFromUnknown(bool value)
@@ -1970,7 +1887,7 @@ void Account::setRoleData(int role, const QVariant& value)
 //       case Password:
 //          accountPassword();
       case CAST(Account::Role::TlsPassword):
-         getAccountTLS()->setTlsPassword(value.toString());
+         getAccountTLS()->getAccountTLS()->setTlsPassword(value.toString());
          break;
       case CAST(Account::Role::TlsCaListCertificate): {
          getAccountTLS()->setTlsCaListCertificate(value.toString());
@@ -1989,9 +1906,9 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::PublishedAddress):
          setPublishedAddress(value.toString());
          break;
-      //case CAST(Account::Role::RingtonePath):
-      //   setRingtonePath(value.toString());
-      //   break;
+      case CAST(Account::Role::RingtonePath):
+         setRingtonePath(value.toString());
+         break;
       case CAST(Account::Role::RegistrationExpire):
          setRegistrationExpire(value.toInt());
          break;
@@ -2034,9 +1951,9 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::PublishedSameAsLocal):
          setPublishedSameAsLocal(value.toBool());
          break;
-      //case CAST(Account::Role::RingtoneEnabled):
-      //   setRingtoneEnabled(value.toBool());
-      //   break;
+      case CAST(Account::Role::RingtoneEnabled):
+         setRingtoneEnabled(value.toBool());
+         break;
       case CAST(Account::Role::dTMFType):
          setDTMFType((DtmfType)value.toInt());
          break;
@@ -2056,21 +1973,21 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::PresenceEnabled          ):
          setPresenceEnabled(value.toBool());
          break;
-      //case CAST(Account::Role::IsVideoEnabled           ):
-      //   getAccountMedia()->setVideoEnabled(value.toBool());
-      //   break;
-      //case CAST(Account::Role::VideoPortMax             ):
-      //   getAccountMedia()->setVideoPortMax(value.toInt());
-      //   break;
-      //case CAST(Account::Role::VideoPortMin             ):
-      //   getAccountMedia()->setVideoPortMin(value.toInt());
-      //   break;
-      //case CAST(Account::Role::AudioPortMin             ):
-      //   getAccountMedia()->setAudioPortMin(value.toInt());
-      //   break;
-      //case CAST(Account::Role::AudioPortMax             ):
-      //   getAccountMedia()->setAudioPortMax(value.toInt());
-      //   break;
+      case CAST(Account::Role::IsVideoEnabled           ):
+         getAccountMedia()->setVideoEnabled(value.toBool());
+         break;
+      case CAST(Account::Role::VideoPortMax             ):
+         getAccountMedia()->setVideoPortMax(value.toInt());
+         break;
+      case CAST(Account::Role::VideoPortMin             ):
+         getAccountMedia()->setVideoPortMin(value.toInt());
+         break;
+      case CAST(Account::Role::AudioPortMin             ):
+         getAccountMedia()->setAudioPortMin(value.toInt());
+         break;
+      case CAST(Account::Role::AudioPortMax             ):
+         getAccountMedia()->setAudioPortMax(value.toInt());
+         break;
       case CAST(Account::Role::IsUpnpEnabled            ):
          setUpnpEnabled(value.toBool());
          break;
@@ -2335,9 +2252,6 @@ void AccountPrivate::save()
          details[iter.key()] = iter.value();
       }
 
-      //Clear the password
-      q_ptr->setArchivePassword("");
-
       const QString currentId = configurationManager.addAccount(details);
 
       q_ptr->codecModel() << CodecModel::EditAction::RELOAD;
@@ -2364,8 +2278,8 @@ void AccountPrivate::save()
 
    if (!q_ptr->id().isEmpty()) {
       Account* acc =  AccountModel::instance().getById(q_ptr->id());
+      qDebug() << "Adding the new account to the account list (" << q_ptr->id() << ")";
       if (acc != q_ptr) {
-         qDebug() << "Adding the new account to the account list (" << q_ptr->id() << ")";
          AccountModel::instance().add(q_ptr);
       }
 
@@ -2420,7 +2334,7 @@ void AccountPrivate::reload()
             if (!key.isEmpty()) {
                q_ptr->getAccountTLS()->setTlsPrivateKey(key);
                   if (!pass.isEmpty())
-                     q_ptr->getAccountTLS()->setTlsPassword(pass);
+                     q_ptr->getAccountTLS()->getAccountTLS()->setTlsPassword(pass);
             }
          }
 
@@ -2595,201 +2509,39 @@ bool AccountPrivate::merge(Account* account)
    return true;
 }
 
-#undef TO_BOOL
-#undef IS_TRUE
-#include <account.moc>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*******************************************************************************
-*                                                                             *
-*                                  Getters                                    *
-*                                                                             *
-******************************************************************************/
-
-bool AccountMedia::isVideoEnabled()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::ENABLED) IS_TRUE;
-}
-
-int AccountMedia::videoPortMax()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MAX).toInt();
-}
-
-int AccountMedia::videoPortMin()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Video::PORT_MIN).toInt();
-}
-
-int AccountMedia::audioPortMin()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MIN).toInt();
-}
-
-int AccountMedia::audioPortMax()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Audio::PORT_MAX).toInt();
-}
-
-///Return if the ringtone are enabled
-bool AccountMedia::isRingtoneEnabled()() const
-{
-	return (d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::ENABLED) IS_TRUE);
-}
-
-///Return the account ringtone path
-QString AccountMedia::ringtonePath()() const
-{
-	return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
+AccountTLS* Account::getAccountTLS(){
+   return new AccountTLS(this);
 }
 
 
-
-#define CAST(item) static_cast<int>(item)
-QVariant AccountMedia::roleData(int role) const
-{
-	switch (role) {
-	case CAST(AccountMedia::Role::IsVideoEnabled):
-		return getAccountMedia()->isVideoEnabled()();
-	case CAST(AccountMedia::Role::VideoPortMax):
-		return getAccountMedia()->videoPortMax()();
-	case CAST(AccountMedia::Role::VideoPortMin):
-		return getAccountMedia()->videoPortMin()();
-	case CAST(AccountMedia::Role::AudioPortMin):
-		return getAccountMedia()->audioPortMin()();
-	case CAST(AccountMedia::Role::AudioPortMax):
-		return getAccountMedia()->audioPortMax()();
-	case CAST(AccountMedia::Role::RingtonePath):
-		return getAccountMedia()->ringtonePath()();
-	case CAST(AccountMedia::Role::RingtoneEnabled):
-		return getAccountMedia()->isRingtoneEnabled()();
-	default:
-		return QVariant();
-	}
-	return QVariant();
+AccountMedia* Account::getAccountMedia(){
+   return new AccountMedia(this);
 }
-#undef CAST
 
+/*****************************************************************************
+ *                                                                           *
+ *                               AccountTLS                                 *
+ *                                                                           *
+ ****************************************************************************/
 
-
-
+///Constructor
+AccountTLS::AccountTLS(Account* acc){
+   this.m_acc = acc;
+}
 
 
 /*****************************************************************************
-*                                                                           *
-*                                  Setters                                  *
-*                                                                           *
-****************************************************************************/
+ *                                                                           *
+ *                               AccountMEDIA                                  *
+ *                                                                           *
+ ****************************************************************************/
 
-///Use video by default when available
-void AccountMedia::setVideoEnabled(bool enable)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::ENABLED, (enable)TO_BOOL);
+///Constructor
+AccountMedia::AccountMedia(Account* acc){
+   this.m_acc = acc;
 }
 
-/**Set the maximum audio port
-* This can be used when some routers without UPnP support open a narrow range
-* of ports to allow the stream to go through.
-*/
-void AccountMedia::setAudioPortMax(int port)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MAX, QString::number(port));
-}
-
-/**Set the minimum audio port
-* This can be used when some routers without UPnP support open a narrow range
-* of ports to allow the stream to go through.
-*/
-void AccountMedia::setAudioPortMin(int port)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Audio::PORT_MIN, QString::number(port));
-}
-
-/**Set the maximum video port
-* This can be used when some routers without UPnP support open a narrow range
-* of ports to allow the stream to go through.
-*/
-void AccountMedia::setVideoPortMax(int port)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MAX, QString::number(port));
-}
-
-/**Set the minimum video port
-* This can be used when some routers without UPnP support open a narrow range
-* of ports to allow the stream to go through.
-*/
-void AccountMedia::setVideoPortMin(int port)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Video::PORT_MIN, QString::number(port));
-}
-
-///Set the ringtone path, it have to be a valid absolute path
-void AccountMedia::setRingtonePath(const QString& detail)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::PATH, detail);
-}
-
-///Set if custom ringtone are enabled
-void AccountMedia::setRingtoneEnabled(bool detail)
-{
-	d_ptr->setAccountProperty(DRing::Account::ConfProperties::Ringtone::ENABLED, (detail)TO_BOOL);
-}
-
-#define CAST(item) static_cast<int>(item)
-void AccountMedia::setRoleData(int role, const QVariant& value)
-{
-	switch (role) {
-	case CAST(AccountMedia::Role::IsVideoEnabled):
-		getAccountMedia()->setVideoEnabled(value.toBool());
-		break;
-	case CAST(AccountMedia::Role::VideoPortMax):
-		getAccountMedia()->setVideoPortMax(value.toInt());
-		break;
-	case CAST(AccountMedia::Role::VideoPortMin):
-		getAccountMedia()->setVideoPortMin(value.toInt());
-		break;
-	case CAST(AccountMedia::Role::AudioPortMin):
-		getAccountMedia()->setAudioPortMin(value.toInt());
-		break;
-	case CAST(AccountMedia::Role::AudioPortMax):
-		getAccountMedia()->setAudioPortMax(value.toInt());
-		break;
-	case CAST(AccountMedia::Role::RingtonePath):
-		setRingtonePath(value.toString());
-		break;
-	case CAST(AccountMedia::Role::RingtoneEnabled):
-		setRingtoneEnabled(value.toBool());
-		break;
-	}
-}
-#undef CAST
+#undef TO_BOOL
+#undef IS_TRUE
+#include <account.moc>
