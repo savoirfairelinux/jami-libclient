@@ -497,7 +497,7 @@ void AccountChecksModel::update()
 
    // AccountSecurityChecks::TLS_DISABLED
    SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::TLS_ENABLED                  ,
-      m_pAccount->isTlsEnabled                 ()
+      m_pAccount->getAccountTLS()->isTlsEnabled                 ()
    );
 
    // AccountSecurityChecks::CERTIFICATE_MISMATCH
@@ -510,22 +510,22 @@ void AccountChecksModel::update()
 
    // AccountSecurityChecks::VERIFY_INCOMING_DISABLED
    SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_INCOMING_ENABLED      ,
-      m_pAccount->isTlsVerifyServer            ()
+      m_pAccount->getAccountTLS()->isTlsVerifyServer            ()
    );
 
    // AccountSecurityChecks::VERIFY_ANSWER_DISABLED
    SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::VERIFY_ANSWER_ENABLED        ,
-      m_pAccount->isTlsVerifyClient            ()
+      m_pAccount->getAccountTLS()->isTlsVerifyClient            ()
    );
 
    // AccountSecurityChecks::REQUIRE_CERTIFICATE_DISABLED
    SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::REQUIRE_CERTIFICATE_ENABLED  ,
-      m_pAccount->isTlsRequireClientCertificate()
+      m_pAccount->getAccountTLS()->isTlsRequireClientCertificate()
    );
 
    // AccountSecurityChecks::MISSING_CERTIFICATE
    SET_CHECK_VALUE( SecurityEvaluationModel::AccountSecurityChecks::NOT_MISSING_CERTIFICATE      ,
-      m_pAccount->tlsCertificate               ()
+      m_pAccount->getAccountTLS()->tlsCertificate               ()
    );
 
    // AccountSecurityChecks::MISSING_AUTHORITY
@@ -620,7 +620,7 @@ SecurityEvaluationModel::SecurityEvaluationModel(Account* account) : QSortFilter
 d_ptr(new SecurityEvaluationModelPrivate(account,this))
 {
    Certificate* caCert = d_ptr->m_pAccount->tlsCaListCertificate ();
-   Certificate* pkCert = d_ptr->m_pAccount->tlsCertificate       ();
+   Certificate* pkCert = d_ptr->m_pAccount->getAccountTLS()->tlsCertificate       ();
 
    SecurityEvaluationModelPrivate::getCertificateSeverityProxy(caCert);
    SecurityEvaluationModelPrivate::getCertificateSeverityProxy(pkCert);

@@ -452,13 +452,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setMailbox                       (const QString& detail  );
       void setProxy                         (const QString& detail  );
       void setPassword                      (const QString& detail  );
-      void setTlsPassword                   (const QString& detail  );
-      void setTlsCaListCertificate          (Certificate* cert      );
-      void setTlsCertificate                (Certificate* cert      );
-      void setTlsCaListCertificate          (const QString& detail  );
-      void setTlsCertificate                (const QString& detail  );
-      void setTlsPrivateKey                 (const QString& path    );
-      void setTlsServerName                 (const QString& detail  );
+
+
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
@@ -470,15 +465,6 @@ class LIB_EXPORT Account : public ItemBase {
       void setDisplayName                   (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
-      void setTlsNegotiationTimeoutSec      (int  detail);
-      void setLocalPort                     (unsigned short detail);
-      void setBootstrapPort                 (unsigned short detail);
-      void setPublishedPort                 (unsigned short detail);
-      void setAutoAnswer                    (bool detail);
-      void setTlsVerifyServer               (bool detail);
-      void setTlsVerifyClient               (bool detail);
-      void setTlsRequireClientCertificate   (bool detail);
-      void setTlsEnabled                    (bool detail);
       void setSrtpRtpFallback               (bool detail);
       void setSrtpEnabled                   (bool detail);
       void setSipStunEnabled                (bool detail);
@@ -566,8 +552,6 @@ class AccountTLS{
    private:
          Account* m_acc;
    public:
-
-
       //Properties
       Q_PROPERTY(Certificate*   tlsCaListCertificate         READ tlsCaListCertificate          WRITE setTlsCaListCertificate        )
       Q_PROPERTY(Certificate*   tlsCertificate               READ tlsCertificate                WRITE setTlsCertificate              )
@@ -582,7 +566,6 @@ class AccountTLS{
         //Getters
         TlsMethodModel*           tlsMethodModel             () const;
         QString tlsPassword                  () const;
-        QString tlsPassword                  () const;
         int     bootstrapPort                () const;
         Certificate* tlsCaListCertificate    () const;
         Certificate* tlsCertificate          () const;
@@ -593,6 +576,7 @@ class AccountTLS{
         bool    isTlsVerifyClient            () const;
         bool    isTlsRequireClientCertificate() const;
         bool    isTlsEnabled                 () const;
+
         //Setters
         void setTlsPassword                   (const QString& detail  );
         void setTlsCaListCertificate          (Certificate* cert      );
@@ -601,7 +585,6 @@ class AccountTLS{
         void setTlsCertificate                (const QString& detail  );
         void setTlsPrivateKey                 (const QString& path    );
         void setTlsServerName                 (const QString& detail  );
-
         void setTlsNegotiationTimeoutSec      (int  detail);
         void setLocalPort                     (unsigned short detail);
         void setBootstrapPort                 (unsigned short detail);
@@ -612,4 +595,8 @@ class AccountTLS{
         void setTlsRequireClientCertificate   (bool detail);
         void setTlsEnabled                    (bool detail);
 
+};
+
+
+class AccountMedia{
 };

@@ -839,7 +839,7 @@ int Account::localPort() const
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (isTlsEnabled())
+         if (getAccountTLS()->isTlsEnabled())
             return d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::LISTENER_PORT).toInt();
          else
             return d_ptr->accountDetail(DRing::Account::ConfProperties::LOCAL_PORT).toInt();
@@ -1060,7 +1060,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::TlsPassword):
          return getAccountTLS()->tlsPassword();
       case CAST(Account::Role::TlsCaListCertificate):
-         return getAccountTLS()->tlsCaListCertificate()?getAccountTLS()->tlsCaListCertificate()->path():QVariant();
+         return getAccountTLS()->tlsCaListCertificate()->path():QVariant();
       case CAST(Account::Role::TlsCertificate):
          return getAccountTLS()->tlsCertificate()?getAccountTLS()->tlsCertificate()->path():QVariant();
       case CAST(Account::Role::TlsPrivateKey):
@@ -1080,7 +1080,7 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::LocalPort):
          return localPort();
       case CAST(Account::Role::BootstrapPort):
-         return bootstrapPort();
+         return getAccountTLS()->bootstrapPort();
       case CAST(Account::Role::PublishedPort):
          return publishedPort();
       case CAST(Account::Role::Enabled):
@@ -1088,13 +1088,13 @@ QVariant Account::roleData(int role) const
       case CAST(Account::Role::AutoAnswer):
          return isAutoAnswer();
       case CAST(Account::Role::TlsVerifyServer):
-         return isTlsVerifyServer();
+         return getAccountTLS()->isTlsVerifyServer();
       case CAST(Account::Role::TlsVerifyClient):
-         return isTlsVerifyClient();
+         return getAccountTLS()->isTlsVerifyClient();
       case CAST(Account::Role::TlsRequireClientCertificate):
-         return isTlsRequireClientCertificate();
+         return getAccountTLS()->isTlsRequireClientCertificate();
       case CAST(Account::Role::TlsEnabled):
-         return isTlsEnabled();
+         return getAccountTLS()->isTlsEnabled();
       case CAST(Account::Role::SrtpRtpFallback):
          return isSrtpRtpFallback();
       case CAST(Account::Role::SipStunEnabled):
@@ -1431,7 +1431,7 @@ void Account::setPassword(const QString& detail)
          }
          break;
       case Account::Protocol::RING:
-         setTlsPassword(detail);
+         getAccountTLS()->getAccountTLS()->setTlsPassword(detail);
          break;
       case Account::Protocol::COUNT__:
          break;
@@ -1453,14 +1453,14 @@ void AccountTLS::setTlsPassword(const QString& detail)
 void AccountTLS::setTlsCaListCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
-   setTlsCaListCertificate(cert);
+   getAccountTLS()->setTlsCaListCertificate(cert);
 }
 
 ///Set the certificate
 void AccountTLS::setTlsCertificate(const QString& path)
 {
    Certificate* cert = CertificateModel::instance().getCertificateFromPath(path);
-   setTlsCertificate(cert);
+   getAccountTLS()->setTlsCertificate(cert);
 }
 
 ///Set the private key
@@ -1551,18 +1551,18 @@ void Account::setRegistrationExpire(int detail)
 }
 
 ///Set TLS negotiation timeout in second
-void Account::setTlsNegotiationTimeoutSec(int detail)
+void Account::getAccountTLS()->setTlsNegotiationTimeoutSec(int detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC, QString::number(detail));
    d_ptr->regenSecurityValidation();
 }
 
 ///Set the local port for SIP/RING communications
-void Account::setLocalPort(unsigned short detail)
+void Account::getAccountTLS()->setLocalPort(unsigned short detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (isTlsEnabled())
+         if (getAccountTLS()->isTlsEnabled())
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::LISTENER_PORT, QString::number(detail));
          else
             d_ptr->setAccountProperty(DRing::Account::ConfProperties::LOCAL_PORT, QString::number(detail));
@@ -1575,13 +1575,13 @@ void Account::setLocalPort(unsigned short detail)
 }
 
 ///Set the TLS listener port (0-2^16)
-void Account::setBootstrapPort(unsigned short detail)
+void Account::getAccountTLS()->setBootstrapPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DHT::PORT, QString::number(detail));
 }
 
 ///Set the published port (0-2^16)
-void Account::setPublishedPort(unsigned short detail)
+void Account::getAccountTLS()->setPublishedPort(unsigned short detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::PUBLISHED_PORT, QString::number(detail));
 }
@@ -1593,7 +1593,7 @@ void Account::setEnabled(bool detail)
 }
 
 ///Set if the account should auto answer
-void Account::setAutoAnswer(bool detail)
+void Account::getAccountTLS()->setAutoAnswer(bool detail)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::AUTOANSWER, (detail)TO_BOOL);
 }
@@ -1737,10 +1737,10 @@ void Account::setUseDefaultPort(bool value)
    if (value) {
       switch (protocol()) {
          case Account::Protocol::SIP:
-            setLocalPort(5060); //FIXME check is TLS is used
+            getAccountTLS()->setLocalPort(5060); //FIXME check is TLS is used
             break;
          case Account::Protocol::RING:
-            setLocalPort(5061);
+            getAccountTLS()->setLocalPort(5061);
             break;
          case Account::Protocol::COUNT__:
             break;
@@ -1892,18 +1892,18 @@ void Account::setRoleData(int role, const QVariant& value)
 //       case Password:
 //          accountPassword();
       case CAST(Account::Role::TlsPassword):
-         setTlsPassword(value.toString());
+         getAccountTLS()->getAccountTLS()->setTlsPassword(value.toString());
          break;
       case CAST(Account::Role::TlsCaListCertificate): {
-         setTlsCaListCertificate(value.toString());
+         getAccountTLS()->setTlsCaListCertificate(value.toString());
          break;
       }
       case CAST(Account::Role::TlsCertificate): {
-         setTlsCertificate(value.toString());
+         getAccountTLS()->setTlsCertificate(value.toString());
       }
          break;
       case CAST(Account::Role::TlsServerName):
-         setTlsServerName(value.toString());
+         getAccountTLS()->setTlsServerName(value.toString());
          break;
       case CAST(Account::Role::SipStunServer):
          setSipStunServer(value.toString());
@@ -1918,34 +1918,34 @@ void Account::setRoleData(int role, const QVariant& value)
          setRegistrationExpire(value.toInt());
          break;
       case CAST(Account::Role::TlsNegotiationTimeoutSec):
-         setTlsNegotiationTimeoutSec(value.toInt());
+         getAccountTLS()->setTlsNegotiationTimeoutSec(value.toInt());
          break;
       case CAST(Account::Role::LocalPort):
-         setLocalPort(value.toInt());
+         getAccountTLS()->setLocalPort(value.toInt());
          break;
       case CAST(Account::Role::BootstrapPort):
-         setBootstrapPort(value.toInt());
+         getAccountTLS()->setBootstrapPort(value.toInt());
          break;
       case CAST(Account::Role::PublishedPort):
-         setPublishedPort(value.toInt());
+         getAccountTLS()->setPublishedPort(value.toInt());
          break;
       case CAST(Account::Role::Enabled):
          setEnabled(value.toBool());
          break;
       case CAST(Account::Role::AutoAnswer):
-         setAutoAnswer(value.toBool());
+         getAccountTLS()->setAutoAnswer(value.toBool());
          break;
       case CAST(Account::Role::TlsVerifyServer):
-         setTlsVerifyServer(value.toBool());
+         getAccountTLS()->setTlsVerifyServer(value.toBool());
          break;
       case CAST(Account::Role::TlsVerifyClient):
-         setTlsVerifyClient(value.toBool());
+         getAccountTLS()->setTlsVerifyClient(value.toBool());
          break;
       case CAST(Account::Role::TlsRequireClientCertificate):
-         setTlsRequireClientCertificate(value.toBool());
+         getAccountTLS()->setTlsRequireClientCertificate(value.toBool());
          break;
       case CAST(Account::Role::TlsEnabled):
-         setTlsEnabled(value.toBool());
+         getAccountTLS()->setTlsEnabled(value.toBool());
          break;
       case CAST(Account::Role::SrtpRtpFallback):
          setSrtpRtpFallback(value.toBool());
@@ -2331,15 +2331,15 @@ void AccountPrivate::reload()
          const QString pass(m_hAccountDetails[DRing::Account::ConfProperties::TLS::PASSWORD]);
 
          if (!ca.isEmpty())
-            q_ptr->setTlsCaListCertificate(ca);
+            q_ptr->getAccountTLS()->setTlsCaListCertificate(ca);
 
          // Set the pvk file and password only if there is a certificate
          if (!cert.isEmpty()) {
-            q_ptr->setTlsCertificate(cert);
+            q_ptr->getAccountTLS()->setTlsCertificate(cert);
             if (!key.isEmpty()) {
-               q_ptr->setTlsPrivateKey(key);
+               q_ptr->getAccountTLS()->setTlsPrivateKey(key);
                   if (!pass.isEmpty())
-                     q_ptr->setTlsPassword(pass);
+                     q_ptr->getAccountTLS()->getAccountTLS()->setTlsPassword(pass);
             }
          }
 
@@ -2518,7 +2518,6 @@ bool AccountPrivate::merge(Account* account)
 AccountTLS* Account::getAccountTLS(){
    return new AccountTLS(this);
 }
-
 
 
 /*****************************************************************************
