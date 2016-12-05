@@ -145,6 +145,10 @@ public:
    bool             setType      (ContactMethod::Type t         );
    void             setLastUsed  (time_t              t         );
 
+   //Private setters
+   void setPresent(bool present);
+   void setPresenceMessage(const QString& message);
+
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
    Q_INVOKABLE void incrementAlternativeName(const QString& name, const time_t lastUsed);
@@ -165,10 +169,6 @@ protected:
    //Constructor
    ContactMethod(const URI& uri, NumberCategory* cat, Type st = Type::UNUSED);
    virtual ~ContactMethod();
-
-   //Private setters
-   void setPresent(bool present);
-   void setPresenceMessage(const QString& message);
 
    //PhoneDirectoryModel mutator
    bool merge(ContactMethod* other);
