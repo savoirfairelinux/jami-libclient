@@ -31,6 +31,7 @@
 #include "itemdataroles.h"
 #include "uri.h"
 class Account;
+class AccountPrivate;
 class Person;
 class Call;
 class ContactMethodPrivate;
@@ -54,6 +55,7 @@ public:
    friend class PhoneDirectoryModelPrivate;
    friend class LocalTextRecordingCollection;
    friend class CallPrivate;
+   friend class AccountPrivate;
 
    enum class Role {
       Uri          = static_cast<int>(Ring::Role::UserRole) + 1000,
