@@ -559,6 +559,7 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Call::Role::Filter):
          cat = uri()+primaryName();
          break;
+      case static_cast<int>(Ring::Role::IsPresent):
       case static_cast<int>(Call::Role::IsPresent):
          cat = isPresent();
          break;
