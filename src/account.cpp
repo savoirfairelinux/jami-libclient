@@ -35,6 +35,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/videomanager.h"
+#include "dbus/presencemanager.h"
 #include "globalinstances.h"
 #include "interfaces/accountlistcolorizeri.h"
 #include "certificate.h"
@@ -160,6 +161,15 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
          auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], a);
          a->d_ptr->m_NumbersFromDaemon << cm;
       }
+   }
+
+   //Load the tracked buddies
+   const VectorMapStringString subscriptions = PresenceManager::instance().getSubscriptions(a->id());
+   foreach(auto subscription, subscriptions){
+       ContactMethod* tracked_buddy = PhoneDirectoryModel::instance().getNumber(subscription["Buddy"], a);
+       bool tracked_buddy_present = subscription["Status"].compare("Online") == 0;
+       tracked_buddy->setTracked(true);
+       tracked_buddy->setPresent(tracked_buddy_present);
    }
 
    return a;
