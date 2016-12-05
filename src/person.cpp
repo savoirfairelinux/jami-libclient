@@ -613,6 +613,8 @@ QVariant Person::roleData(int role) const
          return QVariant(QDateTime::fromTime_t( lastUsedTime()));
       case static_cast<int>(Person::Role::Filter):
          return filterString();
+      case static_cast<int>(Ring::Role::IsPresent):
+         return isPresent();
       case static_cast<int>(Ring::Role::UnreadTextMessageCount):
          {
             int unread = 0;
