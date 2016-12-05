@@ -46,6 +46,7 @@ enum class Role
     FormattedState     ,
     Length             ,
     DropState          ,
+    IsPresent          ,
     UnreadTextMessageCount,
     UserRole           = Qt::UserRole + 100  // this should always be the last role in the list
 };
