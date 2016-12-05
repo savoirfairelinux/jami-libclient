@@ -31,6 +31,7 @@
 #include "itemdataroles.h"
 #include "uri.h"
 class Account;
+class AccountPrivate;
 class Person;
 class Call;
 class ContactMethodPrivate;
@@ -54,6 +55,7 @@ public:
    friend class PhoneDirectoryModelPrivate;
    friend class LocalTextRecordingCollection;
    friend class CallPrivate;
+   friend class AccountPrivate;
 
    enum class Role {
       Uri          = static_cast<int>(Ring::Role::UserRole) + 1000,
@@ -149,6 +151,7 @@ public:
    void             setUid           (const QString&      uri           );
    bool             setType          (ContactMethod::Type t             );
    void             setLastUsed      (time_t              t             );
+   void             setPresent       (bool                present       );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
@@ -172,7 +175,6 @@ protected:
    virtual ~ContactMethod();
 
    //Private setters
-   void setPresent(bool present);
    void setPresenceMessage(const QString& message);
 
    //PhoneDirectoryModel mutator
