@@ -2229,6 +2229,7 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::StopTime):
          return (int) d_ptr->m_pStopTimeStamp;
       case static_cast<int>(Call::Role::IsPresent):
+      case static_cast<int>(Ring::Role::IsPresent):
          return peerContactMethod()->isPresent();
       case static_cast<int>(Call::Role::IsTracked):
          return peerContactMethod()->isTracked();
