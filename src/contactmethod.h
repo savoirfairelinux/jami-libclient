@@ -86,6 +86,7 @@ public:
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
+   Q_PROPERTY(QString           registeredName   READ registeredName    WRITE setRegisteredName       )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -127,6 +128,7 @@ public:
    Media::TextRecording* textRecording   () const;
    bool                  isReachable     () const;
    Certificate*          certificate     () const;
+   QString               registeredName  () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles
@@ -136,14 +138,15 @@ public:
    Q_INVOKABLE QMimeData* mimePayload(        ) const;
 
    //Setters
-   Q_INVOKABLE void setAccount   (Account*            account   );
-   Q_INVOKABLE void setPerson    (Person*             contact   );
-   Q_INVOKABLE void setTracked   (bool                track     );
-   void             setCategory  (NumberCategory*     cat       );
-   void             setBookmarked(bool                bookmarked);
-   void             setUid       (const QString&      uri       );
-   bool             setType      (ContactMethod::Type t         );
-   void             setLastUsed  (time_t              t         );
+   Q_INVOKABLE void setAccount       (Account*            account       );
+   Q_INVOKABLE void setPerson        (Person*             contact       );
+   Q_INVOKABLE void setTracked       (bool                track         );
+   Q_INVOKABLE void setRegisteredName(const QString&      registeredName);
+   void             setCategory      (NumberCategory*     cat           );
+   void             setBookmarked    (bool                bookmarked    );
+   void             setUid           (const QString&      uri           );
+   bool             setType          (ContactMethod::Type t             );
+   void             setLastUsed      (time_t              t             );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);

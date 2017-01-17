@@ -775,6 +775,7 @@ PhoneDirectoryModelPrivate::slotRegisteredNameFound(const Account* account, Name
         foreach (ContactMethod* cm, wrap->numbers) {
             if (cm->account() == account) {
                 cm->incrementAlternativeName(name, QDateTime::currentDateTime().toTime_t());
+                cm->setRegisteredName(name);
             } else {
                 qDebug() << "registered name: uri matches but not account" << name << address << account << cm->account();
             }
