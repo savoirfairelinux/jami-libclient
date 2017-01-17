@@ -87,6 +87,7 @@ public:
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
    Q_PROPERTY(QString           registeredName   READ registeredName    WRITE setRegisteredName       )
+   Q_PROPERTY(QString           getBestId        READ getBestId                                       )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -129,6 +130,7 @@ public:
    bool                  isReachable     () const;
    Certificate*          certificate     () const;
    QString               registeredName  () const;
+   QString               getBestId       () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles

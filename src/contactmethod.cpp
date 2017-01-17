@@ -414,6 +414,13 @@ QString ContactMethod::registeredName() const
    return d_ptr->m_RegisteredName.isEmpty()? QString() : d_ptr->m_RegisteredName;
 }
 
+/// Best bet for this contact identity
+/// returns the registered name if present, otherwise returns the uri
+QString ContactMethod::getBestId() const
+{
+   return (registeredName().size() > 0) ? registeredName() : uri();
+}
+
 ///Is this number bookmarked
 bool ContactMethod::isBookmarked() const
 {
