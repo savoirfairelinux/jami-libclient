@@ -47,6 +47,7 @@ public:
    QList<URI>         m_lOtherURIs       ;
    Media::TextRecording* m_pTextRecording;
    Certificate*       m_pCertificate;
+   QString            m_RegisteredName   ;
 
    //Parents
    QList<ContactMethod*> m_lParents;

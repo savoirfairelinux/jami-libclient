@@ -321,6 +321,12 @@ void ContactMethod::setTracked(bool track)
    }
 }
 
+/// Set the registered name
+void ContactMethod::setRegisteredName(const QString& registeredName)
+{
+   d_ptr->m_RegisteredName = registeredName;
+}
+
 ///Allow phonedirectorymodel to change presence status
 void ContactMethod::setPresent(bool present)
 {
@@ -400,6 +406,12 @@ QString ContactMethod::primaryName() const
 
    //Return the cached primaryname
    return d_ptr->m_PrimaryName_cache;
+}
+
+/// Returns the registered username otherwise returns an empty QString
+QString ContactMethod::registeredName() const
+{
+   return d_ptr->m_RegisteredName.isEmpty()? QString() : d_ptr->m_RegisteredName;
 }
 
 ///Is this number bookmarked
