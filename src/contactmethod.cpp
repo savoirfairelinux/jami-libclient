@@ -506,11 +506,15 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Call::Role::Name):
          /* the formatted name could be empty either because the name of the contact is actually
           * empty, or because the PersonPlaceHolder was never matched to a Person, in either case
-          * we prefer to display the URI in this case */
+          * we try to display the registered name. In the last resort we display the URI. */
          if (contact() and !contact()->formattedName().isEmpty())
             cat = contact()->formattedName();
-         else
-            cat = primaryName();
+         else {
+            if (not d_ptr->m_RegisteredName.isEmpty())
+                cat = d_ptr->m_RegisteredName;
+            else
+                cat = primaryName();
+         }
          break;
       case Qt::ToolTipRole:
          cat = presenceMessage();
