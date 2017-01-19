@@ -2,85 +2,85 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="271"/>
+        <location filename="../src/account.cpp" line="287"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="273"/>
+        <location filename="../src/account.cpp" line="289"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Registrerad</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="275"/>
+        <location filename="../src/account.cpp" line="291"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Ej registrerad</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="277"/>
+        <location filename="../src/account.cpp" line="293"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Försöker...</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="279"/>
+        <location filename="../src/account.cpp" line="295"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="281"/>
+        <location filename="../src/account.cpp" line="297"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>Autentisering misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="283"/>
+        <location filename="../src/account.cpp" line="299"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Nätverket onåbart</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="285"/>
+        <location filename="../src/account.cpp" line="301"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Värdenhet onåbar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="287"/>
+        <location filename="../src/account.cpp" line="303"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>Stun konfigurationsfel</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="289"/>
+        <location filename="../src/account.cpp" line="305"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Stun-server ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="291"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Tjänst ej tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="293"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Oacceptabel</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="295"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="297"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Tidsgräns för begäran överskriden</translation>
@@ -97,12 +97,12 @@
 <context>
     <name>BootstrapModel</name>
     <message>
-        <location filename="../src/bootstrapmodel.cpp" line="195"/>
+        <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
         <translation>Värdnamn</translation>
     </message>
     <message>
-        <location filename="../src/bootstrapmodel.cpp" line="197"/>
+        <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
@@ -110,123 +110,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="708"/>
+        <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Nytt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="711"/>
+        <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Ringer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="714"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Ringer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="717"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Talar</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Ringer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>Parkera</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Upptagen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Överför</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>Överföringspaus</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Över</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
-        <location filename="../src/call.cpp" line="851"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
-        <location filename="../src/call.cpp" line="849"/>
-        <location filename="../src/call.cpp" line="2168"/>
+        <location filename="../src/call.cpp" line="749"/>
+        <location filename="../src/call.cpp" line="854"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Konferens</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Konferens (parkerad)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="755"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>FEL</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Söker efter</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Avbruten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Kommunikation etablerad</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="859"/>
+        <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
         <translation>Okänd</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2173"/>
+        <location filename="../src/call.cpp" line="2168"/>
         <source>Account: </source>
         <translation>Konto:</translation>
     </message>
@@ -234,7 +232,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="914"/>
+        <location filename="../src/callmodel.cpp" line="919"/>
         <source>Calls</source>
         <translation>Samtal</translation>
     </message>
@@ -251,12 +249,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1750"/>
         <source>Aborted</source>
         <translation>Avbruten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1771"/>
         <source>No account registered!</source>
         <translation>Inget konto registrerat!</translation>
     </message>
@@ -490,7 +488,7 @@
 <context>
     <name>InstantMessagingModel</name>
     <message>
-        <location filename="../src/media/textrecording.cpp" line="695"/>
+        <location filename="../src/media/textrecording.cpp" line="804"/>
         <source>Me</source>
         <translation>Jag</translation>
     </message>
@@ -550,22 +548,22 @@
 <context>
     <name>NumberCompletionModel</name>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
         <translation>Namn</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Weight</source>
         <translation>Vikt</translation>
     </message>
@@ -581,104 +579,109 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="226"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="232"/>
         <source>This account does not support presence tracking</source>
         <translation>Detta konto stöder inte närvarospårning</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="229"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="235"/>
         <source>No associated account</source>
         <translation>Inget associerat konto</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Person</source>
         <translation>Person</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>State</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Call count</source>
         <translation>Samtalsräknare</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Week count</source>
         <translation>Antal veckor</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Trimester count</source>
         <translation>Antal fyramånadersperioder</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Have Called</source>
         <translation>Har ringt</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Last used</source>
         <translation>Senast använd</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Name_count</source>
         <translation>Antal_namn</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Total (in seconds)</source>
         <translation>Totalt (i sekunder)</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Popularity_index</source>
         <translation>Popularitetsindex</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Bookmarked</source>
         <translation>Bokmärkt</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Tracked</source>
         <translation>Spårad</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Present</source>
         <translation>Närvarande</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Presence message</source>
         <translation>Närvaromeddelande</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Uid</source>
         <translation>Uid</translation>
+    </message>
+    <message>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <source>Has certificate</source>
+        <translation>Har certifikat</translation>
     </message>
 </context>
 <context>
@@ -724,27 +727,9 @@
     </message>
 </context>
 <context>
-    <name>ProfileContentBackend</name>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="298"/>
-        <source>Profile backend</source>
-        <translation>Profilgränssnitt</translation>
-    </message>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="303"/>
-        <source>Profile</source>
-        <translation>Profil</translation>
-    </message>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="394"/>
-        <source>Default</source>
-        <translation>Standard</translation>
-    </message>
-</context>
-<context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="931"/>
+        <location filename="../src/profilemodel.cpp" line="639"/>
         <source>Profiles</source>
         <translation>Profiler</translation>
     </message>
@@ -752,7 +737,7 @@
 <context>
     <name>ProfileModelPrivate</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="1003"/>
+        <location filename="../src/profilemodel.cpp" line="753"/>
         <source>New profile</source>
         <translation>Ny profil</translation>
     </message>
@@ -760,22 +745,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="175"/>
+        <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Message</source>
         <translation>Meddelande</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
+        <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Code</source>
         <translation>Kod</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
+        <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Time</source>
         <translation>Tid</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
+        <location filename="../src/accountstatusmodel.cpp" line="185"/>
         <source>Counter</source>
         <translation>Räknare</translation>
     </message>
@@ -975,52 +960,53 @@
         <translation>Utgående server</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="180"/>
+        <location filename="../src/certificatemodel.cpp" line="181"/>
         <source>Local certificate store</source>
         <translation>Lokal certifikatlagring</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="255"/>
+        <location filename="../src/certificatemodel.cpp" line="256"/>
+        <location filename="../src/localprofilecollection.cpp" line="209"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="255"/>
+        <location filename="../src/certificatemodel.cpp" line="256"/>
         <source>Certificate not associated with a group</source>
         <translation>Certifikatet inte associerat med någon grupp</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="383"/>
+        <location filename="../src/certificatemodel.cpp" line="384"/>
         <source>A certificate</source>
         <translation>Ett certifikat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="383"/>
+        <location filename="../src/certificatemodel.cpp" line="384"/>
         <source>An organisation</source>
         <translation>En organisation</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="400"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Details</source>
         <translation>Detaljer</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="400"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>The content of the certificate</source>
         <translation>Certifikatets innehåll</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="402"/>
         <source>Checks</source>
         <translation>Kontroller</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="402"/>
         <source>Various security related information</source>
         <translation>Diverse säkerhetsrelaterad information</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="545"/>
+        <location filename="../src/certificatemodel.cpp" line="567"/>
         <source>Header</source>
         <translation>Header</translation>
     </message>
@@ -1131,19 +1117,14 @@
         <translation>Annat</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="52"/>
+        <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>Ring Account</source>
         <translation>Ring-konto</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="53"/>
+        <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>SIP Account</source>
         <translation>SIP-konto</translation>
-    </message>
-    <message>
-        <location filename="../src/protocolmodel.cpp" line="54"/>
-        <source>IAX2 Account</source>
-        <translation>IAX2-konto</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
@@ -1339,6 +1320,26 @@
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
+    <message>
+        <location filename="../src/localprofilecollection.cpp" line="136"/>
+        <source>Local profiles</source>
+        <translation>Lokala profiler</translation>
+    </message>
+    <message>
+        <location filename="../src/localprofilecollection.cpp" line="141"/>
+        <source>Profile Collection</source>
+        <translation>Profilsamling</translation>
+    </message>
+    <message>
+        <location filename="../src/peerprofilecollection.cpp" line="132"/>
+        <source>Peer profiles</source>
+        <translation>Deltagarprofiler</translation>
+    </message>
+    <message>
+        <location filename="../src/peerprofilecollection.cpp" line="137"/>
+        <source>Peers Profiles Collection</source>
+        <translation>Deltagarprofilsamling</translation>
+    </message>
 </context>
 <context>
     <name>RecentModel</name>
@@ -1367,17 +1368,17 @@
 <context>
     <name>Video::SourceModel</name>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="75"/>
+        <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
         <translation>INGEN</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="81"/>
+        <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
         <translation>SKÄRM</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="87"/>
+        <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
         <translation>FIL</translation>
     </message>

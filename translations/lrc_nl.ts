@@ -2,88 +2,88 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="271"/>
+        <location filename="../src/account.cpp" line="287"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Gereed</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="273"/>
+        <location filename="../src/account.cpp" line="289"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Geregistreerd</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="275"/>
+        <location filename="../src/account.cpp" line="291"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Not Geregistreerd</translation>
+        <translation>Niet geregistreerd</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="277"/>
+        <location filename="../src/account.cpp" line="293"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Poging...</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="279"/>
+        <location filename="../src/account.cpp" line="295"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="281"/>
+        <location filename="../src/account.cpp" line="297"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Authenticatie Mislukt</translation>
+        <translation>Authenticatie mislukt</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="283"/>
+        <location filename="../src/account.cpp" line="299"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Netwerk onbereikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="285"/>
+        <location filename="../src/account.cpp" line="301"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Host onbereikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="287"/>
+        <location filename="../src/account.cpp" line="303"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>Stun configuratiefout</translation>
+        <translation>Stun-configuratiefout</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="289"/>
+        <location filename="../src/account.cpp" line="305"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Stun-server ongeldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="291"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>Service niet beschikbaar</translation>
+        <translation>Dienst niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="293"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Onaccepteerbaar</translation>
+        <translation>Onaanvaardbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="295"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Ongeldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="297"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Time-out Aanvragen</translation>
+        <translation>Time-out aanvragen</translation>
     </message>
 </context>
 <context>
@@ -97,12 +97,12 @@
 <context>
     <name>BootstrapModel</name>
     <message>
-        <location filename="../src/bootstrapmodel.cpp" line="195"/>
+        <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
         <translation>Hostnaam</translation>
     </message>
     <message>
-        <location filename="../src/bootstrapmodel.cpp" line="197"/>
+        <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
         <translation>Poort</translation>
     </message>
@@ -110,123 +110,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="708"/>
+        <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Nieuw</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="711"/>
+        <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Ringen</translation>
+        <translation>Gaat over</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="714"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Bellen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="717"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Praten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Kiezen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>In wacht zetten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Mislukt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Bezig</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Overdracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>In wacht door overdracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Over</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
-        <location filename="../src/call.cpp" line="851"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
-        <location filename="../src/call.cpp" line="849"/>
-        <location filename="../src/call.cpp" line="2168"/>
+        <location filename="../src/call.cpp" line="749"/>
+        <location filename="../src/call.cpp" line="854"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Vergadering</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Vergadering (wacht)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="755"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Zoeken naar</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Afgebroken</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Communicatie tot stand gebracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="859"/>
+        <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
         <translation>Onbekend</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2173"/>
+        <location filename="../src/call.cpp" line="2168"/>
         <source>Account: </source>
         <translation>Account:</translation>
     </message>
@@ -234,9 +232,9 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="914"/>
+        <location filename="../src/callmodel.cpp" line="919"/>
         <source>Calls</source>
-        <translation>Gesprekken</translation>
+        <translation>Oproepen</translation>
     </message>
 </context>
 <context>
@@ -245,18 +243,18 @@
         <location filename="../src/callmodel.cpp" line="553"/>
         <location filename="../src/callmodel.cpp" line="578"/>
         <source>Invalid account</source>
-        <translation>Ongeldig account</translation>
+        <translation>Ongeldige account</translation>
     </message>
 </context>
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1750"/>
         <source>Aborted</source>
         <translation>Afgebroken</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1771"/>
         <source>No account registered!</source>
         <translation>Geen account geregistreerd!</translation>
     </message>
@@ -343,7 +341,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Recentelijk gebruikt</translation>
+        <translation>Recent gebruikt</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
@@ -381,7 +379,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Totale tijd</translation>
+        <translation>Totale duur</translation>
     </message>
 </context>
 <context>
@@ -490,7 +488,7 @@
 <context>
     <name>InstantMessagingModel</name>
     <message>
-        <location filename="../src/media/textrecording.cpp" line="695"/>
+        <location filename="../src/media/textrecording.cpp" line="804"/>
         <source>Me</source>
         <translation>Ik</translation>
     </message>
@@ -500,7 +498,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Macros</translation>
+        <translation>Macro&apos;s</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="260"/>
@@ -536,7 +534,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Audio/Video</translation>
+        <translation>Audio/video</translation>
     </message>
 </context>
 <context>
@@ -550,22 +548,22 @@
 <context>
     <name>NumberCompletionModel</name>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="261"/>
+        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Weight</source>
         <translation>Gewicht</translation>
     </message>
@@ -581,104 +579,109 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="226"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="232"/>
         <source>This account does not support presence tracking</source>
-        <translation>Deze account ondersteunt aanwezigheid volgen niet</translation>
+        <translation>Deze account ondersteunt volgen van aanwezigheid niet</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="229"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="235"/>
         <source>No associated account</source>
-        <translation>Geen bijbehorend account</translation>
+        <translation>Geen bijhorende account</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Person</source>
         <translation>Persoon</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>State</source>
         <translation>Staat</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Call count</source>
-        <translation>Aantal gesprekken</translation>
+        <translation>Gespreksteller</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="289"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
         <source>Week count</source>
         <translation>Weekteller</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Trimester count</source>
         <translation>Trimesterteller</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Have Called</source>
-        <translation>Hebben Gebeld</translation>
+        <translation>Hebben gebeld</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Last used</source>
         <translation>Laatst gebruikt</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Name_count</source>
         <translation>Naam_teller</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Total (in seconds)</source>
         <translation>Totaal (in seconden)</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
         <source>Popularity_index</source>
         <translation>Populariteits_index</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Bookmarked</source>
         <translation>Opgeslagen in bladwijzers</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Tracked</source>
         <translation>Gevolgd</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="290"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Present</source>
         <translation>Aanwezig</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Presence message</source>
         <translation>Aanwezigheidsbericht</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="291"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
         <source>Uid</source>
         <translation>Uid</translation>
+    </message>
+    <message>
+        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <source>Has certificate</source>
+        <translation>Heeft certificaat</translation>
     </message>
 </context>
 <context>
@@ -724,27 +727,9 @@
     </message>
 </context>
 <context>
-    <name>ProfileContentBackend</name>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="298"/>
-        <source>Profile backend</source>
-        <translation>Profiel back-end</translation>
-    </message>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="303"/>
-        <source>Profile</source>
-        <translation>Profiel</translation>
-    </message>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="394"/>
-        <source>Default</source>
-        <translation>Standaard</translation>
-    </message>
-</context>
-<context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="931"/>
+        <location filename="../src/profilemodel.cpp" line="639"/>
         <source>Profiles</source>
         <translation>Profielen</translation>
     </message>
@@ -752,7 +737,7 @@
 <context>
     <name>ProfileModelPrivate</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="1003"/>
+        <location filename="../src/profilemodel.cpp" line="753"/>
         <source>New profile</source>
         <translation>Nieuw profiel</translation>
     </message>
@@ -760,22 +745,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="175"/>
+        <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Message</source>
         <translation>Bericht</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
+        <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Code</source>
         <translation>Code</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
+        <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Time</source>
         <translation>Tijd</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
+        <location filename="../src/accountstatusmodel.cpp" line="185"/>
         <source>Counter</source>
         <translation>Teller</translation>
     </message>
@@ -797,7 +782,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Is not self signed</source>
-        <translation>Niet niet zelf ondertekend</translation>
+        <translation>Is niet zelfondertekend</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
@@ -837,17 +822,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Heeft de juiste SELinux attributen voor de persoonlijke sleutel</translation>
+        <translation>Heeft de juiste SELinux-attributen voor de persoonlijke sleutel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Heeft de juiste SELinux attributen voor de openbare sleutel</translation>
+        <translation>Heeft de juiste SELinux-attributen voor de openbare sleutel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Certificaatbestand bestaat en is leesbaar</translation>
+        <translation>Het certificaatbestand bestaat en is leesbaar</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
@@ -862,7 +847,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate has a known authority</source>
-        <translation>Het certificaat heeft een bekende certificeringsinstantie</translation>
+        <translation>Het certificaat heeft een gekende certificeringsinstantie</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
@@ -897,7 +882,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Require a private key password</source>
-        <translation>Een wachtwoord voor de persoonlijke sleutel vereisen</translation>
+        <translation>Vereis een wachtwoord voor de persoonlijke sleutel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
@@ -922,12 +907,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Subject key algorithm</source>
-        <translation>Onderwerpsleutel algoritme</translation>
+        <translation>Onderwerpsleutelalgoritme</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Common name (CN)</source>
-        <translation>Gewoonlijke naam (CN)</translation>
+        <translation>Gewone naam (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
@@ -942,17 +927,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Signature algorithm</source>
-        <translation>Handtekeningalgoritme</translation>
+        <translation>Handtekeningsalgoritme</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Md5 fingerprint</source>
-        <translation>MD5 vingerafdruk</translation>
+        <translation>MD5-vingerafdruk</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Sha1 fingerprint</source>
-        <translation>SHA1 vingerafdruk</translation>
+        <translation>SHA1-vingerafdruk</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -962,7 +947,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Issuer domain name</source>
-        <translation>Domeinnaam van uitgevere</translation>
+        <translation>Domeinnaam van uitgever</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
@@ -975,52 +960,53 @@
         <translation>Uitgaande server</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="180"/>
+        <location filename="../src/certificatemodel.cpp" line="181"/>
         <source>Local certificate store</source>
         <translation>Lokale certificaatopslag</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="255"/>
+        <location filename="../src/certificatemodel.cpp" line="256"/>
+        <location filename="../src/localprofilecollection.cpp" line="209"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="255"/>
+        <location filename="../src/certificatemodel.cpp" line="256"/>
         <source>Certificate not associated with a group</source>
         <translation>Certificaat niet met een groep geassocieerd</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="383"/>
+        <location filename="../src/certificatemodel.cpp" line="384"/>
         <source>A certificate</source>
         <translation>Een certificaat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="383"/>
+        <location filename="../src/certificatemodel.cpp" line="384"/>
         <source>An organisation</source>
         <translation>Een organisatie</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="400"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>Details</source>
         <translation>Details</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="400"/>
+        <location filename="../src/certificatemodel.cpp" line="401"/>
         <source>The content of the certificate</source>
         <translation>De inhoud van het certificaat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="402"/>
         <source>Checks</source>
         <translation>Controles</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="402"/>
         <source>Various security related information</source>
         <translation>Uiteenlopende beveiligingsgerelateerde informatie</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="545"/>
+        <location filename="../src/certificatemodel.cpp" line="567"/>
         <source>Header</source>
         <translation>Kop</translation>
     </message>
@@ -1087,7 +1073,7 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation>Lokale macros</translation>
+        <translation>Lokale macro&apos;s</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
@@ -1131,19 +1117,14 @@
         <translation>Anders</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="52"/>
+        <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>Ring Account</source>
-        <translation>Ring Account</translation>
+        <translation>Ring-account</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="53"/>
+        <location filename="../src/protocolmodel.cpp" line="52"/>
         <source>SIP Account</source>
-        <translation>SIP Account</translation>
-    </message>
-    <message>
-        <location filename="../src/protocolmodel.cpp" line="54"/>
-        <source>IAX2 Account</source>
-        <translation>IAX2 Account</translation>
+        <translation>SIP-account</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
@@ -1153,57 +1134,57 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>Uw mediastreams zijn niet versleuteld, gelieve ZRTP of SDES inschakelen</translation>
+        <translation>Je mediastreams zijn niet versleuteld, gelieve ZRTP of SDES in te schakelen</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>TLS is uitgeschakeld, de onderhandeling zal niet worden versleuteld. Uw communicatie zal vatbaar zijn voor afluisteren.</translation>
+        <translation>TLS is uitgeschakeld, de onderhandeling zal niet worden versleuteld. Je communicatie zal vatbaar zijn voor afluisteren</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Uw certificaat en certificeringsinstantie komen niet overeen, wanneer uw certificaat een een certificeringsinstantie vereist, zal het niet functioneren.</translation>
+        <translation>Je certificaat en certificeringsinstantie komen niet overeen, als je certificaat een een certificeringsinstantie vereist, zal het niet functioneren</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>De gespecificeerde uitgaande server komt niet overeen met de hostnaam of met die opgegeven in het certificaat.</translation>
+        <translation>De gespecificeerde uitgaande server komt niet overeen met de hostnaam of met die opgegeven in het certificaat</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie &quot;inkomende certificaten verifiëren&quot; is uitgeschakeld, dit maakt u vatbaar voor een man-in-the-middle aanval</translation>
+        <translation>De optie &quot;inkomende certificaten verifiëren&quot; is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie &quot;antwoord certificaat verifiëren&quot; is uitgeschakeld, dit maakt u vatbaar voor een man-in-the-middle aanval.</translation>
+        <translation>De optie &quot;antwoordcertificaten verifiëren&quot; is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Geen van uw certificaten heeft een persoonlijke sleutel, terwijl dit vereist is. Gelieve een persoonlijke sleutel te selecteren of een certificaat te gebruiken die een sleutel mee levert.</translation>
+        <translation>Geen van je certificaten heeft een persoonlijke sleutel, terwijl dit vereist is. Kies een persoonlijke sleutel of gebruik een certificaat met ingebouwde sleutel</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Geen certificeringsinstantie opgegeven, het zal niet mogelijk zijn om de binnenkomende certificatie te valideren. Sommige accounts functioneren mogelijkerwijs ook niet.</translation>
+        <translation>Geen certificeringsinstantie opgegeven, het zal niet mogelijk zijn om de inkomende certificaten te valideren. Sommige accounts functioneren mogelijk ook niet.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Geen certificaat opgegeven. Dat wordt, vooralsnog, niet door Ring ondersteund.</translation>
+        <translation>Geen certificaat opgegeven. Dat wordt, vooralsnog, niet door Ring ondersteund</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Uw certificaat is vervallen, gelieve contact op te nemen met uw systeembeheerder.</translation>
+        <translation>Je certificaat is vervallen, neem contact op met je systeembeheerder.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Uw certificaat is zelf-ondertekend. Dit verbreekt de vertrouwensketen.</translation>
+        <translation>Je certificaat is zelf-ondertekend. Dit verbreekt de vertrouwensketen.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="67"/>
@@ -1214,13 +1195,13 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation>Tijdelijke aanduidingen contact</translation>
+        <translation>Tijdelijke contactaanduidingen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="510"/>
         <location filename="../src/useractionmodel.cpp" line="748"/>
         <source>Accept</source>
-        <translation>Accepteren</translation>
+        <translation>Aanvaarden</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="511"/>
@@ -1241,7 +1222,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="514"/>
         <source>Server transfer</source>
-        <translation>Server overdracht</translation>
+        <translation>Serveroverdracht</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="515"/>
@@ -1267,17 +1248,17 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Toggle video</source>
-        <translation>Video in/uitschakelen</translation>
+        <translation>Video in-/uitschakelen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Add a contact</source>
-        <translation>Aan contact toevoegen</translation>
+        <translation>Een contact toevoegen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Add to existing contact</source>
-        <translation>Aan bestaand contact toevoegen</translation>
+        <translation>Toevoegen aan bestaand contact</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
@@ -1339,6 +1320,26 @@
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
+    <message>
+        <location filename="../src/localprofilecollection.cpp" line="136"/>
+        <source>Local profiles</source>
+        <translation>Lokale profielen</translation>
+    </message>
+    <message>
+        <location filename="../src/localprofilecollection.cpp" line="141"/>
+        <source>Profile Collection</source>
+        <translation>Profielverzameling</translation>
+    </message>
+    <message>
+        <location filename="../src/peerprofilecollection.cpp" line="132"/>
+        <source>Peer profiles</source>
+        <translation>Peerprofielen</translation>
+    </message>
+    <message>
+        <location filename="../src/peerprofilecollection.cpp" line="137"/>
+        <source>Peers Profiles Collection</source>
+        <translation>Peerprofielverzameling</translation>
+    </message>
 </context>
 <context>
     <name>RecentModel</name>
@@ -1367,17 +1368,17 @@
 <context>
     <name>Video::SourceModel</name>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="75"/>
+        <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
         <translation>GEEN</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="81"/>
+        <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
         <translation>SCHERM</translation>
     </message>
     <message>
-        <location filename="../src/video/sourcemodel.cpp" line="87"/>
+        <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
         <translation>BESTAND</translation>
     </message>
