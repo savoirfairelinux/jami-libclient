@@ -1,0 +1,7 @@
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Code-Review+2: Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>
+Submitted-by: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
+Submitted-at: Sun, 22 Jan 2017 19:19:27 -0500
+Reviewed-on: https://gerrit-ring.savoirfairelinux.com/6011
+Project: ring-lrc
+Branch: refs/heads/master
