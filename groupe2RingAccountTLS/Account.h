@@ -421,6 +421,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setMailbox                       (const QString& detail  );
       void setProxy                         (const QString& detail  );
       void setPassword                      (const QString& detail  );
+
+
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
@@ -580,7 +582,7 @@ private:
    Account* _account;
 public:
    AccountMedia(Account* account);
-
+   
    // Getters
    bool    isVideoEnabled               () const;
    int     videoPortMax                 () const;
@@ -589,7 +591,6 @@ public:
    int     audioPortMax                 () const;
    bool    isRingtoneEnabled            () const;
    QString ringtonePath                 () const;
-
    // Setters
    void setVideoEnabled                  (bool enable);
    void setAudioPortMax                  (int port   );
