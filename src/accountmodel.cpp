@@ -90,6 +90,8 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotKownDevicesChanged, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
+            &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
 }
 
 ///Destructor
@@ -482,6 +484,30 @@ void AccountModelPrivate::slotExportOnRingEnded(const QString& accountId, int st
   }
 
   emit a->exportOnRingEnded(static_cast<Account::ExportOnRingStatus>(status), pin);
+}
+
+/// Migration ended
+void
+AccountModelPrivate::slotMigrationEnded(const QString& accountId, const QString& result)
+{
+    qDebug() << "Migration ended for " << accountId << " with status : " << result;
+
+    Account* a = q_ptr->getById(accountId.toLatin1());
+
+    Account::MigrationEndedStatus status;
+    if(result == "SUCCESS")
+        status = Account::MigrationEndedStatus::SUCCESS;
+    else if(result == "INVALID")
+        status = Account::MigrationEndedStatus::INVALID;
+    else
+        status = Account::MigrationEndedStatus::UNDEFINED_STATUS;
+
+
+    if (status == Account::MigrationEndedStatus::UNDEFINED_STATUS)
+        qWarning() << "cannot emit migrationEnded signal, status is undefined";
+    else
+        emit a->migrationEnded(accountId, status);
+    qDebug() << "signal emit";
 }
 
 ///Update accounts
