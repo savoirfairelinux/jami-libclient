@@ -343,6 +343,14 @@ class LIB_EXPORT Account : public ItemBase {
       };
       Q_ENUMS(ExportOnRingStatus)
 
+      // Possible account migration status
+      enum class MigrationEndedStatus {
+          SUCCESS = 0,
+          UNDEFINED_STATUS = 1,
+          INVALID = 2,
+      };
+      Q_ENUMS(MigrationEndedStatus)
+
       /**
        *Perform an action
        * @return If the state changed
@@ -571,6 +579,8 @@ class LIB_EXPORT Account : public ItemBase {
       void nameRegistrationEnded(NameDirectory::RegisterNameStatus status, const QString& name);
       ///Name or address lookup has completed
       void registeredNameFound(NameDirectory::LookupStatus status, const QString& address, const QString& name);
+      /// Migration ended
+      void migrationEnded(const QString& accountId, const Account::MigrationEndedStatus);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
