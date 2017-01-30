@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2015-2016 by Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *            Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -74,4 +75,5 @@ public Q_SLOTS:
    void slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
    void slotKownDevicesChanged(const QString& accountId, const MapStringString& devices);
    void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
+   void slotMigrationEnded(const QString& accountId, const QString& result);
 };
