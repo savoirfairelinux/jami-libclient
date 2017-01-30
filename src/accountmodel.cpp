@@ -2,6 +2,7 @@
  *   Copyright (C) 2009-2016 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *            Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -90,6 +91,8 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotKownDevicesChanged, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
+            &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
 }
 
 ///Destructor
@@ -482,6 +485,27 @@ void AccountModelPrivate::slotExportOnRingEnded(const QString& accountId, int st
   }
 
   emit a->exportOnRingEnded(static_cast<Account::ExportOnRingStatus>(status), pin);
+}
+
+/// Migration ended
+void
+AccountModelPrivate::slotMigrationEnded(const QString& accountId, const QString& result)
+{
+    Account* a = q_ptr->getById(accountId.toLatin1());
+
+    Account::MigrationEndedStatus status;
+    if(result == "SUCCESS")
+        status = Account::MigrationEndedStatus::SUCCESS;
+    else if(result == "INVALID")
+        status = Account::MigrationEndedStatus::INVALID;
+    else
+        status = Account::MigrationEndedStatus::UNDEFINED_STATUS;
+
+
+    if (status == Account::MigrationEndedStatus::UNDEFINED_STATUS)
+        qWarning() << "cannot emit migrationEnded signal, status is undefined";
+    else
+        emit a->migrationEnded(accountId, status);
 }
 
 ///Update accounts
