@@ -132,6 +132,10 @@ public:
                [this] () {
                    Q_EMIT this->audioDeviceEvent();
                }),
+        exportable_callback<ConfigurationSignal::MigrationEnded>(
+               [this] (const std::string& account_id, const std::string& result) {
+                   Q_EMIT this->migrationEnded(QString(account_id), QString(result));
+               }),
       };
    }
 
@@ -661,6 +665,7 @@ Q_SIGNALS: // SIGNALS
    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+   void migrationEnded(const QString &accountID, const QString &result);
 
 
 };
