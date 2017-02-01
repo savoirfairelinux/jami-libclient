@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_17f637d8",
+        "filename": "src/account.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 219
+      },
+      "writtenOn": "2017-02-01T14:26:03Z",
+      "side": 1,
+      "message": "The `account_id` seems useless here given you have the object",
+      "revId": "d7d1832fef9b47b583fa8fae7330a74fcca1a3e9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
