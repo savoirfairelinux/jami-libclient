@@ -142,9 +142,10 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 {
    Q_UNUSED(from)
 
-   Call* call = CallModel::instance().getCall(callId);
-
-   Q_ASSERT(call);
+   auto call = CallModel::instance().getCall(callId);
+   if (!call) {
+      return;
+   }
 
    static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
 
