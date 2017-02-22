@@ -20,6 +20,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
+#include <QtCore/QDateTime>
 #include <time.h>
 #include <itembase.h>
 #include <media/media.h>
@@ -123,7 +124,7 @@ protected:
 
 public:
    //Constructors & Destructors
-   explicit Person(CollectionInterface* parent = nullptr, const QByteArray& uid = QByteArray());
+   explicit Person(CollectionInterface* parent = nullptr, const QByteArray& uid = QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8());
    Person(const QByteArray& content, Person::Encoding encoding = Encoding::UID, CollectionInterface* parent = nullptr);
    Person(const Person& other) noexcept;
    virtual ~Person();
