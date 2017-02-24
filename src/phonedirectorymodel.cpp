@@ -448,11 +448,34 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
    //Too bad, lets create one
    ContactMethod* number = new ContactMethod(uri, NumberCategoryModel::instance().getCategory(type));
    number->setIndex(d_ptr->m_lNumbers.size());
+   number->setLastUsed(QDateTime::currentDateTime().currentMSecsSinceEpoch());
    d_ptr->m_lNumbers << number;
    connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged);
+   
+
+    // add the new cm inside the history.
+    for (auto col : CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
+        if (col->id() == "mhb") {
+            QMap<QString,QString> hc;
+            hc[Call::HistoryMapFields::PEER_NUMBER ] = number->uri();
+            hc[Call::HistoryMapFields::CALLID ] = "";
+            //~ hc[Call::HistoryMapFields::ACCOUNT_ID ] = "1ef5837c7a1bb7ea";
+            
+
+            auto fakeCall = Call::buildHistoryCall(hc);
+            if (fakeCall)
+                col->add(fakeCall);
+            else
+                qDebug() << "buildHistoryCall() has returned an invalid Call object.";
+        }
+    }
+    
+    //~ CallManager::instance().addFirstEntryToHistory();
+   
+   
 
    const QString hn = number->uri().hostname();
 

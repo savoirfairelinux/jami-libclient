@@ -157,10 +157,12 @@ bool LocalHistoryEditor::edit( Call* item)
 
 bool LocalHistoryEditor::addNew( Call* call)
 {
+    qDebug() << "LocalHistoryEditor::addNew";
    QDir dir(QString('/'));
    dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + QString());
 
-   if ((call->collection() && call->collection()->editor<Call>() == this)  || call->historyId().isEmpty()) return false;
+   //~ if ((call->collection() && call->collection()->editor<Call>() == this)  || call->historyId().isEmpty()) return false;
+   qDebug() << "BLOKI";
    //TODO support \r and \n\r end of line
    QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/')+"history.ini");
 
