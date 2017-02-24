@@ -889,4 +889,22 @@ bool Certificate::moveToDotCert() const
 #endif
 }
 
+/// XXX mettre la doc
+QVariant
+Certificate::roleData(int role) const
+{
+   switch (role) {
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+         return remoteId();
+      case static_cast<int>(Ring::Role::Object):
+         return QVariant::fromValue(const_cast<Certificate*>(this));
+      case static_cast<int>(Ring::Role::ObjectType):
+        return QVariant::fromValue(Ring::ObjectType::Certificate);
+   }
+
+    /* uknown role */
+    return QVariant();
+}
+
 #include <certificate.moc>

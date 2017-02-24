@@ -17,12 +17,15 @@
  ***************************************************************************/
 #pragma once
 
+#include <QtCore/QAbstractItemModel>
 #include <QtCore/QAbstractTableModel>
 #include <typedefs.h>
 
 class Account;
 class PendingTrustRequestModelPrivate;
 class TrustRequest;
+class QSortFilterProxyModel;
+class QItemSelectionModel;
 
 /**
  * List the pending (incoming) trust request for an account
@@ -43,6 +46,12 @@ public:
    virtual Qt::ItemFlags flags       ( const QModelIndex& index                                 ) const override;
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
+
+    // Getter
+    QModelIndex mapToSource (const QModelIndex& idx) const;
+
+    //Proxy
+    QSortFilterProxyModel* pendingTrustRequestProxy() const;
 
 private:
    explicit PendingTrustRequestModel(Account* a);

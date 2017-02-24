@@ -66,6 +66,7 @@ Account* TrustRequest::account() const
 
 bool TrustRequest::accept()
 {
+    qDebug() << "TrustRequest::accept()";
    if (ConfigurationManager::instance().acceptTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestAccepted();
       return true;
@@ -75,9 +76,29 @@ bool TrustRequest::accept()
 
 bool TrustRequest::discard()
 {
+    qDebug() << "TrustRequest::discard()";
    if (ConfigurationManager::instance().discardTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestDiscarded();
       return true;
    }
    return false;
 }
+
+/// XXX mettre la doc
+QVariant
+TrustRequest::roleData(int role) const
+{
+    switch (role) {
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            return certificate()->remoteId();
+        case static_cast<int>(Ring::Role::Object):
+            return QVariant::fromValue(const_cast<TrustRequest*>(this));
+        case static_cast<int>(Ring::Role::ObjectType):
+            return QVariant::fromValue(Ring::ObjectType::TrustRequest);
+    }
+
+    /* uknown role */
+    return QVariant();
+}
+

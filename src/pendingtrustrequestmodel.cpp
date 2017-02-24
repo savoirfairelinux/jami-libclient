@@ -19,6 +19,7 @@
 
 //Qt
 #include <QtCore/QDateTime>
+#include <QSortFilterProxyModel>
 
 //Ring
 #include <trustrequest.h>
@@ -28,7 +29,20 @@
 
 enum Columns {
    HASH,
-   TIME
+   TIME,
+   SOMETHING_ELSE
+};
+
+class PendingTrustRequestProxy : public QSortFilterProxyModel
+{
+   Q_OBJECT
+public:
+    PendingTrustRequestProxy(PendingTrustRequestModel* source_model);
+
+    virtual QVariant data(const QModelIndex& index, int role) const override;
+protected:
+    virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
+
 };
 
 PendingTrustRequestModelPrivate::PendingTrustRequestModelPrivate(PendingTrustRequestModel* p) : q_ptr(p)
@@ -50,22 +64,14 @@ QVariant PendingTrustRequestModel::data( const QModelIndex& index, int role ) co
    if (!index.isValid())
       return QVariant();
 
-   switch(index.column()) {
-      case Columns::HASH:
-         switch(role) {
-            case Qt::DisplayRole:
-               return d_ptr->m_lRequests[index.row()]->certificate()->remoteId();
-         }
-         break;
-      case Columns::TIME:
-         switch(role) {
-            case Qt::DisplayRole:
-               return d_ptr->m_lRequests[index.row()]->date();
-         }
-         break;
-   }
+    // XXX retourn un qvariant qui enrobe le certificat :
+    //~ return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->certificate());
 
-   return QVariant();
+    // XXX la ligne suivante retourne un certificat, a utiliser dans la logique presenter lundi en reunion
+    //~ return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->certificate()->roleData(role));
+    
+    return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->roleData(role));
+
 }
 
 int PendingTrustRequestModel::rowCount( const QModelIndex& parent ) const
@@ -105,9 +111,15 @@ void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
 
    QObject::connect(r, &TrustRequest::requestAccepted, [this,r]() {
       emit q_ptr->requestAccepted(r);
+      
+      // the request was handled so it can be removed, from the pending
+      removeRequest(r);
    });
    QObject::connect(r, &TrustRequest::requestDiscarded, [this,r]() {
       emit q_ptr->requestDiscarded(r);
+
+      // the request was handled so it can be removed, from the pending
+      removeRequest(r);
    });
 }
 
@@ -122,3 +134,52 @@ void PendingTrustRequestModelPrivate::removeRequest(TrustRequest* r)
    m_lRequests.removeAt(index);
    q_ptr->endRemoveRows();
 }
+
+QModelIndex
+PendingTrustRequestModel::mapToSource(const QModelIndex& idx) const
+{
+    if (!idx.isValid() || !idx.parent().isValid() || idx.model() != this)
+        return QModelIndex();
+
+    return idx;
+}
+
+QSortFilterProxyModel*
+PendingTrustRequestModel::pendingTrustRequestProxy() const
+{
+    static PendingTrustRequestProxy* p = new PendingTrustRequestProxy(const_cast<PendingTrustRequestModel*>(this));
+    return p;
+}
+
+PendingTrustRequestProxy::PendingTrustRequestProxy(PendingTrustRequestModel* sourceModel)
+{
+    setSourceModel(sourceModel);
+}
+
+/// XXX ENTETES DE DOCUMENTATION
+QVariant
+PendingTrustRequestProxy::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid()) {
+        qDebug() << "invalid index";
+        return QVariant();
+    }
+
+    auto indexSource = this->mapToSource(index);
+
+    if (!indexSource.isValid()) {
+        qDebug() << "invalid indexSource";
+        return QVariant();
+    }
+
+    auto child = sourceModel()->index(0,0, indexSource);
+    return sourceModel()->data(child, role);
+}
+
+bool
+PendingTrustRequestProxy::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+    return true;
+}
+
+#include <pendingtrustrequestmodel.moc>

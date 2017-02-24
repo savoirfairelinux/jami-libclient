@@ -32,6 +32,7 @@
 
 //Ring daemon
 #include <account_const.h>
+#include <configurationmanager_interface.h>
 
 //Ring library
 #include "account.h"
@@ -293,6 +294,17 @@ QList<Account*> AccountModel::accountsToMigrate() const
             accounts << account;
     }
     return accounts;
+}
+
+QVector<QMap<QString, QString>>
+AccountModel::getsContacts(const Account& account) const
+{ //std::vector<std::map<std::string, std::string>>
+    qDebug() << "AccountModel::getsContacts for " << account.id().data();
+
+    QVector<QMap<QString, QString>> contacts = ConfigurationManager::instance().getContacts(account.id().data());
+    qDebug() << "contacts size = " << contacts.size();
+    
+    return contacts;
 }
 
 ///Account status changed
@@ -974,9 +986,12 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
       case Account::Protocol::SIP:
          m_lSipAccounts  << a;
          break;
-      case Account::Protocol::RING:
+      case Account::Protocol::RING: {
          m_lRingAccounts << a;
+         auto contactsList = ConfigurationManager::instance().getContacts(a->id().data()); //DRing::getContacts(a->id().data());
+         Q_EMIT q_ptr->contactsList(a);
          break;
+      }
       case Account::Protocol::COUNT__:
          break;
    }

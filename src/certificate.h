@@ -64,7 +64,7 @@ public:
    Q_PROPERTY(CheckValues hasExpectedOwner                    READ hasExpectedOwner                    )
    Q_PROPERTY(bool        isActivated                         READ isActivated                         )
    Q_PROPERTY(bool        hasRemote                           READ hasRemote                           )
-   Q_PROPERTY(QByteArray  remoteId                            READ remoteId                            )
+   Q_PROPERTY(QByteArray  remoteId                            READ remoteId                            ) // XXX semble useless, utiliser la cm associee... verifier ou il est utilise
    Q_PROPERTY(QString     path                                READ path              WRITE setPath     )
    Q_PROPERTY(QString     privateKeyPath                      READ privateKeyPath    WRITE setPrivateKeyPath)
 
@@ -236,6 +236,8 @@ public:
    ChainOfTrustModel* chainOfTrustModel (                             ) const;
    FlagPack<OriginHint> originHint      (                             ) const;
    ContactMethod* contactMethod         (                             ) const;
+    Q_INVOKABLE QVariant roleData (int role) const;
+
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );

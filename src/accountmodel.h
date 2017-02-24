@@ -80,6 +80,7 @@ public:
    EditState            editState                   (                                      ) const;
    Account*             selectedAccount             (                                      ) const;
    QList<Account*>      accountsToMigrate           (                                      ) const;
+   QVector<QMap<QString, QString>> getsContacts     (const Account& account                ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
 
@@ -157,5 +158,7 @@ Q_SIGNALS:
    void accountEditStateChanged(Account* account, const Account::EditState state, const Account::EditState prev);
    ///The global AccountModel edit state changed
    void editStateChanged(const EditState state, const EditState previous) const;
+   /// A list of contacts has been obained.
+   void contactsList(Account *account);
 };
 Q_DECLARE_METATYPE(AccountModel*)

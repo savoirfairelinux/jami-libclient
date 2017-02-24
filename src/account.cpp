@@ -1340,18 +1340,24 @@ bool Account::banCertificate(Certificate* c)
 ///Ask the certificate owner (peer) to trust you
 bool Account::requestTrust( Certificate* c )
 {
-   if ((!c) || (c->remoteId().isEmpty()))
-      return false;
 
-   QByteArray payload;
+    // XXX je desactive /* */ car on utilise pas le remoteId dans la suite de cette fonction
+    if ((!c) /*|| (c->remoteId().isEmpty())*/)
+        return false;
 
-   if (contactMethod() && contactMethod()->contact()) {
-      payload = contactMethod()->contact()->toVCard();
-   }
+    QByteArray payload;
 
-   ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
+    if (contactMethod() && contactMethod()->contact()) {
+        payload = contactMethod()->contact()->toVCard();
+    }
 
-   return true;
+    if (!c->contactMethod()) {
+        qDebug() << "there is no contact method associated to the certificate.";
+        return false;
+    }
+
+    ConfigurationManager::instance().sendTrustRequest(id(),c->contactMethod()->uri(), payload);
+    return true;
 }
 
 ///Helper method to send trust request to the certificate of this CM
