@@ -618,15 +618,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 }
 
 /// aCall << Call::Action::HOLD
-Call* Call::operator<<( Call::Action& c)
+Call& Call::operator<<( Call::Action& c)
 {
    performAction(c);
-   return this;
-}
-
-Call* operator<<(Call* c, Call::Action action)
-{
-   return (!c) ? nullptr : (*c) << action;
+   return *this;
 }
 
 ///Get the start sate from the daemon state

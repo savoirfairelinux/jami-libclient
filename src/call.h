@@ -353,7 +353,7 @@ public:
    bool joinToParent();
 
    //syntactic sugar
-   Call* operator<<( Call::Action& c);
+   Call& operator<<( Call::Action& c);
 
 private:
    Call(const QString& confId, const QString& account);
@@ -405,7 +405,6 @@ Q_DECLARE_METATYPE(Call::LifeCycleState)
 
 DECLARE_ENUM_FLAGS(Call::HoldFlags)
 
-Call* operator<<(Call* c, Call::Action a);
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::State& c       );
 QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c      );
 
