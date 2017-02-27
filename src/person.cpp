@@ -41,6 +41,9 @@
 #include "media/textrecording.h"
 #include "mime.h"
 
+// Std
+#include <random>
+
 class AddressPrivate final
 {
 public:
@@ -203,12 +206,9 @@ PersonPrivate::~PersonPrivate()
 }
 
 ///Constructor
-Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nullptr),
+Person::Person(CollectionInterface* parent): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   if (!uid.isEmpty())
-      d_ptr->m_Uid = uid;
-
    setCollection(parent ? parent : &TransitionalPersonBackend::instance());
 
    d_ptr->m_isPlaceHolder = false;
@@ -755,5 +755,28 @@ void PersonPrivate::slotCallAdded(Call *call)
 {
     foreach (Person* c,m_lParents) {
         emit c->callAdded(call);
+    }
+}
+
+/**
+ * ensureUid ensures an unique Id. By checking the current uid first and generate a random one if not unique or empty.
+ */
+void
+Person::ensureUid()
+{
+    static std::random_device rdev;
+    static std::seed_seq seq {rdev(), rdev()};
+    static std::mt19937_64 rand {seq};
+    static std::uniform_int_distribution<uint64_t> id_generator;
+
+    if (d_ptr->m_Uid.isEmpty()) {
+        do {
+            d_ptr->m_Uid = std::to_string(id_generator(rand)).c_str();
+        } while (PersonModel::instance().getPersonByUid(d_ptr->m_Uid) != this);
+        return;
+    }
+    
+    while (PersonModel::instance().getPersonByUid(d_ptr->m_Uid) != this) {
+        d_ptr->m_Uid = std::to_string(id_generator(rand)).c_str();
     }
 }
