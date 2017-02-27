@@ -18,6 +18,9 @@
 
 #include "peerprofilecollection.h"
 
+// Std
+#include <random>
+
 //Qt
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -31,6 +34,7 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "person.h"
+#include "personmodel.h"
 
 class PeerProfileEditor final : public CollectionEditor<Person>
 {
@@ -96,8 +100,34 @@ bool PeerProfileEditor::edit( Person* item)
    return false;
 }
 
+static QByteArray
+generateRandomPersonUid(const QByteArray& preset_uid)
+{
+    static std::random_device rdev;
+    static std::seed_seq seq {rdev(), rdev()};
+    static std::mt19937_64 rand {seq};
+    static std::uniform_int_distribution<uint64_t> id_generator;
+
+    QByteArray uid;
+
+    if (!preset_uid.isEmpty()) {
+        // check if there is any Person with the same uid
+        // if not, return the preset id, else generate a random one
+        if (!PersonModel::instance().getPersonByUid(preset_uid))
+            return preset_uid;
+    }
+
+    do {
+        uid = std::to_string(id_generator(rand)).c_str();
+    } while (PersonModel::instance().getPersonByUid(uid));
+
+    return uid;
+}
+
 bool PeerProfileEditor::addNew( Person* pers)
 {
+    pers->setUid(generateRandomPersonUid(pers->uid()));
+
     if (not m_lItems.contains(pers)) {
         m_lItems << pers;
         mediator()->addItem(pers);
