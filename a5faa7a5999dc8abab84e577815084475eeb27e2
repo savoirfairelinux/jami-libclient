@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_cd249dc8",
+        "filename": "src/person.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-02-27T20:28:08Z",
+      "side": 1,
+      "message": "what\u0027s happen in case of fast call?\nIt looks like there\u0027ll be collision?",
+      "revId": "a5faa7a5999dc8abab84e577815084475eeb27e2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
