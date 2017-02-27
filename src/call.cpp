@@ -554,9 +554,14 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       //   accId = DRing::Account::ProtocolNames::IP2IP;
    }
 
-   //This corruption has been fixed a while back, but invalid items may still exist
-   if (stopTimeStamp <= 0)
+   // fix invalid time values
+   if (startTimeStamp <= 0) {
+      // currentSecsSinceEpoch is available only from 5.8
+      startTimeStamp = (QDateTime::currentDateTime().currentMSecsSinceEpoch()) * Q_INT64_C(1000);
       stopTimeStamp = startTimeStamp;
+   } else if (stopTimeStamp <= 0) {
+      stopTimeStamp = startTimeStamp;
+   }
 
    //Try to assiciate a contact now, the real contact object is probably not
    //loaded yet, but we can get a placeholder for now
