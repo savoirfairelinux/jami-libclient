@@ -20,6 +20,9 @@
 //Parent
 #include "person.h"
 
+// Std
+#include <random>
+
 //Qt
 #include <QtCore/QDateTime>
 
@@ -202,12 +205,36 @@ PersonPrivate::~PersonPrivate()
 {
 }
 
+
+static QByteArray
+getValidPersonUid(const QByteArray& preset_uid)
+{
+    static std::random_device rdev;
+    static std::seed_seq seq {rdev(), rdev()};
+    static std::mt19937_64 rand {seq};
+    static std::uniform_int_distribution<uint64_t> id_generator;
+
+    QByteArray uid;
+
+    if (!preset_uid.isEmpty()) {
+        // check if there is any Person with the same uid
+        // if not, return the preset id, else generate a random one
+        if (!PersonModel::instance().getPersonByUid(preset_uid))
+            return preset_uid;
+    }
+
+    do {
+        uid = std::to_string(id_generator(rand)).c_str();
+    } while (PersonModel::instance().getPersonByUid(uid));
+
+    return uid;
+}
+
 ///Constructor
 Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   if (!uid.isEmpty())
-      d_ptr->m_Uid = uid;
+   d_ptr->m_Uid = getValidPersonUid(uid);
 
    setCollection(parent ? parent : &TransitionalPersonBackend::instance());
 
