@@ -102,6 +102,7 @@ bool LocalProfileEditor::edit( Profile* item)
 
 bool LocalProfileEditor::addNew(Profile* pro)
 {
+    pro->person()->ensureUid();
     qDebug() << "Creating new profile" << pro->person()->uid();
     m_lItems << pro;
     pro->setCollection(m_pCollection);
@@ -205,7 +206,7 @@ QByteArray LocalProfileCollection::id() const
 
 void LocalProfileCollection::setupDefaultProfile()
 {
-   auto profile = new Profile(this, new Person(nullptr, QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8()));
+   auto profile = new Profile(this, new Person());
    profile->person()->setFormattedName(QObject::tr("Default"));
 
    for (int i = 0 ; i < AccountModel::instance().size() ; i++) {

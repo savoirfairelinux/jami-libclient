@@ -155,6 +155,7 @@ bool FallbackPersonBackendEditor::edit( Person* item)
 
 bool FallbackPersonBackendEditor::addNew( Person* item)
 {
+   item->ensureUid();
    bool ret = save(item);
 
    if (ret) {
