@@ -554,6 +554,10 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
       //   accId = DRing::Account::ProtocolNames::IP2IP;
    }
 
+    // fix invalid start time.
+    if (startTimeStamp <=0)
+        startTimeStamp = QDateTime::currentDateTime().currentSecsSinceEpoch();
+
    //This corruption has been fixed a while back, but invalid items may still exist
    if (stopTimeStamp <= 0)
       stopTimeStamp = startTimeStamp;
