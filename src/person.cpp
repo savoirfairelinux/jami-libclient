@@ -206,8 +206,34 @@ PersonPrivate::~PersonPrivate()
 Person::Person(CollectionInterface* parent, const QByteArray& uid): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   if (!uid.isEmpty())
-      d_ptr->m_Uid = uid;
+    if (!uid.isEmpty()) {
+        if (PersonModel::instance().getPersonByUid(uid)) // check if there is any Person with the same uid
+        {                                                // if so, generate a random one
+            qsrand(QDateTime::currentDateTime().currentMSecsSinceEpoch());
+
+            QByteArray randomUid;
+
+            do {
+                randomUid = d_ptr->m_Uid = std::to_string(qrand()).c_str();
+            } while (PersonModel::instance().getPersonByUid(randomUid));
+
+            d_ptr->m_Uid = randomUid;
+
+        }
+        else
+            d_ptr->m_Uid = uid;
+    }
+    else { // no uid, generate a random one
+        qsrand(QDateTime::currentDateTime().currentMSecsSinceEpoch());
+
+            QByteArray randomUid;
+
+            do {
+                randomUid = d_ptr->m_Uid = std::to_string(qrand()).c_str();
+            } while (PersonModel::instance().getPersonByUid(randomUid));
+
+            d_ptr->m_Uid = randomUid;
+    }
 
    setCollection(parent ? parent : &TransitionalPersonBackend::instance());
 
