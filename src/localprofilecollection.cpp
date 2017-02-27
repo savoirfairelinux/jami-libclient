@@ -32,6 +32,7 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "person.h"
+#include "personmodel.h"
 
 class LocalProfileEditor final : public CollectionEditor<Profile>
 {
@@ -205,8 +206,9 @@ QByteArray LocalProfileCollection::id() const
 
 void LocalProfileCollection::setupDefaultProfile()
 {
-   auto profile = new Profile(this, new Person(nullptr, QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8()));
+   auto profile = new Profile(this, new Person(nullptr));
    profile->person()->setFormattedName(QObject::tr("Default"));
+   profile->person()->setUid(QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8());
 
    for (int i = 0 ; i < AccountModel::instance().size() ; i++) {
        profile->addAccount(AccountModel::instance()[i]);
