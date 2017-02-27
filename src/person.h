@@ -123,7 +123,7 @@ protected:
 
 public:
    //Constructors & Destructors
-   explicit Person(CollectionInterface* parent = nullptr, const QByteArray& uid = QByteArray());
+   explicit Person(CollectionInterface* parent = nullptr);
    Person(const QByteArray& content, Person::Encoding encoding = Encoding::UID, CollectionInterface* parent = nullptr);
    Person(const Person& other) noexcept;
    virtual ~Person();
@@ -170,6 +170,7 @@ public:
    void setDepartment     ( const QString&    name   );
    void setUid            ( const QByteArray& id     );
    void setPhoto          ( const QVariant&   photo  );
+   void setRandomUid      (                          );
 
    //Updates an existing contact from vCard info
    void updateFromVCard(const QByteArray& content);
