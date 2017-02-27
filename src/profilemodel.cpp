@@ -746,7 +746,7 @@ bool ProfileModelPrivate::addProfile(Person* person, const QString& name, Collec
         profile = new Profile(col, person);
     }
     else {
-        auto p = new Person(col, QString::number(QDateTime::currentDateTime().currentMSecsSinceEpoch()).toUtf8());
+        auto p = new Person(col);
         profile = new Profile(col, p);
         QString profileName = name;
         if (profileName.isEmpty()) {

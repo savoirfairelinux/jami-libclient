@@ -155,13 +155,14 @@ bool FallbackPersonBackendEditor::edit( Person* item)
 
 bool FallbackPersonBackendEditor::addNew( Person* item)
 {
-   bool ret = save(item);
+    item->ensureUid();
+    bool ret = save(item);
 
-   if (ret) {
-      addExisting(item);
-   }
+    if (ret) {
+        addExisting(item);
+    }
 
-   return ret;
+    return ret;
 }
 
 bool FallbackPersonBackendEditor::addExisting(const Person* item)
