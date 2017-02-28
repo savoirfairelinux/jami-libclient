@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_508fe423",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-02-28T15:40:12Z",
+      "side": 1,
+      "message": "uint ? or copy row to some uint uRow at the begining of the function ?",
+      "range": {
+        "startLine": 209,
+        "startChar": 31,
+        "endLine": 209,
+        "endChar": 51
+      },
+      "revId": "d37906368fd4703a4d519ed3c91b146fe01ba916",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_70946837",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-02-28T15:40:12Z",
+      "side": 1,
+      "message": "what if \u003d\u003d 0 ?",
+      "range": {
+        "startLine": 211,
+        "startChar": 11,
+        "endLine": 211,
+        "endChar": 15
+      },
+      "revId": "d37906368fd4703a4d519ed3c91b146fe01ba916",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
