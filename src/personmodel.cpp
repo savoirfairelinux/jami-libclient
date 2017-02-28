@@ -19,6 +19,10 @@
 //Parent
 #include "personmodel.h"
 
+//Std
+#include <memory>
+#include <vector>
+
 //Ring library
 #include "person.h"
 #include "call.h"
@@ -44,11 +48,11 @@ public:
 
    PersonItemNode(Person* p, const NodeType type);
    PersonItemNode(ContactMethod* cm, const NodeType type);
-   Person* m_pPerson;
-   ContactMethod* m_pContactMethod;
+   std::unique_ptr<Person> m_pPerson;
+   ContactMethod* m_pContactMethod {nullptr};
    int m_Index;
-   QVector<PersonItemNode*> m_lChildren;
-   PersonItemNode* m_pParent;
+   std::vector<std::unique_ptr<PersonItemNode>> m_lChildren;
+   PersonItemNode* m_pParent {nullptr};
    NodeType m_Type;
 
 };
@@ -65,7 +69,7 @@ public:
 
    //Indexes
    QHash<QByteArray,Person*> m_hPersonsByUid;
-   QVector<PersonItemNode*> m_lPersons;
+   std::vector<std::unique_ptr<PersonItemNode>> m_lPersons;
 
 private:
    PersonModel* q_ptr;
@@ -76,13 +80,13 @@ public Q_SLOTS:
 };
 
 PersonItemNode::PersonItemNode(Person* p, const NodeType type) :
-m_Type(type),m_pPerson(p),m_pContactMethod(nullptr),m_pParent(nullptr)
+m_Type(type),m_pPerson(p)
 {
 
 }
 
 PersonItemNode::PersonItemNode(ContactMethod* cm, const NodeType type) :
-m_Type(type),m_pContactMethod(cm),m_pPerson(nullptr),m_pParent(nullptr)
+m_Type(type),m_pContactMethod(cm)
 {
 
 }
@@ -103,15 +107,6 @@ d_ptr(new PersonModelPrivate(this))
 PersonModel::~PersonModel()
 {
    d_ptr->m_hPersonsByUid.clear();
-   while (d_ptr->m_lPersons.size()) {
-      PersonItemNode* cn = d_ptr->m_lPersons[0];
-      d_ptr->m_lPersons.remove(0);
-      if (cn->m_pPerson)
-         delete cn->m_pPerson;
-      for(PersonItemNode* n : cn->m_lChildren)
-         delete n;
-      delete cn;
-   }
 }
 
 PersonModel& PersonModel::instance()
@@ -181,11 +176,8 @@ int PersonModel::rowCount( const QModelIndex& par ) const
    if (!par.isValid()) {
       return d_ptr->m_lPersons.size();
    }
-   else if (!par.parent().isValid() && par.row() < d_ptr->m_lPersons.size()) {
-      const PersonItemNode* c = d_ptr->m_lPersons[par.row()];
-      if (c) {
-         return c->m_lChildren.size();
-      }
+   else if (!par.parent().isValid() && static_cast<unsigned>(par.row()) < d_ptr->m_lPersons.size()) {
+      return d_ptr->m_lPersons[par.row()]->m_lChildren.size();
    }
    return 0;
 }
@@ -216,13 +208,14 @@ QModelIndex PersonModel::parent( const QModelIndex& idx) const
 
 QModelIndex PersonModel::index( int row, int column, const QModelIndex& par) const
 {
-   if (!par.isValid() && d_ptr->m_lPersons.size() > row) {
-      return createIndex(row,column,d_ptr->m_lPersons[row]);
-   }
-   else if (par.isValid() && d_ptr->m_lPersons[par.row()]->m_lChildren.size() > row) {
-      PersonItemNode* modelItem = (PersonItemNode*)par.internalPointer();
-      if (modelItem && row < modelItem->m_lChildren.size())
-         return createIndex(row,column,modelItem->m_lChildren[row]);
+   if (row >= 0 && column >= 0) {
+      if (!par.isValid() && d_ptr->m_lPersons.size() > static_cast<unsigned>(row)) {
+         return createIndex(row,column,d_ptr->m_lPersons[row].get());
+      } else if (par.isValid() && d_ptr->m_lPersons[par.row()]->m_lChildren.size() > static_cast<unsigned>(row)) {
+         PersonItemNode* modelItem = (PersonItemNode*)par.internalPointer();
+         if (modelItem && static_cast<unsigned>(row) < modelItem->m_lChildren.size())
+            return createIndex(row,column,modelItem->m_lChildren[row].get());
+      }
    }
    return QModelIndex();
 }
@@ -273,21 +266,22 @@ bool PersonModel::addItemCallback(const Person* c)
 {
    //Add to the model
    beginInsertRows(QModelIndex(),d_ptr->m_lPersons.size(),d_ptr->m_lPersons.size());
-   PersonItemNode* n = new PersonItemNode(const_cast<Person*>(c),PersonItemNode::NodeType::PERSON);
-   n->m_Index = d_ptr->m_lPersons.size();
-   d_ptr->m_lPersons << n;
+   d_ptr->m_lPersons.emplace_back(new PersonItemNode {const_cast<Person*>(c), PersonItemNode::NodeType::PERSON});
+   auto& inode = *d_ptr->m_lPersons.back();
+   inode.m_Index = d_ptr->m_lPersons.size() - 1;
    d_ptr->m_hPersonsByUid[c->uid()] = const_cast<Person*>(c);
    endInsertRows();
    emit newPersonAdded(c);
 
    //Add the contact method nodes
-   const QModelIndex& idx = index(n->m_Index,0);
+   const QModelIndex& idx = index(inode.m_Index,0);
    beginInsertRows(idx,0,c->phoneNumbers().size());
-   for(ContactMethod* m : c->phoneNumbers() ) {
-      PersonItemNode* n2 = new PersonItemNode(m,PersonItemNode::NodeType::NUMBER);
-      n2->m_Index = n->m_lChildren.size();
-      n2->m_pParent = n; //TODO support adding new contact methods on the fly
-      n->m_lChildren << n2;
+   inode.m_lChildren.reserve(c->phoneNumbers().size());
+   for (auto& m : c->phoneNumbers()) {
+      inode.m_lChildren.emplace_back(new PersonItemNode {m, PersonItemNode::NodeType::NUMBER});
+      auto& child = *inode.m_lChildren.back().get();
+      child.m_Index = inode.m_lChildren.size() - 1;
+      child.m_pParent = &inode; //TODO support adding new contact methods on the fly
    }
    endInsertRows();
 
