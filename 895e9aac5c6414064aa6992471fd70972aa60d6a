@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "dabed58f_a9b59d32",
+        "filename": "src/person.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-01T13:58:22Z",
+      "side": 1,
+      "message": "does it make sense to let someone to create a Person by calling directly the constructor ? should we not delegate the creation of Person instances to PersonModel ?\n\nOther thing, if the uid is not required at the creation of the object, why there is a paramater in the constructor anyway ? what is the reason since we have setUid ? when I saw that the parameter is passed to the constructor, I unconsciously thought that is required. Moreover there is only 2 times where this parameter is set (with the time function).\n\nSince we want to remove the use of the time function as uid generator, we can do what Stepan says and remove the uid parameter from the constructor.\n\nI\u0027ll wait your comments before going further",
+      "parentUuid": "dabed58f_a947dd4a",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 1
+      },
+      "revId": "895e9aac5c6414064aa6992471fd70972aa60d6a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dabed58f_295c4d25",
         "filename": "src/person.h",
         "patchSetId": 3
