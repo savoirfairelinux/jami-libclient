@@ -33,6 +33,8 @@ class QString;
 #include "typedefs.h"
 #include "itemdataroles.h"
 #include "namedirectory.h"
+#include "usage_statistics.h"
+
 class CredentialModel         ;
 class ContactMethod           ;
 class SecurityEvaluationModel ;
@@ -153,7 +155,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
    Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
    Q_PROPERTY(QString        archivePin                   READ archivePin                    WRITE setArchivePin                  )
-   Q_PROPERTY(RegistrationState registrationState         READ registrationState                                                  )
+   Q_PROPERTY(RegistrationState registrationState         READ registrationState             WRITE setRegistrationState           )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
    Q_PROPERTY(uint           weekCallCount                READ weekCallCount                                                      )
@@ -352,6 +354,10 @@ class LIB_EXPORT Account : public ItemBase {
       };
       Q_ENUMS(MigrationEndedStatus)
 
+      //Factory
+      static Account* buildExistingAccountFromId(const QByteArray& _accountId);
+      static Account* buildNewAccountFromAlias  (Account::Protocol proto, const QString& alias);
+
       /**
        *Perform an action
        * @return If the state changed
@@ -461,6 +467,8 @@ class LIB_EXPORT Account : public ItemBase {
       int     activeCallLimit              () const;
       bool    hasActiveCallLimit           () const;
       bool    needsMigration               () const;
+      uint    internalId                   () const;
+      QString lastSipRegistrationStatus    () const;
 
       bool    exportOnRing      (const QString& password) const;
       bool    registerName      (const QString& password, const QString& name) const;
@@ -478,6 +486,7 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
       Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
       Q_INVOKABLE bool requestTrust    ( Certificate* c       )      ;
+      Q_INVOKABLE QString accountDetail(const QString& param) const;
 
       //Setters
       void setId                            (const QByteArray& id   );
@@ -540,12 +549,26 @@ class LIB_EXPORT Account : public ItemBase {
       void setAllowIncomingFromUnknown      (bool value );
       void setHasActiveCallLimit            (bool value );
       void setProfile                       (Profile* p );
-
+      void setLastSipRegistrationStatus     (const QString& value );
+      void setLastTransportCode             (int value  );
+      void setLastTransportMessage          (const QString& value );
+      void setRegistrationState             (const RegistrationState& value );
       void setRoleData(int role, const QVariant& value);
+
+      bool setAccountProperty(const QString& param, const QString& val);
+
+      //Mutator
+      bool updateState();
 
       //Operators
       bool operator==(const Account&)const;
       Account* operator<<(Account::EditAction& action);
+
+      //Helper
+      void regenSecurityValidation();
+
+      //Variable
+      UsageStatistics usageStats;
 
    public Q_SLOTS:
       void setEnabled(bool checked);
@@ -599,6 +622,7 @@ Account* operator<<(Account* a, Account::EditAction action);
 class LIB_EXPORT AccountPlaceHolder : public Account {
    Q_OBJECT
    friend class AccountModel;
+
 private:
    explicit AccountPlaceHolder(const QByteArray& uid);
 

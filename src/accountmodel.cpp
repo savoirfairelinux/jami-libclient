@@ -41,7 +41,6 @@
 #include "trustrequest.h"
 #include "pendingtrustrequestmodel.h"
 #include "ringdevicemodel.h"
-#include "private/account_p.h"
 #include "private/accountmodel_p.h"
 #include "private/ringdevicemodel_p.h"
 #include "accountstatusmodel.h"
@@ -303,13 +302,13 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
    Account* a = q_ptr->getById(account.toLatin1());
 
    //TODO move this to AccountStatusModel
-   if (!a || (a && a->d_ptr->m_LastSipRegistrationStatus != status )) {
+   if (!a || (a && a->lastSipRegistrationStatus() != status )) {
       if (status != "OK") //Do not pollute the log
          qDebug() << "Account" << account << "status changed to" << status;
    }
 
    if (a)
-      a->d_ptr->m_LastSipRegistrationStatus = status;
+      a->setLastSipRegistrationStatus(status);
 
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
@@ -319,7 +318,7 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
       const QStringList accountIds = configurationManager.getAccountList();
       for (int i = 0; i < accountIds.size(); ++i) {
          if ((!q_ptr->getById(accountIds[i].toLatin1())) && m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-            Account* acc = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
+            Account* acc = Account::buildExistingAccountFromId(accountIds[i].toLatin1());
             qDebug() << "building missing account" << accountIds[i];
             insertAccount(acc,i);
             connect(acc, &Account::changed                , this, &AccountModelPrivate::slotAccountChanged                );
@@ -359,7 +358,7 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
    }
    else {
       const bool isRegistered = a->registrationState() == Account::RegistrationState::READY;
-      a->d_ptr->updateState();
+      a->updateState();
       const QModelIndex idx = a->index();
       emit q_ptr->dataChanged(idx, idx);
       const bool regStateChanged = isRegistered != (a->registrationState() == Account::RegistrationState::READY);
@@ -433,11 +432,11 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 
       a->statusModel()->addTransportEvent(transportDesc,transportCode);
 
-      a->d_ptr->m_LastTransportCode    = transportCode;
-      a->d_ptr->m_LastTransportMessage = transportDesc;
+      a->setLastTransportCode(transportCode);
+      a->setLastTransportMessage(transportDesc);
 
-      const Account::RegistrationState state = fromDaemonName(a->d_ptr->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
-      a->d_ptr->m_RegistrationState = state;
+      const Account::RegistrationState state = fromDaemonName(a->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
+      a->setRegistrationState(state);
    }
 }
 
@@ -528,7 +527,7 @@ void AccountModel::update()
    const QStringList accountIds = configurationManager.getAccountList();
    for (int i = 0; i < accountIds.size(); ++i) {
       if (d_ptr->m_lDeletedAccounts.indexOf(accountIds[i]) == -1) {
-         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
+         Account* a = Account::buildExistingAccountFromId(accountIds[i].toLatin1());
          d_ptr->insertAccount(a,i);
          emit dataChanged(index(i,0),index(size()-1,0));
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
@@ -560,7 +559,7 @@ void AccountModel::updateAccounts()
    for (int i = 0; i < accountIds.size(); ++i) {
       Account* acc = getById(accountIds[i].toLatin1());
       if (!acc) {
-         Account* a = AccountPrivate::buildExistingAccountFromId(accountIds[i].toLatin1());
+         Account* a = Account::buildExistingAccountFromId(accountIds[i].toLatin1());
          d_ptr->insertAccount(a,d_ptr->m_lAccounts.size());
          connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
          //connect(a,SIGNAL(propertyChanged(Account*,QString,QString,QString)),d_ptr,SLOT(slotAccountChanged(Account*)));
@@ -985,7 +984,7 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
 
 Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 {
-   Account* a = AccountPrivate::buildNewAccountFromAlias(proto,alias);
+   Account* a = Account::buildNewAccountFromAlias(proto,alias);
    connect(a,SIGNAL(changed(Account*)),d_ptr,SLOT(slotAccountChanged(Account*)));
    d_ptr->insertAccount(a,d_ptr->m_lAccounts.size());
    connect(a,SIGNAL(presenceEnabledChanged(bool)),d_ptr,SLOT(slotAccountPresenceEnabledChanged(bool)));
