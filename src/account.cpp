@@ -2,6 +2,7 @@
  *   Copyright (C) 2009-2016 by Savoir-faire Linux                          *
  *   Author : Jérémy Quentin <jeremy.quentin@savoirfairelinux.com>          *
  *            Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *            Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -101,7 +102,7 @@ m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationMode
 m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
 m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
-m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
+m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
 m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
 m_pRingDeviceModel(nullptr)
@@ -124,7 +125,7 @@ Account::Account():ItemBase(&AccountModel::instance()),d_ptr(new AccountPrivate(
 }
 
 ///Build an account from it'id
-Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId)
+Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 {
 //    qDebug() << "Building an account from id: " << _accountId;
    Account* a = new Account();
@@ -156,7 +157,7 @@ Account* AccountPrivate::buildExistingAccountFromId(const QByteArray& _accountId
 } //buildExistingAccountFromId
 
 ///Build an account from it's name / alias
-Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
+Account* Account::buildNewAccountFromAlias(Account::Protocol proto, const QString& alias)
 {
    qDebug() << "Building an account from alias: " << alias;
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
@@ -352,7 +353,7 @@ const QString Account::toHumanStateName() const
 }
 
 ///Get an account detail
-const QString AccountPrivate::accountDetail(const QString& param) const
+QString AccountPrivate::accountDetail(const QString& param) const
 {
    if (!m_hAccountDetails.size()) {
       qDebug() << "The account details is not set";
@@ -379,6 +380,12 @@ const QString AccountPrivate::accountDetail(const QString& param) const
       return QString();
    }
 } //accountDetail
+
+///Get an account detail
+QString Account::accountDetail(const QString& param) const
+{
+    return d_ptr->accountDetail(param);
+}
 
 ///Get the alias
 const QString Account::alias() const
@@ -587,30 +594,28 @@ NetworkInterfaceModel* Account::networkInterfaceModel() const
 
 bool Account::isUsedForOutgogingCall() const
 {
-   return d_ptr->m_HaveCalled;
+   return usageStats.haveCalled();
 }
 
 uint Account::totalCallCount() const
 {
-   return d_ptr->m_TotalCount;
+   return usageStats.totalCount();
 }
 
 uint Account::weekCallCount() const
 {
-   return d_ptr->m_LastWeekCount;
+   return usageStats.lastWeekCount();
 }
 
 uint Account::trimesterCallCount() const
 {
-   return d_ptr->m_LastTrimCount;
+   return usageStats.lastTrimCount();
 }
 
 time_t Account::lastUsed() const
 {
-   return d_ptr->m_LastUsed;
+   return usageStats.lastUsed();
 }
-
-
 
 /*******************************************************************************
  *                                                                             *
@@ -891,6 +896,12 @@ int Account::voiceMailCount() const
 Account::RegistrationState Account::registrationState() const
 {
    return d_ptr->m_RegistrationState;
+}
+
+///Return the last account SIP registration status
+QString Account::lastSipRegistrationStatus() const
+{
+   return d_ptr->m_LastSipRegistrationStatus;
 }
 
 ///Return the account type
@@ -1343,10 +1354,11 @@ bool Account::requestTrust( Certificate* c )
    return true;
 }
 
-uint AccountPrivate::internalId() const
+uint Account::internalId() const
 {
-   return m_InternalId;
+   return d_ptr->m_InternalId;
 }
+
 
 /*****************************************************************************
  *                                                                           *
@@ -1387,6 +1399,11 @@ bool AccountPrivate::setAccountProperty(const QString& param, const QString& val
    return m_CurrentState == Account::EditState::MODIFIED_COMPLETE
     || m_CurrentState == Account::EditState::MODIFIED_INCOMPLETE
     || m_CurrentState == Account::EditState::NEW;
+}
+
+bool Account::setAccountProperty(const QString& param, const QString& val)
+{
+    return d_ptr->setAccountProperty(param, val);
 }
 
 ///Set the account id
@@ -1941,6 +1958,25 @@ Profile* Account::profile() const
    return d_ptr->m_pProfile;
 }
 
+void Account::setLastSipRegistrationStatus(const QString& value )
+{
+    d_ptr->m_LastSipRegistrationStatus = value;
+}
+
+void Account::setLastTransportCode(int value)
+{
+    d_ptr->m_LastTransportCode = value;
+}
+
+void Account::setLastTransportMessage(const QString& value)
+{
+    d_ptr->m_LastTransportMessage = value;
+}
+
+void Account::setRegistrationState(const RegistrationState& value)
+{
+    d_ptr->m_RegistrationState = value;
+}
 
 #define CAST(item) static_cast<int>(item)
 ///Proxy for AccountModel::setData
@@ -2322,6 +2358,11 @@ bool AccountPrivate::updateState()
    return true;
 }
 
+bool Account::updateState()
+{
+    return d_ptr->updateState();
+}
+
 ///Save the current account to the daemon
 void AccountPrivate::save()
 {
@@ -2580,6 +2621,12 @@ d_ptr(nullptr)
    Account::d_ptr->m_isLoaded  = false;
 }
 
+/*****************************************************************************
+ *                                                                           *
+ *                                 Mutator                                   *
+ *                                                                           *
+ ****************************************************************************/
+
 ///Merge an existing account into this temporary one
 bool AccountPrivate::merge(Account* account)
 {
@@ -2593,6 +2640,17 @@ bool AccountPrivate::merge(Account* account)
    emit q_ptr->changed(q_ptr);
 
    return true;
+}
+
+/*****************************************************************************
+ *                                                                           *
+ *                                 Helper                                    *
+ *                                                                           *
+ ****************************************************************************/
+
+void Account::regenSecurityValidation()
+{
+    d_ptr->regenSecurityValidation();
 }
 
 #undef TO_BOOL
