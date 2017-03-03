@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_48797ffb",
+        "filename": "src/peerprofilecollection.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-03T03:56:31Z",
+      "side": 1,
+      "message": "I see a better solution, that doesn\u0027t implie code duplication:\n* move this random generator into a dedicated method of Person, call it like \"setRandomUid()\", no parameters.\n* use known uid (m_Uid) in this method (to replace the parameter, it was always the same)\n* use this method in replacement of duplicated code in this patch",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 1
+      },
+      "revId": "fb7ad0f1d73618274e176236f73da85f5710073c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_a81cbbc2",
+        "filename": "src/person.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-03T03:56:31Z",
+      "side": 1,
+      "message": "not used? to be removed?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 27
+      },
+      "revId": "fb7ad0f1d73618274e176236f73da85f5710073c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
