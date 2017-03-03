@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_48bc1f6d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-03T15:38:16Z",
+      "side": 1,
+      "message": "this sentence is not clear and doesn\u0027t explicit the correct behavior. I would prefer something like: \"setRandomUid() ensures the uniqueness of the generated Uid\"",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 12
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_c801ef3a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 7
@@ -81,6 +104,29 @@
         "startChar": 0,
         "endLine": 210,
         "endChar": 37
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_68c1e3e3",
+        "filename": "src/person.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-03T15:38:16Z",
+      "side": 1,
+      "message": "the behavior is not exactly the same as the genuine version (the one with argument). In fact the method (forget its current name) need to validate the uniqueness of the current m_Uid value, if the value is already unique and valid, the method is a no-op. If not, a random number as to be generated until we get uniqueness. That\u0027s the behavior of the geniune version.\nAlso it let a possibility of a new implementation using something different than randomness. This last is only an implementation detail, not an API contract.\nNote: in this case we need also to change the method\u0027s name for something like \u0027validateUid\u0027 or \u0027checkUid\u0027 or \u0027ensureValidUid\u0027, ...",
+      "range": {
+        "startLine": 772,
+        "startChar": 4,
+        "endLine": 774,
+        "endChar": 67
       },
       "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
