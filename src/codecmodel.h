@@ -76,6 +76,9 @@ public:
       COUNT__
    };
 
+   //Constructor/Destructor
+   virtual ~CodecModel();
+
    //Properties
    Q_PROPERTY(QSortFilterProxyModel* audioCodecs    READ audioCodecs    )
    Q_PROPERTY(QSortFilterProxyModel* videoCodecs    READ videoCodecs    )
@@ -116,7 +119,6 @@ private:
 
    //Constructor
    explicit CodecModel(Account* account);
-   virtual ~CodecModel();
 
    QScopedPointer<CodecModelPrivate> d_ptr;
    Q_DECLARE_PRIVATE(CodecModel)

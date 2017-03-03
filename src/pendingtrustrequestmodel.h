@@ -36,6 +36,9 @@ class LIB_EXPORT PendingTrustRequestModel : public QAbstractTableModel
    friend class AccountModelPrivate;
 public:
 
+   //Constructor/Destructor
+   virtual ~PendingTrustRequestModel();
+
    //Model functions
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                ) const override;
@@ -46,7 +49,6 @@ public:
 
 private:
    explicit PendingTrustRequestModel(Account* a);
-   virtual ~PendingTrustRequestModel();
 
    PendingTrustRequestModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(PendingTrustRequestModel)

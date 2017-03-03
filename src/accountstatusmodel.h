@@ -53,6 +53,9 @@ public:
       COUNTER,
    };
 
+   //Constructor/Destructor
+   virtual ~AccountStatusModel();
+
    //Model functions
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                ) const override;
@@ -74,7 +77,6 @@ private:
 
    //Private constructor, can only be called by 'Account'
    explicit AccountStatusModel(Account* parent);
-   virtual ~AccountStatusModel();
 
    AccountStatusModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(AccountStatusModel)

@@ -17,13 +17,28 @@
  ***************************************************************************/
 #pragma once
 
+// Std
+#include <memory>
+
 //Qt
 #include <QtCore/QObject>
 #include <QtCore/QHash>
 
 //Ring
-#include <account.h>
-#include <private/matrixutils.h>
+#include "account.h"
+#include "private/matrixutils.h"
+#include "credentialmodel.h"
+#include "codecmodel.h"
+#include "keyexchangemodel.h"
+#include "ciphermodel.h"
+#include "accountstatusmodel.h"
+#include "securityevaluationmodel.h"
+#include "tlsmethodmodel.h"
+#include "protocolmodel.h"
+#include "bootstrapmodel.h"
+#include "ringdevicemodel.h"
+#include "networkinterfacemodel.h"
+#include "pendingtrustrequestmodel.h"
 
 class AccountPrivate;
 class ContactMethod;
@@ -122,27 +137,27 @@ public:
    void save   ();
    void reloadMod() {reload();modify();}
 
-   CredentialModel*             m_pCredentials            ;
-   CodecModel*                  m_pCodecModel             ;
-   KeyExchangeModel*            m_pKeyExchangeModel       ;
-   CipherModel*                 m_pCipherModel            ;
-   AccountStatusModel*          m_pStatusModel            ;
-   SecurityEvaluationModel*     m_pSecurityEvaluationModel;
-   TlsMethodModel*              m_pTlsMethodModel         ;
-   ProtocolModel*               m_pProtocolModel          ;
-   BootstrapModel*              m_pBootstrapModel         ;
-   RingDeviceModel*             m_pRingDeviceModel        ;
-   QAbstractItemModel*          m_pKnownCertificates      ;
-   QAbstractItemModel*          m_pBannedCertificates     ;
-   QAbstractItemModel*          m_pAllowedCertificates    ;
-   NetworkInterfaceModel*       m_pNetworkInterfaceModel  ;
+   std::unique_ptr<CredentialModel> m_pCredentials;
+   std::unique_ptr<CodecModel> m_pCodecModel;
+   std::unique_ptr<KeyExchangeModel> m_pKeyExchangeModel;
+   std::unique_ptr<CipherModel> m_pCipherModel;
+   std::unique_ptr<AccountStatusModel> m_pStatusModel;
+   std::unique_ptr<SecurityEvaluationModel> m_pSecurityEvaluationModel;
+   std::unique_ptr<TlsMethodModel> m_pTlsMethodModel;
+   std::unique_ptr<ProtocolModel> m_pProtocolModel;
+   std::unique_ptr<BootstrapModel> m_pBootstrapModel;
+   std::unique_ptr<RingDeviceModel> m_pRingDeviceModel;
+   QAbstractItemModel*          m_pKnownCertificates;
+   QAbstractItemModel*          m_pBannedCertificates;
+   QAbstractItemModel*          m_pAllowedCertificates;
+   std::unique_ptr<NetworkInterfaceModel> m_pNetworkInterfaceModel;
    DaemonCertificateCollection* m_pAllowedCerts           ;
    DaemonCertificateCollection* m_pBannedCerts            ;
    Account::EditState           m_CurrentState            ;
    QMetaObject::Connection      m_cTlsCert                ;
    QMetaObject::Connection      m_cTlsCaCert              ;
    Profile*                     m_pProfile {nullptr}      ;
-   PendingTrustRequestModel*    m_pPendingTrustRequestModel;
+   std::unique_ptr<PendingTrustRequestModel> m_pPendingTrustRequestModel;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 

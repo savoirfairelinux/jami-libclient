@@ -32,6 +32,9 @@ public:
    friend class Account;
    friend class AccountModelPrivate;
 
+   //Constructor/Destructor
+   virtual ~RingDeviceModel();
+
    //Abstract model accessors
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
    virtual QVariant      headerData  ( int section, Qt::Orientation orientation, int role          ) const override;
@@ -43,7 +46,6 @@ public:
 
 private:
    explicit RingDeviceModel(Account* a);
-   virtual ~RingDeviceModel();
 
    RingDeviceModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(RingDeviceModel)

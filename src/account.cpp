@@ -42,20 +42,11 @@
 #include "private/certificatemodel_p.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
-#include "credentialmodel.h"
-#include "ciphermodel.h"
-#include "protocolmodel.h"
-#include "bootstrapmodel.h"
-#include "ringdevicemodel.h"
 #include "trustrequest.h"
 #include "person.h"
 #include "profile.h"
 #include "profilemodel.h"
-#include "pendingtrustrequestmodel.h"
 #include "private/pendingtrustrequestmodel_p.h"
-#include "accountstatusmodel.h"
-#include "codecmodel.h"
-#include "networkinterfacemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "presencestatusmodel.h"
@@ -63,7 +54,6 @@
 #include "private/vcardutils.h"
 #include "mime.h"
 #include "namedirectory.h"
-#include "securityevaluationmodel.h"
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
@@ -95,16 +85,15 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 //when objects have a different status for each account
 static uint p_sAutoIncrementId = 0;
 
-AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
+AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_CurrentState(Account::EditState::READY),
-m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
-m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
-m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
+m_pAccountNumber(nullptr),
+m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),
+m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
+m_UseDefaultPort(false),m_RemoteEnabledState(false),
 m_HaveCalled(false),m_TotalCount(0),m_LastWeekCount(0),m_LastTrimCount(0),m_LastUsed(0),m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
-m_pRingDeviceModel(nullptr)
+m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
 {
 }
 
@@ -203,8 +192,6 @@ Account* AccountPrivate::buildNewAccountFromAlias(Account::Protocol proto, const
 Account::~Account()
 {
    disconnect();
-   if (d_ptr->m_pCredentials) delete d_ptr->m_pCredentials ;
-   if (d_ptr->m_pCodecModel) delete d_ptr->m_pCodecModel   ;
 }
 
 /*****************************************************************************
@@ -433,70 +420,70 @@ QVariant Account::stateColor() const
 CredentialModel* Account::credentialModel() const
 {
    if (!d_ptr->m_pCredentials) {
-      d_ptr->m_pCredentials = new CredentialModel(const_cast<Account*>(this));
-      connect(d_ptr->m_pCredentials, &CredentialModel::primaryCredentialChanged,[this]() {
+      d_ptr->m_pCredentials.reset(new CredentialModel(const_cast<Account*>(this)));
+      connect(d_ptr->m_pCredentials.get(), &CredentialModel::primaryCredentialChanged,[this]() {
          Account* a = const_cast<Account*>(this);
          emit a->changed(a);
       });
    }
-   return d_ptr->m_pCredentials;
+   return d_ptr->m_pCredentials.get();
 }
 
 ///Create and return the audio codec model
 CodecModel* Account::codecModel() const
 {
    if (!d_ptr->m_pCodecModel) {
-      d_ptr->m_pCodecModel = new CodecModel(const_cast<Account*>(this));
+      d_ptr->m_pCodecModel.reset(new CodecModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pCodecModel;
+   return d_ptr->m_pCodecModel.get();
 }
 
 KeyExchangeModel* Account::keyExchangeModel() const
 {
    if (!d_ptr->m_pKeyExchangeModel) {
-      d_ptr->m_pKeyExchangeModel = new KeyExchangeModel(const_cast<Account*>(this));
+      d_ptr->m_pKeyExchangeModel.reset(new KeyExchangeModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pKeyExchangeModel;
+   return d_ptr->m_pKeyExchangeModel.get();
 }
 
 CipherModel* Account::cipherModel() const
 {
    if (!d_ptr->m_pCipherModel) {
-      d_ptr->m_pCipherModel = new CipherModel(const_cast<Account*>(this));
+      d_ptr->m_pCipherModel.reset(new CipherModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pCipherModel;
+   return d_ptr->m_pCipherModel.get();
 }
 
 AccountStatusModel* Account::statusModel() const
 {
    if (!d_ptr->m_pStatusModel) {
-      d_ptr->m_pStatusModel = new AccountStatusModel(const_cast<Account*>(this));
+      d_ptr->m_pStatusModel.reset(new AccountStatusModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pStatusModel;
+   return d_ptr->m_pStatusModel.get();
 }
 
 SecurityEvaluationModel* Account::securityEvaluationModel() const
 {
    if (!d_ptr->m_pSecurityEvaluationModel) {
-      d_ptr->m_pSecurityEvaluationModel = new SecurityEvaluationModel(const_cast<Account*>(this));
+      d_ptr->m_pSecurityEvaluationModel.reset(new SecurityEvaluationModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pSecurityEvaluationModel;
+   return d_ptr->m_pSecurityEvaluationModel.get();
 }
 
 TlsMethodModel* Account::tlsMethodModel() const
 {
    if (!d_ptr->m_pTlsMethodModel ) {
-      d_ptr->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
+      d_ptr->m_pTlsMethodModel .reset(new TlsMethodModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pTlsMethodModel;
+   return d_ptr->m_pTlsMethodModel.get();
 }
 
 ProtocolModel* Account::protocolModel() const
 {
    if (!d_ptr->m_pProtocolModel ) {
-      d_ptr->m_pProtocolModel  = new ProtocolModel(const_cast<Account*>(this));
+      d_ptr->m_pProtocolModel .reset(new ProtocolModel(const_cast<Account*>(this)));
    }
-   return d_ptr->m_pProtocolModel;
+   return d_ptr->m_pProtocolModel.get();
 }
 
 BootstrapModel* Account::bootstrapModel() const
@@ -505,18 +492,18 @@ BootstrapModel* Account::bootstrapModel() const
       return nullptr;
 
    if (!d_ptr->m_pBootstrapModel ) {
-      d_ptr->m_pBootstrapModel  = new BootstrapModel(const_cast<Account*>(this));
+      d_ptr->m_pBootstrapModel .reset(new BootstrapModel(const_cast<Account*>(this)));
    }
 
-   return d_ptr->m_pBootstrapModel;
+   return d_ptr->m_pBootstrapModel.get();
 }
 
 RingDeviceModel* Account::ringDeviceModel() const
 {
     if (!d_ptr->m_pRingDeviceModel)
-      d_ptr->m_pRingDeviceModel = new RingDeviceModel(const_cast<Account*>(this));
+       d_ptr->m_pRingDeviceModel.reset(new RingDeviceModel(const_cast<Account*>(this)));
 
-   return d_ptr->m_pRingDeviceModel;
+    return d_ptr->m_pRingDeviceModel.get();
 }
 
 QAbstractItemModel* Account::knownCertificateModel() const
@@ -542,7 +529,7 @@ QAbstractItemModel* Account::bannedCertificatesModel() const
    }
 
    if (!d_ptr->m_pBannedCertificates) {
-      d_ptr->m_pBannedCertificates = CertificateModel::instance().d_ptr->createBannedList(this);
+       d_ptr->m_pBannedCertificates = CertificateModel::instance().d_ptr->createBannedList(this);
    }
 
    return d_ptr->m_pBannedCertificates;
@@ -571,18 +558,18 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
 PendingTrustRequestModel* Account::pendingTrustRequestModel() const
 {
    if (!d_ptr->m_pPendingTrustRequestModel)
-      d_ptr->m_pPendingTrustRequestModel = new PendingTrustRequestModel(const_cast<Account*>(this));
+      d_ptr->m_pPendingTrustRequestModel.reset(new PendingTrustRequestModel(const_cast<Account*>(this)));
 
-   return d_ptr->m_pPendingTrustRequestModel;
+   return d_ptr->m_pPendingTrustRequestModel.get();
 }
 
 NetworkInterfaceModel* Account::networkInterfaceModel() const
 {
    if (!d_ptr->m_pNetworkInterfaceModel) {
-      d_ptr->m_pNetworkInterfaceModel = new NetworkInterfaceModel(const_cast<Account*>(this));
+      d_ptr->m_pNetworkInterfaceModel.reset(new NetworkInterfaceModel(const_cast<Account*>(this)));
    }
 
-   return d_ptr->m_pNetworkInterfaceModel;
+   return d_ptr->m_pNetworkInterfaceModel.get();
 }
 
 bool Account::isUsedForOutgogingCall() const
@@ -2445,11 +2432,11 @@ void AccountPrivate::reload()
 
       //If the credential model is loaded, then update it
       if (m_pCredentials)
-         m_pCredentials << CredentialModel::EditAction::RELOAD;
+         m_pCredentials.get() << CredentialModel::EditAction::RELOAD;
 
       //If the codec model is loaded, then update it
       if (m_pCodecModel)
-         m_pCodecModel << CodecModel::EditAction::RELOAD;
+         m_pCodecModel.get() << CodecModel::EditAction::RELOAD;
 
       emit q_ptr->changed(q_ptr);
 

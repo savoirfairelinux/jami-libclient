@@ -38,6 +38,9 @@ class LIB_EXPORT NetworkInterfaceModel : public QAbstractListModel {
 
 public:
 
+   //Constructor/Destructor
+   virtual ~NetworkInterfaceModel();
+
    //Model functions
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount ( const QModelIndex& parent = QModelIndex()                ) const override;
@@ -52,7 +55,6 @@ private:
 
    //Private constructor, can only be called by 'Account'
    explicit NetworkInterfaceModel(Account* a);
-   virtual ~NetworkInterfaceModel();
 
    NetworkInterfaceModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(NetworkInterfaceModel)

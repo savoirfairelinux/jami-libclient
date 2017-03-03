@@ -57,6 +57,9 @@ public:
       COUNT__
    };
 
+   //Constructor/Destructor
+   virtual ~BootstrapModel();
+
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   )       override;
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                   ) const override;
@@ -81,7 +84,6 @@ public:
 
 private:
    explicit BootstrapModel(Account* a);
-   virtual ~BootstrapModel();
 
    BootstrapModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(BootstrapModel)

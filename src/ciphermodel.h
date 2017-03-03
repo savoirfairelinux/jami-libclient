@@ -41,6 +41,9 @@ class LIB_EXPORT CipherModel : public QAbstractListModel {
 
 public:
 
+   //Constructor/Destructor
+   virtual ~CipherModel();
+
    //Property
    Q_PROPERTY(bool useDefault READ useDefault WRITE setUseDefault)
 
@@ -61,7 +64,6 @@ private:
 
    //Private constructor, can only be called by 'Account'
    explicit CipherModel(Account* parent);
-   virtual ~CipherModel();
 
    CipherModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(CipherModel)
