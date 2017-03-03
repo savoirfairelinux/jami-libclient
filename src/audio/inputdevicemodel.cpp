@@ -79,7 +79,8 @@ QVariant Audio::InputDeviceModel::data( const QModelIndex& index, int role) cons
       return QVariant();
    switch(role) {
       case Qt::DisplayRole:
-         return d_ptr->m_lDeviceList[index.row()];
+         if (index.row() < d_ptr->m_lDeviceList.size())
+            return d_ptr->m_lDeviceList[index.row()];
    };
    return QVariant();
 }
@@ -115,9 +116,12 @@ QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
 
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-      const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::INPUT)].toInt();
-      if (!(idx >= d_ptr->m_lDeviceList.size()))
-         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+      const auto input_idx = static_cast<int>(Settings::DeviceIndex::INPUT);
+      if (input_idx < currentDevices.size()) {
+         const int idx = currentDevices[input_idx].toInt();
+         if (idx < d_ptr->m_lDeviceList.size())
+            d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+      }
 
       connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr.data(), &InputDeviceModelPrivate::setCurrentDevice);
    }
@@ -130,10 +134,13 @@ QModelIndex InputDeviceModelPrivate::currentDevice() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-   const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::INPUT)].toInt();
-   if (idx >= m_lDeviceList.size())
-      return QModelIndex();
-   return q_ptr->index(idx,0);
+   const auto input_idx = static_cast<int>(Audio::Settings::DeviceIndex::INPUT);
+   if (input_idx < currentDevices.size()) {
+      const int idx = currentDevices[input_idx].toInt();
+      if (idx < m_lDeviceList.size())
+         return q_ptr->index(idx,0);
+   }
+   return {};
 }
 
 ///Set the current input device
