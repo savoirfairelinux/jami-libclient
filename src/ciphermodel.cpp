@@ -26,7 +26,6 @@
 //Ring
 #include "dbus/configurationmanager.h"
 #include "account.h"
-#include "private/account_p.h"
 
 class CipherModelPrivate {
 public:
@@ -51,7 +50,7 @@ CipherModelPrivate::CipherModelPrivate(Account* parent) : m_pAccount(parent),m_U
 {
    m_lChecked = new bool[m_slSupportedCiphers.size()]{};
 
-   foreach(const QString& cipher, parent->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
+   foreach(const QString& cipher, parent->accountDetail(DRing::Account::ConfProperties::TLS::CIPHERS).split(' ')) {
       if (!cipher.trimmed().isEmpty()) {
          m_lChecked[m_shMapping[cipher]] = true;
          m_UseDefault = false;
@@ -117,7 +116,7 @@ bool CipherModel::setData( const QModelIndex& index, const QVariant &value, int 
          if (d_ptr->m_lChecked[i])
             ciphers << d_ptr->m_slSupportedCiphers[i];
       }
-      d_ptr->m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::CIPHERS,ciphers.join(QString(' ')));
+      d_ptr->m_pAccount->setAccountProperty(DRing::Account::ConfProperties::TLS::CIPHERS,ciphers.join(QString(' ')));
 
       emit modified();
 

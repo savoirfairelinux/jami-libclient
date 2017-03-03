@@ -48,7 +48,6 @@
 //Ring
 #include "dbus/configurationmanager.h"
 #include "account.h"
-#include "private/account_p.h"
 
 
 struct AccountStatusRow {
