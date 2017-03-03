@@ -81,7 +81,8 @@ QVariant Audio::OutputDeviceModel::data( const QModelIndex& index, int role) con
       return QVariant();
    switch(role) {
       case Qt::DisplayRole:
-         return d_ptr->m_lDeviceList[index.row()];
+         if (index.row() < d_ptr->m_lDeviceList.size())
+            return d_ptr->m_lDeviceList[index.row()];
    };
    return QVariant();
 }
@@ -116,10 +117,12 @@ QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<Audio::OutputDeviceModel*>(this));
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-      const int idx = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
-
-      if (!(idx >= d_ptr->m_lDeviceList.size()))
-         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+      const auto output_idx = static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT);
+      if (output_idx < currentDevices.size()) {
+         const int idx = currentDevices[output_idx].toInt();
+         if (idx < d_ptr->m_lDeviceList.size())
+            d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+      }
 
       connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentDevice(QModelIndex)));
    }
@@ -132,10 +135,13 @@ QModelIndex OutputDeviceModelPrivate::currentDevice() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-   const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT)].toInt();
-   if (idx >= m_lDeviceList.size())
-      return QModelIndex();
-   return q_ptr->index(idx,0);
+   const auto output_idx = static_cast<int>(Audio::Settings::DeviceIndex::OUTPUT);
+   if (output_idx < currentDevices.size()) {
+      const int idx = currentDevices[output_idx].toInt();
+      if (idx < m_lDeviceList.size())
+         return q_ptr->index(idx,0);
+   }
+   return {};
 }
 
 ///Set the current output device
