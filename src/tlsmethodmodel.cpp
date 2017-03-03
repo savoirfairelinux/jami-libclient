@@ -25,8 +25,7 @@
 #include <account_const.h>
 
 //Ring
-#include <account.h>
-#include <private/account_p.h>
+#include "account.h"
 
 class TlsMethodModelPrivate final : public QObject {
    Q_OBJECT
@@ -148,7 +147,7 @@ QItemSelectionModel* TlsMethodModel::selectionModel() const
 {
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<TlsMethodModel*>(this));
-      const QString value    = d_ptr->m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
+      const QString value    = d_ptr->m_pAccount->accountDetail(DRing::Account::ConfProperties::TLS::METHOD);
       const QModelIndex& idx = toIndex(TlsMethodModelPrivate::fromDaemonName(value));
       d_ptr->m_pSelectionModel->setCurrentIndex(idx,QItemSelectionModel::ClearAndSelect);
 
@@ -165,8 +164,8 @@ void TlsMethodModelPrivate::slotSelectionChanged(const QModelIndex& idx)
       return;
 
    const char* value = toDaemonName(static_cast<TlsMethodModel::Type>(idx.row()));
-   if (value != m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TLS::METHOD))
-      m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD , value);
+   if (value != m_pAccount->accountDetail(DRing::Account::ConfProperties::TLS::METHOD))
+      m_pAccount->setAccountProperty(DRing::Account::ConfProperties::TLS::METHOD , value);
 }
 
 ///Convert a TlsMethodModel::Type enum to the string expected by the daemon API

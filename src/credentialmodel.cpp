@@ -23,9 +23,8 @@
 #include <QtCore/QItemSelectionModel>
 
 //Ring
-#include <account.h>
-#include <private/matrixutils.h>
-#include <private/account_p.h>
+#include "account.h"
+#include "private/matrixutils.h"
 
 //Dring
 #include "dbus/configurationmanager.h"
@@ -437,9 +436,9 @@ void CredentialModelPrivate::save()
       foreach (CredentialNode* n, m_pTurnCat->m_lChildren) {
          Credential* cred = n->m_pCredential;
 
-         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME , cred->username());
-         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_PWD   , cred->password());
-         m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM , cred->realm   ());
+         m_pAccount->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_UNAME , cred->username());
+         m_pAccount->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_PWD   , cred->password());
+         m_pAccount->setAccountProperty(DRing::Account::ConfProperties::TURN::SERVER_REALM , cred->realm   ());
       }
    }
 
@@ -466,9 +465,9 @@ void CredentialModelPrivate::reload()
 
       //TURN
       const QModelIndex& idx = q_ptr->addCredentials(Credential::Type::TURN);
-      const QString usern = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
-      const QString passw = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD  );
-      const QString realm = m_pAccount->d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
+      const QString usern = m_pAccount->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_UNAME);
+      const QString passw = m_pAccount->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_PWD  );
+      const QString realm = m_pAccount->accountDetail(DRing::Account::ConfProperties::TURN::SERVER_REALM);
 
       if (!(usern.isEmpty() && passw.isEmpty() && realm.isEmpty())) {
          q_ptr->setData(idx, usern, CredentialModel::Role::NAME    );

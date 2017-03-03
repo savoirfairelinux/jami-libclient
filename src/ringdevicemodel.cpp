@@ -34,8 +34,7 @@
 #include <account_const.h>
 
 //Ring
-#include <account.h>
-#include <private/account_p.h>
+#include "account.h"
 
 RingDeviceModelPrivate::RingDeviceModelPrivate(RingDeviceModel* q,Account* a) : q_ptr(q),m_pAccount(a)
 {

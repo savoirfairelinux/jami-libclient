@@ -32,7 +32,6 @@
 #include "dbus/configurationmanager.h"
 #include <certificatemodel.h>
 #include "private/matrixutils.h"
-#include "private/account_p.h"
 #include "private/certificatemodel_p.h"
 #include "private/certificate_p.h"
 #include <account.h>
@@ -748,7 +747,7 @@ bool Certificate::setStatus(const Account* a, Status s)
 
    //This status is stored as a 3bit bitmask in 3 64bit integers
 
-   const int maskId = a->d_ptr->internalId();
+   const int maskId = a->internalId();
    const int position = (maskId*3)/64;
    const int offset   = (maskId*3)%64;
 
@@ -775,7 +774,7 @@ bool Certificate::setStatus(const Account* a, Status s)
 ///DEPRECATED
 Certificate::Status Certificate::status(const Account* a) const
 {
-   const int maskId = a->d_ptr->internalId();
+   const int maskId = a->internalId();
    const int position = (maskId*3)/64;
    const int offset   = (maskId*3)%64;
 
