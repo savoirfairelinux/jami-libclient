@@ -17,6 +17,9 @@
  ***************************************************************************/
 #pragma once
 
+//Internal
+#include "usage_statistics.h"
+
 class ContactMethodPrivate {
 public:
    ContactMethodPrivate(const URI& number, NumberCategory* cat, ContactMethod::Type st,
@@ -27,15 +30,11 @@ public:
    bool               m_Tracked          ;
    Person*            m_pPerson          ;
    Account*           m_pAccount         ;
-   time_t             m_LastUsed         ;
    QList<Call*>       m_lCalls           ;
    int                m_PopularityIndex  ;
    QString            m_MostCommonName   ;
    QHash<QString,QPair<int,time_t>> m_hNames;
    bool               m_hasType          ;
-   uint               m_LastWeekCount    ;
-   uint               m_LastTrimCount    ;
-   bool               m_HaveCalled       ;
    int                m_Index            ;
    bool               m_IsBookmark       ;
    int                m_TotalSeconds     ;
@@ -48,6 +47,7 @@ public:
    Media::TextRecording* m_pTextRecording;
    Certificate*       m_pCertificate;
    QString            m_RegisteredName   ;
+   UsageStatistics    m_UsageStats       ;
 
    //Parents
    QList<ContactMethod*> m_lParents;
