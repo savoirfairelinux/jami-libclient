@@ -160,8 +160,6 @@ void Audio::OutputDeviceModel::reload()
    beginResetModel();
    d_ptr->m_lDeviceList = configurationManager.getAudioOutputDeviceList();
    endResetModel();
-   emit layoutChanged();
-   emit dataChanged(index(0,0),index(d_ptr->m_lDeviceList.size()-1,0));
 
    // Restore the selection
    selectionModel()->setCurrentIndex(d_ptr->currentDevice(), QItemSelectionModel::ClearAndSelect);
