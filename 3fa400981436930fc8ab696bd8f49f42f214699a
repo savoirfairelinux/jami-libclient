@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_eb9f0d4f",
+        "filename": "src/contactmethod.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-03T22:37:54Z",
+      "side": 1,
+      "message": "this change doesn\u0027t work as expected. I need to fix that",
+      "range": {
+        "startLine": 613,
+        "startChar": 0,
+        "endLine": 613,
+        "endChar": 61
+      },
+      "revId": "3fa400981436930fc8ab696bd8f49f42f214699a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
