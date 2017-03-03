@@ -52,20 +52,6 @@ public:
    };
 
    friend class AccountPlaceHolder;
-   friend class AccountModel;
-   friend class AccountModelPrivate;
-   friend class CipherModelPrivate;
-   friend class CipherModel;
-   friend class AccountStatusModelPrivate;
-   friend class AccountStatusModel;
-   friend class TlsMethodModelPrivate;
-   friend class TlsMethodModel;
-   friend class BootstrapModelPrivate;
-   friend class KeyExchangeModelPrivate;
-   friend class ContactMethod;
-   friend class Certificate;
-   friend class NetworkInterfaceModelPrivate;
-   friend class CredentialModelPrivate;
 
    //Constructor
    explicit AccountPrivate(Account* acc);
@@ -84,26 +70,16 @@ public:
    bool                       m_RemoteEnabledState       ;
    uint                       m_InternalId               ;
 
-   //Statistic
-   bool   m_HaveCalled    ;
-   uint   m_TotalCount    ;
-   uint   m_LastWeekCount ;
-   uint   m_LastTrimCount ;
-   time_t m_LastUsed      ;
-
    //Setters
    void setAccountProperties(const QHash<QString,QString>& m          );
    bool setAccountProperty  (const QString& param, const QString& val );
 
    //Getters
-   const QString accountDetail(const QString& param) const;
+   QString accountDetail(const QString& param) const;
    uint internalId() const;
 
    //Mutator
    bool merge(Account* account);
-   //Constructors
-   static Account* buildExistingAccountFromId(const QByteArray& _accountId);
-   static Account* buildNewAccountFromAlias  (Account::Protocol proto, const QString& alias);
 
    //Helpers
    inline void changeState(Account::EditState state);
