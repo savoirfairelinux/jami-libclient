@@ -29,7 +29,6 @@
 #include "person.h"
 #include "account.h"
 #include "media/recordingmodel.h"
-#include "private/account_p.h"
 #include "private/person_p.h"
 #include "private/contactmethod_p.h"
 #include "call.h"
@@ -104,9 +103,9 @@ const ContactMethod* ContactMethod::BLANK()
 }
 
 ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, ContactMethod::Type st, ContactMethod* q) :
-   m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),m_LastUsed(0),
+   m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
-   m_LastWeekCount(0),m_LastTrimCount(0),m_HaveCalled(false),m_IsBookmark(false),m_TotalSeconds(0),
+   m_IsBookmark(false),m_TotalSeconds(0),
    m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q)
 {}
 
@@ -185,23 +184,15 @@ Person* ContactMethod::contact() const
 ///Return when this number was last used
 time_t ContactMethod::lastUsed() const
 {
-   return d_ptr->m_LastUsed;
+   return d_ptr->m_UsageStats.lastUsed;
 }
 
 ///Set this number default account
 void ContactMethod::setAccount(Account* account)
 {
-
    //Add the statistics
-   if (account && !d_ptr->m_pAccount) {
-      account->d_ptr->m_HaveCalled    += d_ptr->m_HaveCalled    ;
-      account->d_ptr->m_TotalCount    += callCount()            ;
-      account->d_ptr->m_LastWeekCount += d_ptr->m_LastWeekCount ;
-      account->d_ptr->m_LastTrimCount += d_ptr->m_LastTrimCount ;
-
-      if (d_ptr->m_LastUsed > account->d_ptr->m_LastUsed)
-         account->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
-   }
+   if (account && !d_ptr->m_pAccount)
+       account->usageStats += d_ptr->m_UsageStats;
 
    d_ptr->m_pAccount = account;
 
@@ -298,8 +289,8 @@ bool ContactMethod::setType(ContactMethod::Type t)
 ///Update the last time used only if t is more recent than m_LastUsed
 void ContactMethod::setLastUsed(time_t t)
 {
-    if (t > d_ptr->m_LastUsed) {
-       d_ptr->m_LastUsed = t;
+    if (t > d_ptr->m_UsageStats.lastUsed) {
+       d_ptr->m_UsageStats.lastUsed = t;
        emit lastUsedChanged(t);
     }
 }
@@ -353,22 +344,22 @@ ContactMethod::Type ContactMethod::type() const
 ///Return the number of calls from this number
 int ContactMethod::callCount() const
 {
-   return d_ptr->m_lCalls.size();
+   return d_ptr->m_UsageStats.totalCount;
 }
 
 uint ContactMethod::weekCount() const
 {
-   return d_ptr->m_LastWeekCount;
+   return d_ptr->m_UsageStats.lastWeekCount;
 }
 
 uint ContactMethod::trimCount() const
 {
-   return d_ptr->m_LastTrimCount;
+   return d_ptr->m_UsageStats.lastTrimCount;
 }
 
 bool ContactMethod::haveCalled() const
 {
-   return d_ptr->m_HaveCalled;
+   return d_ptr->m_UsageStats.haveCalled;
 }
 
 ///Best bet for this person real name
@@ -533,7 +524,7 @@ QVariant ContactMethod::roleData(int role) const
          break;
       case static_cast<int>(Ring::Role::LastUsed):
       case static_cast<int>(Call::Role::Date):
-         cat = d_ptr->m_LastUsed <= 0 ? QVariant() : QDateTime::fromTime_t(d_ptr->m_LastUsed);
+         cat = d_ptr->m_UsageStats.lastUsed <= 0 ? QVariant() : QDateTime::fromTime_t(d_ptr->m_UsageStats.lastUsed);
          break;
       case static_cast<int>(Ring::Role::Length):
       case static_cast<int>(Call::Role::Length):
@@ -542,10 +533,10 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Call::Role::FormattedDate):
       case static_cast<int>(Call::Role::FuzzyDate):
-         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_LastUsed);
+         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_UsageStats.lastUsed);
          break;
       case static_cast<int>(Ring::Role::IndexedLastUsed):
-         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(d_ptr->m_LastUsed)));
+         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(d_ptr->m_UsageStats.lastUsed)));
       case static_cast<int>(Call::Role::HasAVRecording):
          cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
          break;
@@ -599,41 +590,36 @@ void ContactMethod::addCall(Call* call)
    //Update the contact method statistics
    d_ptr->m_Type = ContactMethod::Type::USED;
    d_ptr->m_lCalls << call;
+   ++d_ptr->m_UsageStats.totalCount;
    d_ptr->m_TotalSeconds += call->stopTimeStamp() - call->startTimeStamp();
    time_t now;
    ::time ( &now );
 
    if (now - 3600*24*7 < call->stopTimeStamp()) {
-      d_ptr->m_LastWeekCount++;
+      d_ptr->m_UsageStats.lastWeekCount++;
       if (d_ptr->m_pAccount)
-         d_ptr->m_pAccount->d_ptr->m_LastWeekCount++;
+         ++d_ptr->m_pAccount->usageStats.lastWeekCount;
    }
 
    if (now - 3600*24*7*15 < call->stopTimeStamp()) {
-      d_ptr->m_LastTrimCount++;
+      d_ptr->m_UsageStats.lastTrimCount++;
       if (d_ptr->m_pAccount)
-         d_ptr->m_pAccount->d_ptr->m_LastTrimCount++;
+         ++d_ptr->m_pAccount->usageStats.lastTrimCount;
    }
 
    if (call->direction() == Call::Direction::OUTGOING) {
-      d_ptr->m_HaveCalled = true;
+      d_ptr->m_UsageStats.haveCalled = true;
       if (d_ptr->m_pAccount)
-         d_ptr->m_pAccount->d_ptr->m_HaveCalled = true;
+         d_ptr->m_pAccount->usageStats.haveCalled = true;
    }
 
-   d_ptr->callAdded(call);
-
-   setLastUsed(call->startTimeStamp());
-
-   //Notify the account directly. This avoid having to track all contact
-   //methods from there
-   if (d_ptr->m_pAccount && d_ptr->m_pAccount->d_ptr->m_LastUsed < d_ptr->m_LastUsed)
-      d_ptr->m_pAccount->d_ptr->m_LastUsed = d_ptr->m_LastUsed;
-
-   d_ptr->changed();
-
+   auto time = call->startTimeStamp();
    if (d_ptr->m_pAccount)
-      d_ptr->m_pAccount->d_ptr->m_TotalCount++;
+       d_ptr->m_pAccount->usageStats.setLastUsed(time);
+   setLastUsed(time);
+
+   d_ptr->callAdded(call);
+   d_ptr->changed();
 }
 
 ///Generate an unique representation of this number

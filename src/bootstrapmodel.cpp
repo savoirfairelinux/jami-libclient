@@ -30,8 +30,8 @@
 #include <account_const.h>
 
 //Ring
-#include <account.h>
-#include <private/account_p.h>
+#include "account.h"
+#include "private/matrixutils.h"
 
 typedef void (BootstrapModelPrivate::*BootstrapModelPrivateFct)();
 
@@ -117,7 +117,7 @@ void BootstrapModelPrivate::save()
       }
    }
 
-   m_pAccount->d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME,ret);
+   m_pAccount->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME,ret);
    m_EditState = BootstrapModel::EditState::READY;
 }
 
