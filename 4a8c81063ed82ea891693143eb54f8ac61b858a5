@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_eb0f0d2d",
+        "filename": "src/fallbackpersoncollection.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T19:02:49Z",
+      "side": 1,
+      "message": "I think this needs to be before the save :)",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 21
+      },
+      "revId": "4a8c81063ed82ea891693143eb54f8ac61b858a5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_ab19157b",
+        "filename": "src/localprofilecollection.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T19:02:49Z",
+      "side": 1,
+      "message": "minor point, but you don\u0027t need to pass the nullptr here, since nullptr is the default arg",
+      "range": {
+        "startLine": 209,
+        "startChar": 47,
+        "endLine": 209,
+        "endChar": 54
+      },
+      "revId": "4a8c81063ed82ea891693143eb54f8ac61b858a5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_cb124958",
+        "filename": "src/person.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T19:02:49Z",
+      "side": 1,
+      "message": "extra whitespace",
+      "range": {
+        "startLine": 778,
+        "startChar": 0,
+        "endLine": 778,
+        "endChar": 4
+      },
+      "revId": "4a8c81063ed82ea891693143eb54f8ac61b858a5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
