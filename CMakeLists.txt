@@ -438,6 +438,7 @@ SET( libringclient_LIB_HDRS
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
   src/smartinfohub.h
+  src/usage_statistics.h
 )
 
 SET(libringclient_video_LIB_HDRS

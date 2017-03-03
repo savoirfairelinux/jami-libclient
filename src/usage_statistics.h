@@ -1,6 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2015-2016 by Savoir-faire Linux                               *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Copyright (C) 2017 by Savoir-faire Linux                          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,45 +15,28 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+
 #pragma once
 
-#include <QtCore/QObject>
-#include <typedefs.h>
+//Std
+#include <time.h>
 
-class TrustRequestPrivate;
-class AccountModel;
-class AccountModelPrivate;
-class Certificate;
-class Account;
-class AccountPrivate;
-
-class LIB_EXPORT TrustRequest : public QObject
-{
-   Q_OBJECT
-
-friend class Account;
-friend class AccountModelPrivate;
-friend class AccountPrivate;
+class UsageStatistics {
+public:
+    unsigned totalCount {0};
+    unsigned lastWeekCount {0};
+    unsigned lastTrimCount {0};
+    bool haveCalled {false};
+    time_t lastUsed {0};
 
 public:
-
-   //Getter
-   Certificate* certificate() const;
-   QDateTime    date       () const;
-   Account*     account    () const;
-
-   //Mutator
-   Q_INVOKABLE bool accept ();
-   Q_INVOKABLE bool discard();
-
-private:
-   explicit TrustRequest(Account* a, const QString& id, time_t time);
-   virtual ~TrustRequest();
-
-   TrustRequestPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(TrustRequest)
-
-Q_SIGNALS:
-   void requestAccepted ();
-   void requestDiscarded();
+    UsageStatistics& operator+=(const UsageStatistics& rhs) {
+        totalCount += rhs.totalCount;
+        lastWeekCount += rhs.lastWeekCount;
+        lastTrimCount += rhs.lastTrimCount;
+        haveCalled += rhs.totalCount; // '+=' mean '|=' here
+        if (lastUsed < rhs.lastUsed)
+            lastUsed = rhs.lastUsed;
+        return *this;
+    }
 };
