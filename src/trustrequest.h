@@ -31,7 +31,7 @@ class LIB_EXPORT TrustRequest : public QObject
 {
    Q_OBJECT
 
-friend class AccountModel;
+friend class Account;
 friend class AccountModelPrivate;
 friend class AccountPrivate;
 
@@ -57,4 +57,3 @@ Q_SIGNALS:
    void requestAccepted ();
    void requestDiscarded();
 };
-
