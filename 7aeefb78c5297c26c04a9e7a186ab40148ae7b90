@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_28ed2b8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T15:09:25Z",
+      "side": 1,
+      "message": "something like \"Improve Person uid generation\" is more clear I think",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_c801ef3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T15:09:25Z",
+      "side": 1,
+      "message": "missing space, should be Tuleap: #1519",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 12
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_089f0705",
+        "filename": "src/localprofilecollection.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T15:09:25Z",
+      "side": 1,
+      "message": "I think the setRandomId should be here, since all the functions which construct a new Person call this. This would be consistent with the PeerProfileCollection. Also because if a different collection other than the LocalProfileCollection is used to store the profile, it may have its own way of generating a uid.",
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_28a44b56",
+        "filename": "src/localprofilecollection.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T15:09:25Z",
+      "side": 1,
+      "message": "see comment above",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 37
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_c8880fc9",
+        "filename": "src/profilemodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-03T15:09:25Z",
+      "side": 1,
+      "message": "as in the other comment, I think this can be moved into the addNew function",
+      "range": {
+        "startLine": 750,
+        "startChar": 8,
+        "endLine": 750,
+        "endChar": 26
+      },
+      "revId": "7aeefb78c5297c26c04a9e7a186ab40148ae7b90",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
