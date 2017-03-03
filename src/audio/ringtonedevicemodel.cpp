@@ -79,7 +79,8 @@ QVariant Audio::RingtoneDeviceModel::data( const QModelIndex& index, int role) c
       return QVariant();
    switch(role) {
       case Qt::DisplayRole:
-         return d_ptr->m_lDeviceList[index.row()];
+            if (index.row() < d_ptr->m_lDeviceList.size())
+                return d_ptr->m_lDeviceList[index.row()];
    };
    return QVariant();
 }
@@ -115,9 +116,12 @@ QItemSelectionModel* Audio::RingtoneDeviceModel::selectionModel() const
 
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-      const int idx = currentDevices[static_cast<int>(Settings::DeviceIndex::RINGTONE)].toInt();
-      if (!(idx >= d_ptr->m_lDeviceList.size()))
-         d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+        const auto ringtone_idx = static_cast<int>(Audio::Settings::DeviceIndex::RINGTONE);
+        if (!(ringtone_idx >= currentDevices.size())) {
+            const int idx = currentDevices[ringtone_idx].toInt();
+            if (!(idx >= d_ptr->m_lDeviceList.size()))
+                d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
+        }
 
       connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentDevice(QModelIndex)));
    }
@@ -130,7 +134,10 @@ QModelIndex RingtoneDeviceModelPrivate::currentDevice() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    const QStringList currentDevices = configurationManager.getCurrentAudioDevicesIndex();
-   const int         idx            = currentDevices[static_cast<int>(Audio::Settings::DeviceIndex::RINGTONE)].toInt();
+    const auto ringtone_idx = static_cast<int>(Audio::Settings::DeviceIndex::RINGTONE);
+    if (ringtone_idx >= currentDevices.size())
+        return QModelIndex();
+    const int idx = currentDevices[ringtone_idx].toInt();
    if (idx >= m_lDeviceList.size())
       return QModelIndex();
    return q_ptr->index(idx,0);
