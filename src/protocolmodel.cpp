@@ -25,8 +25,7 @@
 #include <account_const.h>
 
 //Ring
-#include <account.h>
-#include <private/account_p.h>
+#include "account.h"
 
 class ProtocolModelPrivate final : public QObject
 {
