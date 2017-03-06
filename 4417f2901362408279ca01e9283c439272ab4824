@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_6b1d5d73",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-06T20:22:13Z",
+      "side": 1,
+      "message": "indentation still not fixed",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 7
+      },
+      "revId": "4417f2901362408279ca01e9283c439272ab4824",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_4b189984",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-06T20:22:13Z",
+      "side": 1,
+      "message": "still missing the -1",
+      "range": {
+        "startLine": 272,
+        "startChar": 3,
+        "endLine": 272,
+        "endChar": 44
+      },
+      "revId": "4417f2901362408279ca01e9283c439272ab4824",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
