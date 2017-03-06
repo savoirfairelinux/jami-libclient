@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_4b31790a",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-06T20:11:13Z",
+      "side": 1,
+      "message": "another patch so",
+      "parentUuid": "bab3e1c7_ebaced37",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 45
+      },
+      "revId": "ce1de5a824e7bffc2b312a9be23a99acf9a35c7f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_0bb6218b",
         "filename": "src/personmodel.cpp",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-03-06T15:58:39Z",
       "side": 1,
       "message": "indentation seems weird here... 3 + 2 spaces",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 7
+      },
+      "revId": "ce1de5a824e7bffc2b312a9be23a99acf9a35c7f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_eb5aad4f",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-06T20:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_0bb6218b",
       "range": {
         "startLine": 214,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_8b577126",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-06T20:11:13Z",
+      "side": 1,
+      "message": "good catch",
+      "parentUuid": "bab3e1c7_2bbbe573",
+      "range": {
+        "startLine": 272,
+        "startChar": 3,
+        "endLine": 272,
+        "endChar": 44
+      },
+      "revId": "ce1de5a824e7bffc2b312a9be23a99acf9a35c7f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_cbafa92a",
         "filename": "src/personmodel.cpp",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2017-03-06T15:58:39Z",
       "side": 1,
       "message": "same comment as above",
+      "range": {
+        "startLine": 284,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 47
+      },
+      "revId": "ce1de5a824e7bffc2b312a9be23a99acf9a35c7f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_ab54b521",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-06T20:11:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_cbafa92a",
       "range": {
         "startLine": 284,
         "startChar": 0,
