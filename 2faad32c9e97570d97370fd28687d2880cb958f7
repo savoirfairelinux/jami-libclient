@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_4e0507c1",
+        "filename": "src/account.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-07T17:21:52Z",
+      "side": 1,
+      "message": "Any reason to have this private method and the public one if the public one just calls this one? Why not just have the public one?",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 17
+      },
+      "revId": "2faad32c9e97570d97370fd28687d2880cb958f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_ae684388",
+        "filename": "src/account.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-07T17:21:52Z",
+      "side": 1,
+      "message": "this doesn\u0027t seem needed anymore",
+      "range": {
+        "startLine": 1357,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 1
+      },
+      "revId": "2faad32c9e97570d97370fd28687d2880cb958f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_6e0a4bd4",
+        "filename": "src/private/account_p.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-07T17:21:52Z",
+      "side": 1,
+      "message": "see comments in account.cpp",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 27
+      },
+      "revId": "2faad32c9e97570d97370fd28687d2880cb958f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
