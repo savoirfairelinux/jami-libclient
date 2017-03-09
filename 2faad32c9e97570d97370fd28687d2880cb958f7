@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_31cfd2b2",
+        "filename": "src/account.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-09T03:24:19Z",
+      "side": 1,
+      "message": "This method is used by another AccountPrivate method.\nSo if you only keep the Account version, you must use the q_ptr pointer to use parent\u0027 methods. I want to limit the need of q_ptr, because in pimpl, the best case is to not need a \"parent pointer\". So, when we can, use proxy pattern (Account calling directly AccountPrivate). My idea is to remove q_ptr one day.",
+      "parentUuid": "bab3e1c7_4e0507c1",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 17
+      },
+      "revId": "2faad32c9e97570d97370fd28687d2880cb958f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_ae684388",
         "filename": "src/account.cpp",
         "patchSetId": 10
@@ -36,6 +60,30 @@
       "writtenOn": "2017-03-07T17:21:52Z",
       "side": 1,
       "message": "this doesn\u0027t seem needed anymore",
+      "range": {
+        "startLine": 1357,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 1
+      },
+      "revId": "2faad32c9e97570d97370fd28687d2880cb958f7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_d1c3d688",
+        "filename": "src/account.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-09T03:24:19Z",
+      "side": 1,
+      "message": "right, it safe to remove as AccountPrivate can use m_internalId, also accessible by Account.\nI\u0027m going to make a new changeset for that",
+      "parentUuid": "bab3e1c7_ae684388",
       "range": {
         "startLine": 1357,
         "startChar": 0,
