@@ -25,7 +25,6 @@
 #include <account_const.h>
 
 //Ring
-#include "private/accountmodel_p.h"
 #include "contactmethod.h"
 #include "uri.h"
 
@@ -174,15 +173,11 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
 ///Get the first registerred account (default account)
 Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType type)
 {
-   for (Account* current : AccountModel::instance().d_ptr->m_lAccounts) {
-      if(current
-        && current->registrationState() == Account::RegistrationState::READY
-        && current->isEnabled()
-        && current->supportScheme(type)
-      )
-         return current;
-   }
-   return nullptr;
+    return AccountModel::instance().findAccount([&type](const Account& account) {
+        return account.registrationState() == Account::RegistrationState::READY
+            && account.isEnabled()
+            && account.supportScheme(type);
+    });
 }
 
 QItemSelectionModel* AvailableAccountModel::selectionModel() const

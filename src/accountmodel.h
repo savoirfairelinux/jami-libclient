@@ -18,6 +18,8 @@
  ***************************************************************************/
 #pragma once
 
+#include <functional>
+
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
@@ -47,10 +49,7 @@ public:
    Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
 
-   friend class Account;
    friend class AccountPrivate;
-   friend class AvailableAccountModel;
-   friend class AvailableAccountModelPrivate;
 
    /// @enum Global saving state to be used when using a single saving mechanism for all accounts at once
    enum class EditState {
@@ -109,6 +108,10 @@ public:
    Account*       operator[] (int               i)      ;
    Account*       operator[] (const QByteArray& i)      ;
    const Account* operator[] (int               i) const;
+
+   //Helpers
+   Account* findPlaceHolder(const QByteArray& accountId);
+   Account* findAccount(const std::function<bool(const Account&)>& pred);
 
 private:
    //Constructors & Destructors

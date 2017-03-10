@@ -482,7 +482,7 @@ class LIB_EXPORT Account : public ItemBase {
       time_t lastUsed               () const;
 
       Q_INVOKABLE QVariant roleData    ( int role             ) const;
-      Q_INVOKABLE bool supportScheme   ( URI::SchemeType type )      ;
+      Q_INVOKABLE bool supportScheme   ( URI::SchemeType type ) const;
       Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
       Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
       Q_INVOKABLE bool requestTrust    ( Certificate* c       )      ;
@@ -565,6 +565,7 @@ class LIB_EXPORT Account : public ItemBase {
       Account* operator<<(Account::EditAction& action);
 
       //Helper
+      static Account::RegistrationState fromDaemonName(const QString& st);
       void regenSecurityValidation();
 
       //Variable
