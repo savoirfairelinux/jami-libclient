@@ -35,15 +35,12 @@ class AccountModelPrivate final : public QObject
    Q_OBJECT
    Q_DECLARE_PUBLIC(AccountModel)
 
-   friend class AccountPrivate;
-   friend class AvailableAccountModel;
 public:
    //Constructor
    explicit AccountModelPrivate(AccountModel* parent);
    void init();
 
    //Helpers
-   static Account::RegistrationState fromDaemonName(const QString& st);
    void enableProtocol(Account::Protocol proto);
    AccountModel::EditState convertAccountEditState(const Account::EditState s);
    void insertAccount(Account* a, int idx);
