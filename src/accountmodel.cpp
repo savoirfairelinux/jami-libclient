@@ -22,6 +22,7 @@
 
 //Std
 #include <atomic>
+#include <algorithm>
 
 //Qt
 #include <QtCore/QObject>
@@ -261,45 +262,6 @@ AccountModel::setSelectedAccount(Account* a)
     emit selectedAccountChanged(a);
 }
 
-/**
- * The client have a different point of view when it come to the account
- * state. All the different errors are also handled elsewhere
- */
-Account::RegistrationState AccountModelPrivate::fromDaemonName(const QString& st)
-{
-   if     ( st == DRing::Account::States::REGISTERED
-        ||  st == DRing::Account::States::READY                    )
-      return Account::RegistrationState::READY;
-
-   else if( st == DRing::Account::States::UNREGISTERED             )
-      return Account::RegistrationState::UNREGISTERED;
-
-   else if( st == DRing::Account::States::TRYING                   )
-      return Account::RegistrationState::TRYING;
-
-   else if (st == DRing::Account::States::INITIALIZING             )
-      return Account::RegistrationState::INITIALIZING;
-
-   else if( st == DRing::Account::States::ERROR
-        ||  st == DRing::Account::States::ERROR_GENERIC
-        ||  st == DRing::Account::States::ERROR_AUTH
-        ||  st == DRing::Account::States::ERROR_NETWORK
-        ||  st == DRing::Account::States::ERROR_HOST
-        ||  st == DRing::Account::States::ERROR_CONF_STUN
-        ||  st == DRing::Account::States::ERROR_EXIST_STUN
-        ||  st == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE
-        ||  st == DRing::Account::States::ERROR_NOT_ACCEPTABLE
-        ||  st == DRing::Account::States::ERROR_NEED_MIGRATION
-        ||  st == DRing::Account::States::REQUEST_TIMEOUT          )
-      return Account::RegistrationState::ERROR;
-
-   else {
-      qWarning() << "Unknown registration state" << st;
-      return Account::RegistrationState::ERROR;
-   }
-
-}
-
 QList<Account*> AccountModel::accountsToMigrate() const
 {
     QList<Account*> accounts;
@@ -461,7 +423,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
       a->setLastTransportCode(transportCode);
       a->setLastTransportMessage(transportDesc);
 
-      const Account::RegistrationState state = fromDaemonName(a->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
+      const Account::RegistrationState state = Account::fromDaemonName(a->accountDetail(DRing::Account::ConfProperties::Registration::STATUS));
       a->setRegistrationState(state);
    }
 }
@@ -1204,5 +1166,21 @@ void AccountModel::slotConnectivityChanged()
     ConfigurationManager::instance().connectivityChanged();
 }
 
+Account* AccountModel::findPlaceHolder(const QByteArray& accountId)
+{
+    auto iter = d_ptr->m_hsPlaceHolder.find(accountId);
+    if (iter != d_ptr->m_hsPlaceHolder.end())
+        return *iter;
+    return nullptr;
+}
+
+Account* AccountModel::findAccountIf(const std::function<bool(const Account&)>& pred)
+{
+    auto iter = std::find_if(std::begin(d_ptr->m_lAccounts), std::end(d_ptr->m_lAccounts),
+                             [&](Account* acc){ return acc and pred(*acc); });
+    if (iter != std::end(d_ptr->m_lAccounts))
+        return *iter;
+    return nullptr;
+}
 
 #include <accountmodel.moc>

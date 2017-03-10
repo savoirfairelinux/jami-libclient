@@ -136,9 +136,8 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    a->performAction(Account::EditAction::RELOAD);
 
    //If a placeholder exist for this account, upgrade it
-   if (AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]) {
-      AccountModel::instance().d_ptr->m_hsPlaceHolder[_accountId]->Account::d_ptr->merge(a);
-   }
+   if (auto place_holder = AccountModel::instance().findPlaceHolder(_accountId))
+       place_holder->d_ptr->merge(a);
 
    //Load the pending trust requests
    if (a->protocol() == Account::Protocol::RING) {
@@ -1317,7 +1316,7 @@ QVariant Account::roleData(int role) const
 #undef CAST
 
 
-bool Account::supportScheme( URI::SchemeType type )
+bool Account::supportScheme( URI::SchemeType type ) const
 {
    switch(type) {
       case URI::SchemeType::NONE :
@@ -2378,7 +2377,7 @@ bool AccountPrivate::updateState()
       const MapStringString details        = configurationManager.getVolatileAccountDetails(q_ptr->id());
       const QString         status         = details[DRing::Account::VolatileProperties::Registration::STATUS];
       const Account::RegistrationState cst = q_ptr->registrationState();
-      const Account::RegistrationState st  = AccountModelPrivate::fromDaemonName(status);
+      const Account::RegistrationState st  = Account::fromDaemonName(status);
 
       setAccountProperty(DRing::Account::ConfProperties::Registration::STATUS, status); //Update -internal- object state
       m_RegistrationState = st;
@@ -2684,6 +2683,45 @@ bool AccountPrivate::merge(Account* account)
 void Account::regenSecurityValidation()
 {
     d_ptr->regenSecurityValidation();
+}
+
+/**
+ * The client have a different point of view when it come to the account
+ * state. All the different errors are also handled elsewhere
+ */
+Account::RegistrationState Account::fromDaemonName(const QString& st)
+{
+   if     ( st == DRing::Account::States::REGISTERED
+        ||  st == DRing::Account::States::READY                    )
+      return Account::RegistrationState::READY;
+
+   else if( st == DRing::Account::States::UNREGISTERED             )
+      return Account::RegistrationState::UNREGISTERED;
+
+   else if( st == DRing::Account::States::TRYING                   )
+      return Account::RegistrationState::TRYING;
+
+   else if (st == DRing::Account::States::INITIALIZING             )
+      return Account::RegistrationState::INITIALIZING;
+
+   else if( st == DRing::Account::States::ERROR
+        ||  st == DRing::Account::States::ERROR_GENERIC
+        ||  st == DRing::Account::States::ERROR_AUTH
+        ||  st == DRing::Account::States::ERROR_NETWORK
+        ||  st == DRing::Account::States::ERROR_HOST
+        ||  st == DRing::Account::States::ERROR_CONF_STUN
+        ||  st == DRing::Account::States::ERROR_EXIST_STUN
+        ||  st == DRing::Account::States::ERROR_SERVICE_UNAVAILABLE
+        ||  st == DRing::Account::States::ERROR_NOT_ACCEPTABLE
+        ||  st == DRing::Account::States::ERROR_NEED_MIGRATION
+        ||  st == DRing::Account::States::REQUEST_TIMEOUT          )
+      return Account::RegistrationState::ERROR;
+
+   else {
+      qWarning() << "Unknown registration state" << st;
+      return Account::RegistrationState::ERROR;
+   }
+
 }
 
 #undef TO_BOOL
