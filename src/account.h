@@ -79,24 +79,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
-   //The account class delegate all properties part of "sets" to children models
-   friend class AccountModel;
-   friend class AccountModelPrivate;
    friend class AccountPlaceHolder;
-   friend class CipherModelPrivate;
-   friend class CipherModel;
-   friend class AccountStatusModelPrivate;
-   friend class AccountStatusModel;
-   friend class TlsMethodModelPrivate;
-   friend class TlsMethodModel;
-   friend class BootstrapModelPrivate;
-   friend class RingDeviceModelPrivate;
-   friend class KeyExchangeModel;
-   friend class KeyExchangeModelPrivate;
-   friend class ContactMethod;
-   friend class Certificate;
-   friend class NetworkInterfaceModelPrivate;
-   friend class CredentialModelPrivate;
+   friend class AccountModel;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
