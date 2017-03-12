@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_7c1761a4",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "commented code without reason is \"good software rot practice\" :-)",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_1c0c2594",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 928,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "see upper",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_3c11e9ac",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "duplicated",
+      "range": {
+        "startLine": 942,
+        "startChar": 42,
+        "endLine": 942,
+        "endChar": 54
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_dc252d0b",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "I know its a copy of existing lines, but it\u0027s so weird!\nIf you know why 0x01 than 1 I\u0027ll be glad to have the answer.",
+      "range": {
+        "startLine": 943,
+        "startChar": 51,
+        "endLine": 943,
+        "endChar": 55
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_5c793dfb",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "I found that these lines (and those below) are too many time duplicated over the code. It\u0027ll cause some trouble if we need to change something.",
+      "range": {
+        "startLine": 947,
+        "startChar": 12,
+        "endLine": 948,
+        "endChar": 36
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_fc227100",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "what\u0027s the rule for the space after // ? I\u0027m lost...",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_bc1cf9c2",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "typo: happen",
+      "range": {
+        "startLine": 961,
+        "startChar": 26,
+        "endLine": 961,
+        "endChar": 32
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_9c1fb5b7",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-12T00:37:17Z",
+      "side": 1,
+      "message": "typo: unknown",
+      "range": {
+        "startLine": 965,
+        "startChar": 54,
+        "endLine": 965,
+        "endChar": 61
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
