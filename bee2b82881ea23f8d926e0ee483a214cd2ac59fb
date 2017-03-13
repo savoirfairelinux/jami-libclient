@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_3cd6c9c6",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "can\u0027t remember why I commented it, but I think its not needed, since the CertificateModel is set as the parent of the CertificateModelPrivate, I don\u0027t think we have to explicitly delete it",
+      "parentUuid": "bab3e1c7_7c1761a4",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_1c0c2594",
         "filename": "src/certificatemodel.cpp",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_9ce495ad",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 928,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "I often comment debug statements because they pollute the log once you\u0027re done developing a section of code, but I leave them in case more debugging needs to be done later... not sure if there is a better way to do this",
+      "parentUuid": "bab3e1c7_1c0c2594",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_3c11e9ac",
         "filename": "src/certificatemodel.cpp",
         "patchSetId": 5
@@ -47,6 +83,30 @@
       "writtenOn": "2017-03-12T00:37:17Z",
       "side": 1,
       "message": "duplicated",
+      "range": {
+        "startLine": 942,
+        "startChar": 42,
+        "endLine": 942,
+        "endChar": 54
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_bce1599c",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_3c11e9ac",
       "range": {
         "startLine": 942,
         "startChar": 42,
@@ -82,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_dcda0de9",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "my best guess is that it makes it more evident in the style that we\u0027re doing bit shifting",
+      "parentUuid": "bab3e1c7_dc252d0b",
+      "range": {
+        "startLine": 943,
+        "startChar": 51,
+        "endLine": 943,
+        "endChar": 55
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_5c793dfb",
         "filename": "src/certificatemodel.cpp",
         "patchSetId": 5
@@ -93,6 +177,30 @@
       "writtenOn": "2017-03-12T00:37:17Z",
       "side": 1,
       "message": "I found that these lines (and those below) are too many time duplicated over the code. It\u0027ll cause some trouble if we need to change something.",
+      "range": {
+        "startLine": 947,
+        "startChar": 12,
+        "endLine": 948,
+        "endChar": 36
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_bcf8794a",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_5c793dfb",
       "range": {
         "startLine": 947,
         "startChar": 12,
@@ -122,6 +230,24 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_5cee1d8d",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "I think elv13 prefers no space, but I prefer a space... so the rule is that if I copy code from him, there is no space, if I write the code myself, then there is a space... I\u0027ll update the coding rules :P",
+      "parentUuid": "bab3e1c7_fc227100",
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_bc1cf9c2",
         "filename": "src/certificatemodel.cpp",
         "patchSetId": 5
@@ -145,6 +271,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_7cf3e173",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_bc1cf9c2",
+      "range": {
+        "startLine": 961,
+        "startChar": 26,
+        "endLine": 961,
+        "endChar": 32
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_9c1fb5b7",
         "filename": "src/certificatemodel.cpp",
         "patchSetId": 5
@@ -156,6 +306,30 @@
       "writtenOn": "2017-03-12T00:37:17Z",
       "side": 1,
       "message": "typo: unknown",
+      "range": {
+        "startLine": 965,
+        "startChar": 54,
+        "endLine": 965,
+        "endChar": 61
+      },
+      "revId": "bee2b82881ea23f8d926e0ee483a214cd2ac59fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_1ce8a57b",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-13T14:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab3e1c7_9c1fb5b7",
       "range": {
         "startLine": 965,
         "startChar": 54,
