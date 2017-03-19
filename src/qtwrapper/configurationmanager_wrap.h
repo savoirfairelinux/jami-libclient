@@ -244,6 +244,15 @@ public Q_SLOTS: // METHODS
       return QVector<unsigned int>::fromStdVector(DRing::getCodecList());
    }
 
+   VectorMapStringString getContacts(const QString &accountID)
+   {
+      VectorMapStringString temp;
+      for (auto x : DRing::getContacts(accountId.toStdString())) {
+         temp.push_back(convertMap(x));
+      }
+      return temp;
+   }
+
    int getAudioInputDeviceIndex(const QString& devname)
    {
       return DRing::getAudioInputDeviceIndex(devname.toStdString());
