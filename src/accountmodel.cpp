@@ -982,6 +982,11 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
       emit q_ptr->accountEditStateChanged(a, state, previous);
    });
 
+   // Connect the signal when a contact was added by an account
+   connect(a, &Account::contactRequestAccepted, [a, this](const TrustRequest* r){
+      emit q_ptr->accountContactAdded(a, r);
+   });
+
    switch(a->protocol()) {
       case Account::Protocol::SIP:
          m_lSipAccounts  << a;
