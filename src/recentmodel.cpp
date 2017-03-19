@@ -37,6 +37,9 @@
 #include <categorizedhistorymodel.h>
 #include <media/recordingmodel.h>
 #include <media/textrecording.h>
+#include "accountmodel.h"
+#include "trustrequest.h"
+#include "certificate.h"
 
 struct CallGroup
 {
@@ -209,6 +212,24 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
     connect(&CallModel::instance()          , &CallModel::conferenceRemoved        , d_ptr, &RecentModelPrivate::slotConferenceRemoved  );
     connect(&CallModel::instance()          , &CallModel::conferenceChanged        , d_ptr, &RecentModelPrivate::slotConferenceChanged  );
     connect(CallModel::instance().selectionModel(), &QItemSelectionModel::currentChanged, d_ptr, &RecentModelPrivate::slotCurrentCallChanged);
+
+    // Fill contacts from daemon source
+    for (int i = 0; i < AccountModel::instance().rowCount(); i++) {
+        auto account = qvariant_cast<Account*>(AccountModel::instance().data(AccountModel::instance().index(i,0),
+                                                                             static_cast<int>(Account::Role::Object)));
+
+        for (auto cm : account->getContacts())
+            d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
+    }
+
+    // Called when a contact was added to the daemon list (e.g when the user as accepted a request)
+    connect(&AccountModel::instance(), &AccountModel::accountContactAdded, [this] (Account* a, const TrustRequest* r) {
+       auto cm = r->certificate()->contactMethod();
+       if (!cm)
+          cm = PhoneDirectoryModel::instance().getNumber(r->certificate()->remoteId(), a);
+
+       d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
+    });
 
     //Fill the contacts
     for (int i=0; i < PersonModel::instance().rowCount(); i++) {
