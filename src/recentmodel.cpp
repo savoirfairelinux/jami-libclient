@@ -1138,9 +1138,36 @@ bool
 PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
 {
     //we filter only on top nodes
-    if (!source_parent.isValid() && filterRegExp().isEmpty())
-        return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-    else if (!source_parent.isValid()) {
+    if (!source_parent.isValid() && filterRegExp().isEmpty()) {
+        auto idx = sourceModel()->index(source_row, 0);
+
+        if (not idx.isValid()) // for example, manages rowCount() calls
+            return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+
+        auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
+        auto object = idx.data(static_cast<int>(Ring::Role::Object));
+
+        if (type == Ring::ObjectType::ContactMethod) {
+            // checks if the associated account is the same that the one selected
+            auto cm = object.value<ContactMethod *>();
+            if (cm->account() == AccountModel::instance().selectedAccount()) {
+                return true;
+            }
+
+            return false;
+        } else if (type == Ring::ObjectType::Person) {
+            // checks if the Person contains any ContactMethod wich has the same account than the one selected
+            const auto person_numbers = object.value<Person *>()->phoneNumbers();
+            const auto selected_account = AccountModel::instance().selectedAccount();
+            return std::any_of(std::begin(person_numbers), std::end(person_numbers),
+                [&](const ContactMethod* cm) {
+                    return cm->account() == selected_account;
+                });
+        }
+        // anything else without ContactMethod does not require to be filtered
+        return true;
+
+    }else if (!source_parent.isValid()) {
         auto idx = sourceModel()->index(source_row, 0);
 
         //we want to filter on name and number; note that Person object may have many numbers
