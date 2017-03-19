@@ -160,5 +160,7 @@ Q_SIGNALS:
    void editStateChanged(const EditState state, const EditState previous) const;
    /// A list of contacts has been obained.
    void contactsList(Account *account);
+   /// A new contact has been added.
+   void accountContactAdded(Account* a, const TrustRequest* r);
 };
 Q_DECLARE_METATYPE(AccountModel*)
