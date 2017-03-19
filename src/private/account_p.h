@@ -118,6 +118,7 @@ public:
    QMetaObject::Connection      m_cTlsCaCert              ;
    Profile*                     m_pProfile {nullptr}      ;
    PendingTrustRequestModel*    m_pPendingTrustRequestModel;
+    Account::ContactMethods     m_NumberFromDaemon;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 
