@@ -889,4 +889,26 @@ bool Certificate::moveToDotCert() const
 #endif
 }
 
+/**
+ * get the data by role selection
+ * @param role define the role to select
+ * @return a QVariant object, wich contains the selection
+ */
+QVariant
+Certificate::roleData(int role) const
+{
+   switch (role) {
+      case Qt::DisplayRole:
+      case Qt::EditRole:
+         return remoteId();
+      case static_cast<int>(Ring::Role::Object):
+         return QVariant::fromValue(const_cast<Certificate*>(this));
+      case static_cast<int>(Ring::Role::ObjectType):
+        return QVariant::fromValue(Ring::ObjectType::Certificate);
+   }
+
+    /* unknown role */
+    return QVariant();
+}
+
 #include <certificate.moc>
