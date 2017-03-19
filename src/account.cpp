@@ -147,11 +147,25 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
       QMapIterator<QString, QString> iter(requests);
       while (iter.hasNext()) {
          iter.next();
-         qDebug() << "REQUEST" << iter.key() << iter.value();
          TrustRequest* r = new TrustRequest(a, iter.key(), 0);
          a->pendingTrustRequestModel()->d_ptr->addRequest(r);
       }
    }
+
+    // Connects the account to the signal of the model.
+    connect(a->pendingTrustRequestModel() , &PendingTrustRequestModel::requestAccepted, [a] (TrustRequest* r) {
+            Q_EMIT(a->contactRequestAccepted(r));
+    });
+
+    // Load the contacts associated from the daemon and create the cms.
+    if (a->protocol() == Account::Protocol::RING) {
+        const QVector<QMap<QString, QString>> contacts = ConfigurationManager::instance().getContacts(a->id().data());
+        for ( auto it : contacts ) {
+            auto cm = PhoneDirectoryModel::instance().getNumber(it["id"], a);
+            a->d_ptr->m_NumberFromDaemon << cm;
+        }
+    }
+
 
    return a;
 } //buildExistingAccountFromId
@@ -656,6 +670,16 @@ bool Account::needsMigration() const
     const MapStringString details = ConfigurationManager::instance().getVolatileAccountDetails(id());
     const QString status = details[DRing::Account::VolatileProperties::Registration::STATUS];
     return status == DRing::Account::States::ERROR_NEED_MIGRATION;
+}
+
+/**
+ * return all ContactsMethod from @this account
+ * @return Account::ContactMethods a.k.a. QVector<ContactMethod*>
+ */
+const Account::ContactMethods&
+Account::getContacts() const
+{
+    return d_ptr->m_NumberFromDaemon;
 }
 
 ///Return the account user name
