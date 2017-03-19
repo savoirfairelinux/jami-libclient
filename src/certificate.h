@@ -236,6 +236,8 @@ public:
    ChainOfTrustModel* chainOfTrustModel (                             ) const;
    FlagPack<OriginHint> originHint      (                             ) const;
    ContactMethod* contactMethod         (                             ) const;
+    Q_INVOKABLE QVariant roleData (int role) const;
+
 
    static QString getName        (Certificate::Checks   check  );
    static QString getName        (Certificate::Details details );
