@@ -55,6 +55,7 @@ private:
    //Helpers
    void saveCall(QTextStream& stream, const Call* call);
    bool regenFile(const Call* toIgnore);
+   bool firstEntryInHistory();
 
    //Attributes
    QVector<Call*> m_lItems;
@@ -171,6 +172,25 @@ bool LocalHistoryEditor::addNew( Call* call)
 
       const_cast<Call*>(call)->setCollection(m_pCollection);
       addExisting(call);
+      return true;
+   }
+   else
+      qWarning() << "Unable to save history";
+   return false;
+}
+
+bool
+LocalHistoryEditor::firstEntryInHistory()
+{
+   QDir dir(QString('/'));
+   dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + QString());
+
+   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/')+"history.ini");
+
+   if ( file.open(QIODevice::Append | QIODevice::Text) ) {
+      QTextStream streamFileOut(&file);
+      file.close();
+
       return true;
    }
    else
