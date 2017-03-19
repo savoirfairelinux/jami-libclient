@@ -242,9 +242,25 @@ QItemSelectionModel* AccountModel::selectionModel() const
    return d_ptr->m_pSelectionModel;
 }
 
-Account* AccountModel::selectedAccount() const
+/**
+ * returns the select account
+ * @return Account* the selected account
+ */
+Account*
+AccountModel::selectedAccount() const
 {
-    return AccountModel::instance().getAccountByModelIndex(d_ptr->m_pSelectionModel->currentIndex());
+    return d_ptr->m_selectedAccount;
+}
+
+/**
+ * set the select account
+ * @param a the account to set as selected
+ */
+void
+AccountModel::setSelectedAccount(Account* a)
+{
+    d_ptr->m_selectedAccount = a;
+    emit selectedAccountChanged(a);
 }
 
 /**
