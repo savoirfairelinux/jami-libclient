@@ -103,12 +103,23 @@ void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
    m_lRequests << r;
    q_ptr->endInsertRows();
 
-   QObject::connect(r, &TrustRequest::requestAccepted, [this,r]() {
-      emit q_ptr->requestAccepted(r);
-   });
-   QObject::connect(r, &TrustRequest::requestDiscarded, [this,r]() {
-      emit q_ptr->requestDiscarded(r);
-   });
+    QObject::connect(r, &TrustRequest::requestAccepted, [this,r]() {
+        // the request was handled so it can be removed, from the pending list
+        removeRequest(r);
+
+        // it's important to emit after the request was removed.
+        emit q_ptr->requestAccepted(r);
+    });
+
+    QObject::connect(r, &TrustRequest::requestDiscarded, [this,r]() {
+        // the request was handled so it can be removed, from the pending list
+        removeRequest(r);
+
+        // it's important to emit after the request was removed.
+        emit q_ptr->requestDiscarded(r);
+    });
+
+   emit q_ptr->requestAdded(r);
 }
 
 void PendingTrustRequestModelPrivate::removeRequest(TrustRequest* r)
