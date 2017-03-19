@@ -54,5 +54,6 @@ private:
 Q_SIGNALS:
    void requestAccepted (TrustRequest* r);
    void requestDiscarded(TrustRequest* r);
+   void requestAdded(TrustRequest* r);
 };
 
