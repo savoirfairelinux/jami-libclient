@@ -46,6 +46,7 @@ public:
    Q_PROPERTY(bool           isSipSupported             READ isSipSupported   NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
+   Q_PROPERTY(Account*       selectedAccount            READ selectedAccount          WRITE setSelectedAccount)
 
    friend class Account;
    friend class AccountPrivate;
@@ -105,6 +106,7 @@ public:
    Q_INVOKABLE void     cancel   (                                                                                );
    int                  exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password);
    int                  importAccounts(const QString& filePath, const QString& password);
+   void setSelectedAccount(Account* a);
 
    //Operators
    Account*       operator[] (int               i)      ;
@@ -162,5 +164,7 @@ Q_SIGNALS:
    void contactsList(Account *account);
    /// A new contact has been added.
    void accountContactAdded(Account* a, const TrustRequest* r);
+   /// Selected account changed.
+   void selectedAccountChanged(Account* a);
 };
 Q_DECLARE_METATYPE(AccountModel*)
