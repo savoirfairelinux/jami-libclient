@@ -41,6 +41,7 @@ public:
    Certificate* certificate() const;
    QDateTime    date       () const;
    Account*     account    () const;
+   Q_INVOKABLE QVariant roleData (int role) const;
 
    //Mutator
    Q_INVOKABLE bool accept ();
