@@ -97,27 +97,28 @@ public:
    void save   ();
    void reloadMod() {reload();modify();}
 
-   CredentialModel*             m_pCredentials            ;
-   CodecModel*                  m_pCodecModel             ;
-   KeyExchangeModel*            m_pKeyExchangeModel       ;
-   CipherModel*                 m_pCipherModel            ;
-   AccountStatusModel*          m_pStatusModel            ;
-   SecurityEvaluationModel*     m_pSecurityEvaluationModel;
-   TlsMethodModel*              m_pTlsMethodModel         ;
-   ProtocolModel*               m_pProtocolModel          ;
-   BootstrapModel*              m_pBootstrapModel         ;
-   RingDeviceModel*             m_pRingDeviceModel        ;
-   QAbstractItemModel*          m_pKnownCertificates      ;
-   QAbstractItemModel*          m_pBannedCertificates     ;
-   QAbstractItemModel*          m_pAllowedCertificates    ;
-   NetworkInterfaceModel*       m_pNetworkInterfaceModel  ;
-   DaemonCertificateCollection* m_pAllowedCerts           ;
-   DaemonCertificateCollection* m_pBannedCerts            ;
-   Account::EditState           m_CurrentState            ;
-   QMetaObject::Connection      m_cTlsCert                ;
-   QMetaObject::Connection      m_cTlsCaCert              ;
-   Profile*                     m_pProfile {nullptr}      ;
+   CredentialModel*             m_pCredentials             ;
+   CodecModel*                  m_pCodecModel              ;
+   KeyExchangeModel*            m_pKeyExchangeModel        ;
+   CipherModel*                 m_pCipherModel             ;
+   AccountStatusModel*          m_pStatusModel             ;
+   SecurityEvaluationModel*     m_pSecurityEvaluationModel ;
+   TlsMethodModel*              m_pTlsMethodModel          ;
+   ProtocolModel*               m_pProtocolModel           ;
+   BootstrapModel*              m_pBootstrapModel          ;
+   RingDeviceModel*             m_pRingDeviceModel         ;
+   QAbstractItemModel*          m_pKnownCertificates       ;
+   QAbstractItemModel*          m_pBannedCertificates      ;
+   QAbstractItemModel*          m_pAllowedCertificates     ;
+   NetworkInterfaceModel*       m_pNetworkInterfaceModel   ;
+   DaemonCertificateCollection* m_pAllowedCerts            ;
+   DaemonCertificateCollection* m_pBannedCerts             ;
+   Account::EditState           m_CurrentState             ;
+   QMetaObject::Connection      m_cTlsCert                 ;
+   QMetaObject::Connection      m_cTlsCaCert               ;
+   Profile*                     m_pProfile {nullptr}       ;
    PendingTrustRequestModel*    m_pPendingTrustRequestModel;
+   Account::ContactMethods      m_NumbersFromDaemon        ;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 
