@@ -49,6 +49,7 @@ class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
 class PendingTrustRequestModel;
 class Profile;
+class TrustRequest;
 
 //Private
 class AccountPrivate;
@@ -97,6 +98,8 @@ class LIB_EXPORT Account : public ItemBase {
    friend class Certificate;
    friend class NetworkInterfaceModelPrivate;
    friend class CredentialModelPrivate;
+
+   typedef QVector<ContactMethod*> ContactMethods;
 
    //Properties
    Q_PROPERTY(QByteArray     id                           READ id                                                                 )
@@ -185,6 +188,8 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString turnServerUsername                READ turnServerUsername             WRITE setTurnServerUsername           )
    Q_PROPERTY(QString turnServerPassword                READ turnServerPassword             WRITE setTurnServerPassword           )
    Q_PROPERTY(QString turnServerRealm                   READ turnServerRealm                WRITE setTurnServerRealm              )
+
+    Q_PROPERTY(ContactMethods   contactsFromDaemon      READ getContacts)
 
    public:
 
@@ -481,6 +486,8 @@ class LIB_EXPORT Account : public ItemBase {
       uint   trimesterCallCount     () const;
       time_t lastUsed               () const;
 
+      const ContactMethods& getContacts () const;
+
       Q_INVOKABLE QVariant roleData    ( int role             ) const;
       Q_INVOKABLE bool supportScheme   ( URI::SchemeType type )      ;
       Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
@@ -606,6 +613,8 @@ class LIB_EXPORT Account : public ItemBase {
       void registeredNameFound(NameDirectory::LookupStatus status, const QString& address, const QString& name);
       /// Migration ended
       void migrationEnded(const Account::MigrationEndedStatus);
+      /// contact request accepted
+      void contactRequestAccepted(const TrustRequest*);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
