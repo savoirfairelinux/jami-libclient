@@ -18,7 +18,7 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <typedefs.h>
+
 
 class TrustRequestPrivate;
 class AccountModel;
@@ -41,6 +41,7 @@ public:
    Certificate* certificate() const;
    QDateTime    date       () const;
    Account*     account    () const;
+   Q_INVOKABLE QVariant roleData (int role) const;
 
    //Mutator
    Q_INVOKABLE bool accept ();
