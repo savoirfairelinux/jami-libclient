@@ -62,6 +62,7 @@ enum class ObjectType
     Call,
     Media,
     Certificate,
+    TrustRequest,
     COUNT__
 };
 
