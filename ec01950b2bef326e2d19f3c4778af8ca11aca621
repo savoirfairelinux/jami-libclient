@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_8f8d3634",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:27:11Z",
+      "side": 1,
+      "message": "nit: use the imperatif form (add, emit)",
+      "revId": "ec01950b2bef326e2d19f3c4778af8ca11aca621",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_2f820a01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:27:11Z",
+      "side": 1,
+      "message": "typo: convenient",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "ec01950b2bef326e2d19f3c4778af8ca11aca621",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
