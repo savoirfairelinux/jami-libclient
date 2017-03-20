@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_3d49e38b",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T14:35:21Z",
+      "side": 1,
+      "message": "too complex to read: just following is enough:\n\nreturn ConfigurationManager::instance().getContacts(account-\u003eid().data());",
+      "range": {
+        "startLine": 307,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 20
+      },
+      "revId": "78a728d17ffe8e5cdcdf6228fd375d5982812b35",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_5d4a9784",
+        "filename": "src/accountmodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T14:35:21Z",
+      "side": 1,
+      "message": "I prefer to not change the indentation size per line, but dedicate a patch for that and change all lines in same time.\nFor now, I suggest to keep 3-spaces rule.",
+      "revId": "78a728d17ffe8e5cdcdf6228fd375d5982812b35",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_ef12b257",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T14:35:21Z",
+      "side": 1,
+      "message": "1) same indent size issue\n2) why empty? this file is for direct access to daemon API.\nSo do you mean that the daemon API doesn\u0027t exist yet?",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 5
+      },
+      "revId": "78a728d17ffe8e5cdcdf6228fd375d5982812b35",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
