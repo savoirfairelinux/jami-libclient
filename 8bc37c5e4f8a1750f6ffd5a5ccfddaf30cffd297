@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_6f37a2b1",
+        "filename": "src/certificate.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:37:27Z",
+      "side": 1,
+      "message": "typo: unknown",
+      "range": {
+        "startLine": 910,
+        "startChar": 7,
+        "endLine": 910,
+        "endChar": 13
+      },
+      "revId": "8bc37c5e4f8a1750f6ffd5a5ccfddaf30cffd297",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_afe6fa42",
         "filename": "src/certificate.h",
         "patchSetId": 3
