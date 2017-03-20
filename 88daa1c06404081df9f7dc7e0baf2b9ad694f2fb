@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_0f9386a4",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:27:06Z",
+      "side": 1,
+      "message": "hmm where is contactsList used?",
+      "revId": "88daa1c06404081df9f7dc7e0baf2b9ad694f2fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_4f817e49",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:27:06Z",
+      "side": 1,
+      "message": "const auto\u0026\n(DRing:getContacts() return a vector of map, so prevent a copy, and constness is good for the meaning)",
+      "range": {
+        "startLine": 250,
+        "startChar": 11,
+        "endLine": 250,
+        "endChar": 17
+      },
+      "revId": "88daa1c06404081df9f7dc7e0baf2b9ad694f2fb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
