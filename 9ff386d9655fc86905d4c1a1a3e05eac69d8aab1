@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_6fba42e3",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:53:23Z",
+      "side": 1,
+      "message": "over documented :-p",
+      "range": {
+        "startLine": 247,
+        "startChar": 3,
+        "endLine": 247,
+        "endChar": 40
+      },
+      "revId": "9ff386d9655fc86905d4c1a1a3e05eac69d8aab1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_8fbf76d0",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:53:23Z",
+      "side": 1,
+      "message": "over documented, more interesting here to say that this method\nemit selectedAccountChanged signal.",
+      "range": {
+        "startLine": 257,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 42
+      },
+      "revId": "9ff386d9655fc86905d4c1a1a3e05eac69d8aab1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
