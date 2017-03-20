@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_4f03be73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:35:42Z",
+      "side": 1,
+      "message": "1) continue at line, do not use hyphenation. It looks weird!\n2) how is \"not handled properly\"? what\u0027s wrong (than saying \"it\u0027s wrong\")?",
+      "range": {
+        "startLine": 9,
+        "startChar": 63,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "d25c21b421e0d79cb6fe880a793a059be1807fc9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_0ff5c682",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:35:42Z",
+      "side": 1,
+      "message": "nit: { has to be on same line of the if ()",
+      "range": {
+        "startLine": 1142,
+        "startChar": 4,
+        "endLine": 1142,
+        "endChar": 5
+      },
+      "revId": "d25c21b421e0d79cb6fe880a793a059be1807fc9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_cf456eb4",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1167,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:35:42Z",
+      "side": 1,
+      "message": "\"return true;\" never called",
+      "range": {
+        "startLine": 1166,
+        "startChar": 16,
+        "endLine": 1167,
+        "endChar": 24
+      },
+      "revId": "d25c21b421e0d79cb6fe880a793a059be1807fc9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_af483acd",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1167,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:35:42Z",
+      "side": 1,
+      "message": "nit: indentation inconsistency (many lines)",
+      "range": {
+        "startLine": 1161,
+        "startChar": 12,
+        "endLine": 1167,
+        "endChar": 24
+      },
+      "revId": "d25c21b421e0d79cb6fe880a793a059be1807fc9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
