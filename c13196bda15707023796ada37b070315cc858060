@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_4f117eab",
+        "filename": "src/person.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T17:40:14Z",
+      "side": 1,
+      "message": "too complex:\n\njust keep the line \"d_ptr-\u003em_Uid \u003d std::to_string(id_generator(rand)).c_str();\"\n\nremove all others",
+      "range": {
+        "startLine": 773,
+        "startChar": 8,
+        "endLine": 776,
+        "endChar": 15
+      },
+      "revId": "c13196bda15707023796ada37b070315cc858060",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
