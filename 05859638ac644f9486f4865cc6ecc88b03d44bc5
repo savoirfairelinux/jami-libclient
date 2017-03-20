@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_afbd9a04",
+        "filename": "src/trustrequest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:36:56Z",
+      "side": 1,
+      "message": "typo: data",
+      "range": {
+        "startLine": 86,
+        "startChar": 11,
+        "endLine": 86,
+        "endChar": 15
+      },
+      "revId": "05859638ac644f9486f4865cc6ecc88b03d44bc5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_0fc14680",
+        "filename": "src/trustrequest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:36:56Z",
+      "side": 1,
+      "message": "typo: unknown",
+      "range": {
+        "startLine": 103,
+        "startChar": 7,
+        "endLine": 103,
+        "endChar": 13
+      },
+      "revId": "05859638ac644f9486f4865cc6ecc88b03d44bc5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
