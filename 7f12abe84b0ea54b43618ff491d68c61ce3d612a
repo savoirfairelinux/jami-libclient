@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_4ff89ee5",
+        "filename": "src/account.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:29:51Z",
+      "side": 1,
+      "message": "you can remove extra () now",
+      "range": {
+        "startLine": 1343,
+        "startChar": 8,
+        "endLine": 1343,
+        "endChar": 13
+      },
+      "revId": "7f12abe84b0ea54b43618ff491d68c61ce3d612a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
