@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_ef4ab226",
+        "filename": "src/call.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:53:53Z",
+      "side": 1,
+      "message": "this code permits to have startTimeStamp \u003c\u003d 0 and stopTimeStamp \u003e 0.\nIn such case you\u0027ll get nasty effects...",
+      "range": {
+        "startLine": 557,
+        "startChar": 3,
+        "endLine": 564,
+        "endChar": 37
+      },
+      "revId": "7078ca88e62c9774b67f0ae338b5947115207143",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_4f465e25",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T15:53:53Z",
+      "side": 1,
+      "message": "nit: this fit into one line now",
+      "range": {
+        "startLine": 465,
+        "startChar": 12,
+        "endLine": 466,
+        "endChar": 25
+      },
+      "revId": "7078ca88e62c9774b67f0ae338b5947115207143",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
