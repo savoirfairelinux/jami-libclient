@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_aff03aca",
+        "filename": "src/account.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "where \"contacts\" is used?",
+      "range": {
+        "startLine": 163,
+        "startChar": 24,
+        "endLine": 163,
+        "endChar": 32
+      },
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_6f5ec2eb",
+        "filename": "src/account.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "better (notice the \u0027s\u0027 removal to for-range variable)\n\nfor (const auto\u0026 contact: ConfigurationManager::instance().getContacts(a-\u003eid().data()))",
+      "range": {
+        "startLine": 162,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 36
+      },
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_af54baca",
+        "filename": "src/account.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "prefer \"using\" C++11 style for type declaration, more straightforward\n\nusing TypeName \u003d TypeDecl;",
+      "range": {
+        "startLine": 102,
+        "startChar": 3,
+        "endLine": 102,
+        "endChar": 50
+      },
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_cf51eed9",
+        "filename": "src/account.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "indentation inconsistency",
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_0fe4e60b",
+        "filename": "src/private/account_p.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "plurial form? Because it\u0027s a vector. so it\u0027s nice to have indication of such into the member name.",
+      "range": {
+        "startLine": 121,
+        "startChar": 32,
+        "endLine": 121,
+        "endChar": 50
+      },
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_2fdd2a43",
+        "filename": "src/private/account_p.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-20T16:47:38Z",
+      "side": 1,
+      "message": "indentation inconsistency",
+      "revId": "8857134b1089d164639f4a6d63b9e48086813f59",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
