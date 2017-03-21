@@ -1139,6 +1139,9 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
 {
     //we filter only on top nodes
     if (!source_parent.isValid() && filterRegExp().isEmpty()) {
+        if (not AccountModel::instance().selectedAccount())
+            return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+
         auto idx = sourceModel()->index(source_row, 0);
 
         if (not idx.isValid()) // for example, manages rowCount() calls
