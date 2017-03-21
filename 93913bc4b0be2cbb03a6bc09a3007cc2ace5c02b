@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_059365a4",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-21T18:19:11Z",
+      "side": 1,
+      "message": "not confident in that, I prefere to keep a nullptr in selected account to indicate that no account has been selected.\nselection is a user choice, LRC should not enforce such choice",
+      "range": {
+        "startLine": 1015,
+        "startChar": 0,
+        "endLine": 1017,
+        "endChar": 35
+      },
+      "revId": "93913bc4b0be2cbb03a6bc09a3007cc2ace5c02b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
