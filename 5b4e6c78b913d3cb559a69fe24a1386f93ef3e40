@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_b2e65d43",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1157,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-21T02:39:02Z",
+      "side": 1,
+      "message": "in one line:\n\n\nreturn cm-\u003eaccount() \u003d\u003d AccountModel::instance().selectedAccount();",
+      "range": {
+        "startLine": 1153,
+        "startChar": 12,
+        "endLine": 1157,
+        "endChar": 25
+      },
+      "revId": "5b4e6c78b913d3cb559a69fe24a1386f93ef3e40",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_d2e3d131",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1167,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-21T02:39:02Z",
+      "side": 1,
+      "message": "explicit usage of intention by using std::any_of (but require to include \u003calgorithm\u003e), may be faster than simple for-loop:\n\n\nconst auto person_numbers \u003d object.value\u003cPerson *\u003e()-\u003ephoneNumbers();\nconst auto selected_account \u003d AccountModel::instance().selectedAccount();\nreturn std::any_of(std::begin(person_numbers), std::end(person_numbers),\n    [\u0026](const ContactMethod* cm) {\n        return cm-\u003eaccount() \u003d\u003d selected_account;\n    });",
+      "range": {
+        "startLine": 1160,
+        "startChar": 0,
+        "endLine": 1167,
+        "endChar": 25
+      },
+      "revId": "5b4e6c78b913d3cb559a69fe24a1386f93ef3e40",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
