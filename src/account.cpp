@@ -1285,6 +1285,8 @@ QVariant Account::roleData(int role) const
          break;
       case CAST(Account::Role::LastStatusChangeTimeStamp):
          return QVariant::fromValue(statusModel()->lastTimeStamp());
+      case CAST(Account::Role::RegisteredName):
+         return registeredName();
       default:
          return QVariant();
    }
