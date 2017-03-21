@@ -1285,6 +1285,8 @@ QVariant Account::roleData(int role) const
          break;
       case CAST(Account::Role::LastStatusChangeTimeStamp):
          return QVariant::fromValue(statusModel()->lastTimeStamp());
+      case CAST(Account::Role::RegisteredName):
+         return registeredName();
       default:
          return QVariant();
    }
@@ -2267,6 +2269,11 @@ Account::RoleState Account::roleState(Account::Role role) const
             default:
                break;
          }
+
+         // The registered name cannot be changed once the account is created
+         if (!isNew() && role == Account::Role::RegisteredName)
+             return Account::RoleState::READ_ONLY;
+
          break;
       case Account::Protocol::SIP     :
          switch(role) {
@@ -2282,6 +2289,7 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::AllowIncomingFromHistory:
             case Account::Role::AllowIncomingFromContact:
             case Account::Role::AllowIncomingFromUnknown:
+            case Account::Role::RegisteredName          :
             case Account::Role::HasCustomBootstrap      :
                return Account::RoleState::UNAVAILABLE;
          }
