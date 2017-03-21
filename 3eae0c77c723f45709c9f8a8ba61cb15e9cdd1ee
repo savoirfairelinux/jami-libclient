@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_d2baf109",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-21T12:47:21Z",
+      "side": 1,
+      "message": "implement",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "3eae0c77c723f45709c9f8a8ba61cb15e9cdd1ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_723785b1",
+        "filename": "src/trustrequest.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-21T12:47:21Z",
+      "side": 1,
+      "message": "is this needed?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "3eae0c77c723f45709c9f8a8ba61cb15e9cdd1ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_923c7995",
+        "filename": "src/trustrequest.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-03-21T12:47:21Z",
+      "side": 1,
+      "message": "This isn\u0027t needed in the header, you should move it to the .cpp file",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "3eae0c77c723f45709c9f8a8ba61cb15e9cdd1ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
