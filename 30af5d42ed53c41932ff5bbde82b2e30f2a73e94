@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_92a6b9c0",
+        "filename": "src/call.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-21T15:05:34Z",
+      "side": 1,
+      "message": "You can \"else\" the second test as not needed if first succeed.\nRemove the second comment, that don\u0027t give anything useful.\nCorrected a missing space in first test.\n\n   // fix invalid start/stop times\n   if (startTimeStamp \u003c\u003d 0) {\n      // currentSecsSinceEpoch is available only from 5.8\n      startTimeStamp \u003d (QDateTime::currentDateTime().currentMSecsSinceEpoch()) * Q_INT64_C(1000);\n      stopTimeStamp \u003d startTimeStamp;\n   } else if (stopTimeStamp \u003c\u003d 0) {\n      stopTimeStamp \u003d startTimeStamp;\n   }",
+      "range": {
+        "startLine": 557,
+        "startChar": 3,
+        "endLine": 566,
+        "endChar": 37
+      },
+      "revId": "30af5d42ed53c41932ff5bbde82b2e30f2a73e94",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
