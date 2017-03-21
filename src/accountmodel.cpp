@@ -204,6 +204,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::TurnServerEnabled           ) ,QByteArray("turnEnabled"                   ));
       roles.insert(CAST(Account::Role::TlsPrivateKey               ) ,QByteArray("tlsPrivateKey"                 ));
       roles.insert(CAST(Account::Role::LastStatusChangeTimeStamp   ) ,QByteArray("lastStatusChangeTimeStamp"     ));
+      roles.insert(CAST(Account::Role::RegisteredName              ) ,QByteArray("registeredName"                ));
 
    }
    return roles;
