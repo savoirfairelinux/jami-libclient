@@ -22,6 +22,30 @@
       "revId": "fe9debf6a0147da3c99a3df5e45a933789cfa8e9",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bab3e1c7_85d8b554",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-21T19:59:46Z",
+      "side": 1,
+      "message": "my bad I should have deleted this... the code added in recentmodel.cpp should be enough",
+      "parentUuid": "bab3e1c7_c516adf1",
+      "range": {
+        "startLine": 1016,
+        "startChar": 3,
+        "endLine": 1017,
+        "endChar": 35
+      },
+      "revId": "fe9debf6a0147da3c99a3df5e45a933789cfa8e9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
