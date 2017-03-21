@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "bab3e1c7_525da1e8",
+        "filename": "src/trustrequest.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-21T12:57:43Z",
+      "side": 1,
+      "message": "yes. for more information see outputs of patch 7 built by jenkins",
+      "parentUuid": "bab3e1c7_723785b1",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "3eae0c77c723f45709c9f8a8ba61cb15e9cdd1ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bab3e1c7_923c7995",
         "filename": "src/trustrequest.h",
         "patchSetId": 6
