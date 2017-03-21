@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bab3e1c7_c516adf1",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-21T19:55:18Z",
+      "side": 1,
+      "message": "no, really I think it\u0027s not a good idea.\nimagine if I insert many account in a loop, I trigger a selection each time for nothing (as I\u0027ll do only at the end)\nI recommend to select the account \u0027a\u0027 only if m_selectedAccount is nullptr, not a correct account. Or no selection at all.\nbut not each time.",
+      "range": {
+        "startLine": 1016,
+        "startChar": 3,
+        "endLine": 1017,
+        "endChar": 35
+      },
+      "revId": "fe9debf6a0147da3c99a3df5e45a933789cfa8e9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
