@@ -43,8 +43,8 @@ const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityE
    /*VERIFY_ANSWER_ENABLED       */QObject::tr("The \"verify answer certificate\" option is disabled, this leave you vulnerable to man in the middle attack"),
    /*REQUIRE_CERTIFICATE_ENABLED */QObject::tr("None of your certificate provide a private key, this is required. Please select a private key"
                                        " or use a certificate with one built-in"),
-   /*NOT_MISSING_CERTIFICATE     */QObject::tr("No certificate authority is provided, it won't be possible to validate if the answer certificates are valid. Some account may also not work."),
-   /*NOT_MISSING_CERTIFICATE     */QObject::tr("No certificate has been provided. This is, for now, unsupported by Ring"),
+   /* NOT_MISSING_CERTIFICATE    */QObject::tr("No certificate has been provided. This is, for now, unsupported by Ring"),
+   /* NOT_MISSING_AUTHORITY      */QObject::tr("No certificate authority is provided, it won't be possible to validate if the answer certificates are valid. Some account may also not work."),
 };
 
 static const QString s1 = QObject::tr("Your certificate is expired, please contact your system administrator.");
@@ -60,7 +60,7 @@ SecurityEvaluationModelPrivate::maximumSecurityLevel = {{
    /* VERIFY_ANSWER_ENABLED            */ SecurityEvaluationModel::SecurityLevel::MEDIUM      ,
    /* REQUIRE_CERTIFICATE_ENABLED      */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
    /* NOT_MISSING_CERTIFICATE          */ SecurityEvaluationModel::SecurityLevel::WEAK        ,
-   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::NONE        , //This won't work
+   /* NOT_MISSING_AUTHORITY            */ SecurityEvaluationModel::SecurityLevel::ACCEPTABLE  ,
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::Severity , SecurityEvaluationModel::AccountSecurityChecks >
@@ -73,7 +73,7 @@ SecurityEvaluationModelPrivate::flawSeverity = {{
    /* VERIFY_ANSWER_ENABLED             */ SecurityEvaluationModel::Severity::ISSUE           ,
    /* REQUIRE_CERTIFICATE_ENABLED       */ SecurityEvaluationModel::Severity::ISSUE           ,
    /* NOT_MISSING_CERTIFICATE           */ SecurityEvaluationModel::Severity::WARNING         ,
-   /* NOT_MISSING_AUTHORITY             */ SecurityEvaluationModel::Severity::ERROR           ,
+   /* NOT_MISSING_AUTHORITY             */ SecurityEvaluationModel::Severity::INFORMATION     ,
 }};
 
 const TypedStateMachine< SecurityEvaluationModel::SecurityLevel , Certificate::Checks > SecurityEvaluationModelPrivate::maximumCertificateSecurityLevel = {{
