@@ -50,22 +50,7 @@ QVariant PendingTrustRequestModel::data( const QModelIndex& index, int role ) co
    if (!index.isValid())
       return QVariant();
 
-   switch(index.column()) {
-      case Columns::HASH:
-         switch(role) {
-            case Qt::DisplayRole:
-               return d_ptr->m_lRequests[index.row()]->certificate()->remoteId();
-         }
-         break;
-      case Columns::TIME:
-         switch(role) {
-            case Qt::DisplayRole:
-               return d_ptr->m_lRequests[index.row()]->date();
-         }
-         break;
-   }
-
-   return QVariant();
+   return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->roleData(role));
 }
 
 int PendingTrustRequestModel::rowCount( const QModelIndex& parent ) const
