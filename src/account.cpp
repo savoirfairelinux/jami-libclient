@@ -1359,6 +1359,31 @@ bool Account::banCertificate(Certificate* c)
 }
 
 ///Ask the certificate owner (peer) to trust you
+bool Account::requestTrust( const URI& uri )
+{
+   if (uri.isEmpty())
+       return false;
+
+   QByteArray payload;
+
+   // Send our VCard as payload
+   if (contactMethod() && contactMethod()->contact()) {
+      payload = contactMethod()->contact()->toVCard();
+   }
+
+   ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
+
+   return true;
+}
+
+bool Account::requestTrust(const ContactMethod* c)
+{
+    if (!c)
+        return false;
+
+    return requestTrust(c->uri());
+}
+
 bool Account::requestTrust( Certificate* c )
 {
    if ((!c) || (c->remoteId().isEmpty()))
@@ -1373,15 +1398,6 @@ bool Account::requestTrust( Certificate* c )
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
 
    return true;
-}
-
-///Helper method to send trust request to the certificate of this CM
-bool Account::requestTrust(const ContactMethod* c)
-{
-    if (!c)
-        return false;
-
-    return requestTrust(c->certificate());
 }
 
 uint Account::internalId() const
