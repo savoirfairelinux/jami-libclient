@@ -41,7 +41,6 @@
 #include "private/videorenderermanager.h"
 #include "video/resolution.h"
 #include "private/videorenderer_p.h"
-#include "videomanager_interface.h"
 
 // Uncomment following line to output in console the FPS value
 //#define DEBUG_FPS
