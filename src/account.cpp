@@ -141,13 +141,9 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 
    //Load the pending trust requests
    if (a->protocol() == Account::Protocol::RING) {
-      const QMap<QString,QString> requests = ConfigurationManager::instance().getTrustRequests(a->id());
-
-      QMapIterator<QString, QString> iter(requests);
-      while (iter.hasNext()) {
-         iter.next();
-         TrustRequest* r = new TrustRequest(a, iter.key(), 0);
-         a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
+       for (const auto& tr_info : pending_tr) {
+         a->pendingTrustRequestModel()->d_ptr->addRequest(new TrustRequest(a, tr_info["from"], 0));
       }
    }
 
