@@ -65,7 +65,7 @@ QVariant PendingTrustRequestModel::data( const QModelIndex& index, int role ) co
          break;
    }
 
-   return QVariant();
+   return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->roleData(role));
 }
 
 int PendingTrustRequestModel::rowCount( const QModelIndex& parent ) const
