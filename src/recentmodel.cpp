@@ -1139,6 +1139,7 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
 {
     //we filter only on top nodes
     if (!source_parent.isValid() && filterRegExp().isEmpty()) {
+        // if there is no account selected, show the item.
         if (not AccountModel::instance().selectedAccount())
             return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 
@@ -1153,16 +1154,30 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
         if (type == Ring::ObjectType::ContactMethod) {
             // checks if the associated account is the same that the one selected
             auto cm = object.value<ContactMethod *>();
+
+            // LRC can create cm without account (typically if the cm was createad but never called)
+            // in this case the cm will be shown for any account.
+            if (not cm->account())
+                return cm;
+
             return cm->account() == AccountModel::instance().selectedAccount();
 
         } else if (type == Ring::ObjectType::Person) {
-            // checks if the Person contains any ContactMethod wich has the same account than the one selected
             const auto person_numbers = object.value<Person *>()->phoneNumbers();
             const auto selected_account = AccountModel::instance().selectedAccount();
-            return std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                [&](const ContactMethod* cm) {
-                    return cm->account() == selected_account;
-                });
+
+            // checks if the Person contains any ContactMethod wich has the same account than the one selected
+            if (selected_account and \
+                std::any_of(std::begin(person_numbers), std::end(person_numbers),
+                            [&](const ContactMethod* cm) { return cm->account() == selected_account; })) {
+               return true;
+            }
+
+            // return false if any ContactMethod has a valid account (but none are the selected_account)
+            if (std::any_of(std::begin(person_numbers), std::end(person_numbers),
+                            [&](const ContactMethod* cm) { return cm->account() != nullptr; })) {
+               return false;
+            }
         }
         // anything else without ContactMethod does not require to be filtered
         return true;
@@ -1198,6 +1213,7 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
                 case Ring::ObjectType::Call:
                 case Ring::ObjectType::Media:
                 case Ring::ObjectType::Certificate:
+                case Ring::ObjectType::TrustRequest:
                 case Ring::ObjectType::COUNT__:
                 break;
             }
