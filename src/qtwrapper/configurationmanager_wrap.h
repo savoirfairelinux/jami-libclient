@@ -618,9 +618,9 @@ public Q_SLOTS: // METHODS
       return convertStringList(DRing::getCertificatesByStatus(accountId.toStdString(), status.toStdString()));
    }
 
-   MapStringString getTrustRequests(const QString& accountId)
+   VectorMapStringString getTrustRequests(const QString& accountId)
    {
-      return convertMap(DRing::getTrustRequests(accountId.toStdString()));
+      return DRing::getTrustRequests(accountId.toStdString());
    }
 
    bool acceptTrustRequest(const QString& accountId, const QString& from)
