@@ -184,7 +184,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    ENDIF()
 ENDIF()
 
-IF (${RING_FOUND} MATCHES "true")
+IF (DEFINED ring_INCLUDE_DIRS)
    INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
 ENDIF()
 
@@ -763,7 +763,7 @@ SET(LIB_INSTALL_DIR ${SANE_LIBRARY_PATH})
 SET(libringclient_CONFIG_PATH "${CMAKE_CURRENT_BINARY_DIR}/LibRingClientConfig.cmake")
 
 CONFIGURE_PACKAGE_CONFIG_FILE(
-   "${CMAKE_SOURCE_DIR}/cmake/LibRingClientConfig.cmake.in" ${libringclient_CONFIG_PATH}
+   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/LibRingClientConfig.cmake.in" ${libringclient_CONFIG_PATH}
    INSTALL_DESTINATION ${LIB_INSTALL_DIR}/libringclient/cmake
    PATH_VARS INCLUDE_INSTALL_DIR
 )
