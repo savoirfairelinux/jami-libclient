@@ -45,3 +45,26 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(LIB_RING_CLIENT
     VERSION_VAR
         @GENERIC_LIB_VERSION@
 )
+
+# This isn't pretty, and the blame is on me. I was clueless when I first
+# wrote this file and got something wrong. `LIB_RING_CLIENT` doesn't match the
+# project name in `ring-lrc/CMakeLists.txt`. This causes problems when the
+# ring-lrc Git repository is used in CMake external projects. Given
+# changing it above would break the API, it instead add a second target
+# with the proper name.
+
+SET(ringclient_LIBRARY ${LIB_RING_CLIENT_LIBRARY})
+SET(ringclient_LIBRARY_DYNAMIC ${LIB_RING_CLIENT_LIBRARY_DYNAMIC})
+SET(ringclient_LIBRARY_STATIC ${LIB_RING_CLIENT_LIBRARY_STATIC})
+SET(ringclient_INCLUDE_DIR ${LIB_RING_CLIENT_INCLUDE_DIR})
+SET(ringclient_INCLUDES ${LIB_RING_CLIENT_INCLUDE_DIR}) #compat
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(ringclient
+    FOUND_VAR
+        ringclient_FOUND
+    REQUIRED_VARS
+        ringclient_LIBRARY
+        ringclient_INCLUDE_DIR
+    VERSION_VAR
+        1.0.0
+)
