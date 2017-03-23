@@ -68,3 +68,21 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(ringclient
     VERSION_VAR
         1.0.0
 )
+
+SET(ringclient_static_LIBRARY ${LIB_RING_CLIENT_LIBRARY})
+SET(ringclient_static_INCLUDE_DIR ${LIB_RING_CLIENT_INCLUDE_DIR})
+SET(ringclient_static_INCLUDES ${LIB_RING_CLIENT_INCLUDE_DIR}) #compat
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(ringclient_static
+    FOUND_VAR
+        ringclient_static_FOUND
+    REQUIRED_VARS
+        ringclient_static_LIBRARY
+        ringclient_static_INCLUDE_DIR
+    VERSION_VAR
+        1.0.0
+)
+
+if(NOT TARGET ringclient AND NOT ringclient_BINARY_DIR)
+  include("@SANE_LIBRARY_PATH@/cmake/LibRingClient/LibRingClientTargets.cmake")
+endif()
