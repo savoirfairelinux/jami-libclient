@@ -769,7 +769,9 @@ Person::ensureUid()
     static std::mt19937_64 rand {seq};
     static std::uniform_int_distribution<uint64_t> id_generator;
 
-    while (d_ptr->m_Uid.isEmpty() or PersonModel::instance().getPersonByUid(d_ptr->m_Uid) != this) {
+    while (d_ptr->m_Uid.isEmpty()
+        or (PersonModel::instance().getPersonByUid(d_ptr->m_Uid)
+            && PersonModel::instance().getPersonByUid(d_ptr->m_Uid) != this)) {
         d_ptr->m_Uid = std::to_string(id_generator(rand)).c_str();
     }
 }
