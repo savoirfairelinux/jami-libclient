@@ -176,16 +176,10 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    SET(ENABLE_QT5 true) # Use Qt5
    MESSAGE(STATUS "Compiling with qtwrapper enabled, Qt5 enabled.")
 
-   INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/src/qtwrapper/)
-
    IF(${VERBOSE_IPC} MATCHES true)
       MESSAGE(STATUS "Adding more debug output")
       ADD_DEFINITIONS(-DVERBOSE_IPC=true)
    ENDIF()
-ENDIF()
-
-IF (DEFINED ring_INCLUDE_DIRS)
-   INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
 ENDIF()
 
 IF(NOT (${ENABLE_VIDEO} MATCHES false))
@@ -199,9 +193,6 @@ ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 SET(GENERIC_LIB_VERSION "1.0.0")
 
 INCLUDE_DIRECTORIES(SYSTEM ${QT_INCLUDES} )
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
-INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
 # Build dbus interfaces
 IF(DEFINED RING_XML_INTERFACES_DIR)
@@ -623,8 +614,19 @@ ENDIF()
 
 QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 
-
 ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+
+IF (DEFINED ring_INCLUDE_DIRS)
+   TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
+      ${ring_INCLUDE_DIRS}
+   )
+ENDIF()
+
+IF(${ENABLE_LIBWRAP} MATCHES true)
+   TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
+      ${CMAKE_SOURCE_DIR}/src/qtwrapper/
+   )
+ENDIF()
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
@@ -636,6 +638,22 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
+   )
+
+   TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/src
+   )
+
+   TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/private/
+   )
+
+   TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+      ${CMAKE_CURRENT_BINARY_DIR}
+   )
+
+   TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+      ${ring_INCLUDE_DIRS}
    )
 ENDIF()
 
@@ -654,10 +672,30 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 ENDIF()
 
 
+SET_TARGET_PROPERTIES(ringclient PROPERTIES
+  PUBLIC_HEADER "${libringclient_LIB_HDRS};${libringclient_extra_LIB_HDRS}"
+)
+
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
 )
+
+# Include as PRIVATE because of the /src/ component
+#TODO figure out how to make them public without an error. This
+#allows some extra macros to start working
+TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/private/
+)
+
+TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
    IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
@@ -676,6 +714,18 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
       TARGET_LINK_LIBRARIES( ringclient_static
          qtwrapper
          ${ring_BIN}
+      )
+
+      TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+         ${CMAKE_CURRENT_SOURCE_DIR}/src
+      )
+
+      TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+         ${CMAKE_CURRENT_SOURCE_DIR}/src/private/
+      )
+
+      TARGET_INCLUDE_DIRECTORIES( ringclient_static PRIVATE
+         ${CMAKE_CURRENT_BINARY_DIR}
       )
    ENDIF()
 ELSE()
@@ -696,14 +746,29 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    ENDIF()
 ENDIF()
 
+EXPORT(TARGETS ringclient
+  FILE "${PROJECT_BINARY_DIR}/LibRingClientTargets.cmake")
+
 SET_TARGET_PROPERTIES( ringclient
   PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}
 )
 
+#This hack force Debian based system to return a non multi-arch path
+#this is required to prevent the .deb libringclient.so from having an
+#higher priority than the prefixed one.
+STRING(REPLACE "${CMAKE_LIBRARY_ARCHITECTURE}" "" SANE_LIBRARY_PATH "${CMAKE_INSTALL_FULL_LIBDIR}" )
+
 SET(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
-INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient
+INSTALL(TARGETS ringclient
+  EXPORT LibRingClientTargets
+  PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/libringclient"
+  LIBRARY DESTINATION "${SANE_LIBRARY_PATH}" COMPONENT ringclient
+    COMPONENT Devel
+)
+
+INSTALL(EXPORT LibRingClientTargets
+  DESTINATION ${SANE_LIBRARY_PATH}/cmake/LibRingClient
   COMPONENT Devel
 )
 
@@ -732,11 +797,6 @@ INSTALL( FILES ${libringclient_interface_LIB_HDRS}
   COMPONENT Devel
 )
 
-#This hack force Debian based system to return a non multi-arch path
-#this is required to prevent the .deb libringclient.so from having an
-#higher priority than the prefixed one.
-STRING(REPLACE "${CMAKE_LIBRARY_ARCHITECTURE}" "" SANE_LIBRARY_PATH "${CMAKE_INSTALL_FULL_LIBDIR}" )
-
 INSTALL( TARGETS ringclient
   ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
@@ -752,14 +812,8 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    )
 ENDIF()
 
-
 SET(LIB_INSTALL_DIR ${SANE_LIBRARY_PATH})
 
-# Create a CMake config file
-
-# TARGET_INCLUDE_DIRECTORIES(ringclient PUBLIC
-# "$<INSTALL_INTERFACE:$<CMAKE_INSTALL_PREFIX>/${INCLUDE_INSTALL_DIR}/libringclient>"
-# )
 SET(libringclient_CONFIG_PATH "${CMAKE_CURRENT_BINARY_DIR}/LibRingClientConfig.cmake")
 
 CONFIGURE_PACKAGE_CONFIG_FILE(
@@ -772,12 +826,6 @@ INSTALL( FILES ${libringclient_CONFIG_PATH}
   DESTINATION ${SANE_LIBRARY_PATH}/cmake/LibRingClient
   COMPONENT Devel
 )
-
-# WRITE_BASIC_PACKAGE_VERSION_FILE(
-#    ${libringclient_CONFIG_PATH}
-#    VERSION ${GENERIC_LIB_VERSION}
-#    COMPATIBILITY SameMajorVersion
-# )
 
 # translations
 IF( Qt5LinguistTools_FOUND )
