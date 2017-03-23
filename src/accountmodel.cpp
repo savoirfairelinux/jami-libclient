@@ -33,7 +33,6 @@
 
 //Ring daemon
 #include <account_const.h>
-#include <configurationmanager_interface.h>
 
 //Ring library
 #include "account.h"
