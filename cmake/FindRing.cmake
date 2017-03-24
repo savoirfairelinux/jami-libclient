@@ -11,7 +11,7 @@ ELSEIF(EXISTS ${RING_INCLUDE_DIR}/dring.h)
 ELSEIF(EXISTS ${RING_BUILD_DIR}/dring/dring.h)
    SET(ring_INCLUDE_DIRS ${RING_BUILD_DIR}/dring)
 ELSE()
-   MESSAGE("Daemon header not found!
+   MESSAGE(STATUS "Daemon header not found!
    Add -DRING_BUILD_DIR or -DCMAKE_INSTALL_PREFIX")
    SET(RING_FOUND false)
 ENDIF()
@@ -41,5 +41,5 @@ ENDIF()
 
 ENDIF()
 
-MESSAGE("Ring daemon header is in " ${ring_INCLUDE_DIRS})
-MESSAGE("Ring library path is " ${ring_BIN})
+MESSAGE(STATUS "Ring daemon header is in " ${ring_INCLUDE_DIRS})
+MESSAGE(STATUS "Ring library path is " ${ring_BIN})
