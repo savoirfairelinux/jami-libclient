@@ -47,6 +47,9 @@ public:
    Q_INVOKABLE bool accept ();
    Q_INVOKABLE bool discard();
 
+   // Operator
+   bool operator==(const TrustRequest& another) const;
+
 private:
    explicit TrustRequest(Account* a, const QString& id, time_t time);
    virtual ~TrustRequest();
