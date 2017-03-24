@@ -136,6 +136,14 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
       if (!a)
          a = AccountModel::instance().ip2ip();
 
+      // If there is only RING account, it will still be nullptr. Given there is
+      // *only* RING accounts, then the user probably want a call using the
+      // Ring protocol.
+      if (!a)
+         a = AvailableAccountModelPrivate::firstRegisteredAccount(
+             URI::SchemeType::RING
+         );
+
       AvailableAccountModelPrivate::setPriorAccount(a);
       return a;
    }
