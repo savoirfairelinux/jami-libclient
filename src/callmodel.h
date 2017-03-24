@@ -157,6 +157,8 @@ Q_SIGNALS:
    void rendererRemoved         ( Call* call, Video::Renderer* renderer   );
    ///Notify when a media is added
    void mediaAdded              ( Call* call, Media::Media* media         );
+   ///Notify when the dial (search) field changed
+   void dialNumberChanged       ( Call* call, const QString& entry        );
    ///Notify when a media state change
    void mediaStateChanged( Call* call, Media::Media* media, const Media::Media::State s, const Media::Media::State m);
 };

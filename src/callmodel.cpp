@@ -112,6 +112,7 @@ public:
       void slotNewRecordingAvail  ( const QString& callId    , const QString& filePath);
       void slotCallChanged        (                                                   );
       void slotStateChanged       ( Call::State newState, Call::State previousState   );
+      void slotDialNumberChanged  ( const QString& entry                              );
       void slotDTMFPlayed         ( const QString& str                                );
       void slotRecordStateChanged ( const QString& callId    , bool state             );
       void slotAudioMuted         ( const QString& callId    , bool state             );
@@ -468,6 +469,7 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       emit q_ptr->dataChanged(idx, idx);
       connect(call, &Call::changed, this, &CallModelPrivate::slotCallChanged);
       connect(call,&Call::stateChanged,this,&CallModelPrivate::slotStateChanged);
+      connect(call,&Call::dialNumberChanged,this,&CallModelPrivate::slotDialNumberChanged);
       connect(call,SIGNAL(dtmfPlayed(QString)),this,SLOT(slotDTMFPlayed(QString)));
       connect(call,&Call::videoStarted,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererAdded(call, r);
@@ -1361,6 +1363,13 @@ void CallModelPrivate::slotStateChanged(Call::State newState, Call::State previo
    Call* call = qobject_cast<Call*>(sender());
    if (call)
       emit q_ptr->callStateChanged(call, previousState);
+}
+
+/// Forward the Call::dialNumberChanged signal
+void CallModelPrivate::slotDialNumberChanged(const QString& entry)
+{
+   if (Call* call = qobject_cast<Call*>(sender()))
+       emit q_ptr->dialNumberChanged(call, entry);
 }
 
 ///Update model if the data change
