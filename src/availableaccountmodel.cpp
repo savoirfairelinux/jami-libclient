@@ -111,9 +111,8 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
        switch (method->protocolHint()) {
           case URI::ProtocolHint::SIP_OTHER:
           case URI::ProtocolHint::SIP_HOST:
-             type = URI::SchemeType::SIP;
-             break;
           case URI::ProtocolHint::IP:
+             type = URI::SchemeType::SIP;
              break;
           case URI::ProtocolHint::RING:
           case URI::ProtocolHint::RING_USERNAME:
