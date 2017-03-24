@@ -19,6 +19,9 @@
 
 #include "typedefs.h"
 
+// STD
+#include <functional>
+
 //Qt
 #include <QtCore/QString>
 #include <QtCore/QAbstractTableModel>
@@ -82,6 +85,8 @@ public:
    Q_INVOKABLE ContactMethod* getNumber(const QString& uri, Person* contact, Account* account = nullptr, const QString& type = QString());
    Q_INVOKABLE ContactMethod* fromHash (const QString& hash);
    Q_INVOKABLE ContactMethod* fromTemporary(const TemporaryContactMethod* number);
+
+   ContactMethod* getExistingNumberIf(const URI& uri, const std::function<bool(const ContactMethod*)>& pred) const;
 
    //Getter
    int count() const;
