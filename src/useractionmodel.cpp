@@ -29,6 +29,7 @@
 #include "accountmodel.h"
 #include "contactmethod.h"
 #include "availableaccountmodel.h"
+#include "phonedirectorymodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "interfaces/actionextenderi.h"
@@ -157,7 +158,7 @@ const Matrix2D< UAM::Action, Call::State, bool > UserActionModelPrivate::availab
  { UAMA::EMAIL_CONTACT     , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::COPY_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::BOOKMARK          , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
- { UAMA::VIEW_CHAT_HISTORY , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
+ { UAMA::VIEW_CHAT_HISTORY , {{co, { false, true  , true , true , true , true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::ADD_CONTACT_METHOD, {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::CALL_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
  { UAMA::EDIT_CONTACT      , {{co, { false, true  , true , true , false, true , true , true , true , true , true , true , false, false, true , true , true  }}}},
@@ -358,7 +359,7 @@ const Matrix1D< UAMA, FlagPack<UAM::Context>> UserActionModelPrivate::actionCont
    { UAMA::EMAIL_CONTACT     , UAM::Context::CONTACT     },
    { UAMA::COPY_CONTACT      , UAM::Context::MANAGEMENT  },
    { UAMA::BOOKMARK          , UAM::Context::MANAGEMENT  },
-   { UAMA::VIEW_CHAT_HISTORY , UAM::Context::MANAGEMENT  },
+   { UAMA::VIEW_CHAT_HISTORY , UAM::Context::RECOMMENDED },
    { UAMA::ADD_CONTACT_METHOD, UAM::Context::MANAGEMENT  },
    { UAMA::CALL_CONTACT      , UAM::Context::CONTACT     },
    { UAMA::EDIT_CONTACT      , UAM::Context::CONTACT     },
@@ -410,7 +411,7 @@ const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availab
    { UAMA::EMAIL_CONTACT     , {{ true ,    true ,     true ,  false,    true ,        false     }}},
    { UAMA::COPY_CONTACT      , {{ true ,    true ,     true ,  false,    true ,        false     }}},
    { UAMA::BOOKMARK          , {{ true ,    true ,     true ,  false,    true ,        false     }}},
-   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  false,    true ,        false     }}},
+   { UAMA::VIEW_CHAT_HISTORY , {{ true ,    true ,     true ,  true ,    true ,        true      }}},
    { UAMA::ADD_CONTACT_METHOD, {{ true ,    true ,     true ,  false,    true ,        false     }}},
    { UAMA::CALL_CONTACT      , {{ true ,    true ,     true ,  false,    true ,        false     }}},
    { UAMA::EDIT_CONTACT      , {{ true ,    true ,     true ,  false,    true ,        false     }}},
@@ -478,27 +479,33 @@ const Matrix1D< UAM::Action, bool(*)(const ContactMethod*)> UserActionModelPriva
    { UAMA::JOIN              , nullptr                                         },
    { UAMA::ADD_NEW           , nullptr                                         },
    { UAMA::TOGGLE_VIDEO      , nullptr                                         },
-   { UAMA::ADD_CONTACT       , CM_CB { return (!cm->contact())
+   { UAMA::ADD_CONTACT       , CM_CB { return (!cm) || (!cm->contact())
       || cm->contact()->isPlaceHolder();
    }},
-   { UAMA::ADD_TO_CONTACT    , CM_CB { return !cm->contact();                 }},
-   { UAMA::DELETE_CONTACT    , CM_CB { return cm->contact() &&
+   { UAMA::ADD_TO_CONTACT    , CM_CB { return (!cm) || !cm->contact();        }},
+   { UAMA::DELETE_CONTACT    , CM_CB { return cm && cm->contact() &&
       cm->contact()->collection() &&
       cm->contact()->collection()->supportedFeatures() &
          CollectionInterface::SupportedFeatures::REMOVE;
    }},
-   { UAMA::EMAIL_CONTACT     , CM_CB { return cm->contact() &&
+   { UAMA::EMAIL_CONTACT     , CM_CB { return cm && cm->contact() &&
       !cm->contact()->preferredEmail().isEmpty();
    }},
-   { UAMA::COPY_CONTACT      , CM_CB { return cm->contact();                  }},
+   { UAMA::COPY_CONTACT      , CM_CB { return cm && cm->contact();            }},
    { UAMA::BOOKMARK          , nullptr                                         },
-   { UAMA::VIEW_CHAT_HISTORY , CM_CB { return cm->textRecording()
-       && !cm->textRecording()->isEmpty();
+   { UAMA::VIEW_CHAT_HISTORY , CM_CB {
+       return cm && ((
+          cm->textRecording()
+          && !cm->textRecording()->isEmpty()
+       ) || (
+           cm->protocolHint() == URI::ProtocolHint::RING_USERNAME ||
+           cm->protocolHint() == URI::ProtocolHint::RING
+       ));
    }},
-   { UAMA::ADD_CONTACT_METHOD, CM_CB { return cm->contact();                  }},
-   { UAMA::CALL_CONTACT      , CM_CB { return cm->isReachable();              }},
-   { UAMA::EDIT_CONTACT      , CM_CB { return cm->contact();                  }},
-   { UAMA::REMOVE_HISTORY    , CM_CB { return cm->callCount();                }},
+   { UAMA::ADD_CONTACT_METHOD, CM_CB { return cm && cm->contact();            }},
+   { UAMA::CALL_CONTACT      , CM_CB { return (!cm) || cm->isReachable();     }},
+   { UAMA::EDIT_CONTACT      , CM_CB { return cm && cm->contact();            }},
+   { UAMA::REMOVE_HISTORY    , CM_CB { return cm && cm->callCount();          }},
 };
 #undef CM_CB
 
@@ -523,7 +530,7 @@ m_pCall(nullptr), m_pActiveModel(nullptr), m_fContext(c)
       { UAMA::EMAIL_CONTACT     , QObject::tr("Email contact"          )},
       { UAMA::COPY_CONTACT      , QObject::tr("Copy contact"           )},
       { UAMA::BOOKMARK          , QObject::tr("Bookmark"               )},
-      { UAMA::VIEW_CHAT_HISTORY , QObject::tr("View chat history"      )},
+      { UAMA::VIEW_CHAT_HISTORY , QObject::tr("Open chat"              )},
       { UAMA::ADD_CONTACT_METHOD, QObject::tr("Add phone number"       )},
       { UAMA::CALL_CONTACT      , QObject::tr("Call again"             )},
       { UAMA::EDIT_CONTACT      , QObject::tr("Edit contact details"   )},
@@ -590,6 +597,7 @@ UserActionModel::UserActionModel(QAbstractItemModel* parent, const FlagPack<User
       setSelectionModel(callmodel->selectionModel());
       connect(callmodel, &CallModel::callStateChanged , d_ptr.data(), &UserActionModelPrivate::updateActions);
       connect(callmodel, &CallModel::mediaStateChanged, d_ptr.data(), &UserActionModelPrivate::updateActions);
+      connect(callmodel, &CallModel::dialNumberChanged, d_ptr.data(), &UserActionModelPrivate::updateActions);
    }
    //TODO add other relevant models here Categorized*, RecentModel, etc
 
@@ -829,8 +837,11 @@ bool UserActionModelPrivate::updateByAccount(UserActionModel::Action action, con
 
 bool UserActionModelPrivate::updateByContactMethod(UserActionModel::Action action, const ContactMethod* cm)
 {
+   // Some actions have a conditional CM
    if (!cm)
-      return false;
+      return cmActionAvailability[action] ?
+         cmActionAvailability[action](nullptr) : true;
+
    Account* a = cm->account() ? cm->account() : AvailableAccountModel::instance().currentDefaultAccount();
 
    return updateByAccount(action, a) && (
@@ -901,7 +912,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
 
                      const auto cm = qvariant_cast<ContactMethod*>(idx.data(static_cast<int>(Ring::Role::Object)));
 
-                     ret &= updateByContactMethod( action, cm );
+                     ret &= cm ? updateByContactMethod( action, cm ) : false;
 
                      break;
                   }
@@ -911,12 +922,27 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
 
                      ret &= updateByCall( action, c );
 
+                     // Dialing (search field) calls have a new URI with every
+                     // keystroke. Check is such URI match an existing one. This
+                     // changes the availability of some actions. For example,
+                     // the offline chat only works for Ring CM *or* SIP CM with
+                     // an existing chat history.
+                     if (c->state() == Call::State::DIALING) {
+                        ret &= updateByContactMethod(
+                          action, PhoneDirectoryModel::instance().getExistingNumberIf(
+                             c->peerContactMethod()->uri(),
+                             [](const ContactMethod* cm) -> bool { return cm->account();}
+                          )
+                        );
+                     }
+
                      updateCheckMask( state ,action, c ); //TODO abstract this out
 
                      break;
                   }
                   case Ring::ObjectType::Media          : //TODO
                   case Ring::ObjectType::Certificate    : //TODO
+                  case Ring::ObjectType::ContactRequest   : //TODO
                   case Ring::ObjectType::COUNT__        :
                      break;
                }
@@ -1004,6 +1030,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             break;
          case Ring::ObjectType::Media          : //TODO
          case Ring::ObjectType::Certificate    : //TODO
+         case Ring::ObjectType::ContactRequest   : //TODO
          case Ring::ObjectType::COUNT__        :
             break;
       }
