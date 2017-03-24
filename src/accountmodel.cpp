@@ -1166,7 +1166,7 @@ void AccountModel::slotConnectivityChanged()
     ConfigurationManager::instance().connectivityChanged();
 }
 
-Account* AccountModel::findPlaceHolder(const QByteArray& accountId)
+Account* AccountModel::findPlaceHolder(const QByteArray& accountId) const
 {
     auto iter = d_ptr->m_hsPlaceHolder.find(accountId);
     if (iter != d_ptr->m_hsPlaceHolder.end())
@@ -1174,7 +1174,7 @@ Account* AccountModel::findPlaceHolder(const QByteArray& accountId)
     return nullptr;
 }
 
-Account* AccountModel::findAccountIf(const std::function<bool(const Account&)>& pred)
+Account* AccountModel::findAccountIf(const std::function<bool(const Account&)>& pred) const
 {
     auto iter = std::find_if(std::begin(d_ptr->m_lAccounts), std::end(d_ptr->m_lAccounts),
                              [&](Account* acc){ return acc and pred(*acc); });

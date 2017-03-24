@@ -113,8 +113,8 @@ public:
    const Account* operator[] (int               i) const;
 
    //Helpers
-   Account* findPlaceHolder(const QByteArray& accountId);
-   Account* findAccountIf(const std::function<bool(const Account&)>& pred);
+   Account* findPlaceHolder(const QByteArray& accountId) const;
+   Account* findAccountIf(const std::function<bool(const Account&)>& pred) const;
 
 private:
    //Constructors & Destructors
