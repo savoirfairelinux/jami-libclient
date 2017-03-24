@@ -11,10 +11,10 @@ ELSEIF(EXISTS ${RING_INCLUDE_DIR}/dring.h)
 ELSEIF(EXISTS ${RING_BUILD_DIR}/dring/dring.h)
    SET(ring_INCLUDE_DIRS ${RING_BUILD_DIR}/dring)
 ELSEIF(DEFINED RING_XML_INTERFACES_DIR AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-   MESSAGE("Daemon header not found, DBus mode only")
+   MESSAGE(STATUS "Daemon header not found, DBus mode only")
    SET(RING_FOUND true)
 ELSE()
-   MESSAGE("Daemon header not found!
+   MESSAGE(STATUS "Daemon header not found!
    Add -DRING_BUILD_DIR or -DCMAKE_INSTALL_PREFIX")
    SET(RING_FOUND false)
 ENDIF()
@@ -44,5 +44,5 @@ IF(${ring_BIN} MATCHES "" AND NOT DEFINED RING_XML_INTERFACES_DIR)
 
 ENDIF()
 
-MESSAGE("Ring daemon header is in " ${ring_INCLUDE_DIRS})
-MESSAGE("Ring library path is " ${ring_BIN})
+MESSAGE(STATUS "Ring daemon header is in " ${ring_INCLUDE_DIRS})
+MESSAGE(STATUS "Ring library path is " ${ring_BIN})
