@@ -635,6 +635,29 @@ ContactMethod* PhoneDirectoryModel::fromHash(const QString& hash)
    return nullptr;
 }
 
+
+/** Filter the existing CMs for an URI without flooding the model with merge
+ * candidates.
+ *
+ * This should help reduce the number of accidental duplicates once its
+ * usage spread over the code. It also reduce the boilerplate code.
+ **/
+ContactMethod* PhoneDirectoryModel::getExistingNumberIf(const URI& uri, const std::function<bool(const ContactMethod*)>& pred) const
+{
+   // Prevent the most obvious duplicates
+   const URI strippedUri(uri);
+
+   //See if the number is already loaded
+   const NumberWrapper* w = d_ptr->m_hDirectory[strippedUri];
+
+   if (!w)
+      return nullptr;
+
+   const auto iter = std::find_if(std::begin(w->numbers), std::end(w->numbers), pred);
+
+   return (iter != std::end(w->numbers)) ? *iter : nullptr;
+}
+
 QVector<ContactMethod*> PhoneDirectoryModel::getNumbersByPopularity() const
 {
    return d_ptr->m_lPopularityIndex;
