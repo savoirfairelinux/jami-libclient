@@ -343,8 +343,16 @@ QAbstractItemModel* Media::TextRecording::unreadInstantTextMessagingModel() cons
 
 bool Media::TextRecording::isEmpty() const
 {
-   return !d_ptr->m_lNodes.size();
+   return !size();
 }
+
+int Media::TextRecording::size() const
+{
+    return d_ptr->m_lNodes.size();
+}
+
+// Qt convention compat
+int Media::TextRecording::count() const { return size(); }
 
 QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
 {
