@@ -89,6 +89,8 @@ public:
    QAbstractItemModel* instantTextMessagingModel(                         ) const;
    QAbstractItemModel* unreadInstantTextMessagingModel(                   ) const;
    bool                isEmpty                  (                         ) const;
+   int                 count                    (                         ) const;
+   int                 size                     (                         ) const;
    bool                hasMimeType              ( const QString& mimeType ) const;
    QStringList         mimeTypes                (                         ) const;
    QVector<ContactMethod*> peers                (                         ) const;
