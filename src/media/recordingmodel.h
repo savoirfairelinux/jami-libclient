@@ -27,13 +27,13 @@
 #include "typedefs.h"
 #include "contactmethod.h"
 
-class RecordingModelPrivate;
 class ContactMethod;
 
 namespace Media {
    class Recording;
    class TextRecording;
    class AVRecording;
+   class RecordingModelPrivate;
 
 /**
  * This model host the Ring recordings. Recording sessions span one or
