@@ -74,7 +74,7 @@ m_pAccount(a), m_Mode(mode)
 
    connect(&configurationManager, &ConfigurationManagerInterface::certificatePathPinned , this, &DaemonCertificateCollectionPrivate::slotCertificatePathPinned);
 
-   //    connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest  , this, &DaemonCertificateCollectionPrivate::);
+   //    connect(&configurationManager, &ConfigurationManagerInterface::incomingContactRequest  , this, &DaemonCertificateCollectionPrivate::);
 }
 
 DaemonCertificateCollection::DaemonCertificateCollection(CollectionMediator<Certificate>* mediator, Account* a, DaemonCertificateCollection::Mode mode) :

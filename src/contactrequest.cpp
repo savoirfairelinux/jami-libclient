@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "trustrequest.h"
+#include "contactrequest.h"
 
 //Qt
 #include <QtCore/QDateTime>
@@ -29,7 +29,7 @@
 //DRing
 #include "dbus/configurationmanager.h"
 
-class TrustRequestPrivate
+class ContactRequestPrivate
 {
 public:
    //Attributes
@@ -38,34 +38,34 @@ public:
    Account*     m_pAccount    ;
 };
 
-TrustRequest::TrustRequest(Account* a, const QString& id, time_t time) : QObject(a), d_ptr(new TrustRequestPrivate)
+ContactRequest::ContactRequest(Account* a, const QString& id, time_t time) : QObject(a), d_ptr(new ContactRequestPrivate)
 {
    d_ptr->m_pAccount     = a;
    d_ptr->m_Time         = QDateTime::fromTime_t(time);
    d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(id, a);
 }
 
-TrustRequest::~TrustRequest()
+ContactRequest::~ContactRequest()
 {
    delete d_ptr;
 }
 
-Certificate* TrustRequest::certificate() const
+Certificate* ContactRequest::certificate() const
 {
    return d_ptr->m_pCertificate;
 }
 
-QDateTime TrustRequest::date() const
+QDateTime ContactRequest::date() const
 {
    return d_ptr->m_Time;
 }
 
-Account* TrustRequest::account() const
+Account* ContactRequest::account() const
 {
    return d_ptr->m_pAccount;
 }
 
-bool TrustRequest::accept()
+bool ContactRequest::accept()
 {
    if (ConfigurationManager::instance().acceptTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestAccepted();
@@ -74,7 +74,7 @@ bool TrustRequest::accept()
    return false;
 }
 
-bool TrustRequest::discard()
+bool ContactRequest::discard()
 {
    if (ConfigurationManager::instance().discardTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
       emit requestDiscarded();
@@ -89,16 +89,16 @@ bool TrustRequest::discard()
  * @return a QVariant object, wich contains the selection
  */
 QVariant
-TrustRequest::roleData(int role) const
+ContactRequest::roleData(int role) const
 {
     switch (role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             return certificate()->remoteId();
         case static_cast<int>(Ring::Role::Object):
-            return QVariant::fromValue(const_cast<TrustRequest*>(this));
+            return QVariant::fromValue(const_cast<ContactRequest*>(this));
         case static_cast<int>(Ring::Role::ObjectType):
-            return QVariant::fromValue(Ring::ObjectType::TrustRequest);
+            return QVariant::fromValue(Ring::ObjectType::ContactRequest);
     }
 
     /* unknown role */

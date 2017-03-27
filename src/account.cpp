@@ -48,12 +48,12 @@
 #include "protocolmodel.h"
 #include "bootstrapmodel.h"
 #include "ringdevicemodel.h"
-#include "trustrequest.h"
+#include "contactrequest.h"
 #include "person.h"
 #include "profile.h"
 #include "profilemodel.h"
-#include "pendingtrustrequestmodel.h"
-#include "private/pendingtrustrequestmodel_p.h"
+#include "pendingcontactrequestmodel.h"
+#include "private/pendingcontactrequestmodel_p.h"
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
 #include "networkinterfacemodel.h"
@@ -104,7 +104,7 @@ m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::Regi
 m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
 m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingTrustRequestModel(nullptr),
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingContactRequestModel(nullptr),
 m_pRingDeviceModel(nullptr)
 {
 }
@@ -143,12 +143,12 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    if (a->protocol() == Account::Protocol::RING) {
        const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
        for (const auto& tr_info : pending_tr) {
-         a->pendingTrustRequestModel()->d_ptr->addRequest(new TrustRequest(a, tr_info["from"], 0));
+         a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, tr_info["from"], 0));
       }
    }
 
    // Connects the account to the signal of the model.
-   connect(a->pendingTrustRequestModel() , &PendingTrustRequestModel::requestAccepted, [a] (TrustRequest* r) {
+   connect(a->pendingContactRequestModel() , &PendingContactRequestModel::requestAccepted, [a] (ContactRequest* r) {
       emit a->contactRequestAccepted(r);
    });
 
@@ -584,12 +584,12 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
    return d_ptr->m_pAllowedCertificates;
 }
 
-PendingTrustRequestModel* Account::pendingTrustRequestModel() const
+PendingContactRequestModel* Account::pendingContactRequestModel() const
 {
-   if (!d_ptr->m_pPendingTrustRequestModel)
-      d_ptr->m_pPendingTrustRequestModel = new PendingTrustRequestModel(const_cast<Account*>(this));
+   if (!d_ptr->m_pPendingContactRequestModel)
+      d_ptr->m_pPendingContactRequestModel = new PendingContactRequestModel(const_cast<Account*>(this));
 
-   return d_ptr->m_pPendingTrustRequestModel;
+   return d_ptr->m_pPendingContactRequestModel;
 }
 
 NetworkInterfaceModel* Account::networkInterfaceModel() const

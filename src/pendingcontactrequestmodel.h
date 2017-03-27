@@ -21,13 +21,13 @@
 #include <typedefs.h>
 
 class Account;
-class PendingTrustRequestModelPrivate;
-class TrustRequest;
+class PendingContactRequestModelPrivate;
+class ContactRequest;
 
 /**
  * List the pending (incoming) trust request for an account
  */
-class LIB_EXPORT PendingTrustRequestModel : public QAbstractTableModel
+class LIB_EXPORT PendingContactRequestModel : public QAbstractTableModel
 {
    Q_OBJECT
 
@@ -45,15 +45,15 @@ public:
    virtual QHash<int,QByteArray> roleNames() const override;
 
 private:
-   explicit PendingTrustRequestModel(Account* a);
-   virtual ~PendingTrustRequestModel();
+   explicit PendingContactRequestModel(Account* a);
+   virtual ~PendingContactRequestModel();
 
-   PendingTrustRequestModelPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(PendingTrustRequestModel)
+   PendingContactRequestModelPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(PendingContactRequestModel)
 
 Q_SIGNALS:
-   void requestAccepted (TrustRequest* r);
-   void requestDiscarded(TrustRequest* r);
-   void requestAdded(TrustRequest* r);
+   void requestAccepted (ContactRequest* r);
+   void requestDiscarded(ContactRequest* r);
+   void requestAdded(ContactRequest* r);
 };
 

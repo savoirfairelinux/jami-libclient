@@ -15,37 +15,37 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "pendingtrustrequestmodel.h"
+#include "pendingcontactrequestmodel.h"
 
 //Qt
 #include <QtCore/QDateTime>
 
 //Ring
-#include <trustrequest.h>
+#include <contactrequest.h>
 #include <certificate.h>
 #include <account.h>
-#include "private/pendingtrustrequestmodel_p.h"
+#include "private/pendingcontactrequestmodel_p.h"
 
 enum Columns {
    HASH,
    TIME
 };
 
-PendingTrustRequestModelPrivate::PendingTrustRequestModelPrivate(PendingTrustRequestModel* p) : q_ptr(p)
+PendingContactRequestModelPrivate::PendingContactRequestModelPrivate(PendingContactRequestModel* p) : q_ptr(p)
 {}
 
-PendingTrustRequestModel::PendingTrustRequestModel(Account* a) : QAbstractTableModel(a),
-d_ptr(new PendingTrustRequestModelPrivate(this))
+PendingContactRequestModel::PendingContactRequestModel(Account* a) : QAbstractTableModel(a),
+d_ptr(new PendingContactRequestModelPrivate(this))
 {
    d_ptr->m_pAccount = a;
 }
 
-PendingTrustRequestModel::~PendingTrustRequestModel()
+PendingContactRequestModel::~PendingContactRequestModel()
 {
    delete d_ptr;
 }
 
-QVariant PendingTrustRequestModel::data( const QModelIndex& index, int role ) const
+QVariant PendingContactRequestModel::data( const QModelIndex& index, int role ) const
 {
    if (!index.isValid())
       return QVariant();
@@ -68,23 +68,23 @@ QVariant PendingTrustRequestModel::data( const QModelIndex& index, int role ) co
    return QVariant::fromValue(d_ptr->m_lRequests[index.row()]->roleData(role));
 }
 
-int PendingTrustRequestModel::rowCount( const QModelIndex& parent ) const
+int PendingContactRequestModel::rowCount( const QModelIndex& parent ) const
 {
    return parent.isValid()? 0 : d_ptr->m_lRequests.size();
 }
 
-int PendingTrustRequestModel::columnCount( const QModelIndex& parent ) const
+int PendingContactRequestModel::columnCount( const QModelIndex& parent ) const
 {
    return parent.isValid()? 0 : 2;
 }
 
-Qt::ItemFlags PendingTrustRequestModel::flags( const QModelIndex& index ) const
+Qt::ItemFlags PendingContactRequestModel::flags( const QModelIndex& index ) const
 {
    Q_UNUSED(index);
    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-bool PendingTrustRequestModel::setData( const QModelIndex& index, const QVariant &value, int role)
+bool PendingContactRequestModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
    Q_UNUSED(index)
    Q_UNUSED(value)
@@ -92,18 +92,18 @@ bool PendingTrustRequestModel::setData( const QModelIndex& index, const QVariant
    return false;
 }
 
-QHash<int,QByteArray> PendingTrustRequestModel::roleNames() const
+QHash<int,QByteArray> PendingContactRequestModel::roleNames() const
 {
    return {};
 }
 
-void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
+void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
 {
    q_ptr->beginInsertRows(QModelIndex(),m_lRequests.size(),m_lRequests.size());
    m_lRequests << r;
    q_ptr->endInsertRows();
 
-    QObject::connect(r, &TrustRequest::requestAccepted, [this,r]() {
+    QObject::connect(r, &ContactRequest::requestAccepted, [this,r]() {
         // the request was handled so it can be removed, from the pending list
         removeRequest(r);
 
@@ -111,7 +111,7 @@ void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
         emit q_ptr->requestAccepted(r);
     });
 
-    QObject::connect(r, &TrustRequest::requestDiscarded, [this,r]() {
+    QObject::connect(r, &ContactRequest::requestDiscarded, [this,r]() {
         // the request was handled so it can be removed, from the pending list
         removeRequest(r);
 
@@ -122,7 +122,7 @@ void PendingTrustRequestModelPrivate::addRequest(TrustRequest* r)
    emit q_ptr->requestAdded(r);
 }
 
-void PendingTrustRequestModelPrivate::removeRequest(TrustRequest* r)
+void PendingContactRequestModelPrivate::removeRequest(ContactRequest* r)
 {
    const int index = m_lRequests.indexOf(r);
 

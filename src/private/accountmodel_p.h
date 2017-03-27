@@ -70,7 +70,7 @@ public Q_SLOTS:
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);
    void slotMediaParametersChanged(const QString& accountId);
-   void slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
+   void slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
    void slotKownDevicesChanged(const QString& accountId, const MapStringString& devices);
    void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
    void slotMigrationEnded(const QString& accountId, const QString& result);

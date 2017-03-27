@@ -38,7 +38,7 @@
 #include <media/recordingmodel.h>
 #include <media/textrecording.h>
 #include "accountmodel.h"
-#include "trustrequest.h"
+#include "contactrequest.h"
 #include "certificate.h"
 
 struct CallGroup
@@ -223,7 +223,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
     }
 
     // Called when a contact was added to the daemon list (e.g when the user as accepted a request)
-    connect(&AccountModel::instance(), &AccountModel::accountContactAdded, [this] (Account* a, const TrustRequest* r) {
+    connect(&AccountModel::instance(), &AccountModel::accountContactAdded, [this] (Account* a, const ContactRequest* r) {
        auto cm = r->certificate()->contactMethod();
        if (!cm)
           cm = PhoneDirectoryModel::instance().getNumber(r->certificate()->remoteId(), a);
@@ -1213,7 +1213,7 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
                 case Ring::ObjectType::Call:
                 case Ring::ObjectType::Media:
                 case Ring::ObjectType::Certificate:
-                case Ring::ObjectType::TrustRequest:
+                case Ring::ObjectType::ContactRequest:
                 case Ring::ObjectType::COUNT__:
                 break;
             }

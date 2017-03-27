@@ -20,14 +20,14 @@
 #include <QtCore/QObject>
 #include <typedefs.h>
 
-class TrustRequestPrivate;
+class ContactRequestPrivate;
 class AccountModel;
 class AccountModelPrivate;
 class Certificate;
 class Account;
 class AccountPrivate;
 
-class LIB_EXPORT TrustRequest : public QObject
+class LIB_EXPORT ContactRequest : public QObject
 {
    Q_OBJECT
 
@@ -48,11 +48,11 @@ public:
    Q_INVOKABLE bool discard();
 
 private:
-   explicit TrustRequest(Account* a, const QString& id, time_t time);
-   virtual ~TrustRequest();
+   explicit ContactRequest(Account* a, const QString& id, time_t time);
+   virtual ~ContactRequest();
 
-   TrustRequestPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(TrustRequest)
+   ContactRequestPrivate* d_ptr;
+   Q_DECLARE_PRIVATE(ContactRequest)
 
 Q_SIGNALS:
    void requestAccepted ();

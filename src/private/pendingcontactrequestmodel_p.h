@@ -17,23 +17,23 @@
  ***************************************************************************/
 #pragma once
 
-class PendingTrustRequestModel;
-class TrustRequest;
+class PendingContactRequestModel;
+class ContactRequest;
 
-class PendingTrustRequestModelPrivate
+class PendingContactRequestModelPrivate
 {
 public:
    //Constructor
-   PendingTrustRequestModelPrivate(PendingTrustRequestModel* parent);
+   PendingContactRequestModelPrivate(PendingContactRequestModel* parent);
 
    //Attributes
-   QVector<TrustRequest*> m_lRequests;
+   QVector<ContactRequest*> m_lRequests;
    Account*               m_pAccount ;
 
    //Helper
-   void addRequest   (TrustRequest* r);
-   void removeRequest(TrustRequest* r);
+   void addRequest   (ContactRequest* r);
+   void removeRequest(ContactRequest* r);
 
 private:
-   PendingTrustRequestModel* q_ptr;
+   PendingContactRequestModel* q_ptr;
 };

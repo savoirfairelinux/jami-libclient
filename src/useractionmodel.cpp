@@ -393,7 +393,7 @@ const Matrix1D< UAMA, FlagPack<UAM::Asset>> UserActionModelPrivate::availableByA
  * Different objects type have access to a different subset of actions
  */
 const Matrix2D< UAMA, Ring::ObjectType , bool  > UserActionModelPrivate::availableObjectActions = {
-   /*                            Person ContactMethod  Call    Media  Certificate   TrustRequest*/
+   /*                            Person ContactMethod  Call    Media  Certificate   ContactRequest*/
    { UAMA::ACCEPT            , {{ false,    false,     true ,  false,    false,        false     }}},
    { UAMA::HOLD              , {{ false,    false,     true ,  true ,    false,        false     }}},
    { UAMA::MUTE_AUDIO        , {{ false,    false,     true ,  true ,    false,        false     }}},

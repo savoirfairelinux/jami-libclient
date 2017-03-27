@@ -40,8 +40,8 @@
 #include "mime.h"
 #include "profilemodel.h"
 #include "protocolmodel.h"
-#include "trustrequest.h"
-#include "pendingtrustrequestmodel.h"
+#include "contactrequest.h"
+#include "pendingcontactrequestmodel.h"
 #include "ringdevicemodel.h"
 #include "private/accountmodel_p.h"
 #include "private/ringdevicemodel_p.h"
@@ -50,7 +50,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
-#include "private/pendingtrustrequestmodel_p.h"
+#include "private/pendingcontactrequestmodel_p.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -87,7 +87,7 @@ void AccountModelPrivate::init()
     connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
             SLOT(slotMediaParametersChanged(QString)), Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
-            &AccountModelPrivate::slotIncomingTrustRequest, Qt::QueuedConnection);
+            &AccountModelPrivate::slotIncomingContactRequest, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
             &AccountModelPrivate::slotKownDevicesChanged, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
@@ -430,7 +430,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 }
 
 ///When a Ring-DHT trust request arrive
-void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
+void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
    Q_UNUSED(payload);
    qDebug() << "INCOMING REQUEST" << accountId << hash << time;
@@ -441,8 +441,8 @@ void AccountModelPrivate::slotIncomingTrustRequest(const QString& accountId, con
       return;
    }
 
-   TrustRequest* r = new TrustRequest(a, hash, time);
-   a->pendingTrustRequestModel()->d_ptr->addRequest(r);
+   ContactRequest* r = new ContactRequest(a, hash, time);
+   a->pendingContactRequestModel()->d_ptr->addRequest(r);
 }
 
 ///Known Ring devices have changed
@@ -960,7 +960,7 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
    });
 
    // Connect the signal when a contact was added by an account
-   connect(a, &Account::contactRequestAccepted, [a, this](const TrustRequest* r){
+   connect(a, &Account::contactRequestAccepted, [a, this](const ContactRequest* r){
       emit q_ptr->accountContactAdded(a, r);
    });
 

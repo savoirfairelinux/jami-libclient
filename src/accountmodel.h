@@ -27,7 +27,7 @@
 #include "account.h"
 #include "typedefs.h"
 
-class TrustRequest;
+class ContactRequest;
 
 //Private
 class AccountModelPrivate;
@@ -166,7 +166,7 @@ Q_SIGNALS:
    /// A list of contacts has been obtained.
    void contactsList(Account *account);
    /// A new contact has been added.
-   void accountContactAdded(Account* a, const TrustRequest* r);
+   void accountContactAdded(Account* a, const ContactRequest* r);
    /// Selected account changed.
    void selectedAccountChanged(Account* a);
 };

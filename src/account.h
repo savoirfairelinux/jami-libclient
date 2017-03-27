@@ -47,9 +47,9 @@ class BootstrapModel          ;
 class RingDeviceModel         ;
 class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
-class PendingTrustRequestModel;
+class PendingContactRequestModel;
 class Profile;
-class TrustRequest;
+class ContactRequest;
 
 //Private
 class AccountPrivate;
@@ -380,7 +380,7 @@ class LIB_EXPORT Account : public ItemBase {
       QAbstractItemModel*       knownCertificateModel      () const;
       QAbstractItemModel*       bannedCertificatesModel    () const;
       QAbstractItemModel*       allowedCertificatesModel   () const;
-      PendingTrustRequestModel* pendingTrustRequestModel   () const;
+      PendingContactRequestModel* pendingContactRequestModel   () const;
 
       Q_INVOKABLE RoleState  roleState (Account::Role role) const;
       Q_INVOKABLE RoleStatus roleStatus(Account::Role role) const;
@@ -601,7 +601,7 @@ class LIB_EXPORT Account : public ItemBase {
       /// Migration ended
       void migrationEnded(const Account::MigrationEndedStatus);
       /// contact request accepted
-      void contactRequestAccepted(const TrustRequest*);
+      void contactRequestAccepted(const ContactRequest*);
 };
 // Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)

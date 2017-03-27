@@ -34,7 +34,7 @@ class ProtocolModel;
 class NetworkInterfaceModel;
 class BootstrapModel;
 class DaemonCertificateCollection;
-class PendingTrustRequestModel;
+class PendingContactRequestModel;
 class Profile;
 
 typedef void (AccountPrivate::*account_function)();
@@ -117,7 +117,7 @@ public:
    QMetaObject::Connection      m_cTlsCert                 ;
    QMetaObject::Connection      m_cTlsCaCert               ;
    Profile*                     m_pProfile {nullptr}       ;
-   PendingTrustRequestModel*    m_pPendingTrustRequestModel;
+   PendingContactRequestModel*    m_pPendingContactRequestModel;
    Account::ContactMethods      m_NumbersFromDaemon        ;
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
