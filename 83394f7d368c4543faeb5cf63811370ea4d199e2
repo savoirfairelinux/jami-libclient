@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_c9d015fa",
+        "filename": "src/namedirectory.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-03-27T21:37:15Z",
+      "side": 1,
+      "message": "After a good \"think\", removing the const is awaited and needed.\nI\u0027ve checked many other Qt signals in the Core library and\nthey does the same.\nAs it\u0027s a signal and not a method called, such parameters is supposed given to be modified at user request.",
+      "revId": "83394f7d368c4543faeb5cf63811370ea4d199e2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
