@@ -69,5 +69,5 @@ Q_SIGNALS:
     void nameRegistrationEnded(const Account* account, NameDirectory::RegisterNameStatus status, const QString& name);
 
     ///Name or address lookup has completed
-    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void registeredNameFound(Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 };
