@@ -47,6 +47,9 @@ public:
    Q_INVOKABLE bool accept ();
    Q_INVOKABLE bool discard();
 
+   // Operator
+   bool operator==(const ContactRequest& another) const;
+
 private:
    explicit ContactRequest(Account* a, const QString& id, time_t time);
    virtual ~ContactRequest();
