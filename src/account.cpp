@@ -1359,7 +1359,7 @@ bool Account::banCertificate(Certificate* c)
 }
 
 ///Ask the certificate owner (peer) to trust you
-bool Account::requestTrust( const URI& uri )
+bool Account::sendContactRequest( const URI& uri )
 {
    if (uri.isEmpty())
        return false;
@@ -1376,15 +1376,15 @@ bool Account::requestTrust( const URI& uri )
    return true;
 }
 
-bool Account::requestTrust(const ContactMethod* c)
+bool Account::sendContactRequest(const ContactMethod* c)
 {
     if (!c)
         return false;
 
-    return requestTrust(c->uri());
+    return sendContactRequest(c->uri());
 }
 
-bool Account::requestTrust( Certificate* c )
+bool Account::sendContactRequest( Certificate* c )
 {
    if ((!c) || (c->remoteId().isEmpty()))
       return false;
