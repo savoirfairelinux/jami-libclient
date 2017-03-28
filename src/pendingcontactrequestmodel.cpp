@@ -99,6 +99,12 @@ QHash<int,QByteArray> PendingContactRequestModel::roleNames() const
 
 void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
 {
+   // do not add the same trust request several time
+   if(std::any_of(m_lRequests.begin(), m_lRequests.end(),
+      [&](ContactRequest* r_){ return *r_ == *r ;})) {
+      return;
+   }
+
    q_ptr->beginInsertRows(QModelIndex(),m_lRequests.size(),m_lRequests.size());
    m_lRequests << r;
    q_ptr->endInsertRows();
