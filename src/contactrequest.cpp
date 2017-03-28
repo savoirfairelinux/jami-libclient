@@ -105,3 +105,16 @@ ContactRequest::roleData(int role) const
     return QVariant();
 }
 
+/**
+ * defines the comparaison operator
+ */
+bool
+ContactRequest::operator==(const ContactRequest& another) const
+{
+   bool certificate = d_ptr->m_pCertificate == another.d_ptr->m_pCertificate;
+   bool account = d_ptr->m_pAccount == another. d_ptr->m_pAccount;
+   bool time = d_ptr->m_Time == another. d_ptr->m_Time;
+
+   return account && certificate && time;
+}
+
