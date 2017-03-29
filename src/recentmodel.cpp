@@ -692,6 +692,10 @@ void RecentModelPrivate::insertNode(RecentViewNode* n, time_t t, bool isNew)
    else
       q_ptr->endInsertRows();
 
+    // Select the newly created person
+    auto newIdx = q_ptr->index(newPos, 0);
+    q_ptr->selectionModel()->setCurrentIndex(newIdx, QItemSelectionModel::ClearAndSelect);
+
 #if 0
     //Uncomment if there is issues
     qDebug() << "\n\nList:" << m_lTopLevelReverted.size() << isNew;
@@ -724,8 +728,17 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
 void RecentModelPrivate::slotPersonAdded(const Person* p)
 {
-   if (p)
+   if (p) {
+      // prevent person duplication by checking if the contact method 
+      // is already present in m_hCMsToNodes
+      auto cmToRm = p->phoneNumbers()[0];
+      if (m_hCMsToNodes.contains(cmToRm)) {
+          removeNode(m_hCMsToNodes.value(cmToRm));
+          m_hCMsToNodes.remove(cmToRm);
+      }
+
       slotLastUsedTimeChanged(p, p->lastUsedTime());
+   }
 }
 
 void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
