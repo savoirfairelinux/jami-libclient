@@ -724,8 +724,15 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
 void RecentModelPrivate::slotPersonAdded(const Person* p)
 {
-   if (p)
+   if (p) {
+      // prevent person duplication by checking if the contact method
+      // is already present in m_hCMsToNodes
+      for ( const auto cmToRm : p->phoneNumbers() )
+         if ( auto cmNode = m_hCMsToNodes.take(cmToRm) )
+            removeNode(cmNode);
+
       slotLastUsedTimeChanged(p, p->lastUsedTime());
+   }
 }
 
 void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
