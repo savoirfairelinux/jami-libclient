@@ -55,7 +55,7 @@ QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
 m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
-m_selectedAccount(nullptr), m_lSupportedProtocols {{
+m_lSupportedProtocols {{
    /* SIP  */ false,
    /* RING */ false,
 }}
@@ -243,23 +243,52 @@ QItemSelectionModel* AccountModel::selectionModel() const
    return d_ptr->m_pSelectionModel;
 }
 
+
+QItemSelectionModel* AccountModel::userSelectionModel() const
+{
+   if (!d_ptr->m_pUserSelectionModel)
+      d_ptr->m_pUserSelectionModel = new QItemSelectionModel(const_cast<AccountModel*>(this));
+
+   return d_ptr->m_pUserSelectionModel;
+}
+
 /**
  * returns the select account
  */
 Account*
 AccountModel::selectedAccount() const
 {
-    return d_ptr->m_selectedAccount;
+   auto accIdx = AccountModel::instance().selectionModel()->currentIndex();
+   return AccountModel::instance().getAccountByModelIndex(accIdx);
 }
 
 /**
  * set the select account and emits selectedAccountChanged signal
  */
 void
-AccountModel::setSelectedAccount(Account* a)
+AccountModel::setUserChosenAccount(Account* a)
 {
-    d_ptr->m_selectedAccount = a;
-    emit selectedAccountChanged(a);
+    if (!a)
+        return;
+
+    const auto idx = a->index();
+
+    // Make sure it exists
+    userSelectionModel();
+
+    d_ptr->m_pUserSelectionModel->setCurrentIndex(
+        idx, QItemSelectionModel::ClearAndSelect
+    );
+}
+
+/**
+ * returns the user chosen account
+ */
+Account*
+AccountModel::userChosenAccount() const
+{
+   auto accIdx = AccountModel::instance().userSelectionModel()->currentIndex();
+   return AccountModel::instance().getAccountByModelIndex(accIdx);
 }
 
 QList<Account*> AccountModel::accountsToMigrate() const
