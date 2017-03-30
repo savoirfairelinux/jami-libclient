@@ -53,11 +53,11 @@ public:
    QList<Account*>                   m_pRemovedAccounts   ;
    ProtocolModel*                    m_pProtocolModel     ;
    QItemSelectionModel*              m_pSelectionModel    ;
+   QItemSelectionModel*              m_pUserSelectionModel {nullptr};
    QStringList                       m_lMimes             ;
    QList<Account*>                   m_lSipAccounts       ;
    QList<Account*>                   m_lRingAccounts      ;
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
-   Account* m_selectedAccount;
 
    //Future account cache
    static QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;

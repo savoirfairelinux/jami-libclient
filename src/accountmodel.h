@@ -48,7 +48,8 @@ public:
    Q_PROPERTY(bool           isSipSupported             READ isSipSupported   NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
-   Q_PROPERTY(Account*       selectedAccount            READ selectedAccount          WRITE setSelectedAccount)
+   Q_PROPERTY(Account*       selectedAccount            READ selectedAccount                                  )
+   Q_PROPERTY(Account*       userChosenAccount          READ userChosenAccount      WRITE setUserChosenAccount)
 
    friend class AccountPrivate;
 
@@ -83,6 +84,8 @@ public:
    QVector<QMap<QString, QString>> getContacts      (const Account* account                ) const;
 
    QItemSelectionModel* selectionModel              (                                      ) const;
+   Account*             userChosenAccount           (                                      ) const;
+   QItemSelectionModel* userSelectionModel          (                                      ) const;
 
    //Abstract model accessors
    virtual QVariant              data        ( const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
@@ -105,7 +108,7 @@ public:
    Q_INVOKABLE void     cancel   (                                                                                );
    int                  exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password);
    int                  importAccounts(const QString& filePath, const QString& password);
-   void setSelectedAccount(Account* a);
+   void setUserChosenAccount(Account* account);
 
    //Operators
    Account*       operator[] (int               i)      ;
@@ -167,7 +170,5 @@ Q_SIGNALS:
    void contactsList(Account *account);
    /// A new contact has been added.
    void accountContactAdded(Account* a, const ContactRequest* r);
-   /// Selected account changed.
-   void selectedAccountChanged(Account* a);
 };
 Q_DECLARE_METATYPE(AccountModel*)
