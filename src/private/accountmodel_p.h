@@ -57,7 +57,7 @@ public:
    QList<Account*>                   m_lSipAccounts       ;
    QList<Account*>                   m_lRingAccounts      ;
    Matrix1D<Account::Protocol, bool> m_lSupportedProtocols;
-   Account* m_selectedAccount;
+   Account* m_userChosenAccount;
 
    //Future account cache
    static QHash<QByteArray,AccountPlaceHolder*> m_hsPlaceHolder;
