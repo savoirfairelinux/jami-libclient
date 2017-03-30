@@ -93,6 +93,7 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
             &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
+    connect(q_ptr, &AccountModel::selectedAccountChanged, this, &AccountModelPrivate::moveToTheTop);
 }
 
 ///Destructor
@@ -651,6 +652,15 @@ bool AccountModel::moveDown()
       }
    }
    return false;
+}
+
+/**
+ * Move @param account at the top of the accounts list.
+ */
+void
+AccountModelPrivate::moveToTheTop(Account* account)
+{
+        m_lAccounts.move(account->index().row(), 0);
 }
 
 ///Try to register all enabled accounts
