@@ -573,6 +573,12 @@ void AccountModel::updateAccounts()
          acc->performAction(Account::EditAction::RELOAD);
       }
    }
+
+   // check if the selected account is still alive
+   if (!userChosenAccount()) {
+       setUserChosenAccount((size()) ? d_ptr->m_lAccounts[0] : nullptr);
+   }
+
    emit accountListUpdated();
 } //updateAccounts
 
