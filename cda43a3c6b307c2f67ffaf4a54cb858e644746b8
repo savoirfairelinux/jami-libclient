@@ -16,6 +16,24 @@
       "revId": "cda43a3c6b307c2f67ffaf4a54cb858e644746b8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_20e776e6",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-30T18:41:24Z",
+      "side": 1,
+      "message": "it\u0027s note about the model, but the user point of view we want to be able to have selected an account to (e.g.) edit it, meanwhile having a user choosen account to be able to see his contacts. I actually made a mistake with the name. Kateryna is fixing this problem.",
+      "parentUuid": "7aade967_00c7da46",
+      "revId": "cda43a3c6b307c2f67ffaf4a54cb858e644746b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
