@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_00c7da46",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-03-30T18:25:40Z",
+      "side": 1,
+      "message": "Why is this duplicating the logic of the function just above it (`::selectionModel()`)? The signal is also duplicated. It already exists in the selection model.",
+      "revId": "cda43a3c6b307c2f67ffaf4a54cb858e644746b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
