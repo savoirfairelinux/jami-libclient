@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_c0c0e22c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-30T18:31:37Z",
+      "side": 1,
+      "message": "tuleap numbers have to be in the last paragraph, see https://gerrit-ring.savoirfairelinux.com/#/c/5998/ for example",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 13
+      },
+      "revId": "39f46e39d39de9c8a70d2694d1ca97fca975880e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_80bbcac3",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-30T18:31:37Z",
+      "side": 1,
+      "message": "contact method",
+      "range": {
+        "startLine": 731,
+        "startChar": 16,
+        "endLine": 731,
+        "endChar": 28
+      },
+      "revId": "39f46e39d39de9c8a70d2694d1ca97fca975880e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
