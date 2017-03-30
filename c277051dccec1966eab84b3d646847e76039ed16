@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_00a03a8f",
+        "filename": "src/accountmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-03-30T18:13:49Z",
+      "side": 1,
+      "message": "add :\nQ_PROPERTY(Account*       userChosenAccount            READ userChosenAccount          WRITE setUserChosenAccount)",
+      "range": {
+        "startLine": 51,
+        "startChar": 2,
+        "endLine": 51,
+        "endChar": 111
+      },
+      "revId": "c277051dccec1966eab84b3d646847e76039ed16",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
