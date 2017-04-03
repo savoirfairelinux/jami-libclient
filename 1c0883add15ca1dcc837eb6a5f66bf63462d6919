@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_903c7995",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-03T22:03:32Z",
+      "side": 1,
+      "message": "extra colon",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "1c0883add15ca1dcc837eb6a5f66bf63462d6919",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_70377db1",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-03T22:03:32Z",
+      "side": 1,
+      "message": "dead code should be removed",
+      "range": {
+        "startLine": 1171,
+        "startChar": 0,
+        "endLine": 1171,
+        "endChar": 89
+      },
+      "revId": "1c0883add15ca1dcc837eb6a5f66bf63462d6919",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
