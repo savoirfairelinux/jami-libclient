@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_adf11e97",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-03T15:42:21Z",
+      "side": 1,
+      "message": "comment what\u0027s the intention of these lines.\nIt looks like related to the comment : \"Notify that the transaction is complete\"\nbut it\u0027s not, right?",
+      "revId": "c9bb7a41f01a5773ba60dd6aec798540776b1613",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_0df5d282",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-03T15:42:21Z",
+      "side": 1,
+      "message": "could you indicate the \"why\" before the \"what\"/\"how\". it\u0027s important for the code readability.\n\nex: \"prevent person duplication by checking xxxx\"",
+      "range": {
+        "startLine": 731,
+        "startChar": 6,
+        "endLine": 732,
+        "endChar": 36
+      },
+      "revId": "c9bb7a41f01a5773ba60dd6aec798540776b1613",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
