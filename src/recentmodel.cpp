@@ -1139,8 +1139,12 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
 {
     //we filter only on top nodes
     if (!source_parent.isValid() && filterRegExp().isEmpty()) {
+        // get the user chosen account
+        auto index_chosen_account = AccountModel::instance().userSelectionModel()->currentIndex();
+        auto chosen_account = index_chosen_account.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+
         // if there is no account selected, show the item.
-        if (not AccountModel::instance().selectedAccount())
+        if (not chosen_account)
             return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 
         auto idx = sourceModel()->index(source_row, 0);
@@ -1160,16 +1164,15 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
             if (not cm->account())
                 return cm;
 
-            return cm->account() == AccountModel::instance().selectedAccount();
+            return cm->account() == chosen_account;
 
         } else if (type == Ring::ObjectType::Person) {
             const auto person_numbers = object.value<Person *>()->phoneNumbers();
-            const auto selected_account = AccountModel::instance().selectedAccount();
 
             // checks if the Person contains any ContactMethod wich has the same account than the one selected
-            if (selected_account and \
+            if (chosen_account and \
                 std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                            [&](const ContactMethod* cm) { return cm->account() == selected_account; })) {
+                            [&](const ContactMethod* cm) { return cm->account() == chosen_account; })) {
                return true;
             }
 
