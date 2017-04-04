@@ -49,6 +49,7 @@ public:
    //Getter
    static Account* currentDefaultAccount(ContactMethod* method = nullptr);
    static Account* currentDefaultAccount(URI::SchemeType schemeType);
+   static bool validAccountForScheme(Account* account, URI::SchemeType scheme);
 
    //Singleton
    static AvailableAccountModel& instance();
@@ -64,4 +65,3 @@ private:
    Q_DECLARE_PRIVATE(AvailableAccountModel)
 };
 Q_DECLARE_METATYPE(AvailableAccountModel*)
-

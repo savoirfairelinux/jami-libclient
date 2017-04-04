@@ -96,58 +96,71 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
 
 
 ///Return the current account
-Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
+Account*
+AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
-   Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
+    // Start by validating the scheme used by the ContactMethod
+    URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
 
-   //we prefer not to use Ip2Ip if possible
-   if (priorAccount && priorAccount->isIp2ip())
-      priorAccount = nullptr;
+    // If the scheme type could not be strictly determined, try using the protocol hint
+    if (type == URI::SchemeType::NONE && method) {
+       switch (method->protocolHint()) {
+          case URI::ProtocolHint::SIP_OTHER:
+          case URI::ProtocolHint::SIP_HOST:
+             type = URI::SchemeType::SIP;
+             break;
+          case URI::ProtocolHint::IP:
+             break;
+          case URI::ProtocolHint::RING:
+          case URI::ProtocolHint::RING_USERNAME:
+             type = URI::SchemeType::RING;
+             break;
+        }
+    }
 
-   URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
+    return currentDefaultAccount(type);
 
-   /* if the scheme type could not be strictly determined, try using the
-    * protocol hint
-    */
-   if (type == URI::SchemeType::NONE && method) {
-      switch (method->protocolHint()) {
-         case URI::ProtocolHint::SIP_OTHER:
-         case URI::ProtocolHint::SIP_HOST:
-            type = URI::SchemeType::SIP;
-            break;
-         case URI::ProtocolHint::IP:
-            break;
-         case URI::ProtocolHint::RING:
-         case URI::ProtocolHint::RING_USERNAME:
-            type = URI::SchemeType::RING;
-            break;
-       }
-   }
-   if(priorAccount
-     && priorAccount->registrationState() == Account::RegistrationState::READY
-     && priorAccount->isEnabled()
-     && (priorAccount->supportScheme(type))
-   ) {
-      return priorAccount;
-   }
-   else {
-      Account* a = AvailableAccountModelPrivate::firstRegisteredAccount(type);
+} //currentDefaultAccount
 
-      if (!a)
-         a = AccountModel::instance().ip2ip();
-
-      AvailableAccountModelPrivate::setPriorAccount(a);
-      return a;
-   }
-} //getCurrentAccount
-
-Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
+/// Validation method to check if the account is in a good state and support the scheme provided
+bool
+AvailableAccountModel::validAccountForScheme(Account* account, URI::SchemeType scheme)
 {
-   return AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+    return (account
+      && account->registrationState() == Account::RegistrationState::READY
+      && account->isEnabled()
+      && (account->supportScheme(scheme)));
+}
+
+Account*
+AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
+{
+    // Always try to respect user choice
+    auto userChosenAccount = AccountModel::instance().userChosenAccount();
+    if (userChosenAccount && validAccountForScheme(userChosenAccount, schemeType)) {
+        return userChosenAccount;
+    }
+
+    // If the current selected choice is not valid, try the previous account selected
+    auto priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
+
+    //we prefer not to use Ip2Ip if possible
+    if (priorAccount && priorAccount->isIp2ip()) {
+        priorAccount = nullptr;
+    }
+
+    if(validAccountForScheme(priorAccount, schemeType)) {
+        return priorAccount;
+    } else {
+        auto account = AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+        AvailableAccountModelPrivate::setPriorAccount(account);
+        return account;
+    }
 }
 
 ///Set the previous account used
-void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
+void
+AvailableAccountModelPrivate::setPriorAccount(const Account* account)
 {
    const bool changed = (account && m_spPriorAccount != account) || (!account && m_spPriorAccount);
    m_spPriorAccount = const_cast<Account*>(account);
@@ -171,7 +184,8 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
 }
 
 ///Get the first registerred account (default account)
-Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType type)
+Account*
+AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType type)
 {
     return AccountModel::instance().findAccountIf([&type](const Account& account) {
         return account.registrationState() == Account::RegistrationState::READY
@@ -180,7 +194,8 @@ Account* AvailableAccountModelPrivate::firstRegisteredAccount(URI::SchemeType ty
     });
 }
 
-QItemSelectionModel* AvailableAccountModel::selectionModel() const
+QItemSelectionModel*
+AvailableAccountModel::selectionModel() const
 {
    if (!d_ptr->m_pSelectionModel) {
       d_ptr->m_pSelectionModel = new QItemSelectionModel(const_cast<AvailableAccountModel*>(this));
@@ -192,7 +207,8 @@ QItemSelectionModel* AvailableAccountModel::selectionModel() const
    return d_ptr->m_pSelectionModel;
 }
 
-void AvailableAccountModelPrivate::selectionChanged(const QModelIndex& idx, const QModelIndex& previous)
+void
+AvailableAccountModelPrivate::selectionChanged(const QModelIndex& idx, const QModelIndex& previous)
 {
    Q_UNUSED(previous)
    Account* a = qvariant_cast<Account*>(idx.data(static_cast<int>(Account::Role::Object)));
@@ -200,7 +216,8 @@ void AvailableAccountModelPrivate::selectionChanged(const QModelIndex& idx, cons
    setPriorAccount(a);
 }
 
-void AvailableAccountModelPrivate::checkRemovedAccount(Account* a)
+void
+AvailableAccountModelPrivate::checkRemovedAccount(Account* a)
 {
    if (a == m_spPriorAccount) {
       Account* a2 = firstRegisteredAccount();
@@ -209,7 +226,8 @@ void AvailableAccountModelPrivate::checkRemovedAccount(Account* a)
    }
 }
 
-void AvailableAccountModelPrivate::checkStateChanges(Account* account, const Account::RegistrationState state)
+void
+AvailableAccountModelPrivate::checkStateChanges(Account* account, const Account::RegistrationState state)
 {
    Q_UNUSED(account)
    Q_UNUSED(state)
