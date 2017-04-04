@@ -94,56 +94,64 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
    return sourceModel()->index(source_row,0,source_parent).data(Qt::CheckStateRole) == Qt::Checked;
 }
 
-
 ///Return the current account
 Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
-   Account* priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
+    // Start by validating the scheme used by the ContactMethod
+    URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
 
-   //we prefer not to use Ip2Ip if possible
-   if (priorAccount && priorAccount->isIp2ip())
-      priorAccount = nullptr;
+    // If the scheme type could not be strictly determined, try using the protocol hint
+    if (type == URI::SchemeType::NONE && method) {
+       switch (method->protocolHint()) {
+          case URI::ProtocolHint::SIP_OTHER:
+          case URI::ProtocolHint::SIP_HOST:
+             type = URI::SchemeType::SIP;
+             break;
+          case URI::ProtocolHint::IP:
+             break;
+          case URI::ProtocolHint::RING:
+          case URI::ProtocolHint::RING_USERNAME:
+             type = URI::SchemeType::RING;
+             break;
+        }
+    }
 
-   URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
+    return currentDefaultAccount(type);
 
-   /* if the scheme type could not be strictly determined, try using the
-    * protocol hint
-    */
-   if (type == URI::SchemeType::NONE && method) {
-      switch (method->protocolHint()) {
-         case URI::ProtocolHint::SIP_OTHER:
-         case URI::ProtocolHint::SIP_HOST:
-            type = URI::SchemeType::SIP;
-            break;
-         case URI::ProtocolHint::IP:
-            break;
-         case URI::ProtocolHint::RING:
-         case URI::ProtocolHint::RING_USERNAME:
-            type = URI::SchemeType::RING;
-            break;
-       }
-   }
-   if(priorAccount
-     && priorAccount->registrationState() == Account::RegistrationState::READY
-     && priorAccount->isEnabled()
-     && (priorAccount->supportScheme(type))
-   ) {
-      return priorAccount;
-   }
-   else {
-      Account* a = AvailableAccountModelPrivate::firstRegisteredAccount(type);
+} //currentDefaultAccount
 
-      if (!a)
-         a = AccountModel::instance().ip2ip();
-
-      AvailableAccountModelPrivate::setPriorAccount(a);
-      return a;
-   }
-} //getCurrentAccount
+/// Validation method to check if the account is in a good state and support the scheme provided
+bool AvailableAccountModel::validAccountForScheme(Account* account, URI::SchemeType scheme)
+{
+    return (account
+      && account->registrationState() == Account::RegistrationState::READY
+      && account->isEnabled()
+      && (account->supportScheme(scheme)));
+}
 
 Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
 {
-   return AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+    // Always try to respect user choice
+    auto userChosenAccount = AccountModel::instance().userChosenAccount();
+    if (userChosenAccount && validAccountForScheme(userChosenAccount, schemeType)) {
+        return userChosenAccount;
+    }
+
+    // If the current selected choice is not valid, try the previous account selected
+    auto priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
+
+    //we prefer not to use Ip2Ip if possible
+    if (priorAccount && priorAccount->isIp2ip()) {
+        priorAccount = nullptr;
+    }
+
+    if(validAccountForScheme(priorAccount, schemeType)) {
+        return priorAccount;
+    } else {
+        auto account = AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+        AvailableAccountModelPrivate::setPriorAccount(account);
+        return account;
+    }
 }
 
 ///Set the previous account used
