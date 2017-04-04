@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7aade967_10c72947",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-04T15:13:00Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "7aade967_3099056f",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 41
+      },
+      "revId": "e062ce021630c80c092f37f71227001da19d42e2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade967_f0a28d99",
         "filename": "src/accountmodel.cpp",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2017-04-04T15:03:10Z",
       "side": 1,
       "message": "I don\u0027t think this logic should be here. The purpose of this method is to synchronize the account objects in lrc with the daemon. Updating the UserSelectionModel is unrelated logic.\n\nIf we want to guarantee that there is always an account selected, I suggest instead that we connect to the ::currentChanged() signal of the UserSelectionModel, and check if current is and invlaid index and then select a valid index in this case. We could also make sure at that point that its a registered account (if one exists).\n\nHowever, is it possible that a client might not want to have an account selected in some case? Maybe this logic should be client side... that way each client can decide what to do when there is no account selected? Not sure...",
+      "range": {
+        "startLine": 594,
+        "startChar": 3,
+        "endLine": 596,
+        "endChar": 89
+      },
+      "revId": "e062ce021630c80c092f37f71227001da19d42e2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_50b5a1cb",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-04T15:13:00Z",
+      "side": 1,
+      "message": "an unregistred account would be valid, if not we have to deal with situation like, what happen if there is no internet. Last time I talk about that, it was decided to make possible to choose an unregistered account, mainly, to allow the user to see his conversations.\n\nI\u0027m not, totally convince about the patch, that\u0027s why it\u0027s draft. But I do not see a reason why a client would like to run with an unselected account. I don\u0027t know what is the behavour now, but I think that if the user delete all his accounts it should get back to the wizard page.",
+      "parentUuid": "7aade967_f0a28d99",
       "range": {
         "startLine": 594,
         "startChar": 3,
