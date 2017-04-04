@@ -590,6 +590,11 @@ void AccountModel::updateAccounts()
          acc->performAction(Account::EditAction::RELOAD);
       }
    }
+
+   if( not userSelectionModel()->hasSelection() && d_ptr->m_lAccounts.size())
+      d_ptr->m_pUserSelectionModel->setCurrentIndex(d_ptr->m_lAccounts[0]->index(),
+                                                    QItemSelectionModel::ClearAndSelect);
+
    emit accountListUpdated();
 } //updateAccounts
 
