@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_e31f2508",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "ok",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 29
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_031da10f",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix. it makes harder to read the modification",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 1
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_432b9930",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 69
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_a3028db2",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 74
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_c3ff89a9",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 197,
+        "startChar": 1,
+        "endLine": 198,
+        "endChar": 45
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_632c954b",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 94
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_833191a4",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 61
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_23269d69",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-05T13:35:33Z",
+      "side": 1,
+      "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 105
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
