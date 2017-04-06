@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "7aade967_860affd0",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Well, I rewrote the logic of this method. Please check again, no code style has changed (same indentation)",
+      "parentUuid": "7aade967_031da10f",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 1
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade967_432b9930",
         "filename": "src/availableaccountmodel.cpp",
         "patchSetId": 1
@@ -59,6 +83,30 @@
       "writtenOn": "2017-04-05T13:35:33Z",
       "side": 1,
       "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 69
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_260f8be3",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_432b9930",
       "range": {
         "startLine": 162,
         "startChar": 0,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "7aade967_e6f893c6",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_a3028db2",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 74
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade967_c3ff89a9",
         "filename": "src/availableaccountmodel.cpp",
         "patchSetId": 1
@@ -105,6 +177,30 @@
       "writtenOn": "2017-04-05T13:35:33Z",
       "side": 1,
       "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 197,
+        "startChar": 1,
+        "endLine": 198,
+        "endChar": 45
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_461407f5",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_c3ff89a9",
       "range": {
         "startLine": 197,
         "startChar": 1,
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "7aade967_a6029bb2",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_632c954b",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 94
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade967_833191a4",
         "filename": "src/availableaccountmodel.cpp",
         "patchSetId": 1
@@ -163,6 +283,30 @@
     },
     {
       "key": {
+        "uuid": "7aade967_06f60fd8",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_833191a4",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 61
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade967_23269d69",
         "filename": "src/availableaccountmodel.cpp",
         "patchSetId": 1
@@ -174,6 +318,30 @@
       "writtenOn": "2017-04-05T13:35:33Z",
       "side": 1,
       "message": "this patch is not related to code style fix.",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 105
+      },
+      "revId": "796c9f4aac095b170b6a85a85d66850e4636f8c4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_662ca34b",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-06T18:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_23269d69",
       "range": {
         "startLine": 229,
         "startChar": 1,
