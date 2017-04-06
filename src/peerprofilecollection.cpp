@@ -156,7 +156,7 @@ bool PeerProfileCollection::load()
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
     foreach (const QString& item , entries) {
-        auto personProfile = new Person(nullptr);
+        auto personProfile = new Person(this);
         QList<Account*> accs;
         VCardUtils::mapToPerson(personProfile,QUrl(profilesDir.path()+'/'+item),&accs);
         editor<Person>()->addExisting(personProfile);
