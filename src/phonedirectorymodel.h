@@ -87,6 +87,7 @@ public:
    int count() const;
    bool callWithAccount() const;
    QAbstractListModel* mostPopularNumberModel() const;
+   bool hasUnreadMessage() const;
 
    //Setters
    void setCallWithAccount(bool value);
