@@ -84,6 +84,16 @@ bool ContactRequest::discard()
 }
 
 /**
+ * block the contact request.
+ */
+void
+ContactRequest::block()
+{
+   ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId());
+   emit requestBlocked();
+}
+
+/**
  * get the data by role selection
  * @param role define the role to select
  * @return a QVariant object, wich contains the selection
