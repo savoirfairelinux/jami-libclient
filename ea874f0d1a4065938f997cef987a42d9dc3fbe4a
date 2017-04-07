@@ -46,6 +46,30 @@
       "revId": "ea874f0d1a4065938f997cef987a42d9dc3fbe4a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_e62413c8",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:40:02Z",
+      "side": 1,
+      "message": "ah, I understand, ok",
+      "parentUuid": "7aade967_263b0bed",
+      "range": {
+        "startLine": 873,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 1
+      },
+      "revId": "ea874f0d1a4065938f997cef987a42d9dc3fbe4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
