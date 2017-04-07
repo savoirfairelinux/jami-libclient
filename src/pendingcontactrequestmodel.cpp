@@ -125,6 +125,11 @@ void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
         emit q_ptr->requestDiscarded(r);
     });
 
+    QObject::connect(r, &ContactRequest::requestBlocked, [this,r]() {
+        // the request was handled so it can be removed, from the pending list
+        removeRequest(r);
+    });
+
    emit q_ptr->requestAdded(r);
 }
 
