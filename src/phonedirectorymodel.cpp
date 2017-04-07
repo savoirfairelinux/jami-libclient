@@ -40,6 +40,7 @@
 #include "personmodel.h"
 #include "dbus/configurationmanager.h"
 #include "media/recordingmodel.h"
+#include "media/textrecording.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -864,6 +865,18 @@ QAbstractListModel* PhoneDirectoryModel::mostPopularNumberModel() const
       d_ptr->m_pPopularModel = new MostPopularNumberModel();
 
    return d_ptr->m_pPopularModel;
+}
+
+/**
+ * @return true if any ContactMethod stored has an unread message. False otherwise
+ */
+bool
+PhoneDirectoryModel::hasUnreadMessage() const
+{
+    return std::any_of(d_ptr->m_lNumbers.begin(), d_ptr->m_lNumbers.end(),
+    [](ContactMethod* cm){
+        return cm->textRecording()->unreadInstantTextMessagingModel()->rowCount() > 0;
+    });
 }
 
 #include <phonedirectorymodel.moc>
