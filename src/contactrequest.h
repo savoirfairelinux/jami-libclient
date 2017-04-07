@@ -46,6 +46,7 @@ public:
    //Mutator
    Q_INVOKABLE bool accept ();
    Q_INVOKABLE bool discard();
+   Q_INVOKABLE void block();
 
    // Operator
    bool operator==(const ContactRequest& another) const;
@@ -60,4 +61,5 @@ private:
 Q_SIGNALS:
    void requestAccepted ();
    void requestDiscarded();
+   void requestBlocked();
 };
