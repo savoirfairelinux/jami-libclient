@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_a657fb25",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:16:42Z",
+      "side": 1,
+      "message": "is there any reason not to have this also count the total number of unread messages? since this iterates over all the CMs this would only add one add operation per CM... you could change the name of the function to \"unreadMessageCount()\" and that way you would know both, if there are any unread messages and how many",
+      "range": {
+        "startLine": 873,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 1
+      },
+      "revId": "ea874f0d1a4065938f997cef987a42d9dc3fbe4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
