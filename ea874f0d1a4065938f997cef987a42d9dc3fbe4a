@@ -22,6 +22,30 @@
       "revId": "ea874f0d1a4065938f997cef987a42d9dc3fbe4a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_263b0bed",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-07T18:32:42Z",
+      "side": 1,
+      "message": "I don\u0027t want the number, I just want to know if *any* has unread message, see this example :\nhttp://coliru.stacked-crooked.com/a/9d55a8c9801c4d89\n\nyou\u0027ll see that using any_of avoid iterating trough all over the cms if there is a match.\n\nI thought first to implement what you propose, but I don\u0027t see a real reason of why I want to do so since in the first hand I just want to show a notification for all accounts and in the second hand I want to show the number of unread message not for all accounts by for each account.",
+      "parentUuid": "7aade967_a657fb25",
+      "range": {
+        "startLine": 873,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 1
+      },
+      "revId": "ea874f0d1a4065938f997cef987a42d9dc3fbe4a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
