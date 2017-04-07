@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_c67d57b3",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:10:32Z",
+      "side": 1,
+      "message": "hmm, I\u0027m wondering if we always want this... I guess the moment someone adds a Persons explicitly to their contacts, we probably do, but otherwise people are added asynchronously from various sources when a client first starts, so I\u0027m wondering if we\u0027ll end up with random items getting selected in the middle of the list depending on when it actually gets added...",
+      "range": {
+        "startLine": 695,
+        "startChar": 0,
+        "endLine": 697,
+        "endChar": 90
+      },
+      "revId": "d0ac0845b0463aeea9985aa434ffa3e308183d28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_664a6385",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:10:32Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 732,
+        "startChar": 69,
+        "endLine": 732,
+        "endChar": 70
+      },
+      "revId": "d0ac0845b0463aeea9985aa434ffa3e308183d28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_864f5f92",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:10:32Z",
+      "side": 1,
+      "message": "there could actually be several CMs in this list, so you should iterate over all of them",
+      "range": {
+        "startLine": 734,
+        "startChar": 37,
+        "endLine": 734,
+        "endChar": 41
+      },
+      "revId": "d0ac0845b0463aeea9985aa434ffa3e308183d28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_4649678a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-07T18:10:32Z",
+      "side": 1,
+      "message": "this could be slightly simplified by using QHash::take():\n\nif ( auto cmNode \u003d m_hCMsToNodes.take(cmToRm))\n   removeNode(cmNode);",
+      "range": {
+        "startLine": 735,
+        "startChar": 0,
+        "endLine": 738,
+        "endChar": 7
+      },
+      "revId": "d0ac0845b0463aeea9985aa434ffa3e308183d28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
