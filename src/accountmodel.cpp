@@ -1002,6 +1002,29 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
    }
 }
 
+void AccountModelPrivate::removeAccount(Account* account)
+{
+   const int aindex = m_lAccounts.indexOf(account);
+
+   q_ptr->beginRemoveRows(QModelIndex(),aindex,aindex);
+   m_lAccounts.remove(aindex);
+   m_lDeletedAccounts << account->id();
+   q_ptr->endRemoveRows();
+
+   m_pRemovedAccounts << account;
+
+   switch(account->protocol()) {
+      case Account::Protocol::RING:
+         m_lRingAccounts.removeOne(account);
+         break;
+      case Account::Protocol::SIP:
+         m_lSipAccounts.removeOne(account);
+         break;
+      case Account::Protocol::COUNT__:
+         break;
+   }
+}
+
 Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
 {
    Account* a = Account::buildNewAccountFromAlias(proto,alias);
@@ -1042,16 +1065,12 @@ Account* AccountModel::add(const QString& alias, const QModelIndex& idx)
 ///Remove an account
 void AccountModel::remove(Account* account)
 {
-   if (not account) return;
-   qDebug() << "Removing" << account->alias() << account->id();
-   const int aindex = d_ptr->m_lAccounts.indexOf(account);
-   beginRemoveRows(QModelIndex(),aindex,aindex);
-   d_ptr->m_lAccounts.remove(aindex);
-   d_ptr->m_lDeletedAccounts << account->id();
-   endRemoveRows();
-   emit accountRemoved(account);
-   //delete account;
-   d_ptr->m_pRemovedAccounts << account;
+  if (not account) {
+    return;
+  }
+  qDebug() << "Removing" << account->alias() << account->id();
+  d_ptr->removeAccount(account);
+  emit accountRemoved(account);
 }
 
 void AccountModel::remove(const QModelIndex& idx )

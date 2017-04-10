@@ -44,6 +44,7 @@ public:
    void enableProtocol(Account::Protocol proto);
    AccountModel::EditState convertAccountEditState(const Account::EditState s);
    void insertAccount(Account* a, int idx);
+   void removeAccount(Account* account);
 
    //Attributes
    AccountModel*                     q_ptr                ;
