@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_e1515dd9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-10T14:13:11Z",
+      "side": 1,
+      "message": "As stepan said, selection and insertion must be two separate action.\n\nselect and insert at same time blocks some possibilities like inserting multiple elements (insertion by block) and update the view after this action.",
+      "range": {
+        "startLine": 695,
+        "startChar": 4,
+        "endLine": 697,
+        "endChar": 90
+      },
+      "revId": "0fb7758ce2d4a9e4e5f01095480688e73f3b75b2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
