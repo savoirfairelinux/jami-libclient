@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_41ddd141",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-10T15:04:12Z",
+      "side": 1,
+      "message": "remove this access, equivalent to \"this\"",
+      "range": {
+        "startLine": 253,
+        "startChar": 16,
+        "endLine": 253,
+        "endChar": 41
+      },
+      "revId": "bd17466f2eb5e4979d74a53df908107600445b18",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_61e24d05",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-10T15:04:12Z",
+      "side": 1,
+      "message": "remove this one also",
+      "range": {
+        "startLine": 254,
+        "startChar": 9,
+        "endLine": 254,
+        "endChar": 34
+      },
+      "revId": "bd17466f2eb5e4979d74a53df908107600445b18",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_a1bfe5cf",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-10T15:04:12Z",
+      "side": 1,
+      "message": "@param is used to explain a parameter usage, not used elsewhere (here \"\\brief\")",
+      "range": {
+        "startLine": 658,
+        "startChar": 9,
+        "endLine": 658,
+        "endChar": 14
+      },
+      "revId": "bd17466f2eb5e4979d74a53df908107600445b18",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_01e7d913",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-10T15:04:12Z",
+      "side": 1,
+      "message": "indentation pb",
+      "range": {
+        "startLine": 663,
+        "startChar": 0,
+        "endLine": 663,
+        "endChar": 8
+      },
+      "revId": "bd17466f2eb5e4979d74a53df908107600445b18",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
