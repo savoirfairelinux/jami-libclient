@@ -100,7 +100,7 @@ public:
 
     virtual QVariant data(const QModelIndex& index, int role) const override;
 protected:
-    virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
+    virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const override;
 
 };
 
@@ -1143,98 +1143,68 @@ PeopleProxy::PeopleProxy(RecentModel* sourceModel)
 }
 
 bool
-PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+PeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) const
 {
+    auto idxChosenAccount = AvailableAccountModel::instance().selectionModel()->currentIndex();
+    auto chosenAccount = idxChosenAccount.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+
+    // filter everythin out if there is no account chosen
+    if (not chosenAccount)
+        return false;
+
     //we filter only on top nodes
-    if (!source_parent.isValid() && filterRegExp().isEmpty()) {
-        // get the user chosen account
-        auto index_chosen_account = AvailableAccountModel::instance().selectionModel()->currentIndex();
-        auto chosen_account = index_chosen_account.data(static_cast<int>(Account::Role::Object)).value<Account*>();
-
-        // if there is no account selected, show the item.
-        if (not chosen_account)
-            return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-
-        auto idx = sourceModel()->index(source_row, 0);
-
-        if (not idx.isValid()) // for example, manages rowCount() calls
-            return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-
+    if (!sourceParent.isValid()) {
+        auto idx = sourceModel()->index(sourceRow, 0);
         auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
         auto object = idx.data(static_cast<int>(Ring::Role::Object));
 
-        if (type == Ring::ObjectType::ContactMethod) {
-            // checks if the associated account is the same that the one selected
-            auto cm = object.value<ContactMethod *>();
-
-            // LRC can create cm without account (typically if the cm was createad but never called)
-            // in this case the cm will be shown for any account.
-            if (not cm->account())
-                return cm;
-
-            return cm->account() == chosen_account;
-
-        } else if (type == Ring::ObjectType::Person) {
-            const auto person_numbers = object.value<Person *>()->phoneNumbers();
-
-            // checks if the Person contains any ContactMethod wich has the same account than the one selected
-            if (chosen_account and \
-                std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                            [&](const ContactMethod* cm) { return cm->account() == chosen_account; })) {
-               return true;
+        Person *person = nullptr;
+        auto filterFunction = [&person, chosenAccount, this] (const ContactMethod* cm) {
+            auto passesFilter = false;
+            // only proceed if there is no account set yet, or if it matches the chosen account
+            if ( !cm->account() or (cm->account() == chosenAccount)) {
+                /* we need to check the Person name as well as any identifier of the
+                 * ContactMethod.
+                 * note: QString::contains() will return true for an empty param string
+                 */
+                passesFilter =
+                    (person and person->formattedName().contains(filterRegExp())) or
+                    cm->uri().full().contains(filterRegExp()) or
+                    cm->registeredName().contains(filterRegExp()) or
+                    cm->primaryName().contains(filterRegExp());
             }
-
-            // return false if any ContactMethod has a valid account (but none are the selected_account)
-            if (std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                            [&](const ContactMethod* cm) { return cm->account() != nullptr; })) {
-               return false;
-            }
-        }
-        // anything else without ContactMethod does not require to be filtered
-        return true;
-
-    }else if (!source_parent.isValid()) {
-        auto idx = sourceModel()->index(source_row, 0);
+            return passesFilter;
+        };
 
         //we want to filter on name and number; note that Person object may have many numbers
-        if (idx.data(static_cast<int>(Ring::Role::Name)).toString().contains(filterRegExp())) {
-            return true;
-        } else {
-            auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
-            auto object = idx.data(static_cast<int>(Ring::Role::Object));
+        switch (type) {
+            case Ring::ObjectType::Person:
+            {
+                person = object.value<Person *>();
+                const auto personCMs = person->phoneNumbers();
 
-            switch (type) {
-                case Ring::ObjectType::Person:
-                {
-                    auto p = object.value<Person *>();
-                    for (auto cm : p->phoneNumbers()) {
-                        if (cm->uri().full().contains(filterRegExp()))
-                            return true;
-                    }
-                    return false;
-                }
-                break;
-                case Ring::ObjectType::ContactMethod:
-                {
-                    auto cm = object.value<ContactMethod *>();
-                    return cm->uri().full().contains(filterRegExp());
-                }
-                break;
-                // top nodes are only of type Person or ContactMethod
-                case Ring::ObjectType::Call:
-                case Ring::ObjectType::Media:
-                case Ring::ObjectType::Certificate:
-                case Ring::ObjectType::ContactRequest:
-                case Ring::ObjectType::COUNT__:
-                break;
+                return std::any_of(std::begin(personCMs), std::end(personCMs), filterFunction);
             }
+            case Ring::ObjectType::ContactMethod:
+            {
+                auto cm = object.value<ContactMethod *>();
 
+                return filterFunction(cm);
+            }
+            // top nodes are only of type Person or ContactMethod
+            case Ring::ObjectType::Call:
+            case Ring::ObjectType::Media:
+            case Ring::ObjectType::Certificate:
+            case Ring::ObjectType::ContactRequest:
+            case Ring::ObjectType::COUNT__:
+            break;
         }
+
         return false; // no matches
     }
     //in the case of children, only show if there is more than one unless it is a conference
-    if (static_cast<RecentModel *>(sourceModel())->isConference(source_parent)
-        || sourceModel()->rowCount(source_parent) > 1 )
+    if (static_cast<RecentModel *>(sourceModel())->isConference(sourceParent)
+        || sourceModel()->rowCount(sourceParent) > 1 )
         return true;
     return false;
 }
