@@ -1147,12 +1147,11 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
     //we filter only on top nodes
     if (!source_parent.isValid() && filterRegExp().isEmpty()) {
         // get the user chosen account
-        auto index_chosen_account = AccountModel::instance().userSelectionModel()->currentIndex();
-        auto chosen_account = index_chosen_account.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+        auto chosen_account = AccountModel::instance().userChosenAccount();
 
-        // if there is no account selected, show the item.
+        // if there is no account selected, don't show the item.
         if (not chosen_account)
-            return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+            return false;
 
         auto idx = sourceModel()->index(source_row, 0);
 
@@ -1166,69 +1165,60 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
             // checks if the associated account is the same that the one selected
             auto cm = object.value<ContactMethod *>();
 
-            // LRC can create cm without account (typically if the cm was createad but never called)
-            // in this case the cm will be shown for any account.
-            if (not cm->account())
-                return cm;
-
-            return cm->account() == chosen_account;
+            if (cm->account())
+                return (cm->account() == chosen_account);
 
         } else if (type == Ring::ObjectType::Person) {
             const auto person_numbers = object.value<Person *>()->phoneNumbers();
 
             // checks if the Person contains any ContactMethod wich has the same account than the one selected
-            if (chosen_account and \
-                std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                            [&](const ContactMethod* cm) { return cm->account() == chosen_account; })) {
-               return true;
-            }
-
-            // return false if any ContactMethod has a valid account (but none are the selected_account)
-            if (std::any_of(std::begin(person_numbers), std::end(person_numbers),
-                            [&](const ContactMethod* cm) { return cm->account() != nullptr; })) {
-               return false;
-            }
+            return std::any_of(std::begin(person_numbers), std::end(person_numbers),
+                   [&](const ContactMethod* cm){return (cm->account() == chosen_account);});
         }
         // anything else without ContactMethod does not require to be filtered
         return true;
 
     }else if (!source_parent.isValid()) {
         auto idx = sourceModel()->index(source_row, 0);
+        auto chosen_account = AccountModel::instance().userChosenAccount();
+        auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
+        auto object = idx.data(static_cast<int>(Ring::Role::Object));
 
         //we want to filter on name and number; note that Person object may have many numbers
-        if (idx.data(static_cast<int>(Ring::Role::Name)).toString().contains(filterRegExp())) {
-            return true;
-        } else {
-            auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
-            auto object = idx.data(static_cast<int>(Ring::Role::Object));
+        switch (type) {
+            case Ring::ObjectType::Person:
+            {
+                auto p = object.value<Person *>();
+                const auto person_numbers = object.value<Person *>()->phoneNumbers();
 
-            switch (type) {
-                case Ring::ObjectType::Person:
-                {
-                    auto p = object.value<Person *>();
-                    for (auto cm : p->phoneNumbers()) {
-                        if (cm->uri().full().contains(filterRegExp()))
-                            return true;
-                    }
-                    return false;
-                }
-                break;
-                case Ring::ObjectType::ContactMethod:
-                {
-                    auto cm = object.value<ContactMethod *>();
-                    return cm->uri().full().contains(filterRegExp());
-                }
-                break;
-                // top nodes are only of type Person or ContactMethod
-                case Ring::ObjectType::Call:
-                case Ring::ObjectType::Media:
-                case Ring::ObjectType::Certificate:
-                case Ring::ObjectType::ContactRequest:
-                case Ring::ObjectType::COUNT__:
-                break;
+                if (p->formattedName().contains(filterRegExp()) /* check the profile name used by the peer */ and \
+                    /* check associated account of his contact methods */
+                    std::any_of(std::begin(person_numbers), std::end(person_numbers),
+                    [&](const ContactMethod* cm){return (cm->account() == chosen_account);}))
+                    return true;
             }
+            break;
+            case Ring::ObjectType::ContactMethod:
+            {
+                auto cm = object.value<ContactMethod *>();
 
+                // if the cm has an account check with chosen account
+                return ((cm->account() and cm->account() == chosen_account) and \
+                        /* check the registered name of the peer */
+                        (cm->registeredName().contains(filterRegExp()) or \
+                        /* check his uri */
+                        (cm->registeredName().isEmpty() and cm->uri().full().contains(filterRegExp()))));
+            }
+            break;
+            // top nodes are only of type Person or ContactMethod
+            case Ring::ObjectType::Call:
+            case Ring::ObjectType::Media:
+            case Ring::ObjectType::Certificate:
+            case Ring::ObjectType::ContactRequest:
+            case Ring::ObjectType::COUNT__:
+            break;
         }
+
         return false; // no matches
     }
     //in the case of children, only show if there is more than one unless it is a conference
