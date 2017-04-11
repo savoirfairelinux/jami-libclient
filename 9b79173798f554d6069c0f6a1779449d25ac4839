@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_41d151cc",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-04-11T13:48:35Z",
+      "side": 1,
+      "message": "Check your indentation here, it seems wrong",
+      "revId": "9b79173798f554d6069c0f6a1779449d25ac4839",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
