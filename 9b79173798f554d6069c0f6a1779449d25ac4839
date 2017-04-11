@@ -16,6 +16,24 @@
       "revId": "9b79173798f554d6069c0f6a1779449d25ac4839",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_41b6318c",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2017-04-11T15:39:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aade967_41d151cc",
+      "revId": "9b79173798f554d6069c0f6a1779449d25ac4839",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
