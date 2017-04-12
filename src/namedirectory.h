@@ -26,7 +26,6 @@ class Account;
 class LIB_EXPORT NameDirectory : public QObject
 {
     Q_OBJECT
-
 public:
 
     //Register name status
@@ -52,9 +51,9 @@ public:
     static NameDirectory& instance();
 
     //Lookup
-    bool    lookupName        (const Account* account, const QString& nameServiceURL, const QString& name    ) const;
-    bool    lookupAddress     (const Account* account, const QString& nameServiceURL, const QString& address ) const;
-    bool    registerName      (const Account* account, const QString& password,       const QString& name    ) const;
+    Q_INVOKABLE bool lookupName    (const Account* account, const QString& nameServiceURL, const QString& name    ) const;
+    Q_INVOKABLE bool lookupAddress (const Account* account, const QString& nameServiceURL, const QString& address ) const;
+    Q_INVOKABLE bool registerName  (const Account* account, const QString& password,       const QString& name    ) const;
 
 private:
     //Constructors & Destructors
@@ -63,6 +62,7 @@ private:
 
     NameDirectoryPrivate* d_ptr;
     Q_DECLARE_PRIVATE(NameDirectory)
+    Q_DISABLE_COPY(NameDirectory)
 
 Q_SIGNALS:
     ///RegisterName has ended
@@ -71,3 +71,7 @@ Q_SIGNALS:
     ///Name or address lookup has completed
     void registeredNameFound(Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 };
+
+Q_DECLARE_METATYPE(NameDirectory*)
+Q_DECLARE_METATYPE(NameDirectory::RegisterNameStatus)
+Q_DECLARE_METATYPE(NameDirectory::LookupStatus)
