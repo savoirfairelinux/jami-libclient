@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_1c8662ba",
+        "filename": "src/contactrequest.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-04-12T14:30:13Z",
+      "side": 1,
+      "message": "consistency: accept and discard return bool, why not this one?\nWho is right?",
+      "range": {
+        "startLine": 49,
+        "startChar": 15,
+        "endLine": 49,
+        "endChar": 28
+      },
+      "revId": "7a9bdde1020af226c1f4c071ac94de209d888540",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
