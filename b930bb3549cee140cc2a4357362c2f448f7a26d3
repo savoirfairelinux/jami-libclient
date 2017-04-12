@@ -46,6 +46,30 @@
       "revId": "b930bb3549cee140cc2a4357362c2f448f7a26d3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_9731cba4",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-12T20:23:23Z",
+      "side": 1,
+      "message": "but the comparison you do here is an \"AND\", so it both has to match the account AND the protocol... if you say that the issue is that this check fails:\ncm-\u003eaccount() \u003d\u003d chosen_account\n\nthen it doesn\u0027t matter if the other one passes, the result is still false...\n\nshould it not be then:\ncm-\u003eaccount() \u003d\u003d chosen_account) or compareProtocols(chosen_account-\u003eprotocol(),cm-\u003eprotocolHint())",
+      "parentUuid": "7aade967_970a2bd1",
+      "range": {
+        "startLine": 1182,
+        "startChar": 19,
+        "endLine": 1183,
+        "endChar": 85
+      },
+      "revId": "b930bb3549cee140cc2a4357362c2f448f7a26d3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
