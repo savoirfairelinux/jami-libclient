@@ -22,6 +22,30 @@
       "revId": "b930bb3549cee140cc2a4357362c2f448f7a26d3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_970a2bd1",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-12T20:11:48Z",
+      "side": 1,
+      "message": "let say, \n\n- you have two ring accounts : #34 #67\n- you have a contact added from a collection like evolution, wich mean it has no account associated\n\nif we do the comparaison only on the accounts, the contact will never be visible by anybody\n\nif we do the comparaison only on the protocol, contact with an account associated to #34 will be shown when #67 is chosen.\n\nI may have wrong or forgetting something, but I did a lot of tests to ensure to not breaking something...",
+      "parentUuid": "7aade967_37f3370c",
+      "range": {
+        "startLine": 1182,
+        "startChar": 19,
+        "endLine": 1183,
+        "endChar": 85
+      },
+      "revId": "b930bb3549cee140cc2a4357362c2f448f7a26d3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
