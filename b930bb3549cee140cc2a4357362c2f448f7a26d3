@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_37f3370c",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-12T18:06:39Z",
+      "side": 1,
+      "message": "hmm, I\u0027m confused, in what case would the account of the ContatMethod be the same as the chosen account, but the protocol hint not be compatible with the protocol?\n\nI guess if somewhere we set the account of a CM without checking if the URI is compatible with the account protocol... In this case though, I think that is a bug. We should not, for example, assign a Ring account to a SIP URI. Though there can also be ambiguities, eg: if a SIP URI doesn\u0027t contain \"sip:\" it could be both a valid SIP URI and a valid Ring username.\n\nIn any case, it doesn\u0027t seem right to only fix this ambiguity locally in the RecentModel. We should either not give the wrong account type to a CM, or this sort of comparator should be part of the CM and/or Account API.",
+      "range": {
+        "startLine": 1182,
+        "startChar": 19,
+        "endLine": 1183,
+        "endChar": 85
+      },
+      "revId": "b930bb3549cee140cc2a4357362c2f448f7a26d3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
