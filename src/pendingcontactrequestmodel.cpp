@@ -99,11 +99,20 @@ QHash<int,QByteArray> PendingContactRequestModel::roleNames() const
 
 void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
 {
-   // do not add the same trust request several time
+   // do not add the same contact request several time
    if(std::any_of(m_lRequests.begin(), m_lRequests.end(),
       [&](ContactRequest* r_){ return *r_ == *r ;})) {
       return;
    }
+
+   // update (remove old add new) contact request if the remoteIds match.
+   auto iter = std::find_if(m_lRequests.begin(), m_lRequests.end(), [&](ContactRequest* r_) {
+      return (r_->certificate()->remoteId() == r->certificate()->remoteId());
+   });
+
+    if(iter)
+        removeRequest(*iter);
+
 
    q_ptr->beginInsertRows(QModelIndex(),m_lRequests.size(),m_lRequests.size());
    m_lRequests << r;
