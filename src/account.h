@@ -352,7 +352,7 @@ class LIB_EXPORT Account : public ItemBase {
        *Perform an action
        * @return If the state changed
        */
-      bool performAction(Account::EditAction action);
+      Q_INVOKABLE bool performAction(Account::EditAction action);
       Account::EditState editState() const;
 
       //Getters
@@ -460,10 +460,10 @@ class LIB_EXPORT Account : public ItemBase {
       uint    internalId                   () const;
       QString lastSipRegistrationStatus    () const;
 
-      bool    exportOnRing      (const QString& password) const;
-      bool    registerName      (const QString& password, const QString& name) const;
-      bool    lookupName        (const QString& name                         ) const;
-      bool    lookupAddress     (const QString& address                      ) const;
+      Q_INVOKABLE bool exportOnRing (const QString& password) const;
+      Q_INVOKABLE bool registerName (const QString& password, const QString& name) const;
+      Q_INVOKABLE bool lookupName   (const QString& name                         ) const;
+      Q_INVOKABLE bool lookupAddress(const QString& address                      ) const;
 
       bool   isUsedForOutgogingCall () const;
       uint   totalCallCount         () const;
@@ -575,6 +575,7 @@ class LIB_EXPORT Account : public ItemBase {
 
       QSharedPointer<AccountPrivate> d_ptr;
       Q_DECLARE_PRIVATE(Account)
+      Q_DISABLE_COPY(Account)
 
    Q_SIGNALS:
       ///The account state (Invalid,Trying,Registered) changed
@@ -603,8 +604,8 @@ class LIB_EXPORT Account : public ItemBase {
       /// contact request accepted
       void contactRequestAccepted(const ContactRequest*);
 };
-// Q_DISABLE_COPY(Account)
 Q_DECLARE_METATYPE(Account*)
+Q_DECLARE_METATYPE(const Account*)
 Q_DECLARE_METATYPE(Account::RegistrationState)
 Q_DECLARE_METATYPE(Account::EditAction)
 Q_DECLARE_METATYPE(Account::Protocol)
