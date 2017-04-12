@@ -149,6 +149,16 @@ Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType
         return priorAccount;
     } else {
         auto account = AvailableAccountModelPrivate::firstRegisteredAccount(schemeType);
+
+        // If there is only RING account, it will still be nullptr. Given there is
+        // *only* RING accounts, then the user probably want a call using the
+        // Ring protocol. This will happen when using the name directory instead
+        // of the hash
+        if (!account)
+            account = AvailableAccountModelPrivate::firstRegisteredAccount(
+                URI::SchemeType::RING
+            );
+
         AvailableAccountModelPrivate::setPriorAccount(account);
         return account;
     }
