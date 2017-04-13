@@ -677,6 +677,9 @@ bool UserActionModel::setData(const QModelIndex& index, const QVariant &value, i
 
 bool UserActionModel::isActionEnabled( UserActionModel::Action action ) const
 {
+   if (!d_ptr->m_pCall)
+      return false;
+
    return d_ptr->availableActionMap[action][d_ptr->m_pCall->state()];
 }
 
