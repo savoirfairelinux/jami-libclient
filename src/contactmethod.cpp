@@ -588,6 +588,8 @@ void ContactMethod::addCall(Call* call)
    d_ptr->m_Type = ContactMethod::Type::USED;
    d_ptr->m_lCalls << call;
 
+   // call setLastUsed first so that we emit lastUsedChanged()
+   setLastUsed(time);
    //Update the contact method statistics
    d_ptr->m_UsageStats.update(call->startTimeStamp(), call->stopTimeStamp());
    if (d_ptr->m_pAccount)
@@ -602,7 +604,6 @@ void ContactMethod::addCall(Call* call)
    auto time = call->startTimeStamp();
    if (d_ptr->m_pAccount)
        d_ptr->m_pAccount->usageStats.setLastUsed(time);
-   setLastUsed(time);
 
    d_ptr->callAdded(call);
    d_ptr->changed();
