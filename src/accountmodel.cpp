@@ -30,6 +30,7 @@
 #include <QtCore/QItemSelectionModel>
 #include <QtCore/QMimeData>
 #include <QtCore/QDir>
+#include <QtCore/QSortFilterProxyModel>
 
 //Ring daemon
 #include <account_const.h>
@@ -60,6 +61,18 @@ m_lSupportedProtocols {{
    /* RING */ false,
 }}
 {}
+
+class EnabledProxy : public QSortFilterProxyModel
+{
+   Q_OBJECT
+public:
+    EnabledProxy(AccountModel* source_model);
+
+protected:
+    virtual bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
+
+};
+
 
 ///Constructors
 AccountModel::AccountModel()
@@ -1229,4 +1242,34 @@ Account* AccountModel::findAccountIf(const std::function<bool(const Account&)>& 
     return nullptr;
 }
 
+/**
+ * return the pointer to the proxy
+ */
+QSortFilterProxyModel*
+AccountModel::enabledAccounts() const
+{
+   static EnabledProxy* p = new EnabledProxy(const_cast<AccountModel*>(this));
+   return p;
+}
+
+/**
+ * constructor
+ * @param sourceModel, model to filter
+ */
+EnabledProxy::EnabledProxy(AccountModel* sourceModel)
+{
+    setSourceModel(sourceModel);
+}
+
+/**
+ * filter account by isEnabled
+ */
+bool
+EnabledProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+{
+    auto idx = sourceModel()->index(source_row, 0);
+    auto object = idx.data(static_cast<int>(Ring::Role::Object));
+    auto account = object.value<Account *>();
+    return account->isEnabled();
+}
 #include <accountmodel.moc>

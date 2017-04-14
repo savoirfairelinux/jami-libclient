@@ -28,6 +28,7 @@
 #include "typedefs.h"
 
 class ContactRequest;
+class QSortFilterProxyModel;
 
 //Private
 class AccountModelPrivate;
@@ -86,6 +87,9 @@ public:
    QItemSelectionModel* selectionModel              (                                      ) const;
    Account*             userChosenAccount           (                                      ) const;
    QItemSelectionModel* userSelectionModel          (                                      ) const;
+
+   // Proxy
+   QSortFilterProxyModel* enabledAccounts() const;
 
    //Abstract model accessors
    virtual QVariant              data        ( const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
