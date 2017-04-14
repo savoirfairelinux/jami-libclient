@@ -28,35 +28,21 @@ class UsageStatistics
 public:
     //Accessors
 
-    unsigned totalCount() const {
-        return m_TotalSeconds;
-    }
+    unsigned totalCount() const;
 
-    unsigned totalSeconds() const {
-        return m_TotalSeconds;
-    }
+    unsigned totalSeconds() const;
 
-    unsigned lastWeekCount() const {
-        return m_LastWeekCount;
-    }
+    unsigned lastWeekCount() const;
 
-    unsigned lastTrimCount() const {
-        return m_LastTrimCount;
-    }
+    unsigned lastTrimCount() const;
 
-    time_t lastUsed() const {
-        return m_LastUsed;
-    }
+    time_t lastUsed() const;
 
-    bool haveCalled() const {
-        return m_HaveCalled;
-    }
+    bool haveCalled() const;
 
     //Mutators
 
-    void setHaveCalled() {
-        m_HaveCalled = true;
-    }
+    void setHaveCalled();
 
     /// \brief Update usage using a time range.
     ///
@@ -65,40 +51,17 @@ public:
     ///
     /// \param start starting time of usage
     /// \param stop ending time of usage, must be greater than \a start
-    void update(const time_t& start, const time_t& stop) {
-        ++m_TotalCount;
-        setLastUsed(start);
-        m_TotalSeconds += stop - start;
-        time_t now;
-        ::time(&now);
-        if (now - 3600*24*7 < stop)
-            ++m_LastWeekCount;
-        if (now - 3600*24*7*15 < stop)
-            ++m_LastTrimCount;
-    }
+    void update(const time_t& start, const time_t& stop);
 
     /// \brief Use this method to update lastUsed time by a new time only if sooner.
     ///
     /// \return \a true if the update has been effective.
-    bool setLastUsed(time_t time) {
-        if (m_LastUsed < time) {
-            m_LastUsed = time;
-            return true;
-        }
-        return false;
-    }
+    bool setLastUsed(time_t new_time);
 
     /// \brief Inplace incrementation of current values by values from another UsageStatistics instance.
     ///
     /// \note \a lastUsed time is not incremented but updated using setLastUsed().
-    UsageStatistics& operator+=(const UsageStatistics& rhs) {
-        m_TotalCount += rhs.m_TotalCount;
-        m_LastWeekCount += rhs.m_LastWeekCount;
-        m_LastTrimCount += rhs.m_LastTrimCount;
-        m_HaveCalled += rhs.m_TotalCount; // '+=' mean '|=' here
-        setLastUsed(rhs.m_LastUsed);
-        return *this;
-    }
+    UsageStatistics& operator+=(const UsageStatistics& rhs);
 
 private:
     unsigned m_TotalCount {0};    ///< cummulated usage in number of time
