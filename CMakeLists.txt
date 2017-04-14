@@ -334,6 +334,7 @@ SET( libringclient_LIB_SRCS
   src/private/threadworker.cpp
   src/mime.cpp
   src/smartinfohub.cpp
+  src/usage_statistics.cpp
 
   #Extension
   src/extensions/presencecollectionextension.cpp
