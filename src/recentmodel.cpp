@@ -40,6 +40,7 @@
 #include "accountmodel.h"
 #include "contactrequest.h"
 #include "certificate.h"
+#include "availableaccountmodel.h"
 
 struct CallGroup
 {
@@ -1147,7 +1148,7 @@ PeopleProxy::filterAcceptsRow(int source_row, const QModelIndex & source_parent)
     //we filter only on top nodes
     if (!source_parent.isValid() && filterRegExp().isEmpty()) {
         // get the user chosen account
-        auto index_chosen_account = AccountModel::instance().userSelectionModel()->currentIndex();
+        auto index_chosen_account = AvailableAccountModel::instance().selectionModel()->currentIndex();
         auto chosen_account = index_chosen_account.data(static_cast<int>(Account::Role::Object)).value<Account*>();
 
         // if there is no account selected, show the item.
