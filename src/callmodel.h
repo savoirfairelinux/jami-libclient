@@ -76,7 +76,8 @@ public:
    Q_PROPERTY(bool             isValid         READ isValid         )
    Q_PROPERTY(bool             hasConference   READ hasConference   )
    Q_PROPERTY(bool             isConnected     READ isConnected     )
-   Q_PROPERTY(UserActionModel* userActionModel READ userActionModel )
+   Q_PROPERTY(Call*            selectedCall    READ selectedCall    )
+   Q_PROPERTY(UserActionModel* userActionModel READ userActionModel CONSTANT)
 
    //Call related
    Q_INVOKABLE Call*       dialingCall       ( const QString& peerName=QString(), Account* account=nullptr, Call* parent = nullptr );
@@ -104,7 +105,7 @@ public:
    bool                 hasConference       () const;
    bool                 isConnected         () const;
    UserActionModel*     userActionModel     () const;
-   QItemSelectionModel* selectionModel      () const;
+   Q_INVOKABLE QItemSelectionModel* selectionModel() const;
 
    Q_INVOKABLE Call* getCall ( const QModelIndex& idx ) const;
    Q_INVOKABLE QList<Call*> getConferenceParticipants(Call *conf) const;
