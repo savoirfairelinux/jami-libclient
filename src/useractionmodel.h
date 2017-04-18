@@ -127,7 +127,7 @@ public:
    };
    Q_FLAGS(Context)
 
-   Q_PROPERTY(QSortFilterProxyModel* activeActionModel READ activeActionModel)
+   Q_PROPERTY(QAbstractItemModel* activeActionModel READ activeActionModel CONSTANT)
 
    //Constructor
    explicit UserActionModel(Call* parent     , const FlagPack<Context> c = FlagPack<Context>(Context::MINIMAL)| Context::RECOMMENDED);
@@ -144,13 +144,13 @@ public:
    //Getters
    Q_INVOKABLE bool isActionEnabled ( UserActionModel::Action action ) const;
    Q_INVOKABLE uint relativeIndex   ( UserActionModel::Action action ) const;
-   QSortFilterProxyModel* activeActionModel() const;
+   QAbstractItemModel* activeActionModel() const;
 
    //Setters
    void setSelectionModel(QItemSelectionModel* sm);
 
    //Mutators
-   bool execute( const Action action    ) const;
+   Q_INVOKABLE bool execute( const Action action    ) const;
    bool execute( const QModelIndex& idx ) const;
 
    //Operators
