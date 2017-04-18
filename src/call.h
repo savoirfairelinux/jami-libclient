@@ -347,7 +347,7 @@ public:
    //Mutators
    template<typename T>
    T* addOutgoingMedia(bool useExisting = true);
-   void appendText(const QString& str);
+   Q_INVOKABLE void appendText(const QString& str);
    void backspaceItemText();
    void reset();
    bool joinToParent();
