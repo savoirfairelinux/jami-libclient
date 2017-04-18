@@ -132,8 +132,9 @@ bool AvailableAccountModel::validAccountForScheme(Account* account, URI::SchemeT
 Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
 {
     // Always try to respect user choice
-    auto userChosenAccount = AccountModel::instance().userChosenAccount();
-    if (userChosenAccount && validAccountForScheme(userChosenAccount, schemeType)) {
+    const auto idx = AvailableAccountModel::instance().selectionModel()->currentIndex();
+    auto userChosenAccount = idx.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+    if (userChosenAccount) {
         return userChosenAccount;
     }
 
