@@ -612,11 +612,11 @@ UserActionModel::~UserActionModel()
 QHash<int,QByteArray> UserActionModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-   /*static bool initRoles = false;
+   static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-
-   }*/
+      roles[(int)Role::ACTION] = "action";
+   }
    return roles;
 }
 
@@ -1177,7 +1177,7 @@ bool UserActionModel::execute(const QModelIndex& idx) const
 }
 
 ///Get a model filter with only the available actions
-QSortFilterProxyModel* UserActionModel::activeActionModel() const
+QAbstractItemModel* UserActionModel::activeActionModel() const
 {
    if (!d_ptr->m_pActiveModel)
       d_ptr->m_pActiveModel = new ActiveUserActionModel(const_cast<UserActionModel*>(this));
