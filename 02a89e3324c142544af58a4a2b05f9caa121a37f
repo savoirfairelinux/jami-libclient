@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_347492ce",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-18T17:22:48Z",
+      "side": 0,
+      "message": "I think removing this check needs to be moved into a separate commit... its a different part of the logic and we need to be able to evaluate it separately.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 84
+      },
+      "revId": "02a89e3324c142544af58a4a2b05f9caa121a37f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}

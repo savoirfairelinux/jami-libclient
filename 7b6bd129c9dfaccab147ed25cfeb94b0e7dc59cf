@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_147716d6",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-18T17:22:48Z",
+      "side": 1,
+      "message": "We\u0027re in the AvailableAccountModel class, so this is not needed, you can just do:\n... \u003d selectionModel()-\u003ecurrentIndex();",
+      "range": {
+        "startLine": 135,
+        "startChar": 21,
+        "endLine": 135,
+        "endChar": 55
+      },
+      "revId": "7b6bd129c9dfaccab147ed25cfeb94b0e7dc59cf",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
