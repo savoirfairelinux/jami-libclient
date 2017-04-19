@@ -35,6 +35,8 @@ class LIB_EXPORT PreviewManager : public QObject
    Q_OBJECT
 
 public:
+    Q_PROPERTY(bool previewing READ isPreviewing NOTIFY previewStateChanged)
+
    //Singleton
    static PreviewManager& instance();
 
