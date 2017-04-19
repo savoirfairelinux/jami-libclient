@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_7a5c3326",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T17:33:22Z",
+      "side": 1,
+      "message": "I would change this to something like:\ncurrentDefaultAccount: use AvailableAccountModel selection\n\nIMHO using words like \"edit\" and \"fix\" are redundant in most patches since most patches fix and edit the code they touch, unless you\u0027re using these words to describe the new behaviour.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 57
+      },
+      "revId": "547c3d9eea611fad4bdade39c1040adbf5788459",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_f78fdcca",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T17:33:22Z",
+      "side": 1,
+      "message": "still same comment as before :P",
+      "range": {
+        "startLine": 135,
+        "startChar": 21,
+        "endLine": 135,
+        "endChar": 55
+      },
+      "revId": "547c3d9eea611fad4bdade39c1040adbf5788459",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
