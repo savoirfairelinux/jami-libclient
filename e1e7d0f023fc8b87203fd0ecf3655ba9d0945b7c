@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_5a41370a",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T19:21:53Z",
+      "side": 1,
+      "message": "why not just preform this check before anything else, its independent of everything else",
+      "range": {
+        "startLine": 1150,
+        "startChar": 0,
+        "endLine": 1156,
+        "endChar": 25
+      },
+      "revId": "e1e7d0f023fc8b87203fd0ecf3655ba9d0945b7c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_3ac1db80",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1184,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T19:21:53Z",
+      "side": 1,
+      "message": "I don\u0027t know why this wasn\u0027t caught in the initial but this whole bloc basically repeats the logic thats in the next one, but without the string regex check... the original reason for doing something different when filterRegExp() was empty was because there was nothing to do... now we should just perform the checks all the time, otherwise we have to modify both parts of the code when we change how we want to filter based on the account",
+      "range": {
+        "startLine": 1150,
+        "startChar": 8,
+        "endLine": 1184,
+        "endChar": 20
+      },
+      "revId": "e1e7d0f023fc8b87203fd0ecf3655ba9d0945b7c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_dabd2704",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T19:21:53Z",
+      "side": 1,
+      "message": "I think we should check the account condition first, and then the regex, because in general I think it will be faster to do a simple pointer comparison then a sub string compare; we also need to to compare more than just the formatted name",
+      "range": {
+        "startLine": 1199,
+        "startChar": 17,
+        "endLine": 1199,
+        "endChar": 64
+      },
+      "revId": "e1e7d0f023fc8b87203fd0ecf3655ba9d0945b7c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_faba6309",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T19:21:53Z",
+      "side": 1,
+      "message": "this multiline if condition is hard to read, espeically because in this case we are also nesting basically another function in it, I didin\u0027t even realize thats what it was initially... I think this sort of style should be avoid it, its better to break it up into multiple seperate statements",
+      "range": {
+        "startLine": 1199,
+        "startChar": 15,
+        "endLine": 1206,
+        "endChar": 32
+      },
+      "revId": "e1e7d0f023fc8b87203fd0ecf3655ba9d0945b7c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_9a37afb0",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1218,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-19T19:21:53Z",
+      "side": 1,
+      "message": "same as above... this is more readable, but I still think its weird to have a multiline return",
+      "range": {
+        "startLine": 1214,
+        "startChar": 16,
+        "endLine": 1218,
+        "endChar": 105
+      },
+      "revId": "e1e7d0f023fc8b87203fd0ecf3655ba9d0945b7c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
