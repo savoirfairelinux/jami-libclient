@@ -988,15 +988,32 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
    // For now, only handle single selection, multi-selection could be
    // re-enabled later
 
-   // TODO This will be cleaned up later
-   if (! d_ptr->m_pSelectionModel->hasSelection () && action == UserActionModel::Action::ADD_NEW) {
-      if (UserActions::addNew()) {
-         d_ptr->updateActions();
-         return true;
-      }
+   // The ADD_NEW action can when no selection is present
+   switch(d_ptr->m_Mode) {
+      case UserActionModelPrivate::UserActionModelMode::GENERIC:
+         #pragma GCC diagnostic push
+         #pragma GCC diagnostic ignored "-Wswitch"
+         switch(action) {
+            case UserActionModel::Action::ADD_NEW:
+               if (UserActions::addNew()) {
+                  d_ptr->updateActions();
+                  return true;
+               }
+               break;
+         }
+         #pragma GCC diagnostic pop
+
+      case UserActionModelPrivate::UserActionModelMode::CALL:
+         // There is always an implicit selection on the Call::userActionModel
+         break;
    }
 
-   foreach (const QModelIndex& idx, d_ptr->m_pSelectionModel->selectedRows()) {
+   // Get the indexes of the selected objects
+   const QModelIndexList selected = d_ptr->m_pSelectionModel ?
+      d_ptr->m_pSelectionModel->selectedRows() :
+      QModelIndexList{CallModel::instance().getIndex(d_ptr->m_pCall)};
+
+   for (const auto& idx : selected) {
       const QVariant objTv = idx.data(static_cast<int>(Ring::Role::ObjectType));
 
       //Be sure the model support the UAM abstraction
@@ -1201,3 +1218,4 @@ void UserActionModel::setSelectionModel(QItemSelectionModel* sm)
 }
 
 #include <useractionmodel.moc>
+// kate: space-indent on; indent-width 3; replace-tabs on;
