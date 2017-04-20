@@ -45,6 +45,30 @@
       "revId": "547c3d9eea611fad4bdade39c1040adbf5788459",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_da4d27c6",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-20T12:27:56Z",
+      "side": 1,
+      "message": "currentDefaultAccount is a static member.\n\nhttps://jenkins.ring.cx/job/libringclient-linux/316/console\n\nWe can remove the static from the member, or use instance(). removing static from currentDefaultAccount requires to edit the code in several places (e.g. numbercompletionmodel.cpp:221). I let instance() for now, if you want we can make a patch to remove the static from currentDefaultAccount and do the edits where required.",
+      "parentUuid": "7aade967_f78fdcca",
+      "range": {
+        "startLine": 135,
+        "startChar": 21,
+        "endLine": 135,
+        "endChar": 55
+      },
+      "revId": "547c3d9eea611fad4bdade39c1040adbf5788459",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
