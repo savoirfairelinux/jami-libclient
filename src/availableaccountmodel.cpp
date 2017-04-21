@@ -116,6 +116,14 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
         }
     }
 
+    // Always try to respect user choice
+    const auto idx = AvailableAccountModel::instance().selectionModel()->currentIndex();
+    auto userChosenAccount = idx.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+    if (userChosenAccount) {
+        return userChosenAccount;
+    }
+
+    // if there is no userChosenAccount we will try to determine an account in function of URI::SchemeType
     return currentDefaultAccount(type);
 
 } //currentDefaultAccount
@@ -131,13 +139,6 @@ bool AvailableAccountModel::validAccountForScheme(Account* account, URI::SchemeT
 
 Account* AvailableAccountModel::currentDefaultAccount(URI::SchemeType schemeType)
 {
-    // Always try to respect user choice
-    const auto idx = AvailableAccountModel::instance().selectionModel()->currentIndex();
-    auto userChosenAccount = idx.data(static_cast<int>(Account::Role::Object)).value<Account*>();
-    if (userChosenAccount && validAccountForScheme(userChosenAccount, schemeType)) {
-        return userChosenAccount;
-    }
-
     // If the current selected choice is not valid, try the previous account selected
     auto priorAccount = AvailableAccountModelPrivate::m_spPriorAccount;
 
