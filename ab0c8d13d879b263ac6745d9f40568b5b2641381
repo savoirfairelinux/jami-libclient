@@ -46,6 +46,30 @@
       "revId": "ab0c8d13d879b263ac6745d9f40568b5b2641381",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_3d7475ce",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-21T16:08:05Z",
+      "side": 1,
+      "message": "for me it seems we used to determine the protocol during a dialing because we haven\u0027t that time an account selection",
+      "parentUuid": "7aade967_5d6db103",
+      "range": {
+        "startLine": 132,
+        "startChar": 54,
+        "endLine": 132,
+        "endChar": 80
+      },
+      "revId": "ab0c8d13d879b263ac6745d9f40568b5b2641381",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
