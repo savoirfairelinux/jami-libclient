@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_7dbbcd72",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-21T15:52:09Z",
+      "side": 1,
+      "message": "the issue is that currentDefaultAccount takes a URI scheme as an argument, and so it should return an account of the same type or a nullptr... we can\u0027t return a Ring account if someone asks for a SIP account...\n\nIf we simply want to return the selected account, then there should be another API for this... otherwise, if the issue is that somewhere we are doing currentDefaultAccount() and getting a SIP account when we want the selected RING account, then the bug is there",
+      "range": {
+        "startLine": 132,
+        "startChar": 54,
+        "endLine": 132,
+        "endChar": 80
+      },
+      "revId": "ab0c8d13d879b263ac6745d9f40568b5b2641381",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
