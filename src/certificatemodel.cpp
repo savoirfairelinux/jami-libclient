@@ -237,7 +237,17 @@ void CertificateNode::setStrings(const QString& col1, const QVariant& col2, cons
 
 CertificateNode* CertificateModelPrivate::createCategory(const QString& name, const QString& col2, const QString& tooltip )
 {
+   QMutexLocker l(&m_CertLoader);
    const int idx = m_lTopLevelNodes.size();
+
+   // This should be avoided whenever possible. Having a duplicate would be
+   // both a memory leak and a potential collision attack (far fetched).
+   // This code avoids leak, but has side effects.
+   if (m_hStrToCat.contains(name)) {
+      qWarning() << "Trying to create a certificate node with an already used id."
+         " This can have unforneen consequences";
+      return m_hStrToCat[name];
+   }
 
    CertificateNode* n = new CertificateNode(idx, CertificateModel::NodeType::CATEGORY, nullptr, nullptr);
    n->setStrings(name,col2,tooltip);
@@ -297,7 +307,7 @@ void CertificateModelPrivate::removeFromTree(Certificate* c, CertificateNode* ca
 
 CertificateNode* CertificateModelPrivate::getCategory(const Account* a)
 {
-   CertificateNode* cat = m_hAccToCat[a];
+   CertificateNode* cat = m_hAccToCat.value(a);
 
    if (!cat) {
       cat = createCategory(a->alias(),QString(),QString());
@@ -321,7 +331,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Account* 
 
 void CertificateModelPrivate::regenChecks(Certificate* cert)
 {
-   CertificateNode* n = m_hNodes[cert];
+   CertificateNode* n = m_hNodes.value(cert);
 
    if (!n)
       return;
@@ -334,6 +344,7 @@ void CertificateModelPrivate::regenChecks(Certificate* cert)
 //[Re]generate the checks
 void CertificateModelPrivate::loadChecks(CertificateNode* checks, Certificate* cert)
 {
+   QMutexLocker locker(&m_CertLoader);
    const QModelIndex checksI(q_ptr->createIndex(checks->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),checks));
 
    //Clear the existing nodes
@@ -368,13 +379,14 @@ void CertificateModelPrivate::loadChecks(CertificateNode* checks, Certificate* c
 
 CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, CertificateNode* category)
 {
-   QMutexLocker locker(&m_CertLoader);
-
    if (!category)
       category = defaultCategory();
 
+   // defaultCategory(); can request the mutex
+   QMutexLocker locker(&m_CertLoader);
+
    //Do not add it twice
-   CertificateNode* node = CertificateModel::instance().d_ptr->m_hNodes[cert];
+   CertificateNode* node = CertificateModel::instance().d_ptr->m_hNodes.value(cert);
 
    if (isPartOf(node, category))
       return node;
@@ -391,24 +403,41 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
 
    //Lazy loaded function to reduce the overhead of this (mostly hidden) model
    node->m_fLoader = [this,node,cert]() {
+      CertificateNode* checks = nullptr;
+
       node->m_Col1 = cert->detailResult(Certificate::Details::PUBLIC_KEY_ID).toString();
       node->m_IsLoaded = true;
       const QModelIndex index = q_ptr->createIndex(node->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),node);
 
+      CertificateNode* details = nullptr;
+
       //Insert the check and details categories
+      { // mutex
+      QMutexLocker locker(&m_CertLoader);
       q_ptr->beginInsertRows(index, 0, 1);
-      CertificateNode* details = new CertificateNode(static_cast<int>(CertificateModel::Columns::NAME ), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
-      CertificateNode* checks  = new CertificateNode(static_cast<int>(CertificateModel::Columns::VALUE), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
+      details = new CertificateNode(static_cast<int>(CertificateModel::Columns::NAME ), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
+      checks = new CertificateNode(static_cast<int>(CertificateModel::Columns::VALUE), CertificateModel::NodeType::DETAILS_CATEGORY, node, nullptr);
       details->setStrings(QObject::tr("Details"),QString(),QObject::tr("The content of the certificate")       );
       checks ->setStrings(QObject::tr("Checks") ,QString(),QObject::tr("Various security related information") );
       node->m_lChildren << details;
       node->m_lChildren << checks;
       q_ptr->endInsertRows();
+      } // mutex
 
       static const int detailsC(enum_class_size<Certificate::Details>());
 
-      //Insert the details
       const QModelIndex detailsI(q_ptr->createIndex(details->m_Index,static_cast<int>(CertificateModel::Columns::NAME ),details));
+
+      // Make sure the lazy-loaded details have been created (otherwise it will deadlock)
+      for (const Certificate::Details detail : EnumIterator<Certificate::Details>()) {
+         cert->getName       (detail);
+         cert->detailResult  (detail);
+         cert->getDescription(detail);
+      }
+
+      //Insert the details
+      { // mutex
+      QMutexLocker locker(&m_CertLoader);
       q_ptr->beginInsertRows(detailsI, 0, detailsC - 1);
       for (const Certificate::Details detail : EnumIterator<Certificate::Details>()) {
          CertificateNode* d = new CertificateNode(details->m_lChildren.size(), CertificateModel::NodeType::DETAILS, details, nullptr);
@@ -419,6 +448,7 @@ CertificateNode* CertificateModelPrivate::addToTree(Certificate* cert, Certifica
          details->m_lChildren << d;
       }
       q_ptr->endInsertRows();
+      } // mutex
 
       //Insert the checks
       this->loadChecks(checks, cert);
@@ -592,7 +622,7 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Accou
 
    CertificateNode* cat  = d_ptr->getCategory(a);
 
-   Certificate* cert = d_ptr->m_hCertificates[path];
+   Certificate* cert = d_ptr->m_hCertificates.value(path);
 
    if (!cert) {
       cert = new Certificate(path, Certificate::Type::NONE);
@@ -603,7 +633,7 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Accou
       d_ptr->addToTree(cert,a);
    }
 
-   CertificateNode* node = d_ptr->m_hNodes[cert];
+   CertificateNode* node = d_ptr->m_hNodes.value(cert);
 
    if (node) {
       if (node->m_pParent != cat) {
@@ -618,7 +648,7 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Certi
 {
    const QString id = path;
 
-   Certificate* cert = d_ptr->m_hCertificates[id];
+   Certificate* cert = d_ptr->m_hCertificates.value(id);
 
    //The certificate is not loaded yet
    if (!cert) {
@@ -635,7 +665,7 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Certi
 
 Certificate* CertificateModel::getCertificateFromId(const QString& id, Account* a, const QString& category)
 {
-   Certificate* cert = d_ptr->m_hCertificates[id];
+   Certificate* cert = d_ptr->m_hCertificates.value(id);
 
    //The certificate is not loaded yet
    if (!cert) {
@@ -643,7 +673,7 @@ Certificate* CertificateModel::getCertificateFromId(const QString& id, Account* 
       d_ptr->m_hCertificates[id.toLatin1()] = cert;
 
       if ((!a) && (!category.isEmpty())) {
-         CertificateNode* cat = d_ptr->m_hStrToCat[category];
+         CertificateNode* cat = d_ptr->m_hStrToCat.value(category);
 
          if (!cat) {
             cat = d_ptr->createCategory(category, a?QString("%1 certificates").arg(a->alias()):QString(), QString());
@@ -760,7 +790,7 @@ QAbstractItemModel* CertificateModelPrivate::model(const Certificate* cert) cons
 {
    if (!cert)
       return nullptr;
-   return const_cast<CertificateModelPrivate*>(this)->getModelCommon(m_hNodes[cert]);
+   return const_cast<CertificateModelPrivate*>(this)->getModelCommon(m_hNodes.value(cert));
 }
 
 /**
@@ -771,7 +801,7 @@ QAbstractItemModel* CertificateModelPrivate::checksModel(const Certificate* cert
    if (!cert)
       return nullptr;
 
-   CertificateNode* node = m_hNodes[cert];
+   CertificateNode* node = m_hNodes.value(cert);
 
    if (!node)
       return nullptr;
@@ -827,7 +857,7 @@ QAbstractItemModel* CertificateModelPrivate::createKnownList(const Account* a) c
 
 QAbstractItemModel* CertificateModelPrivate::createBannedList(const Account* a) const
 {
-   QAbstractItemModel* m = m_hAccBan[a];
+   QAbstractItemModel* m = m_hAccBan.value(a);
 
    if (m)
       return m;
@@ -844,7 +874,7 @@ QAbstractItemModel* CertificateModelPrivate::createBannedList(const Account* a) 
 
 QAbstractItemModel* CertificateModelPrivate::createAllowedList(const Account* a) const
 {
-   QAbstractItemModel* m = m_hAccAllow[a];
+   QAbstractItemModel* m = m_hAccAllow.value(a);
 
    if (m)
       return m;
@@ -868,9 +898,9 @@ bool CertificateModelPrivate::allowCertificate(Certificate* c, Account* a)
    createAllowedList(a);
    createBannedList(a);
 
-   CertificateNode* allow   = m_hAccAllowCat [ a ];
-   CertificateNode* ban     = m_hAccBanCat   [ a ];
-   CertificateNode* sibling = m_hNodes       [ c ];
+   CertificateNode* allow   = m_hAccAllowCat .value( a );
+   CertificateNode* ban     = m_hAccBanCat   .value( a );
+   CertificateNode* sibling = m_hNodes       .value( c );
 
    //Check if it's already there
    if (isPartOf(sibling, allow))
@@ -907,9 +937,9 @@ bool CertificateModelPrivate::banCertificate(Certificate* c, Account* a)
    createAllowedList(a);
    createBannedList(a);
 
-   CertificateNode* allow   = m_hAccAllowCat [ a ];
-   CertificateNode* ban     = m_hAccBanCat   [ a ];
-   CertificateNode* sibling = m_hNodes       [ c ];
+   CertificateNode* allow   = m_hAccAllowCat .value( a );
+   CertificateNode* ban     = m_hAccBanCat   .value( a );
+   CertificateNode* sibling = m_hNodes       .value( c );
 
    //Check if it's already there
    if (isPartOf(sibling, ban))
