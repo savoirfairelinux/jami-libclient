@@ -68,7 +68,7 @@ public:
    Q_INVOKABLE Account* getById                     ( const QByteArray& id, bool ph = false) const;
    int                  size                        (                                      ) const;
    Account*             getAccountByModelIndex      ( const QModelIndex& item              ) const;
-   static QString       getSimilarAliasIndex        ( const QString& alias                 )      ;
+   Q_INVOKABLE static QString getSimilarAliasIndex  ( const QString& alias                 )      ;
    Account*             ip2ip                       (                                      ) const;
    QList<Account*>      getAccountsByProtocol       ( const Account::Protocol protocol     ) const;
    bool                 isPresenceEnabled           (                                      ) const;
