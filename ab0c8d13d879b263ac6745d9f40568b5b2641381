@@ -22,6 +22,30 @@
       "revId": "ab0c8d13d879b263ac6745d9f40568b5b2641381",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7aade967_5d6db103",
+        "filename": "src/availableaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-04-21T16:05:53Z",
+      "side": 1,
+      "message": "the issue seems to me to come when Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)\nwe should just send the chosen account from here. I don not see why we should try to determine a protocol since the contacts called (aka conversation) are already attached to an account wich store a protocole",
+      "parentUuid": "7aade967_7dbbcd72",
+      "range": {
+        "startLine": 132,
+        "startChar": 54,
+        "endLine": 132,
+        "endChar": 80
+      },
+      "revId": "ab0c8d13d879b263ac6745d9f40568b5b2641381",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
