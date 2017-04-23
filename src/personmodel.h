@@ -87,9 +87,9 @@ public Q_SLOTS:
    bool addNewPerson(Person* c, CollectionInterface* backend = nullptr);
 
 Q_SIGNALS:
+   void personRemoved(const Person* c);
    void newPersonAdded(const Person* c);
    void newBackendAdded(CollectionInterface* backend);
    ///The last time there was an interaction with this person changed
    void lastUsedTimeChanged(Person* p, long long) const;
 };
-
