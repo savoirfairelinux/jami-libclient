@@ -304,8 +304,38 @@ bool PersonModel::addItemCallback(const Person* c)
 
 bool PersonModel::removeItemCallback(const Person* item)
 {
-   if (item)
-      emit const_cast<Person*>(item)->changed();
+   for (unsigned int nodeIdx = 0; nodeIdx < d_ptr->m_lPersons.size(); ++nodeIdx) {
+      auto person = d_ptr->m_lPersons[nodeIdx]->m_pPerson.get();
+      if (person == item) {
+
+          for ( const auto cm : person->phoneNumbers() )
+              // cm is not linked to any person anymore
+              cm->setPerson(nullptr);
+
+          // Remove contact
+          beginRemoveRows(QModelIndex(), nodeIdx, nodeIdx);
+          d_ptr->m_lPersons[nodeIdx].release();
+          d_ptr->m_lPersons.erase(d_ptr->m_lPersons.begin() + nodeIdx);
+
+          // update indexes
+          for (unsigned int i = 0; i < d_ptr->m_lPersons.size(); ++i) {
+             d_ptr->m_lPersons[i]->m_Index = i;
+             for (unsigned int j = 0; j < d_ptr->m_lPersons[i]->m_lChildren.size(); ++j)
+                d_ptr->m_lPersons[i]->m_lChildren[j]->m_Index = j;
+          }
+          endRemoveRows();
+
+          //Deprecate the placeholder
+          if (d_ptr->m_hPlaceholders.contains(item->uid())) {
+             PersonPlaceHolder* placeholder = d_ptr->m_hPlaceholders[item->uid()];
+             if (placeholder)
+                d_ptr->m_hPlaceholders[item->uid()] = nullptr;
+          }
+          break;
+      }
+   }
+
+   emit personRemoved(item);
    return item;
 }
 
