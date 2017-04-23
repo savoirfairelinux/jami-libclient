@@ -139,6 +139,7 @@ private:
 public Q_SLOTS:
    void slotLastUsedTimeChanged(const Person*  p , time_t t              );
    void slotPersonAdded        (const Person*  p                         );
+   void slotPersonRemoved      (const Person*  p                         );
    void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
    void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
@@ -205,6 +206,7 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
 {
     connect(&PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
     connect(&PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
+    connect(&PersonModel::instance()        , &PersonModel::personRemoved          , d_ptr, &RecentModelPrivate::slotPersonRemoved      );
     connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::lastUsedChanged, d_ptr, &RecentModelPrivate::slotLastUsedChanged    );
     connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactChanged , d_ptr, &RecentModelPrivate::slotContactChanged     );
     connect(&CallModel::instance()          , &CallModel::callAdded                , d_ptr, &RecentModelPrivate::slotCallAdded          );
@@ -734,6 +736,26 @@ void RecentModelPrivate::slotPersonAdded(const Person* p)
 
       slotLastUsedTimeChanged(p, p->lastUsedTime());
    }
+}
+
+void RecentModelPrivate::slotPersonRemoved(const Person* p)
+{
+    // delete p from contacts
+    RecentViewNode* n = m_hPersonsToNodes.value(p);
+    const bool isNewContact = !n;
+
+    if ( isNewContact )
+       return;
+
+    removeNode(n);
+
+    // but keep the conversation
+    for ( const auto cmToAdd : p->phoneNumbers() ) {
+        const bool isNewCm = !m_hCMsToNodes.value(cmToAdd);
+        n = new RecentViewNode(cmToAdd, this);
+        m_hCMsToNodes[cmToAdd] = n;
+        insertNode(n, cmToAdd->lastUsed(), isNewCm);
+    }
 }
 
 void RecentModelPrivate::slotLastUsedTimeChanged(const Person* p, time_t t)
