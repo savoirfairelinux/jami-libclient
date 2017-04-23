@@ -216,9 +216,8 @@ void ContactMethod::setPerson(Person* contact)
    //The sha1 is no longer valid
    d_ptr->m_Sha1.clear();
 
-   contact->d_ptr->registerContactMethod(this);
-
    if (contact && d_ptr->m_Type != ContactMethod::Type::TEMPORARY) {
+      contact->d_ptr->registerContactMethod(this);
       PhoneDirectoryModel::instance().d_ptr->indexNumber(this,d_ptr->m_hNames.keys()+QStringList(contact->formattedName()));
       d_ptr->m_PrimaryName_cache = contact->formattedName();
       d_ptr->primaryNameChanged(d_ptr->m_PrimaryName_cache);

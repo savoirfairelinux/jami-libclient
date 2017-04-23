@@ -113,6 +113,7 @@ private:
 public Q_SLOTS:
    void reloadCategories();
    void slotContactAdded(const Person* c);
+   void slotContactRemoved(const Person* c);
 };
 
 ContactTreeNode::ContactTreeNode(const Person* ct, CategorizedContactModel* parent) :
@@ -247,6 +248,7 @@ CategorizedContactModel::CategorizedContactModel(int role) : QAbstractItemModel(
    d_ptr->m_lMimes << RingMimes::PLAIN_TEXT << RingMimes::PHONENUMBER;
 
    connect(&PersonModel::instance(),&PersonModel::newPersonAdded,d_ptr.data(),&CategorizedContactModelPrivate::slotContactAdded);
+   connect(&PersonModel::instance(),&PersonModel::personRemoved,d_ptr.data(),&CategorizedContactModelPrivate::slotContactRemoved);
 
    for(int i=0; i < PersonModel::instance().rowCount();i++) {
       Person* p = qvariant_cast<Person*>(PersonModel::instance().index(i,0).data((int)Person::Role::Object));
@@ -321,6 +323,12 @@ void CategorizedContactModelPrivate::reloadCategories()
       slotContactAdded(cont);
    }
    emit q_ptr->layoutChanged();
+}
+
+void CategorizedContactModelPrivate::slotContactRemoved(const Person* c) {
+    Q_UNUSED(c)
+
+    reloadCategories();
 }
 
 void CategorizedContactModelPrivate::slotContactAdded(const Person* c)
