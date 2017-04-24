@@ -97,6 +97,12 @@ bool AvailableAccountModel::filterAcceptsRow(int source_row, const QModelIndex& 
 ///Return the current account
 Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
 {
+    // if no CM is give, we use the user chosen account, since no other parameters are available
+    const auto idx = AvailableAccountModel::instance().selectionModel()->currentIndex();
+    if (!method && idx.isValid()) {
+        return idx.data(static_cast<int>(Account::Role::Object)).value<Account*>();
+    }
+
     // Start by validating the scheme used by the ContactMethod
     URI::SchemeType type = (!method) ? URI::SchemeType::NONE : method->uri().schemeType();
 
