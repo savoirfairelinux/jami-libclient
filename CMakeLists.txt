@@ -164,7 +164,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-IF(${ENABLE_LIBWRAP} MATCHES true)
+IF("${ENABLE_LIBWRAP}" MATCHES true)
    # The daemon is only required for when using direct linking
    IF (${RING_FOUND} MATCHES "false")
       MESSAGE(FATAL_ERROR "The daemon is required")
@@ -182,11 +182,11 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    ENDIF()
 ENDIF()
 
-IF(NOT (${ENABLE_VIDEO} MATCHES false))
+IF(NOT "${ENABLE_VIDEO}" MATCHES false)
    MESSAGE(STATUS "VIDEO enabled")
    SET(ENABLE_VIDEO 1 CACHE BOOLEAN "Enable video")
    add_definitions( -DENABLE_VIDEO=true )
-ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
+ENDIF(NOT "${ENABLE_VIDEO}" MATCHES false)
 
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
 
@@ -614,7 +614,13 @@ ENDIF()
 
 QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 
-ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+IF(NOT "${ENABLE_STATIC}" MATCHES true)
+   MESSAGE(STATUS "Only creating the shared target")
+   ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ELSE()
+   MESSAGE(STATUS "Only creating the static target")
+   ADD_LIBRARY( ringclient STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+ENDIF()
 
 IF (DEFINED ring_INCLUDE_DIRS)
    TARGET_INCLUDE_DIRECTORIES( ringclient PRIVATE
@@ -628,7 +634,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    )
 ENDIF()
 
-IF(NOT ${ENABLE_STATIC} MATCHES false)
+IF(NOT "${ENABLE_STATIC}" MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
    QT5_USE_MODULES(ringclient_static Core)
    TARGET_LINK_LIBRARIES( ringclient_static
@@ -661,7 +667,7 @@ QT5_USE_MODULES(ringclient Core)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   QT5_USE_MODULES(ringclient DBus)
-  IF(NOT ${ENABLE_STATIC} MATCHES false)
+  IF(NOT "${ENABLE_STATIC}" MATCHES false)
       QT5_USE_MODULES(ringclient_static DBus)
   ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -710,7 +716,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
          SET_TARGET_PROPERTIES( ringclient PROPERTIES LINK_FLAGS "-undefined dynamic_lookup" )
       ENDIF()
    ENDIF()
-   IF(NOT ${ENABLE_STATIC} MATCHES false)
+   IF(NOT "${ENABLE_STATIC}" MATCHES false)
       TARGET_LINK_LIBRARIES( ringclient_static
          qtwrapper
          ${ring_BIN}
@@ -739,7 +745,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
       -lrt
    )
 
-   IF(NOT ${ENABLE_STATIC} MATCHES false)
+   IF(NOT "${ENABLE_STATIC}" MATCHES false)
       TARGET_LINK_LIBRARIES( ringclient_static
          -lrt
       )
@@ -760,17 +766,20 @@ STRING(REPLACE "${CMAKE_LIBRARY_ARCHITECTURE}" "" SANE_LIBRARY_PATH "${CMAKE_INS
 
 SET(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
-INSTALL(TARGETS ringclient
-  EXPORT LibRingClientTargets
-  PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/libringclient"
-  LIBRARY DESTINATION "${SANE_LIBRARY_PATH}" COMPONENT ringclient
-    COMPONENT Devel
-)
+IF(NOT "${ENABLE_STATIC}" MATCHES "true")
+    INSTALL(TARGETS ringclient
+        EXPORT LibRingClientTargets
+        PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}/libringclient"
+        LIBRARY DESTINATION "${SANE_LIBRARY_PATH}" COMPONENT ringclient
+        COMPONENT Devel
+    )
 
-INSTALL(EXPORT LibRingClientTargets
-  DESTINATION ${SANE_LIBRARY_PATH}/cmake/LibRingClient
-  COMPONENT Devel
-)
+    INSTALL(EXPORT LibRingClientTargets
+        DESTINATION ${SANE_LIBRARY_PATH}/cmake/LibRingClient
+        COMPONENT Devel
+    )
+ENDIF()
+
 
 INSTALL( FILES ${libringclient_video_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/video
@@ -797,19 +806,13 @@ INSTALL( FILES ${libringclient_interface_LIB_HDRS}
   COMPONENT Devel
 )
 
-INSTALL( TARGETS ringclient
-  ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-  LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
-  DESTINATION ${SANE_LIBRARY_PATH}
-)
-
-IF(NOT ${ENABLE_STATIC} MATCHES false)
-   INSTALL( TARGETS ringclient_static
-      ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
-      LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
-      DESTINATION ${SANE_LIBRARY_PATH}
-   )
+IF(NOT "${ENABLE_STATIC}" MATCHES "true")
+    INSTALL( TARGETS ringclient
+        ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
+        DESTINATION ${SANE_LIBRARY_PATH}
+    )
 ENDIF()
 
 SET(LIB_INSTALL_DIR ${SANE_LIBRARY_PATH})
