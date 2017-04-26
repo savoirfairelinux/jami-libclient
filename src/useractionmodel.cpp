@@ -917,6 +917,7 @@ bool UserActionModelPrivate::updateAction(UserActionModel::Action action)
                   }
                   case Ring::ObjectType::Media          : //TODO
                   case Ring::ObjectType::Certificate    : //TODO
+                  case Ring::ObjectType::ContactRequest : //TODO
                   case Ring::ObjectType::COUNT__        :
                      break;
                }
@@ -1004,6 +1005,7 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
             break;
          case Ring::ObjectType::Media          : //TODO
          case Ring::ObjectType::Certificate    : //TODO
+         case Ring::ObjectType::ContactRequest : //TODO
          case Ring::ObjectType::COUNT__        :
             break;
       }
