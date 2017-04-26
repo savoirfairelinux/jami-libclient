@@ -556,8 +556,7 @@ Call* Call::buildHistoryCall(const QMap<QString,QString>& hc)
 
    // fix invalid time values
    if (startTimeStamp <= 0) {
-      // currentSecsSinceEpoch is available only from 5.8
-      startTimeStamp = (QDateTime::currentDateTime().currentMSecsSinceEpoch()) * Q_INT64_C(1000);
+      startTimeStamp = QDateTime::currentDateTime().toTime_t();
       stopTimeStamp = startTimeStamp;
    } else if (stopTimeStamp <= 0) {
       stopTimeStamp = startTimeStamp;
