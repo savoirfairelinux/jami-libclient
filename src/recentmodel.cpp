@@ -1140,6 +1140,11 @@ RecentModel::peopleProxy() const
 PeopleProxy::PeopleProxy(RecentModel* sourceModel)
 {
     setSourceModel(sourceModel);
+
+    /* since the filterAcceptsRow depends on the selected account, we need to re-run the filtering
+     * when the selected account changes automatically */
+    connect( AvailableAccountModel::instance().selectionModel(),
+        &QItemSelectionModel::currentChanged, this, &QSortFilterProxyModel::invalidate);
 }
 
 bool
