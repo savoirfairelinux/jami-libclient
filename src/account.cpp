@@ -30,6 +30,7 @@
 
 //Ring daemon
 #include <account_const.h>
+#include <presencemanager_interface.h>
 
 //Ring lib
 #include "dbus/configurationmanager.h"
@@ -166,8 +167,8 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    //Load the tracked buddies
    const VectorMapStringString subscriptions = PresenceManager::instance().getSubscriptions(a->id());
    foreach(auto subscription, subscriptions){
-       ContactMethod* tracked_buddy = PhoneDirectoryModel::instance().getNumber(subscription["Buddy"], a);
-       bool tracked_buddy_present = subscription["Status"].compare("Online") == 0;
+       ContactMethod* tracked_buddy = PhoneDirectoryModel::instance().getNumber(subscription[DRing::Presence::BUDDY_KEY], a);
+       bool tracked_buddy_present = subscription[DRing::Presence::STATUS_KEY].compare(DRing::Presence::ONLINE_KEY) == 0;
        tracked_buddy->setTracked(true);
        tracked_buddy->setPresent(tracked_buddy_present);
    }
