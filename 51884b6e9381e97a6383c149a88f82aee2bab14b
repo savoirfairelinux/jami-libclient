@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_4e35f544",
+        "filename": "src/call.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-04-26T15:17:18Z",
+      "side": 1,
+      "message": "is there any reason to not just do:\nQDateTime::currentDateTime().toTime_t()\n\nthat seems to be done everywhere else in lrc....",
+      "range": {
+        "startLine": 559,
+        "startChar": 24,
+        "endLine": 559,
+        "endChar": 96
+      },
+      "revId": "51884b6e9381e97a6383c149a88f82aee2bab14b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
