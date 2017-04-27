@@ -55,6 +55,7 @@ public:
       FormattedLastUsed ,
       IndexedLastUsed   ,
       DatedLastUsed     ,
+      IdOfLastCMUsed    ,
       Object            ,
       Filter            , //All roles, all at once
       DropState         = static_cast<int>(Ring::Role::DropState), //State for drag and drop
