@@ -25,12 +25,14 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QUrl>
 #include <QtCore/QVector>
+#include <QtCore/QDateTime>
 
 //Ring
 #include "private/vcardutils.h"
 #include "account.h"
 #include "accountmodel.h"
 #include "person.h"
+#include "contactmethod.h"
 
 class PeerProfileEditor final : public CollectionEditor<Person>
 {
@@ -161,10 +163,21 @@ bool PeerProfileCollection::load()
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
     foreach (const QString& item , entries) {
+        auto filePath = profilesDir.path() + '/' + item;
+
+        // create Person
         auto personProfile = new Person(this);
         QList<Account*> accs;
-        VCardUtils::mapToPerson(personProfile,QUrl(profilesDir.path()+'/'+item),&accs);
+        VCardUtils::mapToPerson(personProfile, QUrl(filePath), &accs);
         editor<Person>()->addExisting(personProfile);
+
+        // set last used time based on last modified of vCard file; this is in case there has been
+        // no other interactions with these CMs
+        auto lastUsed = QFileInfo(filePath).lastModified();
+        for (auto cm : personProfile->phoneNumbers()) {
+            qDebug() << "ppc setting last used" << personProfile << cm << lastUsed;
+            cm->setLastUsed(lastUsed.toTime_t());
+        }
     }
 
     return true;
