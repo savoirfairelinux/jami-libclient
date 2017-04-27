@@ -83,6 +83,7 @@ public:
    static bool mapToPerson(Person* p, const QUrl& url, QList<Account*>* accounts = nullptr);
    static bool mapToPerson(Person* p, const QByteArray& content, QList<Account*>* accounts = nullptr);
    static Person* mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QList<Account*>* accounts = nullptr);
+   static Person* mapToPersonFromIncomingContactRequest(const QHash<QByteArray, QByteArray>& vCard, const QString& hash);
    static QHash<QByteArray, QByteArray> toHashMap(const QByteArray& content);
 
    //Serialization
