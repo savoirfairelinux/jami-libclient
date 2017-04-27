@@ -143,9 +143,14 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 
    //Load the pending trust requests
    if (a->protocol() == Account::Protocol::RING) {
-       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
-       for (const auto& tr_info : pending_tr) {
-         a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, tr_info["from"], 0));
+      const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
+      for (const auto& tr_info : pending_tr) {
+         auto payload = tr_info["payload"];
+         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toLatin1()),
+                                                                       tr_info["from"]);
+
+         a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, peer, tr_info["from"],
+                                                                                        tr_info["received"].toInt()));
       }
    }
 
@@ -155,7 +160,8 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    });
 
    // Load the contacts associated from the daemon and create the cms.
-   const auto account_contacts = static_cast<QVector<QMap<QString, QString>>>(ConfigurationManager::instance().getContacts(a->id().data()));
+   const auto account_contacts = static_cast<QVector<QMap<QString, QString>>>(ConfigurationManager::instance()
+                                                                                          .getContacts(a->id().data()));
 
    if (a->protocol() == Account::Protocol::RING) {
       for (auto contact_info : account_contacts) {
