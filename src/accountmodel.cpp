@@ -50,6 +50,8 @@
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
 #include "private/pendingcontactrequestmodel_p.h"
+#include "person.h"
+#include <private/vcardutils.h>
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -459,7 +461,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
 {
    Q_UNUSED(payload);
-   qDebug() << "INCOMING REQUEST" << accountId << hash << time;
+
    Account* a = q_ptr->getById(accountId.toLatin1());
 
    if (!a) {
@@ -467,7 +469,10 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
-   ContactRequest* r = new ContactRequest(a, hash, time);
+   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload), hash);
+
+   ContactRequest* r = new ContactRequest(a, peer, hash, time);
+
    a->pendingContactRequestModel()->d_ptr->addRequest(r);
 }
 
