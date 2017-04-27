@@ -400,6 +400,35 @@ Person* VCardUtils::mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QLis
     return personMapped;
 }
 
+/**
+ * create a Person object from a vcard and a ringId, to use when loading and receiving a contact request.
+ * 
+ * @param vCard, the vcard. Ring ids inside a vcard should be discarded.
+ * @param ringId, this ring id should always used to identify the peer.
+ */
+Person* VCardUtils::mapToPersonFromIncomingContactRequest(const QHash<QByteArray, QByteArray>& vCard, const QString& ringId)
+{
+    auto personMapped = new Person();
+
+    QHashIterator<QByteArray, QByteArray> it(vCard);
+    while (it.hasNext()) {
+        it.next();
+
+        if (it.key() == VCardUtils::Property::TELEPHONE) {
+            // Do not trust a ringid from an incoming vcard, it could have been falsified.
+            continue;
+        }
+
+        vc_mapper->metacall(personMapped, it.key(), it.value().trimmed());
+    }
+
+    // Add the ringid
+    vc_mapper->metacall(personMapped, VCardUtils::Property::TELEPHONE, ringId.toLatin1());
+    vc_mapper->apply();
+
+    return personMapped;
+}
+
 QHash<QByteArray, QByteArray> VCardUtils::toHashMap(const QByteArray& content)
 {
     QHash<QByteArray, QByteArray> vCard;
