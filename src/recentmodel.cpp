@@ -216,22 +216,25 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
     connect(&CallModel::instance()          , &CallModel::conferenceChanged        , d_ptr, &RecentModelPrivate::slotConferenceChanged  );
     connect(CallModel::instance().selectionModel(), &QItemSelectionModel::currentChanged, d_ptr, &RecentModelPrivate::slotCurrentCallChanged);
 
-    // Fill contacts from daemon source
-    for (int i = 0; i < AccountModel::instance().rowCount(); i++) {
-        auto account = qvariant_cast<Account*>(AccountModel::instance().data(AccountModel::instance().index(i,0),
-                                                                             static_cast<int>(Account::Role::Object)));
-
-        for (auto cm : account->getContacts())
-            d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
-    }
-
     // Called when a contact was added to the daemon list (e.g when the user as accepted a request)
     connect(&AccountModel::instance(), &AccountModel::accountContactAdded, [this] (Account* a, const ContactRequest* r) {
-       auto cm = r->certificate()->contactMethod();
-       if (!cm)
-          cm = PhoneDirectoryModel::instance().getNumber(r->certificate()->remoteId(), a);
+       auto cm = r->peer()->phoneNumbers()[0];
 
-       d_ptr->slotLastUsedChanged(cm, cm->lastUsed());
+        // add the cm into the historic.
+        for (auto col : CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
+            if (col->id() == "mhb") {
+                QMap<QString,QString> hc;
+                hc[Call::HistoryMapFields::PEER_NUMBER ] = cm->uri();
+                // it matters to set a value to hc[Call::HistoryMapFields::CALLID ], but the value itself doesn't matter
+                hc[Call::HistoryMapFields::CALLID ] = "0";
+
+                if (auto fakeCall = Call::buildHistoryCall(hc))
+                    col->add(fakeCall);
+                else
+                    qDebug() << "buildHistoryCall() has returned an invalid Call object.";
+            }
+        }
+
     });
 
     //Fill the contacts
