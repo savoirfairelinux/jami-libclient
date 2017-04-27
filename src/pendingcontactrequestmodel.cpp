@@ -25,11 +25,8 @@
 #include <certificate.h>
 #include <account.h>
 #include "private/pendingcontactrequestmodel_p.h"
-
-enum Columns {
-   HASH,
-   TIME
-};
+#include "person.h"
+#include "contactmethod.h"
 
 PendingContactRequestModelPrivate::PendingContactRequestModelPrivate(PendingContactRequestModel* p) : q_ptr(p)
 {}
@@ -51,16 +48,22 @@ QVariant PendingContactRequestModel::data( const QModelIndex& index, int role ) 
       return QVariant();
 
    switch(index.column()) {
-      case Columns::HASH:
+      case Columns::PEER_ID:
          switch(role) {
             case Qt::DisplayRole:
-               return d_ptr->m_lRequests[index.row()]->certificate()->remoteId();
+            return d_ptr->m_lRequests[index.row()]->peer()->phoneNumbers()[0]->getBestId();
          }
          break;
       case Columns::TIME:
          switch(role) {
             case Qt::DisplayRole:
                return d_ptr->m_lRequests[index.row()]->date();
+         }
+         break;
+      case Columns::FORMATTED_NAME:
+         switch(role) {
+            case Qt::DisplayRole:
+               return d_ptr->m_lRequests[index.row()]->peer()->formattedName();
          }
          break;
    }
@@ -138,7 +141,7 @@ void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
         removeRequest(r);
     });
 
-   emit q_ptr->requestAdded(r);
+    emit q_ptr->requestAdded(r);
 }
 
 void PendingContactRequestModelPrivate::removeRequest(ContactRequest* r)

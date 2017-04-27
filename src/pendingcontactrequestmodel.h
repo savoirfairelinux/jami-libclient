@@ -36,6 +36,12 @@ class LIB_EXPORT PendingContactRequestModel : public QAbstractTableModel
    friend class AccountModelPrivate;
 public:
 
+   enum Columns {
+      PEER_ID,
+      TIME,
+      FORMATTED_NAME
+   };
+
    //Model functions
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
    virtual int           rowCount    ( const QModelIndex& parent = QModelIndex()                ) const override;

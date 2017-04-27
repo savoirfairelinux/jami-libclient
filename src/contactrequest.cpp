@@ -36,11 +36,13 @@ public:
    QDateTime    m_Time        ;
    Certificate* m_pCertificate;
    Account*     m_pAccount    ;
+   Person*      m_pPeer       ;
 };
 
-ContactRequest::ContactRequest(Account* a, const QString& id, time_t time) : QObject(a), d_ptr(new ContactRequestPrivate)
+ContactRequest::ContactRequest(Account* a, Person* p, const QString& id, time_t time) : QObject(a), d_ptr(new ContactRequestPrivate)
 {
    d_ptr->m_pAccount     = a;
+   d_ptr->m_pPeer        = p;
    d_ptr->m_Time         = QDateTime::fromTime_t(time);
    d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(id, a);
 }
@@ -63,6 +65,24 @@ QDateTime ContactRequest::date() const
 Account* ContactRequest::account() const
 {
    return d_ptr->m_pAccount;
+}
+
+/**
+ * get the person associated to the contact request.
+ */
+Person*
+ContactRequest::peer() const
+{
+   return d_ptr->m_pPeer;
+}
+
+/**
+ * set the person associated to the contact request.
+ */
+void
+ContactRequest::setPeer(Person* person)
+{
+   d_ptr->m_pPeer = person;
 }
 
 bool ContactRequest::accept()
