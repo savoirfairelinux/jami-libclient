@@ -754,7 +754,7 @@ void PhoneDirectoryModelPrivate::slotIncomingAccountMessage(const QString& accou
 
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
-   qDebug() << "New presence buddy" << uri << status << message;
+   //~ qDebug() << "New presence buddy" << uri << status << message;
    ContactMethod* number = q_ptr->getNumber(uri,AccountModel::instance().getById(accountId.toLatin1()));
    number->setPresent(status);
    number->setPresenceMessage(message);
