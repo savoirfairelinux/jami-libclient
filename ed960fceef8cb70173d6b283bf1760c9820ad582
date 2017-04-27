@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_29099331",
+        "filename": "src/account.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-04-27T00:11:48Z",
+      "side": 1,
+      "message": "May I suggest batching this over multiple event loops iterations?\n\n\u003c\u003d100 will be fast enough, but after that it will slow down startup in noticeable ways (and it will be worst on ARM, and I care about that). Anyway, using QTimer::singleShot(0. []() {...}) isn\u0027t very hard. Doing a \"modern C++\" style functional async for loop would work too. Maybe do 20 CM per batches.",
+      "revId": "ed960fceef8cb70173d6b283bf1760c9820ad582",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
