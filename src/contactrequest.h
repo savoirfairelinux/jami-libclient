@@ -26,6 +26,7 @@ class AccountModelPrivate;
 class Certificate;
 class Account;
 class AccountPrivate;
+class Person;
 
 class LIB_EXPORT ContactRequest : public QObject
 {
@@ -42,6 +43,10 @@ public:
    QDateTime    date       () const;
    Account*     account    () const;
    Q_INVOKABLE QVariant roleData (int role) const;
+   Person* peer() const;
+
+   // Setter
+   void setPeer(Person* person);
 
    //Mutator
    Q_INVOKABLE bool accept ();
@@ -52,7 +57,7 @@ public:
    bool operator==(const ContactRequest& another) const;
 
 private:
-   explicit ContactRequest(Account* a, const QString& id, time_t time);
+   explicit ContactRequest(Account* a, Person* p, const QString& id = QString(), time_t time = -1);
    virtual ~ContactRequest();
 
    ContactRequestPrivate* d_ptr;
