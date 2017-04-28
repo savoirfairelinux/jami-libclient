@@ -599,7 +599,11 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
             d_ptr->m_hDirectory    [extendedUri] = wrap2;
             d_ptr->m_hSortedNumbers[extendedUri] = wrap2;
          }
-         wrap2->numbers << number;
+
+         if (wrap2)
+            wrap2->numbers << number;
+         else
+            qWarning() << "PhoneDirectoryModel: code path should not be reached, wrap2 is nullptr";
       }
 
    }
