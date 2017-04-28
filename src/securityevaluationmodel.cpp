@@ -724,7 +724,7 @@ void SecurityEvaluationModelPrivate::updateReal()
    typedef SecurityEvaluationModel::Severity      Severity     ;
    typedef SecurityEvaluationModel::SecurityLevel SecurityLevel;
 
-   int countCache[enum_class_size<SecurityEvaluationModel::Severity>()];
+   int countCache[enum_class_size<SecurityEvaluationModel::Severity>()] = {};
 
    //Reset the counter
    for (const Severity s : EnumIterator<Severity>()) {
