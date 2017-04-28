@@ -1241,7 +1241,7 @@ void CallModelPrivate::slotChangingConference(const QString &confID, const QStri
    }
    Call* conf = confInt->call_real;
    qDebug() << "Changing conference state" << conf << confID;
-   if (conf && conf) { //Prevent a race condition between call and conference
+   if (conf) { //Prevent a race condition between call and conference
       if (!q_ptr->getIndex(conf).isValid()) {
          qWarning() << "The conference item does not exist";
          return;
