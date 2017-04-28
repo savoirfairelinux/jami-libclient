@@ -477,9 +477,9 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool supportScheme   ( URI::SchemeType type ) const;
       Q_INVOKABLE bool allowCertificate( Certificate* c       )      ;
       Q_INVOKABLE bool banCertificate  ( Certificate* c       )      ;
-      Q_INVOKABLE bool sendContactRequest(Certificate* c);
-      Q_INVOKABLE bool sendContactRequest(const ContactMethod* c);
-      Q_INVOKABLE bool sendContactRequest(const URI& uri);
+      Q_INVOKABLE bool sendContactRequest(Certificate* c, const QString message);
+      Q_INVOKABLE bool sendContactRequest(const ContactMethod* c, const QString message);
+      Q_INVOKABLE bool sendContactRequest(const URI& uri, const QString message);
       Q_INVOKABLE QString accountDetail(const QString& param) const;
 
       //Setters
