@@ -1147,15 +1147,24 @@ PeopleProxy::PeopleProxy(RecentModel* sourceModel)
         &QItemSelectionModel::currentChanged, [this]() {this->invalidateFilter();});
 }
 
+
+
+/**
+ * This is the filtering function of the PeopleProxy. The PeopleProxy is essentially the "smart list" in
+ * the clients that implement one. The desired behaviour is to group ContactMethods which belong to the
+ * same contact (Person) under one item. Furthermore, we want to filter out items which do not belong to the
+ * currentDefaultAccount() of the AvailableAccountModel. The only exception are items which currently have
+ * an active Call since we always want the user to see any ongoing calls. We don't want the user to have
+ * to take any action to see ongoing Calls.
+ *
+ * We also implement a fitler based on the filterRegExp() string of the model. It will try to find any
+ * name or URI associated with the item which contains the string (case insensitive) and filter out
+ * eveything else. Again, the only exception is Calls, in case a user forgets to clear the search entry.
+ */
 bool
 PeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) const
 {
-    auto idxChosenAccount = AvailableAccountModel::instance().selectionModel()->currentIndex();
-    auto chosenAccount = idxChosenAccount.data(static_cast<int>(Account::Role::Object)).value<Account*>();
-
-    // filter everythin out if there is no account chosen
-    if (not chosenAccount)
-        return false;
+    auto chosenAccount = AvailableAccountModel::instance().currentDefaultAccount();
 
     //we filter only on top nodes
     if (!sourceParent.isValid()) {
@@ -1163,9 +1172,23 @@ PeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) c
         auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
         auto object = idx.data(static_cast<int>(Ring::Role::Object));
 
+        // get set of CMs with active calls
+        auto activeCalls = CallModel::instance().getActiveCalls();
+        QSet<const ContactMethod *> activeCallCMs;
+        for (auto call : activeCalls) {
+            activeCallCMs << call->peerContactMethod();
+        }
+
         Person *person = nullptr;
-        auto filterFunction = [&person, chosenAccount, this] (const ContactMethod* cm) {
+        auto filterFunction = [&person, chosenAccount, this, activeCallCMs] (const ContactMethod* cm) {
             auto passesFilter = false;
+
+            // never filter out items with active calls
+            if (activeCallCMs.contains(cm)) return true;
+
+            // filter everything out if there is no account chosen
+            if (not chosenAccount) return false;
+
             // only proceed if there is no account set yet, or if it matches the chosen account
             if ( !cm->account() or (cm->account() == chosenAccount)) {
                 /* we need to check the Person name as well as any identifier of the
