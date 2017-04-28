@@ -38,14 +38,18 @@ public:
    Certificate* m_pCertificate;
    Account*     m_pAccount    ;
    Person*      m_pPeer       ;
+   QString      m_message     ;
 };
 
-ContactRequest::ContactRequest(Account* a, Person* p, const QString& id, time_t time) : QObject(a), d_ptr(new ContactRequestPrivate)
+ContactRequest::ContactRequest(Account* a, Person* p, const QString& id, time_t time, const QString& message)
+: QObject(a)
+, d_ptr(new ContactRequestPrivate)
 {
    d_ptr->m_pAccount     = a;
    d_ptr->m_pPeer        = p;
    d_ptr->m_Time         = QDateTime::fromTime_t(time);
    d_ptr->m_pCertificate = CertificateModel::instance().getCertificateFromId(id, a);
+   d_ptr->m_message      = message;
 }
 
 ContactRequest::~ContactRequest()
@@ -135,6 +139,15 @@ ContactRequest::roleData(int role) const
 
     /* unknown role */
     return QVariant();
+}
+
+/**
+ * get the message sent by the peer with the contact request.
+ */
+QString
+ContactRequest::message() const
+{
+    return d_ptr->m_message;
 }
 
 /**

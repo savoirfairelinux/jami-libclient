@@ -44,6 +44,7 @@ public:
    Account*     account    () const;
    Q_INVOKABLE QVariant roleData (int role) const;
    Person* peer() const;
+   QString message() const;
 
    // Setter
    void setPeer(Person* person);
@@ -57,7 +58,8 @@ public:
    bool operator==(const ContactRequest& another) const;
 
 private:
-   explicit ContactRequest(Account* a, Person* p, const QString& id = QString(), time_t time = -1);
+   explicit ContactRequest(Account* a, Person* p, const QString& id = QString(), time_t time = -1
+                                                                               , const QString& message = QString());
    virtual ~ContactRequest();
 
    ContactRequestPrivate* d_ptr;
