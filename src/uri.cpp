@@ -518,6 +518,15 @@ QString URI::userinfo() const
 }
 
 /**
+ * Sometime, some metadata can be used to deduce the scheme even if it wasn't
+ * originally known. This will improve the result of ::format.
+ */
+void URI::setSchemeType(SchemeType t)
+{
+    d_ptr->m_HeaderType = t;
+}
+
+/**
  * Generate a new URI formatted with the sections passed in `sections`
  *
  * It is kept as a QString to avoid the URI class to start reformatting
