@@ -1780,6 +1780,14 @@ void CallPrivate::call()
 
     // Warning: m_pDialNumber can become nullptr when linking directly
     URI uri {peerCM->uri()};
+
+    // Better late than never. Set the scheme.
+    if (m_Account && m_Account->protocol() == Account::Protocol::RING &&
+      uri.schemeType() == URI::SchemeType::NONE &&
+      uri.protocolHint() != URI::ProtocolHint::RING) {
+       uri.setSchemeType(URI::SchemeType::RING);
+    }
+
     if (!m_pPeerContactMethod) {
         m_pPeerContactMethod = PhoneDirectoryModel::instance().getNumber(uri, q_ptr->account());
     }
@@ -1795,6 +1803,12 @@ void CallPrivate::call()
     //Refresh peerCM
     peerCM = q_ptr->peerContactMethod();
     peerCM->addCall(q_ptr);
+
+    // dring can print "No suitable account to create outgoing call" if the
+    // URI isn't properly formatted (like sip:foobar).
+    if (m_Account && m_Account->protocol() == Account::Protocol::RING && uri.protocolHint() != URI::ProtocolHint::RING) {
+       qWarning() << "The URI isn't a RingId. It is possible the call wont work" << uri.full();
+    }
 
     m_DringId = CallManager::instance().placeCall(m_Account->id(), uri.full());
 
