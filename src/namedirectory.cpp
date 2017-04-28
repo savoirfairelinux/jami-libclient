@@ -62,7 +62,19 @@ void NameDirectoryPrivate::slotNameRegistrationEnded(const QString& accountId, i
 //Registered Name found
 void NameDirectoryPrivate::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
 {
-    qDebug() << "Registered Name found. Account:" << accountId << "status:" << status << "name:" << name;
+    switch (static_cast<NameDirectory::LookupStatus>(status)) {
+        case NameDirectory::LookupStatus::INVALID_NAME:
+            qDebug() << "lookup name is INVALID:" << name << accountId;
+            break;
+        case NameDirectory::LookupStatus::NOT_FOUND:
+            qDebug() << "lookup name NOT FOUND:" << name << accountId;
+            break;
+        case NameDirectory::LookupStatus::ERROR:
+            qDebug() << "lookup name ERROR:" << name << accountId;
+            break;
+        case NameDirectory::LookupStatus::SUCCESS:
+            break;
+    }
 
     Account* account = AccountModel::instance().getById(accountId.toLatin1());
 
