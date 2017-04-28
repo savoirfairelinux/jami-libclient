@@ -178,6 +178,9 @@ public:
    SchemeType schemeType    () const;
    ProtocolHint protocolHint() const;
 
+   //Setter
+   void setSchemeType(SchemeType t);
+
    //Converter
    QString format(FlagPack<URI::Section> sections) const;
 
