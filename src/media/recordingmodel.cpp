@@ -73,7 +73,7 @@ public:
     RecordingNode*                 m_pText          {nullptr};
     RecordingNode*                 m_pAudioVideo    {nullptr};
     LocalTextRecordingCollection*  m_pTextRecordingCollection;
-    int                            m_UnreadCount             ;
+    int                            m_UnreadCount    { 0     };
 
     // Helpers
     void initCategories();
