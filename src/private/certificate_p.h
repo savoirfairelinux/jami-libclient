@@ -96,7 +96,7 @@ public:
 
    //Attributes
    QString             m_Path                    ;
-   Certificate::Type   m_Type                    ;
+   Certificate::Type   m_Type {Certificate::Type::NONE};
    QByteArray          m_Content                 ;
    LoadingType         m_LoadingType             ;
    QByteArray          m_Id                      ;
