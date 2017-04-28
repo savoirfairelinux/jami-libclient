@@ -39,7 +39,7 @@ public:
    ChainedContactMethod* m_pFirstNode;
    QHash<ContactMethod*,ChainedContactMethod*> m_hNumbers;
    bool m_IsValid;
-   ChainedContactMethod* m_lLastNumbers[MAX_ITEM];
+   ChainedContactMethod* m_lLastNumbers[MAX_ITEM] {};
 };
 
 LastUsedNumberModelPrivate::LastUsedNumberModelPrivate():m_pFirstNode(nullptr),m_IsValid(false)
