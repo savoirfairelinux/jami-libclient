@@ -469,9 +469,25 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
-   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload), hash);
+   /* we are looking for last occurence of BEGIN:VCARD since the message was prepend. No check needed here, done during
+    * the incoming.
+    */
+   auto index = payload.lastIndexOf("BEGIN:VCARD");
 
-   ContactRequest* r = new ContactRequest(a, peer, hash, time);
+   if (index == -1) {
+      qDebug() << "incoming contact request is ill formed, vCard not present.";
+
+      // reject the incoming trust request.
+      ConfigurationManager::instance().discardTrustRequest(accountId, hash);
+      return;
+   }
+
+   QByteArray message = payload.mid(0,index);
+   QByteArray vcard = payload.mid(index);
+
+   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(vcard), hash);
+
+   ContactRequest* r = new ContactRequest(a, peer, hash, time, message);
 
    a->pendingContactRequestModel()->d_ptr->addRequest(r);
 }
