@@ -65,7 +65,7 @@ public:
    RecordingNode*                 m_pText          {nullptr};
    RecordingNode*                 m_pAudioVideo    {nullptr};
    LocalTextRecordingCollection*  m_pTextRecordingCollection;
-   int                            m_UnreadCount             ;
+   int                            m_UnreadCount    { 0     };
 
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
 
