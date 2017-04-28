@@ -126,7 +126,7 @@ public:
    Call::Type                m_Type              ;
    Certificate*              m_pCertificate      ;
    FlagPack<Call::HoldFlags> m_fHoldFlags        ;
-   Call*                     m_pParentCall       ;
+   Call*                     m_pParentCall {nullptr};
    QDateTime*                m_pDateTime {nullptr};
    QDate*                    m_pDateOnly {nullptr};
    QString                   m_FormattedDate     ;
