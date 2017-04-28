@@ -317,7 +317,6 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
    d_ptr->m_Account          = account;
    d_ptr->m_PeerName         = peerName;
    d_ptr->m_pPeerContactMethod = number;
-   d_ptr->m_pParentCall      = nullptr;
 
    emit changed();
 }
@@ -331,7 +330,6 @@ Call::Call(const QString& confId, const QString& account)
    d_ptr->m_Account      = AccountModel::instance().getById(account.toLatin1());
    d_ptr->m_Type         = (!confId.isEmpty())?Call::Type::CONFERENCE:Call::Type::CALL;
    d_ptr->m_DringId      = confId;
-   d_ptr->m_pParentCall  = nullptr;
 
    setObjectName("Conf:"+confId);
 
