@@ -686,6 +686,7 @@ void AccountModel::cancel() {
          switch(a->editState()) {
             case Account::EditState::NEW                :
                remove(a);
+               break;
             case Account::EditState::MODIFIED_INCOMPLETE:
             case Account::EditState::MODIFIED_COMPLETE  :
                a << Account::EditAction::CANCEL;
