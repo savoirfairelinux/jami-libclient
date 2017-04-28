@@ -268,6 +268,9 @@ RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(ne
         auto conf = confList.at(i);
         d_ptr->slotConferenceAdded(conf);
     }
+
+    // sync initial selection with the CallModel in case there are any ongoing Calls
+    d_ptr->slotCurrentCallChanged(CallModel::instance().selectionModel()->currentIndex(), QModelIndex());
 }
 
 RecentModel::~RecentModel()
