@@ -723,16 +723,16 @@ void Person::addCustomField(const QString& key, const QString& value)
 const QByteArray Person::toVCard(QList<Account*> accounts) const
 {
    //serializing here
-   VCardUtils* maker = new VCardUtils();
-   maker->startVCard("2.1");
-   maker->addProperty(VCardUtils::Property::UID, uid());
-   maker->addProperty(VCardUtils::Property::NAME, (secondName()
+   VCardUtils maker;
+   maker.startVCard("2.1");
+   maker.addProperty(VCardUtils::Property::UID, uid());
+   maker.addProperty(VCardUtils::Property::NAME, (secondName()
                                                    + VCardUtils::Delimiter::SEPARATOR_TOKEN
                                                    + firstName()));
-   maker->addProperty(VCardUtils::Property::FORMATTED_NAME, formattedName());
-   maker->addProperty(VCardUtils::Property::ORGANIZATION, organization());
+   maker.addProperty(VCardUtils::Property::FORMATTED_NAME, formattedName());
+   maker.addProperty(VCardUtils::Property::ORGANIZATION, organization());
 
-   maker->addEmail("PREF", preferredEmail());
+   maker.addEmail("PREF", preferredEmail());
 
    foreach (ContactMethod* phone , phoneNumbers()) {
       QString uri = phone->uri();
@@ -740,23 +740,23 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
       // can tell it is a RING number and not some other hash
       if (phone->uri().protocolHint() == URI::ProtocolHint::RING)
          uri = phone->uri().full();
-      maker->addContactMethod(phone->category()->name(), uri);
+      maker.addContactMethod(phone->category()->name(), uri);
    }
 
    foreach (const Address& addr , d_ptr->m_lAddresses) {
-      maker->addAddress(addr);
+      maker.addAddress(addr);
    }
 
    foreach (const QString& key , d_ptr->m_lCustomAttributes.keys()) {
-      maker->addProperty(key, d_ptr->m_lCustomAttributes.value(key));
+      maker.addProperty(key, d_ptr->m_lCustomAttributes.value(key));
    }
 
    foreach (Account* acc , accounts) {
-      maker->addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
+      maker.addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
    }
 
-   maker->addPhoto(GlobalInstances::pixmapManipulator().toByteArray(photo()));
-   return maker->endVCard();
+   maker.addPhoto(GlobalInstances::pixmapManipulator().toByteArray(photo()));
+   return maker.endVCard();
 }
 
 void PersonPrivate::slotLastUsedTimeChanged(::time_t t)
