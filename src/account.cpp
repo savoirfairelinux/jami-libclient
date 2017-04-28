@@ -145,8 +145,16 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    if (a->protocol() == Account::Protocol::RING) {
       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
       for (const auto& tr_info : pending_tr) {
-         auto payload = tr_info["payload"];
-         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toLatin1()),
+         QByteArray payload;
+         payload.append(tr_info["payload"]);
+
+         // we are looking for last occurence of BEGIN:VCARD since the message was prepend.
+         auto index = payload.lastIndexOf("BEGIN:VCARD");
+
+         QByteArray message = payload.mid(0,index);
+         QByteArray vcard = payload.mid(index);
+
+         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(vcard),
                                                                        tr_info["from"]);
 
          a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, peer, tr_info["from"],
@@ -1376,7 +1384,7 @@ bool Account::banCertificate(Certificate* c)
 }
 
 ///Ask the certificate owner (peer) to trust you
-bool Account::sendContactRequest( const URI& uri )
+bool Account::sendContactRequest( const URI& uri, const QString message )
 {
    if (uri.isEmpty())
        return false;
@@ -1388,20 +1396,25 @@ bool Account::sendContactRequest( const URI& uri )
       payload = contactMethod()->contact()->toVCard();
    }
 
+   /* the peer will cut the payload into two pieces with finding the last occurence of END:VCARD. Doing that, we can
+    * safely send END:VCARD in the text body without get interpreted as the end of the vcard.
+    */
+   payload.prepend(message.toUtf8());
+
    ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
 
    return true;
 }
 
-bool Account::sendContactRequest(const ContactMethod* c)
+bool Account::sendContactRequest(const ContactMethod* c, const QString message)
 {
     if (!c)
         return false;
 
-    return sendContactRequest(c->uri());
+    return sendContactRequest(c->uri(), message);
 }
 
-bool Account::sendContactRequest( Certificate* c )
+bool Account::sendContactRequest(Certificate* c, const QString message)
 {
    if ((!c) || (c->remoteId().isEmpty()))
       return false;
@@ -1411,6 +1424,8 @@ bool Account::sendContactRequest( Certificate* c )
    if (contactMethod() && contactMethod()->contact()) {
       payload = contactMethod()->contact()->toVCard();
    }
+
+   payload.prepend(message.toUtf8());
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
 
