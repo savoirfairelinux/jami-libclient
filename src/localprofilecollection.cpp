@@ -78,7 +78,12 @@ bool LocalProfileEditor::save(const Profile* pro)
 
     qDebug() << "Saving profile in:" << filename;
     QFile file {filename};
-    file.open(QIODevice::WriteOnly);
+
+    if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
+        qWarning() << "Can't write to" << filename;
+        return false;
+    }
+
     file.write(result);
     file.close();
     return true;
