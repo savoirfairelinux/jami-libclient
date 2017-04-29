@@ -74,7 +74,12 @@ bool PeerProfileEditor::save(const Person* pers)
     const auto& result = pers->toVCard();
 
     QFile file {filename};
-    file.open(QIODevice::WriteOnly);
+
+    if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
+        qWarning() << "Can't write to" << filename;
+        return false;
+    }
+
     file.write(result);
     file.close();
     return true;
