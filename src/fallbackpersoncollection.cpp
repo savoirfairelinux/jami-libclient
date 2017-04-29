@@ -121,8 +121,15 @@ bool FallbackPersonBackendEditor::save(const Person* item)
       const_cast<Person*>(item)->setUid(hash.result().toHex());
    }
 
-   QFile file(m_Path+'/'+item->uid()+".vcf");
-   file.open(QIODevice::WriteOnly);
+   const QString path = m_Path+'/'+item->uid()+".vcf";
+
+   QFile file(path);
+
+   if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
+      qWarning() << "Can't write to" << path;
+      return false;
+   }
+
    file.write(item->toVCard({}));
    file.close();
    return true;
