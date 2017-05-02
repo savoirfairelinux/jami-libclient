@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_28a44356",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-02T21:16:20Z",
+      "side": 1,
+      "message": "should be in double quotes since its a file local to the project",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "45935b091469ef37e2db50c91d54b794907e3ae2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_089f0705",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-02T21:16:20Z",
+      "side": 1,
+      "message": "unused param warning",
+      "range": {
+        "startLine": 220,
+        "startChar": 83,
+        "endLine": 220,
+        "endChar": 93
+      },
+      "revId": "45935b091469ef37e2db50c91d54b794907e3ae2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_c8880fc9",
+        "filename": "src/recentmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-02T21:16:20Z",
+      "side": 1,
+      "message": "hmm, I wonder if instead of doing this, we can read the last modified of the vCard file and use that as the last used...",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 9
+      },
+      "revId": "45935b091469ef37e2db50c91d54b794907e3ae2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
