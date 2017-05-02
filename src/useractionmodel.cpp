@@ -991,9 +991,6 @@ bool UserActionModel::execute(const UserActionModel::Action action) const
    // The ADD_NEW action can when no selection is present
    switch(d_ptr->m_Mode) {
       case UserActionModelPrivate::UserActionModelMode::GENERIC:
-         if ((!d_ptr->m_pSelectionModel) || !d_ptr->m_pSelectionModel->hasSelection())
-            break;
-
          #pragma GCC diagnostic push
          #pragma GCC diagnostic ignored "-Wswitch"
          switch(action) {
