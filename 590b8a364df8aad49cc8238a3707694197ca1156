@@ -22,6 +22,30 @@
       "revId": "590b8a364df8aad49cc8238a3707694197ca1156",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_880217b3",
+        "filename": "src/phonedirectorymodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-02T00:18:37Z",
+      "side": 1,
+      "message": "What about it? All parameters are nullable and checked in ::fillDetails. d_ptr is the private class behind the public API, so it\u0027s never null. I don\u0027t see a potential dereference in this code path.\n\nOh, and thanks for the review. And btw, Guillaume, you should probably prioritize https://gerrit-ring.savoirfairelinux.com/#/c/6770/. It crashes existing clients (not only mine) and will be an order of magnitude worst when the ContactRequest will become more common.",
+      "parentUuid": "5aaae553_0544d272",
+      "range": {
+        "startLine": 520,
+        "startChar": 47,
+        "endLine": 520,
+        "endChar": 52
+      },
+      "revId": "590b8a364df8aad49cc8238a3707694197ca1156",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
