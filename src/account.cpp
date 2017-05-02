@@ -146,7 +146,7 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
       for (const auto& tr_info : pending_tr) {
          auto payload = tr_info["payload"];
-         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toLatin1()),
+         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toUtf8()),
                                                                        tr_info["from"]);
 
          a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, peer, tr_info["from"],
