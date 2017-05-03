@@ -88,7 +88,7 @@ public:
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
-   Q_PROPERTY(QString           registeredName   READ registeredName    WRITE setRegisteredName       )
+   Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
    Q_PROPERTY(QString           getBestId        READ getBestId                                       )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
@@ -145,7 +145,6 @@ public:
    Q_INVOKABLE void setAccount       (Account*            account       );
    Q_INVOKABLE void setPerson        (Person*             contact       );
    Q_INVOKABLE void setTracked       (bool                track         );
-   Q_INVOKABLE void setRegisteredName(const QString&      registeredName);
    void             setCategory      (NumberCategory*     cat           );
    void             setBookmarked    (bool                bookmarked    );
    void             setUid           (const QString&      uri           );
@@ -232,6 +231,8 @@ Q_SIGNALS:
    void contactChanged(Person* newContact, Person* oldContact);
    /// The number of unread text messages has changed
    void unreadTextMessageCountChanged();
+   /// When the registered name is set
+   void registeredNameSet(const QString& name);
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)
