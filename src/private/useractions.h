@@ -405,11 +405,11 @@ bool addPerson(ContactMethod* cm, CollectionInterface* col)
       const QVector<CollectionInterface*> cols = PersonModel::instance()
          .collections(CollectionInterface::SupportedFeatures::ADD);
 
-         if (cols.isEmpty())
-            return false;
+      if (cols.isEmpty())
+         return false;
 
-         //TODO support collection selection
-         col = cols.first();
+      //TODO support collection selection
+      col = cols.first();
    }
 
    Person* p = new Person();
