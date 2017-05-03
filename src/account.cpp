@@ -30,7 +30,7 @@
 
 //Ring daemon
 #include <account_const.h>
-#include <presencemanager_interface.h>
+#include <presence_const.h>
 
 //Ring lib
 #include "dbus/configurationmanager.h"
