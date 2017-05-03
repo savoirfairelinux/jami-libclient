@@ -59,10 +59,12 @@ public:
    void trackedChanged(bool);
    void primaryNameChanged(const QString& name);
    void rebased(ContactMethod* other);
+   void registeredNameSet(const QString& registeredName);
 
    //Helpers
    void setTextRecording(Media::TextRecording* r);
    void setCertificate (Certificate*);
+   void setRegisteredName(const QString& registeredName);
 
  private:
    ContactMethod* q_ptr;
