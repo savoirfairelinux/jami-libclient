@@ -824,7 +824,9 @@ bool UserActionModelPrivate::updateByCall(UserActionModel::Action action, const 
       availableActionMap        [action] [c->state()             ] &&
       multi_call_options        [action] [m_SelectionState       ] &&
       actionContext             [action] & m_fContext              &&
-      updateByAccount(action, a)
+      updateByAccount(action, a)                                   &&
+      ((!cmActionAvailability[action]) ||
+         cmActionAvailability[action](c->peerContactMethod()))
    );
 }
 
