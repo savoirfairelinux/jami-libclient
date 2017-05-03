@@ -91,6 +91,11 @@ void ContactMethodPrivate::rebased(ContactMethod* other)
       emit n->rebased(other);
 }
 
+void ContactMethodPrivate::registeredNameSet(const QString& name)
+{
+   foreach (ContactMethod* n, m_lParents)
+      emit n->registeredNameSet(name);
+}
 
 const ContactMethod* ContactMethod::BLANK()
 {
@@ -320,9 +325,24 @@ void ContactMethod::setTracked(bool track)
 }
 
 /// Set the registered name
-void ContactMethod::setRegisteredName(const QString& registeredName)
+void ContactMethodPrivate::setRegisteredName(const QString& registeredName)
 {
-   d_ptr->m_RegisteredName = registeredName;
+   if (registeredName.isEmpty() || registeredName == m_RegisteredName)
+      return;
+
+   // If this happens, better create another ContactMethod manually to avoid
+   // all the corner cases. Doing this, for example, allows to keep track of
+   // the name in the private index of unique names kept by the
+   // PhoneDirectoryModel
+   if (!m_RegisteredName.isEmpty()) {
+      qWarning() << "A registered name is already set for this ContactMethod"
+         << m_RegisteredName << registeredName;
+      return;
+   }
+
+   m_RegisteredName = registeredName;
+   registeredNameSet(registeredName);
+   changed();
 }
 
 ///Allow phonedirectorymodel to change presence status

@@ -36,6 +36,7 @@
 #include "collectioninterface.h"
 #include "dbus/presencemanager.h"
 #include "globalinstances.h"
+#include "private/contactmethod_p.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "personmodel.h"
 #include "dbus/configurationmanager.h"
@@ -322,6 +323,7 @@ void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* acco
          wrap = new NumberWrapper();
          m_hDirectory    [extendedUri] = wrap;
          m_hSortedNumbers[extendedUri] = wrap;
+         wrap->numbers << number;
 
       }
       else {
@@ -817,13 +819,55 @@ PhoneDirectoryModelPrivate::slotRegisteredNameFound(const Account* account, Name
         foreach (ContactMethod* cm, wrap->numbers) {
             if (cm->account() == account) {
                 cm->incrementAlternativeName(name, QDateTime::currentDateTime().toTime_t());
-                cm->setRegisteredName(name);
+                cm->d_ptr->setRegisteredName(name);
+
+                // Add the CM to the directory using the registered name too.
+                // Note that in theory the wrapper can exist already if the
+                // user was either offline in a call attempt or if there is a
+                // collision with a SIP account.
+                if (!m_hDirectory.contains(name)) {
+                    //TODO support multiple name service, use proper URIs for names
+                    auto wrap2 = new NumberWrapper();
+                    m_hDirectory    [name] = wrap2;
+                    m_hSortedNumbers[name] = wrap2;
+                    wrap2->numbers << cm;
+                }
+                else {
+                    auto wrapper = m_hDirectory.value(name);
+                    // Merge the existing CMs now that it is known that the RingId match the username
+                    foreach(ContactMethod* n, wrapper->numbers) {
+
+                        // If the account is the same and (as we know) it is a registered name
+                        // there is 100% porbability of match
+                        const bool compAccount = n->account() &&
+                            n->account() == cm->account();
+
+                        // Less certain, but close enough. We have a contact with a phone
+                        // number corresponding with a registeredName and `ring:` in front.
+                        // it *could* use a different name service. Anyway, for now this
+                        // isn't widespread enough to care.
+                        const bool compContact = (!n->account()) && n->contact() &&
+                            n->uri().schemeType() == URI::SchemeType::RING;
+
+                        if (n != cm && (compAccount || compContact)) {
+                            n->merge(cm);
+                        }
+                    }
+                }
+
+                // Only add it once
+                if (!m_hDirectory[name]->numbers.indexOf(cm)) {
+                    //TODO check if some deduplication can be performed
+                    m_hDirectory[name]->numbers << cm;
+                }
             } else {
                 qDebug() << "registered name: uri matches but not account" << name << address << account << cm->account();
             }
         }
     } else {
         // got a registered name for a CM which hasn't been created yet
+        // This can be left as-is to save memory. Those CMs are never freed.
+        // It is generally preferred to create as little as possible.
     }
 }
 
