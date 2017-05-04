@@ -235,13 +235,12 @@ void AvailableAccountModelPrivate::checkRemovedAccount(Account* a)
 
 void AvailableAccountModelPrivate::checkStateChanges(Account* account, const Account::RegistrationState state)
 {
-   Q_UNUSED(account)
-   Q_UNUSED(state)
-   Account* a = firstRegisteredAccount();
-   if ( m_spPriorAccount != a ) {
-      qDebug() << "The current default account changed to" << a;
-      setPriorAccount(a);
-   }
+    // change PriorAccount if current PriorAccount became unavailable
+    if(m_spPriorAccount != account || state == Account::RegistrationState::READY ||
+       state == Account::RegistrationState::TRYING)
+        return;
+    Account* a = firstRegisteredAccount();
+    setPriorAccount(a);
 }
 
 #include <availableaccountmodel.moc>
