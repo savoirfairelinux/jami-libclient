@@ -712,15 +712,25 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 
 void RecentModelPrivate::slotPersonAdded(const Person* p)
 {
-   if (p) {
-      // prevent person duplication by checking if the contact method
-      // is already present in m_hCMsToNodes
-      for ( const auto cmToRm : p->phoneNumbers() )
-         if ( auto cmNode = m_hCMsToNodes.take(cmToRm) )
-            removeNode(cmNode);
+    if (!p) return;
+    // make sure the Person node exists first, then move any children of the CM nodes
+    slotLastUsedTimeChanged(p, p->lastUsedTime());
 
-      slotLastUsedTimeChanged(p, p->lastUsedTime());
-   }
+    for ( const auto contactMethod : p->phoneNumbers() ) {
+        if ( auto oldParentNode = m_hCMsToNodes.take(contactMethod) ) {
+            // move any child nodes (Calls) to new Person
+            if (auto newParentNode = m_hPersonsToNodes.value(p)) {
+                // we need to make a copy of the container since we're modifying it
+                const auto callListCopy = oldParentNode->m_lChildren;
+                for (const auto &callNode : callListCopy) {
+                    moveCallNode(newParentNode, callNode);
+                }
+                removeNode(oldParentNode);
+            } else {
+                qWarning("RecentModel: ContactMethod has new Person, but corresponding Person node doesn't exist");
+            }
+        }
+    }
 }
 
 void RecentModelPrivate::slotPersonRemoved(const Person* p)
@@ -775,25 +785,24 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
 ///Remove the contact method once they are associated with a contact
 void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
 {
+    if (!np->phoneNumbers().contains(cm))
+        qWarning() << "CM has new Person parent, but is not contained in its list of CMs";
+
+    // TODO: implement for when the Person of the CM changes, ie: op != nullptr
     Q_UNUSED(op)
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
-    if (auto n = m_hCMsToNodes.take(cm)) {
-        // remove its child calls from the list first, they will be destroyed when the call is over
-        auto newParentNode = np != nullptr ? m_hPersonsToNodes[np] : nullptr;
-        Q_FOREACH(auto cmNode, n->m_lChildren) {
-            if (newParentNode) {
-                cmNode->m_pParent = newParentNode;
-                newParentNode->m_lChildren.append(cmNode);
-            } else
-                cmNode->m_pParent = nullptr;
-        }
-
-        n->m_lChildren.clear();
-        removeNode(n);
-
-        if (newParentNode && newParentNode->m_lChildren.size()) {
-            selectNode(newParentNode);
+    if (auto oldParentNode = m_hCMsToNodes.take(cm)) {
+        // move any child nodes (Calls) to new Person
+        if (auto newParentNode = m_hPersonsToNodes.value(np)) {
+            // we need to make a copy of the container since we're modifying it
+            const auto callListCopy = oldParentNode->m_lChildren;
+            for (const auto &callNode : callListCopy) {
+                moveCallNode(newParentNode, callNode);
+            }
+            removeNode(oldParentNode);
+        } else {
+            qWarning("RecentModel: ContactMethod has new Person, but corresponding Person node doesn't exist");
         }
     }
 }
