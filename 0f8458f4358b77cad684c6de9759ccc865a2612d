@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_39b577cd",
+        "filename": "src/callmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-05T18:07:22Z",
+      "side": 1,
+      "message": "should this just be \"\u003e\", since the last row would be m_lInternalModel.size() - 1 ... I think",
+      "range": {
+        "startLine": 1001,
+        "startChar": 34,
+        "endLine": 1001,
+        "endChar": 36
+      },
+      "revId": "0f8458f4358b77cad684c6de9759ccc865a2612d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
