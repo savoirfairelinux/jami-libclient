@@ -439,6 +439,21 @@ QString ContactMethod::getBestId() const
    return d_ptr->m_RegisteredName.isEmpty() ? d_ptr->m_Uri : d_ptr->m_RegisteredName;
 }
 
+/**
+ * Return if this ContactMethod pointer is the `master` one or a deduplicated
+ * proxy.
+ *
+ * Contact methods can be merged over time to avoid both the memory overhead
+ * and diverging statistics / presence / messaging. As explained in `merge()`,
+ * the old pointers are kept alive as they are proxies to the real object
+ * (d_ptr). This accessor helps some algorithm detect if they can safely get
+ * rid of this CM as a "better" one already exists (assuming the track all CMs).
+ */
+bool ContactMethod::isDuplicate() const
+{
+   return d_ptr->m_lParents.first() != this;
+}
+
 ///Is this number bookmarked
 bool ContactMethod::isBookmarked() const
 {
