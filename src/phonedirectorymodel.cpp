@@ -249,28 +249,36 @@ QVariant PhoneDirectoryModel::data(const QModelIndex& index, int role ) const
                return number->uid();
          }
          break;
+      case PhoneDirectoryModelPrivate::Columns::REGISTERED_NAME:
+         switch (role) {
+            case Qt::DisplayRole:
+            case Qt::ToolTipRole:
+               return number->registeredName();
+         }
+         break;
    }
    return QVariant();
 }
 
 int PhoneDirectoryModel::rowCount(const QModelIndex& parent ) const
 {
-   if (parent.isValid())
-      return 0;
-   return d_ptr->m_lNumbers.size();
+   return parent.isValid() ? 0 : d_ptr->m_lNumbers.size();
 }
 
 int PhoneDirectoryModel::columnCount(const QModelIndex& parent ) const
 {
-   Q_UNUSED(parent)
-   return 19;
+   return parent.isValid() ? 0 : 20;
 }
 
 Qt::ItemFlags PhoneDirectoryModel::flags(const QModelIndex& index ) const
 {
-   Q_UNUSED(index)
-
    const ContactMethod* number = d_ptr->m_lNumbers[index.row()];
+
+   // Mark the "old" duplicate as disabled. They are now zombies acting as
+   // proxies to the real contact methods.
+   if (number->isDuplicate())
+      return Qt::NoItemFlags;
+
    const bool enabled = !((index.column() == static_cast<int>(PhoneDirectoryModelPrivate::Columns::TRACKED)
       || static_cast<int>(PhoneDirectoryModelPrivate::Columns::PRESENT))
       && number->account() && (!number->account()->supportPresenceSubscribe()));
@@ -298,7 +306,7 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
    Q_UNUSED(orientation)
    static const QString headers[] = {tr("URI"), tr("Type"), tr("Person"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
    tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"),
-   tr("Bookmarked"), tr("Tracked"), tr("Has certificate"), tr("Present"), tr("Presence message"), tr("Uid") };
+   tr("Bookmarked"), tr("Tracked"), tr("Has certificate"), tr("Present"), tr("Presence message"), tr("Uid"), tr("Registered name") };
    if (role == Qt::DisplayRole) return headers[section];
    return QVariant();
 }
@@ -314,12 +322,12 @@ void PhoneDirectoryModelPrivate::setAccount(ContactMethod* number, Account* acco
    number->setAccount(account);
 
    if (!hasAtSign) {
-      NumberWrapper* wrap = m_hDirectory[strippedUri];
+      const QString extendedUri = strippedUri+'@'+account->hostname();
+      NumberWrapper* wrap = m_hDirectory[extendedUri];
 
       //Let make sure none is created in the future for nothing
       if (!wrap) {
          //It won't be a duplicate as none exist for this URI
-         const QString extendedUri = strippedUri+'@'+account->hostname();
          wrap = new NumberWrapper();
          m_hDirectory    [extendedUri] = wrap;
          m_hSortedNumbers[extendedUri] = wrap;
@@ -456,6 +464,7 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged);
+   connect(number,&ContactMethod::rebased ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactMethodMerged);
 
     // add the new cm into the historic.
     for (auto col : CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
@@ -587,6 +596,7 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged );
+   connect(number,&ContactMethod::rebased ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactMethodMerged);
    if (!wrap) {
       wrap = new NumberWrapper();
       d_ptr->m_hDirectory    [strippedUri] = wrap;
@@ -731,8 +741,19 @@ void PhoneDirectoryModelPrivate::slotChanged()
       if (idx<0)
          qDebug() << "Invalid slotChanged() index!" << idx;
 #endif
-      emit q_ptr->dataChanged(q_ptr->index(idx,0),q_ptr->index(idx,static_cast<int>(Columns::UID)));
+      emit q_ptr->dataChanged(q_ptr->index(idx,0),q_ptr->index(idx,static_cast<int>(Columns::REGISTERED_NAME)));
    }
+}
+
+/// Remove
+void PhoneDirectoryModelPrivate::slotContactMethodMerged(ContactMethod* other)
+{
+    // Other == cm when the person they depend on got merged. As a CM is an
+    // "person-lite" this still counts as most code paths care about both. Not
+    // this, so lets ignore the merged persons.
+    auto cm = qobject_cast<ContactMethod*>(sender());
+    if (other != cm)
+        emit q_ptr->contactMethodMerged(cm, other);
 }
 
 void PhoneDirectoryModelPrivate::slotLastUsedChanged(time_t t)
