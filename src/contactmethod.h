@@ -133,6 +133,7 @@ public:
    Certificate*          certificate     () const;
    QString               registeredName  () const;
    QString               getBestId       () const;
+   bool                  isDuplicate     () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles
