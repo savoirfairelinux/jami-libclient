@@ -74,6 +74,7 @@ public:
       PRESENT          = 16,
       PRESENCE_MESSAGE = 17,
       UID              = 18,
+      REGISTERED_NAME  = 19,
    };
 
 
@@ -104,6 +105,7 @@ private Q_SLOTS:
    void slotContactChanged(Person* newContact, Person* oldContact);
    void slotIncomingAccountMessage(const QString& account, const QString& from, const MapStringString& payloads);
    void slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+   void slotContactMethodMerged(ContactMethod* other);
 
    //From DBus
    void slotNewBuddySubscription(const QString& uri, const QString& accountId, bool status, const QString& message);
