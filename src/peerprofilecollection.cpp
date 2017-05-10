@@ -175,7 +175,6 @@ bool PeerProfileCollection::load()
         // no other interactions with these CMs
         auto lastUsed = QFileInfo(filePath).lastModified();
         for (auto cm : personProfile->phoneNumbers()) {
-            qDebug() << "ppc setting last used" << personProfile << cm << lastUsed;
             cm->setLastUsed(lastUsed.toTime_t());
         }
     }
