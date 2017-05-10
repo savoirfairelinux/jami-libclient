@@ -28,6 +28,8 @@ class ItemBasePrivate;
  */
 class LIB_EXPORT ItemBase : public QObject
 {
+   Q_OBJECT
+
    friend class CollectionInterface;
 public:
    //Constructor
@@ -43,10 +45,10 @@ public:
    T2* extension() const;
 
    //Mutator methods
-   bool save    () const;
-   bool edit    ()      ;
-   bool remove  ()      ;
-   bool isActive() const;
+   Q_INVOKABLE bool save    () const;
+   Q_INVOKABLE bool edit    ()      ;
+   Q_INVOKABLE bool remove  ()      ;
+   Q_INVOKABLE bool isActive() const;
 
    //Setter
    void setCollection(CollectionInterface* backend);
