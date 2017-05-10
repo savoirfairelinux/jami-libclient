@@ -748,7 +748,17 @@ bool ContactMethod::merge(ContactMethod* other)
 
    //TODO Merge the alternative names
 
-   //TODO Handle presence
+   if (d_ptr->m_Tracked)
+      other->d_ptr->m_Tracked = true;
+
+   if (d_ptr->m_Present)
+      other->d_ptr->m_Present = true;
+
+   if (contact() && !other->contact())
+      other->setPerson(contact());
+
+   if ((!registeredName().isEmpty()) && other->registeredName().isEmpty())
+      other->d_ptr->setRegisteredName(registeredName());
 
    const QString oldName = primaryName();
 
