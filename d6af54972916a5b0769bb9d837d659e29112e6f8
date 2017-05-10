@@ -22,6 +22,30 @@
       "revId": "d6af54972916a5b0769bb9d837d659e29112e6f8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_dfdc4377",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-10T16:53:28Z",
+      "side": 1,
+      "message": "right, a leftover comment from a previous version of the patch, I will fix that soon",
+      "parentUuid": "5aaae553_1ff3bb0b",
+      "range": {
+        "startLine": 407,
+        "startChar": 5,
+        "endLine": 407,
+        "endChar": 16
+      },
+      "revId": "d6af54972916a5b0769bb9d837d659e29112e6f8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
