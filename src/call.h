@@ -201,6 +201,7 @@ public:
       RECORD_TEXT  = 6, /*!< Enable or disable text  recording              */
       COUNT__,
    };
+   Q_ENUMS(Action)
 
    /** @enum Call::LifeCycleState
     * This enum help track the call meta state
@@ -333,7 +334,7 @@ public:
    QList<Media::Media*>     allMedia    (                                                          ) const;
 
    //Automated function
-   Call::State performAction(Call::Action action);
+   Q_INVOKABLE Call::State performAction(Call::Action action);
 
    //Setters
    void setTransferNumber ( const QString&     number     );
