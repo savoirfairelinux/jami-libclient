@@ -89,7 +89,7 @@ public:
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
    Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
-   Q_PROPERTY(QString           getBestId        READ getBestId                                       )
+   Q_PROPERTY(QString           bestId           READ bestId                                          )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -132,7 +132,8 @@ public:
    bool                  isReachable     () const;
    Certificate*          certificate     () const;
    QString               registeredName  () const;
-   QString               getBestId       () const;
+   Q_DECL_DEPRECATED QString getBestId   () const;
+   QString               bestId          () const;
    bool                  isDuplicate     () const;
 
    /*
