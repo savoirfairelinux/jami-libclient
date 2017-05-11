@@ -552,12 +552,14 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::ToolTipRole:
          cat = presenceMessage();
          break;
+      case static_cast<int>(Role::Uri):
+         cat = uri();
+         break;
       case Qt::DisplayRole:
       case Qt::EditRole:
-      case static_cast<int>(Role::Uri):
       case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
-         cat = uri();
+         cat = getBestId();
          break;
       case Qt::DecorationRole:
          return GlobalInstances::pixmapManipulator().decorationRole(this);
