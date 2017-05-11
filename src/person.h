@@ -142,6 +142,7 @@ public:
    const  QString& group            () const;
    const  QString& department       () const;
    time_t lastUsedTime              () const;
+   ContactMethod* lastUsedContactMethod() const;
 
    Q_INVOKABLE QVariant   roleData   (int role) const;
    Q_INVOKABLE QMimeData* mimePayload(        ) const;
