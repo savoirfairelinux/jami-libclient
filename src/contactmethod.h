@@ -72,7 +72,7 @@ public:
    Q_PROPERTY(int               callCount        READ callCount                                       )
    Q_PROPERTY(QList<Call*>      calls            READ calls                                           )
    Q_PROPERTY(int               popularityIndex  READ popularityIndex                                 )
-   Q_PROPERTY(bool              bookmarked       READ isBookmarked                                    )
+   Q_PROPERTY(bool              bookmarked       READ isBookmarked WRITE setBookmarked NOTIFY bookmarkedChanged )
    Q_PROPERTY(QString           uid              READ uid               WRITE setUid                  )
    Q_PROPERTY(bool              isTracked        READ isTracked         NOTIFY trackedChanged         )
    Q_PROPERTY(bool              isPresent        READ isPresent         NOTIFY presentChanged         )
@@ -234,6 +234,8 @@ Q_SIGNALS:
    void unreadTextMessageCountChanged();
    /// When the registered name is set
    void registeredNameSet(const QString& name);
+   /// When the bookmark status changes
+   void bookmarkedChanged(bool isBookmarked);
 };
 
 Q_DECLARE_METATYPE(ContactMethod*)

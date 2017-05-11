@@ -97,6 +97,12 @@ void ContactMethodPrivate::registeredNameSet(const QString& name)
       emit n->registeredNameSet(name);
 }
 
+void ContactMethodPrivate::bookmarkedChanged(bool value)
+{
+   foreach (ContactMethod* n, m_lParents)
+      emit n->bookmarkedChanged(value);
+}
+
 const ContactMethod* ContactMethod::BLANK()
 {
     static auto instance = []{
@@ -275,6 +281,9 @@ void ContactMethod::setCategory(NumberCategory* cat)
 void ContactMethod::setBookmarked(bool bookmarked )
 {
    d_ptr->m_IsBookmark = bookmarked;
+
+   changed();
+   bookmarkedChanged(bookmarked);
 }
 
 ///Force an Uid on this number (instead of hash)
