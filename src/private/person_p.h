@@ -81,7 +81,7 @@ public:
 
    //Helper
    void registerContactMethod(ContactMethod* m);
-   QString getLastIdUsed();
+   QString lastIdUsed();
 
 public Q_SLOTS:
    void slotLastUsedTimeChanged(::time_t t);
