@@ -2184,6 +2184,8 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
          return peerContactMethod()->getBestId();
+      case static_cast<int>(Ring::Role::URI):
+         return peerContactMethod()->uri();
       case Qt::DecorationRole:
          return GlobalInstances::pixmapManipulator().decorationRole(this);
       case static_cast<int>(Call::Role::Direction):
