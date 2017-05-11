@@ -853,7 +853,7 @@ const QString Call::formattedName() const
     if (type() == Call::Type::CONFERENCE)
         return tr("Conference");
 
-    auto name = peerContactMethod()->roleData(static_cast<int>(Ring::Role::Name)).toString();
+    auto name = peerContactMethod()->bestName();
     if (name.isEmpty())
         return tr("Unknown");
     return name;
