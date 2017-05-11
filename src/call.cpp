@@ -2183,7 +2183,7 @@ QVariant Call::roleData(int role) const
          return dialNumber();
       case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
-         return peerContactMethod()->uri();
+         return peerContactMethod()->getBestId();
       case Qt::DecorationRole:
          return GlobalInstances::pixmapManipulator().decorationRole(this);
       case static_cast<int>(Call::Role::Direction):
