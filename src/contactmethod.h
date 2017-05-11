@@ -91,6 +91,8 @@ public:
    Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
    Q_PROPERTY(QString           getBestId        READ getBestId                                       )
 
+   Q_PROPERTY(QSharedPointer<QAbstractItemModel> callsModel READ callsModel)
+
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
    ///@enum Type: Is this temporary, blank, used or unused
@@ -134,6 +136,8 @@ public:
    QString               registeredName  () const;
    QString               getBestId       () const;
    bool                  isDuplicate     () const;
+
+   QSharedPointer<QAbstractItemModel> callsModel() const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles
