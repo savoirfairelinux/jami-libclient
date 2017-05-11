@@ -552,6 +552,7 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::ToolTipRole:
          cat = presenceMessage();
          break;
+      case static_cast<int>(Ring::Role::URI):
       case static_cast<int>(Role::Uri):
          cat = uri();
          break;
