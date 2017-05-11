@@ -600,6 +600,8 @@ QVariant Person::roleData(int role) const
       case Qt::EditRole:
       case static_cast<int>(Ring::Role::Name):
          return QVariant(formattedName());
+      case static_cast<int>(Ring::Role::Number):
+         return d_ptr->lastIdUsed();
       case Qt::DecorationRole:
          return GlobalInstances::pixmapManipulator().decorationRole(this);
       case static_cast<int>(Person::Role::Organization):
