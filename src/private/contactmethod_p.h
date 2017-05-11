@@ -48,6 +48,8 @@ public:
    QString            m_RegisteredName   ;
    UsageStatistics    m_UsageStats       ;
 
+   QWeakPointer<QAbstractItemModel> m_CallsModel;
+
    //Parents
    QList<ContactMethod*> m_lParents;
 

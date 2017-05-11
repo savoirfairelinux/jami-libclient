@@ -323,6 +323,7 @@ SET( libringclient_LIB_SRCS
   src/video/previewmanager.cpp
   src/private/sortproxies.cpp
   src/private/threadworker.cpp
+  src/private/cmcallsmodel.cpp
   src/mime.cpp
   src/smartinfohub.cpp
   src/usage_statistics.cpp
