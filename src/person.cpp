@@ -203,7 +203,7 @@ PersonPrivate::getLastIdUsed()
         return (a->lastUsed() < b->lastUsed());
     });
 
-    return (*lastPhoneNumberUsed) ? (*lastPhoneNumberUsed)->getBestId() : QString();
+    return (*lastPhoneNumberUsed) ? (*lastPhoneNumberUsed)->bestId() : QString();
 }
 
 PersonPrivate::PersonPrivate(Person* contact) : QObject(nullptr),

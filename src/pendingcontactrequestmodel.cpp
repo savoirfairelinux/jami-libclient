@@ -51,7 +51,7 @@ QVariant PendingContactRequestModel::data( const QModelIndex& index, int role ) 
       case Columns::PEER_ID:
          switch(role) {
             case Qt::DisplayRole:
-            return d_ptr->m_lRequests[index.row()]->peer()->phoneNumbers()[0]->getBestId();
+            return d_ptr->m_lRequests[index.row()]->peer()->phoneNumbers()[0]->bestId();
          }
          break;
       case Columns::TIME:
