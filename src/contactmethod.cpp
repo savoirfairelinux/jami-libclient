@@ -426,6 +426,23 @@ QString ContactMethod::primaryName() const
    return d_ptr->m_PrimaryName_cache;
 }
 
+/// Returns the best possible name for the contact method in order of priority:
+/// 1. Formatted name of associated Person
+/// 2. Registered name (for RING type)
+/// 3. "primary name" (could be a SIP display name received during a call or uri as fallback)
+QString ContactMethod::bestName() const
+{
+    QString name;
+    if (contact() and !contact()->formattedName().isEmpty())
+        name = contact()->formattedName();
+    else if (not registeredName().isEmpty())
+        name = registeredName();
+    else
+        name = primaryName();
+
+    return name;
+}
+
 /// Returns the registered username otherwise returns an empty QString
 QString ContactMethod::registeredName() const
 {
@@ -543,17 +560,7 @@ QVariant ContactMethod::roleData(int role) const
    switch (role) {
       case static_cast<int>(Ring::Role::Name):
       case static_cast<int>(Call::Role::Name):
-         /* the formatted name could be empty either because the name of the contact is actually
-          * empty, or because the PersonPlaceHolder was never matched to a Person, in either case
-          * we try to display the registered name. In the last resort we display the URI. */
-         if (contact() and !contact()->formattedName().isEmpty())
-            cat = contact()->formattedName();
-         else {
-            if (not d_ptr->m_RegisteredName.isEmpty())
-                cat = d_ptr->m_RegisteredName;
-            else
-                cat = primaryName();
-         }
+         cat = bestName();
          break;
       case Qt::ToolTipRole:
          cat = presenceMessage();
