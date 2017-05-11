@@ -158,7 +158,7 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 {{
 //                      RINGING          CONNECTING      CURRENT            BUSY               HOLD               HUNGUP         FAILURE          OVER        INACTIVE     /**/
 /*NEW            */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::nothing      , CP::nothing      , CP::nothing    , CP::nothing  , CP::nothing , CP::nothing}}, /**/
-/*INCOMING       */  {{CP::sendProfile, CP::nothing   , CP::start     , CP::startWeird   , CP::startWeird   , CP::startStop  , CP::failure  , CP::nothing , CP::nothing}}, /**/
+/*INCOMING       */  {{CP::nothing    , CP::nothing   , CP::start     , CP::startWeird   , CP::startWeird   , CP::startStop  , CP::failure  , CP::nothing , CP::nothing}}, /**/
 /*RINGING        */  {{CP::nothing    , CP::nothing   , CP::start     , CP::failure      , CP::start        , CP::startStop  , CP::failure  , CP::nothing , CP::nothing}}, /**/
 /*CURRENT        */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
 /*DIALING        */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
@@ -171,9 +171,9 @@ const TypedStateMachine< TypedStateMachine< function , CallPrivate::DaemonState 
 /*ERROR          */  {{CP::error      , CP::error     , CP::error     , CP::error        , CP::error        , CP::stop       , CP::error    , CP::error   , CP::nothing}}, /**/
 /*CONF           */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
 /*CONF_HOLD      */  {{CP::nothing    , CP::nothing   , CP::nothing   , CP::warning      , CP::nothing      , CP::stop       , CP::nothing  , CP::stop    , CP::nothing}}, /**/
-/*INIT           */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
+/*INIT           */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
 /*ABORTED        */  {{CP::error      , CP::error     , CP::error     , CP::error        , CP::error        , CP::error      , CP::error    , CP::error   , CP::nothing}}, /**/
-/*CONNECTED      */  {{CP::sendProfile, CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
+/*CONNECTED      */  {{CP::nothing    , CP::nothing   , CP::warning   , CP::warning      , CP::warning      , CP::stop       , CP::warning  , CP::stop    , CP::nothing}}, /**/
 }};//                                                                                                                                                                        */
 
 //There is no point to have a 2D matrix, only one transition per state is possible
@@ -1905,6 +1905,9 @@ void CallPrivate::start()
    }
    setStartTimeStamp();
    initTimer();
+
+   /* we want to exchange vCards once the call starts so both peers have updated profiles */
+   sendProfile();
 }
 
 ///Toggle the timer
