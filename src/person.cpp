@@ -193,19 +193,6 @@ void PersonPrivate::registerContactMethod(ContactMethod* m)
       slotLastUsedTimeChanged(m->lastUsed());
 }
 
-/**
- * @return the best Id for the last ContactMethod used with that person.
- */
-QString
-PersonPrivate::getLastIdUsed()
-{
-    auto lastPhoneNumberUsed = std::max_element(m_Numbers.begin(), m_Numbers.end(), [](ContactMethod* a, ContactMethod* b){
-        return (a->lastUsed() < b->lastUsed());
-    });
-
-    return (*lastPhoneNumberUsed) ? (*lastPhoneNumberUsed)->bestId() : QString();
-}
-
 PersonPrivate::PersonPrivate(Person* contact) : QObject(nullptr),
    m_Numbers(),m_DisplayPhoto(false),m_Active(true),m_isPlaceHolder(false),
    m_LastUsed(0),m_LastUsedInit(false), q_ptr(contact)
@@ -364,6 +351,15 @@ const QString& Person::group() const
 const QString& Person::department() const
 {
    return d_ptr->m_Department;
+}
+
+/// Get the last ContactMethod used with that person.
+ContactMethod* Person::lastUsedContactMethod() const
+{
+    auto lastUsed = std::max_element(phoneNumbers().begin(), phoneNumbers().end(),
+        [] (ContactMethod* a, ContactMethod* b) { return (a->lastUsed() < b->lastUsed()); }
+    );
+    return *lastUsed;
 }
 
 ///Set the phone number (type and number)
@@ -629,7 +625,10 @@ QVariant Person::roleData(int role) const
       case static_cast<int>(Ring::Role::IsPresent):
          return isPresent();
       case static_cast<int>(Person::Role::IdOfLastCMUsed):
-         return d_ptr->getLastIdUsed();
+         {
+            auto cm = lastUsedContactMethod();
+            return cm ? cm->bestId() : QString();
+         }
       case static_cast<int>(Ring::Role::UnreadTextMessageCount):
          {
             int unread = 0;
