@@ -432,11 +432,17 @@ QString ContactMethod::registeredName() const
    return d_ptr->m_RegisteredName.isEmpty()? QString() : d_ptr->m_RegisteredName;
 }
 
-/// Best bet for this contact identity
-/// returns the registered name if present, otherwise returns the uri
+/// Returns the registered name if available, otherwise returns the uri
+/// Deprecated for not following LRC naming convention, please use bestId() instead
 QString ContactMethod::getBestId() const
 {
-   return d_ptr->m_RegisteredName.isEmpty() ? d_ptr->m_Uri : d_ptr->m_RegisteredName;
+   return bestId();
+}
+
+/// Returns the registered name if available, otherwise returns the uri
+QString ContactMethod::bestId() const
+{
+   return registeredName().isEmpty() ? uri() : registeredName();
 }
 
 /**
@@ -560,7 +566,7 @@ QVariant ContactMethod::roleData(int role) const
       case Qt::EditRole:
       case static_cast<int>(Ring::Role::Number):
       case static_cast<int>(Call::Role::Number):
-         cat = getBestId();
+         cat = bestId();
          break;
       case Qt::DecorationRole:
          return GlobalInstances::pixmapManipulator().decorationRole(this);
