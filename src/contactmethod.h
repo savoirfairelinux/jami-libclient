@@ -90,6 +90,7 @@ public:
    Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
    Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
    Q_PROPERTY(QString           bestId           READ bestId                                          )
+   Q_PROPERTY(QString           bestName         READ bestName                                        )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -135,6 +136,7 @@ public:
    Q_DECL_DEPRECATED QString getBestId   () const;
    QString               bestId          () const;
    bool                  isDuplicate     () const;
+   QString               bestName        () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles
