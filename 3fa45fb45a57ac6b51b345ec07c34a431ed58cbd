@@ -22,6 +22,30 @@
       "revId": "3fa45fb45a57ac6b51b345ec07c34a431ed58cbd",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_faf4ad88",
+        "filename": "src/certificatemodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-11T16:57:44Z",
+      "side": 1,
+      "message": "Well, given what creates categories, it\u0027s not supposed to happen twice. Either it\u0027s a collision attack or some other code didn\u0027t do it\u0027s job deduplicating things.",
+      "parentUuid": "5aaae553_3a032575",
+      "range": {
+        "startLine": 245,
+        "startChar": 29,
+        "endLine": 245,
+        "endChar": 50
+      },
+      "revId": "3fa45fb45a57ac6b51b345ec07c34a431ed58cbd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
