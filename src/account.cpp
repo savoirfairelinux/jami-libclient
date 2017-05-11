@@ -1386,7 +1386,9 @@ bool Account::sendContactRequest( const URI& uri )
    // Send our VCard as payload
    payload = profile()->person()->toVCard();
 
-   ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
+   ConfigurationManager::instance().sendTrustRequest(
+       id(), uri, {{RingMimes::VCF, payload}}
+   );
 
    return true;
 }
@@ -1409,7 +1411,9 @@ bool Account::sendContactRequest( Certificate* c )
    // Send our VCard as payload
    payload = profile()->person()->toVCard();
 
-   ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
+   ConfigurationManager::instance().sendTrustRequest(
+       id(), c->remoteId(), {{RingMimes::VCF, payload}}
+    );
 
    return true;
 }
