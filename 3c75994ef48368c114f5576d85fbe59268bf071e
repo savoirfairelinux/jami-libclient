@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_ee538e6a",
+        "filename": "src/private/person_p.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-12T13:40:54Z",
+      "side": 1,
+      "message": "Thanks a lot for this. Can it be in person.h?",
+      "revId": "3c75994ef48368c114f5576d85fbe59268bf071e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
