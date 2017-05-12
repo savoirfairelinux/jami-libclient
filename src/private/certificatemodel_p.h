@@ -57,6 +57,7 @@ public:
    QHash<QString,Certificate*>      m_hCertificates     ;
    CertificateNode*                 m_pDefaultCategory  ;
    QMutex                           m_CertLoader        ;
+   QMutex                           m_CertInsertion     ;
    int                              m_GroupCounter      ;
    QHash<const Account*,CertificateNode*> m_hAccToCat   ;
    QHash<const QString&,CertificateNode*> m_hStrToCat   ;
