@@ -629,7 +629,11 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Accou
    if (!cert) {
       cert = new Certificate(path, Certificate::Type::NONE);
       cert->setCollection(m_pFallbackDaemonCollection);
+
+      { // mutex
+      QMutexLocker(&d_ptr->m_CertInsertion);
       d_ptr->m_hCertificates[path.toLatin1()] = cert;
+      } // mutex
 
       //Add it to the model
       d_ptr->addToTree(cert,a);
@@ -656,7 +660,11 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Certi
    if (!cert) {
       cert = new Certificate(path, type);
       cert->setCollection(m_pFallbackDaemonCollection);
+
+      { // mutex
+      QMutexLocker(&d_ptr->m_CertInsertion);
       d_ptr->m_hCertificates[path.toLatin1()] = cert;
+      } // mutex
 
       //Add it to the model
       d_ptr->addToTree(cert);
@@ -672,7 +680,11 @@ Certificate* CertificateModel::getCertificateFromId(const QString& id, Account* 
    //The certificate is not loaded yet
    if (!cert) {
       cert = new Certificate(id);
+
+      { // mutex
+      QMutexLocker(&d_ptr->m_CertInsertion);
       d_ptr->m_hCertificates[id.toLatin1()] = cert;
+      } // mutex
 
       if ((!a) && (!category.isEmpty())) {
          CertificateNode* cat = d_ptr->m_hStrToCat.value(category);
