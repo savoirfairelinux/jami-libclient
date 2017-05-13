@@ -145,12 +145,12 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    if (a->protocol() == Account::Protocol::RING) {
       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
       for (const auto& tr_info : pending_tr) {
-         auto payload = tr_info["payload"];
+         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD];
          auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toUtf8()),
-                                                                       tr_info["from"]);
+                                                                       tr_info[DRing::Account::TrustRequest::FROM]);
 
-         a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, peer, tr_info["from"],
-                                                                                        tr_info["received"].toInt()));
+         a->pendingContactRequestModel()->d_ptr->addRequest(new ContactRequest(a, peer, tr_info[DRing::Account::TrustRequest::FROM],
+                                                                                        tr_info[DRing::Account::TrustRequest::RECEIVED].toInt()));
       }
    }
 
