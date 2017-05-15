@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_d17d17b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-15T14:35:14Z",
+      "side": 1,
+      "message": "This is a good description, but its a bit long for the commit message subject. You should try to limit the subject length to about 50 chars. I suggest you write something like: \"use DRing::Account::TrustRequest constants\" and then a longer description in the body.\n\nSee this for tips on writing good commit messages:\nhttps://chris.beams.io/posts/git-commit/",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 89
+      },
+      "revId": "ef28b90b7d1ea37bb02890a6570597685c8ef38a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
