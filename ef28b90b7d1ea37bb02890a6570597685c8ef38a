@@ -22,6 +22,29 @@
       "revId": "ef28b90b7d1ea37bb02890a6570597685c8ef38a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_914f9f92",
+        "filename": "src/account.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-15T14:39:36Z",
+      "side": 1,
+      "message": "These lines were already quite long before, but now even more so with the addition of the constants; I would slightly re-write this to make it easier to read, something like:\n\nauto contactRequest \u003d new ContactRequest(a,\n                                         tr_info[....],\n                                         tr_info[....]);\na-\u003ependingContactRequestModel()-\u003ed_ptr-\u003eaddRequest(contactRequest);",
+      "range": {
+        "startLine": 152,
+        "startChar": 9,
+        "endLine": 153,
+        "endChar": 146
+      },
+      "revId": "ef28b90b7d1ea37bb02890a6570597685c8ef38a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
