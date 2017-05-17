@@ -111,8 +111,10 @@ bool ContactRequest::discard()
 void
 ContactRequest::block()
 {
-   ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId());
-   emit requestBlocked();
+    ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId());
+    // even block the peer is added
+    PersonModel::instance().addPeerProfile(peer());
+    emit requestBlocked();
 }
 
 /**

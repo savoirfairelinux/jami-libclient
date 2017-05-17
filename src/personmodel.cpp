@@ -32,10 +32,27 @@
 #include "collectionmodel.h"
 #include "collectioneditor.h"
 
+#include "person.h"
+#include "call.h"
+#include "uri.h"
+#include "contactmethod.h"
+#include "collectioninterface.h"
+#include "collectionmodel.h"
+#include "collectioneditor.h"
+#include "dbus/configurationmanager.h"
+#include "accountmodel.h"
+#include "availableaccountmodel.h"
+
 //Qt
 #include <QtCore/QHash>
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QSortFilterProxyModel>
+#include <QItemSelectionModel>
+
+// defines
+#define IS_TRUE == "true"
+#define IS_FALSE != "true" /* do not use == "false" */
 
 class PersonItemNode
 {
@@ -56,6 +73,19 @@ public:
    NodeType m_Type;
 
 };
+
+class BannedPeopleProxy : public QSortFilterProxyModel
+{
+   Q_OBJECT
+public:
+    BannedPeopleProxy(PersonModel* source_model);
+
+    virtual QVariant data(const QModelIndex& index, int role) const override;
+protected:
+    virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const override;
+
+};
+
 
 class PersonModelPrivate final : public QObject
 {
@@ -373,10 +403,58 @@ bool PersonModel::addNewPerson(Person* c, CollectionInterface* backend)
    return ret;
 }
 
+QSortFilterProxyModel*
+PersonModel::bannedPeopleProxy() const
+{
+   static BannedPeopleProxy* p = new BannedPeopleProxy(const_cast<PersonModel*>(this));
+   return p;
+}
+
+BannedPeopleProxy::BannedPeopleProxy(PersonModel* sourceModel)
+{
+    setSourceModel(sourceModel);
+}
+
+bool
+BannedPeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) const
+{
+    if (!sourceParent.isValid()) {
+        auto idx = sourceModel()->index(sourceRow, 0);
+        auto type = idx.data(static_cast<int>(Ring::Role::ObjectType)).value<Ring::ObjectType>();
+        auto object = idx.data(static_cast<int>(Ring::Role::Object));
+
+        if (type == Ring::ObjectType::Person) {
+            // get person
+            auto person = object.value<Person *>();
+
+            // get account selected in settings
+            auto idxAccount = AccountModel::instance().selectionModel()->currentIndex();
+            auto account = idxAccount.data(static_cast<int>(Ring::Role::Object)).value<Account *>();
+
+            // get contact details
+            MapStringString contactDetails 
+                  = ConfigurationManager::instance().getContactDetails(account->id(), person->phoneNumbers()[0]->uri());
+
+            return contactDetails["banned"] IS_TRUE;
+        }
+    }
+
+    return false;
+}
+
+QVariant
+BannedPeopleProxy::data(const QModelIndex& index, int role) const
+{
+    auto indexSource = this->mapToSource(index);
+
+    if (!indexSource.isValid())
+        return QVariant();
+
+    return sourceModel()->data(indexSource, role);
+}
+
 void PersonModelPrivate::slotLastUsedTimeChanged(time_t t) const
 {
    emit q_ptr->lastUsedTimeChanged(static_cast<Person*>(QObject::sender()), t);
 }
-
-
 #include <personmodel.moc>
