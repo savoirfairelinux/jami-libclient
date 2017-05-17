@@ -663,6 +663,19 @@ public Q_SLOTS: // METHODS
    {
        DRing::connectivityChanged();
    }
+   
+   VectorMapStringString getContactDetails(const QString &accountID, const QString &uri)
+   {
+       auto reply = DRing::removeContact(accountId.toStdString(), uri.toStdString());
+       
+       VectorMapStringString vms;
+       for (const auto& itemVector : DRing::getContactDetailsgetContactDetails("", "")) {
+           vms.push_back(convert(itemVector))
+       }
+       
+       return vms;
+       
+   }
 
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
