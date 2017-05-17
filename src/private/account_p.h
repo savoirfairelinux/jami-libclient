@@ -119,6 +119,7 @@ public:
    Profile*                     m_pProfile {nullptr}       ;
    PendingContactRequestModel*    m_pPendingContactRequestModel;
    Account::ContactMethods      m_NumbersFromDaemon        ;
+   BannedContactModel* m_pBannedContactModel {nullptr};
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 
