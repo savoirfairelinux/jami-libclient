@@ -53,6 +53,7 @@
 #include "person.h"
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
+#include "bannedcontactmodel.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -96,6 +97,8 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
             &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::contactRemoved, this,
+            &AccountModelPrivate::slotContactRemoved, Qt::QueuedConnection);
 }
 
 ///Destructor
@@ -527,6 +530,20 @@ AccountModelPrivate::slotMigrationEnded(const QString& accountId, const QString&
         qWarning() << "cannot emit migrationEnded signal, status is undefined";
     else
         emit a->migrationEnded(status);
+}
+
+/**
+ * slot function used with ConfigurationManagerInterface::contactRemoved signal
+ */
+void
+AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString &uri, bool banned)
+{
+    if (not banned)
+        return;
+
+    auto account = q_ptr->getById(accountID.toLatin1());
+    auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+    account->bannedContactModel()->add(cm);
 }
 
 ///Update accounts
