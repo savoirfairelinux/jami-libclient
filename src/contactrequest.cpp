@@ -111,7 +111,9 @@ bool ContactRequest::discard()
 void
 ContactRequest::block()
 {
-   ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId());
+   // even block the peer is added, but his ContactMethod should have been flagged as banned.
+   //~ PersonModel::instance().banPeerProfile(peer()); XXX
+
    emit requestBlocked();
 }
 

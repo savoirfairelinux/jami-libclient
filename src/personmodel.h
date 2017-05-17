@@ -33,6 +33,8 @@ class Account;
 class CollectionInterface;
 class PersonModelPrivate;
 class PersonItemNode;
+class QSortFilterProxyModel;
+
 
 //Typedef
 typedef QVector<Person*> PersonList;
@@ -59,6 +61,9 @@ public:
    //Getters
    Person* getPersonByUid   ( const QByteArray& uid );
    Person* getPlaceHolder(const QByteArray& uid );
+
+   // PROXY
+   QSortFilterProxyModel* bannedPeopleProxy() const;
 
    //Model implementation
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role   ) override;
