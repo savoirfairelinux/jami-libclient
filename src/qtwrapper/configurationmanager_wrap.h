@@ -664,6 +664,11 @@ public Q_SLOTS: // METHODS
        DRing::connectivityChanged();
    }
 
+   MapStringString getContactDetails(const QString &accountID, const QString &uri)
+   {
+       return convertMap(DRing::getContactDetails(accountID.toStdString(), uri.toStdString()));
+   }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();

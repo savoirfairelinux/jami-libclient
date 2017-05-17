@@ -48,6 +48,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QSortFilterProxyModel>
+#include <QItemSelectionModel>
 
 // defines
 #define IS_TRUE == "true"
@@ -429,11 +430,10 @@ BannedPeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourcePar
 
             // get account selected in settings
             auto idxAccount = AccountModel::instance().selectionModel()->currentIndex();
-            auto account = idxAccount.data(static_cast<int>(Ring::Role::Object)).value<Account *>();
+            auto account = idxAccount.data(static_cast<int>(Ring::Role::Object)).value<Account*>();
 
             // get contact details
-            auto reply = ConfigurationManager::instance().getContactDetails(account->id(), person->phoneNumbers()[0]->uri());
-            auto contactDetails = reply.argumentAt<0>();
+            QMap<QString, QString> contactDetails = ConfigurationManager::instance().getContactDetails(account->id(), person->phoneNumbers()[0]->uri());
 
             return contactDetails["banned"] IS_TRUE;
         }
