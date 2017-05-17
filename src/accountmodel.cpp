@@ -53,6 +53,7 @@
 #include "person.h"
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
+#include "bannedcontactmodel.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -96,6 +97,14 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
             &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::contactRemoved, this,
+    [&] (const QString &accountID, const QString &uri, bool banned) {
+        if (banned) {
+            auto account = q_ptr->getById(accountID.toLatin1());
+            auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+            account->bannedContactModel()->add(cm);
+        }
+    });
 }
 
 ///Destructor

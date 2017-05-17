@@ -290,6 +290,7 @@ SET( libringclient_LIB_SRCS
   src/audio/ringtonedevicemodel.cpp
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
+  src/bannedcontactmodel.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -440,6 +441,7 @@ SET( libringclient_LIB_HDRS
   src/itemdataroles.h
   src/smartinfohub.h
   src/usage_statistics.h
+  src/bannedcontactmodel.h
 )
 
 SET(libringclient_video_LIB_HDRS

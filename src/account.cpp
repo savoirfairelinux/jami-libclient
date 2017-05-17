@@ -70,6 +70,9 @@
 #include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
+#include "bannedcontactmodel.h"
+
+// define
 #define TO_BOOL ?"true":"false"
 #define IS_TRUE == "true"
 
@@ -610,6 +613,15 @@ PendingContactRequestModel* Account::pendingContactRequestModel() const
       d_ptr->m_pPendingContactRequestModel = new PendingContactRequestModel(const_cast<Account*>(this));
 
    return d_ptr->m_pPendingContactRequestModel;
+}
+
+BannedContactModel*
+Account::bannedContactModel() const
+{
+   if (!d_ptr->m_pBannedContactModel)
+      d_ptr->m_pBannedContactModel = new BannedContactModel(const_cast<Account*>(this));
+
+   return d_ptr->m_pBannedContactModel;
 }
 
 NetworkInterfaceModel* Account::networkInterfaceModel() const
