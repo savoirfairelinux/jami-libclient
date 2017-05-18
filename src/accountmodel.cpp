@@ -462,7 +462,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 }
 
 ///When a Ring-DHT trust request arrive
-void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time)
+void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const MapStringString& payload, time_t time)
 {
    Q_UNUSED(payload);
 
@@ -473,12 +473,21 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
+    if (not payload.contains(RingMimes::VCF)) {
+        qWarning() << "payload doesn't contain any vcard";
+        return;
+    }
+
+   // get vcard
+   auto vcard = payload[RingMimes::VCF];
+
    /* do not pass a person before the contact request was added to his model */
-   ContactRequest* r = new ContactRequest(a, nullptr, ringID, time);
+   ContactRequest* r = new ContactRequest(a, nullptr, hash, time);
    a->pendingContactRequestModel()->d_ptr->addRequest(r);
 
-   auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
-   r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));
+   auto contactMethod = PhoneDirectoryModel::instance().getNumber(hash, a);
+   std::string raw(vcard.toStdString());
+   r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, QByteArray(reinterpret_cast<const char*>(raw.data()), raw.size())));
 }
 
 ///Known Ring devices have changed

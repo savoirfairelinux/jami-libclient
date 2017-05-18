@@ -1396,10 +1396,11 @@ bool Account::sendContactRequest( const URI& uri )
    if (uri.isEmpty())
        return false;
 
-   QByteArray payload;
+   MapStringString payload;
 
    // Send our VCard as payload
-   payload = profile()->person()->toVCard();
+   auto vcard = profile()->person()->toVCard();
+   payload.insert(RingMimes::VCF, vcard);
 
    ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
 
@@ -1419,10 +1420,11 @@ bool Account::sendContactRequest( Certificate* c )
    if ((!c) || (c->remoteId().isEmpty()))
       return false;
 
-   QByteArray payload;
+   MapStringString payload;
 
    // Send our VCard as payload
-   payload = profile()->person()->toVCard();
+   auto vcard = profile()->person()->toVCard();
+   payload.insert("vcard", vcard);
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
 

@@ -106,8 +106,8 @@ public:
                    Q_EMIT this->accountMessageStatusChanged(QString(accountID.c_str()), id, QString(to.c_str()), status);
                }),
          exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
-               [this] (const std::string &accountId, const std::string &certId, const std::vector<uint8_t> &payload, time_t timestamp) {
-                   Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), QByteArray(reinterpret_cast<const char*>(payload.data()), payload.size()), timestamp);
+               [this] (const std::string &accountId, const std::string &certId, const std::map<std::string, std::string>& payload, time_t timestamp) {
+                   Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()), QString(certId.c_str()), convertMap(payload), timestamp);
                }),
          exportable_callback<ConfigurationSignal::KnownDevicesChanged>(
                [this] (const std::string &accountId, const std::map<std::string, std::string>& devices) {
@@ -641,10 +641,9 @@ public Q_SLOTS: // METHODS
       return DRing::discardTrustRequest(accountId.toStdString(), from.toStdString());
    }
 
-   void sendTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload)
+   void sendTrustRequest(const QString& accountId, const QString& from, const MapStringString& payload)
    {
-      std::vector<unsigned char> raw(payload.begin(), payload.end());
-      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
+      DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), convertMap(payload));
    }
 
    void removeContact(const QString &accountId, const QString &uri, bool ban)
@@ -695,7 +694,7 @@ Q_SIGNALS: // SIGNALS
    void certificatePathPinned(const QString& path, const QStringList& certIds);
    void certificateExpired(const QString& certId);
    void certificateStateChanged(const QString& accountId, const QString& certId, const QString& status);
-   void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
+   void incomingTrustRequest(const QString& accountId, const QString& from, const MapStringString& payload, qulonglong timeStamp);
    void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
    void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
