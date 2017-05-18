@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_5dcff6b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-18T17:31:08Z",
+      "side": 1,
+      "message": "I would say \"adapt to daemon API change...\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "e615f0ead31af6de86574ea7dd390006ddba64d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_9dd56e45",
+        "filename": "src/account.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1390,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-18T17:31:08Z",
+      "side": 1,
+      "message": "this should be a MIME type, I think, probably \"text/vcard\":\nhttps://en.wikipedia.org/wiki/VCard\n\nFYI, this is already defined in LRC, so it should probably be RingMimes::VCF, see mime.h",
+      "range": {
+        "startLine": 1390,
+        "startChar": 18,
+        "endLine": 1390,
+        "endChar": 25
+      },
+      "revId": "e615f0ead31af6de86574ea7dd390006ddba64d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_3dca3aa2",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-05-18T17:31:08Z",
+      "side": 1,
+      "message": "I think its probably worth checking if payload has the MIME type we want with a payload.contains(...) and printing a warning if not",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 33
+      },
+      "revId": "e615f0ead31af6de86574ea7dd390006ddba64d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
