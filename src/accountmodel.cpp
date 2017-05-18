@@ -1235,4 +1235,35 @@ Account* AccountModel::findAccountIf(const std::function<bool(const Account&)>& 
     return nullptr;
 }
 
+/**
+ * set the ban status of an uri associated to an account.
+ * @param account, the account associated to the uri.
+ * @param uri, the uri to querry.
+ * @param flag, set to true to ban the uri, false otherwise.
+ */
+void
+AccountModel::setBanStatus(Account* account, URI uri, bool flag)
+{
+    if (flag)
+        ConfigurationManager::instance().removeContact(account->id(), uri);
+    else
+        ConfigurationManager::instance().addContact(account->id(), uri);
+}
+
+/**
+ * returns the ban status of an uri associated to an account.
+ * @param account, the account associated to the uri.
+ * @param uri, the uri to querry.
+ * @return true if uri is banned, false otherwise.
+ */
+bool
+AccountModel::isBanned(Account* account, URI uri)
+{
+    // get contact details
+    MapStringString contactDetails
+                  = ConfigurationManager::instance().getContactDetails(account->id(), uri);
+
+    return contactDetails["banned"] == "true";
+}
+
 #include <accountmodel.moc>

@@ -86,6 +86,7 @@ public:
    QItemSelectionModel* selectionModel              (                                      ) const;
    Account*             userChosenAccount           (                                      ) const;
    QItemSelectionModel* userSelectionModel          (                                      ) const;
+   bool isBanned(Account* account, URI uri);
 
    //Abstract model accessors
    virtual QVariant              data        ( const QModelIndex& index, int role = Qt::DisplayRole      ) const override;
@@ -109,6 +110,7 @@ public:
    int                  exportAccounts(const QStringList& accountIDs, const QString& filePath, const QString& password);
    int                  importAccounts(const QString& filePath, const QString& password);
    void setUserChosenAccount(Account* account);
+   void setBanStatus(Account* account, URI uri, bool flag);
 
    //Operators
    Account*       operator[] (int               i)      ;

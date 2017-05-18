@@ -50,10 +50,6 @@
 #include <QtCore/QSortFilterProxyModel>
 #include <QItemSelectionModel>
 
-// defines
-#define IS_TRUE == "true"
-#define IS_FALSE != "true" /* do not use == "false" */
-
 class PersonItemNode
 {
 public:
@@ -431,11 +427,7 @@ BannedPeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourcePar
             auto idxAccount = AccountModel::instance().selectionModel()->currentIndex();
             auto account = idxAccount.data(static_cast<int>(Ring::Role::Object)).value<Account *>();
 
-            // get contact details
-            MapStringString contactDetails 
-                  = ConfigurationManager::instance().getContactDetails(account->id(), person->phoneNumbers()[0]->uri());
-
-            return contactDetails["banned"] IS_TRUE;
+            return AccountModel::instance().isBanned(account, person->phoneNumbers()[0]->uri());
         }
     }
 
