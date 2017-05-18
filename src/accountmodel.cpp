@@ -458,7 +458,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 }
 
 ///When a Ring-DHT trust request arrive
-void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
+void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const MapStringString& payload, time_t time)
 {
    Q_UNUSED(payload);
 
@@ -469,7 +469,15 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
-   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload), hash);
+    if (not payload.contains(RingMimes::VCF)) {
+        qWarning() << "payload doesn't contain any vcard";
+        return;
+    }
+
+   // get vcard
+   auto vcard = payload[RingMimes::VCF];
+
+   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(vcard.toUtf8()), hash);
 
    ContactRequest* r = new ContactRequest(a, peer, hash, time);
 
