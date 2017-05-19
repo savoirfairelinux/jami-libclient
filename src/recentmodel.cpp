@@ -786,6 +786,8 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* contactMethod, const 
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
     if (auto oldParentNode = m_hCMsToNodes.take(contactMethod)) {
+
+
         // move any child nodes (Calls) to new Person
         if (auto newParentNode = m_hPersonsToNodes.value(newPerson)) {
             // we need to make a copy of the container since we're modifying it
@@ -793,6 +795,13 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* contactMethod, const 
             for (const auto &callNode : callListCopy) {
                 moveCallNode(newParentNode, callNode);
             }
+
+            // check if the node we will remove is the selected node and select the new node
+            auto selectedIdx = q_ptr->selectionModel()->currentIndex();
+            auto oldIdx = q_ptr->createIndex(oldParentNode->m_Index, 0, oldParentNode);
+            if (selectedIdx == oldIdx)
+                selectNode(newParentNode);
+
             removeNode(oldParentNode);
         } else {
             qWarning("RecentModel: ContactMethod has new Person, but corresponding Person node doesn't exist");
@@ -867,6 +876,13 @@ RecentModelPrivate::moveCallNode(RecentViewNode* destination, RecentViewNode* ca
     auto parent = q_ptr->index(parentNode->m_Index, 0);
     const auto removedIndex = callNode->m_Index;
 
+    // check if this call was selected, so that we can re-select the same one after its moved
+    auto selected = false;
+    auto selectedIdx = q_ptr->selectionModel()->currentIndex();
+    auto oldIdx = q_ptr->index(removedIndex, 0, parent);
+    if (selectedIdx == oldIdx)
+        selected = true;
+
     q_ptr->beginRemoveRows(parent, removedIndex, removedIndex);
 
     parentNode->m_lChildren.removeAt(removedIndex);
@@ -892,6 +908,9 @@ RecentModelPrivate::moveCallNode(RecentViewNode* destination, RecentViewNode* ca
     }
     // emit dataChanged on the parent since the number of children has changed
     emit q_ptr->dataChanged(parent, parent);
+
+    if (selected)
+        selectNode(callNode);
 }
 
 void
