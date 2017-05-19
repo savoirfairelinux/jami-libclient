@@ -75,6 +75,8 @@ bool PeerProfileEditor::save(const Person* pers)
     const auto& filename = path(pers);
     const auto& result = pers->toVCard();
 
+    qDebug() << "@@@ @@@ @@@ PeerProfileEditor::save, filename" << filename;
+
     QFile file {filename};
 
     if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
@@ -105,11 +107,16 @@ bool PeerProfileEditor::edit( Person* item)
 
 bool PeerProfileEditor::addNew( Person* pers)
 {
+    qDebug() << "@@@ @@@ @@@ PeerProfileEditor::addNew" << pers;
+    qDebug() << "@@@ @@@ @@@ ContactMethods" << pers->phoneNumbers();
     pers->ensureUid();
 
     if (not m_lItems.contains(pers)) {
+        qDebug() << "@@@ @@@ @@@ new person";
         m_lItems << pers;
         mediator()->addItem(pers);
+    } else {
+        qDebug() << "@@@ @@@ @@@ existing person";
     }
     save(pers);
     return true;

@@ -793,6 +793,7 @@ Person::ensureUid()
     while (d_ptr->m_Uid.isEmpty()
         or (PersonModel::instance().getPersonByUid(d_ptr->m_Uid)
             && PersonModel::instance().getPersonByUid(d_ptr->m_Uid) != this)) {
+        qDebug() << "@@@ @@@ @@@ Person::ensureUid() UID generated";
         d_ptr->m_Uid = std::to_string(id_generator(rand)).c_str();
     }
 }

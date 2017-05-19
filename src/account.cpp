@@ -145,13 +145,16 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
    if (a->protocol() == Account::Protocol::RING) {
       const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(a->id())};
       for (const auto& tr_info : pending_tr) {
-         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD];
-         auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload.toUtf8()),
-                                                                       tr_info[DRing::Account::TrustRequest::FROM]);
-         auto contactRequest = new ContactRequest(a,
-                                                  peer,
-                                                  tr_info[DRing::Account::TrustRequest::FROM],
-                                                  tr_info[DRing::Account::TrustRequest::RECEIVED].toInt());
+         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD].toUtf8();
+         auto ringID = tr_info[DRing::Account::TrustRequest::FROM];
+         auto timeReceived = tr_info[DRing::Account::TrustRequest::RECEIVED].toInt();
+
+         /* get CM and determine if we already have a Person or not */
+         auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
+
+         auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
+
+         auto contactRequest = new ContactRequest(a, person, ringID, timeReceived);
          a->pendingContactRequestModel()->d_ptr->addRequest(contactRequest);
       }
    }

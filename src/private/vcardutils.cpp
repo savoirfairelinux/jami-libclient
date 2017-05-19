@@ -377,6 +377,7 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
 
 Person* VCardUtils::mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QList<Account*>* accounts)
 {
+    qDebug() << "^^^ ^^^ ^^^ VCardUtils::mapToPerson(), UID:" << vCard.value(Property::UID);
     auto existingPerson = PersonModel::instance().getPersonByUid(vCard[Property::UID]);
     auto personMapped = existingPerson == nullptr ? new Person() : existingPerson;
 
@@ -401,32 +402,44 @@ Person* VCardUtils::mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QLis
 }
 
 /**
- * create a Person object from a vcard and a ringId, to use when loading and receiving a contact request.
+ * There are many instances when we can receive a payload which contains a vCard. The vCard is
+ * received from a ContactMethod so we want to check if this CM already has a Person we want to
+ * update from the new vCard, or else create a new Person. We also can't trust the contents of the
+ * vCard, so we ignore any idenitication info and only basically use the name and the photo.
  *
- * @param vCard, the vcard. Ring ids inside a vcard should be discarded.
- * @param ringId, this ring id should always used to identify the peer.
+ * @param contactMethod, the contactMethod from which we received the profile
+ * @param payload, the profile we received
  */
-Person* VCardUtils::mapToPersonFromIncomingContactRequest(const QHash<QByteArray, QByteArray>& vCard, const QString& ringId)
+Person* VCardUtils::mapToPersonFromReceivedProfile(ContactMethod *contactMethod, const QByteArray& payload)
 {
-    auto personMapped = new Person();
+    auto person = contactMethod->contact();
+    if (person) {
+        qDebug() << "### ### ### CM from TR already has person" << contactMethod << person;
+    } else {
+        qDebug() << "### ### ### Creating new Person for CM from TR" << contactMethod;
+        person = new Person();
+        person->setContactMethods({contactMethod});
+        contactMethod->setPerson(person);
+    }
+    auto vCard = toHashMap(payload);
 
     QHashIterator<QByteArray, QByteArray> it(vCard);
     while (it.hasNext()) {
         it.next();
 
-        if (it.key() == VCardUtils::Property::TELEPHONE) {
-            // Do not trust a ringid from an incoming vcard, it could have been falsified.
-            continue;
-        }
+        // Do not trust a ringid from an incoming vcard, it could have been falsified.
+        if (it.key() == VCardUtils::Property::TELEPHONE) continue;
+        // Do not trust UID from incoming vcard, we can't be sure that its unique, we will generate our own
+        if (it.key() == VCardUtils::Property::UID) continue;
+        // This shouldn't be there anyways, but ignore it if it is
+        if (it.key() == VCardUtils::Property::X_RINGACCOUNT) continue;
 
-        vc_mapper->metacall(personMapped, it.key(), it.value().trimmed());
+        vc_mapper->metacall(person, it.key(), it.value().trimmed());
     }
 
-    // Add the ringid
-    vc_mapper->metacall(personMapped, VCardUtils::Property::TELEPHONE, ringId.toLatin1());
     vc_mapper->apply();
 
-    return personMapped;
+    return person;
 }
 
 QHash<QByteArray, QByteArray> VCardUtils::toHashMap(const QByteArray& content)

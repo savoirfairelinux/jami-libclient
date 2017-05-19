@@ -89,6 +89,7 @@ ContactRequest::setPeer(Person* person)
 bool ContactRequest::accept()
 {
    if (ConfigurationManager::instance().acceptTrustRequest(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId())) {
+       qDebug() << "@@@ @@@ @@@ ContactRequest::accept " << peer();
       PersonModel::instance().addPeerProfile(peer());
       emit requestAccepted();
       return true;
@@ -149,4 +150,3 @@ ContactRequest::operator==(const ContactRequest& another) const
 
    return account && certificate && time;
 }
-

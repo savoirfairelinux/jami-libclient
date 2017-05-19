@@ -78,7 +78,7 @@ class ProfileChunk
 {
 public:
    //Helper
-   static Person* addChunk( const QMap<QString,QString>& args, const QString& payload);
+   static Person* addChunk( const QMap<QString,QString>& args, const QString& payload, ContactMethod *contactMethod);
 
 private:
    //Attributes
@@ -105,11 +105,13 @@ IMConversationManagerPrivate& IMConversationManagerPrivate::instance()
    return *instance;
 }
 
-Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload)
+Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload, ContactMethod *contactMethod)
 {
     const int total  = args[ "of"   ].toInt();
     const int part   = args[ "part" ].toInt();
     const QString id = args[ "id"   ];
+
+    qDebug() << "part" << part << "of" << total << "id" << id;
 
     auto c = m_hRequest[id];
     if (!c) {
@@ -134,7 +136,7 @@ Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString
     m_hRequest[id] = nullptr;
     delete c;
 
-    return VCardUtils::mapToPerson(VCardUtils::toHashMap(cv));
+    return VCardUtils::mapToPersonFromReceivedProfile(contactMethod, cv);
 }
 
 ///Called when a new message is incoming
@@ -143,7 +145,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    Q_UNUSED(from)
 
    auto call = CallModel::instance().getCall(callId);
-   if (!call) {
+   if (!call and !call->peerContactMethod()) {
       return;
    }
 
@@ -155,11 +157,11 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
       iter.next();
 
       if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
+          qDebug() << "*** *** *** got a vCard chunk";
           const auto& args = VCardUtils::parseMimeAttributes(iter.key());
-          if (auto person = ProfileChunk::addChunk(args, iter.value())) {
-              person->setContactMethods({call->peerContactMethod()});
-              if (PersonModel::instance().addPeerProfile(person))
-                call->peerContactMethod()->setPerson(person);
+          if (auto person = ProfileChunk::addChunk(args, iter.value(), call->peerContactMethod())) {
+              qDebug() << "@@@ @@@ @@@ IMConversationManagerPrivate::newMessage adding peerProfile" << person;
+              PersonModel::instance().addPeerProfile(person);
           }
          return;
       }

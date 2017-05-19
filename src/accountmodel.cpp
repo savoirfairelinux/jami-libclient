@@ -52,6 +52,7 @@
 #include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
 #include "private/vcardutils.h"
+#include "phonedirectorymodel.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -458,7 +459,7 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
 }
 
 ///When a Ring-DHT trust request arrive
-void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time)
+void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time)
 {
    Q_UNUSED(payload);
 
@@ -469,10 +470,10 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
-   auto peer = VCardUtils::mapToPersonFromIncomingContactRequest(VCardUtils::toHashMap(payload), hash);
+   auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
+   auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
 
-   ContactRequest* r = new ContactRequest(a, peer, hash, time);
-
+   ContactRequest* r = new ContactRequest(a, person, ringID, time);
    a->pendingContactRequestModel()->d_ptr->addRequest(r);
 }
 
