@@ -141,7 +141,7 @@ public Q_SLOTS:
    void slotPersonAdded        (const Person*  p                         );
    void slotPersonRemoved      (const Person*  p                         );
    void slotLastUsedChanged    (ContactMethod* cm, time_t t              );
-   void slotContactChanged     (ContactMethod* cm, Person* np, Person* op);
+   void slotContactChanged     (ContactMethod* cm, const Person* np, const Person* op);
    void slotCallAdded          (Call* call       , Call* parent          );
    void slotChanged            (RecentViewNode* node                     );
    void slotCallStateChanged   (Call* call       , Call::State previousState);
@@ -713,23 +713,10 @@ void RecentModelPrivate::removeNode(RecentViewNode* n)
 void RecentModelPrivate::slotPersonAdded(const Person* p)
 {
     if (!p) return;
-    // make sure the Person node exists first, then move any children of the CM nodes
-    slotLastUsedTimeChanged(p, p->lastUsedTime());
 
+    // make sure all the CMs associated with this Person are moved into this Person's node
     for ( const auto contactMethod : p->phoneNumbers() ) {
-        if ( auto oldParentNode = m_hCMsToNodes.take(contactMethod) ) {
-            // move any child nodes (Calls) to new Person
-            if (auto newParentNode = m_hPersonsToNodes.value(p)) {
-                // we need to make a copy of the container since we're modifying it
-                const auto callListCopy = oldParentNode->m_lChildren;
-                for (const auto &callNode : callListCopy) {
-                    moveCallNode(newParentNode, callNode);
-                }
-                removeNode(oldParentNode);
-            } else {
-                qWarning("RecentModel: ContactMethod has new Person, but corresponding Person node doesn't exist");
-            }
-        }
+        slotContactChanged(contactMethod, p, nullptr);
     }
 }
 
@@ -782,19 +769,25 @@ void RecentModelPrivate::slotLastUsedChanged(ContactMethod* cm, time_t t)
    }
 }
 
-///Remove the contact method once they are associated with a contact
-void RecentModelPrivate::slotContactChanged(ContactMethod* cm, Person* np, Person* op)
+///(Re)move the ContactMethod node once they are associated with a (new) Person
+void RecentModelPrivate::slotContactChanged(ContactMethod* contactMethod, const Person* newPerson, const Person* oldPerson)
 {
-    if (!np->phoneNumbers().contains(cm))
+    // TODO: implement for when the Person of the CM changes, ie: oldPerson != nullptr
+    Q_UNUSED(oldPerson)
+
+    if (!newPerson) return;
+
+    // make sure the Person node exists first, then move any children of the CM nodes
+    slotLastUsedTimeChanged(newPerson, newPerson->lastUsedTime());
+
+    if (!newPerson->phoneNumbers().contains(contactMethod))
         qWarning() << "CM has new Person parent, but is not contained in its list of CMs";
 
-    // TODO: implement for when the Person of the CM changes, ie: op != nullptr
-    Q_UNUSED(op)
     // m_hCMsToNodes contains RecentViewNode pointers, take will return a default
     // constructed ptr (e.g nullptr) if key is not in the QHash
-    if (auto oldParentNode = m_hCMsToNodes.take(cm)) {
+    if (auto oldParentNode = m_hCMsToNodes.take(contactMethod)) {
         // move any child nodes (Calls) to new Person
-        if (auto newParentNode = m_hPersonsToNodes.value(np)) {
+        if (auto newParentNode = m_hPersonsToNodes.value(newPerson)) {
             // we need to make a copy of the container since we're modifying it
             const auto callListCopy = oldParentNode->m_lChildren;
             for (const auto &callNode : callListCopy) {
