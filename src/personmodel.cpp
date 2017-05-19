@@ -31,6 +31,7 @@
 #include "collectioninterface.h"
 #include "collectionmodel.h"
 #include "collectioneditor.h"
+#include "transitionalpersonbackend.h"
 
 //Qt
 #include <QtCore/QHash>
@@ -339,15 +340,25 @@ bool PersonModel::removeItemCallback(const Person* item)
    return item;
 }
 
-bool PersonModel::addPeerProfile(Person* c)
+///When we get a peer profile, its a vCard from a ContactRequest or a Call. We need to verify if
+///this is Person which already exists, and so we simply need to update our existing vCard, or if
+///this is a new Person, in which case we'll save a new vCard.
+///We cannot trust the UID in the vCard for uniqueness. We can only rely on the RingID to be unique.
+bool PersonModel::addPeerProfile(Person* person)
 {
-   if (!c)
-      return false;
+   if (!person or not person->collection()) return false;
+
+   // check if this person is saved in the PeerProfileCollection, "ppc"
+   if (person->collection() != &TransitionalPersonBackend::instance() and
+       person->collection()->name() != "ppc")
+   {
+      qWarning() << "About to add Person to the PeerProfileCollection which is part of another collection";
+   }
 
    for (auto col : collections(CollectionInterface::SupportedFeatures::ADD)) {
        //Only add profile to peer profile collection
        if (col->id() == "ppc") {
-           col->add(c);
+           col->add(person);
            return true;
        }
    }
