@@ -75,6 +75,8 @@ bool PeerProfileEditor::save(const Person* pers)
     const auto& filename = path(pers);
     const auto& result = pers->toVCard();
 
+    qDebug() << "@@@ @@@ @@@ PeerProfileEditor::save, filename" << filename;
+
     QFile file {filename};
 
     if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
@@ -111,6 +113,7 @@ bool PeerProfileEditor::addNew( Person* pers)
         m_lItems << pers;
         mediator()->addItem(pers);
     }
+
     save(pers);
     return true;
 }

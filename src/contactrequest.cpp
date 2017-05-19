@@ -149,4 +149,3 @@ ContactRequest::operator==(const ContactRequest& another) const
 
    return account && certificate && time;
 }
-

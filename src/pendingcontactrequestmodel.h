@@ -63,4 +63,3 @@ Q_SIGNALS:
    void requestDiscarded(ContactRequest* r);
    void requestAdded(ContactRequest* r);
 };
-
