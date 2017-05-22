@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_18866cba",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-22T02:34:22Z",
+      "side": 1,
+      "message": "`person-\u003ecollection()` can be null",
+      "revId": "3de25951c3d7737db07b894007ded47a49e483a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_f88830c8",
+        "filename": "src/personmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-22T02:34:22Z",
+      "side": 1,
+      "message": "It\u0027s a bad idea to \"randomly\" change the object collection. This breaks saving the contact in case it came from GMail or a local vCard.\n\nNot saying not doing so solves everything. It has it\u0027s own share of issues, but changing the collection make it worst.\n\nThe fact the LRC doesn\u0027t handle this well was a design decision discussed long ago. It was decides that the collection system was already over-engineered enough without having a `N-N` cardinality on the collections.",
+      "revId": "3de25951c3d7737db07b894007ded47a49e483a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
