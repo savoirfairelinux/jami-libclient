@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_735ea3eb",
+        "filename": "src/accountmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2017-05-23T17:42:02Z",
+      "side": 1,
+      "message": "I would move this to the account object, it makes little sense to have it here given you already have the account object.\n\nAlso, `const URI\u0026` for speed, but more importantly because `::URI` copy constructor isn\u0027t very good. But I wonder if you should not use ContactMethod here. This would allow, for example, to add a visual cue in the GUI when trying to call/search for a banned CM/URI. The API would also be slightly nicer:\n\n    auto cm \u003d PhoneDirectoryModel::instance().getNumber(uri, account);\n    cm-\u003esetBanStatus(Cetificate::Status::BANNED);",
+      "revId": "33a12254582d4e17098723755150f4146f69b8dc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
