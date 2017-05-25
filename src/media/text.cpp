@@ -155,7 +155,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
       iter.next();
 
       if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
-          const auto& args = VCardUtils::parseMimeAttributes(iter.key());
+          auto args = VCardUtils::parseMimeAttributes(iter.key());
           if (auto person = ProfileChunk::addChunk(args, iter.value(), call->peerContactMethod())) {
               PersonModel::instance().addPeerProfile(person);
           }
