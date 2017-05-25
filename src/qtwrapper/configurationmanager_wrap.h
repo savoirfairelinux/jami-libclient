@@ -142,6 +142,14 @@ public:
                [this] (const std::string& account_id, const std::string& result) {
                    Q_EMIT this->migrationEnded(QString(account_id.c_str()), QString(result.c_str()));
                }),
+        exportable_callback<ConfigurationSignal::ContactAdded>(
+               [this] (const std::string& account_id, const std::string& uri, const bool& confirmed) {
+                   Q_EMIT this->contactAdded(QString(account_id.c_str()), QString(uri.c_str()), confirmed);
+               }),
+        exportable_callback<ConfigurationSignal::ContactRemoved>(
+               [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
+                   Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
+               }),
       };
    }
 
@@ -692,6 +700,8 @@ Q_SIGNALS: // SIGNALS
    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
    void migrationEnded(const QString &accountID, const QString &result);
+   void contactAdded(const QString &accountID, const QString &uri, bool banned);
+   void contactRemoved(const QString &accountID, const QString &uri, bool banned);
 
 
 };
