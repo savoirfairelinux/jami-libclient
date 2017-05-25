@@ -58,8 +58,6 @@ PhoneDirectoryModel::PhoneDirectoryModel(QObject* parent) :
    setObjectName("PhoneDirectoryModel");
    connect(&PresenceManager::instance(),SIGNAL(newBuddyNotification(QString,QString,bool,QString)),d_ptr.data(),
            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
-   connect(&ConfigurationManager::instance(), SIGNAL(incomingAccountMessage(QString,QString,MapStringString)), d_ptr.data(),
-           SLOT(slotIncomingAccountMessage(QString, QString, MapStringString)));
 }
 
 PhoneDirectoryModel::~PhoneDirectoryModel()
@@ -770,13 +768,6 @@ void PhoneDirectoryModelPrivate::slotContactChanged(Person* newContact, Person* 
 
    if (cm)
       emit q_ptr->contactChanged(cm, newContact, oldContact);
-}
-
-void PhoneDirectoryModelPrivate::slotIncomingAccountMessage(const QString& account, const QString& from, const MapStringString& msg)
-{
-    if(auto cm = q_ptr->getNumber(from, AccountModel::instance().getById(account.toLatin1()))) {
-        emit q_ptr->incomingMessage(cm, msg);
-    }
 }
 
 void PhoneDirectoryModelPrivate::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
