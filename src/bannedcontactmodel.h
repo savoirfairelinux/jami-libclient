@@ -49,6 +49,7 @@ public:
 
     // Helper
     void add(ContactMethod* cm);
+    void remove(ContactMethod* cm);
 
 private:
     explicit BannedContactModel(Account* a);
