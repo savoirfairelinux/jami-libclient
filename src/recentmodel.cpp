@@ -41,6 +41,7 @@
 #include "contactrequest.h"
 #include "certificate.h"
 #include "availableaccountmodel.h"
+#include "pendingcontactrequestmodel.h"
 
 struct CallGroup
 {
@@ -775,7 +776,10 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* contactMethod, const 
     // TODO: implement for when the Person of the CM changes, ie: oldPerson != nullptr
     Q_UNUSED(oldPerson)
 
-    if (!newPerson) return;
+    if (not newPerson
+        or /* avoid to add en entry in recent model when a person was built for a contact request */
+        contactMethod->account()->pendingContactRequestModel()->findContactRequestFrom(contactMethod))
+        return;
 
     // make sure the Person node exists first, then move any children of the CM nodes
     slotLastUsedTimeChanged(newPerson, newPerson->lastUsedTime());

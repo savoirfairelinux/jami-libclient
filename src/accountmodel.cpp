@@ -470,11 +470,12 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
       return;
    }
 
-   auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
-   auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
-
-   ContactRequest* r = new ContactRequest(a, person, ringID, time);
+   /* do not pass a person before the contact request was added to his model */
+   ContactRequest* r = new ContactRequest(a, nullptr, ringID, time);
    a->pendingContactRequestModel()->d_ptr->addRequest(r);
+
+   auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
+   r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));
 }
 
 ///Known Ring devices have changed

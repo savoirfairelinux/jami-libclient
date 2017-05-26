@@ -27,6 +27,7 @@
 #include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
 #include "contactmethod.h"
+#include "uri.h"
 
 PendingContactRequestModelPrivate::PendingContactRequestModelPrivate(PendingContactRequestModel* p) : q_ptr(p)
 {}
@@ -160,4 +161,14 @@ void PendingContactRequestModelPrivate::removeRequest(ContactRequest* r)
    q_ptr->beginRemoveRows(QModelIndex(), index, index);
    m_lRequests.removeAt(index);
    q_ptr->endRemoveRows();
+}
+
+ContactRequest*
+PendingContactRequestModel::findContactRequestFrom(const ContactMethod* cm) const
+{
+    auto iter = std::find_if(d_ptr->m_lRequests.begin(), d_ptr->m_lRequests.end(),
+                             [&](ContactRequest* r){ return r->certificate()->remoteId() == cm->uri(); });
+    if (iter != std::end(d_ptr->m_lRequests))
+        return *iter;
+    return nullptr;
 }
