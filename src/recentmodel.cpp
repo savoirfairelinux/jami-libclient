@@ -778,7 +778,8 @@ void RecentModelPrivate::slotContactChanged(ContactMethod* contactMethod, const 
 
     if (not newPerson
         or /* avoid to add en entry in recent model when a person was built for a contact request */
-        contactMethod->account()->pendingContactRequestModel()->findContactRequestFrom(contactMethod))
+        (contactMethod->account()
+                     and contactMethod->account()->pendingContactRequestModel()->findContactRequestFrom(contactMethod)))
         return;
 
     // make sure the Person node exists first, then move any children of the CM nodes
