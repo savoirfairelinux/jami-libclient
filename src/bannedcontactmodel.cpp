@@ -97,6 +97,10 @@ BannedContactModel::data( const QModelIndex& index, int role ) const
         switch(role) {
         case Qt::DisplayRole:
             return d_ptr->m_lBanned[index.row()]->bestId();
+        case static_cast<int>(ContactMethod::Role::Object):
+            QVariant var;
+            var.setValue(d_ptr->m_lBanned[index.row()]);
+            return var;
         }
     break;
     case Columns::COUNT__:
@@ -138,4 +142,25 @@ BannedContactModel::add(ContactMethod* cm)
     beginInsertRows(QModelIndex(),d_ptr->m_lBanned.size(),d_ptr->m_lBanned.size());
     d_ptr->m_lBanned << cm;
     endInsertRows();
+}
+
+/**
+ * this function remove a ContactMethod from the banned list.
+ * @param cm, the ContactMethod to remove from the list.
+ */
+void
+BannedContactModel::remove(ContactMethod* cm)
+{
+    auto rowIndex = d_ptr->m_lBanned.indexOf(cm);
+
+    beginRemoveRows(QModelIndex(), rowIndex, rowIndex);
+    d_ptr->m_lBanned.removeAt(rowIndex);
+    endRemoveRows();
+
+    if (not cm->account()) {
+        qWarning() << "BannedContactModel, cannot remove. cm->account is nullptr";
+    }
+
+    ConfigurationManager::instance().addContact(cm->account()->id(), cm->uri());
+
 }
