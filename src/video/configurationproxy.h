@@ -17,6 +17,8 @@
  ***************************************************************************/
 #pragma once
 
+#include <typedefs.h>
+
 class QAbstractItemModel;
 class QItemSelectionModel;
 
@@ -28,7 +30,7 @@ namespace Video {
  * proxy flatten the three to the clients don't have to
  * implement the managing logic.
  */
-class ConfigurationProxy {
+class LIB_EXPORT ConfigurationProxy {
 public:
    static QAbstractItemModel& deviceModel    ();
    static QAbstractItemModel& channelModel   ();
@@ -42,4 +44,3 @@ public:
 };
 
 } //namespace Video
-
