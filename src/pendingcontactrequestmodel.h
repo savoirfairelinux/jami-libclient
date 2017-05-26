@@ -23,6 +23,7 @@
 class Account;
 class PendingContactRequestModelPrivate;
 class ContactRequest;
+class ContactMethod;
 
 /**
  * List the pending (incoming) trust request for an account
@@ -50,6 +51,9 @@ public:
    virtual Qt::ItemFlags flags       ( const QModelIndex& index                                 ) const override;
    virtual bool          setData     ( const QModelIndex& index, const QVariant &value, int role)       override;
    virtual QHash<int,QByteArray> roleNames() const override;
+
+   // Helper
+   ContactRequest* findContactRequestFrom(const ContactMethod* cm) const;
 
 private:
    explicit PendingContactRequestModel(Account* a);
