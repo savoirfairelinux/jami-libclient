@@ -111,7 +111,7 @@ bool ContactRequest::discard()
 void
 ContactRequest::block()
 {
-   ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId());
+   ConfigurationManager::instance().removeContact(d_ptr->m_pAccount->id(), d_ptr->m_pCertificate->remoteId(), true);
    emit requestBlocked();
 }
 
