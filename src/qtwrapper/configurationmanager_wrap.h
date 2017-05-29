@@ -647,9 +647,9 @@ public Q_SLOTS: // METHODS
       DRing::sendTrustRequest(accountId.toStdString(), from.toStdString(), raw);
    }
 
-   void removeContact(const QString &accountId, const QString &uri)
+   void removeContact(const QString &accountId, const QString &uri, bool ban)
    {
-      DRing::removeContact(accountId.toStdString(), uri.toStdString());
+      DRing::removeContact(accountId.toStdString(), uri.toStdString(), ban);
    }
 
    uint64_t sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
