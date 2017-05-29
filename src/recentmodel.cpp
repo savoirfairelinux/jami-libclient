@@ -1251,8 +1251,10 @@ PeopleProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) c
 
                 return filterFunction(cm);
             }
-            // top nodes are only of type Person or ContactMethod
             case Ring::ObjectType::Call:
+                return true;
+
+            // top nodes are only of type Person, ContactMethod or Call
             case Ring::ObjectType::Media:
             case Ring::ObjectType::Certificate:
             case Ring::ObjectType::ContactRequest:
