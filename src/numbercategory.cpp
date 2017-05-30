@@ -89,7 +89,7 @@ bool NumberCategory::load()
 
 int NumberCategory::size() const
 {
-   return NumberCategoryModel::instance().d_ptr->getSize(this);
+   return NumberCategoryModel::instance().getSize(this);
 }
 
 int NumberCategory::key() const

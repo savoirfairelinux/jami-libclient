@@ -33,11 +33,6 @@ public:
    QHash<QString,InternalTypeRepresentation*>               m_hByName     ;
    QHash<const NumberCategory*,InternalTypeRepresentation*> m_hToInternal ;
 
-   //Mutator
-   void registerNumber  ( ContactMethod* number     ); //FIXME this should be private
-   void unregisterNumber( ContactMethod* number     );
-   int  getSize         ( const NumberCategory* cat ) const;
-
    virtual ~NumberCategoryModelPrivate();
 };
 
