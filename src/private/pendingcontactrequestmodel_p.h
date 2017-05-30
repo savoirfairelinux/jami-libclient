@@ -23,17 +23,7 @@ class ContactRequest;
 class PendingContactRequestModelPrivate
 {
 public:
-   //Constructor
-   PendingContactRequestModelPrivate(PendingContactRequestModel* parent);
-
    //Attributes
    QVector<ContactRequest*> m_lRequests;
    Account*               m_pAccount ;
-
-   //Helper
-   void addRequest   (ContactRequest* r);
-   void removeRequest(ContactRequest* r);
-
-private:
-   PendingContactRequestModel* q_ptr;
 };

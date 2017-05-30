@@ -49,7 +49,6 @@
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 #include "codecmodel.h"
-#include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
@@ -472,7 +471,7 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
 
    /* do not pass a person before the contact request was added to his model */
    ContactRequest* r = new ContactRequest(a, nullptr, ringID, time);
-   a->pendingContactRequestModel()->d_ptr->addRequest(r);
+   a->pendingContactRequestModel()->addRequest(r);
 
    auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
    r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));

@@ -55,7 +55,6 @@
 #include "profile.h"
 #include "profilemodel.h"
 #include "pendingcontactrequestmodel.h"
-#include "private/pendingcontactrequestmodel_p.h"
 #include "accountstatusmodel.h"
 #include "codecmodel.h"
 #include "networkinterfacemodel.h"
@@ -153,7 +152,7 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
          auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
 
          auto contactRequest = new ContactRequest(a, person, ringID, timeReceived);
-         a->pendingContactRequestModel()->d_ptr->addRequest(contactRequest);
+         a->pendingContactRequestModel()->addRequest(contactRequest);
       }
    }
 
