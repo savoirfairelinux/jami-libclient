@@ -25,7 +25,6 @@
 #include "collectioneditor.h"
 #include "contactmethod.h"
 #include "numbercategorymodel.h"
-#include "private/numbercategorymodel_p.h"
 
 class NumberCategoryPrivate
 {
@@ -89,7 +88,7 @@ bool NumberCategory::load()
 
 int NumberCategory::size() const
 {
-   return NumberCategoryModel::instance().d_ptr->getSize(this);
+   return NumberCategoryModel::instance().getSize(this);
 }
 
 int NumberCategory::key() const

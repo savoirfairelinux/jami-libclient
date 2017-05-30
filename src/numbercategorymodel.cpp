@@ -147,21 +147,21 @@ QModelIndex NumberCategoryModel::nameToIndex(const QString& name) const
 }
 
 ///Be sure the category exist, increment the counter
-void NumberCategoryModelPrivate::registerNumber(ContactMethod* number)
+void NumberCategoryModel::registerNumber(ContactMethod* number)
 {
    const QString lower = number->category()->name().toLower();
-   NumberCategoryModelPrivate::InternalTypeRepresentation* rep = m_hByName[lower];
+   auto rep = d_ptr->m_hByName[lower];
    if (!rep) {
-      NumberCategoryModel::instance().addCategory(number->category()->name(),QVariant());
-      rep = m_hByName[lower];
+      addCategory(number->category()->name(),QVariant());
+      rep = d_ptr->m_hByName[lower];
    }
    rep->counter++;
 }
 
-void NumberCategoryModelPrivate::unregisterNumber(ContactMethod* number)
+void NumberCategoryModel::unregisterNumber(ContactMethod* number)
 {
    const QString lower = number->category()->name().toLower();
-   NumberCategoryModelPrivate::InternalTypeRepresentation* rep = m_hByName[lower];
+   auto rep = d_ptr->m_hByName[lower];
    if (rep)
       rep->counter--;
 }
@@ -193,9 +193,9 @@ NumberCategory* NumberCategoryModel::other()
    return other;
 }
 
-int NumberCategoryModelPrivate::getSize(const NumberCategory* cat) const
+int NumberCategoryModel::getSize(const NumberCategory* cat) const
 {
-   NumberCategoryModelPrivate::InternalTypeRepresentation* i = m_hToInternal[cat];
+   auto i = d_ptr->m_hToInternal[cat];
    return i ? i->counter : 0;
 }
 
