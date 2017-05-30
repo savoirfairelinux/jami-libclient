@@ -32,9 +32,8 @@ class LIB_EXPORT PendingContactRequestModel : public QAbstractTableModel
 {
    Q_OBJECT
 
-   friend class Account;
-   friend class AccountPrivate;
-   friend class AccountModelPrivate;
+   friend class Account; // Only Account is permited to call ctor/dtor
+
 public:
 
    enum Columns {
@@ -54,6 +53,8 @@ public:
 
    // Helper
    ContactRequest* findContactRequestFrom(const ContactMethod* cm) const;
+   void addRequest   (ContactRequest* r);
+   void removeRequest(ContactRequest* r);
 
 private:
    explicit PendingContactRequestModel(Account* a);

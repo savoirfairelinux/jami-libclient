@@ -29,11 +29,8 @@
 #include "contactmethod.h"
 #include "uri.h"
 
-PendingContactRequestModelPrivate::PendingContactRequestModelPrivate(PendingContactRequestModel* p) : q_ptr(p)
-{}
-
 PendingContactRequestModel::PendingContactRequestModel(Account* a) : QAbstractTableModel(a),
-d_ptr(new PendingContactRequestModelPrivate(this))
+d_ptr(new PendingContactRequestModelPrivate())
 {
    d_ptr->m_pAccount = a;
 }
@@ -107,32 +104,32 @@ QHash<int,QByteArray> PendingContactRequestModel::roleNames() const
    return {};
 }
 
-void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
+void PendingContactRequestModel::addRequest(ContactRequest* r)
 {
    // do not add the same contact request several time
-   if(std::any_of(m_lRequests.begin(), m_lRequests.end(),
+   if(std::any_of(d_ptr->m_lRequests.begin(), d_ptr->m_lRequests.end(),
       [&](ContactRequest* r_){ return *r_ == *r ;})) {
       return;
    }
 
    // update (remove old add new) contact request if the remoteIds match.
-   auto iter = std::find_if(m_lRequests.begin(), m_lRequests.end(), [&](ContactRequest* r_) {
+   auto iter = std::find_if(d_ptr->m_lRequests.begin(), d_ptr->m_lRequests.end(), [&](ContactRequest* r_) {
       return (r_->certificate()->remoteId() == r->certificate()->remoteId());
    });
 
     if(iter)
         removeRequest(*iter);
 
-   q_ptr->beginInsertRows(QModelIndex(),m_lRequests.size(),m_lRequests.size());
-   m_lRequests << r;
-   q_ptr->endInsertRows();
+   beginInsertRows(QModelIndex(),d_ptr->m_lRequests.size(),d_ptr->m_lRequests.size());
+   d_ptr->m_lRequests << r;
+   endInsertRows();
 
     QObject::connect(r, &ContactRequest::requestAccepted, [this,r]() {
         // the request was handled so it can be removed, from the pending list
         removeRequest(r);
 
         // it's important to emit after the request was removed.
-        emit q_ptr->requestAccepted(r);
+        emit requestAccepted(r);
     });
 
     QObject::connect(r, &ContactRequest::requestDiscarded, [this,r]() {
@@ -140,7 +137,7 @@ void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
         removeRequest(r);
 
         // it's important to emit after the request was removed.
-        emit q_ptr->requestDiscarded(r);
+        emit requestDiscarded(r);
     });
 
     QObject::connect(r, &ContactRequest::requestBlocked, [this,r]() {
@@ -148,19 +145,19 @@ void PendingContactRequestModelPrivate::addRequest(ContactRequest* r)
         removeRequest(r);
     });
 
-    emit q_ptr->requestAdded(r);
+    emit requestAdded(r);
 }
 
-void PendingContactRequestModelPrivate::removeRequest(ContactRequest* r)
+void PendingContactRequestModel::removeRequest(ContactRequest* r)
 {
-   const int index = m_lRequests.indexOf(r);
+   const int index = d_ptr->m_lRequests.indexOf(r);
 
    if (index == -1)
       return;
 
-   q_ptr->beginRemoveRows(QModelIndex(), index, index);
-   m_lRequests.removeAt(index);
-   q_ptr->endRemoveRows();
+   beginRemoveRows(QModelIndex(), index, index);
+   d_ptr->m_lRequests.removeAt(index);
+   endRemoveRows();
 }
 
 ContactRequest*
