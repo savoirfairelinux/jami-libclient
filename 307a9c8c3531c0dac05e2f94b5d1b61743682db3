@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_7caaefd5",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "better to use a slot method as upper code, to follow current style convention and keep clarity.",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 107,
+        "endChar": 7
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_1c965b95",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "oh it\u0027s so hugly!\nNo language tricks and code hidding using macro, please\nThere is no advantage to explicitly direclty use \u003d\u003d \"true\".",
+      "range": {
+        "startLine": 73,
+        "startChar": 38,
+        "endLine": 73,
+        "endChar": 46
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_3c9317a5",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "usage ???",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 91
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_dc8f6374",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "uneeded, this is the default implementation",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 1
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_fc8c9f81",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "uneeded, this is the default implementation",
+      "range": {
+        "startLine": 150,
+        "startChar": 1,
+        "endLine": 157,
+        "endChar": 1
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_9ce9eb1c",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "(not sure, to be checked)\nuneeded, this is the default implementation",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 1
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_1caf3be5",
+        "filename": "src/bannedcontactmodel.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-05-30T17:28:44Z",
+      "side": 1,
+      "message": "please! do not increase the mess by inter-depending all classes with friendship",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
