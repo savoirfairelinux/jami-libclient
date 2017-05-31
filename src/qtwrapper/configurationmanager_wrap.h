@@ -707,7 +707,7 @@ Q_SIGNALS: // SIGNALS
    void migrationEnded(const QString &accountID, const QString &result);
    void contactAdded(const QString &accountID, const QString &uri, bool banned);
    void contactRemoved(const QString &accountID, const QString &uri, bool banned);
-
+   void revokeDevice(const QString &accountID, const QString &password, const QString &deviceID);
 
 };
 
