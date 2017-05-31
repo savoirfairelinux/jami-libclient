@@ -77,4 +77,5 @@ public Q_SLOTS:
    void slotMigrationEnded(const QString& accountId, const QString& result);
    void slotContactAdded(const QString &accountID, const QString &uri, bool confirmed);
    void slotContactRemoved(const QString &accountID, const QString &uri, bool banned);
+   void slotRevocationEnded(const QString& accountId, const QString& deviceId, const int status);
 };

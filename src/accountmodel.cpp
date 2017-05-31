@@ -102,6 +102,8 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotContactAdded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::contactRemoved, this,
             &AccountModelPrivate::slotContactRemoved, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::deviceRevocationEnded, this,
+            &AccountModelPrivate::slotRevocationEnded, Qt::QueuedConnection);
 }
 
 ///Destructor
@@ -494,9 +496,9 @@ void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const
    if (!a) {
       qWarning() << "Known devices changed for unknown account" << accountId;
       return;
-  }
+   }
 
-   a->ringDeviceModel()->d_ptr->reload(accountDevices);
+   emit a->reloadDevices(accountDevices);
 }
 
 ///Export on Ring ended
@@ -567,6 +569,16 @@ AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString 
                 account->bannedContactModel()->add(cm);
         }
     }
+}
+
+/**
+ * TO DO
+ */
+void
+AccountModelPrivate::slotRevocationEnded(const QString& accountId, const QString& deviceId, const int status)
+{
+    if (auto account = q_ptr->getById(accountId.toLatin1()))
+        emit account->revocationEnded(deviceId, status);
 }
 
 ///Update accounts
