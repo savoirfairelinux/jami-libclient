@@ -22,6 +22,7 @@
 #include <typedefs.h>
 
 class Account;
+class RingDevice;
 
 class RingDeviceModelPrivate;
 
@@ -30,7 +31,6 @@ class LIB_EXPORT RingDeviceModel : public QAbstractTableModel
    Q_OBJECT
 public:
    friend class Account;
-   friend class AccountModelPrivate;
 
    //Abstract model accessors
    virtual QVariant      data        ( const QModelIndex& index, int role = Qt::DisplayRole        ) const override;
@@ -40,6 +40,9 @@ public:
    virtual Qt::ItemFlags flags       (const QModelIndex &index                                     ) const override;
 
    virtual int           size        (                               ) const;
+
+   // helper
+   void revoke(const QModelIndex& ringDeviceIndex, const QString& password);
 
 private:
    explicit RingDeviceModel(Account* a);
