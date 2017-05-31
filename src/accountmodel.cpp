@@ -490,7 +490,7 @@ void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const
       return;
   }
 
-   a->ringDeviceModel()->d_ptr->reload(accountDevices);
+   //~ a->ringDeviceModel()->d_ptr->reload(accountDevices);
 }
 
 ///Export on Ring ended
