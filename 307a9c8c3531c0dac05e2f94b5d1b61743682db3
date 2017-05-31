@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_3cd8f7ee",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-05-31T13:35:51Z",
+      "side": 1,
+      "message": "easter egg",
+      "parentUuid": "5aaae553_3c9317a5",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 91
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_dc8f6374",
         "filename": "src/bannedcontactmodel.cpp",
         "patchSetId": 11
@@ -151,6 +175,30 @@
       "writtenOn": "2017-05-30T17:28:44Z",
       "side": 1,
       "message": "please! do not increase the mess by inter-depending all classes with friendship",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_1cdbbbee",
+        "filename": "src/bannedcontactmodel.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-05-31T13:35:51Z",
+      "side": 1,
+      "message": "I\u0027m okay to remove them, but since his constructor is in private I have to make it public",
+      "parentUuid": "5aaae553_1caf3be5",
       "range": {
         "startLine": 32,
         "startChar": 0,
