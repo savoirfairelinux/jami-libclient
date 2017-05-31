@@ -22,6 +22,7 @@
 #include <typedefs.h>
 
 class Account;
+class RingDevice;
 
 class RingDeviceModelPrivate;
 
@@ -40,6 +41,9 @@ public:
    virtual Qt::ItemFlags flags       (const QModelIndex &index                                     ) const override;
 
    virtual int           size        (                               ) const;
+
+   // helper
+   void removeDevice(const QModelIndex& ringDeviceIndex, const QString& password);
 
 private:
    explicit RingDeviceModel(Account* a);

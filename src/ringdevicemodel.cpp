@@ -35,9 +35,21 @@
 
 //Ring
 #include "account.h"
+#include "dbus/configurationmanager.h"
+#include "itemdataroles.h"
 
 RingDeviceModelPrivate::RingDeviceModelPrivate(RingDeviceModel* q,Account* a) : q_ptr(q),m_pAccount(a)
 {
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+
+    connect(&configurationManager, &ConfigurationManagerInterface::deviceRevocationEnded, this,
+            &RingDeviceModelPrivate::slotDeviceRevocationEnded, Qt::QueuedConnection);
+}
+
+void
+RingDeviceModelPrivate::slotDeviceRevocationEnded(const QString &accountID, const QString &deviceId, int status)
+{
+    qDebug() << "XOXOXOXOX\n\n\n\n";
 }
 
 void RingDeviceModelPrivate::clearLines()
@@ -95,7 +107,9 @@ QVariant RingDeviceModel::data( const QModelIndex& index, int role) const
             return QVariant();
 
         return device->columnData(index.column());
-    } else
+    } else if (role == static_cast<int>(Ring::Role::Object)) {
+        
+    }
         return QVariant();
 }
 
@@ -136,4 +150,20 @@ int RingDeviceModel::size() const
 Qt::ItemFlags RingDeviceModel::flags(const QModelIndex &index) const
 {
     return index.isValid() ? (Qt::ItemIsEnabled | Qt::ItemIsSelectable) : Qt::NoItemFlags;
+}
+
+/**
+ * TO DO
+ */
+void
+RingDeviceModel::removeDevice(const QModelIndex& ringDeviceIndex, const QString& password)
+{
+    auto ringDevice = ringDeviceIndex.data(static_cast<int>(Ring::Role::Object)).value<RingDevice*>();
+    
+    if (not ringDevice) {
+        qWarning() << "removeDevice got null ringDevice";
+        return;
+    }
+
+    ConfigurationManager::instance().revokeDevice("account->id()", password, ringDevice->id());
 }
