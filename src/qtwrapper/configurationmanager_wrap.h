@@ -150,6 +150,10 @@ public:
                [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
                    Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
                }),
+        exportable_callback<ConfigurationSignal::DeviceRevocationEnded>(
+               [this] (const std::string& account_id, const std::string& device_id, const int status) {
+                   Q_EMIT this->deviceRevocationEnded(QString(account_id.c_str()), QString(device_id.c_str()), status);
+               }),
       };
    }
 
@@ -707,7 +711,8 @@ Q_SIGNALS: // SIGNALS
    void migrationEnded(const QString &accountID, const QString &result);
    void contactAdded(const QString &accountID, const QString &uri, bool banned);
    void contactRemoved(const QString &accountID, const QString &uri, bool banned);
-
+   void revokeDevice(const QString &accountID, const QString &password, const QString &deviceID);
+   void deviceRevocationEnded(const QString& accountId, const QString& deviceId, const int status);
 
 };
 
