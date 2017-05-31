@@ -491,9 +491,10 @@ void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const
    if (!a) {
       qWarning() << "Known devices changed for unknown account" << accountId;
       return;
-  }
+   }
 
-   a->ringDeviceModel()->d_ptr->reload(accountDevices);
+   emit a->reloadDevices(accountDevices);
+
 }
 
 ///Export on Ring ended

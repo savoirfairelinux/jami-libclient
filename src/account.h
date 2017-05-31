@@ -605,6 +605,8 @@ class LIB_EXPORT Account : public ItemBase {
       void migrationEnded(const Account::MigrationEndedStatus);
       /// contact request accepted
       void contactRequestAccepted(const ContactRequest*);
+      /// reload devices
+      void reloadDevices(const MapStringString& devices);
 };
 Q_DECLARE_METATYPE(Account*)
 Q_DECLARE_METATYPE(const Account*)
