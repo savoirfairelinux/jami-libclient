@@ -208,6 +208,30 @@
       "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_e772c848",
+        "filename": "src/bannedcontactmodel.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-06-01T18:01:35Z",
+      "side": 1,
+      "message": "is it a requirement (reasons?) to have it private?",
+      "parentUuid": "5aaae553_1cdbbbee",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "307a9c8c3531c0dac05e2f94b5d1b61743682db3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
