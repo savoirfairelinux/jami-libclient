@@ -197,7 +197,7 @@ Account* Account::buildNewAccountFromAlias(Account::Protocol proto, const QStrin
    a->setProtocol(proto);
    a->d_ptr->m_hAccountDetails.clear();
    a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::ENABLED] = "false";
-   a->d_ptr->m_pAccountNumber = const_cast<ContactMethod*>(ContactMethod::BLANK());
+   a->d_ptr->m_pAccountNumber = nullptr;
    MapStringString tmp;
    switch (proto) {
       case Account::Protocol::SIP:

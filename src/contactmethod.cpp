@@ -97,21 +97,15 @@ void ContactMethodPrivate::registeredNameSet(const QString& name)
       emit n->registeredNameSet(name);
 }
 
-const ContactMethod* ContactMethod::BLANK()
-{
-    static auto instance = []{
-        auto instance = new ContactMethod(QString(), NumberCategoryModel::other());
-        instance->d_ptr->m_Type = ContactMethod::Type::BLANK;
-        return instance;
-    }();
-    return instance;
-}
-
 ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, ContactMethod::Type st, ContactMethod* q) :
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_IsBookmark(false),
    m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q)
+{}
+
+ContactMethod::ContactMethod()
+    : ContactMethod(QString(), NumberCategoryModel::other(), ContactMethod::Type::BLANK)
 {}
 
 ///Constructor
