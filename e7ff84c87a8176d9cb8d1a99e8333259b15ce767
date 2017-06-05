@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_8204227f",
+        "filename": "src/private/cmcallsmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-06-05T15:12:04Z",
+      "side": 1,
+      "message": "m_pCM-\u003ecalls() returns a swallow-copy of a ContactMethod internal QList, then the operator[] may does a deep-copy (copy-on-write), only to do a method call on only one pointer\nof this list.\nToo much complexity and too dangerous implementation.\nScale very badly.",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 86
+      },
+      "revId": "e7ff84c87a8176d9cb8d1a99e8333259b15ce767",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
