@@ -838,7 +838,7 @@ ContactMethod* Call::peerContactMethod() const
     if (d_ptr->m_pDialNumber)
         return d_ptr->m_pDialNumber;
 
-    return const_cast<ContactMethod*>(ContactMethod::BLANK());
+    return nullptr;
 }
 
 ///Get the peer name

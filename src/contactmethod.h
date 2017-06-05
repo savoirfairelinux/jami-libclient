@@ -104,6 +104,9 @@ public:
    };
    Q_ENUMS(Type)
 
+   //Constructor
+   ContactMethod(); /*! construct an instance set with Type::BLANK */
+
    //Getters
    URI                   uri             () const;
    NumberCategory*       category        () const;
@@ -159,9 +162,6 @@ public:
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
    Q_INVOKABLE void incrementAlternativeName(const QString& name, const time_t lastUsed);
-
-   //Static
-   static const ContactMethod* BLANK();
 
    //Helper
    QString toHash() const;
