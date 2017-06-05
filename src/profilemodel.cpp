@@ -133,8 +133,6 @@ void ProfileModelPrivate::slotAccountAdded(Account* acc)
     currentNode->children << account_pro;
     q_ptr->endInsertRows();
 
-    acc->contactMethod()->setPerson(currentProfile->person());
-
     if (changed)
         currentProfile->save();
 }
