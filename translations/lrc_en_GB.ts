@@ -1,23 +1,23 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nb" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en_GB" sourcelanguage="en" version="2.1">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="326"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation>Klar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="328"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Registrert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="330"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Ikke registrert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="332"/>
@@ -29,67 +29,67 @@
         <location filename="../src/account.cpp" line="334"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>Forsøker...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="336"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation>Feil</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="338"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Autentisering feilet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="340"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Utilgjengelig nettverk</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="342"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Utilgjengelig vert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="344"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>Oppsettfeil med Stun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="346"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Ugyldig Stun-tjener</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="348"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>Utilgjengelig tjeneste</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="350"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Ikke akseptabel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="352"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Ugyldig</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="354"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Tidsgrense for henvendelse</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Oppsett</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
-        <translation>Vertsnavn</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
-        <translation>Port</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -119,120 +119,120 @@
         <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation>Ny</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Ringer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Kaller opp</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation>Snakker</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation>Slår nummer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Parker</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>Feilet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>Opptatt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Overfør</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Overfør parkert samtale</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation>Over</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation>Feil</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="749"/>
         <location filename="../src/call.cpp" line="854"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation>Konferanse</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="752"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation>Konferanse (parkert)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="755"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation>FEIL</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="758"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Søker etter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="761"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation>Avbrutt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="764"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>Kommunikasjon etablert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
-        <translation>Ukjent</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2187"/>
         <source>Account: </source>
-        <translation>Konto:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="920"/>
         <source>Calls</source>
-        <translation>Samtaler</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
         <location filename="../src/callmodel.cpp" line="555"/>
         <location filename="../src/callmodel.cpp" line="580"/>
         <source>Invalid account</source>
-        <translation>Ugyldig konto</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../src/call.cpp" line="1748"/>
         <source>Aborted</source>
-        <translation>Avbrutt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
-        <translation>Ingen konto registrert!</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -271,12 +271,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation>Mest populær</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>Kontakter</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -284,28 +284,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation>Kontakter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Tom</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Ukjent</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Aldri</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Andre</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation>Historie</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -321,7 +321,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Tillitskjede</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
 </context>
 <context>
@@ -337,27 +337,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Organisasjon</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Nylig brukt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Gruppe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Avdeling</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -365,27 +365,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>Dato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Popularitet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Varighet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Total tid</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -393,102 +393,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation>Idag</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation>Igår</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation>To uker siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation>Tre uker siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation>En uke siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation>En måned siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation>To måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation>Tre måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation>Fire måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation>Fem måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation>Seks måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation>Syv måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation>Åtte måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation>Ni måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation>Ti måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation>Elleve måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation>Tolv måneder siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation>Et år siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation>Veldig lenge siden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation>Aldri</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
-        <translation>Meg</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -504,17 +504,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Makroer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation>Ny</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation>Andre</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Andre</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -530,17 +530,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation>Opptak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation>Tekstmeldinger</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Lyd/Bilde</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -548,7 +548,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Ukategorisert</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -556,22 +556,22 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>URI</source>
-        <translation>URI</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
-        <translation>Konto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Weight</source>
-        <translation>Vekt</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="171"/>
         <source>Persons</source>
-        <translation>Personer</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -587,102 +587,102 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Denne kontoen støtter ikke sporing av tilstedeværelse</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation>Ingen tilknyttet konto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>URI</source>
-        <translation>URI</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
-        <translation>Person</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation>Konto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation>Tilstand</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation>Samtaleantall</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation>Ukesantall</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation>Trimesterantall</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation>Har ringt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Last used</source>
-        <translation>Sist brukt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
-        <translation>Name_count</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Total (in seconds)</source>
-        <translation>Totalt (i sekunder)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
-        <translation>Popularity_index</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation>Bokmerket</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation>Sporet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation>Tilstede</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
-        <translation>Tilstedeværelsesmelding</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation>Uid</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -700,33 +700,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Melding</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Farge</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Tilstede</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Standard</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Tilpasset</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -734,7 +734,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>N/A</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -742,7 +742,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
-        <translation>Profiler</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation>Ny profil</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -758,162 +758,162 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Message</source>
-        <translation>Melding</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
-        <translation>Kode</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Time</source>
-        <translation>Tid</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
-        <translation>Teller</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation>Har privat nøkkel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation>Er ikke utløpt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation>Har sterk signering</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
-        <translation>Er ikke selvsignert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Have a matching key pair</source>
-        <translation>Har nøkkelpar som hører sammen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation>Har korrekte filrettigheter på den private nøkkelfilen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation>Har korrekte filrettigheter på den offentlige nøkkelfilen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Har korrekte rettigheter på den private nøkkelkatalogen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Har korrekte filrettigheter på den offentlige nøkkelkatalogen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation>Har korrekt plassering for privat nøkkelkatalogen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation>Har riktig plassering for offentlig nøkkelkatalogen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Har korrekte SELinux-attributter for privat nøkkel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Har korrekte SELinux-atributter for offentlig nøkkel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Sertifikat-filen eksisterer og er lesbar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
-        <translation>Filen er et gyldig sertifikat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
-        <translation>Sertifikatet har en gyldig autoritet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
-        <translation>Sertifikatet har en kjent autoritet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
-        <translation>Sertifikatet er ikke trukket tilbake</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation>Sertifikatautoriteten stemmer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
-        <translation>Sertifikatet har forventet eier</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation>Sertifikatet er i sin gyldighetsperiode</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation>Utløpsdato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation>Aktiveringsdato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation>Krev et passord på privatnøkkelen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
-        <translation>Offentlig signatur</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation>Versjon</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation>Serienummer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation>Utgiver</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
@@ -928,103 +928,103 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
-        <translation>Navn (N)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation>Organisasjon (O)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation>Signaturalgoritme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>Md5-fingeravtrykk</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>Sha1-fingeravtrykk</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key id</source>
-        <translation>Offentlig nøkkel-ID</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation>Utgivers domenenavn</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
-        <translation>Neste forventede oppdatering</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Utgående tjener</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation>Lokalt sertifikatlager</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <location filename="../src/localprofilecollection.cpp" line="215"/>
         <source>Default</source>
-        <translation>Standard</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation>Sertifikat er ikke tilknyttet en gruppe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>A certificate</source>
-        <translation>Et sertifikat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
-        <translation>En organisasjon</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>Details</source>
-        <translation>Detaljer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>The content of the certificate</source>
-        <translation>Innholdet i sertifikatet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation>Kontroller</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation>Forskjellig sikkerhetsrelatert informasjon</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
         <source>Header</source>
-        <translation>Hode</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation>Sertifikatlager for bakgrunnsprosess</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1042,145 +1042,145 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation>Sertifikat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Sporing av tilstedeværelse</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>Sikkerhetsevaluering</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation>Kontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation>Lokale bokmerker</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
-        <translation>Bokmerke</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation>Lokal historie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>Historie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation>Lokale makroer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation>Makro</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation>Lokale opptak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
         <source>Recording</source>
-        <translation>Tar opp</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation>Lokale ringetoner</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation>Ringetone</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation>Lokale tekstopptak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Telefonnummertyper</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Andre</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Ring-konto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>SIP Account</source>
-        <translation>SIP-konto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="305"/>
         <source>Me</source>
-        <translation>Meg</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>TLS er avslått, forhandlingene vil ikke være kryptert.  Kommunikasjonen din vil være sårbar for kikking</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Sertifikatet ditt og autoriteten stemmer ikke overens.  Hvis sertifikatet ditt krever en autoritet vil det ikke fungere</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Den oppsatte utgående tjeneren stemmer ikke med vertsnavnet eller den som er inkludert i sertifikatet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Valget «kontroller innkommende sertifikat» er avslått, hvilket gjør deg sårbar for mann i midten-angrep</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Valget «kontroller svar-sertifikat» er avslått, hvilket gjør deg sårbar for mann i midten-angrep</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Ingen av dine sertifikat tilbyr en privatnøkkel. Den er påkrevd.  Vær så snill å velg en privatnøkkel eller bruk et sertifikat som har en slik innebygget.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Ingen sertifikatautoritet er gjort tilgjengelig.  Det vil ikke være mulig å kontrollere om svarsertifikatet er gyldig.  Det kan også hende nhoen kontoer ikke fungerer.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Ingen sertifikater er gjort tilgjengelig.  Dette er, så langt, ikke støttet av Ring</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1190,131 +1190,131 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Sertifikatet ditt er utløpt.  Ta kontakt med systemadministratoren din.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Sertifikatet ditt er selvsignert.  Dette knekker tillitskjeden.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Standard</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation>Kontakt-stedfortredere</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>Aksepter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation>Parker</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation>Koble ut lyden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation>Koble ut video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation>Tjeneroverføring</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation>Ta opp</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation>Legg på</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
-        <translation>Bli med</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation>Legg til ny</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>Toggle video</source>
-        <translation>Styr video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
-        <translation>Legg til kontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
-        <translation>Legg til eksisterende kontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation>Slett kontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation>Epostkontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation>Kopier kontakt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
         <source>Add phone number</source>
-        <translation>Legg til telefonnummer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="535"/>
         <source>Call again</source>
-        <translation>Ring på nytt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="536"/>
         <source>Edit contact details</source>
-        <translation>Endre kontaktdetaljer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="537"/>
         <source>Remove from history</source>
-        <translation>Fjern fra historie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="786"/>
         <source>Remove</source>
-        <translation>Fjern</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation>Ring</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
@@ -1324,12 +1324,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation>Gjenoppta parkert</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation>Avbryt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="142"/>
@@ -1357,7 +1357,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="614"/>
         <source>Recent persons</source>
-        <translation>Nylige personer</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1370,7 +1370,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>Navn</translation>
+        <translation>Name</translation>
     </message>
 </context>
 <context>
@@ -1378,7 +1378,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation>Autoritet</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1386,7 +1386,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
-        <translation>Automatisk</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1394,17 +1394,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
-        <translation>INGEN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
-        <translation>SKJERM</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
-        <translation>FIL</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

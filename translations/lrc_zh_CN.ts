@@ -2,85 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="287"/>
+        <location filename="../src/account.cpp" line="326"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>准备</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="289"/>
+        <location filename="../src/account.cpp" line="328"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>已注册</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="291"/>
+        <location filename="../src/account.cpp" line="330"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>未注册</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="293"/>
+        <location filename="../src/account.cpp" line="332"/>
+        <source>Initializing</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="334"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>正在连接…</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="295"/>
+        <location filename="../src/account.cpp" line="336"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="297"/>
+        <location filename="../src/account.cpp" line="338"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>认证失败</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="299"/>
+        <location filename="../src/account.cpp" line="340"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>无法连接到网络</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="301"/>
+        <location filename="../src/account.cpp" line="342"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>无法连接到主机</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="303"/>
+        <location filename="../src/account.cpp" line="344"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>STUN配置错误</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="305"/>
+        <location filename="../src/account.cpp" line="346"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>STUN服务器非法</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="307"/>
+        <location filename="../src/account.cpp" line="348"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>服务不可用</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="309"/>
+        <location filename="../src/account.cpp" line="350"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>不可接受</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="311"/>
+        <location filename="../src/account.cpp" line="352"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>非法</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="313"/>
+        <location filename="../src/account.cpp" line="354"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>请求超时</translation>
@@ -224,7 +230,7 @@
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2168"/>
+        <location filename="../src/call.cpp" line="2187"/>
         <source>Account: </source>
         <translation>帐户：</translation>
     </message>
@@ -232,7 +238,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="919"/>
+        <location filename="../src/callmodel.cpp" line="920"/>
         <source>Calls</source>
         <translation>呼叫</translation>
     </message>
@@ -240,8 +246,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="553"/>
-        <location filename="../src/callmodel.cpp" line="578"/>
+        <location filename="../src/callmodel.cpp" line="555"/>
+        <location filename="../src/callmodel.cpp" line="580"/>
         <source>Invalid account</source>
         <translation>非法帐户</translation>
     </message>
@@ -249,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1750"/>
+        <location filename="../src/call.cpp" line="1748"/>
         <source>Aborted</source>
         <translation>已结束</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1771"/>
+        <location filename="../src/call.cpp" line="1769"/>
         <source>No account registered!</source>
         <translation>没有已注册的帐户！</translation>
     </message>
@@ -276,7 +282,7 @@
 <context>
     <name>CategorizedContactModel</name>
     <message>
-        <location filename="../src/categorizedcontactmodel.cpp" line="393"/>
+        <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
         <translation>通讯录</translation>
     </message>
@@ -488,7 +494,7 @@
 <context>
     <name>InstantMessagingModel</name>
     <message>
-        <location filename="../src/media/textrecording.cpp" line="804"/>
+        <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
         <translation>我</translation>
     </message>
@@ -501,12 +507,12 @@
         <translation>宏</translation>
     </message>
     <message>
-        <location filename="../src/macromodel.cpp" line="260"/>
+        <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
     <message>
-        <location filename="../src/macromodel.cpp" line="261"/>
+        <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
@@ -571,7 +577,7 @@
 <context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="175"/>
+        <location filename="../src/personmodel.cpp" line="171"/>
         <source>Persons</source>
         <translation>人</translation>
     </message>
@@ -579,109 +585,114 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="232"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
         <translation>该帐户不支持Presence追踪</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="235"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
         <translation>没有关联帐户</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
         <translation>人</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
         <translation>帐户</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
         <translation>通话统计</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="295"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
         <translation>周统计</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
         <translation>季度统计</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
         <translation>已通话</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Last used</source>
         <translation>上次使用</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
         <translation>名称总数</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Total (in seconds)</source>
         <translation>总计（秒）</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="296"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
         <translation>受欢迎指数</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
         <translation>已收藏</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
         <translation>已追踪</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
         <translation>在线</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
         <translation>Presence消息</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
         <translation>UID</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="297"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
         <translation>有证书</translation>
+    </message>
+    <message>
+        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <source>Registered name</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -729,7 +740,7 @@
 <context>
     <name>ProfileModel</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="639"/>
+        <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
         <translation>帐户资料</translation>
     </message>
@@ -737,7 +748,7 @@
 <context>
     <name>ProfileModelPrivate</name>
     <message>
-        <location filename="../src/profilemodel.cpp" line="753"/>
+        <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
         <translation>新帐户资料</translation>
     </message>
@@ -745,268 +756,268 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
+        <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Message</source>
         <translation>消息</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
+        <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
         <translation>代码</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="183"/>
+        <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../src/accountstatusmodel.cpp" line="185"/>
+        <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
         <translation>计数</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="43"/>
+        <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
         <translation>有私钥</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="44"/>
+        <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
         <translation>未过期</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="45"/>
+        <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
         <translation>有强签名</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="46"/>
+        <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
         <translation>非自签名</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="47"/>
+        <location filename="../src/certificate.cpp" line="46"/>
         <source>Have a matching key pair</source>
         <translation>有键值对</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="48"/>
+        <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
         <translation>正确配置了私钥文件权限</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="49"/>
+        <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
         <translation>正确配置了公钥文件权限</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="50"/>
+        <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
         <translation>正确配置了私钥目录权限</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="51"/>
+        <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
         <translation>正确配置了公钥目录权限</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="52"/>
+        <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
         <translation>正确配置了私钥目录位置</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="53"/>
+        <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
         <translation>正确配置了公钥目录位置</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="54"/>
+        <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
         <translation>正确配置了私钥的SELinux属性</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="55"/>
+        <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
         <translation>正确配置了公钥的SELinux属性</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="56"/>
+        <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
         <translation>该证书文件存在并可读</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="57"/>
+        <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
         <translation>该文件是一个合法的证书文件</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="58"/>
+        <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
         <translation>该证书有合法的颁发机构</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="59"/>
+        <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
         <translation>该证书颁发机构未知</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="60"/>
+        <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
         <translation>该证书未撤销</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="61"/>
+        <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
         <translation>该证书颁发机构匹配</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="62"/>
+        <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
         <translation>该证书有持有人</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="63"/>
+        <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
         <translation>该证书尚在有效期内</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="91"/>
+        <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
         <translation>过期日期</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="92"/>
+        <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
         <translation>激活日期</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="93"/>
+        <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
         <translation>需要私钥密码</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="94"/>
+        <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
         <translation>公钥签名</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="95"/>
+        <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="96"/>
+        <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
         <translation>序列号</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="97"/>
+        <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
         <translation>颁发者</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="98"/>
+        <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
         <translation>主体密钥算法</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="99"/>
+        <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
         <translation>公用名（CN）</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="100"/>
+        <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
         <translation>名称（N）</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="101"/>
+        <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
         <translation>组织（O）</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="102"/>
+        <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
         <translation>签名算法</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="103"/>
+        <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
         <translation>MD5指纹</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="104"/>
+        <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
         <translation>SHA1指纹</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="105"/>
+        <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key id</source>
         <translation>公钥ID</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="106"/>
+        <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
         <translation>颁发者域名</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="107"/>
+        <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
         <translation>下次更新</translation>
     </message>
     <message>
-        <location filename="../src/certificate.cpp" line="108"/>
+        <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
         <translation>发送服务器</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="181"/>
+        <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
         <translation>本地证书存储</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="256"/>
-        <location filename="../src/localprofilecollection.cpp" line="209"/>
+        <location filename="../src/certificatemodel.cpp" line="267"/>
+        <location filename="../src/localprofilecollection.cpp" line="215"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="256"/>
+        <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
         <translation>证书未关联至组</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="384"/>
+        <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>A certificate</source>
         <translation>一个证书</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="384"/>
+        <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
         <translation>一个组织</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>Details</source>
         <translation>详细</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="401"/>
+        <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>The content of the certificate</source>
         <translation>证书内容</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="402"/>
+        <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
         <translation>检查</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="402"/>
+        <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
         <translation>安全相关信息</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="567"/>
+        <location filename="../src/certificatemodel.cpp" line="610"/>
         <source>Header</source>
         <translation>头部</translation>
     </message>
@@ -1044,7 +1055,7 @@
         <translation>安全性评估</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="186"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation>通讯录</translation>
@@ -1056,7 +1067,7 @@
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
-        <location filename="../src/useractionmodel.cpp" line="525"/>
+        <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
         <translation>收藏夹</translation>
     </message>
@@ -1087,7 +1098,7 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="159"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
         <source>Recording</source>
         <translation>录音</translation>
     </message>
@@ -1102,7 +1113,7 @@
         <translation>铃声</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="154"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
         <translation>本地文字消息记录</translation>
     </message>
@@ -1117,24 +1128,19 @@
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="51"/>
+        <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
         <translation>Ring帐户</translation>
     </message>
     <message>
-        <location filename="../src/protocolmodel.cpp" line="52"/>
+        <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>SIP Account</source>
         <translation>SIP帐户</translation>
     </message>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="399"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="305"/>
         <source>Me</source>
         <translation>我</translation>
-    </message>
-    <message>
-        <location filename="../src/securityevaluationmodel.cpp" line="37"/>
-        <source>Your media streams are not encrypted, please enable ZRTP or SDES</source>
-        <translation>您的媒体流未加密，请启用ZRTP或SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
@@ -1167,14 +1173,19 @@
         <translation>您的所有证书都没有提供私钥。请选择一个私钥或使用一个带有私钥的证书。</translation>
     </message>
     <message>
-        <location filename="../src/securityevaluationmodel.cpp" line="46"/>
+        <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
         <translation>证书办法机构没有提供，将无法检查应答证书是否合法。一些帐户可能无法工作。</translation>
     </message>
     <message>
-        <location filename="../src/securityevaluationmodel.cpp" line="47"/>
+        <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
         <translation>没有提供证书。目前Ring不支持。</translation>
+    </message>
+    <message>
+        <location filename="../src/securityevaluationmodel.cpp" line="37"/>
+        <source>Your media streams are not encrypted, please enable SDES</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1187,7 +1198,7 @@
         <translation>您的证书是自签名，破坏了信任链。</translation>
     </message>
     <message>
-        <location filename="../src/tlsmethodmodel.cpp" line="67"/>
+        <location filename="../src/tlsmethodmodel.cpp" line="64"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
         <translation>默认</translation>
@@ -1198,145 +1209,145 @@
         <translation>联系人占位符</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="510"/>
-        <location filename="../src/useractionmodel.cpp" line="748"/>
+        <location filename="../src/useractionmodel.cpp" line="517"/>
+        <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
         <translation>接听</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="511"/>
-        <location filename="../src/useractionmodel.cpp" line="760"/>
+        <location filename="../src/useractionmodel.cpp" line="518"/>
+        <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>等待</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="512"/>
+        <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
         <translation>静音</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="513"/>
+        <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
         <translation>关闭视频</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="514"/>
+        <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
         <translation>服务器转接</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="515"/>
+        <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
         <translation>录制</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="516"/>
-        <location filename="../src/useractionmodel.cpp" line="778"/>
+        <location filename="../src/useractionmodel.cpp" line="523"/>
+        <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
         <translation>挂断</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="517"/>
+        <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
         <translation>加入</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="518"/>
+        <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
         <translation>添加新</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="519"/>
+        <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>Toggle video</source>
         <translation>切换视频</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="520"/>
+        <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
         <translation>添加联系人</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="521"/>
+        <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
         <translation>添加至已有通讯录</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="522"/>
+        <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
         <translation>删除联系人</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="523"/>
+        <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
         <translation>将联系人用电子邮件发送</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="524"/>
+        <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
         <translation>复制联系人</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="526"/>
-        <source>View chat history</source>
-        <translation>查看聊天记录</translation>
-    </message>
-    <message>
-        <location filename="../src/useractionmodel.cpp" line="527"/>
+        <location filename="../src/useractionmodel.cpp" line="534"/>
         <source>Add phone number</source>
         <translation>添加电话号码</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="528"/>
+        <location filename="../src/useractionmodel.cpp" line="535"/>
         <source>Call again</source>
         <translation>重拨</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="529"/>
+        <location filename="../src/useractionmodel.cpp" line="536"/>
         <source>Edit contact details</source>
         <translation>编辑联系人详细资料</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="530"/>
+        <location filename="../src/useractionmodel.cpp" line="537"/>
         <source>Remove from history</source>
         <translation>从历史记录中删除</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="775"/>
+        <location filename="../src/useractionmodel.cpp" line="786"/>
         <source>Remove</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="745"/>
+        <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
         <translation>通话</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="757"/>
+        <location filename="../src/useractionmodel.cpp" line="533"/>
+        <source>Open chat</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
         <translation>取消等待</translation>
     </message>
     <message>
-        <location filename="../src/useractionmodel.cpp" line="768"/>
+        <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="136"/>
+        <location filename="../src/localprofilecollection.cpp" line="142"/>
         <source>Local profiles</source>
         <translation>本地资料</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="141"/>
+        <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Profile Collection</source>
         <translation>帐户资料列表</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="132"/>
+        <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="137"/>
+        <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
         <translation type="unfinished"/>
     </message>
@@ -1344,9 +1355,22 @@
 <context>
     <name>RecentModel</name>
     <message>
-        <location filename="../src/recentmodel.cpp" line="595"/>
+        <location filename="../src/recentmodel.cpp" line="614"/>
         <source>Recent persons</source>
         <translation>最新联系人</translation>
+    </message>
+</context>
+<context>
+    <name>RingDeviceModel</name>
+    <message>
+        <location filename="../src/ringdevicemodel.cpp" line="110"/>
+        <source>Id</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/ringdevicemodel.cpp" line="112"/>
+        <source>Name</source>
+        <translation>姓名</translation>
     </message>
 </context>
 <context>
@@ -1360,7 +1384,7 @@
 <context>
     <name>TlsMethodModel</name>
     <message>
-        <location filename="../src/tlsmethodmodel.cpp" line="104"/>
+        <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
         <translation>自动</translation>
     </message>
