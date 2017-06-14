@@ -210,6 +210,16 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    bool getDecodingAccelerated()
+    {
+        return DRing::getDecodingAccelerated();
+    }
+
+    void setDecodingAccelerated(bool state)
+    {
+        DRing::setDecodingAccelerated(state);
+    }
+
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);

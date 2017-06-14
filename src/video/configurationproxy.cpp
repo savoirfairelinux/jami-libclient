@@ -28,6 +28,7 @@
 #include <video/channel.h>
 #include <video/resolution.h>
 #include <video/rate.h>
+#include <dbus/videomanager.h>
 
 namespace ConfigurationProxyPrivate {
    static QIdentityProxyModel* m_spDeviceModel    = nullptr;
@@ -290,4 +291,16 @@ QItemSelectionModel& Video::ConfigurationProxy::rateSelectionModel()
       QObject::connect(ConfigurationProxyPrivate::m_spRateSelectionModel,&QItemSelectionModel::currentChanged, &ConfigurationProxyPrivate::changeRate);
    }
    return *ConfigurationProxyPrivate::m_spRateSelectionModel;
+}
+
+bool Video::ConfigurationProxy::getDecodingAccelerated()
+{
+    VideoManagerInterface& interface = VideoManager::instance();
+    return interface.getDecodingAccelerated();
+}
+
+void Video::ConfigurationProxy::setDecodingAccelerated(bool state)
+{
+    VideoManagerInterface& interface = VideoManager::instance();
+    interface.setDecodingAccelerated(state);
 }
