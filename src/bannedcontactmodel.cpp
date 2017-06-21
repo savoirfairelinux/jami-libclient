@@ -137,6 +137,8 @@ BannedContactModel::columnCount( const QModelIndex& parent ) const
 void
 BannedContactModel::add(ContactMethod* cm)
 {
+    if (d_ptr->m_lBanned.contains(cm))
+        return;
     beginInsertRows(QModelIndex(),d_ptr->m_lBanned.size(),d_ptr->m_lBanned.size());
     d_ptr->m_lBanned << cm;
     endInsertRows();
