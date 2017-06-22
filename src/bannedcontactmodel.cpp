@@ -152,6 +152,8 @@ void
 BannedContactModel::remove(ContactMethod* cm)
 {
     auto rowIndex = d_ptr->m_lBanned.indexOf(cm);
+    if (rowIndex < 0)
+        return;
 
     beginRemoveRows(QModelIndex(), rowIndex, rowIndex);
     d_ptr->m_lBanned.removeAt(rowIndex);
