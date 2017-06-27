@@ -54,6 +54,7 @@
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
 #include "bannedcontactmodel.h"
+#include "contactmethod.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -97,6 +98,8 @@ void AccountModelPrivate::init()
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
             &AccountModelPrivate::slotMigrationEnded, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::contactAdded, this,
+            &AccountModelPrivate::slotContactAdded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::contactRemoved, this,
             &AccountModelPrivate::slotContactRemoved, Qt::QueuedConnection);
 }
@@ -308,7 +311,7 @@ QList<Account*> AccountModel::accountsToMigrate() const
 /**
  * returns a vector of contacts from the daemon
  * @param account the account to query
- * @return contacts a QVector<QMap<QString, QString>>, keywords : "id" and "added"
+ * @return contacts a QVector<QMap<QString, QString>>
  */
 QVector<QMap<QString, QString>>
 AccountModel::getContacts(const Account* account) const
@@ -530,6 +533,21 @@ AccountModelPrivate::slotMigrationEnded(const QString& accountId, const QString&
         qWarning() << "cannot emit migrationEnded signal, status is undefined";
     else
         emit a->migrationEnded(status);
+}
+
+
+/// slot function used with ConfigurationManagerInterface::contactAdded signal
+void
+AccountModelPrivate::slotContactAdded(const QString &accountID, const QString &uri, bool confirmed)
+{
+    if (auto account = q_ptr->getById(accountID.toLatin1())) {
+        if (auto cm = PhoneDirectoryModel::instance().getNumber(uri, account)) {
+            cm->setTrusted(confirmed);
+            auto& daemon_contacts = account->getContacts();
+            if (not daemon_contacts.contains(cm))
+                daemon_contacts << cm;
+        }
+    }
 }
 
 /**

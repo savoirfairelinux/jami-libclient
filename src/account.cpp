@@ -704,7 +704,7 @@ bool Account::needsMigration() const
  * return all ContactsMethod from @this account
  * @return Account::ContactMethods a.k.a. QVector<ContactMethod*>
  */
-const Account::ContactMethods&
+Account::ContactMethods&
 Account::getContacts() const
 {
     return d_ptr->m_NumbersFromDaemon;
