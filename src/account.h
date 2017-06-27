@@ -473,7 +473,7 @@ class LIB_EXPORT Account : public ItemBase {
       uint   trimesterCallCount     () const;
       time_t lastUsed               () const;
 
-      const ContactMethods& getContacts () const;
+      ContactMethods& getContacts () const;
 
       Q_INVOKABLE QVariant roleData    ( int role             ) const;
       Q_INVOKABLE bool supportScheme   ( URI::SchemeType type ) const;
