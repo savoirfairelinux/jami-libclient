@@ -47,6 +47,7 @@ public:
    Certificate*       m_pCertificate;
    QString            m_RegisteredName   ;
    UsageStatistics    m_UsageStats       ;
+   bool               m_Trusted          ;
 
    //Parents
    QList<ContactMethod*> m_lParents;

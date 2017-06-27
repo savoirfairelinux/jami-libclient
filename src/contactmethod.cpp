@@ -101,7 +101,8 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_IsBookmark(false),
-   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr), q_ptr(q)
+   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr),
+   m_Trusted(false), q_ptr(q)
 {}
 
 ContactMethod::ContactMethod()
@@ -125,6 +126,19 @@ ContactMethod::~ContactMethod()
    d_ptr->m_lParents.removeAll(this);
    if (!d_ptr->m_lParents.size())
       delete d_ptr;
+}
+
+///Return if this contact has trusted the associated account
+bool ContactMethod::isTrusted() const
+{
+   return d_ptr->m_Trusted;
+}
+
+///Change the trusted property
+void ContactMethod::setTrusted(bool trusted)
+{
+    d_ptr->m_Trusted = trusted;
+    d_ptr->changed();
 }
 
 ///Return if this number presence is being tracked
