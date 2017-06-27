@@ -559,9 +559,11 @@ AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString 
     if (not banned)
         return;
 
-    auto account = q_ptr->getById(accountID.toLatin1());
-    auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
-    account->bannedContactModel()->add(cm);
+    if (auto account = q_ptr->getById(accountID.toLatin1())) {
+        if (auto cm = PhoneDirectoryModel::instance().getNumber(uri, account)) {
+            account->bannedContactModel()->add(cm);
+        }
+    }
 }
 
 ///Update accounts
