@@ -171,8 +171,13 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 
    if (a->protocol() == Account::Protocol::RING) {
       for (auto contact_info : account_contacts) {
-         auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], a);
-         a->d_ptr->m_NumbersFromDaemon << cm;
+          auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], a);
+          if (contact_info["banned"] IS_TRUE) {
+             a->bannedContactModel()->add(cm);
+          } else {
+             cm->setConfirmed(contact_info["confirmed"] IS_TRUE);
+             a->d_ptr->m_NumbersFromDaemon << cm;
+          }
       }
    }
 

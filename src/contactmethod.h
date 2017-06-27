@@ -91,6 +91,7 @@ public:
    Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
    Q_PROPERTY(QString           bestId           READ bestId                                          )
    Q_PROPERTY(QString           bestName         READ bestName                                        )
+   Q_PROPERTY(bool              isConfirmed      READ isConfirmed       WRITE setConfirmed            )
 
 //    Q_PROPERTY(QHash<QString,int> alternativeNames READ alternativeNames         )
 
@@ -140,6 +141,7 @@ public:
    QString               bestId          () const;
    bool                  isDuplicate     () const;
    QString               bestName        () const;
+   bool                  isConfirmed     () const;
 
    /*
     * Returns roles associated on ContactMethod based on Call::Roles
@@ -158,6 +160,7 @@ public:
    bool             setType          (ContactMethod::Type t             );
    void             setLastUsed      (time_t              t             );
    void             setPresent       (bool                present       );
+   void             setConfirmed     (bool                confirmed     );
 
    //Mutator
    Q_INVOKABLE void addCall(Call* call);
