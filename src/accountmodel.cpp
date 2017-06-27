@@ -556,12 +556,17 @@ AccountModelPrivate::slotContactAdded(const QString &accountID, const QString &u
 void
 AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString &uri, bool banned)
 {
-    if (not banned)
-        return;
-
-    auto account = q_ptr->getById(accountID.toLatin1());
-    auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
-    account->bannedContactModel()->add(cm);
+    if (auto account = q_ptr->getById(accountID.toLatin1())) {
+        if (auto cm = PhoneDirectoryModel::instance().getNumber(uri, account)) {
+            auto& daemon_contacts = account->getContacts();
+            // TODO: removeAll() is 5.4 - not yet supported by debian 8
+            auto index = daemon_contacts.indexOf(cm);
+            if (index >= 0)
+                daemon_contacts.remove(index);
+            if (banned)
+                account->bannedContactModel()->add(cm);
+        }
+    }
 }
 
 ///Update accounts
