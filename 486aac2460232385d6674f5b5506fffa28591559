@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_209aaa14",
+        "filename": "src/account.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T04:08:01Z",
+      "side": 1,
+      "message": "The contact is trusted if in the list (and not banned). Confirmed is not related to the trust status, but means that  we received a confirmation that we\u0027re also in his contact list.",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 60
+      },
+      "revId": "486aac2460232385d6674f5b5506fffa28591559",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
