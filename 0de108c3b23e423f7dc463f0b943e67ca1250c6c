@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_c0881ec9",
+        "filename": "src/accountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T09:01:53Z",
+      "side": 1,
+      "message": "This should set isTrusted to false",
+      "revId": "0de108c3b23e423f7dc463f0b943e67ca1250c6c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
