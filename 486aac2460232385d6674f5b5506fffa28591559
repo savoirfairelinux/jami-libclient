@@ -22,6 +22,29 @@
       "revId": "486aac2460232385d6674f5b5506fffa28591559",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_a33d24be",
+        "filename": "src/account.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-29T11:38:12Z",
+      "side": 1,
+      "message": "setTrusted should be set for all peers in the list (except blocked ones), not just confirmed ones. setConfimed might be set for confirmed peers.",
+      "range": {
+        "startLine": 175,
+        "startChar": 14,
+        "endLine": 175,
+        "endChar": 24
+      },
+      "revId": "486aac2460232385d6674f5b5506fffa28591559",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
