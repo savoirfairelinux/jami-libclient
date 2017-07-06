@@ -327,9 +327,9 @@ public Q_SLOTS: // METHODS
         DRing::startTone(start, type);
     }
 
-    void stopRecordedFilePlayback(const QString &filepath)
+    void stopRecordedFilePlayback()
     {
-        DRing::stopRecordedFilePlayback(filepath.toStdString());
+        DRing::stopRecordedFilePlayback();
     }
 
     bool toggleRecording(const QString &callID)
