@@ -240,10 +240,8 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(type)
     }
 
-    void stopRecordedFilePlayback(const QString &filepath)
-    {
-        Q_UNUSED(filepath)
-    }
+    void stopRecordedFilePlayback()
+    { }
 
     bool toggleRecording(const QString &callID)
     {
