@@ -189,7 +189,7 @@ void Media::AVRecording::play()
 void Media::AVRecording::stop()
 {
    CallManagerInterface& callManager = CallManager::instance();
-   Q_NOREPLY callManager.stopRecordedFilePlayback(path().path());
+   Q_NOREPLY callManager.stopRecordedFilePlayback();
    emit stopped();
 
    RecordingPlaybackManager::instance().desactivateRecording(this);
