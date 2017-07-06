@@ -240,7 +240,7 @@ void RingtoneModelPrivate::slotStopTimer()
 {
    if (m_pCurrent) {
       CallManagerInterface& callManager = CallManager::instance();
-      callManager.stopRecordedFilePlayback(m_pCurrent->path());
+      callManager.stopRecordedFilePlayback();
       m_isPlaying = false;
       const QModelIndex& idx = q_ptr->index(m_lRingtone.indexOf(m_pCurrent),0);
       emit q_ptr->dataChanged(idx,q_ptr->index(idx.row(),1));
