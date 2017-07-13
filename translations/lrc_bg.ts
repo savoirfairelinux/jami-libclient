@@ -1,92 +1,92 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="bg" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="bg" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="326"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="328"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Регистриран</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="330"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Нерегистриран</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="332"/>
+        <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="334"/>
+        <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Опитване…</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="336"/>
+        <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="338"/>
+        <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>Неуспешно удостоверяване</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="340"/>
+        <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Мрежата е недостъпна</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="342"/>
+        <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Сървърът е недостъпен</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="344"/>
+        <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>Грешна настройка на Stun</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="346"/>
+        <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Сървърът за Stun е грешен</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="348"/>
+        <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Услугата не е налична</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="350"/>
+        <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Неприемливо</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="352"/>
+        <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Грешно</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="354"/>
+        <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Време за изчакване на заявката</translation>

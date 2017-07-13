@@ -1,92 +1,92 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="326"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Valmis</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="328"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Rekistöröity</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="330"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Ei rekistöröity</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="332"/>
+        <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="334"/>
+        <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Yritetään...</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="336"/>
+        <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="338"/>
+        <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>Todennusvirhe</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="340"/>
+        <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Verkko tavoitamattomissa</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="342"/>
+        <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Palvelin tavoittamattomissa</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="344"/>
+        <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>Stun määrittelyvirhe</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="346"/>
+        <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Stun palvelin virheellinen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="348"/>
+        <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Plavelu tavoittamattomissa</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="350"/>
+        <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Epäkelpo</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="352"/>
+        <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Virheellinen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="354"/>
+        <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Pyyntö aikakatkaistu</translation>

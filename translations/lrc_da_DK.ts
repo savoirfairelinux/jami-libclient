@@ -1,92 +1,92 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="326"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="328"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Registreret</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="330"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Ikke registreret</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="332"/>
+        <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Initialiserer</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="334"/>
+        <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Prøver...</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="336"/>
+        <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Fejl</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="338"/>
+        <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>Autentificering fejlede</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="340"/>
+        <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Netværk utilgængeligt</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="342"/>
+        <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Host utilgængelig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="344"/>
+        <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>STUN-konfigurationsfejl</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="346"/>
+        <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>STUN server ugyldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="348"/>
+        <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Service ikke tilgængelig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="350"/>
+        <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Uacceptabel</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="352"/>
+        <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Ugyldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="354"/>
+        <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Anmodning fik timeout</translation>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Registreret navn</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Dine media streams er ikke krypteret, venligst aktiver SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1319,7 +1319,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Åben chatvindue</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1365,7 +1365,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>Id</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>

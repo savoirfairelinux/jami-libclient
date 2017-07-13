@@ -1,92 +1,92 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="326"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Paruošta</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="328"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Registruota</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="330"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Neregistruota</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="332"/>
+        <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Inicijuojama</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="334"/>
+        <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>Bandoma...</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="336"/>
+        <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Klaida</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="338"/>
+        <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>Tapatybės nustatymas nepavyko</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="340"/>
+        <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Tinklas nepasiekiamas</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="342"/>
+        <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Kompiuteris nepasiekiamas</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="344"/>
+        <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>Stun konfigūracijos klaida</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="346"/>
+        <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Neteisingas Stun serveris</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="348"/>
+        <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Paslauga neprieinama</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="350"/>
+        <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Nepriimtina</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="352"/>
+        <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Neteisinga</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="354"/>
+        <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Užklausos laikas baigėsi</translation>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų medijos srautai nėra užšifruoti, prašome įjungti SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1319,7 +1319,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Atverti pokalbį</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1365,7 +1365,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>Id</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>

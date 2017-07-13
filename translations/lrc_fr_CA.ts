@@ -1,92 +1,92 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_CA" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_CA" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="326"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Prêt</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="328"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Enregistré</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="330"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Non enregistré</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="332"/>
+        <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="334"/>
+        <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
         <translation>En cours</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="336"/>
+        <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="338"/>
+        <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
         <translation>L&apos;authentification a échouée</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="340"/>
+        <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Réseau inaccessible</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="342"/>
+        <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Domaine inaccessible</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="344"/>
+        <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>Erreur de configuration Stun</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="346"/>
+        <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Serveur Stun invalide</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="348"/>
+        <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Service inaccessible</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="350"/>
+        <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Non acceptable</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="352"/>
+        <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Invalide</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="354"/>
+        <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Délai de la requête dépassé</translation>
@@ -125,7 +125,7 @@
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>ça sonne</translation>
+        <translation>Sonnerie en cours</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
@@ -149,19 +149,19 @@
         <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>tenir</translation>
+        <translation>En attente</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>échoué </translation>
+        <translation>Échoué</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>occupé </translation>
+        <translation>Occupé</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
@@ -179,7 +179,7 @@
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation>sur</translation>
+        <translation>Terminé</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
@@ -210,7 +210,7 @@
         <location filename="../src/call.cpp" line="758"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Recherche en cours pour</translation>
+        <translation>Recherche en cours</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="761"/>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Nom enregistré</translation>
     </message>
 </context>
 <context>
@@ -898,7 +898,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
-        <translation>Signature privée</translation>
+        <translation>Signature publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
@@ -1324,7 +1324,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation>ne pas tenir</translation>
+        <translation>Reprendre</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
