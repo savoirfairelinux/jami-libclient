@@ -119,7 +119,7 @@
         <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Naujas</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="716"/>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>Naujas</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
@@ -1180,7 +1180,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation type="unfinished"/>
+        <translation>Nebuvo pateiktas joks liudijimas. Kol kas Ring to nepalaiko</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1195,7 +1195,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų liudijimas yra paties pasirašytas. Tai sulaužo pasitikėjimo grandinę.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>

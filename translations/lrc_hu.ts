@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Felvételek</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
