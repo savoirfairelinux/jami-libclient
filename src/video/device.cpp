@@ -53,19 +53,28 @@ d_ptr(new VideoDevicePrivate(this))
 
       Video::Channel* chan = new Video::Channel(this,channels.key());
       d_ptr->m_lChannels << chan;
+      QList<Video::Resolution*> validResolutions;
 
       QMapIterator<QString, VectorString> resolutions(channels.value());
       while (resolutions.hasNext()) {
          resolutions.next();
 
          Video::Resolution* res = new Video::Resolution(resolutions.key(),chan);
-         chan->d_ptr->m_lValidResolutions << res;
+         validResolutions << res;
 
          foreach(const QString& rate, resolutions.value()) {
             Video::Rate* r = new Video::Rate(res,rate);
             res->d_ptr->m_lValidRates << r;
          }
       }
+
+      // Sort resolutions by size area.
+      qSort(validResolutions.begin(),
+      validResolutions.end(),
+      [](Video::Resolution* resA, Video::Resolution* resB) {
+          return resA->width()  * resA->height() > resB->width() * resB->height();
+      });
+      chan->d_ptr->m_lValidResolutions = validResolutions;
    }
    Q_UNUSED(cap)
 }
