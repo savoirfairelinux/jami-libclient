@@ -1,5 +1,5 @@
 /******************************************************************************
-*   Copyright (C) 2014-2016 by Savoir-faire Linux                                 *
+*   Copyright (C) 2014-2017 Savoir-faire Linux                                 *
 *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
 *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
 *                                                                            *

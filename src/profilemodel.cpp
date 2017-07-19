@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2013-2016 by Savoir-faire Linux                          *
+ *   Copyright (C) 2013-2017 Savoir-faire Linux                          *
  *   Authors : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>*
  *             Alexandre Lision <alexandre.lision@savoirfairelinux.com>     *
  *                                                                          *
