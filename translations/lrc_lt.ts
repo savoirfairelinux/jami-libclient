@@ -778,7 +778,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation type="unfinished"/>
+        <translation>Turi privatųjį raktą</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
