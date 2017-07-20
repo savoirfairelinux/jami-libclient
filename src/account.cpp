@@ -1434,6 +1434,34 @@ bool Account::sendContactRequest( Certificate* c )
    return true;
 }
 
+bool Account::removeContact( const URI& uri )
+{
+   if (uri.isEmpty())
+       return false;
+
+   ConfigurationManager::instance().removeContact(id(), uri, false);
+
+   return true;
+}
+
+bool Account::removeContact(const ContactMethod* c)
+{
+    if (!c)
+        return false;
+
+    return removeContact(c->uri());
+}
+
+bool Account::removeContact( Certificate* c  )
+{
+    if ((!c) || (c->remoteId().isEmpty()))
+    return false;
+
+    ConfigurationManager::instance().removeContact(id(), c->remoteId(), false);
+
+    return true;
+}
+
 uint Account::internalId() const
 {
    return d_ptr->m_InternalId;

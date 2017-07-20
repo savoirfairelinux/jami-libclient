@@ -482,6 +482,9 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool sendContactRequest(Certificate* c);
       Q_INVOKABLE bool sendContactRequest(const ContactMethod* c);
       Q_INVOKABLE bool sendContactRequest(const URI& uri);
+      Q_INVOKABLE bool removeContact(Certificate* c);
+      Q_INVOKABLE bool removeContact(const ContactMethod* c);
+      Q_INVOKABLE bool removeContact(const URI& uri);
       Q_INVOKABLE QString accountDetail(const QString& param) const;
 
       //Setters
