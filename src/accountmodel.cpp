@@ -54,6 +54,7 @@
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
 #include "bannedcontactmodel.h"
+#include "daemoncontactmodel.h"
 #include "contactmethod.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
@@ -545,7 +546,7 @@ AccountModelPrivate::slotContactAdded(const QString &accountID, const QString &u
             cm->setConfirmed(confirmed);
             auto& daemon_contacts = account->getContacts();
             if (not daemon_contacts.contains(cm))
-                daemon_contacts << cm;
+                account->daemonContactModel()->add(cm);
         }
     }
 }
@@ -562,7 +563,7 @@ AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString 
             // TODO: removeAll() is 5.4 - not yet supported by debian 8
             auto index = daemon_contacts.indexOf(cm);
             if (index >= 0)
-                daemon_contacts.remove(index);
+                account->daemonContactModel()->remove(cm);
             if (banned)
                 account->bannedContactModel()->add(cm);
         }

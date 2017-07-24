@@ -51,6 +51,7 @@ class PendingContactRequestModel;
 class Profile;
 class ContactRequest;
 class BannedContactModel;
+class DaemonContactModel;
 
 //Private
 class AccountPrivate;
@@ -383,6 +384,7 @@ class LIB_EXPORT Account : public ItemBase {
       QAbstractItemModel*       allowedCertificatesModel   () const;
       PendingContactRequestModel* pendingContactRequestModel   () const;
       BannedContactModel* bannedContactModel() const;
+      DaemonContactModel* daemonContactModel() const;
 
       Q_INVOKABLE RoleState  roleState (Account::Role role) const;
       Q_INVOKABLE RoleStatus roleStatus(Account::Role role) const;

@@ -20,6 +20,7 @@
 
 //Parent
 #include "account.h"
+#include <iostream>
 
 //Qt
 #include <QtCore/QDebug>
@@ -71,6 +72,8 @@
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
 #include "bannedcontactmodel.h"
+#include "daemoncontactmodel.h"
+#include "availableaccountmodel.h"
 
 // define
 #define TO_BOOL ?"true":"false"
@@ -132,6 +135,7 @@ Account::Account():ItemBase(&AccountModel::instance()),d_ptr(new AccountPrivate(
 ///Build an account from it'id
 Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 {
+    std::cout << "build account" << std::endl;
 //    qDebug() << "Building an account from id: " << _accountId;
    Account* a = new Account();
    a->d_ptr->m_AccountId = _accountId;
@@ -176,7 +180,7 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
              a->bannedContactModel()->add(cm);
           } else {
              cm->setConfirmed(contact_info["confirmed"] IS_TRUE);
-             a->d_ptr->m_NumbersFromDaemon << cm;
+             a->daemonContactModel()->add(cm);
           }
       }
    }
@@ -234,6 +238,7 @@ Account* Account::buildNewAccountFromAlias(Account::Protocol proto, const QStrin
    a->d_ptr->setAccountProperty(DRing::Account::ConfProperties::ALIAS,alias);
    a->d_ptr->m_RemoteEnabledState = a->isEnabled();
    //a->setObjectName(a->id());
+
    return a;
 }
 
@@ -620,6 +625,17 @@ PendingContactRequestModel* Account::pendingContactRequestModel() const
    return d_ptr->m_pPendingContactRequestModel;
 }
 
+
+DaemonContactModel*
+Account::daemonContactModel() const
+{
+   if (!d_ptr->m_pDaemonContactModel)
+      d_ptr->m_pDaemonContactModel = new DaemonContactModel();
+
+   return d_ptr->m_pDaemonContactModel;
+}
+
+
 BannedContactModel*
 Account::bannedContactModel() const
 {
@@ -711,7 +727,7 @@ bool Account::needsMigration() const
 Account::ContactMethods&
 Account::getContacts() const
 {
-    return d_ptr->m_NumbersFromDaemon;
+    return d_ptr->m_pDaemonContactModel->getContacts();
 }
 
 ///Return the account user name
@@ -1517,6 +1533,7 @@ bool Account::setAccountProperty(const QString& param, const QString& val)
 ///Set the account id
 void Account::setId(const QByteArray& id)
 {
+    std::cout << "build account 3" << std::endl;
    if (! isNew())
       qDebug() << "Error : setting AccountId of an existing account" << d_ptr->m_AccountId;
    d_ptr->m_AccountId = id;
@@ -2298,6 +2315,7 @@ void Account::setRoleData(int role, const QVariant& value)
 
 void AccountPrivate::performAction(const Account::EditAction action)
 {
+    std::cout << "build account 4" << std::endl;
    (this->*(stateMachineActionsOnState[m_CurrentState][action]))();
 }
 
@@ -2455,6 +2473,7 @@ Account::RoleStatus Account::roleStatus(Account::Role role) const
  */
 bool AccountPrivate::updateState()
 {
+    std::cout << "build accoun 5 t" << std::endl;
    if(! q_ptr->isNew()) {
       ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
       const MapStringString details        = configurationManager.getVolatileAccountDetails(q_ptr->id());
@@ -2536,9 +2555,11 @@ void AccountPrivate::save()
    emit q_ptr->changed(q_ptr);
 }
 
+
 ///sync with the daemon, this need to be done manually to prevent reloading the account while it is being edited
 void AccountPrivate::reload()
 {
+    std::cout << "reload account !!!" << std::endl;
    if (!q_ptr->isNew()) {
       if (m_hAccountDetails.size())
          qDebug() << "Reloading" << q_ptr->id() << q_ptr->alias();
@@ -2626,6 +2647,7 @@ void AccountPrivate::edit()    {
 }
 
 void AccountPrivate::modify()  {
+    std::cout << "build account 6" << std::endl;
    typedef Account::RoleStatus ST;
    typedef Account::Role       R ;
    //This check if the account can be saved or it would produce an invalid result

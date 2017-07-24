@@ -267,6 +267,7 @@ SET( libringclient_LIB_SRCS
   src/lastusednumbermodel.cpp
   src/securityevaluationmodel.cpp
   src/personmodel.cpp
+  src/daemoncontactmodel.cpp
   src/collectionmodel.cpp
   src/collectionextensionmodel.cpp
   src/collectionmanagerinterface.cpp
@@ -396,6 +397,7 @@ SET( libringclient_LIB_HDRS
   src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
+  src/daemoncontactmodel.h
   src/personmodel.h
   src/transitionalpersonbackend.h
   src/collectionmodel.h
