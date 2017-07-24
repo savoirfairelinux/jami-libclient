@@ -23,7 +23,7 @@
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Başlatılıyor</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Kaydedilen ad</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Ortam açıklarınız şifrelenmemiş, lütfen SDES&apos;i etkinleştirin</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1365,7 +1365,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
