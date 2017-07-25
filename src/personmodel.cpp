@@ -350,7 +350,7 @@ bool PersonModel::addPeerProfile(Person* person)
 
    // check if this person is saved in the PeerProfileCollection, "ppc"
    if (person->collection() != &TransitionalPersonBackend::instance() and
-       person->collection()->name() != "ppc")
+       person->collection()->id() != "ppc")
    {
       qWarning() << "About to add Person to the PeerProfileCollection which is part of another collection";
    }
