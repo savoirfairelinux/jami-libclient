@@ -264,6 +264,7 @@ private:
     TemporaryContactMethod* m_pTransferNumber;
 
 private Q_SLOTS:
+   void refuseAfterFailure();
    void updated();
    void videoStopped();
 };

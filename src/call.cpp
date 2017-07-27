@@ -1450,6 +1450,18 @@ void CallPrivate::changeCurrentState(Call::State newState)
 
    initTimer();
 
+   // If the call failed, start the timer for 1 second and refuse the call.
+   if (q_ptr->state() == Call::State::FAILURE) {
+      if (!m_pTimer) {
+         m_pTimer = new QTimer(this);
+         m_pTimer->setInterval(1000);
+         connect(m_pTimer,SIGNAL(timeout()),this,SLOT(refuseAfterFailure()));
+      }
+      if (!m_pTimer->isActive()) {
+          m_pTimer->start();
+      }
+   }
+
    if (q_ptr->lifeCycleState() == Call::LifeCycleState::FINISHED)
       emit q_ptr->isOver();
 
@@ -2142,6 +2154,16 @@ void CallPrivate::updated()
    emit q_ptr->changed();
 }
 
+void CallPrivate::refuseAfterFailure()
+{
+    if (m_pTimer) {
+       m_pTimer->stop();
+       delete m_pTimer;
+       m_pTimer = nullptr;
+       q_ptr->performAction(Call::Action::REFUSE);
+    }
+}
+
 UserActionModel* Call::userActionModel() const
 {
    if (!d_ptr->m_pUserActionModel)
@@ -2166,7 +2188,7 @@ void CallPrivate::initTimer()
       m_pTimer->stop();
       delete m_pTimer;
       m_pTimer = nullptr;
-   }
+  }
 }
 
 QVariant Call::roleData(Call::Role role) const
