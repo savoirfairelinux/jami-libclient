@@ -230,7 +230,7 @@
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2187"/>
+        <location filename="../src/call.cpp" line="2209"/>
         <source>Account: </source>
         <translation>帐户：</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1760"/>
         <source>Aborted</source>
         <translation>已结束</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1781"/>
         <source>No account registered!</source>
         <translation>没有已注册的帐户！</translation>
     </message>
@@ -1344,12 +1344,12 @@
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>节点资料</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>节点资料集</translation>
     </message>
 </context>
 <context>
