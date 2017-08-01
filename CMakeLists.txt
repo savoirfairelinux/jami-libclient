@@ -20,7 +20,7 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++1y")
+ADD_DEFINITIONS("-std=c++14") # https://stackoverflow.com/questions/28825113/difference-between-gcc-compile-options-std-c1y-and-std-c14
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
@@ -241,6 +241,7 @@ SET( libringclient_LIB_SRCS
   src/media/recording.cpp
   src/media/avrecording.cpp
   src/media/textrecording.cpp
+  src/smartlistitem.cpp
 
   #Models
   src/bootstrapmodel.cpp
@@ -291,6 +292,9 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
   src/bannedcontactmodel.cpp
+  src/smartlistitem.cpp
+  src/smartlistmodel.cpp
+  src/contactitem.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -442,6 +446,9 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
+  src/smartlistitem.h
+  src/smartlistmodel.h
+  src/contactitem.h
 )
 
 SET(libringclient_video_LIB_HDRS
