@@ -16,48 +16,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-
-
 // Parent
 #include "smartlistitem.h"
-
-
 
 // Debug
 #include <qdebug.h>
 
-
-SmartListItem::SmartListItem(SmartListItemType smartListItemType)
+SmartListItem::SmartListItem()
+: _title(new std::string())
 {
-    qDebug() << "{C} SmartListItem";
-    _title = new std::string("_title (fallback)");
-    //~ std::unique_ptr<int> v1 = std::make_unique<int>();
-    
-    qDebug() << "TITLE : " << _title->data();
-
-    qDebug() << "\n\n\n\n";
-    
-    _smartListItemType = smartListItemType;
-    
 }
 
 SmartListItem::~SmartListItem()
 {
-    qDebug() << "{D} SmartListItem\n\n\n\n";
-    delete _title;
 }
-
-//~ void
-//~ SmartListItem::setTitle(const std::string)
-//~ {
-    
-//~ }
-
-//~ const std::string
-//~ SmartListItem::getTitle()
-//~ {
-    //~ return _title->data();
-//~ }
-
 
 #include <smartlistitem.moc>

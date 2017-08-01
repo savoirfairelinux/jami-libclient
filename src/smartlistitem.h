@@ -18,29 +18,19 @@
 #pragma once
 
 // Std
+#include <memory>
 #include <string>
-
-enum class SmartListItemType{
-    CONTACT,
-    DEFAULT,
-    COUNT
-};
 
 class SmartListItem {
     public:
-    ~SmartListItem();
+    virtual ~SmartListItem();
 
-    virtual void setTitle(const std::string) {}; // limiter l'acces seulement la factory devrait le modifier
-    virtual const std::string getTitle() { return "TITLE ERROR"; };
-    SmartListItemType getType(){return _smartListItemType;};
-    
-    
+    virtual void setTitle(const std::string) {};
+    virtual const std::string getTitle() { return _title->data(); };
 
     protected:
-    SmartListItem(SmartListItemType);
+    SmartListItem();
 
-    private:
-    std::string* _title;
-    SmartListItemType _smartListItemType;
-    
+    std::shared_ptr<std::string> _title;
+
 };

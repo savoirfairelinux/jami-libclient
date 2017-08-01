@@ -293,7 +293,9 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
   src/bannedcontactmodel.cpp
+  src/smartlistitem.cpp
   src/smartlistmodel.cpp
+  src/contactitem.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -445,10 +447,9 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
-  src/smartlistmodel.h
   src/smartlistitem.h
+  src/smartlistmodel.h
   src/contactitem.h
-  src/memorylrc.h
 )
 
 SET(libringclient_video_LIB_HDRS

@@ -25,13 +25,9 @@
 
 class ContactItem : public SmartListItem {
     public:
-    ContactItem(SmartListItemType);
+    ContactItem();
     ~ContactItem();
 
-    void setTitle(const std::string) override; // limiter l'acces seulement la factory devrait le modifier
+    void setTitle(const std::string) override;
     const std::string getTitle() override;
-
-    private:
-    std::string* _title;
-    
 };

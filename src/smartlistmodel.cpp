@@ -26,33 +26,60 @@
 // Debug
 #include <qdebug.h>
 
-// Lrc
+// Lrc mettre des ""
 #include <contactitem.h>
+#include <accountmodel.h>
+#include <contactmethod.h>
+#include <availableaccountmodel.h>
 
-SmartListModel::SmartListModel()
+SmartListModel::SmartListModel(QObject* parent)
 {
-    qDebug() << "{C} SmartListModel\n\n\n\n";
-    
-    // JN : ce qui suit n'est là que pour rapide exemple.
-    // on ne stockera pas des item tels quels, on aura des contacts etc.
-    
-    items.push_back(new ContactItem(SmartListItemType::CONTACT));
-    
+    auto fillsWithContacts = [&] (Account* a) {
+        if (not a) {
+            qDebug() << "no available account selected";
+            return a;
+        }
+
+        auto contacts = a->getContacts();
+
+        // clear the list
+        items.clear();
+
+        // add contacts to the list
+        for (auto c : contacts) {
+            auto contact = std::shared_ptr<ContactItem>(new ContactItem());
+            contact->setTitle(c->uri().toUtf8().constData());
+            items.push_back(contact);
+        }
+
+        return a;
+    };
+
+    connect(&AvailableAccountModel::instance(), &AvailableAccountModel::currentDefaultAccountChanged,
+    [this, fillsWithContacts](Account* a)
+    {
+        if (fillsWithContacts(a))
+            emit modelUpdated();
+    });
+
+    // initialise the list
+    fillsWithContacts(AvailableAccountModel::instance().currentDefaultAccount());
 }
 
 SmartListModel::~SmartListModel()
 {
-    qDebug() << "{D} SmartListModel\n\n\n\n";
-    // delete the items
-    for (auto item : items)
-        delete item;
 }
 
-std::list<SmartListItem*>
+SmartListItems
 SmartListModel::getItems()
 {
     return items;
 }
 
+SmartListModel& SmartListModel::instance()
+{
+    static auto instance = new SmartListModel(QCoreApplication::instance());
+    return *instance;
+}
 
 #include <smartlistmodel.moc>
