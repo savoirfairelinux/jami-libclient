@@ -43,6 +43,9 @@
 #include "availableaccountmodel.h"
 #include "pendingcontactrequestmodel.h"
 
+// TEST ONLY
+#include "smartlistmodel.h"
+
 struct CallGroup
 {
    QVector<Call*>  m_lCalls   ;
@@ -205,6 +208,10 @@ void RecentModelPrivate::selectNode(RecentViewNode* node) const
 
 RecentModel::RecentModel(QObject* parent) : QAbstractItemModel(parent), d_ptr(new RecentModelPrivate(this))
 {
+    
+    qDebug() << "{C} RecentModel\n\n\n\n";
+    smartListModel = new SmartListModel();
+    
     connect(&PersonModel::instance()        , &PersonModel::lastUsedTimeChanged    , d_ptr, &RecentModelPrivate::slotLastUsedTimeChanged);
     connect(&PersonModel::instance()        , &PersonModel::newPersonAdded         , d_ptr, &RecentModelPrivate::slotPersonAdded        );
     connect(&PersonModel::instance()        , &PersonModel::personRemoved          , d_ptr, &RecentModelPrivate::slotPersonRemoved      );
@@ -262,6 +269,8 @@ RecentModel::~RecentModel()
 {
    for (RecentViewNode* n : d_ptr->m_lTopLevelReverted)
       delete n;
+
+    delete smartListModel;
 
    delete d_ptr;
 }
@@ -1295,6 +1304,12 @@ PeopleProxy::data(const QModelIndex& index, int role) const
     }
 
     return sourceModel()->data(indexSource, role);
+}
+
+SmartListModel*      
+RecentModel::getSmartListModel() const
+{
+    return smartListModel;
 }
 
 #include <recentmodel.moc>
