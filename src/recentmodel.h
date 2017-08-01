@@ -29,6 +29,7 @@ class RecentModelPrivate;
 class Call;
 class Person;
 class ContactMethod;
+class SmartListModel;
 
 class LIB_EXPORT RecentModel : public QAbstractItemModel
 {
@@ -62,10 +63,12 @@ public:
    QItemSelectionModel* selectionModel(                        ) const;
    QStringList          getParticipantName(Call* call          ) const;
    int                  getParticipantNumber(Call* call        ) const;
+   SmartListModel*      getSmartListModel() const;
 
 private:
    explicit RecentModel(QObject* parent = nullptr);
    virtual ~RecentModel();
+   SmartListModel* smartListModel;
 
    RecentModelPrivate* d_ptr;
    Q_DECLARE_PRIVATE(RecentModel)
