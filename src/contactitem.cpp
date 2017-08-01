@@ -27,28 +27,22 @@
 #include <qdebug.h>
 
 
-ContactItem::ContactItem(SmartListItemType type)
-: SmartListItem(type)
+ContactItem::ContactItem()
+: SmartListItem()
 {
-    qDebug() << "{C} ContactItem";
-    _title = new std::string("_Xtitle (fallback)");
-    //~ std::unique_ptr<int> v1 = std::make_unique<int>();
-    
-    qDebug() << "TITLE : " << _title->data();
-
-    qDebug() << "\n\n\n\n";
 }
 
 ContactItem::~ContactItem()
 {
-    qDebug() << "{D} ContactItem\n\n\n\n";
-    delete _title;
 }
 
 void
-ContactItem::setTitle(const std::string)
+ContactItem::setTitle(const std::string title)
 {
-    
+    if (not _title)
+        _title = std::unique_ptr<std::string>(new std::string());
+
+    _title->assign(title);
 }
 
 const std::string

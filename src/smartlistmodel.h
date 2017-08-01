@@ -22,18 +22,35 @@
 #include "memorylrc.h"
 #include <string>
 
+// Qt
+#include <qobject.h>
+
 // Data
 #include "smartlistitem.h"
 
-class SmartListModel {
+typedef std::list<std::shared_ptr<SmartListItem>> SmartListItems;
+
+class SmartListModel : public QObject {
+    Q_OBJECT // on changera ça dans le futur // utilisé pour binder les signaux qt
     public:
-    SmartListModel();
     ~SmartListModel();
-    
-    std::list<SmartListItem*> getItems();
-    
+
+    //Singleton
+    static SmartListModel& instance();
+
+    SmartListItems getItems();
+
+    // factories (pour l'instant en public, mais il faudra think a little, elles devront sans doute est utilisées au travers
+    // des signaux rendant le public caduc).
+    // - la factory des contacts provenant du daemon est dans le constructeur dans la lambda associée au changment de compte
+
+
+    // signals
+    Q_SIGNALS:
+    void modelUpdated();
 
     private:
-    std::list<SmartListItem*> items;
-    
+    explicit SmartListModel(QObject* parent = nullptr);
+    SmartListItems items;
+
 };
