@@ -180,6 +180,7 @@ void AvailableAccountModelPrivate::setPriorAccount(const Account* account)
 
       Account* a = account ? const_cast<Account*>(account) : self.currentDefaultAccount();
 
+    qDebug() << "changment\n";
       emit self.currentDefaultAccountChanged(a);
 
       if (self.d_ptr->m_pSelectionModel) {
