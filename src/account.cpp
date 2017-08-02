@@ -1455,11 +1455,43 @@ bool Account::removeContact(const ContactMethod* c)
 bool Account::removeContact( Certificate* c  )
 {
     if ((!c) || (c->remoteId().isEmpty()))
-    return false;
+        return false;
 
     ConfigurationManager::instance().removeContact(id(), c->remoteId(), false);
-
     return true;
+}
+
+bool Account::addContact( const URI& uri )
+{
+   if (uri.isEmpty())
+       return false;
+
+   ConfigurationManager::instance().addContact(id(), uri);
+
+   return true;
+}
+
+bool Account::addContact(const ContactMethod* c)
+{
+    if (!c)
+        return false;
+
+    return addContact(c->uri());
+}
+
+bool Account::addContact( Certificate* c  )
+{
+    if ((!c) || (c->remoteId().isEmpty()))
+        return false;
+
+    ConfigurationManager::instance().addContact(id(), c->remoteId());
+    return true;
+}
+
+bool Account::hasContact(ContactMethod* c )
+{
+    auto contacts = getContacts();
+    return contacts.indexOf(c) != -1;
 }
 
 uint Account::internalId() const

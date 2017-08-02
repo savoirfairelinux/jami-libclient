@@ -485,6 +485,10 @@ class LIB_EXPORT Account : public ItemBase {
       Q_INVOKABLE bool removeContact(Certificate* c);
       Q_INVOKABLE bool removeContact(const ContactMethod* c);
       Q_INVOKABLE bool removeContact(const URI& uri);
+      Q_INVOKABLE bool addContact(Certificate* c);
+      Q_INVOKABLE bool addContact(const ContactMethod* c);
+      Q_INVOKABLE bool addContact(const URI& uri);
+      Q_INVOKABLE bool hasContact(ContactMethod* c);
       Q_INVOKABLE QString accountDetail(const QString& param) const;
 
       //Setters
