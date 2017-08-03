@@ -19,7 +19,6 @@
 
 // Std
 #include <list>
-#include "memorylrc.h"
 #include <string>
 
 // Qt
