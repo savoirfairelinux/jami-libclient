@@ -377,7 +377,9 @@ bool VCardUtils::mapToPerson(Person* p, const QUrl& path, QList<Account*>* accou
 
 Person* VCardUtils::mapToPerson(const QHash<QByteArray, QByteArray>& vCard, QList<Account*>* accounts)
 {
-    auto existingPerson = PersonModel::instance().getPersonByUid(vCard[Property::UID]);
+    // Here, we prioritize the phone number
+    auto vcardUid = vCard[Property::TELEPHONE].isEmpty() ? vCard[Property::UID] : vCard[Property::TELEPHONE];
+    auto existingPerson = PersonModel::instance().getPersonByUid(vcardUid);
     auto personMapped = existingPerson == nullptr ? new Person() : existingPerson;
 
     QHashIterator<QByteArray, QByteArray> it(vCard);

@@ -105,8 +105,6 @@ bool PeerProfileEditor::edit( Person* item)
 
 bool PeerProfileEditor::addNew( Person* pers)
 {
-    pers->ensureUid();
-
     if (not m_lItems.contains(pers)) {
         m_lItems << pers;
         mediator()->addItem(pers);

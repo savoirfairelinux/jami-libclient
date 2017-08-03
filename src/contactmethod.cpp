@@ -520,7 +520,7 @@ int ContactMethod::totalSpentTime() const
 ///Return this number unique identifier (hash)
 QString ContactMethod::uid() const
 {
-   return d_ptr->m_Uid.isEmpty()?toHash():d_ptr->m_Uid;
+   return d_ptr->m_Uid.isEmpty()?uri():d_ptr->m_Uid;
 }
 
 ///Return the URI protocol hint

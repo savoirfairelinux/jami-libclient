@@ -337,9 +337,14 @@ const QString& Person::preferredEmail()  const
 }
 
 ///Get the unique identifier (used for drag and drop)
-const QByteArray& Person::uid() const
+const QByteArray Person::uid() const
 {
-   return d_ptr->m_Uid;
+    // SIP or ringID should have a phone number
+    if (phoneNumbers().size() > 0) {
+        return phoneNumbers().first()->uid().toUtf8();
+    }
+    // Fallback id.
+    return d_ptr->m_Uid;
 }
 
 ///Get the group
@@ -738,6 +743,9 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
 
    maker.addEmail("PREF", preferredEmail());
 
+   if (phoneNumbers().size() == 0) {
+       maker.addProperty(VCardUtils::Property::TELEPHONE, uid());
+   }
    foreach (ContactMethod* phone , phoneNumbers()) {
       QString uri = phone->uri();
       // in the case of a RingID, we want to make sure that the uri contains "ring:" so that the user

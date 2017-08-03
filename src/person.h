@@ -136,7 +136,7 @@ public:
    const  QString& secondName       () const;
    const  QString& formattedName    () const;
    const  QString& organization     () const;
-   const  QByteArray& uid           () const;
+   const  QByteArray uid           () const;
    const  QString& preferredEmail   () const;
    const  QVariant photo            () const;
    const  QString& group            () const;
