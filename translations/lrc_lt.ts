@@ -230,7 +230,7 @@
         <translation>Nežinoma</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2187"/>
+        <location filename="../src/call.cpp" line="2209"/>
         <source>Account: </source>
         <translation>Paskyra: </translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1760"/>
         <source>Aborted</source>
         <translation>Nutraukta</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1781"/>
         <source>No account registered!</source>
         <translation>Nėra registruotos paskyros!</translation>
     </message>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>Makrokomandos</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
@@ -1052,7 +1052,7 @@
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
+        <translation>Saugumo įvertinimas</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
@@ -1084,12 +1084,12 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>Vietinės makrokomandos</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>Makrokomanda</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
