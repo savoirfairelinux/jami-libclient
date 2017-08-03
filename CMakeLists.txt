@@ -49,6 +49,7 @@ SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
 FIND_PACKAGE(Qt5Core REQUIRED)
+FIND_PACKAGE(Qt5Sql REQUIRED)
 FIND_PACKAGE(Qt5LinguistTools) # translations
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
@@ -296,6 +297,7 @@ SET( libringclient_LIB_SRCS
   src/smartlistitem.cpp
   src/smartlistmodel.cpp
   src/contactitem.cpp
+  src/database.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -450,6 +452,7 @@ SET( libringclient_LIB_HDRS
   src/smartlistitem.h
   src/smartlistmodel.h
   src/contactitem.h
+  src/database.h
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -643,6 +646,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
       -lpthread
       ${QT_QTDBUS_LIBRARY}
       ${QT_QTCORE_LIBRARY}
+      -lQt5Sql
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
@@ -667,6 +671,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
+   -lQt5Sql
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

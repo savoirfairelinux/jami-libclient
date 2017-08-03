@@ -31,6 +31,7 @@
 #include <accountmodel.h>
 #include <contactmethod.h>
 #include <availableaccountmodel.h>
+#include "database.h"
 
 SmartListModel::SmartListModel(QObject* parent)
 {
@@ -64,6 +65,11 @@ SmartListModel::SmartListModel(QObject* parent)
 
     // initialise the list
     fillsWithContacts(AvailableAccountModel::instance().currentDefaultAccount());
+    
+    
+    // test only
+    DataBase::instance();
+    
 }
 
 SmartListModel::~SmartListModel()
