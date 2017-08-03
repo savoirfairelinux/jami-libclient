@@ -230,7 +230,7 @@
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2187"/>
+        <location filename="../src/call.cpp" line="2209"/>
         <source>Account: </source>
         <translation>Konto:</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1760"/>
         <source>Aborted</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1781"/>
         <source>No account registered!</source>
         <translation>Kein angemeldetes Konto</translation>
     </message>
@@ -1212,7 +1212,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="518"/>

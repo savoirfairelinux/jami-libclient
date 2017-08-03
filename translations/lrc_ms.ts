@@ -230,7 +230,7 @@
         <translation>Tidak diketahui</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2187"/>
+        <location filename="../src/call.cpp" line="2209"/>
         <source>Account: </source>
         <translation>Akaun</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1748"/>
+        <location filename="../src/call.cpp" line="1760"/>
         <source>Aborted</source>
         <translation>Digugurkan</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1769"/>
+        <location filename="../src/call.cpp" line="1781"/>
         <source>No account registered!</source>
         <translation>Tiada akaun terdaftar!</translation>
     </message>
