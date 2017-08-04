@@ -31,4 +31,5 @@ class ContactItem : public SmartListItem {
     void setTitle(const std::string) override;
     const std::string getTitle() override;
 
+    virtual void action() override;
 };

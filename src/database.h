@@ -39,7 +39,7 @@ class DataBase : public QObject {
     ~DataBase();
 
     void addMessage(const QString& From, const QString& message);
-    std::forward_list<std::string> getMessages(const QString& author);
+    std::vector<std::string> getMessages(const QString& author);
 
     //Singleton
     static DataBase& instance();
