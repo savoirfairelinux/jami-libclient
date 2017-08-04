@@ -98,7 +98,7 @@ DataBase::addMessage(const QString& author, const QString& message )
     emit messageAdded(message.toStdString()); // ajouter l'auteur
 }
 
-std::forward_list<std::string> //  message : status+date+contactitem+direction+body
+std::vector<std::string> //  message : status+date+contactitem+direction+body
 DataBase::getMessages(const QString& author) // author == from
 {
     // ici je recupere le hash du compte
@@ -107,12 +107,12 @@ DataBase::getMessages(const QString& author) // author == from
 
     if (not _querry->exec(toto)) {
         qDebug() << "getMessages, " << _querry->lastError().text();
-        return std::forward_list<std::string>();
+        return std::vector<std::string>();
     }
 
-    std::forward_list<std::string> messages;
+    std::vector<std::string> messages;    
     while(_querry->next())
-        messages.push_front(_querry->value(0).toString().toStdString());
+        messages.push_back(_querry->value(0).toString().toStdString());
 
     return messages;
 }
