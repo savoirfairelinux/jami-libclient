@@ -21,12 +21,18 @@
 #include <memory>
 #include <string>
 
-class SmartListItem {
+// Qt
+#include <qobject.h> // for signals
+
+class SmartListItem : public QObject {
+    Q_OBJECT
+
     public:
     virtual ~SmartListItem();
 
     virtual void setTitle(const std::string) {};
     virtual const std::string getTitle() { return _title->data(); };
+    virtual void action() {};
 
     protected:
     SmartListItem();
