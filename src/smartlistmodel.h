@@ -48,7 +48,10 @@ class SmartListModel : public QObject {
     // signals
     Q_SIGNALS:
     void modelUpdated();
-    void showConversationView(std::vector<std::string> messages);
+    // NOTE for njager: I need the history when the chatview is loaded. Not for creating the chatview.
+    // I think it's more logical to get the history when we want
+    // But I need to know which item is activated for creating the chatview. So I add SmartListItem* item
+    void showConversationView(SmartListItem* item);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
