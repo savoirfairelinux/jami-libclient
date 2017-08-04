@@ -94,11 +94,15 @@ DataBase::addMessage(const QString& author, const QString& message )
         qDebug() << "addMessage, " << _querry->lastError().text();
         return;
     }
+
+    emit messageAdded(message.toStdString()); // ajouter l'auteur
 }
 
-std::forward_list<std::string>
-DataBase::getMessages(const QString& author)
+std::forward_list<std::string> //  message : status+date+contactitem+direction+body
+DataBase::getMessages(const QString& author) // author == from
 {
+    // ici je recupere le hash du compte
+    // je fais la requete pour avoir les messages du couple account+contact
     auto toto = QString("select message from conversations where author = '"+author+"'");
 
     if (not _querry->exec(toto)) {
