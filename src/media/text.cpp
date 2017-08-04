@@ -39,6 +39,9 @@
 #include <accountmodel.h>
 #include <personmodel.h>
 
+// Lrc
+#include "database.h"
+
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
  *
@@ -183,6 +186,12 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
        auto txtRecording = cm->textRecording();
        txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
    }
+
+    // WIP NEW MODEL
+    // sauvegarde le message dans la bd. ceci ne concerne pas l'ui
+    DataBase::instance().addMessage(from, payloads["text/plain"]);
+    
+
 }
 
 void IMConversationManagerPrivate::accountMessageStatusChanged(const QString& accountId, uint64_t id, const QString& to, int status)
