@@ -82,10 +82,16 @@ SmartListModel::getItems()
     return items;
 }
 
-SmartListModel& SmartListModel::instance()
+SmartListModel&
+SmartListModel::instance()
 {
     static auto instance = new SmartListModel(QCoreApplication::instance());
     return *instance;
+}
+
+std::shared_ptr<SmartListItem> 
+SmartListModel::getItem(int row){
+    return items[row];
 }
 
 #include <smartlistmodel.moc>

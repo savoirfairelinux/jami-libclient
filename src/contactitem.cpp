@@ -21,7 +21,12 @@
 // Parent
 #include "contactitem.h"
 
+// Lrc
+#include "database.h"
+#include "smartlistmodel.h"
 
+// Qt
+#include <qstring.h>
 
 // Debug
 #include <qdebug.h>
@@ -51,5 +56,11 @@ ContactItem::getTitle()
     return _title->data();
 }
 
+void
+ContactItem::action()
+{
+    qDebug() << "tof";
+    emit SmartListModel::instance().showConversationView(DataBase::instance().getMessages(QString(_title->c_str())));
+}
 
 #include <contactitem.moc>
