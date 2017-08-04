@@ -22,7 +22,6 @@
 #include "contactitem.h"
 
 // Lrc
-#include "database.h"
 #include "smartlistmodel.h"
 
 // Qt
@@ -59,7 +58,7 @@ ContactItem::getTitle()
 void
 ContactItem::action()
 {
-    emit SmartListModel::instance().showConversationView(DataBase::instance().getMessages(QString(_title->c_str())));
+    emit SmartListModel::instance().showConversationView(this);
 }
 
 #include <contactitem.moc>
