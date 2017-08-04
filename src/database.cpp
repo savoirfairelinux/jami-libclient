@@ -73,11 +73,8 @@ DataBase::DataBase(QObject* parent)
             qDebug() << "DataBase : " << _querry->lastError().text();
 
     // fake message
-    addMessage("ME", "hello!");
-    auto titi = getMessages("ME");
-    for (auto it : titi)
-        qDebug() << "D : " << QString(it.c_str());
-
+    addMessage("2518b726b225019595a09ab6735785b3384f99a4", "hello!");
+    
 }
 
 DataBase::~DataBase()
@@ -93,6 +90,9 @@ DataBase& DataBase::instance()
 void
 DataBase::addMessage(const QString& author, const QString& message )
 {
+    qDebug() << "G: " << author;
+    qDebug() << "G: " << message;
+
     auto toto = QString("insert into conversations(author, message) values(? , ?)");
 
     if (not _querry->prepare(toto)) {
@@ -107,11 +107,15 @@ DataBase::addMessage(const QString& author, const QString& message )
         qDebug() << "addMessage, " << _querry->lastError().text();
         return;
     }
+
+    emit messageAdded(message.toStdString()); // ajouter l'auteur
 }
 
-std::forward_list<std::string>
-DataBase::getMessages(const QString& author)
+std::forward_list<std::string> //  message : status+date+contactitem+direction+body
+DataBase::getMessages(const QString& author) // author == from
 {
+    // ici je recupere le hash du compte
+    // je fais la requete pour avoir les messages du couple account+contact
     auto toto = QString("select message from conversations where author = '"+author+"'");
 
     if (not _querry->exec(toto)) {
@@ -122,7 +126,7 @@ DataBase::getMessages(const QString& author)
     std::forward_list<std::string> messages;    
     while(_querry->next())
         messages.push_front(_querry->value(0).toString().toStdString());
-    
+
     return messages;
 }
 

@@ -63,6 +63,7 @@ class DataBase : public QObject {
 
     // signals
     Q_SIGNALS:
+    void messageAdded(const std::string&);
 
     private:
     explicit DataBase(QObject* parent = nullptr);
