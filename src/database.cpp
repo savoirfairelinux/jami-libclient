@@ -27,6 +27,9 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 
+// Lrc
+#include "private/vcardutils.h"
+
 DataBase::DataBase(QObject* parent)
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
@@ -57,7 +60,7 @@ DataBase::DataBase(QObject* parent)
 
     // add contacts table
     if (not tables.contains("contacts", Qt::CaseInsensitive))
-        if (not _query->exec("create table contacts (id integer primary key, unread integer)"))
+        if (not _query->exec("create table contacts (id integer primary key, unread integer, ring_id text not null unique, alias text, photo text)"))
             qDebug() << "DataBase : " << _query->lastError().text();
 
     // add conversations table
@@ -126,5 +129,61 @@ DataBase::getMessages(const QString& author) // author == from
     return messages;
 }
 
+void
+DataBase::addContact(const QString& from, const QByteArray& payload)
+{
+    auto vCard = VCardUtils::toHashMap(payload);
 
+    auto alias = vCard["FN"];
+    auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"]; // to improve
+
+    auto toto = QString("insert into contacts(ring_id, alias, photo) values(?, ?, ?)");
+
+    if (not _querry->prepare(toto)) {
+        qDebug() << "addContact, " << _querry->lastError().text();
+        return;
+    }
+
+    _querry->addBindValue(from);
+    _querry->addBindValue(alias);
+    _querry->addBindValue(photo);
+
+    if (not _querry->exec()) {
+        qDebug() << "addContact, " << _querry->lastError().text();
+        return;
+    }
+
+    emit contactAdded(from.toStdString());
+
+}
+
+std::string
+DataBase::getAlias(const QString& from)
+{
+    auto toto = QString("select alias from contacts where ring_id = '"+from+"'");
+
+    if (not _querry->exec(toto)) {
+        qDebug() << "getAlias, " << _querry->lastError().text();
+        return std::string();
+    }
+
+    _querry->next();
+    qDebug() << _querry->value(0).toString();
+    return _querry->value(0).toString().toStdString();
+}
+
+std::string
+DataBase::getAvatar(const QString& from)
+{
+    auto toto = QString("select photo from contacts where ring_id = '"+from+"'");
+
+    if (not _querry->exec(toto)) {
+        qDebug() << "getAvatar, " << _querry->lastError().text();
+        return std::string();
+    }
+
+    _querry->next();
+    qDebug() << _querry->value(0).toString();
+    return _querry->value(0).toString().toStdString();
+}
 #include <database.moc>
