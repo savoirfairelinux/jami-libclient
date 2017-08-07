@@ -55,6 +55,7 @@
 #include "phonedirectorymodel.h"
 #include "bannedcontactmodel.h"
 #include "contactmethod.h"
+#include "database.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
@@ -482,6 +483,10 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
 
    auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
    r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));
+
+    /* add to database */
+    DataBase::instance().addContact(ringID, payload);
+
 }
 
 ///Known Ring devices have changed
