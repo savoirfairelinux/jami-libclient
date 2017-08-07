@@ -65,6 +65,8 @@ class DataBase : public QObject {
     // Messages
     void addMessage(const QString& From, const QString& message, const QString& timestamp);
     std::vector<Message> getMessages(const QString& author);
+    int NumberOfUnreads(const QString& author);
+    void setMessageRead(const int uid);
 
     // Contacts
     void addContact(const QString& From, const QByteArray& payload);
