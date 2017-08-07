@@ -87,6 +87,8 @@ public:
 
    ///The severity of a given flaw
    enum class Severity {
+   #pragma push_macro("ERROR")
+   #undef ERROR
       UNSUPPORTED   = 0, /*!< This severity is unsupported, to be ignored                  */
       INFORMATION   = 1, /*!< Tip and tricks to have better security                       */
       WARNING       = 2, /*!< It is a problem, but it won't have other side effects         */
@@ -94,9 +96,9 @@ public:
       ERROR         = 4, /*!< It simply won't work (REGISTER)                               */
       FATAL_WARNING = 5, /*!< Registration may work, but it render everything else useless */
       COUNT__,
+   #pragma pop_macro("ERROR")
    };
    Q_ENUMS(Severity)
-
    ///Every supported flaws
    enum class AccountSecurityChecks {
       SRTP_ENABLED                , /*!< The account use secure media streams                    */
@@ -160,4 +162,3 @@ private:
 Q_DECLARE_METATYPE(SecurityEvaluationModel*)
 Q_DECLARE_METATYPE(SecurityEvaluationModel::Severity)
 Q_DECLARE_METATYPE(SecurityEvaluationModel::SecurityLevel)
-

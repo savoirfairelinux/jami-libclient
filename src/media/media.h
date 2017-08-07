@@ -52,9 +52,15 @@ public:
    };
 
    enum class Direction {
+   #pragma push_macro("OUT")
+   #pragma push_macro("IN")
+   #undef OUT
+   #undef IN
       IN , /*!< The media is coming from the peer */
       OUT, /*!< The media is going to the peer    */
       COUNT__
+   #pragma pop_macro("OUT")
+   #pragma pop_macro("IN")
    };
 
    enum class Action {
@@ -98,4 +104,3 @@ private:
 Q_DECLARE_METATYPE(Media::Media::Direction)
 
 Media::Media* operator<<(Media::Media* m, Media::Media::Action a);
-

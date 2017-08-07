@@ -61,14 +61,16 @@ T* Call::firstMedia(Media::Media::Direction direction) const
 template<typename T>
 T* Call::addOutgoingMedia(bool useExisting)
 {
+   #pragma push_macro("OUT")
+   #undef OUT
    T* existing = firstMedia<T>(Media::Media::Direction::OUT);
-
    if (useExisting && existing)
       return existing;
 
    Media::Media::Type t = MediaTypeInference::getType<T>();
 
    return static_cast<T*>(MediaTypeInference::safeMediaCreator(this,t,Media::Media::Direction::OUT));
+   #pragma pop_macro("OUT")
 }
 
 #define REGISTER_MEDIA() __attribute__ ((unused)) static auto forceType = [] {\

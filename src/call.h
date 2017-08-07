@@ -152,6 +152,8 @@ public:
 
    ///Possible call states
    enum class State : unsigned int{
+   #pragma push_macro("ERROR")
+   #undef ERROR
       NEW             = 0, /*!< The call has been created, but no dialing number been set                         */
       INCOMING        = 1, /*!< Ringing incoming call                                                             */
       RINGING         = 2, /*!< Ringing outgoing call                                                             */
@@ -170,6 +172,7 @@ public:
       ABORTED         = 15,/*!< The call was dropped before being sent to the daemon                              */
       CONNECTED       = 16,/*!< The peer has been found, attempting negotiation                                   */
       COUNT__,
+   #pragma pop_macro("ERROR")
    };
    Q_ENUMS(State)
 
@@ -223,10 +226,16 @@ public:
     * only used for outgoing holding.
     */
    enum class HoldFlags {
+   #pragma push_macro("OUT")
+   #pragma push_macro("IN")
+   #undef OUT
+   #undef IN
       NONE = 0x0 << 0, /*!< The call is not on hold        */
       OUT  = 0x1 << 0, /*!< This side put the peer on hold */
       IN   = 0x1 << 1, /*!< The peer put this side on hold */
       COUNT__
+   #pragma pop_macro("OUT")
+   #pragma pop_macro("IN")
    };
    Q_FLAGS(HoldFlags)
 
