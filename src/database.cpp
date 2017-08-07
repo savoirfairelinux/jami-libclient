@@ -65,7 +65,7 @@ DataBase::DataBase(QObject* parent)
 
     // add conversations table
     if (not tables.contains("conversations", Qt::CaseInsensitive))
-        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text)"))
+        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text, is_unread integer)"))
             qDebug() << "DataBase : " << _query->lastError().text();
 
 }
@@ -83,7 +83,7 @@ DataBase& DataBase::instance()
 void
 DataBase::addMessage(const QString& author, const QString& message, const QString& timestamp)
 {
-    auto toto = QString("insert into conversations(author, message, timestamp) values(? , ? , ?)");
+    auto toto = QString("insert into conversations(author, message, timestamp, is_unread) values(? , ?, ?, 1)");
 
     if (not _query->prepare(toto)) {
         qDebug() << "addMessage, " << _query->lastError().text();
@@ -185,5 +185,31 @@ DataBase::getAvatar(const QString& from)
     _query->next();
     qDebug() << _query->value(0).toString();
     return _query->value(0).toString().toStdString();
+}
+
+int
+DataBase::NumberOfUnreads(const QString& author)
+{
+    auto toto = QString("select count(is_unread) from conversations where is_unread = '1' and author = '"+author+"'");
+
+    if (not _query->exec(toto)) {
+        qDebug() << "NumberOfUnreads, " << _query->lastError().text();
+        return -1;
+    }
+
+    _query->next();
+    qDebug() << _query->value(0).toString();
+    return _query->value(0).toInt();
+
+}
+
+void
+DataBase::setMessageRead(const int uid)
+{
+    auto toto = QString("update conversations set is_unread = '0' where id = '"+QString::number(uid)+"'");
+
+    if (not _query->exec(toto))
+        qDebug() << "setMessageRead, " << _query->lastError().text();
+
 }
 #include <database.moc>
