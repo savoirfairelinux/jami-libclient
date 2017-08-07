@@ -40,7 +40,7 @@ DataBase::DataBase(QObject* parent)
     }
 
     // initalize the database
-    
+
     _db = QSqlDatabase::addDatabase("QSQLITE");//not dbConnection
     _db.setDatabaseName(ringDB);
 
@@ -49,32 +49,32 @@ DataBase::DataBase(QObject* parent)
         return;
         // do something or leave...
     }
-    
-    // connect querry object to database object
-    // You must load the SQL driver and open the connection before a QSqlQuery is created. 
-    _querry = std::unique_ptr<QSqlQuery>(new QSqlQuery(_db));
+
+    // connect query object to database object
+    // You must load the SQL driver and open the connection before a QSqlQuery is created.
+    _query = std::unique_ptr<QSqlQuery>(new QSqlQuery(_db));
 
     // check if all tables are presents :
     QStringList tables = _db.tables();
 
     // add accounts table
     if (not tables.contains("accounts", Qt::CaseInsensitive))
-        if (not _querry->exec("create table accounts (id integer primary key)"))
-            qDebug() << "DataBase : " << _querry->lastError().text();
+        if (not _query->exec("create table accounts (id integer primary key)"))
+            qDebug() << "DataBase : " << _query->lastError().text();
 
     // add contacts table
     if (not tables.contains("contacts", Qt::CaseInsensitive))
-        if (not _querry->exec("create table contacts (id integer primary key, unread integer)"))
-            qDebug() << "DataBase : " << _querry->lastError().text();
+        if (not _query->exec("create table contacts (id integer primary key, unread integer)"))
+            qDebug() << "DataBase : " << _query->lastError().text();
 
     // add conversations table
     if (not tables.contains("conversations", Qt::CaseInsensitive))
-        if (not _querry->exec("create table conversations (id integer primary key, author integer, message text)"))
-            qDebug() << "DataBase : " << _querry->lastError().text();
+        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text)"))
+            qDebug() << "DataBase : " << _query->lastError().text();
 
     // fake message
-    addMessage("2518b726b225019595a09ab6735785b3384f99a4", "hello!");
-    
+    addMessage("2518b726b225019595a09ab6735785b3384f99a4", "hello!", "1501474286");
+
 }
 
 DataBase::~DataBase()
@@ -88,44 +88,53 @@ DataBase& DataBase::instance()
 }
 
 void
-DataBase::addMessage(const QString& author, const QString& message )
+DataBase::addMessage(const QString& author, const QString& message, const QString& timestamp)
 {
     qDebug() << "G: " << author;
     qDebug() << "G: " << message;
 
-    auto toto = QString("insert into conversations(author, message) values(? , ?)");
+    auto toto = QString("insert into conversations(author, message, timestamp) values(? , ? , ?)");
 
-    if (not _querry->prepare(toto)) {
-        qDebug() << "addMessage, " << _querry->lastError().text();
+    if (not _query->prepare(toto)) {
+        qDebug() << "addMessage, " << _query->lastError().text();
         return;
     }
 
-    _querry->addBindValue(author);
-    _querry->addBindValue(message);
+    _query->addBindValue(author);
+    _query->addBindValue(message);
+    _query->addBindValue(timestamp);
 
-    if (not _querry->exec()) {
-        qDebug() << "addMessage, " << _querry->lastError().text();
+    if (not _query->exec()) {
+        qDebug() << "addMessage, " << _query->lastError().text();
         return;
     }
 
-    emit messageAdded(message.toStdString()); // ajouter l'auteur
+    DataBase::Message msg;
+    msg.body = message.toUtf8().constData();
+    msg.timestamp = timestamp.toStdString();
+
+    emit messageAdded(msg); // ajouter l'auteur
 }
 
-std::vector<std::string> //  message : status+date+contactitem+direction+body
+std::vector<DataBase::Message> //  message : status+date+contactitem+direction+body
 DataBase::getMessages(const QString& author) // author == from
 {
     // ici je recupere le hash du compte
     // je fais la requete pour avoir les messages du couple account+contact
-    auto toto = QString("select message from conversations where author = '"+author+"'");
+    auto toto = QString("SELECT message, timestamp FROM conversations WHERE author = '"+author+"'");
 
-    if (not _querry->exec(toto)) {
-        qDebug() << "getMessages, " << _querry->lastError().text();
-        return std::vector<std::string>();
+    if (not _query->exec(toto)) {
+        qDebug() << "getMessages, " << _query->lastError().text();
+        return std::vector<Message>();
     }
 
-    std::vector<std::string> messages;    
-    while(_querry->next())
-        messages.push_back(_querry->value(0).toString().toStdString());
+    std::vector<DataBase::Message> messages;
+    while(_query->next()) {
+        DataBase::Message msg;
+        msg.body = _query->value(0).toString().toStdString();
+        msg.timestamp = _query->value(1).toString().toStdString();
+        messages.push_back(msg);
+    }
 
     return messages;
 }

@@ -189,8 +189,8 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
 
     // WIP NEW MODEL
     // sauvegarde le message dans la bd. ceci ne concerne pas l'ui
-    DataBase::instance().addMessage(from, payloads["text/plain"]);
-    
+    DataBase::instance().addMessage(from, payloads["text/plain"], "1501474286");
+
 
 }
 
