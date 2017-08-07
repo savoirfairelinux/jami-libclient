@@ -33,25 +33,36 @@
 
 constexpr char ringDB[] = "ring.db";
 
+/// NOTES :
+///   - les messages peuvent contenir des images, soit les traiter comme des blobs soit les mettre ailleurs et les
+///      charger ultérieurement.
+
 class DataBase : public QObject {
     Q_OBJECT
     public:
+    //TODO complete this class and move it elsewhere?
+    struct Message
+    {
+        std::string body;
+        std::string timestamp;
+    };
+
     ~DataBase();
 
-    void addMessage(const QString& From, const QString& message);
-    std::vector<std::string> getMessages(const QString& author);
+    void addMessage(const QString& From, const QString& message, const QString& timestamp);
+    std::vector<Message> getMessages(const QString& author);
 
     //Singleton
     static DataBase& instance();
 
     // signals
     Q_SIGNALS:
-    void messageAdded(const std::string&);
+    void messageAdded(const DataBase::Message);
 
     private:
     explicit DataBase(QObject* parent = nullptr);
 
-    std::unique_ptr<QSqlQuery> _querry;
+    std::unique_ptr<QSqlQuery> _query;
     QSqlDatabase _db;
 
 };
