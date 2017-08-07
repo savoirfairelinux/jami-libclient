@@ -62,8 +62,14 @@ class DataBase : public QObject {
 
     ~DataBase();
 
+    // Messages
     void addMessage(const QString& From, const QString& message, const QString& timestamp);
     std::vector<Message> getMessages(const QString& author);
+
+    // Contacts
+    void addContact(const QString& From, const QByteArray& payload);
+    std::string getAlias(const QString& from);
+    std::string getAvatar(const QString& from);
 
     //Singleton
     static DataBase& instance();
@@ -71,6 +77,7 @@ class DataBase : public QObject {
     // signals
     Q_SIGNALS:
     void messageAdded(const DataBase::Message);
+    void contactAdded(const std::string&);
 
     private:
     explicit DataBase(QObject* parent = nullptr);
