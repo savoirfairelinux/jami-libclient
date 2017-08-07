@@ -125,7 +125,7 @@
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>מצלצל</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
@@ -137,7 +137,7 @@
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>מדבר</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
@@ -155,13 +155,13 @@
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>של</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>עסוק</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא מוכר</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2209"/>
@@ -295,7 +295,7 @@
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא מוכר</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
