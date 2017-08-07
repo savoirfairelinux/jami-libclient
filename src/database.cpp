@@ -65,7 +65,7 @@ DataBase::DataBase(QObject* parent)
 
     // add conversations table
     if (not tables.contains("conversations", Qt::CaseInsensitive))
-        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text)"))
+        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text, is_unread integer)"))
             qDebug() << "DataBase : " << _query->lastError().text();
 
 }
@@ -83,7 +83,7 @@ DataBase& DataBase::instance()
 void
 DataBase::addMessage(const QString& author, const QString& message, const QString& timestamp)
 {
-    auto toto = QString("insert into conversations(author, message, timestamp) values(? , ? , ?)");
+    auto toto = QString("insert into conversations(author, message, timestamp, is_unread) values(? , ?, ?, 1)");
 
     if (not _query->prepare(toto)) {
         qDebug() << "addMessage, " << _query->lastError().text();
@@ -139,17 +139,17 @@ DataBase::addContact(const QString& from, const QByteArray& payload)
 
     auto toto = QString("insert into contacts(ring_id, alias, photo) values(?, ?, ?)");
 
-    if (not _querry->prepare(toto)) {
-        qDebug() << "addContact, " << _querry->lastError().text();
+    if (not _query->prepare(toto)) {
+        qDebug() << "addContact, " << _query->lastError().text();
         return;
     }
 
-    _querry->addBindValue(from);
-    _querry->addBindValue(alias);
-    _querry->addBindValue(photo);
+    _query->addBindValue(from);
+    _query->addBindValue(alias);
+    _query->addBindValue(photo);
 
-    if (not _querry->exec()) {
-        qDebug() << "addContact, " << _querry->lastError().text();
+    if (not _query->exec()) {
+        qDebug() << "addContact, " << _query->lastError().text();
         return;
     }
 
@@ -162,14 +162,14 @@ DataBase::getAlias(const QString& from)
 {
     auto toto = QString("select alias from contacts where ring_id = '"+from+"'");
 
-    if (not _querry->exec(toto)) {
-        qDebug() << "getAlias, " << _querry->lastError().text();
+    if (not _query->exec(toto)) {
+        qDebug() << "getAlias, " << _query->lastError().text();
         return std::string();
     }
 
-    _querry->next();
-    qDebug() << _querry->value(0).toString();
-    return _querry->value(0).toString().toStdString();
+    _query->next();
+    qDebug() << _query->value(0).toString();
+    return _query->value(0).toString().toStdString();
 }
 
 std::string
@@ -177,13 +177,39 @@ DataBase::getAvatar(const QString& from)
 {
     auto toto = QString("select photo from contacts where ring_id = '"+from+"'");
 
-    if (not _querry->exec(toto)) {
-        qDebug() << "getAvatar, " << _querry->lastError().text();
+    if (not _query->exec(toto)) {
+        qDebug() << "getAvatar, " << _query->lastError().text();
         return std::string();
     }
 
-    _querry->next();
-    qDebug() << _querry->value(0).toString();
-    return _querry->value(0).toString().toStdString();
+    _query->next();
+    qDebug() << _query->value(0).toString();
+    return _query->value(0).toString().toStdString();
+}
+
+int
+DataBase::NumberOfUnreads(const QString& author)
+{
+    auto toto = QString("select count(is_unread) from conversations where is_unread = '1' and author = '"+author+"'");
+
+    if (not _query->exec(toto)) {
+        qDebug() << "NumberOfUnreads, " << _query->lastError().text();
+        return -1;
+    }
+
+    _query->next();
+    qDebug() << _query->value(0).toString();
+    return _query->value(0).toInt();
+
+}
+
+void
+DataBase::setMessageRead(const int uid)
+{
+    auto toto = QString("update conversations set is_unread = '0' where id = '"+QString::number(uid)+"'");
+
+    if (not _query->exec(toto))
+        qDebug() << "setMessageRead, " << _query->lastError().text();
+
 }
 #include <database.moc>
