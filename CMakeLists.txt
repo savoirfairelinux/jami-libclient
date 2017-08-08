@@ -379,6 +379,7 @@ SET( libringclient_LIB_HDRS
   src/categorizedcontactmodel.h
   src/useractionmodel.h
   src/presencestatusmodel.h
+  src/contact.h
   src/contactmethod.h
   src/phonedirectorymodel.h
   src/historytimecategorymodel.h
