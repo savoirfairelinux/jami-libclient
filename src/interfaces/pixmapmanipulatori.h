@@ -28,6 +28,7 @@ class QByteArray ;
 #include <securityevaluationmodel.h>
 #include <categorizedcontactmodel.h>
 #include <categorizedhistorymodel.h>
+class  SmartListItem      ;
 class  Person             ;
 class  ContactMethod      ;
 class  Call               ;
@@ -71,12 +72,14 @@ public:
     virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
+    virtual QVariant   itemPhoto(const SmartListItem* item, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
     virtual QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulatorI::CollectionIconHint hint = PixmapManipulatorI::CollectionIconHint::NONE) const = 0;
     virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const = 0;
     virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const = 0;
     virtual QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const = 0;
     virtual QVariant   decorationRole(const QModelIndex&   index) = 0;
+    virtual QVariant   decorationRole(const SmartListItem* i    ) = 0;
     virtual QVariant   decorationRole(const Call*          c    ) = 0;
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;

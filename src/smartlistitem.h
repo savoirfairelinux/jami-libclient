@@ -31,8 +31,10 @@ class SmartListItem : public QObject {
     virtual ~SmartListItem();
 
     virtual void setTitle(const std::string) {};
-    virtual const std::string getTitle() { return _title->data(); };
+    virtual const std::string getTitle() const { return _title->data(); };
     virtual void action() {};
+    virtual const std::string getAlias() const { return ""; };
+    virtual const std::string getAvatar() const { return ""; };
 
     protected:
     SmartListItem();

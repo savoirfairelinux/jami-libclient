@@ -23,6 +23,7 @@
 
 // Lrc
 #include "smartlistmodel.h"
+#include "database.h"
 
 // Qt
 #include <qstring.h>
@@ -31,9 +32,16 @@
 #include <qdebug.h>
 
 
-ContactItem::ContactItem()
+ContactItem::ContactItem(ContactMethod* cm)
 : SmartListItem()
 {
+    this->contact.uri = cm->uri().toStdString();
+    this->contact.avatar = DataBase::instance().getAvatar(QString(this->contact.uri.c_str()));
+    this->contact.id = cm->bestId().toStdString();
+    this->contact.registeredName = cm->registeredName().toStdString();
+    this->contact.displayName = cm->bestName().toStdString();
+    this->contact.isPresent = false;
+    this->contact.unreadMessages = 0;
 }
 
 ContactItem::~ContactItem()
@@ -50,7 +58,7 @@ ContactItem::setTitle(const std::string title)
 }
 
 const std::string
-ContactItem::getTitle()
+ContactItem::getTitle() const
 {
     return _title->data();
 }
@@ -59,6 +67,18 @@ void
 ContactItem::action()
 {
     emit SmartListModel::instance().showConversationView(this);
+}
+
+const std::string
+ContactItem::getAlias() const
+{
+    return this->contact.displayName;
+}
+
+const std::string
+ContactItem::getAvatar() const
+{
+    return this->contact.avatar;
 }
 
 #include <contactitem.moc>

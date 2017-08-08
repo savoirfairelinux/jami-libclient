@@ -35,6 +35,14 @@ QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bo
     return QVariant();
 }
 
+QVariant PixmapManipulatorDefault::itemPhoto(const SmartListItem* item, const QSize& size, bool displayPresence)
+{
+    Q_UNUSED(item)
+    Q_UNUSED(size)
+    Q_UNUSED(displayPresence)
+    return QVariant();
+}
+
 QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
 {
     Q_UNUSED(p)
@@ -138,6 +146,13 @@ QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
 {
    Q_UNUSED(acc)
    return QVariant();
+}
+
+QVariant
+PixmapManipulatorDefault::decorationRole(const SmartListItem* i)
+{
+    Q_UNUSED(i)
+    return QVariant();
 }
 
 

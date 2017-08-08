@@ -22,14 +22,20 @@
 
 // Lrc
 #include "smartlistitem.h"
+#include "contact.h"
+#include "contactmethod.h"
 
 class ContactItem : public SmartListItem {
     public:
-    ContactItem();
+    explicit ContactItem(ContactMethod* contact);
     ~ContactItem();
 
     void setTitle(const std::string) override;
-    const std::string getTitle() override;
-
+    const std::string getTitle() const override;
+    const std::string getAlias() const override;
+    const std::string getAvatar() const override;
     virtual void action() override;
+
+private:
+    Contact contact;
 };
