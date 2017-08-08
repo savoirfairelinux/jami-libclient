@@ -29,6 +29,7 @@
 
 // Lrc
 #include "private/vcardutils.h"
+#include "availableaccountmodel.h"
 
 DataBase::DataBase(QObject* parent)
 {
@@ -60,7 +61,7 @@ DataBase::DataBase(QObject* parent)
 
     // add contacts table
     if (not tables.contains("contacts", Qt::CaseInsensitive))
-        if (not _query->exec("create table contacts (id integer primary key, unread integer, ring_id text not null unique, alias text, photo text)"))
+        if (not _query->exec("create table contacts (id integer primary key, unread integer, ring_id text not null unique, alias text, photo text, username text)"))
             qDebug() << "DataBase : " << _query->lastError().text();
 
     // add conversations table
@@ -137,13 +138,14 @@ DataBase::addContact(const QString& from, const QByteArray& payload)
     auto alias = vCard["FN"];
     auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"]; // to improve
 
-    auto toto = QString("insert into contacts(ring_id, alias, photo) values(?, ?, ?)");
+    auto toto = QString("insert into contacts(ring_id, username, alias, photo) values(?, ?, ?, ?)");
 
     if (not _query->prepare(toto)) {
         qDebug() << "addContact, " << _query->lastError().text();
         return;
     }
 
+    _query->addBindValue(from);
     _query->addBindValue(from);
     _query->addBindValue(alias);
     _query->addBindValue(photo);
@@ -152,6 +154,9 @@ DataBase::addContact(const QString& from, const QByteArray& payload)
         qDebug() << "addContact, " << _query->lastError().text();
         return;
     }
+
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    NameDirectory::instance().lookupName(account, QString(), from);
 
     emit contactAdded(from.toStdString());
 
@@ -212,4 +217,39 @@ DataBase::setMessageRead(const int uid)
         qDebug() << "setMessageRead, " << _query->lastError().text();
 
 }
+
+void
+DataBase::slotRegisteredNameFound(const Account* account,
+                                  NameDirectory::LookupStatus status,
+                                  const QString& address,
+                                  const QString& name)
+{
+    // for now, registeredNameFound is fired even if it not find any username.
+    //~ if (name.isEmpty()) {
+        //~ qDebug() << "slotRegisteredNameFound, name not found for " << address;
+        //~ return;
+    //~ }
+
+    auto toto = QString("update contacts set username = '"+name+"' where ring_id = '"+address+"'");
+
+    if (not _query->exec(toto))
+        qDebug() << "slotRegisteredNameFound, " << _query->lastError().text();
+
+}
+
+std::string
+DataBase::getUri(const QString& from)
+{
+    auto toto = QString("select username from contacts where ring_id='"+from+"'");
+
+    if (not _query->exec(toto)) {
+        qDebug() << "getUri, " << _query->lastError().text();
+        return std::string();
+    }
+
+    _query->next();
+    qDebug() << _query->value(0).toString();
+    return _query->value(0).toString().toStdString();
+}
+
 #include <database.moc>

@@ -27,6 +27,8 @@
 #include <qobject.h>
 #include <QtSql/QSqlQuery>
 
+// Lrc
+#include "namedirectory.h"
 
 // TEST
 #include <qdebug.h>
@@ -36,6 +38,8 @@ constexpr char ringDB[] = "ring.db";
 /// NOTES :
 ///   - les messages peuvent contenir des images, soit les traiter comme des blobs soit les mettre ailleurs et les
 ///      charger ultérieurement.
+
+class Account;
 
 class DataBase : public QObject {
     Q_OBJECT
@@ -57,6 +61,7 @@ class DataBase : public QObject {
 
     // Contacts
     void addContact(const QString& From, const QByteArray& payload);
+    std::string getUri(const QString& from);
     std::string getAlias(const QString& from);
     std::string getAvatar(const QString& from);
 
@@ -67,6 +72,10 @@ class DataBase : public QObject {
     Q_SIGNALS:
     void messageAdded(const DataBase::Message);
     void contactAdded(const std::string&);
+
+    // Slots
+    private Q_SLOTS:
+    void slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
     private:
     explicit DataBase(QObject* parent = nullptr);
