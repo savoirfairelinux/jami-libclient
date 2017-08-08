@@ -24,7 +24,6 @@
 // Lrc
 #include "smartlistmodel.h"
 #include "database.h"
-#include "availableaccountmodel.h"
 
 // Qt
 #include <qstring.h>
@@ -75,13 +74,13 @@ ContactItem::activate()
 }
 
 const std::string
-ContactItem::getAlias()
+ContactItem::getAlias() const
 {
     return this->contact.displayName;
 }
 
 const std::string
-ContactItem::getAvatar()
+ContactItem::getAvatar() const
 {
     return this->contact.avatar;
 }
