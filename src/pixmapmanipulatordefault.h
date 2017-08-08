@@ -30,7 +30,7 @@ public:
     QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) override;
     QVariant   securityIssueIcon(const QModelIndex& index) override;
     QByteArray toByteArray(const QVariant& pxm) override;
-    QVariant   itemPhoto(const std::string& avatar, const std::string& alias, const std::string& uri, const QSize& size, bool displayPresence = true) override;
+    QVariant   itemPhoto(const SmartListItem* item, const QSize& size, bool displayPresence = true) override;
     QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") override;
     QVariant   collectionIcon(const CollectionInterface* interface, PixmapManipulatorI::CollectionIconHint hint = PixmapManipulatorI::CollectionIconHint::NONE) const override;
     QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const override;

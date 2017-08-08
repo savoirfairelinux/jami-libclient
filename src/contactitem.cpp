@@ -75,13 +75,13 @@ ContactItem::activate()
 }
 
 const std::string
-ContactItem::getAlias()
+ContactItem::getAlias() const
 {
     return this->contact.displayName;
 }
 
 const std::string
-ContactItem::getAvatar()
+ContactItem::getAvatar() const
 {
     return this->contact.avatar;
 }
@@ -123,7 +123,7 @@ ContactItem::placeCall()
 }
 
 const std::string
-ContactItem::getLastInteraction()
+ContactItem::getLastInteraction() const
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
 
