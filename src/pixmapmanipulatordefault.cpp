@@ -35,6 +35,16 @@ QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bo
     return QVariant();
 }
 
+QVariant PixmapManipulatorDefault::itemPhoto(const std::string& avatar, const std::string& alias, const std::string& uri, const QSize& size, bool displayPresence)
+{
+    Q_UNUSED(avatar)
+    Q_UNUSED(alias)
+    Q_UNUSED(uri)
+    Q_UNUSED(size)
+    Q_UNUSED(displayPresence)
+    return QVariant();
+}
+
 QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
 {
     Q_UNUSED(p)
