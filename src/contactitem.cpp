@@ -70,13 +70,13 @@ ContactItem::action()
 }
 
 const std::string
-ContactItem::getAlias() const
+ContactItem::getAlias()
 {
     return this->contact.displayName;
 }
 
 const std::string
-ContactItem::getAvatar() const
+ContactItem::getAvatar()
 {
     return this->contact.avatar;
 }
