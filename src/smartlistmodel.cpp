@@ -48,7 +48,7 @@ SmartListModel::SmartListModel(QObject* parent)
 
         // add contacts to the list
         for (auto c : contacts) {
-            auto contact = std::shared_ptr<ContactItem>(new ContactItem());
+            auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
             contact->setTitle(c->uri().toUtf8().constData());
             items.push_back(contact);
         }
@@ -65,11 +65,11 @@ SmartListModel::SmartListModel(QObject* parent)
 
     // initialise the list
     fillsWithContacts(AvailableAccountModel::instance().currentDefaultAccount());
-    
-    
+
+
     // test only
     DataBase::instance();
-    
+
 }
 
 SmartListModel::~SmartListModel()
@@ -89,7 +89,7 @@ SmartListModel::instance()
     return *instance;
 }
 
-std::shared_ptr<SmartListItem> 
+std::shared_ptr<SmartListItem>
 SmartListModel::getItem(int row){
     return items[row];
 }
