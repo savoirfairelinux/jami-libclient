@@ -35,6 +35,7 @@ class ContactItem : public SmartListItem {
     const std::string getAlias() const override;
     const std::string getAvatar() const override;
     virtual void action() override;
+    void sendMessage(std::string message);
 
 private:
     Contact contact;
