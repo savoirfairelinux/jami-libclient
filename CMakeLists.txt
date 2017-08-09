@@ -806,3 +806,22 @@ CONFIGURE_FILE(
 
 ADD_CUSTOM_TARGET(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+
+
+IF((${ENABLE_TEST} MATCHES true))
+  FIND_PACKAGE(Cppunit REQUIRED)
+  MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
+  # unit testing
+  IF (CPPUNIT_FOUND)
+    add_executable(LRCTester
+      test/test_runner.cpp
+      test/example.h
+      test/example.cpp
+    )
+    TARGET_LINK_LIBRARIES(LRCTester
+       -lcppunit
+    )
+    enable_testing()
+    add_test(TEST LRCTester)
+  ENDIF()
+ENDIF()
