@@ -24,6 +24,7 @@
 // Lrc
 #include "smartlistmodel.h"
 #include "database.h"
+#include "availableaccountmodel.h"
 
 // Qt
 #include <qstring.h>
@@ -31,6 +32,8 @@
 // Debug
 #include <qdebug.h>
 
+// Ring daemon
+#include "dbus/configurationmanager.h"
 
 ContactItem::ContactItem(ContactMethod* cm)
 : SmartListItem()
@@ -79,6 +82,21 @@ const std::string
 ContactItem::getAvatar()
 {
     return this->contact.avatar;
+}
+
+void
+ContactItem::sendMessage(std::string message)
+{
+    // il faudera traiter les cas messages durant appels et par dht.
+
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = message.c_str();
+
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+
+    auto id = ConfigurationManager::instance().sendTextMessage(account->id(), contact.uri.c_str(), payloads);
+
+    DataBase::instance().addMessage(account->id(), message.c_str(), "timestamp missing");
 }
 
 #include <contactitem.moc>
