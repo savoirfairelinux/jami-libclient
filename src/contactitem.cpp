@@ -34,6 +34,7 @@
 
 // Ring daemon
 #include "dbus/configurationmanager.h"
+#include "dbus/callmanager.h"
 
 ContactItem::ContactItem(ContactMethod* cm)
 : SmartListItem()
@@ -97,6 +98,21 @@ ContactItem::sendMessage(std::string message)
     auto id = ConfigurationManager::instance().sendTextMessage(account->id(), contact.uri.c_str(), payloads);
 
     DataBase::instance().addMessage(account->id(), message.c_str(), "timestamp missing");
+}
+
+void
+ContactItem::placeCall()
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+
+    if (not account) {
+        qDebug() << "placeCall, invalid pointer";
+        return;
+    }
+
+    auto uri = "ring:" + contact.uri;
+
+    CallManager::instance().placeCall(account->id(), uri.c_str());
 }
 
 #include <contactitem.moc>
