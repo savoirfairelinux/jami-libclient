@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_460374b8",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2017-08-10T16:00:33Z",
+      "side": 1,
+      "message": "You should not link to Qt5Sql like this. Look how it is done just above with Core and Dbus.\nBy calling FIND_PACKAGE you get specific env var with the correct path to the sql component.",
+      "range": {
+        "startLine": 673,
+        "startChar": 4,
+        "endLine": 673,
+        "endChar": 11
+      },
+      "revId": "62ca590f9195f3483dee43ea02dfe051c30b9484",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
