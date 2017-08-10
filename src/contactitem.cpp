@@ -115,4 +115,15 @@ ContactItem::placeCall()
     CallManager::instance().placeCall(account->id(), uri.c_str());
 }
 
+const std::string
+ContactItem::getLastInteraction()
+{
+    auto messages = DataBase::instance().getMessages(contact.uri.c_str());
+
+    if (messages.size() == 0)
+        return std::string();
+
+    return messages.back().body;
+}
+
 #include <contactitem.moc>
