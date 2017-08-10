@@ -109,6 +109,7 @@ private:
    Q_DECLARE_PRIVATE(PhoneDirectoryModel)
 
 Q_SIGNALS:
+   void contactSearched(ContactMethod* cm);
    void lastUsedChanged(ContactMethod* cm, time_t t);
    void contactChanged(ContactMethod* cm, Person* newContact, Person* oldContact);
    void contactMethodMerged(ContactMethod* cm, ContactMethod* into);

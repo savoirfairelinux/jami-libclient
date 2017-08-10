@@ -26,6 +26,7 @@
 
 // Data
 #include "smartlistitem.h"
+#include "contactmethod.h"
 
 typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
 
@@ -44,6 +45,8 @@ class SmartListModel : public QObject {
     // des signaux rendant le public caduc).
     // - la factory des contacts provenant du daemon est dans le constructeur dans la lambda associée au changment de compte
 
+    public Q_SLOTS:
+    void slotContactSearched(const ContactMethod* cm);
 
     // signals
     Q_SIGNALS:
@@ -56,5 +59,7 @@ class SmartListModel : public QObject {
     private:
     explicit SmartListModel(QObject* parent = nullptr);
     SmartListItems items;
+
+    int find(const std::string& uid) const;
 
 };

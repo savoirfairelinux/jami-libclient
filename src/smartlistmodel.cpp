@@ -31,6 +31,7 @@
 #include <accountmodel.h>
 #include <contactmethod.h>
 #include <availableaccountmodel.h>
+#include <phonedirectorymodel.h>
 #include "database.h"
 
 SmartListModel::SmartListModel(QObject* parent)
@@ -62,6 +63,7 @@ SmartListModel::SmartListModel(QObject* parent)
         if (fillsWithContacts(a))
             emit modelUpdated();
     });
+    connect(&PhoneDirectoryModel::instance(), &PhoneDirectoryModel::contactSearched, this, &SmartListModel::slotContactSearched);
 
     // initialise the list
     fillsWithContacts(AvailableAccountModel::instance().currentDefaultAccount());
@@ -90,8 +92,31 @@ SmartListModel::instance()
 }
 
 std::shared_ptr<SmartListItem>
-SmartListModel::getItem(int row){
+SmartListModel::getItem(int row)
+{
     return items[row];
+}
+
+void
+SmartListModel::slotContactSearched(const ContactMethod* cm)
+{
+    auto row = find(cm->uri().toStdString());
+    if (row != -1) {
+        //TODO set this item at first pos and emit modelUpdated (replace action())
+        items[row]->action();
+    } else {
+        // TODO change temporary item
+    }
+}
+
+int
+SmartListModel::find(const std::string& uid) const
+{
+    for (auto i = 0; i < items.size(); ++i) {
+        auto item = items[i];
+        if (item->getTitle() == uid) return i;
+    }
+    return -1;
 }
 
 #include <smartlistmodel.moc>

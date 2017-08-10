@@ -562,12 +562,15 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
 
    //Empirical testing resulted in this as the best return order
    //The merge may have failed either in the "if" above or in the merging code
-   if (confirmedCandidate2)
-      return confirmedCandidate2;
-   if (confirmedCandidate)
-      return confirmedCandidate;
-   if (confirmedCandidate3)
-      return confirmedCandidate3;
+   if (confirmedCandidate) {
+       return confirmedCandidate;
+   }
+   if (confirmedCandidate2) {
+       return confirmedCandidate2;
+   }
+   if (confirmedCandidate3) {
+       return confirmedCandidate3;
+   }
 
    //No better candidates were found than the original assumption, use it
    if (wrap) {
@@ -577,7 +580,7 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
             //For a short time, a placeholder contact and a contact can coexist, drop the placeholder
             if (contact && (!number->contact() || (contact->uid() == number->contact()->uid())))
                number->setPerson(contact);
-
+            emit contactSearched(number);
             return number;
          }
       }
