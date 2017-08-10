@@ -55,7 +55,9 @@ class DataBase : public QObject {
 
     // Messages
     void addMessage(const QString& From, const QString& message, const QString& timestamp);
+    // TODO Not correct, we must change the table to get a conversation, not all messages from author
     std::vector<Message> getMessages(const QString& author);
+    void removeHistory(const QString& author);
     int NumberOfUnreads(const QString& author);
     void setMessageRead(const int uid);
 
