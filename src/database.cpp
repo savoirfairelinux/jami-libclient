@@ -147,6 +147,16 @@ DataBase::getMessages(const QString& author) // author == from
 }
 
 void
+DataBase::removeHistory(const QString& author)
+{
+    auto removeHistoryQuery = QString("DELETE FROM conversations WHERE author = '"+author+"'");
+
+    if (not _query->exec(removeHistoryQuery)) {
+        qDebug() << "removeHistory, " << _query->lastError().text();
+    }
+}
+
+void
 DataBase::addContact(const QString& from, const QByteArray& payload)
 {
     auto vCard = VCardUtils::toHashMap(payload);
