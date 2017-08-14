@@ -28,6 +28,10 @@
 #include <contactmethod.h>
 #include <availableaccountmodel.h>
 #include "database.h"
+#include "dbus/callmanager.h"
+
+// Std
+#include <iterator>
 
 SmartListModel::SmartListModel(QObject* parent)
 {
@@ -57,6 +61,35 @@ SmartListModel::SmartListModel(QObject* parent)
     {
         if (fillsWithContacts(a))
             emit modelUpdated();
+    });
+
+
+    connect(&CallManager::instance(), &CallManagerInterface::incomingCall,
+    [this](const QString &accountID, const QString &callID, const QString &fromQString)
+    {
+        auto from = fromQString.toStdString();
+
+        // during a call we receiving something like :
+        // "gargouille <6f42876966f3eb12c5ad33c33398e0fb22c6cea4@ring.dht>"
+        // we trim to get only the ringid
+        from.erase(0, from.find('<')+1);
+        from.erase(from.find('@'));
+
+        unsigned int row = 0;
+
+        for (auto iter = items.begin(); iter != items.end(); iter++) {
+            auto conversation = std::dynamic_pointer_cast<ContactItem>(*iter);
+
+            if(not conversation) {
+                qDebug() << "incomingCall, but no conversation found";
+                continue;
+            }
+
+            if (conversation->getUri() == from) {
+                conversation->setCallId(callID.toInt());
+                emit conversationItemUpdated(std::distance(items.begin(), iter));
+            }
+        }
     });
 
     // initialise the list
