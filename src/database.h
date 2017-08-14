@@ -49,16 +49,16 @@ class DataBase : public QObject {
     {
         std::string body;
         std::string timestamp;
+        bool is_outgoing;
     };
 
     ~DataBase();
 
     // Messages
-    void addMessage(const QString& From, const QString& message, const QString& timestamp);
-    // TODO Not correct, we must change the table to get a conversation, not all messages from author
-    std::vector<Message> getMessages(const QString& author);
-    void removeHistory(const QString& author);
-    int NumberOfUnreads(const QString& author);
+    void addMessage(const QString& contact, const QString& account, const QString& message, const QString& timestamp, const bool is_outgoing);
+    std::vector<Message> getMessages(const QString& contact, const QString& account);
+    void removeHistory(const QString& contact, const QString& account);
+    int NumberOfUnreads(const QString& contact, const QString& account);
     void setMessageRead(const int uid);
 
     // Contacts

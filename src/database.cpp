@@ -66,7 +66,7 @@ DataBase::DataBase(QObject* parent)
 
     // add conversations table
     if (not tables.contains("conversations", Qt::CaseInsensitive))
-        if (not _query->exec("create table conversations (id integer primary key, author integer, message text, timestamp text, is_unread integer)"))
+        if (not _query->exec("create table conversations (id integer primary key, contact integer, account integer, message text, timestamp text, is_unread boolean, is_outgoing boolean)"))
             qDebug() << "DataBase : " << _query->lastError().text();
 
 }
@@ -82,18 +82,20 @@ DataBase& DataBase::instance()
 }
 
 void
-DataBase::addMessage(const QString& author, const QString& message, const QString& timestamp)
+DataBase::addMessage(const QString& contact, const QString& account, const QString& message, const QString& timestamp, const bool is_outgoing)
 {
-    auto toto = QString("insert into conversations(author, message, timestamp, is_unread) values(? , ?, ?, 1)");
+    auto toto = QString("insert into conversations(contact, account, message, timestamp, is_unread, is_outgoing) values(?, ?, ?, ?, 1, ?)");
 
     if (not _query->prepare(toto)) {
         qDebug() << "addMessage, " << _query->lastError().text();
         return;
     }
 
-    _query->addBindValue(author);
+    _query->addBindValue(contact);
+    _query->addBindValue(account);
     _query->addBindValue(message);
     _query->addBindValue(timestamp);
+    _query->addBindValue(is_outgoing);
 
     if (not _query->exec()) {
         qDebug() << "addMessage, " << _query->lastError().text();
@@ -103,16 +105,17 @@ DataBase::addMessage(const QString& author, const QString& message, const QStrin
     DataBase::Message msg;
     msg.body = message.toUtf8().constData();
     msg.timestamp = timestamp.toStdString();
+    msg.is_outgoing = is_outgoing;
 
     emit messageAdded(msg); // ajouter l'auteur
 }
 
 std::vector<DataBase::Message> //  message : status+date+contactitem+direction+body
-DataBase::getMessages(const QString& author) // author == from
+DataBase::getMessages(const QString& contact, const QString& account) // contact == from
 {
     // ici je recupere le hash du compte
     // je fais la requete pour avoir les messages du couple account+contact
-    auto toto = QString("SELECT message, timestamp FROM conversations WHERE author = '"+author+"'");
+    auto toto = QString("SELECT message, timestamp, is_outgoing FROM conversations WHERE contact = '"+contact+"' AND account='"+account+"'");
 
     if (not _query->exec(toto)) {
         qDebug() << "getMessages, " << _query->lastError().text();
@@ -124,6 +127,7 @@ DataBase::getMessages(const QString& author) // author == from
         DataBase::Message msg;
         msg.body = _query->value(0).toString().toStdString();
         msg.timestamp = _query->value(1).toString().toStdString();
+        msg.is_outgoing = _query->value(2).toBool();
         messages.push_back(msg);
     }
 
@@ -131,9 +135,9 @@ DataBase::getMessages(const QString& author) // author == from
 }
 
 void
-DataBase::removeHistory(const QString& author)
+DataBase::removeHistory(const QString& contact, const QString& account)
 {
-    auto removeHistoryQuery = QString("DELETE FROM conversations WHERE author = '"+author+"'");
+    auto removeHistoryQuery = QString("DELETE FROM conversations WHERE contact = '"+contact+"' AND account='"+account+"'");
 
     if (not _query->exec(removeHistoryQuery)) {
         qDebug() << "removeHistory, " << _query->lastError().text();
@@ -203,9 +207,9 @@ DataBase::getAvatar(const QString& from)
 }
 
 int
-DataBase::NumberOfUnreads(const QString& author)
+DataBase::NumberOfUnreads(const QString& contact, const QString& account)
 {
-    auto toto = QString("select count(is_unread) from conversations where is_unread = '1' and author = '"+author+"'");
+    auto toto = QString("SELECT COUNT(is_unread) FROM conversations WHERE is_unread='1' AND contact='"+contact+"' AND account='"+account+"'");
 
     if (not _query->exec(toto)) {
         qDebug() << "NumberOfUnreads, " << _query->lastError().text();

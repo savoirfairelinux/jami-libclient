@@ -28,6 +28,7 @@
 
 // Qt
 #include <qstring.h>
+#include <QDateTime>
 
 // Debug
 #include <qdebug.h>
@@ -97,7 +98,13 @@ ContactItem::sendMessage(std::string message)
 
     auto id = ConfigurationManager::instance().sendTextMessage(account->id(), contact.uri.c_str(), payloads);
 
-    DataBase::instance().addMessage(account->id(), message.c_str(), "timestamp missing");
+    DataBase::instance().addMessage(
+        contact.uri.c_str(),
+        account->id(),
+        message.c_str(),
+        QString::number(QDateTime::currentMSecsSinceEpoch() / 1000),
+        true
+    );
 }
 
 void
@@ -118,7 +125,14 @@ ContactItem::placeCall()
 const std::string
 ContactItem::getLastInteraction()
 {
-    auto messages = DataBase::instance().getMessages(contact.uri.c_str());
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+
+    if (not account) {
+        qDebug() << "placeCall, invalid pointer";
+        return std::string();
+    }
+
+    auto messages = DataBase::instance().getMessages(contact.uri.c_str(), account->id());
 
     if (messages.size() == 0)
         return std::string();
