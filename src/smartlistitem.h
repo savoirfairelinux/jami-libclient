@@ -40,6 +40,7 @@ class LIB_EXPORT SmartListItem : public QObject {
     virtual const std::string getAlias() const { return ""; };
     virtual const std::string getAvatar() const { return ""; };
     virtual const std::string getLastInteraction() const { return ""; };
+    virtual const bool getPresence() const = 0;
 
     protected:
     SmartListItem();

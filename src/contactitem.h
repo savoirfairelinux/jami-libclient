@@ -36,6 +36,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     const std::string getAvatar() const override;
     const std::string getLastInteraction() override;
     const std::string getUri();
+    const bool getPresence() const override;
     virtual void activate() override;
 
     // message communication
@@ -44,6 +45,9 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     // video communication
     void placeCall();
     void setCallId(const unsigned int);
+
+    public Q_SLOTS:
+    void slotPresenceChanged(bool);
 
 private:
     Contact contact;
