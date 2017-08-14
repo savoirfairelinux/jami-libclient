@@ -44,6 +44,8 @@ class LIB_EXPORT SmartListModel : public QObject {
     // des signaux rendant le public caduc).
     // - la factory des contacts provenant du daemon est dans le constructeur dans la lambda associée au changment de compte
 
+    int find(const std::string& uid) const;
+    void openConversation(const std::string& uid) const;
 
     // signals
     Q_SIGNALS:
