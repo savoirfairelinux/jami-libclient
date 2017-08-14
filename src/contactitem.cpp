@@ -146,4 +146,10 @@ ContactItem::getUri()
     return contact.uri;
 }
 
+void
+ContactItem::setCallId(const unsigned int callId)
+{
+    callId_ = callId;
+}
+
 #include <contactitem.moc>
