@@ -126,4 +126,10 @@ ContactItem::getLastInteraction()
     return messages.back().body;
 }
 
+const std::string
+ContactItem::getUri()
+{
+    return contact.uri;
+}
+
 #include <contactitem.moc>
