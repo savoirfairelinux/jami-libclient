@@ -137,7 +137,7 @@ void
 SmartListModel::openConversation(const std::string& uid) const
 {
     auto i = find(uid);
-    if (i != -1) items[i]->action();
+    if (i != -1) items[i]->activate();
     else {
         // TODO open temporary item
     }
