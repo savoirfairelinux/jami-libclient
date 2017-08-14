@@ -647,7 +647,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
-        <translation>Счётчик имён</translation>
+        <translation>Счетчик имен</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -773,7 +773,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
-        <translation>Счётчик</translation>
+        <translation>Счетчик</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
@@ -783,7 +783,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation>Не истёк</translation>
+        <translation>Срок действия не истек</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
@@ -1190,7 +1190,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Ваш сертификат истёк, пожалуйста, свяжитесь с вашим системным администратором.</translation>
+        <translation>Ваш сертификат истек, пожалуйста, свяжитесь с вашим системным администратором.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
