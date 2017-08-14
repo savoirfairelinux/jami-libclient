@@ -39,6 +39,10 @@
 #include <accountmodel.h>
 #include <personmodel.h>
 
+// Qt
+#include <QDateTime>
+#include <QString>
+
 // Lrc
 #include "database.h"
 
@@ -189,7 +193,13 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
 
     // WIP NEW MODEL
     // sauvegarde le message dans la bd. ceci ne concerne pas l'ui
-    DataBase::instance().addMessage(from, payloads["text/plain"], "timestamp missing");
+    DataBase::instance().addMessage(
+        from,
+        accountId,
+        payloads["text/plain"],
+        QString::number(QDateTime::currentMSecsSinceEpoch() / 1000),
+        false
+    );
 
 
 }
