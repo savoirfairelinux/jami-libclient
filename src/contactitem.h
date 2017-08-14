@@ -36,9 +36,14 @@ class ContactItem : public SmartListItem {
     const std::string getAvatar() override;
     const std::string getLastInteraction() override;
     const std::string getUri();
+    const bool getPresence() const override;
+
     virtual void action() override;
     void sendMessage(std::string message);
     void placeCall();
+
+    public Q_SLOTS:
+    void slotPresenceChanged(bool);
 
 private:
     Contact contact;

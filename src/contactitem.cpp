@@ -45,8 +45,10 @@ ContactItem::ContactItem(ContactMethod* cm)
     this->contact.id = cm->bestId().toStdString();
     this->contact.registeredName = cm->registeredName().toStdString();
     this->contact.displayName = cm->bestName().toStdString();
-    this->contact.isPresent = false;
+    this->contact.isPresent = cm->isPresent();
     this->contact.unreadMessages = 0;
+
+    QObject::connect(cm, &ContactMethod::presentChanged, this, &ContactItem::slotPresenceChanged);
 }
 
 ContactItem::~ContactItem()
@@ -145,5 +147,20 @@ ContactItem::getUri()
 {
     return contact.uri;
 }
+
+const bool
+ContactItem::getPresence() const
+{
+    return contact.isPresent;
+}
+
+
+void
+ContactItem::slotPresenceChanged(bool presence)
+{
+    this->contact.isPresent = presence;
+    // TODO emit changed();
+}
+
 
 #include <contactitem.moc>

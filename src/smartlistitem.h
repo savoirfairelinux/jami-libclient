@@ -36,6 +36,7 @@ class SmartListItem : public QObject {
     virtual const std::string getAlias() { return ""; };
     virtual const std::string getAvatar() { return ""; };
     virtual const std::string getLastInteraction() { return ""; };
+    virtual const bool getPresence() const = 0;
 
     protected:
     SmartListItem();
