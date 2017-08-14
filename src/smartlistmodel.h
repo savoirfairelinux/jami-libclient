@@ -48,10 +48,13 @@ class SmartListModel : public QObject {
     // signals
     Q_SIGNALS:
     void modelUpdated();
+    void conversationItemUpdated(const unsigned int row);
+
     // NOTE for njager: I need the history when the chatview is loaded. Not for creating the chatview.
     // I think it's more logical to get the history when we want
     // But I need to know which item is activated for creating the chatview. So I add SmartListItem* item
     void showConversationView(SmartListItem* item);
+    void showIncomingCallView(SmartListItem* item);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
