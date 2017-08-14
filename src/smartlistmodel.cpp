@@ -98,7 +98,6 @@ SmartListModel::SmartListModel(QObject* parent)
 
     // test only
     DataBase::instance();
-
 }
 
 SmartListModel::~SmartListModel()
@@ -122,5 +121,27 @@ std::shared_ptr<SmartListItem>
 SmartListModel::getItem(int row){
     return items[row];
 }
+
+int
+SmartListModel::find(const std::string& uid) const
+{
+    for (unsigned int i = 0 ; i < items.size() ; ++i) {
+        if (items[i]->getTitle() == uid) { // TODO get UID
+            return i;
+        }
+    }
+    return -1;
+}
+
+void
+SmartListModel::openConversation(const std::string& uid) const
+{
+    auto i = find(uid);
+    if (i != -1) items[i]->activate();
+    else {
+        // TODO open temporary item
+    }
+}
+
 
 #include <smartlistmodel.moc>
