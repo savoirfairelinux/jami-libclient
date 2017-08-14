@@ -37,9 +37,15 @@ class ContactItem : public SmartListItem {
     const std::string getLastInteraction() override;
     const std::string getUri();
     virtual void action() override;
-    void sendMessage(std::string message);
+
+    // message communication
+    void sendMessage(std::string message); // manage only dht message for now
+
+    // video communication
     void placeCall();
+    void setCallId(const unsigned int);
 
 private:
     Contact contact;
+    unsigned int callId_ = 0;
 };

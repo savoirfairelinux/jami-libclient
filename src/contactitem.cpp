@@ -28,7 +28,6 @@
 
 // Qt
 #include <qstring.h>
-#include <QDateTime>
 
 // Debug
 #include <qdebug.h>
@@ -144,6 +143,13 @@ const std::string
 ContactItem::getUri()
 {
     return contact.uri;
+}
+
+void
+ContactItem::setCallId(const unsigned int callId)
+{
+    callId_ = callId;
+    emit SmartListModel::instance().showIncomingCallView(this);
 }
 
 #include <contactitem.moc>
