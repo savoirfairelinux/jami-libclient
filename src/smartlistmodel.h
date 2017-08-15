@@ -37,7 +37,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     //Singleton
     static SmartListModel& instance();
 
-    SmartListItems getItems();
+    SmartListItems getItems() const;
     std::shared_ptr<SmartListItem> getItem(int row);
 
     // factories (pour l'instant en public, mais il faudra think a little, elles devront sans doute est utilisées au travers
@@ -46,6 +46,9 @@ class LIB_EXPORT SmartListModel : public QObject {
 
     int find(const std::string& uid) const;
     void openConversation(const std::string& uid) const;
+
+    void setFilter(const std::string& newFilter);
+    std::string getFilter() const;
 
     // signals
     Q_SIGNALS:
@@ -61,5 +64,6 @@ class LIB_EXPORT SmartListModel : public QObject {
     private:
     explicit SmartListModel(QObject* parent = nullptr);
     SmartListItems items;
+    std::string m_sFilter;
 
 };

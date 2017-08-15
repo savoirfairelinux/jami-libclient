@@ -32,6 +32,8 @@
 
 // Std
 #include <iterator>
+#include <algorithm>
+#include <regex>
 
 SmartListModel::SmartListModel(QObject* parent)
 {
@@ -105,9 +107,28 @@ SmartListModel::~SmartListModel()
 }
 
 SmartListItems
-SmartListModel::getItems()
+SmartListModel::getItems() const
 {
-    return items;
+    if (m_sFilter.length() == 0) return items;
+
+    SmartListItems filteredItems(items.size());
+    auto filter = m_sFilter;
+    auto it = std::copy_if(items.begin(), items.end(), filteredItems.begin(),
+    [&filter] (std::shared_ptr<SmartListItem> item) {
+        try {
+            // TODO filter by UID and not by title?
+            auto regexFilter = std::regex(filter, std::regex_constants::icase);
+            bool result = std::regex_search(item->getTitle(), regexFilter)
+            | std::regex_search(item->getAlias(), regexFilter);
+            return result;
+        } catch(std::regex_error&) {
+            // If the regex is incorrect, just test if filter is a substring of the title or the alias.
+            return item->getTitle().find(filter) != std::string::npos
+            && item->getAlias().find(filter) != std::string::npos;
+        }
+    });
+    filteredItems.resize(std::distance(filteredItems.begin(), it));
+    return filteredItems;
 }
 
 SmartListModel&
@@ -141,6 +162,20 @@ SmartListModel::openConversation(const std::string& uid) const
     else {
         // TODO open temporary item
     }
+}
+
+void
+SmartListModel::setFilter(const std::string& newFilter)
+{
+    m_sFilter = newFilter;
+    emit modelUpdated();
+}
+
+
+std::string
+SmartListModel::getFilter() const
+{
+    return m_sFilter;
 }
 
 
