@@ -122,12 +122,12 @@ SmartListModel::getItems() const
     SmartListItems filteredItems(items.size());
     auto filter = m_sFilter;
     auto it = std::copy_if(items.begin(), items.end(), filteredItems.begin(),
-    [&filter] (std::shared_ptr<SmartListItem> item) {
+    [&filter, this] (const std::shared_ptr<SmartListItem>& item) {
         try {
             // TODO filter by UID and not by title?
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
-            bool result = std::regex_search(item->getTitle(), regexFilter)
-            | std::regex_search(item->getAlias(), regexFilter);
+            bool result = ( std::regex_search(item->getTitle(), regexFilter)
+            | std::regex_search(item->getAlias(), regexFilter) ) || ( items[0] == item );
             return result;
         } catch(std::regex_error&) {
             // If the regex is incorrect, just test if filter is a substring of the title or the alias.
