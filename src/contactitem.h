@@ -36,7 +36,7 @@ class ContactItem : public SmartListItem {
     const std::string getAvatar() override;
     const std::string getLastInteraction() override;
     const std::string getUri();
-    virtual void action() override;
+    virtual void activate() override;
 
     // message communication
     void sendMessage(std::string message); // manage only dht message for now
