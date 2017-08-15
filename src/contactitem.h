@@ -25,7 +25,7 @@
 #include "contact.h"
 #include "contactmethod.h"
 
-class ContactItem : public SmartListItem {
+class LIB_EXPORT ContactItem : public SmartListItem {
     public:
     explicit ContactItem(ContactMethod* contact);
     ~ContactItem();
