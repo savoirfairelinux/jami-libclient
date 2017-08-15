@@ -29,7 +29,7 @@
 
 typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
 
-class SmartListModel : public QObject {
+class LIB_EXPORT SmartListModel : public QObject {
     Q_OBJECT // on changera ça dans le futur // utilisé pour binder les signaux qt
     public:
     ~SmartListModel();

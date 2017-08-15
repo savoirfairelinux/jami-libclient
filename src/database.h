@@ -41,7 +41,7 @@ constexpr char ringDB[] = "ring.db";
 
 class Account;
 
-class DataBase : public QObject {
+class LIB_EXPORT DataBase : public QObject {
     Q_OBJECT
     public:
     //TODO complete this class and move it elsewhere?
