@@ -24,7 +24,11 @@
 // Qt
 #include <qobject.h> // for signals
 
-class SmartListItem : public QObject {
+// Lrc
+#include "typedefs.h"
+
+
+class LIB_EXPORT SmartListItem : public QObject {
     Q_OBJECT
 
     public:
