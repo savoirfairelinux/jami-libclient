@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_4c81d58e",
+        "filename": "test/example.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-08-15T19:52:35Z",
+      "side": 1,
+      "message": "GPL header missing",
+      "revId": "e0006a7ed8356db459e5c7f14bd00d5b5139e8e8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_2c7e11af",
+        "filename": "test/test_runner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-08-15T19:52:35Z",
+      "side": 1,
+      "message": "GPL header missing",
+      "revId": "e0006a7ed8356db459e5c7f14bd00d5b5139e8e8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
