@@ -69,7 +69,7 @@ ContactItem::getTitle() const
 }
 
 void
-ContactItem::action()
+ContactItem::activate()
 {
     emit SmartListModel::instance().showConversationView(this);
 }
