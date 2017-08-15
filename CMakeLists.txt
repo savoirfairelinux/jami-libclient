@@ -297,6 +297,7 @@ SET( libringclient_LIB_SRCS
   src/smartlistmodel.cpp
   src/contactitem.cpp
   src/database.cpp
+  src/newconversationitem.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -453,6 +454,7 @@ SET( libringclient_LIB_HDRS
   src/smartlistmodel.h
   src/contactitem.h
   src/database.h
+  src/newconversationitem.h
 )
 
 SET(libringclient_video_LIB_HDRS

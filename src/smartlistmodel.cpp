@@ -29,6 +29,7 @@
 #include <availableaccountmodel.h>
 #include "database.h"
 #include "dbus/callmanager.h"
+#include "newconversationitem.h"
 
 // Std
 #include <iterator>
@@ -47,6 +48,12 @@ SmartListModel::SmartListModel(QObject* parent)
 
         // clear the list
         items.clear();
+
+        // add the first item, wich is the NewConversationItem
+        auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
+        items.push_back(newConversationItem);
+        // for test only :
+        newConversationItem->setTitle("0");
 
         // add contacts to the list
         for (auto c : contacts) {

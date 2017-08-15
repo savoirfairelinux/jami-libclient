@@ -27,6 +27,8 @@
 // Data
 #include "smartlistitem.h"
 
+class NewConversationItem;
+
 typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
 
 class LIB_EXPORT SmartListModel : public QObject {
@@ -60,6 +62,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     // But I need to know which item is activated for creating the chatview. So I add SmartListItem* item
     void showConversationView(SmartListItem* item);
     void showIncomingCallView(SmartListItem* item);
+    void newConversationItemActivated(const NewConversationItem* item);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
