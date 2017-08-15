@@ -143,7 +143,7 @@ ContactItem::getLastInteraction() const
 }
 
 const std::string
-ContactItem::getUri()
+ContactItem::getUri() const
 {
     return contact.uri;
 }

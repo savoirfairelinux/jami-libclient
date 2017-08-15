@@ -35,7 +35,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     const std::string getAlias() const override;
     const std::string getAvatar() const override;
     const std::string getLastInteraction() const override;
-    const std::string getUri();
+    const std::string getUri() const;
     const bool isPresent() const override;
     virtual void activate() override;
 
