@@ -65,6 +65,9 @@ class LIB_EXPORT SmartListModel : public QObject {
     void showIncomingCallView(SmartListItem* item);
     void newConversationItemActivated(const NewConversationItem* item);
 
+    public Q_SLOTS:
+    void temporaryItemChanged();
+
     private:
     explicit SmartListModel(QObject* parent = nullptr);
     SmartListItems items;

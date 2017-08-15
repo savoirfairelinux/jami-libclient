@@ -34,7 +34,7 @@
 #include "dbus/callmanager.h"
 
 NewConversationItem::NewConversationItem()
-: SmartListItem()
+: SmartListItem(), m_sAlias("Searching...")
 {
 }
 
@@ -68,5 +68,31 @@ NewConversationItem::isPresent() const
 {
     return false;
 }
+
+void
+NewConversationItem::search(const std::string& query)
+{
+    // Update alias
+    m_sAlias = "Searching..." + query;
+    emit changed();
+    // Query NS
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
+    account->lookupName(QString(query.c_str()));
+}
+
+void
+NewConversationItem::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+{
+    Q_UNUSED(account)
+    Q_UNUSED(address)
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        m_sAlias = name.toStdString();
+        emit changed();
+    }
+    disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
+}
+
 
 #include <newconversationitem.moc>

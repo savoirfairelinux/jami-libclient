@@ -23,17 +23,28 @@
 // Lrc
 #include "smartlistitem.h"
 #include "contact.h"
+#include "namedirectory.h"
 
 class LIB_EXPORT NewConversationItem : public SmartListItem {
+    Q_OBJECT
     public:
     explicit NewConversationItem();
     ~NewConversationItem();
 
     void setTitle(const std::string) override;
     const std::string getTitle() const override;
-    const std::string getAlias() const override { return "searching..."; };
+    const std::string getAlias() const override { return m_sAlias; };
     virtual void activate() override;
     const bool isPresent() const override;
 
+    void search(const std::string& query);
+
+Q_SIGNALS:
+    void changed();
+
+public Q_SLOTS:
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+
 private:
+    std::string m_sAlias;
 };

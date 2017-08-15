@@ -53,8 +53,8 @@ SmartListModel::SmartListModel(QObject* parent)
         // add the first item, wich is the NewConversationItem
         auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
         items.push_back(newConversationItem);
-        // for test only :
-        newConversationItem->setTitle("0");
+
+        connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
 
         // add contacts to the list
         for (auto c : contacts) {
@@ -72,7 +72,6 @@ SmartListModel::SmartListModel(QObject* parent)
         if (fillsWithContacts(a))
             emit modelUpdated();
     });
-
 
     connect(&CallManager::instance(), &CallManagerInterface::incomingCall,
     [this](const QString &accountID, const QString &callID, const QString &fromQString)
@@ -202,6 +201,8 @@ void
 SmartListModel::setFilter(const std::string& newFilter)
 {
     m_sFilter = newFilter;
+    std::shared_ptr<NewConversationItem> temporaryItem = std::dynamic_pointer_cast<NewConversationItem>(items.front());
+    temporaryItem->search(newFilter);
     emit modelUpdated();
 }
 
@@ -211,6 +212,13 @@ SmartListModel::getFilter() const
 {
     return m_sFilter;
 }
+
+void
+SmartListModel::temporaryItemChanged()
+{
+    emit modelUpdated();
+}
+
 
 
 #include <smartlistmodel.moc>
