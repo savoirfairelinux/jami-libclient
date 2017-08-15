@@ -30,6 +30,7 @@
 #include "database.h"
 #include "dbus/callmanager.h"
 #include "newconversationitem.h"
+#include "dbus/configurationmanager.h"
 
 // Std
 #include <iterator>
@@ -170,6 +171,32 @@ SmartListModel::openConversation(const std::string& uid) const
         // TODO open temporary item
     }
 }
+
+void
+SmartListModel::removeConversation(const std::string& title)
+{
+    // Find item to remove
+    auto idx = find(title);
+    if (idx == -1) return;
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+
+    // Clear history with this contact
+    DataBase::instance().removeHistory(QString(title.c_str()), QString(account->id()));
+
+    // TODO define behavior for group chats.
+    // Remove contact from Daemon
+    ConfigurationManager::instance().removeContact(account->id(), QString(title.c_str()), false);
+
+    // Remove item
+    auto it = items.begin();
+    std::advance(it, idx);
+    items.erase(it);
+
+    // The model has changed
+    emit modelUpdated();
+}
+
 
 void
 SmartListModel::setFilter(const std::string& newFilter)

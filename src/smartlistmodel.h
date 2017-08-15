@@ -48,6 +48,7 @@ class LIB_EXPORT SmartListModel : public QObject {
 
     int find(const std::string& uid) const;
     void openConversation(const std::string& uid) const;
+    void removeConversation(const std::string& title);
 
     void setFilter(const std::string& newFilter);
     std::string getFilter() const;
