@@ -21,11 +21,11 @@
 #include <string>
 
 // Lrc
-#include "smartlistitem.h"
+#include "contactitem.h"
 #include "contact.h"
 #include "namedirectory.h"
 
-class LIB_EXPORT NewConversationItem : public SmartListItem {
+class LIB_EXPORT NewConversationItem : public ContactItem {
     Q_OBJECT
     public:
     explicit NewConversationItem();
