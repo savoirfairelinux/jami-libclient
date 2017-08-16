@@ -28,6 +28,7 @@
 #include "smartlistitem.h"
 
 class NewConversationItem;
+class ContactItem;
 
 typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
 
@@ -62,8 +63,8 @@ class LIB_EXPORT SmartListModel : public QObject {
     // I think it's more logical to get the history when we want
     // But I need to know which item is activated for creating the chatview. So I add SmartListItem* item
     void showConversationView(SmartListItem* item);
-    void showIncomingCallView(SmartListItem* item);
-    void newConversationItemActivated(const NewConversationItem* item);
+    void newConversationItemActivated(const NewConversationItem* item); // show new conversation
+    void ShowIncomingCallView(ContactItem* item); // adding const is good, but requires some work in gnome-ring
 
     public Q_SLOTS:
     void temporaryItemChanged();

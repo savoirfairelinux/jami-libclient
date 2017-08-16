@@ -26,6 +26,8 @@
 #include "contactmethod.h"
 
 class LIB_EXPORT ContactItem : public SmartListItem {
+    Q_OBJECT
+
     public:
     explicit ContactItem(ContactMethod* contact);
     ContactItem();
@@ -50,6 +52,14 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     void setCallId(const std::string);
     void setCallStatus(const CallStatus);
     const std::string getCallId() const { return callId_; };
+    const CallStatus getCallStatus() {return callStatus_;};
+    static std::string getReadableCallStatus(CallStatus);
+    void rejectIncomingCall() const;
+    void acceptIncomingCall() const;
+
+    Q_SIGNALS:
+    void CallStatusChanged(const CallStatus);
+
 
     public Q_SLOTS:
     void slotPresenceChanged(bool);

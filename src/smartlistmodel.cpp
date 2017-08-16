@@ -119,7 +119,6 @@ SmartListModel::SmartListModel(QObject* parent)
         if (iter == items.end())
             return;
 
-
         CallStatus state = CallStatus::NONE;
         if (stateName == "INCOMING")
             state = CallStatus::INCOMING_RINGING;
@@ -148,17 +147,9 @@ SmartListModel::SmartListModel(QObject* parent)
         if (stateName == "PEER_PAUSED")
             state = CallStatus::PEER_PAUSED;
 
-//~ std::shared_ptr<SmartListItem>'
-
-        SmartListItem& item = **iter;
-        auto contactItem = dynamic_cast<ContactItem*>(&item);
-        //~ auto contactItem = std::static_pointer_cast<ContactItem>(iter);
-
-        if(not contactItem)
-            return
+        auto contactItem = std::dynamic_pointer_cast<ContactItem>(*iter);
 
         contactItem->setCallStatus(state);
-
     });
 
     // initialise the list
