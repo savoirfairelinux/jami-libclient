@@ -17,35 +17,20 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <string>
-
-// Qt
-#include <qobject.h> // for signals
-
-// Lrc
-#include "typedefs.h"
-#include "globals.h"
-
-
-class LIB_EXPORT SmartListItem : public QObject {
-    Q_OBJECT
-
-    public:
-    virtual ~SmartListItem();
-
-    virtual void setTitle(const std::string) {};
-    virtual const std::string getTitle() const { return _title->data(); };
-    virtual void activate() {};
-    virtual const std::string getAlias() const { return ""; };
-    virtual const std::string getAvatar() const { return ""; };
-    virtual const std::string getLastInteraction() const { return ""; };
-    virtual const bool isPresent() const = 0;
-
-    protected:
-    SmartListItem();
-
-    std::shared_ptr<std::string> _title;
-
+/* Public enumerations */
+enum class CallStatus {
+    NONE,
+    OUTGOING_REQUESTED,
+    INCOMING_RINGING,
+    OUTGOING_RINGING,
+    CONNECTING,
+    SEARCHING,
+    IN_PROGRESS,
+    PAUSED,
+    PEER_PAUSED,
+    INACTIVE,
+    ENDED,
+    TERMINATING,
+    CONNECTED,
+    AUTO_ANSWERING
 };

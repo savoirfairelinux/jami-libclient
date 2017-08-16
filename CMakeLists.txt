@@ -455,6 +455,7 @@ SET( libringclient_LIB_HDRS
   src/contactitem.h
   src/database.h
   src/newconversationitem.h
+  src/globals.h
 )
 
 SET(libringclient_video_LIB_HDRS
