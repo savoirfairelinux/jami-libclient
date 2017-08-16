@@ -173,6 +173,6 @@ Q_SIGNALS:
 
    // TODO remove this, used by SmartListModel because in fillsWithContacts we use Account->getContacts()
    // Need to change fillsWithContacts
-   void daemonContactAdded();
+   void daemonContactAdded(const std::string& id);
 };
 Q_DECLARE_METATYPE(AccountModel*)

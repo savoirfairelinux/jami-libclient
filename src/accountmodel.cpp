@@ -551,7 +551,7 @@ AccountModelPrivate::slotContactAdded(const QString &accountID, const QString &u
             auto& daemon_contacts = account->getContacts();
             if (not daemon_contacts.contains(cm)) {
                 daemon_contacts << cm;
-                emit q_ptr->daemonContactAdded();
+                emit q_ptr->daemonContactAdded(cm->uri().toStdString());
             }
         }
     }
