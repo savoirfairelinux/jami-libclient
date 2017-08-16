@@ -81,10 +81,22 @@ ContactItem::getTitle() const
     return _title->data();
 }
 
+// peut etre serait-il préférable de juste retourner un état et de laisser les clients déterminer s'ils veulent
+// lancer un signal... Attention, si on fait ça cela va complexifier les clients, car l'ui qui doit changer en
+// fonction d'un tel signal doit pouvoir le connecter... ce n'est pas évident que la semartlist soit visible de
+// chat view par exemple...
 void
 ContactItem::activate()
 {
-    emit SmartListModel::instance().showConversationView(this);
+    switch(callStatus_)
+    {
+        case CallStatus::INCOMING_RINGING :
+        emit SmartListModel::instance().ShowIncomingCallView(this);
+        break;
+        case CallStatus::NONE :
+        default :
+        emit SmartListModel::instance().showConversationView(this);
+    }
 }
 
 const std::string
@@ -216,6 +228,35 @@ ContactItem::setCallStatus(const CallStatus callStatus)
     if (callStatus == CallStatus::CONNECTING)
         qDebug() << "CallStatus::CONNECTING";
 
+    emit CallStatusChanged(callStatus_);
+
+}
+
+std::string
+ContactItem::getReadableCallStatus(CallStatus callStatus)
+{
+    switch (callStatus) {
+        case CallStatus::INCOMING_RINGING :
+        return "ringing";
+        case CallStatus::ENDED :
+        return "call ended";
+        case CallStatus::OUTGOING_RINGING :
+        return "ringing";
+        default :
+        return "plouf!";
+    }
+}
+
+void
+ContactItem::rejectIncomingCall() const
+{
+    CallManager::instance().hangUp(callId_.c_str());
+}
+
+void
+ContactItem::acceptIncomingCall() const
+{
+    CallManager::instance().accept(callId_.c_str());
 }
 
 #include <contactitem.moc>
