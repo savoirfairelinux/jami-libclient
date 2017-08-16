@@ -34,7 +34,7 @@
 #include "dbus/callmanager.h"
 
 NewConversationItem::NewConversationItem()
-: ContactItem(), m_sAlias("Searching...")
+: ContactItem(), alias_("Searching...")
 {
 }
 
@@ -60,7 +60,10 @@ NewConversationItem::getTitle() const
 void
 NewConversationItem::activate()
 {
-    emit SmartListModel::instance().newConversationItemActivated(this);
+    if (contact_.id.length() > 0) {
+        // If a contact is linked, we can show a new conversation
+        emit SmartListModel::instance().newConversationItemActivated(this);
+    }
 }
 
 const bool
@@ -73,7 +76,9 @@ void
 NewConversationItem::search(const std::string& query)
 {
     // Update alias
-    m_sAlias = "Searching..." + query;
+    Contact emptyContact;
+    contact_ = emptyContact;
+    alias_ = "Searching..." + query;
     emit changed();
     // Query NS
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
@@ -88,7 +93,16 @@ NewConversationItem::registeredNameFound(const Account* account, NameDirectory::
     Q_UNUSED(account)
     Q_UNUSED(address)
     if (status == NameDirectory::LookupStatus::SUCCESS) {
-        m_sAlias = name.toStdString();
+        alias_ = name.toStdString();
+        Contact newContact;
+        newContact.uri = address.toStdString();
+        newContact.id = address.toStdString();
+        newContact.registeredName = alias_;
+        newContact.displayName = alias_;
+        newContact.avatar = "";
+        newContact.isPresent = false;
+        newContact.unreadMessages = 0;
+        contact_ = newContact;
         emit changed();
     }
     disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);

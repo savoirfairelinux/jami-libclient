@@ -9,7 +9,6 @@ struct Contact
     std::string avatar;
     bool isPresent;
     unsigned int unreadMessages;
-    //TODO add avatar + lastUsed
 
     // constructor
     Contact() {};

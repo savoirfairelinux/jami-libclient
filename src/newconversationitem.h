@@ -33,7 +33,7 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
 
     void setTitle(const std::string) override;
     const std::string getTitle() const override;
-    const std::string getAlias() const override { return m_sAlias; };
+    const std::string getAlias() const override { return alias_; };
     virtual void activate() override;
     const bool isPresent() const override;
 
@@ -46,5 +46,5 @@ public Q_SLOTS:
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
 private:
-    std::string m_sAlias;
+    std::string alias_;
 };

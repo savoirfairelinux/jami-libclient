@@ -54,7 +54,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     public Q_SLOTS:
     void slotPresenceChanged(bool);
 
-private:
+protected:
     Contact contact_;
     std::string callId_ = "";
     CallStatus callStatus_ = CallStatus::NONE;
