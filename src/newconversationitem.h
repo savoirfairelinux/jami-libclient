@@ -50,5 +50,6 @@ public Q_SLOTS:
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
 private:
+    void setMinimumContact(const std::string& address);
     std::string alias_;
 };

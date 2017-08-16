@@ -22,6 +22,8 @@
 #include "smartlistmodel.h"
 #include "database.h"
 #include "availableaccountmodel.h"
+#include "phonedirectorymodel.h"
+#include "uri.h"
 
 // Qt
 #include <qstring.h>
@@ -81,10 +83,25 @@ NewConversationItem::search(const std::string& query)
     alias_ = "Searching..." + query;
     emit changed();
     // Query NS
-    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    auto uri = URI(QString(query.c_str()));
+    Account* account = nullptr;
+    if (uri.schemeType() != URI::SchemeType::NONE) {
+        account = AvailableAccountModel::instance().currentDefaultAccount(uri.schemeType());
+    } else {
+        account = AvailableAccountModel::instance().currentDefaultAccount();
+    }
     if (!account) return;
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
-    account->lookupName(QString(query.c_str()));
+    if (account->protocol() == Account::Protocol::RING &&
+        uri.protocolHint() != URI::ProtocolHint::RING)
+    {
+        account->lookupName(QString(query.c_str()));
+    } else {
+        /* no lookup, simply use the URI as is */
+        auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+        alias_ = cm->bestName().toStdString();
+        setMinimumContact(cm->uri().toStdString());
+    }
 }
 
 void
@@ -94,19 +111,26 @@ NewConversationItem::registeredNameFound(const Account* account, NameDirectory::
     Q_UNUSED(address)
     if (status == NameDirectory::LookupStatus::SUCCESS) {
         alias_ = name.toStdString();
-        Contact newContact;
-        newContact.uri = address.toStdString();
-        newContact.id = address.toStdString();
-        newContact.registeredName = alias_;
-        newContact.displayName = alias_;
-        newContact.avatar = "";
-        newContact.isPresent = false;
-        newContact.unreadMessages = 0;
-        contact_ = newContact;
-        emit changed();
+        setMinimumContact(address.toStdString());
     }
     disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
 }
+
+void
+NewConversationItem::setMinimumContact(const std::string& address)
+{
+    Contact newContact;
+    newContact.uri = address;
+    newContact.id = address;
+    newContact.registeredName = alias_;
+    newContact.displayName = alias_;
+    newContact.avatar = "";
+    newContact.isPresent = false;
+    newContact.unreadMessages = 0;
+    contact_ = newContact;
+    emit changed();
+}
+
 
 void
 NewConversationItem::sendInvitation()
