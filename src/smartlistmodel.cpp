@@ -40,39 +40,14 @@
 
 SmartListModel::SmartListModel(QObject* parent)
 {
-    auto fillsWithContacts = [&] (Account* a) {
-        if (not a) {
-            qDebug() << "no available account selected";
-            return a;
-        }
-
-        auto contacts = a->getContacts();
-
-        // clear the list
-        items.clear();
-
-        // add the first item, wich is the NewConversationItem
-        auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
-        items.push_back(newConversationItem);
-
-        connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
-
-        // add contacts to the list
-        for (auto c : contacts) {
-            auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
-            contact->setTitle(c->uri().toUtf8().constData());
-            items.push_back(contact);
-        }
-
-        return a;
-    };
-
     connect(&AvailableAccountModel::instance(), &AvailableAccountModel::currentDefaultAccountChanged,
-    [this, fillsWithContacts](Account* a)
+    [this](Account* a)
     {
         if (fillsWithContacts(a))
             emit modelUpdated();
     });
+
+    connect(&AccountModel::instance(), &AccountModel::daemonContactAdded, this, &SmartListModel::contactAdded);
 
     connect(&CallManager::instance(), &CallManagerInterface::incomingCall,
     [this](const QString &accountID, const QString &callID, const QString &fromQString)
@@ -169,6 +144,7 @@ SmartListModel::SmartListModel(QObject* parent)
     DataBase::instance();
 }
 
+
 SmartListModel::~SmartListModel()
 {
 }
@@ -249,6 +225,7 @@ SmartListModel::removeConversation(const std::string& title)
 
     // Remove item
     auto it = items.begin();
+    auto item = items.at(idx);
     std::advance(it, idx);
     items.erase(it);
 
@@ -279,6 +256,44 @@ SmartListModel::temporaryItemChanged()
     emit modelUpdated();
 }
 
+Account*
+SmartListModel::fillsWithContacts(Account* account)
+{
+    if (not account) {
+        qDebug() << "no available account selected";
+        return account;
+    }
+
+    auto contacts = account->getContacts();
+
+    // clear the list
+    items.clear();
+
+    // add the first item, wich is the NewConversationItem
+    auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
+    items.push_back(newConversationItem);
+
+    connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
+
+    // add contacts to the list
+    for (auto c : contacts) {
+        auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
+        contact->setTitle(c->uri().toUtf8().constData());
+        items.push_back(contact);
+    }
+
+    return account;
+}
+
+
+void
+SmartListModel::contactAdded()
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    fillsWithContacts(account);
+    emit modelUpdated();
+}
 
 
 #include <smartlistmodel.moc>

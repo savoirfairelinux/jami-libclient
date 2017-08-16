@@ -39,6 +39,10 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
 
     void search(const std::string& query);
 
+    void sendInvitation();
+    void sendMessage(std::string message); // manage only dht message for now
+    void placeCall();
+
 Q_SIGNALS:
     void changed();
 

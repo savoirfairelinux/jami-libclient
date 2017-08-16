@@ -108,5 +108,32 @@ NewConversationItem::registeredNameFound(const Account* account, NameDirectory::
     disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
 }
 
+void
+NewConversationItem::sendInvitation()
+{
+    if (contact_.id.length() == 0) return;
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    ConfigurationManager::instance().addContact(account->id(), QString(contact_.id.c_str()));
+}
+
+
+void
+NewConversationItem::sendMessage(std::string message)
+{
+    ContactItem::sendMessage(message);
+    sendInvitation();
+}
+
+void
+NewConversationItem::placeCall()
+{
+    // NOTE this item will be destroyed, and replaced by a ContactItem
+    // So, Check if this works!
+    ContactItem::placeCall();
+    sendInvitation();
+}
+
+
 
 #include <newconversationitem.moc>
