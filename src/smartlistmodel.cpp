@@ -183,14 +183,14 @@ SmartListModel::instance()
 
 std::shared_ptr<SmartListItem>
 SmartListModel::getItem(int row){
-    return items[row];
+    return items[row]; //TODO don't work if filtered
 }
 
 int
 SmartListModel::find(const std::string& uid) const
 {
     for (unsigned int i = 0 ; i < items.size() ; ++i) {
-        if (items[i]->getTitle() == uid) { // TODO get UID
+        if (items[i]->getTitle() == uid) { // TODO get UID //TODO don't work if filtered
             return i;
         }
     }
@@ -212,7 +212,7 @@ SmartListModel::removeConversation(const std::string& title)
 {
     // Find item to remove
     auto idx = find(title);
-    if (idx == -1) return;
+    if (idx <= 0) return;
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
 
@@ -287,12 +287,13 @@ SmartListModel::fillsWithContacts(Account* account)
 
 
 void
-SmartListModel::contactAdded()
+SmartListModel::contactAdded(const std::string& id)
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
     fillsWithContacts(account);
     emit modelUpdated();
+    emit newContactAdded(id);
 }
 
 
