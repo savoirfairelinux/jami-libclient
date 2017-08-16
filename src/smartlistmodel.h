@@ -63,7 +63,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     // But I need to know which item is activated for creating the chatview. So I add SmartListItem* item
     void showConversationView(SmartListItem* item);
     void showIncomingCallView(SmartListItem* item);
-    void newConversationItemActivated(const NewConversationItem* item);
+    void newConversationItemActivated(NewConversationItem* item); // TODO replace by showNewConversation
 
     public Q_SLOTS:
     void temporaryItemChanged();
