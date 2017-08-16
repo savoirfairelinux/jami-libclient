@@ -121,7 +121,10 @@ ContactItem::placeCall()
 
     auto uri = "ring:" + contact.uri;
 
-    CallManager::instance().placeCall(account->id(), uri.c_str());
+    auto callId = CallManager::instance().placeCall(account->id(), uri.c_str());
+    setCallId(callId.value().toStdString());
+    setCallStatus(CallStatus::SEARCHING);
+
 }
 
 const std::string
@@ -149,7 +152,7 @@ ContactItem::getUri() const
 }
 
 void
-ContactItem::setCallId(const unsigned int callId)
+ContactItem::setCallId(const std::string callId)
 {
     callId_ = callId;
 }
@@ -166,6 +169,37 @@ ContactItem::slotPresenceChanged(bool presence)
 {
     this->contact.isPresent = presence;
     // TODO emit changed();
+}
+
+void
+ContactItem::setCallStatus(const CallStatus callStatus)
+{
+    callStatus_ = callStatus;
+
+    if (callStatus == CallStatus::INCOMING_RINGING)
+        qDebug() << "CallStatus::INCOMING_RINGING";
+
+    if (callStatus == CallStatus::IN_PROGRESS)
+        qDebug() << "CallStatus::IN_PROGRESS";
+
+    if (callStatus == CallStatus::ENDED)
+        qDebug() << "CallStatus::ENDED";
+
+    if (callStatus == CallStatus::OUTGOING_RINGING)
+        qDebug() << "CallStatus::OUTGOING_RINGING";
+
+    if (callStatus == CallStatus::SEARCHING)
+        qDebug() << "CallStatus::SEARCHING";
+
+    if (callStatus == CallStatus::PAUSED)
+        qDebug() << "CallStatus::PAUSED";
+
+    if (callStatus == CallStatus::PEER_PAUSED)
+        qDebug() << "CallStatus::PEER_PAUSED";
+
+    if (callStatus == CallStatus::CONNECTING)
+        qDebug() << "CallStatus::CONNECTING";
+
 }
 
 #include <contactitem.moc>

@@ -44,12 +44,15 @@ class LIB_EXPORT ContactItem : public SmartListItem {
 
     // video communication
     void placeCall();
-    void setCallId(const unsigned int);
+    void setCallId(const std::string);
+    void setCallStatus(const CallStatus);
+    const std::string getCallId() const { return callId_; };
 
     public Q_SLOTS:
     void slotPresenceChanged(bool);
 
 private:
     Contact contact;
-    unsigned int callId_ = 0;
+    std::string callId_ = "";
+    CallStatus callStatus_ = CallStatus::NONE;
 };
