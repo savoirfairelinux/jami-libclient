@@ -21,6 +21,8 @@
 #include <cppunit/CompilerOutputter.h>
 #include <iostream>
 
+//TEST
+
 int main()
 {
     CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
