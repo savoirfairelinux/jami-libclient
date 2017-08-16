@@ -40,15 +40,26 @@
 ContactItem::ContactItem(ContactMethod* cm)
 : SmartListItem()
 {
-    this->contact.uri = cm->uri().toStdString();
-    this->contact.avatar = DataBase::instance().getAvatar(QString(this->contact.uri.c_str()));
-    this->contact.id = cm->bestId().toStdString();
-    this->contact.registeredName = cm->registeredName().toStdString();
-    this->contact.displayName = cm->bestName().toStdString();
-    this->contact.isPresent = cm->isPresent();
-    this->contact.unreadMessages = 0;
+    this->contact_.uri = cm->uri().toStdString();
+    this->contact_.avatar = DataBase::instance().getAvatar(QString(this->contact_.uri.c_str()));
+    this->contact_.id = cm->bestId().toStdString();
+    this->contact_.registeredName = cm->registeredName().toStdString();
+    this->contact_.displayName = cm->bestName().toStdString();
+    this->contact_.isPresent = cm->isPresent();
+    this->contact_.unreadMessages = 0;
 
     QObject::connect(cm, &ContactMethod::presentChanged, this, &ContactItem::slotPresenceChanged);
+}
+
+ContactItem::ContactItem()
+: SmartListItem()
+{
+}
+
+void
+ContactItem::setContact(const Contact& contact)
+{
+    contact_ = contact;
 }
 
 ContactItem::~ContactItem()
@@ -79,13 +90,13 @@ ContactItem::activate()
 const std::string
 ContactItem::getAlias() const
 {
-    return this->contact.displayName;
+    return this->contact_.displayName;
 }
 
 const std::string
 ContactItem::getAvatar() const
 {
-    return this->contact.avatar;
+    return this->contact_.avatar;
 }
 
 void
@@ -98,10 +109,10 @@ ContactItem::sendMessage(std::string message)
 
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
 
-    auto id = ConfigurationManager::instance().sendTextMessage(account->id(), contact.uri.c_str(), payloads);
+    auto id = ConfigurationManager::instance().sendTextMessage(account->id(), contact_.uri.c_str(), payloads);
 
     DataBase::instance().addMessage(
-        contact.uri.c_str(),
+        contact_.uri.c_str(),
         account->id(),
         message.c_str(),
         QString::number(QDateTime::currentMSecsSinceEpoch() / 1000),
@@ -119,7 +130,7 @@ ContactItem::placeCall()
         return;
     }
 
-    auto uri = "ring:" + contact.uri;
+    auto uri = "ring:" + contact_.uri;
 
     auto callId = CallManager::instance().placeCall(account->id(), uri.c_str());
     setCallId(callId.value().toStdString());
@@ -137,7 +148,7 @@ ContactItem::getLastInteraction() const
         return std::string();
     }
 
-    auto messages = DataBase::instance().getMessages(contact.uri.c_str(), account->id());
+    auto messages = DataBase::instance().getMessages(contact_.uri.c_str(), account->id());
 
     if (messages.size() == 0)
         return std::string();
@@ -148,7 +159,7 @@ ContactItem::getLastInteraction() const
 const std::string
 ContactItem::getUri() const
 {
-    return contact.uri;
+    return contact_.uri;
 }
 
 void
@@ -160,14 +171,14 @@ ContactItem::setCallId(const std::string callId)
 const bool
 ContactItem::isPresent() const
 {
-    return contact.isPresent;
+    return contact_.isPresent;
 }
 
 
 void
 ContactItem::slotPresenceChanged(bool presence)
 {
-    this->contact.isPresent = presence;
+    this->contact_.isPresent = presence;
     // TODO emit changed();
 }
 

@@ -34,7 +34,7 @@
 #include "dbus/callmanager.h"
 
 NewConversationItem::NewConversationItem()
-: SmartListItem(), m_sAlias("Searching...")
+: ContactItem(), m_sAlias("Searching...")
 {
 }
 

@@ -28,6 +28,7 @@
 class LIB_EXPORT ContactItem : public SmartListItem {
     public:
     explicit ContactItem(ContactMethod* contact);
+    ContactItem();
     ~ContactItem();
 
     void setTitle(const std::string) override;
@@ -35,9 +36,11 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     const std::string getAlias() const override;
     const std::string getAvatar() const override;
     const std::string getLastInteraction() const override;
-    const std::string getUri() const;
+    const std::string getUri() const; // pensez à éventuellement retirer ces fonctions et accéder à l'uri depui getContact
     const bool isPresent() const override;
     virtual void activate() override;
+    const Contact& getContact() {return contact_;};
+    void setContact(const Contact&);
 
     // message communication
     void sendMessage(std::string message); // manage only dht message for now
@@ -52,7 +55,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     void slotPresenceChanged(bool);
 
 private:
-    Contact contact;
+    Contact contact_;
     std::string callId_ = "";
     CallStatus callStatus_ = CallStatus::NONE;
 };
