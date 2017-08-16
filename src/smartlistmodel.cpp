@@ -31,6 +31,7 @@
 #include "dbus/callmanager.h"
 #include "newconversationitem.h"
 #include "dbus/configurationmanager.h"
+#include "globals.h"
 
 // Std
 #include <iterator>
@@ -93,12 +94,71 @@ SmartListModel::SmartListModel(QObject* parent)
                 qDebug() << "incomingCall, but no conversation found";
                 continue;
             }
-
             if (conversation->getUri() == from) {
-                conversation->setCallId(callID.toInt());
+                conversation->setCallId(callID.toStdString());
+                conversation->setCallStatus(CallStatus::INCOMING_RINGING);
                 emit conversationItemUpdated(std::distance(items.begin(), iter));
             }
         }
+    });
+
+
+    connect(&CallManager::instance(), &CallManagerInterface::callStateChanged, // A DEPLACER DANS UNE FONCTION CAR TROP GROS
+    [this](const QString& callID, const QString& stateName, int code)
+    {
+        auto iter = std::find_if (items.begin(), items.end(),
+        [&callID] (const std::shared_ptr<SmartListItem>& item)
+        {
+            // for now we use the dynamic cast...
+            auto toto = std::dynamic_pointer_cast<ContactItem>(item);
+            if (not toto)
+                return false;
+            return (toto->getCallId() == callID.toStdString());
+        });
+
+        if (iter == items.end())
+            return;
+
+
+        CallStatus state = CallStatus::NONE;
+        if (stateName == "INCOMING")
+            state = CallStatus::INCOMING_RINGING;
+
+        if (stateName == "CURRENT")
+            state = CallStatus::IN_PROGRESS;
+
+        if (stateName == "CONNECTING")
+            state = CallStatus::CONNECTING;
+
+        if (stateName == "INACTIVE")
+            state = CallStatus::INACTIVE;
+
+        if (stateName == "OVER")
+            state = CallStatus::ENDED;
+
+        if (stateName == "RINGING")
+            state = CallStatus::OUTGOING_RINGING;
+
+        if (stateName == "CONNECTING")
+            state = CallStatus::SEARCHING;
+
+        if (stateName == "HOLD")
+            state = CallStatus::PAUSED;
+
+        if (stateName == "PEER_PAUSED")
+            state = CallStatus::PEER_PAUSED;
+
+//~ std::shared_ptr<SmartListItem>'
+
+        SmartListItem& item = **iter;
+        auto contactItem = dynamic_cast<ContactItem*>(&item);
+        //~ auto contactItem = std::static_pointer_cast<ContactItem>(iter);
+
+        if(not contactItem)
+            return
+
+        contactItem->setCallStatus(state);
+
     });
 
     // initialise the list
