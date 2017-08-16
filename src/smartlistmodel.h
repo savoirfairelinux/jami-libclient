@@ -28,6 +28,7 @@
 #include "smartlistitem.h"
 
 class NewConversationItem;
+class Account;
 
 typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
 
@@ -67,9 +68,11 @@ class LIB_EXPORT SmartListModel : public QObject {
 
     public Q_SLOTS:
     void temporaryItemChanged();
+    void contactAdded();
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
+    Account* fillsWithContacts(Account* account);
     SmartListItems items;
     std::string m_sFilter;
 

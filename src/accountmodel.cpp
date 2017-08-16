@@ -549,8 +549,10 @@ AccountModelPrivate::slotContactAdded(const QString &accountID, const QString &u
         if (auto cm = PhoneDirectoryModel::instance().getNumber(uri, account)) {
             cm->setConfirmed(confirmed);
             auto& daemon_contacts = account->getContacts();
-            if (not daemon_contacts.contains(cm))
+            if (not daemon_contacts.contains(cm)) {
                 daemon_contacts << cm;
+                emit q_ptr->daemonContactAdded();
+            }
         }
     }
 }
