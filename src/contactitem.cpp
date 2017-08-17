@@ -91,6 +91,9 @@ ContactItem::activate()
     switch(callStatus_)
     {
         case CallStatus::INCOMING_RINGING :
+        case CallStatus::OUTGOING_RINGING :
+        case CallStatus::CONNECTING :
+        case CallStatus::SEARCHING :
         emit SmartListModel::instance().ShowIncomingCallView(this);
         break;
         case CallStatus::NONE :
@@ -152,6 +155,8 @@ ContactItem::placeCall()
 
     setCallId(callId.toStdString());
     setCallStatus(CallStatus::SEARCHING);
+
+    activate();
 
 }
 
@@ -242,6 +247,8 @@ ContactItem::getReadableCallStatus(CallStatus callStatus)
         return "call ended";
         case CallStatus::OUTGOING_RINGING :
         return "ringing";
+        case CallStatus::SEARCHING:
+        return "searching";
         default :
         return "plouf!";
     }
@@ -258,5 +265,12 @@ ContactItem::acceptIncomingCall() const
 {
     CallManager::instance().accept(callId_.c_str());
 }
+
+void
+ContactItem::cancelOutGoingCall() const
+{
+    CallManager::instance().hangUp(callId_.c_str());
+}
+
 
 #include <contactitem.moc>

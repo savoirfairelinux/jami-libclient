@@ -60,6 +60,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     void modelUpdated();
     void conversationItemUpdated(const unsigned int row);
     void newContactAdded(const std::string& uid);
+    void incomingCallFromItem(const unsigned int row);
 
     // NOTE for njager: I need the history when the chatview is loaded. Not for creating the chatview.
     // I think it's more logical to get the history when we want
