@@ -47,8 +47,6 @@ SmartListModel::SmartListModel(QObject* parent)
             emit modelUpdated();
     });
 
-    connect(&AccountModel::instance(), &AccountModel::daemonContactAdded, this, &SmartListModel::contactAdded);
-
     connect(&CallManager::instance(), &CallManagerInterface::incomingCall,
     [this](const QString &accountID, const QString &callID, const QString &fromQString)
     {
@@ -151,9 +149,11 @@ SmartListModel::getItems() const
     [&filter, this] (const std::shared_ptr<SmartListItem>& item) {
         try {
             // TODO filter by UID and not by title?
+            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(item); //TODO wait for enum LRC side to get type
+
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
             bool result = ( std::regex_search(item->getTitle(), regexFilter)
-            | std::regex_search(item->getAlias(), regexFilter) ) || ( items[0] == item );
+            | std::regex_search(item->getAlias(), regexFilter) ) || ( isTemporary );
             return result;
         } catch(std::regex_error&) {
             // If the regex is incorrect, just test if filter is a substring of the title or the alias.
@@ -193,9 +193,6 @@ SmartListModel::openConversation(const std::string& uid) const
 {
     auto i = find(uid);
     if (i != -1) items[i]->activate();
-    else {
-        // TODO open temporary item
-    }
 }
 
 void
@@ -203,7 +200,7 @@ SmartListModel::removeConversation(const std::string& title)
 {
     // Find item to remove
     auto idx = find(title);
-    if (idx <= 0) return;
+    if (idx < 0) return;
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
 
@@ -229,9 +226,67 @@ void
 SmartListModel::setFilter(const std::string& newFilter)
 {
     m_sFilter = newFilter;
-    std::shared_ptr<NewConversationItem> temporaryItem = std::dynamic_pointer_cast<NewConversationItem>(items.front());
-    temporaryItem->search(newFilter);
+    std::shared_ptr<NewConversationItem> newConversationItem;
+    if (!newFilter.empty()) {
+        // add the first item, wich is the NewConversationItem
+        if (!items.empty()) {
+            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items.front()); //TODO wait for enum LRC side to get type
+            if (!isTemporary) {
+                // No newConversationItem, create one
+                newConversationItem = createNewConversationItem();
+            } else {
+                // The item already exists
+                newConversationItem = std::dynamic_pointer_cast<NewConversationItem>(items.front());
+            }
+        } else {
+            newConversationItem = createNewConversationItem();
+        }
+        newConversationItem->search(newFilter);
+    } else {
+        // No filter, so we can remove the newConversationItem
+        if (!items.empty()) {
+            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items.front()); //TODO wait for enum LRC side to get type
+            if (isTemporary) {
+                removeNewConversationItem();
+            }
+        }
+    }
     emit modelUpdated();
+}
+
+void
+SmartListModel::contactFound(const std::string& id)
+{
+    auto idx = find(id);
+    if (idx != -1) {
+        removeNewConversationItem();
+    }
+}
+
+std::shared_ptr<NewConversationItem>
+SmartListModel::createNewConversationItem()
+{
+    auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
+    items.emplace_front(newConversationItem);
+    connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
+    connect(newConversationItem.get(), &NewConversationItem::contactFound, this, &SmartListModel::contactFound);
+    connect(newConversationItem.get(), &NewConversationItem::contactAdded, this, &SmartListModel::contactAdded);
+    connect(newConversationItem.get(), &NewConversationItem::contactAddedAndCall, this, &SmartListModel::contactAddedAndCall);
+    connect(newConversationItem.get(), &NewConversationItem::contactAddedAndSend, this, &SmartListModel::contactAddedAndSend);
+    return newConversationItem;
+}
+
+
+void
+SmartListModel::removeNewConversationItem()
+{
+    auto newConversationItem = std::dynamic_pointer_cast<NewConversationItem>(items.front());
+    disconnect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
+    disconnect(newConversationItem.get(), &NewConversationItem::contactFound, this, &SmartListModel::contactFound);
+    disconnect(newConversationItem.get(), &NewConversationItem::contactAdded, this, &SmartListModel::contactAdded);
+    disconnect(newConversationItem.get(), &NewConversationItem::contactAddedAndCall, this, &SmartListModel::contactAddedAndCall);
+    disconnect(newConversationItem.get(), &NewConversationItem::contactAddedAndSend, this, &SmartListModel::contactAddedAndSend);
+    items.pop_front();
 }
 
 
@@ -260,17 +315,11 @@ SmartListModel::fillsWithContacts(Account* account)
     // clear the list
     items.clear();
 
-    // add the first item, wich is the NewConversationItem
-    auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
-    items.push_back(newConversationItem);
-
-    connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
-
     // add contacts to the list
     for (auto c : contacts) {
         auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
         contact->setTitle(c->uri().toUtf8().constData());
-        items.push_back(contact);
+        items.emplace_back(contact);
     }
 
     return account;
@@ -280,11 +329,37 @@ SmartListModel::fillsWithContacts(Account* account)
 void
 SmartListModel::contactAdded(const std::string& id)
 {
-    auto account = AvailableAccountModel::instance().currentDefaultAccount();
-    if (!account) return;
-    fillsWithContacts(account);
+    fillsWithContacts(AvailableAccountModel::instance().currentDefaultAccount());
     emit modelUpdated();
     emit newContactAdded(id);
+}
+
+void
+SmartListModel::contactAddedAndCall(const std::string& id)
+{
+    contactAdded(id);
+    // Call the new item
+    auto idx = find(id);
+    if (idx != -1) {
+        auto conversation = std::dynamic_pointer_cast<ContactItem>(items.at(idx));
+        if (conversation) {
+            conversation->placeCall();
+        }
+    }
+}
+
+void
+SmartListModel::contactAddedAndSend(const std::string& id, std::string message)
+{
+    contactAdded(id);
+    // Send a message to the new item
+    auto idx = find(id);
+    if (idx != -1) {
+        auto conversation = std::dynamic_pointer_cast<ContactItem>(items.at(idx));
+        if (conversation) {
+            conversation->sendMessage(message);
+        }
+    }
 }
 
 
