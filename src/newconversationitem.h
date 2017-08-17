@@ -45,11 +45,21 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
 
 Q_SIGNALS:
     void changed();
+    void contactFound(const std::string& uid);
+    // Used by smartlistmodel to transform the NewConversationItem to a Conversation item
+    void contactAdded(const std::string& uid);
+    void contactAddedAndCall(const std::string& uid);
+    void contactAddedAndSend(const std::string& uid, std::string message);
 
 public Q_SLOTS:
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void slotContactAdded(const std::string& uid);
+    void slotContactAddedAndCall(const std::string& uid);
+    void slotContactAddedAndSend(const std::string& uid);
 
 private:
+    void addContact();
     void setMinimumContact(const std::string& address);
     std::string alias_;
+    std::string awaitingMessage_;
 };

@@ -19,6 +19,7 @@
 #include "newconversationitem.h"
 
 // Lrc
+#include "accountmodel.h"
 #include "smartlistmodel.h"
 #include "database.h"
 #include "availableaccountmodel.h"
@@ -128,12 +129,12 @@ NewConversationItem::setMinimumContact(const std::string& address)
     newContact.isPresent = false;
     newContact.unreadMessages = 0;
     contact_ = newContact;
-    emit changed();
+    emit contactFound(address);
 }
 
 
 void
-NewConversationItem::sendInvitation()
+NewConversationItem::addContact()
 {
     if (contact_.id.length() == 0) return;
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
@@ -143,19 +144,43 @@ NewConversationItem::sendInvitation()
 
 
 void
+NewConversationItem::sendInvitation()
+{
+    addContact();
+    connect(&AccountModel::instance(), &AccountModel::daemonContactAdded, this, &NewConversationItem::slotContactAdded);
+}
+
+void
+NewConversationItem::slotContactAdded(const std::string& uid)
+{
+    emit contactAdded(uid);
+}
+
+void
+NewConversationItem::slotContactAddedAndCall(const std::string& uid)
+{
+    emit contactAddedAndCall(uid);
+}
+
+void
+NewConversationItem::slotContactAddedAndSend(const std::string& uid)
+{
+    emit contactAddedAndSend(uid, awaitingMessage_);
+}
+
+void
 NewConversationItem::sendMessage(std::string message)
 {
-    ContactItem::sendMessage(message);
-    sendInvitation();
+    addContact();
+    awaitingMessage_ = message;
+    connect(&AccountModel::instance(), &AccountModel::daemonContactAdded, this, &NewConversationItem::slotContactAddedAndSend);
 }
 
 void
 NewConversationItem::placeCall()
 {
-    // NOTE this item will be destroyed, and replaced by a ContactItem
-    // So, Check if this works!
-    ContactItem::placeCall();
-    sendInvitation();
+    addContact();
+    connect(&AccountModel::instance(), &AccountModel::daemonContactAdded, this, &NewConversationItem::slotContactAddedAndCall);
 }
 
 
