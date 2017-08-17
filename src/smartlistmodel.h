@@ -19,6 +19,7 @@
 
 // Std
 #include <list>
+#include <deque>
 #include <string>
 
 // Qt
@@ -31,7 +32,7 @@ class NewConversationItem;
 class Account;
 class ContactItem;
 
-typedef std::vector<std::shared_ptr<SmartListItem>> SmartListItems;
+typedef std::deque<std::shared_ptr<SmartListItem>> SmartListItems;
 
 class LIB_EXPORT SmartListModel : public QObject {
     Q_OBJECT // on changera ça dans le futur // utilisé pour binder les signaux qt
@@ -71,11 +72,18 @@ class LIB_EXPORT SmartListModel : public QObject {
 
     public Q_SLOTS:
     void temporaryItemChanged();
+    void contactFound(const std::string& uid);
     void contactAdded(const std::string& uid);
+    void contactAddedAndSend(const std::string& uid, std::string message);
+    void contactAddedAndCall(const std::string& uid);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
     Account* fillsWithContacts(Account* account);
+
+    void removeNewConversationItem();
+    std::shared_ptr<NewConversationItem> createNewConversationItem();
+
     SmartListItems items;
     std::string m_sFilter;
 
