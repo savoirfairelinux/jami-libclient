@@ -50,6 +50,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     // - la factory des contacts provenant du daemon est dans le constructeur dans la lambda associée au changment de compte
 
     int find(const std::string& uid) const;
+    int findFiltered(const std::string& uid) const;
     void openConversation(const std::string& uid) const;
     void removeConversation(const std::string& title);
 
@@ -84,7 +85,8 @@ class LIB_EXPORT SmartListModel : public QObject {
     void removeNewConversationItem();
     std::shared_ptr<NewConversationItem> createNewConversationItem();
 
-    SmartListItems items;
+    SmartListItems items_;
+    mutable SmartListItems filteredItems_;
     std::string m_sFilter;
 
 };
