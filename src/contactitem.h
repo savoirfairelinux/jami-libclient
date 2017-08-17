@@ -56,6 +56,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     static std::string getReadableCallStatus(CallStatus);
     void rejectIncomingCall() const;
     void acceptIncomingCall() const;
+    void cancelOutGoingCall() const;
 
     Q_SIGNALS:
     void CallStatusChanged(const CallStatus);

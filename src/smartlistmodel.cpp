@@ -72,7 +72,7 @@ SmartListModel::SmartListModel(QObject* parent)
             if (conversation->getUri() == from) {
                 conversation->setCallId(callID.toStdString());
                 conversation->setCallStatus(CallStatus::INCOMING_RINGING);
-                emit conversationItemUpdated(std::distance(items.begin(), iter));
+                emit incomingCallFromItem(std::distance(items.begin(), iter));
             }
         }
     });
