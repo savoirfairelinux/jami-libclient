@@ -59,6 +59,7 @@ class LIB_EXPORT SmartListModel : public QObject {
 
     // signals
     Q_SIGNALS:
+    void itemChanged(unsigned int row);
     void modelUpdated();
     void conversationItemUpdated(const unsigned int row);
     void newContactAdded(const std::string& uid);
@@ -72,10 +73,10 @@ class LIB_EXPORT SmartListModel : public QObject {
     void ShowIncomingCallView(ContactItem* item); // adding const is good, but requires some work in gnome-ring
 
     public Q_SLOTS:
-    void temporaryItemChanged();
     void contactFound(const std::string& uid);
     void contactAdded(const std::string& uid);
     void contactAddedAndSend(const std::string& uid, std::string message);
+    void slotItemChanged(SmartListItem*);
     void contactAddedAndCall(const std::string& uid);
 
     private:

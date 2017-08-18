@@ -60,6 +60,7 @@ void
 ContactItem::setContact(const Contact& contact)
 {
     contact_ = contact;
+    emit changed(this);
 }
 
 ContactItem::~ContactItem()
@@ -73,6 +74,7 @@ ContactItem::setTitle(const std::string title)
         _title = std::unique_ptr<std::string>(new std::string());
 
     _title->assign(title);
+    emit changed(this);
 }
 
 const std::string
@@ -188,6 +190,7 @@ void
 ContactItem::setCallId(const std::string callId)
 {
     callId_ = callId;
+    emit changed(this);
 }
 
 const bool
@@ -235,6 +238,7 @@ ContactItem::setCallStatus(const CallStatus callStatus)
 
     emit CallStatusChanged(callStatus_);
 
+    emit changed(this);
 }
 
 std::string

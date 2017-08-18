@@ -44,7 +44,6 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
     void placeCall();
 
 Q_SIGNALS:
-    void changed();
     void contactFound(const std::string& uid);
     // Used by smartlistmodel to transform the NewConversationItem to a Conversation item
     void contactAdded(const std::string& uid);

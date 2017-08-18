@@ -43,6 +43,9 @@ class LIB_EXPORT SmartListItem : public QObject {
     virtual const std::string getLastInteraction() const { return ""; };
     virtual const bool isPresent() const {return false;};
 
+    Q_SIGNALS:
+    void changed(SmartListItem* row);
+
     protected:
     SmartListItem();
 

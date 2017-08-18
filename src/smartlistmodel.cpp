@@ -281,7 +281,7 @@ SmartListModel::createNewConversationItem()
 {
     auto newConversationItem = std::shared_ptr<NewConversationItem>(new NewConversationItem());
     items_.emplace_front(newConversationItem);
-    connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
+    connect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::slotItemChanged);
     connect(newConversationItem.get(), &NewConversationItem::contactFound, this, &SmartListModel::contactFound);
     connect(newConversationItem.get(), &NewConversationItem::contactAdded, this, &SmartListModel::contactAdded);
     connect(newConversationItem.get(), &NewConversationItem::contactAddedAndCall, this, &SmartListModel::contactAddedAndCall);
@@ -294,7 +294,7 @@ void
 SmartListModel::removeNewConversationItem()
 {
     auto newConversationItem = std::dynamic_pointer_cast<NewConversationItem>(items_.front());
-    disconnect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::temporaryItemChanged);
+    disconnect(newConversationItem.get(), &NewConversationItem::changed, this, &SmartListModel::slotItemChanged);
     disconnect(newConversationItem.get(), &NewConversationItem::contactFound, this, &SmartListModel::contactFound);
     disconnect(newConversationItem.get(), &NewConversationItem::contactAdded, this, &SmartListModel::contactAdded);
     disconnect(newConversationItem.get(), &NewConversationItem::contactAddedAndCall, this, &SmartListModel::contactAddedAndCall);
@@ -307,12 +307,6 @@ std::string
 SmartListModel::getFilter() const
 {
     return m_sFilter;
-}
-
-void
-SmartListModel::temporaryItemChanged()
-{
-    emit modelUpdated();
 }
 
 Account*
@@ -332,6 +326,7 @@ SmartListModel::fillsWithContacts(Account* account)
     // add contacts to the list
     for (auto c : contacts) {
         auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
+        connect(contact.get(), &ContactItem::changed, this, &SmartListModel::slotItemChanged);
         contact->setTitle(c->uri().toUtf8().constData());
         items_.emplace_back(contact);
     }
@@ -362,6 +357,16 @@ SmartListModel::contactAddedAndCall(const std::string& id)
         }
     }
 }
+
+void
+SmartListModel::slotItemChanged(SmartListItem* item)
+{
+    auto idx = find(item->getTitle());
+    if (idx != -1) {
+        emit itemChanged(static_cast<unsigned int>(idx));
+    }
+}
+
 
 void
 SmartListModel::contactAddedAndSend(const std::string& id, std::string message)

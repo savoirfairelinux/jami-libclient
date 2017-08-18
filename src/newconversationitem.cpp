@@ -52,6 +52,7 @@ NewConversationItem::setTitle(const std::string title)
         _title = std::unique_ptr<std::string>(new std::string());
 
     _title->assign(title);
+    emit changed(this);
 }
 
 const std::string
@@ -82,7 +83,6 @@ NewConversationItem::search(const std::string& query)
     Contact emptyContact;
     contact_ = emptyContact;
     alias_ = "Searching..." + query;
-    emit changed();
     // Query NS
     auto uri = URI(QString(query.c_str()));
     Account* account = nullptr;
