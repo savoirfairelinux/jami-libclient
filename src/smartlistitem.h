@@ -48,6 +48,8 @@ class LIB_EXPORT SmartListItem : public QObject {
     virtual void removeHistory() {};
     virtual Messages getHistory() const { return Messages(); };
 
+    virtual void placeCall() {};
+
     Q_SIGNALS:
     void changed(SmartListItem*);
     void lastInteractionChanged(SmartListItem*);
