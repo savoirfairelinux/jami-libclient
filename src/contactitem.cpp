@@ -135,6 +135,8 @@ ContactItem::sendMessage(std::string message)
         QString::number(QDateTime::currentMSecsSinceEpoch() / 1000),
         true
     );
+
+    emit lastInteractionChanged(this);
 }
 
 void
@@ -158,8 +160,8 @@ ContactItem::placeCall()
     setCallId(callId.toStdString());
     setCallStatus(CallStatus::SEARCHING);
 
+    emit lastInteractionChanged(this);
     activate();
-
 }
 
 const std::string
@@ -168,7 +170,7 @@ ContactItem::getLastInteraction() const
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
 
     if (not account) {
-        qDebug() << "placeCall, invalid pointer";
+        qDebug() << "getLastInteraction, invalid pointer";
         return std::string();
     }
 
@@ -178,6 +180,24 @@ ContactItem::getLastInteraction() const
         return std::string();
 
     return messages.back().body;
+}
+
+const long int
+ContactItem::getLastInteractionTimeStamp() const
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+
+    if (not account) {
+        qDebug() << "getLastInteractionTimeStamp, invalid pointer";
+        return 0;
+    }
+
+    auto messages = DataBase::instance().getMessages(contact_.uri.c_str(), account->id());
+
+    if (messages.size() == 0)
+        return 0;
+
+    return std::stol(messages.back().timestamp);
 }
 
 const std::string

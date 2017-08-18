@@ -143,9 +143,9 @@ SmartListModel::getItems() const
 {
     filteredItems_ = items_;
 
-    if (m_sFilter.length() == 0) return filteredItems_;
+    if (filter_.length() == 0) return filteredItems_;
 
-    auto filter = m_sFilter;
+    auto filter = filter_;
     auto it = std::copy_if(items_.begin(), items_.end(), filteredItems_.begin(),
     [&filter, this] (const std::shared_ptr<SmartListItem>& item) {
         auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(item); //TODO wait for enum LRC side to get type
@@ -237,7 +237,7 @@ SmartListModel::removeConversation(const std::string& title)
 void
 SmartListModel::setFilter(const std::string& newFilter)
 {
-    m_sFilter = newFilter;
+    filter_ = newFilter;
     std::shared_ptr<NewConversationItem> newConversationItem;
     if (!newFilter.empty()) {
         // add the first item, wich is the NewConversationItem
@@ -306,7 +306,7 @@ SmartListModel::removeNewConversationItem()
 std::string
 SmartListModel::getFilter() const
 {
-    return m_sFilter;
+    return filter_;
 }
 
 Account*
@@ -327,9 +327,11 @@ SmartListModel::fillsWithContacts(Account* account)
     for (auto c : contacts) {
         auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
         connect(contact.get(), &ContactItem::changed, this, &SmartListModel::slotItemChanged);
+        connect(contact.get(), &ContactItem::lastInteractionChanged, this, &SmartListModel::slotLastInteractionChanged);
         contact->setTitle(c->uri().toUtf8().constData());
         items_.emplace_back(contact);
     }
+    sortItems();
     filteredItems_ = items_;
 
     return account;
@@ -380,6 +382,25 @@ SmartListModel::contactAddedAndSend(const std::string& id, std::string message)
             conversation->sendMessage(message);
         }
     }
+}
+
+void
+SmartListModel::slotLastInteractionChanged(SmartListItem* item)
+{
+    if (items_.empty() && !filter_.empty()) return;
+    sortItems();
+    emit modelUpdated();
+}
+
+
+void
+SmartListModel::sortItems()
+{
+    std::sort(items_.begin(), items_.end(),
+    [](const std::shared_ptr<SmartListItem>& itemA, const std::shared_ptr<SmartListItem>& itemB)
+    {
+        return itemA->getLastInteractionTimeStamp() > itemB->getLastInteractionTimeStamp();
+    });
 }
 
 

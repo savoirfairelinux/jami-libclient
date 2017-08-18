@@ -76,18 +76,20 @@ class LIB_EXPORT SmartListModel : public QObject {
     void contactFound(const std::string& uid);
     void contactAdded(const std::string& uid);
     void contactAddedAndSend(const std::string& uid, std::string message);
-    void slotItemChanged(SmartListItem*);
+    void slotItemChanged(SmartListItem* item);
     void contactAddedAndCall(const std::string& uid);
+    void slotLastInteractionChanged(SmartListItem* item);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);
     Account* fillsWithContacts(Account* account);
+    void sortItems();
 
     void removeNewConversationItem();
     std::shared_ptr<NewConversationItem> createNewConversationItem();
 
     SmartListItems items_;
     mutable SmartListItems filteredItems_;
-    std::string m_sFilter;
+    std::string filter_;
 
 };

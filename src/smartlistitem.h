@@ -41,10 +41,12 @@ class LIB_EXPORT SmartListItem : public QObject {
     virtual const std::string getAlias() const { return ""; };
     virtual const std::string getAvatar() const { return ""; };
     virtual const std::string getLastInteraction() const { return ""; };
+    virtual const long int getLastInteractionTimeStamp() const { return 0; };
     virtual const bool isPresent() const {return false;};
 
     Q_SIGNALS:
-    void changed(SmartListItem* row);
+    void changed(SmartListItem*);
+    void lastInteractionChanged(SmartListItem*);
 
     protected:
     SmartListItem();
