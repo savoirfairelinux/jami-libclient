@@ -71,6 +71,10 @@ class LIB_EXPORT SmartListModel : public QObject {
     void showConversationView(SmartListItem* item);
     void newConversationItemActivated(NewConversationItem* item); // TODO replace by showNewConversation
     void ShowIncomingCallView(ContactItem* item); // adding const is good, but requires some work in gnome-ring
+    void showVideoViewFor(ContactItem* item);
+
+    // signals for call model
+    void callPauseModeChangedFor(const ContactItem*);
 
     public Q_SLOTS:
     void contactFound(const std::string& uid);

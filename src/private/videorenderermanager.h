@@ -54,6 +54,7 @@ public:
 
    //Helpers
    Video::Renderer* getRenderer(const Call* call) const;
+   Video::Renderer* getRenderer(const std::string& callId) const;
    void setBufferSize(uint size);
    void switchDevice(const Video::Device* device) const;
 

@@ -25,6 +25,10 @@
 #include "contact.h"
 #include "contactmethod.h"
 
+namespace Video {
+class Renderer;
+}
+
 class LIB_EXPORT ContactItem : public SmartListItem {
     Q_OBJECT
 
@@ -48,16 +52,24 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     // message communication
     void sendMessage(std::string message); // manage only dht message for now
 
-    // video communication
+    // video communication (maybe move all or some stuff to a call object)
     void placeCall();
     void setCallId(const std::string);
     void setCallStatus(const CallStatus);
     const std::string getCallId() const { return callId_; };
     const CallStatus getCallStatus() {return callStatus_;};
-    static std::string getReadableCallStatus(CallStatus);
+    static std::string getReadableCallStatus(CallStatus); // changer le parametre pour un ContactItem...
     void rejectIncomingCall() const;
     void acceptIncomingCall() const;
     void cancelOutGoingCall() const;
+    Video::Renderer* getRenderer() const; // should be in some other place... ?? e.g. in the coming call object.
+    // video call controllers :
+    void hangUp() const;
+    void togglePause();
+    void toggleMuteaUdio();
+    void toggleMuteVideo();
+    void toggleRecoringdAudio();
+    void qualityController() const;
 
     Q_SIGNALS:
     void CallStatusChanged(const CallStatus);
@@ -70,4 +82,10 @@ protected:
     Contact contact_;
     std::string callId_ = "";
     CallStatus callStatus_ = CallStatus::NONE;
+
+private:
+    bool isPaused = false;
+    bool isAudioMuted = false;
+    bool isVideoMuted = false;
+    bool isRecordingAudio = false;
 };

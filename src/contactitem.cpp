@@ -25,6 +25,9 @@
 #include "smartlistmodel.h"
 #include "database.h"
 #include "availableaccountmodel.h"
+#include "video/renderer.h"
+#include "private/videorenderermanager.h"
+
 
 // Qt
 #include <qstring.h>
@@ -33,9 +36,12 @@
 // Debug
 #include <qdebug.h>
 
-// Ring daemon
+// Dbus bind for ring daemon
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
+
+// Ring daemon
+#include <media_const.h>
 
 ContactItem::ContactItem(ContactMethod* cm)
 : SmartListItem()
@@ -97,6 +103,9 @@ ContactItem::activate()
         case CallStatus::CONNECTING :
         case CallStatus::SEARCHING :
         emit SmartListModel::instance().ShowIncomingCallView(this);
+        break;
+        case CallStatus::IN_PROGRESS :
+        emit SmartListModel::instance().showVideoViewFor(this);
         break;
         case CallStatus::NONE :
         default :
@@ -273,6 +282,8 @@ ContactItem::getReadableCallStatus(CallStatus callStatus)
         return "ringing";
         case CallStatus::SEARCHING:
         return "searching";
+        case CallStatus::IN_PROGRESS :
+        return "in progress";
         default :
         return "plouf!";
     }
@@ -296,5 +307,58 @@ ContactItem::cancelOutGoingCall() const
     CallManager::instance().hangUp(callId_.c_str());
 }
 
+Video::Renderer*
+ContactItem::getRenderer() const
+{
+   #ifdef ENABLE_VIDEO
+   return VideoRendererManager::instance().getRenderer(callId_);
+   #else
+   return nullptr;
+   #endif
+}
+
+void
+ContactItem::hangUp() const
+{
+    CallManager::instance().hangUp(callId_.c_str());
+}
+
+void
+ContactItem::togglePause()
+{
+    if (isPaused)
+        CallManager::instance().unhold(callId_.c_str());
+    else
+        CallManager::instance().hold(callId_.c_str());
+
+    isPaused = !isPaused; // should be done by some callback from daemon if possible
+}
+
+void
+ContactItem::toggleMuteaUdio()
+{
+    isAudioMuted = !isAudioMuted;
+    CallManager::instance().muteLocalMedia(callId_.c_str(), DRing::Media::Details::MEDIA_TYPE_AUDIO, isAudioMuted /* mute state */ );
+}
+
+void
+ContactItem::toggleMuteVideo()
+{
+    isVideoMuted = !isVideoMuted;
+    CallManager::instance().muteLocalMedia(callId_.c_str(), DRing::Media::Details::MEDIA_TYPE_VIDEO, isVideoMuted /* mute state */ );
+}
+
+void
+ContactItem::toggleRecoringdAudio()
+{
+    isRecordingAudio = !isRecordingAudio;
+    CallManager::instance().toggleRecording(callId_.c_str());
+}
+
+void
+ContactItem::qualityController() const
+{
+    qDebug() << "qualityController, isn't yet implemented";
+}
 
 #include <contactitem.moc>
