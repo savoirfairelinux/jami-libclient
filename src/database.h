@@ -50,7 +50,7 @@ class LIB_EXPORT DataBase : public QObject {
 
     // Messages
     void addMessage(const QString& contact, const QString& account, const QString& message, const QString& timestamp, const bool is_outgoing);
-    std::vector<Message> getMessages(const QString& contact, const QString& account);
+    Messages getMessages(const QString& contact, const QString& account);
     void removeHistory(const QString& contact, const QString& account);
     int NumberOfUnreads(const QString& contact, const QString& account);
     void setMessageRead(const int uid);

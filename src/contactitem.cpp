@@ -149,6 +149,22 @@ ContactItem::sendMessage(std::string message)
 }
 
 void
+ContactItem::removeHistory()
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    DataBase::instance().removeHistory(QString(contact_.id.c_str()), QString(account->id()));
+}
+
+Messages
+ContactItem::getHistory() const
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return Messages();
+    return DataBase::instance().getMessages(QString(contact_.id.c_str()), QString(account->id()));
+}
+
+void
 ContactItem::placeCall()
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
@@ -366,7 +382,8 @@ ContactItem::slotNewMessageInDatabase(const std::string& contact, const std::str
 {
     auto currentAccount = AvailableAccountModel::instance().currentDefaultAccount();
     if (QString(currentAccount->id()).toStdString() != account) return;
-    if (contact != contact_.id) return;
+
+    if (contact != getTitle()) return;
     emit newMessage(msg);
     emit lastInteractionChanged(this);
 }
