@@ -27,7 +27,7 @@
 // Lrc
 #include "typedefs.h"
 #include "globals.h"
-#include "database.h"
+#include "message.h"
 
 
 class LIB_EXPORT SmartListItem : public QObject {
@@ -48,7 +48,7 @@ class LIB_EXPORT SmartListItem : public QObject {
     Q_SIGNALS:
     void changed(SmartListItem*);
     void lastInteractionChanged(SmartListItem*);
-    void newMessage(DataBase::Message& message);
+    void newMessage(Message& message);
 
     protected:
     SmartListItem();

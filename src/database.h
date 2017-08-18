@@ -29,6 +29,7 @@
 
 // Lrc
 #include "namedirectory.h"
+#include "message.h"
 
 // TEST
 #include <qdebug.h>
@@ -44,13 +45,6 @@ class Account;
 class LIB_EXPORT DataBase : public QObject {
     Q_OBJECT
     public:
-    //TODO complete this class and move it elsewhere?
-    struct Message
-    {
-        std::string body;
-        std::string timestamp;
-        bool is_outgoing;
-    };
 
     ~DataBase();
 
@@ -72,7 +66,7 @@ class LIB_EXPORT DataBase : public QObject {
 
     // signals
     Q_SIGNALS:
-    void messageAdded(const std::string&, const std::string&, DataBase::Message);
+    void messageAdded(const std::string&, const std::string&, Message);
     void contactAdded(const std::string&);
 
     // Slots

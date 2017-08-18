@@ -102,7 +102,7 @@ DataBase::addMessage(const QString& contact, const QString& account, const QStri
         return;
     }
 
-    DataBase::Message msg;
+    Message msg;
     msg.body = message.toUtf8().constData();
     msg.timestamp = timestamp.toStdString();
     msg.is_outgoing = is_outgoing;
@@ -110,7 +110,7 @@ DataBase::addMessage(const QString& contact, const QString& account, const QStri
     emit messageAdded(contact.toStdString(), account.toStdString(), msg); // ajouter l'auteur
 }
 
-std::vector<DataBase::Message> //  message : status+date+contactitem+direction+body
+std::vector<Message> //  message : status+date+contactitem+direction+body
 DataBase::getMessages(const QString& contact, const QString& account) // contact == from
 {
     // ici je recupere le hash du compte
@@ -122,9 +122,9 @@ DataBase::getMessages(const QString& contact, const QString& account) // contact
         return std::vector<Message>();
     }
 
-    std::vector<DataBase::Message> messages;
+    std::vector<Message> messages;
     while(_query->next()) {
-        DataBase::Message msg;
+        Message msg;
         msg.body = _query->value(0).toString().toStdString();
         msg.timestamp = _query->value(1).toString().toStdString();
         msg.is_outgoing = _query->value(2).toBool();

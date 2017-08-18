@@ -76,7 +76,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
 
     public Q_SLOTS:
     void slotPresenceChanged(bool);
-    void slotNewMessageInDatabase(const std::string& contact, const std::string& account, DataBase::Message msg);
+    void slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg);
 
 protected:
     Contact contact_;

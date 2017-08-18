@@ -26,7 +26,7 @@
 #include "availableaccountmodel.h"
 #include "video/renderer.h"
 #include "private/videorenderermanager.h"
-
+#include "database.h"
 
 // Qt
 #include <qstring.h>
@@ -362,7 +362,7 @@ ContactItem::qualityController() const
 }
 
 void
-ContactItem::slotNewMessageInDatabase(const std::string& contact, const std::string& account, DataBase::Message msg)
+ContactItem::slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg)
 {
     auto currentAccount = AvailableAccountModel::instance().currentDefaultAccount();
     if (QString(currentAccount->id()).toStdString() != account) return;

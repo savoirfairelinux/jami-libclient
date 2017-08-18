@@ -454,6 +454,7 @@ SET( libringclient_LIB_HDRS
   src/smartlistmodel.h
   src/contactitem.h
   src/database.h
+  src/message.h
   src/newconversationitem.h
   src/globals.h
 )
