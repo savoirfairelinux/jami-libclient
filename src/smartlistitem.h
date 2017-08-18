@@ -45,10 +45,13 @@ class LIB_EXPORT SmartListItem : public QObject {
     virtual const long int getLastInteractionTimeStamp() const { return 0; };
     virtual const bool isPresent() const {return false;};
 
+    virtual void removeHistory() {};
+    virtual Messages getHistory() const { return Messages(); };
+
     Q_SIGNALS:
     void changed(SmartListItem*);
     void lastInteractionChanged(SmartListItem*);
-    void newMessage(Message& message);
+    void newMessage(Message message);
 
     protected:
     SmartListItem();

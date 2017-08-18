@@ -51,6 +51,8 @@ class LIB_EXPORT ContactItem : public SmartListItem {
 
     // message communication
     void sendMessage(std::string message); // manage only dht message for now
+    void removeHistory();
+    Messages getHistory() const;
 
     // video communication (maybe move all or some stuff to a call object)
     void placeCall();
