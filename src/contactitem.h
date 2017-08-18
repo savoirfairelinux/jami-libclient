@@ -53,6 +53,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     void sendMessage(std::string message); // manage only dht message for now
     void removeHistory();
     Messages getHistory() const;
+    void newMessageAdded(Message msg);
 
     // video communication (maybe move all or some stuff to a call object)
     void placeCall();
@@ -78,7 +79,6 @@ class LIB_EXPORT ContactItem : public SmartListItem {
 
     public Q_SLOTS:
     void slotPresenceChanged(bool);
-    void slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg);
 
 protected:
     Contact contact_;

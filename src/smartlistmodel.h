@@ -83,6 +83,7 @@ class LIB_EXPORT SmartListModel : public QObject {
     void slotItemChanged(SmartListItem* item);
     void contactAddedAndCall(const std::string& uid);
     void slotLastInteractionChanged(SmartListItem* item);
+    void slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg);
 
     private:
     explicit SmartListModel(QObject* parent = nullptr);

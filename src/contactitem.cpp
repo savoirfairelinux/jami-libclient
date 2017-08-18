@@ -54,7 +54,6 @@ ContactItem::ContactItem(ContactMethod* cm)
     this->contact_.unreadMessages = 0;
 
     QObject::connect(cm, &ContactMethod::presentChanged, this, &ContactItem::slotPresenceChanged);
-    QObject::connect(&DataBase::instance(), &DataBase::messageAdded, this, &ContactItem::slotNewMessageInDatabase);
 }
 
 ContactItem::ContactItem()
@@ -378,12 +377,8 @@ ContactItem::qualityController() const
 }
 
 void
-ContactItem::slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg)
+ContactItem::newMessageAdded(Message msg)
 {
-    auto currentAccount = AvailableAccountModel::instance().currentDefaultAccount();
-    if (QString(currentAccount->id()).toStdString() != account) return;
-
-    if (contact != getTitle()) return;
     emit newMessage(msg);
     emit lastInteractionChanged(this);
 }

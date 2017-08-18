@@ -135,6 +135,7 @@ SmartListModel::SmartListModel(QObject* parent)
 
     // test only
     DataBase::instance();
+    QObject::connect(&DataBase::instance(), &DataBase::messageAdded, this, &SmartListModel::slotNewMessageInDatabase);
 }
 
 
@@ -405,6 +406,20 @@ SmartListModel::sortItems()
     {
         return itemA->getLastInteractionTimeStamp() > itemB->getLastInteractionTimeStamp();
     });
+}
+
+void
+SmartListModel::slotNewMessageInDatabase(const std::string& contact, const std::string& account, Message msg)
+{
+    auto currentAccount = AvailableAccountModel::instance().currentDefaultAccount();
+    if (QString(currentAccount->id()).toStdString() != account) return;
+
+    auto idx = find(contact);
+    if (idx == -1) return;
+    auto conversation = std::dynamic_pointer_cast<ContactItem>(items_.at(idx));
+    if (conversation) {
+        conversation->newMessageAdded(msg);
+    }
 }
 
 
