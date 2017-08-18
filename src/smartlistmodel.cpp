@@ -38,7 +38,7 @@
 #include <algorithm>
 #include <regex>
 
-SmartListModel::SmartListModel(QObject* parent)
+SmartListModel::SmartListModel(QObject* parent) : QObject(parent)
 {
     connect(&AvailableAccountModel::instance(), &AvailableAccountModel::currentDefaultAccountChanged,
     [this](Account* a)
@@ -50,6 +50,7 @@ SmartListModel::SmartListModel(QObject* parent)
     connect(&CallManager::instance(), &CallManagerInterface::incomingCall,
     [this](const QString &accountID, const QString &callID, const QString &fromQString)
     {
+        Q_UNUSED(accountID)
         auto from = fromQString.toStdString();
 
         // during a call we receiving something like :
@@ -57,8 +58,6 @@ SmartListModel::SmartListModel(QObject* parent)
         // we trim to get only the ringid
         from.erase(0, from.find('<')+1);
         from.erase(from.find('@'));
-
-        unsigned int row = 0;
 
         for (auto iter = items_.begin(); iter != items_.end(); iter++) {
             auto conversation = std::dynamic_pointer_cast<ContactItem>(*iter);
@@ -76,9 +75,10 @@ SmartListModel::SmartListModel(QObject* parent)
     });
 
 
-    connect(&CallManager::instance(), &CallManagerInterface::callStateChanged, // A DEPLACER DANS UNE FONCTION CAR TROP GROS
+    connect(&CallManager::instance(), &CallManagerInterface::callStateChanged, // TODO A DEPLACER DANS UNE FONCTION CAR TROP GROS
     [this](const QString& callID, const QString& stateName, int code)
     {
+        Q_UNUSED(code)
         auto iter = std::find_if (items_.begin(), items_.end(),
         [&callID] (const std::shared_ptr<SmartListItem>& item)
         {
@@ -153,7 +153,7 @@ SmartListModel::getItems() const
     auto filter = filter_;
     auto it = std::copy_if(items_.begin(), items_.end(), filteredItems_.begin(),
     [&filter, this] (const std::shared_ptr<SmartListItem>& item) {
-        auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(item); //TODO wait for enum LRC side to get type
+        auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(item);
         if (isTemporary) return true;
         try {
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
@@ -187,7 +187,7 @@ int
 SmartListModel::find(const std::string& uid) const
 {
     for (unsigned int i = 0 ; i < items_.size() ; ++i) {
-        if (items_[i]->getUID() == uid) { // TODO get UID
+        if (items_[i]->getUID() == uid) {
             return i;
         }
     }
@@ -198,7 +198,7 @@ int
 SmartListModel::findFiltered(const std::string& uid) const
 {
     for (unsigned int i = 0 ; i < filteredItems_.size() ; ++i) {
-        if (filteredItems_[i]->getUID() == uid) { // TODO get UID
+        if (filteredItems_[i]->getUID() == uid) {
             return i;
         }
     }
@@ -247,7 +247,7 @@ SmartListModel::setFilter(const std::string& newFilter)
     if (!newFilter.empty()) {
         // add the first item, wich is the NewConversationItem
         if (!items_.empty()) {
-            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items_.front()); //TODO wait for enum LRC side to get type
+            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items_.front());
             if (!isTemporary) {
                 // No newConversationItem, create one
                 newConversationItem = createNewConversationItem();
@@ -262,7 +262,7 @@ SmartListModel::setFilter(const std::string& newFilter)
     } else {
         // No filter, so we can remove the newConversationItem
         if (!items_.empty()) {
-            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items_.front()); //TODO wait for enum LRC side to get type
+            auto isTemporary = std::dynamic_pointer_cast<NewConversationItem>(items_.front());
             if (isTemporary) {
                 removeNewConversationItem();
             }
@@ -368,6 +368,7 @@ SmartListModel::contactAddedAndCall(const std::string& id)
 void
 SmartListModel::slotItemChanged(SmartListItem* item)
 {
+    Q_UNUSED(item)
     auto idx = find(item->getUID());
     if (idx != -1) {
         emit itemChanged(static_cast<unsigned int>(idx));
@@ -392,6 +393,7 @@ SmartListModel::contactAddedAndSend(const std::string& id, std::string message)
 void
 SmartListModel::slotLastInteractionChanged(SmartListItem* item)
 {
+    Q_UNUSED(item)
     if (items_.empty() && !filter_.empty()) return;
     sortItems();
     emit modelUpdated();

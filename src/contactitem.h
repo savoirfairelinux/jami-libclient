@@ -41,7 +41,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     const std::string getAvatar() const override;
     const std::string getLastInteraction() const override;
     long int getLastInteractionTimeStamp() const;
-    const std::string getUri() const; // pensez à éventuellement retirer ces fonctions et accéder à l'uri depui getContact
+    std::string getUri() const; // pensez à éventuellement retirer ces fonctions et accéder à l'uri depui getContact
     bool isPresent() const override;
     virtual void activate() override;
     const Contact& getContact() {return contact_;};
@@ -58,7 +58,7 @@ class LIB_EXPORT ContactItem : public SmartListItem {
     void setCallId(const std::string);
     void setCallStatus(const CallStatus);
     const std::string getCallId() const { return callId_; };
-    const CallStatus getCallStatus() {return callStatus_;};
+    CallStatus getCallStatus() {return callStatus_;};
     static std::string getReadableCallStatus(CallStatus); // changer le parametre pour un ContactItem...
     void rejectIncomingCall() const;
     void acceptIncomingCall() const;

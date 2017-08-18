@@ -31,7 +31,7 @@
 #include "private/vcardutils.h"
 #include "availableaccountmodel.h"
 
-DataBase::DataBase(QObject* parent)
+DataBase::DataBase(QObject* parent) : QObject(parent)
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         qDebug() << "DataBase, errror QSQLITE not supported";
@@ -238,6 +238,8 @@ DataBase::slotRegisteredNameFound(const Account* account,
                                   const QString& address,
                                   const QString& name)
 {
+    Q_UNUSED(account)
+    Q_UNUSED(status)
     // for now, registeredNameFound is fired even if it not find any username.
     //~ if (name.isEmpty()) {
         //~ qDebug() << "slotRegisteredNameFound, name not found for " << address;

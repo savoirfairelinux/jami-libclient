@@ -208,7 +208,7 @@ ContactItem::getLastInteractionTimeStamp() const
     return std::stol(messages.back().timestamp);
 }
 
-const std::string
+std::string
 ContactItem::getUri() const
 {
     return contact_.uri;
@@ -232,7 +232,7 @@ void
 ContactItem::slotPresenceChanged(bool presence)
 {
     this->contact_.isPresent = presence;
-    // TODO emit changed();
+    emit changed(this);
 }
 
 void
