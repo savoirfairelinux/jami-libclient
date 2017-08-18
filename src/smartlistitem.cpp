@@ -20,7 +20,7 @@
 #include "smartlistitem.h"
 
 SmartListItem::SmartListItem()
-: _title(new std::string())
+: _uid(new std::string())
 {
 }
 
@@ -29,20 +29,19 @@ SmartListItem::~SmartListItem()
 }
 
 void
-SmartListItem::setTitle(const std::string& newTitle)
+SmartListItem::setUID(const std::string& newUID)
 {
-    if (not _title)
-        _title = std::unique_ptr<std::string>(new std::string());
+    if (not _uid)
+        _uid = std::unique_ptr<std::string>(new std::string());
 
-    _title->assign(newTitle);
-    emit changed(this);
+    _uid->assign(newUID);
 }
 
 
 const std::string
-SmartListItem::getTitle() const
+SmartListItem::getUID() const
 {
-    return _title->data();
+    return _uid->data();
 }
 
 #include <smartlistitem.moc>

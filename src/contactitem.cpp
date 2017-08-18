@@ -97,7 +97,7 @@ ContactItem::activate()
 }
 
 const std::string
-ContactItem::getAlias() const
+ContactItem::getTitle() const
 {
     return this->contact_.displayName;
 }

@@ -31,7 +31,7 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
     explicit NewConversationItem();
     ~NewConversationItem();
 
-    const std::string getAlias() const override { return alias_; };
+    const std::string getTitle() const override { return title_; };
     virtual void activate() override;
     bool isPresent() const override;
 
@@ -57,6 +57,6 @@ public Q_SLOTS:
 private:
     void addContact();
     void setMinimumContact(const std::string& address);
-    std::string alias_;
+    std::string title_;
     std::string awaitingMessage_;
 };

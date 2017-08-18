@@ -37,7 +37,7 @@
 #include "dbus/callmanager.h"
 
 NewConversationItem::NewConversationItem()
-: ContactItem(), alias_("Searching...")
+: ContactItem(), title_("Searching...")
 {
 }
 
@@ -66,7 +66,7 @@ NewConversationItem::search(const std::string& query)
     // Update alias
     Contact emptyContact;
     contact_ = emptyContact;
-    alias_ = "Searching..." + query;
+    title_ = "Searching..." + query;
     // Query NS
     auto uri = URI(QString(query.c_str()));
     Account* account = nullptr;
@@ -84,7 +84,7 @@ NewConversationItem::search(const std::string& query)
     } else {
         /* no lookup, simply use the URI as is */
         auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
-        alias_ = cm->bestName().toStdString();
+        title_ = cm->bestName().toStdString();
         setMinimumContact(cm->uri().toStdString());
     }
 }
@@ -95,7 +95,7 @@ NewConversationItem::registeredNameFound(const Account* account, NameDirectory::
     Q_UNUSED(account)
     Q_UNUSED(address)
     if (status == NameDirectory::LookupStatus::SUCCESS) {
-        alias_ = name.toStdString();
+        title_ = name.toStdString();
         setMinimumContact(address.toStdString());
     }
     disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &NewConversationItem::registeredNameFound);
@@ -107,8 +107,8 @@ NewConversationItem::setMinimumContact(const std::string& address)
     Contact newContact;
     newContact.uri = address;
     newContact.id = address;
-    newContact.registeredName = alias_;
-    newContact.displayName = alias_;
+    newContact.registeredName = title_;
+    newContact.displayName = title_;
     newContact.avatar = "";
     newContact.isPresent = false;
     newContact.unreadMessages = 0;

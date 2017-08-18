@@ -158,12 +158,12 @@ SmartListModel::getItems() const
         try {
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
             bool result = std::regex_search(item->getTitle(), regexFilter)
-            | std::regex_search(item->getAlias(), regexFilter);
+            | std::regex_search(item->getUID(), regexFilter);
             return result;
         } catch(std::regex_error&) {
             // If the regex is incorrect, just test if filter is a substring of the title or the alias.
             return item->getTitle().find(filter) != std::string::npos
-            && item->getAlias().find(filter) != std::string::npos;
+            && item->getUID().find(filter) != std::string::npos;
         }
     });
     filteredItems_.resize(std::distance(filteredItems_.begin(), it));
@@ -187,7 +187,7 @@ int
 SmartListModel::find(const std::string& uid) const
 {
     for (unsigned int i = 0 ; i < items_.size() ; ++i) {
-        if (items_[i]->getTitle() == uid) { // TODO get UID
+        if (items_[i]->getUID() == uid) { // TODO get UID
             return i;
         }
     }
@@ -198,7 +198,7 @@ int
 SmartListModel::findFiltered(const std::string& uid) const
 {
     for (unsigned int i = 0 ; i < filteredItems_.size() ; ++i) {
-        if (filteredItems_[i]->getTitle() == uid) { // TODO get UID
+        if (filteredItems_[i]->getUID() == uid) { // TODO get UID
             return i;
         }
     }
@@ -333,7 +333,7 @@ SmartListModel::fillsWithContacts(Account* account)
         auto contact = std::shared_ptr<ContactItem>(new ContactItem(c));
         connect(contact.get(), &ContactItem::changed, this, &SmartListModel::slotItemChanged);
         connect(contact.get(), &ContactItem::lastInteractionChanged, this, &SmartListModel::slotLastInteractionChanged);
-        contact->setTitle(c->uri().toUtf8().constData());
+        contact->setUID(c->uri().toUtf8().constData());
         items_.emplace_back(contact);
     }
     sortItems();
@@ -368,7 +368,7 @@ SmartListModel::contactAddedAndCall(const std::string& id)
 void
 SmartListModel::slotItemChanged(SmartListItem* item)
 {
-    auto idx = find(item->getTitle());
+    auto idx = find(item->getUID());
     if (idx != -1) {
         emit itemChanged(static_cast<unsigned int>(idx));
     }
