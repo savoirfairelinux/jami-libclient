@@ -19,9 +19,6 @@
 // Parent
 #include "smartlistitem.h"
 
-// Debug
-#include <qdebug.h>
-
 SmartListItem::SmartListItem()
 : _title(new std::string())
 {
@@ -29,6 +26,23 @@ SmartListItem::SmartListItem()
 
 SmartListItem::~SmartListItem()
 {
+}
+
+void
+SmartListItem::setTitle(const std::string& newTitle)
+{
+    if (not _title)
+        _title = std::unique_ptr<std::string>(new std::string());
+
+    _title->assign(newTitle);
+    emit changed(this);
+}
+
+
+const std::string
+SmartListItem::getTitle() const
+{
+    return _title->data();
 }
 
 #include <smartlistitem.moc>

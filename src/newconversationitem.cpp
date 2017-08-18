@@ -46,22 +46,6 @@ NewConversationItem::~NewConversationItem()
 }
 
 void
-NewConversationItem::setTitle(const std::string title)
-{
-    if (not _title)
-        _title = std::unique_ptr<std::string>(new std::string());
-
-    _title->assign(title);
-    emit changed(this);
-}
-
-const std::string
-NewConversationItem::getTitle() const
-{
-    return _title->data();
-}
-
-void
 NewConversationItem::activate()
 {
     if (contact_.id.length() > 0) {
@@ -70,7 +54,7 @@ NewConversationItem::activate()
     }
 }
 
-const bool
+bool
 NewConversationItem::isPresent() const
 {
     return false;

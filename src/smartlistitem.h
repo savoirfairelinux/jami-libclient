@@ -36,24 +36,26 @@ class LIB_EXPORT SmartListItem : public QObject {
     public:
     virtual ~SmartListItem();
 
-    virtual void setTitle(const std::string) {};
-    virtual const std::string getTitle() const { return _title->data(); };
-    virtual void activate() {};
-    virtual const std::string getAlias() const { return ""; };
-    virtual const std::string getAvatar() const { return ""; };
-    virtual const std::string getLastInteraction() const { return ""; };
-    virtual const long int getLastInteractionTimeStamp() const { return 0; };
-    virtual const bool isPresent() const {return false;};
+    virtual void setTitle(const std::string& newTitle);
+    virtual const std::string getTitle() const;
 
-    virtual void removeHistory() {};
-    virtual Messages getHistory() const { return Messages(); };
+    // Informations about the item
+    virtual const std::string getAlias() const = 0;
+    virtual const std::string getAvatar() const = 0;
+    virtual const std::string getLastInteraction() const = 0;
+    virtual long int getLastInteractionTimeStamp() const = 0;
+    virtual bool isPresent() const = 0;
 
-    virtual void placeCall() {};
+    // Actions related
+    virtual void activate() = 0;
+    virtual Messages getHistory() const = 0;
+    virtual void removeHistory() = 0;
+    virtual void placeCall() = 0;
 
     Q_SIGNALS:
     void changed(SmartListItem*);
     void lastInteractionChanged(SmartListItem*);
-    void newMessage(Message message);
+    void newMessage(Message);
 
     protected:
     SmartListItem();

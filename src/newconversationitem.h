@@ -31,11 +31,9 @@ class LIB_EXPORT NewConversationItem : public ContactItem {
     explicit NewConversationItem();
     ~NewConversationItem();
 
-    void setTitle(const std::string) override;
-    const std::string getTitle() const override;
     const std::string getAlias() const override { return alias_; };
     virtual void activate() override;
-    const bool isPresent() const override;
+    bool isPresent() const override;
 
     void search(const std::string& query);
 

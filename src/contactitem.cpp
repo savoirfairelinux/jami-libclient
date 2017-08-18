@@ -72,22 +72,6 @@ ContactItem::~ContactItem()
 {
 }
 
-void
-ContactItem::setTitle(const std::string title)
-{
-    if (not _title)
-        _title = std::unique_ptr<std::string>(new std::string());
-
-    _title->assign(title);
-    emit changed(this);
-}
-
-const std::string
-ContactItem::getTitle() const
-{
-    return _title->data();
-}
-
 // peut etre serait-il préférable de juste retourner un état et de laisser les clients déterminer s'ils veulent
 // lancer un signal... Attention, si on fait ça cela va complexifier les clients, car l'ui qui doit changer en
 // fonction d'un tel signal doit pouvoir le connecter... ce n'est pas évident que la semartlist soit visible de
@@ -206,7 +190,7 @@ ContactItem::getLastInteraction() const
     return messages.back().body;
 }
 
-const long int
+long int
 ContactItem::getLastInteractionTimeStamp() const
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
@@ -237,7 +221,7 @@ ContactItem::setCallId(const std::string callId)
     emit changed(this);
 }
 
-const bool
+bool
 ContactItem::isPresent() const
 {
     return contact_.isPresent;
