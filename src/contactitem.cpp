@@ -23,7 +23,6 @@
 
 // Lrc
 #include "smartlistmodel.h"
-#include "database.h"
 #include "availableaccountmodel.h"
 #include "video/renderer.h"
 #include "private/videorenderermanager.h"
@@ -55,6 +54,7 @@ ContactItem::ContactItem(ContactMethod* cm)
     this->contact_.unreadMessages = 0;
 
     QObject::connect(cm, &ContactMethod::presentChanged, this, &ContactItem::slotPresenceChanged);
+    QObject::connect(&DataBase::instance(), &DataBase::messageAdded, this, &ContactItem::slotNewMessageInDatabase);
 }
 
 ContactItem::ContactItem()
@@ -359,6 +359,16 @@ void
 ContactItem::qualityController() const
 {
     qDebug() << "qualityController, isn't yet implemented";
+}
+
+void
+ContactItem::slotNewMessageInDatabase(const std::string& contact, const std::string& account, DataBase::Message msg)
+{
+    auto currentAccount = AvailableAccountModel::instance().currentDefaultAccount();
+    if (QString(currentAccount->id()).toStdString() != account) return;
+    if (contact != contact_.id) return;
+    emit newMessage(msg);
+    emit lastInteractionChanged(this);
 }
 
 #include <contactitem.moc>

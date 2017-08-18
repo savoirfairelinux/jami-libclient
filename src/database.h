@@ -72,7 +72,7 @@ class LIB_EXPORT DataBase : public QObject {
 
     // signals
     Q_SIGNALS:
-    void messageAdded(const DataBase::Message);
+    void messageAdded(const std::string&, const std::string&, DataBase::Message);
     void contactAdded(const std::string&);
 
     // Slots

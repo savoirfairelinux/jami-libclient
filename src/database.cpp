@@ -107,7 +107,7 @@ DataBase::addMessage(const QString& contact, const QString& account, const QStri
     msg.timestamp = timestamp.toStdString();
     msg.is_outgoing = is_outgoing;
 
-    emit messageAdded(msg); // ajouter l'auteur
+    emit messageAdded(contact.toStdString(), account.toStdString(), msg); // ajouter l'auteur
 }
 
 std::vector<DataBase::Message> //  message : status+date+contactitem+direction+body
