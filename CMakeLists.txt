@@ -50,6 +50,7 @@ SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 FIND_PACKAGE(Ring REQUIRED)
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5LinguistTools) # translations
+FIND_PACKAGE(Qt5Sql REQUIRED)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
    FIND_PACKAGE(Qt5DBus)
@@ -291,6 +292,10 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
   src/bannedcontactmodel.cpp
+  src/contactmodel.cpp
+  src/newcallmodel.cpp
+  src/conversationmodel.cpp
+  src/databasemanager.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -442,6 +447,14 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
+  src/newcallmodel.h
+  src/contactmodel.h
+  src/conversationmodel.h
+  src/message.h
+  src/databasemanager.h
+  src/conversation.h
+  src/callinfo.h
+  src/contactinfo.h
 )
 
 SET(libringclient_video_LIB_HDRS
@@ -635,6 +648,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
       -lpthread
       ${QT_QTDBUS_LIBRARY}
       ${QT_QTCORE_LIBRARY}
+      Qt5::Sql
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
@@ -659,6 +673,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
+   Qt5::Sql
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
