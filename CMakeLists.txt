@@ -50,6 +50,7 @@ SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 FIND_PACKAGE(Ring REQUIRED)
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5LinguistTools) # translations
+FIND_PACKAGE(Qt5Sql REQUIRED)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
    FIND_PACKAGE(Qt5DBus)
@@ -291,6 +292,12 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
   src/bannedcontactmodel.cpp
+  src/contactmodel.cpp
+  src/newcallmodel.cpp
+  src/conversationmodel.cpp
+  src/database.cpp
+  src/lrc.cpp
+  src/newaccountmodel.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -442,7 +449,22 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
+  src/newcallmodel.h
+  src/contactmodel.h
+  src/conversationmodel.h
+  src/database.h
+  src/lrc.h
+  src/newaccountmodel.h
 )
+
+SET(libringclient_data_LIB_HDRS
+  src/data/message.h
+  src/data/conversation.h
+  src/data/contact.h
+  src/data/call.h
+  src/data/account.h
+)
+
 
 SET(libringclient_video_LIB_HDRS
   src/video/device.h
@@ -635,6 +657,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
       -lpthread
       ${QT_QTDBUS_LIBRARY}
       ${QT_QTCORE_LIBRARY}
+      Qt5::Sql
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
@@ -659,6 +682,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
+   Qt5::Sql
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -733,6 +757,12 @@ INSTALL( FILES ${libringclient_interface_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/interfaces
   COMPONENT Devel
 )
+
+INSTALL( FILES ${libringclient_data_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/data
+  COMPONENT Devel
+)
+
 
 #This hack force Debian based system to return a non multi-arch path
 #this is required to prevent the .deb libringclient.so from having an
