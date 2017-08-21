@@ -1212,7 +1212,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="518"/>

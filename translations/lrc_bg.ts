@@ -662,7 +662,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Добавено в любими</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Присъстващ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -687,12 +687,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>Има сертификат</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Регистрирано име</translation>
     </message>
 </context>
 <context>
@@ -715,7 +715,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Присъстващ</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -726,7 +726,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Персонализиран</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -734,7 +734,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>Няма</translation>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation>Нов профи</translation>
+        <translation>Нов профил</translation>
     </message>
 </context>
 <context>
@@ -803,22 +803,22 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Има правилните файлови права за личния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Има правилните файлови права за публичния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Има правилните права на папка за личния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Има правилните права на папка за публичния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
@@ -928,12 +928,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
-        <translation type="unfinished"/>
+        <translation>Име (И)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>Организация (О)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>

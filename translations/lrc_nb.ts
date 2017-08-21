@@ -23,7 +23,7 @@
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Igangsetter</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
@@ -687,12 +687,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>Har sertifikat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Registrert navn</translation>
     </message>
 </context>
 <context>
@@ -918,12 +918,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Emnenøkkelalgoritme</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Vanlig navn (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
@@ -1030,13 +1030,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 bannlysningsliste</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 tilgangsliste</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Dine mediastrømmer er ikke krypterte, skru på SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1319,7 +1319,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Åpne sludring</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1334,22 +1334,22 @@
     <message>
         <location filename="../src/localprofilecollection.cpp" line="142"/>
         <source>Local profiles</source>
-        <translation type="unfinished"/>
+        <translation>Lokale profiler</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Profile Collection</source>
-        <translation type="unfinished"/>
+        <translation>Profilsamling</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>Likemannsprofiler</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>Samling av likemannsprofiler</translation>
     </message>
 </context>
 <context>
@@ -1365,7 +1365,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
