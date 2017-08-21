@@ -20,7 +20,6 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++1y")
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
@@ -44,12 +43,14 @@ SET(CMAKE_AUTOMOC TRUE)
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
+SET(CMAKE_CXX_STANDARD 14)
 
 SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
 FIND_PACKAGE(Ring REQUIRED)
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5LinguistTools) # translations
+FIND_PACKAGE(Qt5Sql REQUIRED)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
    FIND_PACKAGE(Qt5DBus)
@@ -203,13 +204,13 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
-# Build dbus interfaces
+# Build dbus api
 IF(DEFINED RING_XML_INTERFACES_DIR)
     SET (dbus_xml_introspecs_path ${RING_XML_INTERFACES_DIR})
 ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
     SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
 ELSE()
-    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
+    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/api)
 ENDIF()
 
 #File to compile
@@ -291,6 +292,13 @@ SET( libringclient_LIB_SRCS
   src/audio/settings.cpp
   src/media/recordingmodel.cpp
   src/bannedcontactmodel.cpp
+  src/contactmodel.cpp
+  src/newcallmodel.cpp
+  src/conversationmodel.cpp
+  src/database.cpp
+  src/lrc.cpp
+  src/newaccountmodel.cpp
+  src/callbackshandler.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -443,6 +451,20 @@ SET( libringclient_LIB_HDRS
   src/usage_statistics.h
   src/bannedcontactmodel.h
 )
+
+SET(libringclient_api_LIB_HDRS
+  src/api/message.h
+  src/api/conversation.h
+  src/api/contact.h
+  src/api/call.h
+  src/api/account.h
+  src/api/lrc.h
+  src/api/newaccountmodel.h
+  src/api/newcallmodel.h
+  src/api/contactmodel.h
+  src/api/conversationmodel.h
+)
+
 
 SET(libringclient_video_LIB_HDRS
   src/video/device.h
@@ -635,6 +657,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
       -lpthread
       ${QT_QTDBUS_LIBRARY}
       ${QT_QTCORE_LIBRARY}
+      Qt5::Sql
       )
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
@@ -659,6 +682,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES( ringclient
    -lpthread
    ${QT_QTCORE_LIBRARY}
+   Qt5::Sql
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -733,6 +757,12 @@ INSTALL( FILES ${libringclient_interface_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/interfaces
   COMPONENT Devel
 )
+
+INSTALL( FILES ${libringclient_api_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/api
+  COMPONENT Devel
+)
+
 
 #This hack force Debian based system to return a non multi-arch path
 #this is required to prevent the .deb libringclient.so from having an
