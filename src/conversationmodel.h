@@ -42,6 +42,10 @@ class LIB_EXPORT ConversationModel : public QObject {
     const Conversation::Info& getConversation(const unsigned int row) const;
     const Conversation::Info& addConversation(const std::string& uri);
     void removeConversation(const std::string& uid);
+    /**
+     * Select a conversation
+     * @param uid the conversation to select
+     */
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
     void sendMessage(const std::string& uid, const std::string& body) const;
@@ -61,6 +65,13 @@ class LIB_EXPORT ConversationModel : public QObject {
     void showIncomingCallView(const Conversation::Info& conversation);
 
     private:
+    /**
+     * Search a conversation in conversations_
+     * @param uid the contact to search
+     * @return the contact if found else nullptr
+     */
+    std::shared_ptr<Conversation::Info> findNonFiltered(const std::string& uid);
+
     Conversations conversations_;
     mutable Conversations filteredConversations_;
     std::string filter_;

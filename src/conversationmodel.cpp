@@ -18,6 +18,12 @@
  ***************************************************************************/
 #include "conversationmodel.h"
 
+// LRC
+#include "callinfo.h"
+
+// std
+#include <algorithm>
+
 ConversationModel::ConversationModel(QObject* parent)
 :QObject(parent)
 {
@@ -50,7 +56,42 @@ ConversationModel::addConversation(const std::string& uri)
 void
 ConversationModel::selectConversation(const std::string& uid)
 {
+    // Get conversation
+    auto conversation = findNonFiltered(uid);
+    if (!conversation) return;
+    auto participants = conversation->participants_;
+    // Check if conversation has a valid contact.
+    if (participants.empty() || participants.front().uri_.empty())
+        return;
+    switch (conversation->call_.status_) {
+        case NewCall::Status::INCOMING_RINGING:
+        case NewCall::Status::OUTGOING_RINGING:
+        case NewCall::Status::CONNECTING:
+        case NewCall::Status::SEARCHING:
+            // We are currently in a call
+            emit showIncomingCallView(*conversation);
+            break;
+        case NewCall::Status::IN_PROGRESS:
+            // We are currently receiving a call
+            emit showCallView(*conversation);
+            break;
+        case NewCall::Status::NONE:
+        default:
+            // We are not in a call, show the chatview
+            emit showChatView(*conversation);
+    }
+}
 
+std::shared_ptr<Conversation::Info>
+ConversationModel::findNonFiltered(const std::string& uid)
+{
+    std::shared_ptr<Conversation::Info> result = nullptr;
+    auto i = std::find_if(conversations_.begin(), conversations_.end(),
+    [uid](const std::pair<std::string, std::shared_ptr<Conversation::Info>>& conversation) {
+        return conversation.first == uid;
+    });
+    if (i != filteredConversations_.end()) result = i->second;
+    return result;
 }
 
 void
