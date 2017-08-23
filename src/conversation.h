@@ -31,26 +31,36 @@ struct Info
     std::vector <Contact::Info> participants_;
     NewCall::Info call_ = NewCall::Info(0, 0, NewCall::Status::INVALID_STATUS);
     Messages messages_;
+    int lastMessageUid_ = -1;
     bool isUsed_ = false;
     Account* account_; // old
-    unsigned int index_;
+    unsigned int index_ = 0;
 
     // create a new converation when a search was made.
     Info(Account* account, Contact::Info participant)
     : account_(account), participants_({participant}){}
-    
+
     // create a new conversation when we load data from database.
-    Info(Account* account, const std::string& uid, std::vector <Contact::Info> participants, Messages messages)
-    : account_(account), uid_(uid), participants_(participants), messages_(messages) {}
-    Info(Account* account, const std::string& uid, Contact::Info participant, Messages messages)
-    : account_(account), uid_(uid), participants_({participant}), messages_(messages) {}
-    
+    Info(Account* account, const std::string& uid, std::vector <Contact::Info>& participants, Messages messages)
+    : account_(account), uid_(uid), participants_(participants), messages_(messages) {
+        if(!messages_.empty()) {
+            lastMessageUid_ = (--messages_.end())->first;
+        }
+    }
+    Info(Account* account, const std::string& uid, Contact::Info& participant, Messages messages)
+    : account_(account), uid_(uid), participants_({participant}), messages_(messages) {
+        if(!messages_.empty()) {
+            lastMessageUid_ = (--messages_.end())->first;
+        }
+    }
+
     // create a new conversation when someone is calling for the first time.
-    Info(Account* account, const std::string& uid, Contact::Info participant, NewCall::Info call)
+    Info(Account* account, const std::string& uid, Contact::Info& participant, NewCall::Info call)
     : account_(account), uid_(uid), participants_({participant}), call_(call) {}
 
 };
 
 }
 
-typedef std::deque<std::pair<std::string, std::shared_ptr<Conversation::Info>>> Conversations;
+typedef std::pair<std::string, std::shared_ptr<Conversation::Info>> ConversationEntry;
+typedef std::deque<ConversationEntry> Conversations;

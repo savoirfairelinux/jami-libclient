@@ -29,7 +29,7 @@ ConversationModel::ConversationModel(std::shared_ptr<ContactModel> contactModel,
   std::shared_ptr<DatabaseManager> dbManager, QObject* parent):
   contactModel_(contactModel), dbManager_(dbManager_), QObject(parent)
 {
-
+    initConversations();
 }
 
 ConversationModel::~ConversationModel()
@@ -89,7 +89,7 @@ ConversationModel::find(const std::string& uid)
 {
     std::shared_ptr<Conversation::Info> result = nullptr;
     auto i = std::find_if(conversations_.begin(), conversations_.end(),
-    [uid](const std::pair<std::string, std::shared_ptr<Conversation::Info>>& conversation) {
+    [uid](const ConversationEntry& conversation) {
         return conversation.first == uid;
     });
     if (i != conversations_.end()) result = i->second;
@@ -111,8 +111,7 @@ ConversationModel::removeConversation(const std::string& uid)
     std::advance(it, conversation->index_);
     it = conversations_.erase(it);
     // Update indexes
-    std::for_each(it, conversations_.end(), [](
-    std::pair<std::string, std::shared_ptr<Conversation::Info>> conversation) {
+    std::for_each(it, conversations_.end(), [](ConversationEntry conversation) {
         conversation.second->index_--;
     });
 
@@ -152,4 +151,51 @@ ConversationModel::cleanHistory(const std::string& uid)
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
     dbManager_->removeHistory(account->id().toStdString(), uid);
+}
+
+void
+ConversationModel::initConversations()
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    // Fill conversations_
+    for(auto const& contact : contactModel_->getContacts())
+    {
+        auto contactinfo = contact.second;
+        // TODO change uid when group chat
+        auto conversation = std::make_shared<Conversation::Info>(
+        Conversation::Info(account, contactinfo->uri_,
+        *contactinfo.get(),
+        dbManager_->getMessages(account->id().toStdString(), contactinfo->uri_)));
+        ConversationEntry item(conversation->uid_, conversation);
+        conversations_.emplace_front(item);
+    }
+    sortConversations();
+    filteredConversations_ = conversations_;
+}
+
+void
+ConversationModel::sortConversations()
+{
+    std::sort(conversations_.begin(), conversations_.end(),
+    [](const ConversationEntry& conversationA, const ConversationEntry& conversationB)
+    {
+        auto historyA = conversationA.second->messages_;
+        auto historyB = conversationB.second->messages_;
+        // A or B is a new conversation (without INVITE message)
+        if (historyA.empty()) return true;
+        if (historyB.empty()) return false;
+        // Sort by last Interaction
+        try
+        {
+            auto lastMessageA = historyA.at(conversationA.second->lastMessageUid_);
+            auto lastMessageB = historyB.at(conversationB.second->lastMessageUid_);
+            return lastMessageA.timestamp_ > lastMessageB.timestamp_;
+        }
+        catch (const std::exception& e)
+        {
+            qDebug() << "ConversationModel::sortConversations(), can't get lastMessage";
+            return true;
+        }
+    });
 }

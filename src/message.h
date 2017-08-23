@@ -55,4 +55,4 @@ struct Info
 
 }
 
-typedef std::map<std::string, Message::Info> Messages;
+typedef std::map<int, Message::Info> Messages;

@@ -151,7 +151,7 @@ DatabaseManager::removeHistory(const std::string& account, const std::string& ui
 Messages
 DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
 {
-    auto getMessagesQuery = "SELECT contact, body, timestamp, is_unread, \
+    auto getMessagesQuery = "SELECT id, contact, body, timestamp, is_unread, \
     is_outgoing, type, status FROM conversations WHERE contact = '" + uid + "' \
     AND account='" + account + "'";
 
@@ -162,11 +162,12 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
 
     Messages messages;
     while(query_->next()) {
-        auto uid = query_->value(0).toString().toStdString();
-        auto body = query_->value(1).toString().toStdString();
-        std::time_t timestamp = std::stoll(query_->value(2).toString().toStdString());
-        auto isOutgoing = query_->value(3).toBool();
-        auto typeStr = query_->value(4).toString().toStdString();
+        auto message_id = query_->value(0).toInt();
+        auto uid = query_->value(1).toString().toStdString();
+        auto body = query_->value(2).toString().toStdString();
+        std::time_t timestamp = std::stoll(query_->value(3).toString().toStdString());
+        auto isOutgoing = query_->value(4).toBool();
+        auto typeStr = query_->value(5).toString().toStdString();
         auto type = Message::Type::INVALID_TYPE;
         if (typeStr == "TEXT") {
             type = Message::Type::TEXT;
@@ -185,7 +186,7 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
             status = Message::Status::SUCCEED;
         }
         Message::Info msg(uid, body, timestamp, isOutgoing, type, status);
-        messages.insert(std::pair<std::string, Message::Info>(uid, msg));
+        messages.insert(std::pair<int, Message::Info>(message_id, msg));
     }
 
     return messages;

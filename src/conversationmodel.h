@@ -73,6 +73,14 @@ class LIB_EXPORT ConversationModel : public QObject {
      * @return the contact if found else nullptr
      */
     std::shared_ptr<Conversation::Info> find(const std::string& uid);
+    /**
+     * Initialize conversations_ and filteredConversations_
+     */
+    void initConversations();
+    /**
+     * Sort conversation by last action
+     */
+    void sortConversations();
 
     std::shared_ptr<ContactModel> contactModel_;
     std::shared_ptr<DatabaseManager> dbManager_;
