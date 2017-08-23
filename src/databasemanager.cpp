@@ -186,7 +186,7 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
             status = Message::Status::SUCCEED;
         }
         Message::Info msg(uid, body, isOutgoing, type, timestamp, status);
-        messages.insert(std::pair<std::string, Message::Info>(uid, msg));
+        messages.insert(std::pair<int, Message::Info>(message_id, msg));
     }
 
     return messages;

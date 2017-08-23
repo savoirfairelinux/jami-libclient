@@ -20,6 +20,7 @@
 
 // std
 #include <ctime>
+#include <string>
 
 namespace Message
 {

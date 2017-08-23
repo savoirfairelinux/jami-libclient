@@ -60,6 +60,14 @@ QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize
     return QVariant();
 }
 
+QVariant PixmapManipulatorDefault::conversationPhoto(const Conversation::Info& conversation, const QSize& size, bool displayPresence)
+{
+    Q_UNUSED(conversation)
+    Q_UNUSED(size)
+    Q_UNUSED(displayPresence)
+    return QVariant();
+}
+
 QVariant PixmapManipulatorDefault::securityIssueIcon(const QModelIndex& index)
 {
     Q_UNUSED(index)
@@ -137,6 +145,12 @@ QVariant PixmapManipulatorDefault::decorationRole(const Person* p)
 QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
 {
    Q_UNUSED(acc)
+   return QVariant();
+}
+
+QVariant PixmapManipulatorDefault::decorationRole(const Conversation::Info* c)
+{
+   Q_UNUSED(c)
    return QVariant();
 }
 
