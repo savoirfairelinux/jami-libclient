@@ -34,6 +34,7 @@ struct Info
     std::string registeredName_;
     std::string alias_;
     bool isTrusted_;
+    bool isPresent_;
     Type type_;
 
     Info(const std::string& uri = "", const std::string& avatar = "", const std::string& registeredName = "",

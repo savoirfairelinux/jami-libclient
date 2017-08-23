@@ -35,6 +35,7 @@ struct Info
     bool isUsed_ = false;
     Account* account_; // old
     unsigned int index_ = 0;
+    unsigned int unreadMessages = 0;
 
     // create a new converation when a search was made.
     Info(Account* account, Contact::Info participant)
