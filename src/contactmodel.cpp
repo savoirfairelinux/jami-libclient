@@ -28,6 +28,7 @@
 ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
 : dbm_(dbm), account_(account), QObject(parent)
 {
+    fillsWithContacts();
 }
 
 ContactModel::~ContactModel()
@@ -77,7 +78,7 @@ ContactModel::getContact(const std::string& uri)
 const ContactsInfo&
 ContactModel::getContacts() const
 {
-    return ContactsInfo();
+    return contacts_;
 }
 
 void
@@ -95,7 +96,7 @@ ContactModel::addressLookup(const std::string& name) const
 bool
 ContactModel::fillsWithContacts()
 {
-    if (account_->protocol() == Account::Protocol::RING) {
+    if (account_->protocol() != Account::Protocol::RING) {
         qDebug() << "fillsWithContacts, account is not a RING account";
         return false;
     }
@@ -103,7 +104,7 @@ ContactModel::fillsWithContacts()
     auto contacts = account_->getContacts();
 
     // Clear the list
-    contacts.clear();
+    contacts_.clear();
 
     auto type = Contact::Type::RING;
 

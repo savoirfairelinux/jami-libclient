@@ -27,6 +27,7 @@
 #include <qobject.h>
 
 // Lrc
+#include "newcallmodel.h"
 #include "contactmodel.h"
 #include "conversation.h"
 #include "databasemanager.h"
@@ -35,14 +36,15 @@
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
     public:
-    explicit ConversationModel(std::shared_ptr<ContactModel> contactModel,
+    explicit ConversationModel(std::shared_ptr<NewCallModel> callModel,
+                               std::shared_ptr<ContactModel> contactModel,
                                std::shared_ptr<DatabaseManager> dbManager,
                                QObject* parent = nullptr);
     ~ConversationModel();
 
     const Conversations& getConversations() const;
-    const Conversation::Info& getConversation(const unsigned int row) const;
-    const Conversation::Info& addConversation(const std::string& uri);
+    std::shared_ptr<Conversation::Info> getConversation(const unsigned int row) const;
+    std::shared_ptr<Conversation::Info> addConversation(const std::string& uri);
     void removeConversation(const std::string& uid);
     /**
      * Select a conversation
@@ -62,9 +64,9 @@ class LIB_EXPORT ConversationModel : public QObject {
     void newContactAdded(const std::string& uid);
     void incomingCallFromItem(const unsigned int row);
 
-    void showChatView(const Conversation::Info& conversation);
-    void showCallView(const Conversation::Info& conversation);
-    void showIncomingCallView(const Conversation::Info& conversation);
+    void showChatView(std::shared_ptr<Conversation::Info> conversation);
+    void showCallView(std::shared_ptr<Conversation::Info> conversation);
+    void showIncomingCallView(std::shared_ptr<Conversation::Info> conversation);
 
     private:
     /**
@@ -82,6 +84,7 @@ class LIB_EXPORT ConversationModel : public QObject {
      */
     void sortConversations();
 
+    std::shared_ptr<NewCallModel> callModel_;
     std::shared_ptr<ContactModel> contactModel_;
     std::shared_ptr<DatabaseManager> dbManager_;
 

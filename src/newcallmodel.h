@@ -32,7 +32,7 @@ class NewCallModel : public QObject {
     explicit NewCallModel(QObject* parent = nullptr);
     ~NewCallModel();
 
-    const NewCall::Info& createCall();
+    const NewCall::Info& createCall(Account* account, const std::string& contact);
     void sendMessage(const std::string& callId, const std::string& body) const;
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
