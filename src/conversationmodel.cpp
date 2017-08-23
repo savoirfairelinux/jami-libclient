@@ -19,13 +19,15 @@
 #include "conversationmodel.h"
 
 // LRC
+#include "availableaccountmodel.h"
 #include "callinfo.h"
 
 // std
 #include <algorithm>
 
-ConversationModel::ConversationModel(QObject* parent)
-:QObject(parent)
+ConversationModel::ConversationModel(std::shared_ptr<ContactModel> contactModel,
+  std::shared_ptr<DatabaseManager> dbManager, QObject* parent):
+  contactModel_(contactModel), dbManager_(dbManager_), QObject(parent)
 {
 
 }
@@ -97,7 +99,25 @@ ConversationModel::find(const std::string& uid)
 void
 ConversationModel::removeConversation(const std::string& uid)
 {
+    auto conversation = find(uid);
+    if (!conversation || conversation->participants_.empty()) return;
 
+    // TODO group chat?
+    auto contact = conversation->participants_.front();
+    contactModel_->removeContact(contact.uri_);
+
+    // Remove conversation
+    auto it = conversations_.begin();
+    std::advance(it, conversation->index_);
+    it = conversations_.erase(it);
+    // Update indexes
+    std::for_each(it, conversations_.end(), [](
+    std::pair<std::string, std::shared_ptr<Conversation::Info>> conversation) {
+        conversation.second->index_--;
+    });
+
+    // The model has changed
+    emit modelUpdated();
 }
 
 void
@@ -127,5 +147,9 @@ ConversationModel::addParticipant(const std::string& uid, const::std::string& ur
 void
 ConversationModel::cleanHistory(const std::string& uid)
 {
-
+    auto conversation = find(uid);
+    if (!conversation || conversation->participants_.empty()) return;
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    dbManager_->removeHistory(account->id().toStdString(), uid);
 }

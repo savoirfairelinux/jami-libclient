@@ -26,16 +26,18 @@
 // Qt
 #include <qobject.h>
 
-// Data
-#include "conversation.h"
-
 // Lrc
+#include "contactmodel.h"
+#include "conversation.h"
+#include "databasemanager.h"
 #include "typedefs.h"
 
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
     public:
-    explicit ConversationModel(QObject* parent = nullptr);
+    explicit ConversationModel(std::shared_ptr<ContactModel> contactModel,
+                               std::shared_ptr<DatabaseManager> dbManager,
+                               QObject* parent = nullptr);
     ~ConversationModel();
 
     const Conversations& getConversations() const;
@@ -71,6 +73,9 @@ class LIB_EXPORT ConversationModel : public QObject {
      * @return the contact if found else nullptr
      */
     std::shared_ptr<Conversation::Info> find(const std::string& uid);
+
+    std::shared_ptr<ContactModel> contactModel_;
+    std::shared_ptr<DatabaseManager> dbManager_;
 
     Conversations conversations_;
     mutable Conversations filteredConversations_;
