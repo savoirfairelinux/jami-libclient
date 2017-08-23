@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_dcb0f0f6",
+        "filename": "src/databasemanager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-08-23T14:37:40Z",
+      "side": 1,
+      "message": "Should be a named constexpr",
+      "range": {
+        "startLine": 58,
+        "startChar": 59,
+        "endLine": 58,
+        "endChar": 60
+      },
+      "revId": "177995d7643572d2a511f70e172055086c3cb75a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
