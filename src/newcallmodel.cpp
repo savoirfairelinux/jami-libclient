@@ -31,9 +31,9 @@ NewCallModel::~NewCallModel()
 }
 
 const NewCall::Info&
-NewCallModel::createCall()
+NewCallModel::createCall(Account* account, const std::string& contact)
 {
-    return NewCall::Info(0, std::time_t(), NewCall::Status::INVALID_STATUS);
+    return NewCall::Info(account, contact, std::time_t(), NewCall::Status::INVALID_STATUS);
 }
 
 void
