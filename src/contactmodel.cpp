@@ -18,39 +18,60 @@
  ***************************************************************************/
 #include "contactmodel.h"
 
-ContactModel::ContactModel(QObject* parent)
-: QObject(parent)
-{
+// Lrc
+#include "availableaccountmodel.h" // old
+#include "contactmethod.h" // old
+#include "dbus/callmanager.h" // old
+#include "dbus/configurationmanager.h" // old
 
+
+ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
+: dbm_(dbm), account_(account), QObject(parent)
+{
 }
 
 ContactModel::~ContactModel()
 {
-
 }
 
 const Contact::Info&
 ContactModel::addContact(const std::string& uri)
 {
-    return Contact::Info();
+    auto avatar = dbm_->getAvatar("");
+    auto registeredName = "feature missing"; // TODO add function in database
+    auto alias = dbm_->getAlias("");
+    auto isTrusted = false;
+    auto type = Contact::Type::RING;
+
+    auto contactInfo = std::make_shared<Contact::Info>(uri, avatar, registeredName, alias, isTrusted, type);
+
+    contacts_[uri] = contactInfo;
 }
 
 void
 ContactModel::removeContact(const std::string& uri)
 {
-
+    contacts_.erase(uri);
 }
 
 void
 ContactModel::sendMessage(const std::string& uri, const std::string& body) const
 {
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = body.c_str();
 
+    unsigned int id = ConfigurationManager::instance().sendTextMessage(account_->id(), uri.c_str(), payloads);
+
+    auto accountId = account_->id().toStdString();
+    auto message = Message::Info(std::to_string(id), body, true, Message::Type::TEXT);
+
+    dbm_->addMessage(accountId, message);
 }
 
-const Contact::Info&
-ContactModel::getContact(const std::string& uri/*TODO: add type*/) const
+std::shared_ptr<Contact::Info>
+ContactModel::getContact(const std::string& uri)
 {
-    return Contact::Info();
+    return contacts_[uri];
 }
 
 const ContactsInfo&
@@ -69,4 +90,41 @@ void
 ContactModel::addressLookup(const std::string& name) const
 {
 
+}
+
+bool
+ContactModel::fillsWithContacts()
+{
+    if (account_->protocol() == Account::Protocol::RING) {
+        qDebug() << "fillsWithContacts, account is not a RING account";
+        return false;
+    }
+
+    auto contacts = account_->getContacts();
+
+    // Clear the list
+    contacts.clear();
+
+    auto type = Contact::Type::RING;
+
+    // Add contacts to the list
+    for (auto c : contacts) {
+        auto uri = c->uri().toStdString();
+        auto avatar = dbm_->getAvatar(uri);
+        auto registeredName = c->registeredName().toStdString();
+        auto alias = c->bestName().toStdString();
+        auto isTrusted = false; // TODO: handle trust
+        auto isPresent = c->isPresent();
+
+        auto contact = std::shared_ptr<Contact::Info>(new Contact::Info(uri,
+                                                                        avatar,
+                                                                        registeredName,
+                                                                        alias,
+                                                                        isTrusted,
+                                                                        type));
+
+        contacts_[uri] = contact;
+    }
+
+    return true;
 }

@@ -47,8 +47,8 @@ struct Info
     const Type type_;
     Status status_;
 
-    Info(const std::string& uid, const std::string& body, const std::time_t timestamp, bool isOutgoing, Type type
-    , Status status = Status::INVALID_STATUS)
+    Info(const std::string& uid, const std::string& body, bool isOutgoing, Type type
+    , const std::time_t timestamp = std::time(nullptr), Status status = Status::INVALID_STATUS)
     : uid_(uid), body_(body), timestamp_(timestamp), isOutgoing_(isOutgoing), type_(type), status_(status)
     {};
 };
