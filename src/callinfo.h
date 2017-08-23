@@ -21,6 +21,9 @@
 // std
 #include <ctime>
 
+// LRC
+#include "account.h"
+
 namespace NewCall
 {
 
@@ -47,8 +50,9 @@ struct Info
     const std::string id_;
     const std::time_t startTime_;
     Status status_;
-    Info(const std::string& id, std::time_t startTime, Status status)
-    : id_(id), startTime_(startTime), status_(status) {};
+    Account* account_;
+    Info(Account* account, const std::string& id, std::time_t startTime, Status status)
+    : account_(account), id_(id), startTime_(startTime), status_(status) {};
 };
 
 }

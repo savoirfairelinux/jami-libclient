@@ -27,6 +27,7 @@
 #include <qobject.h>
 
 // Lrc
+#include "newcallmodel.h"
 #include "contactmodel.h"
 #include "conversation.h"
 #include "databasemanager.h"
@@ -35,7 +36,8 @@
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
     public:
-    explicit ConversationModel(std::shared_ptr<ContactModel> contactModel,
+    explicit ConversationModel(std::shared_ptr<NewCallModel> callModel,
+                               std::shared_ptr<ContactModel> contactModel,
                                std::shared_ptr<DatabaseManager> dbManager,
                                QObject* parent = nullptr);
     ~ConversationModel();
@@ -82,6 +84,7 @@ class LIB_EXPORT ConversationModel : public QObject {
      */
     void sortConversations();
 
+    std::shared_ptr<NewCallModel> callModel_;
     std::shared_ptr<ContactModel> contactModel_;
     std::shared_ptr<DatabaseManager> dbManager_;
 

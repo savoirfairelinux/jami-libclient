@@ -24,10 +24,12 @@
 
 // std
 #include <algorithm>
+#include <stdexcept>
 
-ConversationModel::ConversationModel(std::shared_ptr<ContactModel> contactModel,
+ConversationModel::ConversationModel(std::shared_ptr<NewCallModel> callModel,
+  std::shared_ptr<ContactModel> contactModel,
   std::shared_ptr<DatabaseManager> dbManager, QObject* parent):
-  contactModel_(contactModel), dbManager_(dbManager_), QObject(parent)
+  callModel_(callModel), contactModel_(contactModel), dbManager_(dbManager), QObject(parent)
 {
     initConversations();
 }
@@ -40,19 +42,21 @@ ConversationModel::~ConversationModel()
 const Conversations&
 ConversationModel::getConversations() const
 {
-    return conversations_;
+    return filteredConversations_;
 }
 
 const Conversation::Info&
 ConversationModel::getConversation(const unsigned int row) const
 {
-    return Conversation::Info(nullptr, Contact::Info());
+    if (row >= filteredConversations_.size())
+        throw std::out_of_range("Can't get conversation at row " + std::to_string(row));
+    return *filteredConversations_.at(row).second.get();
 }
 
 const Conversation::Info&
 ConversationModel::addConversation(const std::string& uri)
 {
-    return Conversation::Info(nullptr, Contact::Info());
+    return Conversation::Info(nullptr, nullptr);
 }
 
 void
@@ -63,9 +67,9 @@ ConversationModel::selectConversation(const std::string& uid)
     if (!conversation) return;
     auto participants = conversation->participants_;
     // Check if conversation has a valid contact.
-    if (participants.empty() || participants.front().uri_.empty())
+    if (participants.empty() || participants.front()->uri_.empty())
         return;
-    switch (conversation->call_.status_) {
+    switch (conversation->call_->status_) {
         case NewCall::Status::INCOMING_RINGING:
         case NewCall::Status::OUTGOING_RINGING:
         case NewCall::Status::CONNECTING:
@@ -104,7 +108,7 @@ ConversationModel::removeConversation(const std::string& uid)
 
     // TODO group chat?
     auto contact = conversation->participants_.front();
-    contactModel_->removeContact(contact.uri_);
+    contactModel_->removeContact(contact->uri_);
 
     // Remove conversation
     auto it = conversations_.begin();
@@ -148,9 +152,7 @@ ConversationModel::cleanHistory(const std::string& uid)
 {
     auto conversation = find(uid);
     if (!conversation || conversation->participants_.empty()) return;
-    auto account = AvailableAccountModel::instance().currentDefaultAccount();
-    if (!account) return;
-    dbManager_->removeHistory(account->id().toStdString(), uid);
+    dbManager_->removeHistory(conversation->account_->id().toStdString(), uid);
 }
 
 void
@@ -163,11 +165,13 @@ ConversationModel::initConversations()
     {
         auto contactinfo = contact.second;
         // TODO change uid when group chat
-        auto conversation = std::make_shared<Conversation::Info>(
-        Conversation::Info(account, contactinfo->uri_,
-        *contactinfo.get(),
-        dbManager_->getMessages(account->id().toStdString(), contactinfo->uri_)));
+        auto conversation = std::make_shared<Conversation::Info>(account,
+        contactinfo->uri_,
+        contactinfo,
+        dbManager_->getMessages(account->id().toStdString(), contactinfo->uri_));
+        std::cout << "###" << contactinfo->alias_ << std::endl;
         ConversationEntry item(conversation->uid_, conversation);
+        std::cout << "###" << contactinfo->alias_ << std::endl;
         conversations_.emplace_front(item);
     }
     sortConversations();

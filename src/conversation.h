@@ -22,14 +22,17 @@
 #include "contactinfo.h"
 #include "account.h" // old
 
+// std
+#include <memory>
+
 namespace Conversation
 {
 
 struct Info
 {
     const std::string uid_= "";
-    std::vector <Contact::Info> participants_;
-    NewCall::Info call_ = NewCall::Info(0, 0, NewCall::Status::INVALID_STATUS);
+    std::vector <std::shared_ptr<Contact::Info>> participants_;
+    std::shared_ptr<NewCall::Info> call_;
     Messages messages_;
     int lastMessageUid_ = -1;
     bool isUsed_ = false;
@@ -38,17 +41,17 @@ struct Info
     unsigned int unreadMessages = 0;
 
     // create a new converation when a search was made.
-    Info(Account* account, Contact::Info participant)
+    Info(Account* account, std::shared_ptr<Contact::Info> participant)
     : account_(account), participants_({participant}){}
 
     // create a new conversation when we load data from database.
-    Info(Account* account, const std::string& uid, std::vector <Contact::Info>& participants, Messages messages)
+    Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<Contact::Info>>& participants, Messages messages)
     : account_(account), uid_(uid), participants_(participants), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
         }
     }
-    Info(Account* account, const std::string& uid, Contact::Info& participant, Messages messages)
+    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, Messages messages)
     : account_(account), uid_(uid), participants_({participant}), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
@@ -56,7 +59,7 @@ struct Info
     }
 
     // create a new conversation when someone is calling for the first time.
-    Info(Account* account, const std::string& uid, Contact::Info& participant, NewCall::Info call)
+    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, std::shared_ptr<NewCall::Info> call)
     : account_(account), uid_(uid), participants_({participant}), call_(call) {}
 
 };
