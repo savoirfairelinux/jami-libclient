@@ -29,7 +29,7 @@
 class NewCallModel : public QObject {
     Q_OBJECT
     public:
-    explicit NewCallModel(QObject* parent = nullptr);
+    explicit NewCallModel();
     ~NewCallModel();
 
     const NewCall::Info& createCall();
@@ -48,3 +48,5 @@ class NewCallModel : public QObject {
     CallsInfo calls_;
 
 };
+
+typedef std::shared_ptr<NewCallModel> pNewCallModel;
