@@ -43,6 +43,7 @@ class ContactModel : public QObject {
     void sendMessage(const std::string& uri, const std::string& body) const;
     std::shared_ptr<Contact::Info> getContact(const std::string& uri);
     const ContactsInfo& getContacts() const;
+    bool isAContact(const std::string& uri) const;
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 

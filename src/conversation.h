@@ -43,7 +43,7 @@ struct Info
 
     // create a new converation when a search was made.
     Info(Account* account, std::shared_ptr<Contact::Info> participant)
-    : account_(account), participants_({participant}){}
+    : account_(account), participants_({participant}), uid_(participant->uri_) { }
 
     // create a new conversation when we load data from database.
     Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<Contact::Info>>& participants, Messages messages)

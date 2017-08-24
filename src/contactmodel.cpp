@@ -49,9 +49,21 @@ ContactModel::addContact(const std::string& uri)
     contacts_[uri] = contactInfo;
 }
 
+
+bool
+ContactModel::isAContact(const std::string& uri) const
+{
+    auto i = std::find_if(contacts_.begin(), contacts_.end(),
+    [uri](const std::pair<std::string, std::shared_ptr<Contact::Info>>& contact) {
+        return contact.second->uri_ == uri;
+    });
+    return (i != contacts_.end());
+}
+
 void
 ContactModel::removeContact(const std::string& uri)
 {
+    ConfigurationManager::instance().removeContact(account_->id(), QString(uri.c_str()), false);
     contacts_.erase(uri);
 }
 

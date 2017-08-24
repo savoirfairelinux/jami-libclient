@@ -42,9 +42,10 @@ class LIB_EXPORT ConversationModel : public QObject {
                                QObject* parent = nullptr);
     ~ConversationModel();
 
+    std::shared_ptr<ContactModel> getContactModel();
     const Conversations& getConversations() const;
     std::shared_ptr<Conversation::Info> getConversation(const unsigned int row) const;
-    std::shared_ptr<Conversation::Info> addConversation(const std::string& uri);
+    void addConversation(const std::string& uri);
     void removeConversation(const std::string& uid);
     /**
      * Select a conversation
@@ -71,6 +72,7 @@ class LIB_EXPORT ConversationModel : public QObject {
 
     private Q_SLOTS:
     void slotMessageAdded(int uid, const std::string& account, Message::Info msg);
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
     private:
     /**
@@ -87,6 +89,7 @@ class LIB_EXPORT ConversationModel : public QObject {
      * Sort conversation by last action
      */
     void sortConversations();
+    void search();
 
     std::shared_ptr<NewCallModel> callModel_;
     std::shared_ptr<ContactModel> contactModel_;
