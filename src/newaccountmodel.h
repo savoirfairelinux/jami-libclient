@@ -16,73 +16,39 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#pragma once
+
+// Std
+#include <memory>
+#include <deque>
+#include <map>
+
+// Qt
+#include <qobject.h>
+
+// Lrc
+#include "typedefs.h"
 #include "databasemanager.h"
+#include "accountinfo.h"
 
-namespace lrc {
-
-DatabaseManager::DatabaseManager(QObject* parent)
-: QObject(parent)
+namespace lrc
 {
 
-}
+class LIB_EXPORT NewAccountModel : public QObject {
+    Q_OBJECT
 
-DatabaseManager::~DatabaseManager()
-{
+public:
+    explicit NewAccountModel(std::unique_ptr<DatabaseManager>& dbManager);
 
-}
+    ~NewAccountModel();
+    const account::Info& getAccountInfo(const std::string& id);
 
-void
-DatabaseManager::addMessage(const std::string& account, const std::string& uid, const std::string& body, const long timestamp, const bool isOutgoing)
-{
+private:
 
-}
+    std::unique_ptr<DatabaseManager>& dbManager_;
+    AccountsInfo accounts_;
+};
 
-void
-DatabaseManager::removeHistory(const std::string& account, const std::string& uid)
-{
-
-}
-
-Messages
-DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
-{
-    return Messages();
-}
-
-unsigned int
-DatabaseManager::numberOfUnreads(const std::string& account, const std::string& uid) const
-{
-    return 0;
-}
-
-void
-DatabaseManager::setMessageRead(int uid)
-{
-
-}
-
-void
-DatabaseManager::addContact(const std::string& contact, const QByteArray& payload)
-{
-
-}
-
-std::string
-DatabaseManager::getUri(const std::string& uid) const
-{
-    return "";
-}
-
-std::string
-DatabaseManager::getAlias(const std::string& uid) const
-{
-    return "";
-}
-
-std::string
-DatabaseManager::getAvatar(const std::string& uid) const
-{
-    return "";
-}
+using upNewAccountModel = std::unique_ptr<NewAccountModel>;
 
 }

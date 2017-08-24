@@ -16,73 +16,43 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "databasemanager.h"
+#include "newaccountmodel.h"
 
-namespace lrc {
+#include "dbus/configurationmanager.h" // old
 
-DatabaseManager::DatabaseManager(QObject* parent)
-: QObject(parent)
+namespace lrc
+{
+
+NewAccountModel::NewAccountModel(std::unique_ptr<DatabaseManager>& dbManager)
+:QObject(nullptr)
+, dbManager_(dbManager)
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info info;
+        info.id = id.toStdString();
+        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.callModel = std::make_shared<NewCallModel>();
+        info.contactModel = std::make_shared<ContactModel>();
+        info.conversationModel = std::make_shared<ConversationModel>();
+
+        accounts_[id.toStdString()] = std::move(info);
+    }
+
+}
+
+NewAccountModel::~NewAccountModel()
 {
 
 }
 
-DatabaseManager::~DatabaseManager()
+const account::Info&
+NewAccountModel::getAccountInfo(const std::string& id)
 {
-
+    return accounts_[id];
 }
 
-void
-DatabaseManager::addMessage(const std::string& account, const std::string& uid, const std::string& body, const long timestamp, const bool isOutgoing)
-{
-
-}
-
-void
-DatabaseManager::removeHistory(const std::string& account, const std::string& uid)
-{
-
-}
-
-Messages
-DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
-{
-    return Messages();
-}
-
-unsigned int
-DatabaseManager::numberOfUnreads(const std::string& account, const std::string& uid) const
-{
-    return 0;
-}
-
-void
-DatabaseManager::setMessageRead(int uid)
-{
-
-}
-
-void
-DatabaseManager::addContact(const std::string& contact, const QByteArray& payload)
-{
-
-}
-
-std::string
-DatabaseManager::getUri(const std::string& uid) const
-{
-    return "";
-}
-
-std::string
-DatabaseManager::getAlias(const std::string& uid) const
-{
-    return "";
-}
-
-std::string
-DatabaseManager::getAvatar(const std::string& uid) const
-{
-    return "";
-}
-
-}
+} // namespace lrc

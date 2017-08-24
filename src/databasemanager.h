@@ -34,6 +34,9 @@ constexpr char ringDB[] = "ring.db";
 
 class Account;
 
+namespace lrc
+{
+
 class LIB_EXPORT DatabaseManager : public QObject {
     Q_OBJECT
     public:
@@ -63,3 +66,5 @@ class LIB_EXPORT DatabaseManager : public QObject {
     QSqlDatabase db_;
 
 };
+
+}
