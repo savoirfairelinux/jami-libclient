@@ -25,8 +25,11 @@
 #include "dbus/configurationmanager.h" // old
 
 
-ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
-: dbm_(dbm), account_(account), QObject(parent)
+ContactModel::ContactModel(const pDatabaseManager dbm,
+                           const std::string accountId)
+: dbm_(dbm)
+, accountId_(accountId)
+, QObject(nullptr)
 {
     fillsWithContacts();
 }
