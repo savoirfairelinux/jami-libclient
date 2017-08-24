@@ -52,6 +52,7 @@ ContactModel::addContact(const std::string& uri)
 void
 ContactModel::removeContact(const std::string& uri)
 {
+    ConfigurationManager::instance().removeContact(account_->id(), QString(uri.c_str()), false);
     contacts_.erase(uri);
 }
 
