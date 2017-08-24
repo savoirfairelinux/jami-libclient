@@ -19,14 +19,17 @@
 #include "contactmodel.h"
 
 // Lrc
-#include "availableaccountmodel.h" // old
 #include "contactmethod.h" // old
-#include "dbus/callmanager.h" // old
 #include "dbus/configurationmanager.h" // old
+#include "account.h" // old
+#include "databasemanager.h"
+#include "accountmodel.h"
 
-
-ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
-: dbm_(dbm), account_(account), QObject(parent)
+ContactModel::ContactModel(const pDatabaseManager dbm,
+                           const std::string accountId)
+: dbm_(dbm)
+, accountId_(accountId)
+, QObject(nullptr)
 {
     fillsWithContacts();
 }
@@ -115,6 +118,12 @@ ContactModel::addressLookup(const std::string& name) const
 bool
 ContactModel::fillsWithContacts()
 {
+    account_ = AccountModel::instance().getById(accountId_.c_str());
+
+    if (not account_) {
+        qDebug() << "fillsWithContacts, nullptr";
+    }
+
     if (account_->protocol() != Account::Protocol::RING) {
         qDebug() << "fillsWithContacts, account is not a RING account";
         return false;

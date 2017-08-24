@@ -24,18 +24,17 @@
 // Qt
 #include <qobject.h>
 
-// Data
+// Lrc
 #include "contactinfo.h"
-#include "callinfo.h"
-#include "databasemanager.h"
-#include "account.h" // old
 
-
+class Account; // old
+class DatabaseManager;
+typedef std::shared_ptr<DatabaseManager> pDatabaseManager;
 
 class ContactModel : public QObject {
     Q_OBJECT
     public:
-    explicit ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent = nullptr);
+    explicit ContactModel(const pDatabaseManager dbm, const std::string accountId);
     ~ContactModel();
 
     const Contact::Info& addContact(const std::string& uri);
@@ -54,5 +53,8 @@ class ContactModel : public QObject {
     ContactsInfo contacts_;
     const std::shared_ptr<DatabaseManager> dbm_;
     const Account* account_;
+    const std::string accountId_;
 
 };
+
+typedef std::shared_ptr<ContactModel> pContactModel;
