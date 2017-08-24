@@ -16,37 +16,27 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#pragma once
-// Std
-#include <memory>
+#include "lrc.h"
+#include "newaccountmodel.h"
+#include "databasemanager.h"
 
-// Qt
-#include <qobject.h>
+Lrc::Lrc()
+: QObject(nullptr)
+{
+    // create the database manager
+    if (not databaseManager_) {
+        DatabaseManager* ptr = new DatabaseManager();
+        databaseManager_ = std::shared_ptr<DatabaseManager>(ptr);
+    }
 
-// Data
-#include "callinfo.h"
+    // create the account model
+    if (not accountModel_) {
+        NewAccountModel* ptr = new NewAccountModel(databaseManager_);
+        accountModel_ = std::shared_ptr<NewAccountModel>(ptr);
+    }
 
-class NewCallModel : public QObject {
-    Q_OBJECT
-    public:
-    explicit NewCallModel();
-    ~NewCallModel();
+}
 
-    const NewCall::Info& createCall();
-    void sendMessage(const std::string& callId, const std::string& body) const;
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMuteaUdio(const std::string& callId) const;
-    void toggleMuteVideo(const std::string& callId) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
-
-    private:
-    CallsInfo calls_;
-
-};
-
-typedef std::shared_ptr<NewCallModel> pNewCallModel;
+Lrc::~Lrc()
+{
+}
