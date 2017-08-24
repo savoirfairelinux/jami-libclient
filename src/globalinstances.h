@@ -96,7 +96,7 @@ void setInterfaceInternal(Interfaces::ActionExtenderI          *);
  * can be passed.
  */
 template<class I, typename ...Ts>
-void LIB_EXPORT setInterface(Ts... args)
+void setInterface(Ts... args)
 {
    try {
       auto i = new I(args...);
