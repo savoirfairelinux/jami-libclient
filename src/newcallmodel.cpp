@@ -18,8 +18,8 @@
  ***************************************************************************/
 #include "newcallmodel.h"
 
-NewCallModel::NewCallModel(QObject* parent)
-:QObject(parent)
+NewCallModel::NewCallModel()
+:QObject(nullptr)
 {
 
 }

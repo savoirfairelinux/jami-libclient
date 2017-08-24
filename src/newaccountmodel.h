@@ -17,36 +17,32 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
+
 // Std
 #include <memory>
+#include <deque>
+#include <map>
 
 // Qt
 #include <qobject.h>
 
-// Data
-#include "callinfo.h"
+// Lrc
+#include "contactmodel.h"
+#include "conversation.h"
+#include "databasemanager.h"
+#include "typedefs.h"
+#include "accountinfo.h"
+#include "newcallmodel.h"
 
-class NewCallModel : public QObject {
+class LIB_EXPORT NewAccountModel : public QObject {
     Q_OBJECT
     public:
-    explicit NewCallModel();
-    ~NewCallModel();
-
-    const NewCall::Info& createCall();
-    void sendMessage(const std::string& callId, const std::string& body) const;
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMuteaUdio(const std::string& callId) const;
-    void toggleMuteVideo(const std::string& callId) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
+    explicit NewAccountModel(pDatabaseManager dbManager);
+    ~NewAccountModel();
+    pAccountInfo getAccountInfo(const std::string& id);
 
     private:
-    CallsInfo calls_;
-
+    Conversations initConversationFor();
+    pDatabaseManager dbManager_;
+    AccountsInfo accounts_;
 };
-
-typedef std::shared_ptr<NewCallModel> pNewCallModel;

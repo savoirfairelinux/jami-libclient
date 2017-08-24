@@ -90,3 +90,5 @@ class LIB_EXPORT ConversationModel : public QObject {
     std::string filter_;
 
 };
+
+typedef std::shared_ptr<ConversationModel> pConversationModel;

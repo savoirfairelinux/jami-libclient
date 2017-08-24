@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
+
 // Std
 #include <memory>
 
@@ -24,29 +25,19 @@
 #include <qobject.h>
 
 // Data
+#include "contactinfo.h"
 #include "callinfo.h"
+#include "databasemanager.h"
+#include "newaccountmodel.h"
 
-class NewCallModel : public QObject {
+class Lrc : public QObject {
     Q_OBJECT
     public:
-    explicit NewCallModel();
-    ~NewCallModel();
-
-    const NewCall::Info& createCall();
-    void sendMessage(const std::string& callId, const std::string& body) const;
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMuteaUdio(const std::string& callId) const;
-    void toggleMuteVideo(const std::string& callId) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
+    explicit Lrc();
+    ~Lrc();
 
     private:
-    CallsInfo calls_;
+    pDatabaseManager databaseManager_;
+    std::shared_ptr<NewAccountModel> accountModel_;
 
 };
-
-typedef std::shared_ptr<NewCallModel> pNewCallModel;

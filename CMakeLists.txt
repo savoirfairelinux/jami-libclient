@@ -345,6 +345,9 @@ SET( libringclient_LIB_SRCS
   #Extension
   src/extensions/presencecollectionextension.cpp
   src/extensions/securityevaluationextension.cpp
+
+  #New Models
+  src/lrc.cpp
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
@@ -455,6 +458,7 @@ SET( libringclient_LIB_HDRS
   src/conversation.h
   src/callinfo.h
   src/contactinfo.h
+  src/lrc.h
 )
 
 SET(libringclient_video_LIB_HDRS

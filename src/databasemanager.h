@@ -121,3 +121,5 @@ class LIB_EXPORT DatabaseManager : public QObject {
     QSqlDatabase db_;
 
 };
+
+typedef std::shared_ptr<DatabaseManager> pDatabaseManager;
