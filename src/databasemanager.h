@@ -30,6 +30,7 @@
 #include "message.h"
 #include "typedefs.h"
 #include "namedirectory.h"
+#include "lrc.h"
 
 constexpr char ringDB[] = "ring.db"; // TODO move this and use QStandardPath
 
@@ -38,7 +39,6 @@ class Account;
 class LIB_EXPORT DatabaseManager : public QObject {
     Q_OBJECT
     public:
-    explicit DatabaseManager(QObject* parent = nullptr);
     ~DatabaseManager();
 
     // Messages related
@@ -118,7 +118,11 @@ class LIB_EXPORT DatabaseManager : public QObject {
                                  const QString& name);
 
     private:
+    friend Lrc::Lrc();
+    explicit DatabaseManager(QObject* parent = nullptr);
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
 
 };
+
+typedef std::shared_ptr<DatabaseManager> pDatabaseManager;

@@ -16,82 +16,27 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "newcallmodel.h"
+#include "lrc.h"
+#include "newaccountmodel.h"
+#include "databasemanager.h"
 
-NewCallModel::NewCallModel()
-:QObject(nullptr)
+Lrc::Lrc()
+: QObject(nullptr)
 {
+    // create the database manager
+    if (not databaseManager_) {
+        DatabaseManager* ptr = new DatabaseManager();
+        databaseManager_ = std::shared_ptr<DatabaseManager>(ptr);
+    }
+
+    // create the account model
+    if (not accountModel_) {
+        NewAccountModel* ptr = new NewAccountModel(databaseManager_);
+        accountModel_ = std::shared_ptr<NewAccountModel>(ptr);
+    }
 
 }
 
-
-NewCallModel::~NewCallModel()
+Lrc::~Lrc()
 {
-
-}
-
-const NewCall::Info&
-NewCallModel::createCall(Account* account, const std::string& contact)
-{
-    return NewCall::Info(account, contact, std::time_t(), NewCall::Status::INVALID_STATUS);
-}
-
-void
-NewCallModel::sendMessage(const std::string& callId, const std::string& body) const
-{
-
-}
-
-void
-NewCallModel::hangUp(const std::string& callId) const
-{
-
-}
-
-void
-NewCallModel::togglePause(const std::string& callId) const
-{
-
-}
-
-void
-NewCallModel::toggleMuteaUdio(const std::string& callId) const
-{
-
-}
-
-void
-NewCallModel::toggleMuteVideo(const std::string& callId) const
-{
-
-}
-
-void
-NewCallModel::toggleRecoringdAudio(const std::string& callId) const
-{
-
-}
-
-void
-NewCallModel::setQuality(const std::string& callId, const double quality) const
-{
-
-}
-
-void
-NewCallModel::transfer(const std::string& callId, const std::string& to) const
-{
-
-}
-
-void
-NewCallModel::addParticipant(const std::string& callId, const std::string& participant)
-{
-
-}
-
-void
-NewCallModel::removeParticipant(const std::string& callId, const std::string& participant)
-{
-
 }
