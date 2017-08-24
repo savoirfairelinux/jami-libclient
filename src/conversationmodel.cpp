@@ -22,6 +22,10 @@
 #include "availableaccountmodel.h"
 #include "callinfo.h"
 #include "dbus/configurationmanager.h"
+#include "namedirectory.h"
+#include "uri.h"
+#include "phonedirectorymodel.h"
+#include "contactmethod.h"
 
 // TODO move
 #include "private/imconversationmanagerprivate.h"
@@ -29,6 +33,7 @@
 // std
 #include <algorithm>
 #include <stdexcept>
+#include <regex>
 
 ConversationModel::ConversationModel(std::shared_ptr<NewCallModel> callModel,
   std::shared_ptr<ContactModel> contactModel,
@@ -50,6 +55,29 @@ ConversationModel::~ConversationModel()
 const Conversations&
 ConversationModel::getConversations() const
 {
+    filteredConversations_ = conversations_;
+
+    if (filter_.length() == 0) return filteredConversations_;
+
+    auto filter = filter_;
+    auto it = std::copy_if(conversations_.begin(), conversations_.end(), filteredConversations_.begin(),
+    [&filter, this] (const ConversationEntry& entry) {
+        auto isUsed = entry.second->isUsed_;
+        if (!isUsed) return true;
+        auto contact = entry.second->participants_.front();
+        try {
+            auto regexFilter = std::regex(filter, std::regex_constants::icase);
+            bool result = std::regex_search(contact->uri_, regexFilter)
+            | std::regex_search(contact->alias_, regexFilter);
+            return result;
+        } catch(std::regex_error&) {
+            // If the regex is incorrect, just test if filter is a substring of the title or the alias.
+            return contact->alias_.find(filter) != std::string::npos
+            && contact->uri_.find(filter) != std::string::npos;
+        }
+    });
+    filteredConversations_.resize(std::distance(filteredConversations_.begin(), it));
+
     return filteredConversations_;
 }
 
@@ -172,10 +200,44 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // TODO change last interaction + sort + isUsed + add contact to db + invite msg
 }
 
-void
-ConversationModel::setFilter(const std::string&)
-{
 
+void
+ConversationModel::setFilter(const std::string& filter)
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    auto participant = std::make_shared<Contact::Info>("", "", "", "Searching... " + filter);
+    filter_ = filter;
+    std::shared_ptr<Conversation::Info> newConversationItem;
+    if (!filter_.empty()) {
+        // add the first item, wich is the NewConversationItem
+        if (!conversations_.empty()) {
+            auto isUsed = conversations_.front().second->isUsed_;
+            if (isUsed) {
+                // No newConversationItem, create one
+                newConversationItem = std::make_shared<Conversation::Info>(account, participant);
+                conversations_.emplace_front(ConversationEntry("", newConversationItem));
+            } else {
+                // The item already exists
+                conversations_.pop_front();
+                newConversationItem = std::make_shared<Conversation::Info>(account, participant);
+                conversations_.emplace_front(ConversationEntry("", newConversationItem));
+            }
+        } else {
+            newConversationItem = std::make_shared<Conversation::Info>(account, participant);
+            conversations_.emplace_front(ConversationEntry("", newConversationItem));
+        }
+        search();
+    } else {
+        // No filter, so we can remove the newConversationItem
+        if (!conversations_.empty()) {
+            auto isUsed = conversations_.front().second->isUsed_;
+            if (!isUsed) {
+                conversations_.pop_front();
+            }
+        }
+    }
+    emit modelUpdated();
 }
 
 void
@@ -252,4 +314,77 @@ ConversationModel::slotMessageAdded(int uid, const std::string& account, Message
     emit newMessageAdded(msg.uid_, msg);
     // TODO sort
     // TODO update model
+}
+
+void
+ConversationModel::search()
+{
+    // Update alias
+    auto uri = URI(QString(filter_.c_str()));
+    // Query NS
+    Account* account = nullptr;
+    if (uri.schemeType() != URI::SchemeType::NONE) {
+        account = AvailableAccountModel::instance().currentDefaultAccount(uri.schemeType());
+    } else {
+        account = AvailableAccountModel::instance().currentDefaultAccount();
+    }
+    if (!account) return;
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
+
+    if (account->protocol() == Account::Protocol::RING &&
+        uri.protocolHint() != URI::ProtocolHint::RING)
+    {
+        account->lookupName(QString(filter_.c_str()));
+    } else {
+        /* no lookup, simply use the URI as is */
+        auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front().second;
+            if (!firstConversation->isUsed_) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = cm->uri().toStdString();
+                auto participant = std::make_shared<Contact::Info>(
+                uid, "", "", cm->bestName().toStdString());
+                conversations_.pop_front();
+                if (!find(uid)) {
+                    conversations_.emplace_front(ConversationEntry(
+                        uid,
+                        std::make_shared<Conversation::Info>(account, participant)
+                    ));
+                }
+                emit modelUpdated();
+            }
+        }
+    }
+}
+
+void
+ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+{
+    Q_UNUSED(account)
+
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front().second;
+            if (!firstConversation->isUsed_) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = address.toStdString();
+                auto participant = std::make_shared<Contact::Info>(
+                uid, "", "", name.toStdString());
+                conversations_.pop_front();
+                if (!find(uid)) {
+                    conversations_.emplace_front(ConversationEntry(
+                        uid,
+                        std::make_shared<Conversation::Info>(account, participant)
+                    ));
+                }
+                emit modelUpdated();
+            }
+        }
+    }
+    disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
 }
