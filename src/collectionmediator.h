@@ -36,7 +36,7 @@ class CollectionMediatorPrivate;
  * The later objective make it easier to later implement the decorator pattern.
  */
 template<typename T>
-class LIB_EXPORT CollectionMediator {
+class CollectionMediator {
 public:
    CollectionMediator(CollectionManagerInterface<T>* parentManager, QAbstractItemModel* m);
    virtual ~CollectionMediator();
@@ -50,4 +50,3 @@ private:
 };
 
 #include <collectionmediator.hpp>
-

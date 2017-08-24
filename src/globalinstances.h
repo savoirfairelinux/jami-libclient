@@ -52,7 +52,7 @@ void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListC
 LIB_EXPORT Interfaces::ContactMethodSelectorI& contactMethodSelector();
 void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
-LIB_EXPORT Interfaces::DBusErrorHandlerI& dBusErrorHandler();
+Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
 
 /**
@@ -96,7 +96,7 @@ void setInterfaceInternal(Interfaces::ActionExtenderI          *);
  * can be passed.
  */
 template<class I, typename ...Ts>
-void LIB_EXPORT setInterface(Ts... args)
+void setInterface(Ts... args)
 {
    try {
       auto i = new I(args...);
