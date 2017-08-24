@@ -52,8 +52,9 @@ class LIB_EXPORT DatabaseManager : public QObject {
      * Remove the history of the conversation between account and uid
      * @param account
      * @param uid
+     * @param removeContact if we also want to remove the contact
      */
-    void removeHistory(const std::string& account, const std::string& uid);
+    void removeHistory(const std::string& account, const std::string& uid, bool removeContact = false);
     /**
      * @param  account
      * @param  uid

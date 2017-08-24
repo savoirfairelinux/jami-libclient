@@ -109,8 +109,8 @@ DatabaseManager::addMessage(const std::string& account, const Message::Info& mes
     case Message::Type::CALL:
         query_->addBindValue(QString("CALL"));
         break;
-    case Message::Type::INVITE:
-        query_->addBindValue(QString("INVITE"));
+    case Message::Type::CONTACT:
+        query_->addBindValue(QString("CONTACT"));
         break;
     case Message::Type::INVALID_TYPE:
         query_->addBindValue(QString("INVALID_TYPE"));
@@ -146,10 +146,13 @@ DatabaseManager::addMessage(const std::string& account, const Message::Info& mes
 }
 
 void
-DatabaseManager::removeHistory(const std::string& account, const std::string& uid)
+DatabaseManager::removeHistory(const std::string& account, const std::string& uid, bool removeContact)
 {
     auto removeHistoryQuery = "DELETE FROM conversations WHERE contact = '"
     +uid+"' AND account='"+account+"'";
+    if (!removeContact) {
+        removeHistoryQuery += " AND type!='CONTACT'";
+    }
 
     if (not query_->exec(removeHistoryQuery.c_str())) {
         qDebug() << "DatabaseManager: removeHistory, " << query_->lastError().text();
@@ -181,8 +184,8 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
             type = Message::Type::TEXT;
         } else if (typeStr == "CALL") {
             type = Message::Type::CALL;
-        } else if (typeStr == "INVITE") {
-            type = Message::Type::INVITE;
+        } else if (typeStr == "CONTACT") {
+            type = Message::Type::CONTACT;
         }
         auto statusStr = query_->value(5).toString().toStdString();
         auto status = Message::Status::INVALID_STATUS;

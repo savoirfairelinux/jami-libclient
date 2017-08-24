@@ -110,6 +110,13 @@ ConversationModel::addConversation(const std::string& uri)
         if (contact->uri_.length() == 0) return;
         ConfigurationManager::instance().addContact(account->id(),
         QString(contact->uri_.c_str()));
+
+        Message::Info msg(contact->uri_.c_str(), "", true, Message::Type::CONTACT,
+        std::time(nullptr), Message::Status::SUCCEED);
+        dbManager_->addMessage(account->id().toStdString(), msg);
+
+        // TODO just this item
+        emit modelUpdated();
     }
 }
 
@@ -167,6 +174,7 @@ ConversationModel::removeConversation(const std::string& uid)
     // TODO group chat?
     auto contact = conversation->participants_.front();
     contactModel_->removeContact(contact->uri_);
+    dbManager_->removeHistory(conversation->account_->id().toStdString(), uid, true);
 
     // Remove conversation
     auto it = conversations_.begin();

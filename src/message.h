@@ -29,7 +29,7 @@ namespace Message
 enum class Type {
     TEXT,
     CALL,
-    INVITE,
+    CONTACT,
     INVALID_TYPE
 };
 
