@@ -16,37 +16,35 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#pragma once
-// Std
-#include <memory>
+#include "newaccountmodel.h"
 
-// Qt
-#include <qobject.h>
+#include "dbus/configurationmanager.h" // old
 
-// Data
-#include "callinfo.h"
+NewAccountModel::NewAccountModel(pDatabaseManager dbManager)
+:QObject(nullptr)
+, dbManager_(dbManager)
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
-class NewCallModel : public QObject {
-    Q_OBJECT
-    public:
-    explicit NewCallModel();
-    ~NewCallModel();
+    for (auto id : accountIds) {
+        // first we build all objects contained in the info structure
+        auto callModel = std::make_shared<NewCallModel>();
+        auto contactModel = std::make_shared<ContactModel>(dbManager_, id.toStdString());
+        auto conversationModel = std::make_shared<ConversationModel>(callModel, contactModel, dbManager_);
+        
+        auto info = std::make_shared<NewAccount::Info>(id.toStdString(), callModel, contactModel, conversationModel);
+        accounts_[id.toStdString()] = info;
+    }
 
-    const NewCall::Info& createCall();
-    void sendMessage(const std::string& callId, const std::string& body) const;
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMuteaUdio(const std::string& callId) const;
-    void toggleMuteVideo(const std::string& callId) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
+}
 
-    private:
-    CallsInfo calls_;
+NewAccountModel::~NewAccountModel()
+{
 
-};
+}
 
-typedef std::shared_ptr<NewCallModel> pNewCallModel;
+pAccountInfo
+NewAccountModel::getAccountInfo(const std::string& id)
+{
+    return accounts_[id];
+}

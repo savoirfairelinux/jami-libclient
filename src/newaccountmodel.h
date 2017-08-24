@@ -26,45 +26,26 @@
 // Qt
 #include <qobject.h>
 
-// Data
-#include "conversation.h"
-
 // Lrc
 #include "typedefs.h"
+#include "databasemanager.h"
+#include "accountinfo.h"
 
-class LIB_EXPORT ConversationModel : public QObject {
+class LIB_EXPORT NewAccountModel : public QObject {
+    friend Lrc::Lrc();
     Q_OBJECT
+
     public:
-    explicit ConversationModel(QObject* parent = nullptr);
-    ~ConversationModel();
+    explicit NewAccountModel(pDatabaseManager dbManager);
 
-    const Conversations& getConversations() const;
-    const Conversation::Info& getConversation(const unsigned int row) const;
-    const Conversation::Info& addConversation(const std::string& uri);
-    void removeConversation(const std::string& uid);
-    void selectConversation(const std::string& uid);
-    void placeCall(const std::string& uid) const;
-    void sendMessage(const std::string& uid, const std::string& body) const;
-    void setFilter(const std::string&);
-    void addParticipant(const std::string& uid, const::std::string& uri);
-    void cleanHistory(const std::string& uid);
-
-    // signals
-    Q_SIGNALS:
-    void conversationUpdated(unsigned int row);
-    void modelUpdated();
-    void newContactAdded(const std::string& uid);
-    void incomingCallFromItem(const unsigned int row);
-
-    void showChatView(const Conversation::Info& conversation);
-    void showCallView(const Conversation::Info& conversation);
-    void showIncomingCallView(const Conversation::Info& conversation);
+    ~NewAccountModel();
+    pAccountInfo getAccountInfo(const std::string& id);
 
     private:
-    Conversations conversations_;
-    mutable Conversations filteredConversations_;
-    std::string filter_;
+    explicit NewAccountModel();
 
+    pDatabaseManager dbManager_;
+    AccountsInfo accounts_;
 };
 
-typedef std::shared_ptr<ConversationModel> pConversationModel;
+typedef std::shared_ptr<NewAccountModel> pNewAccountModel;

@@ -17,36 +17,38 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-// Std
 #include <memory>
+#include "newcallmodel.h"
+#include "contactmodel.h"
+#include "conversationmodel.h"
 
-// Qt
-#include <qobject.h>
+namespace NewAccount
+{
 
-// Data
-#include "callinfo.h"
-
-class NewCallModel : public QObject {
-    Q_OBJECT
-    public:
-    explicit NewCallModel();
-    ~NewCallModel();
-
-    const NewCall::Info& createCall();
-    void sendMessage(const std::string& callId, const std::string& body) const;
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMuteaUdio(const std::string& callId) const;
-    void toggleMuteVideo(const std::string& callId) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
-
-    private:
-    CallsInfo calls_;
-
+enum class Type {
+    RING,
+    SIP,
+    INVALID_TYPE
 };
 
-typedef std::shared_ptr<NewCallModel> pNewCallModel;
+struct Info
+{
+    const std::string id_ = "";
+    pNewCallModel callModel_;
+    pContactModel contactModel_;
+    pConversationModel conversationModel_;
+
+    Info(const std::string& id,
+         pNewCallModel callModel,
+         pContactModel contactModel,
+         pConversationModel conversationModel)
+        : id_(id)
+        , callModel_(callModel)
+        , contactModel_(contactModel)
+        , conversationModel_(conversationModel)
+        {}
+};
+
+}
+typedef std::shared_ptr<NewAccount::Info> pAccountInfo;
+typedef std::map<std::string, pAccountInfo> AccountsInfo;
