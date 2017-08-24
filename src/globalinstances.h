@@ -42,37 +42,37 @@ class ActionExtenderI;
  */
 namespace GlobalInstances {
 
-LIB_EXPORT Interfaces::AccountListColorizerI& accountListColorizer();
-void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
+Interfaces::AccountListColorizerI& accountListColorizer();
+void setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ContactMethodSelectorI& contactMethodSelector();
-void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
+Interfaces::ContactMethodSelectorI& contactMethodSelector();
+void setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
-LIB_EXPORT Interfaces::DBusErrorHandlerI& dBusErrorHandler();
+Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
-void LIB_EXPORT setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
+Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
+void setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
 
 LIB_EXPORT Interfaces::PixmapManipulatorI& pixmapManipulator();
 void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
 
-LIB_EXPORT Interfaces::PresenceSerializerI& presenceSerializer();
-void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
+Interfaces::PresenceSerializerI& presenceSerializer();
+void setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
 
-LIB_EXPORT Interfaces::ShortcutCreatorI& shortcutCreator();
-void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
+Interfaces::ShortcutCreatorI& shortcutCreator();
+void setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
-LIB_EXPORT Interfaces::ActionExtenderI& actionExtender();
-void LIB_EXPORT setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
+Interfaces::ActionExtenderI& actionExtender();
+void setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
 
 
 
@@ -96,7 +96,7 @@ void setInterfaceInternal(Interfaces::ActionExtenderI          *);
  * can be passed.
  */
 template<class I, typename ...Ts>
-void LIB_EXPORT setInterface(Ts... args)
+void setInterface(Ts... args)
 {
    try {
       auto i = new I(args...);
