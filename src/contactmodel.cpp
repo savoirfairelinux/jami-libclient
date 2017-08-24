@@ -19,14 +19,17 @@
 #include "contactmodel.h"
 
 // Lrc
-#include "availableaccountmodel.h" // old
 #include "contactmethod.h" // old
-#include "dbus/callmanager.h" // old
 #include "dbus/configurationmanager.h" // old
+#include "account.h" // old
+#include "databasemanager.h"
 
 
-ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
-: dbm_(dbm), account_(account), QObject(parent)
+ContactModel::ContactModel(const pDatabaseManager dbm,
+                           const std::string accountId)
+: dbm_(dbm)
+, accountId_(accountId)
+, QObject(nullptr)
 {
     fillsWithContacts();
 }
