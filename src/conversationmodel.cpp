@@ -21,6 +21,10 @@
 // LRC
 #include "availableaccountmodel.h"
 #include "callinfo.h"
+#include "dbus/configurationmanager.h"
+
+// TODO move
+#include "private/imconversationmanagerprivate.h"
 
 // std
 #include <algorithm>
@@ -32,6 +36,10 @@ ConversationModel::ConversationModel(std::shared_ptr<NewCallModel> callModel,
   callModel_(callModel), contactModel_(contactModel), dbManager_(dbManager), QObject(parent)
 {
     initConversations();
+    connect(&*dbManager_, &DatabaseManager::messageAdded, this, &ConversationModel::slotMessageAdded);
+
+    // TODO move this
+    IMConversationManagerPrivate::instance().setDatabaseManager(dbManager_);
 }
 
 ConversationModel::~ConversationModel()
@@ -93,7 +101,7 @@ ConversationModel::selectConversation(const std::string& uid)
 }
 
 std::shared_ptr<Conversation::Info>
-ConversationModel::find(const std::string& uid)
+ConversationModel::find(const std::string& uid) const
 {
     std::shared_ptr<Conversation::Info> result = nullptr;
     auto i = std::find_if(conversations_.begin(), conversations_.end(),
@@ -136,7 +144,32 @@ ConversationModel::placeCall(const std::string& uid) const
 void
 ConversationModel::sendMessage(const std::string& uid, const std::string& body) const
 {
+    auto conversation = find(uid);
+    if (!conversation || conversation->participants_.empty()) return;
+    auto contact = conversation->participants_.front();
+    auto account = AvailableAccountModel::instance().currentDefaultAccount(); // TODO replace by linked account
+    if (!account) return;
 
+    // Send contact request if non used
+    if(!conversation->isUsed_) {
+        if (contact->uri_.length() == 0) return;
+        ConfigurationManager::instance().addContact(account->id(),
+        QString(contact->uri_.c_str()));
+    }
+    // Send message to contact.
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = body.c_str();
+
+    // TODO change this for group messages
+    auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
+    contact->uri_.c_str(), payloads);
+
+    Message::Info msg(contact->uri_.c_str(), body, true, Message::Type::TEXT,
+    std::time(nullptr), Message::Status::SENDING);
+
+    dbManager_->addMessage(account->id().toStdString(), msg);
+
+    // TODO change last interaction + sort + isUsed + add contact to db + invite msg
 }
 
 void
@@ -204,4 +237,19 @@ ConversationModel::sortConversations()
             return true;
         }
     });
+    // TODO change conversations indexes
+}
+
+void
+ConversationModel::slotMessageAdded(int uid, const std::string& account, Message::Info msg)
+{
+    auto conversation = find(msg.uid_);
+    if (!conversation || conversation->participants_.empty()) return;
+    if (!conversation->isUsed_) conversation->isUsed_ = true;
+    // Add message to conversation
+    conversation->messages_.insert(std::pair<int, Message::Info>(uid, msg));
+    conversation->lastMessageUid_ = uid;
+    emit newMessageAdded(msg.uid_, msg);
+    // TODO sort
+    // TODO update model
 }

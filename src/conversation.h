@@ -50,12 +50,14 @@ struct Info
     : account_(account), uid_(uid), participants_(participants), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
+            isUsed_ = true;
         }
     }
     Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, Messages messages)
     : account_(account), uid_(uid), participants_({participant}), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
+            isUsed_ = true;
         }
     }
 

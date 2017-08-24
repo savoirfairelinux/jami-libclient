@@ -98,11 +98,11 @@ class LIB_EXPORT DatabaseManager : public QObject {
     Q_SIGNALS:
     /**
      * Will be emitted each time a message is successfully stored into the database
-     * @param uid the uid of the conversation
+     * @param uid the uid of the message
      * @param account linked to the conversation
      * @param msg the message added
      */
-    void messageAdded(const std::string& uid, const std::string& account, Message::Info msg);
+    void messageAdded(int uid, const std::string& account, Message::Info msg);
     /**
      * Will be emitted each time a contact is added into the database
      * @param uid the uid of the contact

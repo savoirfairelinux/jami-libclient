@@ -39,6 +39,9 @@
 #include <accountmodel.h>
 #include <personmodel.h>
 
+#include "databasemanager.h"
+#include "message.h"
+
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
  *
@@ -93,6 +96,7 @@ IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QO
 {
    CallManagerInterface& callManager                   = CallManager::instance();
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+   dbManager_ = std::make_shared<DatabaseManager>();
 
    connect(&configurationManager, &ConfigurationManagerInterface::incomingAccountMessage, this, &IMConversationManagerPrivate::newAccountMessage);
    connect(&configurationManager, &ConfigurationManagerInterface::accountMessageStatusChanged  , this, &IMConversationManagerPrivate::accountMessageStatusChanged);
@@ -104,6 +108,13 @@ IMConversationManagerPrivate& IMConversationManagerPrivate::instance()
    static auto instance = new IMConversationManagerPrivate(nullptr);
    return *instance;
 }
+
+void
+IMConversationManagerPrivate::setDatabaseManager(std::shared_ptr<DatabaseManager> newManager)
+{
+   dbManager_ = newManager;
+}
+
 
 Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString& payload, ContactMethod *contactMethod)
 {
@@ -179,10 +190,13 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-   if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
-       auto txtRecording = cm->textRecording();
-       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
-   }
+    Message::Info msg(from.toStdString(), payloads["text/plain"].toStdString(), false,
+    Message::Type::TEXT, std::time(nullptr), Message::Status::SUCCEED);
+    dbManager_->addMessage(accountId.toStdString(), msg);
+    if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
+        auto txtRecording = cm->textRecording();
+        txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
+    }
 }
 
 void IMConversationManagerPrivate::accountMessageStatusChanged(const QString& accountId, uint64_t id, const QString& to, int status)

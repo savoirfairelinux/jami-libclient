@@ -19,10 +19,12 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QHash>
+#include <memory>
 
 class Account;
 class Call;
 class ContactMethod;
+class DatabaseManager;
 
 namespace Media {
    class Text;
@@ -37,9 +39,13 @@ public:
    IMConversationManagerPrivate(QObject* parent);
 
    static IMConversationManagerPrivate& instance();
+   void setDatabaseManager(std::shared_ptr<DatabaseManager> newManager);
 
 private Q_SLOTS:
    void newMessage       (const QString& callId   , const QString& from, const QMap<QString,QString>& payloads);
    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
    void accountMessageStatusChanged(const QString& accountId, uint64_t id, const QString& to, int status);
+
+   private:
+    std::shared_ptr<DatabaseManager> dbManager_;
 };

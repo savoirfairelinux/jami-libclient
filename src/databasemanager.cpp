@@ -83,6 +83,8 @@ DatabaseManager::~DatabaseManager()
 
 }
 
+#include <iostream>
+
 void
 DatabaseManager::addMessage(const std::string& account, const Message::Info& message)
 {
@@ -134,7 +136,13 @@ DatabaseManager::addMessage(const std::string& account, const Message::Info& mes
         return;
     }
 
-    emit messageAdded(message.uid_, account, message);
+    if (not query_->exec("SELECT last_insert_rowid()")) {
+        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
+        return;
+    }
+    while(query_->next()) {
+        emit messageAdded(query_->value(0).toInt(), account, message);
+    }
 }
 
 void
@@ -151,7 +159,7 @@ DatabaseManager::removeHistory(const std::string& account, const std::string& ui
 Messages
 DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
 {
-    auto getMessagesQuery = "SELECT id, contact, body, timestamp, is_unread, \
+    auto getMessagesQuery = "SELECT id, contact, body, timestamp, \
     is_outgoing, type, status FROM conversations WHERE contact = '" + uid + "' \
     AND account='" + account + "'";
 

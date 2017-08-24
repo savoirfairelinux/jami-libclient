@@ -59,6 +59,7 @@ class LIB_EXPORT ConversationModel : public QObject {
 
     // signals
     Q_SIGNALS:
+    void newMessageAdded(const std::string& uid, Message::Info msg);
     void conversationUpdated(unsigned int row);
     void modelUpdated();
     void newContactAdded(const std::string& uid);
@@ -68,13 +69,16 @@ class LIB_EXPORT ConversationModel : public QObject {
     void showCallView(std::shared_ptr<Conversation::Info> conversation);
     void showIncomingCallView(std::shared_ptr<Conversation::Info> conversation);
 
+    private Q_SLOTS:
+    void slotMessageAdded(int uid, const std::string& account, Message::Info msg);
+
     private:
     /**
      * Search a conversation in conversations_
      * @param uid the contact to search
      * @return the contact if found else nullptr
      */
-    std::shared_ptr<Conversation::Info> find(const std::string& uid);
+    std::shared_ptr<Conversation::Info> find(const std::string& uid) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
