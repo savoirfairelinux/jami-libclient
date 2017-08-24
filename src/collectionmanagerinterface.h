@@ -199,4 +199,3 @@ private:
 };
 
 #include "collectionmanagerinterface.hpp"
-

@@ -47,8 +47,11 @@ template<typename A> constexpr int enum_class_size() {
    return static_cast<int>(A::COUNT__);
 }
 
+#ifdef LRC_IMPORT
+#define LIB_EXPORT Q_DECL_IMPORT
+#else
 #define LIB_EXPORT Q_DECL_EXPORT
-#define LIB_IMPORT Q_DECL_IMPORT
+#endif
 
 //Doesn't work
 #if ((__GNUC_MINOR__ > 8) || (__GNUC_MINOR__ == 8))

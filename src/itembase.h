@@ -58,4 +58,3 @@ private:
 };
 
 #include <itembase.hpp>
-
