@@ -96,7 +96,6 @@ IMConversationManagerPrivate::IMConversationManagerPrivate(QObject* parent) : QO
 {
    CallManagerInterface& callManager                   = CallManager::instance();
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-   dbManager_ = std::make_shared<DatabaseManager>();
 
    connect(&configurationManager, &ConfigurationManagerInterface::incomingAccountMessage, this, &IMConversationManagerPrivate::newAccountMessage);
    connect(&configurationManager, &ConfigurationManagerInterface::accountMessageStatusChanged  , this, &IMConversationManagerPrivate::accountMessageStatusChanged);
@@ -192,7 +191,8 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
 {
     Message::Info msg(from.toStdString(), payloads["text/plain"].toStdString(), false,
     Message::Type::TEXT, std::time(nullptr), Message::Status::SUCCEED);
-    dbManager_->addMessage(accountId.toStdString(), msg);
+    if (dbManager_)
+        dbManager_->addMessage(accountId.toStdString(), msg);
     if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
         auto txtRecording = cm->textRecording();
         txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
