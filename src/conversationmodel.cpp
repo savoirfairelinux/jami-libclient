@@ -108,12 +108,7 @@ ConversationModel::addConversation(const std::string& uri)
     // Send contact request if non used
     if(!conversation->isUsed_) {
         if (contact->uri_.length() == 0) return;
-        ConfigurationManager::instance().addContact(account->id(),
-        QString(contact->uri_.c_str()));
-
-        Message::Info msg(contact->uri_.c_str(), "", true, Message::Type::CONTACT,
-        std::time(nullptr), Message::Status::SUCCEED);
-        dbManager_->addMessage(account->id().toStdString(), msg);
+        contactModel_->addContact(uri);
 
         // TODO just this item
         emit modelUpdated();
@@ -192,7 +187,7 @@ ConversationModel::placeCall(const std::string& uid) const
 }
 
 void
-ConversationModel::sendMessage(const std::string& uid, const std::string& body) const
+ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 {
     auto conversation = find(uid);
     if (!conversation || conversation->participants_.empty()) return;
@@ -203,8 +198,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // Send contact request if non used
     if(!conversation->isUsed_) {
         if (contact->uri_.length() == 0) return;
-        ConfigurationManager::instance().addContact(account->id(),
-        QString(contact->uri_.c_str()));
+        contactModel_->addContact(contact->uri_);
+        emit modelUpdated();
     }
     // Send message to contact.
     QMap<QString, QString> payloads;

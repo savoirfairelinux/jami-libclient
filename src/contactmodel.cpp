@@ -47,6 +47,13 @@ ContactModel::addContact(const std::string& uri)
     auto contactInfo = std::make_shared<Contact::Info>(uri, avatar, registeredName, alias, isTrusted, type);
 
     contacts_[uri] = contactInfo;
+
+    ConfigurationManager::instance().addContact(account_->id(),
+    QString(uri.c_str()));
+
+    Message::Info msg(uri.c_str(), "", true, Message::Type::CONTACT,
+    std::time(nullptr), Message::Status::SUCCEED);
+    dbm_->addMessage(account_->id().toStdString(), msg);
 }
 
 
