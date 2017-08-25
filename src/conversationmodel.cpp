@@ -26,6 +26,7 @@
 #include "uri.h"
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
+#include "databasemanager.h"
 
 // TODO move
 #include "private/imconversationmanagerprivate.h"

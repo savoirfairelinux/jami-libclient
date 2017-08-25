@@ -37,6 +37,7 @@ constexpr char ringDB[] = "ring.db"; // TODO move this and use QStandardPath
 class Account;
 
 class LIB_EXPORT DatabaseManager : public QObject {
+    friend Lrc::Lrc();
     Q_OBJECT
     public:
     ~DatabaseManager();
@@ -118,7 +119,6 @@ class LIB_EXPORT DatabaseManager : public QObject {
                                  const QString& name);
 
     private:
-    friend Lrc::Lrc();
     explicit DatabaseManager(QObject* parent = nullptr);
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;

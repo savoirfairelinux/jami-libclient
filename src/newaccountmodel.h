@@ -27,24 +27,23 @@
 #include <qobject.h>
 
 // Lrc
-#include "contactmodel.h"
-#include "conversation.h"
-#include "databasemanager.h"
 #include "typedefs.h"
+#include "databasemanager.h"
 #include "accountinfo.h"
-#include "newcallmodel.h"
-
 
 class LIB_EXPORT NewAccountModel : public QObject {
+    friend Lrc::Lrc();
     Q_OBJECT
 
     public:
+    explicit NewAccountModel(pDatabaseManager dbManager);
+    
     ~NewAccountModel();
     pAccountInfo getAccountInfo(const std::string& id);
 
     private:
-    friend Lrc::Lrc();
-    explicit NewAccountModel(pDatabaseManager dbManager);
+    explicit NewAccountModel();
+    
     pDatabaseManager dbManager_;
     AccountsInfo accounts_;
 };
