@@ -47,9 +47,12 @@ class ContactModel : public QObject {
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 
+    public Q_SLOTS:
+        void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
 
     private:
     bool fillsWithContacts();
+
 
     ContactsInfo contacts_;
     const std::shared_ptr<DatabaseManager> dbm_;

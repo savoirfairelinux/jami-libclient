@@ -38,8 +38,8 @@ struct Info
     Type type_;
 
     Info(const std::string& uri = "", const std::string& avatar = "", const std::string& registeredName = "",
-         const std::string& alias = "", bool isTrusted = false, Type type = Type::INVALID_TYPE)
-        : uri_(uri), avatar_(avatar), registeredName_(registeredName), alias_(alias), isTrusted_(isTrusted), type_(type)
+         const std::string& alias = "", bool isTrusted = false, bool isPresent = false, Type type = Type::INVALID_TYPE)
+        : uri_(uri), avatar_(avatar), registeredName_(registeredName), alias_(alias), isTrusted_(isTrusted), isPresent_(isPresent), type_(type)
         {}
 };
 

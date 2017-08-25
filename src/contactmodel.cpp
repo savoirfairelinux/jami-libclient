@@ -23,12 +23,18 @@
 #include "contactmethod.h" // old
 #include "dbus/callmanager.h" // old
 #include "dbus/configurationmanager.h" // old
+#include "dbus/presencemanager.h" // old
 
 
 ContactModel::ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent)
 : dbm_(dbm), account_(account), QObject(parent)
 {
     fillsWithContacts();
+
+    connect(&PresenceManager::instance(),
+            SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
+            this,
+            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 }
 
 ContactModel::~ContactModel()
@@ -42,9 +48,10 @@ ContactModel::addContact(const std::string& uri)
     auto registeredName = "feature missing"; // TODO add function in database
     auto alias = dbm_->getAlias("");
     auto isTrusted = false;
+    auto isPresent = false;
     auto type = Contact::Type::RING;
 
-    auto contactInfo = std::make_shared<Contact::Info>(uri, avatar, registeredName, alias, isTrusted, type);
+    auto contactInfo = std::make_shared<Contact::Info>(uri, avatar, registeredName, alias, isTrusted, isPresent, type);
 
     contacts_[uri] = contactInfo;
 
@@ -56,6 +63,14 @@ ContactModel::addContact(const std::string& uri)
     dbm_->addMessage(account_->id().toStdString(), msg);
 }
 
+void
+ContactModel::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
+{
+    if (accountId != account_->id()) return;
+    if (contacts_.find(uri.toStdString()) != contacts_.end()) {
+        contacts_[uri.toStdString()]->isPresent_ = status;
+    }
+}
 
 bool
 ContactModel::isAContact(const std::string& uri) const
@@ -141,6 +156,7 @@ ContactModel::fillsWithContacts()
                                                                         registeredName,
                                                                         alias,
                                                                         isTrusted,
+                                                                        isPresent,
                                                                         type));
 
         contacts_[uri] = contact;
