@@ -36,6 +36,7 @@ class Lrc : public QObject {
     public:
     explicit Lrc();
     ~Lrc();
+    std::shared_ptr<NewAccountModel> getAccountModel() {return accountModel_;};
 
     private:
     static std::shared_ptr<DatabaseManager> databaseManager_;
