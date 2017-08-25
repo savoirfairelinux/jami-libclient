@@ -82,19 +82,10 @@ class LIB_EXPORT DatabaseManager : public QObject {
     void addContact(const std::string& contact, const QByteArray& payload);
     /**
      * @param  uid of a contact
-     * @return the URI of a contact
+     * @param  the attribute to search for a contact
+     * @return attribute of a contact
      */
-    std::string getUri(const std::string& uid) const;
-    /**
-     * @param  uid of a contact
-     * @return the alias of a contact
-     */
-    std::string getAlias(const std::string& uid) const;
-    /**
-     * @param  uid of a contact
-     * @return the avatar of a contact
-     */
-    std::string getAvatar(const std::string& uid) const;
+    std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
 
     Q_SIGNALS:
     /**

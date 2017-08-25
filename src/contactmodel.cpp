@@ -41,9 +41,9 @@ ContactModel::~ContactModel()
 const Contact::Info&
 ContactModel::addContact(const std::string& uri)
 {
-    auto avatar = dbm_->getAvatar("");
+    auto avatar = dbm_->getContactAttribute(uri, "photo");
     auto registeredName = "feature missing"; // TODO add function in database
-    auto alias = dbm_->getAlias("");
+    auto alias = dbm_->getContactAttribute(uri, "alias");
     auto isTrusted = false;
     auto type = Contact::Type::RING;
 
@@ -133,7 +133,7 @@ ContactModel::fillsWithContacts()
     // Add contacts to the list
     for (auto c : contacts) {
         auto uri = c->uri().toStdString();
-        auto avatar = dbm_->getAvatar(uri);
+        auto avatar = dbm_->getContactAttribute(uri, "photo");
         auto registeredName = c->registeredName().toStdString();
         auto alias = c->bestName().toStdString();
         auto isTrusted = false; // TODO: handle trust

@@ -28,6 +28,7 @@
 // Lrc
 #include "private/vcardutils.h"
 #include "availableaccountmodel.h"
+#include "databasehelper.h"
 
 DatabaseManager::DatabaseManager(QObject* parent)
 : QObject(parent)
@@ -54,27 +55,26 @@ DatabaseManager::DatabaseManager(QObject* parent)
     QStringList tables = db_.tables();
 
     // Set the version of the database
-    if (tables.empty())
-        if (not query_->exec("PRAGMA schema.user_version = 1"))
+    if (tables.empty()) {
+        auto storeVersionQuery = std::string(DATABASE_STORE_VERSION);
+        storeVersionQuery += std::string(DATABASE_VERSION);
+        if (not query_->exec(storeVersionQuery.c_str()))
             qDebug() << "DatabaseManager: " << query_->lastError().text();
+    }
 
     // add accounts table
     if (not tables.contains("accounts", Qt::CaseInsensitive))
-        if (not query_->exec("CREATE TABLE accounts (id integer primary key)"))
+        if (not query_->exec(DATABASE_CREATE_ACCOUNTS_TABLES))
             qDebug() << "DatabaseManager: " << query_->lastError().text();
 
     // add contacts table
     if (not tables.contains("contacts", Qt::CaseInsensitive))
-        if (not query_->exec("CREATE TABLE contacts (id integer primary key, \
-        unread integer, ring_id text not null unique, alias text, photo text, \
-        username text, type text)"))
+        if (not query_->exec(DATABASE_CREATE_CONTACTS_TABLES))
             qDebug() << "DatabaseManager: " << query_->lastError().text();
 
     // add conversations table
     if (not tables.contains("conversations", Qt::CaseInsensitive))
-        if (not query_->exec("CREATE TABLE conversations (id integer primary key, \
-        contact integer, account integer, body text, timestamp text, \
-        is_unread boolean, is_outgoing boolean, type text, status text)"))
+        if (not query_->exec())
             qDebug() << "DatabaseManager: " << query_->lastError().text();
 }
 
@@ -83,63 +83,59 @@ DatabaseManager::~DatabaseManager()
 
 }
 
-#include <iostream>
-
 void
 DatabaseManager::addMessage(const std::string& account, const Message::Info& message)
 {
-    auto addMessageQuery = QString("INSERT INTO conversations(contact, account,\
-    body, timestamp, is_unread, is_outgoing, type, status) VALUES(?, ?, ?, ?,\
-    1, ?, ?, ?)");
-
-    if (not query_->prepare(addMessageQuery)) {
-        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
-        return;
-    }
-
-    query_->addBindValue(QString(message.uid_.c_str()));
-    query_->addBindValue(QString(account.c_str()));
-    query_->addBindValue(QString(message.body_.c_str()));
-    query_->addBindValue(QString::number(message.timestamp_));
-    query_->addBindValue(message.isOutgoing_);
+    std::string type;
     switch (message.type_) {
     case Message::Type::TEXT:
-        query_->addBindValue(QString("TEXT"));
+        type = "TEXT";
         break;
     case Message::Type::CALL:
-        query_->addBindValue(QString("CALL"));
+        type = "CALL";
         break;
     case Message::Type::CONTACT:
-        query_->addBindValue(QString("CONTACT"));
+        type = "CONTACT";
         break;
     case Message::Type::INVALID_TYPE:
-        query_->addBindValue(QString("INVALID_TYPE"));
+        type = "INVALID_TYPE";
         break;
     }
+    std::string status;
     switch (message.status_) {
     case Message::Status::SENDING:
-        query_->addBindValue(QString("SENDING"));
+        status = "SENDING";
         break;
     case Message::Status::FAILED:
-        query_->addBindValue(QString("FAILED"));
+        status = "FAILED";
         break;
     case Message::Status::SUCCEED:
-        query_->addBindValue(QString("SUCCEED"));
+        status = "SUCCEED";
         break;
     case Message::Status::INVALID_STATUS:
-        query_->addBindValue(QString("INVALID_STATUS"));
+        status = "INVALID_STATUS";
         break;
     }
+    auto addMessageQuery = DATABASE_ADD_MESSAGE(
+        message.uid_,
+        account,
+        message.body_,
+        std::to_string(message.timestamp_),
+        message.isOutgoing_,
+        type,
+        status
+    );
 
-    if (not query_->exec()) {
+    if (not query_->exec(QString(addMessageQuery.c_str()))) {
         qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
         return;
     }
 
-    if (not query_->exec("SELECT last_insert_rowid()")) {
-        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
+    if (not query_->exec(QString(DATABASE_GET_LAST_INSERTED_ID))) {
+        qDebug() << "DatabaseManager: getLastInsertedID, " << query_->lastError().text();
         return;
     }
+
     while(query_->next()) {
         emit messageAdded(query_->value(0).toInt(), account, message);
     }
@@ -148,8 +144,7 @@ DatabaseManager::addMessage(const std::string& account, const Message::Info& mes
 void
 DatabaseManager::removeHistory(const std::string& account, const std::string& uid, bool removeContact)
 {
-    auto removeHistoryQuery = "DELETE FROM conversations WHERE contact = '"
-    +uid+"' AND account='"+account+"'";
+    auto removeHistoryQuery = DATABASE_REMOVE_HISTORY(account, uid);
     if (!removeContact) {
         removeHistoryQuery += " AND type!='CONTACT'";
     }
@@ -162,9 +157,7 @@ DatabaseManager::removeHistory(const std::string& account, const std::string& ui
 Messages
 DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
 {
-    auto getMessagesQuery = "SELECT id, contact, body, timestamp, \
-    is_outgoing, type, status FROM conversations WHERE contact = '" + uid + "' \
-    AND account='" + account + "'";
+    auto getMessagesQuery = DATABASE_GET_MESSAGES(account, uid);
 
     if (not query_->exec(getMessagesQuery.c_str())) {
         qDebug() << "DatabaseManager: getMessages, " << query_->lastError().text();
@@ -206,8 +199,7 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
 unsigned int
 DatabaseManager::numberOfUnreads(const std::string& account, const std::string& uid) const
 {
-    auto numberOfUnreadsQuery = "SELECT COUNT(is_unread) FROM conversations \
-    WHERE is_unread='1' AND contact='" + uid + "' AND account='" + account + "'";
+    auto numberOfUnreadsQuery = DATABASE_COUNT_MESSAGES_UNREAD(account, uid);
 
     if (not query_->exec(numberOfUnreadsQuery.c_str())) {
         qDebug() << "DatabaseManager: NumberOfUnreads, " << query_->lastError().text();
@@ -221,8 +213,7 @@ DatabaseManager::numberOfUnreads(const std::string& account, const std::string& 
 void
 DatabaseManager::setMessageRead(int uid)
 {
-    auto setMessageReadQuery = QString("UPDATE conversations SET is_unread = '0' \
-    WHERE id = '" + QString::number(uid) + "'");
+    auto setMessageReadQuery = QString(DATABASE_SET_MESSAGE_READ(std::to_string(uid)).c_str());
 
     if (not query_->exec(setMessageReadQuery))
         qDebug() << "DatabaseManager: setMessageRead, " << query_->lastError().text();
@@ -238,18 +229,10 @@ DatabaseManager::addContact(const std::string& contact, const QByteArray& payloa
     auto alias = vCard["FN"];
     auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"]; // TODO: to improve
 
-    auto addContactQuery = QString("INSERT INTO contacts(ring_id, username, alias, photo) values(?, ?, ?, ?)");
-
-    if (not query_->prepare(addContactQuery)) {
-        qDebug() << "DatabaseManager: addContact, " << query_->lastError().text();
-        return;
-    }
-
-    query_->addBindValue(contact_id);
-    query_->addBindValue(contact_id);
-    // ^TODO: ring_id and username should be different
-    query_->addBindValue(alias);
-    query_->addBindValue(photo);
+    auto addContactQuery = QString(DATABASE_ADD_CONTACT(
+    contact_id.toStdString(), contact_id.toStdString(), alias.toStdString(),
+    photo.toStdString()).c_str()
+    );
 
     if (not query_->exec()) {
         qDebug() << "DatabaseManager: addContact, " << query_->lastError().text();
@@ -263,40 +246,12 @@ DatabaseManager::addContact(const std::string& contact, const QByteArray& payloa
 }
 
 std::string
-DatabaseManager::getUri(const std::string& uid) const
+DatabaseManager::getContactAttribute(const std::string& uid, const std::string& attribute) const
 {
-    auto getUriQuery = "SELECT username FROM contacts WHERE ring_id='" + uid + "'";
+    auto attributeQuery = DATABASE_GET_CONTACT_ATTRIBUTE(uid, attribute);
 
-    if (not query_->exec(QString(getUriQuery.c_str()))) {
-        qDebug() << "DatabaseManager: getUri, " << query_->lastError().text();
-        return std::string();
-    }
-
-    query_->next();
-    return query_->value(0).toString().toStdString();
-}
-
-std::string
-DatabaseManager::getAlias(const std::string& uid) const
-{
-    auto getAliasQuery = "SELECT alias FROM contacts WHERE ring_id='" + uid + "'";
-
-    if (not query_->exec(QString(getAliasQuery.c_str()))) {
-        qDebug() << "DatabaseManager: getAlias, " << query_->lastError().text();
-        return std::string();
-    }
-
-    query_->next();
-    return query_->value(0).toString().toStdString();
-}
-
-std::string
-DatabaseManager::getAvatar(const std::string& uid) const
-{
-    auto getAvatarQuery = "SELECT photo FROM contacts WHERE ring_id='" + uid + "'";
-
-    if (not query_->exec(QString(getAvatarQuery.c_str()))) {
-        qDebug() << "DatabaseManager: getAvatar, " << query_->lastError().text();
+    if (not query_->exec(QString(attributeQuery.c_str()))) {
+        qDebug() << "DatabaseManager: getContactAttribute, " << query_->lastError().text();
         return std::string();
     }
 
@@ -314,9 +269,10 @@ DatabaseManager::slotRegisteredNameFound(const Account* account,
     Q_UNUSED(status)
     // For now, registeredNameFound is fired even if it not find any username.
 
-    auto updateUserQuery = QString("UPDATE contacts SET username = '" + name + "' WHERE ring_id='" + address + "'");
+    auto updateUserQuery = DATABASE_UPDATE_CONTACT(address.toStdString(),
+                                                   name.toStdString());
 
-    if (not query_->exec(updateUserQuery))
+    if (not query_->exec(QString(updateUserQuery.c_str())))
         qDebug() << "DatabaseManager: slotRegisteredNameFound, " << query_->lastError().text();
 
 }
