@@ -24,13 +24,12 @@
 // Qt
 #include <qobject.h>
 
-// Data
+// Lrc
 #include "contactinfo.h"
-#include "callinfo.h"
-#include "databasemanager.h"
-#include "account.h" // old
 
-
+class Account; // old
+class DatabaseManager;
+typedef std::shared_ptr<DatabaseManager> pDatabaseManager;
 
 class ContactModel : public QObject {
     Q_OBJECT

@@ -19,10 +19,10 @@
 #include "contactmodel.h"
 
 // Lrc
-#include "availableaccountmodel.h" // old
 #include "contactmethod.h" // old
-#include "dbus/callmanager.h" // old
 #include "dbus/configurationmanager.h" // old
+#include "account.h" // old
+#include "databasemanager.h"
 
 
 ContactModel::ContactModel(const pDatabaseManager dbm,
