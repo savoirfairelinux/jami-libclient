@@ -345,6 +345,10 @@ SET( libringclient_LIB_SRCS
   #Extension
   src/extensions/presencecollectionextension.cpp
   src/extensions/securityevaluationextension.cpp
+
+  #New Models
+  src/lrc.cpp
+  src/newaccountmodel.cpp
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
