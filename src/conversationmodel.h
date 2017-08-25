@@ -53,7 +53,7 @@ class LIB_EXPORT ConversationModel : public QObject {
      */
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
-    void sendMessage(const std::string& uid, const std::string& body) const;
+    void sendMessage(const std::string& uid, const std::string& body);
     void setFilter(const std::string&);
     void addParticipant(const std::string& uid, const::std::string& uri);
     void cleanHistory(const std::string& uid);
