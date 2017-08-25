@@ -30,7 +30,7 @@
 #include "newcallmodel.h"
 #include "contactmodel.h"
 #include "conversation.h"
-#include "databasemanager.h"
+
 #include "typedefs.h"
 
 class LIB_EXPORT ConversationModel : public QObject {
