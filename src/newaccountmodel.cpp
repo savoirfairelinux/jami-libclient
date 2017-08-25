@@ -44,7 +44,7 @@ NewAccountModel::~NewAccountModel()
 }
 
 pAccountInfo
-getAccountInfo(const std::string& id)
+NewAccountModel::getAccountInfo(const std::string& id)
 {
     return accounts_[id];
 }
