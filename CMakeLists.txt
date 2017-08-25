@@ -459,6 +459,7 @@ SET( libringclient_LIB_HDRS
   src/callinfo.h
   src/contactinfo.h
   src/lrc.h
+  src/newaccountmodel.h
 )
 
 SET(libringclient_video_LIB_HDRS
