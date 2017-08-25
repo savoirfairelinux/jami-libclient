@@ -348,6 +348,7 @@ SET( libringclient_LIB_SRCS
 
   #New Models
   src/lrc.cpp
+  src/newaccountmodel.cpp
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true)

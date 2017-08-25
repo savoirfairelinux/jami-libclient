@@ -24,16 +24,16 @@ NewAccountModel::NewAccountModel(pDatabaseManager dbManager)
 :QObject(nullptr)
 , dbManager_(dbManager)
 {
-    const QStringList accountIds = configurationManager.getAccountList();
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
     for (auto id : accountIds) {
         // first we build all objects contained in the info structure
-        auto callModel = std::make_shared<NewCallModel>(NewCallModel());
-        auto contactModel = std::make_shared<ContactModel>(ContactModel(dbManager_, id.toStdString()));
-        auto conversationModel = std::make_shared<ConversationModel>(ConversationModel());
+        auto callModel = std::make_shared<NewCallModel>();
+        auto contactModel = std::make_shared<ContactModel>(dbManager_, id.toStdString());
+        auto conversationModel = std::make_shared<ConversationModel>(callModel, contactModel, dbManager_);
         
-        auto info = NewAccount::Info(id.toStdString(), callModel, contactModel, conversationModel);
-        accounts[id] = info;
+        auto info = std::make_shared<NewAccount::Info>(id.toStdString(), callModel, contactModel, conversationModel);
+        accounts_[id.toStdString()] = info;
     }
 
 }
