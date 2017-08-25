@@ -16,42 +16,35 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#pragma once
+#include "newaccountmodel.h"
 
-// Std
-#include <memory>
+#include "dbus/configurationmanager.h" // old
 
-// Qt
-#include <qobject.h>
+NewAccountModel::NewAccountModel(pDatabaseManager dbManager)
+:QObject(nullptr)
+, dbManager_(dbManager)
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
-// Lrc
-#include "contactinfo.h"
+    for (auto id : accountIds) {
+        // first we build all objects contained in the info structure
+        auto callModel = std::make_shared<NewCallModel>();
+        auto contactModel = std::make_shared<ContactModel>(dbManager_, id.toStdString());
+        auto conversationModel = std::make_shared<ConversationModel>(callModel, contactModel, dbManager_);
+        
+        auto info = std::make_shared<NewAccount::Info>(id.toStdString(), callModel, contactModel, conversationModel);
+        accounts_[id.toStdString()] = info;
+    }
 
-class Account; // old
-class DatabaseManager;
-typedef std::shared_ptr<DatabaseManager> pDatabaseManager;
+}
 
-class ContactModel : public QObject {
-    Q_OBJECT
-    public:
-    explicit ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent = nullptr);
-    ~ContactModel();
+NewAccountModel::~NewAccountModel()
+{
 
-    const Contact::Info& addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
-    void sendMessage(const std::string& uri, const std::string& body) const;
-    std::shared_ptr<Contact::Info> getContact(const std::string& uri);
-    const ContactsInfo& getContacts() const;
-    bool isAContact(const std::string& uri) const;
-    void nameLookup(const std::string& uri) const;
-    void addressLookup(const std::string& name) const;
+}
 
-
-    private:
-    bool fillsWithContacts();
-
-    ContactsInfo contacts_;
-    const std::shared_ptr<DatabaseManager> dbm_;
-    const Account* account_;
-
-};
+pAccountInfo
+NewAccountModel::getAccountInfo(const std::string& id)
+{
+    return accounts_[id];
+}

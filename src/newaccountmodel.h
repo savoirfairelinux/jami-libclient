@@ -20,38 +20,30 @@
 
 // Std
 #include <memory>
+#include <deque>
+#include <map>
 
 // Qt
 #include <qobject.h>
 
 // Lrc
-#include "contactinfo.h"
+#include "typedefs.h"
+#include "databasemanager.h"
+#include "accountinfo.h"
 
-class Account; // old
-class DatabaseManager;
-typedef std::shared_ptr<DatabaseManager> pDatabaseManager;
-
-class ContactModel : public QObject {
+class LIB_EXPORT NewAccountModel : public QObject {
+    friend Lrc::Lrc();
     Q_OBJECT
+
     public:
-    explicit ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent = nullptr);
-    ~ContactModel();
+    explicit NewAccountModel(pDatabaseManager dbManager);
 
-    const Contact::Info& addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
-    void sendMessage(const std::string& uri, const std::string& body) const;
-    std::shared_ptr<Contact::Info> getContact(const std::string& uri);
-    const ContactsInfo& getContacts() const;
-    bool isAContact(const std::string& uri) const;
-    void nameLookup(const std::string& uri) const;
-    void addressLookup(const std::string& name) const;
-
+    ~NewAccountModel();
+    pAccountInfo getAccountInfo(const std::string& id);
 
     private:
-    bool fillsWithContacts();
+    explicit NewAccountModel();
 
-    ContactsInfo contacts_;
-    const std::shared_ptr<DatabaseManager> dbm_;
-    const Account* account_;
-
+    pDatabaseManager dbManager_;
+    AccountsInfo accounts_;
 };
