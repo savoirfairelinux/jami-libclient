@@ -32,6 +32,7 @@
 namespace lrc
 {
 
+class CallbacksHandler;
 class Database;
 class ContactModelPimpl;
 
@@ -51,18 +52,38 @@ public:
     const account::Info& owner;
 
     ContactModel(const account::Info& owner,
-                 const Database& database);
+                 const Database& database,
+                 const CallbacksHandler& callbacksHandler);
     ~ContactModel();
 
-    const contact::Info& getContact(const std::string& uri) const;
+    /**
+     * Ask the daemon to add a contact.
+     * @param contactUri
+     */
+    void addContact(const std::string& contactUri);
+    /**
+     * Ask the daemon to remove a contact
+     * @param contactUri
+     * @param banned
+     */
+    void removeContact(const std::string& contactUri, bool banned=false);
+    /**
+     * @param  contactUri
+     * @return the contact::Info structure for a contact
+     * @throws out_of_range exception if can't find the contact
+     */
+    const contact::Info& getContact(const std::string& contactUri) const;
+    /**
+     * @return all contacts for this account
+     */
     const ContactInfoMap& getAllContacts() const;
-    void addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
+
+    // TODO
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 
 Q_SIGNALS:
-    void contactsChanged();
+    void modelUpdated() const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
