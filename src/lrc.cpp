@@ -19,6 +19,8 @@
 #include "lrc.h"
 #include "newaccountmodel.h"
 #include "database.h"
+#include "dbus/presencemanager.h"
+#include "data/message.h"
 
 namespace lrc
 {
@@ -26,12 +28,36 @@ namespace lrc
 Lrc::Lrc()
 : QObject(nullptr)
 {
+    // create the database manager
+    if (not database_) {
+        Database* ptr = new Database();
+        database_ = std::unique_ptr<Database>(ptr);
+    }
+
+    // create the account model
+    if (not accountModel_) {
+        NewAccountModel* ptr = new NewAccountModel(*database_.get());
+        accountModel_ = std::unique_ptr<NewAccountModel>(ptr);
+    }
+
+    connect(&PresenceManager::instance(),
+            SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
+            this,
+            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 
 }
 
 Lrc::~Lrc()
 {
 
+}
+
+void
+Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
+{
+    Q_UNUSED(message)
+    auto contactModel = accountModel_->getAccountInfo(accountId.toStdString()).contactModel;
+    contactModel->setContactPresent(uri.toStdString(), status);
 }
 
 } // namespace lrc
