@@ -30,7 +30,12 @@
 #include "conversation.h"
 
 // Lrc
+#include "contactmodel.h"
 #include "typedefs.h"
+#include "newcallmodel.h"
+
+namespace lrc
+{
 
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
@@ -38,9 +43,10 @@ class LIB_EXPORT ConversationModel : public QObject {
     explicit ConversationModel(QObject* parent = nullptr);
     ~ConversationModel();
 
-    const Conversations& getConversations() const;
-    const Conversation::Info& getConversation(const unsigned int row) const;
-    const Conversation::Info& addConversation(const std::string& uri);
+    std::shared_ptr<ContactModel> getContactModel();
+    const lrc::ConversationsList& getConversations() const;
+    std::shared_ptr<lrc::conversation::Info> getConversation(const unsigned int row) const;
+    const conversation::Info& addConversation(const std::string& uri);
     void removeConversation(const std::string& uid);
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
@@ -56,13 +62,39 @@ class LIB_EXPORT ConversationModel : public QObject {
     void newContactAdded(const std::string& uid);
     void incomingCallFromItem(const unsigned int row);
 
-    void showChatView(const Conversation::Info& conversation);
-    void showCallView(const Conversation::Info& conversation);
-    void showIncomingCallView(const Conversation::Info& conversation);
+    void showChatView(std::shared_ptr<lrc::conversation::Info> conversation);
+    void showCallView(std::shared_ptr<lrc::conversation::Info> conversation);
+    void showIncomingCallView(std::shared_ptr<lrc::conversation::Info> conversation);
+
+    private Q_SLOTS:
+    void slotMessageAdded(int uid, const std::string& account, lrc::message::Info msg);
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
     private:
-    Conversations conversations_;
-    mutable Conversations filteredConversations_;
+    /**
+     * Search a conversation in conversations_
+     * @param uid the contact to search
+     * @return the contact if found else nullptr
+     */
+    std::shared_ptr<lrc::conversation::Info> find(const std::string& uid) const;
+    /**
+     * Initialize conversations_ and filteredConversations_
+     */
+    void initConversations();
+    /**
+     * Sort conversation by last action
+     */
+    void sortConversations();
+    void search();
+
+    std::shared_ptr<NewCallModel> callModel_;
+    std::shared_ptr<ContactModel> contactModel_;
+    std::shared_ptr<DatabaseManager> dbManager_;
+
+    lrc::ConversationsList conversations_;
+    mutable lrc::ConversationsList filteredConversations_;
     std::string filter_;
 
 };
+
+} // namespace lrc

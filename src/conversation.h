@@ -22,22 +22,31 @@
 #include "contactinfo.h"
 #include "account.h" // old
 
-namespace Conversation
+// std
+#include <memory>
+#include <deque>
+
+namespace lrc
+{
+
+namespace conversation
 {
 
 struct Info
 {
-    const std::string uid_= "";
-    std::vector <std::shared_ptr<lrc::contact::Info>> participants_;
-    std::shared_ptr<lrc::call::Info> call_;
-    lrc::MessagesMap messages_;
-    bool isUsed_ = false;
-    Account* account_; // old
-    unsigned int index_ = 0;
+    std::string uid = "";
+    std::vector <std::shared_ptr<contact::Info>> participants;
+    std::shared_ptr<call::Info> call;
+    lrc::MessagesMap messages;
+    int lastMessageUid = -1;
+    bool isUsed = false;
+    Account* account; // old
+    unsigned int index = 0;
     unsigned int unreadMessages = 0;
-
 };
 
-}
+} // namespace conversation
 
-typedef std::deque<std::pair<std::string, std::shared_ptr<Conversation::Info>>> Conversations;
+using ConversationsList = std::deque<std::shared_ptr<conversation::Info>>;
+
+} //namespace lrc

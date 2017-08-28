@@ -19,6 +19,8 @@
 
 #include <typedefs.h>
 
+#include "conversation.h"
+
 //Qt
 class QVariant   ;
 class QModelIndex;
@@ -34,6 +36,7 @@ class  Call               ;
 class  CollectionInterface;
 class  Account;
 struct UserActionElement  ;
+
 
 namespace Interfaces {
 
@@ -72,6 +75,7 @@ public:
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
     virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
+    virtual QVariant   conversationPhoto(const lrc::conversation::Info& conversation, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   collectionIcon(const CollectionInterface* colItf, PixmapManipulatorI::CollectionIconHint hint = PixmapManipulatorI::CollectionIconHint::NONE) const = 0;
     virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const = 0;
     virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const = 0;
@@ -79,6 +83,7 @@ public:
     virtual QVariant   decorationRole(const QModelIndex&   index) = 0;
     virtual QVariant   decorationRole(const Call*          c    ) = 0;
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
+    virtual QVariant   decorationRole(const lrc::conversation::Info* c) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;
     virtual QVariant   decorationRole(const Account*       acc  ) = 0;
 

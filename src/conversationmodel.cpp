@@ -18,6 +18,9 @@
  ***************************************************************************/
 #include "conversationmodel.h"
 
+namespace lrc
+{
+
 ConversationModel::ConversationModel(QObject* parent)
 :QObject(parent)
 {
@@ -29,20 +32,31 @@ ConversationModel::~ConversationModel()
 
 }
 
-const Conversations&
+std::shared_ptr<ContactModel>
+ConversationModel::getContactModel()
+{
+    return contactModel_;
+}
+
+
+const lrc::ConversationsList&
 ConversationModel::getConversations() const
 {
+    return lrc::ConversationsList();
 }
 
-const Conversation::Info&
+std::shared_ptr<lrc::conversation::Info>
 ConversationModel::getConversation(const unsigned int row) const
 {
-    return Conversation::Info();
+    if (row >= filteredConversations_.size())
+        throw std::out_of_range("Can't get conversation at row " + std::to_string(row));
+    return filteredConversations_.at(row);
 }
 
-const Conversation::Info&
+const conversation::Info&
 ConversationModel::addConversation(const std::string& uri)
 {
+    return conversation::Info();
 }
 
 void
@@ -84,5 +98,7 @@ ConversationModel::addParticipant(const std::string& uid, const::std::string& ur
 void
 ConversationModel::cleanHistory(const std::string& uid)
 {
+
+}
 
 }
