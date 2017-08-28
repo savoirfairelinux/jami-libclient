@@ -39,13 +39,18 @@ namespace lrc
 
 class LIB_EXPORT DatabaseManager : public QObject {
     Q_OBJECT
-    public:
+public:
     explicit DatabaseManager(QObject* parent = nullptr);
     ~DatabaseManager();
 
-    // Messages
-    void addMessage(const std::string& account, const std::string& uid, const std::string& body, const long timestamp, const bool isOutgoing);
-    void removeHistory(const std::string& account, const std::string& uid);
+    // Messages related
+    /**
+     * Add a message object into the database
+     * @param account linked to message
+     * @param message the object to add
+     */
+    void addMessage(const std::string& account, const message::Info& message) const;
+    void removeHistory(const std::string& account, const std::string& uid) const;
     MessagesMap getMessages(const std::string& account, const std::string& uid) const;
     unsigned int numberOfUnreads(const std::string& account, const std::string& uid) const;
     void setMessageRead(int uid);
@@ -57,11 +62,17 @@ class LIB_EXPORT DatabaseManager : public QObject {
     std::string getAvatar(const std::string& uid) const;
 
     // signals
-    Q_SIGNALS:
-    void messageAdded(const std::string&, const std::string&, lrc::message::Info);
+Q_SIGNALS:
+    /**
+     * Will be emitted each time a message is successfully stored into the database
+     * @param uid the uid of the message
+     * @param account linked to the conversation
+     * @param msg the message added
+     */
+    void messageAdded(int uid, const std::string& account, message::Info msg) const;
     void contactAdded(const std::string&);
 
-    private:
+private:
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
 

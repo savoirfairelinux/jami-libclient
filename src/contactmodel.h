@@ -27,7 +27,6 @@
 // Data
 #include "contactinfo.h"
 #include "callinfo.h"
-#include "account.h" // old
 #include "databasemanager.h"
 
 namespace lrc
@@ -35,8 +34,8 @@ namespace lrc
 
 class ContactModel : public QObject {
     Q_OBJECT
-    public:
-    explicit ContactModel(QObject* parent = nullptr);
+public:
+    explicit ContactModel(const DatabaseManager& dbm, const std::string& accountId);
     ~ContactModel();
 
     const contact::Info& addContact(const std::string& uri);
@@ -48,16 +47,15 @@ class ContactModel : public QObject {
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 
+private Q_SLOTS:
+    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
 
-    private:
-    ContactsInfoMap ringContacts_;
-    ContactsInfoMap sipContacts_;
+private:
     bool fillsWithContacts();
 
-
     ContactsInfoMap contacts_;
-    const std::shared_ptr<DatabaseManager> dbm_;
-    const Account* account_;
+    const DatabaseManager& dbm_;
+    const std::string accountId_;
 
 };
 

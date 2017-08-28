@@ -36,7 +36,7 @@ NewAccountModel::NewAccountModel(std::unique_ptr<DatabaseManager>& dbManager)
         info.id = id.toStdString();
         info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         info.callModel = std::make_shared<NewCallModel>();
-        info.contactModel = std::make_shared<ContactModel>();
+        info.contactModel = std::make_shared<ContactModel>(*dbManager_.get(), id.toStdString());
         info.conversationModel = std::make_shared<ConversationModel>();
 
         accounts_[id.toStdString()] = std::move(info);
