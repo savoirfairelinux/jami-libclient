@@ -43,7 +43,6 @@ public:
     void sendMessage(const std::string& uri, const std::string& body) const;
     std::shared_ptr<contact::Info> getContact(const std::string& uri);
     const ContactsInfoMap& getContacts() const;
-    bool isAContact(const std::string& uri) const;
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 

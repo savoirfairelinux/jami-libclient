@@ -176,4 +176,13 @@ ContactModel::fillsWithContacts()
     return true;
 }
 
+void
+ContactModel::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
+{
+    if (accountId_ != accountId.toStdString()) return;
+    if (contacts_.find(uri.toStdString()) != contacts_.end()) {
+        contacts_[uri.toStdString()]->isPresent = status;
+    }
+}
+
 }

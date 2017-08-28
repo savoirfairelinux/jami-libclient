@@ -20,6 +20,7 @@
 
 // std
 #include <ctime>
+#include <map>
 
 namespace lrc
 {
