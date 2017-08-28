@@ -168,7 +168,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     // Init models for this account
     owner.callModel = std::make_unique<NewCallModel>(owner);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-    owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
+    owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
     owner.accountModel = &linked;
 }
 
