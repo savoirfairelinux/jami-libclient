@@ -18,6 +18,10 @@
  ***************************************************************************/
 #include "contactmodel.h"
 
+// std
+#include <stdexcept>
+
+// lrc
 #include "availableaccountmodel.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
@@ -29,7 +33,13 @@ namespace lrc
 ContactModel::ContactModel(const Database& db, const std::string& accountId)
 : QObject(), db_(db), accountId_(accountId)
 {
+    fillsWithContacts();
 
+    // Get contacts presence
+    connect(&PresenceManager::instance(),
+            SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
+            this,
+            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 }
 
 ContactModel::~ContactModel()
@@ -40,25 +50,69 @@ ContactModel::~ContactModel()
 const contact::Info&
 ContactModel::addContact(const std::string& uri)
 {
-    return contact::Info();
+    // Add contact to daemon
+    ConfigurationManager::instance().addContact(QString(accountId_.c_str()),
+    QString(uri.c_str()));
+
+    // TODO do this when daemon emit contactAdded
+    // Store new contact
+    auto contact = std::make_shared<contact::Info>();
+    contact->uri = uri;
+    contact->avatar = "";
+    contact->registeredName = "";
+    contact->alias = "";
+    contact->isTrusted = false;
+    contact->isPresent = false;
+    contact->type = contact::Type::RING; // TODO SIP contacts
+    contacts_[uri] = contact;
+
+    // Add to database
+    message::Info msg;
+    msg.uid = uri.c_str();
+    msg.body = "";
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::CONTACT;
+    msg.status = message::Status::SUCCEED;
+    db_.addMessage(accountId_, msg);
+
+    return *contact.get();
 }
 
 void
 ContactModel::removeContact(const std::string& uri)
 {
-
+    // Remove contact from daemon contacts
+    ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
+    // TODO do this when daemon emit contactRemoved
+    contacts_.erase(uri);
 }
 
 void
 ContactModel::sendMessage(const std::string& uri, const std::string& body) const
 {
+    // Send message
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = body.c_str();
+    unsigned int id = ConfigurationManager::instance().sendTextMessage(QString(accountId_.c_str()), uri.c_str(), payloads);
 
+    // Store it into the database
+    message::Info msg;
+    msg.uid = std::to_string(id);
+    msg.body = body;
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::SENDING;
+    db_.addMessage(accountId_, msg);
 }
 
 const contact::Info&
 ContactModel::getContact(const std::string& uri)
 {
-    return contact::Info();
+    auto contact = contacts_.find(uri);
+    if (contact == contacts_.end()) {
+        throw std::out_of_range("ContactModel::getContact invalid uri");
+    }
+    return *contact->second.get();
 }
 
 const ContactsInfoMap&
@@ -70,19 +124,57 @@ ContactModel::getAllContacts() const
 void
 ContactModel::nameLookup(const std::string& uri) const
 {
-
+    // TODO
 }
 
 void
 ContactModel::addressLookup(const std::string& name) const
 {
-
+    // TODO
 }
 
 bool
 ContactModel::fillsWithContacts()
 {
-    return false;
+    auto account = AccountModel::instance().getById(accountId_.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::fillsWithContacts(), nullptr";
+    }
+    // TODO improve this
+    if (account->protocol() != Account::Protocol::RING) {
+        qDebug() << "fillsWithContacts, account is not a RING account";
+        return false;
+    }
+
+    auto contacts = account->getContacts();
+
+    // Clear the list
+    contacts_.clear();
+
+    auto type = contact::Type::RING;
+
+    // Add contacts to the list
+    for (auto c : contacts) {
+        auto uri = c->uri().toStdString();
+        auto avatar = db_.getContactAttribute(uri, "photo");
+        auto registeredName = c->registeredName().toStdString();
+        auto alias = c->bestName().toStdString();
+        auto isTrusted = false; // TODO: handle trust
+        auto isPresent = c->isPresent();
+
+        auto contact = std::make_shared<contact::Info>();
+        contact->uri = uri;
+        contact->avatar = avatar;
+        contact->registeredName = registeredName;
+        contact->alias = alias;
+        contact->isTrusted = isTrusted;
+        contact->isPresent = isPresent;
+        contact->type = type;
+
+        contacts_[uri] = contact;
+    }
+
+    return true;
 }
 
 void
