@@ -32,20 +32,25 @@
 
 // Data
 #include "api/conversation.h"
+#include "api/profile.h"
 
 namespace lrc
 {
 
-class Database;
+class CallbacksHandler;
 class ConversationModelPimpl;
+class Database;
 
 namespace api
 {
 
 namespace account { struct Info; }
-namespace message { struct Info; }
+namespace interaction { struct Info; }
 class NewAccountModel;
 
+/**
+  *  @brief Class that manages conversation informations.
+  */
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
 public:
@@ -53,31 +58,101 @@ public:
 
     const account::Info& owner;
 
-    ConversationModel(const account::Info& owner, const Database& database);
+    ConversationModel(const account::Info& owner, Database& db, const CallbacksHandler& callbacksHandler);
     ~ConversationModel();
 
-    const ConversationQueue& getFilteredConversations() const;
-    conversation::Info getConversation(unsigned int row) const;
-    void addConversation(const std::string& uri) const;
-    void removeConversation(const std::string& uid);
-    void selectConversation(const std::string& uid);
+    /**
+     * Get conversations which should be shown client side
+     * @return conversations filtered with the current filter
+     */
+    const ConversationQueue& allFilteredConversations() const;
+    /**
+     * Get the conversation at row in the filtered conversations
+     * @param  row
+     * @return a copy of the conversation
+     */
+    conversation::Info filteredConversation(unsigned int row) const;
+    /**
+     * Make permanent a temporary contact or a pending request.
+     * Ensure that given conversation is stored permanently into the system.
+     * @param uid of the conversation to change.
+     * @exception std::out_of_range if uid doesn't correspond to an existing conversation
+     */
+    void makePermanent(const std::string& uid);
+    /**
+     * Remove a conversation and the contact if it's a dialog
+     * @param uid of the conversation
+     * @param banned if we want to ban the contact.
+     */
+    void removeConversation(const std::string& uid, bool banned=false);
+    /**
+     * Get the action wanted by the user when they click on the conversation
+     * @param uid of the conversation
+     */
+    void selectConversation(const std::string& uid) const;
+    /**
+     * Call contacts linked to this conversation
+     * @param uid of the conversation
+     */
     void placeCall(const std::string& uid) const;
+    /**
+     * Send a message to the conversation
+     * @param uid of the conversation
+     * @param body of the message
+     */
     void sendMessage(const std::string& uid, const std::string& body) const;
+    /**
+     * Modify the current filter (will change the result of getFilteredConversations)
+     * @param filter the new filter
+     */
     void setFilter(const std::string& filter);
+    /**
+     * Modify the current filter (will change the result of getFilteredConversations)
+     * @param filter the new filter (example: PENDING, RING)
+     */
+    void setFilter(const profile::Type& filter = profile::Type::INVALID);
+    /**
+     * Add a new participant to a conversation
+     * @param uid conversation linked
+     * @param uri peer to add
+     */
     void addParticipant(const std::string& uid, const::std::string& uri);
+    /**
+     * Clear the history of a conversation
+     * @param uid of the conversation
+     */
     void clearHistory(const std::string& uid);
 
 Q_SIGNALS:
-    void newMessageAdded(const std::string& uid, const message::Info& msg);
-    void conversationUpdated(unsigned int row);
-    void modelUpdated() const;
-    void newContactAdded(const std::string& uri);
-    void incomingCallFromItem(const unsigned int row);
-
-    void showChatView(const conversation::Info& conversationInfo);
-    void showCallView(const conversation::Info& conversationInfo);
-    void showIncomingCallView(const conversation::Info& conversationInfo);
-
+    /**
+     * Emitted when a conversation receives a new interaction
+     * @param uid of msg
+     * @param msg
+     */
+    void newUnreadMessage(const std::string& uid, const interaction::Info& msg) const;
+    /**
+     * Emitted when user clear the history of a conversation
+     * @param uid
+     */
+    void conversationCleared(const std::string& uid) const;
+    /**
+     * Emitted when conversations are sorted by last interaction
+     */
+    void modelSorted() const;
+    /**
+     * Emitted when filter has changed
+     */
+    void filterChanged() const;
+    /**
+     * Emitted when a conversation has been added
+     * @param uid
+     */
+    void newConversation(const std::string& uid) const;
+    /**
+     * Emitted when a conversation has been removed
+     * @param uid
+     */
+    void conversationRemoved(const std::string& uid) const;
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
