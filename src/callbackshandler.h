@@ -65,12 +65,21 @@ Q_SIGNALS:
      */
     void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
     /**
-     * Connect this signal to know when a contact was addeb by the daemon.
+     * Connect this signal to know when a contact is added by the daemon.
      * @param accountId, the one who got a new contact.
      * @param contactUri, the new contact.
      * @param confirmed, true if the contact is trusted.
      */
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
+    /**
+     * Connect this signal to know when an incoming request is added by the daemon
+     * @param accountId, the one who got the request
+     * @param ringID the peer contact
+     * @param payload the VCard
+     */
+    void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
+    void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
+    void callStateChanged(const std::string& callId, const std::string &state, int code);
 
 private Q_SLOTS:
     /**
@@ -102,6 +111,15 @@ private Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+
+    /**
+     * Get a new incoming request
+     * @param accountId the linked id
+     * @param ringID   the peer contact
+     * @param payload  the VCard
+     * @param time     when the request was received
+     */
+    void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
 
 private:
     const api::Lrc& parent;
