@@ -21,7 +21,9 @@
 // std
 #include <ctime>
 
-namespace Message
+namespace lrc {
+
+namespace message
 {
 
 enum class Type {
@@ -40,19 +42,15 @@ enum class Status {
 
 struct Info
 {
-    const std::string uid_;
-    const std::string body_;
-    const std::time_t timestamp_;
-    const bool isOutgoing_;
-    const Type type_;
-    Status status_;
-
-    Info(const std::string& uid, const std::string& body, const std::time_t timestamp, bool isOutgoing, Type type
-    , Status status = Status::INVALID_STATUS)
-    : uid_(uid), body_(body), timestamp_(timestamp), isOutgoing_(isOutgoing), type_(type), status_(status)
-    {};
+    std::string uid;
+    std::string body;
+    std::time_t timestamp;
+    bool isOutgoing;
+    Type type;
+    Status status;
 };
 
-}
+} // namespace message
 
-typedef std::map<std::string, Message::Info> Messages;
+using MessagesMap = std::map<int, message::Info>;
+} // namespace lrc

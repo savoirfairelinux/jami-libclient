@@ -46,7 +46,7 @@ class LIB_EXPORT DatabaseManager : public QObject {
     // Messages
     void addMessage(const std::string& account, const std::string& uid, const std::string& body, const long timestamp, const bool isOutgoing);
     void removeHistory(const std::string& account, const std::string& uid);
-    Messages getMessages(const std::string& account, const std::string& uid) const;
+    MessagesMap getMessages(const std::string& account, const std::string& uid) const;
     unsigned int numberOfUnreads(const std::string& account, const std::string& uid) const;
     void setMessageRead(int uid);
 
@@ -58,7 +58,7 @@ class LIB_EXPORT DatabaseManager : public QObject {
 
     // signals
     Q_SIGNALS:
-    void messageAdded(const std::string&, const std::string&, Message::Info);
+    void messageAdded(const std::string&, const std::string&, lrc::message::Info);
     void contactAdded(const std::string&);
 
     private:
