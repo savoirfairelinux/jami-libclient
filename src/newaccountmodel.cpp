@@ -94,19 +94,24 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
         const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
 
+        // Init profile
         auto& item = *(accounts.emplace(id.toStdString(), account::Info()).first);
         auto& owner = item.second;
         owner.id = id.toStdString();
-        owner.profile.uri = details["Account.username"].toStdString();
         // TODO get avatar;
-        owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
-        owner.profile.alias = details["Account.alias"].toStdString();
         owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
+        owner.profile.alias = details["Account.alias"].toStdString();
+        owner.profile.registeredName = owner.profile.type == contact::Type::RING ?
+                                       volatileDetails["Account.registredName"].toStdString() : owner.profile.alias;
+        owner.profile.uri = owner.profile.type == contact::Type::RING ?
+                            details["Account.username"].toStdString() : owner.profile.alias;
+        // Add profile into database
+        addAcountProfileInDb(owner);
+        // Init models for this account
         owner.callModel = std::make_unique<NewCallModel>(owner);
-        owner.contactModel = std::make_unique<ContactModel>(owner, database);
+        owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
         owner.accountModel = &linked;
-        addAcountProfileInDb(owner);
     }
 }
 
