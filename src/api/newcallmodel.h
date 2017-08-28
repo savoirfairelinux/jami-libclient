@@ -55,6 +55,7 @@ public:
     ~NewCallModel();
 
     const call::Info& createCall(const std::string& contactUri);
+    const call::Info& getCallFromURI(const std::string& uri) const;
 
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
