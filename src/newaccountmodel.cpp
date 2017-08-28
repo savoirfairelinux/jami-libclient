@@ -19,6 +19,7 @@
 #include "api/newaccountmodel.h"
 
 // Models and database
+#include "callbackshandler.h"
 #include "database.h"
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
@@ -36,15 +37,38 @@ namespace api
 class NewAccountModelPimpl
 {
 public:
-    NewAccountModelPimpl(const Database& database);
+    NewAccountModelPimpl(const Database& database, const lrc::CallbacksHandler& callbackHandler);
     ~NewAccountModelPimpl();
 
+    /**
+     * Update the presence of a contact for an account
+     * @param accountId
+     * @param contactUri
+     * @param status if the contact is present
+     */
+    void setNewBuddySubscription(const std::string& accountId, const std::string& contactUri, bool status);
+    /**
+     * Add a contact in the contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param confirmed
+     */
+    void slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+    /**
+     * Remove a contact from a contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+
     const Database& database;
+    const CallbacksHandler& callbackHandler;
     AccountInfoMap accounts;
 };
 
-NewAccountModel::NewAccountModel(const Database& database)
-: pimpl_(std::make_unique<NewAccountModelPimpl>(database))
+NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksHandler& callbackHandler)
+: pimpl_(std::make_unique<NewAccountModelPimpl>(database, callbackHandler))
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
@@ -56,7 +80,7 @@ NewAccountModel::NewAccountModel(const Database& database)
         info.id = id.toStdString();
         info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
-        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, info));
+        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
         info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
 
         pimpl_->accounts[id.toStdString()] = std::move(info);
@@ -79,13 +103,14 @@ NewAccountModel::getAccountList() const
 }
 
 const account::Info&
-NewAccountModel::getAccountInfo(const std::string& accountId)
+NewAccountModel::getAccountInfo(const std::string& accountId) const
 {
     return pimpl_->accounts[accountId];
 }
 
-NewAccountModelPimpl::NewAccountModelPimpl(const Database& database)
+NewAccountModelPimpl::NewAccountModelPimpl(const Database& database, const CallbacksHandler& callbackHandler)
 : database(database)
+, callbackHandler(callbackHandler)
 {
 
 }
@@ -93,6 +118,24 @@ NewAccountModelPimpl::NewAccountModelPimpl(const Database& database)
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
 
+}
+
+void
+NewAccountModelPimpl::slotContactAdded(const std::string& accountId,
+                                  const std::string& contactUri,
+                                  bool confirmed)
+{
+    //~ auto& contactModel = getAccountInfo(accountId).contactModel;
+    //~ contactModel->slotContactAdded(contactUri, confirmed);
+}
+
+void
+NewAccountModelPimpl::slotContactRemoved(const std::string& accountId,
+                                    const std::string& contactUri,
+                                    bool banned)
+{
+    //~ auto& contactModel = getAccountInfo(accountId).contactModel;
+    //~ contactModel->slotContactRemoved(contactUri, banned);
 }
 
 } // namespace api

@@ -50,7 +50,8 @@ public:
      * get a reference on account model.
      * @return a NewAccountModel&.
      */
-    NewAccountModel& getAccountModel();
+    const NewAccountModel& getAccountModel() const;
+    
 
 private:
     std::unique_ptr<LrcPimpl> lrcPipmpl_;
