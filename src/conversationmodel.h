@@ -60,7 +60,7 @@ class LIB_EXPORT ConversationModel : public QObject {
 
     // signals
     Q_SIGNALS:
-    void newMessageAdded(const std::string& uid, Message::Info msg);
+    void newMessageAdded(const std::string& uid, lrc::message::Info msg);
     void conversationUpdated(unsigned int row);
     void modelUpdated();
     void newContactAdded(const std::string& uid);
@@ -71,7 +71,7 @@ class LIB_EXPORT ConversationModel : public QObject {
     void showIncomingCallView(std::shared_ptr<Conversation::Info> conversation);
 
     private Q_SLOTS:
-    void slotMessageAdded(int uid, const std::string& account, Message::Info msg);
+    void slotMessageAdded(int uid, const std::string& account, lrc::message::Info msg);
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
     private:

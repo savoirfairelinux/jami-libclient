@@ -86,7 +86,7 @@ DatabaseManager::~DatabaseManager()
 #include <iostream>
 
 void
-DatabaseManager::addMessage(const std::string& account, const Message::Info& message)
+DatabaseManager::addMessage(const std::string& account, const lrc::message::Info& message)
 {
     auto addMessageQuery = QString("INSERT INTO conversations(contact, account,\
     body, timestamp, is_unread, is_outgoing, type, status) VALUES(?, ?, ?, ?,\
@@ -97,36 +97,36 @@ DatabaseManager::addMessage(const std::string& account, const Message::Info& mes
         return;
     }
 
-    query_->addBindValue(QString(message.uid_.c_str()));
+    query_->addBindValue(QString(message.uid.c_str()));
     query_->addBindValue(QString(account.c_str()));
-    query_->addBindValue(QString(message.body_.c_str()));
-    query_->addBindValue(QString::number(message.timestamp_));
-    query_->addBindValue(message.isOutgoing_);
-    switch (message.type_) {
-    case Message::Type::TEXT:
+    query_->addBindValue(QString(message.body.c_str()));
+    query_->addBindValue(QString::number(message.timestamp));
+    query_->addBindValue(message.isOutgoing);
+    switch (message.type) {
+    case lrc::message::Type::TEXT:
         query_->addBindValue(QString("TEXT"));
         break;
-    case Message::Type::CALL:
+    case lrc::message::Type::CALL:
         query_->addBindValue(QString("CALL"));
         break;
-    case Message::Type::CONTACT:
+    case lrc::message::Type::CONTACT:
         query_->addBindValue(QString("CONTACT"));
         break;
-    case Message::Type::INVALID_TYPE:
+    case lrc::message::Type::INVALID_TYPE:
         query_->addBindValue(QString("INVALID_TYPE"));
         break;
     }
-    switch (message.status_) {
-    case Message::Status::SENDING:
+    switch (message.status) {
+    case lrc::message::Status::SENDING:
         query_->addBindValue(QString("SENDING"));
         break;
-    case Message::Status::FAILED:
+    case lrc::message::Status::FAILED:
         query_->addBindValue(QString("FAILED"));
         break;
-    case Message::Status::SUCCEED:
+    case lrc::message::Status::SUCCEED:
         query_->addBindValue(QString("SUCCEED"));
         break;
-    case Message::Status::INVALID_STATUS:
+    case lrc::message::Status::INVALID_STATUS:
         query_->addBindValue(QString("INVALID_STATUS"));
         break;
     }
@@ -159,7 +159,7 @@ DatabaseManager::removeHistory(const std::string& account, const std::string& ui
     }
 }
 
-Messages
+lrc::MessagesMap
 DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
 {
     auto getMessagesQuery = "SELECT id, contact, body, timestamp, \
@@ -168,36 +168,38 @@ DatabaseManager::getMessages(const std::string& account, const std::string& uid)
 
     if (not query_->exec(getMessagesQuery.c_str())) {
         qDebug() << "DatabaseManager: getMessages, " << query_->lastError().text();
-        return Messages();
+        return lrc::MessagesMap();
     }
 
-    Messages messages;
+    lrc::MessagesMap messages;
     while(query_->next()) {
         auto message_id = query_->value(0).toInt();
-        auto uid = query_->value(1).toString().toStdString();
-        auto body = query_->value(2).toString().toStdString();
-        std::time_t timestamp = std::stoll(query_->value(3).toString().toStdString());
-        auto isOutgoing = query_->value(4).toBool();
+        lrc::message::Info msg;
+        msg.uid = query_->value(1).toString().toStdString();
+        msg.body = query_->value(2).toString().toStdString();
+        msg.timestamp = std::stoll(query_->value(3).toString().toStdString());
+        msg.isOutgoing = query_->value(4).toBool();
         auto typeStr = query_->value(5).toString().toStdString();
-        auto type = Message::Type::INVALID_TYPE;
+        auto type = lrc::message::Type::INVALID_TYPE;
         if (typeStr == "TEXT") {
-            type = Message::Type::TEXT;
+            type = lrc::message::Type::TEXT;
         } else if (typeStr == "CALL") {
-            type = Message::Type::CALL;
+            type = lrc::message::Type::CALL;
         } else if (typeStr == "CONTACT") {
-            type = Message::Type::CONTACT;
+            type = lrc::message::Type::CONTACT;
         }
         auto statusStr = query_->value(5).toString().toStdString();
-        auto status = Message::Status::INVALID_STATUS;
+        auto status = lrc::message::Status::INVALID_STATUS;
         if (statusStr == "SENDING") {
-            status = Message::Status::SENDING;
+            status = lrc::message::Status::SENDING;
         } else if (statusStr == "FAILED") {
-            status = Message::Status::FAILED;
+            status = lrc::message::Status::FAILED;
         } else if (statusStr == "SUCCEED") {
-            status = Message::Status::SUCCEED;
+            status = lrc::message::Status::SUCCEED;
         }
-        Message::Info msg(uid, body, isOutgoing, type, timestamp, status);
-        messages.insert(std::pair<int, Message::Info>(message_id, msg));
+        msg.type = type;
+        msg.status = status;
+        messages.insert(std::pair<int, lrc::message::Info>(message_id, msg));
     }
 
     return messages;

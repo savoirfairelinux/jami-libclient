@@ -209,8 +209,13 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
     contact->uri_.c_str(), payloads);
 
-    Message::Info msg(contact->uri_.c_str(), body, true, Message::Type::TEXT,
-    std::time(nullptr), Message::Status::SENDING);
+    lrc::message::Info msg;
+    msg.uid = contact->uri_.c_str();
+    msg.body = body;
+    msg.timestamp = std::time(nullptr);
+    msg.isOutgoing = true;
+    msg.type = lrc::message::Type::TEXT;
+    msg.status = lrc::message::Status::SENDING;
 
     dbManager_->addMessage(account->id().toStdString(), msg);
 }
@@ -306,7 +311,7 @@ ConversationModel::sortConversations()
         {
             auto lastMessageA = historyA.at(conversationA.second->lastMessageUid_);
             auto lastMessageB = historyB.at(conversationB.second->lastMessageUid_);
-            return lastMessageA.timestamp_ > lastMessageB.timestamp_;
+            return lastMessageA.timestamp > lastMessageB.timestamp;
         }
         catch (const std::exception& e)
         {
@@ -317,15 +322,15 @@ ConversationModel::sortConversations()
 }
 
 void
-ConversationModel::slotMessageAdded(int uid, const std::string& account, Message::Info msg)
+ConversationModel::slotMessageAdded(int uid, const std::string& account, lrc::message::Info msg)
 {
-    auto conversation = find(msg.uid_);
+    auto conversation = find(msg.uid);
     if (!conversation || conversation->participants_.empty()) return;
     if (!conversation->isUsed_) conversation->isUsed_ = true;
     // Add message to conversation
-    conversation->messages_.insert(std::pair<int, Message::Info>(uid, msg));
+    conversation->messages_.insert(std::pair<int, lrc::message::Info>(uid, msg));
     conversation->lastMessageUid_ = uid;
-    emit newMessageAdded(msg.uid_, msg);
+    emit newMessageAdded(msg.uid, msg);
     sortConversations();
     emit modelUpdated();
 }

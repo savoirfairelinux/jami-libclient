@@ -189,8 +189,13 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-    Message::Info msg(from.toStdString(), payloads["text/plain"].toStdString(), false,
-    Message::Type::TEXT, std::time(nullptr), Message::Status::SUCCEED);
+    lrc::message::Info msg;
+    msg.uid = from.toStdString();
+    msg.body = payloads["text/plain"].toStdString();
+    msg.timestamp = std::time(nullptr);
+    msg.isOutgoing = false;
+    msg.type = lrc::message::Type::TEXT;
+    msg.status = lrc::message::Status::SUCCEED;
     if (dbManager_)
         dbManager_->addMessage(accountId.toStdString(), msg);
     if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {

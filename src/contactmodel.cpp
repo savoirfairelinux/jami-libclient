@@ -58,8 +58,13 @@ ContactModel::addContact(const std::string& uri)
     ConfigurationManager::instance().addContact(account_->id(),
     QString(uri.c_str()));
 
-    Message::Info msg(uri.c_str(), "", true, Message::Type::CONTACT,
-    std::time(nullptr), Message::Status::SUCCEED);
+    lrc::message::Info msg;
+    msg.uid = uri.c_str();
+    msg.body = "";
+    msg.timestamp = std::time(nullptr);
+    msg.isOutgoing = true;
+    msg.type = lrc::message::Type::CONTACT;
+    msg.status = lrc::message::Status::SUCCEED;
     dbm_->addMessage(account_->id().toStdString(), msg);
 }
 
@@ -98,9 +103,15 @@ ContactModel::sendMessage(const std::string& uri, const std::string& body) const
     unsigned int id = ConfigurationManager::instance().sendTextMessage(account_->id(), uri.c_str(), payloads);
 
     auto accountId = account_->id().toStdString();
-    auto message = Message::Info(std::to_string(id), body, true, Message::Type::TEXT);
+    lrc::message::Info msg;
+    msg.uid = std::to_string(id);
+    msg.body = body;
+    msg.timestamp = std::time(nullptr);
+    msg.isOutgoing = true;
+    msg.type = lrc::message::Type::TEXT;
+    msg.status = lrc::message::Status::SENDING;
 
-    dbm_->addMessage(accountId, message);
+    dbm_->addMessage(accountId, msg);
 }
 
 std::shared_ptr<Contact::Info>

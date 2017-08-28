@@ -47,7 +47,7 @@ class LIB_EXPORT DatabaseManager : public QObject {
      * @param account account linked to message
      * @param message the object to add
      */
-    void addMessage(const std::string& account, const Message::Info& message);
+    void addMessage(const std::string& account, const lrc::message::Info& message);
     /**
      * Remove the history of the conversation between account and uid
      * @param account
@@ -60,7 +60,7 @@ class LIB_EXPORT DatabaseManager : public QObject {
      * @param  uid
      * @return messages from the conversation between account and uid
      */
-    Messages getMessages(const std::string& account, const std::string& uid) const;
+    lrc::MessagesMap getMessages(const std::string& account, const std::string& uid) const;
     /**
      * @param  account
      * @param  uid
@@ -103,7 +103,7 @@ class LIB_EXPORT DatabaseManager : public QObject {
      * @param account linked to the conversation
      * @param msg the message added
      */
-    void messageAdded(int uid, const std::string& account, Message::Info msg);
+    void messageAdded(int uid, const std::string& account, lrc::message::Info msg);
     /**
      * Will be emitted each time a contact is added into the database
      * @param uid the uid of the contact

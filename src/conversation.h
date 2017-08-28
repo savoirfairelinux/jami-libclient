@@ -34,7 +34,7 @@ struct Info
     const std::string uid_= "";
     std::vector <std::shared_ptr<Contact::Info>> participants_;
     std::shared_ptr<lrc::call::Info> call_;
-    Messages messages_;
+    lrc::MessagesMap messages_;
     int lastMessageUid_ = -1;
     bool isUsed_ = false;
     Account* account_; // old
@@ -46,14 +46,14 @@ struct Info
     : account_(account), participants_({participant}), uid_(participant->uri_) { }
 
     // create a new conversation when we load data from database.
-    Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<Contact::Info>>& participants, Messages messages)
+    Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<Contact::Info>>& participants, lrc::MessagesMap messages)
     : account_(account), uid_(uid), participants_(participants), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
             isUsed_ = true;
         }
     }
-    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, Messages messages)
+    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, lrc::MessagesMap messages)
     : account_(account), uid_(uid), participants_({participant}), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
