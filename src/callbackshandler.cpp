@@ -67,7 +67,13 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
                                         const QString& from,
                                         const QMap<QString,QString>& payloads)
 {
-
+    //~ message::Info msg;
+    //~ msg.contact = from.toStdString();
+    //~ msg.body = payloads["text/plain"].toStdString();
+    //~ msg.timestamp = std::time(nullptr);
+    //~ msg.type = message::Type::TEXT;
+    //~ msg.status = message::Status::READ;
+    //~ database_->addMessage(accountId.toStdString(), msg);
 }
 
 void
