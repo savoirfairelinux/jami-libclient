@@ -23,6 +23,7 @@
 #include "api/newaccountmodel.h"
 
 // Dbus
+#include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 
@@ -55,6 +56,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::contactRemoved,
             this,
             &CallbacksHandler::slotContactRemoved);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingTrustRequest,
+            this,
+            &CallbacksHandler::slotIncomingContactRequest);
+
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -100,4 +107,13 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
     emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
 }
 
+void
+CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
+                                             const QString& ringID,
+                                             const QByteArray& payload,
+                                             time_t time)
+{
+    Q_UNUSED(time)
+    emit incomingContactRequest(accountId.toStdString(), ringID.toStdString(), payload.toStdString());
+}
 } // namespace lrc
