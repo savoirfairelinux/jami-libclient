@@ -38,13 +38,13 @@ ConversationModel::getConversations() const
 const Conversation::Info&
 ConversationModel::getConversation(const unsigned int row) const
 {
-    return Conversation::Info(nullptr, Contact::Info());
+    return Conversation::Info();
 }
 
 const Conversation::Info&
 ConversationModel::addConversation(const std::string& uri)
 {
-    return Conversation::Info(nullptr, Contact::Info());
+    return Conversation::Info();
 }
 
 void
