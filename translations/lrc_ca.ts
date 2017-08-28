@@ -137,7 +137,7 @@
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Parlant</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
@@ -161,7 +161,7 @@
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ocupat</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
@@ -1130,7 +1130,7 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation type="unfinished"/>
+        <translation>Compte de Ring</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>

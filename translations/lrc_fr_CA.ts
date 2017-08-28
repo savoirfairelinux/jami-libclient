@@ -23,7 +23,7 @@
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Initialisation en cours</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>

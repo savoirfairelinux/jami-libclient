@@ -823,12 +823,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Има правилното място на паппката на личния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Има правилното място на паппката на публичния ключ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
@@ -923,7 +923,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Обществено име (ОИ)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Медийните Ви канали не са кодирани, моля включете SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1206,7 +1206,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Запазени места за контакти</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1254,7 +1254,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Добавяне на нов</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
@@ -1319,7 +1319,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Отваряне на разговор</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1334,12 +1334,12 @@
     <message>
         <location filename="../src/localprofilecollection.cpp" line="142"/>
         <source>Local profiles</source>
-        <translation type="unfinished"/>
+        <translation>Местни профили</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Profile Collection</source>
-        <translation type="unfinished"/>
+        <translation>Колекция с Профили</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
