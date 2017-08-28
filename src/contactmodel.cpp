@@ -62,6 +62,7 @@ ContactModel::removeContact(const std::string& uri)
     ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
     // TODO do this when daemon emit contactRemoved
     contacts_.erase(uri);
+    db_.clearHistory(accountId_, uri, true);
 }
 
 void
@@ -87,7 +88,7 @@ ContactModel::getContact(const std::string& uri)
 {
     auto contact = contacts_.find(uri);
     if (contact == contacts_.end()) {
-        throw std::out_of_range("ContactModel::getContact invalid uri");
+        throw std::out_of_range("ContactModel::getContact, invalid uri");
     }
     return *contact->second.get();
 }
