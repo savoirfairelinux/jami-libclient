@@ -30,6 +30,7 @@
 namespace lrc
 {
 
+class CallbacksHandler;
 class Database;
 
 namespace api
@@ -41,7 +42,7 @@ using AccountInfoMap = std::map<std::string, account::Info>;
 
 class LIB_EXPORT NewAccountModel {
 public:
-    NewAccountModel(const Database& database);
+    NewAccountModel(const Database& database, const CallbacksHandler& callbackHandler);
     ~NewAccountModel();
 
     /**
@@ -54,7 +55,7 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const api::account::Info& getAccountInfo(const std::string& accountId);
+    const api::account::Info& getAccountInfo(const std::string& accountId) const;
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
