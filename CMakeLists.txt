@@ -456,6 +456,7 @@ SET( libringclient_LIB_HDRS
   src/conversationmodel.h
   src/message.h
   src/databasemanager.h # we may remove that one, to avoid client calling the databasemanager itself
+  src/databasehelper.h
   src/conversation.h
   src/callinfo.h
   src/contactinfo.h
