@@ -31,7 +31,7 @@ enum class Type {
     INVALID,
     TEXT,
     CALL,
-    INVITE
+    CONTACT
 };
 
 enum class Status {
