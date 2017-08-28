@@ -26,13 +26,16 @@
 // Data
 #include "callinfo.h"
 
+namespace lrc
+{
+
 class NewCallModel : public QObject {
     Q_OBJECT
-    public:
+public:
     explicit NewCallModel(QObject* parent = nullptr);
     ~NewCallModel();
 
-    const NewCall::Info& createCall();
+    const call::Info& createCall(Account* account, const std::string& contact);
     void sendMessage(const std::string& callId, const std::string& body) const;
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
@@ -44,7 +47,9 @@ class NewCallModel : public QObject {
     void addParticipant(const std::string& callId, const std::string& participant);
     void removeParticipant(const std::string& callId, const std::string& participant);
 
-    private:
-    CallsInfo calls_;
+private:
+    CallsInfoMap calls_;
 
 };
+
+} // namespace lrc

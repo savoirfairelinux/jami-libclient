@@ -18,6 +18,9 @@
  ***************************************************************************/
 #include "newcallmodel.h"
 
+namespace lrc
+{
+
 NewCallModel::NewCallModel(QObject* parent)
 :QObject(parent)
 {
@@ -30,10 +33,16 @@ NewCallModel::~NewCallModel()
 
 }
 
-const NewCall::Info&
-NewCallModel::createCall()
+const call::Info&
+NewCallModel::createCall(Account* account, const std::string& contact)
 {
-    return NewCall::Info(0, std::time_t(), NewCall::Status::INVALID_STATUS);
+    auto call = std::make_shared<call::Info>();
+    call->id = contact;
+    call->startTime = std::time_t();
+    call->status = call::Status::INVALID_STATUS;
+    call->account = account;
+    calls_.insert(CallsInfoMapEntry(contact, call));
+    return *call.get();
 }
 
 void
@@ -95,3 +104,5 @@ NewCallModel::removeParticipant(const std::string& callId, const std::string& pa
 {
 
 }
+
+} // namespace lrc

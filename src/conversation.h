@@ -29,25 +29,10 @@ struct Info
 {
     const std::string uid_= "";
     std::vector <Contact::Info> participants_;
-    NewCall::Info call_ = NewCall::Info(0, 0, NewCall::Status::INVALID_STATUS);
     Messages messages_;
     bool isUsed_ = false;
     Account* account_; // old
     unsigned int index_;
-
-    // create a new converation when a search was made.
-    Info(Account* account, Contact::Info participant)
-    : account_(account), participants_({participant}){}
-    
-    // create a new conversation when we load data from database.
-    Info(Account* account, const std::string& uid, std::vector <Contact::Info> participants, Messages messages)
-    : account_(account), uid_(uid), participants_(participants), messages_(messages) {}
-    Info(Account* account, const std::string& uid, Contact::Info participant, Messages messages)
-    : account_(account), uid_(uid), participants_({participant}), messages_(messages) {}
-    
-    // create a new conversation when someone is calling for the first time.
-    Info(Account* account, const std::string& uid, Contact::Info participant, NewCall::Info call)
-    : account_(account), uid_(uid), participants_({participant}), call_(call) {}
 
 };
 
