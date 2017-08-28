@@ -29,6 +29,8 @@
 // Lrc
 #include "message.h"
 #include "typedefs.h"
+#include "namedirectory.h"
+#include "lrc.h"
 
 constexpr char ringDB[] = "ring.db";
 
@@ -40,28 +42,54 @@ namespace lrc
 class LIB_EXPORT DatabaseManager : public QObject {
     Q_OBJECT
 public:
-    explicit DatabaseManager(QObject* parent = nullptr);
     ~DatabaseManager();
 
     // Messages related
     /**
      * Add a message object into the database
-     * @param account linked to message
+     * @param account account linked to message
      * @param message the object to add
      */
     void addMessage(const std::string& account, const message::Info& message) const;
-    void removeHistory(const std::string& account, const std::string& uid) const;
+    /**
+     * Remove the history of the conversation between account and uid
+     * @param account
+     * @param uid
+     * @param removeContact if we also want to remove the contact
+     */
+    void removeHistory(const std::string& account, const std::string& uid, bool removeContact = false) const;
+    /**
+     * @param  account
+     * @param  uid
+     * @return messages from the conversation between account and uid
+     */
     MessagesMap getMessages(const std::string& account, const std::string& uid) const;
+    /**
+     * @param  account
+     * @param  uid
+     * @return the number of unread messages in the conversation between account and uid
+     */
     unsigned int numberOfUnreads(const std::string& account, const std::string& uid) const;
-    void setMessageRead(int uid);
+    /**
+     * Set a message READ
+     * @param uid of a message
+     */
+    void setMessageRead(int uid) const;
 
-    // Contacts
-    void addContact(const std::string& contact, const QByteArray& payload);
-    std::string getUri(const std::string& uid) const;
-    std::string getAlias(const std::string& uid) const;
-    std::string getAvatar(const std::string& uid) const;
+    // Contacts related
+    /**
+     * Add a contact into the database
+     * @param contact a uid
+     * @param payload the VCard of a contact
+     */
+    void addContact(const std::string& contact, const QByteArray& payload) const;
+    /**
+     * @param  uid of a contact
+     * @param  the attribute to search for a contact
+     * @return attribute of a contact
+     */
+    std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
 
-    // signals
 Q_SIGNALS:
     /**
      * Will be emitted each time a message is successfully stored into the database
@@ -70,9 +98,22 @@ Q_SIGNALS:
      * @param msg the message added
      */
     void messageAdded(int uid, const std::string& account, message::Info msg) const;
-    void contactAdded(const std::string&);
+    /**
+     * Will be emitted each time a contact is added into the database
+     * @param uid the uid of the contact
+     */
+    void contactAdded(const std::string& uid) const;
+
+public Q_SLOTS:
+    // NOTE: temporary, will be removed
+    void slotRegisteredNameFound(const Account* account,
+                                 NameDirectory::LookupStatus status,
+                                 const QString& address,
+                                 const QString& name) const;
 
 private:
+    friend Lrc::Lrc();
+    explicit DatabaseManager();
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
 

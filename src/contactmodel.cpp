@@ -154,7 +154,7 @@ ContactModel::fillsWithContacts()
     // Add contacts to the list
     for (auto c : contacts) {
         auto uri = c->uri().toStdString();
-        auto avatar = dbm_.getAvatar(uri);
+        auto avatar = dbm_.getContactAttribute(uri, "photo");
         auto registeredName = c->registeredName().toStdString();
         auto alias = c->bestName().toStdString();
         auto isTrusted = false; // TODO: handle trust
