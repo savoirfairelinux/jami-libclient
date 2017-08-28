@@ -41,36 +41,71 @@ class ContactModel : public QObject {
     friend class NewAccountModel;
     friend class ConversationModel;
 
-
 public:
     const account::Info& owner;
 
     ~ContactModel();
 
-    void addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
-    const contact::Info& getContact(const std::string& uri);
+    /**
+     * Ask the daemon to add a contact.
+     * @param contactUri
+     */
+    void addContact(const std::string& contactUri);
+    /**
+     * Ask the daemon to remove a contact
+     * @param contactUri
+     * @param banned
+     */
+    void removeContact(const std::string& contactUri, bool banned=false);
+    /**
+     * @param  contactUri
+     * @return the contact::Info structure for a contact
+     * @throws out_of_range exception if can't find the contact
+     */
+    const contact::Info& getContact(const std::string& contactUri);
+    /**
+     * @return all contacts for this account
+     */
     const ContactsInfoMap& getAllContacts() const;
+
+    // TODO
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 
 Q_SIGNALS:
     void contactsChanged();
 
-private Q_SLOTS:
-    // TODO remove this from here when LRC signals are added
-    void slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed);
-    void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
-
 private:
     explicit ContactModel(NewAccountModel& parent,
                           const Database& db,
                           const account::Info& info);
-
-    ContactModel(const ContactModel& contactModel);
+    /**
+     * Fills with contacts from daemon
+     * @return if the method succeeds
+     */
     bool fillsWithContacts();
-    void sendMessage(const std::string& uri, const std::string& body) const;
+    /**
+     * Update the presence status of a contact
+     * @param contactUri
+     * @param status
+     */
     void setContactPresent(const std::string& uri, bool status);
+    /**
+     * @param contactUri
+     * @param confirmed]
+     */
+    void slotContactAdded(const std::string& contactUri, bool confirmed);
+    /**
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const std::string& contactUri, bool banned);
+    /**
+     * Send a text message to a contact
+     * @param contactUri
+     * @param body
+     */
+    void sendMessage(const std::string& contactUri, const std::string& body) const;
 
     ContactsInfoMap contacts_;
     const Database& db_;

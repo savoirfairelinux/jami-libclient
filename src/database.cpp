@@ -124,7 +124,7 @@ Database::addMessage(const std::string& accountId, const message::Info& message)
         break;
     }
     const auto addMessageQuery = DATABASE_ADD_MESSAGE(
-        message.uid,
+        message.contact,
         accountId,
         message.body,
         std::to_string(message.timestamp),
@@ -175,7 +175,7 @@ Database::getHistory(const std::string& accountId, const std::string& contactUri
     while(query_->next()) {
         const auto message_id = query_->value(0).toInt();
         message::Info msg;
-        msg.uid = query_->value(1).toString().toStdString();
+        msg.contact = query_->value(1).toString().toStdString();
         msg.body = query_->value(2).toString().toStdString();
         msg.timestamp = std::stoll(query_->value(3).toString().toStdString());
         const auto typeStr = query_->value(5).toString().toStdString();

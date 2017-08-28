@@ -49,6 +49,16 @@ Lrc::Lrc()
             &PresenceManagerInterface::newBuddyNotification,
             this,
             &Lrc::slotNewBuddySubscription);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::contactAdded,
+            this,
+            &Lrc::slotContactAdded);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::contactRemoved,
+            this,
+            &Lrc::slotContactRemoved);
 }
 
 Lrc::~Lrc()
@@ -64,11 +74,37 @@ Lrc::slotNewAccountMessage(const QString& accountId, const QString& from,
 }
 
 void
-Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri,
+Lrc::slotNewBuddySubscription(const QString& accountId,
+                              const QString& contactUri,
                               bool status,
                               const QString& message)
 {
+    Q_UNUSED(message)
+    accountModel_->setNewBuddySubscription(accountId.toStdString(),
+                                           contactUri.toStdString(),
+                                           status);
+}
 
+void
+Lrc::slotContactAdded(const QString& accountId,
+                      const QString& contactUri,
+                      bool confirmed)
+{
+    Q_UNUSED(confirmed)
+    accountModel_->slotContactAdded(accountId.toStdString(),
+                                    contactUri.toStdString(),
+                                    confirmed);
+}
+
+void
+Lrc::slotContactRemoved(const QString& accountId,
+                        const QString& contactUri,
+                        bool banned)
+{
+    Q_UNUSED(banned)
+    accountModel_->slotContactRemoved(accountId.toStdString(),
+                                      contactUri.toStdString(),
+                                      banned);
 }
 
 } // namespace lrc
