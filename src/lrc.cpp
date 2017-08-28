@@ -50,7 +50,8 @@ Lrc::slotNewAccountMessage(const QString& accountId, const QString& from, const 
 void
 Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
-
+    Q_UNUSED(message)
+    accountModel_->setNewBuddySubscription(accountId.toStdString(), uri.toStdString(), status);
 }
 
 } // namespace lrc

@@ -86,61 +86,59 @@ Database::~Database()
 void
 Database::addMessage(const std::string& accountId, const message::Info& message) const
 {
-    std::string type;
+    // TODO improve
+    auto addMessageQuery = QString("INSERT INTO conversations(contact, account,\
+    body, timestamp, is_unread, is_outgoing, type, status) VALUES(?, ?, ?, ?,\
+    1, ?, ?, ?)");
+
+    if (not query_->prepare(addMessageQuery)) {
+        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
+        return;
+    }
+
+    query_->addBindValue(QString(message.uid.c_str()));
+    query_->addBindValue(QString(accountId.c_str()));
+    query_->addBindValue(QString(message.body.c_str()));
+    query_->addBindValue(QString::number(message.timestamp));
+    query_->addBindValue(false); // TODO
     switch (message.type) {
     case message::Type::TEXT:
-        type = "TEXT";
+        query_->addBindValue(QString("TEXT"));
         break;
     case message::Type::CALL:
-        type = "CALL";
+        query_->addBindValue(QString("CALL"));
         break;
     case message::Type::CONTACT:
-        type = "CONTACT";
+        query_->addBindValue(QString("CONTACT"));
         break;
     case message::Type::INVALID:
-        type = "INVALID";
+        query_->addBindValue(QString("INVALID"));
         break;
     }
-    std::string status;
-    bool isOutgoing = true;
     switch (message.status) {
     case message::Status::SENDING:
-        status = "SENDING";
+        query_->addBindValue(QString("SENDING"));
         break;
     case message::Status::FAILED:
-        status = "FAILED";
+        query_->addBindValue(QString("FAILED"));
         break;
     case message::Status::SUCCEED:
-        status = "SUCCEED";
-        break;
-    case message::Status::READ:
-        status = "READ";
-        isOutgoing = false;
+        query_->addBindValue(QString("SUCCEED"));
         break;
     case message::Status::INVALID:
-        status = "INVALID";
+        query_->addBindValue(QString("INVALID"));
         break;
     }
-    auto addMessageQuery = DATABASE_ADD_MESSAGE(
-        message.uid,
-        accountId,
-        message.body,
-        std::to_string(message.timestamp),
-        isOutgoing,
-        type,
-        status
-    );
 
-    if (not query_->exec(QString(addMessageQuery.c_str()))) {
-        qDebug() << "Database: addMessage, " << query_->lastError().text();
+    if (not query_->exec()) {
+        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
         return;
     }
 
-    if (not query_->exec(QString(DATABASE_GET_LAST_INSERTED_ID))) {
-        qDebug() << "Database: getLastInsertedID, " << query_->lastError().text();
+    if (not query_->exec("SELECT last_insert_rowid()")) {
+        qDebug() << "DatabaseManager: addMessage, " << query_->lastError().text();
         return;
     }
-
     while(query_->next()) {
         emit messageAdded(query_->value(0).toInt(), accountId, message);
     }

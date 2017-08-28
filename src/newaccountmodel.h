@@ -49,6 +49,7 @@ public:
 
 private:
     explicit NewAccountModel(const Database& database);
+    void setNewBuddySubscription(const std::string& accountId, const std::string& uri, bool status);
     const Database& database_;
     AccountsInfoMap accounts_;
 };
