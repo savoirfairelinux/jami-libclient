@@ -71,7 +71,6 @@ Q_SIGNALS:
 private Q_SLOTS:
     void slotMessageAdded(int uid, const std::string& account, message::Info msg);
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
-    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
 
 private:
     /**
@@ -79,7 +78,7 @@ private:
      * @param uid the contact to search
      * @return the contact if found else nullptr
      */
-    std::shared_ptr<conversation::Info> find(const std::string& uid) const;
+    conversation::Info& find(const std::string& uid) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
