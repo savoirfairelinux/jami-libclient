@@ -68,6 +68,8 @@ public:
      */
     const ContactsInfoMap& getAllContacts() const;
 
+    contact::Info temporaryContact;
+
     // TODO
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
