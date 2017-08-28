@@ -61,6 +61,17 @@ LrcPimpl::LrcPimpl(const Lrc& linked)
 , database(std::make_unique<Database>())
 , accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler))
 {
+    // ⚠️ take care of the order ⚠️
+    // we need to bind objects, so we have to be sure to never use something not yet instanced
+
+    // create the database.
+    database = std::make_unique<Database>();
+
+    // create callback model.
+    callbackHandler = std::make_unique<CallbacksHandler>(linked);
+
+    // create account model.
+    accountModel = std::make_unique<NewAccountModel>(*database, *callbackHandler);
 }
 
 } // namespace lrc

@@ -97,7 +97,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         owner.id = id.toStdString();
         owner.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         owner.callModel = std::make_unique<NewCallModel>(owner);
-        owner.contactModel = std::make_unique<ContactModel>(owner, database);
+        owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
     }
 }
