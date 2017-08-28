@@ -39,7 +39,7 @@ class NewAccountModelPimpl
 {
 public:
     NewAccountModelPimpl(const NewAccountModel& linked,
-                         const Database& database,
+                         Database& database,
                          const CallbacksHandler& callbackHandler);
     ~NewAccountModelPimpl();
 
@@ -48,7 +48,7 @@ public:
     NewAccountModel::AccountInfoMap accounts;
 };
 
-NewAccountModel::NewAccountModel(const Database& database, const CallbacksHandler& callbacksHandler)
+NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
 : QObject()
 , pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler))
 {
@@ -73,11 +73,15 @@ NewAccountModel::getAccountList() const
 const account::Info&
 NewAccountModel::getAccountInfo(const std::string& accountId) const
 {
-    return pimpl_->accounts[accountId];
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end())
+        throw std::out_of_range("NewAccountModel::getAccountInfo, can't find " + accountId);
+
+    return accountInfo->second;
 }
 
 NewAccountModelPimpl::NewAccountModelPimpl(const NewAccountModel& linked,
-                                           const Database& database,
+                                           Database& database,
                                            const CallbacksHandler& callbacksHandler)
 : linked(linked)
 , database(database)
@@ -92,7 +96,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(const NewAccountModel& linked,
         owner.id = id.toStdString();
         owner.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         owner.callModel = std::make_unique<NewCallModel>(owner);
-        owner.contactModel = std::make_unique<ContactModel>(owner, database);
+        owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
 
         accounts[id.toStdString()] = std::move(owner);
