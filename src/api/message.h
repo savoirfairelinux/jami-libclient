@@ -84,9 +84,9 @@ StatusToString(Status status)
 
 struct Info
 {
-    std::string contact; // [jn] to rename with something more like contactUri
-    std::string body;
-    std::time_t timestamp = 0;
+    std::string contact; // [jn] const ?, to rename with something more like contactUri
+    std::string body; // [jn] const ?
+    std::time_t timestamp = 0; // [jn] const ?
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };
