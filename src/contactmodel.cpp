@@ -143,6 +143,7 @@ ContactModel::addressLookup(const std::string& name) const
 const contact::Info&
 ContactModel::getContact(const std::string& contactUri)
 {
+    if (contactUri.empty()) return temporaryContact;
     auto contact = pimpl_->contacts.find(contactUri);
     if (contact == pimpl_->contacts.end()) {
         throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
