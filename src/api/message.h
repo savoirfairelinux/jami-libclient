@@ -38,6 +38,23 @@ enum class Type {
     CONTACT
 };
 
+static const std::string
+TypeToString(Type type)
+{
+    switch(type) {
+    case Type::INVALID:
+        return "INVALID";
+    case Type::TEXT:
+        return "TEXT";
+    case Type::CALL:
+        return "CALL";
+    case Type::CONTACT:
+        return "CONTACT";
+    }
+
+    //throw something
+}
+
 enum class Status {
     INVALID,
     SENDING,
@@ -46,9 +63,28 @@ enum class Status {
     READ
 };
 
+static const std::string
+StatusToString(Status status)
+{
+    switch(status) {
+    case Status::INVALID:
+        return "INVALID";
+    case Status::SENDING:
+        return "SENDING";
+    case Status::FAILED:
+        return "FAILED";
+    case Status::SUCCEED:
+        return "SUCCEED";
+    case Status::READ:
+        return "READ";
+    }
+
+    //throw something
+}
+
 struct Info
 {
-    std::string contact;
+    std::string contact; // [jn] to rename with something more like contactUri
     std::string body;
     std::time_t timestamp = 0;
     Type type = Type::INVALID;
