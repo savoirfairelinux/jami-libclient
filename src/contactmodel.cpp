@@ -64,6 +64,7 @@ ContactModel::removeContact(const std::string& uri)
     ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
     // TODO do this when daemon emit contactRemoved
     contacts_.erase(uri);
+    db_.clearHistory(accountId_, uri, true);
 }
 
 void
