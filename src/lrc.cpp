@@ -17,8 +17,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "lrc.h"
-
-// Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 
@@ -67,17 +65,19 @@ Lrc::~Lrc()
 }
 
 void
-Lrc::slotNewAccountMessage(const QString& accountId, const QString& from,
-                           const QMap<QString,QString>& payloads)
+Lrc::slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-
+    message::Info msg;
+    msg.uid = from.toStdString();
+    msg.body = payloads["text/plain"].toStdString();
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::READ;
+    database_->addMessage(accountId.toStdString(), msg);
 }
 
 void
-Lrc::slotNewBuddySubscription(const QString& accountId,
-                              const QString& contactUri,
-                              bool status,
-                              const QString& message)
+Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
 {
     Q_UNUSED(message)
     accountModel_->setNewBuddySubscription(accountId.toStdString(),
