@@ -36,8 +36,9 @@
 namespace lrc
 {
 
-class Database;
+class CallbacksHandler;
 class ConversationModelPimpl;
+class Database;
 
 namespace api
 {
@@ -53,12 +54,12 @@ public:
 
     const account::Info& owner;
 
-    ConversationModel(const account::Info& owner, const Database& database);
+    ConversationModel(const account::Info& owner, Database& db, const CallbacksHandler& callbacksHandler);
     ~ConversationModel();
 
     const ConversationQueue& getFilteredConversations() const;
     conversation::Info getConversation(unsigned int row) const;
-    void addConversation(const std::string& uri) const;
+    void addConversation(const std::string& uid) const;
     void removeConversation(const std::string& uid);
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
@@ -68,15 +69,15 @@ public:
     void clearHistory(const std::string& uid);
 
 Q_SIGNALS:
-    void newMessageAdded(const std::string& uid, const message::Info& msg);
+    void newMessageAdded(const std::string& uid, const message::Info& msg) const;
     void conversationUpdated(unsigned int row);
     void modelUpdated() const;
     void newContactAdded(const std::string& uri);
     void incomingCallFromItem(const unsigned int row);
 
-    void showChatView(const conversation::Info& conversationInfo);
-    void showCallView(const conversation::Info& conversationInfo);
-    void showIncomingCallView(const conversation::Info& conversationInfo);
+    void showChatView(const conversation::Info& conversationInfo); // TO MOVE
+    void showCallView(const conversation::Info& conversationInfo);// TO MOVE
+    void showIncomingCallView(const conversation::Info& conversationInfo);// TO MOVE
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
