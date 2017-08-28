@@ -25,7 +25,9 @@
 // LRC
 #include "account.h"
 
-namespace NewCall
+namespace lrc {
+
+namespace call
 {
 
 enum class Status {
@@ -48,14 +50,14 @@ enum class Status {
 
 struct Info
 {
-    const std::string id_;
-    const std::time_t startTime_;
-    Status status_;
-    Account* account_;
-    Info(Account* account, const std::string& id, std::time_t startTime, Status status)
-    : account_(account), id_(id), startTime_(startTime), status_(status) {};
+    std::string id;
+    std::time_t startTime;
+    Status status;
+    Account* account;
 };
 
-}
+} // namespace call
 
-typedef std::map<std::string, std::shared_ptr<NewCall::Info>> CallsInfo;
+using CallsInfoMapEntry = std::pair<std::string, std::shared_ptr<call::Info>>;
+using CallsInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+} // namespace lrc

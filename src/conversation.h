@@ -33,7 +33,7 @@ struct Info
 {
     const std::string uid_= "";
     std::vector <std::shared_ptr<Contact::Info>> participants_;
-    std::shared_ptr<NewCall::Info> call_;
+    std::shared_ptr<lrc::call::Info> call_;
     Messages messages_;
     int lastMessageUid_ = -1;
     bool isUsed_ = false;
@@ -62,7 +62,7 @@ struct Info
     }
 
     // create a new conversation when someone is calling for the first time.
-    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, std::shared_ptr<NewCall::Info> call)
+    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, std::shared_ptr<lrc::call::Info> call)
     : account_(account), uid_(uid), participants_({participant}), call_(call) {}
 
 };

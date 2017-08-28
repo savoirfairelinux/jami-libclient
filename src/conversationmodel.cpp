@@ -129,19 +129,19 @@ ConversationModel::selectConversation(const std::string& uid)
         emit showChatView(conversation);
         return;
     }
-    switch (conversation->call_->status_) {
-        case NewCall::Status::INCOMING_RINGING:
-        case NewCall::Status::OUTGOING_RINGING:
-        case NewCall::Status::CONNECTING:
-        case NewCall::Status::SEARCHING:
+    switch (conversation->call_->status) {
+    case lrc::call::Status::INCOMING_RINGING:
+    case lrc::call::Status::OUTGOING_RINGING:
+    case lrc::call::Status::CONNECTING:
+    case lrc::call::Status::SEARCHING:
             // We are currently in a call
             emit showIncomingCallView(conversation);
             break;
-        case NewCall::Status::IN_PROGRESS:
+        case lrc::call::Status::IN_PROGRESS:
             // We are currently receiving a call
             emit showCallView(conversation);
             break;
-        case NewCall::Status::NONE:
+        case lrc::call::Status::NONE:
         default:
             // We are not in a call, show the chatview
             emit showChatView(conversation);

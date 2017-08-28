@@ -30,10 +30,16 @@ NewCallModel::~NewCallModel()
 
 }
 
-const NewCall::Info&
+const lrc::call::Info&
 NewCallModel::createCall(Account* account, const std::string& contact)
 {
-    return NewCall::Info(account, contact, std::time_t(), NewCall::Status::INVALID_STATUS);
+    auto call = std::make_shared<lrc::call::Info>();
+    call->id = contact;
+    call->startTime = std::time_t();
+    call->status = lrc::call::Status::INVALID_STATUS;
+    call->account = account;
+    calls_.insert(lrc::CallsInfoMapEntry(contact, call));
+    return *call.get();
 }
 
 void
