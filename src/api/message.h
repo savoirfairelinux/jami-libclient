@@ -55,6 +55,21 @@ TypeToString(Type type)
     //throw something
 }
 
+static Type
+StringToType(const std::string& type)
+{
+    if (type == "TEXT") {
+        return message::Type::TEXT;
+    } else if (type == "CALL") {
+        return message::Type::CALL;
+    } else if (type == "CONTACT") {
+        return message::Type::CONTACT;
+    } else if (type == "INVALID")
+        return message::Type::INVALID;
+    //throw something
+}
+
+
 enum class Status {
     INVALID,
     SENDING,
@@ -82,11 +97,29 @@ StatusToString(Status status)
     //throw something
 }
 
+static Status
+StringToStatus(const std::string& status)
+{
+    if (status == "SENDING")
+        return message::Status::SENDING;
+    else if (status == "FAILED")
+        return message::Status::FAILED;
+    else if (status == "SUCCEED")
+        return message::Status::SUCCEED;
+    else if (status == "READ")
+        return message::Status::READ;
+    else if (status == "INVALID")
+        return message::Status::INVALID;
+
+    //throw something
+
+}
+
 struct Info
 {
-    std::string contact; // [jn] to rename with something more like contactUri
-    std::string body;
-    std::time_t timestamp = 0;
+    std::string contact; // [jn] const ?, to rename with something more like contactUri
+    std::string body; // [jn] const ?
+    std::time_t timestamp = 0; // [jn] const ?
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };
