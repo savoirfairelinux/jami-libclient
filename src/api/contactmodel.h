@@ -32,6 +32,7 @@
 namespace lrc
 {
 
+class CallbacksHandler;
 class Database;
 class ContactModelPimpl;
 
@@ -43,26 +44,54 @@ namespace account { struct Info; }
 class NewAccountModel;
 class ConversationModel;
 
+/**
+  *  @brief Class that manages contact information associated to an account.
+  */
 class LIB_EXPORT ContactModel : public QObject {
     Q_OBJECT
 public:
-    using ContactInfoMap = std::map<std::string, std::shared_ptr<contact::Info>>;
+    using ContactInfoMap = std::map<std::string, contact::Info>;
 
     const account::Info& owner;
 
     ContactModel(const account::Info& owner,
-                 const Database& database);
+                 Database& database,
+                 const CallbacksHandler& callbacksHandler);
     ~ContactModel();
 
-    const contact::Info& getContact(const std::string& uri) const;
+    /**
+     * Ask the daemon to add a contact.
+     * @param contactUri
+     */
+    void addContact(const std::string& contactUri);
+    /**
+     * Ask the daemon to remove a contact
+     * @param contactUri
+     * @param banned
+     */
+    void removeContact(const std::string& contactUri, bool banned=false);
+    /**
+     * @param  contactUri
+     * @return the contact::Info structure for a contact
+     * @throws out_of_range exception if can't find the contact
+     */
+    const contact::Info getContact(const std::string& contactUri) const;
+    /**
+     * @return all contacts for this account
+     */
     const ContactInfoMap& getAllContacts() const;
-    void addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
-    void nameLookup(const std::string& uri) const;
-    void addressLookup(const std::string& name) const;
+    /**
+     * @return if pending requests exists
+     */
+    bool hasPendingRequests() const;
+    /**
+     * Search a SIP or a Ring contact from a query
+     * @param query
+     */
+    void searchContact(const std::string& query);
 
 Q_SIGNALS:
-    void contactsChanged();
+    void modelUpdated() const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
