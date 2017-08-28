@@ -109,6 +109,12 @@ Q_SIGNALS:
      */
     void contactAdded(const std::string& uid) const;
 
+public Q_SLOTS:
+    void slotRegisteredNameFound(const Account* account,
+                                 NameDirectory::LookupStatus status,
+                                 const QString& address,
+                                 const QString& name) const;
+
 private:
     explicit Database();
     std::unique_ptr<QSqlQuery> query_;
