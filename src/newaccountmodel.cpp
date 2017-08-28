@@ -27,7 +27,22 @@ NewAccountModel::NewAccountModel(const Database& database)
 :QObject(nullptr)
 , database_(database)
 {
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info info;
+        info.id = id.toStdString();
+        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.callModel = std::make_shared<NewCallModel>();
+        info.contactModel = std::make_shared<ContactModel>(database_, id.toStdString());
+        info.conversationModel = std::make_shared<ConversationModel>(*info.callModel.get(),
+                                                                     *info.contactModel.get(),
+                                                                     database);
+
+        accounts_[id.toStdString()] = std::move(info);
+    }
 }
 
 NewAccountModel::~NewAccountModel()
