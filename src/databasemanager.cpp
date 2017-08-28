@@ -18,7 +18,8 @@
  ***************************************************************************/
 #include "databasemanager.h"
 
-namespace lrc {
+namespace lrc
+{
 
 DatabaseManager::DatabaseManager(QObject* parent)
 : QObject(parent)
@@ -43,10 +44,10 @@ DatabaseManager::removeHistory(const std::string& account, const std::string& ui
 
 }
 
-Messages
+MessagesMap
 DatabaseManager::getMessages(const std::string& account, const std::string& uid) const
 {
-    return Messages();
+    return MessagesMap();
 }
 
 unsigned int

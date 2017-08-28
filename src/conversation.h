@@ -29,7 +29,7 @@ struct Info
 {
     const std::string uid_= "";
     std::vector <Contact::Info> participants_;
-    Messages messages_;
+    lrc::MessagesMap messages_;
     bool isUsed_ = false;
     Account* account_; // old
     unsigned int index_;

@@ -38,6 +38,7 @@
 #include <private/imconversationmanagerprivate.h>
 #include <accountmodel.h>
 #include <personmodel.h>
+#include "message.h"
 
 /*
  * Instant message have 3 major modes, "past", "in call" and "offline"
