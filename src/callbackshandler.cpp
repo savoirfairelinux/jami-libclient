@@ -22,9 +22,12 @@
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 
-// Dbus
+// Lrc
+#include "account.h"
+#include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
+#include "namedirectory.h"
 
 namespace lrc
 {
@@ -55,6 +58,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::contactRemoved,
             this,
             &CallbacksHandler::slotContactRemoved);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingTrustRequest,
+            this,
+            &CallbacksHandler::slotIncomingContactRequest);
+
+    connect(&NameDirectory::instance(),
+            &NameDirectory::registeredNameFound,
+            this,
+            &CallbacksHandler::slotRegisteredNameFound);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -99,5 +112,25 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
 {
     emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
 }
+
+void
+CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
+                                             const QString& ringID,
+                                             const QByteArray& payload,
+                                             time_t time)
+{
+    Q_UNUSED(time)
+    emit incomingContactRequest(accountId.toStdString(), ringID.toStdString(), payload.toStdString());
+}
+
+void
+CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                                          const QString& address, const QString& name)
+{
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
+    }
+}
+
 
 } // namespace lrc
