@@ -34,7 +34,8 @@ enum class Type {
     INVALID,
     RING,
     SIP,
-    PENDING
+    PENDING,
+    TEMPORARY
 };
 
 struct Info

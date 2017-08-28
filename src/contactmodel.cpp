@@ -197,6 +197,7 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 const contact::Info
 ContactModel::getContact(const std::string& contactUri) const
 {
+    if (contactUri.empty()) return pimpl_->temporaryContact;
     auto contactInfo = pimpl_->contacts.find(contactUri);
     if (contactInfo == pimpl_->contacts.end())
         throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
