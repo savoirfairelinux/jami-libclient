@@ -41,7 +41,6 @@ struct Info
     int lastMessageUid = -1;
     bool isUsed = false;
     Account* account; // old
-    unsigned int index = 0;
     unsigned int unreadMessages = 0;
 };
 

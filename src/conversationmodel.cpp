@@ -147,16 +147,21 @@ ConversationModel::selectConversation(const std::string& uid)
 void
 ConversationModel::removeConversation(const std::string& uid)
 {
-    auto conversation = find(uid);
-    if (!conversation || conversation->participants.empty()) return;
+    // Get conversation
+    auto i = std::find_if(conversations_.begin(), conversations_.end(),
+    [uid](const std::shared_ptr<conversation::Info>& conversation) {
+        return conversation->uid == uid;
+    });
+    if (i == conversations_.end()) return;
+    auto conversation = *i;
+    if (conversation->participants.empty()) return;
 
+    // Remove contact from daemon
     auto contact = conversation->participants.front();
     contactModel_->removeContact(contact->uri);
 
-    // Remove conversation
-    auto it = conversations_.begin();
-    std::advance(it, conversation->index);
-    it = conversations_.erase(it);
+    // Remove conversation (TODO get confirmation from contactModel)
+    conversations_.erase(i);
 
     // The model has changed
     emit modelUpdated();
