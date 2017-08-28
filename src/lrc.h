@@ -43,7 +43,28 @@ public:
 
 private Q_SLOTS:
     void slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
-    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
+    /**
+     * Update the presence of a contact for an account
+     * @param accountId
+     * @param contactUri
+     * @param status if the contact is present
+     * @param message unused for now
+     */
+    void slotNewBuddySubscription(const QString& accountId, const QString& contactUri, bool status, const QString& message);
+    /**
+     * Add a contact in the contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param confirmed
+     */
+    void slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed);
+    /**
+     * Remove a contact from a contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
 
 private:
     std::unique_ptr<Database> database_;

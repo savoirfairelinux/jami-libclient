@@ -54,6 +54,29 @@ public:
 
 private:
     explicit NewAccountModel(const Database& database);
+
+    /**
+     * Update the presence of a contact for an account
+     * @param accountId
+     * @param contactUri
+     * @param status if the contact is present
+     */
+    void setNewBuddySubscription(const std::string& accountId, const std::string& contactUri, bool status);
+    /**
+     * Add a contact in the contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param confirmed
+     */
+    void slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+    /**
+     * Remove a contact from a contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+
     const Database& database_;
     AccountsInfoMap accounts_;
 };

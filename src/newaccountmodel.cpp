@@ -21,7 +21,6 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 
-
 // Models and database
 #include "newcallmodel.h"
 #include "contactmodel.h"
@@ -61,5 +60,33 @@ NewAccountModel::getAccountInfo(const std::string& accountId)
 {
     return accounts_[accountId];
 }
+
+void
+NewAccountModel::setNewBuddySubscription(const std::string& accountId,
+                                         const std::string& contactUri,
+                                         bool status)
+{
+    auto& contactModel = getAccountInfo(accountId).contactModel;
+    contactModel->setContactPresent(contactUri, status);
+}
+
+void
+NewAccountModel::slotContactAdded(const std::string& accountId,
+                                  const std::string& contactUri,
+                                  bool confirmed)
+{
+    auto& contactModel = getAccountInfo(accountId).contactModel;
+    contactModel->slotContactAdded(contactUri, confirmed);
+}
+
+void
+NewAccountModel::slotContactRemoved(const std::string& accountId,
+                                    const std::string& contactUri,
+                                    bool banned)
+{
+    auto& contactModel = getAccountInfo(accountId).contactModel;
+    contactModel->slotContactRemoved(contactUri, banned);
+}
+
 
 } // namespace lrc

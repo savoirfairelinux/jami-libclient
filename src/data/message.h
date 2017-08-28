@@ -44,7 +44,7 @@ enum class Status {
 
 struct Info
 {
-    std::string uid;
+    std::string contact;
     std::string body;
     std::time_t timestamp = 0;
     Type type = Type::INVALID;

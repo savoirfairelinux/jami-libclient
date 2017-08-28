@@ -18,6 +18,15 @@
  ***************************************************************************/
 #include "contactmodel.h"
 
+// Std
+#include <stdexcept>
+
+// Data
+#include "data/message.h"
+
+// Models and database
+#include "database.h"
+
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
@@ -25,6 +34,7 @@
 // Lrc
 #include "availableaccountmodel.h"
 #include "contactmethod.h"
+#include "phonedirectorymodel.h"
 
 namespace lrc
 {
@@ -35,17 +45,7 @@ ContactModel::ContactModel(NewAccountModel& parent, const Database& db, const ac
 , owner(info)
 , QObject()
 {
-
-}
-
-ContactModel::ContactModel(const ContactModel& contactModel)
-: contacts_(contactModel.contacts_)
-, db_(contactModel.db_)
-, parent_(contactModel.parent_)
-, owner(contactModel.owner)
-, QObject()
-{
-
+    fillsWithContacts();
 }
 
 ContactModel::~ContactModel()
@@ -54,27 +54,27 @@ ContactModel::~ContactModel()
 }
 
 void
-ContactModel::addContact(const std::string& uri)
+ContactModel::addContact(const std::string& contactUri)
 {
-
+    ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
+    QString(contactUri.c_str()));
 }
 
 void
-ContactModel::removeContact(const std::string& uri)
+ContactModel::removeContact(const std::string& contactUri, bool banned)
 {
-
-}
-
-void
-ContactModel::sendMessage(const std::string& uri, const std::string& body) const
-{
-
+    ConfigurationManager::instance().removeContact(QString(owner.id.c_str()),
+    QString(contactUri.c_str()), banned);
 }
 
 const contact::Info&
-ContactModel::getContact(const std::string& uri)
+ContactModel::getContact(const std::string& contactUri)
 {
-    return contact::Info();
+    auto contact = contacts_.find(contactUri);
+    if (contact == contacts_.end()) {
+        throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
+    }
+    return *contact->second.get();
 }
 
 const ContactsInfoMap&
@@ -86,37 +86,147 @@ ContactModel::getAllContacts() const
 void
 ContactModel::nameLookup(const std::string& uri) const
 {
-
+    // TODO
 }
 
 void
 ContactModel::addressLookup(const std::string& name) const
 {
-
-}
-
-void
-ContactModel::setContactPresent(const std::string& uri, bool status)
-{
-
+    // TODO
 }
 
 bool
 ContactModel::fillsWithContacts()
 {
-    return false;
+    // TODO: For now, we only get contacts for RING accounts.
+    // In the future, we will directly get contacts from daemon (or SIP)
+    // and avoid "account->getContacts();"
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::fillsWithContacts(), nullptr";
+    }
+    if (account->protocol() != Account::Protocol::RING) {
+        qDebug() << "fillsWithContacts, account is not a RING account";
+        return false;
+    }
+
+    // Clear current contacts
+    contacts_.clear();
+
+    // Add contacts
+    auto contacts = account->getContacts();
+    for (auto c : contacts) {
+        auto contact = std::make_shared<contact::Info>();
+        auto contactUri = c->uri().toStdString();
+        contact->uri = contactUri;
+        contact->avatar = db_.getContactAttribute(contactUri, "photo");
+        contact->registeredName = db_.getContactAttribute(contactUri, "username");
+        contact->alias = db_.getContactAttribute(contactUri, "alias");
+        contact->isTrusted = c->isConfirmed();
+        contact->isPresent = c->isPresent();
+        switch (owner.type)
+        {
+        case account::Type::RING:
+            contact->type = contact::Type::RING;
+            break;
+        case account::Type::SIP:
+            contact->type = contact::Type::SIP;
+            break;
+        case account::Type::INVALID:
+        default:
+            contact->type = contact::Type::INVALID;
+            break;
+        }
+
+        contacts_[contactUri] = contact;
+    }
+
+    return true;
 }
 
 void
-ContactModel::slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed)
+ContactModel::setContactPresent(const std::string& contactUri, bool status)
 {
-
+    if (contacts_.find(contactUri) != contacts_.end()) {
+        contacts_[contactUri]->isPresent = status;
+    }
 }
 
 void
-ContactModel::slotContactsRemoved(const QString &accountID, const QString &uri, bool status)
+ContactModel::slotContactAdded(const std::string& contactUri, bool confirmed)
 {
+    // TODO: For now, we only get contacts for RING accounts.
+    // Moreover, we still use ContactMethod class.
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+    }
+    if (contacts_.find(contactUri) == contacts_.end()) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
+        auto contact = std::make_shared<contact::Info>();
+        contact->uri = contactUri;
+        contact->avatar = db_.getContactAttribute(contactUri, "photo");
+        contact->registeredName = db_.getContactAttribute(contactUri, "username");
+        contact->alias = db_.getContactAttribute(contactUri, "alias");
+        contact->isTrusted = confirmed;
+        contact->isPresent = cm->isPresent();
+        switch (owner.type)
+        {
+        case account::Type::RING:
+            contact->type = contact::Type::RING;
+            break;
+        case account::Type::SIP:
+            contact->type = contact::Type::SIP;
+            break;
+        case account::Type::INVALID:
+        default:
+            contact->type = contact::Type::INVALID;
+            break;
+        }
 
+        contacts_[contactUri] = contact;
+
+        // Add to database
+        message::Info msg;
+        msg.contact = contactUri;
+        msg.body = "";
+        msg.timestamp = std::time(nullptr);
+        msg.type = message::Type::CONTACT;
+        msg.status = message::Status::SUCCEED;
+        db_.addMessage(owner.id, msg);
+        emit contactsChanged();
+    }
+}
+
+void
+ContactModel::slotContactRemoved(const std::string& contactUri, bool banned)
+{
+    // TODO handle banned contacts
+    if (contacts_.find(contactUri) != contacts_.end()) {
+        db_.clearHistory(owner.id, contactUri, true);
+        contacts_.erase(contactUri);
+        emit contactsChanged();
+    }
+}
+
+void
+ContactModel::sendMessage(const std::string& contactUri, const std::string& body) const
+{
+    // Send message
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = body.c_str();
+    ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),
+                                                     QString(contactUri.c_str()),
+                                                     payloads);
+
+    // Store it into the database
+    message::Info msg;
+    msg.contact = contactUri;
+    msg.body = body;
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::SENDING;
+    db_.addMessage(owner.id, msg);
 }
 
 } // namespace lrc
