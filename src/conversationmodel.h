@@ -39,14 +39,16 @@ namespace lrc
 
 class LIB_EXPORT ConversationModel : public QObject {
     Q_OBJECT
-    public:
-    explicit ConversationModel(QObject* parent = nullptr);
+public:
+    explicit ConversationModel(std::shared_ptr<NewCallModel>& callModel,
+                               std::shared_ptr<ContactModel>& contactModel,
+                               const DatabaseManager& dbManager);
     ~ConversationModel();
 
     std::shared_ptr<ContactModel> getContactModel();
-    const lrc::ConversationsList& getConversations() const;
-    std::shared_ptr<lrc::conversation::Info> getConversation(const unsigned int row) const;
-    const conversation::Info& addConversation(const std::string& uri);
+    const ConversationsList& getConversations() const;
+    std::shared_ptr<conversation::Info> getConversation(const unsigned int row) const;
+    void addConversation(const std::string& uri);
     void removeConversation(const std::string& uid);
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
@@ -56,27 +58,29 @@ class LIB_EXPORT ConversationModel : public QObject {
     void cleanHistory(const std::string& uid);
 
     // signals
-    Q_SIGNALS:
+Q_SIGNALS:
+    void newMessageAdded(const std::string& uid, message::Info msg);
     void conversationUpdated(unsigned int row);
-    void modelUpdated();
+    void modelUpdated() const;
     void newContactAdded(const std::string& uid);
     void incomingCallFromItem(const unsigned int row);
 
-    void showChatView(std::shared_ptr<lrc::conversation::Info> conversation);
-    void showCallView(std::shared_ptr<lrc::conversation::Info> conversation);
-    void showIncomingCallView(std::shared_ptr<lrc::conversation::Info> conversation);
+    void showChatView(std::shared_ptr<conversation::Info> conversation);
+    void showCallView(std::shared_ptr<conversation::Info> conversation);
+    void showIncomingCallView(std::shared_ptr<conversation::Info> conversation);
 
-    private Q_SLOTS:
-    void slotMessageAdded(int uid, const std::string& account, lrc::message::Info msg);
+private Q_SLOTS:
+    void slotMessageAdded(int uid, const std::string& account, message::Info msg);
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
 
-    private:
+private:
     /**
      * Search a conversation in conversations_
      * @param uid the contact to search
      * @return the contact if found else nullptr
      */
-    std::shared_ptr<lrc::conversation::Info> find(const std::string& uid) const;
+    std::shared_ptr<conversation::Info> find(const std::string& uid) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
@@ -89,10 +93,10 @@ class LIB_EXPORT ConversationModel : public QObject {
 
     std::shared_ptr<NewCallModel> callModel_;
     std::shared_ptr<ContactModel> contactModel_;
-    std::shared_ptr<DatabaseManager> dbManager_;
+    const DatabaseManager& dbManager_;
 
-    lrc::ConversationsList conversations_;
-    mutable lrc::ConversationsList filteredConversations_;
+    ConversationsList conversations_;
+    mutable ConversationsList filteredConversations_;
     std::string filter_;
 
 };

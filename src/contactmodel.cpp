@@ -52,24 +52,24 @@ ContactModel::addContact(const std::string& uri)
 
     // TODO do this when daemon emit contactAdded
     // Store new contact
-    auto contact = std::make_shared<lrc::contact::Info>();
+    auto contact = std::make_shared<contact::Info>();
     contact->uri = uri;
     contact->avatar = "";
     contact->registeredName = "";
     contact->alias = "";
     contact->isTrusted = false;
     contact->isPresent = false;
-    contact->type = lrc::contact::Type::RING; // TODO SIP contacts
+    contact->type = contact::Type::RING; // TODO SIP contacts
     contacts_[uri] = contact;
 
     // Add to database
-    lrc::message::Info msg;
+    message::Info msg;
     msg.uid = uri.c_str();
     msg.body = "";
     msg.timestamp = std::time(nullptr);
     msg.isOutgoing = true;
-    msg.type = lrc::message::Type::CONTACT;
-    msg.status = lrc::message::Status::SUCCEED;
+    msg.type = message::Type::CONTACT;
+    msg.status = message::Status::SUCCEED;
     dbm_.addMessage(accountId_, msg);
 
     return *contact.get();
@@ -82,6 +82,7 @@ ContactModel::removeContact(const std::string& uri)
     ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
     // TODO do this when daemon emit contactRemoved
     contacts_.erase(uri);
+    dbm_.removeHistory(accountId_, uri, true);
 }
 
 void
@@ -93,13 +94,13 @@ ContactModel::sendMessage(const std::string& uri, const std::string& body) const
     unsigned int id = ConfigurationManager::instance().sendTextMessage(QString(accountId_.c_str()), uri.c_str(), payloads);
 
     // Store it into the database
-    lrc::message::Info msg;
+    message::Info msg;
     msg.uid = std::to_string(id);
     msg.body = body;
     msg.timestamp = std::time(nullptr);
     msg.isOutgoing = true;
-    msg.type = lrc::message::Type::TEXT;
-    msg.status = lrc::message::Status::SENDING;
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::SENDING;
     dbm_.addMessage(accountId_, msg);
 }
 
