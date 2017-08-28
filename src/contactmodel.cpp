@@ -18,6 +18,9 @@
  ***************************************************************************/
 #include "contactmodel.h"
 
+#include "dbus/configurationmanager.h"
+#include "contactmethod.h"
+
 ContactModel::ContactModel(QObject* parent)
 : QObject(parent)
 {
@@ -29,10 +32,20 @@ ContactModel::~ContactModel()
 
 }
 
-const Contact::Info&
+const lrc::contact::Info&
 ContactModel::addContact(const std::string& uri)
 {
-    return Contact::Info();
+    return lrc::contact::Info();
+}
+
+bool
+ContactModel::isAContact(const std::string& uri) const
+{
+    auto i = std::find_if(contacts_.begin(), contacts_.end(),
+    [uri](const std::pair<std::string, std::shared_ptr<lrc::contact::Info>>& contact) {
+        return contact.second->uri == uri;
+    });
+    return (i != contacts_.end());
 }
 
 void
@@ -47,16 +60,16 @@ ContactModel::sendMessage(const std::string& uri, const std::string& body) const
 
 }
 
-const Contact::Info&
-ContactModel::getContact(const std::string& uri/*TODO: add type*/) const
+std::shared_ptr<lrc::contact::Info>
+ContactModel::getContact(const std::string& uri)
 {
-    return Contact::Info();
+    return std::shared_ptr<lrc::contact::Info>();
 }
 
-const ContactsInfo&
+const lrc::ContactsInfoMap&
 ContactModel::getContacts() const
 {
-    return ContactsInfo();
+    return lrc::ContactsInfoMap();
 }
 
 void
@@ -69,4 +82,43 @@ void
 ContactModel::addressLookup(const std::string& name) const
 {
 
+}
+
+bool
+ContactModel::fillsWithContacts()
+{
+    if (account_->protocol() != Account::Protocol::RING) {
+        qDebug() << "fillsWithContacts, account is not a RING account";
+        return false;
+    }
+
+    auto contacts = account_->getContacts();
+
+    // Clear the list
+    contacts_.clear();
+
+    auto type = lrc::contact::Type::RING;
+
+    // Add contacts to the list
+    for (auto c : contacts) {
+        auto uri = c->uri().toStdString();
+        auto avatar = dbm_->getAvatar(uri);
+        auto registeredName = c->registeredName().toStdString();
+        auto alias = c->bestName().toStdString();
+        auto isTrusted = false; // TODO: handle trust
+        auto isPresent = c->isPresent();
+
+        auto contact = std::make_shared<lrc::contact::Info>();
+        contact->uri = uri;
+        contact->avatar = avatar;
+        contact->registeredName = registeredName;
+        contact->alias = alias;
+        contact->isTrusted = isTrusted;
+        contact->isPresent = isPresent;
+        contact->type = type;
+
+        contacts_[uri] = contact;
+    }
+
+    return true;
 }
