@@ -47,6 +47,7 @@ enum class Type {
 struct Info
 {
     std::string id;
+    bool enabled;
     contact::Info profile;  // TODO: not the best, we should separate profile and contact::Info...
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
