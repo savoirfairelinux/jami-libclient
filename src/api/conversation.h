@@ -42,7 +42,6 @@ struct Info
     std::string callId;
     std::map<int, message::Info> messages;
     unsigned int lastMessageUid = 0;
-    bool isUsed = false;
     unsigned int unreadMessages = 0;
 };
 

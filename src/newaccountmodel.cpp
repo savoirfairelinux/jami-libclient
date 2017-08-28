@@ -98,6 +98,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         auto& item = *(accounts.emplace(id.toStdString(), account::Info()).first);
         auto& owner = item.second;
         owner.id = id.toStdString();
+        owner.enabled = details["Account.enable"] == QString("true");
         // TODO get avatar;
         owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
         owner.profile.alias = details["Account.alias"].toStdString();
@@ -110,7 +111,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         // Init models for this account
         owner.callModel = std::make_unique<NewCallModel>(owner);
         owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-        owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
+        owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
     }
 }
