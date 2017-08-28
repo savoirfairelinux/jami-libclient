@@ -50,20 +50,65 @@ public:
     ~Database();
 
     // Messages related
+    /**
+     * Add a message object into the database
+     * @param accountId
+     * @param message to add
+     */
     void addMessage(const std::string& accountId, const message::Info& message) const;
+    /**
+     * Clear the history of the conversation between account and uid
+     * @param accountId
+     * @param uid
+     * @param removeContact if we also want to remove the contact
+     */
     void clearHistory(const std::string& accountId,
                       const std::string& uid,
                       bool removeContact = false) const;
+    /**
+     * @param  accountId
+     * @param  uid
+     * @return messages from the conversation between account and uid
+     */
     MessagesMap getAllMessages(const std::string& accountId, const std::string& uid) const;
+    /**
+     * @param  accountId
+     * @param  uid
+     * @return the number of unread messages in the conversation between account and uid
+     */
     std::size_t numberOfUnreads(const std::string& accountId, const std::string& uid) const;
+    /**
+     * Set a message READ
+     * @param uid of a message
+     */
     void setMessageRead(int uid) const;
 
     // Contacts related
+    /**
+     * Add a contact into the database
+     * @param contact a uid
+     * @param payload the VCard of a contact
+     */
     void addContact(const std::string& contact, const QByteArray& payload) const;
+    /**
+     * @param  uid of a contact
+     * @param  the attribute to search for a contact
+     * @return attribute of a contact
+     */
     std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
 
 Q_SIGNALS:
+    /**
+     * Will be emitted each time a message is successfully stored into the database
+     * @param uid the uid of the message
+     * @param accountId linked to the conversation
+     * @param msg the message added
+     */
     void messageAdded(int uid, const std::string& accountId, message::Info msg) const;
+    /**
+     * Will be emitted each time a contact is added into the database
+     * @param uid the uid of the contact
+     */
     void contactAdded(const std::string& uid) const;
 
 private Q_SLOTS:
