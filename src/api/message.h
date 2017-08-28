@@ -48,9 +48,9 @@ enum class Status {
 
 struct Info
 {
-    std::string contact;
-    std::string body;
-    std::time_t timestamp = 0;
+    std::string contact; // [jn] const ?
+    std::string body; // [jn] const ?
+    std::time_t timestamp = 0; // [jn] const ?
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };
