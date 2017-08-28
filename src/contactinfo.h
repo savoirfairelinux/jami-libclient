@@ -18,7 +18,10 @@
  ***************************************************************************/
 #pragma once
 
-namespace Contact
+namespace lrc
+{
+
+namespace contact
 {
 
 enum class Type {
@@ -29,19 +32,18 @@ enum class Type {
 
 struct Info
 {
-    const std::string uri_;
-    std::string avatar_;
-    std::string registeredName_;
-    std::string alias_;
-    bool isTrusted_;
-    Type type_;
-
-    Info(const std::string& uri = "", const std::string& avatar = "", const std::string& registeredName = "",
-         const std::string& alias = "", bool isTrusted = false, Type type = Type::INVALID_TYPE)
-        : uri_(uri), avatar_(avatar), registeredName_(registeredName), alias_(alias), isTrusted_(isTrusted), type_(type)
-        {}
+    std::string uri;
+    std::string avatar;
+    std::string registeredName;
+    std::string alias;
+    bool isTrusted;
+    bool isPresent;
+    Type type;
 };
 
-}
+} // namespace contact
 
-typedef std::map<std::string, std::shared_ptr<Contact::Info>> ContactsInfo;
+using ContactsInfoMapEntry = std::pair<std::string, std::shared_ptr<contact::Info>>;
+using ContactsInfoMap = std::map<std::string, std::shared_ptr<contact::Info>>;
+
+} // namespace lrc

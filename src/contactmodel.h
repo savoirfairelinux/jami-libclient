@@ -28,8 +28,10 @@
 #include "contactinfo.h"
 #include "callinfo.h"
 #include "account.h" // old
+#include "databasemanager.h"
 
-
+namespace lrc
+{
 
 class ContactModel : public QObject {
     Q_OBJECT
@@ -37,17 +39,26 @@ class ContactModel : public QObject {
     explicit ContactModel(QObject* parent = nullptr);
     ~ContactModel();
 
-    const Contact::Info& addContact(const std::string& uri);
+    const contact::Info& addContact(const std::string& uri);
     void removeContact(const std::string& uri);
     void sendMessage(const std::string& uri, const std::string& body) const;
-    const Contact::Info& getContact(const std::string& uri) const;
-    const ContactsInfo& getContacts() const;
+    std::shared_ptr<contact::Info> getContact(const std::string& uri);
+    const ContactsInfoMap& getContacts() const;
+    bool isAContact(const std::string& uri) const;
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
 
 
     private:
-    ContactsInfo ringContacts_;
-    ContactsInfo sipContacts_;
+    ContactsInfoMap ringContacts_;
+    ContactsInfoMap sipContacts_;
+    bool fillsWithContacts();
+
+
+    ContactsInfoMap contacts_;
+    const std::shared_ptr<DatabaseManager> dbm_;
+    const Account* account_;
 
 };
+
+}

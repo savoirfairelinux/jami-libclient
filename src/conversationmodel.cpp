@@ -32,7 +32,6 @@ ConversationModel::~ConversationModel()
 const Conversations&
 ConversationModel::getConversations() const
 {
-    return conversations_;
 }
 
 const Conversation::Info&
@@ -44,7 +43,6 @@ ConversationModel::getConversation(const unsigned int row) const
 const Conversation::Info&
 ConversationModel::addConversation(const std::string& uri)
 {
-    return Conversation::Info();
 }
 
 void

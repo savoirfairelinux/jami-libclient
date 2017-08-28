@@ -28,11 +28,13 @@ namespace Conversation
 struct Info
 {
     const std::string uid_= "";
-    std::vector <Contact::Info> participants_;
+    std::vector <std::shared_ptr<lrc::contact::Info>> participants_;
+    std::shared_ptr<lrc::call::Info> call_;
     lrc::MessagesMap messages_;
     bool isUsed_ = false;
     Account* account_; // old
-    unsigned int index_;
+    unsigned int index_ = 0;
+    unsigned int unreadMessages = 0;
 
 };
 
