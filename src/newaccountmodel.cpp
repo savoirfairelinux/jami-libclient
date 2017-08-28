@@ -48,4 +48,11 @@ NewAccountModel::getAccountInfo(const std::string& accountId)
     return accounts_[accountId];
 }
 
+void
+NewAccountModel::setNewBuddySubscription(const std::string& accountId, const std::string& uri, bool status)
+{
+    auto& contactModel = getAccountInfo(accountId).contactModel;
+    contactModel->setContactPresent(uri, status);
+}
+
 } // namespace lrc
