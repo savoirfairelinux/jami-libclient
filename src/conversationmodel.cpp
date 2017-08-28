@@ -57,7 +57,30 @@ ConversationModel::~ConversationModel()
 const ConversationsList&
 ConversationModel::getFilteredConversations() const
 {
-    return conversations_;
+    filteredConversations_ = conversations_;
+
+    if (filter_.length() == 0) return filteredConversations_;
+
+    auto filter = filter_;
+    auto it = std::copy_if(conversations_.begin(), conversations_.end(), filteredConversations_.begin(),
+    [&filter, this] (const conversation::Info& entry) {
+        auto isUsed = entry.isUsed;
+        if (!isUsed) return true;
+        auto contact = owner.contactModel->getContact(entry.participants.front());
+        try {
+            auto regexFilter = std::regex(filter, std::regex_constants::icase);
+            bool result = std::regex_search(contact.uri, regexFilter)
+            | std::regex_search(contact.alias, regexFilter);
+            return result;
+        } catch(std::regex_error&) {
+            // If the regex is incorrect, just test if filter is a substring of the title or the alias.
+            return contact.alias.find(filter) != std::string::npos
+            && contact.uri.find(filter) != std::string::npos;
+        }
+    });
+    filteredConversations_.resize(std::distance(filteredConversations_.begin(), it));
+
+    return filteredConversations_;
 }
 
 conversation::Info
@@ -181,7 +204,47 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
 void
 ConversationModel::setFilter(const std::string& filter)
 {
-
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    filter_ = filter;
+    conversation::Info newConversationItem;
+    if (!filter_.empty()) {
+        // add the first item, wich is the NewConversationItem
+        conversation::Info conversation;
+        contact::Info participant;
+        participant.alias = "Searching...";
+        conversation.uid = participant.uri;
+        participant.alias += filter;
+        owner.contactModel->temporaryContact = participant;
+        conversation.participants.emplace_back("");
+        conversation.accountId = account->id().toStdString();
+        if (!conversations_.empty()) {
+            auto isUsed = conversations_.front().isUsed;
+            if (isUsed) {
+                // No newConversationItem, create one
+                newConversationItem = conversation;
+                conversations_.emplace_front(newConversationItem);
+            } else {
+                // The item already exists
+                conversations_.pop_front();
+                newConversationItem = conversation;
+                conversations_.emplace_front(newConversationItem);
+            }
+        } else {
+            newConversationItem = conversation;
+            conversations_.emplace_front(newConversationItem);
+        }
+        search();
+    } else {
+        // No filter, so we can remove the newConversationItem
+        if (!conversations_.empty()) {
+            auto isUsed = conversations_.front().isUsed;
+            if (!isUsed) {
+                conversations_.pop_front();
+            }
+        }
+    }
+    emit modelUpdated();
 }
 
 void
@@ -277,13 +340,84 @@ ConversationModel::find(const std::string& uid) const
 void
 ConversationModel::search()
 {
+    // Update alias
+    auto uri = URI(QString(filter_.c_str()));
+    // Query NS
+    Account* account = nullptr;
+    if (uri.schemeType() != URI::SchemeType::NONE) {
+        account = AvailableAccountModel::instance().currentDefaultAccount(uri.schemeType());
+    } else {
+        account = AvailableAccountModel::instance().currentDefaultAccount();
+    }
+    if (!account) return;
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
 
+    if (account->protocol() == Account::Protocol::RING &&
+        uri.protocolHint() != URI::ProtocolHint::RING)
+    {
+        account->lookupName(QString(filter_.c_str()));
+    } else {
+        /* no lookup, simply use the URI as is */
+        auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front();
+            if (!firstConversation.isUsed) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = cm->uri().toStdString();
+                conversations_.pop_front();
+                auto conversationIdx = find(uid);
+                if (conversationIdx == -1) {
+                    // create the new conversation
+                    conversation::Info conversation;
+                    contact::Info participant;
+                    participant.uri = uid;
+                    participant.alias = cm->bestName().toStdString();
+                    conversation.uid = participant.uri;
+                    owner.contactModel->temporaryContact = participant;
+                    conversation.participants.emplace_back("");
+                    conversation.accountId = account->id().toStdString();
+                    conversations_.emplace_front(conversation);
+                }
+                emit modelUpdated();
+            }
+        }
+    }
 }
 
 void
 ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
 {
+    Q_UNUSED(account)
 
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front();
+            if (!firstConversation.isUsed) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = address.toStdString();
+                conversations_.pop_front();
+                auto conversationIdx = find(uid);
+                if (conversationIdx == -1) {
+                    // create the new conversation
+                    conversation::Info conversation;
+                    contact::Info participant;
+                    participant.uri = uid;
+                    participant.alias = name.toStdString();
+                    conversation.uid = participant.uri;
+                    owner.contactModel->temporaryContact = participant;
+                    conversation.participants.emplace_back("");
+                    conversation.accountId = account->id().toStdString();
+                    conversations_.emplace_front(conversation);
+                }
+                emit modelUpdated();
+            }
+        }
+    }
+    disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
 }
 
 void
