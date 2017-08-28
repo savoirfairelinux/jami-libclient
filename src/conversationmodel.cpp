@@ -74,13 +74,13 @@ ConversationModel::getConversations() const
         auto contact = entry.second->participants_.front();
         try {
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
-            bool result = std::regex_search(contact->uri_, regexFilter)
-            | std::regex_search(contact->alias_, regexFilter);
+            bool result = std::regex_search(contact->uri, regexFilter)
+            | std::regex_search(contact->alias, regexFilter);
             return result;
         } catch(std::regex_error&) {
             // If the regex is incorrect, just test if filter is a substring of the title or the alias.
-            return contact->alias_.find(filter) != std::string::npos
-            && contact->uri_.find(filter) != std::string::npos;
+            return contact->alias.find(filter) != std::string::npos
+            && contact->uri.find(filter) != std::string::npos;
         }
     });
     filteredConversations_.resize(std::distance(filteredConversations_.begin(), it));
@@ -107,7 +107,7 @@ ConversationModel::addConversation(const std::string& uri)
 
     // Send contact request if non used
     if(!conversation->isUsed_) {
-        if (contact->uri_.length() == 0) return;
+        if (contact->uri.length() == 0) return;
         contactModel_->addContact(uri);
 
         // TODO just this item
@@ -123,7 +123,7 @@ ConversationModel::selectConversation(const std::string& uid)
     if (!conversation) return;
     auto participants = conversation->participants_;
     // Check if conversation has a valid contact.
-    if (participants.empty() || participants.front()->uri_.empty())
+    if (participants.empty() || participants.front()->uri.empty())
         return;
     if (!conversation->call_) {
         emit showChatView(conversation);
@@ -168,7 +168,7 @@ ConversationModel::removeConversation(const std::string& uid)
 
     // TODO group chat?
     auto contact = conversation->participants_.front();
-    contactModel_->removeContact(contact->uri_);
+    contactModel_->removeContact(contact->uri);
     dbManager_->removeHistory(conversation->account_->id().toStdString(), uid, true);
 
     // Remove conversation
@@ -197,8 +197,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     // Send contact request if non used
     if(!conversation->isUsed_) {
-        if (contact->uri_.length() == 0) return;
-        contactModel_->addContact(contact->uri_);
+        if (contact->uri.length() == 0) return;
+        contactModel_->addContact(contact->uri);
         emit modelUpdated();
     }
     // Send message to contact.
@@ -207,10 +207,10 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     // TODO change this for group messages
     auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
-    contact->uri_.c_str(), payloads);
+    contact->uri.c_str(), payloads);
 
     lrc::message::Info msg;
-    msg.uid = contact->uri_.c_str();
+    msg.uid = contact->uri.c_str();
     msg.body = body;
     msg.timestamp = std::time(nullptr);
     msg.isOutgoing = true;
@@ -226,7 +226,14 @@ ConversationModel::setFilter(const std::string& filter)
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
-    auto participant = std::make_shared<Contact::Info>("", "", "", "Searching... " + filter);
+    auto participant = std::make_shared<lrc::contact::Info>();
+    participant->uri = "";
+    participant->avatar = "";
+    participant->registeredName = "";
+    participant->alias = "Searching...";
+    participant->isTrusted = false;
+    participant->isPresent = false;
+
     filter_ = filter;
     std::shared_ptr<Conversation::Info> newConversationItem;
     if (!filter_.empty()) {
@@ -285,9 +292,9 @@ ConversationModel::initConversations()
         auto contactinfo = contact.second;
         // TODO change uid when group chat
         auto conversation = std::make_shared<Conversation::Info>(account,
-        contactinfo->uri_,
+        contactinfo->uri,
         contactinfo,
-        dbManager_->getMessages(account->id().toStdString(), contactinfo->uri_));
+        dbManager_->getMessages(account->id().toStdString(), contactinfo->uri));
         ConversationEntry item(conversation->uid_, conversation);
         conversations_.emplace_front(item);
     }
@@ -364,8 +371,13 @@ ConversationModel::search()
                 auto account = AvailableAccountModel::instance().currentDefaultAccount();
                 if (!account) return;
                 auto uid = cm->uri().toStdString();
-                auto participant = std::make_shared<Contact::Info>(
-                uid, "", "", cm->bestName().toStdString());
+                auto participant = std::make_shared<lrc::contact::Info>();
+                participant->uri = uid;
+                participant->avatar = "";
+                participant->registeredName = "";
+                participant->alias = cm->bestName().toStdString();
+                participant->isTrusted = false;
+                participant->isPresent = false;
                 conversations_.pop_front();
                 if (!find(uid)) {
                     conversations_.emplace_front(ConversationEntry(
@@ -391,8 +403,13 @@ ConversationModel::registeredNameFound(const Account* account, NameDirectory::Lo
                 auto account = AvailableAccountModel::instance().currentDefaultAccount();
                 if (!account) return;
                 auto uid = address.toStdString();
-                auto participant = std::make_shared<Contact::Info>(
-                uid, "", "", name.toStdString());
+                auto participant = std::make_shared<lrc::contact::Info>();
+                participant->uri = uid;
+                participant->avatar = "";
+                participant->registeredName = "";
+                participant->alias = name.toStdString();
+                participant->isTrusted = false;
+                participant->isPresent = false;
                 conversations_.pop_front();
                 if (!find(uid)) {
                     conversations_.emplace_front(ConversationEntry(

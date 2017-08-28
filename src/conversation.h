@@ -32,7 +32,7 @@ namespace Conversation
 struct Info
 {
     const std::string uid_= "";
-    std::vector <std::shared_ptr<Contact::Info>> participants_;
+    std::vector <std::shared_ptr<lrc::contact::Info>> participants_;
     std::shared_ptr<lrc::call::Info> call_;
     lrc::MessagesMap messages_;
     int lastMessageUid_ = -1;
@@ -42,18 +42,18 @@ struct Info
     unsigned int unreadMessages = 0;
 
     // create a new converation when a search was made.
-    Info(Account* account, std::shared_ptr<Contact::Info> participant)
-    : account_(account), participants_({participant}), uid_(participant->uri_) { }
+    Info(Account* account, std::shared_ptr<lrc::contact::Info> participant)
+    : account_(account), participants_({participant}), uid_(participant->uri) { }
 
     // create a new conversation when we load data from database.
-    Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<Contact::Info>>& participants, lrc::MessagesMap messages)
+    Info(Account* account, const std::string& uid, std::vector <std::shared_ptr<lrc::contact::Info>>& participants, lrc::MessagesMap messages)
     : account_(account), uid_(uid), participants_(participants), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
             isUsed_ = true;
         }
     }
-    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, lrc::MessagesMap messages)
+    Info(Account* account, const std::string& uid, std::shared_ptr<lrc::contact::Info> participant, lrc::MessagesMap messages)
     : account_(account), uid_(uid), participants_({participant}), messages_(messages) {
         if(!messages_.empty()) {
             lastMessageUid_ = (--messages_.end())->first;
@@ -62,7 +62,7 @@ struct Info
     }
 
     // create a new conversation when someone is calling for the first time.
-    Info(Account* account, const std::string& uid, std::shared_ptr<Contact::Info> participant, std::shared_ptr<lrc::call::Info> call)
+    Info(Account* account, const std::string& uid, std::shared_ptr<lrc::contact::Info> participant, std::shared_ptr<lrc::call::Info> call)
     : account_(account), uid_(uid), participants_({participant}), call_(call) {}
 
 };

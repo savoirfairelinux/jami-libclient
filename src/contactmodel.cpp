@@ -41,7 +41,7 @@ ContactModel::~ContactModel()
 {
 }
 
-const Contact::Info&
+const lrc::contact::Info&
 ContactModel::addContact(const std::string& uri)
 {
     auto avatar = dbm_->getAvatar("");
@@ -49,11 +49,18 @@ ContactModel::addContact(const std::string& uri)
     auto alias = dbm_->getAlias("");
     auto isTrusted = false;
     auto isPresent = false;
-    auto type = Contact::Type::RING;
+    auto type = lrc::contact::Type::RING;
 
-    auto contactInfo = std::make_shared<Contact::Info>(uri, avatar, registeredName, alias, isTrusted, isPresent, type);
+    auto contact = std::make_shared<lrc::contact::Info>();
+    contact->uri = uri;
+    contact->avatar = avatar;
+    contact->registeredName = registeredName;
+    contact->alias = alias;
+    contact->isTrusted = isTrusted;
+    contact->isPresent = isPresent;
+    contact->type = type;
 
-    contacts_[uri] = contactInfo;
+    contacts_[uri] = contact;
 
     ConfigurationManager::instance().addContact(account_->id(),
     QString(uri.c_str()));
@@ -73,7 +80,7 @@ ContactModel::slotNewBuddySubscription(const QString& accountId, const QString& 
 {
     if (accountId != account_->id()) return;
     if (contacts_.find(uri.toStdString()) != contacts_.end()) {
-        contacts_[uri.toStdString()]->isPresent_ = status;
+        contacts_[uri.toStdString()]->isPresent = status;
     }
 }
 
@@ -81,8 +88,8 @@ bool
 ContactModel::isAContact(const std::string& uri) const
 {
     auto i = std::find_if(contacts_.begin(), contacts_.end(),
-    [uri](const std::pair<std::string, std::shared_ptr<Contact::Info>>& contact) {
-        return contact.second->uri_ == uri;
+    [uri](const std::pair<std::string, std::shared_ptr<lrc::contact::Info>>& contact) {
+        return contact.second->uri == uri;
     });
     return (i != contacts_.end());
 }
@@ -114,13 +121,13 @@ ContactModel::sendMessage(const std::string& uri, const std::string& body) const
     dbm_->addMessage(accountId, msg);
 }
 
-std::shared_ptr<Contact::Info>
+std::shared_ptr<lrc::contact::Info>
 ContactModel::getContact(const std::string& uri)
 {
     return contacts_[uri];
 }
 
-const ContactsInfo&
+const lrc::ContactsInfoMap&
 ContactModel::getContacts() const
 {
     return contacts_;
@@ -151,7 +158,7 @@ ContactModel::fillsWithContacts()
     // Clear the list
     contacts_.clear();
 
-    auto type = Contact::Type::RING;
+    auto type = lrc::contact::Type::RING;
 
     // Add contacts to the list
     for (auto c : contacts) {
@@ -162,13 +169,14 @@ ContactModel::fillsWithContacts()
         auto isTrusted = false; // TODO: handle trust
         auto isPresent = c->isPresent();
 
-        auto contact = std::shared_ptr<Contact::Info>(new Contact::Info(uri,
-                                                                        avatar,
-                                                                        registeredName,
-                                                                        alias,
-                                                                        isTrusted,
-                                                                        isPresent,
-                                                                        type));
+        auto contact = std::make_shared<lrc::contact::Info>();
+        contact->uri = uri;
+        contact->avatar = avatar;
+        contact->registeredName = registeredName;
+        contact->alias = alias;
+        contact->isTrusted = isTrusted;
+        contact->isPresent = isPresent;
+        contact->type = type;
 
         contacts_[uri] = contact;
     }

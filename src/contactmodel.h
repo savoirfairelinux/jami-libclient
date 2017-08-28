@@ -38,11 +38,11 @@ class ContactModel : public QObject {
     explicit ContactModel(const std::shared_ptr<DatabaseManager> dbm, const Account* account, QObject* parent = nullptr);
     ~ContactModel();
 
-    const Contact::Info& addContact(const std::string& uri);
+    const lrc::contact::Info& addContact(const std::string& uri);
     void removeContact(const std::string& uri);
     void sendMessage(const std::string& uri, const std::string& body) const;
-    std::shared_ptr<Contact::Info> getContact(const std::string& uri);
-    const ContactsInfo& getContacts() const;
+    std::shared_ptr<lrc::contact::Info> getContact(const std::string& uri);
+    const lrc::ContactsInfoMap& getContacts() const;
     bool isAContact(const std::string& uri) const;
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
@@ -54,7 +54,7 @@ class ContactModel : public QObject {
     bool fillsWithContacts();
 
 
-    ContactsInfo contacts_;
+    lrc::ContactsInfoMap contacts_;
     const std::shared_ptr<DatabaseManager> dbm_;
     const Account* account_;
 
