@@ -42,6 +42,12 @@ public:
     NewAccountModel& getAccountModel() {return *accountModel_.get();};
 
 private Q_SLOTS:
+    /**
+     * Add the incoming message from the daemon to the database
+     * @param accountId
+     * @param from
+     * @param payloads of the message
+     */
     void slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
     /**
      * Update the presence of a contact for an account
