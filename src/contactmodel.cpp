@@ -178,10 +178,4 @@ ContactModel::fillsWithContacts()
     return true;
 }
 
-void
-ContactModel::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
-{
-
-}
-
 } // namespace lrc
