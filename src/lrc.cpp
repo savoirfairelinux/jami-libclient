@@ -19,6 +19,7 @@
 #include "lrc.h"
 #include "newaccountmodel.h"
 #include "database.h"
+#include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "data/message.h"
 
@@ -39,6 +40,11 @@ Lrc::Lrc()
         NewAccountModel* ptr = new NewAccountModel(*database_.get());
         accountModel_ = std::unique_ptr<NewAccountModel>(ptr);
     }
+    // Get signals from daemon
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingAccountMessage,
+            this,
+            &Lrc::newAccountMessage);
 
     connect(&PresenceManager::instance(),
             SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
@@ -50,6 +56,18 @@ Lrc::Lrc()
 Lrc::~Lrc()
 {
 
+}
+
+void
+Lrc::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
+{
+    message::Info msg;
+    msg.uid = from.toStdString();
+    msg.body = payloads["text/plain"].toStdString();
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::READ;
+    database_->addMessage(accountId.toStdString(), msg);
 }
 
 void

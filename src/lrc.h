@@ -42,6 +42,7 @@ public:
     NewAccountModel& getAccountModel() {return *accountModel_.get();};
 
 private Q_SLOTS:
+    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
     void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
 
 private:
