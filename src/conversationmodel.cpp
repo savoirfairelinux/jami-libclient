@@ -320,6 +320,56 @@ ConversationModel::sortConversations()
 }
 
 void
+ConversationModel::search()
+{
+    // Update alias
+    auto uri = URI(QString(filter_.c_str()));
+    // Query NS
+    Account* account = nullptr;
+    if (uri.schemeType() != URI::SchemeType::NONE) {
+        account = AvailableAccountModel::instance().currentDefaultAccount(uri.schemeType());
+    } else {
+        account = AvailableAccountModel::instance().currentDefaultAccount();
+    }
+    if (!account) return;
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
+
+    if (account->protocol() == Account::Protocol::RING &&
+        uri.protocolHint() != URI::ProtocolHint::RING)
+    {
+        account->lookupName(QString(filter_.c_str()));
+    } else {
+        /* no lookup, simply use the URI as is */
+        auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front();
+            if (!firstConversation->isUsed) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = cm->uri().toStdString();
+                auto participant = std::make_shared<lrc::contact::Info>();
+                participant->uri = uid;
+                participant->avatar = "";
+                participant->registeredName = "";
+                participant->alias = cm->bestName().toStdString();
+                participant->isTrusted = false;
+                participant->isPresent = false;
+                conversations_.pop_front();
+                if (!find(uid)) {
+                    auto conversation = std::make_shared<lrc::conversation::Info>();
+                    conversation->uid = participant->uri;
+                    conversation->participants.emplace_back(participant);
+                    conversation->account = account;
+                    conversations_.emplace_front(conversation);
+                }
+                emit modelUpdated();
+            }
+        }
+    }
+}
+
+void
 ConversationModel::slotMessageAdded(int uid, const std::string& account, message::Info msg)
 {
     auto conversation = find(msg.uid);
@@ -331,6 +381,41 @@ ConversationModel::slotMessageAdded(int uid, const std::string& account, message
     emit newMessageAdded(msg.uid, msg);
     sortConversations();
     emit modelUpdated();
+}
+
+void
+ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+{
+    Q_UNUSED(account)
+
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        if (!conversations_.empty()) {
+            auto firstConversation = conversations_.front();
+            if (!firstConversation->isUsed) {
+                auto account = AvailableAccountModel::instance().currentDefaultAccount();
+                if (!account) return;
+                auto uid = address.toStdString();
+                auto participant = std::make_shared<lrc::contact::Info>();
+                participant->uri = uid;
+                participant->avatar = "";
+                participant->registeredName = "";
+                participant->alias = name.toStdString();
+                participant->isTrusted = false;
+                participant->isPresent = false;
+                conversations_.pop_front();
+                if (!find(uid)) {
+                    auto conversation = std::make_shared<lrc::conversation::Info>();
+                    conversation->uid = participant->uri;
+                    conversation->participants.emplace_back(participant);
+                    conversation->account = account;
+                    conversations_.emplace_front(conversation);
+                }
+                emit modelUpdated();
+            }
+        }
+    }
+    disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+    this, &ConversationModel::registeredNameFound);
 }
 
 void
