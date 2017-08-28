@@ -20,6 +20,7 @@
 
 // LRC
 #include "api/newaccountmodel.h"
+#include "api/call.h"
 
 namespace lrc
 {
@@ -55,6 +56,12 @@ const call::Info&
 NewCallModel::createCall(const std::string& contactUri)
 {
 
+}
+
+const call::Info&
+NewCallModel::getCallFromURI(const std::string& uri) const
+{
+    return {};
 }
 
 void
