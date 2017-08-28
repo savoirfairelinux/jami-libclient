@@ -91,12 +91,20 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     for (auto& id : accountIds) {
         QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
 
+        const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
+
+
         account::Info owner;
+        owner.profile.uri = details["Account.username"].toStdString();
+        // TODO std::string avatar;
+        owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
+        owner.profile.alias = details["Account.alias"].toStdString();
+        owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
         owner.id = id.toStdString();
         owner.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         owner.callModel = std::make_unique<NewCallModel>(owner);
         owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-        owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
+        owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
 
         accounts.emplace(id.toStdString(), std::move(owner));

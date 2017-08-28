@@ -125,7 +125,7 @@ void
 authority::database::addContact(Database& db, const std::string& contactUri)
 {
     // add contact to the database
-    auto row = db.insertInto("contacts", {{":id", "ring_id"}, {":alias", "alias"}, {":type", "type"}}, 
+    auto row = db.insertInto("contacts", {{":id", "ring_id"}, {":alias", "alias"}, {":type", "type"}},
                             {{":id", contactUri}, {":alias", contactUri}, {":type", "SIP"}});
 
     if (row == -1) {
@@ -214,7 +214,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , db(db)
 , callbacksHandler(callbacksHandler)
 {
+    qDebug() << "11111111";
     fillsWithContacts();
+    qDebug() << "11111111";
 
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::NewBuddySubscription,
@@ -248,6 +250,8 @@ ContactModelPimpl::fillsWithContacts()
         qDebug() << "fillsWithContacts, account is not a RING account";
         return false;
     }
+
+
 
     // Clear current contacts
     contacts.clear();
@@ -295,7 +299,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
                       {{":contactId", msg.contact}, {":accountId", linked.owner.id}, {":body", msg.body},
                        {":timestamp", std::to_string(msg.timestamp)}, {":isUnread", "1"}, {":isOutgoing", "true"},
                        {":type", TypeToString(msg.type)}, {":status", StatusToString(msg.status)}});
-        
+
         emit linked.modelUpdated();
     }
 }
@@ -346,10 +350,10 @@ ContactModelPimpl::addToContacts(ContactMethod* cm)
     auto contactInfo = std::make_shared<contact::Info>();
     auto contactUri = cm->uri().toStdString();
     contactInfo->uri = contactUri;
-    auto returnFromDb = db.select("photo, username, alias",
-                                  "contacts",
-                                  "ring_id=:ringid",
-                                  {{":ringid", contactUri}});
+    auto returnFromDb = db.select("photo, uri, alias",
+                                  "profiles",
+                                  "uri=:uri",
+                                  {{":uri", contactUri}});
     // the query should return on row of three columns.
     if (returnFromDb.nbrOfCols == 3 and returnFromDb.payloads.size() == 3) {
         contactInfo->avatar = returnFromDb.payloads[0];
@@ -372,6 +376,7 @@ ContactModelPimpl::addToContacts(ContactMethod* cm)
     }
 
     contacts[contactUri] = contactInfo;
+    qDebug() << "#######" << contactUri.c_str();
 
     return *contactInfo;
 }
