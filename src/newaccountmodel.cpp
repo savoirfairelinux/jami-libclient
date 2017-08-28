@@ -18,8 +18,8 @@
  ***************************************************************************/
 #include "api/newaccountmodel.h"
 
-
 // LRC
+#include "callbackshandler.h"
 #include "database.h"
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
@@ -37,18 +37,61 @@ using namespace api;
 class NewAccountModelPimpl
 {
 public:
-    NewAccountModelPimpl(const NewAccountModel& linked, const Database& database);
+    NewAccountModelPimpl(const NewAccountModel& linked, const Database& database, const lrc::CallbacksHandler& callbackHandler);
     ~NewAccountModelPimpl();
+    /**
+     * Update the presence of a contact for an account
+     * @param accountId
+     * @param contactUri
+     * @param status if the contact is present
+     */
+    void setNewBuddySubscription(const std::string& accountId, const std::string& contactUri, bool status);
+    /**
+     * Add a contact in the contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param confirmed
+     */
+    void slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+    /**
+     * Remove a contact from a contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
 
     const NewAccountModel& linked;
     const Database& database;
     NewAccountModel::AccountInfoMap accounts;
 };
 
-NewAccountModel::NewAccountModel(const Database& database)
+NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksHandler& callbackHandler)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbackHandler))
 {
+    const CallbacksHandler& callbackHandler;
+    AccountInfoMap accounts;
+};
+
+NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksHandler& callbackHandler)
+: pimpl_(std::make_unique<NewAccountModelPimpl>(database, callbackHandler))
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info info;
+        info.accountModel = std::unique_ptr<NewAccountModel>(this);
+        info.id = id.toStdString();
+        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
+        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
+        info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
+
+        accounts[id.toStdString()] = std::move(owner);
+    }
 
 }
 
@@ -68,14 +111,15 @@ NewAccountModel::getAccountList() const
 }
 
 const account::Info&
-NewAccountModel::getAccountInfo(const std::string& accountId)
+NewAccountModel::getAccountInfo(const std::string& accountId) const
 {
     return pimpl_->accounts[accountId];
 }
 
-NewAccountModelPimpl::NewAccountModelPimpl(const NewAccountModel& linked, const Database& database)
+NewAccountModelPimpl::NewAccountModelPimpl(const NewAccountModel& linked, const Database& database, const CallbacksHandler& callbackHandler)
 : linked(linked)
 , database(database)
+, callbackHandler(callbackHandler)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 

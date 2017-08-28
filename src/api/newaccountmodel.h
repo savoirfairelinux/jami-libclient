@@ -33,6 +33,7 @@
 namespace lrc
 {
 
+class CallbacksHandler;
 class Database;
 class NewAccountModelPimpl;
 
@@ -45,7 +46,7 @@ class LIB_EXPORT NewAccountModel : public QObject {
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
-    NewAccountModel(const Database& database);
+    NewAccountModel(const Database& database, const CallbacksHandler& callbackHandler);
     ~NewAccountModel();
     /**
      * get a list of all acountId.
@@ -57,7 +58,7 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const account::Info& getAccountInfo(const std::string& accountId);
+    const api::account::Info& getAccountInfo(const std::string& accountId) const;
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
