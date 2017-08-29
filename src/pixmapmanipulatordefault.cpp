@@ -60,6 +60,19 @@ QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize
     return QVariant();
 }
 
+QVariant
+PixmapManipulatorDefault::conversationPhoto(const lrc::conversation::Info& conversation,
+                                            const lrc::ContactModel& contactModel,
+                                            const QSize& size,
+                                            bool displayPresence)
+{
+    Q_UNUSED(conversation)
+    Q_UNUSED(contactModel)
+    Q_UNUSED(size)
+    Q_UNUSED(displayPresence)
+    return QVariant();
+}
+
 QVariant PixmapManipulatorDefault::securityIssueIcon(const QModelIndex& index)
 {
     Q_UNUSED(index)
@@ -140,5 +153,13 @@ QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
    return QVariant();
 }
 
+QVariant
+PixmapManipulatorDefault::decorationRole(const lrc::conversation::Info& conversation,
+                                         const lrc::ContactModel& contactModel)
+{
+   Q_UNUSED(conversation)
+   Q_UNUSED(contactModel)
+   return QVariant();
+}
 
 } // namespace Interfaces
