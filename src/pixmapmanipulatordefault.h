@@ -26,6 +26,9 @@ class LIB_EXPORT PixmapManipulatorDefault : public PixmapManipulatorI {
 public:
     QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true) override;
     QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true) override;
+    QVariant   conversationPhoto(const lrc::conversation::Info& conversation,
+                                 const QSize& size,
+                                 bool displayPresence = true) override;
     QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) override;
     QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) override;
     QVariant   securityIssueIcon(const QModelIndex& index) override;
@@ -39,6 +42,7 @@ public:
     QVariant   decorationRole(const Call*              c    ) override;
     QVariant   decorationRole(const ContactMethod*     cm   ) override;
     QVariant   decorationRole(const Person*            p    ) override;
+    QVariant   decorationRole(const lrc::conversation::Info& conversation) override;
     QVariant   decorationRole(const Account*           acc  ) override;
     /**
      * Return the icons associated with the action and its state
