@@ -62,6 +62,7 @@ ContactModel::removeContact(const std::string& uri)
 {
     // Remove contact from daemon contacts
     ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
+    // TODO connect signal from LRC
 }
 
 void
@@ -154,9 +155,10 @@ ContactModel::fillsWithContacts()
         contact->alias = alias;
         contact->isTrusted = isTrusted;
         contact->isPresent = isPresent;
-        contact->type = type;
+        contact->type = type; // TODO
 
         contacts_[uri] = contact;
+
     }
 
     return true;
