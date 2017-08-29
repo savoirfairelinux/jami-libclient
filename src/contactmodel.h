@@ -38,7 +38,7 @@ public:
     explicit ContactModel(const Database& db, const std::string& accountId);
     ~ContactModel();
 
-    const contact::Info& addContact(const std::string& uri);
+    void addContact(const std::string& uri);
     void removeContact(const std::string& uri);
     void sendMessage(const std::string& uri, const std::string& body) const;
     const contact::Info& getContact(const std::string& uri);
@@ -46,6 +46,14 @@ public:
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
     void setContactPresent(const std::string& uri, bool status);
+
+Q_SIGNALS:
+    void contactsChanged();
+
+private Q_SLOTS:
+    // TODO remove this from here
+    void slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed);
+    void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
 
 private:
     bool fillsWithContacts();

@@ -48,7 +48,7 @@ public:
     ContactModel& getContactModel() const;
     const ConversationsList& getFilteredConversations() const;
     conversation::Info getConversation(const unsigned int row) const;
-    void addConversation(const std::string& uri);
+    void addConversation(const std::string& uri) const;
     void removeConversation(const std::string& uid);
     void selectConversation(const std::string& uid);
     void placeCall(const std::string& uid) const;
@@ -69,6 +69,7 @@ Q_SIGNALS:
     void showIncomingCallView(conversation::Info conversationInfo);
 
 private Q_SLOTS:
+    void slotContactsChanged();
     void slotMessageAdded(int uid, const std::string& account, message::Info msg);
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
 
@@ -76,9 +77,9 @@ private:
     /**
      * Search a conversation in conversations_
      * @param uid the contact to search
-     * @return the contact if found else nullptr
+     * @return the index in conversations_
      */
-    conversation::Info& find(const std::string& uid) const;
+    int find(const std::string& uid) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */

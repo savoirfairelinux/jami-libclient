@@ -41,6 +41,7 @@ ConversationModel::ConversationModel(NewCallModel& callModel,
 {
     initConversations();
     connect(&database_, &Database::messageAdded, this, &ConversationModel::slotMessageAdded);
+    connect(&contactModel_, &ContactModel::contactsChanged, this, &ConversationModel::slotContactsChanged);
 }
 
 ConversationModel::~ConversationModel()
@@ -93,23 +94,18 @@ ConversationModel::getConversation(const unsigned int row) const
 }
 
 void
-ConversationModel::addConversation(const std::string& uri)
+ConversationModel::addConversation(const std::string& uri) const
 {
-    try {
-        auto conversation = find(uri);
-        if (conversation.participants.empty()) return;
-        auto contact = conversation.participants.front();
+    auto conversationIdx = find(uri);
+    if (conversationIdx == -1) return;
+    auto conversation = conversations_.at(conversationIdx);
+    if (conversation.participants.empty()) return;
+    auto contact = conversation.participants.front();
 
-        // Send contact request if non used
-        if(!conversation.isUsed) {
-            if (contact.uri.length() == 0) return;
-            contactModel_.addContact(uri);
-
-            // TODO just this item
-            emit modelUpdated();
-        }
-    } catch (const std::out_of_range&) {
-        return;
+    // Send contact request if non used
+    if(!conversation.isUsed) {
+        if (contact.uri.length() == 0) return;
+        contactModel_.addContact(uri);
     }
 
 }
@@ -117,36 +113,36 @@ ConversationModel::addConversation(const std::string& uri)
 void
 ConversationModel::selectConversation(const std::string& uid)
 {
-    try {
-        // Get conversation
-        auto conversation = find(uid);
-        auto participants = conversation.participants;
-        // Check if conversation has a valid contact.
-        if (participants.empty() || participants.front().uri.empty())
-            return;
-        if (conversation.call.status == call::Status::INVALID) {
-            emit showChatView(conversation);
-            return;
-        }
-        switch (conversation.call.status) {
-        case call::Status::INCOMING_RINGING:
-        case call::Status::OUTGOING_RINGING:
-        case call::Status::CONNECTING:
-        case call::Status::SEARCHING:
-                // We are currently in a call
-                emit showIncomingCallView(conversation);
-                break;
-            case call::Status::IN_PROGRESS:
-                // We are currently receiving a call
-                emit showCallView(conversation);
-                break;
-            default:
-                // We are not in a call, show the chatview
-                emit showChatView(conversation);
-        }
-    } catch (const std::out_of_range&) {
+    // Get conversation
+    auto conversationIdx = find(uid);
+    if (conversationIdx == -1) return;
+    auto conversation = conversations_.at(conversationIdx);
+    auto participants = conversation.participants;
+    // Check if conversation has a valid contact.
+    if (participants.empty() || participants.front().uri.empty())
+        return;
+    emit showChatView(conversation);
+    /* TODO
+    if (conversation.call.status == call::Status::INVALID) {
+        emit showChatView(conversation);
         return;
     }
+    switch (conversation.call.status) {
+    case call::Status::INCOMING_RINGING:
+    case call::Status::OUTGOING_RINGING:
+    case call::Status::CONNECTING:
+    case call::Status::SEARCHING:
+            // We are currently in a call
+            emit showIncomingCallView(conversation);
+            break;
+        case call::Status::IN_PROGRESS:
+            // We are currently receiving a call
+            emit showCallView(conversation);
+            break;
+        default:
+            // We are not in a call, show the chatview
+            emit showChatView(conversation);
+    }*/
 }
 
 void
@@ -164,12 +160,6 @@ ConversationModel::removeConversation(const std::string& uid)
     // Remove contact from daemon
     auto contact = conversation.participants.front();
     contactModel_.removeContact(contact.uri);
-
-    // Remove conversation (TODO get confirmation from contactModel)
-    conversations_.erase(i);
-
-    // The model has changed
-    emit modelUpdated();
 }
 
 void
@@ -181,39 +171,35 @@ ConversationModel::placeCall(const std::string& uid) const
 void
 ConversationModel::sendMessage(const std::string& uid, const std::string& body) const
 {
-    try {
-        auto conversation = find(uid);
-        if (conversation.participants.empty()) return;
-        auto contact = conversation.participants.front();
-        auto account = AvailableAccountModel::instance().currentDefaultAccount(); // TODO replace by linked account
-        if (!account) return;
+    auto conversationIdx = find(uid);
+    if (conversationIdx == -1) return;
+    auto conversation = conversations_.at(conversationIdx);
+    if (conversation.participants.empty()) return;
+    auto contact = conversation.participants.front();
+    auto account = AvailableAccountModel::instance().currentDefaultAccount(); // TODO replace by linked account
+    if (!account) return;
 
-        // Send contact request if non used
-        if(!conversation.isUsed) {
-            if (contact.uri.length() == 0) return;
-            contactModel_.addContact(contact.uri);
-            emit modelUpdated();
-        }
-        // Send message to contact.
-        QMap<QString, QString> payloads;
-        payloads["text/plain"] = body.c_str();
-
-        // TODO change this for group messages
-        auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
-        contact.uri.c_str(), payloads);
-
-        message::Info msg;
-        msg.uid = contact.uri.c_str();
-        msg.body = body;
-        msg.timestamp = std::time(nullptr);
-        msg.type = message::Type::TEXT;
-        msg.status = message::Status::SENDING;
-
-        database_.addMessage(account->id().toStdString(), msg);
-    } catch (const std::out_of_range&) {
-        return;
+    // Send contact request if non used
+    if(!conversation.isUsed) {
+        if (contact.uri.length() == 0) return;
+        addConversation(contact.uri);
     }
+    // Send message to contact.
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = body.c_str();
 
+    // TODO change this for group messages
+    auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
+    contact.uri.c_str(), payloads);
+
+    message::Info msg;
+    msg.uid = contact.uri.c_str();
+    msg.body = body;
+    msg.timestamp = std::time(nullptr);
+    msg.type = message::Type::TEXT;
+    msg.status = message::Status::SENDING;
+
+    database_.addMessage(account->id().toStdString(), msg);
 }
 
 void
@@ -278,6 +264,7 @@ ConversationModel::initConversations()
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
+    conversations_.clear();
     // Fill conversations_
     for(auto const& contact : contactModel_.getAllContacts())
     {
@@ -328,33 +315,26 @@ ConversationModel::sortConversations()
 void
 ConversationModel::slotMessageAdded(int uid, const std::string& account, message::Info msg)
 {
-    try {
-        auto conversation = find(msg.uid);
-        if (conversation.participants.empty()) return;
-        if (!conversation.isUsed) conversation.isUsed = true;
-        // Add message to conversation
-        conversation.messages.insert(std::pair<int, message::Info>(uid, msg));
-        conversation.lastMessageUid = uid;
-        emit newMessageAdded(msg.uid, msg);
-        sortConversations();
-        emit modelUpdated();
-    } catch (const std::out_of_range&) {
-        return;
-    }
+    auto conversationIdx = find(msg.uid);
+    if (conversationIdx == -1) return;
+    auto conversation = conversations_.at(conversationIdx);
+    if (conversation.participants.empty()) return;
+    if (!conversation.isUsed) conversation.isUsed = true;
+    // Add message to conversation
+    conversation.messages.insert(std::pair<int, message::Info>(uid, msg));
+    conversation.lastMessageUid = uid;
+    emit newMessageAdded(msg.uid, msg);
+    sortConversations();
+    emit modelUpdated();
 }
 
-conversation::Info&
+int
 ConversationModel::find(const std::string& uid) const
 {
-    std::shared_ptr<conversation::Info> result = nullptr;
-    auto i = std::find_if(conversations_.begin(), conversations_.end(),
-    [uid](const conversation::Info& conversation) {
-        return conversation.uid == uid;
-    });
-    if (i != conversations_.end()) {
-        throw std::out_of_range("ConversationModel::find, invalid uid");
+    for (unsigned int i = 0; i < conversations_.size() ; ++i) {
+        if(conversations_.at(i).uid == uid) return i;
     }
-    return *result.get();
+    return -1;
 }
 
 void
@@ -387,9 +367,8 @@ ConversationModel::search()
                 if (!account) return;
                 auto uid = cm->uri().toStdString();
                 conversations_.pop_front();
-                try {
-                    auto conversation = find(uid);
-                } catch (const std::out_of_range&) {
+                auto conversationIdx = find(uid);
+                if (conversationIdx == -1) {
                     // create the new conversation
                     conversation::Info conversation;
                     contact::Info participant;
@@ -419,9 +398,8 @@ ConversationModel::registeredNameFound(const Account* account, NameDirectory::Lo
                 if (!account) return;
                 auto uid = address.toStdString();
                 conversations_.pop_front();
-                try {
-                    auto conversation = find(uid);
-                } catch (const std::out_of_range&) {
+                auto conversationIdx = find(uid);
+                if (conversationIdx == -1) {
                     // create the new conversation
                     conversation::Info conversation;
                     contact::Info participant;
@@ -438,6 +416,13 @@ ConversationModel::registeredNameFound(const Account* account, NameDirectory::Lo
     }
     disconnect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
     this, &ConversationModel::registeredNameFound);
+}
+
+void
+ConversationModel::slotContactsChanged()
+{
+    initConversations();
+    emit modelUpdated();
 }
 
 } // namespace lrc

@@ -25,6 +25,9 @@
 #include "availableaccountmodel.h"
 #include "dbus/configurationmanager.h"
 #include "contactmethod.h"
+#include "phonedirectorymodel.h"
+
+#include <iostream>
 
 namespace lrc
 {
@@ -33,6 +36,12 @@ ContactModel::ContactModel(const Database& db, const std::string& accountId)
 : QObject(), db_(db), accountId_(accountId)
 {
     fillsWithContacts();
+
+    // TODO move into LRC
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::contactAdded, this,
+            &ContactModel::slotContactsAdded);
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::contactRemoved, this,
+            &ContactModel::slotContactsRemoved);
 }
 
 ContactModel::~ContactModel()
@@ -40,35 +49,13 @@ ContactModel::~ContactModel()
 
 }
 
-const contact::Info&
+void
 ContactModel::addContact(const std::string& uri)
 {
     // Add contact to daemon
     ConfigurationManager::instance().addContact(QString(accountId_.c_str()),
     QString(uri.c_str()));
-
-    // TODO do this when daemon emit contactAdded
-    // Store new contact
-    auto contact = std::make_shared<contact::Info>();
-    contact->uri = uri;
-    contact->avatar = "";
-    contact->registeredName = "";
-    contact->alias = "";
-    contact->isTrusted = false;
-    contact->isPresent = false;
-    contact->type = contact::Type::RING; // TODO SIP contacts
-    contacts_[uri] = contact;
-
-    // Add to database
-    message::Info msg;
-    msg.uid = uri.c_str();
-    msg.body = "";
-    msg.timestamp = std::time(nullptr);
-    msg.type = message::Type::CONTACT;
-    msg.status = message::Status::SUCCEED;
-    db_.addMessage(accountId_, msg);
-
-    return *contact.get();
+    // TODO connect signal from LRC
 }
 
 void
@@ -76,9 +63,7 @@ ContactModel::removeContact(const std::string& uri)
 {
     // Remove contact from daemon contacts
     ConfigurationManager::instance().removeContact(QString(accountId_.c_str()), QString(uri.c_str()), false);
-    // TODO do this when daemon emit contactRemoved
-    contacts_.erase(uri);
-    db_.clearHistory(accountId_, uri, true);
+    // TODO connect signal from LRC
 }
 
 void
@@ -163,9 +148,10 @@ ContactModel::fillsWithContacts()
         contact->alias = alias;
         contact->isTrusted = isTrusted;
         contact->isPresent = isPresent;
-        contact->type = type;
+        contact->type = type; // TODO
 
         contacts_[uri] = contact;
+
     }
 
     return true;
@@ -176,6 +162,51 @@ ContactModel::setContactPresent(const std::string& uri, bool status)
 {
     if (contacts_.find(uri) != contacts_.end()) {
         contacts_[uri]->isPresent = status;
+    }
+}
+
+void
+ContactModel::slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed)
+{
+    auto account = AccountModel::instance().getById(accountId_.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+    }
+    // TODO disconnect signal from LRC
+    if (contacts_.find(uri.toStdString()) == contacts_.end()) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
+        auto contact = std::make_shared<contact::Info>();
+        contact->uri = uri.toStdString();
+        contact->avatar = db_.getContactAttribute(uri.toStdString(), "photo");
+        contact->registeredName = cm->registeredName().toStdString();
+        contact->alias =  cm->bestName().toStdString();
+        contact->isTrusted = false;
+        contact->isPresent = cm->isPresent();
+        contact->type = contact::Type::RING; // TODO
+
+        contacts_[uri.toStdString()] = contact;
+
+        // Add to database
+        message::Info msg;
+        msg.uid = uri.toStdString();
+        msg.body = "";
+        msg.timestamp = std::time(nullptr);
+        msg.type = message::Type::CONTACT;
+        msg.status = message::Status::SUCCEED;
+        db_.addMessage(accountId_, msg);
+        emit contactsChanged();
+    }
+}
+
+void
+ContactModel::slotContactsRemoved(const QString &accountID, const QString &uri, bool status)
+{
+    if (accountId_ != accountID.toStdString()) return;
+    // TODO disconnect signal from LRC
+    if (contacts_.find(uri.toStdString()) != contacts_.end()) {
+        db_.clearHistory(accountId_, uri.toStdString(), true);
+        contacts_.erase(uri.toStdString());
+        emit contactsChanged();
     }
 }
 
