@@ -28,6 +28,7 @@ class QByteArray ;
 #include <securityevaluationmodel.h>
 #include <categorizedcontactmodel.h>
 #include <categorizedhistorymodel.h>
+#include "data/conversation.h"
 class  Person             ;
 class  ContactMethod      ;
 class  Call               ;
@@ -68,6 +69,7 @@ public:
     virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) = 0;
+    virtual QVariant   conversationPhoto(const lrc::conversation::Info& conversation, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
@@ -80,6 +82,7 @@ public:
     virtual QVariant   decorationRole(const Call*          c    ) = 0;
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;
+    virtual QVariant   decorationRole(const lrc::conversation::Info* c) = 0;
     virtual QVariant   decorationRole(const Account*       acc  ) = 0;
 
     /**

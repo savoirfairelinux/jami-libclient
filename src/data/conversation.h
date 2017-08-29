@@ -19,6 +19,9 @@
 #pragma once
 #include "message.h"
 
+// std
+#include <deque>
+
 namespace lrc
 {
 
