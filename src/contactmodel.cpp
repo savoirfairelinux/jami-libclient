@@ -24,7 +24,6 @@
 // lrc
 #include "availableaccountmodel.h"
 #include "dbus/configurationmanager.h"
-#include "dbus/presencemanager.h"
 #include "contactmethod.h"
 
 namespace lrc
@@ -34,12 +33,6 @@ ContactModel::ContactModel(const Database& db, const std::string& accountId)
 : QObject(), db_(db), accountId_(accountId)
 {
     fillsWithContacts();
-
-    // Get contacts presence
-    connect(&PresenceManager::instance(),
-            SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
-            this,
-            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 }
 
 ContactModel::~ContactModel()
@@ -178,4 +171,12 @@ ContactModel::fillsWithContacts()
     return true;
 }
 
-} // namespace lrc
+void
+ContactModel::setContactPresent(const std::string& uri, bool status)
+{
+    if (contacts_.find(uri) != contacts_.end()) {
+        contacts_[uri]->isPresent = status;
+    }
+}
+
+}
