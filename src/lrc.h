@@ -30,18 +30,22 @@
 
 namespace lrc
 {
-    
+
 class NewAccountModel;
 class Database;
 
 class Lrc : public QObject {
     Q_OBJECT
-    public:
+public:
     explicit Lrc();
     ~Lrc();
     NewAccountModel& getAccountModel() {return *accountModel_.get();};
 
-    private:
+private Q_SLOTS:
+    void newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
+    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
+
+private:
     std::unique_ptr<Database> database_;
     std::unique_ptr<NewAccountModel> accountModel_;
 };

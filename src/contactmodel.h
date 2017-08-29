@@ -45,9 +45,7 @@ public:
     const ContactsInfoMap& getAllContacts() const;
     void nameLookup(const std::string& uri) const;
     void addressLookup(const std::string& name) const;
-
-private Q_SLOTS:
-    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
+    void setContactPresent(const std::string& uri, bool status);
 
 private:
     bool fillsWithContacts();
