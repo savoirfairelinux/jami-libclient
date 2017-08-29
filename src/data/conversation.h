@@ -17,7 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-#include "message.h"
+#include "data/message.h"
 #include "data/call.h"
 #include "data/contact.h"
 
