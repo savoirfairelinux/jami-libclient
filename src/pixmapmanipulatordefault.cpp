@@ -25,6 +25,10 @@
 //Ring
 #include <useractionmodel.h>
 
+// LRC
+#include "api/account.h"
+#include "api/conversation.h"
+
 namespace Interfaces {
 
 QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bool displayPresence)
@@ -55,6 +59,19 @@ QVariant PixmapManipulatorDefault::callPhoto(Call* c, const QSize& size, bool di
 QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize& size, bool displayPresence)
 {
     Q_UNUSED(c)
+    Q_UNUSED(size)
+    Q_UNUSED(displayPresence)
+    return QVariant();
+}
+
+QVariant
+PixmapManipulatorDefault::conversationPhoto(const lrc::api::conversation::Info& conversation,
+                                            const lrc::api::account::Info& accountInfo,
+                                            const QSize& size,
+                                            bool displayPresence)
+{
+    Q_UNUSED(conversation)
+    Q_UNUSED(accountInfo)
     Q_UNUSED(size)
     Q_UNUSED(displayPresence)
     return QVariant();
@@ -140,5 +157,13 @@ QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
    return QVariant();
 }
 
+QVariant
+PixmapManipulatorDefault::decorationRole(const lrc::api::conversation::Info& conversation,
+                                         const lrc::api::account::Info& accountInfo)
+{
+   Q_UNUSED(conversation)
+   Q_UNUSED(accountInfo)
+   return QVariant();
+}
 
 } // namespace Interfaces
