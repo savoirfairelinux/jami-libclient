@@ -76,9 +76,9 @@ private:
     /**
      * Search a conversation in conversations_
      * @param uid the contact to search
-     * @return the contact if found else nullptr
+     * @return the index in conversations_
      */
-    conversation::Info& find(const std::string& uid) const;
+    int find(const std::string& uid) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
