@@ -24,6 +24,7 @@
 // std
 #include <memory>
 #include <deque>
+#include <vector>
 
 namespace lrc
 {
@@ -36,7 +37,7 @@ struct Info
     std::string uid;
     std::string accountId;
     std::vector<contact::Info> participants;
-    call::Info call;
+    //call::Info call;
     MessagesMap messages;
     unsigned int lastMessageUid = 0;
     bool isUsed = false;
