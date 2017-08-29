@@ -45,6 +45,6 @@ struct Info
 
 }
 
-using AccountsInfo = std::map<std::string, account::Info>;
+using AccountsInfoMap = std::map<std::string, account::Info>;
 
 } // namespace lrc

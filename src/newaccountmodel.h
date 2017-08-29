@@ -46,7 +46,7 @@ public:
 private:
     explicit NewAccountModel(const Database& database);
     const Database& database_;
-    AccountsInfo accounts_;
+    AccountsInfoMap accounts_;
 };
 
 using upNewAccountModel = std::unique_ptr<NewAccountModel>;
