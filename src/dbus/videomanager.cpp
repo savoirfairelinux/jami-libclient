@@ -22,7 +22,7 @@
 
 VideoManagerInterface& VideoManager::instance()
 {
-#ifdef ENABLE_LIBWRAP
+#if defined(ENABLE_TEST) || defined(ENABLE_LIBWRAP)
     static auto interface = new VideoManagerInterface();
 #else
     if (!dbus_metaTypeInit)
