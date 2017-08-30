@@ -20,10 +20,20 @@
 
 #pragma once
 
+// cppunit
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-namespace ring { namespace test {
+// std
+#include <memory>
+
+// lrc
+#include "lrc.h"
+
+namespace ring
+{
+namespace test
+{
 
 class ExampleTest : public CppUnit::TestFixture {
 
@@ -31,7 +41,12 @@ class ExampleTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(test);
     CPPUNIT_TEST_SUITE_END();
 public:
+    void setUp();
     void test();
+
+protected:
+    std::unique_ptr<lrc::Lrc> lrc_;
 };
 
-}} // namespace ring::test
+} // namespace test
+} // namespace ring
