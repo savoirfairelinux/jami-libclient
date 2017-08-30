@@ -71,6 +71,10 @@ Q_SIGNALS:
      * @param confirmed, true if the contact is trusted.
      */
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
+    // TODO: add docs
+    void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
+    void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
+    void callStateChanged(const std::string& callId, const std::string &state, int code);
 
 private Q_SLOTS:
     /**
@@ -102,6 +106,12 @@ private Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+
+    // TODO: add docs
+    void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
+
+    void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
+    void slotCallStateChanged(const QString& callId, const QString &state, int code);
 
 private:
     const api::Lrc& parent;

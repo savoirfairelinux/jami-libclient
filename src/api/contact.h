@@ -34,8 +34,39 @@ enum class Type {
     INVALID,
     RING,
     SIP,
-    PENDING
+    PENDING,
 };
+
+static const std::string
+TypeToString(Type type)
+{
+    switch(type) {
+    case Type::INVALID:
+        return "INVALID";
+    case Type::RING:
+        return "RING";
+    case Type::SIP:
+        return "SIP";
+    case Type::PENDING:
+        return "PENDING";
+    }
+
+    //throw something
+}
+
+static Type
+StringToType(const std::string& type)
+{
+    if (type == "PENDING") {
+        return contact::Type::PENDING;
+    } else if (type == "SIP") {
+        return contact::Type::SIP;
+    } else if (type == "RING") {
+        return contact::Type::RING;
+    } else if (type == "INVALID")
+        return contact::Type::INVALID;
+    //throw something
+}
 
 struct Info
 {

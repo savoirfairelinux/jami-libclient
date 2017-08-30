@@ -35,7 +35,7 @@ namespace lrc
 
 using namespace api;
 
-class NewAccountModelPimpl
+class NewAccountModelPimpl: public QObject
 {
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
@@ -46,6 +46,9 @@ public:
     NewAccountModel& linked;
     const Database& database;
     NewAccountModel::AccountInfoMap accounts;
+
+public Q_SLOTS:
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
 };
 
 NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
@@ -95,16 +98,24 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         auto& owner = item.second;
         owner.id = id.toStdString();
         owner.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
-        owner.callModel = std::make_unique<NewCallModel>(owner);
+        owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
         owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
     }
+
+    connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
 
+}
+
+void
+NewAccountModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
+{
+    emit linked.incomingCall(accountId, fromId);
 }
 
 } // namespace lrc
