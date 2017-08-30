@@ -84,6 +84,7 @@ public Q_SLOTS:
     void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
     void registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
                              const QString& address, const QString& name);
+    void slotIncomingCall(const std::string& callId, const std::string& fromId);
 
 };
 
@@ -187,28 +188,37 @@ ConversationModel::selectConversation(const std::string& uid)
     if (participants.empty())
         return;
 
-    emit showChatView(conversation);
-    /* TODO
-    if (conversation.call.status == call::Status::INVALID) {
+    //emit showChatView(conversation);
+    try  {
+        auto call = owner.callModel->getCall(conversation.callId);
+        switch (call.status) {
+            case call::Status::INCOMING_RINGING:
+            case call::Status::OUTGOING_RINGING:
+            case call::Status::CONNECTING:
+            case call::Status::SEARCHING:
+                // We are currently in a call
+                emit showIncomingCallView(conversation);
+                break;
+            case call::Status::IN_PROGRESS:
+                // We are currently receiving a call
+                emit showCallView(conversation);
+                break;
+            case call::Status::INVALID:
+            case call::Status::OUTGOING_REQUESTED:
+            case call::Status::PAUSED:
+            case call::Status::PEER_PAUSED:
+            case call::Status::INACTIVE:
+            case call::Status::ENDED:
+            case call::Status::TERMINATING:
+            case call::Status::CONNECTED:
+            case call::Status::AUTO_ANSWERING:
+            default:
+                // We are not in a call, show the chatview
+                emit showChatView(conversation);
+        }
+    } catch (const std::out_of_range&) {
         emit showChatView(conversation);
-        return;
     }
-    switch (conversation.call.status) {
-    case call::Status::INCOMING_RINGING:
-    case call::Status::OUTGOING_RINGING:
-    case call::Status::CONNECTING:
-    case call::Status::SEARCHING:
-            // We are currently in a call
-            emit showIncomingCallView(conversation);
-            break;
-        case call::Status::IN_PROGRESS:
-            // We are currently receiving a call
-            emit showCallView(conversation);
-            break;
-        default:
-            // We are not in a call, show the chatview
-            emit showChatView(conversation);
-    }*/
 }
 
 void
@@ -234,8 +244,22 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
 }
 
 void
-ConversationModel::placeCall(const std::string& uid) const
+ConversationModel::placeCall(const std::string& uid)
 {
+    auto conversationIdx = pimpl_->indexOf(uid);
+
+    if (conversationIdx == -1)
+        return;
+
+    auto conversation = pimpl_->conversations.at(conversationIdx);
+
+    auto url = conversation.participants.front();
+    if (owner.contact.type == contact::Type::RING) {
+        url = "ring:" + url;
+    }
+    qDebug() << "Start call with " << url.c_str();
+    conversation.callId = owner.callModel->createCall(url).id;
+    emit showIncomingCallView(conversation);
 }
 
 void
@@ -388,6 +412,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     connect(&database, &Database::messageAdded, this, &ConversationModelPimpl::slotMessageAdded);
     connect(&*linked.owner.contactModel, &ContactModel::modelUpdated,
             this, &ConversationModelPimpl::slotContactModelUpdated);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ConversationModelPimpl::slotIncomingCall);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -583,6 +609,24 @@ ConversationModelPimpl::slotContactModelUpdated()
 {
     initConversations();
     emit linked.modelUpdated();
+}
+
+void
+ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+{
+    auto conversationIdx = indexOf(fromId);
+
+    if (conversationIdx != -1) {
+        auto conversation = conversations.at(conversationIdx);
+
+        qDebug() << "Add call to conversation with " << fromId.c_str();
+        conversation.callId = callId;
+        // TODO Add call + don't show this method to the client.
+        // owner.callModel->createCall(url).id;
+        emit linked.showIncomingCallView(conversation);
+    } else {
+        // TODO we receive a conversation from a non contact. How do we want to show this?
+    }
 }
 
 } // namespace api

@@ -65,7 +65,7 @@ public:
     void addConversation(const std::string& uid) const;
     void removeConversation(const std::string& uid, bool banned=false);
     void selectConversation(const std::string& uid);
-    void placeCall(const std::string& uid) const;
+    void placeCall(const std::string& uid);
     void sendMessage(const std::string& uid, const std::string& body) const;
     void setFilter(const std::string& filter);
     void setFilter(const lrc::api::contact::Type& filter = lrc::api::contact::Type::INVALID);
@@ -79,9 +79,9 @@ Q_SIGNALS:
     void newContactAdded(const std::string& uri);
     void incomingCallFromItem(const unsigned int row);
 
-    void showChatView(const conversation::Info& conversationInfo); // TO MOVE
-    void showCallView(const conversation::Info& conversationInfo);// TO MOVE
-    void showIncomingCallView(const conversation::Info& conversationInfo);// TO MOVE
+    void showChatView(const conversation::Info& conversationInfo) const; // TO MOVE
+    void showCallView(const conversation::Info& conversationInfo) const;// TO MOVE
+    void showIncomingCallView(const conversation::Info& conversationInfo) const;// TO MOVE
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;

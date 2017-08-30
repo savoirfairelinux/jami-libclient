@@ -85,7 +85,7 @@ NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksH
         info.contact.registeredName = volatileDetails["Account.registredName"].toStdString();
         info.contact.alias = details["Account.alias"].toStdString();
         info.contact.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
+        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, callbackHandler, info));
         info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
         info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
     }
