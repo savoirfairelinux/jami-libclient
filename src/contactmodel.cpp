@@ -354,6 +354,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
+
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -585,6 +588,7 @@ ContactModelPimpl::slotRegisteredNameFound(const Account* account, NameDirectory
             temporaryContact.uri = address.toStdString();
             temporaryContact.registeredName = name.toStdString();
             temporaryContact.alias = name.toStdString();
+            temporaryContact.avatar = "";
         } else {
             contacts[address.toStdString()].registeredName = name.toStdString();
             contacts[address.toStdString()].alias = name.toStdString();
@@ -593,6 +597,7 @@ ContactModelPimpl::slotRegisteredNameFound(const Account* account, NameDirectory
                 temporaryContact.uri = "";
                 temporaryContact.registeredName = "";
                 temporaryContact.alias = "";
+                temporaryContact.avatar = searchingAvatar;
             }
         }
         emit linked.modelUpdated();
