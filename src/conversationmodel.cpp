@@ -250,36 +250,36 @@ ConversationModel::selectConversation(const std::string& uid) const
     }
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
-    //~ try  { [jn] a deplacer dans le patch callmodel
-        //~ auto call = owner.callModel->getCall(conversation.callId);
-        //~ switch (call.status) {
-            //~ case call::Status::INCOMING_RINGING:
-            //~ case call::Status::OUTGOING_RINGING:
-            //~ case call::Status::CONNECTING:
-            //~ case call::Status::SEARCHING:
-                //~ // We are currently in a call
-                //~ emit showIncomingCallView(conversation);
-                //~ break;
-            //~ case call::Status::PAUSED:
-            //~ case call::Status::PEER_PAUSED:
-            //~ case call::Status::CONNECTED:
-            //~ case call::Status::IN_PROGRESS:
-                //~ // We are currently receiving a call
-                //~ emit showCallView(conversation);
-                //~ break;
-            //~ case call::Status::INVALID:
-            //~ case call::Status::OUTGOING_REQUESTED:
-            //~ case call::Status::INACTIVE:
-            //~ case call::Status::ENDED:
-            //~ case call::Status::TERMINATING:
-            //~ case call::Status::AUTO_ANSWERING:
-            //~ default:
-                //~ // We are not in a call, show the chatview
-                //~ emit showChatView(conversation);
-        //~ }
-    //~ } catch (const std::out_of_range&) {
+    try  {
+        auto call = owner.callModel->getCall(conversation.callId);
+        switch (call.status) {
+            case call::Status::INCOMING_RINGING:
+            case call::Status::OUTGOING_RINGING:
+            case call::Status::CONNECTING:
+            case call::Status::SEARCHING:
+                // We are currently in a call
+                emit showIncomingCallView(conversation);
+                break;
+            case call::Status::PAUSED:
+            case call::Status::PEER_PAUSED:
+            case call::Status::CONNECTED:
+            case call::Status::IN_PROGRESS:
+                // We are currently receiving a call
+                emit showCallView(conversation);
+                break;
+            case call::Status::INVALID:
+            case call::Status::OUTGOING_REQUESTED:
+            case call::Status::INACTIVE:
+            case call::Status::ENDED:
+            case call::Status::TERMINATING:
+            case call::Status::AUTO_ANSWERING:
+            default:
+                // We are not in a call, show the chatview
+                emit showChatView(conversation);
+        }
+    } catch (const std::out_of_range&) {
         emit showChatView(conversation);
-    //~ }
+    }
 }
 
 void
@@ -323,12 +323,13 @@ ConversationModel::placeCall(const std::string& uid) const
 
     auto participant = conversation.participants.front();
     auto contact = owner.contactModel->getContact(participant);
-    pimpl_->sendContactRequest(participant);
     auto url = contact.uri;
+    if (url.empty()) return; // Incorrect item
+    pimpl_->sendContactRequest(participant);
     if (owner.profile.type != contact::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
-    //~ conversation.callId = owner.callModel->createCall(url); [jn] à deplacer dans le patch callmodel
+    conversation.callId = owner.callModel->createCall(url);
     if (convId.empty()) {
         // The conversation has changed because it was with the temporary item
         auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
@@ -366,10 +367,10 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     for (const auto& participant: conversation.participants) {
         auto contact = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
-        //~ if (not conversation.callId.empty()) [jn] à delpacer dans le patch du callmodel
-            //~ owner.callModel->sendSipMessage(conversation.callId, body);
-        //~ else
-            owner.contactModel->sendDhtMessage(participant, body);
+        if (not conversation.callId.empty())
+            owner.callModel->sendSipMessage(conversation.callId, body);
+        else
+            owner.contactModel->sendDhtMessage(contact.uri, body);
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
@@ -468,23 +469,23 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::incomingCallMessage,
             this, &ConversationModelPimpl::slotIncomingCallMessage);
 
-    // Call related [jn] à deplacer dans call model
-    //~ connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
-            //~ this, &ConversationModelPimpl::slotIncomingCall);
+    // Call related
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ConversationModelPimpl::slotIncomingCall);
     connect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
             this, &ConversationModelPimpl::slotIncomingCall);
-    //~ connect(&*linked.owner.callModel,
-            //~ &lrc::api::NewCallModel::callStatusChanged,
-            //~ this,
-            //~ &ConversationModelPimpl::slotCallStatusChanged);
-    //~ connect(&*linked.owner.callModel,
-            //~ &lrc::api::NewCallModel::callStarted,
-            //~ this,
-            //~ &ConversationModelPimpl::slotCallStarted);
-    //~ connect(&*linked.owner.callModel,
-            //~ &lrc::api::NewCallModel::callEnded,
-            //~ this,
-            //~ &ConversationModelPimpl::slotCallEnded);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStatusChanged,
+            this,
+            &ConversationModelPimpl::slotCallStatusChanged);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStarted,
+            this,
+            &ConversationModelPimpl::slotCallStarted);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callEnded,
+            this,
+            &ConversationModelPimpl::slotCallEnded);
 }
 
 
@@ -784,28 +785,28 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
 void
 ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
 {
-        //~ if (linked.owner.callModel->hasCall(callId)) { [jn] à deplacer dans callmodel
-            //~ // [jn] code dupliqué
-            //~ auto contactProfileId = database::getOrInsertProfile(db, from);
-            //~ auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
-            //~ auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
-            //~ if (conv.empty()) {
-                //~ conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
-            //~ }
-            //~ auto msg = message::Info({contactProfileId, body, std::time(nullptr),
-                                    //~ message::Type::TEXT, message::Status::UNREAD});
-            //~ int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
-            //~ auto conversationIdx = indexOf(conv[0]);
-            //~ // Add the conversation if not already here
-            //~ if (conversationIdx == -1) {
-                //~ addConversationWith(conv[0], from);
-            //~ } else {
-                //~ conversations[conversationIdx].messages.emplace(msgId, msg);
-            //~ }
-            //~ emit linked.newUnreadMessage(conv[0], msg);
-            //~ sortConversations();
-            //~ emit linked.modelSorted();
-        //~ }
+        if (linked.owner.callModel->hasCall(callId)) {
+            // [jn] code dupliqué
+            auto contactProfileId = database::getOrInsertProfile(db, from);
+            auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
+            auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+            if (conv.empty()) {
+                conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
+            }
+            auto msg = message::Info({contactProfileId, body, std::time(nullptr),
+                                    message::Type::TEXT, message::Status::UNREAD});
+            int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+            auto conversationIdx = indexOf(conv[0]);
+            // Add the conversation if not already here
+            if (conversationIdx == -1) {
+                addConversationWith(conv[0], from);
+            } else {
+                conversations[conversationIdx].messages.emplace(msgId, msg);
+            }
+            emit linked.newUnreadMessage(conv[0], msg);
+            sortConversations();
+            emit linked.modelSorted();
+        }
 }
 
 } // namespace lrc
