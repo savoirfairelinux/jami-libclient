@@ -18,16 +18,36 @@
  */
 #include "example.h"
 
-#include <iostream>
+// Qt
+#include <QString>
 
-namespace ring { namespace test {
+// Lrc
+#include "dbus/configurationmanager.h"
+
+namespace ring
+{
+namespace test
+{
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExampleTest);
 
 void
+ExampleTest::setUp()
+{
+    // NOTE: here we can create some accounts, contacts, etc
+    // NOTE: We can also recreate ring.db
+    lrc_ = std::unique_ptr<lrc::api::Lrc>(new lrc::api::Lrc());
+}
+
+void
 ExampleTest::test()
 {
-    std::cout << "Hello Ring!" << std::endl;
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] ="from test";
+    ConfigurationManager::instance().emitIncomingAccountMessage(QString("0000"),
+    QString("aaaaa"), payloads);
     CPPUNIT_ASSERT_EQUAL(1, 1);
 }
-}} // namespace ring::test
+
+} // namespace test
+} // namespace ring
