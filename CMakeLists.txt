@@ -60,6 +60,10 @@ ELSE()
    SET(ENABLE_LIBWRAP true)
 ENDIF()
 
+IF((${ENABLE_TEST} MATCHES true))
+  SET(ENABLE_LIBWRAP true) # because mocks use the same interface present in src/qtwrapper
+ENDIF()
+
 # Enable some useful warnings
 ADD_DEFINITIONS(
    -Wall
@@ -524,7 +528,7 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
 )
 
-IF(${ENABLE_LIBWRAP} MATCHES true)
+IF(${ENABLE_LIBWRAP} MATCHES true OR ${ENABLE_TEST} MATCHES true)
    # done this way because of bug in cmake 2.8
    # (not necessary in 3.0+)
 ELSE()
@@ -610,7 +614,6 @@ ELSE()
       ${instance_xml}
       instance_dbus_interface
    )
-
 ENDIF()
 
 # Manually wrap private files and interfaces
@@ -637,7 +640,8 @@ SET(libringclient_PRIVATE_HDRS
    src/private/certificatemodel_p.h
 )
 
-IF(${ENABLE_LIBWRAP} MATCHES true)
+
+IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
    SET(libringclient_PRIVATE_HDRS
       ${libringclient_PRIVATE_HDRS}
 
@@ -843,18 +847,36 @@ ADD_CUSTOM_TARGET(uninstall
 
 
 IF((${ENABLE_TEST} MATCHES true))
+  ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Avoid dbus models
+  ADD_DEFINITIONS(-DENABLE_TEST=true) # Use mocks
   FIND_PACKAGE(Cppunit REQUIRED)
   MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
   # unit testing
   IF (CPPUNIT_FOUND)
     add_executable(LRCTester
+      test/mocks/callmanager_mock.h
+      test/mocks/configurationmanager_mock.h
+      test/mocks/instancemanager_mock.h
+      test/mocks/presencemanager_mock.h
+      test/mocks/videomanager_mock.h
       test/test_runner.cpp
       test/example.h
       test/example.cpp
+      ${libringclient_LIB_SRCS}
+      ${libringclient_PRIVATE_HDRS}
     )
     TARGET_LINK_LIBRARIES(LRCTester
        -lcppunit
+       -lpthread
+       ${QT_QTCORE_LIBRARY}
+       Qt5::Sql
     )
+
+    IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+       TARGET_LINK_LIBRARIES( LRCTester
+          -lrt
+       )
+    ENDIF()
     enable_testing()
     add_test(TEST LRCTester)
   ENDIF()
