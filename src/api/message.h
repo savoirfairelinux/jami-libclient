@@ -55,6 +55,10 @@ struct Info
     Status status = Status::INVALID;
 };
 
+static bool isOutgoing(const Info& message) {
+    return message.status != lrc::api::message::Status::READ;
+}
+
 } // namespace message
 } // namespace api
 } // namespace lrc

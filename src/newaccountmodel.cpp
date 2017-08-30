@@ -34,10 +34,10 @@ namespace lrc
 namespace api
 {
 
-class NewAccountModelPimpl
+class NewAccountModelPimpl: public QObject
 {
 public:
-    NewAccountModelPimpl(const Database& database, const lrc::CallbacksHandler& callbackHandler);
+    NewAccountModelPimpl(NewAccountModel& linked, const Database& database, const lrc::CallbacksHandler& callbackHandler);
     ~NewAccountModelPimpl();
     /**
      * Update the presence of a contact for an account
@@ -61,13 +61,17 @@ public:
      */
     void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
 
+    NewAccountModel& linked;
     const Database& database;
     const CallbacksHandler& callbackHandler;
     AccountInfoMap accounts;
+
+public Q_SLOTS:
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
 };
 
 NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksHandler& callbackHandler)
-: pimpl_(std::make_unique<NewAccountModelPimpl>(database, callbackHandler))
+: pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbackHandler))
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
@@ -85,7 +89,7 @@ NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksH
         info.contact.registeredName = volatileDetails["Account.registredName"].toStdString();
         info.contact.alias = details["Account.alias"].toStdString();
         info.contact.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
+        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, callbackHandler, info));
         info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
         info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
     }
@@ -112,16 +116,23 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
     return pimpl_->accounts[accountId];
 }
 
-NewAccountModelPimpl::NewAccountModelPimpl(const Database& database, const CallbacksHandler& callbackHandler)
-: database(database)
+NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked, const Database& database, const CallbacksHandler& callbackHandler)
+: linked(linked)
+, database(database)
 , callbackHandler(callbackHandler)
 {
-
+    connect(&callbackHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
 
+}
+
+void
+NewAccountModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
+{
+    emit linked.incomingCall(accountId, fromId);
 }
 
 } // namespace api
