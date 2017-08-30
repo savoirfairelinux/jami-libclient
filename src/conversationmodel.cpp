@@ -87,6 +87,8 @@ public:
 public Q_SLOTS:
     void slotContactModelUpdated();
     void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
+    void slotIncomingCall(const std::string& fromId, const std::string& callId);
+    void slotCallStatusChanged(const std::string& callId);
 
 };
 
@@ -174,7 +176,7 @@ ConversationModel::addConversation(const std::string& uid) const
 }
 
 void
-ConversationModel::selectConversation(const std::string& uid)
+ConversationModel::selectConversation(const std::string& uid) const
 {
     // Get conversation
     auto conversationIdx = pimpl_->indexOf(uid);
@@ -189,7 +191,7 @@ ConversationModel::selectConversation(const std::string& uid)
     if (participants.empty())
         return;
 
-    /*try  {
+    try  {
         auto call = owner.callModel->getCall(conversation.callId);
         switch (call.status) {
             case call::Status::INCOMING_RINGING:
@@ -216,10 +218,9 @@ ConversationModel::selectConversation(const std::string& uid)
                 // We are not in a call, show the chatview
                 emit showChatView(conversation);
         }
-    } catch (const std::out_of_range&) {*/
+    } catch (const std::out_of_range&) {
         emit showChatView(conversation);
-        qDebug() << "SHOW CHAT VIEW WITH " << conversation.uid.c_str();
-    //}
+    }
 }
 
 void
@@ -234,7 +235,7 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
     if (i == pimpl_->conversations.end())
         return;
 
-    auto conversation = *i;
+    auto& conversation = *i;
 
     if (conversation.participants.empty())
         return;
@@ -258,8 +259,8 @@ ConversationModel::placeCall(const std::string& uid) const
     if (owner.profile.type == contact::Type::RING) {
         url = "ring:" + url;
     }
-    //conversation.callId = owner.callModel->createCall(url);
-    //emit showIncomingCallView(conversation);
+    conversation.callId = owner.callModel->createCall(url);
+    emit showIncomingCallView(conversation);
 }
 
 void
@@ -341,13 +342,19 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , typeFilter(contact::Type::INVALID)
 {
     initConversations();
-
     // [jn] those signals don't make sense anymore. We may have to recycle them, or just to delete them.
     // since adding a message from Conversation use insertInto wich return something, I guess we can deal with
     // messageAdded without signal.
-    //~ connect(&db, &Database::messageAdded, this, &ConversationModelPimpl::slotMessageAdded);
     connect(&*linked.owner.contactModel, &ContactModel::modelUpdated,
             this, &ConversationModelPimpl::slotContactModelUpdated);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ConversationModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
+            this, &ConversationModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStatusChanged,
+            this,
+            &ConversationModelPimpl::slotCallStatusChanged);
 }
 
 
@@ -551,6 +558,39 @@ ConversationModelPimpl::indexOfContact(const std::string& uri) const
     return -1;
 }
 
+void
+ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+{
+    auto conversationIdx = indexOfContact(fromId);
+
+    if (conversationIdx == -1) {
+        qDebug() << "ConversationModelPimpl::slotIncomingCall, but conversation not found";
+        return; // Not a contact
+    }
+
+    auto& conversation = conversations.at(conversationIdx);
+
+    qDebug() << "Add call to conversation with " << fromId.c_str();
+    conversation.callId = callId;
+    emit linked.showIncomingCallView(conversation);
+}
+
+void
+ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
+{
+    // Get conversation
+    auto i = std::find_if(
+    conversations.begin(), conversations.end(),
+    [callId](const conversation::Info& conversation) {
+      return conversation.callId == callId;
+    });
+
+    if (i == conversations.end()) return;
+
+    auto& conversation = *i;
+    auto uid = conversation.uid;
+    linked.selectConversation(uid);
+}
 
 } // namespace lrc
 

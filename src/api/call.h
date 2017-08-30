@@ -54,6 +54,8 @@ struct Info
     std::time_t startTime = 0;
     Status status = Status::INVALID;
     std::string peer;
+    bool audioMuted = false;
+    bool videoMuted = false;
 };
 
 } // namespace call
