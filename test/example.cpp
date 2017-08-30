@@ -20,14 +20,24 @@
 
 #include <iostream>
 
-namespace ring { namespace test {
+#include <QString>
+
+#include "dbus/configurationmanager.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExampleTest);
 
 void
+ExampleTest::setUp()
+{
+    lrc_ = std::unique_ptr<lrc::Lrc>(new lrc::Lrc());
+}
+
+void
 ExampleTest::test()
 {
-    std::cout << "Hello Ring!" << std::endl;
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] ="from test";
+    ConfigurationManager::instance().emitIncomingAccountMessage(QString("0000"),
+    QString("aaaaa"), payloads);
     CPPUNIT_ASSERT_EQUAL(1, 1);
 }
-}} // namespace ring::test
