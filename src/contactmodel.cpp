@@ -113,6 +113,8 @@ public Q_SLOTS:
     void slotIncomingContactRequest(const std::string& accountId,
                                     const std::string& ringID,
                                     const std::string& payload);
+
+    void slotIncomingCall(const std::string& callId, const std::string& fromId);
 };
 
 namespace authority
@@ -317,6 +319,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
+
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -631,8 +636,6 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     }
 }
 
-<<<<<<< Updated upstream
-=======
 void
 ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
 {
@@ -670,7 +673,6 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
     emit linked.incomingCallFromPending(fromId, callId);
 }
 
->>>>>>> Stashed changes
 } // namespace lrc
 
 #include "api/moc_contactmodel.cpp"

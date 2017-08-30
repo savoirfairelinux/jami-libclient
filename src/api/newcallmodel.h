@@ -26,9 +26,18 @@
 // Qt
 #include <qobject.h>
 
+// Data
+#include "api/call.h"
+#include "api/account.h"
+
+namespace Video {
+class Renderer;
+}
+
 namespace lrc
 {
 
+class CallbacksHandler;
 class NewCallModelPimpl;
 
 namespace api
@@ -40,6 +49,10 @@ class NewAccountModel;
 
 class NewCallModel : public QObject {
     Q_OBJECT
+
+    friend class NewAccountModel;
+    friend class ConversationModel;
+
 public:
     using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
 
@@ -51,19 +64,31 @@ public:
         VIDEO
     };
 
-    NewCallModel(const account::Info& owner);
+    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
     ~NewCallModel();
 
-    const call::Info& createCall(const std::string& contactUri);
+    const std::string createCall(const std::string& url);
+    const call::Info& getCall(const std::string& uid) const;
+    static std::string humanReadableStatus(const call::Status& status);
 
+    void accept(const std::string& callId) const;
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const Media media) const;
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;
     void setQuality(const std::string& callId, const double quality) const;
     void transfer(const std::string& callId, const std::string& to) const;
     void addParticipant(const std::string& callId, const std::string& participant);
     void removeParticipant(const std::string& callId, const std::string& participant);
+
+    Video::Renderer* getRenderer(const std::string& callId) const;
+
+    std::string getFormattedCallDuration(const std::string& callId) const;
+
+Q_SIGNALS:
+    void callStatusChanged(const std::string& callId) const;
+    void newIncomingCall(const std::string& callId, const std::string& fromId) const;
+    void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
