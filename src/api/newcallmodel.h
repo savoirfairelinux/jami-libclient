@@ -26,9 +26,18 @@
 // Qt
 #include <qobject.h>
 
+// Data
+#include "api/call.h"
+#include "api/account.h"
+
+namespace Video {
+class Renderer;
+}
+
 namespace lrc
 {
 
+class CallbacksHandler;
 class NewCallModelPimpl;
 
 namespace api
@@ -38,8 +47,15 @@ namespace account { struct Info; }
 namespace call { struct Info; }
 class NewAccountModel;
 
+/**
+  *  @brief Class that manages call informations.
+  */
 class NewCallModel : public QObject {
     Q_OBJECT
+
+    friend class NewAccountModel;
+    friend class ConversationModel;
+
 public:
     using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
 
@@ -51,20 +67,131 @@ public:
         VIDEO
     };
 
-    NewCallModel(const account::Info& owner);
+    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
     ~NewCallModel();
 
-    const call::Info& createCall(const std::string& contactUri);
+    /**
+     * Create a new call with a contact
+     * @param  url of the contact to call
+     * @return the call uid created
+     */
+    const std::string createCall(const std::string& url);
+    /**
+     * Get the call from its call id
+     * @param  uid
+     * @return the callInfo
+     * @throw out_of_range exception if not found
+     */
+    const call::Info& getCall(const std::string& uid) const;
+    /**
+     * Get the call from the peer uri
+     * @param  uri
+     * @return the callInfo
+     * @throw out_of_range exception if not found
+     */
     const call::Info& getCallFromURI(const std::string& uri) const;
+    /**
+     * @param  callId to test
+     * @return true if callId is presend else false.
+     */
+    bool hasCall(const std::string& callId);
+    /**
+     * Send a text message to a SIP call
+     * @param callId
+     * @param body of the message
+     */
+    void sendSipMessage(const std::string& callId, const std::string& body) const;
 
+    /**
+     * Accept a call
+     * @param callId
+     */
+    void accept(const std::string& callId) const;
+    /**
+     * Hang up a call
+     * @param callId
+     */
     void hangUp(const std::string& callId) const;
+    /**
+     * Toggle audio record on a call
+     * @param callId
+     */
+    void toggleAudioRecord(const std::string& callId) const;
+    /**
+     * Play DTMF in a call
+     * @param callId
+     * @param value to play
+     */
+    void playDTMF(const std::string& callId, const std::string& value) const;
+    /**
+     * Toggle pause on a call
+     * @param callId
+     */
     void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const Media media) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
+    /**
+     * Toggle a media on a call
+     * @param callId
+     * @param media {AUDIO, VIDEO}
+     * @param flag is muted
+     */
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
+    /**
+     * Not implemented yet
+     */
     void setQuality(const std::string& callId, const double quality) const;
+    /**
+     * Not implemented yet
+     */
     void transfer(const std::string& callId, const std::string& to) const;
+    /**
+     * Not implemented yet
+     */
     void addParticipant(const std::string& callId, const std::string& participant);
+    /**
+     * Not implemented yet
+     */
     void removeParticipant(const std::string& callId, const std::string& participant);
+
+    /**
+     * @param  callId
+     * @return the renderer linked to a call
+     */
+    Video::Renderer* getRenderer(const std::string& callId) const;
+
+    /**
+     * @param  callId
+     * @return a human readable call duration
+     */
+    std::string getFormattedCallDuration(const std::string& callId) const;
+
+Q_SIGNALS:
+    /**
+     * Emitted when a call state changes
+     * @param callId
+     */
+    void callStatusChanged(const std::string& callId) const;
+    /**
+     * Emitted when a call starts
+     * @param callId
+     */
+    void callStarted(const std::string& callId) const;
+    /**
+     * Emitted when a call is over
+     * @param callId
+     */
+    void callEnded(const std::string& callId) const;
+    /**
+     * Emitted when a call is incoming
+     * @param callId
+     * @param fromId the peer uri
+     */
+    void newIncomingCall(const std::string& callId, const std::string& fromId) const;
+    /**
+     * Emitted when the renderer starts
+     * @param callId
+     * @param renderer
+     */
+    void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
