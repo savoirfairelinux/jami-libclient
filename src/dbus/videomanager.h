@@ -17,11 +17,15 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_LIBWRAP
- #include "videomanager_wrap.h"
+#ifdef ENABLE_TEST
+ #include "../../test/mocks/videomanager_mock.h"
 #else
- #include "video_dbus_interface.h"
- #include <QDBusPendingReply>
+ #ifdef ENABLE_LIBWRAP
+  #include "videomanager_wrap.h"
+ #else
+  #include "video_dbus_interface.h"
+  #include <QDBusPendingReply>
+ #endif
 #endif
 
 #include <typedefs.h>
