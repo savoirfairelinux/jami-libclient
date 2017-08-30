@@ -18,11 +18,15 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_LIBWRAP
- #include "../qtwrapper/configurationmanager_wrap.h"
+#ifdef ENABLE_TEST
+ #include "../../test/mocks/configurationmanager_mock.h"
 #else
- #include "configurationmanager_dbus_interface.h"
- #include <QDBusPendingReply>
+ #ifdef ENABLE_LIBWRAP
+  #include "../qtwrapper/configurationmanager_wrap.h"
+ #else
+  #include "configurationmanager_dbus_interface.h"
+  #include <QDBusPendingReply>
+ #endif
 #endif
 #include <typedefs.h>
 
