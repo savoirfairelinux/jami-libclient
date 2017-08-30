@@ -40,7 +40,8 @@ class NewAccountModelPimpl;
 
 using AccountInfoMap = std::map<std::string, account::Info>;
 
-class LIB_EXPORT NewAccountModel {
+class LIB_EXPORT NewAccountModel : public QObject {
+    Q_OBJECT
 public:
     NewAccountModel(const Database& database, const CallbacksHandler& callbackHandler);
     ~NewAccountModel();

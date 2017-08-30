@@ -113,6 +113,14 @@ Video::Renderer* VideoRendererManager::getRenderer(const Call* call) const
    return d_ptr->m_hRenderers[call->dringId().toLatin1()];
 }
 
+// helper for the new model
+Video::Renderer* VideoRendererManager::getRenderer(const std::string& callId) const
+{
+   return (d_ptr->m_hRenderers.contains(callId.c_str()))
+          ? d_ptr->m_hRenderers[callId.c_str()]
+          : nullptr;
+}
+
 ///Get the video preview Renderer
 Video::Renderer* VideoRendererManager::previewRenderer()
 {
