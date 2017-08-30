@@ -35,7 +35,7 @@ namespace lrc
 
 using namespace api;
 
-class NewAccountModelPimpl
+class NewAccountModelPimpl: public QObject
 {
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
@@ -48,6 +48,9 @@ public:
     NewAccountModel::AccountInfoMap accounts;
 
     void addAcountProfileInDb(const account::Info& info);
+
+public Q_SLOTS:
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
 };
 
 NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
@@ -103,12 +106,14 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
         owner.profile.alias = details["Account.alias"].toStdString();
         owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-        owner.callModel = std::make_unique<NewCallModel>(owner);
+        owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
         owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
         addAcountProfileInDb(owner);
     }
+
+    connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -132,6 +137,12 @@ NewAccountModelPimpl::addAcountProfileInDb(const account::Info& info)
                              {{":uri", info.profile.uri}, {":alias", info.profile.alias}, {":photo", ""},
                               {":type", type}, {":status", ""}});
     }
+}
+
+void
+NewAccountModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
+{
+    emit linked.incomingCall(accountId, fromId);
 }
 
 } // namespace lrc

@@ -318,6 +318,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
+
 }
 
 ContactModelPimpl::~ContactModelPimpl()
