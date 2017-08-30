@@ -18,16 +18,38 @@
  */
 #include "example.h"
 
-#include <iostream>
+// Qt
+#include <QString>
 
-namespace ring { namespace test {
+// Lrc
+#include "dbus/configurationmanager.h"
+
+namespace lrc
+{
+namespace test
+{
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExampleTest);
 
 void
+ExampleTest::setUp()
+{
+    // NOTE: Tests must always gives the same result. So, here we can
+    // clean and re-initialize the database.
+    lrc_ = std::unique_ptr<lrc::api::Lrc>(new lrc::api::Lrc());
+}
+
+void
 ExampleTest::test()
 {
-    std::cout << "Hello Ring!" << std::endl;
+    // NOTE: just a dummy test for the example. This test simulate an incoming
+    // message using the mocked daemon
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] ="from test";
+    ConfigurationManager::instance().emitIncomingAccountMessage(QString("0000"),
+    QString("aaaaa"), payloads);
     CPPUNIT_ASSERT_EQUAL(1, 1);
 }
-}} // namespace ring::test
+
+} // namespace test
+} // namespace lrc
