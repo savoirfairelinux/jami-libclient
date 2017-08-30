@@ -22,9 +22,12 @@
 
 VideoManagerInterface& VideoManager::instance()
 {
-#ifdef ENABLE_LIBWRAP
+#ifdef ENABLE_TEST
     static auto interface = new VideoManagerInterface();
 #else
+ #ifdef ENABLE_LIBWRAP
+    static auto interface = new VideoManagerInterface();
+ #else
     if (!dbus_metaTypeInit)
         registerCommTypes();
 
@@ -41,6 +44,7 @@ VideoManagerInterface& VideoManager::instance()
             "Error : dring is not available, make sure it is running"
         );
     }
+ #endif
 #endif
    return *interface;
 }
