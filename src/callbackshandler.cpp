@@ -62,6 +62,15 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotIncomingContactRequest);
 
+    connect(&CallManager::instance(),
+            &CallManagerInterface::incomingCall,
+            this,
+            &CallbacksHandler::slotIncomingCall);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::callStateChanged,
+            this,
+            &CallbacksHandler::slotCallStateChanged);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -116,4 +125,25 @@ CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
     Q_UNUSED(time)
     emit incomingContactRequest(accountId.toStdString(), ringID.toStdString(), payload.toStdString());
 }
+
+void
+CallbacksHandler::slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString)
+{
+    auto from = fromQString.toStdString();
+
+    // during a call we receiving something like :
+    // "gargouille <6f42876966f3eb12c5ad33c33398e0fb22c6cea4@ring.dht>"
+    // we trim to get only the ringid
+    from.erase(0, from.find('<')+1);
+    from.erase(from.find('@'));
+
+    emit incomingCall(accountID.toStdString(), callID.toStdString(), from);
+}
+
+void
+CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
+{
+    emit callStateChanged(callId.toStdString(), state.toStdString(), code);
+}
+
 } // namespace lrc
