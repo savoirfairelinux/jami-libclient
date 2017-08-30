@@ -31,6 +31,8 @@
 namespace lrc
 {
 
+class CallbacksHandler;
+
 namespace api
 {
 
@@ -41,6 +43,10 @@ using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
 
 class NewCallModel : public QObject {
     Q_OBJECT
+
+    friend class NewAccountModel;
+    friend class ConversationModel;
+
 public:
     const account::Info& owner;
 
@@ -50,19 +56,26 @@ public:
         VIDEO
     };
 
-    NewCallModel(NewAccountModel& parent, const account::Info& info);
+    NewCallModel(NewAccountModel& parent, const CallbacksHandler& callbackHandler, const account::Info& info);
     ~NewCallModel();
 
-    const call::Info& createCall(const std::string& contactUri);
+    const call::Info& createCall(const std::string& url);
+    const call::Info& getCall(const std::string& uid) const;
+    static std::string humanReadableStatus(const call::Status& status);
 
+    void accept(const std::string& callId) const;
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;
     void setQuality(const std::string& callId, const double quality) const;
     void transfer(const std::string& callId, const std::string& to) const;
     void addParticipant(const std::string& callId, const std::string& participant);
     void removeParticipant(const std::string& callId, const std::string& participant);
+
+Q_SIGNALS:
+    void callStatusChanged(const std::string& callId) const;
+    void newIncomingCall(const std::string& callId, const std::string& fromId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
