@@ -50,7 +50,11 @@ Database::Database()
 
     // initalize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
+#ifdef ENABLE_TEST
+    db_.setDatabaseName(QString("./") + QString(NAME));
+#else
     db_.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + NAME);
+#endif
 
     // open the database.
     if (not db_.open()) {
