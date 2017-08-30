@@ -353,6 +353,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
+
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -372,7 +375,7 @@ ContactModelPimpl::fillsWithContacts()
     // Clear current contacts
     contacts.clear();
 
-    /* TODO if (linked.owner.profile.type == contact::Type::SIP) {
+    if (linked.owner.profile.type == contact::Type::SIP) {
         // Get SIP contacts
         auto accountProfileId = getAccountProfileId();
         // get conversations with this profile
@@ -407,7 +410,7 @@ ContactModelPimpl::fillsWithContacts()
             }
         }
         return true;
-    }*/
+    }
 
     // Add RING contacts
     auto contactsList = account->getContacts();
@@ -584,6 +587,7 @@ ContactModelPimpl::slotRegisteredNameFound(const Account* account, NameDirectory
             temporaryContact.uri = address.toStdString();
             temporaryContact.registeredName = name.toStdString();
             temporaryContact.alias = name.toStdString();
+            temporaryContact.avatar = "";
         } else {
             contacts[address.toStdString()].registeredName = name.toStdString();
             contacts[address.toStdString()].alias = name.toStdString();
@@ -592,6 +596,7 @@ ContactModelPimpl::slotRegisteredNameFound(const Account* account, NameDirectory
                 temporaryContact.uri = "";
                 temporaryContact.registeredName = "";
                 temporaryContact.alias = "";
+                temporaryContact.avatar = searchingAvatar;
             }
         }
         emit linked.modelUpdated();

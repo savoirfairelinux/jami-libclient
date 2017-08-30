@@ -35,7 +35,7 @@ namespace lrc
 
 using namespace api;
 
-class NewAccountModelPimpl
+class NewAccountModelPimpl: public QObject
 {
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
@@ -48,6 +48,9 @@ public:
     NewAccountModel::AccountInfoMap accounts;
 
     void addAcountProfileInDb(const account::Info& info);
+
+public Q_SLOTS:
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
 };
 
 NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
@@ -94,21 +97,28 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
         const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
 
+        // Init profile
         auto& item = *(accounts.emplace(id.toStdString(), account::Info()).first);
         auto& owner = item.second;
         owner.id = id.toStdString();
         owner.enabled = details["Account.enable"] == QString("true");
-        owner.profile.uri = details["Account.username"].toStdString();
         // TODO get avatar;
-        owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
-        owner.profile.alias = details["Account.alias"].toStdString();
         owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-        owner.callModel = std::make_unique<NewCallModel>(owner);
+        owner.profile.alias = details["Account.alias"].toStdString();
+        owner.profile.registeredName = owner.profile.type == contact::Type::RING ?
+                                       volatileDetails["Account.registredName"].toStdString() : owner.profile.alias;
+        owner.profile.uri = owner.profile.type == contact::Type::RING ?
+                            details["Account.username"].toStdString() : owner.profile.alias;
+        // Add profile into database
+        addAcountProfileInDb(owner);
+        // Init models for this account
+        owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
         owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
-        addAcountProfileInDb(owner);
     }
+
+    connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -132,6 +142,12 @@ NewAccountModelPimpl::addAcountProfileInDb(const account::Info& info)
                              {{":uri", info.profile.uri}, {":alias", info.profile.alias}, {":photo", ""},
                               {":type", type}, {":status", ""}});
     }
+}
+
+void
+NewAccountModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
+{
+    emit linked.incomingCall(accountId, fromId);
 }
 
 } // namespace lrc
