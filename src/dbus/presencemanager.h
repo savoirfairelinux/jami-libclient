@@ -16,13 +16,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-
-#ifdef ENABLE_LIBWRAP
- #include "../qtwrapper/presencemanager_wrap.h"
+#ifdef ENABLE_TEST
+ #include "../../test/mocks/presencemanager_mock.h"
 #else
- #include "presencemanager_dbus_interface.h"
- #include <QDBusPendingReply>
+ #ifdef ENABLE_LIBWRAP
+  #include "../qtwrapper/presencemanager_wrap.h"
+ #else
+  #include "presencemanager_dbus_interface.h"
+  #include <QDBusPendingReply>
+ #endif
 #endif
+
 #include <typedefs.h>
 
 namespace PresenceManager {
