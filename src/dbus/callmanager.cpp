@@ -23,9 +23,12 @@
 
 CallManagerInterface & CallManager::instance(){
 
-#ifdef ENABLE_LIBWRAP
+#ifdef ENABLE_TEST
     static auto interface = new CallManagerInterface();
 #else
+ #ifdef ENABLE_LIBWRAP
+    static auto interface = new CallManagerInterface();
+ #else
     if (!dbus_metaTypeInit) registerCommTypes();
 
     static auto interface = new CallManagerInterface( "cx.ring.Ring",
@@ -41,6 +44,7 @@ CallManagerInterface & CallManager::instance(){
             "Error : dring is not available, make sure it is running"
         );
     }
+ #endif
 #endif
     return *interface;
 }

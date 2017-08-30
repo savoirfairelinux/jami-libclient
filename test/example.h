@@ -23,7 +23,9 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-namespace ring { namespace test {
+#include <memory>
+
+#include "../src/lrc.h"
 
 class ExampleTest : public CppUnit::TestFixture {
 
@@ -31,7 +33,9 @@ class ExampleTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(test);
     CPPUNIT_TEST_SUITE_END();
 public:
+    void setUp();
     void test();
-};
 
-}} // namespace ring::test
+protected:
+    std::unique_ptr<lrc::Lrc> lrc_;
+};
