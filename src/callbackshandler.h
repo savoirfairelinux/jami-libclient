@@ -110,6 +110,9 @@ private Q_SLOTS:
     // TODO: add docs
     void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
 
+    void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
+    void slotCallStateChanged(const QString& callId, const QString &state, int code);
+
 private:
     const api::Lrc& parent;
 };

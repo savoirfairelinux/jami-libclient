@@ -46,6 +46,7 @@ namespace account { struct Info; }
   *  @brief Class that manages account information.
   */
 class LIB_EXPORT NewAccountModel : public QObject {
+    Q_OBJECT
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
@@ -62,6 +63,9 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+
+Q_SIGNALS:
+    void incomingCall(const std::string& accountId, const std::string& contactUri);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
