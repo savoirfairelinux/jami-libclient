@@ -41,6 +41,10 @@ using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
 
 class NewCallModel : public QObject {
     Q_OBJECT
+
+    friend class NewAccountModel;
+    friend class ConversationModel;
+
 public:
     const account::Info& owner;
 
@@ -54,10 +58,11 @@ public:
     ~NewCallModel();
 
     const call::Info& createCall(const std::string& contactUri);
+    const call::Info& getCall(const std::string& uid) const;
 
     void hangUp(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;
     void setQuality(const std::string& callId, const double quality) const;
     void transfer(const std::string& callId, const std::string& to) const;

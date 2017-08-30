@@ -187,28 +187,37 @@ ConversationModel::selectConversation(const std::string& uid)
     if (participants.empty())
         return;
 
-    emit showChatView(conversation);
-    /* TODO
-    if (conversation.call.status == call::Status::INVALID) {
+    //emit showChatView(conversation);
+    try  {
+        auto call = owner.callModel->getCall(conversation.callId);
+        switch (call.status) {
+            case call::Status::INCOMING_RINGING:
+            case call::Status::OUTGOING_RINGING:
+            case call::Status::CONNECTING:
+            case call::Status::SEARCHING:
+                // We are currently in a call
+                emit showIncomingCallView(conversation);
+                break;
+            case call::Status::IN_PROGRESS:
+                // We are currently receiving a call
+                emit showCallView(conversation);
+                break;
+            case call::Status::INVALID:
+            case call::Status::OUTGOING_REQUESTED:
+            case call::Status::PAUSED:
+            case call::Status::PEER_PAUSED:
+            case call::Status::INACTIVE:
+            case call::Status::ENDED:
+            case call::Status::TERMINATING:
+            case call::Status::CONNECTED:
+            case call::Status::AUTO_ANSWERING:
+            default:
+                // We are not in a call, show the chatview
+                emit showChatView(conversation);
+        }
+    } catch (const std::out_of_range&) {
         emit showChatView(conversation);
-        return;
     }
-    switch (conversation.call.status) {
-    case call::Status::INCOMING_RINGING:
-    case call::Status::OUTGOING_RINGING:
-    case call::Status::CONNECTING:
-    case call::Status::SEARCHING:
-            // We are currently in a call
-            emit showIncomingCallView(conversation);
-            break;
-        case call::Status::IN_PROGRESS:
-            // We are currently receiving a call
-            emit showCallView(conversation);
-            break;
-        default:
-            // We are not in a call, show the chatview
-            emit showChatView(conversation);
-    }*/
 }
 
 void
@@ -234,8 +243,16 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
 }
 
 void
-ConversationModel::placeCall(const std::string& uid) const
+ConversationModel::placeCall(const std::string& uid)
 {
+    auto conversationIdx = pimpl_->indexOf(uid);
+
+    if (conversationIdx == -1)
+        return;
+
+    auto conversation = pimpl_->conversations.at(conversationIdx);
+
+    owner.callModel->createCall(conversation.participants.front());
 }
 
 void
