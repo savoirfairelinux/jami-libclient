@@ -65,7 +65,7 @@ public:
     void addConversation(const std::string& uid) const;
     void removeConversation(const std::string& uid, bool banned=false);
     void selectConversation(const std::string& uid);
-    void placeCall(const std::string& uid) const;
+    void placeCall(const std::string& uid);
     void sendMessage(const std::string& uid, const std::string& body) const;
     void setFilter(const std::string& filter);
     void setFilter(const lrc::api::contact::Type& filter = lrc::api::contact::Type::INVALID);

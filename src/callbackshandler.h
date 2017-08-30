@@ -47,6 +47,7 @@ Q_SIGNALS:
     void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
     void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
+    void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
 
 private Q_SLOTS:
     /**
