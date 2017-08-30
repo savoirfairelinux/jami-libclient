@@ -326,8 +326,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
             this, &ContactModelPimpl::slotRegisteredNameFound);
-    //~ connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall, // [jn] to move in newcallmodel pthc
-            //~ this, &ContactModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
             this, &ContactModelPimpl::slotNewAccountMessage);
 
