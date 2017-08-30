@@ -42,6 +42,7 @@
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
 #include "private/vcardutils.h"
+#include "api/newcallmodel.h"
 
 namespace lrc
 {
@@ -101,6 +102,8 @@ public Q_SLOTS:
     void slotIncomingContactRequest(const std::string& accountId,
                                     const std::string& ringID,
                                     const std::string& payload);
+
+    void slotIncomingCall(const std::string& callId, const std::string& fromId);
 };
 
 
@@ -258,6 +261,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactAdded, this, &ContactModelPimpl::slotContactAdded);
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
 
 }
 
@@ -342,7 +347,6 @@ ContactModelPimpl::fillsWithContacts()
 
        contacts.emplace(std::make_pair(contactUri, contact));
        // TODO add to db
-       // TODO connect to incoming signal from daemon in callbacksHandler
     }
 
     return true;
@@ -443,6 +447,32 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         contacts[ringID] = contact;
         emit linked.modelUpdated();
     }
+}
+
+void
+ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+{
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+    }
+    auto contact = std::make_shared<contact::Info>();
+    if (contacts.find(fromId) == contacts.end()) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
+        contact->uri = fromId;
+        contact->avatar = db.getContactAttribute(fromId, "photo"); // TODO
+        contact->registeredName = cm->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
+        contact->alias = cm->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
+        contact->isTrusted = false;
+        contact->isPresent = false;
+        contact->type = contact::Type::PENDING;
+        contacts[fromId] = contact;
+        emit linked.modelUpdated();
+    } else {
+        contact = contacts[fromId];
+    }
+
+    emit linked.incomingCallFromPending(fromId, callId);
 }
 
 } // namespace api

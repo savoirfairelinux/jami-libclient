@@ -90,6 +90,7 @@ public:
 
 Q_SIGNALS:
     void modelUpdated() const;
+    void incomingCallFromPending(const std::string& fromId, const std::string& callId) const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;

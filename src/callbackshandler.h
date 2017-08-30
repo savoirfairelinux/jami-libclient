@@ -47,6 +47,8 @@ Q_SIGNALS:
     void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
     void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
+    void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
+    void callStateChanged(const std::string& callId, const std::string &state, int code);
 
 private Q_SLOTS:
     /**
@@ -80,6 +82,9 @@ private Q_SLOTS:
     void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
 
     void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
+
+    void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
+    void slotCallStateChanged(const QString& callId, const QString &state, int code);
 
 private:
     const api::Lrc& parent;
