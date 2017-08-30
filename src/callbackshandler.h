@@ -138,6 +138,8 @@ private Q_SLOTS:
      */
     void slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
                                  const QString& address, const QString& name);
+    void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
+    void slotCallStateChanged(const QString& callId, const QString &state, int code);
 
 private:
     const api::Lrc& parent;
