@@ -21,6 +21,7 @@
 // std
 #include <string>
 #include <ctime>
+#include <chrono>
 
 // Qt
 #include <QObject>
@@ -87,11 +88,37 @@ to_string(const call::Status& status)
     }
 }
 
+/**
+ * Convert status from daemon (not from to_string) into a Status
+ * @param  status
+ * @return
+ */
+static const Status
+to_status(const std::string& status)
+{
+    if (status == "INCOMING")
+        return Status::INCOMING_RINGING;
+    else if (status == "CONNECTING")
+        return Status::CONNECTING;
+    else if (status == "RINGING")
+        return Status::OUTGOING_RINGING;
+    else if (status == "HUNGUP")
+        return Status::TERMINATING;
+    else if (status == "HOLD")
+        return Status::PAUSED;
+    else if (status == "UNHOLD" || status == "CURRENT")
+        return Status::IN_PROGRESS;
+    else if (status == "INACTIVE" || status == "BUSY")
+        return Status::INACTIVE;
+    else if (status == "OVER" || status == "FAILURE")
+        return Status::ENDED;
+    return Status::INVALID;
+}
 
 struct Info
 {
     std::string id;
-    std::time_t startTime = 0;
+    std::chrono::time_point<std::chrono::steady_clock> startTime;
     Status status = Status::INVALID;
     std::string peer;
     bool audioMuted = false;
