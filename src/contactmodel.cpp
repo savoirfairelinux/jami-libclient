@@ -189,8 +189,10 @@ ContactModel::addContact(contact::Info contactInfo)
         if (contactInfo.profileInfo.type == profile::Type::PENDING) {
             daemon::addContactFromPending(owner, contactInfo.profileInfo.uri);
             contactInfo.profileInfo.type = api::profile::Type::RING;
-        } else // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
+        } else if (contactInfo.profileInfo.type == profile::Type::TEMPORARY) {
+            // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
             daemon::addContact(owner, contactInfo);
+        }
         // we need to add the profile into the database.
         database::getOrInsertProfile(pimpl_->db, contactInfo.profileInfo.uri, contactInfo.profileInfo.alias,
         contactInfo.profileInfo.avatar, to_string(contactInfo.profileInfo.type));
@@ -331,6 +333,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
             this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
             this, &ContactModelPimpl::slotNewAccountMessage);
 
