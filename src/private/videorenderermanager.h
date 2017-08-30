@@ -54,6 +54,7 @@ public:
 
    //Helpers
    Video::Renderer* getRenderer(const Call* call) const;
+   Video::Renderer* getRenderer(const std::string& callId) const;
    void setBufferSize(uint size);
    void switchDevice(const Video::Device* device) const;
 
@@ -75,6 +76,6 @@ Q_SIGNALS:
    void previewStateChanged(bool startStop);
    void previewStarted(Video::Renderer* renderer);
    void previewStopped(Video::Renderer* renderer);
+   void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer);
 
 };
-
