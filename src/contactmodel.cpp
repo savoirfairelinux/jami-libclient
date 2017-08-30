@@ -325,8 +325,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
             this, &ContactModelPimpl::slotRegisteredNameFound);
-    //~ connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall, [jn] à deplacer dans le patch call model
-            //~ this, &ContactModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
             this, &ContactModelPimpl::slotNewAccountMessage);
 
