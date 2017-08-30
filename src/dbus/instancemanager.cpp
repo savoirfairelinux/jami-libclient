@@ -26,9 +26,12 @@
 
 InstanceManagerInterface& InstanceManager::instance()
 {
-#ifdef ENABLE_LIBWRAP
+#ifdef ENABLE_TEST
     static auto interface = new InstanceManagerInterface();
 #else
+ #ifdef ENABLE_LIBWRAP
+    static auto interface = new InstanceManagerInterface();
+ #else
     if (!dbus_metaTypeInit) registerCommTypes();
 
     static auto interface = new InstanceManagerInterface("cx.ring.Ring",
@@ -55,6 +58,7 @@ InstanceManagerInterface& InstanceManager::instance()
      * http://doc.qt.io/qt-4.8/qdbuserror.html#ErrorType-enum
      */
 
+ #endif
 #endif
     return *interface;
 }

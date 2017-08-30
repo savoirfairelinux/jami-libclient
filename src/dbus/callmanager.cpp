@@ -23,7 +23,7 @@
 
 CallManagerInterface & CallManager::instance(){
 
-#ifdef ENABLE_LIBWRAP
+#if defined(ENABLE_TEST) || defined(ENABLE_LIBWRAP)
     static auto interface = new CallManagerInterface();
 #else
     if (!dbus_metaTypeInit) registerCommTypes();
