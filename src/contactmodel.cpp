@@ -112,6 +112,8 @@ public Q_SLOTS:
     void slotIncomingContactRequest(const std::string& accountId,
                                     const std::string& ringID,
                                     const std::string& payload);
+
+    void slotIncomingCall(const std::string& callId, const std::string& fromId);
 };
 
 namespace authority
@@ -316,6 +318,9 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound, this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ContactModelPimpl::slotIncomingCall);
+
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -588,6 +593,43 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             emit linked.modelUpdated();
         }
     }
+}
+
+void
+ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+{
+    auto account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+        return;
+    }
+
+    auto contactInfo = contact::Info();
+    if (contacts.find(fromId) == contacts.end()) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
+
+        auto returnFromDb = db.select("photo, alias, type",
+                                  "profiles",
+                                  "uri=:uri",
+                                  {{":uri", fromId}});
+
+        // the query should return one row of three columns.
+        if (returnFromDb.nbrOfCols == 3 and returnFromDb.payloads.size() == 3) {
+            auto avatar = returnFromDb.payloads[0];
+            auto registeredName = "";
+            auto alias = returnFromDb.payloads[1];
+            auto isPresent = cm->isPresent();
+            auto isTrusted = true; // for now...
+            auto type = contact::StringToType(returnFromDb.payloads[2]);
+
+            auto contactInfo = contact::Info({fromId, avatar, registeredName, alias, isPresent, isTrusted, type});
+            contacts.emplace(std::make_pair(fromId, contactInfo));
+            emit linked.modelUpdated();
+        }
+    } else
+        contactInfo = contacts[fromId];
+
+    emit linked.incomingCallFromPending(fromId, callId);
 }
 
 } // namespace lrc
