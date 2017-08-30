@@ -23,6 +23,8 @@
 #include "dbus/presencemanager.h"
 #include "data/message.h"
 
+#include <iostream>
+
 namespace lrc
 {
 
@@ -61,6 +63,7 @@ Lrc::~Lrc()
 void
 Lrc::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
+    std::cout << "MESSAGE INCOMING" << std::endl;
     message::Info msg;
     msg.uid = from.toStdString();
     msg.body = payloads["text/plain"].toStdString();

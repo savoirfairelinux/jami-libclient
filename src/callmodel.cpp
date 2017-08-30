@@ -217,7 +217,11 @@ CallModel::~CallModel()
 #ifdef ENABLE_LIBWRAP
 
 #else
+ #ifdef ENABLE_TEST
+
+ #else
    instance.connection().disconnectFromBus(instance.connection().baseService());
+ #endif //ENABLE_TEST
 #endif //ENABLE_LIBWRAP
 }
 
@@ -374,9 +378,13 @@ QList<Call*> CallModel::getConferenceParticipants(Call* conf) const
 bool CallModel::isConnected() const
 {
 #ifdef ENABLE_LIBWRAP
-   return InstanceManager::instance().isConnected();
+  return InstanceManager::instance().isConnected();
 #else
-   return InstanceManager::instance().connection().isConnected();
+ #ifdef ENABLE_TEST
+  return InstanceManager::instance().isConnected();
+ #else
+   instance.connection().disconnectFromBus(instance.connection().baseService());
+ #endif //ENABLE_TEST
 #endif //ENABLE_LIBWRAP
 }
 

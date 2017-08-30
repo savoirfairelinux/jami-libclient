@@ -22,9 +22,12 @@
 
 PresenceManagerInterface& PresenceManager::instance()
 {
-#ifdef ENABLE_LIBWRAP
+#ifdef ENABLE_TEST
     static auto interface = new PresenceManagerInterface();
 #else
+ #ifdef ENABLE_LIBWRAP
+    static auto interface = new PresenceManagerInterface();
+ #else
     if (!dbus_metaTypeInit) registerCommTypes();
     static auto interface = new PresenceManagerInterface("cx.ring.Ring",
                                                         "/cx/ring/Ring/PresenceManager",
@@ -40,6 +43,7 @@ PresenceManagerInterface& PresenceManager::instance()
             "Error : dring is not available, make sure it is running"
         );
     }
+ #endif
 #endif
     return *interface;
 }
