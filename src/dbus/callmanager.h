@@ -18,11 +18,15 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_LIBWRAP
- #include "../qtwrapper/callmanager_wrap.h"
+#ifdef ENABLE_TEST
+ #include "../../test/mocks/callmanager_mock.h"
 #else
- #include "callmanager_dbus_interface.h"
- #include <QDBusPendingReply>
+ #ifdef ENABLE_LIBWRAP
+  #include "../qtwrapper/callmanager_wrap.h"
+ #else
+  #include "callmanager_dbus_interface.h"
+  #include <QDBusPendingReply>
+ #endif
 #endif
 #include <typedefs.h>
 
