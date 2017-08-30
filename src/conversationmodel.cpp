@@ -251,7 +251,38 @@ ConversationModel::selectConversation(const std::string& uid) const
         return;
     }
 
-    // fully functional behaviour not implemented in this patch
+    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    try  {
+        auto call = owner.callModel->getCall(conversation.callId);
+        switch (call.status) {
+            case call::Status::INCOMING_RINGING:
+            case call::Status::OUTGOING_RINGING:
+            case call::Status::CONNECTING:
+            case call::Status::SEARCHING:
+                // We are currently in a call
+                // fully functional behaviour not implemented in this patch
+                break;
+            case call::Status::PAUSED:
+            case call::Status::PEER_PAUSED:
+            case call::Status::CONNECTED:
+            case call::Status::IN_PROGRESS:
+                // We are currently receiving a call
+                // fully functional behaviour not implemented in this patch
+                break;
+            case call::Status::INVALID:
+            case call::Status::OUTGOING_REQUESTED:
+            case call::Status::INACTIVE:
+            case call::Status::ENDED:
+            case call::Status::TERMINATING:
+            case call::Status::AUTO_ANSWERING:
+            default:
+                // We are not in a call, show the chatview
+                // fully functional behaviour not implemented in this patch
+                break;
+        }
+    } catch (const std::out_of_range&) {
+        // fully functional behaviour not implemented in this patch
+    }
 }
 
 void
@@ -301,7 +332,7 @@ ConversationModel::placeCall(const std::string& uid) const
     if (owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
-    // at this point we are not yet ready to do a call
+    conversation.callId = owner.callModel->createCall(url);
     if (convId.empty()) {
         // The conversation has changed because it was with the temporary item
         auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
@@ -340,7 +371,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
         if (not conversation.callId.empty())
-            true; // requires more work in NeCallModel to send message from this point
+            owner.callModel->sendSipMessage(conversation.callId, body);
         else
             owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
         if (convId.empty()) {
@@ -441,6 +472,23 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::incomingCallMessage,
             this, &ConversationModelPimpl::slotIncomingCallMessage);
 
+    // Call related
+    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+            this, &ConversationModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
+            this, &ConversationModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStatusChanged,
+            this,
+            &ConversationModelPimpl::slotCallStatusChanged);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStarted,
+            this,
+            &ConversationModelPimpl::slotCallStarted);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callEnded,
+            this,
+            &ConversationModelPimpl::slotCallEnded);
 }
 
 
@@ -722,7 +770,10 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
 void
 ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
 {
-    // at this point we are not yet able to handle incoming call message
+    if (not linked.owner.callModel->hasCall(callId))
+        return;
+
+    addIncomingMessage(from, body);
 }
 
 void
