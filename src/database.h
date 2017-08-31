@@ -49,21 +49,66 @@ public:
     ~Database();
 
     // Messages related
+    /**
+     * Add a message object into the database
+     * @param accountId
+     * @param message to add
+     */
     void addMessage(const std::string& accountId, const api::message::Info& message) const;
+    /**
+     * Clear the history of the conversation between account and a contact
+     * @param accountId
+     * @param contactUri
+     * @param removeContact if we also want to remove the contact
+     */
     void clearHistory(const std::string& accountId,
-                      const std::string& uid,
+                      const std::string& contactUri,
                       bool removeContact = false) const;
-    MessagesMap getHistory(const std::string& accountId, const std::string& uid) const;
-    std::size_t numberOfUnreads(const std::string& accountId, const std::string& uid) const;
+    /**
+     * @param  accountId
+     * @param  contactUri
+     * @return history of the conversation between account and a contact
+     */
+    MessagesMap getHistory(const std::string& accountId, const std::string& contactUri) const;
+    /**
+     * @param  accountId
+     * @param  contactUri
+     * @return number of unread messages in the conversation between account and a contact
+     */
+    std::size_t numberOfUnreads(const std::string& accountId, const std::string& contactUri) const;
+    /**
+     * Set a message READ
+     * @param uid of the message to update
+     */
     void setMessageRead(int uid) const;
 
     // Contacts related
-    void addContact(const std::string& contact, const QByteArray& payload) const;
-    std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
+    /**
+     * Add a contact into the database
+     * @param contactUri
+     * @param payload the VCard of this contact
+     */
+    void addContact(const std::string& contactUri, const QByteArray& payload) const;
+    /**
+     * @param  contactUri
+     * @param  attribute to search (correpond to a column of the "contacts" tables)
+     * @return attribute of a contact
+     */
+    std::string getContactAttribute(const std::string& contactUri, const std::string& attribute) const;
 
 Q_SIGNALS:
+    /**
+     * Will be emitted each time a message is successfully stored into the database
+     * @param uid of the message
+     * @param accountId linked to the conversation
+     * @param message added
+     */
     void messageAdded(int uid, const std::string& accountId, const api::message::Info& msg) const;
-    void contactAdded(const std::string& uid) const;
+    /**
+     * Will be emitted each time a contact is added into the database
+     * @param uri of the contact
+     */
+    void contactAdded(const std::string& uri) const;
 
 private Q_SLOTS:
     void slotRegisteredNameFound(const Account* account,
