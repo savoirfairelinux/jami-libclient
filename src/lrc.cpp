@@ -33,6 +33,22 @@ namespace lrc
 Lrc::Lrc()
 : QObject()
 {
+    // create the database manager
+    if (not database_) {
+        Database* ptr = new Database();
+        database_ = std::unique_ptr<Database>(ptr);
+    }
+
+    // create the account model
+    if (not accountModel_) {
+        NewAccountModel* ptr = new NewAccountModel(*database_.get());
+        accountModel_ = std::unique_ptr<NewAccountModel>(ptr);
+    }
+
+    connect(&PresenceManager::instance(),
+            SIGNAL(newBuddyNotification(QString,QString,bool,QString)),
+            this,
+            SLOT(slotNewBuddySubscription(QString,QString,bool,QString)));
 
 }
 
