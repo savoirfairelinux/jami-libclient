@@ -33,7 +33,22 @@ namespace lrc
 Lrc::Lrc()
 : QObject()
 {
+    // create the database manager
+    database_ = std::unique_ptr<Database>(new Database());
 
+    // create the account model
+    accountModel_ = std::unique_ptr<NewAccountModel>(new NewAccountModel(*database_.get()));
+
+    // Get signals from daemon
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingAccountMessage,
+            this,
+            &Lrc::slotNewAccountMessage);
+
+    connect(&PresenceManager::instance(),
+            &PresenceManagerInterface::newBuddyNotification,
+            this,
+            &Lrc::slotNewBuddySubscription);
 }
 
 Lrc::~Lrc()
@@ -42,13 +57,16 @@ Lrc::~Lrc()
 }
 
 void
-Lrc::slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
+Lrc::slotNewAccountMessage(const QString& accountId, const QString& from,
+                           const QMap<QString,QString>& payloads)
 {
 
 }
 
 void
-Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message)
+Lrc::slotNewBuddySubscription(const QString& accountId, const QString& uri,
+                              bool status,
+                              const QString& message)
 {
 
 }
