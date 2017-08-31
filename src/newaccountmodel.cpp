@@ -34,7 +34,21 @@ NewAccountModel::NewAccountModel(const Database& database)
 : QObject()
 , database_(database)
 {
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info info;
+        info.accountModel = std::unique_ptr<NewAccountModel>(this);
+        info.id = id.toStdString();
+        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
+        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, info));
+        info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
+
+        accounts_[id.toStdString()] = std::move(info);
+    }
 }
 
 NewAccountModel::~NewAccountModel()
