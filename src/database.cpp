@@ -26,8 +26,9 @@ namespace lrc
 
 using namespace api;
 
-Database::Database()
+Database::Database(const CallbacksHandler& callbacksHandler)
 : QObject()
+, callbacksHandler_(callbacksHandler)
 {
 
 }
