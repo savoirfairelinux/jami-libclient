@@ -58,7 +58,11 @@ Lrc::getAccountModel()
 
 LrcPimpl::LrcPimpl()
 {
+    // create the database.
     database = std::make_unique<Database>();
+
+    // create account model.
+    accountModel = std::unique_ptr<NewAccountModel>(new NewAccountModel(*database));
 }
 
 } // namespace api

@@ -46,7 +46,10 @@ class LIB_EXPORT Lrc {
 public:
     Lrc();
     ~Lrc();
-
+    /**
+     * get a reference on account model.
+     * @return a NewAccountModel&.
+     */
     NewAccountModel& getAccountModel();
 
 private:
