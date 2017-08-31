@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_bc308557",
+        "filename": "src/database.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T20:33:11Z",
+      "side": 1,
+      "message": "I think the type should be \"const message::Info\u0026\"",
+      "range": {
+        "startLine": 66,
+        "startChar": 62,
+        "endLine": 66,
+        "endChar": 75
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_7cef1db1",
+        "filename": "src/database.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T20:33:11Z",
+      "side": 1,
+      "message": "remove that",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_9cf2e198",
+        "filename": "src/lrc.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T20:33:11Z",
+      "side": 1,
+      "message": "see comments in implementation patch",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_1cb1b1e1",
+        "filename": "src/lrc.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T20:33:11Z",
+      "side": 1,
+      "message": "\u0027explicit\u0027 keyword has no meaning here",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
