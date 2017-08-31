@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_1cac11a0",
+        "filename": "src/lrc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2017-08-31T18:06:48Z",
+      "side": 1,
+      "message": "database_ \u003d std::unique_ptr\u003cDatabase\u003e(new Database(); works",
+      "revId": "7a70f84a03294532cab7d45d748378981fa22e31",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_dca109ab",
+        "filename": "src/lrc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2017-08-31T18:06:48Z",
+      "side": 1,
+      "message": "accountModel_ \u003d std::unique_ptr\u003cNewAccountModel\u003e(new AccountModel(*database.get()); works",
+      "revId": "7a70f84a03294532cab7d45d748378981fa22e31",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
