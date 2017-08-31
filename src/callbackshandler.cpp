@@ -18,13 +18,26 @@
  ***************************************************************************/
 #include "callbackshandler.h"
 
+// Dbus
+#include "dbus/configurationmanager.h"
+#include "dbus/presencemanager.h"
+
 namespace lrc
 {
 
 CallbacksHandler::CallbacksHandler()
 : QObject()
 {
+    // Get signals from daemon
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingAccountMessage,
+            this,
+            &CallbacksHandler::slotNewAccountMessage);
 
+    connect(&PresenceManager::instance(),
+            &PresenceManagerInterface::newBuddyNotification,
+            this,
+            &CallbacksHandler::slotNewBuddySubscription);
 }
 
 CallbacksHandler::~CallbacksHandler()
