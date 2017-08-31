@@ -17,6 +17,17 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "database.h"
+#include "databasehelper.h"
+
+// Qt
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
+#include <QStandardPaths>
+
+// Lrc
+#include "private/vcardutils.h"
+#include "availableaccountmodel.h"
 
 // Data
 #include "api/message.h"
@@ -25,10 +36,50 @@ namespace lrc
 {
 
 using namespace api;
+using namespace db;
 
 Database::Database()
 : QObject()
 {
+    enum class Errors{QSQLITE_NOT_SUPPORTED, CANNOT_OPEN_DB};
+
+    try
+    {
+        // check support.
+        if (not QSqlDatabase::drivers().contains("QSQLITE"))
+          throw Errors::QSQLITE_NOT_SUPPORTED;
+
+        // initalize the database.
+        db_ = QSqlDatabase::addDatabase("QSQLITE");
+        // [jn] : we have to test the path :
+        db_.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + ringDB);
+
+        // open the database.
+        // TODO store the database in a standard path
+        if (not db_.open())
+            throw Errors::CANNOT_OPEN_DB;
+
+    }
+    catch(Errors err)
+    {
+        switch(err)
+        {
+        case Errors::QSQLITE_NOT_SUPPORTED:
+            qDebug() << "Database, error QSQLITE not supported";
+            break;
+        case Errors::CANNOT_OPEN_DB:
+            qDebug() << "Database, can't open the database";
+            break;
+        }
+    }
+
+    // connect query object to database object
+    // You must load the SQL driver and open the connection before a QSqlQuery is created.
+    query_ = std::unique_ptr<QSqlQuery>(new QSqlQuery(db_));
+
+    // if db is empty we create them.
+    if (db_.tables().empty())
+        createTables();
 
 }
 
@@ -37,52 +88,210 @@ Database::~Database()
 
 }
 
-void
-Database::addMessage(const std::string& accountId, const message::Info& message) const
+bool
+Database::createTables()
 {
+    try
+    {
+        // add profiles table
+        if (not db_.tables().contains("profiles", Qt::CaseInsensitive))
+
+            if (not query_->exec(CREATE_TABLE_PROFILES)) {
+                qDebug() << "Database: " << query_->lastError().text();
+                throw;
+            }
+
+        // add conversations table
+        if (not db_.tables().contains("conversations", Qt::CaseInsensitive))
+
+            if (not query_->exec(CREATE_TABLE_CONVERSATIONS)) {
+                qDebug() << "Database: " << query_->lastError().text();
+                throw;
+            }
+
+        // add interactions table
+        if (not db_.tables().contains("interactions", Qt::CaseInsensitive))
+
+            if (not query_->exec(CREATE_TABLE_INTERACTIONS)) {
+                qDebug() << "Database: " << query_->lastError().text();
+                throw;
+            }
+    }
+    catch(...)
+    {
+        qDebug() << "Database, error tables not created";
+    }
+
+    return storeVersion(VERSION);
+}
+
+bool
+Database::storeVersion(const std::string& version)
+{
+    try
+    {
+        auto storeVersionQuery = std::string(STORE_VERSION) + version;
+
+        if (not query_->exec(storeVersionQuery.c_str())) {
+            qDebug() << "Database: " << query_->lastError().text();
+            //throw;
+        }
+    }
+    catch(...)
+    {
+        qDebug() << "Database, error tables not created";
+    }
+
+    return true;
+}
+
+bool
+Database::insertInto(const std::string& table,                                   // "tests"
+                     const std::map<std::string, std::string>& bindCol,          // {{":id", "id"}, {":forename", "alice"}, {":name", "cooper"}}
+                     const std::map<std::string, std::string>& bindsSet) const   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
+{
+    QSqlQuery query;
+    std::string columns;
+    std::string binds;
+
+    for (const auto& entry : bindCol) {
+        columns += entry.second + ",";
+        binds += entry.first + ",";
+    }
+
+    //remove the last ','
+    columns.pop_back();
+    binds.pop_back();
+
+    auto prepareStr = std::string("INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")");
+    query.prepare(prepareStr.c_str());
+
+    for (const auto& entry : bindsSet)
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
+
+
+    if(not query.exec()) {
+        qDebug() << "sqlite error: " << query.lastError();
+        qDebug() << "paramaters sent :";
+        qDebug() << "table = " << table.c_str();
+        for (auto& b : bindCol)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+        for (auto& b : bindsSet)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+        return false;
+    }
+
+    return true;
+}
+
+bool 
+Database::update(const std::string& table,                                   // "tests"
+                 const std::string& set,                                     // "location=:place, phone:=nmbr"
+                 const std::map<std::string, std::string>& bindsSet,         // {{":place", "montreal"}, {":nmbr", "514"}}
+                 const std::string& where,                                   // "contact=:name AND id=:id
+                 const std::map<std::string, std::string>& bindsWhere) const // {{":name", "toto"}, {":id", "65"}}
+{
+    QSqlQuery query;
+
+    auto prepareStr = std::string("UPDATE " + table + " SET " + set + " WHERE " + where);
+    query.prepare(prepareStr.c_str());
+
+    for (const auto& entry : bindsSet)
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
+
+    for (const auto& entry : bindsWhere)
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
+
+    if(not query.exec()) {
+        qDebug() << "sqlite error: " << query.lastError();
+        qDebug() << "paramaters sent :";
+        qDebug() << "table = " << table.c_str();
+        qDebug() << "set = " << set.c_str();
+        qDebug() << "bindsSet :";
+        for (auto& b : bindsSet)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+        qDebug() << "where = " << where.c_str();
+        for (auto& b : bindsWhere)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+
+        return false;
+    }
+
+    return true;
+}
+
+Database::Result
+Database::select(const std::string& select,                             // "id", "body", ...
+                 const std::string& table,                              // "tests"
+                 const std::string& where,                              // "contact=:name AND id=:id
+                 const std::map<std::string, std::string>& binds) const // {{":name", "toto"}, {":id", "65"}}
+{
+    QSqlQuery query;
+    std::string columnsSelect;
+
+    auto prepareStr = std::string("SELECT " + select + " FROM " + table + " WHERE " + where);
+    query.prepare(prepareStr.c_str());
+
+    qDebug() << prepareStr.c_str();
+
+    for (const auto& entry : binds)
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
+
+    if(not query.exec()) {
+        qDebug() << "sqlite error: " << query.lastError();
+        qDebug() << "paramaters sent :";
+        qDebug() << "select :" << select.c_str();
+        qDebug() << "table = " << table.c_str();
+        qDebug() << "where = " << where.c_str();
+        qDebug() << "binds :";
+        for (auto& b : binds)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+
+        return Database::Result();
+    }
+
+    QSqlRecord rec = query.record();
+    Database::Result result = {rec.count(), std::vector<std::string>()};
+
+    while (query.next()) {
+        for (int i = 0 ; i < rec.count() ; i++) {
+            result.payloads.push_back(query.value(i).toString().toStdString());
+        }
+    }
+
+    return std::move(result);
 
 }
 
-void
-Database::clearHistory(const std::string& accountId, const std::string& uid, bool removeContact) const
+bool
+Database::deleteFrom(const std::string& table,                              // "tests"
+                     const std::string& where,                              // "contact=:name AND id=:id
+                     const std::map<std::string, std::string>& binds) const // {{":name", "toto"}, {":id", "65"}}
 {
+    QSqlQuery query;
 
-}
+    auto prepareStr = std::string("DELETE FROM " + table + " WHERE " + where);
+    query.prepare(prepareStr.c_str());
 
-Database::MessagesMap
-Database::getHistory(const std::string& accountId, const std::string& uid) const
-{
-    return {};
-}
+    qDebug() << prepareStr.c_str();
 
-std::size_t
-Database::numberOfUnreads(const std::string& accountId, const std::string& uid) const
-{
-    return 0;
-}
+    for (const auto& entry : binds){
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    }
 
-void
-Database::setMessageRead(int uid) const
-{
+    if(not query.exec()) {
+        qDebug() << "sqlite error: " << query.lastError();
+        qDebug() << "paramaters sent :";
+        qDebug() << "table = " << table.c_str();
+        qDebug() << "where = " << where.c_str();
+        qDebug() << "binds :";
+        for (auto& b : binds)
+            qDebug() << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+    
+        return false;
+    }
 
-}
-
-void
-Database::addContact(const std::string& contact, const QByteArray& payload) const
-{
-
-}
-
-std::string
-Database::getContactAttribute(const std::string& uid, const std::string& attribute) const
-{
-    return {};
-}
-
-void
-Database::slotRegisteredNameFound(Account const*, NameDirectory::LookupStatus, QString const&, QString const&) const
-{
-
+    return true;
 }
 
 } // namespace lrc
