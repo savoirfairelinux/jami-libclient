@@ -18,12 +18,14 @@
  ***************************************************************************/
 #include "api/newaccountmodel.h"
 
-
 // Models and database
 #include "database.h"
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
+
+// Dbus
+#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -44,16 +46,36 @@ public:
 NewAccountModel::NewAccountModel(const Database& database)
 : pimpl_(std::make_unique<NewAccountModelPimpl>(database))
 {
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info info;
+        info.accountModel = std::unique_ptr<NewAccountModel>(this);
+        info.id = id.toStdString();
+        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
+        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, info));
+        info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
+
+        pimpl_->accounts[id.toStdString()] = std::move(info);
+    }
 }
 
 NewAccountModel::~NewAccountModel()
 {
 }
 
-std::vector<std::string>
+const std::vector<std::string>
 NewAccountModel::getAccountList() const
 {
-    return {};
+    std::vector<std::string> accountsId;
+
+    for(auto const& accountInfo: pimpl_->accounts)
+        accountsId.push_back(accountInfo.first);
+
+    return std::move(accountsId);
 }
 
 const account::Info&

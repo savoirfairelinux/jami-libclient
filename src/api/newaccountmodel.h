@@ -44,8 +44,17 @@ public:
     NewAccountModel(const Database& database);
     ~NewAccountModel();
 
-    std::vector<std::string> getAccountList() const;
-    const account::Info& getAccountInfo(const std::string& accountId);
+    /**
+     * get a list with all acountId.
+     * @return a std::vector<std::string>.
+     */
+    const std::vector<std::string> getAccountList() const;
+    /**
+     * get account informations associated to accountId.
+     * @param accountId.
+     * @return a const account::Info& structure.
+     */
+    const api::account::Info& getAccountInfo(const std::string& accountId);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
