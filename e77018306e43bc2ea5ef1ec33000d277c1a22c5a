@@ -2,6 +2,270 @@
   "comments": [
     {
       "key": {
+        "uuid": "ba3841fe_fceded8c",
+        "filename": "src/contactmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "could be removed?\n\ndefine\n\nnamespace account {\nclass Info;\n}",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_3cd8f5ee",
+        "filename": "src/contactmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "missing const at end?",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_5c54d953",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "const\u0026 ?",
+      "range": {
+        "startLine": 67,
+        "startChar": 49,
+        "endLine": 67,
+        "endChar": 62
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_3c511563",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 73,
+        "startChar": 22,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_9c4e61c0",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 74,
+        "startChar": 23,
+        "endLine": 74,
+        "endChar": 40
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_7c4b9db0",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 75,
+        "startChar": 30,
+        "endLine": 75,
+        "endChar": 49
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_dcc74911",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 79,
+        "startChar": 63,
+        "endLine": 79,
+        "endChar": 76
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_bccc0537",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "sure ???\nin general it\u0027s not used like this, but more with mutex",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 11
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_9c778102",
+        "filename": "src/data/call.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "not needed, use CallsInfoMap::value_type",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 78
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_3c6ab51a",
+        "filename": "src/data/contact.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "not needed. it\u0027s the type of ContactsInfoMap::value_type",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 84
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_1cd251d2",
+        "filename": "src/data/conversation.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "Queue",
+      "range": {
+        "startLine": 42,
+        "startChar": 19,
+        "endLine": 42,
+        "endChar": 23
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_fcd68dc4",
+        "filename": "src/data/message.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T21:00:44Z",
+      "side": 1,
+      "message": "missing\n\n#include \u003cstring\u003e\n#include \u003cmap\u003e",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_bc308557",
         "filename": "src/database.h",
         "patchSetId": 28
