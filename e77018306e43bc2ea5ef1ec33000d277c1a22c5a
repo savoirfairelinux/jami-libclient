@@ -204,6 +204,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_9caae117",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T23:08:00Z",
+      "side": 1,
+      "message": "fine, but never forget to ensure the constness from the client-side.",
+      "parentUuid": "ba3841fe_bc9a4512",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 11
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_9c778102",
         "filename": "src/data/call.h",
         "patchSetId": 28
