@@ -30,7 +30,11 @@ namespace lrc
 Lrc::Lrc()
 : QObject()
 {
+    // create the database manager
+    database_ = std::unique_ptr<Database>(new Database());
 
+    // create the account model
+    accountModel_ = std::unique_ptr<NewAccountModel>(new NewAccountModel(*database_));
 }
 
 Lrc::~Lrc()

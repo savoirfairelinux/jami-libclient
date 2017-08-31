@@ -36,7 +36,11 @@ class Lrc : public QObject {
 public:
     Lrc();
     ~Lrc();
-    NewAccountModel& getAccountModel() {return *accountModel_;};
+    /**
+     * get a reference on account model.
+     * @return a NewAccountModel&.
+     */
+    NewAccountModel& getAccountModel() {return *accountModel_.get();};
 
 private:
     std::unique_ptr<Database> database_;
