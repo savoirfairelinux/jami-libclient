@@ -46,8 +46,11 @@ class LIB_EXPORT Lrc {
 public:
     Lrc();
     ~Lrc();
-
-    NewAccountModel& getAccountModel();
+    /**
+     * get a reference on account model.
+     * @return a NewAccountModel&.
+     */
+    const NewAccountModel& getAccountModel() const;
 
 private:
     std::unique_ptr<LrcPimpl> lrcPipmpl_;

@@ -32,8 +32,9 @@ namespace lrc
 
 using namespace api;
 
-Database::Database()
+Database::Database(const CallbacksHandler& callbacksHandler)
 : QObject()
+, callbacksHandler_(callbacksHandler)
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         qDebug() << "Database, errror QSQLITE not supported";

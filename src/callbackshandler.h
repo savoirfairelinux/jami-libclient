@@ -30,18 +30,24 @@
 namespace lrc
 {
 
+namespace api
+{
+    class Lrc;
+}
+
 class CallbacksHandler : public QObject {
     Q_OBJECT
 
 public:
+    CallbacksHandler(const api::Lrc& parent);
     ~CallbacksHandler();
-
-private:
-    CallbacksHandler();
 
 public Q_SLOTS:
     void slotNewAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
     void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
+
+private:
+    const api::Lrc& parent;
 };
 
 } // namespace lrc

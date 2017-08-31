@@ -33,16 +33,16 @@ class LrcPimpl
 {
 
 public:
-    LrcPimpl();
+    LrcPimpl(const Lrc& linked);
 
-    std::unique_ptr<Lrc> parent;
+    const Lrc& linked;
     std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<CallbacksHandler> callbackHandler;
 };
 
 Lrc::Lrc()
-: lrcPipmpl_(std::make_unique<LrcPimpl>())
+: lrcPipmpl_(std::make_unique<LrcPimpl>(*this))
 {
 }
 
@@ -50,15 +50,26 @@ Lrc::~Lrc()
 {
 }
 
-NewAccountModel&
-Lrc::getAccountModel()
+const NewAccountModel&
+Lrc::getAccountModel() const
 {
     return *lrcPipmpl_->accountModel;
 }
 
-LrcPimpl::LrcPimpl()
+LrcPimpl::LrcPimpl(const Lrc& linked)
+: linked(linked)
 {
-    database = std::make_unique<Database>();
+    // ⚠️ take care of the order ⚠️
+    // we need to bind objects, so we have to be sure to never use something not yet instanced
+
+    // create callback model.
+    callbackHandler = std::make_unique<CallbacksHandler>(linked);
+
+    // create the database.
+    database = std::make_unique<Database>(*callbackHandler);
+
+    // create account model.
+    accountModel = std::make_unique<NewAccountModel>(*database);
 }
 
 } // namespace api

@@ -37,6 +37,8 @@ class Account; // TODO: move this class into lrc ns
 namespace lrc
 {
 
+class CallbacksHandler;
+
 using MessagesMap = std::map<int, api::message::Info>;
 
 class LIB_EXPORT Database : public QObject {
@@ -45,7 +47,7 @@ class LIB_EXPORT Database : public QObject {
 public:
     static constexpr auto ringDB = "ring.db"; // TODO: set path correctly for tests and release.
 
-    Database();
+    Database(const CallbacksHandler& callbacksHandler);
     ~Database();
 
     // Messages related
@@ -117,6 +119,7 @@ private Q_SLOTS:
                                  const QString& name) const;
 
 private:
+    const CallbacksHandler& callbacksHandler_;
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
 };
