@@ -45,6 +45,11 @@ class LIB_EXPORT NewAccountModel : public QObject {
 
 public:
     ~NewAccountModel();
+    /**
+     * get account informations associated to accountId.
+     * @param accountId.
+     * @return a const account::Info& structure.
+     */
     const account::Info& getAccountInfo(const std::string& accountId);
 
 private:
