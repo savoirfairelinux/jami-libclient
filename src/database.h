@@ -26,52 +26,83 @@
 #include <qobject.h>
 #include <QtSql/QSqlQuery>
 
-// Lrc
-#include "namedirectory.h"
-
-class Account; // TODO: move this class into lrc ns
-
 namespace lrc
 {
-
-namespace api { namespace message { struct Info; }}
 
 class Database : public QObject {
     Q_OBJECT
 
 public:
-    using MessagesMap = std::map<int, api::message::Info>;
-
-    static constexpr auto ringDB = "ring.db"; // TODO: set path correctly for tests and release.
-
     Database();
     ~Database();
 
-    // Messages related
-    void addMessage(const std::string& accountId, const api::message::Info& message) const;
-    void clearHistory(const std::string& accountId,
-                      const std::string& uid,
-                      bool removeContact = false) const;
-    MessagesMap getHistory(const std::string& accountId, const std::string& uid) const;
-    std::size_t numberOfUnreads(const std::string& accountId, const std::string& uid) const;
-    void setMessageRead(int uid) const;
-
-    // Contacts related
-    void addContact(const std::string& contact, const QByteArray& payload) const;
-    std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
-
-Q_SIGNALS:
-    void messageAdded(int uid, const std::string& accountId, const api::message::Info& msg) const;
-    void contactAdded(const std::string& uid) const;
-
-private Q_SLOTS:
-    void slotRegisteredNameFound(const Account* account,
-                                 NameDirectory::LookupStatus status,
-                                 const QString& address,
-                                 const QString& name) const;
+    struct Result {
+        int nbrOfCols = -1;
+        std::vector<std::string> payloads;
+    };
+    /**
+     * Insert value(s) inside a table.
+     * @param table, table to perfom the action on.
+     * @param bindCol, a map wich bind column(s) and identifier(s). The key is the identifier, it should begin by ':'.
+     * The value is the name of the column from the table.
+     * @param bindsSet, a map wich bind value(s) and identifier(s). The key is the identifier, it should begin by ':'.
+     * The value is the value to store.
+     *
+     * nb : usualy the identifiers has to be the same between bindCol and bindsSet
+     */
+    int insertInto(const std::string& table,
+                   const std::map<std::string, std::string>& bindCol,
+                   const std::map<std::string, std::string>& bindsSet) const;
+    /**
+     * Update value(s) inside a table.
+     * @param table, table to perfom the action on.
+     * @param set, define wich column(s), using identifier(s), will be updated.
+     * @param bindsSet, specify the value(s) to set, using the identifier(s). The key is the identifier, it should
+     * begin by ':'. The value is value to set.
+     * @param where, define the conditional to get updated, using identifier(s).
+     * @param bindsWhere, specify the value(s) to test using the identifier(s). The key is the identifier, it should
+     * begin by ':'. The value is the value test.
+     *
+     * nb : usualy, identifiers between set and bindsSet, are equals. The same goes between where and bindsWhere.
+     */
+    bool update(const std::string& table,
+                const std::string& set,
+                const std::map<std::string, std::string>& bindsSet,
+                const std::string& where,
+                const std::map<std::string, std::string>& bindsWhere) const;
+    /**
+     * Delete row from a table.
+     * @param table, table to perfom the action on.
+     * @param where, define the conditional to get updated, using identifier(s).
+     * @param bindsWhere, specify the value(s) to test using the identifier(s). The key is the identifier, it should
+     * begin by ':'. The value is the value test.
+     *
+     * nb : usualy, identifiers between where and bindsWhere, are equals.
+     */
+    bool deleteFrom(const std::string& table,
+                    const std::string& where,
+                    const std::map<std::string, std::string>& bindsWhere) const;
+    /**
+     * Select data from a table.
+     * @param select, column(s) to select.
+     * @param table, table to perfom the action on.
+     * @param where, define the conditional to get selected, using identifier(s).
+     * @param bindsWhere, specify the value(s) to test using the identifier(s).The key is the identifier, it should
+     * begin by ':'. The value is the value to test.
+     * @return Database::Result wich contains the result(s).
+     *
+     * nb : usualy, identifiers between where and bindsWhere, are equals.
+     */
+    Database::Result select(const std::string& select,
+                            const std::string& table,
+                            const std::string& where,
+                            const std::map<std::string, std::string>& bindsWhere) const;
 
 private:
-    std::unique_ptr<QSqlQuery> query_;
+    bool createTables();
+    bool storeVersion(const std::string& version);
+    const std::string VERSION = "1";
+    const std::string ringDB = "ring.db";
     QSqlDatabase db_;
 };
 
