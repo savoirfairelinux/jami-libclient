@@ -180,6 +180,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_bc9a4512",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2017-08-31T21:09:44Z",
+      "side": 1,
+      "message": "Yeap I\u0027m sure.\nIt\u0027s because the object is modified by\nconst ConversationsList\u0026 getFilteredConversations() const;",
+      "parentUuid": "ba3841fe_bccc0537",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 11
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_9c778102",
         "filename": "src/data/call.h",
         "patchSetId": 28
