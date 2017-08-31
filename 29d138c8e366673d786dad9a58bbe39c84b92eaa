@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_1cfff168",
+        "filename": "src/lrc.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T19:35:40Z",
+      "side": 1,
+      "message": "as in .h, remove it",
+      "range": {
+        "startLine": 40,
+        "startChar": 83,
+        "endLine": 40,
+        "endChar": 89
+      },
+      "revId": "29d138c8e366673d786dad9a58bbe39c84b92eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_dc046980",
+        "filename": "src/lrc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T19:35:40Z",
+      "side": 1,
+      "message": ".get() is not needed here, operator* does that for you",
+      "range": {
+        "startLine": 42,
+        "startChar": 61,
+        "endLine": 42,
+        "endChar": 67
+      },
+      "revId": "29d138c8e366673d786dad9a58bbe39c84b92eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_bc09a597",
+        "filename": "src/lrc.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-08-31T19:35:40Z",
+      "side": 1,
+      "message": "After discussion, this section must be moved into a structure not exported to the client.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 117
+      },
+      "revId": "29d138c8e366673d786dad9a58bbe39c84b92eaa",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
