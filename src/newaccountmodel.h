@@ -35,7 +35,11 @@ class LIB_EXPORT NewAccountModel : public api::NewAccountModelI {
 public:
     NewAccountModel(const Database& database);
     ~NewAccountModel();
-
+    /**
+     * get account informations associated to accountId.
+     * @param accountId.
+     * @return a const account::Info& structure.
+     */
     const api::account::Info& getAccountInfo(const std::string& accountId) override;
 
 private:
