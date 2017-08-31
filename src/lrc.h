@@ -35,6 +35,10 @@ class Lrc : public QObject {
 public:
     explicit Lrc();
     ~Lrc();
+    /**
+     * get a reference on account model.
+     * @return a NewAccountModel&.
+     */
     NewAccountModel& getAccountModel() {return *accountModel_.get();};
 
 private Q_SLOTS:
