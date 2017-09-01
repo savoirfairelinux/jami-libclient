@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_df261bba",
+        "filename": "src/interfaces/pixmapmanipulatori.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T13:31:51Z",
+      "side": 1,
+      "message": "not safe, you can pass a conversation with a wrong contactmodel. Since conversation stores a accountId you can get the contactmodel with it. then you could remove a parameter.",
+      "range": {
+        "startLine": 73,
+        "startChar": 41,
+        "endLine": 74,
+        "endChar": 79
+      },
+      "revId": "969392942d813aeacc6a248c83f93661fab5e87d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
