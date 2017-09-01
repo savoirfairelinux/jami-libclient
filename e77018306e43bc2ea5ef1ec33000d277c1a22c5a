@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "ba3841fe_bfa077f5",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 28
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "not required client-side",
+      "range": {
+        "startLine": 455,
+        "startChar": 1,
+        "endLine": 455,
+        "endChar": 16
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_fceded8c",
         "filename": "src/contactmodel.h",
         "patchSetId": 28
@@ -13,6 +36,30 @@
       "writtenOn": "2017-08-31T21:00:44Z",
       "side": 1,
       "message": "could be removed?\n\ndefine\n\nnamespace account {\nclass Info;\n}",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_1f21a39f",
+        "filename": "src/contactmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_fceded8c",
       "range": {
         "startLine": 29,
         "startChar": 0,
@@ -42,6 +89,47 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_ff25dfab",
+        "filename": "src/contactmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_3cd8f5ee",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_5f3a0bce",
+        "filename": "src/contactmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "I move them to private, since the client will don\u0027t screen a list of contacts.",
+      "range": {
+        "startLine": 52,
+        "startChar": 3,
+        "endLine": 53,
+        "endChar": 50
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_5c54d953",
         "filename": "src/conversationmodel.h",
         "patchSetId": 28
@@ -53,6 +141,30 @@
       "writtenOn": "2017-08-31T21:00:44Z",
       "side": 1,
       "message": "const\u0026 ?",
+      "range": {
+        "startLine": 67,
+        "startChar": 49,
+        "endLine": 67,
+        "endChar": 62
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_1f6fe3c6",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_5c54d953",
       "range": {
         "startLine": 67,
         "startChar": 49,
@@ -88,6 +200,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_ff731faf",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_3c511563",
+      "range": {
+        "startLine": 73,
+        "startChar": 22,
+        "endLine": 73,
+        "endChar": 40
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_9c4e61c0",
         "filename": "src/conversationmodel.h",
         "patchSetId": 28
@@ -99,6 +235,30 @@
       "writtenOn": "2017-08-31T21:00:44Z",
       "side": 1,
       "message": "const\u0026",
+      "range": {
+        "startLine": 74,
+        "startChar": 23,
+        "endLine": 74,
+        "endChar": 40
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_5f684bba",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_9c4e61c0",
       "range": {
         "startLine": 74,
         "startChar": 23,
@@ -134,6 +294,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_3f6587e1",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_7c4b9db0",
+      "range": {
+        "startLine": 75,
+        "startChar": 30,
+        "endLine": 75,
+        "endChar": 49
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_dcc74911",
         "filename": "src/conversationmodel.h",
         "patchSetId": 28
@@ -145,6 +329,30 @@
       "writtenOn": "2017-08-31T21:00:44Z",
       "side": 1,
       "message": "const\u0026",
+      "range": {
+        "startLine": 79,
+        "startChar": 63,
+        "endLine": 79,
+        "endChar": 76
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_9f62d3d6",
+        "filename": "src/conversationmodel.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_dcc74911",
       "range": {
         "startLine": 79,
         "startChar": 63,
@@ -251,6 +459,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_3f3747e5",
+        "filename": "src/data/call.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "it\u0027s not used anywhere, I delete it",
+      "parentUuid": "ba3841fe_9c778102",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 78
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_3c6ab51a",
         "filename": "src/data/contact.h",
         "patchSetId": 28
@@ -262,6 +494,30 @@
       "writtenOn": "2017-08-31T21:00:44Z",
       "side": 1,
       "message": "not needed. it\u0027s the type of ContactsInfoMap::value_type",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 84
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_9f3493df",
+        "filename": "src/data/contact.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "not used anywhere, I delete it",
+      "parentUuid": "ba3841fe_3c6ab51a",
       "range": {
         "startLine": 46,
         "startChar": 0,
@@ -297,6 +553,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_7f5f0f0f",
+        "filename": "src/data/conversation.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_1cd251d2",
+      "range": {
+        "startLine": 42,
+        "startChar": 19,
+        "endLine": 42,
+        "endChar": 23
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_fcd68dc4",
         "filename": "src/data/message.h",
         "patchSetId": 28
@@ -314,6 +594,24 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_df9bbbc7",
+        "filename": "src/data/message.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_fcd68dc4",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_bc308557",
         "filename": "src/database.h",
         "patchSetId": 28
@@ -325,6 +623,30 @@
       "writtenOn": "2017-08-31T20:33:11Z",
       "side": 1,
       "message": "I think the type should be \"const message::Info\u0026\"",
+      "range": {
+        "startLine": 66,
+        "startChar": 62,
+        "endLine": 66,
+        "endChar": 75
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_ff5cbf27",
+        "filename": "src/database.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "yes, since this signal must have the same signature than the slot using it in conversamodel.h slotMessageAdded.",
+      "parentUuid": "ba3841fe_bc308557",
       "range": {
         "startLine": 66,
         "startChar": 62,
@@ -360,6 +682,30 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_5f416b38",
+        "filename": "src/database.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_7cef1db1",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 12
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_9cf2e198",
         "filename": "src/lrc.h",
         "patchSetId": 28
@@ -377,6 +723,24 @@
     },
     {
       "key": {
+        "uuid": "ba3841fe_df745b9e",
+        "filename": "src/lrc.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_9cf2e198",
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_1cb1b1e1",
         "filename": "src/lrc.h",
         "patchSetId": 28
@@ -388,6 +752,30 @@
       "writtenOn": "2017-08-31T20:33:11Z",
       "side": 1,
       "message": "\u0027explicit\u0027 keyword has no meaning here",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 12
+      },
+      "revId": "e77018306e43bc2ea5ef1ec33000d277c1a22c5a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_bf799795",
+        "filename": "src/lrc.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-01T15:41:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3841fe_1cb1b1e1",
       "range": {
         "startLine": 36,
         "startChar": 4,
