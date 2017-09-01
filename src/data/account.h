@@ -52,6 +52,6 @@ struct Info
 
 } // namespace account
 
-using AccountsInfoMap = std::map<std::string, std::shared_ptr<account::Info>>;
+using AccountsInfoMap = std::map<std::string, account::Info>;
 
 } // namespace lrc

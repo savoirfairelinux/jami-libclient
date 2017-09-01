@@ -50,7 +50,7 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    std::shared_ptr<account::Info> getAccountInfo(const std::string& accountId);
+    account::Info& getAccountInfo(const std::string& accountId);
 
 private:
     explicit NewAccountModel(const Database& database);
