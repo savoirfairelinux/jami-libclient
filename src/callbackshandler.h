@@ -30,12 +30,8 @@
 namespace lrc
 {
 
-class Lrc;
-
-class LIB_EXPORT CallbacksHandler : public QObject {
+class CallbacksHandler : public QObject {
     Q_OBJECT
-
-    friend class Lrc;
 
 public:
     ~CallbacksHandler();
@@ -44,10 +40,8 @@ private:
     CallbacksHandler();
 
 public Q_SLOTS:
-    void slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
+    void slotNewAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
     void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
 };
-
-using upCallbacksHandler = std::unique_ptr<CallbacksHandler>;
 
 } // namespace lrc

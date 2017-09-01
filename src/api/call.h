@@ -17,57 +17,44 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-// Std
-#include <memory>
 
-// Qt
-#include <qobject.h>
-
-// Data
-#include "data/call.h"
-#include "data/account.h"
+// std
+#include <string>
+#include <ctime>
 
 namespace lrc
 {
 
-class NewAccountModel;
-class ConversationModel;
+namespace api
+{
 
-class NewCallModel : public QObject {
-    Q_OBJECT
+namespace call
+{
 
-    friend class NewAccountModel;
-    friend class ConversationModel;
-
-public:
-    const account::Info& owner;
-
-    enum class Media {
-        NONE,
-        AUDIO,
-        VIDEO
-    };
-
-    ~NewCallModel();
-
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const Media media) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
-
-private:
-    explicit NewCallModel(NewAccountModel& parent, const account::Info& info);
-    NewCallModel(const NewCallModel& newCallModel);
-    const call::Info& createCall(const std::string& contactUri);
-    void sendMessage(const std::string& callId, const std::string& body) const;
-
-    CallsInfoMap calls_;
-    NewAccountModel& parent_;
-
+enum class Status {
+    INVALID,
+    OUTGOING_REQUESTED,
+    INCOMING_RINGING,
+    OUTGOING_RINGING,
+    CONNECTING,
+    SEARCHING,
+    IN_PROGRESS,
+    PAUSED,
+    PEER_PAUSED,
+    INACTIVE,
+    ENDED,
+    TERMINATING,
+    CONNECTED,
+    AUTO_ANSWERING
 };
 
+struct Info
+{
+    std::string id;
+    std::time_t startTime = 0;
+    Status status = Status::INVALID;
+};
+
+} // namespace call
+} // namespace api
 } // namespace lrc

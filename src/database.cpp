@@ -18,16 +18,10 @@
  ***************************************************************************/
 #include "database.h"
 
-// Qt
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlError>
-
-// Lrc
-#include "private/vcardutils.h"
-#include "availableaccountmodel.h"
-
 namespace lrc
 {
+
+using namespace api;
 
 Database::Database()
 : QObject()

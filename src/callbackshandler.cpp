@@ -18,10 +18,6 @@
  ***************************************************************************/
 #include "callbackshandler.h"
 
-// Dbus
-#include "dbus/configurationmanager.h"
-#include "dbus/presencemanager.h"
-
 namespace lrc
 {
 

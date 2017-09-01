@@ -18,42 +18,34 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <ctime>
-#include <string>
+// Std
+#include <vector>
 #include <map>
+
+// Data
+#include "message.h"
 
 namespace lrc
 {
 
-namespace message
+namespace api
 {
 
-enum class Type {
-    INVALID,
-    TEXT,
-    CALL,
-    CONTACT
-};
-
-enum class Status {
-    INVALID,
-    SENDING,
-    FAILED,
-    SUCCEED,
-    READ
-};
+namespace conversation
+{
 
 struct Info
 {
     std::string uid;
-    std::string body;
-    std::time_t timestamp = 0;
-    Type type = Type::INVALID;
-    Status status = Status::INVALID;
+    std::string accountId;
+    std::vector<std::string> participants;
+    std::string callId;
+    std::map<int, message::Info> messages;
+    unsigned int lastMessageUid = 0;
+    bool isUsed = false;
+    unsigned int unreadMessages = 0;
 };
 
-} // namespace message
-
-using MessagesMap = std::map<int, message::Info>;
+} // namespace conversation
+} // namespace api
 } // namespace lrc

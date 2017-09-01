@@ -18,40 +18,35 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <ctime>
+// Std
+#include <string>
 
 namespace lrc
 {
 
-namespace call
+namespace api
 {
 
-enum class Status {
+namespace contact
+{
+
+enum class Type {
     INVALID,
-    OUTGOING_REQUESTED,
-    INCOMING_RINGING,
-    OUTGOING_RINGING,
-    CONNECTING,
-    SEARCHING,
-    IN_PROGRESS,
-    PAUSED,
-    PEER_PAUSED,
-    INACTIVE,
-    ENDED,
-    TERMINATING,
-    CONNECTED,
-    AUTO_ANSWERING
+    RING,
+    SIP
 };
 
 struct Info
 {
-    std::string id;
-    std::time_t startTime = 0;
-    Status status = Status::INVALID;
+    std::string uri;
+    std::string avatar;
+    std::string registeredName;
+    std::string alias;
+    bool isTrusted = false;
+    bool isPresent = false;
+    Type type = Type::INVALID;
 };
 
-} // namespace call
-
-using CallsInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+} // namespace contact
+} // namespace api
 } // namespace lrc

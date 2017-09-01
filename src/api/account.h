@@ -18,10 +18,21 @@
  ***************************************************************************/
 #pragma once
 
+#include <string>
+#include <memory>
+
 namespace lrc
 {
 
-namespace contact
+namespace api
+{
+
+class NewCallModel;
+class ContactModel;
+class ConversationModel;
+class NewAccountModel;
+
+namespace account
 {
 
 enum class Type {
@@ -32,17 +43,14 @@ enum class Type {
 
 struct Info
 {
-    std::string uri;
-    std::string avatar;
-    std::string registeredName;
-    std::string alias;
-    bool isTrusted = false;
-    bool isPresent = false;
-    Type type = Type::INVALID;
+    std::string id;
+    Type type = account::Type::INVALID;
+    std::unique_ptr<lrc::api::NewCallModel> callModel;
+    std::unique_ptr<lrc::api::ContactModel> contactModel;
+    std::unique_ptr<lrc::api::ConversationModel> conversationModel;
+    std::unique_ptr<lrc::api::NewAccountModel> accountModel;
 };
 
-} // namespace contact
-
-using ContactsInfoMap = std::map<std::string, std::shared_ptr<contact::Info>>;
-
+} // namespace account
+} // namespace api
 } // namespace lrc

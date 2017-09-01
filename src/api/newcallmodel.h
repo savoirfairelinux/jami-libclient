@@ -17,28 +17,56 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-#include "message.h"
+
+// Std
+#include <memory>
+
+// Qt
+#include <qobject.h>
+
+// Data
+#include "api/call.h"
+#include "api/account.h"
 
 namespace lrc
 {
 
-namespace conversation
+namespace api
 {
 
-struct Info
-{
-    std::string uid;
-    std::string accountId;
-    std::vector<std::string> participants;
-    std::string callId;
-    MessagesMap messages; // TODO: avoid MessagesMap
-    unsigned int lastMessageUid = 0;
-    bool isUsed = false;
-    unsigned int unreadMessages = 0;
+class NewAccountModel;
+class NewCallModelPimpl;
+
+using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+
+class NewCallModel : public QObject {
+    Q_OBJECT
+public:
+    const account::Info& owner;
+
+    enum class Media {
+        NONE,
+        AUDIO,
+        VIDEO
+    };
+
+    NewCallModel(NewAccountModel& parent, const account::Info& info);
+    ~NewCallModel();
+
+    const call::Info& createCall(const std::string& contactUri);
+
+    void hangUp(const std::string& callId) const;
+    void togglePause(const std::string& callId) const;
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
+    void toggleRecoringdAudio(const std::string& callId) const;
+    void setQuality(const std::string& callId, const double quality) const;
+    void transfer(const std::string& callId, const std::string& to) const;
+    void addParticipant(const std::string& callId, const std::string& participant);
+    void removeParticipant(const std::string& callId, const std::string& participant);
+
+private:
+    std::unique_ptr<NewCallModelPimpl> pimpl_;
 };
 
-} // namespace conversation
-
-using ConversationsQueue = std::deque<conversation::Info>;
-
-} //namespace lrc
+} // namespace api
+} // namespace lrc

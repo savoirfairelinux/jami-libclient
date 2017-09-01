@@ -16,28 +16,61 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "conversationmodel.h"
+#include "api/conversationmodel.h"
 
 // std
 #include <regex>
 
-// Dbus
-#include "dbus/configurationmanager.h"
-
 // Models and database
 #include "database.h"
-#include "newcallmodel.h"
+#include "api/newcallmodel.h"
+#include "api/newaccountmodel.h"
 
 namespace lrc
 {
 
+namespace api
+{
+
+class ConversationModelPimpl
+{
+public:
+    ConversationModelPimpl(const NewAccountModel& p, const Database& d, const account::Info& o);
+    ~ConversationModelPimpl();
+
+    // shortcuts in owner
+    NewCallModel& callModel;
+
+    /**
+     * Search a conversation in conversations_
+     * @param uid the contact to search
+     * @return the index in conversations_
+     */
+    int find(const std::string& uid) const;
+    /**
+     * Initialize conversations_ and filteredConversations_
+     */
+    void initConversations();
+    /**
+     * Sort conversation by last action
+     */
+    void sortConversations();
+    void search();
+
+    const NewAccountModel& parent;
+    const Database& database;
+
+    ConversationQueue conversations;
+    mutable ConversationQueue filteredConversations;
+    std::string filter;
+
+};
+
 ConversationModel::ConversationModel(const NewAccountModel& parent,
                                      const Database& database,
                                      const account::Info& info)
-: parent_(parent)
-, database_(database)
+: pimpl_(std::make_unique<ConversationModelPimpl>(parent, database, owner))
 , owner(info)
-, QObject()
 {
 
 }
@@ -47,16 +80,16 @@ ConversationModel::~ConversationModel()
 
 }
 
-const ConversationsQueue&
+const ConversationQueue&
 ConversationModel::getFilteredConversations() const
 {
-    return conversations_;
+    return pimpl_->conversations;
 }
 
 conversation::Info
 ConversationModel::getConversation(const unsigned int row) const
 {
-
+    return {};
 }
 
 void
@@ -80,7 +113,6 @@ ConversationModel::removeConversation(const std::string& uid)
 void
 ConversationModel::placeCall(const std::string& uid) const
 {
-    owner.callModel->createCall("fake uri just for class test");
 }
 
 void
@@ -108,18 +140,6 @@ ConversationModel::clearHistory(const std::string& uid)
 }
 
 void
-ConversationModel::initConversations()
-{
-
-}
-
-void
-ConversationModel::sortConversations()
-{
-
-}
-
-void
 ConversationModel::slotContactsChanged()
 {
 
@@ -131,22 +151,49 @@ ConversationModel::slotMessageAdded(int uid, const std::string& account, const m
 
 }
 
+void
+ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                                       const QString& address, const QString& name)
+{
+
+}
+
+ConversationModelPimpl::ConversationModelPimpl(const NewAccountModel& p, const Database& d, const account::Info& o)
+: parent(p)
+, database(d)
+, callModel(*o.callModel)
+{
+
+}
+
+ConversationModelPimpl::~ConversationModelPimpl()
+{
+
+}
+
 int
-ConversationModel::find(const std::string& uid) const
+ConversationModelPimpl::find(const std::string& uid) const
+{
+    return -1;
+}
+
+void
+ConversationModelPimpl::search()
 {
 
 }
 
 void
-ConversationModel::search()
+ConversationModelPimpl::initConversations()
 {
 
 }
 
 void
-ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+ConversationModelPimpl::sortConversations()
 {
 
 }
 
+} // namespace api
 } // namespace lrc

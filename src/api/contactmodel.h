@@ -19,29 +19,53 @@
 #pragma once
 
 // Std
-#include <memory>
+#include <string>
 
 // Qt
 #include <qobject.h>
 
+// Data
+#include "api/account.h"
+#include "api/contact.h"
+
 namespace lrc
 {
 
-class NewAccountModel;
 class Database;
-class CallbacksHandler;
 
-class Lrc : public QObject {
+namespace api
+{
+
+class NewAccountModel;
+class ConversationModel;
+class ContactModelPimpl;
+
+
+using ContactInfoMap = std::map<std::string, std::shared_ptr<contact::Info>>;
+
+class ContactModel : public QObject {
     Q_OBJECT
 public:
-    Lrc();
-    ~Lrc();
-    NewAccountModel& getAccountModel() {return *accountModel_;};
+    const account::Info& owner;
+
+    ContactModel(NewAccountModel& parent,
+                 const Database& database,
+                 const account::Info& info);
+    ~ContactModel();
+
+    const contact::Info& getContact(const std::string& uri) const;
+    void addContact(const std::string& uri);
+    void removeContact(const std::string& uri);
+    void nameLookup(const std::string& uri) const;
+    void addressLookup(const std::string& name) const;
+
+Q_SIGNALS:
+    void contactsChanged();
 
 private:
-    std::unique_ptr<Database> database_;
-    std::unique_ptr<NewAccountModel> accountModel_;
-    std::unique_ptr<CallbacksHandler> callbackHandler_;
+    std::unique_ptr<ContactModelPimpl> pimpl_;
+
 };
 
+} // namespace api
 } // namespace lrc

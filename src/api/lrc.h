@@ -25,61 +25,34 @@
 #include <qobject.h>
 
 // Data
-#include "data/contact.h"
+#include "api/account.h"
+
+// Lrc
+#include "typedefs.h"
 
 namespace lrc
 {
 
-namespace account
-{
-    class Info;
-}
-
-class NewAccountModel;
-class ConversationModel;
 class Database;
+class CallbacksHandler;
 
-class ContactModel : public QObject {
+namespace api
+{
+
+class LrcPimpl;
+class NewAccountModel;
+
+class Lrc : public QObject {
     Q_OBJECT
-
-    friend class NewAccountModel;
-    friend class ConversationModel;
-
-
 public:
-    const account::Info& owner;
+    Lrc();
+    ~Lrc();
 
-    ~ContactModel();
-
-    void addContact(const std::string& uri);
-    void removeContact(const std::string& uri);
-    void nameLookup(const std::string& uri) const;
-    void addressLookup(const std::string& name) const;
-
-Q_SIGNALS:
-    void contactsChanged();
-
-private Q_SLOTS:
-    // TODO remove this from here when LRC signals are added
-    void slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed);
-    void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
+    NewAccountModel& getAccountModel();
 
 private:
-    explicit ContactModel(NewAccountModel& parent,
-                          const Database& db,
-                          const account::Info& info);
-
-    ContactModel(const ContactModel& contactModel);
-    bool fillsWithContacts();
-    void sendMessage(const std::string& uri, const std::string& body) const;
-    void setContactPresent(const std::string& uri, bool status);
-    const contact::Info& getContact(const std::string& uri) const;
-    const ContactsInfoMap& getAllContacts() const;
-
-    ContactsInfoMap contacts_;
-    const Database& db_;
-    NewAccountModel& parent_;
-
+    std::unique_ptr<LrcPimpl> lrcPipmpl_;
 };
 
-}
+} // namespace api
+} // namespace lrc

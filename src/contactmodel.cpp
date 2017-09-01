@@ -16,34 +16,44 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "contactmodel.h"
+#include "api/contactmodel.h"
 
-// Dbus
-#include "dbus/configurationmanager.h"
-#include "dbus/presencemanager.h"
-
-// Lrc
-#include "availableaccountmodel.h"
-#include "contactmethod.h"
+// Models and database
+#include "database.h"
+#include "api/newaccountmodel.h"
 
 namespace lrc
 {
 
-ContactModel::ContactModel(NewAccountModel& parent, const Database& db, const account::Info& info)
-: parent_(parent)
-, db_(db)
-, owner(info)
-, QObject()
+namespace api
 {
 
-}
+class ContactModelPimpl
+{
+public:
+    ContactModelPimpl(NewAccountModel& p, const Database& d);
+    ~ContactModelPimpl();
+    ContactModelPimpl(const ContactModelPimpl& contactModelPimpl);
 
-ContactModel::ContactModel(const ContactModel& contactModel)
-: contacts_(contactModel.contacts_)
-, db_(contactModel.db_)
-, parent_(contactModel.parent_)
-, owner(contactModel.owner)
-, QObject()
+    bool fillsWithContacts();
+    void sendMessage(const std::string& uri, const std::string& body) const;
+    void setContactPresent(const std::string& uri, bool status);
+    const ContactInfoMap& getAllContacts() const;
+
+    const Database& db;
+    ContactInfoMap contacts;
+    NewAccountModel& parent;
+
+public Q_SLOTS:
+    // TODO remove this from here when LRC signals are added
+    void slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed);
+    void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
+};
+
+
+ContactModel::ContactModel(NewAccountModel& parent, const Database& database, const account::Info& info)
+: pimpl_(std::make_unique<ContactModelPimpl>(parent, database))
+, owner(info)
 {
 
 }
@@ -65,22 +75,10 @@ ContactModel::removeContact(const std::string& uri)
 
 }
 
-void
-ContactModel::sendMessage(const std::string& uri, const std::string& body) const
-{
-
-}
-
 const contact::Info&
 ContactModel::getContact(const std::string& uri) const
 {
-    return contact::Info();
-}
-
-const ContactsInfoMap&
-ContactModel::getAllContacts() const
-{
-    return contacts_;
+    return {};
 }
 
 void
@@ -95,28 +93,56 @@ ContactModel::addressLookup(const std::string& name) const
 
 }
 
+ContactModelPimpl::ContactModelPimpl(NewAccountModel& p, const Database& d)
+: db(d)
+, parent(p)
+{
+
+}
+
+ContactModelPimpl::ContactModelPimpl(const ContactModelPimpl& contactModelPimpl)
+: db(contactModelPimpl.db)
+, contacts(contactModelPimpl.contacts)
+, parent(contactModelPimpl.parent)
+{
+
+}
+
 void
-ContactModel::setContactPresent(const std::string& uri, bool status)
+ContactModelPimpl::sendMessage(const std::string& uri, const std::string& body) const
 {
 
 }
 
 bool
-ContactModel::fillsWithContacts()
+ContactModelPimpl::fillsWithContacts()
 {
     return false;
 }
 
 void
-ContactModel::slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed)
+ContactModelPimpl::setContactPresent(const std::string& uri, bool status)
+{
+
+}
+
+const ContactInfoMap&
+ContactModelPimpl::getAllContacts() const
+{
+    return contacts;
+}
+
+void
+ContactModelPimpl::slotContactsAdded(const QString &accountID, const QString &uri, bool confirmed)
 {
 
 }
 
 void
-ContactModel::slotContactsRemoved(const QString &accountID, const QString &uri, bool status)
+ContactModelPimpl::slotContactsRemoved(const QString &accountID, const QString &uri, bool status)
 {
 
 }
 
+} // namespace api
 } // namespace lrc

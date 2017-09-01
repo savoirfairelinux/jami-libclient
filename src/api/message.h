@@ -18,40 +18,43 @@
  ***************************************************************************/
 #pragma once
 
+// std
+#include <ctime>
+#include <string>
+
 namespace lrc
 {
 
-class NewCallModel;
-class ContactModel;
-class ConversationModel;
-class NewAccountModel;
+namespace api
+{
 
-using upNewCallModel = std::unique_ptr<NewCallModel>;
-using upContactModel = std::unique_ptr<ContactModel>;
-using upConversationModel = std::unique_ptr<ConversationModel>;
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
-
-namespace account
+namespace message
 {
 
 enum class Type {
     INVALID,
-    RING,
-    SIP
+    TEXT,
+    CALL,
+    CONTACT
+};
+
+enum class Status {
+    INVALID,
+    SENDING,
+    FAILED,
+    SUCCEED,
+    READ
 };
 
 struct Info
 {
-    std::string id;
-    Type type = account::Type::INVALID;
-    upNewCallModel callModel;
-    upContactModel contactModel;
-    upConversationModel conversationModel;
-    upNewAccountModel accountModel;
+    std::string uid;
+    std::string body;
+    std::time_t timestamp = 0;
+    Type type = Type::INVALID;
+    Status status = Status::INVALID;
 };
 
-} // namespace account
-
-using AccountsInfoMap = std::map<std::string, account::Info>;
-
+} // namespace message
+} // namespace api
 } // namespace lrc

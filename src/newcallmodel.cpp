@@ -16,24 +16,31 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "newcallmodel.h"
+#include "api/newcallmodel.h"
+
+#include "api/newaccountmodel.h"
 
 namespace lrc
 {
 
-NewCallModel::NewCallModel(NewAccountModel& parent, const account::Info& info)
-: parent_(parent)
-, owner(info)
-, QObject()
+namespace api
 {
 
-}
+class NewCallModelPimpl
+{
+public:
+    NewCallModelPimpl(NewAccountModel& parent);
+    ~NewCallModelPimpl();
 
-NewCallModel::NewCallModel(const NewCallModel& newCallModel)
-: calls_(newCallModel.calls_)
-, parent_(newCallModel.parent_)
-, owner(newCallModel.owner)
-, QObject()
+    void sendMessage(const std::string& callId, const std::string& body) const;
+
+    CallInfoMap calls;
+    NewAccountModel& parent;
+};
+
+NewCallModel::NewCallModel(NewAccountModel& parent, const account::Info& info)
+: owner(info)
+, pimpl_(std::make_unique<NewCallModelPimpl>(parent))
 {
 
 }
@@ -45,12 +52,6 @@ NewCallModel::~NewCallModel()
 
 const call::Info&
 NewCallModel::createCall(const std::string& contactUri)
-{
-
-}
-
-void
-NewCallModel::sendMessage(const std::string& callId, const std::string& body) const
 {
 
 }
@@ -103,4 +104,22 @@ NewCallModel::removeParticipant(const std::string& callId, const std::string& pa
 
 }
 
+NewCallModelPimpl::NewCallModelPimpl(NewAccountModel& p)
+: parent(p)
+{
+
+}
+
+NewCallModelPimpl::~NewCallModelPimpl()
+{
+
+}
+
+void
+NewCallModelPimpl::sendMessage(const std::string& callId, const std::string& body) const
+{
+
+}
+
+} // namespace api
 } // namespace lrc

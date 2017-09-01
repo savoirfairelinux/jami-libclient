@@ -27,30 +27,29 @@
 #include <QtSql/QSqlQuery>
 
 // Data
-#include "data/message.h"
+#include "api/message.h"
 
 // Lrc
-#include "typedefs.h"
 #include "namedirectory.h"
 
-constexpr char ringDB[] = "ring.db";
-
-class Account;
-class Lrc;
+class Account; // TODO: move this class into lrc ns
 
 namespace lrc
 {
 
+using MessagesMap = std::map<int, api::message::Info>;
+
 class LIB_EXPORT Database : public QObject {
     Q_OBJECT
 
-    friend class Lrc;
-
 public:
+    static constexpr auto ringDB = "ring.db"; // TODO: set path correctly for tests and release.
+
+    Database();
     ~Database();
 
     // Messages related
-    void addMessage(const std::string& accountId, const message::Info& message) const;
+    void addMessage(const std::string& accountId, const api::message::Info& message) const;
     void clearHistory(const std::string& accountId,
                       const std::string& uid,
                       bool removeContact = false) const;
@@ -63,7 +62,7 @@ public:
     std::string getContactAttribute(const std::string& uid, const std::string& attribute) const;
 
 Q_SIGNALS:
-    void messageAdded(int uid, const std::string& accountId, const message::Info& msg) const;
+    void messageAdded(int uid, const std::string& accountId, const api::message::Info& msg) const;
     void contactAdded(const std::string& uid) const;
 
 private Q_SLOTS:
@@ -73,10 +72,8 @@ private Q_SLOTS:
                                  const QString& name) const;
 
 private:
-    Database();
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
-
 };
 
 } // namespace lrc

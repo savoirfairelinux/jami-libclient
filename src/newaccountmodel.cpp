@@ -16,36 +16,56 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "newaccountmodel.h"
-
-// Dbus
-#include "dbus/configurationmanager.h"
+#include "api/newaccountmodel.h"
 
 
 // Models and database
-#include "newcallmodel.h"
-#include "contactmodel.h"
-#include "conversationmodel.h"
+#include "database.h"
+#include "api/newcallmodel.h"
+#include "api/contactmodel.h"
+#include "api/conversationmodel.h"
 
 namespace lrc
 {
 
-NewAccountModel::NewAccountModel(const Database& database)
-: QObject()
-, database_(database)
+namespace api
 {
 
+class NewAccountModelPimpl
+{
+public:
+    NewAccountModelPimpl(const Database& database);
+    ~NewAccountModelPimpl();
+
+    const Database& database;
+    AccountInfoMap accounts;
+};
+
+NewAccountModel::NewAccountModel(const Database& database)
+: pimpl_(std::make_unique<NewAccountModelPimpl>(database))
+{
 }
 
 NewAccountModel::~NewAccountModel()
 {
-
 }
 
 const account::Info&
 NewAccountModel::getAccountInfo(const std::string& accountId)
 {
-    return accounts_[accountId];
+    return pimpl_->accounts[accountId];
 }
 
+NewAccountModelPimpl::NewAccountModelPimpl(const Database& database)
+: database(database)
+{
+
+}
+
+NewAccountModelPimpl::~NewAccountModelPimpl()
+{
+
+}
+
+} // namespace api
 } // namespace lrc

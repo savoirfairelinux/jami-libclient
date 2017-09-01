@@ -20,39 +20,45 @@
 
 // Std
 #include <memory>
-#include <deque>
 #include <map>
-
-// Qt
-#include <qobject.h>
+#include <string>
+#include <deque>
 
 // Data
-#include "data/conversation.h"
-#include "data/account.h"
+#include "api/account.h"
+#include "api/conversation.h"
 
 // Lrc
 #include "typedefs.h"
 #include "account.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
+#include "namedirectory.h"
 
 namespace lrc
 {
 
-class NewAccountModel;
 class Database;
 
+namespace api
+{
+
+using ConversationQueue = std::deque<conversation::Info>;
+
+class NewAccountModel;
+class NewCallModel;
+class ConversationModelPimpl;
+
 class LIB_EXPORT ConversationModel : public QObject {
-    Q_OBJECT
-
-    friend class NewAccountModel;
-
 public:
     const account::Info& owner;
 
+    ConversationModel(const NewAccountModel& parent,
+                      const Database& database,
+                      const account::Info& info);
     ~ConversationModel();
 
-    const ConversationsQueue& getFilteredConversations() const;
+    const ConversationQueue& getFilteredConversations() const;
     conversation::Info getConversation(const unsigned int row) const;
     void addConversation(const std::string& uri) const;
     void removeConversation(const std::string& uid);
@@ -77,35 +83,12 @@ Q_SIGNALS:
 private Q_SLOTS:
     void slotContactsChanged();
     void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
-    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                             const QString& address, const QString& name);
 
 private:
-    explicit ConversationModel(const NewAccountModel& parent,
-                               const Database& database,
-                               const account::Info& info);
-    /**
-     * Search a conversation in conversations_
-     * @param uid the contact to search
-     * @return the index in conversations_
-     */
-    int find(const std::string& uid) const;
-    /**
-     * Initialize conversations_ and filteredConversations_
-     */
-    void initConversations();
-    /**
-     * Sort conversation by last action
-     */
-    void sortConversations();
-    void search();
-
-    const NewAccountModel& parent_;
-    const Database& database_;
-
-    ConversationsQueue conversations_;
-    mutable ConversationsQueue filteredConversations_;
-    std::string filter_;
-
+    std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
 
+} // namespace api
 } // namespace lrc
