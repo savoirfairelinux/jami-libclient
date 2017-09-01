@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_bf3cf794",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-01T23:53:18Z",
+      "side": 1,
+      "message": "friendship with not-so-strongly-related class\nUse it with method/function is a better pattern here.",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "947cc18e9d1b91f8b9aee987727b2d123d768329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3841fe_7fbb8f0e",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-01T23:53:18Z",
+      "side": 1,
+      "message": "the \u0027up\u0027 brokes type naming rules.\nuse such for member/variable names, not type.\nBTW this using with unique_ptr looks over-engineered\nNote also you don\u0027t use in in lrc.h as example, so why to define it if not to be used?",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "947cc18e9d1b91f8b9aee987727b2d123d768329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
