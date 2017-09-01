@@ -21,15 +21,15 @@
 // std
 #include <regex>
 
-// Dbus
-#include "dbus/configurationmanager.h"
-
 // Models and database
 #include "database.h"
 #include "newcallmodel.h"
+#include "newaccountmodel.h"
 
 namespace lrc
 {
+
+using namespace api;
 
 ConversationModel::ConversationModel(const NewAccountModel& parent,
                                      const Database& database,
@@ -37,7 +37,7 @@ ConversationModel::ConversationModel(const NewAccountModel& parent,
 : parent_(parent)
 , database_(database)
 , owner(info)
-, QObject()
+, callModel_(static_cast<NewCallModel&>(*owner.callModel))
 {
 
 }
@@ -47,7 +47,7 @@ ConversationModel::~ConversationModel()
 
 }
 
-const ConversationsQueue&
+const ConversationQueue&
 ConversationModel::getFilteredConversations() const
 {
     return conversations_;
@@ -56,7 +56,7 @@ ConversationModel::getFilteredConversations() const
 conversation::Info
 ConversationModel::getConversation(const unsigned int row) const
 {
-
+    return {};
 }
 
 void
@@ -80,7 +80,6 @@ ConversationModel::removeConversation(const std::string& uid)
 void
 ConversationModel::placeCall(const std::string& uid) const
 {
-    owner.callModel->createCall("fake uri just for class test");
 }
 
 void
@@ -134,7 +133,7 @@ ConversationModel::slotMessageAdded(int uid, const std::string& account, const m
 int
 ConversationModel::find(const std::string& uid) const
 {
-
+    return -1;
 }
 
 void
@@ -144,7 +143,8 @@ ConversationModel::search()
 }
 
 void
-ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
+ConversationModel::registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                                       const QString& address, const QString& name)
 {
 
 }

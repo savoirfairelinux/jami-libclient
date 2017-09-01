@@ -18,16 +18,8 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <deque>
-#include <map>
-
-// Qt
-#include <qobject.h>
-
-// Data
-#include "data/account.h"
+// Interface
+#include "api/newaccountmodeli.h"
 
 // Lrc
 #include "typedefs.h"
@@ -36,23 +28,19 @@ namespace lrc
 {
 
 class Database;
-class Lrc;
 
-class LIB_EXPORT NewAccountModel : public QObject {
-    Q_OBJECT
+using AccountInfoMap = std::map<std::string, api::account::Info>;
 
-    friend class Lrc;
-
+class LIB_EXPORT NewAccountModel : public api::NewAccountModelI {
 public:
+    NewAccountModel(const Database& database);
     ~NewAccountModel();
-    const account::Info& getAccountInfo(const std::string& accountId);
+
+    const api::account::Info& getAccountInfo(const std::string& accountId) override;
 
 private:
-    explicit NewAccountModel(const Database& database);
     const Database& database_;
-    AccountsInfoMap accounts_;
+    AccountInfoMap accounts_;
 };
-
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
 
 } // namespace lrc

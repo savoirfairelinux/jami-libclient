@@ -19,9 +19,13 @@
 #pragma once
 
 // std
+#include <string>
 #include <ctime>
 
 namespace lrc
+{
+
+namespace api
 {
 
 namespace call
@@ -52,6 +56,5 @@ struct Info
 };
 
 } // namespace call
-
-using CallsInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+} // namespace api
 } // namespace lrc

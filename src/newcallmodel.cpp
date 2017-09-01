@@ -18,22 +18,24 @@
  ***************************************************************************/
 #include "newcallmodel.h"
 
+#include "newaccountmodel.h"
+
 namespace lrc
 {
 
+using namespace api;
+
 NewCallModel::NewCallModel(NewAccountModel& parent, const account::Info& info)
-: parent_(parent)
-, owner(info)
-, QObject()
+: owner(info)
+, parent_(parent)
 {
 
 }
 
 NewCallModel::NewCallModel(const NewCallModel& newCallModel)
-: calls_(newCallModel.calls_)
+: owner(newCallModel.owner)
 , parent_(newCallModel.parent_)
-, owner(newCallModel.owner)
-, QObject()
+, calls_(newCallModel.calls_)
 {
 
 }

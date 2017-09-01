@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,40 +17,26 @@
  ***************************************************************************/
 #pragma once
 
+// Std
+#include <string>
+
+// Qt
+#include <qobject.h>
+
+// Data
+#include "api/account.h"
+
 namespace lrc
 {
 
-class NewCallModel;
-class ContactModel;
-class ConversationModel;
-class NewAccountModel;
-
-using upNewCallModel = std::unique_ptr<NewCallModel>;
-using upContactModel = std::unique_ptr<ContactModel>;
-using upConversationModel = std::unique_ptr<ConversationModel>;
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
-
-namespace account
+namespace api
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
+class NewAccountModelI : public QObject {
+    Q_OBJECT
+public:
+    virtual const account::Info& getAccountInfo(const std::string& accountId) = 0;
 };
 
-struct Info
-{
-    std::string id;
-    Type type = account::Type::INVALID;
-    upNewCallModel callModel;
-    upContactModel contactModel;
-    upConversationModel conversationModel;
-    upNewAccountModel accountModel;
-};
-
-} // namespace account
-
-using AccountsInfoMap = std::map<std::string, account::Info>;
-
+} // namespace interface
 } // namespace lrc

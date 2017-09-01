@@ -16,37 +16,36 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "callbackshandler.h"
+#pragma once
+
+// Std
+#include <vector>
+#include <map>
+
+// Data
+#include "message.h"
 
 namespace lrc
 {
 
-CallbacksHandler::CallbacksHandler()
-: QObject()
+namespace api
 {
 
-}
-
-CallbacksHandler::~CallbacksHandler()
+namespace conversation
 {
 
-}
-
-void
-CallbacksHandler::slotNewAccountMessage(const QString& accountId,
-                                        const QString& from,
-                                        const QMap<QString,QString>& payloads)
+struct Info
 {
+    std::string uid;
+    std::string accountId;
+    std::vector<std::string> participants;
+    std::string callId;
+    std::map<int, message::Info> messages;
+    unsigned int lastMessageUid = 0;
+    bool isUsed = false;
+    unsigned int unreadMessages = 0;
+};
 
-}
-
-void
-CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
-                                           const QString& uri,
-                                           bool status,
-                                           const QString& message)
-{
-
-}
-
+} // namespace conversation
+} // namespace api
 } // namespace lrc
