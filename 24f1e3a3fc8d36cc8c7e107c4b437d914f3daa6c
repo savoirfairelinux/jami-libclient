@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3841fe_5f4b2b2b",
+        "filename": "src/database.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2017-09-01T19:32:58Z",
+      "side": 1,
+      "message": "6 not 5",
+      "range": {
+        "startLine": 190,
+        "startChar": 45,
+        "endLine": 190,
+        "endChar": 46
+      },
+      "revId": "24f1e3a3fc8d36cc8c7e107c4b437d914f3daa6c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
