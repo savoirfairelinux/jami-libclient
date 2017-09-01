@@ -16,37 +16,45 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "callbackshandler.h"
+#pragma once
+
+// Std
+#include <memory>
+
+// Qt
+#include <qobject.h>
+
+// Data
+#include "api/account.h"
+
+// Lrc
+#include "typedefs.h"
 
 namespace lrc
 {
 
-CallbacksHandler::CallbacksHandler()
-: QObject()
+class LrcPimpl;
+
+namespace api
 {
+
+class NewAccountModelI;
 
 }
 
-CallbacksHandler::~CallbacksHandler()
-{
+class Database;
+class CallbacksHandler;
+class NewAccountModel;
 
-}
+class LIB_EXPORT Lrc {
+public:
+    Lrc();
+    ~Lrc();
 
-void
-CallbacksHandler::slotNewAccountMessage(const QString& accountId,
-                                        const QString& from,
-                                        const QMap<QString,QString>& payloads)
-{
+    api::NewAccountModelI& getAccountModel();
 
-}
-
-void
-CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
-                                           const QString& uri,
-                                           bool status,
-                                           const QString& message)
-{
-
-}
+private:
+    std::unique_ptr<LrcPimpl> lrcPipmpl_;
+};
 
 } // namespace lrc

@@ -17,57 +17,51 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
+
 // Std
 #include <memory>
 
 // Qt
 #include <qobject.h>
 
+// Interface
+#include "api/newcallmodeli.h"
+
 // Data
-#include "data/call.h"
-#include "data/account.h"
+#include "api/call.h"
+#include "api/account.h"
 
 namespace lrc
 {
 
 class NewAccountModel;
-class ConversationModel;
 
-class NewCallModel : public QObject {
-    Q_OBJECT
+using CallInfoMap = std::map<std::string, std::shared_ptr<api::call::Info>>;
 
-    friend class NewAccountModel;
-    friend class ConversationModel;
-
+class NewCallModel : public api::NewCallModelI {
 public:
-    const account::Info& owner;
+    const api::account::Info& owner;
 
-    enum class Media {
-        NONE,
-        AUDIO,
-        VIDEO
-    };
-
+    NewCallModel(NewAccountModel& parent, const api::account::Info& info);
+    NewCallModel(const NewCallModel& newCallModel);
     ~NewCallModel();
 
-    void hangUp(const std::string& callId) const;
-    void togglePause(const std::string& callId) const;
-    void toggleMedia(const std::string& callId, const Media media) const;
-    void toggleRecoringdAudio(const std::string& callId) const;
-    void setQuality(const std::string& callId, const double quality) const;
-    void transfer(const std::string& callId, const std::string& to) const;
-    void addParticipant(const std::string& callId, const std::string& participant);
-    void removeParticipant(const std::string& callId, const std::string& participant);
+    const api::call::Info& createCall(const std::string& contactUri);
+
+    void hangUp(const std::string& callId) const override;
+    void togglePause(const std::string& callId) const override;
+    void toggleMedia(const std::string& callId, const api::NewCallModelI::Media media) const override;
+    void toggleRecoringdAudio(const std::string& callId) const override;
+    void setQuality(const std::string& callId, const double quality) const override;
+    void transfer(const std::string& callId, const std::string& to) const override;
+    void addParticipant(const std::string& callId, const std::string& participant) override;
+    void removeParticipant(const std::string& callId, const std::string& participant) override;
 
 private:
-    explicit NewCallModel(NewAccountModel& parent, const account::Info& info);
-    NewCallModel(const NewCallModel& newCallModel);
-    const call::Info& createCall(const std::string& contactUri);
     void sendMessage(const std::string& callId, const std::string& body) const;
 
-    CallsInfoMap calls_;
+    CallInfoMap calls_;
     NewAccountModel& parent_;
-
 };
 
 } // namespace lrc

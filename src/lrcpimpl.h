@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -17,28 +16,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-#include "message.h"
 
 namespace lrc
 {
+class Lrc;
 
-namespace conversation
-{
+class LrcPimpl {
 
-struct Info
-{
-    std::string uid;
-    std::string accountId;
-    std::vector<std::string> participants;
-    std::string callId;
-    MessagesMap messages; // TODO: avoid MessagesMap
-    unsigned int lastMessageUid = 0;
-    bool isUsed = false;
-    unsigned int unreadMessages = 0;
+public:
+    LrcPimpl();
+
+    std::unique_ptr<Lrc> parent;
+    std::unique_ptr<Database> database;
+    std::unique_ptr<NewAccountModel> accountModel;
+    std::unique_ptr<CallbacksHandler> callbackHandler;
 };
 
-} // namespace conversation
-
-using ConversationsQueue = std::deque<conversation::Info>;
-
-} //namespace lrc
+} // namespace lrc

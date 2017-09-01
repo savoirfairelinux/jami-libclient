@@ -18,11 +18,9 @@
  ***************************************************************************/
 #include "newaccountmodel.h"
 
-// Dbus
-#include "dbus/configurationmanager.h"
-
 
 // Models and database
+#include "database.h"
 #include "newcallmodel.h"
 #include "contactmodel.h"
 #include "conversationmodel.h"
@@ -30,16 +28,15 @@
 namespace lrc
 {
 
-NewAccountModel::NewAccountModel(const Database& database)
-: QObject()
-, database_(database)
-{
+using namespace api;
 
+NewAccountModel::NewAccountModel(const Database& database)
+: database_(database)
+{
 }
 
 NewAccountModel::~NewAccountModel()
 {
-
 }
 
 const account::Info&

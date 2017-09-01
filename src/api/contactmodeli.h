@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -19,7 +18,7 @@
 #pragma once
 
 // Std
-#include <memory>
+#include <string>
 
 // Qt
 #include <qobject.h>
@@ -27,21 +26,17 @@
 namespace lrc
 {
 
-class NewAccountModel;
-class Database;
-class CallbacksHandler;
+namespace api
+{
 
-class Lrc : public QObject {
+class ContactModelI : public QObject {
     Q_OBJECT
 public:
-    Lrc();
-    ~Lrc();
-    NewAccountModel& getAccountModel() {return *accountModel_;};
-
-private:
-    std::unique_ptr<Database> database_;
-    std::unique_ptr<NewAccountModel> accountModel_;
-    std::unique_ptr<CallbacksHandler> callbackHandler_;
+    virtual void addContact(const std::string& uri) = 0;
+    virtual void removeContact(const std::string& uri) = 0;
+    virtual void nameLookup(const std::string& uri) const = 0;
+    virtual void addressLookup(const std::string& name) const = 0;
 };
 
+} // namespace interface
 } // namespace lrc
