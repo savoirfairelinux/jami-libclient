@@ -18,39 +18,33 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-
-// Qt
-#include <qobject.h>
+// Interface
+#include "api/contactmodeli.h"
 
 // Data
-#include "data/contact.h"
+#include "api/account.h"
+#include "api/contact.h"
 
 namespace lrc
 {
-
-namespace account
-{
-    class Info;
-}
 
 class NewAccountModel;
 class ConversationModel;
 class Database;
 
-class ContactModel : public QObject {
-    Q_OBJECT
+using ContactInfoMap = std::map<std::string, std::shared_ptr<api::contact::Info>>;
 
-    friend class NewAccountModel;
-    friend class ConversationModel;
-
-
+class ContactModel : public api::ContactModelI {
 public:
-    const account::Info& owner;
+    const api::account::Info& owner;
 
+    ContactModel(NewAccountModel& parent,
+                 const Database& db,
+                 const api::account::Info& info);
+    ContactModel(const ContactModel& contactModel);
     ~ContactModel();
 
+    const api::contact::Info& getContact(const std::string& uri) const;
     void addContact(const std::string& uri);
     void removeContact(const std::string& uri);
     void nameLookup(const std::string& uri) const;
@@ -65,21 +59,14 @@ private Q_SLOTS:
     void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
 
 private:
-    explicit ContactModel(NewAccountModel& parent,
-                          const Database& db,
-                          const account::Info& info);
-
-    ContactModel(const ContactModel& contactModel);
     bool fillsWithContacts();
     void sendMessage(const std::string& uri, const std::string& body) const;
     void setContactPresent(const std::string& uri, bool status);
-    const contact::Info& getContact(const std::string& uri) const;
-    const ContactsInfoMap& getAllContacts() const;
+    const ContactInfoMap& getAllContacts() const;
 
-    ContactsInfoMap contacts_;
     const Database& db_;
+    ContactInfoMap contacts_;
     NewAccountModel& parent_;
-
 };
 
-}
+} // namespace lrc

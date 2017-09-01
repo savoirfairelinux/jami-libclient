@@ -20,15 +20,14 @@
 
 // Std
 #include <memory>
-#include <deque>
 #include <map>
 
-// Qt
-#include <qobject.h>
+// Interface
+#include "api/conversationmodeli.h"
 
 // Data
-#include "data/conversation.h"
-#include "data/account.h"
+#include "api/account.h"
+#include "api/conversation.h"
 
 // Lrc
 #include "typedefs.h"
@@ -39,50 +38,51 @@
 namespace lrc
 {
 
-class NewAccountModel;
 class Database;
+class NewAccountModel;
+class NewCallModel;
 
-class LIB_EXPORT ConversationModel : public QObject {
-    Q_OBJECT
-
-    friend class NewAccountModel;
-
+class LIB_EXPORT ConversationModel : public api::ConversationModelI {
 public:
-    const account::Info& owner;
+    const api::account::Info& owner;
 
+    ConversationModel(const NewAccountModel& parent,
+                      const Database& database,
+                      const api::account::Info& info);
     ~ConversationModel();
 
-    const ConversationsQueue& getFilteredConversations() const;
-    conversation::Info getConversation(const unsigned int row) const;
-    void addConversation(const std::string& uri) const;
-    void removeConversation(const std::string& uid);
-    void selectConversation(const std::string& uid);
-    void placeCall(const std::string& uid) const;
-    void sendMessage(const std::string& uid, const std::string& body) const;
-    void setFilter(const std::string& filter);
-    void addParticipant(const std::string& uid, const::std::string& uri);
-    void clearHistory(const std::string& uid);
+    const api::ConversationQueue& getFilteredConversations() const override;
+    api::conversation::Info getConversation(const unsigned int row) const override;
+    void addConversation(const std::string& uri) const override;
+    void removeConversation(const std::string& uid) override;
+    void selectConversation(const std::string& uid) override;
+    void placeCall(const std::string& uid) const override;
+    void sendMessage(const std::string& uid, const std::string& body) const override;
+    void setFilter(const std::string& filter) override;
+    void addParticipant(const std::string& uid, const::std::string& uri) override;
+    void clearHistory(const std::string& uid) override;
 
 Q_SIGNALS:
-    void newMessageAdded(const std::string& uid, const message::Info& msg);
-    void conversationUpdated(unsigned int row);
-    void modelUpdated() const;
-    void newContactAdded(const std::string& uid);
-    void incomingCallFromItem(const unsigned int row);
+    void newMessageAdded(const std::string& uid, const api::message::Info& msg) override;
+    void conversationUpdated(unsigned int row) override;
+    void modelUpdated() const override;
+    void newContactAdded(const std::string& uid) override;
+    void incomingCallFromItem(const unsigned int row) override;
 
-    void showChatView(const conversation::Info& conversationInfo);
-    void showCallView(const conversation::Info& conversationInfo);
-    void showIncomingCallView(const conversation::Info& conversationInfo);
+    void showChatView(const api::conversation::Info& conversationInfo) override;
+    void showCallView(const api::conversation::Info& conversationInfo) override;
+    void showIncomingCallView(const api::conversation::Info& conversationInfo) override;
 
 private Q_SLOTS:
     void slotContactsChanged();
-    void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
-    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void slotMessageAdded(int uid, const std::string& accountId, const api::message::Info& msg);
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                             const QString& address, const QString& name);
 
 private:
-    explicit ConversationModel(const NewAccountModel& parent,
-                               const Database& database,
-                               const account::Info& info);
+    // shortcuts in owner
+    NewCallModel& callModel_;
+
     /**
      * Search a conversation in conversations_
      * @param uid the contact to search
@@ -102,10 +102,9 @@ private:
     const NewAccountModel& parent_;
     const Database& database_;
 
-    ConversationsQueue conversations_;
-    mutable ConversationsQueue filteredConversations_;
+    api::ConversationQueue conversations_;
+    mutable api::ConversationQueue filteredConversations_;
     std::string filter_;
-
 };
 
 } // namespace lrc

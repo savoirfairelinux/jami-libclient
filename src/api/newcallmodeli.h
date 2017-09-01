@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,40 +17,39 @@
  ***************************************************************************/
 #pragma once
 
+// Std
+#include <string>
+
+// Qt
+#include <qobject.h>
+
+// Data
+#include "api/conversation.h"
+
 namespace lrc
 {
 
-class NewCallModel;
-class ContactModel;
-class ConversationModel;
-class NewAccountModel;
-
-using upNewCallModel = std::unique_ptr<NewCallModel>;
-using upContactModel = std::unique_ptr<ContactModel>;
-using upConversationModel = std::unique_ptr<ConversationModel>;
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
-
-namespace account
+namespace api
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
+class NewCallModelI : public QObject {
+    Q_OBJECT
+public:
+    enum class Media {
+        NONE,
+        AUDIO,
+        VIDEO
+    };
+
+    virtual void hangUp(const std::string& callId) const = 0;
+    virtual void togglePause(const std::string& callId) const = 0;
+    virtual void toggleMedia(const std::string& callId, const Media media) const = 0;
+    virtual void toggleRecoringdAudio(const std::string& callId) const = 0;
+    virtual void setQuality(const std::string& callId, const double quality) const = 0;
+    virtual void transfer(const std::string& callId, const std::string& to) const = 0;
+    virtual void addParticipant(const std::string& callId, const std::string& participant) = 0;
+    virtual void removeParticipant(const std::string& callId, const std::string& participant) = 0;
 };
 
-struct Info
-{
-    std::string id;
-    Type type = account::Type::INVALID;
-    upNewCallModel callModel;
-    upContactModel contactModel;
-    upConversationModel conversationModel;
-    upNewAccountModel accountModel;
-};
-
-} // namespace account
-
-using AccountsInfoMap = std::map<std::string, account::Info>;
-
+} // namespace api
 } // namespace lrc

@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,30 +17,19 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-
-// Qt
-#include <qobject.h>
-
 namespace lrc
 {
+class Lrc;
 
-class NewAccountModel;
-class Database;
-class CallbacksHandler;
+class LrcPimpl {
 
-class Lrc : public QObject {
-    Q_OBJECT
 public:
-    Lrc();
-    ~Lrc();
-    NewAccountModel& getAccountModel() {return *accountModel_;};
+    LrcPimpl();
 
-private:
-    std::unique_ptr<Database> database_;
-    std::unique_ptr<NewAccountModel> accountModel_;
-    std::unique_ptr<CallbacksHandler> callbackHandler_;
+    std::unique_ptr<Lrc> parent;
+    std::unique_ptr<Database> database;
+    std::unique_ptr<NewAccountModel> accountModel;
+    std::unique_ptr<CallbacksHandler> callbackHandler;
 };
 
 } // namespace lrc

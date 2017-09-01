@@ -18,42 +18,39 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <ctime>
 #include <string>
-#include <map>
+#include <memory>
 
 namespace lrc
 {
 
-namespace message
+namespace api
+{
+
+class NewAccountModelI;
+class NewCallModelI;
+class ContactModelI;
+class ConversationModelI;
+
+namespace account
 {
 
 enum class Type {
     INVALID,
-    TEXT,
-    CALL,
-    CONTACT
-};
-
-enum class Status {
-    INVALID,
-    SENDING,
-    FAILED,
-    SUCCEED,
-    READ
+    RING,
+    SIP
 };
 
 struct Info
 {
-    std::string uid;
-    std::string body;
-    std::time_t timestamp = 0;
-    Type type = Type::INVALID;
-    Status status = Status::INVALID;
+    std::string id;
+    Type type = account::Type::INVALID;
+    std::unique_ptr<lrc::api::NewCallModelI> callModel;
+    std::unique_ptr<lrc::api::ContactModelI> contactModel;
+    std::unique_ptr<lrc::api::ConversationModelI> conversationModel;
+    std::unique_ptr<lrc::api::NewAccountModelI> accountModel;
 };
 
-} // namespace message
-
-using MessagesMap = std::map<int, message::Info>;
+} // namespace account
+} // namespace api
 } // namespace lrc

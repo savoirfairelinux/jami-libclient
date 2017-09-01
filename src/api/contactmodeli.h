@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,40 +17,30 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <ctime>
+// Std
+#include <string>
+
+// Qt
+#include <qobject.h>
+
+// Data
+#include "api/contact.h"
 
 namespace lrc
 {
 
-namespace call
+namespace api
 {
 
-enum class Status {
-    INVALID,
-    OUTGOING_REQUESTED,
-    INCOMING_RINGING,
-    OUTGOING_RINGING,
-    CONNECTING,
-    SEARCHING,
-    IN_PROGRESS,
-    PAUSED,
-    PEER_PAUSED,
-    INACTIVE,
-    ENDED,
-    TERMINATING,
-    CONNECTED,
-    AUTO_ANSWERING
+class ContactModelI : public QObject {
+    Q_OBJECT
+public:
+    virtual const api::contact::Info& getContact(const std::string& uri) const = 0;
+    virtual void addContact(const std::string& uri) = 0;
+    virtual void removeContact(const std::string& uri) = 0;
+    virtual void nameLookup(const std::string& uri) const = 0;
+    virtual void addressLookup(const std::string& name) const = 0;
 };
 
-struct Info
-{
-    std::string id;
-    std::time_t startTime = 0;
-    Status status = Status::INVALID;
-};
-
-} // namespace call
-
-using CallsInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+} // namespace interface
 } // namespace lrc

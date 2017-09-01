@@ -18,32 +18,28 @@
  ***************************************************************************/
 #include "contactmodel.h"
 
-// Dbus
-#include "dbus/configurationmanager.h"
-#include "dbus/presencemanager.h"
-
-// Lrc
-#include "availableaccountmodel.h"
-#include "contactmethod.h"
+// Models and database
+#include "database.h"
+#include "newaccountmodel.h"
 
 namespace lrc
 {
 
+using namespace api;
+
 ContactModel::ContactModel(NewAccountModel& parent, const Database& db, const account::Info& info)
-: parent_(parent)
+: owner(info)
 , db_(db)
-, owner(info)
-, QObject()
+, parent_(parent)
 {
 
 }
 
 ContactModel::ContactModel(const ContactModel& contactModel)
-: contacts_(contactModel.contacts_)
-, db_(contactModel.db_)
+: owner(contactModel.owner)
 , parent_(contactModel.parent_)
-, owner(contactModel.owner)
-, QObject()
+, db_(contactModel.db_)
+, contacts_(contactModel.contacts_)
 {
 
 }
@@ -74,10 +70,10 @@ ContactModel::sendMessage(const std::string& uri, const std::string& body) const
 const contact::Info&
 ContactModel::getContact(const std::string& uri) const
 {
-    return contact::Info();
+    return {};
 }
 
-const ContactsInfoMap&
+const ContactInfoMap&
 ContactModel::getAllContacts() const
 {
     return contacts_;

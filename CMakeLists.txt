@@ -20,7 +20,6 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++1y")
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
@@ -44,6 +43,7 @@ SET(CMAKE_AUTOMOC TRUE)
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
+SET(CMAKE_CXX_STANDARD 14)
 
 SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
 
@@ -204,13 +204,13 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
-# Build dbus interfaces
+# Build dbus api
 IF(DEFINED RING_XML_INTERFACES_DIR)
     SET (dbus_xml_introspecs_path ${RING_XML_INTERFACES_DIR})
 ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
     SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
 ELSE()
-    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
+    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/api)
 ENDIF()
 
 #File to compile
@@ -450,19 +450,19 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
-  src/newcallmodel.h
-  src/contactmodel.h
-  src/conversationmodel.h
-  src/lrc.h
-  src/newaccountmodel.h
 )
 
-SET(libringclient_data_LIB_HDRS
-  src/data/message.h
-  src/data/conversation.h
-  src/data/contact.h
-  src/data/call.h
-  src/data/account.h
+SET(libringclient_api_LIB_HDRS
+  src/api/message.h
+  src/api/conversation.h
+  src/api/contact.h
+  src/api/call.h
+  src/api/account.h
+  src/api/lrc.h
+  src/api/newaccountmodeli.h
+  src/api/newcallmodeli.h
+  src/api/contactmodeli.h
+  src/api/conversationmodeli.h
 )
 
 
@@ -609,7 +609,7 @@ ELSE()
 
 ENDIF()
 
-# Manually wrap private files and interfaces
+# Manually wrap private files and api
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
    src/private/ringdevicemodel_p.h
@@ -758,8 +758,8 @@ INSTALL( FILES ${libringclient_interface_LIB_HDRS}
   COMPONENT Devel
 )
 
-INSTALL( FILES ${libringclient_data_LIB_HDRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/data
+INSTALL( FILES ${libringclient_api_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/api
   COMPONENT Devel
 )
 
