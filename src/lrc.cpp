@@ -16,7 +16,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "lrc.h"
+#include "api/lrc.h"
+#include "lrcpimpl.h"
 
 // Models and database
 #include "database.h"
@@ -27,15 +28,26 @@
 namespace lrc
 {
 
-Lrc::Lrc()
-: QObject()
-{
+using namespace api;
 
+Lrc::Lrc()
+: lrcPipmpl_(std::make_unique<LrcPimpl>())
+{
 }
 
 Lrc::~Lrc()
 {
+}
 
+NewAccountModelI&
+Lrc::getAccountModel()
+{
+    return *lrcPipmpl_->accountModel;
+}
+
+LrcPimpl::LrcPimpl()
+{
+    database = std::make_unique<Database>();
 }
 
 } // namespace lrc
