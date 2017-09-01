@@ -21,6 +21,7 @@
 
 // std
 #include <deque>
+#include <vector>
 
 namespace lrc
 {

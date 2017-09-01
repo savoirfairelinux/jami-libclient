@@ -38,15 +38,15 @@ NewAccountModel::NewAccountModel(const Database& database)
     for (auto& id : accountIds) {
         QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
 
-        account::Info info;
-        info.accountModel = std::unique_ptr<NewAccountModel>(this);
-        info.id = id.toStdString();
-        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
-        info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
-        info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, info));
-        info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
+        auto info = std::make_shared<account::Info>();
+        info->accountModel = std::shared_ptr<NewAccountModel>(this);
+        info->id = id.toStdString();
+        info->type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info->callModel = std::shared_ptr<NewCallModel>(new NewCallModel(*this, *info));
+        info->contactModel = std::shared_ptr<ContactModel>(new ContactModel(*this, database, *info));
+        info->conversationModel = std::shared_ptr<ConversationModel>(new ConversationModel(*this, database, *info));
 
-        accounts_[id.toStdString()] = std::move(info);
+        accounts_[id.toStdString()] = info;
     }
 }
 
@@ -55,7 +55,7 @@ NewAccountModel::~NewAccountModel()
 
 }
 
-const account::Info&
+std::shared_ptr<account::Info>
 NewAccountModel::getAccountInfo(const std::string& accountId)
 {
     return accounts_[accountId];
@@ -66,7 +66,7 @@ NewAccountModel::setNewBuddySubscription(const std::string& accountId,
                                          const std::string& contactUri,
                                          bool status)
 {
-    auto& contactModel = getAccountInfo(accountId).contactModel;
+    auto& contactModel = getAccountInfo(accountId)->contactModel;
     contactModel->setContactPresent(contactUri, status);
 }
 
@@ -75,7 +75,7 @@ NewAccountModel::slotContactAdded(const std::string& accountId,
                                   const std::string& contactUri,
                                   bool confirmed)
 {
-    auto& contactModel = getAccountInfo(accountId).contactModel;
+    auto& contactModel = getAccountInfo(accountId)->contactModel;
     contactModel->slotContactAdded(contactUri, confirmed);
 }
 
@@ -84,7 +84,7 @@ NewAccountModel::slotContactRemoved(const std::string& accountId,
                                     const std::string& contactUri,
                                     bool banned)
 {
-    auto& contactModel = getAccountInfo(accountId).contactModel;
+    auto& contactModel = getAccountInfo(accountId)->contactModel;
     contactModel->slotContactRemoved(contactUri, banned);
 }
 

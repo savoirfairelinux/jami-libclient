@@ -26,10 +26,10 @@ class ContactModel;
 class ConversationModel;
 class NewAccountModel;
 
-using upNewCallModel = std::unique_ptr<NewCallModel>;
-using upContactModel = std::unique_ptr<ContactModel>;
-using upConversationModel = std::unique_ptr<ConversationModel>;
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
+using upNewCallModel = std::shared_ptr<NewCallModel>;
+using upContactModel = std::shared_ptr<ContactModel>;
+using upConversationModel = std::shared_ptr<ConversationModel>;
+using upNewAccountModel = std::shared_ptr<NewAccountModel>;
 
 namespace account
 {
@@ -52,6 +52,6 @@ struct Info
 
 } // namespace account
 
-using AccountsInfoMap = std::map<std::string, account::Info>;
+using AccountsInfoMap = std::map<std::string, std::shared_ptr<account::Info>>;
 
 } // namespace lrc

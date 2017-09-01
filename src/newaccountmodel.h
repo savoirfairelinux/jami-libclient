@@ -50,7 +50,7 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const account::Info& getAccountInfo(const std::string& accountId);
+    std::shared_ptr<account::Info> getAccountInfo(const std::string& accountId);
 
 private:
     explicit NewAccountModel(const Database& database);
@@ -81,6 +81,6 @@ private:
     AccountsInfoMap accounts_;
 };
 
-using upNewAccountModel = std::unique_ptr<NewAccountModel>;
+using upNewAccountModel = std::shared_ptr<NewAccountModel>;
 
 } // namespace lrc

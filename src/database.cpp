@@ -187,7 +187,7 @@ Database::getHistory(const std::string& accountId, const std::string& contactUri
         } else if (typeStr == "CONTACT") {
             msg.type = message::Type::CONTACT;
         }
-        const auto statusStr = query_->value(5).toString().toStdString();
+        const auto statusStr = query_->value(6).toString().toStdString();
         msg.status = message::Status::INVALID;
         if (statusStr == "SENDING") {
             msg.status = message::Status::SENDING;

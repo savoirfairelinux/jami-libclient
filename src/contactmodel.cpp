@@ -70,6 +70,7 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 const contact::Info&
 ContactModel::getContact(const std::string& contactUri)
 {
+    if (contactUri.empty()) return temporaryContact;
     auto contact = contacts_.find(contactUri);
     if (contact == contacts_.end()) {
         throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
@@ -120,8 +121,8 @@ ContactModel::fillsWithContacts()
         auto contactUri = c->uri().toStdString();
         contact->uri = contactUri;
         contact->avatar = db_.getContactAttribute(contactUri, "photo");
-        contact->registeredName = db_.getContactAttribute(contactUri, "username");
-        contact->alias = db_.getContactAttribute(contactUri, "alias");
+        contact->registeredName = c->registeredName().toStdString(); // db_.getContactAttribute(contactUri, "username");
+        contact->alias = c->bestName().toStdString(); // db_.getContactAttribute(contactUri, "alias");
         contact->isTrusted = c->isConfirmed();
         contact->isPresent = c->isPresent();
         switch (owner.type)
@@ -166,8 +167,8 @@ ContactModel::slotContactAdded(const std::string& contactUri, bool confirmed)
         auto contact = std::make_shared<contact::Info>();
         contact->uri = contactUri;
         contact->avatar = db_.getContactAttribute(contactUri, "photo");
-        contact->registeredName = db_.getContactAttribute(contactUri, "username");
-        contact->alias = db_.getContactAttribute(contactUri, "alias");
+        contact->registeredName = cm->registeredName().toStdString(); // db_.getContactAttribute(contactUri, "username");
+        contact->alias = cm->bestName().toStdString(); // db_.getContactAttribute(contactUri, "alias");
         contact->isTrusted = confirmed;
         contact->isPresent = cm->isPresent();
         switch (owner.type)

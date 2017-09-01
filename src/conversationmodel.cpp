@@ -98,12 +98,13 @@ ConversationModel::addConversation(const std::string& uri) const
     if (conversationIdx == -1) return;
     auto conversation = conversations_.at(conversationIdx);
     if (conversation.participants.empty()) return;
-    auto contact = conversation.participants.front();
+    auto contactUri = conversation.participants.front();
 
     // Send contact request if non used
     if(!conversation.isUsed) {
-        if (contact.length() == 0) return;
-        owner.contactModel->addContact(contact);
+        auto contact = owner.contactModel->getContact(contactUri);
+        if (contact.uri.length() == 0) return;
+        owner.contactModel->addContact(contact.uri);
     }
 
 }
@@ -112,12 +113,14 @@ void
 ConversationModel::selectConversation(const std::string& uid)
 {
     // Get conversation
+    qDebug() <<  "   " << this << "###\n";
     auto conversationIdx = find(uid);
+    qDebug() << "###" << conversationIdx << "\n";
     if (conversationIdx == -1) return;
     auto conversation = conversations_.at(conversationIdx);
     auto participants = conversation.participants;
     // Check if conversation has a valid contact.
-    if (participants.empty() || participants.front().empty())
+    if (participants.empty())
         return;
     emit showChatView(conversation);
     /* TODO
@@ -266,7 +269,7 @@ ConversationModel::initConversations()
     if (!account) return;
     conversations_.clear();
     // Fill conversations_
-    for(auto const& contact : owner.contactModel->getAllContacts())
+    for(auto contact : owner.contactModel->getAllContacts())
     {
         auto contactinfo = contact;
         conversation::Info conversation;
@@ -284,6 +287,7 @@ ConversationModel::initConversations()
     }
     sortConversations();
     filteredConversations_ = conversations_;
+    qDebug() << conversations_.size() << "   " << this << "###\n";
 }
 
 void
