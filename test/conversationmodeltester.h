@@ -35,17 +35,40 @@ namespace ring
 namespace test
 {
 
-class ExampleTest : public CppUnit::TestFixture {
+class ConversationModelTester : public CppUnit::TestFixture {
 
-    CPPUNIT_TEST_SUITE(ExampleTest);
-    CPPUNIT_TEST(test);
+    CPPUNIT_TEST_SUITE(ConversationModelTester);
+    CPPUNIT_TEST(setUp);
+    CPPUNIT_TEST(testAddValidConversation);
+    CPPUNIT_TEST(testAddInvalidConversation);
+    CPPUNIT_TEST(testRmConversation);
+    CPPUNIT_TEST(testFilterAndGetConversations);
+    CPPUNIT_TEST(testSendMessage);
+    CPPUNIT_TEST(testPlaceCall);
+    CPPUNIT_TEST(testCreateConference);
+    CPPUNIT_TEST(testSelectConversation);
+    CPPUNIT_TEST(testRmHistory);
+    CPPUNIT_TEST(testRmContact);
+    CPPUNIT_TEST(tearDown);
     CPPUNIT_TEST_SUITE_END();
+
 public:
     void setUp();
-    void test();
+    void testAddValidConversation();
+    void testAddInvalidConversation();
+    void testRmConversation();
+    void testFilterAndGetConversations();
+    void testSendMessage();
+    void testPlaceCall();
+    void testCreateConference();
+    void testSelectConversation();
+    void testRmHistory();
+    void testRmContact();
+    void tearDown();
 
 protected:
-    std::unique_ptr<lrc::Lrc> lrc_;
+    std::unique_ptr<lrc> lrc_;
+    const lrc::account::Info& accInfo_;
 };
 
 } // namespace test
