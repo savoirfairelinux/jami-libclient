@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2017 Savoir-faire Linux Inc.
+ *
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -16,38 +17,52 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
  */
-#include "example.h"
 
-// Qt
-#include <QString>
+#pragma once
 
-// Lrc
-#include "dbus/configurationmanager.h"
+// cppunit
+#include <cppunit/TestFixture.h>
+#include <cppunit/extensions/HelperMacros.h>
+
+// std
+#include <memory>
+
+// lrc
+#include "database.h"
+#include "data/message.h"
 
 namespace ring
 {
 namespace test
 {
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ExampleTest);
+class DatabaseTester : public CppUnit::TestFixture {
 
-void
-ExampleTest::setUp()
-{
-    // NOTE: here we can create some accounts, contacts, etc
-    // NOTE: We can also recreate ring.db
-    lrc_ = std::unique_ptr<lrc::Lrc>(new lrc::Lrc());
-}
+    CPPUNIT_TEST_SUITE(DatabaseTester);
+    CPPUNIT_TEST(setUp);
+    CPPUNIT_TEST(testAddAndClearMessage);
+    CPPUNIT_TEST(testGetHistory);
+    CPPUNIT_TEST(testUnread);
+    CPPUNIT_TEST(testContact);
+    CPPUNIT_TEST(tearDown);
+    CPPUNIT_TEST_SUITE_END();
 
-void
-ExampleTest::test()
-{
-    QMap<QString, QString> payloads;
-    payloads["text/plain"] ="from test";
-    ConfigurationManager::instance().emitIncomingAccountMessage(QString("0000"),
-    QString("aaaaa"), payloads);
-    CPPUNIT_ASSERT_EQUAL(1, 1);
-}
+public:
+    void setUp();
+    void testAddAndClearMessage();
+    void testGetHistory();
+    void testUnread();
+    void testContact();
+    void tearDown();
+
+protected:
+    std::unique_ptr<lrc::Database> database_;
+
+private:
+    bool findMessage(const lrc::message::Info& msg,
+                     const std::string& accountId,
+                     const std::string& contactUri) const;
+};
 
 } // namespace test
 } // namespace ring

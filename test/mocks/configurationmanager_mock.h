@@ -42,6 +42,10 @@ class ConfigurationManagerInterface: public QObject
 {
     Q_OBJECT
 
+private:
+    QMap<QString, VectorMapStringString> accountToContactsMap;
+    QStringList availableContacts_;
+
 public:
 
    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
@@ -49,6 +53,25 @@ public:
    ConfigurationManagerInterface()
    {
       setObjectName("ConfigurationManagerInterface");
+      availableContacts_ << "contact0";
+      availableContacts_ << "contact1";
+      availableContacts_ << "contact2";
+      availableContacts_ << "dummy";
+      for (auto& account: getAccountList()) {
+          auto contacts = VectorMapStringString();
+          if (account.indexOf("ring") != -1) {
+              for (auto& contactUri: availableContacts_) {
+                  auto contact = QMap<QString, QString>();
+                  contact.insert("id", contactUri);
+                  contact.insert("added", "true");
+                  contact.insert("removed", "false");
+                  contact.insert("confirmed", "true");
+                  contact.insert("banned", "false");
+                  contacts.push_back(contact);
+              }
+          }
+          accountToContactsMap.insert(account, contacts);
+      }
    }
 
    ~ConfigurationManagerInterface() {}
@@ -82,18 +105,14 @@ public Q_SLOTS: // METHODS
 
     bool lookupName(const QString& accountId, const QString& nameServiceURL, const QString& name)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(nameServiceURL)
-        Q_UNUSED(name)
-        return false;
+        if (getAccountList().indexOf(accountId) == -1) return false;
+        return availableContacts_.indexOf(name) != -1;
     }
 
     bool lookupAddress(const QString& accountId, const QString& nameServiceURL, const QString& address)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(nameServiceURL)
-        Q_UNUSED(address)
-        return false;
+        if (getAccountList().indexOf(accountId) == -1) return false;
+        return availableContacts_.indexOf(address) != -1;
     }
 
     bool registerName(const QString& accountId, const QString& password, const QString& name)
@@ -106,13 +125,23 @@ public Q_SLOTS: // METHODS
 
     MapStringString getAccountDetails(const QString& accountId)
     {
-        Q_UNUSED(accountId)
-        return MapStringString();
+        auto result = MapStringString();
+        if (accountId.indexOf("ring") != -1) {
+            result.insert("Account.type", "RING");
+        } else {
+            result.insert("Account.type", "SIP");
+        }
+        return result;
     }
 
     QStringList getAccountList()
     {
-        return QStringList();
+        auto accountList = QStringList();
+        accountList << QString("ring0");
+        accountList << QString("ring1");
+        accountList << QString("sip0");
+        accountList << QString("sip1");
+        return accountList;
     }
 
     MapStringString getAccountTemplate(const QString& accountType)
@@ -157,9 +186,10 @@ public Q_SLOTS: // METHODS
 
     VectorMapStringString getContacts(const QString &accountId)
     {
-        Q_UNUSED(accountId)
-        VectorMapStringString temp;
-        return temp;
+        if (accountToContactsMap.find(accountId) == accountToContactsMap.end()) {
+            return VectorMapStringString();
+        }
+        return accountToContactsMap[accountId];
     }
 
     int getAudioInputDeviceIndex(const QString& devname)
@@ -540,19 +570,33 @@ public Q_SLOTS: // METHODS
 
     void removeContact(const QString &accountId, const QString &uri, bool ban)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(uri)
-        Q_UNUSED(ban)
+        if (getAccountList().indexOf(accountId) == -1) return;
+        auto contacts = accountToContactsMap[accountId];
+        for (auto c = 0 ; c < contacts.size() ; ++c) {
+            if (contacts.at(c)["id"] == uri) {
+                contacts.remove(c);
+                emit contactRemoved(accountId, uri, ban);
+                return;
+            }
+        }
     }
 
     void addContact(const QString &accountId, const QString &uri)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(uri)
+        if (getAccountList().indexOf(accountId) == -1) return;
+        auto contact = QMap<QString, QString>();
+        contact.insert("id", uri);
+        contact.insert("added", "true");
+        contact.insert("removed", "false");
+        contact.insert("confirmed", "true");
+        contact.insert("banned", "false");
+        accountToContactsMap[accountId].push_back(contact);
+        emit contactAdded(accountId, uri, true);
     }
 
     uint64_t sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
     {
+        // NOTE used in ContactModel::sendMessage and ConversationModel::sendMessage
         Q_UNUSED(accountId)
         Q_UNUSED(to)
         Q_UNUSED(payloads)
@@ -605,7 +649,7 @@ Q_SIGNALS: // SIGNALS
    void audioDeviceEvent();
    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
-   void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+   void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name); // used by conversationModel
    void migrationEnded(const QString &accountId, const QString &result);
    void contactAdded(const QString &accountId, const QString &uri, bool banned);
    void contactRemoved(const QString &accountId, const QString &uri, bool banned);
