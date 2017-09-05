@@ -27,25 +27,52 @@
 // std
 #include <memory>
 
+// Qt
+#include <QObject>
+
 // lrc
-#include "api/lrc.h"
+#include "lrc.h"
 
 namespace ring
 {
 namespace test
 {
 
-class ExampleTest : public CppUnit::TestFixture {
+class ConversationModelTester : public CppUnit::TestFixture, public QObject {
 
-    CPPUNIT_TEST_SUITE(ExampleTest);
-    CPPUNIT_TEST(test);
+    Q_OBJECT
+
+    CPPUNIT_TEST_SUITE(ConversationModelTester);
+    CPPUNIT_TEST(setUp);
+    CPPUNIT_TEST(testAddValidConversation);
+    CPPUNIT_TEST(testAddInvalidConversation);
+    CPPUNIT_TEST(testRmConversation);
+    CPPUNIT_TEST(testFilterAndGetConversations);
+    CPPUNIT_TEST(testSendMessageAndClearHistory);
+    CPPUNIT_TEST(testPlaceCall);
+    CPPUNIT_TEST(testCreateConference);
+    CPPUNIT_TEST(testSelectConversation);
+    CPPUNIT_TEST(tearDown);
     CPPUNIT_TEST_SUITE_END();
+
 public:
     void setUp();
-    void test();
+    void testAddValidConversation();
+    void testAddInvalidConversation();
+    void testRmConversation();
+    void testFilterAndGetConversations();
+    void testSendMessageAndClearHistory();
+    void testPlaceCall();
+    void testCreateConference();
+    void testSelectConversation();
+    void tearDown();
+
+private Q_SLOTS:
+    void slotContactsRemoved(const QString &accountID, const QString &uri, bool status);
 
 protected:
-    std::unique_ptr<lrc::api::Lrc> lrc_;
+    std::unique_ptr<lrc> lrc_;
+    const lrc::account::Info& accInfo_;
 };
 
 } // namespace test
