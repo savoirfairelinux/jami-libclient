@@ -42,6 +42,9 @@ class ConfigurationManagerInterface: public QObject
 {
     Q_OBJECT
 
+private:
+    QMap<QString, VectorMapStringString> accountToContactsMap;
+
 public:
 
    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
@@ -49,6 +52,26 @@ public:
    ConfigurationManagerInterface()
    {
       setObjectName("ConfigurationManagerInterface");
+      auto availableContacts = QStringList();
+      availableContacts << "contact0";
+      availableContacts << "contact1";
+      availableContacts << "contact2";
+      availableContacts << "dummy";
+      for (auto& account: getAccountList()) {
+          auto contacts = VectorMapStringString();
+          if (account.indexOf("ring") != -1) {
+              for (auto& contactUri: availableContacts) {
+                  auto contact = std::map<std::string, std::string>();
+                  contact.insert(std::pair<std::string, std::string>("id", contactUri));
+                  contact.insert(std::pair<std::string, std::string>("added", "true"));
+                  contact.insert(std::pair<std::string, std::string>("removed", "false"));
+                  contact.insert(std::pair<std::string, std::string>("confirmed", "true"));
+                  contact.insert(std::pair<std::string, std::string>("banned", "false"));
+                  contacts.insert(contact);
+              }
+          }
+          accountToContactsMap.insert(account, contacts);
+      }
    }
 
    ~ConfigurationManagerInterface() {}
@@ -106,13 +129,23 @@ public Q_SLOTS: // METHODS
 
     MapStringString getAccountDetails(const QString& accountId)
     {
-        Q_UNUSED(accountId)
-        return MapStringString();
+        auto result = MapStringString();
+        if (accountId.indexOf("ring") != -1) {
+            result.insert(std::pair<std::string, std::string>("Account.type", "RING"));
+        } else {
+            result.insert(std::pair<std::string, std::string>("Account.type", "SIP"));
+        }
+        return result;
     }
 
     QStringList getAccountList()
     {
-        return QStringList();
+        auto accountList = QStringList();
+        accountList << QString("ring0");
+        accountList << QString("ring1");
+        accountList << QString("sip0");
+        accountList << QString("sip1");
+        return accountList;
     }
 
     MapStringString getAccountTemplate(const QString& accountType)
@@ -157,9 +190,10 @@ public Q_SLOTS: // METHODS
 
     VectorMapStringString getContacts(const QString &accountId)
     {
-        Q_UNUSED(accountId)
-        VectorMapStringString temp;
-        return temp;
+        if (accountToContactsMap.find(accountId) == accountToContactsMap.end()) {
+            return VectorMapStringString();
+        }
+        return accountToContactsMap.at(accountId);
     }
 
     int getAudioInputDeviceIndex(const QString& devname)
@@ -540,15 +574,23 @@ public Q_SLOTS: // METHODS
 
     void removeContact(const QString &accountId, const QString &uri, bool ban)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(uri)
-        Q_UNUSED(ban)
+        if (getAccountList().indexOf(accountId) == -1) return;
+        if (availableContacts_.at(accountId).erase(uri)) {
+            emit contactRemoved(accountId, uri);
+        }
     }
 
     void addContact(const QString &accountId, const QString &uri)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(uri)
+        if (getAccountList().indexOf(accountId) == -1) return;
+        auto contact = std::map<std::string, std::string>();
+        contact.insert(std::pair<std::string, std::string>("id", uri));
+        contact.insert(std::pair<std::string, std::string>("added", "true"));
+        contact.insert(std::pair<std::string, std::string>("removed", "false"));
+        contact.insert(std::pair<std::string, std::string>("confirmed", "true"));
+        contact.insert(std::pair<std::string, std::string>("banned", "false"));
+        availableContacts_.at(accountId).emplace_back(contact);
+        emit contactAdded(accountId, uri);
     }
 
     uint64_t sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
