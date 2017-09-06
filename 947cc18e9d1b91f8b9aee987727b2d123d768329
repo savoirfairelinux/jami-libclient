@@ -25,6 +25,53 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_1f30a355",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-06T13:53:19Z",
+      "side": 1,
+      "message": "I use class to avoid include lrc.h",
+      "parentUuid": "ba3841fe_bf3cf794",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "947cc18e9d1b91f8b9aee987727b2d123d768329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5f886be7",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-06T13:53:19Z",
+      "side": 1,
+      "message": "I think this should be public",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 7
+      },
+      "revId": "947cc18e9d1b91f8b9aee987727b2d123d768329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3841fe_7fbb8f0e",
         "filename": "src/callbackshandler.h",
         "patchSetId": 31
@@ -36,6 +83,30 @@
       "writtenOn": "2017-09-01T23:53:18Z",
       "side": 1,
       "message": "the \u0027up\u0027 brokes type naming rules.\nuse such for member/variable names, not type.\nBTW this using with unique_ptr looks over-engineered\nNote also you don\u0027t use in in lrc.h as example, so why to define it if not to be used?",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "947cc18e9d1b91f8b9aee987727b2d123d768329",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_3fff6703",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-06T13:53:19Z",
+      "side": 1,
+      "message": "yep this one isn\u0027t useful.",
+      "parentUuid": "ba3841fe_7fbb8f0e",
       "range": {
         "startLine": 51,
         "startChar": 6,
