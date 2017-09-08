@@ -62,7 +62,7 @@ LrcPimpl::LrcPimpl(const Lrc& linked)
     // we need to bind objects, so we have to be sure to never use something not yet instanced
 
     // create callback model.
-    callbackHandler = std::make_unique<CallbacksHandler>();
+    callbackHandler = std::make_unique<CallbacksHandler>(linked);
 
     // create the database.
     database = std::make_unique<Database>();

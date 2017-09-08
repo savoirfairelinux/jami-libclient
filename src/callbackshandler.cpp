@@ -18,13 +18,43 @@
  ***************************************************************************/
 #include "callbackshandler.h"
 
+// Models and database
+#include "api/lrc.h"
+#include "api/newaccountmodel.h"
+
+// Dbus
+#include "dbus/configurationmanager.h"
+#include "dbus/presencemanager.h"
+
 namespace lrc
 {
 
-CallbacksHandler::CallbacksHandler()
-: QObject()
-{
+using namespace api;
 
+CallbacksHandler::CallbacksHandler(const Lrc& parent)
+: QObject()
+, parent(parent)
+{
+    // Get signals from daemon
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingAccountMessage,
+            this,
+            &CallbacksHandler::slotNewAccountMessage);
+
+    connect(&PresenceManager::instance(),
+            &PresenceManagerInterface::newBuddyNotification,
+            this,
+            &CallbacksHandler::slotNewBuddySubscription);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::contactAdded,
+            this,
+            &CallbacksHandler::slotContactAdded);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::contactRemoved,
+            this,
+            &CallbacksHandler::slotContactRemoved);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -35,9 +65,9 @@ CallbacksHandler::~CallbacksHandler()
 void
 CallbacksHandler::slotNewAccountMessage(const QString& accountId,
                                         const QString& from,
-                                        const MapStringString& payloads)
+                                        const QMap<QString,QString>& payloads)
 {
-
+    emit NewAccountMessage(accountId.toStdString(), from.toStdString(), payloads);
 }
 
 void
@@ -46,7 +76,23 @@ CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
                                            bool status,
                                            const QString& message)
 {
+    emit NewBuddySubscription(uri.toStdString());
+}
 
+void
+CallbacksHandler::slotContactAdded(const QString& accountId,
+                                   const QString& contactUri,
+                                   bool confirmed)
+{
+    emit contactAdded(accountId.toStdString(), contactUri.toStdString(), confirmed);
+}
+
+void
+CallbacksHandler::slotContactRemoved(const QString& accountId,
+                                     const QString& contactUri,
+                                     bool banned)
+{
+    emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
 }
 
 } // namespace lrc
