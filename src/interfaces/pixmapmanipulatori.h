@@ -77,7 +77,10 @@ public:
     virtual QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                          const lrc::api::account::Info& accountInfo,
                                          const QSize& size,
-                                         bool displayPresence = true) = 0;
+                                         bool displayPresence = true) {
+        Q_UNUSED(conversation); Q_UNUSED(accountInfo); Q_UNUSED(size); Q_UNUSED(displayPresence);
+        return {};
+    }
     virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
@@ -91,7 +94,10 @@ public:
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;
     virtual QVariant   decorationRole(const lrc::api::conversation::Info& conversation,
-                                      const lrc::api::account::Info& accountInfo) = 0;
+                                      const lrc::api::account::Info& accountInfo) {
+        Q_UNUSED(conversation); Q_UNUSED(accountInfo);
+        return {};
+    }
     virtual QVariant   decorationRole(const Account*       acc  ) = 0;
 
     /**
