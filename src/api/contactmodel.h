@@ -77,6 +77,11 @@ public:
      */
     const ContactInfoMap& getAllContacts() const;
 
+    /**
+     * @return if pending requests exists
+     */
+    bool isPendingRequests() const;
+
     contact::Info temporaryContact;
 
     // TODO

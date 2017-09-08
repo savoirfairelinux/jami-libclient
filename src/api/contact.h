@@ -33,7 +33,8 @@ namespace contact
 enum class Type {
     INVALID,
     RING,
-    SIP
+    SIP,
+    PENDING
 };
 
 struct Info
