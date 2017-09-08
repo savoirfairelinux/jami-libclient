@@ -20,7 +20,6 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS("-std=c++1y")
 ADD_DEFINITIONS(
    ${QT_DEFINITIONS}
    -fexceptions
@@ -39,6 +38,9 @@ IF (CMAKE_COMPILER_IS_GNUCC)
       MESSAGE(FATAL_ERROR "Your version of GCC is too old, please install GCC 4.8 or later")
    ENDIF()
 ENDIF()
+
+SET(CMAKE_CXX_STANDARD 14)
+SET(CXX_STANDARD_REQUIRED TRUE)
 
 SET(CMAKE_AUTOMOC TRUE)
 
