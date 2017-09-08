@@ -74,15 +74,14 @@ NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksH
     for (auto& id : accountIds) {
         QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
 
-        account::Info info;
+        pimpl_->accounts.emplace(std::make_pair(id.toStdString(), account::Info()));
+        auto& info = pimpl_->accounts[id.toStdString()];
         info.accountModel = std::unique_ptr<NewAccountModel>(this);
         info.id = id.toStdString();
         info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
         info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
         info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
         info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));
-
-        pimpl_->accounts[id.toStdString()] = std::move(info);
     }
 }
 
