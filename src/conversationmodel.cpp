@@ -76,6 +76,7 @@ public:
     ConversationQueue conversations;
     mutable ConversationQueue filteredConversations;
     std::string filter;
+    lrc::api::contact::Type typeFilter;
 
 public Q_SLOTS:
     void slotContactModelUpdated();
@@ -104,14 +105,22 @@ ConversationModel::getFilteredConversations() const
 {
     pimpl_->filteredConversations = pimpl_->conversations;
 
-    if (pimpl_->filter.length() == 0) return pimpl_->filteredConversations;
-
     auto filter = pimpl_->filter;
+    auto typeFilter = pimpl_->typeFilter;
+
     auto it = std::copy_if(pimpl_->conversations.begin(), pimpl_->conversations.end(), pimpl_->filteredConversations.begin(),
-    [&filter, this] (const conversation::Info& entry) {
+    [&filter, &typeFilter, this] (const conversation::Info& entry) {
         auto isUsed = entry.isUsed;
-        if (!isUsed) return true;
         auto contact = owner.contactModel->getContact(entry.participants.front());
+        // Check type
+        if (typeFilter != lrc::api::contact::Type::PENDING) {
+            if (contact.type == lrc::api::contact::Type::PENDING) return false;
+            if (!isUsed) return true;
+        } else {
+            if (contact.type != lrc::api::contact::Type::PENDING) return false;
+        }
+
+        // Check contact
         try {
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
             bool result = std::regex_search(contact.uri, regexFilter)
@@ -277,6 +286,11 @@ ConversationModel::setFilter(const std::string& filter)
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
     pimpl_->filter = filter;
+    // We don't create newConversationItem if we already filter on pending
+    if (pimpl_->typeFilter == contact::Type::PENDING) {
+        emit modelUpdated();
+        return;
+    }
     conversation::Info newConversationItem;
     if (!pimpl_->filter.empty()) {
         // add the first item, wich is the NewConversationItem
@@ -314,6 +328,16 @@ ConversationModel::setFilter(const std::string& filter)
             }
         }
     }
+    emit modelUpdated();
+}
+
+
+void
+ConversationModel::setFilter(const lrc::api::contact::Type& filter)
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    pimpl_->typeFilter = filter;
     emit modelUpdated();
 }
 
@@ -363,6 +387,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , parent(p)
 , database(d)
 , callModel(*o.callModel)
+, typeFilter(lrc::api::contact::Type::INVALID)
 {
     initConversations();
     connect(&database, &Database::messageAdded, this, &ConversationModelPimpl::slotMessageAdded);
@@ -412,6 +437,7 @@ ConversationModelPimpl::initConversations()
         conversations.emplace_front(conversation);
     }
     sortConversations();
+
     filteredConversations = conversations;
 }
 

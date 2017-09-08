@@ -29,6 +29,9 @@
 #include "database.h"
 #include "api/newaccountmodel.h"
 
+// Daemon
+#include <account_const.h>
+
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
@@ -37,6 +40,7 @@
 #include "availableaccountmodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
+#include "private/vcardutils.h"
 
 namespace lrc
 {
@@ -92,6 +96,10 @@ public Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+
+    void slotIncomingContactRequest(const std::string& accountId,
+                                    const std::string& ringID,
+                                    const std::string& payload);
 };
 
 
@@ -174,8 +182,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     });
 
     connect(&callbacksHandler, &CallbacksHandler::contactAdded, this, &ContactModelPimpl::slotContactAdded);
-
     connect(&callbacksHandler, &CallbacksHandler::contactRemoved, this, &ContactModelPimpl::slotContactRemoved);
+    connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
 
 }
 
@@ -209,8 +217,8 @@ ContactModelPimpl::fillsWithContacts()
         auto contactUri = c->uri().toStdString();
         contact->uri = contactUri;
         contact->avatar = db.getContactAttribute(contactUri, "photo");
-        contact->registeredName = db.getContactAttribute(contactUri, "username");
-        contact->alias = db.getContactAttribute(contactUri, "alias");
+        contact->registeredName = c->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
+        contact->alias = c->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
         contact->isTrusted = c->isConfirmed();
         contact->isPresent = c->isPresent();
         switch (owner.type)
@@ -227,14 +235,38 @@ ContactModelPimpl::fillsWithContacts()
             break;
         }
 
-        contacts[contactUri] = contact;
+        contacts.emplace(std::make_pair(contactUri, contact));
+    }
+
+    const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(account->id())};
+    for (const auto& tr_info : pending_tr) {
+       auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD].toUtf8();
+       auto ringID = tr_info[DRing::Account::TrustRequest::FROM];
+
+       auto c = PhoneDirectoryModel::instance().getNumber(ringID, account);
+       const auto vCard = VCardUtils::toHashMap(payload);
+       const auto alias = vCard["FN"];
+       const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+
+       auto contact = std::make_shared<contact::Info>();
+       auto contactUri = c->uri().toStdString();
+       contact->uri = contactUri;
+       contact->avatar = photo.toStdString();
+       contact->registeredName = c->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
+       contact->alias = alias.toStdString();
+       contact->isTrusted = c->isConfirmed();
+       contact->isPresent = c->isPresent();
+       contact->type = contact::Type::PENDING;
+
+       contacts.emplace(std::make_pair(contactUri, contact));
+       // TODO add to db
+       // TODO connect to incoming signal from daemon in callbacksHandler
     }
 
     return true;
 }
 
 void
-
 ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
 {
     if (contacts.find(contactUri) != contacts.end()) {
@@ -257,8 +289,8 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
         auto contact = std::make_shared<contact::Info>();
         contact->uri = contactUri;
         contact->avatar = db.getContactAttribute(contactUri, "photo");
-        contact->registeredName = db.getContactAttribute(contactUri, "username");
-        contact->alias = db.getContactAttribute(contactUri, "alias");
+        contact->registeredName = cm->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
+        contact->alias = cm->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
         contact->isTrusted = confirmed;
         contact->isPresent = cm->isPresent();
         switch (owner.type)
@@ -318,6 +350,31 @@ ContactModelPimpl::sendMessage(const std::string& contactUri, const std::string&
     msg.type = message::Type::TEXT;
     msg.status = message::Status::SENDING;
     db.addMessage(owner.id, msg);
+}
+
+void
+ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
+                                              const std::string& ringID,
+                                              const std::string& payload)
+{
+    if (owner.id != accountId) return;
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+    }
+    if (contacts.find(ringID) == contacts.end()) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(ringID.c_str()), account);
+        auto contact = std::make_shared<contact::Info>();
+        contact->uri = ringID;
+        contact->avatar = db.getContactAttribute(ringID, "photo"); // TODO
+        contact->registeredName = cm->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
+        contact->alias = cm->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
+        contact->isTrusted = false;
+        contact->isPresent = false;
+        contact->type = contact::Type::PENDING;
+
+        contacts[ringID] = contact;
+    }
 }
 
 } // namespace api

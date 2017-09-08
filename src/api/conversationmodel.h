@@ -27,6 +27,7 @@
 // Data
 #include "api/account.h"
 #include "api/conversation.h"
+#include "api/contact.h"
 
 // Lrc
 #include "typedefs.h"
@@ -67,6 +68,7 @@ public:
     void placeCall(const std::string& uid) const;
     void sendMessage(const std::string& uid, const std::string& body) const;
     void setFilter(const std::string& filter);
+    void setFilter(const lrc::api::contact::Type& filter = lrc::api::contact::Type::INVALID);
     void addParticipant(const std::string& uid, const::std::string& uri);
     void clearHistory(const std::string& uid);
 
