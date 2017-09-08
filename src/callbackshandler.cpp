@@ -55,6 +55,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::contactRemoved,
             this,
             &CallbacksHandler::slotContactRemoved);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingTrustRequest,
+            this,
+            &CallbacksHandler::slotIncomingContactRequest);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -99,6 +104,16 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
                                      bool banned)
 {
     emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
+}
+
+void
+CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
+                                             const QString& ringID,
+                                             const QByteArray& payload,
+                                             time_t time)
+{
+    Q_UNUSED(time)
+    emit incomingContactRequest(accountId.toStdString(), ringID.toStdString(), payload.toStdString());
 }
 
 } // namespace lrc
