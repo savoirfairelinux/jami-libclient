@@ -18,6 +18,9 @@
  ***************************************************************************/
 #pragma once
 
+// Std
+#include <memory>
+
 // Qt
 #include <qobject.h>
 
@@ -27,16 +30,81 @@
 namespace lrc
 {
 
+namespace api
+{
+class Lrc;
+}
+
 class CallbacksHandler : public QObject {
     Q_OBJECT
 
 public:
-    CallbacksHandler();
+    CallbacksHandler(const api::Lrc& parent);
     ~CallbacksHandler();
 
-public Q_SLOTS:
-    void slotNewAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
-    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status, const QString& message);
+Q_SIGNALS:
+    /**
+     * Connect this signal to get incoming message.
+     * @param accountId, message reciever.
+     * @param from, message sender.
+     * @param payloads.
+     */
+    void NewAccountMessage(const std::string& accountId,
+                           const std::string& toStdString,
+                           const std::map<std::string,std::string> payloads) const;
+    /**
+     * Connect this signal to get information when a peer is online.
+     * @param contactUri, the peer.
+     */
+    void NewBuddySubscription(const std::string& contactUri) const;
+    /**
+     * Connect this signal to know when a contact was removed by the daemon.
+     * @param accountId, the one who lost a contact.
+     * @param contactUri, the contact removed.
+     * @param banned, true if the contact was banned
+     */
+    void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
+    /**
+     * Connect this signal to know when a contact was addeb by the daemon.
+     * @param accountId, the one who got a new contact.
+     * @param contactUri, the new contact.
+     * @param confirmed, true if the contact is trusted.
+     */
+    void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
+
+private Q_SLOTS:
+    /**
+     * Add the incoming message from the daemon to the database
+     * @param accountId
+     * @param from
+     * @param payloads of the message
+     */
+    void slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
+    /**
+     * Update the presence of a contact for an account
+     * @param accountId
+     * @param contactUri
+     * @param status if the contact is present
+     * @param message unused for now
+     */
+    void slotNewBuddySubscription(const QString& accountId, const QString& contactUri, bool status, const QString& message);
+    /**
+     * Add a contact in the contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param confirmed
+     */
+    void slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed);
+    /**
+     * Remove a contact from a contact list of an account
+     * @param accountId
+     * @param contactUri
+     * @param banned
+     */
+    void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+
+private:
+    const api::Lrc& parent;
 };
 
 } // namespace lrc
