@@ -46,6 +46,7 @@ Q_SIGNALS:
     void NewBuddySubscription(const std::string& contactUri);
     void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
+    void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
 
 private Q_SLOTS:
     /**
@@ -77,6 +78,8 @@ private Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+
+    void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
 
 private:
     const api::Lrc& parent;
