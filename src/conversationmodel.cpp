@@ -214,36 +214,31 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         return;
 
     auto conversation = pimpl_->conversations.at(conversationIdx);
-
     if (conversation.participants.empty())
         return;
 
-    auto contact = conversation.participants.front();
-    auto account = AvailableAccountModel::instance().currentDefaultAccount(); // TODO replace by linked account
-
-    if (!account || contact.length() == 0)
-        return;
+    auto contact = owner.contactModel->getContact(conversation.participants.front());
 
     // Send contact request if non used
     if (!conversation.isUsed)
-        addConversation(contact);
+        addConversation(uid);
 
     // Send message to contact.
     QMap<QString, QString> payloads;
     payloads["text/plain"] = body.c_str();
 
     // TODO change this for group messages
-    auto id = ConfigurationManager::instance().sendTextMessage(account->id(),
-    contact.c_str(), payloads);
+    auto id = ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),
+    contact.uri.c_str(), payloads);
 
     message::Info msg;
-    msg.contact = contact.c_str();
+    msg.contact = contact.uri.c_str();
     msg.body = body;
     msg.timestamp = std::time(nullptr);
     msg.type = message::Type::TEXT;
     msg.status = message::Status::SENDING;
 
-    pimpl_->database.addMessage(account->id().toStdString(), msg);
+    pimpl_->database.addMessage(owner.id, msg);
 
 }
 
