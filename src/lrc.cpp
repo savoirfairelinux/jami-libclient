@@ -35,8 +35,8 @@ public:
     LrcPimpl(const Lrc& linked);
 
     const Lrc& linked;
-    std::unique_ptr<Database> database;
     std::unique_ptr<CallbacksHandler> callbackHandler;
+    std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
 };
 
@@ -57,11 +57,10 @@ Lrc::getAccountModel() const
 
 LrcPimpl::LrcPimpl(const Lrc& linked)
 : linked(linked)
+, callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
-, callbackHandler(std::make_unique<CallbacksHandler>())
 , accountModel(std::make_unique<NewAccountModel>(*database))
 {
-
 }
 
 } // namespace lrc
