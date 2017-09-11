@@ -20,8 +20,14 @@
 #include "databasehelper.h"
 
 // Qt
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
+#include <QtCore/QStandardPaths>
 
 // Lrc
 #include "private/vcardutils.h"
@@ -35,6 +41,7 @@ using namespace api;
 Database::Database()
 : QObject()
 {
+    migrateOldFiles();
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         qDebug() << "Database, errror QSQLITE not supported";
         return;
@@ -329,5 +336,133 @@ Database::slotRegisteredNameFound(const Account* account,
         qDebug() << "Database: slotRegisteredNameFound, " << query_->lastError().text();
 
 }
+
+void
+Database::migrateOldFiles()
+{
+    migrateTextHistory();
+    migratePeerProfiles();
+    migrateLocalProfiles();
+}
+
+void
+Database::migrateTextHistory()
+{
+    // load all text recordings so we can recover CMs that are not in the call history
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/");
+    if (dir.exists()) {
+        // get .json files, sorted by time, latest first
+        QStringList filters;
+        filters << "*.json";
+        auto list = dir.entryInfoList(filters, QDir::Files | QDir::NoSymLinks | QDir::Readable, QDir::Time);
+
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+
+            QString content;
+            QFile file(fileInfo.absoluteFilePath());
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                content = QString::fromUtf8(file.readAll());
+            } else {
+                qWarning() << "Could not open text recording json file";
+            }
+
+            if (!content.isEmpty()) {
+                QJsonParseError err;
+                auto loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err).object();
+
+                for (const auto& key: loadDoc.keys()) {
+                    if (key == "peers") {
+                        auto peersObject = loadDoc[key].toArray()[0].toObject();
+                        // TODO
+                        qDebug() << "TODO: add conversation between "
+                        << peersObject["accountId"].toString() << " and "
+                        << peersObject["uri"].toString();
+                    } else if (key == "groups") {
+                        auto groupsArray = loadDoc[key].toArray();
+                        for (const auto& groupObject: groupsArray) {
+                            auto messagesArray = groupObject.toObject()["messages"].toArray();
+                            for (const auto& messageRef: messagesArray) {
+                                auto messageObject = messageRef.toObject();
+                                // TODO
+                                qDebug() << "TODO, add interaction, direction: " << messageObject["direction"].toInt()
+                                << ", read:" << messageObject["isRead"].toInt()
+                                << ", timestamp:" <<  messageObject["timestamp"].toInt()
+                                << ", content: " << messageObject["payloads"].toArray()[0].toObject()["payload"].toString();
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                qWarning() << "Text recording file is empty";
+            }
+            // TODO file.remove();
+        }
+    }
+}
+
+void
+Database::migratePeerProfiles()
+{
+    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/peer_profiles/";
+
+    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
+
+    foreach (const QString& item , entries) {
+        auto filePath = profilesDir.path() + '/' + item;
+        QString content;
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            content = QString::fromUtf8(file.readAll());
+        } else {
+            qWarning() << "Could not vcf file";
+        }
+
+        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        const auto uri = vCard["UID"];
+        const auto alias = vCard["FN"];
+        const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+
+        qDebug() << "TODO add profiles " << uri << ", " << alias << ", " << photo;
+        // TODO file.remove();
+    }
+}
+
+void
+Database::migrateLocalProfiles()
+{
+    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+
+    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
+
+    foreach (const QString& item , entries) {
+        auto filePath = profilesDir.path() + '/' + item;
+        QString content;
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            content = QString::fromUtf8(file.readAll());
+        } else {
+            qWarning() << "Could not vcf file";
+        }
+
+        auto personProfile = new Person(nullptr);
+        QList<Account*> accs;
+        VCardUtils::mapToPerson(personProfile, content.toUtf8(), &accs);
+        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        const auto alias = vCard["FN"];
+        const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+
+        // TODO
+        for (const auto& account: accs) {
+            qDebug() << "TODO ADD PROFILE: " << account->id()
+            << ", " << alias
+            << ", " << photo;
+        }
+
+        // TODO file.remove();
+    }
+}
+
 
 } // namespace lrc
