@@ -37,7 +37,7 @@ DATABASE_CREATE_ACCOUNTS_TABLES="CREATE TABLE accounts \
 constexpr static const auto
 DATABASE_CREATE_CONTACTS_TABLES="CREATE TABLE contacts \
 (id integer primary key, unread integer, ring_id text not null unique, \
-alias text, photo text, username text, type integer)";
+alias text, photo text, username text, type text)";
 constexpr static const auto
 DATABASE_CREATE_CONVERSATIONS_TABLES="CREATE TABLE conversations \
 (id integer primary key, contact integer, account integer, body text, \
