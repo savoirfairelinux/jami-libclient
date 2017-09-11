@@ -120,6 +120,11 @@ private Q_SLOTS:
                                  const QString& name) const;
 
 private:
+    void migrateOldFiles();
+    void migrateTextHistory();
+    void migratePeerProfiles();
+    void migrateLocalProfiles();
+
     std::unique_ptr<QSqlQuery> query_;
     QSqlDatabase db_;
 };
