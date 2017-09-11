@@ -21,6 +21,7 @@
 // Std
 #include <memory>
 #include <string>
+#include <vector>
 
 // Qt
 #include <qobject.h>
@@ -89,6 +90,8 @@ public:
      * @param payload the VCard of this contact
      */
     void addContact(const std::string& contactUri, const QByteArray& payload) const;
+    void addSIPContact(const std::string& contactUri) const;
+    std::vector<std::string> getSIPContacts() const;
     /**
      * @param  contactUri
      * @param  attribute to search (correpond to a column of the "contacts" tables)
