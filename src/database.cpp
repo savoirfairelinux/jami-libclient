@@ -156,6 +156,12 @@ Database::clearHistory(const std::string& account, const std::string& contactUri
     auto clearHistoryQuery = DATABASE_CLEAR_HISTORY(account, contactUri);
     if (!removeContact) {
         clearHistoryQuery += " AND type!='CONTACT'";
+    } else {
+        // TODO link account and use profiles tabs
+        auto removeContactQuery = "DELETE FROM contacts WHERE type='SIP' AND ring_id='" + contactUri + "'";
+        if (not query_->exec(removeContactQuery.c_str())) {
+            qDebug() << "Database: clearHistory, " << query_->lastError().text();
+        }
     }
 
     if (not query_->exec(clearHistoryQuery.c_str())) {
@@ -246,7 +252,7 @@ Database::addContact(const std::string& contactUri, const QByteArray& payload) c
       photo.toStdString()).c_str()
     );
 
-    if (not query_->exec()) {
+    if (not query_->exec(addContactQuery)) {
         qDebug() << "Database: addContact, " << query_->lastError().text();
         return;
     }
@@ -257,6 +263,38 @@ Database::addContact(const std::string& contactUri, const QByteArray& payload) c
 
     emit contactAdded(contactUri);
 }
+
+void
+Database::addSIPContact(const std::string& contactUri) const
+{
+    const auto addContactQuery = "INSERT INTO contacts(ring_id, alias, type) values('" + contactUri + "', '" + contactUri + "', 'SIP')";
+
+    if (not query_->exec(QString(addContactQuery.c_str()))) {
+        qDebug() << "Database: addSIPContact, " << query_->lastError().text();
+        return;
+    }
+    emit contactAdded(contactUri);
+}
+
+std::vector<std::string>
+Database::getSIPContacts() const
+{
+    // TODO by account
+    const auto getSIPContactsQuery =  "SELECT ring_id FROM contacts WHERE type='SIP'";
+
+    if (not query_->exec(getSIPContactsQuery)) {
+        qDebug() << "Database: getSIPContacts, " << query_->lastError().text();
+        return {};
+    }
+
+    auto contacts = std::vector<std::string>();
+    while(query_->next()) {
+        contacts.emplace_back(query_->value(0).toString().toStdString());
+    }
+
+    return contacts;
+}
+
 
 std::string
 Database::getContactAttribute(const std::string& contactUri, const std::string& attribute) const
