@@ -267,15 +267,15 @@ ContactModelPimpl::fillsWithContacts()
         contact->alias = c->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
         contact->isTrusted = c->isConfirmed();
         contact->isPresent = c->isPresent();
-        switch (owner.type)
+        switch (owner.contact.type)
         {
-        case account::Type::RING:
+        case contact::Type::RING:
             contact->type = contact::Type::RING;
             break;
-        case account::Type::SIP:
+        case contact::Type::SIP:
             contact->type = contact::Type::SIP;
             break;
-        case account::Type::INVALID:
+        case contact::Type::INVALID:
         default:
             contact->type = contact::Type::INVALID;
             break;
@@ -339,15 +339,15 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
         contact->alias = cm->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
         contact->isTrusted = confirmed;
         contact->isPresent = cm->isPresent();
-        switch (owner.type)
+        switch (owner.contact.type)
         {
-        case account::Type::RING:
+        case contact::Type::RING:
             contact->type = contact::Type::RING;
             break;
-        case account::Type::SIP:
+        case contact::Type::SIP:
             contact->type = contact::Type::SIP;
             break;
-        case account::Type::INVALID:
+        case contact::Type::INVALID:
         default:
             contact->type = contact::Type::INVALID;
             break;
