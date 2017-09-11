@@ -78,7 +78,11 @@ NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksH
         auto& info = pimpl_->accounts[id.toStdString()];
         info.accountModel = std::unique_ptr<NewAccountModel>(this);
         info.id = id.toStdString();
-        info.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        info.contact.uri = details["RingNS.uri"].toStdString();
+        // TODO std::string avatar;
+        info.contact.registeredName = details["Account.username"].toStdString();
+        info.contact.alias = details["Account.alias"].toStdString();
+        info.contact.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
         info.callModel = std::unique_ptr<NewCallModel>(new NewCallModel(*this, info));
         info.contactModel = std::unique_ptr<ContactModel>(new ContactModel(*this, database, callbackHandler, info));
         info.conversationModel = std::unique_ptr<ConversationModel>(new ConversationModel(*this, database, info));

@@ -21,6 +21,8 @@
 #include <string>
 #include <memory>
 
+#include <api/contact.h>
+
 namespace lrc
 {
 
@@ -35,16 +37,10 @@ class NewAccountModel;
 namespace account
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
-};
-
 struct Info
 {
     std::string id;
-    Type type = account::Type::INVALID;
+    contact::Info contact;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
