@@ -20,17 +20,29 @@
 #include "database.h"
 
 // Qt
+#include <QtCore/QDir>
+#include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
-#include <QStandardPaths>
-#include <QDebug>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QVariant>
 
 // Std
 #include <sstream>
 
 // Data
 #include "api/message.h"
+
+// Lrc for migrations
+#include "person.h"
+#include "account.h"
+#include "accountmodel.h"
+#include "private/vcardutils.h"
 
 namespace lrc
 {
@@ -43,7 +55,6 @@ static constexpr auto NAME = "ring.db";
 Database::Database()
 : QObject()
 {
-    // check support.
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         throw std::runtime_error("QSQLITE not supported");
     }
@@ -58,8 +69,11 @@ Database::Database()
     }
 
     // if db is empty we create them.
-    if (db_.tables().empty())
+    if (db_.tables().empty()) {
         createTables();
+        // NOTE: the migration can take some time...
+        migrateOldFiles();
+    }
 }
 
 Database::~Database()
@@ -330,5 +344,178 @@ Database::QueryDeleteError::details()
         oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
     return oss.str();
 }
+
+void
+Database::migrateOldFiles()
+{
+    migrateLocalProfiles();
+    migratePeerProfiles();
+    migrateTextHistory();
+}
+
+void
+Database::migrateLocalProfiles()
+{
+    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+
+    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
+
+    foreach (const QString& item , entries) {
+        auto filePath = profilesDir.path() + '/' + item;
+        QString content;
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            content = QString::fromUtf8(file.readAll());
+        } else {
+            qWarning() << "Could not open .vcf file";
+        }
+
+        auto personProfile = new Person(nullptr);
+        QList<Account*> accs;
+        VCardUtils::mapToPerson(personProfile, content.toUtf8(), &accs);
+        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        const auto alias = vCard["FN"];
+        const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+
+        for (const auto& account: accs) {
+            auto type = account->protocol() == Account::Protocol::RING ? "RING" : "SIP";
+            insertInto("profiles",
+            {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
+            {":status", "status"}},
+            {{":uri", account->username().toStdString()}, {":alias", alias.toStdString()},
+            {":photo", avatar.toStdString()}, {":type", type},
+            {":status", "TRUSTED"}});
+        }
+    }
+    // TODO remove VCard
+}
+
+void
+Database::migratePeerProfiles()
+{
+    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/peer_profiles/";
+
+    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
+
+    foreach (const QString& item , entries) {
+        auto filePath = profilesDir.path() + '/' + item;
+        QString content;
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            content = QString::fromUtf8(file.readAll());
+        } else {
+            qWarning() << "Could not vcf file";
+        }
+
+        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        auto uri = vCard["TEL;other"];
+        const auto alias = vCard["FN"];
+        const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+        const std::string type = uri.startsWith("ring:") ? "RING" : "SIP";
+        if (type == "RING") {
+            uri = uri.mid(std::string("ring:").size());
+        }
+
+        insertInto("profiles",
+        {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
+        {":status", "status"}},
+        {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
+        {":photo", avatar.toStdString()}, {":type", type},
+        {":status", "TRUSTED"}});
+        // TODO remove VCard
+    }
+}
+
+void
+Database::migrateTextHistory()
+{
+    // load all text recordings so we can recover CMs that are not in the call history
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/");
+    if (dir.exists()) {
+        // get .json files, sorted by time, latest first
+        QStringList filters;
+        filters << "*.json";
+        auto list = dir.entryInfoList(filters, QDir::Files | QDir::NoSymLinks | QDir::Readable, QDir::Time);
+
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+
+            QString content;
+            QFile file(fileInfo.absoluteFilePath());
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                content = QString::fromUtf8(file.readAll());
+            } else {
+                qWarning() << "Could not open text recording json file";
+            }
+
+            if (!content.isEmpty()) {
+                QJsonParseError err;
+                auto loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err).object();
+
+                // Load account
+                auto peersObject = loadDoc["peers"].toArray()[0].toObject();
+                auto account = AccountModel::instance().getById(peersObject["accountId"].toString().toUtf8());
+                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", account->username().toStdString()}}).payloads;
+                auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
+                if (accountIds.empty()) {
+                    qDebug() << "Can't find profile for URI: " << peersObject["accountId"].toString() << ". Ignore this file.";
+                } else if (contactIds.empty()) {
+                    qDebug() << "Can't find profile for URI: " << peersObject["uri"].toString() << ". Ignore this file.";
+                } else {
+                    auto contactId = contactIds[0];
+                    auto accountId = accountIds[0];
+                    auto newConversationsId = select("IFNULL(MAX(id), 0) + 1",
+                                                        "conversations",
+                                                        "1=1",
+                                                        {}).payloads[0];
+                    insertInto("conversations",
+                                {{":id", "id"}, {":participant_id", "participant_id"}},
+                                {{":id", newConversationsId}, {":participant_id", accountId}});
+                    insertInto("conversations",
+                                {{":id", "id"}, {":participant_id", "participant_id"}},
+                                {{":id", newConversationsId}, {":participant_id", contactId}});
+                    // Add "Conversation started" message
+                    insertInto("interactions",
+                                {{":account_id", "account_id"}, {":author_id", "author_id"},
+                                {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                                {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                                {":body", "body"}, {":type", "type"},
+                                {":status", "status"}},
+                                {{":account_id", accountId}, {":author_id", accountId},
+                                {":conversation_id", newConversationsId}, {":device_id", "0"},
+                                {":group_id", "0"}, {":timestamp", "0"},
+                                {":body", "Conversation started"}, {":type", "CONTACT"},
+                                {":status", "SUCCEED"}});
+
+                    // Load interactions
+                    auto groupsArray = loadDoc["groups"].toArray();
+                    for (const auto& groupObject: groupsArray) {
+                        auto messagesArray = groupObject.toObject()["messages"].toArray();
+                        for (const auto& messageRef: messagesArray) {
+                            auto messageObject = messageRef.toObject();
+                            auto direction = messageObject["direction"].toInt();
+                            auto body = messageObject["payloads"].toArray()[0].toObject()["payload"].toString();
+                            insertInto("interactions",
+                                        {{":account_id", "account_id"}, {":author_id", "author_id"},
+                                        {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                                        {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                                        {":body", "body"}, {":type", "type"},
+                                        {":status", "status"}},
+                                        {{":account_id", accountId}, {":author_id", direction ? accountId : contactId},
+                                        {":conversation_id", newConversationsId}, {":device_id", "0"},
+                                        {":group_id", "0"}, {":timestamp", messageObject["timestamp"].toString().toStdString()},
+                                        {":body", body.toStdString()}, {":type", "TEXT"},
+                                        {":status", direction ? "SUCCEED" : "READ"}});
+                        }
+                    }
+                }
+            } else {
+                qWarning() << "Text recording file is empty";
+            }
+            // TODO remove JSON file.
+        }
+    }
+}
+
 
 } // namespace lrc
