@@ -20,6 +20,7 @@
 
 // Std
 #include <stdexcept>
+#include <iostream>
 
 // Data
 #include "api/message.h"
@@ -138,6 +139,7 @@ ContactModel::isPendingRequests() const
 void
 ContactModel::addContact(const std::string& contactUri)
 {
+    // TODO add contact SIP
     auto contact = pimpl_->contacts.find(contactUri);
     if (contact != pimpl_->contacts.end()
         && contact->second->type == contact::Type::PENDING) {
@@ -158,8 +160,28 @@ ContactModel::addContact(const std::string& contactUri)
         pimpl_->db.addMessage(owner.id, msg);
         emit modelUpdated();
     } else {
-        ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-        QString(contactUri.c_str()));
+        if (owner.contact.type == contact::Type::SIP) {
+            pimpl_->db.addSIPContact(contactUri);
+            auto contact = std::make_shared<contact::Info>();
+            contact->uri = contactUri;
+            contact->alias = contactUri;
+            contact->isTrusted = true;
+            contact->isPresent = false;
+            contact->type = contact::Type::SIP;
+            pimpl_->contacts.emplace(std::make_pair(contactUri, contact));
+            // Add to database
+            message::Info msg;
+            msg.contact = contactUri;
+            msg.body = "";
+            msg.timestamp = std::time(nullptr);
+            msg.type = message::Type::CONTACT;
+            msg.status = message::Status::SUCCEED;
+            pimpl_->db.addMessage(owner.id, msg);
+            emit modelUpdated();
+        } else {
+            ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
+            QString(contactUri.c_str()));
+        }
     }
 }
 
@@ -177,8 +199,14 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
         pimpl_->contacts.erase(contactUri);
         emit modelUpdated();
     } else {
-        ConfigurationManager::instance().removeContact(QString(owner.id.c_str()),
-        QString(contactUri.c_str()), banned);
+        if (owner.contact.type == contact::Type::SIP) {
+            pimpl_->db.clearHistory(owner.id, contactUri, true);
+            pimpl_->contacts.erase(contactUri);
+            emit modelUpdated();
+        } else {
+            ConfigurationManager::instance().removeContact(QString(owner.id.c_str()),
+            QString(contactUri.c_str()), banned);
+        }
     }
 }
 
@@ -248,13 +276,21 @@ ContactModelPimpl::fillsWithContacts()
     if (not account) {
         qDebug() << "ContactModel::fillsWithContacts(), nullptr";
     }
-    if (account->protocol() != Account::Protocol::RING) {
-        qDebug() << "fillsWithContacts, account is not a RING account";
-        return false;
-    }
-
     // Clear current contacts
     contacts.clear();
+
+    if (owner.contact.type == contact::Type::SIP) {
+        for (auto contactUri: db.getSIPContacts()) {
+            auto contact = std::make_shared<contact::Info>();
+            contact->uri = contactUri;
+            contact->alias = contactUri;
+            contact->isTrusted = true;
+            contact->isPresent = false;
+            contact->type = contact::Type::SIP;
+            contacts.emplace(std::make_pair(contactUri, contact));
+        }
+        return true;
+    }
 
     // Add contacts
     auto contactsList = account->getContacts();
@@ -323,35 +359,20 @@ ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
 void
 ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed)
 {
-    // TODO: For now, we only get contacts for RING accounts.
-    // Moreover, we still use ContactMethod class.
-
     auto account = AccountModel::instance().getById(owner.id.c_str());
     if (not account) {
         qDebug() << "ContactModel::slotContactsAdded(), nullptr";
     }
     if (contacts.find(contactUri) == contacts.end()) {
-        auto cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
         auto contact = std::make_shared<contact::Info>();
         contact->uri = contactUri;
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
         contact->avatar = db.getContactAttribute(contactUri, "photo");
-        contact->registeredName = cm->registeredName().toStdString();// db.getContactAttribute(contactUri, "username");
-        contact->alias = cm->bestName().toStdString();// db.getContactAttribute(contactUri, "alias");
+        contact->registeredName = cm->registeredName().toStdString();
+        contact->alias = cm->bestName().toStdString();
         contact->isTrusted = confirmed;
         contact->isPresent = cm->isPresent();
-        switch (owner.contact.type)
-        {
-        case contact::Type::RING:
-            contact->type = contact::Type::RING;
-            break;
-        case contact::Type::SIP:
-            contact->type = contact::Type::SIP;
-            break;
-        case contact::Type::INVALID:
-        default:
-            contact->type = contact::Type::INVALID;
-            break;
-        }
+        contact->type = contact::Type::RING;
 
         contacts[contactUri] = contact;
 

@@ -108,7 +108,6 @@ ConversationModel::getFilteredConversations() const
 
     auto filter = pimpl_->filter;
     auto typeFilter = pimpl_->typeFilter;
-
     auto it = std::copy_if(pimpl_->conversations.begin(), pimpl_->conversations.end(), pimpl_->filteredConversations.begin(),
     [&filter, &typeFilter, this] (const conversation::Info& entry) {
         auto isUsed = entry.isUsed;
@@ -318,8 +317,8 @@ ConversationModel::setFilter(const std::string& filter)
         if (!pimpl_->conversations.empty()) {
             auto firstContactUri = pimpl_->conversations.front().participants.front();
             auto firstContact = owner.contactModel->getContact(firstContactUri);
-            auto isUsed = pimpl_->conversations.front().isUsed;
-            if (!isUsed && firstContact.type != contact::Type::PENDING) {
+            auto temporaryContactUri = owner.contactModel->temporaryContact.uri;
+            if (firstContact.uri == temporaryContactUri) {
                 pimpl_->conversations.pop_front();
             }
         }
@@ -422,7 +421,7 @@ ConversationModelPimpl::initConversations()
         conversation::Info conversation;
         conversation.uid = contactinfo.second->uri;
         conversation.participants.emplace_back((*contactinfo.second.get()).uri);
-        auto messages = database.getHistory(account->id().toStdString(),
+        auto messages = database.getHistory(linked.owner.id,
                                              contactinfo.second->uri);
         conversation.messages = messages;
         if (!messages.empty()) {
@@ -439,11 +438,37 @@ ConversationModelPimpl::initConversations()
     sortConversations();
 
     filteredConversations = conversations;
+
 }
 
 void
 ConversationModelPimpl::search()
 {
+    if (linked.owner.contact.type == contact::Type::SIP) {
+        if (!conversations.empty()) {
+            auto firstConversation = conversations.front();
+            if (!firstConversation.isUsed) {
+                auto uid = filter;
+                conversations.pop_front();
+                auto conversationIdx = indexOf(uid);
+                if (conversationIdx == -1) {
+                    // create the new conversation
+                    conversation::Info conversation;
+                    contact::Info participant;
+                    participant.uri = uid;
+                    participant.alias = uid;
+                    participant.type = contact::Type::SIP;
+                    conversation.uid = participant.uri;
+                    linked.owner.contactModel->temporaryContact = participant;
+                    conversation.participants.emplace_back("");
+                    conversation.accountId = linked.owner.id;
+                    conversations.emplace_front(conversation);
+                }
+                emit linked.modelUpdated();
+            }
+        }
+        return;
+    }
     // Update alias
     auto uri = URI(QString(filter.c_str()));
     // Query NS
