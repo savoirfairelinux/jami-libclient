@@ -211,6 +211,15 @@ public:
 private:
     void createTables();
     void storeVersion(const std::string& version);
+
+    /**
+     * Migration helpets. Parse JSON for history and VCards and add it into the database.
+     */
+    void migrateOldFiles();
+    void migrateLocalProfiles();
+    void migratePeerProfiles();
+    void migrateTextHistory();
+
     QSqlDatabase db_;
 };
 
