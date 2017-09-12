@@ -212,8 +212,10 @@ IF(DEFINED RING_XML_INTERFACES_DIR)
 ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
     SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
 ELSE()
-    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/api)
+    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
 ENDIF()
+
+MESSAGE(STATUS "Using Ring DBus-XML interfaces in ${dbus_xml_introspecs_path}")
 
 #File to compile
 SET( libringclient_LIB_SRCS
