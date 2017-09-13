@@ -29,19 +29,19 @@ using namespace api;
 class NewCallModelPimpl
 {
 public:
-    NewCallModelPimpl(NewAccountModel& parent);
+    NewCallModelPimpl(NewCallModel& linked);
     ~NewCallModelPimpl();
 
     void sendMessage(const std::string& callId, const std::string& body) const;
 
+    const NewCallModel& linked;
     NewCallModel::CallInfoMap calls;
-    NewAccountModel& parent;
 };
 
-NewCallModel::NewCallModel(NewAccountModel& parent, const account::Info& info)
+NewCallModel::NewCallModel(const account::Info& owner)
 : QObject()
-, owner(info)
-, pimpl_(std::make_unique<NewCallModelPimpl>(parent))
+, owner(owner)
+, pimpl_(std::make_unique<NewCallModelPimpl>(*this))
 {
 
 }
@@ -105,8 +105,8 @@ NewCallModel::removeParticipant(const std::string& callId, const std::string& pa
 
 }
 
-NewCallModelPimpl::NewCallModelPimpl(NewAccountModel& p)
-: parent(p)
+NewCallModelPimpl::NewCallModelPimpl(NewCallModel& linked)
+: linked(linked)
 {
 
 }
