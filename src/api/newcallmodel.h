@@ -51,7 +51,7 @@ public:
         VIDEO
     };
 
-    NewCallModel(NewAccountModel& parent, const account::Info& info);
+    NewCallModel(const account::Info& owner);
     ~NewCallModel();
 
     const call::Info& createCall(const std::string& contactUri);
