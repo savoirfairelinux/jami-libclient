@@ -20,12 +20,14 @@
 
 
 // LRC
+#include "database.h"
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 #include "api/account.h"
 
-#include "database.h"
+// Dbus
+#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -35,17 +37,19 @@ using namespace api;
 class NewAccountModelPimpl
 {
 public:
-    NewAccountModelPimpl(const Database& database);
+    NewAccountModelPimpl(const NewAccountModel& linked, const Database& database);
     ~NewAccountModelPimpl();
 
+    const NewAccountModel& linked;
     const Database& database;
     NewAccountModel::AccountInfoMap accounts;
 };
 
 NewAccountModel::NewAccountModel(const Database& database)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(database))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database))
 {
+
 }
 
 NewAccountModel::~NewAccountModel()
@@ -55,7 +59,12 @@ NewAccountModel::~NewAccountModel()
 const std::vector<std::string>
 NewAccountModel::getAccountList() const
 {
-    return {};
+    std::vector<std::string> accountsId;
+
+    for(auto const& accountInfo: pimpl_->accounts)
+        accountsId.push_back(accountInfo.first);
+
+    return std::move(accountsId);
 }
 
 const account::Info&
@@ -64,10 +73,25 @@ NewAccountModel::getAccountInfo(const std::string& accountId)
     return pimpl_->accounts[accountId];
 }
 
-NewAccountModelPimpl::NewAccountModelPimpl(const Database& database)
-: database(database)
+NewAccountModelPimpl::NewAccountModelPimpl(const NewAccountModel& linked, const Database& database)
+: linked(linked)
+, database(database)
 {
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+
+        account::Info owner;
+        owner.accountModel = std::unique_ptr<const NewAccountModel>(&linked);
+        owner.id = id.toStdString();
+        owner.type = details["Account.type"] == "RING" ? account::Type::RING : account::Type::SIP;
+        owner.callModel = std::make_unique<NewCallModel>(owner);
+        owner.contactModel = std::make_unique<ContactModel>(owner, database);
+        owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
+
+        accounts[id.toStdString()] = std::move(owner);
+    }
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
