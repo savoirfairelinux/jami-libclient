@@ -38,11 +38,8 @@ class ConversationModelPimpl : public QObject
 {
     Q_OBJECT
 public:
-    ConversationModelPimpl(const NewAccountModel& p, const Database& d, const account::Info& o);
+    ConversationModelPimpl(const ConversationModel& linked, const Database& db);
     ~ConversationModelPimpl();
-
-    // shortcuts in owner
-    NewCallModel& callModel;
 
     /**
      * Search a conversation in conversations_
@@ -60,8 +57,8 @@ public:
     void sortConversations();
     void search();
 
-    const NewAccountModel& parent;
-    const Database& database;
+    const ConversationModel& linked;
+    const Database& db;
 
     ConversationModel::ConversationQueue conversations;
     mutable ConversationModel::ConversationQueue filteredConversations;
@@ -75,12 +72,10 @@ public Q_SLOTS:
 
 };
 
-ConversationModel::ConversationModel(const NewAccountModel& parent,
-                                     const Database& database,
-                                     const account::Info& info)
+ConversationModel::ConversationModel(const account::Info& owner, const Database& database)
 : QObject()
-,pimpl_(std::make_unique<ConversationModelPimpl>(parent, database, owner))
-, owner(info)
+, pimpl_(std::make_unique<ConversationModelPimpl>(*this, database))
+, owner(owner)
 {
 
 }
@@ -149,10 +144,9 @@ ConversationModel::clearHistory(const std::string& uid)
 
 }
 
-ConversationModelPimpl::ConversationModelPimpl(const NewAccountModel& p, const Database& d, const account::Info& o)
-: parent(p)
-, database(d)
-, callModel(*o.callModel)
+ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked, const Database& db)
+: linked(linked)
+, db(db)
 {
 
 }
