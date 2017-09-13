@@ -48,7 +48,7 @@ struct Info
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
-    std::unique_ptr<lrc::api::NewAccountModel> accountModel;
+    lrc::api::NewAccountModel* accountModel {nullptr};
 };
 
 } // namespace account
