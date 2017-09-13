@@ -59,7 +59,7 @@ LrcPimpl::LrcPimpl(const Lrc& linked)
 : linked(linked)
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(*database))
+, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler))
 {
 }
 
