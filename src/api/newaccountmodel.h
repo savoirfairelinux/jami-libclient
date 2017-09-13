@@ -47,8 +47,16 @@ public:
 
     NewAccountModel(const Database& database);
     ~NewAccountModel();
-
+    /**
+     * get a list of all acountId.
+     * @return a std::vector<std::string>.
+     */
     const std::vector<std::string> getAccountList() const;
+    /**
+     * get account informations associated to an accountId.
+     * @param accountId.
+     * @return a const account::Info& structure.
+     */
     const account::Info& getAccountInfo(const std::string& accountId);
 
 private:
