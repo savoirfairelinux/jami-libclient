@@ -33,6 +33,7 @@
 namespace lrc
 {
 
+class CallbacksHandler;
 class Database;
 class NewAccountModelPimpl;
 
@@ -41,15 +42,31 @@ namespace api
 
 namespace account { struct Info; }
 
+/**
+  *  @brief Class that manages account information.
+  */
 class LIB_EXPORT NewAccountModel : public QObject {
+    Q_OBJECT
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
-    NewAccountModel(const Database& database);
+    NewAccountModel(Database& database, const CallbacksHandler& callbackHandler);
     ~NewAccountModel();
+    /**
+     * get a list of all acountId.
+     * @return a std::vector<std::string>.
+     */
+    std::vector<std::string> getAccountList() const;
+    /**
+     * get account informations associated to an accountId.
+     * @param accountId.
+     * @return a const account::Info& structure.
+     */
+    const account::Info& getAccountInfo(const std::string& accountId) const; // [jn] we should not send a ref but a copy, the client has no authority to edit anything
 
-    const std::vector<std::string> getAccountList() const;
-    const account::Info& getAccountInfo(const std::string& accountId);
+Q_SIGNALS: // [jn] docs!
+    void incomingCall(const std::string& accountId, const std::string& contactUri);
+    void accountStatusChanged(const std::string& accountID);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
