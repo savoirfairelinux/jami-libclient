@@ -48,6 +48,29 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_132ffca2",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "no! let the called do that",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 5
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_6e5c9f26",
         "filename": "src/database.cpp",
         "patchSetId": 21
@@ -64,6 +87,144 @@
         "startChar": 15,
         "endLine": 91,
         "endChar": 23
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53186484",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "dumb comment",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 29
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_331de074",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "no naked throw (not a re-throw)",
+      "range": {
+        "startLine": 121,
+        "startChar": 16,
+        "endLine": 121,
+        "endChar": 22
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9312ec60",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "naked throw",
+      "range": {
+        "startLine": 129,
+        "startChar": 16,
+        "endLine": 129,
+        "endChar": 22
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_73176852",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "naked throw",
+      "range": {
+        "startLine": 137,
+        "startChar": 16,
+        "endLine": 137,
+        "endChar": 22
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d30bd429",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "let caller do that",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 143,
+        "endChar": 5
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b308d02e",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "let caller do that",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 5
       },
       "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
@@ -118,6 +279,99 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_ee51cfd9",
+        "filename": "src/database.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "first, the return of toStdString() is a rvalue, not a lvalue to the SB comment is valid (but not exact, rvalue are not always temporary values).\n\nThen, emplace_back is a push_back if the compiler can\u0027t use move semantic.\nYou can safely use emplace_back and let the compiler decide.\npush_back() continue to exist for legacy code and some rare case (with initializer_list)\n\nex: https://godbolt.org/g/KcH7cQ",
+      "parentUuid": "9a3d3df0_eeba6f09",
+      "range": {
+        "startLine": 288,
+        "startChar": 28,
+        "endLine": 288,
+        "endChar": 37
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_13aa5c19",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "Documentation?",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 17
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b3ac5037",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "fields documentation?",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 42
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5363441a",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "no \",\" after the param name",
+      "range": {
+        "startLine": 45,
+        "startChar": 19,
+        "endLine": 45,
+        "endChar": 20
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_8e20039d",
         "filename": "src/database.h",
         "patchSetId": 21
@@ -165,6 +419,86 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_933b0ceb",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "really? why? (just for my knowledge)",
+      "range": {
+        "startLine": 46,
+        "startChar": 68,
+        "endLine": 46,
+        "endChar": 118
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d37634d8",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "indent line binds to a param description",
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7372c8e6",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "@return missing to explain returned value",
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_336840f5",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "use @note for notes comment",
+      "range": {
+        "startLine": 51,
+        "startChar": 7,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_6e25bfaa",
         "filename": "src/database.h",
         "patchSetId": 21
@@ -205,6 +539,29 @@
         "startChar": 12,
         "endLine": 66,
         "endChar": 18
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f37d38b3",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "same issues as above",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 7
       },
       "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
@@ -306,6 +663,29 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_534a2484",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "same issues as above",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 7
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_0e34f3dc",
         "filename": "src/database.h",
         "patchSetId": 21
@@ -369,6 +749,29 @@
         "startChar": 9,
         "endLine": 94,
         "endChar": 11
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_334fa094",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "same issues as above",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 7
       },
       "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
@@ -510,6 +913,29 @@
         "startChar": 22,
         "endLine": 105,
         "endChar": 28
+      },
+      "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d32474c8",
+        "filename": "src/database.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-13T15:03:41Z",
+      "side": 1,
+      "message": "1) prefer to use \"const char* const\" than std::string for constants\n2) declare static all constants\n3) prefer to use capitalized words for constants",
+      "range": {
+        "startLine": 104,
+        "startChar": 14,
+        "endLine": 105,
+        "endChar": 41
       },
       "revId": "85d0278957df430e7a7f45ad3a235557e7e24a25",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
