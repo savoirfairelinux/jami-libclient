@@ -53,9 +53,7 @@ public:
 
     const account::Info& owner;
 
-    ConversationModel(const NewAccountModel& parent,
-                      const Database& database,
-                      const account::Info& info);
+    ConversationModel(const account::Info& owner, const Database& database);
     ~ConversationModel();
 
     const ConversationQueue& getFilteredConversations() const;
