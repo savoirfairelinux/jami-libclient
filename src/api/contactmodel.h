@@ -50,9 +50,8 @@ public:
 
     const account::Info& owner;
 
-    ContactModel(NewAccountModel& parent,
-                 const Database& database,
-                 const account::Info& info);
+    ContactModel(const account::Info& owner,
+                 const Database& database);
     ~ContactModel();
 
     const contact::Info& getContact(const std::string& uri) const;
