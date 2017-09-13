@@ -45,7 +45,7 @@ public:
     const NewAccountModel& getAccountModel() const;
 
 private:
-    std::unique_ptr<LrcPimpl> lrcPipmpl_;
+    std::unique_ptr<LrcPimpl> lrcPimpl_;
 };
 
 } // namespace api
