@@ -24,8 +24,11 @@
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 #include "api/account.h"
-
+#include "callbackshandler.h"
 #include "database.h"
+
+// Dbus
+#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -35,44 +38,99 @@ using namespace api;
 class NewAccountModelPimpl
 {
 public:
-    NewAccountModelPimpl(const Database& database);
+    NewAccountModelPimpl(NewAccountModel& linked,
+                         Database& database,
+                         const CallbacksHandler& callbackHandler);
     ~NewAccountModelPimpl();
 
-    const Database& database;
+    NewAccountModel& linked;
+    Database& database;
     NewAccountModel::AccountInfoMap accounts;
+
+    void addAcountProfileInDb(const account::Info& info);
 };
 
-NewAccountModel::NewAccountModel(const Database& database)
+NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(database))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler))
 {
+
 }
 
 NewAccountModel::~NewAccountModel()
 {
 }
 
-const std::vector<std::string>
+std::vector<std::string>
 NewAccountModel::getAccountList() const
 {
-    return {};
+    std::vector<std::string> accountsId;
+
+    for(auto const& accountInfo: pimpl_->accounts)
+        accountsId.emplace_back(accountInfo.first);
+
+    return accountsId;
 }
 
 const account::Info&
-NewAccountModel::getAccountInfo(const std::string& accountId)
+NewAccountModel::getAccountInfo(const std::string& accountId) const
 {
-    return pimpl_->accounts[accountId];
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end())
+        throw std::out_of_range("NewAccountModel::getAccountInfo, can't find " + accountId);
+
+    return accountInfo->second;
 }
 
-NewAccountModelPimpl::NewAccountModelPimpl(const Database& database)
-: database(database)
+NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
+                                           Database& database,
+                                           const CallbacksHandler& callbacksHandler)
+: linked(linked)
+, database(database)
 {
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
+    for (auto& id : accountIds) {
+        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
+        const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
+
+        auto& item = *(accounts.emplace(id.toStdString(), account::Info()).first);
+        auto& owner = item.second;
+        owner.id = id.toStdString();
+        owner.profile.uri = details["Account.username"].toStdString();
+        // TODO get avatar;
+        owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
+        owner.profile.alias = details["Account.alias"].toStdString();
+        owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
+        owner.callModel = std::make_unique<NewCallModel>(owner);
+        owner.contactModel = std::make_unique<ContactModel>(owner, database);
+        owner.conversationModel = std::make_unique<ConversationModel>(owner, database);
+        owner.accountModel = &linked;
+        addAcountProfileInDb(owner);
+    }
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
 
+}
+
+void
+NewAccountModelPimpl::addAcountProfileInDb(const account::Info& info)
+{
+    auto returnFromDb = database.select("uri",
+                                        "profiles",
+                                        "uri=:uri",
+                                        {{":uri", info.profile.uri}});
+    if (returnFromDb.payloads.empty()) {
+        // Profile is not in db, add it.
+        auto type = info.profile.type == contact::Type::RING ? "RING" : "SIP";
+        database.insertInto("profiles",
+                             {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
+                              {":type", "type"}, {":status", "status"}},
+                             {{":uri", info.profile.uri}, {":alias", info.profile.alias}, {":photo", ""},
+                              {":type", type}, {":status", ""}});
+    }
 }
 
 } // namespace lrc
