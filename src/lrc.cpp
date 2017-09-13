@@ -46,7 +46,7 @@ Lrc::Lrc()
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
     InstanceManager::instance();
-    lrcPipmpl_ = std::make_unique<LrcPimpl>(*this);
+    lrcPimpl_ = std::make_unique<LrcPimpl>(*this);
 }
 
 Lrc::~Lrc()
@@ -56,14 +56,14 @@ Lrc::~Lrc()
 const NewAccountModel&
 Lrc::getAccountModel() const
 {
-    return *lrcPipmpl_->accountModel;
+    return *lrcPimpl_->accountModel;
 }
 
 LrcPimpl::LrcPimpl(const Lrc& linked)
 : linked(linked)
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(*database))
+, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler))
 {
 }
 
