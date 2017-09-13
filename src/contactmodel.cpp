@@ -33,7 +33,7 @@ class ContactModelPimpl : public QObject
 {
     Q_OBJECT
 public:
-    ContactModelPimpl(NewAccountModel& p, const Database& d);
+    ContactModelPimpl(ContactModel& linked, const Database& db);
     ~ContactModelPimpl();
     ContactModelPimpl(const ContactModelPimpl& contactModelPimpl);
 
@@ -41,9 +41,9 @@ public:
     void sendMessage(const std::string& uri, const std::string& body) const;
     void setContactPresent(const std::string& uri, bool status);
 
+    const ContactModel& linked;
     const Database& db;
     ContactModel::ContactInfoMap contacts;
-    NewAccountModel& parent;
 
 public Q_SLOTS:
     // TODO remove this from here when LRC signals are added
@@ -52,10 +52,10 @@ public Q_SLOTS:
 };
 
 
-ContactModel::ContactModel(NewAccountModel& parent, const Database& database, const account::Info& info)
+ContactModel::ContactModel(const account::Info& owner, const Database& database)
 : QObject()
-, pimpl_(std::make_unique<ContactModelPimpl>(parent, database))
-, owner(info)
+, owner(owner)
+, pimpl_(std::make_unique<ContactModelPimpl>(*this, database))
 {
 
 }
@@ -101,9 +101,9 @@ ContactModel::addressLookup(const std::string& name) const
 
 }
 
-ContactModelPimpl::ContactModelPimpl(NewAccountModel& p, const Database& d)
-: db(d)
-, parent(p)
+ContactModelPimpl::ContactModelPimpl(ContactModel& linked, const Database& db)
+: db(db)
+, linked(linked)
 {
 
 }
@@ -116,7 +116,7 @@ ContactModelPimpl::~ContactModelPimpl()
 ContactModelPimpl::ContactModelPimpl(const ContactModelPimpl& contactModelPimpl)
 : db(contactModelPimpl.db)
 , contacts(contactModelPimpl.contacts)
-, parent(contactModelPimpl.parent)
+, linked(contactModelPimpl.linked)
 {
 
 }
