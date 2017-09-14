@@ -1,8 +1,8 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author:  Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author:  Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
- *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux>           *
+ *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
+ *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
