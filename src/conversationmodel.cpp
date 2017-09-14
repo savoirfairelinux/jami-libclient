@@ -311,6 +311,7 @@ ConversationModel::setFilter(const std::string& filter)
         conversation::Info conversation;
         contact::Info participant;
         participant.alias = "Searching...";
+        participant.avatar = pimpl_->database.getContactAttribute("", "photo");
         conversation.uid = participant.uri;
         participant.alias += filter;
         owner.contactModel->temporaryContact = participant;
