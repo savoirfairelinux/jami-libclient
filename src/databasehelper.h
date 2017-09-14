@@ -70,8 +70,8 @@ DATABASE_ADD_CONTACT(const std::string& ring_id,
                      const std::string& alias,
                      const std::string& photo)
 {
-    return "INSERT INTO contacts(ring_id, username, alias, photo) values("
-    + ring_id + ", " + username + ", " + alias + ", " + photo + ")";
+    return "INSERT INTO contacts(ring_id, username, alias, photo) values('"
+    + ring_id + "', '" + username + "', '" + alias + "', '" + photo + "')";
 }
 
 static const std::string
