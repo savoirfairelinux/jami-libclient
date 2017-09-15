@@ -863,8 +863,10 @@ IF((${ENABLE_TEST} MATCHES true))
       test/mocks/presencemanager_mock.h
       test/mocks/videomanager_mock.h
       test/test_runner.cpp
-      test/example.h
-      test/example.cpp
+      test/databasetester.h
+      test/databasetester.cpp
+      test/utils/waitforsignalhelper.h
+      test/utils/waitforsignalhelper.cpp
       ${libringclient_LIB_SRCS}
       ${libringclient_PRIVATE_HDRS}
     )
