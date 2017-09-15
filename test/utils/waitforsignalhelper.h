@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2017 Savoir-faire Linux Inc.
+ *
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -16,40 +17,23 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
  */
-#include "example.h"
+
+#pragma once
 
 // Qt
-#include <QString>
+#include <QEventLoop>
 
-// Lrc
-#include "dbus/configurationmanager.h"
-
-namespace lrc
+class WaitForSignalHelper: public QObject
 {
-namespace test
-{
+    Q_OBJECT
+public:
+    WaitForSignalHelper(QObject& object, const char* signal);
+    bool wait(unsigned int timeoutMs);
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ExampleTest);
+public Q_SLOTS:
+    void timeout();
 
-void
-ExampleTest::setUp()
-{
-    // NOTE: Tests must always gives the same result. So, here we can
-    // clean and re-initialize the database.
-    lrc_ = std::unique_ptr<lrc::api::Lrc>(new lrc::api::Lrc());
-}
-
-void
-ExampleTest::test()
-{
-    // NOTE: just a dummy test for the example. This test simulate an incoming
-    // message using the mocked daemon
-    QMap<QString, QString> payloads;
-    payloads["text/plain"] ="from test";
-    ConfigurationManager::instance().emitIncomingAccountMessage(QString("0000"),
-    QString("aaaaa"), payloads);
-    CPPUNIT_ASSERT_EQUAL(1, 1);
-}
-
-} // namespace test
-} // namespace lrc
+private:
+    bool timeout_;
+    QEventLoop eventLoop_;
+};
