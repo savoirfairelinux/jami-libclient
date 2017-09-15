@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_39e2dfd5",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-15T18:03:44Z",
+      "side": 1,
+      "message": "1) not wrong, but not efficient: std::make_pair(), sd::map ctor accepts key, value form. This prevent the creation on the stack of a temporary object of type std::pair\u003c\u003e;\nSee third example here:\nhttp://en.cppreference.com/w/cpp/container/map/emplace\n\n2) map.emplace() returns a std::pair\u003citerator, bool\u003e, with the iterator (as key) pointing to the inserted element.\nSo the this line and next line could be joined together giving:\n\nauto\u0026 owner \u003d accounts.emplace(id.toStdString(), account::Info()).first-\u003efirst;\n\nNote: it\u0027s may be look ugly, but it\u0027s more efficient. it\u0027ll be nicer in C++17",
+      "range": {
+        "startLine": 94,
+        "startChar": 25,
+        "endLine": 94,
+        "endChar": 39
+      },
+      "revId": "87361319beee584959a00f400994cc40b88883ce",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_592b63eb",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-15T18:03:44Z",
+      "side": 1,
+      "message": "crash!",
+      "range": {
+        "startLine": 96,
+        "startChar": 29,
+        "endLine": 96,
+        "endChar": 71
+      },
+      "revId": "87361319beee584959a00f400994cc40b88883ce",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
