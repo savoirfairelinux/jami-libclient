@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a3d3df0_9935eb48",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-09-15T18:18:03Z",
+      "side": 1,
+      "message": "\u003e auto\u0026 owner \u003d accounts.emplace(id.toStdString(), account::Info()).first-\u003efirst;\n\noups... it\u0027s not \"-\u003efirst\" but \"-\u003esecond\" at the end.\n\nThen if you found the \"one-line\" solution ugly. two-line solution exist also:\n\nauto\u0026 item \u003d *(accounts.emplace(id.toStdString(), account::Info()).first);\nauto\u0026 owner \u003d item.second;",
+      "parentUuid": "9a3d3df0_39e2dfd5",
+      "range": {
+        "startLine": 94,
+        "startChar": 25,
+        "endLine": 94,
+        "endChar": 39
+      },
+      "revId": "87361319beee584959a00f400994cc40b88883ce",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_592b63eb",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 24
