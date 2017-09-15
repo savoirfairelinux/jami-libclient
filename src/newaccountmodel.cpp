@@ -136,6 +136,7 @@ NewAccountModelPimpl::~NewAccountModelPimpl()
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
+    if (status == api::account::Status::UNREGISTERED || status == INITIALIZING) return; // On removed or init, don't want to add
     auto accountInfo = accounts.find(accountID);
         if (accountInfo == accounts.end())
             addToAccounts(accountID);
