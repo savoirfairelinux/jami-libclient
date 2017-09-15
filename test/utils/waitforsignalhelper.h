@@ -20,33 +20,33 @@
 
 #pragma once
 
-// cppunit
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
+// Qt
+#include <QEventLoop>
 
-// std
-#include <memory>
-
-// lrc
-#include "api/lrc.h"
-
-namespace lrc
+/**
+ * Class used to wait a Qt signal
+ * @param object to listen from
+ * @param signal to detect
+ */
+class WaitForSignalHelper: public QObject
 {
-namespace test
-{
-
-class ExampleTest : public CppUnit::TestFixture {
-
-    CPPUNIT_TEST_SUITE(ExampleTest);
-    CPPUNIT_TEST(test);
-    CPPUNIT_TEST_SUITE_END();
+    Q_OBJECT
 public:
-    void setUp();
-    void test();
+    WaitForSignalHelper(QObject& object, const char* signal);
+    /**
+     * Connect the signal to quit() slot
+     * @param  timeoutMs the time to wait
+     * @return if the signal was emitted
+     */
+    bool wait(unsigned int timeoutMs);
 
-protected:
-    std::unique_ptr<lrc::api::Lrc> lrc_;
+public Q_SLOTS:
+    /**
+     * Is activated if wait is finished
+     */
+    void timeout();
+
+private:
+    bool timeout_;
+    QEventLoop eventLoop_;
 };
-
-} // namespace test
-} // namespace lrc
