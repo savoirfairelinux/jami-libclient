@@ -143,6 +143,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QString        displayName                  READ displayName                   WRITE setDisplayName                 )
    Q_PROPERTY(QString        archivePassword              READ archivePassword               WRITE setArchivePassword             )
    Q_PROPERTY(QString        archivePin                   READ archivePin                    WRITE setArchivePin                  )
+   Q_PROPERTY(QString        archivePath                  READ archivePath                   WRITE setArchivePath                 )
    Q_PROPERTY(RegistrationState registrationState         READ registrationState             WRITE setRegistrationState           )
    Q_PROPERTY(bool           usedForOutgogingCall         READ isUsedForOutgogingCall                                             )
    Q_PROPERTY(uint           totalCallCount               READ totalCallCount                                                     )
@@ -449,6 +450,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString displayName                  () const;
       QString archivePassword              () const;
       QString archivePin                   () const;
+      QString archivePath                  () const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
@@ -519,6 +521,7 @@ class LIB_EXPORT Account : public ItemBase {
       void setDisplayName                   (const QString& value   );
       void setArchivePassword               (const QString& value   );
       void setArchivePin                    (const QString& value   );
+      void setArchivePath                   (const QString& value   );
       void setVoiceMailCount                (int  count );
       void setRegistrationExpire            (int  detail);
       void setTlsNegotiationTimeoutSec      (int  detail);

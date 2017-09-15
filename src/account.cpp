@@ -1101,6 +1101,11 @@ QString Account::archivePin() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PIN);
 }
 
+QString Account::archivePath() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PATH);
+}
+
 bool Account::allowIncomingFromUnknown() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
@@ -2012,6 +2017,11 @@ void Account::setArchivePassword(const QString& value)
 void Account::setArchivePin(const QString& value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PIN, value);
+}
+
+void Account::setArchivePath(const QString& value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::ARCHIVE_PATH, value);
 }
 
 void Account::setAllowIncomingFromUnknown(bool value)
