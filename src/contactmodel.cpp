@@ -87,7 +87,6 @@ public:
     const account::Info& owner;
 
 public Q_SLOTS:
-    // TODO remove this from here when LRC signals are added
     /**
      * @param contactUri
      * @param confirmed]
@@ -142,7 +141,6 @@ ContactModel::isPendingRequests() const
 void
 ContactModel::addContact(const std::string& contactUri)
 {
-    // TODO add contact SIP
     auto contact = pimpl_->contacts.find(contactUri);
     if (contact != pimpl_->contacts.end()
         && contact->second->type == contact::Type::PENDING) {

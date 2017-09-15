@@ -77,7 +77,7 @@ public:
     ConversationQueue conversations;
     mutable ConversationQueue filteredConversations;
     std::string filter;
-    lrc::api::contact::Type typeFilter;
+    contact::Type typeFilter;
 
 public Q_SLOTS:
     void slotContactModelUpdated();
@@ -112,14 +112,13 @@ ConversationModel::getFilteredConversations() const
     auto typeFilter = pimpl_->typeFilter;
     auto it = std::copy_if(pimpl_->conversations.begin(), pimpl_->conversations.end(), pimpl_->filteredConversations.begin(),
     [&filter, &typeFilter, this] (const conversation::Info& entry) {
-        auto isUsed = entry.isUsed;
         auto contact = owner.contactModel->getContact(entry.participants.front());
         // Check type
-        if (typeFilter != lrc::api::contact::Type::PENDING) {
-            if (contact.type == lrc::api::contact::Type::PENDING) return false;
-            if (!isUsed) return true;
+        if (typeFilter != contact::Type::PENDING) {
+            if (contact.type == contact::Type::PENDING) return false;
+            if (contact.type == contact::Type::TEMPORARY) return true;
         } else {
-            if (contact.type != lrc::api::contact::Type::PENDING) return false;
+            if (contact.type != contact::Type::PENDING) return false;
         }
 
         // Check contact
@@ -160,13 +159,15 @@ ConversationModel::addConversation(const std::string& uid) const
     if (conversation.participants.empty())
         return;
 
-    auto contact = conversation.participants.front();
+    auto contactUri = conversation.participants.front();
+    auto contact = owner.contactModel->getContact(contactUri);
 
     // Send contact request if non used
-    if (not conversation.isUsed) {
-        auto contactUri = contact;
-        if (contact.length() == 0) {
-            contactUri = owner.contactModel->getContact(contact).uri;
+    auto isNotUsed = contact.type == contact::Type::TEMPORARY
+    || contact.type == contact::Type::PENDING;
+    if (isNotUsed) {
+        if (contactUri.length() == 0) {
+            contactUri = owner.contactModel->getContact(contactUri).uri;
         }
         owner.contactModel->addContact(contactUri);
     }
@@ -274,9 +275,11 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         return;
 
     auto contact = owner.contactModel->getContact(conversation.participants.front());
+    auto isNotUsed = contact.type == contact::Type::TEMPORARY
+    || contact.type == contact::Type::PENDING;
 
     // Send contact request if non used
-    if (!conversation.isUsed)
+    if (isNotUsed)
         addConversation(uid);
 
     // Send message to contact.
@@ -314,14 +317,15 @@ ConversationModel::setFilter(const std::string& filter)
         participant.avatar = pimpl_->database.getContactAttribute("", "photo");
         conversation.uid = participant.uri;
         participant.alias += filter;
+        participant.type = contact::Type::TEMPORARY;
         owner.contactModel->temporaryContact = participant;
         conversation.participants.emplace_back("");
         conversation.accountId = account->id().toStdString();
         if (!pimpl_->conversations.empty()) {
             auto firstContactUri = pimpl_->conversations.front().participants.front();
             auto firstContact = owner.contactModel->getContact(firstContactUri);
-            auto isUsed = pimpl_->conversations.front().isUsed ;
-            if (isUsed || firstContact.type == contact::Type::PENDING) {
+            auto isUsed = firstContact.type != contact::Type::TEMPORARY;
+            if (isUsed) {
                 // No newConversationItem, create one
                 newConversationItem = conversation;
                 pimpl_->conversations.emplace_front(newConversationItem);
@@ -352,7 +356,7 @@ ConversationModel::setFilter(const std::string& filter)
 
 
 void
-ConversationModel::setFilter(const lrc::api::contact::Type& filter)
+ConversationModel::setFilter(const contact::Type& filter)
 {
     auto account = AvailableAccountModel::instance().currentDefaultAccount();
     if (!account) return;
@@ -382,12 +386,6 @@ ConversationModelPimpl::slotMessageAdded(int uid, const std::string& account, co
 
     auto conversation = conversations.at(conversationIdx);
 
-    if (conversation.participants.empty())
-        return;
-
-    if (!conversation.isUsed)
-        conversation.isUsed = true;
-
     // Add message to conversation
     conversation.messages.insert(std::pair<int, message::Info>(uid, msg));
     conversation.lastMessageUid = uid;
@@ -406,7 +404,7 @@ ConversationModelPimpl::ConversationModelPimpl(ConversationModel& linked,
 , parent(p)
 , database(d)
 , callModel(*o.callModel)
-, typeFilter(lrc::api::contact::Type::INVALID)
+, typeFilter(contact::Type::INVALID)
 {
     initConversations();
     connect(&database, &Database::messageAdded, this, &ConversationModelPimpl::slotMessageAdded);
@@ -417,7 +415,7 @@ ConversationModelPimpl::ConversationModelPimpl(ConversationModel& linked,
     connect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
             this, &ConversationModelPimpl::slotIncomingCall);
     connect(&*linked.owner.callModel,
-            &lrc::api::NewCallModel::callStatusChanged,
+            &NewCallModel::callStatusChanged,
             this,
             &ConversationModelPimpl::slotCallStatusChanged);
 
@@ -459,11 +457,6 @@ ConversationModelPimpl::initConversations()
         conversation.messages = messages;
         if (!messages.empty()) {
             conversation.lastMessageUid = (--messages.end())->first;
-            for (const auto& msg: messages) {
-                if (msg.second.type == message::Type::CONTACT) {
-                    conversation.isUsed = true;
-                }
-            }
         }
         conversation.accountId = account->id().toStdString();
         conversations.emplace_front(conversation);
@@ -480,7 +473,9 @@ ConversationModelPimpl::search()
     if (linked.owner.contact.type == contact::Type::SIP) {
         if (!conversations.empty()) {
             auto firstConversation = conversations.front();
-            if (!firstConversation.isUsed) {
+            auto contact = linked.owner.contactModel->getContact(firstConversation.participants[0]);
+            auto isNotUsed = contact.type == contact::Type::TEMPORARY;
+            if (isNotUsed) {
                 auto uid = filter;
                 conversations.pop_front();
                 auto conversationIdx = indexOf(uid);
@@ -490,7 +485,7 @@ ConversationModelPimpl::search()
                     contact::Info participant;
                     participant.uri = uid;
                     participant.alias = uid;
-                    participant.type = contact::Type::SIP;
+                    participant.type = contact::Type::TEMPORARY;
                     conversation.uid = participant.uri;
                     linked.owner.contactModel->temporaryContact = participant;
                     conversation.participants.emplace_back("");
@@ -524,7 +519,9 @@ ConversationModelPimpl::search()
         auto cm = PhoneDirectoryModel::instance().getNumber(uri, account);
         if (!conversations.empty()) {
             auto firstConversation = conversations.front();
-            if (!firstConversation.isUsed) {
+            auto contact = linked.owner.contactModel->getContact(firstConversation.participants[0]);
+            auto isNotUsed = contact.type == contact::Type::TEMPORARY;
+            if (isNotUsed) {
                 auto account = AvailableAccountModel::instance().currentDefaultAccount();
                 if (!account) return;
                 auto uid = cm->uri().toStdString();
@@ -536,6 +533,7 @@ ConversationModelPimpl::search()
                     contact::Info participant;
                     participant.uri = uid;
                     participant.alias = cm->bestName().toStdString();
+                    participant.type = contact::Type::TEMPORARY;
                     conversation.uid = participant.uri;
                     linked.owner.contactModel->temporaryContact = participant;
                     conversation.participants.emplace_back("");
@@ -585,7 +583,9 @@ ConversationModelPimpl::registeredNameFound(const Account* account,
     if (status == NameDirectory::LookupStatus::SUCCESS) {
         if (!conversations.empty()) {
             auto firstConversation = conversations.front();
-            if (!firstConversation.isUsed) {
+            auto contact = linked.owner.contactModel->getContact(firstConversation.participants[0]);
+            auto isNotUsed = contact.type == contact::Type::TEMPORARY;
+            if (isNotUsed) {
                 auto account = AvailableAccountModel::instance().currentDefaultAccount();
                 if (!account) return;
                 auto uid = address.toStdString();
@@ -597,6 +597,7 @@ ConversationModelPimpl::registeredNameFound(const Account* account,
                     contact::Info participant;
                     participant.uri = uid;
                     participant.alias = name.toStdString();
+                    participant.type = contact::Type::TEMPORARY;
                     conversation.uid = participant.uri;
                     linked.owner.contactModel->temporaryContact = participant;
                     conversation.participants.emplace_back("");
