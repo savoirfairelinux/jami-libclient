@@ -41,6 +41,7 @@ struct Info
 {
     std::string id;
     contact::Info contact;
+    bool enabled = true;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;

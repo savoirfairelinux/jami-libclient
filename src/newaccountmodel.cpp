@@ -85,6 +85,7 @@ NewAccountModel::NewAccountModel(const Database& database, const lrc::CallbacksH
         const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
 
         info.contact.uri = details["Account.username"].toStdString();
+        info.enabled = details["Account.enable"] == QString("true");
         // TODO std::string avatar;
         info.contact.registeredName = volatileDetails["Account.registredName"].toStdString();
         info.contact.alias = details["Account.alias"].toStdString();
