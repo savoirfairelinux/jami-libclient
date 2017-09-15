@@ -28,24 +28,60 @@
 #include <memory>
 
 // lrc
-#include "api/lrc.h"
+#include "database.h"
 
 namespace lrc
 {
 namespace test
 {
 
-class ExampleTest : public CppUnit::TestFixture {
+class DatabaseTester : public CppUnit::TestFixture {
 
-    CPPUNIT_TEST_SUITE(ExampleTest);
-    CPPUNIT_TEST(test);
+    CPPUNIT_TEST_SUITE(DatabaseTester);
+    CPPUNIT_TEST(testInsertAndSelectCorrectValue);
+    CPPUNIT_TEST(testInsertIncorrectFail);
+    CPPUNIT_TEST(testSelectInexistantValue);
+    CPPUNIT_TEST(testUpdateCorrectValue);
+    CPPUNIT_TEST(testUpdateInexistantValue);
+    CPPUNIT_TEST(testDeleteCorrectValue);
+    CPPUNIT_TEST(testDeleteInexistantValue);
     CPPUNIT_TEST_SUITE_END();
+
 public:
     void setUp();
-    void test();
+    void tearDown();
+    /**
+     * Insert a correct value and try to retrieve it
+     */
+    void testInsertAndSelectCorrectValue();
+    /**
+     * Insert incorrect value
+     */
+    void testInsertIncorrectFail();
+    /**
+     * Select inexistant value
+     */
+    void testSelectInexistantValue();
+    /**
+     * Update value
+     */
+    void testUpdateCorrectValue();
+    /**
+     * Update inexistant value
+     */
+    void testUpdateInexistantValue();
+    /**
+     * Delete value
+     */
+    void testDeleteCorrectValue();
+    /**
+     * Delete inexistant value
+     */
+    void testDeleteInexistantValue();
 
 protected:
-    std::unique_ptr<lrc::api::Lrc> lrc_;
+    std::unique_ptr<lrc::Database> database_;
+    std::string dbPath_;
 };
 
 } // namespace test
