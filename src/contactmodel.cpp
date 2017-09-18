@@ -214,9 +214,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , db(db)
 , callbacksHandler(callbacksHandler)
 {
-    qDebug() << "11111111";
     fillsWithContacts();
-    qDebug() << "11111111";
 
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::NewBuddySubscription,
@@ -359,6 +357,16 @@ ContactModelPimpl::addToContacts(ContactMethod* cm)
         contactInfo->avatar = returnFromDb.payloads[0];
         contactInfo->registeredName = returnFromDb.payloads[1];
         contactInfo->alias = returnFromDb.payloads[2];
+    } else {
+        // profiles is not in db, must add it
+        db.insertInto("profiles",
+                      {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
+                       {":type", "type"}, {":status", "status"}},
+                      {{":uri", contactUri}, {":alias", cm->bestName().toStdString()}, {":photo", ""},
+                       {":type", "RING"}, {":status", "TRUSTED"}}); // TODO type
+       contactInfo->avatar = "";
+       contactInfo->registeredName = cm->registeredName().toStdString();
+       contactInfo->alias = cm->bestName().toStdString();
     }
     contactInfo->isPresent = cm->isPresent();
     switch (linked.owner.type)

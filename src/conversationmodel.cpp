@@ -20,6 +20,7 @@
 
 // std
 #include <regex>
+#include <algorithm>
 
 // LRC
 #include "api/contactmodel.h"
@@ -240,7 +241,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     msg.type = message::Type::TEXT;
     msg.status = message::Status::SENDING;
 
-    // Add to database
+    // Add to db
     pimpl_->db.insertInto("conversations",
                   {{":contactId", "contact"}, {":accountId", "account"}, {":body", "body"},
                    {":timestamp", "timestamp"}, {":isUnread", "is_unread"}, {":isOutgoing", "is_outgoing"},
@@ -313,42 +314,96 @@ ConversationModelPimpl::initConversations()
 
     conversations.clear();
     // Fill conversations
+    auto accountProfileId = db.select("id",
+                                  "profiles",
+                                  "uri=:uri",
+                                  {{":uri", linked.owner.profile.uri}}).payloads;
+    if (accountProfileId.empty()) {
+        qDebug() << "ConversationModelPimpl::initConversations(), account not in bdd... abort";
+        return;
+    }
+    auto conversationsForAccount = db.select("id",
+                                  "conversations",
+                                  "participant_id=:participant_id",
+                                  {{":participant_id", accountProfileId[0]}}).payloads;
+    std::sort(conversationsForAccount.begin(), conversationsForAccount.end());
     for (auto const& contact : linked.owner.contactModel->getAllContacts())
     {
-        /*auto contactinfo = contact;
-        conversation::Info conversation;
-        conversation.uid = contactinfo.second->uri;
-        conversation.participants.emplace_back((*contactinfo.second.get()).uri);
-        auto returnFromDb = db.select("id, contact, body, timestamp, is_outgoing, type, status",
+        // for each contact
+        // TODO: split this
+        auto contactinfo = contact;
+        auto contactProfileId = db.select("id",
+                                      "profiles",
+                                      "uri=:uri",
+                                      {{":uri", contactinfo.second->uri}}).payloads;
+        if (contactProfileId.empty()) {
+          qDebug() << "ConversationModelPimpl::initConversations(), contact not in bdd... abort";
+          return;
+        }
+        // Get linked conversation with they
+        auto conversationsForContact = db.select("id",
                                       "conversations",
-                                      "contact=:c AND account=:a",
-                                      {{":c", "contactinfo.second->uri"}, {":a", "account->id().toStdString()"}});
+                                      "participant_id=:participant_id",
+                                      {{":participant_id", contactProfileId[0]}}).payloads;
 
-        // we excpect 7 columns
-        if (returnFromDb.nbrOfCols == 7 and returnFromDb.payloads.size() > 0 and returnFromDb.payloads.size()%7 == 0) {
-            std::map<int, api::message::Info> messages;
-            for (int i = 0 ; i < returnFromDb.payloads.size() ; i+=7) {
-                const auto messageId = std::stoi(returnFromDb.payloads[i]);
+        std::sort(conversationsForContact.begin(), conversationsForContact.end());
+        std::vector<std::string> common;
+
+        std::set_intersection(conversationsForAccount.begin(), conversationsForAccount.end(),
+                              conversationsForContact.begin(), conversationsForContact.end(),
+                              std::back_inserter(common));
+        // Can't find a conversation with this contact. It's anormal, add one in the db
+        if (common.empty()) {
+            auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1",
+                                          "conversations",
+                                          "1=1",
+                                          {}).payloads[0];
+            db.insertInto("conversations",
+                          {{":id", "id"}, {":participant_id", "participant_id"}},
+                          {{":id", newConversationsId}, {":participant_id", accountProfileId[0]}});
+            db.insertInto("conversations",
+                          {{":id", "id"}, {":participant_id", "participant_id"}},
+                          {{":id", newConversationsId}, {":participant_id", contactProfileId[0]}});
+            // Add "Conversation started" message
+            db.insertInto("interactions",
+                          {{":account_id", "account_id"}, {":author_id", "author_id"},
+                          {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                          {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                          {":body", "body"}, {":type", "type"},
+                          {":status", "status"}},
+                          {{":account_id", accountProfileId[0]}, {":author_id", accountProfileId[0]},
+                          {":conversation_id", newConversationsId}, {":device_id", "0"},
+                          {":group_id", "0"}, {":timestamp", "0"},
+                          {":body", "Conversation started"}, {":type", "CONTACT"},
+                          {":status", "SUCCEED"}});
+            common.emplace_back(newConversationsId);
+        }
+
+        // Add the conversation
+        conversation::Info conversation;
+        conversation.uid = common[0];
+        conversation.accountId = linked.owner.id;
+        conversation.participants = {contactinfo.second->uri};
+        conversation.callId = ""; // TODO update if current call.
+        // Get messages
+        auto messagesResult = db.select("id, body, timestamp, type, status",
+                                        "interactions",
+                                        "conversation_id=:conversation_id",
+                                        {{":conversation_id", conversation.uid}});
+        if (messagesResult.nbrOfCols == 5) {
+            auto payloads = messagesResult.payloads;
+            for (auto i = 0; i < payloads.size(); i += 5) {
                 message::Info msg;
-                msg.contact = returnFromDb.payloads[i+1];
-                msg.body = returnFromDb.payloads[i+2];
-                msg.timestamp = std::stoi(returnFromDb.payloads[i+3]);
-
-                // is outgoing = returnFromDb.payloads[i+4];
-                msg.type = message::StringToType(returnFromDb.payloads[i+5]);
-                msg.status = message::StringToStatus(returnFromDb.payloads[i+6]);
-                messages.insert(std::pair<int, message::Info>(messageId, msg));
+                msg.contact = contactinfo.second->uri;
+                msg.body = payloads[i + 1];
+                msg.timestamp = std::stoi(payloads[i + 2]);
+                msg.type = message::StringToType(payloads[i + 3]);
+                msg.status = message::StringToStatus(payloads[i + 4]);
+                conversation.messages.emplace(std::make_pair<int, message::Info>(std::stoi(payloads[i]), std::move(msg)));
+                conversation.lastMessageUid = std::stoi(payloads[i]);
             }
-
-            conversation.messages = std::move(messages);
-            if (!messages.empty()) {
-                conversation.lastMessageUid = (--messages.end())->first;
-                conversation.isUsed = true;
-            }
-
-            conversation.accountId = account->id().toStdString();
-            conversations.emplace_front(conversation);
-        }*/
+        }
+        conversations.emplace_front(conversation);
     }
     sortConversations();
     filteredConversations = conversations;

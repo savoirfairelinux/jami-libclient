@@ -107,6 +107,19 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
         owner.accountModel = &linked;
 
+        auto returnFromDb = database.select("uri",
+                                      "profiles",
+                                      "uri=:uri",
+                                      {{":uri", owner.profile.uri}});
+        if (returnFromDb.payloads.size() != 1) {
+            // profiles is not in bdd mus add it
+            database.insertInto("profiles",
+                              {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
+                               {":type", "type"}, {":status", "status"}},
+                              {{":uri", owner.profile.uri}, {":alias", owner.profile.alias}, {":photo", ""},
+                               {":type", "RING"}, {":status", "TRUSTED"}}); // TODO type
+        }
+
         accounts.emplace(id.toStdString(), std::move(owner));
     }
 }
