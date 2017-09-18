@@ -71,7 +71,7 @@
         <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>Service ikke tilgængelig</translation>
+        <translation>Tjeneste ikke tilgængelig</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="355"/>
@@ -1284,7 +1284,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation>Kopier kontakt</translation>
+        <translation>Kopiér kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
@@ -1319,7 +1319,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation>Åben chatvindue</translation>
+        <translation>Åbn chat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
