@@ -103,6 +103,9 @@ public Q_SLOTS:
                                     const std::string& payload);
 
     void slotIncomingCall(const std::string& callId, const std::string& fromId);
+
+    void registeredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                             const QString& address, const QString& name);
 };
 
 
@@ -261,6 +264,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::incomingContactRequest, this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ContactModelPimpl::slotIncomingCall);
+    connect(&NameDirectory::instance(), &NameDirectory::registeredNameFound,
+            this, &ContactModelPimpl::registeredNameFound);
 
 }
 
@@ -471,6 +476,24 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
     }
 
     emit linked.incomingCallFromPending(fromId, callId);
+}
+
+void
+ContactModelPimpl::registeredNameFound(const Account* account,
+                                       NameDirectory::LookupStatus status,
+                                       const QString& address,
+                                       const QString& name)
+{
+    if (account->id().toStdString() != linked.owner.id) return;
+    if (contacts.find(address.toStdString()) == contacts.end()) return;
+
+    auto& contact = contacts[address.toStdString()];
+    contact->registeredName = name.toStdString();
+    // alias should contains the best name.
+    if (contact->alias == address.toStdString()) {
+        contact->alias = name.toStdString();
+    }
+    emit linked.modelUpdated();
 }
 
 } // namespace api
