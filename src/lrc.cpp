@@ -22,6 +22,7 @@
 #include "api/newaccountmodel.h"
 #include "database.h"
 #include "callbackshandler.h"
+#include "dbus/instancemanager.h"
 
 namespace lrc
 {
@@ -41,8 +42,11 @@ public:
 };
 
 Lrc::Lrc()
-: lrcPipmpl_(std::make_unique<LrcPimpl>(*this))
 {
+    // Ensure Daemon is running/loaded (especially on non-DBus platforms)
+    // before instantiating LRC and its members
+    InstanceManager::instance();
+    lrcPipmpl_ = std::make_unique<LrcPimpl>(*this);
 }
 
 Lrc::~Lrc()
