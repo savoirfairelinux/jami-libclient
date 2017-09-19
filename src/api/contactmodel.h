@@ -28,6 +28,7 @@
 
 // LRC
 #include "typedefs.h"
+#include "api/contact.h"
 
 namespace lrc
 {
@@ -39,7 +40,6 @@ class ContactModelPimpl;
 namespace api
 {
 
-namespace contact { struct Info; }
 namespace account { struct Info; }
 class NewAccountModel;
 class ConversationModel;
@@ -50,7 +50,7 @@ class ConversationModel;
 class LIB_EXPORT ContactModel : public QObject {
     Q_OBJECT
 public:
-    using ContactInfoMap = std::map<std::string, std::shared_ptr<contact::Info>>;
+    using ContactInfoMap = std::map<std::string, contact::Info>;
 
     const account::Info& owner;
 
@@ -75,11 +75,13 @@ public:
      * @return the contact::Info structure for a contact
      * @throws out_of_range exception if can't find the contact
      */
-    const contact::Info& getContact(const std::string& contactUri) const;
+    const contact::Info getContact(const std::string& contactUri) const;
     /**
      * @return all contacts for this account
      */
     const ContactInfoMap& getAllContacts() const;
+
+    void TEST(const std::string&) const;
 
 Q_SIGNALS:
     void modelUpdated() const;

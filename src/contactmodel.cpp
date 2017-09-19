@@ -81,6 +81,7 @@ public:
     Database& db;
     ContactModel::ContactInfoMap contacts;
     const CallbacksHandler& callbacksHandler;
+    contact::Info temporaryContact;
 
 public Q_SLOTS:
     /**
@@ -157,23 +158,27 @@ ContactModel::getAllContacts() const
 void
 ContactModel::addContact(const std::string& contactUri)
 {
-    auto contact = std::make_shared<contact::Info>();
-    contact->uri = contactUri;
-    contact->alias = contactUri;
-    contact->isTrusted = true;
-    contact->isPresent = false;
+    auto uri = contactUri;
+    auto avatar = "";
+    auto registeredName = "";
+    auto alias = contactUri;
+    auto isPresent = false;
+    auto isTrusted = true;
+    auto type = contact::Type::INVALID;
+
+    auto contactInfo = contact::Info({uri, avatar, registeredName, alias, isPresent, isTrusted, type});
 
     if(owner.profile.type == contact::Type::SIP) {
         database::addContact(pimpl_->db, contactUri);
-        contact->type = contact::Type::SIP;
+        contactInfo.type = contact::Type::SIP;
     } else { // == contact::Type::RING
         auto contactFound = pimpl_->contacts.find(contactUri);
-        if(contactFound != pimpl_->contacts.end() && contactFound->second->type == contact::Type::PENDING) {
+        if(contactFound != pimpl_->contacts.end() && contactFound->second.type == contact::Type::PENDING) {
             daemon::addContactFromPending(owner, contactUri);
-            contactFound->second->type = contact::Type::RING;
+            contactFound->second.type = contact::Type::RING;
         } else {
             daemon::addContact(owner, contactUri);
-            contact->type = contact::Type::RING;
+            contactInfo.type = contact::Type::RING;
         }
     }
 
@@ -186,7 +191,7 @@ ContactModel::addContact(const std::string& contactUri)
     msg.status = message::Status::SUCCEED;
     //~ pimpl_->db.addMessage(owner.id, msg);
 
-    pimpl_->contacts.emplace(std::make_pair(contactUri, contact));
+    //~ pimpl_->contacts.emplace(std::make_pair(contactUri, contactInfo));
     emit modelUpdated();
 }
 
@@ -197,14 +202,17 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
     ConfigurationManager::instance().removeContact(QString(owner.id.c_str()), QString(contactUri.c_str()), banned);
 }
 
-const contact::Info&
+const contact::Info
 ContactModel::getContact(const std::string& contactUri) const
 {
+    if (pimpl_->contacts.size() == 0)
+        return contact::Info();
+
     auto contact = pimpl_->contacts.find(contactUri);
     if (contact == pimpl_->contacts.end())
         throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
 
-    return *contact->second.get();
+    return contact->second;
 }
 
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
@@ -224,7 +232,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
         auto iter = contacts.find(contactUri);
 
         if (iter != contacts.end())
-            iter->second->isPresent = true;
+            iter->second.isPresent = true;
     });
 
     connect(&callbacksHandler, &CallbacksHandler::contactAdded, this, &ContactModelPimpl::slotContactAdded);
@@ -269,7 +277,7 @@ void
 ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
 {
     if (contacts.find(contactUri) != contacts.end())
-        contacts[contactUri]->isPresent = status;
+        contacts[contactUri].isPresent = status;
 }
 
 void // [jn] maybe to rename to slotnewcontactadded
@@ -347,38 +355,35 @@ ContactModelPimpl::sendDhtMessage(const std::string& contactUri, const std::stri
 contact::Info
 ContactModelPimpl::addToContacts(ContactMethod* cm)
 {
-    auto contactInfo = std::make_shared<contact::Info>();
+    //~ auto contactInfo = contact::Info();
     auto contactUri = cm->uri().toStdString();
-    contactInfo->uri = contactUri;
+    //~ contactInfo->uri = contactUri;
     auto returnFromDb = db.select("photo, uri, alias",
                                   "profiles",
                                   "uri=:uri",
                                   {{":uri", contactUri}});
     // the query should return on row of three columns.
     if (returnFromDb.nbrOfCols == 3 and returnFromDb.payloads.size() == 3) {
-        contactInfo->avatar = returnFromDb.payloads[0];
-        contactInfo->registeredName = returnFromDb.payloads[1];
-        contactInfo->alias = returnFromDb.payloads[2];
-    }
-    contactInfo->isPresent = cm->isPresent();
-    switch (linked.owner.type)
-    {
-    case account::Type::RING:
-        contactInfo->type = contact::Type::RING;
-        break;
-    case account::Type::SIP:
-        contactInfo->type = contact::Type::SIP;
-        break;
-    case account::Type::INVALID:
-    default:
-        contactInfo->type = contact::Type::INVALID;
-        break;
+        auto avatar = returnFromDb.payloads[0];
+        auto registeredName = returnFromDb.payloads[1];
+        auto alias = returnFromDb.payloads[2];
+        auto isPresent = cm->isPresent();
+        auto isTrusted = true; // for now...
+        auto type = contact::Type::INVALID; // for now...
+
+        auto contactInfo = contact::Info({contactUri, avatar, registeredName, alias, isPresent, isTrusted, type});
+        //~ contacts[contactUri] = 
+        //~ pimpl_->contacts.emplace(std::make_pair(contactUri, contactInfo));
     }
 
-    contacts[contactUri] = contactInfo;
-    qDebug() << "#######" << contactUri.c_str();
+    //~ return contacts[contactUri];
+    return contact::Info();
+}
 
-    return *contactInfo;
+void
+ContactModel::TEST(const std::string& alias) const
+{
+    pimpl_->temporaryContact.alias = alias;
 }
 
 } // namespace lrc

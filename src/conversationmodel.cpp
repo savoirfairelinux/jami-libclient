@@ -26,6 +26,7 @@
 #include "api/newcallmodel.h"
 #include "api/newaccountmodel.h"
 #include "api/account.h"
+#include "api/contact.h"
 #include "callbackshandler.h"
 #include "database.h"
 
@@ -253,7 +254,71 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
 void
 ConversationModel::setFilter(const std::string& filter)
 {
+    //~ owner.contactModel->temporaryContact;
+    //~ return;
+    auto accountInfo = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!accountInfo) return;
+    pimpl_->filter = filter;
+    // We don't create newConversationItem if we already filter on pending
+    conversation::Info newConversationItem;
+    if (!pimpl_->filter.empty()) {
+        // add the first item, wich is the NewConversationItem
+        conversation::Info conversationInfo;
+        contact::Info participant;
+        participant.alias = "Searching...";
+        auto returnFromDb = pimpl_->db.select("photo", "profiles", "uri=:uri", {{":uri", ""}});
+        if (returnFromDb.nbrOfCols == 1 and returnFromDb.payloads.size() == 1)
+            participant.avatar = returnFromDb.payloads[0];
+        else
+            participant.avatar = "";
+        conversationInfo.uid = participant.uri;
+        participant.alias += filter;
+        //~ owner.contactModel->TEST();
+        //~ owner.contactModel->temporaryContact = std::unique_ptr<contact::Info>(&participant);
+        //~ owner.contactModel->temporaryContact = std::move(participant);
+        //~ owner.contactModel->temporaryContact.alias = "toto"; //participant.alias;
+        conversationInfo.participants.emplace_back("");
+        conversationInfo.accountId = accountInfo->id().toStdString();
+        if (!pimpl_->conversations.empty()) {
+            auto firstContactUri = pimpl_->conversations.front().participants.front();
+            auto firstContact = owner.contactModel->getContact(firstContactUri);
+            auto isUsed = pimpl_->conversations.front().isUsed ;
+            if (isUsed || firstContact.type == contact::Type::PENDING) {
+                // No newConversationItem, create one
+                newConversationItem = conversationInfo;
+                pimpl_->conversations.emplace_front(newConversationItem);
+            } else {
+                // The item already exists
+                pimpl_->conversations.pop_front();
+                newConversationItem = conversationInfo;
+                pimpl_->conversations.emplace_front(newConversationItem);
+            }
+        } else {
+            newConversationItem = conversationInfo;
+            pimpl_->conversations.emplace_front(newConversationItem);
+        }
+        pimpl_->search();
+    } else {
+        // No filter, so we can remove the newConversationItem
+        if (!pimpl_->conversations.empty()) {
+            auto firstContactUri = pimpl_->conversations.front().participants.front();
+            auto firstContact = owner.contactModel->getContact(firstContactUri);
+            auto temporaryContactUri = "owner.contactModel->temporaryContact.uri";
+            if (firstContact.uri == temporaryContactUri) {
+                pimpl_->conversations.pop_front();
+            }
+        }
+    }
+    emit modelUpdated();
+}
 
+void
+ConversationModel::setFilter(const lrc::api::contact::Type& filter)
+{
+    auto account = AvailableAccountModel::instance().currentDefaultAccount();
+    if (!account) return;
+    //~ pimpl_->typeFilter = filter;
+    emit modelUpdated();
 }
 
 void
