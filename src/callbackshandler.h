@@ -33,6 +33,10 @@ namespace lrc
 namespace api
 {
 class Lrc;
+namespace account
+{
+    enum class Status;
+}
 }
 
 class CallbacksHandler : public QObject {
@@ -80,6 +84,7 @@ Q_SIGNALS:
     void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
     void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
     void callStateChanged(const std::string& callId, const std::string &state, int code);
+    void accountStatusChanged(const std::string& accountID, const api::account::Status status);
 
 private Q_SLOTS:
     /**
@@ -120,6 +125,10 @@ private Q_SLOTS:
      * @param time     when the request was received
      */
     void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
+    /**
+     *
+     */
+    void slotRegistrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
 
     void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
     void slotCallStateChanged(const QString& callId, const QString &state, int code);
