@@ -128,6 +128,10 @@ private Q_SLOTS:
      * @param time     when the request was received
      */
     void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
+    /**
+     *
+     */
+    void slotRegistrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
 
     /**
      * Listen from the daemon when a contact is found.

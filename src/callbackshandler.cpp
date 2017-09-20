@@ -19,6 +19,7 @@
 #include "callbackshandler.h"
 
 // Models and database
+#include "api/account.h"
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 
@@ -63,11 +64,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::incomingTrustRequest,
             this,
             &CallbacksHandler::slotIncomingContactRequest);
-
     connect(&NameDirectory::instance(),
             &NameDirectory::registeredNameFound,
             this,
             &CallbacksHandler::slotRegisteredNameFound);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::registrationStateChanged,
+            this,
+            &CallbacksHandler::slotRegistrationStateChanged);
+
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingCall,
             this,
@@ -160,5 +166,16 @@ CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& sta
 {
     emit callStateChanged(callId.toStdString(), state.toStdString(), code);
 }
+
+void
+CallbacksHandler::slotRegistrationStateChanged(const QString& accountID,
+                                               const QString& registration_state,
+                                               unsigned detail_code,
+                                               const QString& detail_str)
+{
+    emit accountStatusChanged(accountID.toStdString(), lrc::api::account::StringToStatus(registration_state.toStdString()));
+
+}
+
 
 } // namespace lrc
