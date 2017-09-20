@@ -44,10 +44,35 @@ enum class Type {
     SIP
 };
 
+enum class Status {
+    INVALID,
+    INITIALIZING,
+    UNREGISTERED,
+    TRYING,
+    REGISTERED
+};
+
+static account::Status
+StringToStatus(const std::string& type)
+{
+    if (type == "INITIALIZING") {
+        return account::Status::INITIALIZING;
+    } else if (type == "UNREGISTERED") {
+        return account::Status::UNREGISTERED;
+    } else if (type == "TRYING") {
+        return account::Status::TRYING;
+    } else if (type == "REGISTERED") {
+        return account::Status::REGISTERED;
+    } else if (type == "INVALID")
+        return account::Status::INVALID;
+    //throw something
+}
+
 struct Info
 {
     std::string id;
     bool enabled;
+    Status status = account::Status::INVALID;
     contact::Info profile;  // TODO: not the best, we should separate profile and contact::Info...
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;

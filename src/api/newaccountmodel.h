@@ -62,10 +62,11 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const account::Info& getAccountInfo(const std::string& accountId) const;
+    const account::Info& getAccountInfo(const std::string& accountId) const; // [jn] we should not send a ref but a copy, the client has no authority to edit anything
 
-Q_SIGNALS:
+Q_SIGNALS: // [jn] docs!
     void incomingCall(const std::string& accountId, const std::string& contactUri);
+    void accountStatusChanged(const std::string& accountID);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
