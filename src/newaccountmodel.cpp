@@ -44,20 +44,22 @@ public:
     ~NewAccountModelPimpl();
 
     NewAccountModel& linked;
+    const CallbacksHandler& callbacksHandler;
     Database& database;
     NewAccountModel::AccountInfoMap accounts;
 
     void addAcountProfileInDb(const account::Info& info);
+    void addToAccounts(const std::string& accountId);
 
 public Q_SLOTS:
     void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
+    void slotAccountStatusChanged(const std::string& accountID, const api::account::Status status);
 };
 
 NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
 : QObject()
 , pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler))
 {
-
 }
 
 NewAccountModel::~NewAccountModel()
@@ -89,31 +91,16 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
                                            Database& database,
                                            const CallbacksHandler& callbacksHandler)
 : linked(linked)
+, callbacksHandler(callbacksHandler)
 , database(database)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
-    for (auto& id : accountIds) {
-        QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(id);
-        const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
-
-        auto& item = *(accounts.emplace(id.toStdString(), account::Info()).first);
-        auto& owner = item.second;
-        owner.id = id.toStdString();
-        owner.enabled = details["Account.enable"] == QString("true");
-        owner.profile.uri = details["Account.username"].toStdString();
-        // TODO get avatar;
-        owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
-        owner.profile.alias = details["Account.alias"].toStdString();
-        owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-        owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
-        owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-        owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
-        owner.accountModel = &linked;
-        addAcountProfileInDb(owner);
-    }
+    for (auto& id : accountIds)
+        addToAccounts(id.toStdString());
 
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
+    connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -143,6 +130,40 @@ void
 NewAccountModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
 {
     emit linked.incomingCall(accountId, fromId);
+}
+
+void
+NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
+{
+    auto accountInfo = accounts.find(accountID);
+        if (accountInfo == accounts.end())
+            addToAccounts(accountID);
+
+    accountInfo->second.status = status;
+
+    emit linked.accountStatusChanged(accountID);
+}
+
+void
+NewAccountModelPimpl::addToAccounts(const std::string& accountId)
+{
+    QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+    const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+
+    auto& item = *(accounts.emplace(accountId, account::Info()).first);
+    auto& owner = item.second;
+    owner.id = accountId;
+    owner.enabled = details["Account.enable"] == QString("true");
+    owner.profile.uri = details["Account.username"].toStdString();
+    // TODO get avatar;
+    owner.profile.registeredName = volatileDetails["Account.registredName"].toStdString();
+    owner.profile.alias = details["Account.alias"].toStdString();
+    owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
+    owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
+    owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
+    owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
+    owner.accountModel = &linked;
+    addAcountProfileInDb(owner);
 }
 
 } // namespace lrc
