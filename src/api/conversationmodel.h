@@ -71,7 +71,7 @@ public:
     void clearHistory(const std::string& uid);
 
 Q_SIGNALS:
-    void newMessageAdded(const std::string& uid, const message::Info& msg) const;
+    void newUnreadMessage(const std::string& uid, const message::Info& msg) const;
     void conversationUpdated(unsigned int row);
     void modelUpdated() const;
     void newContactAdded(const std::string& uri);

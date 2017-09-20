@@ -97,10 +97,15 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
 {
     std::map<std::string,std::string> stdPayloads;
 
-    for (auto item : payloads.keys())
+    for (auto item : payloads.keys()) {
         stdPayloads[item.toStdString()] = payloads.value(item).toStdString();
+        qDebug() << ":X: " << payloads.value(item);
+    }
 
-    emit NewAccountMessage(accountId.toStdString(), from.toStdString(), stdPayloads);
+    auto accountId2 = accountId.toStdString();
+    auto from2 = from.toStdString();
+
+    emit NewAccountMessage(accountId2, from2, stdPayloads);
 }
 
 void

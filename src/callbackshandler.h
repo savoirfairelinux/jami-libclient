@@ -55,9 +55,9 @@ Q_SIGNALS:
      * @param from, message sender.
      * @param payloads.
      */
-    void NewAccountMessage(const std::string& accountId,
-                           const std::string& toStdString,
-                           const std::map<std::string,std::string> payloads) const;
+    void NewAccountMessage(std::string& accountId,
+                           std::string& from,
+                           std::map<std::string,std::string> payloads) const;
     /**
      * Connect this signal to get information when a peer is online.
      * @param contactUri, the peer.

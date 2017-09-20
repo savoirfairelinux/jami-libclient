@@ -90,6 +90,9 @@ public Q_SLOTS:
     void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
     void slotCallStatusChanged(const std::string& callId);
+    void slotNewAccountMessage(std::string& accountId, 
+                               std::string& from,
+                               std::map<std::string,std::string> payloads);
 
 };
 
@@ -357,6 +360,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callStatusChanged,
             this,
             &ConversationModelPimpl::slotCallStatusChanged);
+    connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
+            this, &ConversationModelPimpl::slotNewAccountMessage);
 }
 
 
@@ -537,7 +542,7 @@ ConversationModelPimpl::slotMessageAdded(int uid, const std::string& account, co
     conversation.messages.insert(std::pair<int, message::Info>(uid, msg));
     conversation.lastMessageUid = uid;
 
-    emit linked.newMessageAdded(msg.contact, msg);
+    emit linked.newUnreadMessage(msg.contact, msg);
 
     sortConversations();
     emit linked.modelUpdated();
@@ -593,6 +598,41 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
     auto& conversation = *i;
     auto uid = conversation.uid;
     linked.selectConversation(uid);
+}
+
+void
+ConversationModelPimpl::slotNewAccountMessage(std::string& accountId, 
+                                              std::string& from,
+                                              std::map<std::string,std::string> payloads)
+{
+    if (accountId == linked.owner.id) {
+        qDebug() << payloads["text/plain"].c_str();
+
+        // [jn] il nous faut une table pour convertir accounit/uri et authorid/uri
+        // [jn] il nous faut traiter le cas d'un message arrivant d'un peer inconnu.
+
+        // Add "Conversation started" message
+        auto lastMessageAdded = db.insertInto("interactions",
+                                              {{":account_id", "account_id"}, {":author_id", "account_id"},
+                                              {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                                              {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                                              {":body", "body"}, {":type", "type"},
+                                              {":status", "status"}},
+                                              {{":account_id", accountId.c_str()}, {":author_id", from.c_str()},
+                                              {":conversation_id", "0"}, {":device_id", "0"},
+                                              {":group_id", "0"}, {":timestamp", "0"},
+                                              {":body", payloads["text/plain"].c_str()}, {":type", "text"},
+                                              {":status", "unread"}});
+        if (lastMessageAdded != -1) {
+            message::Info msg;
+            msg.contact = from;
+            msg.body = payloads["text/plain"];
+            msg.timestamp = std::time(nullptr);
+            msg.type = message::Type::TEXT;
+            msg.status = message::Status::UNREAD;
+            emit linked.newUnreadMessage(from, msg);
+        }
+    }
 }
 
 } // namespace lrc

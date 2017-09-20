@@ -75,7 +75,8 @@ enum class Status {
     SENDING,
     FAILED,
     SUCCEED,
-    READ
+    READ, // [jn] this status should be set only after the client says to lrc that the message was actually read.
+    UNREAD // [jn] this status should be for any new message sent to the client.
 };
 
 static const std::string
@@ -92,6 +93,8 @@ StatusToString(Status status)
         return "SUCCEED";
     case Status::READ:
         return "READ";
+    case Status::UNREAD:
+        return "UNREAD";
     }
 
     //throw something
@@ -110,6 +113,8 @@ StringToStatus(const std::string& status)
         return message::Status::READ;
     else if (status == "INVALID")
         return message::Status::INVALID;
+    else if (status == "UNREAD")
+        return message::Status::UNREAD;
 
     //throw something
 
@@ -117,7 +122,7 @@ StringToStatus(const std::string& status)
 
 struct Info
 {
-    std::string contact; // [jn] const ?, to rename with something more like contactUri
+    std::string contact; // [jn] const ?, to rename with something more like contactUri or authorUri...
     std::string body; // [jn] const ?
     std::time_t timestamp = 0; // [jn] const ?
     Type type = Type::INVALID;
