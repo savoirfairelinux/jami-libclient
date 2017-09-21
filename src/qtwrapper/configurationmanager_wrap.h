@@ -480,6 +480,11 @@ public Q_SLOTS: // METHODS
       return DRing::importAccounts(filePath.toStdString(), password.toStdString());
    }
 
+   std::string getDataDir()
+   {
+      return DRing::getDataDir();
+   }
+
    void sendRegister(const QString& accountID, bool enable)
    {
       DRing::sendRegister(accountID.toStdString(), enable);

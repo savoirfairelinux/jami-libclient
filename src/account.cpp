@@ -1103,7 +1103,11 @@ QString Account::archivePin() const
 
 QString Account::archivePath() const
 {
-   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PATH);
+   auto path = d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PATH);
+   if (path.isEmpty()) {
+       path = ConfigurationManager::instance().getDataDir() + "/" + id() + "/export.gz";
+   }
+   return path;
 }
 
 bool Account::allowIncomingFromUnknown() const
