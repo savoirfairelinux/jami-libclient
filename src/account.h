@@ -451,6 +451,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString archivePassword              () const;
       QString archivePin                   () const;
       QString archivePath                  () const;
+      bool    changePassword               (const QString& currentPassword, const QString newPassword) const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;
