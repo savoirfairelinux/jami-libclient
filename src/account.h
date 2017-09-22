@@ -448,9 +448,11 @@ class LIB_EXPORT Account : public ItemBase {
       QString turnServerRealm              () const;
       bool    hasProxy                     () const;
       QString displayName                  () const;
+      bool    archiveHasPassword           () const;
       QString archivePassword              () const;
       QString archivePin                   () const;
       QString archivePath                  () const;
+      bool    changePassword               (const QString& currentPassword, const QString newPassword) const;
       RegistrationState  registrationState () const;
       Protocol           protocol          () const;
       ContactMethod*     contactMethod     () const;

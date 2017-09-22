@@ -1091,6 +1091,12 @@ QString Account::displayName() const
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DISPLAYNAME);
 }
 
+bool Account::archiveHasPassword() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_HAS_PASSWORD) == "true";
+}
+
+
 QString Account::archivePassword() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PASSWORD);
@@ -1104,6 +1110,11 @@ QString Account::archivePin() const
 QString Account::archivePath() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::ARCHIVE_PATH);
+}
+
+bool Account::changePassword(const QString& currentPassword, const QString newPassword) const
+{
+    return ConfigurationManager::instance().changeAccountPassword(id(), currentPassword, newPassword);
 }
 
 bool Account::allowIncomingFromUnknown() const
