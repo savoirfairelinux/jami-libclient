@@ -53,6 +53,7 @@ TypeToString(Type type)
     }
 
     //throw something
+    return "";
 }
 
 static Type
@@ -64,9 +65,8 @@ StringToType(const std::string& type)
         return message::Type::CALL;
     } else if (type == "CONTACT") {
         return message::Type::CONTACT;
-    } else if (type == "INVALID")
+    } else
         return message::Type::INVALID;
-    //throw something
 }
 
 
@@ -97,7 +97,7 @@ StatusToString(Status status)
         return "UNREAD";
     }
 
-    //throw something
+    return "INVALID";
 }
 
 static Status
@@ -111,12 +111,10 @@ StringToStatus(const std::string& status)
         return message::Status::SUCCEED;
     else if (status == "READ")
         return message::Status::READ;
-    else if (status == "INVALID")
-        return message::Status::INVALID;
     else if (status == "UNREAD")
         return message::Status::UNREAD;
-
-    //throw something
+    else
+        return message::Status::INVALID;
 
 }
 
@@ -130,7 +128,8 @@ struct Info
 };
 
 static bool isOutgoing(const Info& message) {
-    return message.status != lrc::api::message::Status::READ;
+    return message.status != lrc::api::message::Status::READ
+    && message.status != lrc::api::message::Status::UNREAD;
 }
 
 } // namespace message

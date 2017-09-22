@@ -147,6 +147,7 @@ void
 CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
                                           const QString& address, const QString& name)
 {
+    if (!account) return;
     if (status == NameDirectory::LookupStatus::SUCCESS) {
         emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
     }
