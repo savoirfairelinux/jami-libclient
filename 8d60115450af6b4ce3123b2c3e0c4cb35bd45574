@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_3e092096",
+        "filename": "src/account.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1109,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-22T17:26:02Z",
+      "side": 1,
+      "message": "Works around a daemon issue by guessing what the value might be. To be fixed in the daemon",
+      "range": {
+        "startLine": 1107,
+        "startChar": 3,
+        "endLine": 1109,
+        "endChar": 4
+      },
+      "revId": "8d60115450af6b4ce3123b2c3e0c4cb35bd45574",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
