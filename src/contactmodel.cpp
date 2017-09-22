@@ -432,7 +432,7 @@ ContactModel::getContact(const std::string& contactUri) const
     // NOTE: "" is the id of the temporaryContact
     //~ if (contactUri.empty())
         //~ return pimpl_->temporaryContact;
-
+        //~
     auto contactInfo = pimpl_->contacts.find(contactUri);
     if (contactInfo == pimpl_->contacts.end())
         throw std::out_of_range("ContactModel::getContact, can't find " + contactUri);
@@ -556,8 +556,9 @@ ContactModelPimpl::fillsWithRINGContacts() {
 
     // Add daemon contacts
     auto contactsList = account->getContacts();
-    for (auto c : contactsList)
+    for (auto c : contactsList) {
         addToContacts(c);
+    }
 
     // Add pending contacts
     const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(account->id())};
@@ -685,6 +686,14 @@ ContactModelPimpl::addToContacts(ContactMethod* cm)
 
         auto contactInfo = contact::Info({contactUri, avatar, registeredName,
                                          alias, isPresent, true, type});
+        contacts.emplace(contactUri, contactInfo);
+    } else {
+        auto accountId = getAccountProfileId();
+        auto contactId = getOrInsertContact(contactUri, cm->bestName().toStdString(), "");
+        beginConversationsBetween(accountId, contactId);
+        auto contactInfo = contact::Info({contactUri, "", cm->bestId().toStdString(),
+                                         cm->bestName().toStdString(), cm->isPresent(),
+                                         true, linked.owner.profile.type});
         contacts.emplace(contactUri, contactInfo);
     }
 }

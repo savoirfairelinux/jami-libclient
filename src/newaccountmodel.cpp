@@ -117,7 +117,7 @@ NewAccountModelPimpl::addAcountProfileInDb(const account::Info& info)
                                         {{":uri", info.profile.uri}});
     if (returnFromDb.payloads.empty()) {
         // Profile is not in db, add it.
-        auto type = info.profile.type == contact::Type::RING ? "RING" : "SIP";
+        std::string type = info.profile.type == contact::Type::RING ? "RING" : "SIP";
         database.insertInto("profiles",
                              {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
                               {":type", "type"}, {":status", "status"}},
@@ -161,7 +161,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.profile.registeredName = owner.profile.type == contact::Type::RING ?
                                    volatileDetails["Account.registredName"].toStdString() : owner.profile.alias;
     owner.profile.uri = owner.profile.type == contact::Type::RING ?
-                        details["Account.username"].toStdString() : owner.profile.alias;
+                        details["Account.username"].toStdString().substr(std::string("ring:").size()) : owner.profile.alias;
     // Add profile into database
     addAcountProfileInDb(owner);
     // Init models for this account

@@ -149,8 +149,9 @@ Database::insertInto(const std::string& table,                             // "t
     auto prepareStr = std::string("INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")");
     query.prepare(prepareStr.c_str());
 
-    for (const auto& entry : bindsSet)
+    for (const auto& entry : bindsSet) {
         query.bindValue(entry.first.c_str(), entry.second.c_str());
+    }
 
     if (not query.exec())
         throw QueryInsertError(query, table, bindCol, bindsSet);
@@ -197,13 +198,10 @@ Database::select(const std::string& select,                            // "id", 
 
     auto prepareStr = std::string("SELECT " + select + " FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
-    
-    qDebug() << "X: " << prepareStr.c_str(); //debug
-    
+
 
     for (const auto& entry : bindsWhere) { //debug
         query.bindValue(entry.first.c_str(), entry.second.c_str());
-        qDebug() << "X: " << entry.first.c_str() << " : " << entry.second.c_str();
     }
 
     if (not query.exec())

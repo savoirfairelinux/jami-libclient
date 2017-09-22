@@ -85,12 +85,49 @@ public:
     std::string filter;
     contact::Type typeFilter;
 
+    // Database Helpers
+    // TODO: move in another class.
+    /**
+     * @note the account must be in the database or it will fails
+     * @return the id in the database for the current profile
+     */
+    std::string getAccountProfileId() const;
+    /**
+     * @param contactUri
+     * @param alias
+     * @param avatar
+     * @return the id in the database for the current profile
+     */
+    std::string getOrInsertContact(const std::string& contactUri,
+                                   const std::string& alias = "",
+                                   const std::string& avatar = "") const;
+    /**
+     * @param accountProfile the id of the account in the database
+     * @param contactProfile the id of the contact in the database
+     * @return conversations id for conversations between account and contact
+     */
+    std::vector<std::string> getConversationsBetween(const std::string& accountProfile, const std::string& contactProfile) const;
+    /**
+     * Start a conversation between account and contact. Creates an entry in the conversations table
+     * and an entry in the interactions table.
+     * @param accountProfile the id of the account in the database
+     * @param contactProfile the id of the contact in the database
+     * @return conversation_id of the new conversation.
+     */
+    std::string beginConversationsBetween(const std::string& accountProfile, const std::string& contactProfile) const;
+    /**
+     * Remove a conversation between current account and a contact. Remove corresponding entries in
+     * the conversations table and profiles if the profile is linked to no conversations.
+     * @param contactUri
+     */
+    void removeContactFromDb(const std::string& contactUri) const;
+
 public Q_SLOTS:
     void slotContactModelUpdated();
     void slotMessageAdded(int uid, const std::string& accountId, const message::Info& msg);
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
     void slotCallStatusChanged(const std::string& callId);
-    void slotNewAccountMessage(std::string& accountId, 
+    void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
 
@@ -307,7 +344,20 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     msg.type = message::Type::TEXT;
     msg.status = message::Status::SENDING;
 
-    // TODO Add to database
+    auto accountId = pimpl_->db.select("id", "profiles","uri=:uri", {{":uri", owner.profile.uri}}).payloads[0];
+    auto peerId = pimpl_->db.select("id", "profiles","uri=:uri", {{":uri", contact.uri}}).payloads[0];
+    auto conversations = pimpl_->getConversationsBetween(accountId, peerId);
+    pimpl_->db.insertInto("interactions",
+                  {{":account_id", "account_id"}, {":author_id", "author_id"},
+                  {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                  {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                  {":body", "body"}, {":type", "type"},
+                  {":status", "status"}},
+                  {{":account_id", accountId}, {":author_id", accountId},
+                  {":conversation_id", conversations[0]}, {":device_id", "0"},
+                  {":group_id", "0"}, {":timestamp", std::to_string(msg.timestamp)},
+                  {":body", msg.body}, {":type", TypeToString(msg.type)},
+                  {":status", StatusToString(msg.status)}});
 }
 
 void
@@ -395,6 +445,7 @@ ConversationModelPimpl::initConversations()
     std::sort(conversationsForAccount.begin(), conversationsForAccount.end());
     for (auto const& contact : linked.owner.contactModel->getAllContacts())
     {
+        if(linked.owner.profile.uri == contact.second.uri) continue;
         // for each contact
         // TODO: split this
         auto contactinfo = contact;
@@ -601,7 +652,7 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
 }
 
 void
-ConversationModelPimpl::slotNewAccountMessage(std::string& accountId, 
+ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
                                               std::string& from,
                                               std::map<std::string,std::string> payloads)
 {
@@ -612,17 +663,23 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
         // [jn] il nous faut traiter le cas d'un message arrivant d'un peer inconnu.
 
         // Add "Conversation started" message
+        auto row = getOrInsertContact(from);
+        auto accountProfileId = getAccountProfileId();
+        auto conversations = getConversationsBetween(accountProfileId, row);
+        if (conversations.empty()) {
+            conversations.emplace_back(beginConversationsBetween(accountProfileId, row));
+        }
         auto lastMessageAdded = db.insertInto("interactions",
                                               {{":account_id", "account_id"}, {":author_id", "account_id"},
                                               {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
                                               {":group_id", "group_id"}, {":timestamp", "timestamp"},
                                               {":body", "body"}, {":type", "type"},
                                               {":status", "status"}},
-                                              {{":account_id", accountId.c_str()}, {":author_id", from.c_str()},
-                                              {":conversation_id", "0"}, {":device_id", "0"},
+                                              {{":account_id", accountProfileId}, {":author_id", row},
+                                              {":conversation_id", conversations[0]}, {":device_id", "0"},
                                               {":group_id", "0"}, {":timestamp", "0"},
-                                              {":body", payloads["text/plain"].c_str()}, {":type", "text"},
-                                              {":status", "unread"}});
+                                              {":body", payloads["text/plain"].c_str()}, {":type", "TEXT"},
+                                              {":status", "UNREAD"}});
         if (lastMessageAdded != -1) {
             message::Info msg;
             msg.contact = from;
@@ -634,6 +691,127 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
         }
     }
 }
+
+// Database Helpers
+std::string
+ConversationModelPimpl::getAccountProfileId() const
+{
+    return db.select("id", "profiles","uri=:uri", {{":uri", linked.owner.profile.uri}}).payloads[0];
+}
+
+std::string
+ConversationModelPimpl::getOrInsertContact(const std::string& contactUri,
+                                      const std::string& alias,
+                                      const std::string& avatar) const
+{
+    // Check if profile is already present.
+    auto profileAlreadyExists = db.select("id",
+                                                "profiles",
+                                                "uri=:uri",
+                                                {{":uri", contactUri}});
+    if (profileAlreadyExists.payloads.empty()) {
+        // Doesn't exists, add contact to the database
+        auto type = TypeToString(linked.owner.profile.type);
+        auto row = db.insertInto("profiles",
+        {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
+        {":status", "status"}},
+        {{":uri", contactUri}, {":alias", alias}, {":photo", avatar}, {":type", type},
+        {":status", "TRUSTED"}});
+
+        if (row == -1) {
+            qDebug() << "contact not added to the database";
+            return "";
+        }
+
+        return std::to_string(row);
+    } else {
+        // Exists, update and retrieve it.
+        if (!avatar.empty() || !alias.empty()) {
+            db.update("profiles",
+                      "alias=:alias, photo=:photo",
+                      {{":alias", alias}, {":photo", avatar}},
+                      "uri=:uri", {{":uri", contactUri}});
+        }
+        return profileAlreadyExists.payloads[0];
+    }
+}
+
+
+std::vector<std::string>
+ConversationModelPimpl::getConversationsBetween(const std::string& accountProfile, const std::string& contactProfile) const
+{
+    auto conversationsForAccount = db.select("id",
+                                  "conversations",
+                                  "participant_id=:participant_id",
+                                  {{":participant_id", accountProfile}}).payloads;
+    std::sort(conversationsForAccount.begin(), conversationsForAccount.end());
+    auto conversationsForContact = db.select("id",
+                                  "conversations",
+                                  "participant_id=:participant_id",
+                                  {{":participant_id", contactProfile}}).payloads;
+
+    std::sort(conversationsForContact.begin(), conversationsForContact.end());
+    std::vector<std::string> common;
+
+    std::set_intersection(conversationsForAccount.begin(), conversationsForAccount.end(),
+                          conversationsForContact.begin(), conversationsForContact.end(),
+                          std::back_inserter(common));
+    return common;
+}
+
+std::string
+ConversationModelPimpl::beginConversationsBetween(const std::string& accountProfile, const std::string& contactProfile) const
+{
+    // Add conversation between account and profile
+    auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1",
+                                        "conversations",
+                                        "1=1",
+                                        {}).payloads[0];
+    db.insertInto("conversations",
+                  {{":id", "id"}, {":participant_id", "participant_id"}},
+                  {{":id", newConversationsId}, {":participant_id", accountProfile}});
+    db.insertInto("conversations",
+                  {{":id", "id"}, {":participant_id", "participant_id"}},
+                  {{":id", newConversationsId}, {":participant_id", contactProfile}});
+    // Add "Conversation started" message
+    db.insertInto("interactions",
+                  {{":account_id", "account_id"}, {":author_id", "author_id"},
+                  {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
+                  {":group_id", "group_id"}, {":timestamp", "timestamp"},
+                  {":body", "body"}, {":type", "type"},
+                  {":status", "status"}},
+                  {{":account_id", accountProfile}, {":author_id", accountProfile},
+                  {":conversation_id", newConversationsId}, {":device_id", "0"},
+                  {":group_id", "0"}, {":timestamp", "0"},
+                  {":body", "Conversation started"}, {":type", "CONTACT"},
+                  {":status", "SUCCEED"}});
+    return newConversationsId;
+}
+
+void
+ConversationModelPimpl::removeContactFromDb(const std::string& contactUri) const
+{
+    // Get profile for contact
+    auto contactId = db.select("id", "profiles","uri=:uri", {{":uri", contactUri}}).payloads;
+    if (contactId.empty()) return; // No profile
+    // Get common conversations
+    auto accountProfileId = getAccountProfileId();
+    auto conversations = getConversationsBetween(accountProfileId, contactId[0]);
+    // Remove conversations + interactions
+    for (const auto& conversationId: conversations) {
+        // Remove conversation
+        db.deleteFrom("conversations", "id=:id", {{":id", conversationId}});
+        // clear History
+        db.deleteFrom("interactions", "conversation_id=:id", {{":id", conversationId}});
+    }
+    // Get conversations for this contact.
+    conversations = db.select("id", "conversations","participant_id=:id", {{":id", contactId[0]}}).payloads;
+    if (conversations.empty()) {
+        // Delete profile
+        db.deleteFrom("profiles", "id=:id", {{":id", contactId[0]}});
+    }
+}
+
 
 } // namespace lrc
 
