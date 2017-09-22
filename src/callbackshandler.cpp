@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "callbackshandler.h"
+#include <iostream>
 
 // Models and database
 #include "api/account.h"
@@ -147,6 +148,7 @@ void
 CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
                                           const QString& address, const QString& name)
 {
+    if (!account) return;
     if (status == NameDirectory::LookupStatus::SUCCESS) {
         emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
     }

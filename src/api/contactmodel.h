@@ -90,6 +90,12 @@ public:
      * @param query
      */
     void searchContact(const std::string& query);
+    /**
+     * Send a text message to a contact over the Dht
+     * @param contactUri
+     * @param body
+     */
+    void sendDhtMessage(const std::string& uri, const std::string& body) const;
 
 Q_SIGNALS:
     void modelUpdated() const;
