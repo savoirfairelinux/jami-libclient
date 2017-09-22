@@ -93,7 +93,7 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
-    contact::Info temporaryContact;
+    //contact::Info temporaryContact;
 
     // Searching avatar in base 64
     const std::string searchingAvatar = "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";
@@ -177,6 +177,7 @@ namespace authority
 namespace daemon
 {
     void addContact(const account::Info& owner, const std::string& uri);
+    void addToContacts(const account::Info& owner, contact::Info& contactInfo);
     void removeContact(const account::Info& owner, const std::string& uri, bool banned);
     void addContactFromPending(const account::Info& owner, const std::string& uri);
     void discardFromPending(const account::Info& owner, const std::string& uri);
@@ -185,6 +186,7 @@ namespace daemon
 namespace database
 {
     void addContact(ContactModelPimpl& model, const std::string& contactUri);
+    const std::string addToProfiles(Database& db, const contact::Info& contactInfo);
 } // namespace database
 } // namespace authority
 
@@ -192,6 +194,14 @@ void
 authority::daemon::addContact(const account::Info& owner, const std::string& contactUri)
 {
     ConfigurationManager::instance().addContact(QString(owner.id.c_str()), QString(contactUri.c_str()));
+}
+
+void
+authority::daemon::addToContacts(const account::Info& owner, contact::Info& contactInfo)
+{
+    ConfigurationManager::instance().addContact(QString(owner.id.c_str()), QString(contactInfo.uri.c_str()));
+    // [jn] voir si cette fonction retourne un status
+    contactInfo.type = contact::Type::RING;
 }
 
 void
@@ -216,6 +226,40 @@ authority::daemon::discardFromPending(const account::Info& owner, const std::str
     );
 }
 
+const std::string
+authority::database::addToProfiles(Database& db, const contact::Info& contactInfo)
+{
+    // Check if profile is already present.
+    auto profile = db.select("id", "profiles", "uri=:uri", {{":uri", contactInfo.uri}});
+
+    if (profile.payloads.empty()) {
+        // Doesn't exists, add contact to the database
+        auto row = db.insertInto("profiles",
+                                 {{":uri", "uri"}, {":alias", "alias"},
+                                  {":photo", "photo"}, {":type", "type"},
+                                 {":status", "status"}},
+                                 {{":uri", contactInfo.uri}, {":alias", contactInfo.alias},
+                                  {":photo", contactInfo.avatar}, {":type", TypeToString(contactInfo.type)},
+                                 {":status", "TRUSTED"}});
+
+        if (row == -1) {
+            qDebug() << "contact not added to the database";
+            return "";
+        }
+        return std::to_string(row);
+
+    } else {
+        // Exists, update and retrieve it.
+        if (!contactInfo.avatar.empty() || !contactInfo.alias.empty()) {
+            db.update("profiles",
+                      "alias=:alias, photo=:photo",
+                      {{":alias", contactInfo.alias}, {":photo", contactInfo.avatar}},
+                      "uri=:uri",
+                      {{":uri", contactInfo.uri}});
+        }
+    return profile.payloads[0];
+    }
+}
 
 void
 authority::database::addContact(ContactModelPimpl& model, const std::string& contactUri)
@@ -268,65 +312,94 @@ ContactModel::hasPendingRequests() const
 }
 
 void
-ContactModel::addContact(const std::string& contactUri)
+ContactModel::addContact(contact::Info contactInfo)
 {
-    auto contactInfo = contact::Info({contactUri, "", contactUri, contactUri,
-                                     true, false, contact::Type::INVALID});
-
-    if(owner.profile.type == contact::Type::SIP) {
-        // SIP contact are owned by the database
-        database::addContact(*this->pimpl_, contactUri);
-        contactInfo.type = contact::Type::SIP;
-        // Here the contact is directly added, so we can add the contact in the map
-        pimpl_->contacts.emplace(contactUri, contactInfo);
-        emit modelUpdated();
-    } else {
-        // Ring contacts are owned by the daemon
-        auto contactFound = pimpl_->contacts.find(contactUri);
-        if(contactFound != pimpl_->contacts.end()
-        && contactFound->second.type == contact::Type::PENDING) {
-            // If it's a pending request, accept the request
-            daemon::addContactFromPending(owner, contactUri);
-            contactFound->second.type = contact::Type::RING;
-            pimpl_->getOrInsertContact(contactUri, contactInfo.alias, contactInfo.avatar);
-            emit modelUpdated();
-        } else {
-            // if the contact is already found, we don't need to add it.
-            if(contactFound != pimpl_->contacts.end()) {
-                qDebug() << "Add contact, but not pending, abort.";
-                return;
-            }
-            // HACK: The daemon can say this URI is a contact (but don't return it with getAllContacts)
-            // So, test if the daemon considers this uri as a contact
-            QMap<QString, QString> details = ConfigurationManager::instance()
-            .getContactDetails(QString(owner.id.c_str()), QString(contactUri.c_str()));
-            if (details.empty()) {
-                // It's not a contact for the daemon, add it.
-                // NOTE: this method is async, slotContactAdded will be call and then
-                // the model will be updated.
-                daemon::addContact(owner, contactUri);
-                contactInfo.type = contact::Type::RING;
-            } else {
-                // It's a contact for the daemon, directly add it.
-                // TODO: investigate and remove this hack.
-                auto account = AccountModel::instance().getById(owner.id.c_str());
-                // Get details.
-                auto cm = PhoneDirectoryModel::instance().getNumber(contactUri.c_str(), account);
-                auto contactUri = cm->uri().toStdString();
-                contactInfo.uri = contactUri;
-                contactInfo.registeredName = cm->registeredName().toStdString();
-                contactInfo.alias = cm->bestName().toStdString();
-                contactInfo.isTrusted = cm->isConfirmed();
-                contactInfo.isPresent = cm->isPresent();
-                contactInfo.type = contact::Type::RING;
-
-                pimpl_->contacts.emplace(contactUri, contactInfo);
-                pimpl_->getOrInsertContact(contactUri, contactInfo.alias, contactInfo.avatar);
-                emit modelUpdated();
-            }
+    if ((owner.profile.type == contact::Type::SIP and contactInfo.type == contact::Type::RING)
+        or (owner.profile.type == contact::Type::RING and contactInfo.type == contact::Type::SIP)) {
+            qDebug() << "ContactModel::addContact, types invalids.";
+            return; // [jn] throw
         }
+
+    switch (contactInfo.type) {
+    case contact::Type::RING: // si c'est un type ring, il doit déjà être dans le daemon.
+    case contact::Type::PENDING:
+        daemon::addToContacts(owner, contactInfo); // cette fonction modifera le type de pending a RING, si ring ne pas l'ajouter
+        // we need to add the profile too
+    case contact::Type::SIP:
+        database::addToProfiles(pimpl_->db, contactInfo);
+        break;
+    break;
+    case contact::Type::TEMPORARY:
+        qDebug() << "TODO FOR TEMPORARY";
+    case contact::Type::INVALID:
+        qDebug() << "ContactModel::addContact, cannot add contact with invalid type.";
+    break;
     }
+
+    pimpl_->contacts.emplace(contactInfo.uri, contactInfo);
+    emit modelUpdated();
 }
+
+//~ void // to remove
+//~ ContactModel::addContact(const std::string& contactUri)
+//~ {
+    //~ auto contactInfo = contact::Info({contactUri, "", contactUri, contactUri,
+                                     //~ true, false, contact::Type::INVALID});
+
+    //~ if(owner.profile.type == contact::Type::SIP) {
+        //~ // SIP contact are owned by the database
+        //~ database::addContact(*this->pimpl_, contactUri);
+        //~ contactInfo.type = contact::Type::SIP;
+        //~ // Here the contact is directly added, so we can add the contact in the map
+        //~ pimpl_->contacts.emplace(contactUri, contactInfo);
+        //~ emit modelUpdated();
+    //~ } else {
+        //~ // Ring contacts are owned by the daemon
+        //~ auto contactFound = pimpl_->contacts.find(contactUri);
+        //~ if(contactFound != pimpl_->contacts.end()
+        //~ && contactFound->second.type == contact::Type::PENDING) {
+            //~ // If it's a pending request, accept the request
+            //~ daemon::addContactFromPending(owner, contactUri);
+            //~ contactFound->second.type = contact::Type::RING;
+            //~ pimpl_->getOrInsertContact(contactUri, contactInfo.alias, contactInfo.avatar);
+            //~ emit modelUpdated();
+        //~ } else {
+            //~ // if the contact is already found, we don't need to add it.
+            //~ if(contactFound != pimpl_->contacts.end()) {
+                //~ qDebug() << "Add contact, but not pending, abort.";
+                //~ return;
+            //~ }
+            //~ // HACK: The daemon can say this URI is a contact (but don't return it with getAllContacts)
+            //~ // So, test if the daemon considers this uri as a contact
+            //~ QMap<QString, QString> details = ConfigurationManager::instance()
+            //~ .getContactDetails(QString(owner.id.c_str()), QString(contactUri.c_str()));
+            //~ if (details.empty()) {
+                //~ // It's not a contact for the daemon, add it.
+                //~ // NOTE: this method is async, slotContactAdded will be call and then
+                //~ // the model will be updated.
+                //~ daemon::addContact(owner, contactUri);
+                //~ contactInfo.type = contact::Type::RING;
+            //~ } else {
+                //~ // It's a contact for the daemon, directly add it.
+                //~ // TODO: investigate and remove this hack.
+                //~ auto account = AccountModel::instance().getById(owner.id.c_str());
+                //~ // Get details.
+                //~ auto cm = PhoneDirectoryModel::instance().getNumber(contactUri.c_str(), account);
+                //~ auto contactUri = cm->uri().toStdString();
+                //~ contactInfo.uri = contactUri;
+                //~ contactInfo.registeredName = cm->registeredName().toStdString();
+                //~ contactInfo.alias = cm->bestName().toStdString();
+                //~ contactInfo.isTrusted = cm->isConfirmed();
+                //~ contactInfo.isPresent = cm->isPresent();
+                //~ contactInfo.type = contact::Type::RING;
+
+                //~ pimpl_->contacts.emplace(contactUri, contactInfo);
+                //~ pimpl_->getOrInsertContact(contactUri, contactInfo.alias, contactInfo.avatar);
+                //~ emit modelUpdated();
+            //~ }
+        //~ }
+    //~ }
+//~ }
 
 void
 ContactModel::removeContact(const std::string& contactUri, bool banned)
@@ -357,8 +430,8 @@ const contact::Info
 ContactModel::getContact(const std::string& contactUri) const
 {
     // NOTE: "" is the id of the temporaryContact
-    if (contactUri.empty())
-        return pimpl_->temporaryContact;
+    //~ if (contactUri.empty())
+        //~ return pimpl_->temporaryContact;
 
     auto contactInfo = pimpl_->contacts.find(contactUri);
     if (contactInfo == pimpl_->contacts.end())
@@ -372,19 +445,19 @@ ContactModel::searchContact(const std::string& query)
 {
     if (owner.profile.type == contact::Type::SIP) {
         // We don,t need to search anything for SIP contacts.
-        pimpl_->temporaryContact.uri = query;
+        pimpl_->contacts[""].uri = query;
         // TODO default SIP avatar?
-        pimpl_->temporaryContact.avatar = "";
-        pimpl_->temporaryContact.registeredName = query;
-        pimpl_->temporaryContact.alias = query;
+        pimpl_->contacts[""].avatar = "";
+        pimpl_->contacts[""].registeredName = query; // [jn] there is no registered name for sip
+        pimpl_->contacts[""].alias = query;
         emit modelUpdated();
         return;
     }
     // Default searching item.
-    pimpl_->temporaryContact.uri = "";
-    pimpl_->temporaryContact.registeredName = query;
-    pimpl_->temporaryContact.alias = "Searching… " + query;
-    pimpl_->temporaryContact.avatar = pimpl_->searchingAvatar;
+    pimpl_->contacts[""].uri = "";
+    pimpl_->contacts[""].registeredName = query;
+    pimpl_->contacts[""].alias = "Searching… " + query;
+    pimpl_->contacts[""].avatar = pimpl_->searchingAvatar;
     emit modelUpdated();
 
     // Query Name Server
@@ -407,9 +480,6 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
         fillsWithSIPContacts();
     else
         fillsWithRINGContacts();
-    // Init temporaryContact
-    temporaryContact.type = contact::Type::TEMPORARY;
-    temporaryContact.avatar = searchingAvatar;
 
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::NewBuddySubscription,
@@ -624,20 +694,20 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId, const s
 {
     if (accountId != linked.owner.id) return;
     if (contacts.find(uri) == contacts.end()) {
-        temporaryContact.uri = uri;
-        temporaryContact.registeredName = registeredName;
-        temporaryContact.alias = registeredName;
-        temporaryContact.avatar = "";
+        contacts[""].uri = uri;
+        contacts[""].registeredName = registeredName;
+        contacts[""].alias = registeredName;
+        contacts[""].avatar = "";
     } else {
         contacts[uri].registeredName = registeredName;
         contacts[uri].alias = registeredName;
-        if (temporaryContact.registeredName == uri
-        || temporaryContact.registeredName == registeredName) {
-            temporaryContact.uri = "";
-            temporaryContact.registeredName = "";
-            temporaryContact.alias = "";
-            temporaryContact.avatar = searchingAvatar;
-        }
+        //~ if (temporaryContact.registeredName == uri
+        //~ || temporaryContact.registeredName == registeredName) {
+            //~ temporaryContact.uri = "";
+            //~ temporaryContact.registeredName = "";
+            //~ temporaryContact.alias = "";
+            //~ temporaryContact.avatar = searchingAvatar;
+        //~ }
     }
     emit linked.modelUpdated();
 

@@ -63,7 +63,8 @@ public:
      * Ask the daemon to add a contact.
      * @param contactUri
      */
-    void addContact(const std::string& contactUri);
+    //~ void addContact(const std::string& contactUri);
+    void addContact(contact::Info contactInfo);
     /**
      * Ask the daemon to remove a contact
      * @param contactUri

@@ -109,6 +109,7 @@ ConversationModel::~ConversationModel()
 const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations() const
 {
+    return pimpl_->conversations;
     pimpl_->filteredConversations = pimpl_->conversations;
 
     auto filter = pimpl_->filter;
@@ -171,7 +172,7 @@ ConversationModel::addConversation(const std::string& uid) const
         if (contactUri.length() == 0) {
             contactUri = owner.contactModel->getContact(contactUri).uri;
         }
-        owner.contactModel->addContact(contactUri);
+        owner.contactModel->addContact({contactUri, "", "", "" , false, false, owner.profile.type});
     }
 
 }
@@ -398,7 +399,7 @@ ConversationModelPimpl::initConversations()
                                       {{":uri", contactinfo.second.uri}}).payloads;
         if (contactProfileId.empty()) {
           qDebug() << "ConversationModelPimpl::initConversations(), contact not in bdd... abort";
-          return;
+          continue;
         }
         // Get linked conversation with they
         auto conversationsForContact = db.select("id",

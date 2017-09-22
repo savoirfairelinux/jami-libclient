@@ -197,9 +197,14 @@ Database::select(const std::string& select,                            // "id", 
 
     auto prepareStr = std::string("SELECT " + select + " FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
+    
+    qDebug() << "X: " << prepareStr.c_str(); //debug
+    
 
-    for (const auto& entry : bindsWhere)
+    for (const auto& entry : bindsWhere) { //debug
         query.bindValue(entry.first.c_str(), entry.second.c_str());
+        qDebug() << "X: " << entry.first.c_str() << " : " << entry.second.c_str();
+    }
 
     if (not query.exec())
         throw QuerySelectError(query, select, table, where, bindsWhere);
