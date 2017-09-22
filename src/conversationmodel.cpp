@@ -444,6 +444,7 @@ ConversationModelPimpl::initConversations()
         conversation::Info conversation;
         conversation.uid = common[0];
         conversation.accountId = linked.owner.id;
+        qDebug() << contactinfo.second.uri.c_str();
         conversation.participants = {contactinfo.second.uri};
         try {
             conversation.callId = linked.owner.callModel->getCallFromURI(contactinfo.second.uri).id;

@@ -36,7 +36,7 @@ namespace conversation
 
 struct Info
 {
-    std::string uid;
+    std::string uid = "";
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
