@@ -149,7 +149,6 @@ ConversationModel::~ConversationModel()
 const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations() const
 {
-    return pimpl_->conversations;
     pimpl_->filteredConversations = pimpl_->conversations;
 
     auto filter = pimpl_->filter;
