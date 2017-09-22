@@ -1110,6 +1110,11 @@ QString Account::archivePath() const
    return path;
 }
 
+bool Account::changePassword(const QString& currentPassword, const QString newPassword) const
+{
+    return ConfigurationManager::instance().changeAccountPassword(id(), currentPassword, newPassword);
+}
+
 bool Account::allowIncomingFromUnknown() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::DHT::PUBLIC_IN_CALLS) IS_TRUE;
