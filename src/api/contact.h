@@ -50,9 +50,12 @@ TypeToString(Type type)
         return "SIP";
     case Type::PENDING:
         return "PENDING";
+    case Type::TEMPORARY:
+        return "TEMPORARY";
     }
 
     //throw something
+    return "";
 }
 
 static Type
@@ -64,9 +67,10 @@ StringToType(const std::string& type)
         return contact::Type::SIP;
     } else if (type == "RING") {
         return contact::Type::RING;
-    } else if (type == "INVALID")
+    } else if (type == "TEMPORARY") {
+        return contact::Type::TEMPORARY;
+    } else
         return contact::Type::INVALID;
-    //throw something
 }
 
 struct Info

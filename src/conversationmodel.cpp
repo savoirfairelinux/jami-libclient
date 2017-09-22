@@ -21,6 +21,7 @@
 // std
 #include <regex>
 #include <algorithm>
+#include <iostream>
 
 // LRC
 #include "api/contactmodel.h"
@@ -149,7 +150,6 @@ ConversationModel::~ConversationModel()
 const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations() const
 {
-    return pimpl_->conversations;
     pimpl_->filteredConversations = pimpl_->conversations;
 
     auto filter = pimpl_->filter;
@@ -209,10 +209,7 @@ ConversationModel::addConversation(const std::string& uid) const
     auto isNotUsed = contact.type == contact::Type::TEMPORARY
     || contact.type == contact::Type::PENDING;
     if (isNotUsed) {
-        if (contactUri.length() == 0) {
-            contactUri = owner.contactModel->getContact(contactUri).uri;
-        }
-        owner.contactModel->addContact({contactUri, "", "", "" , false, false, owner.profile.type});
+        owner.contactModel->addContact(contact);
     }
 
 }
@@ -261,6 +258,7 @@ ConversationModel::selectConversation(const std::string& uid) const
                 emit showChatView(conversation);
         }
     } catch (const std::out_of_range&) {
+        std::cout << "###" << std::endl;
         emit showChatView(conversation);
     }
 }
@@ -501,7 +499,7 @@ ConversationModelPimpl::initConversations()
         conversation.uid = common[0];
         conversation.accountId = linked.owner.id;
         qDebug() << contactinfo.second.uri.c_str();
-        conversation.participants = {contactinfo.second.uri};
+        conversation.participants = {contactinfo.first};
         try {
             conversation.callId = linked.owner.callModel->getCallFromURI(contactinfo.second.uri).id;
         } catch (...) {
