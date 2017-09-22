@@ -480,6 +480,11 @@ public Q_SLOTS: // METHODS
       return DRing::importAccounts(filePath.toStdString(), password.toStdString());
    }
 
+   bool changeAccountPassword(const QString& id, const QString& currentPassword, const QString& newPassword)
+   {
+       return DRing::changeAccountPassword(id.toStdString(), currentPassword.toStdString(), newPassword.toStdString());
+   }
+
    void sendRegister(const QString& accountID, bool enable)
    {
       DRing::sendRegister(accountID.toStdString(), enable);
