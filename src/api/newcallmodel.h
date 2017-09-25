@@ -88,6 +88,8 @@ public:
 
 Q_SIGNALS:
     void callStatusChanged(const std::string& callId) const;
+    void callStarted(const std::string& callId) const;
+    void callEnded(const std::string& callId) const;
     void newIncomingCall(const std::string& callId, const std::string& fromId) const;
     void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
 

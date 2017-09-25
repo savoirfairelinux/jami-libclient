@@ -21,7 +21,6 @@
 // std
 #include <regex>
 #include <algorithm>
-#include <iostream>
 
 // LRC
 #include "api/contactmodel.h"
@@ -87,10 +86,17 @@ public:
      * @param contactUri
      */
     void addConversationWith(const std::string& convId, const std::string& contactUri);
+    /**
+     * Add call message for conversation with callId
+     * @param callId
+     * @param body
+     */
+    void addCallMessage(const std::string& callId, const std::string& body);
 
     const ConversationModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
+    const std::string accountProfileId;
 
     // contains all conversations
     ConversationModel::ConversationQueue conversations;
@@ -122,10 +128,20 @@ public Q_SLOTS:
      */
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
     /**
-     * Listen from acllmodel for calls status changed.
+     * Listen from callmodel for calls status changed.
      * @param callId
      */
     void slotCallStatusChanged(const std::string& callId);
+    /**
+     * Listen from callmodel for writing "Call started"
+     * @param callId
+     */
+    void slotCallStarted(const std::string& callId);
+    /**
+     * Listen from callmodel for writing "Call ended"
+     * @param callId
+     */
+    void slotCallEnded(const std::string& callId);
     /**
      * Listen from CallbacksHandler for new incoming messages;
      * @param accountId
@@ -334,7 +350,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     }
 
     // Add message to database
-    auto accountId = database::getProfileId(pimpl_->db, owner.profile.uri);
+    auto accountId = pimpl_->accountProfileId;
     auto msg = message::Info({accountId, body, std::time(nullptr),
                             message::Type::TEXT, message::Status::SENDING});
     int msgId = database::addMessageToConversation(pimpl_->db, accountId, uid, msg);
@@ -398,6 +414,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , db(db)
 , callbacksHandler(callbacksHandler)
 , typeFilter(contact::Type::INVALID)
+, accountProfileId(database::getProfileId(db, linked.owner.profile.uri))
 {
     initConversations();
 
@@ -418,6 +435,14 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callStatusChanged,
             this,
             &ConversationModelPimpl::slotCallStatusChanged);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callStarted,
+            this,
+            &ConversationModelPimpl::slotCallStarted);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callEnded,
+            this,
+            &ConversationModelPimpl::slotCallEnded);
 
     // Messages related
     connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
@@ -438,7 +463,6 @@ ConversationModelPimpl::initConversations()
         return;
 
     // Fill conversations
-    auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
     if (accountProfileId.empty()) {
         // Should not, NewAccountModel must create this profile before.
         qDebug() << "ConversationModelPimpl::initConversations(), account not in bdd... abort";
@@ -446,10 +470,8 @@ ConversationModelPimpl::initConversations()
     }
     auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     std::sort(conversationsForAccount.begin(), conversationsForAccount.end());
-    std::cout << "FOR ACCOUNT:" << linked.owner.profile.alias << std::endl;
     for (auto const& contact : linked.owner.contactModel->getAllContacts())
     {
-        std::cout << "CONTACT:" << contact.second.alias << std::endl;
         if(linked.owner.profile.uri == contact.second.uri) continue;
         auto contactProfileId = database::getProfileId(db, contact.second.uri);
         if (contactProfileId.empty()) {
@@ -516,7 +538,6 @@ void
 ConversationModelPimpl::slotContactAdded(const std::string& uri)
 {
     auto contactProfileId = database::getOrInsertProfile(db, uri);
-    auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, contactProfileId));
@@ -647,6 +668,42 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
 }
 
 void
+ConversationModelPimpl::slotCallStarted(const std::string& callId)
+{
+    addCallMessage(callId, "📞 Conversation started");
+}
+
+void
+ConversationModelPimpl::slotCallEnded(const std::string& callId)
+{
+    addCallMessage(callId, "🕽 Conversation ended");
+}
+
+void
+ConversationModelPimpl::addCallMessage(const std::string& callId, const std::string& body)
+{
+    // Get conversation
+    auto i = std::find_if(
+    conversations.begin(), conversations.end(),
+    [callId](const conversation::Info& conversation) {
+      return conversation.callId == callId;
+    });
+
+    if (i == conversations.end()) return;
+
+    auto& conversation = *i;
+    auto uid = conversation.uid;
+    auto msg = message::Info({accountProfileId, body, std::time(nullptr),
+                            message::Type::CALL, message::Status::SUCCEED});
+    int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
+    conversation.messages.emplace(msgId, msg);
+    emit linked.newUnreadMessage(conversation.uid, msg);
+    sortConversations();
+    emit linked.modelUpdated();
+}
+
+
+void
 ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
                                               std::string& from,
                                               std::map<std::string,std::string> payloads)
@@ -659,7 +716,6 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
 
     // Add "Conversation started" message
     auto contactProfileId = database::getOrInsertProfile(db, from);
-    auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));

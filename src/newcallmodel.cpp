@@ -329,6 +329,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         } else if (state == "HUNGUP") {
             calls[callId]->status = call::Status::TERMINATING;
         } else if (state == "OVER") {
+            emit linked.callEnded(callId);
             calls[callId]->status = call::Status::ENDED;
         } else if (state == "INACTIVE") {
             calls[callId]->status = call::Status::INACTIVE;
@@ -336,6 +337,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
             if (calls[callId]->startTime == 0) {
                 auto now = std::chrono::system_clock::now();
                 calls[callId]->startTime = std::chrono::system_clock::to_time_t(now);
+                emit linked.callStarted(callId);
             }
             calls[callId]->status = call::Status::IN_PROGRESS;
         } else if (state == "HOLD") {
