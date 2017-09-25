@@ -25,6 +25,7 @@
 // Lrc
 #include "callbackshandler.h"
 #include "api/conversationmodel.h"
+#include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
 #include "private/videorenderermanager.h"
@@ -53,11 +54,19 @@ public:
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
+    
+    /**
+     * key = peer's uri
+     * vector = chunks
+     * @note chunks are counted from 1 to number of parts. We use 0 to store the actual number of parts stored
+     */
+    std::map<std::string, std::vector<std::string>> vcardsChunks;
 
 public Q_SLOTS:
     void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
     void slotCallStateChanged(const std::string& callId, const std::string &state, int code);
     void slotRemotePreviewStarted(const std::string& callId, Video::Renderer* renderer);
+    void slotIncomingVcardChunk(const std::string& callId, const std::string& from, int part, int numberOfParts, const std::string& payload);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -281,6 +290,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
+    connect(&callbacksHandler, &CallbacksHandler::incomingVcardChunk, this, &NewCallModelPimpl::slotIncomingVcardChunk);
 }
 
 NewCallModelPimpl::~NewCallModelPimpl()
@@ -350,6 +360,52 @@ void
 NewCallModelPimpl::slotRemotePreviewStarted(const std::string& callId, Video::Renderer* renderer)
 {
     emit linked.remotePreviewStarted(callId, renderer);
+}
+
+void
+NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
+                                          const std::string& from,
+                                          int part,
+                                          int numberOfParts,
+                                          const std::string& payload)
+{
+    // [jn] maybe we can only rely on from... not sure...
+    auto it = calls.find(callId);
+
+    if (it != calls.end()) {
+
+        auto it_2 = vcardsChunks.find(from);
+        if (it_2 != vcardsChunks.end()) {
+            vcardsChunks[from][part-1] = payload;
+            
+            if ( not std::any_of(vcardsChunks[from].begin(), vcardsChunks[from].end(),
+                [](std::string s) { return s.empty(); }) ) {
+                
+                contact::Info contactInfo;
+                contactInfo.uri = from;
+                contactInfo.type = contact::Type::RING;
+                
+                std::string profile;
+                
+                for (auto& chunk : vcardsChunks[from]) {
+                    profile += chunk;
+                }
+                //~ qDebug() << "\n\n\n\n\n\n\n" << profile.c_str() << "\n\n\n\n\n\n\n";
+                auto pieces1 = QString(profile.c_str()).split( "\n" );
+                for (auto& e : pieces1)
+                    if (e.contains("PHOTO"))
+                        contactInfo.avatar = e.split( ":" )[1].toStdString();
+                    else if (e.contains("FN"))
+                        contactInfo.alias = e.split( ":" )[1].toStdString();
+            
+                linked.owner.contactModel->addContact(contactInfo);
+            }
+        } else {
+            vcardsChunks[from] = std::vector<std::string>(numberOfParts);
+            vcardsChunks[from][part-1] = payload;
+        }
+        
+    }
 }
 
 } // namespace lrc

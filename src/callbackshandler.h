@@ -88,6 +88,7 @@ Q_SIGNALS:
     void callStateChanged(const std::string& callId, const std::string &state, int code);
     void accountStatusChanged(const std::string& accountID, const api::account::Status status);
     void registeredNameFound(const std::string& accountId, const std::string& uri, const std::string& registeredName);
+    void incomingVcardChunk(const std::string& callId, const std::string& from, int part, int numberOfParts, const std::string& payload);
 
 private Q_SLOTS:
     /**

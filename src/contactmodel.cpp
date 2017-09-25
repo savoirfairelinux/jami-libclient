@@ -199,8 +199,8 @@ ContactModel::addContact(contact::Info contactInfo)
         break;
     }
 
-    pimpl_->contacts.emplace(contactInfo.uri, contactInfo);
-    emit contactAdded(contactInfo.uri);
+    pimpl_->contacts[contactInfo.uri] = contactInfo;
+    emit contactAdded(contactInfo.uri); // [jn] or updated
 }
 
 void
