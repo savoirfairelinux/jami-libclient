@@ -160,8 +160,9 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.profile.alias = details["Account.alias"].toStdString();
     owner.profile.registeredName = owner.profile.type == contact::Type::RING ?
                                    volatileDetails["Account.registredName"].toStdString() : owner.profile.alias;
-    owner.profile.uri = owner.profile.type == contact::Type::RING ?
-                        details["Account.username"].toStdString().substr(std::string("ring:").size()) : owner.profile.alias;
+    owner.profile.uri = (owner.profile.type == contact::Type::RING and details["Account.username"].contains("ring:")) ?
+                        details["Account.username"].toStdString().substr(std::string("ring:").size())
+                        : details["Account.username"].toStdString();
     // Add profile into database
     addAcountProfileInDb(owner);
     // Init models for this account
