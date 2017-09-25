@@ -102,6 +102,7 @@ Q_SIGNALS:
     void contactAdded(const std::string& contactUri) const;
     void contactRemoved(const std::string& contactUri) const;
     void incomingCallFromPending(const std::string& fromId, const std::string& callId) const;
+    void newAccountMessage(std::string& accountId, std::string& from, std::map<std::string,std::string> payloads) const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;

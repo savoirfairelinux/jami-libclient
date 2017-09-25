@@ -77,10 +77,11 @@ public:
      * Add a contact::Info to contacts.
      * @note: the cm must corresponds to a profile in the database.
      * @param cm ContactMethod.
+     * @param: type
      * @return contact::Info added to contacts
      * @TODO this function rely on legacy code and has to be changed in the futur.
      */
-    void addToContacts(ContactMethod* cm);
+    void addToContacts(ContactMethod* cm, const contact::Type& type);
 
     // Helpers
     const ContactModel& linked;
@@ -129,6 +130,16 @@ public Q_SLOTS:
      * @param callId
      */
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
+
+    /**
+     * Listen from callbacksHandler for new account message and add pending contact if not present
+     * @param accountId
+     * @param from
+     * @param payloads
+     */
+    void slotNewAccountMessage(std::string& accountId,
+                               std::string& from,
+                               std::map<std::string,std::string> payloads);
 };
 
 using namespace authority;
@@ -316,6 +327,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotRegisteredNameFound);
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ContactModelPimpl::slotIncomingCall);
+    connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
+            this, &ContactModelPimpl::slotNewAccountMessage);
 
 }
 
@@ -353,7 +366,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
     // Add contacts from daemon
     auto contactsList = account->getContacts();
     for (auto c : contactsList) {
-        addToContacts(c);
+        addToContacts(c, linked.owner.profile.type);
     }
 
     // Add pending contacts
@@ -401,7 +414,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     if (contacts.find(contactUri) == contacts.end()) {
         // Doesn't exists, add contact
         auto cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
-        addToContacts(cm);
+        addToContacts(cm, linked.owner.profile.type);
         // Other models should be warned
         emit linked.contactAdded(contactUri);
     }
@@ -420,7 +433,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(ContactMethod* cm)
+ContactModelPimpl::addToContacts(ContactMethod* cm, const contact::Type& type)
 {
     auto contactUri = cm->uri().toStdString();
     auto contactId = database::getProfileId(db, contactUri);
@@ -428,7 +441,7 @@ ContactModelPimpl::addToContacts(ContactMethod* cm)
         contactId = database::getOrInsertProfile(db, contactUri,
                                                  cm->bestName().toStdString(),
                                                  "",
-                                                 TypeToString(linked.owner.profile.type));
+                                                 TypeToString(type));
     }
     auto contact = database::buildContactFromProfileId(db, contactId);
     contact.isPresent = cm->isPresent();
@@ -506,12 +519,35 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         // Contact not found, load profile from database.
         // The conversation model will create an entry and link the incomingCall.
         auto cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
-        addToContacts(cm);
+        addToContacts(cm, contact::Type::PENDING);
         emit linked.contactAdded(fromId);
+        emit linked.incomingCallFromPending(fromId, callId);
     } else {
         // Already a contact, just emit signal
         emit linked.incomingCallFromPending(fromId, callId);
     }
+}
+
+void
+ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
+                                         std::string& from,
+                                         std::map<std::string,std::string> payloads)
+{
+    if (accountId != linked.owner.id) return;
+    auto account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotIncomingCall(), nullptr";
+        return;
+    }
+
+    if (contacts.find(from) == contacts.end()) {
+        // Contact not found, load profile from database.
+        // The conversation model will create an entry and link the incomingCall.
+        auto cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
+        addToContacts(cm, contact::Type::PENDING);
+    }
+    qDebug() << TypeToString(contacts[from].type).c_str();
+    emit linked.newAccountMessage(accountId, from, payloads);
 }
 
 } // namespace lrc

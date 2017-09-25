@@ -425,6 +425,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     connect(&*linked.owner.contactModel, &ContactModel::contactRemoved,
             this, &ConversationModelPimpl::slotContactRemoved);
 
+    // Messages related
+    connect(&*linked.owner.contactModel, &lrc::ContactModel::newAccountMessage,
+            this, &ConversationModelPimpl::slotNewAccountMessage);
+
     // Call related
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ConversationModelPimpl::slotIncomingCall);
@@ -442,10 +446,6 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callEnded,
             this,
             &ConversationModelPimpl::slotCallEnded);
-
-    // Messages related
-    connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
-            this, &ConversationModelPimpl::slotNewAccountMessage);
 }
 
 
