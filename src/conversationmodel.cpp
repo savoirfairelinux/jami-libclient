@@ -403,7 +403,7 @@ ConversationModel::clearHistory(const std::string& uid)
     conversation.messages.clear();
     database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
     emit modelUpdated();
-    // TODO signal for chatview in client?
+    emit conversationCleared(uid);
 }
 
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,

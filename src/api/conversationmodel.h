@@ -72,9 +72,9 @@ public:
 
 Q_SIGNALS:
     void newUnreadMessage(const std::string& uid, const message::Info& msg) const;
+    void conversationCleared(const std::string& uid) const;
     void conversationUpdated(unsigned int row);
     void modelUpdated() const;
-    void newContactAdded(const std::string& uri);
     void incomingCallFromItem(const unsigned int row);
 
     void showChatView(const conversation::Info& conversationInfo) const; // TO MOVE
