@@ -199,7 +199,10 @@ ContactModel::addContact(contact::Info contactInfo)
         break;
     }
 
-    pimpl_->contacts.emplace(contactInfo.uri, contactInfo);
+    if (pimpl_->contacts.find(contactInfo.uri) == pimpl_->contacts.end())
+        pimpl_->contacts.emplace(contactInfo.uri, contactInfo);
+    else
+        pimpl_->contacts[contactInfo.uri] = contactInfo;
     emit contactAdded(contactInfo.uri);
 }
 

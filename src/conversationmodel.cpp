@@ -318,8 +318,7 @@ ConversationModel::placeCall(const std::string& uid) const
     }
 
     auto contactUri = conversation.participants.front();
-    if (contactUri.empty())
-        pimpl_->sendContactRequest(contactUri);
+    pimpl_->sendContactRequest(contactUri);
     auto url = owner.contactModel->getContact(contactUri).uri;
     if (owner.profile.type != contact::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
