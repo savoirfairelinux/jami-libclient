@@ -227,6 +227,11 @@ ConversationModel::selectConversation(const std::string& uid) const
     if (conversationIdx == -1)
         return;
 
+    if (uid.empty() && owner.contactModel->getContact("").uri.empty()) {
+        // if we select the temporary contact, check if its a valid contact.
+        return;
+    }
+
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
         auto call = owner.callModel->getCall(conversation.callId);
