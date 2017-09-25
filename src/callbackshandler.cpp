@@ -83,6 +83,29 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallManagerInterface::callStateChanged,
             this,
             &CallbacksHandler::slotCallStateChanged);
+    
+    connect(&CallManager::instance(),
+            &CallManagerInterface::incomingMessage,
+            this,
+            [this] (const QString& callId, const QString& from, const QMap<QString,QString>& message) {
+qDebug() << "\n\n\n\nX :" << from.left(40)<< "\n\n\n\n";
+                
+                for (auto& e : message.toStdMap()) {
+                    if (e.first.contains("x-ring/ring.profile.vcard")) {
+                        auto pieces0 = e.first.split( ";" );
+                        auto pieces1 = pieces0[1].split( "," );
+                        auto pieces2 = pieces1[1].split( "=" );
+                        auto pieces3 = pieces1[2].split( "=" );
+                        //~ qDebug() << "payload : "<< e.second;
+                        emit incomingVcardChunk(callId.toStdString(),
+                                                from.left(40).toStdString(),
+                                                pieces2[1].toInt(),
+                                                pieces3[1].toInt(),
+                                                e.second.toStdString());
+                    }
+                }
+            });
+    
 }
 
 CallbacksHandler::~CallbacksHandler()
