@@ -457,7 +457,7 @@ SET( libringclient_LIB_HDRS
 )
 
 SET(libringclient_api_LIB_HDRS
-  src/api/message.h
+  src/api/interaction.h
   src/api/conversation.h
   src/api/contact.h
   src/api/call.h
@@ -467,6 +467,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/newcallmodel.h
   src/api/contactmodel.h
   src/api/conversationmodel.h
+  src/api/profile.h
 )
 
 
