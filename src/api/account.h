@@ -18,8 +18,12 @@
  ***************************************************************************/
 #pragma once
 
+// Std
 #include <string>
 #include <memory>
+
+// Data
+#include "profile.h"
 
 namespace lrc
 {
@@ -41,14 +45,40 @@ enum class Type {
     SIP
 };
 
+enum class Status {
+    INVALID,
+    INITIALIZING,
+    UNREGISTERED,
+    TRYING,
+    REGISTERED
+};
+
+static account::Status
+StringToStatus(const std::string& type)
+{
+    if (type == "INITIALIZING") {
+        return account::Status::INITIALIZING;
+    } else if (type == "UNREGISTERED") {
+        return account::Status::UNREGISTERED;
+    } else if (type == "TRYING") {
+        return account::Status::TRYING;
+    } else if (type == "REGISTERED") {
+        return account::Status::REGISTERED;
+    } else
+        return account::Status::INVALID;
+}
+
 struct Info
 {
     std::string id;
-    Type type = account::Type::INVALID;
+    std::string registeredName;
+    bool enabled;
+    Status status = account::Status::INVALID;
+    lrc::api::profile::Info profileInfo;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
-    std::unique_ptr<lrc::api::NewAccountModel> accountModel;
+    lrc::api::NewAccountModel* accountModel {nullptr};
 };
 
 } // namespace account

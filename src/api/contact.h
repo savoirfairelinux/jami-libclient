@@ -21,6 +21,9 @@
 // Std
 #include <string>
 
+// Data
+#include "profile.h"
+
 namespace lrc
 {
 
@@ -30,21 +33,12 @@ namespace api
 namespace contact
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
-};
-
 struct Info
 {
-    std::string uri;
-    std::string avatar;
+    lrc::api::profile::Info profileInfo;
     std::string registeredName;
-    std::string alias;
     bool isTrusted = false;
     bool isPresent = false;
-    Type type = Type::INVALID;
 };
 
 } // namespace contact
