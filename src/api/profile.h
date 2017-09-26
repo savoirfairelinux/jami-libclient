@@ -1,7 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,8 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <ctime>
+// Std
 #include <string>
 
 namespace lrc
@@ -28,33 +27,58 @@ namespace lrc
 namespace api
 {
 
-namespace message
+namespace profile
 {
 
 enum class Type {
     INVALID,
-    TEXT,
-    CALL,
-    CONTACT
+    RING,
+    SIP,
+    PENDING,
+    TEMPORARY
 };
 
-enum class Status {
-    INVALID,
-    SENDING,
-    FAILED,
-    SUCCEED,
-    READ
-};
+static const std::string
+TypeToString(Type type)
+{
+    switch(type) {
+    case Type::RING:
+        return "RING";
+    case Type::SIP:
+        return "SIP";
+    case Type::PENDING:
+        return "PENDING";
+    case Type::TEMPORARY:
+        return "TEMPORARY";
+    case Type::INVALID:
+    default:
+        return "INVALID";
+    }
+}
+
+static Type
+StringToType(const std::string& type)
+{
+    if (type == "PENDING")
+        return Type::PENDING;
+    else if (type == "SIP")
+        return Type::SIP;
+    else if (type == "RING")
+        return Type::RING;
+    else if (type == "TEMPORARY")
+        return Type::TEMPORARY;
+    else
+        return Type::INVALID;
+}
 
 struct Info
 {
-    std::string contact;
-    std::string body;
-    std::time_t timestamp = 0;
+    std::string uri = "";
+    std::string avatar = "";
+    std::string alias = "";
     Type type = Type::INVALID;
-    Status status = Status::INVALID;
 };
 
-} // namespace message
+} // namespace profile
 } // namespace api
 } // namespace lrc
