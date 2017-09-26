@@ -323,8 +323,9 @@ ConversationModel::placeCall(const std::string& uid) const
 
     auto participant = conversation.participants.front();
     auto contact = owner.contactModel->getContact(participant);
-    pimpl_->sendContactRequest(participant);
     auto url = contact.uri;
+    if (url.empty()) return; // Incorrect item
+    pimpl_->sendContactRequest(participant);
     if (owner.profile.type != contact::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
@@ -369,7 +370,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         if (not conversation.callId.empty())
             owner.callModel->sendSipMessage(conversation.callId, body);
         else
-            owner.contactModel->sendDhtMessage(participant, body);
+            owner.contactModel->sendDhtMessage(contact.uri, body);
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
