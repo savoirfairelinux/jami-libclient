@@ -361,7 +361,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // This conversation is now at the top of the list
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
-    emit modelUpdated();
+    emit modelSorted();
 
 }
 
@@ -371,6 +371,7 @@ ConversationModel::setFilter(const std::string& filter)
     pimpl_->filter = filter;
     // Will update the temporary contact in the contactModel
     owner.contactModel->searchContact(filter);
+    emit filterChanged();
 }
 
 void
@@ -378,7 +379,7 @@ ConversationModel::setFilter(const contact::Type& filter)
 {
     // Switch between PENDING, RING and SIP contacts.
     pimpl_->typeFilter = filter;
-    emit modelUpdated();
+    emit filterChanged();
 }
 
 void
@@ -402,7 +403,8 @@ ConversationModel::clearHistory(const std::string& uid)
     // Update conversation
     conversation.messages.clear();
     database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
-    emit modelUpdated();
+    pimpl_->sortConversations();
+    emit modelSorted();
     emit conversationCleared(uid);
 }
 
@@ -542,10 +544,16 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, contactProfileId));
     }
     // Add the conversation if not already here
-    if (indexOf(conv[0]) == -1)
+    if (indexOf(conv[0]) == -1) {
         addConversationWith(conv[0], uri);
+        emit linked.newConversation(conv[0]);
+    }
     sortConversations();
-    emit linked.modelUpdated();
+    auto firstContactUri = conversations.front().participants.front();
+    if (firstContactUri.empty()) {
+        conversations.pop_front();
+    }
+    emit linked.modelSorted();
 }
 
 void
@@ -556,9 +564,10 @@ ConversationModelPimpl::slotContactRemoved(const std::string& uri)
         qDebug() << "ConversationModelPimpl::slotContactRemoved, but conversation not found";
         return; // Not a contact
     }
+    auto& conversationUid = conversations[conversationIdx].uid;
     conversations.erase(conversations.begin() + conversationIdx);
-    // Already sorted
-    emit linked.modelUpdated();
+    emit linked.conversationRemoved(conversationUid);
+    emit linked.modelSorted();
 }
 
 
@@ -594,7 +603,7 @@ ConversationModelPimpl::slotContactModelUpdated()
             }
         }
     }
-    emit linked.modelUpdated();
+    emit linked.modelSorted();
 }
 
 void
@@ -698,7 +707,7 @@ ConversationModelPimpl::addCallMessage(const std::string& callId, const std::str
     conversation.messages.emplace(msgId, msg);
     emit linked.newUnreadMessage(conversation.uid, msg);
     sortConversations();
-    emit linked.modelUpdated();
+    emit linked.modelSorted();
 }
 
 
@@ -726,12 +735,13 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     // Add the conversation if not already here
     if (conversationIdx == -1) {
         addConversationWith(conv[0], from);
+        emit linked.newConversation(conv[0]);
     } else {
         conversations[conversationIdx].messages.emplace(msgId, msg);
     }
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
-    emit linked.modelUpdated();
+    emit linked.modelSorted();
 }
 
 } // namespace lrc

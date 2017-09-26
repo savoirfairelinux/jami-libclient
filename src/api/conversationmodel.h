@@ -71,10 +71,30 @@ public:
     void clearHistory(const std::string& uid);
 
 Q_SIGNALS:
+    /**
+     * Emitted when a conversation receives a new message
+     */
     void newUnreadMessage(const std::string& uid, const message::Info& msg) const;
+    /**
+     * Emiited when user clear the history of a conversation
+     */
     void conversationCleared(const std::string& uid) const;
-    void conversationUpdated(unsigned int row);
-    void modelUpdated() const;
+    /**
+     * Emitted when conversations are sorted by last interaction
+     */
+    void modelSorted() const;
+    /**
+     * Emitted when filter has changed
+     */
+    void filterChanged() const;
+    /**
+     * Emitted when a conversation has been added
+     */
+    void newConversation(const std::string& uid) const;
+    /**
+     * Emitted when a conversation has been removed
+     */
+    void conversationRemoved(const std::string& uid) const;
     void incomingCallFromItem(const unsigned int row);
 
     void showChatView(const conversation::Info& conversationInfo) const; // TO MOVE
