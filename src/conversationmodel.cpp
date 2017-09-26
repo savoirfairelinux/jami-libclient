@@ -135,6 +135,7 @@ public Q_SLOTS:
     void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
+    void slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body);
 
 };
 
@@ -325,7 +326,11 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // NOTE: conferences are not implemented yet, so we have only one participant
     for (const auto& participant: conversation.participants) {
         pimpl_->sendContactRequest(participant);
-        owner.contactModel->sendDhtMessage(participant, body);
+
+        if (not conversation.callId.empty())
+            owner.callModel->sendSipMessage(conversation.callId, body);
+        else
+            owner.contactModel->sendDhtMessage(participant, body);
     }
 
     // Add message to database
@@ -336,7 +341,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // Update conversation
     conversation.messages.insert(std::pair<int, message::Info>(msgId, msg));
     conversation.lastMessageUid = msgId;
-    // Emit this signal for chatview in the client
+    // Emit this signal for chatview in the client // [jn] chatview too much gtk-client oriented...
     emit newUnreadMessage(uid, msg);
     // This conversation is now at the top of the list
     pimpl_->sortConversations();
@@ -413,6 +418,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callStatusChanged,
             this,
             &ConversationModelPimpl::slotCallStatusChanged);
+    connect(&callbacksHandler, &CallbacksHandler::incomingCallMessage, this, &ConversationModelPimpl::slotIncomingCallMessage);
 
     // Messages related
     connect(&callbacksHandler, &lrc::CallbacksHandler::NewAccountMessage,
@@ -652,7 +658,7 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     // [jn] il nous faut une table pour convertir accounit/uri et authorid/uri
     // [jn] il nous faut traiter le cas d'un message arrivant d'un peer inconnu.
 
-    // Add "Conversation started" message
+    // [jn] Add "Conversation started" if first message
     auto contactProfileId = database::getOrInsertProfile(db, from);
     auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
@@ -672,6 +678,33 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
     emit linked.modelUpdated();
+}
+
+void
+ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
+{
+        if (linked.owner.callModel->hasCall(callId)) {
+            // [jn] code dupliqué
+            auto contactProfileId = database::getOrInsertProfile(db, from);
+            auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
+            auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+            if (conv.empty()) {
+                conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
+            }
+            auto msg = message::Info({contactProfileId, body, std::time(nullptr),
+                                    message::Type::TEXT, message::Status::UNREAD});
+            int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+            auto conversationIdx = indexOf(conv[0]);
+            // Add the conversation if not already here
+            if (conversationIdx == -1) {
+                addConversationWith(conv[0], from);
+            } else {
+                conversations[conversationIdx].messages.emplace(msgId, msg);
+            }
+            emit linked.newUnreadMessage(conv[0], msg);
+            sortConversations();
+            emit linked.modelUpdated();
+        }
 }
 
 } // namespace lrc
