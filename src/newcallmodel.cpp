@@ -49,8 +49,6 @@ public:
     NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler);
     ~NewCallModelPimpl();
 
-    void sendMessage(const std::string& callId, const std::string& body) const;
-
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
@@ -299,7 +297,7 @@ NewCallModelPimpl::~NewCallModelPimpl()
 }
 
 void
-NewCallModelPimpl::sendMessage(const std::string& callId, const std::string& body) const
+NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
 {
     // cette fonction doit etre appellé depuis le sendmessage de conversation
     // la fonction sendmessage de conversation doit etre friend
@@ -410,6 +408,12 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
         }
         
     }
+}
+
+bool
+NewCallModel::hasCall(const std::string& callId)
+{
+    return (pimpl_->calls.find(callId) != pimpl_->calls.end()) ? true : false;
 }
 
 } // namespace lrc
