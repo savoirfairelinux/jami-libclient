@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_a1999570",
+        "filename": "src/api/account.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-26T15:06:26Z",
+      "side": 1,
+      "message": "we have to talk!",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 98
+      },
+      "revId": "25baa30c33d795050e255345b9a3acd85f1e371c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_618f8d24",
+        "filename": "src/api/contact.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-09-26T15:06:26Z",
+      "side": 1,
+      "message": "edit",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 14
+      },
+      "revId": "25baa30c33d795050e255345b9a3acd85f1e371c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
