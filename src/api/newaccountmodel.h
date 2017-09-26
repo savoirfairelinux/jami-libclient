@@ -67,6 +67,8 @@ public:
 Q_SIGNALS: // [jn] docs!
     void incomingCall(const std::string& accountId, const std::string& contactUri);
     void accountStatusChanged(const std::string& accountID);
+    void accountAdded(const std::string& accountID);
+    void accountRemoved(const std::string& accountID);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
