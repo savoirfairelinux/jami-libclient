@@ -151,6 +151,7 @@ public Q_SLOTS:
     void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
+    void slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body);
 
 };
 
@@ -365,7 +366,10 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     for (const auto& participant: conversation.participants) {
         auto contact = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
-        owner.contactModel->sendDhtMessage(contact.uri, body);
+        if (not conversation.callId.empty())
+            owner.callModel->sendSipMessage(conversation.callId, body);
+        else
+            owner.contactModel->sendDhtMessage(participant, body);
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
@@ -461,6 +465,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     // Messages related
     connect(&*linked.owner.contactModel, &lrc::ContactModel::newAccountMessage,
             this, &ConversationModelPimpl::slotNewAccountMessage);
+    connect(&callbacksHandler, &CallbacksHandler::incomingCallMessage,
+            this, &ConversationModelPimpl::slotIncomingCallMessage);
 
     // Call related
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
@@ -753,7 +759,7 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     // [jn] il nous faut une table pour convertir accounit/uri et authorid/uri
     // [jn] il nous faut traiter le cas d'un message arrivant d'un peer inconnu.
 
-    // Add "Conversation started" message
+    // [jn] Add "Conversation started" if first message
     auto contactProfileId = database::getOrInsertProfile(db, from);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
@@ -773,6 +779,33 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
     emit linked.modelSorted();
+}
+
+void
+ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
+{
+        if (linked.owner.callModel->hasCall(callId)) {
+            // [jn] code dupliqué
+            auto contactProfileId = database::getOrInsertProfile(db, from);
+            auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
+            auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+            if (conv.empty()) {
+                conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
+            }
+            auto msg = message::Info({contactProfileId, body, std::time(nullptr),
+                                    message::Type::TEXT, message::Status::UNREAD});
+            int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+            auto conversationIdx = indexOf(conv[0]);
+            // Add the conversation if not already here
+            if (conversationIdx == -1) {
+                addConversationWith(conv[0], from);
+            } else {
+                conversations[conversationIdx].messages.emplace(msgId, msg);
+            }
+            emit linked.newUnreadMessage(conv[0], msg);
+            sortConversations();
+            emit linked.modelUpdated();
+        }
 }
 
 } // namespace lrc
