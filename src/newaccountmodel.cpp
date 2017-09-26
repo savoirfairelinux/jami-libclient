@@ -24,8 +24,11 @@
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 #include "api/account.h"
+#include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
+
+#include "accountmodel.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
@@ -51,9 +54,14 @@ public:
     void addAcountProfileInDb(const account::Info& info);
     void addToAccounts(const std::string& accountId);
 
+    std::vector<std::string> newAccountsId;
+
 public Q_SLOTS:
     void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
     void slotAccountStatusChanged(const std::string& accountID, const api::account::Status status);
+    void slotAccountAdded(Account* account);
+    void slotAccountRemoved(Account* account);
+    void slotAccountUpdated();
 };
 
 NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
@@ -101,6 +109,11 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewAccountModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
+
+    // NOTE: because we still use the old LRC for configuration, we still use old signals,
+    connect(&AccountModel::instance(), &AccountModel::accountAdded, this,  &NewAccountModelPimpl::slotAccountAdded);
+    connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
+    connect(&AccountModel::instance(), &AccountModel::accountListUpdated, this,  &NewAccountModelPimpl::slotAccountUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -170,6 +183,34 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
     owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
     owner.accountModel = &linked;
+}
+
+void
+NewAccountModelPimpl::slotAccountAdded(Account* account)
+{
+    newAccountsId.emplace_back(account->id().toStdString());
+    // NOTE: The account is not correct yet. we need to wait for accountListUpdated
+}
+
+void
+NewAccountModelPimpl::slotAccountUpdated()
+{
+    if (newAccountsId.empty()) return;
+    // Accounts are now ready
+    for (const auto& accountId: newAccountsId) {
+        addToAccounts(accountId);
+        emit linked.accountAdded(accountId);
+    }
+    newAccountsId.clear();
+}
+
+void
+NewAccountModelPimpl::slotAccountRemoved(Account* account)
+{
+    auto accountId = account->id().toStdString();
+    authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
+    accounts.erase(accountId);
+    emit linked.accountRemoved(accountId);
 }
 
 } // namespace lrc
