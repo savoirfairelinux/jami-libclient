@@ -197,6 +197,24 @@ void removeContact(Database& db, const std::string& accountUri, const std::strin
     }
 }
 
+void removeAccount(Database& db, const std::string& accountUri)
+{
+    auto accountProfileId = database::getProfileId(db, accountUri);
+    auto conversationsForAccount = getConversationsForProfile(db, accountProfileId);
+    for (const auto& convId: conversationsForAccount) {
+        auto peers = getPeerParticipantsForConversation(db, accountProfileId, convId);
+        db.deleteFrom("conversations", "id=:id", {{":id", convId}});
+        db.deleteFrom("interactions", "conversation_id=:id", {{":id", convId}});
+        for (const auto& peerId: peers) {
+            auto otherConversationsForProfile = getConversationsForProfile(db, peerId);
+            if (otherConversationsForProfile.empty()) {
+                db.deleteFrom("profiles", "id=:id", {{":id", peerId}});
+            }
+        }
+    }
+    db.deleteFrom("profiles", "id=:id", {{":id", accountProfileId}});
+}
+
 void addContact(Database& db, const std::string& accountUri, const std::string& contactUri)
 {
     // Get profile for contact

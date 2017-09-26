@@ -105,6 +105,7 @@ int addMessageToConversation(Database& db,
  */
 void clearHistory(Database& db,
                   const std::string& conversationId);
+
 /**
  * Remove a conversation between current account and a contact. Remove corresponding entries in
  * the conversations table and profiles if the profile is linked to no conversations.
@@ -112,6 +113,13 @@ void clearHistory(Database& db,
  * @param contactUri
  */
 void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+
+/**
+ * Remove conversations and profiles linked to an account
+ * @param db
+ * @param accountUri
+ */
+void removeAccount(Database& db, const std::string& accountUri);
 
 /**
  * insert profiles and begin conversations
