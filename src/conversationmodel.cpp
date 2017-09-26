@@ -317,13 +317,29 @@ ConversationModel::placeCall(const std::string& uid) const
         return;
     }
 
-    auto contactUri = conversation.participants.front();
-    pimpl_->sendContactRequest(contactUri);
-    auto url = owner.contactModel->getContact(contactUri).uri;
+    auto convId = uid;
+    auto accountId = pimpl_->accountProfileId;
+
+    auto participant = conversation.participants.front();
+    auto contact = owner.contactModel->getContact(participant);
+    pimpl_->sendContactRequest(participant);
+    auto url = contact.uri;
     if (owner.profile.type != contact::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
     conversation.callId = owner.callModel->createCall(url);
+    if (convId.empty()) {
+        // The conversation has changed because it was with the temporary item
+        auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
+        auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
+        if (common.empty()) return;
+        convId = common.front();
+        // Get new conversation
+        conversationIdx = pimpl_->indexOf(convId);
+        if (conversationIdx == -1)
+            return;
+        conversation = pimpl_->conversations.at(conversationIdx);
+    }
     emit showIncomingCallView(conversation);
 }
 
@@ -341,23 +357,38 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         return;
     }
 
+    auto convId = uid;
+    auto accountId = pimpl_->accountProfileId;
+
     // Send message to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
     for (const auto& participant: conversation.participants) {
+        auto contact = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
-        owner.contactModel->sendDhtMessage(participant, body);
+        owner.contactModel->sendDhtMessage(contact.uri, body);
+        if (convId.empty()) {
+            // The conversation has changed because it was with the temporary item
+            auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
+            auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
+            if (common.empty()) return;
+            convId = common.front();
+            // Get new conversation
+            conversationIdx = pimpl_->indexOf(convId);
+            if (conversationIdx == -1)
+                return;
+            conversation = pimpl_->conversations.at(conversationIdx);
+        }
     }
 
     // Add message to database
-    auto accountId = pimpl_->accountProfileId;
     auto msg = message::Info({accountId, body, std::time(nullptr),
                             message::Type::TEXT, message::Status::SENDING});
-    int msgId = database::addMessageToConversation(pimpl_->db, accountId, uid, msg);
+    int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
     // Update conversation
     conversation.messages.insert(std::pair<int, message::Info>(msgId, msg));
     conversation.lastMessageUid = msgId;
     // Emit this signal for chatview in the client
-    emit newUnreadMessage(uid, msg);
+    emit newUnreadMessage(convId, msg);
     // This conversation is now at the top of the list
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
