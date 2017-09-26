@@ -1,7 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -21,6 +21,9 @@
 // Std
 #include <string>
 
+// Data
+#include "profile.h"
+
 namespace lrc
 {
 
@@ -30,21 +33,12 @@ namespace api
 namespace contact
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
-};
-
 struct Info
 {
-    std::string uri;
-    std::string avatar;
+    profile::Info profileInfo;
     std::string registeredName;
-    std::string alias;
     bool isTrusted = false;
     bool isPresent = false;
-    Type type = Type::INVALID;
 };
 
 } // namespace contact

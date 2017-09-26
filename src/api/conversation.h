@@ -1,7 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
- *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
- *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -23,7 +23,7 @@
 #include <map>
 
 // Data
-#include "message.h"
+#include "interaction.h"
 
 namespace lrc
 {
@@ -36,13 +36,12 @@ namespace conversation
 
 struct Info
 {
-    std::string uid;
+    std::string uid = "";
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
-    std::map<int, message::Info> messages;
+    std::map<int, interaction::Info> interactions;
     unsigned int lastMessageUid = 0;
-    bool isUsed = false;
     unsigned int unreadMessages = 0;
 };
 
