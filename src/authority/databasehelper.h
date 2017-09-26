@@ -138,7 +138,6 @@ void clearHistory(Database& db,
  */
 void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
 
-/**
  * Remove from conversations and profiles linked to an account.
  * @param db
  * @param accountUri
