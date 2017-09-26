@@ -26,6 +26,7 @@
 
 // Lrc
 #include "typedefs.h"
+#include "namedirectory.h"
 
 namespace lrc
 {
@@ -33,6 +34,11 @@ namespace lrc
 namespace api
 {
 class Lrc;
+
+namespace account
+{
+    enum class Status;
+}
 }
 
 class CallbacksHandler : public QObject {
@@ -49,9 +55,9 @@ Q_SIGNALS:
      * @param from, message sender.
      * @param payloads.
      */
-    void NewAccountMessage(const std::string& accountId,
-                           const std::string& toStdString,
-                           const std::map<std::string,std::string> payloads) const;
+    void NewAccountMessage(std::string& accountId,
+                           std::string& from,
+                           std::map<std::string,std::string> payloads) const;
     /**
      * Connect this signal to get information when a peer is online.
      * @param contactUri, the peer.
@@ -65,12 +71,25 @@ Q_SIGNALS:
      */
     void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned) const;
     /**
-     * Connect this signal to know when a contact was addeb by the daemon.
+     * Connect this signal to know when a contact is added by the daemon.
      * @param accountId, the one who got a new contact.
      * @param contactUri, the new contact.
      * @param confirmed, true if the contact is trusted.
      */
     void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed) const;
+    /**
+     * Connect this signal to know when an incoming request is added by the daemon
+     * @param accountId, the one who got the request
+     * @param ringID the peer contact
+     * @param payload the VCard
+     */
+    void incomingContactRequest(const std::string& accountId, const std::string& ringID, const std::string& payload);
+    void incomingCall(const std::string& accountID, const std::string& callID, const std::string& fromId);
+    void callStateChanged(const std::string& callId, const std::string &state, int code);
+    void accountStatusChanged(const std::string& accountID, const api::account::Status status);
+    void registeredNameFound(const std::string& accountId, const std::string& uri, const std::string& registeredName);
+    void incomingVcardChunk(const std::string& callId, const std::string& from, int part, int numberOfParts, const std::string& payload);
+    void incomingCallMessage(const std::string& callId, const std::string& from, const std::string& body) const;
 
 private Q_SLOTS:
     /**
@@ -102,6 +121,31 @@ private Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+
+    /**
+     * Get a new incoming request
+     * @param accountId the linked id
+     * @param ringID   the peer contact
+     * @param payload  the VCard
+     * @param time     when the request was received
+     */
+    void slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time);
+    /**
+     *
+     */
+    void slotRegistrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
+
+    /**
+     * Listen from the daemon when a contact is found.
+     * @param account account linked.
+     * @param status  if the method succeeds
+     * @param address [description]
+     * @param name    [description]
+     */
+    void slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                                 const QString& address, const QString& name);
+    void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
+    void slotCallStateChanged(const QString& callId, const QString &state, int code);
 
 private:
     const api::Lrc& parent;

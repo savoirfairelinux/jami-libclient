@@ -19,12 +19,16 @@
 #include "callbackshandler.h"
 
 // Models and database
+#include "api/account.h"
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 
-// Dbus
+// Lrc
+#include "account.h"
+#include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
+#include "namedirectory.h"
 
 namespace lrc
 {
@@ -55,6 +59,52 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::contactRemoved,
             this,
             &CallbacksHandler::slotContactRemoved);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::incomingTrustRequest,
+            this,
+            &CallbacksHandler::slotIncomingContactRequest);
+    connect(&NameDirectory::instance(),
+            &NameDirectory::registeredNameFound,
+            this,
+            &CallbacksHandler::slotRegisteredNameFound);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::registrationStateChanged,
+            this,
+            &CallbacksHandler::slotRegistrationStateChanged);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::incomingCall,
+            this,
+            &CallbacksHandler::slotIncomingCall);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::callStateChanged,
+            this,
+            &CallbacksHandler::slotCallStateChanged);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::incomingMessage,
+            this,
+            [this] (const QString& callId, const QString& from, const QMap<QString,QString>& message) {
+                auto from2 = from.left(40).toStdString();
+                for (auto& e : message.toStdMap()) {
+                    if (e.first.contains("x-ring/ring.profile.vcard")) {
+                        auto pieces0 = e.first.split( ";" );
+                        auto pieces1 = pieces0[1].split( "," );
+                        auto pieces2 = pieces1[1].split( "=" );
+                        auto pieces3 = pieces1[2].split( "=" );
+                        emit incomingVcardChunk(callId.toStdString(),
+                                                from2,
+                                                pieces2[1].toInt(),
+                                                pieces3[1].toInt(),
+                                                e.second.toStdString());
+                    } else { // we consider it as an usual message
+                        emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
+                    }
+                }
+            });
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -69,10 +119,14 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
 {
     std::map<std::string,std::string> stdPayloads;
 
-    for (auto item : payloads.keys())
+    for (auto item : payloads.keys()) {
         stdPayloads[item.toStdString()] = payloads.value(item).toStdString();
+    }
 
-    emit NewAccountMessage(accountId.toStdString(), from.toStdString(), stdPayloads);
+    auto accountId2 = accountId.toStdString();
+    auto from2 = from.toStdString();
+
+    emit NewAccountMessage(accountId2, from2, stdPayloads);
 }
 
 void
@@ -99,5 +153,56 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
 {
     emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
 }
+
+void
+CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
+                                             const QString& ringID,
+                                             const QByteArray& payload,
+                                             time_t time)
+{
+    Q_UNUSED(time)
+    emit incomingContactRequest(accountId.toStdString(), ringID.toStdString(), payload.toStdString());
+}
+
+void
+CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
+                                          const QString& address, const QString& name)
+{
+    if (!account) return;
+    if (status == NameDirectory::LookupStatus::SUCCESS) {
+        emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
+    }
+}
+
+void
+CallbacksHandler::slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString)
+{
+    auto from = fromQString.toStdString();
+
+    // during a call we receiving something like :
+    // "gargouille <6f42876966f3eb12c5ad33c33398e0fb22c6cea4@ring.dht>"
+    // we trim to get only the ringid
+    from.erase(0, from.find('<')+1); // [jn] voir si on peut améliorer ça...
+    from.erase(from.find('@'));
+
+    emit incomingCall(accountID.toStdString(), callID.toStdString(), from);
+}
+
+void
+CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
+{
+    emit callStateChanged(callId.toStdString(), state.toStdString(), code);
+}
+
+void
+CallbacksHandler::slotRegistrationStateChanged(const QString& accountID,
+                                               const QString& registration_state,
+                                               unsigned detail_code,
+                                               const QString& detail_str)
+{
+    emit accountStatusChanged(accountID.toStdString(), lrc::api::account::StringToStatus(registration_state.toStdString()));
+
+}
+
 
 } // namespace lrc
