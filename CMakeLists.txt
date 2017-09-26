@@ -300,6 +300,8 @@ SET( libringclient_LIB_SRCS
   src/newcallmodel.cpp
   src/conversationmodel.cpp
   src/database.cpp
+  src/authority/daemon.cpp
+  src/authority/databasehelper.cpp
   src/lrc.cpp
   src/newaccountmodel.cpp
   src/callbackshandler.cpp
