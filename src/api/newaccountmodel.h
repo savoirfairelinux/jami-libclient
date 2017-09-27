@@ -62,9 +62,9 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const account::Info& getAccountInfo(const std::string& accountId) const; // [jn] we should not send a ref but a copy, the client has no authority to edit anything
+    const account::Info& getAccountInfo(const std::string& accountId) const;
 
-Q_SIGNALS: // [jn] docs!
+Q_SIGNALS:
     void incomingCall(const std::string& accountId, const std::string& contactUri);
     void accountStatusChanged(const std::string& accountID);
 

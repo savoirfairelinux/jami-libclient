@@ -19,7 +19,7 @@ void addContact(const api::account::Info& owner, const std::string& uri)
 void addToContacts(const api::account::Info& owner, api::contact::Info& contactInfo)
 {
     ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-    QString(contactInfo.uri.c_str()));
+    QString(contactInfo.profileInfo.uri.c_str()));
 }
 
 void removeContact(const api::account::Info& owner, const std::string& contactUri, bool banned)

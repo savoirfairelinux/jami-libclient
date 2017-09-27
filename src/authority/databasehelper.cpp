@@ -1,4 +1,6 @@
+// [jn] add copyright
 #include "databasehelper.h"
+#include "api/profile.h"
 
 namespace lrc
 {
@@ -79,8 +81,10 @@ api::contact::Info buildContactFromProfileId(Database& db, const std::string& pr
                                   {{":id", profileId}});
     if (returnFromDb.nbrOfCols == 4 && returnFromDb.payloads.size() >= 4) {
       auto payloads = returnFromDb.payloads;
-      return {payloads[0], payloads[1], payloads[2], payloads[2],
-                              true, false, api::contact::StringToType(payloads[3])};
+
+      api::profile::Info profileInfo = {payloads[0], payloads[1], payloads[2], api::profile::StringToType(payloads[3])};
+
+      return {profileInfo ,"" ,true, false};
     }
     return api::contact::Info();
 }

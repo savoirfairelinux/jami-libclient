@@ -32,7 +32,7 @@
 
 // Data
 #include "api/conversation.h"
-#include "api/contact.h"
+#include "api/profile.h"
 
 namespace lrc
 {
@@ -66,7 +66,7 @@ public:
     void placeCall(const std::string& uid) const;
     void sendMessage(const std::string& uid, const std::string& body) const;
     void setFilter(const std::string& filter);
-    void setFilter(const contact::Type& filter = lrc::api::contact::Type::INVALID);
+    void setFilter(const profile::Type& filter = profile::Type::INVALID);
     void addParticipant(const std::string& uid, const::std::string& uri);
     void clearHistory(const std::string& uid);
 

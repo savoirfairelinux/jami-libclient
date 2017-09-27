@@ -469,6 +469,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/newcallmodel.h
   src/api/contactmodel.h
   src/api/conversationmodel.h
+  src/api/profile.h
 )
 
 
