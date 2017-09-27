@@ -78,6 +78,11 @@ public:
      */
     const contact::Info getContact(const std::string& contactUri) const;
     /**
+     * @param  contactUri
+     * @return "" if no contact, else the uri in db
+     */
+    const std::string getContactProfileId(const std::string& contactUri) const;
+    /**
      * @return all contacts for this account.
      */
     const ContactInfoMap& getAllContacts() const;
