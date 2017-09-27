@@ -23,7 +23,7 @@
 #include <map>
 
 // Data
-#include "message.h"
+#include "interaction.h"
 
 namespace lrc
 {
@@ -40,7 +40,7 @@ struct Info
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
-    std::map<int, message::Info> messages;
+    std::map<int, interaction::Info> interactions;
     unsigned int lastMessageUid = 0;
     unsigned int unreadMessages = 0;
 };

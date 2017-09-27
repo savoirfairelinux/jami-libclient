@@ -22,6 +22,9 @@
 #include <string>
 #include <ctime>
 
+// Qt
+#include <QObject>
+
 namespace lrc
 {
 
@@ -47,6 +50,44 @@ enum class Status {
     CONNECTED,
     AUTO_ANSWERING
 };
+
+static const std::string
+StatusToString(const call::Status& status)
+{
+    switch(status)
+    {
+    case call::Status::PAUSED:
+        return QObject::tr("Hold").toStdString();
+    case call::Status::IN_PROGRESS:
+        return QObject::tr("Talking").toStdString();
+    case call::Status::INVALID:
+        return QObject::tr("ERROR").toStdString();
+    case call::Status::OUTGOING_REQUESTED:
+        return QObject::tr("Outgoing requested").toStdString();
+    case call::Status::INCOMING_RINGING:
+        return QObject::tr("Incoming").toStdString();
+    case call::Status::OUTGOING_RINGING:
+        return QObject::tr("Calling").toStdString();
+    case call::Status::CONNECTING:
+        return QObject::tr("Connecting").toStdString();
+    case call::Status::SEARCHING:
+        return QObject::tr("Searching").toStdString();
+    case call::Status::PEER_PAUSED:
+        return QObject::tr("Hold").toStdString();
+    case call::Status::INACTIVE:
+        return QObject::tr("Inactive").toStdString();
+    case call::Status::ENDED:
+        return QObject::tr("Finished").toStdString();
+    case call::Status::TERMINATING:
+        return QObject::tr("Finished").toStdString();
+    case call::Status::CONNECTED:
+        return QObject::tr("Communication established").toStdString();
+    case call::Status::AUTO_ANSWERING:
+        return QObject::tr("Auto answering").toStdString();
+        break;
+    }
+}
+
 
 struct Info
 {

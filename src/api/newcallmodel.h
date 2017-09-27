@@ -70,12 +70,12 @@ public:
     const std::string createCall(const std::string& url);
     const call::Info& getCall(const std::string& uid) const;
     const call::Info& getCallFromURI(const std::string& uri) const;
-    static std::string humanReadableStatus(const call::Status& status); // [jn]  StatusToString ?
     bool hasCall(const std::string& callId);
     void sendSipMessage(const std::string& callId, const std::string& body) const;
 
     void accept(const std::string& callId) const;
     void hangUp(const std::string& callId) const;
+    void toggleAudioRecord(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
     void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;

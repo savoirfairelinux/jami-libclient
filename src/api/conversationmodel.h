@@ -32,7 +32,7 @@
 
 // Data
 #include "api/conversation.h"
-#include "api/contact.h"
+#include "api/profile.h"
 
 namespace lrc
 {
@@ -45,7 +45,7 @@ namespace api
 {
 
 namespace account { struct Info; }
-namespace message { struct Info; }
+namespace interaction { struct Info; }
 class NewAccountModel;
 
 class LIB_EXPORT ConversationModel : public QObject {
@@ -66,15 +66,15 @@ public:
     void placeCall(const std::string& uid) const;
     void sendMessage(const std::string& uid, const std::string& body) const;
     void setFilter(const std::string& filter);
-    void setFilter(const contact::Type& filter = lrc::api::contact::Type::INVALID);
+    void setFilter(const profile::Type& filter = profile::Type::INVALID);
     void addParticipant(const std::string& uid, const::std::string& uri);
     void clearHistory(const std::string& uid);
 
 Q_SIGNALS:
     /**
-     * Emitted when a conversation receives a new message
+     * Emitted when a conversation receives a new interaction
      */
-    void newUnreadMessage(const std::string& uid, const message::Info& msg) const;
+    void newUnreadMessage(const std::string& uid, const interaction::Info& msg) const;
     /**
      * Emiited when user clear the history of a conversation
      */

@@ -50,9 +50,9 @@ public:
 
 Q_SIGNALS:
     /**
-     * Connect this signal to get incoming message.
-     * @param accountId, message reciever.
-     * @param from, message sender.
+     * Connect this signal to get incoming interaction.
+     * @param accountId, interaction reciever.
+     * @param from, interaction sender.
      * @param payloads.
      */
     void NewAccountMessage(std::string& accountId,
@@ -93,10 +93,10 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     /**
-     * Add the incoming message from the daemon to the database
+     * Add the incoming interaction from the daemon to the database
      * @param accountId
      * @param from
-     * @param payloads of the message
+     * @param payloads of the interaction
      */
     void slotNewAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads);
     /**
@@ -104,9 +104,9 @@ private Q_SLOTS:
      * @param accountId
      * @param contactUri
      * @param status if the contact is present
-     * @param message unused for now
+     * @param interaction unused for now
      */
-    void slotNewBuddySubscription(const QString& accountId, const QString& contactUri, bool status, const QString& message);
+    void slotNewBuddySubscription(const QString& accountId, const QString& contactUri, bool status, const QString& interaction);
     /**
      * Add a contact in the contact list of an account
      * @param accountId

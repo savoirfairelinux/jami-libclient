@@ -21,6 +21,9 @@
 // Std
 #include <string>
 
+// Data
+#include "profile.h"
+
 namespace lrc
 {
 
@@ -30,58 +33,12 @@ namespace api
 namespace contact
 {
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP,
-    PENDING,
-    TEMPORARY
-};
-
-static const std::string
-TypeToString(Type type)
-{
-    switch(type) {
-    case Type::INVALID:
-        return "INVALID";
-    case Type::RING:
-        return "RING";
-    case Type::SIP:
-        return "SIP";
-    case Type::PENDING:
-        return "PENDING";
-    case Type::TEMPORARY:
-        return "TEMPORARY";
-    }
-
-    //throw something
-    return "";
-}
-
-static Type
-StringToType(const std::string& type)
-{
-    if (type == "PENDING") {
-        return contact::Type::PENDING;
-    } else if (type == "SIP") {
-        return contact::Type::SIP;
-    } else if (type == "RING") {
-        return contact::Type::RING;
-    } else if (type == "TEMPORARY") {
-        return contact::Type::TEMPORARY;
-    }
-    return contact::Type::INVALID;
-}
-
 struct Info
 {
-    std::string uri;
-    std::string avatar;
+    lrc::api::profile::Info profileInfo;
     std::string registeredName;
-    std::string alias;
     bool isTrusted = false;
     bool isPresent = false;
-    Type type = Type::INVALID;
 };
 
 } // namespace contact

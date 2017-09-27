@@ -1,4 +1,6 @@
+// [jn] add copyright
 #include "databasehelper.h"
+#include "api/profile.h"
 
 namespace lrc
 {
@@ -79,8 +81,10 @@ api::contact::Info buildContactFromProfileId(Database& db, const std::string& pr
                                   {{":id", profileId}});
     if (returnFromDb.nbrOfCols == 4 && returnFromDb.payloads.size() >= 4) {
       auto payloads = returnFromDb.payloads;
-      return {payloads[0], payloads[1], payloads[2], payloads[2],
-                              true, false, api::contact::StringToType(payloads[3])};
+
+      api::profile::Info profileInfo = {payloads[0], payloads[1], payloads[2], api::profile::StringToType(payloads[3])};
+
+      return {profileInfo ,"" ,true, false};
     }
     return api::contact::Info();
 }
@@ -116,7 +120,7 @@ std::string beginConversationsBetween(Database& db,
     db.insertInto("conversations",
                   {{":id", "id"}, {":participant_id", "participant_id"}},
                   {{":id", newConversationsId}, {":participant_id", contactProfile}});
-    // Add "Conversation started" message
+    // Add "Conversation started" interaction
     db.insertInto("interactions",
                   {{":account_id", "account_id"}, {":author_id", "author_id"},
                   {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
@@ -133,18 +137,18 @@ std::string beginConversationsBetween(Database& db,
 
 void getHistory(Database& db, api::conversation::Info& conversation)
 {
-    auto messagesResult = db.select("id, author_id, body, timestamp, type, status",
+    auto interactionsResult = db.select("id, author_id, body, timestamp, type, status",
                                     "interactions",
                                     "conversation_id=:conversation_id",
                                     {{":conversation_id", conversation.uid}});
-    if (messagesResult.nbrOfCols == 6) {
-        auto payloads = messagesResult.payloads;
+    if (interactionsResult.nbrOfCols == 6) {
+        auto payloads = interactionsResult.payloads;
         for (auto i = 0; i < payloads.size(); i += 6) {
-            auto msg = api::message::Info({payloads[i + 1], payloads[i + 2],
+            auto msg = api::interaction::Info({payloads[i + 1], payloads[i + 2],
                                          std::stoi(payloads[i + 3]),
-                                         api::message::StringToType(payloads[i + 4]),
-                                         api::message::StringToStatus(payloads[i + 5])});
-            conversation.messages.emplace(std::stoi(payloads[i]), std::move(msg));
+                                         api::interaction::StringToType(payloads[i + 4]),
+                                         api::interaction::StringToStatus(payloads[i + 5])});
+            conversation.interactions.emplace(std::stoi(payloads[i]), std::move(msg));
             conversation.lastMessageUid = std::stoi(payloads[i]);
         }
     }
@@ -153,7 +157,7 @@ void getHistory(Database& db, api::conversation::Info& conversation)
 int addMessageToConversation(Database& db,
                               const std::string& accountProfile,
                               const std::string& conversationId,
-                              const api::message::Info& msg)
+                              const api::interaction::Info& msg)
 {
     return db.insertInto("interactions",
                           {{":account_id", "account_id"}, {":author_id", "author_id"},
@@ -195,6 +199,24 @@ void removeContact(Database& db, const std::string& accountUri, const std::strin
         // Delete profile
         db.deleteFrom("profiles", "id=:id", {{":id", contactId[0]}});
     }
+}
+
+void removeAccount(Database& db, const std::string& accountUri)
+{
+    auto accountProfileId = database::getProfileId(db, accountUri);
+    auto conversationsForAccount = getConversationsForProfile(db, accountProfileId);
+    for (const auto& convId: conversationsForAccount) {
+        auto peers = getPeerParticipantsForConversation(db, accountProfileId, convId);
+        db.deleteFrom("conversations", "id=:id", {{":id", convId}});
+        db.deleteFrom("interactions", "conversation_id=:id", {{":id", convId}});
+        for (const auto& peerId: peers) {
+            auto otherConversationsForProfile = getConversationsForProfile(db, peerId);
+            if (otherConversationsForProfile.empty()) {
+                db.deleteFrom("profiles", "id=:id", {{":id", peerId}});
+            }
+        }
+    }
+    db.deleteFrom("profiles", "id=:id", {{":id", accountProfileId}});
 }
 
 void addContact(Database& db, const std::string& accountUri, const std::string& contactUri)
