@@ -271,7 +271,9 @@ NewCallModel::sendSipMessage(const std::string& callId, const std::string& body)
     QMap<QString, QString> payloads;
     payloads["text/plain"] = body.c_str();
 
-    CallManager::instance().sendTextMessage(callId.c_str(), payloads, true /* not used */);
+    qDebug() << "@ sendSipMessage : " << callId.c_str();
+
+    CallManager::instance().sendTextMessage(callId.c_str(), payloads,true /* not used */);
 
     // l'ajout du interaction dans la db doit se faire depuis conversatoin
 }

@@ -86,9 +86,20 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
 
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
-            this,
+            this, // [jn] move it to a function
             [this] (const QString& callId, const QString& from, const QMap<QString,QString>& interaction) {
-                auto from2 = from.left(40).toStdString();
+
+                std::string from2;
+
+                if (from.contains("ring.dht")) {
+                    from2 = from.left(40).toStdString();
+                }
+                else {
+                    auto left = from.indexOf(":")+1;
+                    auto right = from.indexOf("@");
+                    from2 = from.mid(left, right-left).toStdString();
+                }
+
                 for (auto& e : interaction.toStdMap()) {
                     if (e.first.contains("x-ring/ring.profile.vcard")) {
                         auto pieces0 = e.first.split( ";" );
@@ -100,7 +111,7 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
                                                 pieces2[1].toInt(),
                                                 pieces3[1].toInt(),
                                                 e.second.toStdString());
-                    } else { // we consider it as an usual interaction
+                    } else { // we consider it as an usual message interaction
                         emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
                     }
                 }
@@ -185,6 +196,7 @@ CallbacksHandler::slotIncomingCall(const QString &accountID, const QString &call
         auto left = fromQString.indexOf("<")+1;
         auto right = fromQString.indexOf("@");
         auto fromQString2 = fromQString.mid(left, right-left);
+
         emit incomingCall(accountID.toStdString(), callID.toStdString(), fromQString2.toStdString());
     }
 }
