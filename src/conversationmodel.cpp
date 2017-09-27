@@ -350,6 +350,7 @@ ConversationModel::placeCall(const std::string& uid) const
 void
 ConversationModel::sendMessage(const std::string& uid, const std::string& body) const
 {
+    qDebug() << "@ : " << uid.c_str();
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
         return;
