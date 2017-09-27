@@ -251,6 +251,25 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
+
+    // Init call list
+    QStringList callList = CallManager::instance().getCallList();
+    for (const auto& callId: callList)
+    {
+        QMap<QString, QString> details = CallManager::instance().getCallDetails(callId);
+        auto accountId = details["ACCOUNTID"].toStdString();
+        if (accountId == linked.owner.id) {
+            auto callInfo = std::make_shared<call::Info>();
+            callInfo->id = callId.toStdString();
+            callInfo->startTime = std::stoi(details["TIMESTAMP_START"].toStdString());
+            callInfo->status =  call::StringToStatus(details["CALL_STATE"].toStdString());
+            auto endId = details["PEER_NUMBER"].indexOf("@");
+            callInfo->peer = details["PEER_NUMBER"].left(endId).toStdString();
+            callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
+            callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
+            calls[callId.toStdString()] = callInfo;
+        }
+    }
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
