@@ -363,7 +363,7 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
                     else if (e.contains("FN"))
                         profileInfo.alias = e.split( ":" )[1].toStdString();
 
-                contact::Info contactInfo = {profileInfo, "", false, false};
+                contact::Info contactInfo = {profileInfo, "", true, true};
 
                 linked.owner.contactModel->addContact(contactInfo);
             }
