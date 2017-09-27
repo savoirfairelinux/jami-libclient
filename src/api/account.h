@@ -23,7 +23,7 @@
 #include <memory>
 
 // Data
-#include "contact.h"
+#include "profile.h"
 
 namespace lrc
 {
@@ -71,9 +71,10 @@ StringToStatus(const std::string& type)
 struct Info
 {
     std::string id;
+    std::string registeredName;
     bool enabled;
     Status status = account::Status::INVALID;
-    contact::Info profile;  // TODO: not the best, we should separate profile and contact::Info...
+    lrc::api::profile::Info profileInfo;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;

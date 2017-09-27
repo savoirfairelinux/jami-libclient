@@ -92,6 +92,8 @@ public:
      * @param body
      */
     void addCallMessage(const std::string& callId, const std::string& body);
+    
+    void addIncomingMessage(const std::string& from, const std::string& body);
 
     const ConversationModel& linked;
     Database& db;
@@ -104,7 +106,7 @@ public:
     mutable ConversationModel::ConversationQueue filteredConversations;
     // filters
     std::string filter;
-    contact::Type typeFilter;
+    profile::Type typeFilter;
 
 public Q_SLOTS:
     /**
@@ -179,28 +181,28 @@ ConversationModel::getFilteredConversations() const
     auto it = std::copy_if(pimpl_->conversations.begin(), pimpl_->conversations.end(), pimpl_->filteredConversations.begin(),
     [&filter, &typeFilter, this] (const conversation::Info& entry) {
         // TODO conferences?
-        auto contact = owner.contactModel->getContact(entry.participants.front());
+        auto contactInfo = owner.contactModel->getContact(entry.participants.front());
         // Check type
-        if (typeFilter != contact::Type::PENDING) {
+        if (typeFilter != profile::Type::PENDING) {
             // Remove pending contacts and get the temporary item if filter is not empty
-            if (contact.type == contact::Type::PENDING) return false;
-            if (contact.type == contact::Type::TEMPORARY) return !contact.alias.empty();
+            if (contactInfo.profileInfo.type == profile::Type::PENDING) return false;
+            if (contactInfo.profileInfo.type == profile::Type::TEMPORARY) return !contactInfo.profileInfo.alias.empty();
         } else {
             // We only want pending requests matching zith the filter
-            if (contact.type != contact::Type::PENDING) return false;
+            if (contactInfo.profileInfo.type != profile::Type::PENDING) return false;
         }
 
         // Check contact
         try {
             auto regexFilter = std::regex(filter, std::regex_constants::icase);
-            bool result = std::regex_search(contact.uri, regexFilter)
-            | std::regex_search(contact.alias, regexFilter);
+            bool result = std::regex_search(contactInfo.profileInfo.uri, regexFilter)
+            | std::regex_search(contactInfo.profileInfo.alias, regexFilter);
             return result;
         } catch(std::regex_error&) {
             // If the regex is incorrect, just test if filter is a substring
             // of the uri or the alias.
-            return contact.alias.find(filter) != std::string::npos
-            && contact.uri.find(filter) != std::string::npos;
+            return contactInfo.profileInfo.alias.find(filter) != std::string::npos
+            && contactInfo.profileInfo.uri.find(filter) != std::string::npos;
         }
     });
     pimpl_->filteredConversations.resize(
@@ -244,7 +246,7 @@ ConversationModel::selectConversation(const std::string& uid) const
     if (conversationIdx == -1)
         return;
 
-    if (uid.empty() && owner.contactModel->getContact("").uri.empty()) {
+    if (uid.empty() && owner.contactModel->getContact("").profileInfo.uri.empty()) {
         // if we select the temporary contact, check if its a valid contact.
         return;
     }
@@ -322,17 +324,17 @@ ConversationModel::placeCall(const std::string& uid) const
     auto accountId = pimpl_->accountProfileId;
 
     auto participant = conversation.participants.front();
-    auto contact = owner.contactModel->getContact(participant);
-    auto url = contact.uri;
+    auto contactInfo = owner.contactModel->getContact(participant);
+    auto url = contactInfo.profileInfo.uri;
     if (url.empty()) return; // Incorrect item
     pimpl_->sendContactRequest(participant);
-    if (owner.profile.type != contact::Type::SIP) {
+    if (owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
     conversation.callId = owner.callModel->createCall(url);
     if (convId.empty()) {
         // The conversation has changed because it was with the temporary item
-        auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
+        auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
         auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
         if (common.empty()) return;
         convId = common.front();
@@ -365,15 +367,15 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     // Send message to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
     for (const auto& participant: conversation.participants) {
-        auto contact = owner.contactModel->getContact(participant);
+        auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
         if (not conversation.callId.empty())
             owner.callModel->sendSipMessage(conversation.callId, body);
         else
-            owner.contactModel->sendDhtMessage(contact.uri, body);
+            owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
-            auto contactProfileId = database::getProfileId(pimpl_->db, contact.uri);
+            auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
             auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
             if (common.empty()) return;
             convId = common.front();
@@ -411,7 +413,7 @@ ConversationModel::setFilter(const std::string& filter)
 }
 
 void
-ConversationModel::setFilter(const contact::Type& filter)
+ConversationModel::setFilter(const profile::Type& filter)
 {
     // Switch between PENDING, RING and SIP contacts.
     pimpl_->typeFilter = filter;
@@ -450,8 +452,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 : linked(linked)
 , db(db)
 , callbacksHandler(callbacksHandler)
-, typeFilter(contact::Type::INVALID)
-, accountProfileId(database::getProfileId(db, linked.owner.profile.uri))
+, typeFilter(profile::Type::INVALID)
+, accountProfileId(database::getProfileId(db, linked.owner.profileInfo.uri))
 {
     initConversations();
 
@@ -504,20 +506,23 @@ ConversationModelPimpl::initConversations()
     // Fill conversations
     if (accountProfileId.empty()) {
         // Should not, NewAccountModel must create this profile before.
-        qDebug() << "ConversationModelPimpl::initConversations(), account not in bdd... abort";
+        qDebug() << "ConversationModelPimpl::initConversations(), account not in db";
         return;
     }
     auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     std::sort(conversationsForAccount.begin(), conversationsForAccount.end());
-    for (auto const& contact : linked.owner.contactModel->getAllContacts())
+    for (auto const& c : linked.owner.contactModel->getAllContacts())
     {
-        if(linked.owner.profile.uri == contact.second.uri) continue;
-        auto contactProfileId = database::getProfileId(db, contact.second.uri);
+        if(linked.owner.profileInfo.uri == c.second.profileInfo.uri)
+            continue;
+
+        auto contactProfileId = database::getProfileId(db, c.second.profileInfo.uri);
         if (contactProfileId.empty()) {
             // Should not, ContactModel must create profiles before.
-            qDebug() << "ConversationModelPimpl::initConversations(), contact not in bdd... abort";
+            qDebug() << "ConversationModelPimpl::initConversations(), contact not in db";
             continue;
         }
+
         // Get linked conversation with contact
         auto conversationsForContact = database::getConversationsForProfile(db, contactProfileId);
         std::sort(conversationsForContact.begin(), conversationsForContact.end());
@@ -531,7 +536,7 @@ ConversationModelPimpl::initConversations()
             common.emplace_back(newConversationsId);
         }
 
-        addConversationWith(common[0], contact.first);
+        addConversationWith(common[0], c.first);
     }
 
     sortConversations();
@@ -568,8 +573,8 @@ void
 ConversationModelPimpl::sendContactRequest(const std::string& contactUri)
 {
     auto contact = linked.owner.contactModel->getContact(contactUri);
-    auto isNotUsed = contact.type == contact::Type::TEMPORARY
-    || contact.type == contact::Type::PENDING;;
+    auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
+    || contact.profileInfo.type == profile::Type::PENDING;;
     if (isNotUsed) linked.owner.contactModel->addContact(contact);
 }
 
@@ -618,11 +623,11 @@ ConversationModelPimpl::slotContactModelUpdated()
         // Create a conversation with the temporary item
         conversation::Info conversationInfo;
         auto temporaryContact = linked.owner.contactModel->getContact("");
-        conversationInfo.uid = temporaryContact.uri;
+        conversationInfo.uid = temporaryContact.profileInfo.uri;
         conversationInfo.participants.emplace_back("");
         conversationInfo.accountId = linked.owner.id;
         // if temporary contact is already present, its alias is empty.
-        if (!temporaryContact.alias.empty()) {
+        if (!temporaryContact.profileInfo.alias.empty()) {
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
                 if (!firstContactUri.empty()) {
@@ -754,19 +759,31 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
                                               std::string& from,
                                               std::map<std::string,std::string> payloads)
 {
-    if (accountId != linked.owner.id) return;
-    qDebug() << payloads["text/plain"].c_str();
+    if (accountId != linked.owner.id)
+        return;
 
-    // [jn] il nous faut une table pour convertir accounit/uri et authorid/uri
-    // [jn] il nous faut traiter le cas d'un message arrivant d'un peer inconnu.
+    addIncomingMessage(from, payloads["text/plain"]);
+}
 
-    // [jn] Add "Conversation started" if first message
+void
+ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
+{
+    if (not linked.owner.callModel->hasCall(callId))
+        return;
+    
+    addIncomingMessage(from, body);
+}
+
+void
+ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::string& body)
+{
     auto contactProfileId = database::getOrInsertProfile(db, from);
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
     }
-    auto msg = message::Info({contactProfileId, payloads["text/plain"], std::time(nullptr),
+    auto msg = message::Info({contactProfileId, body, std::time(nullptr),
                             message::Type::TEXT, message::Status::UNREAD});
     int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);
@@ -780,33 +797,6 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
     emit linked.modelSorted();
-}
-
-void
-ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body)
-{
-        if (linked.owner.callModel->hasCall(callId)) {
-            // [jn] code dupliqué
-            auto contactProfileId = database::getOrInsertProfile(db, from);
-            auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
-            auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
-            if (conv.empty()) {
-                conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
-            }
-            auto msg = message::Info({contactProfileId, body, std::time(nullptr),
-                                    message::Type::TEXT, message::Status::UNREAD});
-            int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
-            auto conversationIdx = indexOf(conv[0]);
-            // Add the conversation if not already here
-            if (conversationIdx == -1) {
-                addConversationWith(conv[0], from);
-            } else {
-                conversations[conversationIdx].messages.emplace(msgId, msg);
-            }
-            emit linked.newUnreadMessage(conv[0], msg);
-            sortConversations();
-            emit linked.modelSorted();
-        }
 }
 
 } // namespace lrc

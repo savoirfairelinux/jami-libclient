@@ -81,7 +81,7 @@ public:
      * @return contact::Info added to contacts
      * @TODO this function rely on legacy code and has to be changed in the futur.
      */
-    void addToContacts(ContactMethod* cm, const contact::Type& type);
+    void addToContacts(ContactMethod* cm, const profile::Type& type);
 
     // Helpers
     const ContactModel& linked;
@@ -166,8 +166,8 @@ bool
 ContactModel::hasPendingRequests() const
 {
     auto i = std::find_if(pimpl_->contacts.begin(), pimpl_->contacts.end(),
-    [](const auto& contact) {
-      return contact.second.type == contact::Type::PENDING;
+    [](const auto& c) {
+      return c.second.profileInfo.type == profile::Type::PENDING;
     });
 
     return (i != pimpl_->contacts.end());
@@ -176,45 +176,45 @@ ContactModel::hasPendingRequests() const
 void
 ContactModel::addContact(contact::Info contactInfo)
 {
-    if ((owner.profile.type == contact::Type::SIP and contactInfo.type == contact::Type::RING)
-        or (owner.profile.type == contact::Type::RING and contactInfo.type == contact::Type::SIP)) {
+    if ((owner.profileInfo.type == profile::Type::SIP and contactInfo.profileInfo.type == profile::Type::RING)
+        or (owner.profileInfo.type == profile::Type::RING and contactInfo.profileInfo.type == profile::Type::SIP)) {
             qDebug() << "ContactModel::addContact, types invalids.";
-            return; // [jn] throw
+            return;
     }
 
-    switch (contactInfo.type) {
-    case contact::Type::RING:
-    case contact::Type::TEMPORARY:
-    case contact::Type::PENDING:
+    switch (contactInfo.profileInfo.type) {
+    case profile::Type::RING:
+    case profile::Type::TEMPORARY:
+    case profile::Type::PENDING:
         // Already a RING contact, daemon::addToContacts will do nothing
         // but we need the profile in the database.
-        if (contactInfo.type == contact::Type::PENDING) {
-            daemon::addContactFromPending(owner, contactInfo.uri);
+        if (contactInfo.profileInfo.type == profile::Type::PENDING) {
+            daemon::addContactFromPending(owner, contactInfo.profileInfo.uri);
         } else {
             daemon::addToContacts(owner, contactInfo);
         }
         // NOTE: [sb] Incorrect, should be when daemon emit slotContactAdded
-        contactInfo.type = api::contact::Type::RING;
+        contactInfo.profileInfo.type = api::profile::Type::RING;
         // we need to add the profile into the database.
-        database::getOrInsertProfile(pimpl_->db, contactInfo.uri, contactInfo.alias,
-        contactInfo.avatar, TypeToString(contactInfo.type));
+        database::getOrInsertProfile(pimpl_->db, contactInfo.profileInfo.uri, contactInfo.profileInfo.alias,
+        contactInfo.profileInfo.avatar, TypeToString(contactInfo.profileInfo.type));
         break;
-    case contact::Type::SIP:
-        database::getOrInsertProfile(pimpl_->db, contactInfo.uri, contactInfo.alias,
-        contactInfo.avatar, TypeToString(contact::Type::SIP));
-        contactInfo.type = api::contact::Type::SIP;
+    case profile::Type::SIP:
+        database::getOrInsertProfile(pimpl_->db, contactInfo.profileInfo.uri, contactInfo.profileInfo.alias,
+        contactInfo.profileInfo.avatar, TypeToString(profile::Type::SIP));
+        contactInfo.profileInfo.type = api::profile::Type::SIP;
         break;
-    case contact::Type::INVALID:
+    case profile::Type::INVALID:
     default:
         qDebug() << "ContactModel::addContact, cannot add contact with invalid type.";
         break;
     }
 
-    if (pimpl_->contacts.find(contactInfo.uri) == pimpl_->contacts.end())
-        pimpl_->contacts.emplace(contactInfo.uri, contactInfo);
+    if (pimpl_->contacts.find(contactInfo.profileInfo.uri) == pimpl_->contacts.end())
+        pimpl_->contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
     else
-        pimpl_->contacts[contactInfo.uri] = contactInfo;
-    emit contactAdded(contactInfo.uri);
+        pimpl_->contacts[contactInfo.profileInfo.uri] = contactInfo;
+    emit contactAdded(contactInfo.profileInfo.uri);
 }
 
 void
@@ -222,17 +222,17 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 {
     auto contact = pimpl_->contacts.find(contactUri);
     if (!banned && contact != pimpl_->contacts.end()
-        && contact->second.type == contact::Type::PENDING) {
+        && contact->second.profileInfo.type == profile::Type::PENDING) {
         // Discard the pending request and remove profile from db if necessary
         daemon::discardFromPending(owner, contactUri);
         pimpl_->contacts.erase(contactUri);
-        database::removeContact(pimpl_->db, owner.profile.uri, contactUri);
+        database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
         emit contactRemoved(contactUri);
     } else {
-        if (owner.profile.type == contact::Type::SIP) {
+        if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, owner.profile.uri, contactUri);
+            database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
             emit contactRemoved(contactUri);
         } else {
             // NOTE: this method is async, slotContactRemoved will be call and
@@ -255,25 +255,24 @@ ContactModel::getContact(const std::string& contactUri) const
 void
 ContactModel::searchContact(const std::string& query)
 {
-    if (owner.profile.type == contact::Type::SIP) {
+    if (owner.profileInfo.type == profile::Type::SIP) {
         // We don't need to search anything for SIP contacts.
         // TODO default SIP avatar?
         // NOTE: there is no registeredName for SIP contacts
-        if (pimpl_->contacts[""].alias == query) {
+        if (pimpl_->contacts[""].profileInfo.alias == query) {
             // contact already present, remove the temporaryContact
-            pimpl_->contacts[""] = {"", "", "", "",
-                            false, false,
-                            contact::Type::TEMPORARY};
+            profile::Info profileInfo = {"", "", "", profile::Type::TEMPORARY};
+            pimpl_->contacts[""] = {profileInfo, "", false, false};
         } else {
-            pimpl_->contacts[""] = {query, "", "", query,
-                                    false, false, contact::Type::TEMPORARY};
+            profile::Info profileInfo = {query, "", query, profile::Type::TEMPORARY};
+            pimpl_->contacts[""] = {profileInfo, "", false, false};
         }
         emit modelUpdated();
         return;
     }
     // Default searching item.
-    pimpl_->contacts[""] = {"", pimpl_->searchingAvatar, query, "Searching… " + query,
-                            false, false, contact::Type::TEMPORARY};
+    profile::Info profileInfo = {"", pimpl_->searchingAvatar, "Searching… " + query, profile::Type::TEMPORARY};
+    pimpl_->contacts[""] = {profileInfo, query, false, false};
     emit modelUpdated();
 
     // Query Name Server
@@ -304,7 +303,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , callbacksHandler(callbacksHandler)
 {
     // Init contacts map
-    if (linked.owner.profile.type == contact::Type::SIP)
+    if (linked.owner.profileInfo.type == profile::Type::SIP)
         fillsWithSIPContacts();
     else
         fillsWithRINGContacts();
@@ -339,15 +338,15 @@ ContactModelPimpl::~ContactModelPimpl()
 bool
 ContactModelPimpl::fillsWithSIPContacts()
 {
-    auto accountProfileId = database::getProfileId(db, linked.owner.profile.uri);
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     // get conversations with this profile
     auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     for (const auto& c : conversationsForAccount) {
         auto otherParticipants = database::getPeerParticipantsForConversation(db, accountProfileId, c);
         for (const auto& participant: otherParticipants) {
             // for each conversations get the other profile id
-            auto contact = database::buildContactFromProfileId(db, participant);
-            contacts.emplace(contact.uri, contact);
+            auto contactInfo = database::buildContactFromProfileId(db, participant);
+            contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
         }
     }
     return true;
@@ -366,7 +365,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
     // Add contacts from daemon
     auto contactsList = account->getContacts();
     for (auto c : contactsList) {
-        addToContacts(c, linked.owner.profile.type);
+        addToContacts(c, linked.owner.profileInfo.type);
     }
 
     // Add pending contacts
@@ -374,19 +373,19 @@ ContactModelPimpl::fillsWithRINGContacts() {
     for (const auto& tr_info : pending_tr) {
         // Get pending requests.
         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD].toUtf8();
-        auto ringId = tr_info[DRing::Account::TrustRequest::FROM];
 
+        // [jn] je crois qu'il y a deux fois le ringid ici...
+        auto ringId = tr_info[DRing::Account::TrustRequest::FROM];
         auto cm = PhoneDirectoryModel::instance().getNumber(ringId, account);
+        auto contactUri = cm->uri().toStdString(); // [jn] celui là est peut être inutil
+
         const auto vCard = VCardUtils::toHashMap(payload);
         const auto alias = vCard["FN"];
         const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-        auto contactUri = cm->uri().toStdString();
-        auto contactInfo = contact::Info({contactUri, photo.toStdString(),
-                                          cm->registeredName().toStdString(),
-                                          alias.toStdString(),
-                                          cm->isConfirmed(), cm->isPresent(),
-                                          contact::Type::PENDING});
+        lrc::api::profile::Info profileInfo = {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
+        contact::Info contactInfo = {profileInfo, cm->registeredName().toStdString(), false, false};
+
         contacts.emplace(contactUri, contactInfo);
         // NOTE: profiles should be in the database.
         database::getOrInsertProfile(db, contactUri, alias.toStdString(), photo.toStdString());
@@ -414,7 +413,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     if (contacts.find(contactUri) == contacts.end()) {
         // Doesn't exists, add contact
         auto cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
-        addToContacts(cm, linked.owner.profile.type);
+        addToContacts(cm, linked.owner.profileInfo.type);
         // Other models should be warned
         emit linked.contactAdded(contactUri);
     }
@@ -426,14 +425,14 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
     if (accountId != linked.owner.id) return;
     Q_UNUSED(banned)
     if (contacts.find(contactUri) != contacts.end()) {
-        database::removeContact(db, linked.owner.profile.uri, contactUri);
+        database::removeContact(db, linked.owner.profileInfo.uri, contactUri);
         contacts.erase(contactUri);
         emit linked.contactRemoved(contactUri);
     }
 }
 
 void
-ContactModelPimpl::addToContacts(ContactMethod* cm, const contact::Type& type)
+ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type)
 {
     auto contactUri = cm->uri().toStdString();
     auto contactId = database::getProfileId(db, contactUri);
@@ -443,9 +442,9 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const contact::Type& type)
                                                  "",
                                                  TypeToString(type));
     }
-    auto contact = database::buildContactFromProfileId(db, contactId);
-    contact.isPresent = cm->isPresent();
-    contacts.emplace(contact.uri, contact);
+    auto contactInfo = database::buildContactFromProfileId(db, contactId);
+    contactInfo.isPresent = cm->isPresent();
+    contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
 }
 
 void
@@ -456,19 +455,17 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
     if (accountId != linked.owner.id) return;
     if (contacts.find(uri) == contacts.end()) {
         // contact not present in contacts, update the temporaryContact
-        contacts[""] = {uri, "", registeredName, registeredName,
-                        false, false,
-                        contact::Type::TEMPORARY};
+        lrc::api::profile::Info profileInfo = {uri, "", registeredName, profile::Type::TEMPORARY};
+        contacts[""] = {profileInfo, registeredName, false, false};
     } else {
         // Update contact
         contacts[uri].registeredName = registeredName;
-        contacts[uri].alias = registeredName;
+        contacts[uri].profileInfo.alias = registeredName;
         if (contacts[""].registeredName == uri
         || contacts[""].registeredName == registeredName) {
             // contact already present, remove the temporaryContact
-            contacts[""] = {"", searchingAvatar, "", "",
-                            false, false,
-                            contact::Type::TEMPORARY};
+            lrc::api::profile::Info profileInfo = {"", searchingAvatar, "", profile::Type::TEMPORARY};
+            contacts[""] = {profileInfo, "", false, false};
         }
     }
     emit linked.modelUpdated();
@@ -495,11 +492,8 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         const auto alias = vCard["FN"];
         const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-        auto contactInfo = contact::Info({contactUri, photo.toStdString(),
-                                          cm->registeredName().toStdString(),
-                                          alias.toStdString(),
-                                          cm->isConfirmed(), cm->isPresent(),
-                                          contact::Type::PENDING});
+        auto profileInfo = profile::Info({contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING});
+        auto contactInfo = contact::Info({profileInfo, cm->registeredName().toStdString(), cm->isConfirmed(), cm->isPresent()});
         contacts.emplace(contactUri, contactInfo);
         database::getOrInsertProfile(db, contactUri, alias.toStdString(), photo.toStdString());
         emit linked.contactAdded(contactUri);
@@ -519,7 +513,8 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         // Contact not found, load profile from database.
         // The conversation model will create an entry and link the incomingCall.
         auto cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
-        addToContacts(cm, contact::Type::PENDING);
+        auto type = (linked.owner.profileInfo.type == profile::Type::RING) ? profile::Type::PENDING : profile::Type::SIP;
+        addToContacts(cm, type);
         emit linked.contactAdded(fromId);
         emit linked.incomingCallFromPending(fromId, callId);
     } else {
@@ -544,9 +539,8 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         // Contact not found, load profile from database.
         // The conversation model will create an entry and link the incomingCall.
         auto cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
-        addToContacts(cm, contact::Type::PENDING);
+        addToContacts(cm, profile::Type::PENDING);
     }
-    qDebug() << TypeToString(contacts[from].type).c_str();
     emit linked.newAccountMessage(accountId, from, payloads);
 }
 
