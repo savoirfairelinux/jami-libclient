@@ -75,6 +75,7 @@ public:
 
     void accept(const std::string& callId) const;
     void hangUp(const std::string& callId) const;
+    void toggleAudioRecord(const std::string& callId) const;
     void togglePause(const std::string& callId) const;
     void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;
