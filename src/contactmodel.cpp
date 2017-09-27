@@ -252,6 +252,13 @@ ContactModel::getContact(const std::string& contactUri) const
     return contactInfo->second;
 }
 
+
+const std::string
+ContactModel::getContactProfileId(const std::string& contactUri) const
+{
+    return database::getProfileId(pimpl_->db, contactUri);
+}
+
 void
 ContactModel::searchContact(const std::string& query)
 {

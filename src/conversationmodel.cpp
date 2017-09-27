@@ -92,7 +92,7 @@ public:
      * @param body
      */
     void addCallMessage(const std::string& callId, const std::string& body);
-    
+
     void addIncomingMessage(const std::string& from, const std::string& body);
 
     const ConversationModel& linked;
@@ -722,13 +722,13 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
 void
 ConversationModelPimpl::slotCallStarted(const std::string& callId)
 {
-    addCallMessage(callId, "📞 Conversation started");
+    addCallMessage(callId, "📞 Call started");
 }
 
 void
 ConversationModelPimpl::slotCallEnded(const std::string& callId)
 {
-    addCallMessage(callId, "🕽 Conversation ended");
+    addCallMessage(callId, "🕽 Call ended");
 }
 
 void
@@ -749,6 +749,7 @@ ConversationModelPimpl::addCallMessage(const std::string& callId, const std::str
                             interaction::Type::CALL, interaction::Status::SUCCEED});
     int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
     conversation.interactions.emplace(msgId, msg);
+    conversation.lastMessageUid = msgId;
     emit linked.newUnreadMessage(conversation.uid, msg);
     sortConversations();
     emit linked.modelSorted();
@@ -771,7 +772,7 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
 {
     if (not linked.owner.callModel->hasCall(callId))
         return;
-    
+
     addIncomingMessage(from, body);
 }
 
@@ -794,6 +795,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
         emit linked.newConversation(conv[0]);
     } else {
         conversations[conversationIdx].interactions.emplace(msgId, msg);
+        conversations[conversationIdx].lastMessageUid = msgId;
     }
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
