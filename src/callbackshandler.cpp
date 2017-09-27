@@ -87,9 +87,9 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
             this,
-            [this] (const QString& callId, const QString& from, const QMap<QString,QString>& message) {
+            [this] (const QString& callId, const QString& from, const QMap<QString,QString>& interaction) {
                 auto from2 = from.left(40).toStdString();
-                for (auto& e : message.toStdMap()) {
+                for (auto& e : interaction.toStdMap()) {
                     if (e.first.contains("x-ring/ring.profile.vcard")) {
                         auto pieces0 = e.first.split( ";" );
                         auto pieces1 = pieces0[1].split( "," );
@@ -100,7 +100,7 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
                                                 pieces2[1].toInt(),
                                                 pieces3[1].toInt(),
                                                 e.second.toStdString());
-                    } else { // we consider it as an usual message
+                    } else { // we consider it as an usual interaction
                         emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
                     }
                 }
@@ -133,7 +133,7 @@ void
 CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
                                            const QString& uri,
                                            bool status,
-                                           const QString& message)
+                                           const QString& interaction)
 {
     emit NewBuddySubscription(uri.toStdString());
 }

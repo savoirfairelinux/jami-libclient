@@ -30,7 +30,7 @@
 #include <sstream>
 
 // Data
-#include "api/message.h"
+#include "api/interaction.h"
 
 namespace lrc
 {

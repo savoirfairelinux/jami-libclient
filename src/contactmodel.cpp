@@ -27,7 +27,7 @@
 // LRC
 #include "api/account.h"
 #include "api/contact.h"
-#include "api/message.h"
+#include "api/interaction.h"
 #include "api/newcallmodel.h"
 #include "callbackshandler.h"
 
@@ -132,7 +132,7 @@ public Q_SLOTS:
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
 
     /**
-     * Listen from callbacksHandler for new account message and add pending contact if not present
+     * Listen from callbacksHandler for new account interaction and add pending contact if not present
      * @param accountId
      * @param from
      * @param payloads
@@ -291,7 +291,7 @@ ContactModel::searchContact(const std::string& query)
 void
 ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& body) const
 {
-    // Send message
+    // Send interaction
     QMap<QString, QString> payloads;
     payloads["text/plain"] = body.c_str();
     ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),

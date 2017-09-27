@@ -28,7 +28,7 @@ namespace lrc
 namespace api
 {
 
-namespace message
+namespace interaction
 {
 
 enum class Type {
@@ -58,13 +58,13 @@ static Type
 StringToType(const std::string& type)
 {
     if (type == "TEXT") {
-        return message::Type::TEXT;
+        return interaction::Type::TEXT;
     } else if (type == "CALL") {
-        return message::Type::CALL;
+        return interaction::Type::CALL;
     } else if (type == "CONTACT") {
-        return message::Type::CONTACT;
+        return interaction::Type::CONTACT;
     } else
-        return message::Type::INVALID;
+        return interaction::Type::INVALID;
 }
 
 
@@ -101,17 +101,17 @@ static Status
 StringToStatus(const std::string& status)
 {
     if (status == "SENDING")
-        return message::Status::SENDING;
+        return interaction::Status::SENDING;
     else if (status == "FAILED")
-        return message::Status::FAILED;
+        return interaction::Status::FAILED;
     else if (status == "SUCCEED")
-        return message::Status::SUCCEED;
+        return interaction::Status::SUCCEED;
     else if (status == "READ")
-        return message::Status::READ;
+        return interaction::Status::READ;
     else if (status == "UNREAD")
-        return message::Status::UNREAD;
+        return interaction::Status::UNREAD;
     else
-        return message::Status::INVALID;
+        return interaction::Status::INVALID;
 
 }
 
@@ -124,11 +124,11 @@ struct Info
     Status status = Status::INVALID;
 };
 
-static bool isOutgoing(const Info& message) {
-    return message.status != lrc::api::message::Status::READ
-    && message.status != lrc::api::message::Status::UNREAD;
+static bool isOutgoing(const Info& interaction) {
+    return interaction.status != lrc::api::interaction::Status::READ
+    && interaction.status != lrc::api::interaction::Status::UNREAD;
 }
 
-} // namespace message
+} // namespace interaction
 } // namespace api
 } // namespace lrc

@@ -120,7 +120,7 @@ std::string beginConversationsBetween(Database& db,
     db.insertInto("conversations",
                   {{":id", "id"}, {":participant_id", "participant_id"}},
                   {{":id", newConversationsId}, {":participant_id", contactProfile}});
-    // Add "Conversation started" message
+    // Add "Conversation started" interaction
     db.insertInto("interactions",
                   {{":account_id", "account_id"}, {":author_id", "author_id"},
                   {":conversation_id", "conversation_id"}, {":device_id", "device_id"},
@@ -137,18 +137,18 @@ std::string beginConversationsBetween(Database& db,
 
 void getHistory(Database& db, api::conversation::Info& conversation)
 {
-    auto messagesResult = db.select("id, author_id, body, timestamp, type, status",
+    auto interactionsResult = db.select("id, author_id, body, timestamp, type, status",
                                     "interactions",
                                     "conversation_id=:conversation_id",
                                     {{":conversation_id", conversation.uid}});
-    if (messagesResult.nbrOfCols == 6) {
-        auto payloads = messagesResult.payloads;
+    if (interactionsResult.nbrOfCols == 6) {
+        auto payloads = interactionsResult.payloads;
         for (auto i = 0; i < payloads.size(); i += 6) {
-            auto msg = api::message::Info({payloads[i + 1], payloads[i + 2],
+            auto msg = api::interaction::Info({payloads[i + 1], payloads[i + 2],
                                          std::stoi(payloads[i + 3]),
-                                         api::message::StringToType(payloads[i + 4]),
-                                         api::message::StringToStatus(payloads[i + 5])});
-            conversation.messages.emplace(std::stoi(payloads[i]), std::move(msg));
+                                         api::interaction::StringToType(payloads[i + 4]),
+                                         api::interaction::StringToStatus(payloads[i + 5])});
+            conversation.interactions.emplace(std::stoi(payloads[i]), std::move(msg));
             conversation.lastMessageUid = std::stoi(payloads[i]);
         }
     }
@@ -157,7 +157,7 @@ void getHistory(Database& db, api::conversation::Info& conversation)
 int addMessageToConversation(Database& db,
                               const std::string& accountProfile,
                               const std::string& conversationId,
-                              const api::message::Info& msg)
+                              const api::interaction::Info& msg)
 {
     return db.insertInto("interactions",
                           {{":account_id", "account_id"}, {":author_id", "author_id"},

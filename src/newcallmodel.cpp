@@ -265,15 +265,15 @@ NewCallModelPimpl::~NewCallModelPimpl()
 void
 NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
 {
-    // cette fonction doit etre appellé depuis le sendmessage de conversation
-    // la fonction sendmessage de conversation doit etre friend
+    // cette fonction doit etre appellé depuis le sendinteraction de conversation
+    // la fonction sendinteraction de conversation doit etre friend
     //
     QMap<QString, QString> payloads;
     payloads["text/plain"] = body.c_str();
 
     CallManager::instance().sendTextMessage(callId.c_str(), payloads, true /* not used */);
 
-    // l'ajout du message dans la db doit se faire depuis conversatoin
+    // l'ajout du interaction dans la db doit se faire depuis conversatoin
 }
 
 void

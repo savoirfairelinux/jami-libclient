@@ -4,7 +4,7 @@
 #include "api/account.h"
 #include "api/contact.h"
 #include "api/conversation.h"
-#include "api/message.h"
+#include "api/interaction.h"
 #include "database.h"
 #include "dbus/configurationmanager.h"
 
@@ -79,27 +79,27 @@ std::string beginConversationsBetween(Database& db,
                                       const std::string& contactProfile);
 
 /**
- * Return messages for a conversation
+ * Return interactions for a conversation
  * @param  db
  * @param  conversation to modify
  */
 void getHistory(Database& db, api::conversation::Info& conversation);
 
 /**
- * Add a message into a conversation
+ * Add a interaction into a conversation
  * @param  db
  * @param  accountProfile
  * @param  conversationId
  * @param  msg
- * @return the id of the inserted message
+ * @return the id of the inserted interaction
  */
 int addMessageToConversation(Database& db,
                               const std::string& accountProfile,
                               const std::string& conversationId,
-                              const api::message::Info& msg);
+                              const api::interaction::Info& msg);
 
 /**
- * Clear history but not the conversation started message
+ * Clear history but not the conversation started interaction
  * @param  db
  * @param  conversationId
  */

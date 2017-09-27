@@ -91,7 +91,7 @@ public:
      */
     void searchContact(const std::string& query);
     /**
-     * Send a text message to a contact over the Dht
+     * Send a text interaction to a contact over the Dht
      * @param contactUri
      * @param body
      */
