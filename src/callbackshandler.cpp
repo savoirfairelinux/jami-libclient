@@ -116,7 +116,7 @@ void
 CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
                                            const QString& uri,
                                            bool status,
-                                           const QString& message)
+                                           const QString& interaction)
 {
     Q_UNUSED(accountId)
     Q_UNUSED(status)

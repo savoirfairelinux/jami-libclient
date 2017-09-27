@@ -123,7 +123,7 @@ int addMessageToConversation(Database& db,
                               const api::interaction::Info& msg);
 
 /**
- * reset the history (remove all interaction for a conversation), keep The conversation.
+ * Reset the history (remove all interaction for a conversation), keep The conversation.
  * @param  db
  * @param  conversationId
  */
