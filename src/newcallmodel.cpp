@@ -49,7 +49,7 @@ public:
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
-    
+
     /**
      * key = peer's uri
      * vector = chunks
@@ -124,6 +124,12 @@ void
 NewCallModel::hangUp(const std::string& callId) const
 {
     CallManager::instance().hangUp(callId.c_str());
+}
+
+void
+NewCallModel::toggleAudioRecord(const std::string& callId) const
+{
+    CallManager::instance().toggleRecording(callId.c_str());
 }
 
 void
@@ -337,16 +343,16 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
         auto it_2 = vcardsChunks.find(from);
         if (it_2 != vcardsChunks.end()) {
             vcardsChunks[from][part-1] = payload;
-            
+
             if ( not std::any_of(vcardsChunks[from].begin(), vcardsChunks[from].end(),
                 [](std::string s) { return s.empty(); }) ) {
-                
+
                 profile::Info profileInfo;
                 profileInfo.uri = from;
                 profileInfo.type = profile::Type::RING;
-                
+
                 std::string vcardPhoto;
-                
+
                 for (auto& chunk : vcardsChunks[from]) {
                     vcardPhoto += chunk;
                 }
@@ -356,16 +362,16 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
                         profileInfo.avatar = e.split( ":" )[1].toStdString();
                     else if (e.contains("FN"))
                         profileInfo.alias = e.split( ":" )[1].toStdString();
-            
+
                 contact::Info contactInfo = {profileInfo, "", false, false};
-            
+
                 linked.owner.contactModel->addContact(contactInfo);
             }
         } else {
             vcardsChunks[from] = std::vector<std::string>(numberOfParts);
             vcardsChunks[from][part-1] = payload;
         }
-        
+
     }
 }
 
