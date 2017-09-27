@@ -123,7 +123,7 @@ int addMessageToConversation(Database& db,
                               const api::interaction::Info& msg);
 
 /**
- * reset the history (remove all interaction for a conversation), keep The conversation.
+ * Reset the history (remove all interaction for a conversation), keep The conversation.
  * @param  db
  * @param  conversationId
  */
@@ -138,6 +138,7 @@ void clearHistory(Database& db,
  */
 void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
 
+/**
  * Remove from conversations and profiles linked to an account.
  * @param db
  * @param accountUri

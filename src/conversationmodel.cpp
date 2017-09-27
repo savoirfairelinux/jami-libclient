@@ -87,7 +87,7 @@ public:
      */
     void addConversationWith(const std::string& convId, const std::string& contactUri);
     /**
-     * Add call message for conversation with callId
+     * Add call interaction for conversation with callId
      * @param callId
      * @param body
      */
@@ -145,7 +145,7 @@ public Q_SLOTS:
      */
     void slotCallEnded(const std::string& callId);
     /**
-     * Listen from CallbacksHandler for new incoming messages;
+     * Listen from CallbacksHandler for new incoming interactions;
      * @param accountId
      * @param from uri
      * @param payloads body
@@ -357,14 +357,14 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     if (conversation.participants.empty()) {
         // Should not
-        qDebug() << "ConversationModel::sendMessage can't send a message to a conversation with no participant";
+        qDebug() << "ConversationModel::sendMessage can't send a interaction to a conversation with no participant";
         return;
     }
 
     auto convId = uid;
     auto accountId = pimpl_->accountProfileId;
 
-    // Send message to all participants
+    // Send interaction to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
@@ -387,12 +387,12 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body) 
         }
     }
 
-    // Add message to database
-    auto msg = message::Info({accountId, body, std::time(nullptr),
-                            message::Type::TEXT, message::Status::SENDING});
+    // Add interaction to database
+    auto msg = interaction::Info({accountId, body, std::time(nullptr),
+                            interaction::Type::TEXT, interaction::Status::SENDING});
     int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
     // Update conversation
-    conversation.messages.insert(std::pair<int, message::Info>(msgId, msg));
+    conversation.interactions.insert(std::pair<int, interaction::Info>(msgId, msg));
     conversation.lastMessageUid = msgId;
     // Emit this signal for chatview in the client
     emit newUnreadMessage(convId, msg);
@@ -436,10 +436,10 @@ ConversationModel::clearHistory(const std::string& uid)
         return;
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
-    // Remove all TEXT messages from database
+    // Remove all TEXT interactions from database
     database::clearHistory(pimpl_->db, uid);
     // Update conversation
-    conversation.messages.clear();
+    conversation.interactions.clear();
     database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
     pimpl_->sortConversations();
     emit modelSorted();
@@ -549,9 +549,9 @@ ConversationModelPimpl::sortConversations()
     std::sort(conversations.begin(), conversations.end(),
     [](const conversation::Info& conversationA, const conversation::Info& conversationB)
     {
-        auto historyA = conversationA.messages;
-        auto historyB = conversationB.messages;
-        // A or B is a new conversation (without CONTACT message)
+        auto historyA = conversationA.interactions;
+        auto historyB = conversationB.interactions;
+        // A or B is a new conversation (without CONTACT interaction)
         if (historyA.empty()) return true;
         if (historyB.empty()) return false;
         // Sort by last Interaction
@@ -744,10 +744,10 @@ ConversationModelPimpl::addCallMessage(const std::string& callId, const std::str
 
     auto& conversation = *i;
     auto uid = conversation.uid;
-    auto msg = message::Info({accountProfileId, body, std::time(nullptr),
-                            message::Type::CALL, message::Status::SUCCEED});
+    auto msg = interaction::Info({accountProfileId, body, std::time(nullptr),
+                            interaction::Type::CALL, interaction::Status::SUCCEED});
     int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
-    conversation.messages.emplace(msgId, msg);
+    conversation.interactions.emplace(msgId, msg);
     emit linked.newUnreadMessage(conversation.uid, msg);
     sortConversations();
     emit linked.modelSorted();
@@ -783,8 +783,8 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
     if (conv.empty()) {
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, from));
     }
-    auto msg = message::Info({contactProfileId, body, std::time(nullptr),
-                            message::Type::TEXT, message::Status::UNREAD});
+    auto msg = interaction::Info({contactProfileId, body, std::time(nullptr),
+                            interaction::Type::TEXT, interaction::Status::UNREAD});
     int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);
     // Add the conversation if not already here
@@ -792,7 +792,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
         addConversationWith(conv[0], from);
         emit linked.newConversation(conv[0]);
     } else {
-        conversations[conversationIdx].messages.emplace(msgId, msg);
+        conversations[conversationIdx].interactions.emplace(msgId, msg);
     }
     emit linked.newUnreadMessage(conv[0], msg);
     sortConversations();
