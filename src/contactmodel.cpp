@@ -277,6 +277,12 @@ ContactModel::searchContact(const std::string& query)
 
     // Query Name Server
     auto uri = URI(QString(query.c_str()));
+    if (uri.full().startsWith("ring:")) {
+        profile::Info profileInfo = {query, "", query, profile::Type::TEMPORARY};
+        pimpl_->contacts[""] = {profileInfo, query, false, false};
+        emit modelUpdated();
+        return;
+    }
     auto account = AccountModel::instance().getById(owner.id.c_str());
     if (!account) return;
     account->lookupName(QString(query.c_str()));
