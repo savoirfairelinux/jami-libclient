@@ -177,15 +177,16 @@ CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory:
 void
 CallbacksHandler::slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString)
 {
-    auto from = fromQString.toStdString();
-
-    // during a call we receiving something like :
-    // "gargouille <6f42876966f3eb12c5ad33c33398e0fb22c6cea4@ring.dht>"
-    // we trim to get only the ringid
-    from.erase(0, from.find('<')+1); // [jn] voir si on peut améliorer ça...
-    from.erase(from.find('@'));
-
-    emit incomingCall(accountID.toStdString(), callID.toStdString(), from);
+    if (fromQString.contains("ring.dht")) {
+        auto fromQString2 = fromQString.right(50);
+        fromQString2 = fromQString2.left(40);
+        emit incomingCall(accountID.toStdString(), callID.toStdString(), fromQString2.toStdString());
+    } else {
+        auto left = fromQString.indexOf("<")+1;
+        auto right = fromQString.indexOf("@");
+        auto fromQString2 = fromQString.mid(left, right-left);
+        emit incomingCall(accountID.toStdString(), callID.toStdString(), fromQString2.toStdString());
+    }
 }
 
 void

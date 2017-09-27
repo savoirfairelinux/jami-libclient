@@ -20,10 +20,6 @@
 
 // Std
 #include <string>
-#include <memory>
-
-// Data
-#include "profile.h"
 
 namespace lrc
 {
@@ -31,56 +27,58 @@ namespace lrc
 namespace api
 {
 
-class NewCallModel;
-class ContactModel;
-class ConversationModel;
-class NewAccountModel;
-
-namespace account
+namespace profile
 {
 
 enum class Type {
     INVALID,
     RING,
-    SIP
+    SIP,
+    PENDING,
+    TEMPORARY
 };
 
-enum class Status {
-    INVALID,
-    INITIALIZING,
-    UNREGISTERED,
-    TRYING,
-    REGISTERED
-};
-
-static account::Status
-StringToStatus(const std::string& type)
+static const std::string
+TypeToString(Type type)
 {
-    if (type == "INITIALIZING") {
-        return account::Status::INITIALIZING;
-    } else if (type == "UNREGISTERED") {
-        return account::Status::UNREGISTERED;
-    } else if (type == "TRYING") {
-        return account::Status::TRYING;
-    } else if (type == "REGISTERED") {
-        return account::Status::REGISTERED;
-    } else
-        return account::Status::INVALID;
+    switch(type) {
+    case Type::RING:
+        return "RING";
+    case Type::SIP:
+        return "SIP";
+    case Type::PENDING:
+        return "PENDING";
+    case Type::TEMPORARY:
+        return "TEMPORARY";
+    case Type::INVALID:
+    default:
+    return "INVALID";
+    }
+}
+
+static Type
+StringToType(const std::string& type)
+{
+    if (type == "PENDING") {
+        return Type::PENDING;
+    } else if (type == "SIP") {
+        return Type::SIP;
+    } else if (type == "RING") {
+        return Type::RING;
+    } else if (type == "TEMPORARY") {
+        return Type::TEMPORARY;
+    }
+    return Type::INVALID;
 }
 
 struct Info
 {
-    std::string id;
-    std::string registeredName;
-    bool enabled;
-    Status status = account::Status::INVALID;
-    lrc::api::profile::Info profileInfo;
-    std::unique_ptr<lrc::api::NewCallModel> callModel;
-    std::unique_ptr<lrc::api::ContactModel> contactModel;
-    std::unique_ptr<lrc::api::ConversationModel> conversationModel;
-    lrc::api::NewAccountModel* accountModel {nullptr};
+    std::string uri = "";
+    std::string avatar = "";
+    std::string alias = "";
+    Type type = Type::INVALID;
 };
 
-} // namespace account
+} // namespace profile
 } // namespace api
 } // namespace lrc

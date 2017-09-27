@@ -114,14 +114,14 @@ NewAccountModelPimpl::addAcountProfileInDb(const account::Info& info)
     auto returnFromDb = database.select("uri",
                                         "profiles",
                                         "uri=:uri",
-                                        {{":uri", info.profile.uri}});
+                                        {{":uri", info.profileInfo.uri}});
     if (returnFromDb.payloads.empty()) {
         // Profile is not in db, add it.
-        std::string type = info.profile.type == contact::Type::RING ? "RING" : "SIP";
+        std::string type = info.profileInfo.type == profile::Type::RING ? "RING" : "SIP";
         database.insertInto("profiles",
                              {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
                               {":type", "type"}, {":status", "status"}},
-                             {{":uri", info.profile.uri}, {":alias", info.profile.alias}, {":photo", ""},
+                             {{":uri", info.profileInfo.uri}, {":alias", info.profileInfo.alias}, {":photo", ""},
                               {":type", type}, {":status", ""}});
     }
 }
@@ -156,11 +156,11 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.id = accountId;
     owner.enabled = details["Account.enable"] == QString("true");
     // TODO get avatar;
-    owner.profile.type = details["Account.type"] == "RING" ? contact::Type::RING : contact::Type::SIP;
-    owner.profile.alias = details["Account.alias"].toStdString();
-    owner.profile.registeredName = owner.profile.type == contact::Type::RING ?
-                                   volatileDetails["Account.registredName"].toStdString() : owner.profile.alias;
-    owner.profile.uri = (owner.profile.type == contact::Type::RING and details["Account.username"].contains("ring:")) ?
+    owner.profileInfo.type = details["Account.type"] == "RING" ? profile::Type::RING : profile::Type::SIP;
+    owner.profileInfo.alias = details["Account.alias"].toStdString();
+    owner.registeredName = owner.profileInfo.type == profile::Type::RING ?
+                                   volatileDetails["Account.registredName"].toStdString() : owner.profileInfo.alias;
+    owner.profileInfo.uri = (owner.profileInfo.type == profile::Type::RING and details["Account.username"].contains("ring:")) ?
                         details["Account.username"].toStdString().substr(std::string("ring:").size())
                         : details["Account.username"].toStdString();
     // Add profile into database
