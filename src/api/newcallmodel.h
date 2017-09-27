@@ -70,7 +70,6 @@ public:
     const std::string createCall(const std::string& url);
     const call::Info& getCall(const std::string& uid) const;
     const call::Info& getCallFromURI(const std::string& uri) const;
-    static std::string humanReadableStatus(const call::Status& status); // [jn]  StatusToString ?
     bool hasCall(const std::string& callId);
     void sendSipMessage(const std::string& callId, const std::string& body) const;
 

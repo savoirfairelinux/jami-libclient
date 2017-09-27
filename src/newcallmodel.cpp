@@ -27,16 +27,13 @@
 #include "api/conversationmodel.h"
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
+#include "api/contact.h"
 #include "dbus/callmanager.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
 
 // Ring daemon
 #include <media_const.h>
-
-// Qt
-#include <QObject>
-#include <QString>
 
 namespace lrc
 {
@@ -96,43 +93,6 @@ NewCallModel::getCall(const std::string& uid) const
         throw std::out_of_range("No call at UID " + uid);
     }
     return *pimpl_->calls[uid];
-}
-
-std::string
-NewCallModel::humanReadableStatus(const call::Status& status)
-{
-    switch(status)
-    {
-    case call::Status::PAUSED:
-        return tr("Hold").toStdString();
-    case call::Status::IN_PROGRESS:
-        return tr("Talking").toStdString();
-    case call::Status::INVALID:
-        return tr("ERROR").toStdString();
-    case call::Status::OUTGOING_REQUESTED:
-        return tr("Outgoing requested").toStdString();
-    case call::Status::INCOMING_RINGING:
-        return tr("Incoming").toStdString();
-    case call::Status::OUTGOING_RINGING:
-        return tr("Calling").toStdString();
-    case call::Status::CONNECTING:
-        return tr("Connecting").toStdString();
-    case call::Status::SEARCHING:
-        return tr("Searching").toStdString();
-    case call::Status::PEER_PAUSED:
-        return tr("Hold").toStdString();
-    case call::Status::INACTIVE:
-        return tr("Inactive").toStdString();
-    case call::Status::ENDED:
-        return tr("Finished").toStdString();
-    case call::Status::TERMINATING:
-        return tr("Finished").toStdString();
-    case call::Status::CONNECTED:
-        return tr("Communication established").toStdString();
-    case call::Status::AUTO_ANSWERING:
-        return tr("Auto answering").toStdString();
-        break;
-    }
 }
 
 const std::string
@@ -371,11 +331,9 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
                                           int numberOfParts,
                                           const std::string& payload)
 {
-    // [jn] maybe we can only rely on from... not sure...
     auto it = calls.find(callId);
 
     if (it != calls.end()) {
-
         auto it_2 = vcardsChunks.find(from);
         if (it_2 != vcardsChunks.end()) {
             vcardsChunks[from][part-1] = payload;
@@ -383,21 +341,23 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
             if ( not std::any_of(vcardsChunks[from].begin(), vcardsChunks[from].end(),
                 [](std::string s) { return s.empty(); }) ) {
                 
-                contact::Info contactInfo;
-                contactInfo.uri = from;
-                contactInfo.type = contact::Type::RING;
+                profile::Info profileInfo;
+                profileInfo.uri = from;
+                profileInfo.type = profile::Type::RING;
                 
-                std::string profile;
+                std::string vcardPhoto;
                 
                 for (auto& chunk : vcardsChunks[from]) {
-                    profile += chunk;
+                    vcardPhoto += chunk;
                 }
-                auto pieces1 = QString(profile.c_str()).split( "\n" );
+                auto pieces1 = QString(vcardPhoto.c_str()).split( "\n" );
                 for (auto& e : pieces1)
                     if (e.contains("PHOTO"))
-                        contactInfo.avatar = e.split( ":" )[1].toStdString();
+                        profileInfo.avatar = e.split( ":" )[1].toStdString();
                     else if (e.contains("FN"))
-                        contactInfo.alias = e.split( ":" )[1].toStdString();
+                        profileInfo.alias = e.split( ":" )[1].toStdString();
+            
+                contact::Info contactInfo = {profileInfo, "", false, false};
             
                 linked.owner.contactModel->addContact(contactInfo);
             }
@@ -412,7 +372,7 @@ NewCallModelPimpl::slotIncomingVcardChunk(const std::string& callId,
 bool
 NewCallModel::hasCall(const std::string& callId)
 {
-    return (pimpl_->calls.find(callId) != pimpl_->calls.end()) ? true : false;
+    return (pimpl_->calls.find(callId) != pimpl_->calls.end());
 }
 
 } // namespace lrc
