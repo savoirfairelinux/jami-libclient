@@ -260,14 +260,14 @@ ConversationModel::selectConversation(const std::string& uid) const
             case call::Status::CONNECTING:
             case call::Status::SEARCHING:
                 // We are currently in a call
-                // fully functional behaviour not implemented in this patch
+                emit showIncomingCallView(conversation);
                 break;
             case call::Status::PAUSED:
             case call::Status::PEER_PAUSED:
             case call::Status::CONNECTED:
             case call::Status::IN_PROGRESS:
                 // We are currently receiving a call
-                // fully functional behaviour not implemented in this patch
+                emit showCallView(conversation);
                 break;
             case call::Status::INVALID:
             case call::Status::OUTGOING_REQUESTED:
@@ -277,11 +277,10 @@ ConversationModel::selectConversation(const std::string& uid) const
             case call::Status::AUTO_ANSWERING:
             default:
                 // We are not in a call, show the chatview
-                // fully functional behaviour not implemented in this patch
-                break;
+                emit showChatView(conversation);
         }
     } catch (const std::out_of_range&) {
-        // fully functional behaviour not implemented in this patch
+        emit showChatView(conversation);
     }
 }
 
@@ -345,7 +344,7 @@ ConversationModel::placeCall(const std::string& uid) const
             return;
         conversation = pimpl_->conversations.at(conversationIdx);
     }
-    // fully functional behaviour not implemented in this patch
+    emit showIncomingCallView(conversation);
 }
 
 void
@@ -699,7 +698,7 @@ ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::s
 
     qDebug() << "Add call to conversation with " << fromId.c_str();
     conversation.callId = callId;
-    // fully functional behaviour not implemented in this patch
+    emit linked.showIncomingCallView(conversation);
 }
 
 void
