@@ -94,8 +94,9 @@ public:
      * Send a text interaction to a contact over the Dht
      * @param contactUri
      * @param body
+     * @return id from daemon
      */
-    void sendDhtMessage(const std::string& uri, const std::string& body) const;
+    uint64_t sendDhtMessage(const std::string& uri, const std::string& body) const;
 
 Q_SIGNALS:
     void modelUpdated() const;

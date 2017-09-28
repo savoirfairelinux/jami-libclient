@@ -40,8 +40,8 @@ struct Info
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
-    std::map<int, interaction::Info> interactions;
-    unsigned int lastMessageUid = 0;
+    std::map<uint64_t, interaction::Info> interactions;
+    uint64_t lastMessageUid = 0;
     unsigned int unreadMessages = 0;
 };
 

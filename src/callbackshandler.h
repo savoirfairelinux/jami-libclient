@@ -90,6 +90,16 @@ Q_SIGNALS:
     void registeredNameFound(const std::string& accountId, const std::string& uri, const std::string& registeredName);
     void incomingVcardChunk(const std::string& callId, const std::string& from, int part, int numberOfParts, const std::string& payload);
     void incomingCallMessage(const std::string& callId, const std::string& from, const std::string& body) const;
+    /**
+     * Connect this signal to know when
+     * @param accountId, account linked
+     * @param id of the message
+     * @param to, peer uri
+     * @param status, new status for this message
+     */
+    void accountMessageStatusChanged(const std::string& accountId,
+                                     const uint64_t id,
+                                     const std::string& to, int status);
 
 private Q_SLOTS:
     /**
@@ -146,6 +156,10 @@ private Q_SLOTS:
                                  const QString& address, const QString& name);
     void slotIncomingCall(const QString &accountID, const QString &callID, const QString &fromQString);
     void slotCallStateChanged(const QString& callId, const QString &state, int code);
+
+    void slotAccountMessageStatusChanged(const QString& accountId,
+                                         const uint64_t id,
+                                         const QString& to, int status);
 
 private:
     const api::Lrc& parent;

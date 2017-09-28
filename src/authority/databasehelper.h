@@ -99,6 +99,23 @@ int addMessageToConversation(Database& db,
                               const api::interaction::Info& msg);
 
 /**
+ * Change the interaction id
+ * @param db
+ * @param oldId
+ * @param newId
+ */
+void changeInteractionId(Database& db, unsigned int oldId, unsigned int newId);
+
+/**
+ * Change the status of an interaction
+ * @param db
+ * @param id
+ * @param newStatus
+ */
+void updateInteractionStatus(Database& db, unsigned int id,
+                             api::interaction::Status& newStatus);
+
+/**
  * Clear history but not the conversation started interaction
  * @param  db
  * @param  conversationId
