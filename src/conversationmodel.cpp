@@ -278,10 +278,10 @@ ConversationModel::selectConversation(const std::string& uid) const
             default:
             break;
                 // We are not in a call, show the chatview
-                /// emit showChatView(conversation); [jn] emits signal with behaviour controller
+                emit showChatView(conversation);
         }
     } catch (const std::out_of_range&) {
-        /// emit showChatView(conversation); [jn] emits signal with behaviour controller
+        emit showChatView(conversation);
     }
 }
 
