@@ -21,37 +21,50 @@
 // Std
 #include <memory>
 
+// Qt
+#include <qobject.h>
+
 // Lrc
 #include "typedefs.h"
 
 namespace lrc
 {
 
-class LrcPimpl;
+class BehaviorControllerPimpl;
 
 namespace api
 {
+class Lrc;
 
-class BehaviorController;
-class NewAccountModel;
+namespace conversation
+{
+    class Info;
+}
 
-class LIB_EXPORT Lrc {
+/**
+  *  @brief Class that helps to control behaviors from the client side.
+  *  @note This class must only refer to the common behaviors.
+  */
+class BehaviorController : public QObject {
+    Q_OBJECT
+
 public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
+    BehaviorController();
+    ~BehaviorController();
 
-private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+Q_SIGNALS:
+    /**
+     * Emitted when the client should open the chat view.
+     */
+    void showChatView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    /**
+     * Emitted when the client should open the call view.
+     */
+    void showCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    /**
+     * Emitted when the client should open the incoming call view.
+     */
+    void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
 };
 
 } // namespace api
