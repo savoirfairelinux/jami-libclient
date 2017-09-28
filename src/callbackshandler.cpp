@@ -64,6 +64,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::incomingTrustRequest,
             this,
             &CallbacksHandler::slotIncomingContactRequest);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::accountMessageStatusChanged,
+            this,
+            &CallbacksHandler::slotAccountMessageStatusChanged);
+
     connect(&NameDirectory::instance(),
             &NameDirectory::registeredNameFound,
             this,
@@ -255,6 +261,15 @@ void
 CallbacksHandler::slotConferenceRemoved(const QString& callId)
 {
     emit conferenceRemoved(callId.toStdString());
+}
+
+void
+CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
+                                                  const uint64_t id,
+                                                  const QString& to, int status)
+{
+    emit accountMessageStatusChanged(accountId.toStdString(), id,
+                                     to.toStdString(), status);
 }
 
 
