@@ -20,6 +20,7 @@
 
 // Models and database
 #include "api/newaccountmodel.h"
+#include "api/behaviorcontroller.h"
 #include "database.h"
 #include "callbackshandler.h"
 #include "dbus/instancemanager.h"
@@ -36,6 +37,7 @@ public:
     LrcPimpl(const Lrc& linked);
 
     const Lrc& linked;
+    std::unique_ptr<BehaviorController> behaviorController;
     std::unique_ptr<CallbacksHandler> callbackHandler;
     std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
@@ -59,11 +61,18 @@ Lrc::getAccountModel() const
     return *lrcPimpl_->accountModel;
 }
 
+const BehaviorController&
+Lrc::getBehaviorController() const
+{
+    return *lrcPimpl_->behaviorController;
+}
+
 LrcPimpl::LrcPimpl(const Lrc& linked)
 : linked(linked)
+, behaviorController(std::make_unique<BehaviorController>())
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler))
+, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler, *behaviorController))
 {
 }
 
