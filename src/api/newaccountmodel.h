@@ -39,6 +39,7 @@ class NewAccountModelPimpl;
 
 namespace api
 {
+class BehaviorController;
 
 namespace account { struct Info; }
 
@@ -50,7 +51,10 @@ class LIB_EXPORT NewAccountModel : public QObject {
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
-    NewAccountModel(Database& database, const CallbacksHandler& callbackHandler);
+    NewAccountModel(Database& database,
+                    const CallbacksHandler& callbackHandler,
+                    const api::BehaviorController& behaviorController);
+
     ~NewAccountModel();
     /**
      * get a list of all acountId.

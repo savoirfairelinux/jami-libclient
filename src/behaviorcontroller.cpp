@@ -16,43 +16,49 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#pragma once
+#include "api/behaviorcontroller.h"
 
-// Std
-#include <memory>
-
-// Lrc
-#include "typedefs.h"
+// Models and database
+#include "api/lrc.h"
 
 namespace lrc
 {
 
-class LrcPimpl;
+using namespace api;
 
-namespace api
+class BehaviorControllerPimpl: public QObject
 {
-
-class BehaviorController;
-class NewAccountModel;
-
-class LIB_EXPORT Lrc {
+    Q_OBJECT
 public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
+    BehaviorControllerPimpl(const BehaviorController& linked);
+    ~BehaviorControllerPimpl();
 
-private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+    // Helpers
+    const BehaviorController& linked;
+
 };
 
-} // namespace api
+BehaviorControllerPimpl::BehaviorControllerPimpl(const BehaviorController& linked)
+: linked(linked)
+{
+}
+
+BehaviorControllerPimpl::~BehaviorControllerPimpl()
+{
+}
+
+BehaviorController::BehaviorController()
+: QObject()
+, pimpl_(std::make_unique<BehaviorControllerPimpl>(*this))
+{
+}
+
+BehaviorController::~BehaviorController()
+{
+
+}
+
 } // namespace lrc
+
+#include "api/moc_behaviorcontroller.cpp"
+#include "behaviorcontroller.moc"
