@@ -93,6 +93,7 @@ Database::createTables()
                                                          body TEXT,     \
                                                          type TEXT,  \
                                                          status TEXT, \
+                                                         daemon_id TEXT, \
                                                          FOREIGN KEY(account_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(author_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(conversation_id) REFERENCES conversations(id))";

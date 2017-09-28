@@ -99,6 +99,39 @@ int addMessageToConversation(Database& db,
                               const api::interaction::Info& msg);
 
 /**
+ * Change the daemon_id column for an interaction
+ * @param db
+ * @param interactionId
+ * @param daemonId
+ */
+void addDaemonMsgId(Database& db,
+                    const std::string& interactionId,
+                    const std::string& daemonId);
+
+/**
+ * @param  db
+ * @param  id
+ * @return the deamon id for an interaction else ""
+ */
+std::string getDaemonIdByInteractionId(Database& db, const std::string& id);
+
+/**
+ * @param  db
+ * @param  id
+ * @return the interaction id for a daemon id else ""
+ */
+std::string getInteractionIdByDaemonId(Database& db, const std::string& id);
+
+/**
+ * Change the status of an interaction
+ * @param db
+ * @param id
+ * @param newStatus
+ */
+void updateInteractionStatus(Database& db, unsigned int id,
+                             api::interaction::Status& newStatus);
+
+/**
  * Clear history but not the conversation started interaction
  * @param  db
  * @param  conversationId
