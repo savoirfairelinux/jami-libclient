@@ -148,8 +148,8 @@ void getHistory(Database& db, api::conversation::Info& conversation)
                                          std::stoi(payloads[i + 3]),
                                          api::interaction::StringToType(payloads[i + 4]),
                                          api::interaction::StringToStatus(payloads[i + 5])});
-            conversation.interactions.emplace(std::stoi(payloads[i]), std::move(msg));
-            conversation.lastMessageUid = std::stoi(payloads[i]);
+            conversation.interactions.emplace(std::stoull(payloads[i]), std::move(msg));
+            conversation.lastMessageUid = std::stoull(payloads[i]);
         }
     }
 }
@@ -170,6 +170,36 @@ int addMessageToConversation(Database& db,
                           {":group_id", "0"}, {":timestamp", std::to_string(msg.timestamp)},
                           {":body", msg.body}, {":type", TypeToString(msg.type)},
                           {":status", StatusToString(msg.status)}});
+}
+
+void addDaemonMsgId(Database& db,
+                    const std::string& interactionId,
+                    const std::string& daemonId)
+{
+    db.update("interactions", "daemon_id=:daemon_id",
+              {{":daemon_id", daemonId}},
+              "id=:id", {{":id", interactionId}});
+}
+
+std::string getDaemonIdByInteractionId(Database& db, const std::string& id)
+{
+    auto ids = db.select("daemon_id", "interactions", "id=:id", {{":id", id}}).payloads;
+    return ids.empty() ? "" : ids[0];
+}
+
+std::string getInteractionIdByDaemonId(Database& db, const std::string& id)
+{
+    auto ids = db.select("id", "interactions", "daemon_id=:daemon_id", {{":daemon_id", id}}).payloads;
+    return ids.empty() ? "" : ids[0];
+}
+
+
+void updateInteractionStatus(Database& db, unsigned int id,
+                             api::interaction::Status& newStatus)
+{
+    db.update("interactions", "status=:status",
+              {{":status", api::interaction::StatusToString(newStatus)}},
+              "id=:id", {{":id", std::to_string(id)}});
 }
 
 void clearHistory(Database& db,
