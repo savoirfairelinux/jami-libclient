@@ -79,7 +79,7 @@ Database::createTables()
                                                  type INTEGER,          \
                                                  status INTEGER)";
 
-    auto tableConversations = "CREATE TABLE conversations (id INTEGER PRIMARY KEY,\
+    auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
                                                            participant_id INTEGER, \
                                                            FOREIGN KEY(participant_id) REFERENCES profiles(id))";
 
@@ -91,8 +91,8 @@ Database::createTables()
                                                          group_id INTEGER, \
                                                          timestamp INTEGER, \
                                                          body TEXT,     \
-                                                         type INTEGER,  \
-                                                         status INTEGER, \
+                                                         type TEXT,  \
+                                                         status TEXT, \
                                                          FOREIGN KEY(account_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(author_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(conversation_id) REFERENCES conversations(id))";
