@@ -288,16 +288,17 @@ ContactModel::searchContact(const std::string& query)
     account->lookupName(QString(query.c_str()));
 }
 
-void
+uint64_t
 ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& body) const
 {
     // Send interaction
     QMap<QString, QString> payloads;
     payloads["text/plain"] = body.c_str();
-    ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),
+    auto msgId = ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),
                                                      QString(contactUri.c_str()),
                                                      payloads);
     // NOTE: ConversationModel should store the interaction into the database
+    return msgId;
 }
 
 
