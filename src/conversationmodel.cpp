@@ -103,6 +103,16 @@ public:
     void addIncomingMessage(const std::string& from,
                             const std::string& body,
                             const std::string& authorProfileId="");
+    /**
+     * Change the status of an interaction. Listen from callbacksHandler
+     * @param accountId, account linked
+     * @param id, interaction to update
+     * @param to, peer uri
+     * @param status, new status for this interaction
+     */
+    void slotUpdateInteractionStatus(const std::string& accountId,
+                                     const uint64_t id,
+                                     const std::string& to, int status);
 
     const ConversationModel& linked;
     Database& db;
@@ -423,13 +433,14 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     // Send interaction to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
+    uint64_t daemonMsgId = 0;
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
         if (not conversation.callId.empty())
             owner.callModel->sendSipMessage(conversation.callId, body);
         else
-            owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
+            daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
@@ -445,14 +456,20 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     }
 
     // Add interaction to database
+    auto status = (conversation.callId.empty()) ? interaction::Status::SENDING : interaction::Status::UNKNOWN;
     auto msg = interaction::Info {accountId, body, std::time(nullptr),
-                                  interaction::Type::TEXT, interaction::Status::SENDING};
+                                  interaction::Type::TEXT, status};
     int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
     // Update conversation
-    conversation.interactions.insert(std::pair<int, interaction::Info>(msgId, msg));
+    if (conversation.callId.empty()) {
+        // Because the daemon already give an id for the message, we need to store it.
+        database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
+    }
+    conversation.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
     conversation.lastMessageUid = msgId;
+    dirtyConversations = true;
     // Emit this signal for chatview in the client
-    emit newUnreadMessage(convId, msg);
+    emit newUnreadMessage(convId, msgId, msg);
     // This conversation is now at the top of the list
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
@@ -511,6 +528,23 @@ ConversationModel::clearHistory(const std::string& uid)
     emit conversationCleared(uid);
 }
 
+void
+ConversationModel::setInteractionRead(const std::string& convId, const uint64_t& msgId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx != -1) {
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        if (interactions.find(msgId) != interactions.end()) {
+            if (interactions[msgId].status != interaction::Status::UNREAD) return;
+            auto newStatus = interaction::Status::READ;
+            interactions[msgId].status = newStatus;
+            dirtyConversations = true;
+            database::updateInteractionStatus(pimpl_->db, msgId, newStatus);
+            emit interactionStatusUpdated(convId, msgId, interactions[msgId]);
+        }
+    }
+}
+
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
                                                Database& db,
                                                const CallbacksHandler& callbacksHandler,
@@ -537,6 +571,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this, &ConversationModelPimpl::slotNewAccountMessage);
     connect(&callbacksHandler, &CallbacksHandler::incomingCallMessage,
             this, &ConversationModelPimpl::slotIncomingCallMessage);
+    connect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
+            this, &ConversationModelPimpl::slotUpdateInteractionStatus);
 
 
     // Call related
@@ -737,6 +773,20 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
         conversation.callId = "";
     }
     database::getHistory(db, conversation);
+    for (auto& interaction: conversation.interactions) {
+        if (interaction.second.status == interaction::Status::SENDING) {
+            // Get the message status from daemon, else unknown
+            auto id = database::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
+            auto status = 0;
+            if (!id.empty()) {
+                auto msgId = std::stoull(id);
+                status = ConfigurationManager::instance().getMessageStatus(msgId);
+            }
+            slotUpdateInteractionStatus(linked.owner.id, std::stoull(id),
+                                        contactUri, status);
+        }
+    }
+
     conversations.emplace_front(conversation);
     dirtyConversations = true;
 }
@@ -826,7 +876,7 @@ ConversationModelPimpl::addCallMessage(const std::string& callId, const std::str
             conversation.interactions.emplace(msgId, msg);
             conversation.lastMessageUid = msgId;
             dirtyConversations = true;
-            emit linked.newUnreadMessage(conversation.uid, msg);
+            emit linked.newUnreadMessage(conversation.uid, msgId, msg);
             sortConversations();
             emit linked.modelSorted();
         }
@@ -891,7 +941,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
         conversations[conversationIdx].lastMessageUid = msgId;
     }
     dirtyConversations = true;
-    emit linked.newUnreadMessage(conv[0], msg);
+    emit linked.newUnreadMessage(conv[0], msgId, msg);
     sortConversations();
     emit linked.modelSorted();
 }
@@ -908,6 +958,49 @@ ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, con
     }
 }
 
+void
+ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId,
+                                                    const uint64_t id,
+                                                    const std::string& to,
+                                                    int status)
+{
+    if (accountId != linked.owner.id) return;
+    auto newStatus = interaction::Status::INVALID;
+    switch (status)
+    {
+    case 1:
+        newStatus = interaction::Status::SENDING;
+        break;
+    case 2:
+        newStatus = interaction::Status::SUCCEED;
+        break;
+    case 3:
+        newStatus = interaction::Status::FAILED;
+        break;
+    default:
+        newStatus = interaction::Status::UNKNOWN;
+        break;
+    }
+    // Update database
+    auto interactionId = database::getInteractionIdByDaemonId(db, std::to_string(id));
+    if (interactionId.empty()) return;
+    auto msgId = std::stoull(interactionId);
+    database::updateInteractionStatus(db, msgId, newStatus);
+    // Update conversations
+    auto contactProfileId = database::getProfileId(db, to);
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    if (!conv.empty()) {
+        auto conversationIdx = indexOf(conv[0]);
+        if (conversationIdx != -1) {
+            auto& interactions = conversations[conversationIdx].interactions;
+            if (interactions.find(msgId) != interactions.end()) {
+                interactions[msgId].status = newStatus;
+                emit linked.interactionStatusUpdated(conv[0], msgId, interactions[msgId]);
+            }
+        }
+    }
+}
 
 } // namespace lrc
 
