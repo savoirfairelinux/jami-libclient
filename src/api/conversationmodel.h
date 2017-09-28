@@ -127,6 +127,12 @@ public:
      * @param uid of the conversation
      */
     void clearHistory(const std::string& uid);
+    /**
+     * change the status of the interaction from UNREAD to READ
+     * @param convId, id of the conversation
+     * @param msgId, id of the interaction
+     */
+    void setInteractionRead(const std::string& convId, const uint64_t& msgId);
 
 Q_SIGNALS:
     /**
@@ -134,7 +140,16 @@ Q_SIGNALS:
      * @param uid of msg
      * @param msg
      */
-    void newUnreadMessage(const std::string& uid, const interaction::Info& msg) const;
+    void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const;
+    /**
+     * Emitted when an interaction got a new status
+     * @param convUid conversation which owns the interaction
+     * @param msgId
+     * @param msg
+     */
+    void interactionStatusUpdated(const std::string& convUid,
+                                  uint64_t msgId,
+                                  const api::interaction::Info& msg) const;
     /**
      * Emitted when user clear the history of a conversation
      * @param uid
