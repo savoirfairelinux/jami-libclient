@@ -70,6 +70,7 @@ StringToType(const std::string& type)
 
 enum class Status {
     INVALID,
+    UNKNOWN,
     SENDING,
     FAILED,
     SUCCEED,
@@ -81,6 +82,8 @@ static const std::string
 StatusToString(Status status)
 {
     switch(status) {
+    case Status::UNKNOWN:
+        return "UNKNOWN";
     case Status::SENDING:
         return "SENDING";
     case Status::FAILED:
@@ -100,7 +103,9 @@ StatusToString(Status status)
 static Status
 StringToStatus(const std::string& status)
 {
-    if (status == "SENDING")
+    if (status == "UNKNOWN")
+        return interaction::Status::UNKNOWN;
+    else if (status == "SENDING")
         return interaction::Status::SENDING;
     else if (status == "FAILED")
         return interaction::Status::FAILED;

@@ -74,7 +74,10 @@ Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction
      */
-    void newUnreadMessage(const std::string& uid, const interaction::Info& msg) const;
+    void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const;
+    void interactionStatusUpdated(const std::string& convUid,
+                                  uint64_t msgId,
+                                  const api::interaction::Info& msg) const;
     /**
      * Emiited when user clear the history of a conversation
      */
