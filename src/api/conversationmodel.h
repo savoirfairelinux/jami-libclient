@@ -97,6 +97,10 @@ Q_SIGNALS:
     void conversationRemoved(const std::string& uid) const;
     void incomingCallFromItem(const unsigned int row);
 
+    void showChatView(const conversation::Info& conversationInfo) const; // TO MOVE
+    void showCallView(const conversation::Info& conversationInfo) const;// TO MOVE
+    void showIncomingCallView(const conversation::Info& conversationInfo) const;// TO MOVE
+
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
