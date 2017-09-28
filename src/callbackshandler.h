@@ -148,6 +148,16 @@ Q_SIGNALS:
      * @param callId of the conference
      */
     void conferenceRemoved(const std::string& callId);
+    /**
+     * Connect this signal to know when
+     * @param accountId, account linked
+     * @param id of the message
+     * @param to, peer uri
+     * @param status, new status for this message
+     */
+    void accountMessageStatusChanged(const std::string& accountId,
+                                     const uint64_t id,
+                                     const std::string& to, int status);
 
 private Q_SLOTS:
     /**
@@ -256,6 +266,16 @@ private Q_SLOTS:
      * @param state, new state
      */
     void slotConferenceChanged(const QString& callId, const QString& state);
+    /**
+     * Emit accountMessageStatusChanged
+     * @param accountId
+     * @param id of the message for the daemon
+     * @param to peer uri
+     * @param status, new status
+     */
+    void slotAccountMessageStatusChanged(const QString& accountId,
+                                         const uint64_t id,
+                                         const QString& to, int status);
 
 private:
     const api::Lrc& parent;
