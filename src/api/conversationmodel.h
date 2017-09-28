@@ -46,6 +46,7 @@ namespace api
 
 namespace account { struct Info; }
 namespace interaction { struct Info; }
+class BehaviourController;
 class NewAccountModel;
 
 class LIB_EXPORT ConversationModel : public QObject {
@@ -55,7 +56,10 @@ public:
 
     const account::Info& owner;
 
-    ConversationModel(const account::Info& owner, Database& db, const CallbacksHandler& callbacksHandler);
+    ConversationModel(const account::Info& owner,
+                      Database& db,
+                      const CallbacksHandler& callbacksHandler,
+                      const api::BehaviourController& behaviourController);
     ~ConversationModel();
 
     const ConversationQueue& getFilteredConversations() const;

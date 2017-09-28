@@ -32,6 +32,7 @@ class LrcPimpl;
 namespace api
 {
 
+class BehaviourController;
 class NewAccountModel;
 
 class LIB_EXPORT Lrc {
@@ -43,6 +44,11 @@ public:
      * @return a NewAccountModel&.
      */
     const NewAccountModel& getAccountModel() const;
+    /**
+     * get a reference on the behaviour controller.
+     * @return a BehaviourController&.
+     */
+    const BehaviourController& getBehaviourController() const;
 
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;

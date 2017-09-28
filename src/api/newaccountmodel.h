@@ -39,6 +39,7 @@ class NewAccountModelPimpl;
 
 namespace api
 {
+class BehaviourController;
 
 namespace account { struct Info; }
 
@@ -50,7 +51,10 @@ class LIB_EXPORT NewAccountModel : public QObject {
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
-    NewAccountModel(Database& database, const CallbacksHandler& callbackHandler);
+    NewAccountModel(Database& database,
+                    const CallbacksHandler& callbackHandler,
+                    const api::BehaviourController& behaviourController);
+
     ~NewAccountModel();
     /**
      * get a list of all acountId.
@@ -80,6 +84,7 @@ Q_SIGNALS:
      * @param accountID
      */
     void accountRemoved(const std::string& accountID);
+    void incomingCall(const std::string& accountId, const std::string& contactUri);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
