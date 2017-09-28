@@ -24,6 +24,7 @@
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 #include "api/account.h"
+#include "api/behaviourcontroller.h"
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
@@ -43,13 +44,15 @@ class NewAccountModelPimpl: public QObject
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
                          Database& database,
-                         const CallbacksHandler& callbackHandler);
+                         const CallbacksHandler& callbackHandler,
+                         const BehaviourController& behaviourController);
     ~NewAccountModelPimpl();
 
     NewAccountModel& linked;
     const CallbacksHandler& callbacksHandler;
     Database& database;
     NewAccountModel::AccountInfoMap accounts;
+    const BehaviourController& behaviourController;
 
     /**
      * Add the profile information from an account to the db then add it to accounts.
@@ -84,9 +87,11 @@ public Q_SLOTS:
     void slotAccountUpdated();
 };
 
-NewAccountModel::NewAccountModel(Database& database, const CallbacksHandler& callbacksHandler)
+NewAccountModel::NewAccountModel(Database& database,
+                                 const CallbacksHandler& callbacksHandler,
+                                 const BehaviourController& behaviourController)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler, behaviourController))
 {
 }
 
@@ -117,8 +122,10 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
 
 NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
                                            Database& database,
-                                           const CallbacksHandler& callbacksHandler)
+                                           const CallbacksHandler& callbacksHandler,
+                                           const BehaviourController& behaviourController)
 : linked(linked)
+, behaviourController(behaviourController)
 , callbacksHandler(callbacksHandler)
 , database(database)
 {
@@ -178,7 +185,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     // Init models for this account
     owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-    owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler);
+    owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler, behaviourController);
     owner.accountModel = &linked;
 }
 

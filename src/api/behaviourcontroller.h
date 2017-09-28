@@ -18,75 +18,57 @@
  ***************************************************************************/
 #pragma once
 
-// std
-#include <vector>
-#include <map>
+// Std
 #include <memory>
-#include <string>
 
 // Qt
 #include <qobject.h>
 
 // Lrc
 #include "typedefs.h"
+#include "namedirectory.h"
 
 namespace lrc
 {
 
-class CallbacksHandler;
-class Database;
-class NewAccountModelPimpl;
+class BehaviourControllerPimpl;
 
 namespace api
 {
-class BehaviourController;
+class Lrc;
 
-namespace account { struct Info; }
+namespace conversation
+{
+    class Info;
+}
 
 /**
-  *  @brief Class that manages account information.
+  *  @brief Class that helps to control the behaviours client side.
+  *  @note This class must only refer to the common beahviours.
   */
-class LIB_EXPORT NewAccountModel : public QObject {
+class BehaviourController : public QObject {
     Q_OBJECT
+
 public:
-    using AccountInfoMap = std::map<std::string, account::Info>;
-
-    NewAccountModel(Database& database,
-                    const CallbacksHandler& callbackHandler,
-                    const api::BehaviourController& behaviourController);
-
-    ~NewAccountModel();
-    /**
-     * get a list of all acountId.
-     * @return a std::vector<std::string>.
-     */
-    std::vector<std::string> getAccountList() const;
-    /**
-     * get account informations associated to an accountId.
-     * @param accountId.
-     * @return a const account::Info& structure.
-     */
-    const account::Info& getAccountInfo(const std::string& accountId) const;
+    BehaviourController();
+    ~BehaviourController();
 
 Q_SIGNALS:
     /**
-     * Connect this signal to know when the status of an account has changed.
-     * @param accountID
+     * Emitted when the client should open the chat view.
      */
-    void accountStatusChanged(const std::string& accountID);
+    void showChatView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
     /**
-     * Connect this signal to know when an account was added.
-     * @param accountID
+     * Emitted when the client should open the call view.
      */
-    void accountAdded(const std::string& accountID);
+    void showCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
     /**
-     * Connect this signal to know when an account was removed.
-     * @param accountID
+     * Emitted when the client should open the incoming call view.
      */
-    void accountRemoved(const std::string& accountID);
+    void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
 
 private:
-    std::unique_ptr<NewAccountModelPimpl> pimpl_;
+    std::unique_ptr<BehaviourControllerPimpl> pimpl_;
 };
 
 } // namespace api
