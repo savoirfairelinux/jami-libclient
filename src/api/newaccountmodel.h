@@ -80,6 +80,7 @@ Q_SIGNALS:
      * @param accountID
      */
     void accountRemoved(const std::string& accountID);
+    void incomingCall(const std::string& accountId, const std::string& contactUri);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
