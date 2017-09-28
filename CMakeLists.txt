@@ -305,6 +305,7 @@ SET( libringclient_LIB_SRCS
   src/lrc.cpp
   src/newaccountmodel.cpp
   src/callbackshandler.cpp
+  src/behaviorcontroller.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -470,6 +471,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/contactmodel.h
   src/api/conversationmodel.h
   src/api/profile.h
+  src/api/behaviorcontroller.h
 )
 
 
