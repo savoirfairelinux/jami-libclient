@@ -91,6 +91,16 @@ public Q_SLOTS:
      * @param payload
      */
     void slotincomingVCardChunk(const std::string& callId, const std::string& from, int part, int numberOfParts, const std::string& payload);
+    /**
+     * Listen from CallbacksHandler when a conference is created.
+     * @param callId
+     */
+    void slotConferenceCreated(const std::string& callId);
+    /**
+     * Listen from CallbacksHandler when a conference is deleted.
+     * @param callId
+     */
+    void slotConferenceRemoved(const std::string& callId);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -134,6 +144,7 @@ NewCallModel::createCall(const std::string& url)
     callInfo->id = callId.toStdString();
     callInfo->peer = url;
     callInfo->status =  call::Status::SEARCHING;
+    callInfo->type =  call::Type::DIALOG;
     pimpl_->calls.emplace(callId.toStdString(), std::move(callInfo));
 
     return callId.toStdString();
@@ -148,7 +159,21 @@ NewCallModel::accept(const std::string& callId) const
 void
 NewCallModel::hangUp(const std::string& callId) const
 {
-    CallManager::instance().hangUp(callId.c_str());
+    auto it = pimpl_->calls.find(callId);
+    if (it == pimpl_->calls.end()) return;
+    auto& call = it->second;
+    switch(call->type)
+    {
+    case call::Type::DIALOG:
+        CallManager::instance().hangUp(callId.c_str());
+        break;
+    case call::Type::CONFERENCE:
+        CallManager::instance().hangUpConference(callId.c_str());
+        break;
+    case call::Type::INVALID:
+    default:
+        break;
+    }
 }
 
 void
@@ -169,15 +194,28 @@ NewCallModel::playDTMF(const std::string& callId, const std::string& value) cons
 void
 NewCallModel::togglePause(const std::string& callId) const
 {
-    auto call = pimpl_->calls.find(callId);
-    if (call == pimpl_->calls.end()) return;
-    switch(pimpl_->calls[callId]->status)
+    auto it = pimpl_->calls.find(callId);
+    if (it == pimpl_->calls.end()) return;
+    auto& call = it->second;
+    switch(call->status)
     {
     case call::Status::PAUSED:
-        CallManager::instance().unhold(callId.c_str());
+        if (call->type == call::Type::DIALOG)
+            CallManager::instance().unhold(callId.c_str());
+        else {
+            CallManager::instance().unholdConference(callId.c_str());
+            call->status =  call::Status::IN_PROGRESS;
+            emit callStatusChanged(callId);
+        }
         break;
     case call::Status::IN_PROGRESS:
-        CallManager::instance().hold(callId.c_str());
+        if (call->type == call::Type::DIALOG)
+            CallManager::instance().hold(callId.c_str());
+        else {
+            CallManager::instance().holdConference(callId.c_str());
+            call->status = call::Status::PAUSED;
+            emit callStatusChanged(callId);
+        }
         break;
     case call::Status::INVALID:
     case call::Status::OUTGOING_REQUESTED:
@@ -231,9 +269,20 @@ NewCallModel::transfer(const std::string& callId, const std::string& to) const
 }
 
 void
-NewCallModel::addParticipant(const std::string& callId, const std::string& participant) const
+NewCallModel::addParticipant(const std::string& callIdSrc, const std::string& callIdDest) const
 {
-
+    if (pimpl_->calls.find(callIdSrc) == pimpl_->calls.end()) return;
+    if (pimpl_->calls.find(callIdDest) == pimpl_->calls.end()) return;
+    auto& call1 = pimpl_->calls[callIdSrc];
+    auto& call2 = pimpl_->calls[callIdDest];
+    if (call1->type == call::Type::CONFERENCE)
+        CallManager::instance().addParticipant(callIdDest.c_str(), callIdSrc.c_str());
+    else if (call2->type == call::Type::CONFERENCE)
+        CallManager::instance().addParticipant(callIdSrc.c_str(), callIdDest.c_str());
+    else if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
+        CallManager::instance().joinConference(callIdSrc.c_str(), callIdDest.c_str());
+    else
+        CallManager::instance().joinParticipant(callIdSrc.c_str(), callIdDest.c_str());
 }
 
 void
@@ -288,6 +337,8 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
+    connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+    connect(&callbacksHandler, &CallbacksHandler::conferenceRemoved, this , &NewCallModelPimpl::slotConferenceRemoved);
 }
 
 NewCallModelPimpl::~NewCallModelPimpl()
@@ -315,6 +366,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->id = callId;
     callInfo->peer = fromId;
     callInfo->status =  call::Status::INCOMING_RINGING;
+    callInfo->type =  call::Type::DIALOG;
     calls.emplace(callId, std::move(callInfo));
 
     emit linked.newIncomingCall(fromId, callId);
@@ -408,6 +460,33 @@ bool
 NewCallModel::hasCall(const std::string& callId)
 {
     return pimpl_->calls.find(callId) != pimpl_->calls.end();
+}
+
+void
+NewCallModelPimpl::slotConferenceCreated(const std::string& callId)
+{
+    if (calls.find(callId) != calls.end()) return;
+    auto callInfo = std::make_shared<call::Info>();
+    callInfo->id = callId;
+    callInfo->status =  call::Status::IN_PROGRESS;
+    callInfo->type =  call::Type::CONFERENCE;
+    callInfo->startTime = std::chrono::steady_clock::now();
+    calls[callId] = callInfo;
+    QStringList callList = CallManager::instance().getParticipantList(callId.c_str());
+    foreach(const auto& call, callList) {
+        emit linked.callAddedToConference(call.toStdString(), callId);
+    }
+}
+
+void
+NewCallModelPimpl::slotConferenceRemoved(const std::string& callId)
+{
+    auto it = calls.find(callId);
+    if (it == calls.end()) return;
+    auto& call = it->second;
+    call->status =  call::Status::ENDED;
+    emit linked.callEnded(callId);
+    emit linked.callStatusChanged(callId);
 }
 
 } // namespace lrc
