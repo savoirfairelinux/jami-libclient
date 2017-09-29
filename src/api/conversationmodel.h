@@ -61,6 +61,12 @@ public:
     const ConversationQueue& getFilteredConversations() const;
     conversation::Info getConversation(unsigned int row) const;
     void addConversation(const std::string& uid) const;
+    /**
+     * Creates a conference from 2 conversations
+     * @param uidSrc
+     * @param uidDest
+     */
+    void createConference(const std::string& uidSrc, const std::string& uidDest) const;
     void removeConversation(const std::string& uid, bool banned=false);
     void selectConversation(const std::string& uid) const;
     void placeCall(const std::string& uid) const;
