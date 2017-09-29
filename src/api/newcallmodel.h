@@ -164,6 +164,8 @@ public:
      */
     std::string getFormattedCallDuration(const std::string& callId) const;
 
+    void createConference(const std::string& callIdSrc, const std::string& callIdDest);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
@@ -192,6 +194,7 @@ Q_SIGNALS:
      * @param renderer
      */
     void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
+    void callAddedToConference(const std::string& callId, const std::string& confId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
