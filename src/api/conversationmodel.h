@@ -116,11 +116,11 @@ public:
      */
     void setFilter(const profile::Type& filter = profile::Type::INVALID);
     /**
-     * Add a new participant to a conversation
-     * @param uid conversation linked
-     * @param uri peer to add
+     * Create a conference from 2 conversations. Conversations must be in a call.
+     * @param uidSrc uid of the conversation to add to the conference
+     * @param uidDest other uid for the conference
      */
-    void addParticipant(const std::string& uid, const::std::string& uri);
+    void addParticipant(const std::string& uidSrc, const std::string& uidDest);
     /**
      * Clear the history of a conversation
      * @param uid of the conversation
