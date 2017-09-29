@@ -126,6 +126,13 @@ public:
      */
     void clearHistory(const std::string& uid);
 
+    /*
+     * Creates a conference from 2 conversations
+     * @param uidSrc
+     * @param uidDest
+     */
+    void createConference(const std::string& uidSrc, const std::string& uidDest) const;
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction
