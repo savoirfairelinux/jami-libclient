@@ -94,8 +94,15 @@ public:
      * @param body
      */
     void addCallMessage(const std::string& callId, const std::string& body);
-
-    void addIncomingMessage(const std::string& from, const std::string& body);
+    /**
+     * Add a message in a conversation
+     * @param from peer uri
+     * @param body content of the message
+     * @param authorProfileId override the author of the message (if empty it's from)
+     */
+    void addIncomingMessage(const std::string& from,
+                            const std::string& body,
+                            const std::string& authorProfileId="");
 
     const ConversationModel& linked;
     Database& db;
@@ -157,6 +164,7 @@ public Q_SLOTS:
                                std::string& from,
                                std::map<std::string,std::string> payloads);
     void slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body);
+    void slotCallAddedToConference(const std::string& callId, const std::string& confId);
 
 };
 
@@ -328,6 +336,33 @@ ConversationModel::placeCall(const std::string& uid) const
         return;
     }
 
+    // Disallow multiple call
+    if (!conversation.callId.empty()) {
+        try  {
+            auto call = owner.callModel->getCall(conversation.callId);
+            switch (call.status) {
+                case call::Status::INCOMING_RINGING:
+                case call::Status::OUTGOING_RINGING:
+                case call::Status::CONNECTING:
+                case call::Status::SEARCHING:
+                case call::Status::PAUSED:
+                case call::Status::PEER_PAUSED:
+                case call::Status::CONNECTED:
+                case call::Status::IN_PROGRESS:
+                case call::Status::OUTGOING_REQUESTED:
+                case call::Status::AUTO_ANSWERING:
+                    return;
+                case call::Status::INVALID:
+                case call::Status::INACTIVE:
+                case call::Status::ENDED:
+                case call::Status::TERMINATING:
+                default:
+                    break;
+            }
+        } catch (const std::out_of_range&) {
+        }
+    }
+
     auto convId = uid;
     auto accountId = pimpl_->accountProfileId;
 
@@ -429,11 +464,18 @@ ConversationModel::setFilter(const profile::Type& filter)
 }
 
 void
-ConversationModel::addParticipant(const std::string& uid, const::std::string& uri)
+ConversationModel::addParticipant(const std::string& uidSrc, const std::string& uidDest)
 {
-    Q_UNUSED(uid)
-    Q_UNUSED(uri)
-    // TODO when conferences.will be implemented
+    auto conversationSrcIdx = pimpl_->indexOf(uidSrc);
+    auto conversationDestIdx = pimpl_->indexOf(uidDest);
+    if (conversationSrcIdx == -1 || conversationDestIdx == -1)
+        return;
+    auto& conversationSrc = pimpl_->conversations[conversationSrcIdx];
+    auto& conversationDest = pimpl_->conversations[conversationDestIdx];
+    // NOTE: To create a conference, we must be in call for now.
+    if (conversationSrc.callId.empty() || conversationDest.callId.empty())
+        return;
+    owner.callModel->addParticipant(conversationSrc.callId, conversationDest.callId);
 }
 
 void
@@ -498,6 +540,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callEnded,
             this,
             &ConversationModelPimpl::slotCallEnded);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callAddedToConference,
+            this,
+            &ConversationModelPimpl::slotCallAddedToConference);
 }
 
 
@@ -739,37 +785,28 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
     addCallMessage(callId, "🕽 Call ended");
 
     // reset the callId stored in the conversation
-    auto it = std::find_if(conversations.begin(), conversations.end(),
-    [callId](const conversation::Info& conversation) {
-      return conversation.callId == callId;
-    });
-
-    if (it != conversations.end())
-        it->callId = "";
+    for (auto& conversation: conversations)
+        if (conversation.callId == callId)
+            conversation.callId = "";
 }
 
 void
 ConversationModelPimpl::addCallMessage(const std::string& callId, const std::string& body)
 {
     // Get conversation
-    auto i = std::find_if(
-    conversations.begin(), conversations.end(),
-    [callId](const conversation::Info& conversation) {
-      return conversation.callId == callId;
-    });
-
-    if (i == conversations.end()) return;
-
-    auto& conversation = *i;
-    auto uid = conversation.uid;
-    auto msg = interaction::Info({accountProfileId, body, std::time(nullptr),
-                            interaction::Type::CALL, interaction::Status::SUCCEED});
-    int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
-    conversation.interactions.emplace(msgId, msg);
-    conversation.lastMessageUid = msgId;
-    emit linked.newUnreadMessage(conversation.uid, msg);
-    sortConversations();
-    emit linked.modelSorted();
+    for (auto& conversation: conversations) {
+        if (conversation.callId == callId) {
+            auto uid = conversation.uid;
+            auto msg = interaction::Info({accountProfileId, body, std::time(nullptr),
+                                    interaction::Type::CALL, interaction::Status::SUCCEED});
+            int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
+            conversation.interactions.emplace(msgId, msg);
+            conversation.lastMessageUid = msgId;
+            emit linked.newUnreadMessage(conversation.uid, msg);
+            sortConversations();
+            emit linked.modelSorted();
+        }
+    }
 }
 
 
@@ -790,11 +827,26 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
     if (not linked.owner.callModel->hasCall(callId))
         return;
 
-    addIncomingMessage(from, body);
+    auto& call = linked.owner.callModel->getCall(callId);
+    if (call.type == call::Type::CONFERENCE) {
+        // Show messages in all conversations for conferences.
+        for (const auto& conversation: conversations) {
+            if (conversation.callId == callId) {
+                if (conversation.participants.empty()) continue;
+                auto authorProfileId = database::getOrInsertProfile(db, from);
+                addIncomingMessage(conversation.participants.front(), body, authorProfileId);
+            }
+        }
+    } else {
+        addIncomingMessage(from, body);
+    }
+
 }
 
 void
-ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::string& body)
+ConversationModelPimpl::addIncomingMessage(const std::string& from,
+                                           const std::string& body,
+                                           const std::string& authorProfileId)
 {
     auto contactProfileId = database::getOrInsertProfile(db, from);
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
@@ -802,7 +854,8 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
     if (conv.empty()) {
         conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, contactProfileId));
     }
-    auto msg = interaction::Info({contactProfileId, body, std::time(nullptr),
+    auto authorId = authorProfileId.empty()? contactProfileId: authorProfileId;
+    auto msg = interaction::Info({authorId, body, std::time(nullptr),
                             interaction::Type::TEXT, interaction::Status::UNREAD});
     int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);
@@ -818,6 +871,18 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
     sortConversations();
     emit linked.modelSorted();
 }
+
+void
+ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, const std::string& confId)
+{
+    for (auto& conversation: conversations) {
+        if (conversation.callId == callId) {
+            conversation.callId = confId;
+            emit linked.selectConversation(conversation.uid);
+        }
+    }
+}
+
 
 } // namespace lrc
 
