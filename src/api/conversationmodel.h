@@ -119,7 +119,7 @@ public:
      * @param uid conversation linked
      * @param uri peer to add
      */
-    void addParticipant(const std::string& uid, const::std::string& uri);
+    void addParticipant(const std::string& uidSrc, const std::string& uidDest);
     /**
      * Clear the history of a conversation
      * @param uid of the conversation
