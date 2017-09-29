@@ -79,6 +79,7 @@ public:
     void togglePause(const std::string& callId) const;
     void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
     void toggleRecoringdAudio(const std::string& callId) const;
+    void playDTMF(const std::string& callId, const std::string& value) const;
     void setQuality(const std::string& callId, const double quality) const;
     void transfer(const std::string& callId, const std::string& to) const;
     void addParticipant(const std::string& callId, const std::string& participant);

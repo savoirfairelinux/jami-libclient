@@ -133,6 +133,15 @@ NewCallModel::toggleAudioRecord(const std::string& callId) const
 }
 
 void
+NewCallModel::playDTMF(const std::string& callId, const std::string& value) const
+{
+    auto call = pimpl_->calls.find(callId);
+    if (call == pimpl_->calls.end()) return;
+    if (pimpl_->calls[callId]->status != call::Status::IN_PROGRESS) return;
+    CallManager::instance().playDTMF(value.c_str());
+}
+
+void
 NewCallModel::togglePause(const std::string& callId) const
 {
     auto call = pimpl_->calls.find(callId);
