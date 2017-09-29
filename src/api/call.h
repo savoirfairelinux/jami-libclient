@@ -88,12 +88,18 @@ StatusToString(const call::Status& status)
     }
 }
 
+enum class Type {
+    INVALID,
+    DIALOG,
+    CONFERENCE
+};
 
 struct Info
 {
     std::string id;
     std::time_t startTime = 0;
     Status status = Status::INVALID;
+    Type type = Type::INVALID;
     std::string peer;
     bool audioMuted = false;
     bool videoMuted = false;

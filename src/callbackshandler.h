@@ -138,6 +138,7 @@ Q_SIGNALS:
     void incomingCallMessage(const std::string& callId,
                              const std::string& from,
                              const std::string& body) const;
+    void conferenceCreated(const std::string& callId);
 
 private Q_SLOTS:
     /**
@@ -230,6 +231,8 @@ private Q_SLOTS:
     void slotIncomingMessage(const QString& callId,
                              const QString& from,
                              const QMap<QString,QString>& interaction);
+    void slotConferenceCreated(const QString& callId);
+    void slotConferenceChanged(const QString& callId, const QString& state);
 
 private:
     const api::Lrc& parent;
