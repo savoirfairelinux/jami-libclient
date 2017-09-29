@@ -137,7 +137,18 @@ Q_SIGNALS:
      */
     void incomingCallMessage(const std::string& callId,
                              const std::string& from,
-                             const std::string& body);
+
+                             const std::string& body) const;
+    /**
+     * Connect this signal to know when a new conference is created
+     * @param callId of the conference
+     */
+    void conferenceCreated(const std::string& callId);
+    /**
+     * Connect this signal to know when a conference is removed
+     * @param callId of the conference
+     */
+    void conferenceRemoved(const std::string& callId);
 
 private Q_SLOTS:
     /**
@@ -230,6 +241,22 @@ private Q_SLOTS:
     void slotIncomingMessage(const QString& callId,
                              const QString& from,
                              const QMap<QString,QString>& interaction);
+    /**
+     * Emit conferenceCreated
+     * @param callId of the conference
+     */
+    void slotConferenceCreated(const QString& callId);
+    /**
+     * Emit conferenceRemove
+     * @param callId of the conference
+     */
+    void slotConferenceRemoved(const QString& callId);
+    /**
+     * Call slotCallStateChanged
+     * @param callId of the conference
+     * @param state, new state
+     */
+    void slotConferenceChanged(const QString& callId, const QString& state);
 
 private:
     const api::Lrc& parent;
