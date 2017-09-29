@@ -144,20 +144,20 @@ public:
      */
     void transfer(const std::string& callId, const std::string& to) const;
     /**
-     * Not implemented yet
+     * Add a new participant to a conversation
+     * @param uidSrc uid of the conversation to add to the conference
+     * @param uidDest other uid for the conference
      */
-    void addParticipant(const std::string& callId, const std::string& participant);
+    void addParticipant(const std::string& callIdSrc, const std::string& callIdDest);
     /**
      * Not implemented yet
      */
     void removeParticipant(const std::string& callId, const std::string& participant);
-
     /**
      * @param  callId
      * @return the renderer linked to a call
      */
     Video::Renderer* getRenderer(const std::string& callId) const;
-
     /**
      * @param  callId
      * @return a human readable call duration
@@ -192,6 +192,12 @@ Q_SIGNALS:
      * @param renderer
      */
     void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
+    /**
+     * Emitted when a call is added to a conference
+     * @param callId
+     * @param confId
+     */
+    void callAddedToConference(const std::string& callId, const std::string& confId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
