@@ -154,6 +154,7 @@ public Q_SLOTS:
                                std::string& from,
                                std::map<std::string,std::string> payloads);
     void slotIncomingCallMessage(const std::string& callId, const std::string& from, const std::string& body);
+    void slotCallAddedToConference(const std::string& callId, const std::string& confId);
 
 };
 
@@ -235,6 +236,22 @@ ConversationModel::addConversation(const std::string& uid) const
 
     // Send contact request if non used
     pimpl_->sendContactRequest(conversation.participants.front());
+}
+
+void
+ConversationModel::createConference(const std::string& uidSrc,
+                                    const std::string& uidDest) const
+{
+    auto conversationSrcIdx = pimpl_->indexOf(uidSrc);
+    auto conversationDestIdx = pimpl_->indexOf(uidDest);
+    if (conversationSrcIdx == -1 || conversationDestIdx == -1)
+        return;
+    auto& conversationSrc = pimpl_->conversations[conversationSrcIdx];
+    auto& conversationDest = pimpl_->conversations[conversationDestIdx];
+    // NOTE: To create a conference, we must be in call for now.
+    if (conversationSrc.callId.empty() || conversationDest.callId.empty())
+        return;
+    owner.callModel->createConference(conversationSrc.callId, conversationDest.callId);
 }
 
 void
@@ -489,6 +506,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callEnded,
             this,
             &ConversationModelPimpl::slotCallEnded);
+    connect(&*linked.owner.callModel,
+            &lrc::api::NewCallModel::callAddedToConference,
+            this,
+            &ConversationModelPimpl::slotCallAddedToConference);
 }
 
 
@@ -801,6 +822,18 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from, const std::s
     sortConversations();
     emit linked.modelSorted();
 }
+
+void
+ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, const std::string& confId)
+{
+    for (auto& conversation: conversations) {
+        if (conversation.callId == callId) {
+            conversation.callId = confId;
+            emit linked.selectConversation(conversation.uid);
+        }
+    }
+}
+
 
 } // namespace lrc
 

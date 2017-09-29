@@ -81,6 +81,7 @@ public:
     void toggleRecoringdAudio(const std::string& callId) const;
     void setQuality(const std::string& callId, const double quality) const;
     void transfer(const std::string& callId, const std::string& to) const;
+    void createConference(const std::string& callIdSrc, const std::string& callIdDest);
     void addParticipant(const std::string& callId, const std::string& participant);
     void removeParticipant(const std::string& callId, const std::string& participant);
 
@@ -94,6 +95,7 @@ Q_SIGNALS:
     void callEnded(const std::string& callId) const;
     void newIncomingCall(const std::string& callId, const std::string& fromId) const;
     void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
+    void callAddedToConference(const std::string& callId, const std::string& confId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;

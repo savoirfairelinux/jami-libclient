@@ -85,6 +85,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotCallStateChanged);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::conferenceCreated,
+            this,
+            &CallbacksHandler::slotConferenceCreated);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::conferenceChanged,
+            this,
+            &CallbacksHandler::slotConferenceChanged);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
             this, // [jn] move it to a function
             [this] (const QString& callId, const QString& from, const QMap<QString,QString>& interaction) {
@@ -215,6 +225,18 @@ CallbacksHandler::slotRegistrationStateChanged(const QString& accountID,
 {
     emit accountStatusChanged(accountID.toStdString(), lrc::api::account::StringToStatus(registration_state.toStdString()));
 
+}
+
+void
+CallbacksHandler::slotConferenceCreated(const QString& callId)
+{
+    emit conferenceCreated(callId.toStdString());
+}
+
+void
+CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& state)
+{
+    slotCallStateChanged(callId, state, 0);
 }
 
 
