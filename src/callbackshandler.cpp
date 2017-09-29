@@ -85,6 +85,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotCallStateChanged);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::conferenceCreated,
+            this,
+            &CallbacksHandler::slotConferenceCreated);
+
+    connect(&CallManager::instance(),
+            &CallManagerInterface::conferenceChanged,
+            this,
+            &CallbacksHandler::slotConferenceChanged);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
             this,
             &CallbacksHandler::slotIncomingMessage);
@@ -222,6 +232,18 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
             emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
         }
     }
+}
+
+void
+CallbacksHandler::slotConferenceCreated(const QString& callId)
+{
+    emit conferenceCreated(callId.toStdString());
+}
+
+void
+CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& state)
+{
+    slotCallStateChanged(callId, state, 0);
 }
 
 
