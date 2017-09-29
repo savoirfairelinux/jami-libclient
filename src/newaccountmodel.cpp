@@ -137,20 +137,6 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
-    auto returnFromDb = database.select("uri",
-                                        "profiles",
-                                        "uri=:uri",
-                                        {{":uri", info.profileInfo.uri}});
-    if (returnFromDb.payloads.empty()) {
-        // Profile is not in db, add it.
-        std::string type = info.profileInfo.type == profile::Type::RING ? "RING" : "SIP";
-        database.insertInto("profiles",
-                             {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"},
-                              {":type", "type"}, {":status", "status"}},
-                             {{":uri", info.profileInfo.uri}, {":alias", info.profileInfo.alias}, {":photo", ""},
-                              {":type", type}, {":status", ""}});
-    }
-}
 
 }
 
