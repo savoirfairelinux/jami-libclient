@@ -21,8 +21,12 @@
 #include <cppunit/CompilerOutputter.h>
 #include <iostream>
 
-int main()
+#include <QtWidgets/QApplication>
+
+int main(int argc, char** argv)
 {
+    QApplication app(argc, argv);
+    std::remove("/tmp/ring.db");
     CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
     CppUnit::Test *suite = registry.makeTest();
     if (suite->countTestCases() == 0) {
@@ -31,5 +35,7 @@ int main()
     }
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(suite);
-    return runner.run() ? 0 : 1;
+    auto result = runner.run() ? 0 : 1;
+    std::remove("/tmp/ring.db");
+    return result;
 }
