@@ -664,7 +664,7 @@ ConversationModelPimpl::sendContactRequest(const std::string& contactUri)
 {
     auto contact = linked.owner.contactModel->getContact(contactUri);
     auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
-    || contact.profileInfo.type == profile::Type::PENDING;;
+    || contact.profileInfo.type == profile::Type::PENDING;
     if (isNotUsed) linked.owner.contactModel->addContact(contact);
 }
 
