@@ -313,10 +313,12 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , callbacksHandler(callbacksHandler)
 {
     // Init contacts map
+#ifndef ENABLE_TEST
     if (linked.owner.profileInfo.type == profile::Type::SIP)
         fillsWithSIPContacts();
     else
         fillsWithRINGContacts();
+#endif
 
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::newBuddySubscription,

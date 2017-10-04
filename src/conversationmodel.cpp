@@ -582,9 +582,11 @@ ConversationModelPimpl::~ConversationModelPimpl()
 void
 ConversationModelPimpl::initConversations()
 {
+#ifndef ENABLE_TEST
     auto account = AccountModel::instance().getById(linked.owner.id.c_str());
     if (!account)
         return;
+#endif
 
     // Fill conversations
     if (accountProfileId.empty()) {

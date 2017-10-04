@@ -136,10 +136,12 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
 
+#ifndef ENABLE_TEST
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountAdded, this,  &NewAccountModelPimpl::slotAccountAdded);
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
     connect(&AccountModel::instance(), &AccountModel::accountListUpdated, this,  &NewAccountModelPimpl::slotAccountUpdated);
+#endif
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
