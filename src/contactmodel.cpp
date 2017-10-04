@@ -179,6 +179,8 @@ ContactModel::addContact(contact::Info contactInfo)
             return;
     }
 
+    if (contactInfo.profileInfo.uri.empty()) return;
+
     switch (contactInfo.profileInfo.type) {
     case profile::Type::RING:
     case profile::Type::TEMPORARY:
@@ -197,9 +199,11 @@ ContactModel::addContact(contact::Info contactInfo)
                 // Already a contact for the daemon
                 contactInfo.profileInfo.type = profile::Type::RING;
             }
+            #ifndef ENABLE_TEST // NOTE: will be removed. but for now the old LRC doesn't like mocks and crash
             auto account = AccountModel::instance().getById(owner.id.c_str());
             if (account) account->sendContactRequest(URI(contactInfo.profileInfo.uri.c_str()));
             // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
+            #endif
         }
         // we need to add the profile into the database.
         database::getOrInsertProfile(pimpl_->db, contactInfo.profileInfo.uri, contactInfo.profileInfo.alias,
