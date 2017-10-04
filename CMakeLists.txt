@@ -854,7 +854,9 @@ ADD_CUSTOM_TARGET(uninstall
 IF((${ENABLE_TEST} MATCHES true))
   ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Avoid dbus models
   ADD_DEFINITIONS(-DENABLE_TEST=true) # Use mocks
+  INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
   FIND_PACKAGE(Cppunit REQUIRED)
+  FIND_PACKAGE(Qt5Widgets)
   MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
   # unit testing
   IF (CPPUNIT_FOUND)
@@ -869,6 +871,8 @@ IF((${ENABLE_TEST} MATCHES true))
       test/databasetester.cpp
       test/utils/waitforsignalhelper.h
       test/utils/waitforsignalhelper.cpp
+      test/conversationmodeltester.h
+      test/conversationmodeltester.cpp
       ${libringclient_LIB_SRCS}
       ${libringclient_PRIVATE_HDRS}
     )
