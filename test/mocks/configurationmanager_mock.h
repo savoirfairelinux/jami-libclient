@@ -108,6 +108,8 @@ public Q_SLOTS: // METHODS
     {
         Q_UNUSED(nameServiceURL)
         if (getAccountList().indexOf(accountId) == -1) return false;
+        if (name == "notAContact") return false;
+        emit registeredNameFound(accountId, 00, name, name);
         return availableContacts_.indexOf(name) != -1;
     }
 
@@ -391,6 +393,14 @@ public Q_SLOTS: // METHODS
         return 0;
     }
 
+    bool changeAccountPassword(const QString& id, const QString& currentPassword, const QString& newPassword)
+    {
+        Q_UNUSED(id)
+        Q_UNUSED(currentPassword)
+        Q_UNUSED(newPassword)
+        return false;
+    }
+
     void sendRegister(const QString& accountId, bool enable)
     {
         Q_UNUSED(accountId)
@@ -535,14 +545,6 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(certPath)
         Q_UNUSED(status)
         return false;
-    }
-
-    bool changeAccountPassword(const QString& id, const QString& currentPassword, const QString& newPassword)
-    {
-        Q_UNUSED(id)
-        Q_UNUSED(currentPassword)
-        Q_UNUSED(newPassword)
-        return true;
     }
 
     QStringList getCertificatesByStatus(const QString& accountId, const QString& status)
