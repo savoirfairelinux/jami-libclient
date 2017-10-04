@@ -141,7 +141,7 @@ Q_SIGNALS:
                                   uint64_t msgId,
                                   const api::interaction::Info& msg) const;
     /**
-     * Emiited when user clear the history of a conversation
+     * Emitted when user clear the history of a conversation
      */
     void conversationCleared(const std::string& uid) const;
     /**
