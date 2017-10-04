@@ -138,9 +138,7 @@ public Q_SLOTS: // METHODS
 
     QStringList getParticipantList(const QString &confID)
     {
-        Q_UNUSED(confID)
-        QStringList temp;
-        return temp;
+        return confID.split(",");
     }
 
     bool hangUp(const QString &callID)
@@ -182,17 +180,14 @@ public Q_SLOTS: // METHODS
 
     bool joinParticipant(const QString &sel_callID, const QString &drag_callID)
     {
-        Q_UNUSED(sel_callID)
-        Q_UNUSED(drag_callID)
-        return false;
+        emit conferenceCreated(sel_callID + "," + drag_callID);
+        return true;
     }
 
     QString placeCall(const QString &accountID, const QString &to)
     {
-        Q_UNUSED(accountID)
-        Q_UNUSED(to)
-        QString temp;
-        return temp;
+        emit newCallCreated(accountID, to, to);
+        return to;
     }
 
     void playDTMF(const QString &key)
