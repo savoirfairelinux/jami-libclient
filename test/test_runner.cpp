@@ -17,19 +17,17 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
  */
 #include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/ui/qt/TestRunner.h>
 #include <cppunit/CompilerOutputter.h>
 #include <iostream>
 
-int main()
+#include <QtWidgets/QApplication>
+
+int main(int argc, char** argv)
 {
-    CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
-    CppUnit::Test *suite = registry.makeTest();
-    if (suite->countTestCases() == 0) {
-        std::cout << "No test cases specified for suite" << std::endl;
-        return 1;
-    }
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest(suite);
-    return runner.run() ? 0 : 1;
+    QApplication app( argc, argv );
+    CPPUNIT_NS::QtTestRunner runner;
+    runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
+    runner.run(true);
+    return 0;
 }
