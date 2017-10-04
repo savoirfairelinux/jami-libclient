@@ -5,7 +5,7 @@
 #include <QTimer>
 
 WaitForSignalHelper::WaitForSignalHelper(QObject& object, const char* signal)
-: timeout_(false)
+: QObject(), timeout_(false)
 {
     connect(&object, signal, &eventLoop_, SLOT(quit()));
 }

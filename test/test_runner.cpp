@@ -21,8 +21,11 @@
 #include <cppunit/CompilerOutputter.h>
 #include <iostream>
 
-int main()
+#include <QtWidgets/QApplication>
+
+int main(int argc, char** argv)
 {
+    QApplication app( argc, argv );
     CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
     CppUnit::Test *suite = registry.makeTest();
     if (suite->countTestCases() == 0) {
