@@ -84,12 +84,24 @@ NewCallModel::~NewCallModel()
 const call::Info&
 NewCallModel::getCallFromURI(const std::string& uri) const
 {
+    if (pimpl_->calls.empty()) throw std::out_of_range("No call at URI " + uri);
+    // Search in conference
+    std::string callId = "";
     for (const auto& call: pimpl_->calls) {
-        if (call.second->peer == uri) {
-            return *call.second;
+        if (call.second->type == call::Type::CONFERENCE) {
+            QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
+            foreach(const auto& callId, callList) {
+                if (pimpl_->calls[callId.toStdString()]->peer == uri) {
+                    qDebug() << call.first.c_str();
+                    return *call.second;
+                }
+            }
         }
+        if (call.second->peer == uri) callId = call.first;
     }
-    throw std::out_of_range("No call at URI " + uri);
+    // DIALOG SEARCH
+    if (!callId.empty()) return *pimpl_->calls[callId];
+    else throw std::out_of_range("No call at URI " + uri);
 }
 
 const call::Info&
@@ -312,9 +324,38 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
             callInfo->peer = details["PEER_NUMBER"].left(endId).toStdString();
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
+            callInfo->type = call::Type::DIALOG;
             calls[callId.toStdString()] = callInfo;
+            // DIRTY HACK. Unmute the video to restart private/videorenderermanager (and the video).
+            linked.toggleMedia(callId.toStdString(), NewCallModel::Media::VIDEO, true);
+            linked.toggleMedia(callId.toStdString(), NewCallModel::Media::VIDEO, false);
         }
     }
+    // Get conferences
+    callList = CallManager::instance().getConferenceList();
+    for (const auto& callId: callList)
+    {
+        QMap<QString, QString> details = CallManager::instance().getConferenceDetails(callId);
+        auto callInfo = std::make_shared<call::Info>();
+        callInfo->id = callId.toStdString();
+        QStringList callList = CallManager::instance().getParticipantList(callId);
+        auto isForThisAccount = true;
+        foreach(const auto& call, callList) {
+            QMap<QString, QString> callDetails = CallManager::instance().getCallDetails(call);
+            isForThisAccount = callDetails["ACCOUNTID"].toStdString() == linked.owner.id;
+            if (!isForThisAccount) break;
+            callInfo->startTime = std::stoi(callDetails["TIMESTAMP_START"].toStdString());
+            callInfo->status =  details["CONF_STATE"] == "ACTIVE_ATTACHED"? call::Status::IN_PROGRESS : call::Status::PAUSED;
+            emit linked.callAddedToConference(call.toStdString(), callId.toStdString());
+        }
+        if (!isForThisAccount) break;
+        callInfo->type = call::Type::CONFERENCE;
+        calls[callId.toStdString()] = callInfo;
+        // DIRTY HACK. Unmute the video to restart private/videorenderermanager (and the video).
+        CallManager::instance().holdConference(callId);
+        CallManager::instance().unholdConference(callId);
+    }
+
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
