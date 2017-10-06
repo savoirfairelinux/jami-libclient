@@ -60,6 +60,12 @@ ELSE()
    SET(ENABLE_LIBWRAP true)
 ENDIF()
 
+IF(NOT ENABLE_TEST)
+  SET(ENABLE_TEST false)
+ELSE()
+  SET(ENABLE_TEST true) # because mocks use the same interface present in src/qtwrapper
+ENDIF()
+
 # Enable some useful warnings
 ADD_DEFINITIONS(
    -Wall
