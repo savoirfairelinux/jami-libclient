@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_e6d9e684",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-06T15:56:41Z",
+      "side": 1,
+      "message": "why some methods are const and some not?\nI think it should be all const, no?",
+      "revId": "ed7592ae852eb0ed76b09bf423c101de88ae2235",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_a6f87ee6",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-06T15:56:41Z",
+      "side": 1,
+      "message": "no \u0027,\u0027 after param name. It looks weird into the rendered documentation.\n\n(comment valid for everywhere below)",
+      "range": {
+        "startLine": 54,
+        "startChar": 18,
+        "endLine": 55,
+        "endChar": 23
+      },
+      "revId": "ed7592ae852eb0ed76b09bf423c101de88ae2235",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_06ddea70",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-06T15:56:41Z",
+      "side": 1,
+      "message": "VCard (uppercase \u0027C\u0027) ?",
+      "range": {
+        "startLine": 127,
+        "startChar": 9,
+        "endLine": 127,
+        "endChar": 27
+      },
+      "revId": "ed7592ae852eb0ed76b09bf423c101de88ae2235",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
