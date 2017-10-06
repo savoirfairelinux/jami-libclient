@@ -60,6 +60,10 @@ ELSE()
    SET(ENABLE_LIBWRAP true)
 ENDIF()
 
+IF(NOT ENABLE_TEST)
+  SET(ENABLE_TEST false)
+ENDIF()
+
 # Enable some useful warnings
 ADD_DEFINITIONS(
    -Wall
