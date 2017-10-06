@@ -76,8 +76,8 @@ Database::createTables()
                                                  uri TEXT NOT NULL,     \
                                                  alias TEXT,            \
                                                  photo TEXT,            \
-                                                 type INTEGER,          \
-                                                 status INTEGER)";
+                                                 type TEXT,             \
+                                                 status TEXT)";
 
     auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
                                                            participant_id INTEGER, \
@@ -87,8 +87,6 @@ Database::createTables()
                                                          account_id INTEGER, \
                                                          author_id INTEGER, \
                                                          conversation_id INTEGER, \
-                                                         device_id INTEGER, \
-                                                         group_id INTEGER, \
                                                          timestamp INTEGER, \
                                                          body TEXT,     \
                                                          type TEXT,  \
