@@ -87,8 +87,6 @@ Database::createTables()
                                                          account_id INTEGER, \
                                                          author_id INTEGER, \
                                                          conversation_id INTEGER, \
-                                                         device_id INTEGER, \
-                                                         group_id INTEGER, \
                                                          timestamp INTEGER, \
                                                          body TEXT,     \
                                                          type TEXT,  \
