@@ -1215,10 +1215,68 @@
         <translation>قبول</translation>
     </message>
     <message>
+        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>نگه داشتن</translation>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="62"/>
+        <source>Talking</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="64"/>
+        <source>ERROR</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="66"/>
+        <source>Outgoing requested</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="68"/>
+        <source>Incoming</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="70"/>
+        <source>Calling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="72"/>
+        <source>Connecting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="74"/>
+        <source>Searching</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="78"/>
+        <source>Inactive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="80"/>
+        <location filename="../src/api/call.h" line="82"/>
+        <source>Finished</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="84"/>
+        <source>Communication established</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="86"/>
+        <source>Auto answering</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>

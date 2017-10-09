@@ -29,7 +29,7 @@
         <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>Forsøker...</translation>
+        <translation>Forsøker…</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="341"/>
@@ -59,13 +59,13 @@
         <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>Oppsettfeil med Stun</translation>
+        <translation>Oppsettfeil med STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Ugyldig Stun-tjener</translation>
+        <translation>Ugyldig STUN-tjener</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -682,7 +682,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation>Uid</translation>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -803,32 +803,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation>Har korrekte filrettigheter på den private nøkkelfilen</translation>
+        <translation>Har korrekte filrettigheter til den private nøkkelfilen</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation>Har korrekte filrettigheter på den offentlige nøkkelfilen</translation>
+        <translation>Har korrekte filrettigheter til den offentlige nøkkelfilen</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Har korrekte rettigheter på den private nøkkelkatalogen</translation>
+        <translation>Har korrekte rettigheter til den private nøkkelmappen</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Har korrekte filrettigheter på den offentlige nøkkelkatalogen</translation>
+        <translation>Har korrekte filrettigheter på den offentlige nøkkelmappen</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation>Har korrekt plassering for privat nøkkelkatalogen</translation>
+        <translation>Har korrekt plassering for privat nøkkel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation>Har riktig plassering for offentlig nøkkelkatalogen</translation>
+        <translation>Har riktig plassering for offentlig nøkkelkatalog</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
@@ -838,12 +838,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Har korrekte SELinux-atributter for offentlig nøkkel</translation>
+        <translation>Har korrekte SELinux-attributter for offentlig nøkkel</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Sertifikat-filen eksisterer og er lesbar</translation>
+        <translation>Sertifikatfilen eksisterer og er lesbar</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
@@ -878,7 +878,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation>Sertifikatet er i sin gyldighetsperiode</translation>
+        <translation>Sertifikatet er innenfor sin gyldighetsperiode</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
@@ -943,12 +943,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>Md5-fingeravtrykk</translation>
+        <translation>MD5-fingeravtrykk</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>Sha1-fingeravtrykk</translation>
+        <translation>SHA1-fingeravtrykk</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
@@ -984,7 +984,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation>Sertifikat er ikke tilknyttet en gruppe</translation>
+        <translation>Sertifikatet er ikke tilknyttet en gruppe</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
@@ -1170,17 +1170,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Ingen av dine sertifikat tilbyr en privatnøkkel. Den er påkrevd.  Vær så snill å velg en privatnøkkel eller bruk et sertifikat som har en slik innebygget.</translation>
+        <translation>Ingen av dine sertifikater tilbyr en privatnøkkel. Den er påkrevd.  Velg en privatnøkkel eller bruk et sertifikat som har en slik innebygget.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Ingen sertifikatautoritet er gjort tilgjengelig.  Det vil ikke være mulig å kontrollere om svarsertifikatet er gyldig.  Det kan også hende nhoen kontoer ikke fungerer.</translation>
+        <translation>Ingen sertifikatautoritet er gjort tilgjengelig.  Det vil ikke være mulig å kontrollere om svarsertifikatet er gyldig.  Det kan også hende noen kontoer ikke fungerer.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Ingen sertifikater er gjort tilgjengelig.  Dette er, så langt, ikke støttet av Ring</translation>
+        <translation>Inget sertifikat er gjort tilgjengelig.  Dette er, så langt, ikke støttet av Ring</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1215,10 +1215,68 @@
         <translation>Aksepter</translation>
     </message>
     <message>
+        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>Parker</translation>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="62"/>
+        <source>Talking</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="64"/>
+        <source>ERROR</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="66"/>
+        <source>Outgoing requested</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="68"/>
+        <source>Incoming</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="70"/>
+        <source>Calling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="72"/>
+        <source>Connecting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="74"/>
+        <source>Searching</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="78"/>
+        <source>Inactive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="80"/>
+        <location filename="../src/api/call.h" line="82"/>
+        <source>Finished</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="84"/>
+        <source>Communication established</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="86"/>
+        <source>Auto answering</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1279,7 +1337,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation>Epostkontakt</translation>
+        <translation>E-postkontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
