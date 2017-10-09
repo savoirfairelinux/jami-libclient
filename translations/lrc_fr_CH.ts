@@ -1,23 +1,23 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="el" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_CH" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation>Έτοιμο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Εγγεγραμμένος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Μη Εγγεγραμμένος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="337"/>
@@ -29,31 +29,31 @@
         <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>Προσπάθεια...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation>Σφάλμα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Η Ταυτοποίηση Απέτυχε</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Δίκτυο Μη Προσβάσιμο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Φιλοξενητής μη προσβάσιμος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
@@ -71,25 +71,25 @@
         <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>Υπηρεσία μη διαθέσιμη</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Μη αποδεκτός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Άκυρος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Αίτημα Εκτός Χρόνου</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Ρυθμίσεις</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
-        <translation>Hostname</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
-        <translation>Port</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -119,120 +119,120 @@
         <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation>Νέο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Κουδουνίζει</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Καλεί</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation>Μιλά</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation>Κλήση</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Αναμονή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>Απέτυχε</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>Απασχολημένο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Μεταφορά</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Μεταφορά κράτησης</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation>Τέλος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation>Σφάλμα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="749"/>
         <location filename="../src/call.cpp" line="854"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation>Συνδιάσκεψη</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="752"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation>Συνδιάσκεψη (σε αναμονή)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="755"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation>ΣΦΑΛΜΑ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="758"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Αναζήτηση για</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="761"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation>Ματαιώθηκε</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="764"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>Επικοινωνία επιτεύχθηκε</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
-        <translation>Άγνωστος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2209"/>
         <source>Account: </source>
-        <translation>Λογαριασμός:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="920"/>
         <source>Calls</source>
-        <translation>Κλήσεις</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
         <location filename="../src/callmodel.cpp" line="555"/>
         <location filename="../src/callmodel.cpp" line="580"/>
         <source>Invalid account</source>
-        <translation>Λανθασμένος λογαριασμός</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../src/call.cpp" line="1760"/>
         <source>Aborted</source>
-        <translation>Ματαιώθηκε</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1781"/>
         <source>No account registered!</source>
-        <translation>Κανένας εγγεγραμμένος λογαριασμός!</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -271,12 +271,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation>Δημοφιλείς</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>Επαφές</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -284,28 +284,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation>Επαφές</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Άδειο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Άγνωστοι</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Ποτέ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Άλλοι</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation>Ιστορικό</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -321,7 +321,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Αλυσίδα Εμπιστοσύνης</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
 </context>
 <context>
@@ -337,27 +337,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Οργανισμός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Πρόσφατα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Ομάδα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Τμήμα</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -365,27 +365,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>Ημερομηνία</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Δημοτικότητα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Διάρκεια</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Συνολικός χρόνος</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -393,102 +393,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="40"/>
         <source>Today</source>
-        <translation>Σήμερα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation>Χθες</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
         <source>Two weeks ago</source>
-        <translation>Δύο εβδομάδες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="49"/>
         <source>Three weeks ago</source>
-        <translation>Τρεις εβδομάδες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="47"/>
         <source>A week ago</source>
-        <translation>Μία εβδομάδα πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>A month ago</source>
-        <translation>Ένας μήνας πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Two months ago</source>
-        <translation>Δύο μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="52"/>
         <source>Three months ago</source>
-        <translation>Τρεις μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="53"/>
         <source>Four months ago</source>
-        <translation>Τέσσερις μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="54"/>
         <source>Five months ago</source>
-        <translation>Πέντε μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="55"/>
         <source>Six months ago</source>
-        <translation>Έξι μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="56"/>
         <source>Seven months ago</source>
-        <translation>Επτά μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>Eight months ago</source>
-        <translation>Οκτώ μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Nine months ago</source>
-        <translation>Εννιά μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Ten months ago</source>
-        <translation>Δέκα μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>Eleven months ago</source>
-        <translation>Έντεκα μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Twelve months ago</source>
-        <translation>Δώδεκα μήνες πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>A year ago</source>
-        <translation>Ένας χρόνος πριν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Very long time ago</source>
-        <translation>Πριν από πολύ καιρό</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Never</source>
-        <translation>Ποτέ</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
-        <translation>Εγώ</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -504,17 +504,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Μακροεντολές</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation>Νέο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation>Άλλα</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Άλλα</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -530,17 +530,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation>Εγγραφές</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation>Μηνύματα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Ήχος/Βίντεο</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -548,7 +548,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Χωρίς Κατηγορία</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -556,22 +556,22 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>URI</source>
-        <translation>URI</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
-        <translation>Λογαριασμός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Weight</source>
-        <translation>Βάρος</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="171"/>
         <source>Persons</source>
-        <translation>Άτομα</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -587,62 +587,62 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Αυτός ο λογαριασμός δεν υποστηρίζει εντοπισμό παρουσίας</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation>Κανένας συνδεδεμένος λογαριασμός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>URI</source>
-        <translation>URI</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation>Τύπος</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
-        <translation>Άτομο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation>Λογαριασμός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation>Πολιτεία</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation>Μετρητής κλήσεων</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation>Καταμέτρηση εβδομάδας</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation>Καταμέτρηση τριμήνου</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation>Έχουν καλέσει</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Last used</source>
-        <translation>Τελευταία</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -652,7 +652,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Total (in seconds)</source>
-        <translation>Σύνολο (σε δευτερόλεπτα)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -662,7 +662,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation>Με σελιδοδείκτη</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -672,12 +672,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation>Παρόν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
-        <translation>Μήνυμα παρουσίας</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -700,27 +700,27 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Μήνυμα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Χρώμα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Παρόν</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Προεπιλογή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -734,7 +734,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>N/A</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -742,7 +742,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
-        <translation>Προφίλ</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation>Νέο προφίλ</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -758,37 +758,37 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Message</source>
-        <translation>Μήνυμα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
-        <translation>Κωδικός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Time</source>
-        <translation>Ώρα</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
-        <translation>Μετρητής</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation>Έχει ιδιωτικό κλειδί</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation>Δεν έχει λήξει</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation>Έχει ισχυρή υπογραφή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
@@ -888,7 +888,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation>Ημερομηνία ενεργοποίησης</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
@@ -903,12 +903,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation>Έκδοση</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation>Σειριακός αριθμός</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
@@ -933,7 +933,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation>Οργανισμός (Ο)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
@@ -979,7 +979,7 @@
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <location filename="../src/localprofilecollection.cpp" line="215"/>
         <source>Default</source>
-        <translation>Προεπιλογή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
@@ -1079,7 +1079,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>Ιστορικό</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
@@ -1125,12 +1125,12 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Άλλοι</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Λογαριασμός Ring</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
@@ -1140,7 +1140,7 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="305"/>
         <source>Me</source>
-        <translation>Εγώ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
@@ -1201,7 +1201,7 @@
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Προεπιλογή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
@@ -1212,7 +1212,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>Αποδοχή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
@@ -1220,7 +1220,7 @@
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation>Αναμονή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="62"/>
@@ -1281,12 +1281,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation>Σίγαση ήχου</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation>Σίγαση βίντεο</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
@@ -1296,7 +1296,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation>Εγγραφή</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation>Κλήση</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
@@ -1382,12 +1382,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation>Ακύρωση αναμονής</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation>Ακύρωση</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="142"/>
@@ -1428,7 +1428,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>Όνομα</translation>
+        <translation>nom</translation>
     </message>
 </context>
 <context>
