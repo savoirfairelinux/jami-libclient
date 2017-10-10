@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_7a060622",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T17:27:06Z",
+      "side": 1,
+      "message": "misleading parameter name",
+      "range": {
+        "startLine": 64,
+        "startChar": 14,
+        "endLine": 64,
+        "endChar": 24
+      },
+      "revId": "26ade996f83f4fc7774df21e862c0ee311f2c410",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_fd09702d",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T17:27:06Z",
+      "side": 1,
+      "message": "Comments are not properly ordered and/or have incorrect parameters",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 120
+      },
+      "revId": "26ade996f83f4fc7774df21e862c0ee311f2c410",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5d1a1c6f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T17:27:06Z",
+      "side": 1,
+      "message": "\":\" or not \":\" ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 19
+      },
+      "revId": "26ade996f83f4fc7774df21e862c0ee311f2c410",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7d1d6066",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T17:27:06Z",
+      "side": 1,
+      "message": "Doc: missing parameters",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 102
+      },
+      "revId": "26ade996f83f4fc7774df21e862c0ee311f2c410",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
