@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_fd20509d",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "If addConversation() is const, why the symmetrical removeConversation() is not ?",
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_dd258cac",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "Missing parameters in documentation",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 132,
+        "endChar": 7
+      },
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_3d3ab8cd",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "Missing parameters in documentation",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 8
+      },
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7d3440de",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 131,
+        "startChar": 19,
+        "endLine": 131,
+        "endChar": 28
+      },
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5d317ceb",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "w",
+      "range": {
+        "startLine": 201,
+        "startChar": 54,
+        "endLine": 201,
+        "endChar": 55
+      },
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bd4d2875",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T18:23:29Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 355,
+        "startChar": 43,
+        "endLine": 355,
+        "endChar": 45
+      },
+      "revId": "3607b955852d789350dc197d7d179ff43b181cd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
