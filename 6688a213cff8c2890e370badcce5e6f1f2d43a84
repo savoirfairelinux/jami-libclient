@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_7afc463f",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-10T13:51:03Z",
+      "side": 1,
+      "message": "missing Q_OBJECT macro¹ for a class which uses signal/slots mechanisms\n_____\n¹http://doc.qt.io/qt-5/qobject.html#Q_OBJECT",
+      "range": {
+        "startLine": 41,
+        "startChar": 35,
+        "endLine": 41,
+        "endChar": 42
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
