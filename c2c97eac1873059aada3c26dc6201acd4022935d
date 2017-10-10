@@ -1,0 +1,481 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_3d959840",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "The power to say: \"auto*\"",
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9dee6421",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "please keep an ident inside function block.\nHere the lambda looks to be declared alone, outside of find_if.",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 166,
+        "endChar": 7
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5d8dfc7a",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "do you mean:\n\nowner.profileInfo.type !\u003d contactInfo.profileInfo.type\n\n???",
+      "range": {
+        "startLine": 174,
+        "startChar": 7,
+        "endLine": 175,
+        "endChar": 116
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bde9a81c",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "ouch... my eyes burn!\nreally difficult to read and understand what we do here.\ncomments are not a help :-(",
+      "range": {
+        "startLine": 181,
+        "startChar": 4,
+        "endLine": 205,
+        "endChar": 14
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5de4dc3a",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "I think all these lines could be simplified by:\n\npimpl_-\u003econtacts[contactInfo.profileInfo.uri] \u003d contactInfo;",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 220,
+        "endChar": 92
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7dbe0001",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "you can just implement that like this:\n\nreturn pimpl_-\u003econtacts.at(contactUri);",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 256,
+        "endChar": 31
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5dbb3c0e",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "indent!!!",
+      "range": {
+        "startLine": 328,
+        "startChar": 4,
+        "endLine": 333,
+        "endChar": 7
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bd37e8af",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "dumb comment",
+      "range": {
+        "startLine": 355,
+        "startChar": 4,
+        "endLine": 355,
+        "endChar": 42
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9d3ca495",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "readability and type safety:\n\nfor (auto* c : account-\u003egetContacts()) {\n    addToContacts(c, linked.owner.profileInfo.type);\n}",
+      "range": {
+        "startLine": 377,
+        "startChar": 4,
+        "endLine": 380,
+        "endChar": 5
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_1d925457",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 389,
+        "startChar": 8,
+        "endLine": 389,
+        "endChar": 12
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bd888823",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "confirmed: unused argument",
+      "range": {
+        "startLine": 419,
+        "startChar": 102,
+        "endLine": 419,
+        "endChar": 111
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7d9f2060",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 422,
+        "startChar": 4,
+        "endLine": 422,
+        "endChar": 8
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5d9cdc69",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 427,
+        "startChar": 4,
+        "endLine": 427,
+        "endChar": 8
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7d5560c5",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "oh no! the return of non-owned-possibly-null pointer without checking and needs... :-p",
+      "range": {
+        "startLine": 445,
+        "startChar": 33,
+        "endLine": 445,
+        "endChar": 50
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bd5ec8e7",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "eyes issues",
+      "range": {
+        "startLine": 469,
+        "startChar": 1,
+        "endLine": 485,
+        "endChar": 31
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_fd5850fc",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "type safety: auto*",
+      "range": {
+        "startLine": 497,
+        "startChar": 4,
+        "endLine": 497,
+        "endChar": 8
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_1dcb7473",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "safety first: auto*",
+      "range": {
+        "startLine": 504,
+        "startChar": 8,
+        "endLine": 504,
+        "endChar": 12
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_bda1a8ab",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 522,
+        "startChar": 4,
+        "endLine": 522,
+        "endChar": 8
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9da664c0",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 531,
+        "startChar": 8,
+        "endLine": 531,
+        "endChar": 12
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_fdab3087",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 548,
+        "startChar": 4,
+        "endLine": 548,
+        "endChar": 8
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_ddb0ecf6",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T20:41:30Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 557,
+        "startChar": 8,
+        "endLine": 557,
+        "endChar": 12
+      },
+      "revId": "c2c97eac1873059aada3c26dc6201acd4022935d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
