@@ -2,6 +2,69 @@
   "comments": [
     {
       "key": {
+        "uuid": "9a3d3df0_babc0e6e",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 57
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "typo: account",
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7aaa861a",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 57
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "typo: no \u0027s\u0027 to \u0027information\u0027 in English",
+      "range": {
+        "startLine": 61,
+        "startChar": 19,
+        "endLine": 61,
+        "endChar": 31
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5aa7c24f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "why there are two ctor for a pimpl? Seems that one on them is not used.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 64
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a3d3df0_7afc463f",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 57
@@ -18,6 +81,190 @@
         "startChar": 35,
         "endLine": 41,
         "endChar": 42
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9a4f8a92",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "it\u0027s not a useful description...and it\u0027s even not \"correct\"!\nI need to take a look to the implementation to understand.\nAs it\u0027s the pimpl, commenting where the function is defined is more indicated.",
+      "range": {
+        "startLine": 63,
+        "startChar": 6,
+        "endLine": 63,
+        "endChar": 33
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_dd0e2c34",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "Why not using a reference than a pointer?",
+      "range": {
+        "startLine": 72,
+        "startChar": 28,
+        "endLine": 72,
+        "endChar": 45
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7a81e68e",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "api:: can be removed, as \"using namespace api\" is declared.",
+      "range": {
+        "startLine": 132,
+        "startChar": 18,
+        "endLine": 132,
+        "endChar": 23
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_1a09ba31",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "With map object when you obtain the iterator from .find(), prefer to use it\nas reference, as with .erase(), than a key. The complexity is almost linear or even constant¹.\n____\n¹ http://en.cppreference.com/w/cpp/container/map/erase",
+      "range": {
+        "startLine": 138,
+        "startChar": 23,
+        "endLine": 138,
+        "endChar": 32
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_fa44d675",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "you can swap if\u0027 actions to simplify conditionnals:\n\nif (accountInfo !\u003d accounts.end()) {\n  ...\n} else if (status \u003d\u003d api::account::Status::REGISTERED) {\n  ...\n}",
+      "range": {
+        "startLine": 134,
+        "startChar": 4,
+        "endLine": 144,
+        "endChar": 5
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_da49128d",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "MapStringString \u003d\u003d QMap\u003cQString, QString\u003e\n\nmake a choise :-)",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 25
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5a2ce2ab",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "QString implements operator\u003d\u003d(const char*)\nSo, this temporary ctor is not needed.",
+      "range": {
+        "startLine": 157,
+        "startChar": 49,
+        "endLine": 157,
+        "endChar": 56
+      },
+      "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_9d04a416",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-10T15:40:35Z",
+      "side": 1,
+      "message": "if you re-use a result many time, think about to cache it.\nI think the compiler doesn\u0027t optimize such access.\n(yes, I\u0027ve made some tests... quite surprizing!)",
+      "range": {
+        "startLine": 163,
+        "startChar": 79,
+        "endLine": 163,
+        "endChar": 106
       },
       "revId": "6688a213cff8c2890e370badcce5e6f1f2d43a84",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
