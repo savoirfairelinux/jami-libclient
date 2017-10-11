@@ -19,43 +19,33 @@
 #pragma once
 
 // Std
-#include <memory>
-
-// Lrc
-#include "typedefs.h"
+#include <ctime>
+#include <string>
 
 namespace lrc
 {
 
-class LrcPimpl;
-
 namespace api
 {
 
-class BehaviorController;
-class NewAccountModel;
-class Renderers;
+namespace video
+{
 
-class LIB_EXPORT Lrc {
-public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
 
-    const Renderers& getRenderers() const;
-
-private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+class enum RendererType{ // [jn] pris depuis le client gtk, vérifier pour les autres.
+    REMOTE,
+    LOCAL,
+    COUNT, // [jn] not sure about this one
+    INVALID // [jn] added
 };
 
+struct Info
+{
+    std::string id = "";
+    bool isRendering = false;
+    RendererType type = INVALID;
+};
+
+} // namespace video
 } // namespace api
 } // namespace lrc

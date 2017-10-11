@@ -32,6 +32,13 @@ namespace lrc
 namespace api
 {
 
+#ifdef ENABLE_LIBWRAP
+    #define RENDERER_TYPE std::string
+#else
+    class NewShmRenderer;
+    #define RENDERER_TYPE lrc::api::NewShmRenderer
+#endif
+
 namespace call
 {
 
@@ -133,6 +140,7 @@ struct Info
     std::string peer;
     bool audioMuted = false;
     bool videoMuted = false;
+    std::shared_ptr<RENDERER_TYPE> renderer;
 };
 
 } // namespace call

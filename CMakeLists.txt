@@ -316,6 +316,9 @@ SET( libringclient_LIB_SRCS
   src/newaccountmodel.cpp
   src/callbackshandler.cpp
   src/behaviorcontroller.cpp
+  src/baserender.cpp
+  src/renderers.cpp
+  src/newshmrenderer.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -467,6 +470,9 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
+  src/baserender.h
+  src/renderers.h
+  src/newshmrenderer.h
 )
 
 SET(libringclient_api_LIB_HDRS
