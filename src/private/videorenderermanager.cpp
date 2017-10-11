@@ -175,7 +175,7 @@ void VideoRendererManager::startPreview()
    if (d_ptr->m_PreviewState)
       return;
 
-   VideoManager::instance().startCamera();
+   //~ VideoManager::instance().startCamera();
 
    d_ptr->m_PreviewState = true;
 
@@ -196,7 +196,8 @@ void VideoRendererManager::setBufferSize(uint size)
 ///A video is not being rendered
 void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-   Q_UNUSED(shmPath) //When directly linked, there is no SHM
+    return;
+   Q_UNUSED(shmPath) //When directly linked, there is no SHM // [jn] missig ifdef...
    const QSize      res = QSize(width,height);
    const QByteArray rid = id.toLatin1();
 
@@ -315,6 +316,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
  */
 void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
 {
+    return;
     Q_UNUSED(shmPath)
 
     if (!m_hRenderers.contains(id.toLatin1()) || !m_hRenderers.contains(id.toLatin1())) {
@@ -437,6 +439,7 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
 
 void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
 {
+    return;
    Q_UNUSED(shmPath)
 
    if (m_hRenderers.contains(id.toLatin1())) {
