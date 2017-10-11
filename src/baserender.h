@@ -21,41 +21,46 @@
 // Std
 #include <memory>
 
+// Qt
+#include <qobject.h>
+
 // Lrc
-#include "typedefs.h"
+#include "renderers.h"
 
 namespace lrc
 {
 
-class LrcPimpl;
-
 namespace api
 {
+class Lrc;
+}
 
-class BehaviorController;
-class NewAccountModel;
-class Renderers;
+class BaseRender : public QObject {
+    Q_OBJECT
 
-class LIB_EXPORT Lrc {
 public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
+    BaseRender(int width, int height);
+    ~BaseRender();
 
-    //~ const Renderers& getRenderers() const;
+   virtual bool isRendering() const;
+   virtual lrc::api::video::Frame currentFrame() const;
+   virtual lrc::api::video::ColorSpace colorSpace() const;
+   
+   virtual void stopRendering();
+   virtual bool startRendering();
+   int getWidth();
+   int getHeight();
 
-private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+Q_SIGNALS:
+   void frameUpdated();
+   void stopped();
+   void started();
+
+//~ private Q_SLOTS:
+
+protected:
+    int width_;
+    int height_;
 };
 
-} // namespace api
 } // namespace lrc
