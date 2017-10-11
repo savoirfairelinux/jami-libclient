@@ -16,46 +16,67 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#pragma once
+#include "baserender.h"
 
-// Std
-#include <memory>
-
-// Lrc
-#include "typedefs.h"
+// Models and database
+#include "api/lrc.h"
 
 namespace lrc
 {
 
-class LrcPimpl;
+using namespace api;
 
-namespace api
+BaseRender::BaseRender(int width, int height)
+: QObject()
+, width_(width)
+, height_(height)
+{
+}
+
+BaseRender::~BaseRender()
+{
+}
+
+bool
+BaseRender::isRendering() const
+{
+    return false;
+}
+
+lrc::api::video::Frame
+BaseRender::currentFrame() const
+{
+    return lrc::api::video::Frame();
+}
+
+lrc::api::video::ColorSpace
+BaseRender::colorSpace() const
+{
+    return lrc::api::video::ColorSpace();
+}
+   
+void
+BaseRender::stopRendering()
 {
 
-class BehaviorController;
-class NewAccountModel;
-class Renderers;
+}
 
-class LIB_EXPORT Lrc {
-public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
+bool
+BaseRender::startRendering()
+{
+    return false;
+}
 
-    //~ const Renderers& getRenderers() const;
+int
+BaseRender::getWidth()
+{
+    return width_;
+}
 
-private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
-};
+int
+BaseRender::getHeight()
+{
+    return height_;
+}
 
-} // namespace api
 } // namespace lrc

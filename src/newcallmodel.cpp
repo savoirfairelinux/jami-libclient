@@ -31,6 +31,9 @@
 #include "dbus/callmanager.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
+#include "renderers.h"
+#include "baserender.h"
+#include "newshmrenderer.h"
 
 // Ring daemon
 #include <media_const.h>
@@ -47,12 +50,13 @@ using namespace api;
 class NewCallModelPimpl: public QObject
 {
 public:
-    NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler);
+    NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler, lrc::api::Renderers& renderers);
     ~NewCallModelPimpl();
 
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
+    lrc::api::Renderers& renderers;
 
     /**
      * key = peer's uri
@@ -98,9 +102,9 @@ public Q_SLOTS:
     void slotConferenceCreated(const std::string& callId);
 };
 
-NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
+NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler, lrc::api::Renderers& renderers)
 : owner(owner)
-, pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler))
+, pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler, renderers))
 {
 
 }
@@ -286,14 +290,20 @@ NewCallModel::removeParticipant(const std::string& callId, const std::string& pa
 
 }
 
-Video::Renderer*
-NewCallModel::getRenderer(const std::string& callId) const
+//~ std::shared_ptr<RENDERER_TYPE>
+//~ NewCallModel::getRenderer(const std::string& callId) const
+//~ {
+   //~ #ifdef ENABLE_VIDEO
+   //~ return VideoRendererManager::instance().getRenderer(callId);
+   //~ #else
+   //~ return nullptr;
+   //~ #endif
+//~ }
+
+lrc::BaseRender&
+NewCallModel::getNewRenderer(const std::string& callId)
 {
-   #ifdef ENABLE_VIDEO
-   return VideoRendererManager::instance().getRenderer(callId);
-   #else
-   return nullptr;
-   #endif
+    pimpl_->renderers.getRenderer(callId);
 }
 
 std::string
@@ -323,9 +333,10 @@ NewCallModel::getFormattedCallDuration(const std::string& callId) const
 }
 
 
-NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler)
+NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler, lrc::api::Renderers& renderers)
 : linked(linked)
 , callbacksHandler(callbacksHandler)
+, renderers(renderers)
 {
     // TODO init call list and conferences if client crash but not the daemon in call.
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
@@ -333,6 +344,19 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+    connect(&renderers, &Renderers::renderStarted, this, [this] (const std::string& callId) {
+        auto callInfo = calls.find(callId);
+        if(callInfo == calls.end()) {
+            qDebug() << "pas de call pour moi";
+            return;
+        }
+
+        std::shared_ptr<RENDERER_TYPE> renderer = this->renderers.getRenderer(callId);
+
+        qDebug() << " XXX call pour moi avec un width : " << this->renderers.getRenderer(callId)->getWidth();
+        calls.at(callId)->renderer = this->renderers.getRenderer(callId);
+        emit this->linked.rendererStarted(callId);
+    });
 }
 
 NewCallModelPimpl::~NewCallModelPimpl()
