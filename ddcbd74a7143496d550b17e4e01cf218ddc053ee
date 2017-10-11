@@ -1,0 +1,573 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_136fe593",
+        "filename": "src/api/call.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "this could not work with to_string above, as i18n will change the string.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 1
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_736c719d",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "bad: these classes have nothing related to NewCallModel.\nthis breaks the classes separation.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53696d8a",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "string returned by copy, so no \"const\"",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 78,
+        "endChar": 9
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_930ad5d0",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "can be function-const",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 83
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f30fe1df",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "can be function-const",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 86
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f326c167",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "danger: non-owned pointer! the caller should not try to \"save\" it or bad things will happen.\nWE NEED TO CHECK THAT IN THE REST OF THE CODE",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 20
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d3145df7",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "please, mark such implemented behavior with a TODO.\neasier to find later what we need to finish",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 75
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_33f949c9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "replace callid by \u0026 (default by ref)\nand indent the lambda",
+      "range": {
+        "startLine": 757,
+        "startChar": 5,
+        "endLine": 757,
+        "endChar": 11
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_13f6c5d7",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "why? filters don\u0027t apply to callId, no?\nDoes the filtered list need to be updated by that?",
+      "range": {
+        "startLine": 763,
+        "startChar": 0,
+        "endLine": 763,
+        "endChar": 34
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_7303d1b8",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "DBus-cpp API is a scrap!",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 56
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53004daa",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "not efficient and maybe bugged.\nbetter: calls.emplace(callId.toStdString(), std::move(callInfo))",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 51
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b32c394c",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "all these const char* convertion everywhere look incorrect.\nIs the argument not const std::string\u0026 ?",
+      "range": {
+        "startLine": 166,
+        "startChar": 43,
+        "endLine": 166,
+        "endChar": 50
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_933135a5",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "why not let the daemon do that?",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_33202949",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "use a monotomic clock, like steady_clock, not system_system. or wrong ouput are displayed if the system change the clock during a call.",
+      "range": {
+        "startLine": 261,
+        "startChar": 30,
+        "endLine": 262,
+        "endChar": 45
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_131d2510",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "\"std::string formattedString;\" is enough ;-)",
+      "range": {
+        "startLine": 263,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 43
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_731ab118",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "if (difference \u003e\u003d 60)",
+      "range": {
+        "startLine": 264,
+        "startChar": 4,
+        "endLine": 264,
+        "endChar": 31
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_5317aded",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "use strftime that re-invent the wheel:\n\nhttp://en.cppreference.com/w/cpp/chrono/c/strftime",
+      "range": {
+        "startLine": 263,
+        "startChar": 43,
+        "endLine": 274,
+        "endChar": 27
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b3d39937",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "or MapStringString for a different flavor :-D",
+      "range": {
+        "startLine": 286,
+        "startChar": 8,
+        "endLine": 286,
+        "endChar": 31
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_93d81555",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "emplace(callId.toStdString(), std::move(callInfo))",
+      "range": {
+        "startLine": 297,
+        "startChar": 12,
+        "endLine": 297,
+        "endChar": 51
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f3dd2144",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "roooh!! emplace()... you  know!!",
+      "range": {
+        "startLine": 331,
+        "startChar": 4,
+        "endLine": 331,
+        "endChar": 29
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_33e78914",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "no system_clock here",
+      "range": {
+        "startLine": 356,
+        "startChar": 43,
+        "endLine": 357,
+        "endChar": 53
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_13e4050c",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "wrong ident here",
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_73f111cd",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "you\u0027re in C++14, you can use \"const auto\u0026\" for argument here\n(and yes, by reference, not by value)",
+      "range": {
+        "startLine": 390,
+        "startChar": 19,
+        "endLine": 390,
+        "endChar": 30
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53ee8ded",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "could be on the same line, temp lvalue  not needed",
+      "range": {
+        "startLine": 401,
+        "startChar": 25,
+        "endLine": 402,
+        "endChar": 36
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b3ba79df",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-11T23:03:01Z",
+      "side": 1,
+      "message": "I tend to not use initialization for pure struct, as if the API change this could lead to some nasty issues.",
+      "range": {
+        "startLine": 408,
+        "startChar": 37,
+        "endLine": 408,
+        "endChar": 76
+      },
+      "revId": "ddcbd74a7143496d550b17e4e01cf218ddc053ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
