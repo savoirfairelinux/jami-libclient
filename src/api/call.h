@@ -28,6 +28,8 @@
 
 namespace lrc
 {
+    
+class NewShmRenderer;
 
 namespace api
 {
@@ -133,6 +135,7 @@ struct Info
     std::string peer;
     bool audioMuted = false;
     bool videoMuted = false;
+    NewShmRenderer* renderer;
 };
 
 } // namespace call

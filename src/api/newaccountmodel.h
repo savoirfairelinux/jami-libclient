@@ -40,6 +40,7 @@ class NewAccountModelPimpl;
 namespace api
 {
 class BehaviorController;
+class Renderers;
 
 namespace account { struct Info; }
 
@@ -53,7 +54,8 @@ public:
 
     NewAccountModel(Database& database,
                     const CallbacksHandler& callbackHandler,
-                    const api::BehaviorController& behaviorController);
+                    const api::BehaviorController& behaviorController,
+                    lrc::api::Renderers& renderers);
 
     ~NewAccountModel();
     /**

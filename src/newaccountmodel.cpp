@@ -28,6 +28,7 @@
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
+#include "renderers.h"
 
 #include "accountmodel.h"
 
@@ -46,7 +47,8 @@ public:
     NewAccountModelPimpl(NewAccountModel& linked,
                          Database& database,
                          const CallbacksHandler& callbackHandler,
-                         const BehaviorController& behaviorController);
+                         const BehaviorController& behaviorController,
+                         lrc::api::Renderers& renderers);
     ~NewAccountModelPimpl();
 
     NewAccountModel& linked;
@@ -54,6 +56,7 @@ public:
     Database& database;
     NewAccountModel::AccountInfoMap accounts;
     const BehaviorController& behaviorController;
+    lrc::api::Renderers& renderers;
 
     /**
      * Add the profile information from an account to the db then add it to accounts.
@@ -78,9 +81,10 @@ public Q_SLOTS:
 
 NewAccountModel::NewAccountModel(Database& database,
                                  const CallbacksHandler& callbacksHandler,
-                                 const BehaviorController& behaviorController)
+                                 const BehaviorController& behaviorController,
+                                 lrc::api::Renderers& renderers)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler, behaviorController))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler, behaviorController, renderers))
 {
 }
 
@@ -112,11 +116,13 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
 NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
                                            Database& database,
                                            const CallbacksHandler& callbacksHandler,
-                                           const BehaviorController& behaviorController)
+                                           const BehaviorController& behaviorController,
+                                           lrc::api::Renderers& renderers)
 : linked(linked)
 , behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 , database(database)
+, renderers(renderers)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
@@ -182,7 +188,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     auto avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
     owner.profileInfo.avatar = avatar;
     // Init models for this account
-    owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
+    owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler, renderers);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
     owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler, behaviorController);
     owner.accountModel = &linked;
