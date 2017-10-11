@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_f05877fc",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2017-10-11T18:44:00Z",
+      "side": 1,
+      "message": "maybe precise the effect of the string on the filtered list (what is taken into account in the filter to compare against the filter)",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 7
+      },
+      "revId": "bc1a0cf9a8db19934dc18a4abebf2a58f21df348",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_3072df7c",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2017-10-11T18:44:00Z",
+      "side": 1,
+      "message": "constify, this will not change the value of the members of ConversationModel",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 46
+      },
+      "revId": "bc1a0cf9a8db19934dc18a4abebf2a58f21df348",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f00fd7df",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2017-10-11T18:44:00Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 73
+      },
+      "revId": "bc1a0cf9a8db19934dc18a4abebf2a58f21df348",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_500043aa",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2017-10-11T18:44:00Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 73
+      },
+      "revId": "bc1a0cf9a8db19934dc18a4abebf2a58f21df348",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f026b767",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2017-10-11T18:44:00Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 46
+      },
+      "revId": "bc1a0cf9a8db19934dc18a4abebf2a58f21df348",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
