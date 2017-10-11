@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_50d8431d",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T20:25:20Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 143,
+        "startChar": 9,
+        "endLine": 143,
+        "endChar": 11
+      },
+      "revId": "a8503afdd3fc894654271a3949aa7695068b2636",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_90092b98",
+        "filename": "src/authority/databasehelper.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T20:25:20Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 138,
+        "startChar": 16,
+        "endLine": 138,
+        "endChar": 18
+      },
+      "revId": "a8503afdd3fc894654271a3949aa7695068b2636",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f0feb76a",
+        "filename": "src/authority/databasehelper.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T20:25:20Z",
+      "side": 1,
+      "message": "\"\" -\u003e empty string",
+      "range": {
+        "startLine": 145,
+        "startChar": 51,
+        "endLine": 145,
+        "endChar": 53
+      },
+      "revId": "a8503afdd3fc894654271a3949aa7695068b2636",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d003b371",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T20:25:20Z",
+      "side": 1,
+      "message": "when ?",
+      "range": {
+        "startLine": 153,
+        "startChar": 35,
+        "endLine": 153,
+        "endChar": 39
+      },
+      "revId": "a8503afdd3fc894654271a3949aa7695068b2636",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d0a45359",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T20:25:20Z",
+      "side": 1,
+      "message": "May be better with “decltype” instead of “auto” to ensure “status” is of getMessageStatus() return type",
+      "range": {
+        "startLine": 768,
+        "startChar": 12,
+        "endLine": 768,
+        "endChar": 16
+      },
+      "revId": "a8503afdd3fc894654271a3949aa7695068b2636",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
