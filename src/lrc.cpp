@@ -24,6 +24,8 @@
 #include "database.h"
 #include "callbackshandler.h"
 #include "dbus/instancemanager.h"
+#include "renderers.h"
+#include "baserender.h"
 
 namespace lrc
 {
@@ -38,6 +40,7 @@ public:
 
     const Lrc& linked;
     std::unique_ptr<BehaviorController> behaviorController;
+    std::unique_ptr<lrc::api::Renderers> renderers;
     std::unique_ptr<CallbacksHandler> callbackHandler;
     std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
@@ -67,13 +70,22 @@ Lrc::getBehaviorController() const
     return *lrcPimpl_->behaviorController;
 }
 
+const Renderers&
+Lrc::getRenderers() const
+{
+    return *lrcPimpl_->renderers;
+}
+
 LrcPimpl::LrcPimpl(const Lrc& linked)
+// [jn] : on devrait arreter de passer à chacun l'ensembe des sp aux constructeur, passons le pimpl ou une structure...
 : linked(linked)
 , behaviorController(std::make_unique<BehaviorController>())
+, renderers(std::make_unique<lrc::api::Renderers>())
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler, *behaviorController))
+, accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler, *behaviorController, *renderers))
 {
+    qDebug() << "@1;              LrcPimpl";
 }
 
 } // namespace lrc

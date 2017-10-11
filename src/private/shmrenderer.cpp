@@ -143,7 +143,7 @@ ShmRenderer::~ShmRenderer()
 }
 
 /// Wait new frame data from shared memory and save pointer
-bool ShmRendererPrivate::getNewFrame(bool wait)
+bool ShmRendererPrivate::getNewFrame(bool wait) // [jn] fonction tjrs avec wait = false, donc useless
 {
    if (!shmLock())
       return false;
@@ -151,8 +151,8 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
    if (m_FrameGen == m_pShmArea->frameGen) {
       shmUnlock();
 
-      if (not wait)
-         return false;
+      if (not wait) // [jn] useless
+         return false; // [jn] useless
 
       // wait for a new frame, max 33ms
       static const struct timespec timeout = {0, 33000000};
@@ -176,11 +176,13 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
       return false;
    }
 
-   auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
+   auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame; // [jn] shared pointer
    if (not frame_ptr)
        frame_ptr.reset(new Frame);
-   frame_ptr->storage.clear();
-   frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
+
+    frame_ptr->storage.clear();
+
+   frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset; // [jn] double buff <- offset
    frame_ptr->size = m_pShmArea->frameSize;
    m_FrameGen = m_pShmArea->frameGen;
 
@@ -372,7 +374,7 @@ Frame ShmRenderer::currentFrame() const
     QMutexLocker lk {mutex()};
     if (d_ptr->getNewFrame(false)) {
         if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
-            return std::move(*frame_ptr);
+            return std::move(*frame_ptr); // [jn] est-ce que le sp -> tjrs vers le même contenu ?
     }
     return {};
 }

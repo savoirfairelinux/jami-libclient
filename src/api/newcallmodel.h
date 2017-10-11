@@ -39,6 +39,7 @@ namespace lrc
 
 class CallbacksHandler;
 class NewCallModelPimpl;
+class BaseRender;
 
 namespace api
 {
@@ -46,6 +47,14 @@ namespace api
 namespace account { struct Info; }
 namespace call { struct Info; }
 class NewAccountModel;
+class Renderers;
+
+#ifdef ENABLE_LIBWRAP
+    #define RENDERER_TYPE std::string
+#else
+    class NewShmRenderer;
+    #define RENDERER_TYPE lrc::api::NewShmRenderer
+#endif
 
 /**
   *  @brief Class that manages call informations.
@@ -64,7 +73,7 @@ public:
         VIDEO
     };
 
-    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
+    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler, lrc::api::Renderers& renderers);
     ~NewCallModel();
 
     /**
@@ -79,7 +88,7 @@ public:
      * @return the callInfo
      * @throw out_of_range exception if not found
      */
-    const call::Info& getCall(const std::string& uid) const;
+    const call::Info& getCall(const std::string& uid) const; // [jn] getCallInfo
     /**
      * Get the call from the peer uri
      * @param  uri
@@ -155,6 +164,7 @@ public:
      * @return the renderer linked to a call
      */
     Video::Renderer* getRenderer(const std::string& callId) const;
+    std::shared_ptr<RENDERER_TYPE> getNewRenderer(const std::string& callId);
     /**
      * @param  callId
      * @return a human readable call duration (M:ss)
@@ -195,6 +205,8 @@ Q_SIGNALS:
      * @param confId
      */
     void callAddedToConference(const std::string& callId, const std::string& confId) const;
+
+    void rendererStarted(const std::string& callId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
