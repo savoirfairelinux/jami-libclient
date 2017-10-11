@@ -1,7 +1,6 @@
 /****************************************************************************
  *   Copyright (C) 2017 Savoir-faire Linux                                  *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
- *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -21,41 +20,41 @@
 // Std
 #include <memory>
 
+// Qt
+#include <qobject.h>
+
 // Lrc
-#include "typedefs.h"
+#include "renderers.h"
+#include "baserender.h"
+
+class SHMHeader;
 
 namespace lrc
 {
 
-class LrcPimpl;
+class NewShmRendererPimpl;
 
 namespace api
 {
+class Lrc;
+}
 
-class BehaviorController;
-class NewAccountModel;
-class Renderers;
+class NewShmRenderer : public BaseRender {
+    Q_OBJECT
 
-class LIB_EXPORT Lrc {
 public:
-    Lrc();
-    ~Lrc();
-    /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
-     */
-    const NewAccountModel& getAccountModel() const;
-    /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
-     */
-    const BehaviorController& getBehaviorController() const;
+    NewShmRenderer(const std::string& shmPath, int width, int height);
+    ~NewShmRenderer();
 
-    //~ const Renderers& getRenderers() const;
+   bool isRendering() const;
+   lrc::api::video::Frame currentFrame();
+
+   void stopRendering();
+   bool startRendering();
 
 private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+    std::unique_ptr<NewShmRendererPimpl> pimpl_;
+
 };
 
-} // namespace api
 } // namespace lrc
