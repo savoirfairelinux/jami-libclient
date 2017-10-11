@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_b0b6efda",
+        "filename": "src/api/behaviorcontroller.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T18:43:58Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 46,
+        "startChar": 54,
+        "endLine": 46,
+        "endChar": 56
+      },
+      "revId": "c5cbc7369e555c7ab488ed5de07b17e355188203",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_30cadf4f",
+        "filename": "src/api/behaviorcontroller.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T18:43:58Z",
+      "side": 1,
+      "message": "Not sure that Qt signals are to be declared as \"const\"",
+      "range": {
+        "startLine": 59,
+        "startChar": 100,
+        "endLine": 59,
+        "endChar": 106
+      },
+      "revId": "c5cbc7369e555c7ab488ed5de07b17e355188203",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_50c1632d",
+        "filename": "src/behaviorcontroller.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-11T18:43:58Z",
+      "side": 1,
+      "message": "Why having an empty pimpl ?",
+      "revId": "c5cbc7369e555c7ab488ed5de07b17e355188203",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
