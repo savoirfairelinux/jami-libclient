@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_33cae94f",
+        "filename": "src/api/call.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:33:23Z",
+      "side": 1,
+      "message": "bad practice to put notes/warnings into a title.\nwith doxygen, use \\warning.",
+      "range": {
+        "startLine": 92,
+        "startChar": 30,
+        "endLine": 92,
+        "endChar": 50
+      },
+      "revId": "e72bd610c4f5212fa7b91b608ee8dd9e94da1252",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_33f8297c",
+        "filename": "src/api/call.h",
+        "patchSetId": 41
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:33:23Z",
+      "side": 1,
+      "message": "no, using std::time_t was connect.\nmy comment was inside the implementation, not on the struct definition.",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 65
+      },
+      "revId": "e72bd610c4f5212fa7b91b608ee8dd9e94da1252",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_d311fdad",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:33:23Z",
+      "side": 1,
+      "message": "this code has to be changed again to keep std::time_t into Info struct. And you don\u0027t have used strftime as I\u0027ve mentionned. why?",
+      "range": {
+        "startLine": 258,
+        "startChar": 4,
+        "endLine": 278,
+        "endChar": 27
+      },
+      "revId": "e72bd610c4f5212fa7b91b608ee8dd9e94da1252",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
