@@ -22,6 +22,52 @@
       "revId": "67837b5f3493d05bac02c1f3118527b7b2d02e55",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_330ca942",
+        "filename": "src/database.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-12T19:55:39Z",
+      "side": 1,
+      "message": "open ?",
+      "range": {
+        "startLine": 413,
+        "startChar": 36,
+        "endLine": 413,
+        "endChar": 37
+      },
+      "revId": "67837b5f3493d05bac02c1f3118527b7b2d02e55",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53032d0f",
+        "filename": "src/database.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-10-12T19:55:39Z",
+      "side": 1,
+      "message": "Should be a transaction",
+      "range": {
+        "startLine": 484,
+        "startChar": 20,
+        "endLine": 499,
+        "endChar": 57
+      },
+      "revId": "67837b5f3493d05bac02c1f3118527b7b2d02e55",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
