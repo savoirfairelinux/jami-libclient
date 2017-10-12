@@ -70,7 +70,14 @@ Database::Database()
 
     // if db is empty we create them.
     if (db_.tables().empty()) {
-        createTables();
+        try {
+            QSqlDatabase::database().transaction();
+            createTables();
+            QSqlDatabase::database().commit();
+        } catch (QueryError& e) {
+            QSqlDatabase::database().rollback();
+            throw std::runtime_error("Could not correctly create the database");
+        }
         // NOTE: the migration can take some time.
         migrateOldFiles();
     }
