@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_13cb6573",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": "this is not clear. I don\u0027t understand the behavior",
+      "range": {
+        "startLine": 119,
+        "startChar": 7,
+        "endLine": 121,
+        "endChar": 50
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_73c8f174",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": "not more clear (copy/paste :-p)",
+      "range": {
+        "startLine": 147,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 50
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_53aa0d71",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": "use the iterator returned by the .find than redo an access by operator[]",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 39
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_b3b6f9da",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": "here also use iterator from .find",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 198,
+        "endChar": 32
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_93bbf5c3",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": ".find iterator",
+      "range": {
+        "startLine": 272,
+        "startChar": 25,
+        "endLine": 283,
+        "endChar": 79
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a3d3df0_f3b081df",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T15:23:21Z",
+      "side": 1,
+      "message": "iterator",
+      "range": {
+        "startLine": 496,
+        "startChar": 17,
+        "endLine": 497,
+        "endChar": 38
+      },
+      "revId": "e0f62cc6c805d432d77a21c7164468dc0a144425",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
