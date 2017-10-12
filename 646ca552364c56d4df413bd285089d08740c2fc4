@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a3d3df0_8ea62cc0",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-12T20:52:59Z",
+      "side": 1,
+      "message": "use daemon MessageStates values (account_const.h)",
+      "range": {
+        "startLine": 972,
+        "startChar": 4,
+        "endLine": 972,
+        "endChar": 11
+      },
+      "revId": "646ca552364c56d4df413bd285089d08740c2fc4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
