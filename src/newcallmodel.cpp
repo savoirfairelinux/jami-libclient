@@ -96,11 +96,6 @@ public Q_SLOTS:
      * @param callId
      */
     void slotConferenceCreated(const std::string& callId);
-    /**
-     * Listen from CallbacksHandler when a conference is deleted.
-     * @param callId
-     */
-    void slotConferenceRemoved(const std::string& callId);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -338,7 +333,6 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
-    connect(&callbacksHandler, &CallbacksHandler::conferenceRemoved, this , &NewCallModelPimpl::slotConferenceRemoved);
 }
 
 NewCallModelPimpl::~NewCallModelPimpl()
@@ -463,30 +457,18 @@ NewCallModel::hasCall(const std::string& callId)
 }
 
 void
-NewCallModelPimpl::slotConferenceCreated(const std::string& callId)
+NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
 {
-    if (calls.find(callId) != calls.end()) return;
     auto callInfo = std::make_shared<call::Info>();
-    callInfo->id = callId;
+    callInfo->id = confId;
     callInfo->status =  call::Status::IN_PROGRESS;
     callInfo->type =  call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
-    calls[callId] = callInfo;
-    QStringList callList = CallManager::instance().getParticipantList(callId.c_str());
+    calls[confId] = callInfo;
+    QStringList callList = CallManager::instance().getParticipantList(confId.c_str());
     foreach(const auto& call, callList) {
-        emit linked.callAddedToConference(call.toStdString(), callId);
+        emit linked.callAddedToConference(call.toStdString(), confId);
     }
-}
-
-void
-NewCallModelPimpl::slotConferenceRemoved(const std::string& callId)
-{
-    auto it = calls.find(callId);
-    if (it == calls.end()) return;
-    auto& call = it->second;
-    call->status =  call::Status::ENDED;
-    emit linked.callEnded(callId);
-    emit linked.callStatusChanged(callId);
 }
 
 } // namespace lrc
