@@ -272,5 +272,4 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
                                      to.toStdString(), status);
 }
 
-
 } // namespace lrc
