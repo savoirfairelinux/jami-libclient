@@ -133,6 +133,8 @@ public:
      * @param msgId, id of the interaction
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+    
+    void hangUpFor(const std::string& uid);
 
 Q_SIGNALS:
     /**
