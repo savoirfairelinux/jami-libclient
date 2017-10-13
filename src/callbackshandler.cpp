@@ -109,6 +109,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallManagerInterface::incomingMessage,
             this,
             &CallbacksHandler::slotIncomingMessage);
+    
+    connect(&CallManager::instance(),
+            &CallManagerInterface::conferenceCreated,
+            this,
+            &CallbacksHandler::slotIncomingConference);
+    
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -270,6 +276,12 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 {
     emit accountMessageStatusChanged(accountId.toStdString(), id,
                                      to.toStdString(), status);
+}
+
+void
+CallbacksHandler::slotIncomingConference(const QString& confID)
+{
+    qDebug() << "confID : " << confID;
 }
 
 

@@ -277,6 +277,8 @@ private Q_SLOTS:
     void slotAccountMessageStatusChanged(const QString& accountId,
                                          const uint64_t id,
                                          const QString& to, int status);
+    
+    void slotIncomingConference(const QString& confId);
 
 private:
     const api::Lrc& parent;
