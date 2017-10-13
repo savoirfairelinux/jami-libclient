@@ -292,8 +292,12 @@ ConversationModel::selectConversation(const std::string& uid) const
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
-        auto call = owner.callModel->getCall(conversation.callId);
-        switch (call.status) {
+        if (not conversation.confId.empty()) {
+            emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+            qDebug() << "   @@@  " << conversation.confId.c_str();
+        } else {
+            auto call = owner.callModel->getCall(conversation.callId);
+            switch (call.status) {
             case call::Status::INCOMING_RINGING:
             case call::Status::OUTGOING_RINGING:
             case call::Status::CONNECTING:
@@ -317,6 +321,7 @@ ConversationModel::selectConversation(const std::string& uid) const
             default:
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+            }
         }
     } catch (const std::out_of_range&) {
         emit pimpl_->behaviorController.showChatView(owner.id, conversation);
@@ -951,7 +956,7 @@ ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, con
 {
     for (auto& conversation: conversations) {
         if (conversation.callId == callId) {
-            conversation.callId = confId;
+            conversation.confId = confId;
             dirtyConversations = true;
             emit linked.selectConversation(conversation.uid);
         }
