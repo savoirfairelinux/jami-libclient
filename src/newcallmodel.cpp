@@ -463,18 +463,20 @@ NewCallModel::hasCall(const std::string& callId)
 }
 
 void
-NewCallModelPimpl::slotConferenceCreated(const std::string& callId)
+NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
 {
-    if (calls.find(callId) != calls.end()) return;
+    //~ if (calls.find(callId) != calls.end())
+        //~ return;
+
     auto callInfo = std::make_shared<call::Info>();
-    callInfo->id = callId;
+    callInfo->id = confId; // ATENTION DANGER
     callInfo->status =  call::Status::IN_PROGRESS;
     callInfo->type =  call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
-    calls[callId] = callInfo;
-    QStringList callList = CallManager::instance().getParticipantList(callId.c_str());
+    calls[confId] = callInfo;
+    QStringList callList = CallManager::instance().getParticipantList(confId.c_str());
     foreach(const auto& call, callList) {
-        emit linked.callAddedToConference(call.toStdString(), callId);
+        emit linked.callAddedToConference(call.toStdString(), confId);
     }
 }
 
