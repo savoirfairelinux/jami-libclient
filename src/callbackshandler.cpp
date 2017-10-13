@@ -108,7 +108,7 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
             this,
-            &CallbacksHandler::slotIncomingMessage);
+            &CallbacksHandler::slotIncomingMessage);    
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -271,6 +271,5 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
     emit accountMessageStatusChanged(accountId.toStdString(), id,
                                      to.toStdString(), status);
 }
-
 
 } // namespace lrc
