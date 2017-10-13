@@ -187,6 +187,11 @@ public Q_SLOTS:
      * @param confId
      */
     void slotCallAddedToConference(const std::string& callId, const std::string& confId);
+    /**
+     * Listen from CallbacksHandler when a conference is deleted.
+     * @param callId
+     */
+    void slotConferenceRemoved(const std::string& callId);
 
 };
 
@@ -295,8 +300,12 @@ ConversationModel::selectConversation(const std::string& uid) const
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
-        auto call = owner.callModel->getCall(conversation.callId);
-        switch (call.status) {
+        if (not conversation.confId.empty()) {
+            emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+            qDebug() << "   @@@  " << conversation.confId.c_str();
+        } else {
+            auto call = owner.callModel->getCall(conversation.callId);
+            switch (call.status) {
             case call::Status::INCOMING_RINGING:
             case call::Status::OUTGOING_RINGING:
             case call::Status::CONNECTING:
@@ -309,6 +318,7 @@ ConversationModel::selectConversation(const std::string& uid) const
             case call::Status::CONNECTED:
             case call::Status::IN_PROGRESS:
                 // We are currently receiving a call
+                qDebug() << " %%%%%%%%%%%%%%%%%%%%% TEST";
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
             case call::Status::INVALID:
@@ -320,6 +330,7 @@ ConversationModel::selectConversation(const std::string& uid) const
             default:
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+            }
         }
     } catch (const std::out_of_range&) {
         emit pimpl_->behaviorController.showChatView(owner.id, conversation);
@@ -508,9 +519,43 @@ ConversationModel::joinConversations(const std::string& uidA, const std::string&
     auto& conversationA = pimpl_->conversations[conversationAIdx];
     auto& conversationB = pimpl_->conversations[conversationBIdx];
     // NOTE: To create a conference, we must be in call for now.
-    if (conversationA.callId.empty() || conversationB.callId.empty())
+    
+    auto callA = conversationA.callId;
+    auto callB = conversationB.callId;
+    
+    
+    if (conversationA.confId.empty()) {
+        if(conversationB.confId.empty()){
+            qDebug() << "#1#";
+            owner.callModel->joinCalls(conversationA.callId, conversationB.callId);
+        }else{
+            qDebug() << "#2#";
+            owner.callModel->joinCalls(conversationA.callId, conversationB.confId); // verifier le sens
+            conversationA.confId = conversationB.confId; // verifier le sens
+        }
+    } else {
+        if(conversationB.confId.empty()){
+            qDebug() << "#3#";
+            owner.callModel->joinCalls(conversationB.callId, conversationA.confId); // verifier le sens
+            conversationB.confId = conversationA.confId; // verifier le sens
+        }else{
+            qDebug() << "#4#";
+            owner.callModel->joinCalls(conversationA.confId, conversationB.confId); // verifier le sens
+            conversationB.confId = conversationA.confId; // verifier le sens
+        }
+    }
+    
+    
+     callA = conversationA.confId;
+
+
+    
+    if (!conversationB.confId.empty()) callB = conversationB.confId;
+
+
+    if (callA.empty() || callB.empty())
         return;
-    owner.callModel->joinCalls(conversationA.callId, conversationB.callId);
+    owner.callModel->joinCalls(callA, callB);
 }
 
 void
@@ -600,6 +645,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &lrc::api::NewCallModel::callAddedToConference,
             this,
             &ConversationModelPimpl::slotCallAddedToConference);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conferenceRemoved,
+            this,
+            &ConversationModelPimpl::slotConferenceRemoved);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -908,7 +957,7 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
     if (call.type == call::Type::CONFERENCE) {
         // Show messages in all conversations for conferences.
         for (const auto& conversation: conversations) {
-            if (conversation.callId == callId) {
+            if (conversation.confId == callId) {
                 if (conversation.participants.empty()) continue;
                 auto authorProfileId = database::getOrInsertProfile(db, from);
                 addIncomingMessage(conversation.participants.front(), body, authorProfileId);
@@ -955,7 +1004,7 @@ ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, con
 {
     for (auto& conversation: conversations) {
         if (conversation.callId == callId) {
-            conversation.callId = confId;
+            conversation.confId = confId;
             dirtyConversations = true;
             emit linked.selectConversation(conversation.uid);
         }
@@ -1009,6 +1058,55 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
             }
         }
     }
+}
+
+void
+ConversationModel::hangUpFor(const std::string& uid)
+{
+    auto conversationIdx = pimpl_->indexOf(uid);
+    if (conversationIdx == -1)
+        return;
+
+    auto& conversationInfo = pimpl_->conversations.at(conversationIdx);
+
+    if (not conversationInfo.confId.empty()) {
+        owner.callModel->hangUp(conversationInfo.confId);
+        conversationInfo.confId = "";
+    }
+    else if (not conversationInfo.callId.empty()) {
+        owner.callModel->hangUp(conversationInfo.callId);
+        conversationInfo.callId = "";
+    }
+}
+
+void
+ConversationModelPimpl::slotConferenceRemoved(const std::string& confId)
+{
+    // Get conversation
+    for(auto& i : conversations){
+        if (i.confId == confId)
+            i.confId = "";
+    }
+
+
+    //~ auto i = std::find_if(
+        //~ conversations.begin(), conversations.end(),
+        //~ [confId](const conversation::Info& conversation) {
+            //~ return conversation.confId == confId;
+        //~ });
+
+    //~ if (i == conversations.end())
+        //~ return;
+
+    //~ auto& conversationInfo = *i;
+    //~ auto uid = conversationInfo.uid;
+
+
+    //~ if (not conversationInfo.confId.empty())
+        //~ conversationInfo.confId = "";
+
+    //~ linked.selectConversation(uid);
+
 }
 
 } // namespace lrc
