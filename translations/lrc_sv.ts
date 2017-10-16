@@ -1215,66 +1215,66 @@
         <translation>Acceptera</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
-        <location filename="../src/api/call.h" line="76"/>
+        <location filename="../src/api/call.h" line="61"/>
+        <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>Parkera</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Talar</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
-        <translation type="unfinished"/>
+        <translation>FEL</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Outgoing requested</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Inkommande</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>Ringer</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Ansluter</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Söker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="78"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="80"/>
-        <location filename="../src/api/call.h" line="82"/>
+        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="84"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>Kommunikation etablerad</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="86"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
         <translation type="unfinished"/>
     </message>
