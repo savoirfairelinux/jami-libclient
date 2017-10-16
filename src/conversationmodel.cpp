@@ -1392,6 +1392,11 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
     try {
+        conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
+    } catch (...) {
+        conversation.confId = "";
+    }
+    try {
         conversation.callId = linked.owner.callModel->getCallFromURI(contactUri).id;
     } catch (...) {
         conversation.callId = "";
