@@ -183,9 +183,12 @@ ContactModel::addContact(contact::Info contactInfo)
     MapStringString details = ConfigurationManager::instance().getContactDetails(
         owner.id.c_str(), contactInfo.profileInfo.uri.c_str());
 
-    // copy type (if not RING or SIP)
-    if (!details.empty())
-        profile.type = owner.profileInfo.type;
+    // if contactInfo is already a contact for the daemon, type should be equals to RING
+    // if the user add a temporary item for a SIP account, should be directly transformed
+    if (!details.empty()
+        || (profile.type == profile::Type::TEMPORARY
+        && owner.profileInfo.type == profile::Type::SIP))
+            profile.type = owner.profileInfo.type;
 
     switch (profile.type) {
     case profile::Type::TEMPORARY:
