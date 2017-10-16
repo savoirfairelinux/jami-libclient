@@ -31,6 +31,7 @@
 #include <QtSql/QSqlRecord>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QVariant>
+#include <QDir>
 
 // Std
 #include <sstream>
@@ -57,6 +58,12 @@ Database::Database()
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         throw std::runtime_error("QSQLITE not supported");
+    }
+
+    {
+        // create data directory if not created yet
+        QDir dataDir;
+        dataDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
     }
 
     // initalize the database.
