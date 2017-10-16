@@ -137,7 +137,6 @@ NewAccountModelPimpl::~NewAccountModelPimpl()
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
-    if (status == api::account::Status::UNREGISTERED || status == api::account::Status::INVALID) return;
     auto accountInfo = accounts.find(accountID);
     if (status == api::account::Status::REGISTERED && accountInfo == accounts.end()) {
         // Update account
@@ -147,6 +146,11 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
         addToAccounts(accountID);
         emit linked.accountAdded(accountID);
     } else if (accountInfo != accounts.end()) {
+        if (status == api::account::Status::REGISTERED) {
+            accounts[accountID].enabled = true;
+        } else if (status == api::account::Status::UNREGISTERED) {
+            accounts[accountID].enabled = false;
+        }
         accountInfo->second.status = status;
         emit linked.accountStatusChanged(accountID);
     }
