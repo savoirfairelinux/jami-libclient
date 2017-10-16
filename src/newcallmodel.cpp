@@ -61,6 +61,15 @@ public:
      */
     std::map<std::string, std::vector<std::string>> vcardsChunks;
 
+    /**
+     * Retrieve active calls from the daemon and init the model
+     */
+    void initCallFromDaemon();
+    /**
+     * Retrieve active conferences from the daemon and init the model
+     */
+    void initConferencesFromDaemon();
+
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -121,6 +130,23 @@ NewCallModel::getCallFromURI(const std::string& uri, bool notOver) const
             else
                 if (call.second->status != call::Status::ENDED)
                     return *call.second;
+        }
+    }
+    throw std::out_of_range("No call at URI " + uri);
+}
+
+const call::Info&
+NewCallModel::getConferenceFromURI(const std::string& uri) const
+{
+    if (pimpl_->calls.empty()) throw std::out_of_range("No call at URI " + uri);
+    for (const auto& call: pimpl_->calls) {
+        if (call.second->type == call::Type::CONFERENCE) {
+            QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
+            foreach(const auto& callId, callList) {
+                if (pimpl_->calls[callId.toStdString()]->peer == uri) {
+                    return *call.second;
+                }
+            }
         }
     }
     throw std::out_of_range("No call at URI " + uri);
@@ -362,18 +388,84 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
-    // TODO init call list and conferences if client crash but not the daemon in call.
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+
+#ifndef ENABLE_LIBWRAP
+    // Only necessary with dbus, cause the daemon is separated
+    initCallFromDaemon();
+    initConferencesFromDaemon();
+#endif
 }
 
 NewCallModelPimpl::~NewCallModelPimpl()
 {
 
 }
+
+void
+NewCallModelPimpl::initCallFromDaemon()
+{
+    QStringList callList = CallManager::instance().getCallList();
+    for (const auto& callId : callList)
+    {
+        MapStringString details = CallManager::instance().getCallDetails(callId);
+        auto accountId = details["ACCOUNTID"].toStdString();
+        if (accountId == linked.owner.id) {
+            auto callInfo = std::make_shared<call::Info>();
+            callInfo->id = callId.toStdString();
+            auto now = std::chrono::steady_clock::now();
+            auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            auto diff = static_cast<int64_t>(system_now) - std::stol(details["TIMESTAMP_START"].toStdString());
+            callInfo->startTime = now - std::chrono::seconds(diff);
+            callInfo->status =  call::to_status(details["CALL_STATE"].toStdString());
+            auto endId = details["PEER_NUMBER"].indexOf("@");
+            callInfo->peer = details["PEER_NUMBER"].left(endId).toStdString();
+            if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
+                callInfo->peer = "ring:" + callInfo->peer;
+            }
+            callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
+            callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
+            callInfo->type = call::Type::DIALOG;
+            calls.emplace(callId.toStdString(), std::move(callInfo));
+            // NOTE/BUG: the videorenderer can't know that the client has restarted
+            // So, for now, a user will have to manually restart the medias until
+            // this renderer is not redesigned.
+        }
+    }
+}
+
+void
+NewCallModelPimpl::initConferencesFromDaemon()
+{
+    QStringList callList = CallManager::instance().getConferenceList();
+    for (const auto& callId : callList)
+    {
+        QMap<QString, QString> details = CallManager::instance().getConferenceDetails(callId);
+        auto callInfo = std::make_shared<call::Info>();
+        callInfo->id = callId.toStdString();
+        QStringList callList = CallManager::instance().getParticipantList(callId);
+        auto isForThisAccount = true;
+        foreach(const auto& call, callList) {
+            MapStringString callDetails = CallManager::instance().getCallDetails(call);
+            isForThisAccount = callDetails["ACCOUNTID"].toStdString() == linked.owner.id;
+            if (!isForThisAccount) break;
+            auto now = std::chrono::steady_clock::now();
+            auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            auto diff = static_cast<int64_t>(system_now) - std::stol(callDetails["TIMESTAMP_START"].toStdString());
+            callInfo->status =  details["CONF_STATE"] == "ACTIVE_ATTACHED"? call::Status::IN_PROGRESS : call::Status::PAUSED;
+            callInfo->startTime = now - std::chrono::seconds(diff);
+            emit linked.callAddedToConference(call.toStdString(), callId.toStdString());
+        }
+        if (!isForThisAccount) break;
+        callInfo->type = call::Type::CONFERENCE;
+        calls.emplace(callId.toStdString(), std::move(callInfo));
+    }
+}
+
 
 void
 NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
