@@ -88,6 +88,13 @@ public:
      */
     const call::Info& getCallFromURI(const std::string& uri) const;
     /**
+     * Get conference from a peer uri
+     * @param  uri
+     * @return the callInfo
+     * @throw out_of_range exception if not found
+     */
+    const call::Info& getConferenceFromURI(const std::string& uri) const;
+    /**
      * @param  callId to test
      * @return true if callId is presend else false.
      */
