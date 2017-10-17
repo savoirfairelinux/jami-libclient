@@ -388,6 +388,7 @@ Database::migrateLocalProfiles()
             if (!account) continue;
             auto type = account->protocol() == Account::Protocol::RING ? "RING" : "SIP";
             auto uri = account->username();
+            // Remove the ring: from the username because account uri is stored without "ring:" in the database
             if (uri.startsWith("ring:")) {
                 uri = uri.mid(std::string("ring:").size());
             }
@@ -476,8 +477,23 @@ Database::migrateTextHistory()
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
                 auto account = AccountModel::instance().getById(peersObject["accountId"].toString().toUtf8());
                 if (!account) continue;
-                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", account->username().toStdString()}}).payloads;
+                auto accountUri = account->username();
+                if (accountUri.startsWith("ring:")) {
+                    accountUri = accountUri.mid(QString("ring:").length());
+                }
+                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri.toStdString()}}).payloads;
                 auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
+                if (contactIds.empty()) {
+                    insertInto("profiles",
+                               {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
+                               {":status", "status"}},
+                               {{":uri", peersObject["uri"].toString().toStdString()}, {":alias", ""},
+                               {":photo", ""}, {":type", "RING"},
+                               {":status", "NONTRUSTED"}});
+                    // NOTE: this profile is in a case where it's not a contact for the daemon. So we choose to remove this contact from
+                    // conversations.
+                    contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
+                }
                 if (accountIds.empty()) {
                     qDebug() << "Can't find profile for URI: " << peersObject["accountId"].toString() << ". Ignore this file.";
                 } else if (contactIds.empty()) {
@@ -498,16 +514,6 @@ Database::migrateTextHistory()
                         insertInto("conversations",
                                     {{":id", "id"}, {":participant_id", "participant_id"}},
                                     {{":id", newConversationsId}, {":participant_id", contactId}});
-                        // Add "Conversation started" message
-                        insertInto("interactions",
-                                    {{":account_id", "account_id"}, {":author_id", "author_id"},
-                                    {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                                    {":body", "body"}, {":type", "type"},
-                                    {":status", "status"}},
-                                    {{":account_id", accountId}, {":author_id", accountId},
-                                    {":conversation_id", newConversationsId}, {":timestamp", "0"},
-                                    {":body", "Conversation started"}, {":type", "CONTACT"},
-                                    {":status", "SUCCEED"}});
                         QSqlDatabase::database().commit();
                     } catch (QueryInsertError& e) {
                         qDebug() << e.details().c_str();
@@ -516,10 +522,25 @@ Database::migrateTextHistory()
 
                     // Load interactions
                     auto groupsArray = loadDoc["groups"].toArray();
+                    auto beginConversation = true;
                     for (const auto& groupObject: groupsArray) {
                         auto messagesArray = groupObject.toObject()["messages"].toArray();
                         for (const auto& messageRef: messagesArray) {
                             auto messageObject = messageRef.toObject();
+                            if (beginConversation) {
+                                // Add "Conversation started" message
+                                insertInto("interactions",
+                                            {{":account_id", "account_id"}, {":author_id", "author_id"},
+                                            {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                                            {":body", "body"}, {":type", "type"},
+                                            {":status", "status"}},
+                                            {{":account_id", accountId}, {":author_id", accountId},
+                                            {":conversation_id", newConversationsId},
+                                            {":timestamp", std::to_string(messageObject["timestamp"].toInt())},
+                                            {":body", "Conversation started"}, {":type", "CONTACT"},
+                                            {":status", "SUCCEED"}});
+                                beginConversation = false;
+                            }
                             auto direction = messageObject["direction"].toInt();
                             auto body = messageObject["payloads"].toArray()[0].toObject()["payload"].toString();
                             insertInto("interactions",
@@ -529,7 +550,7 @@ Database::migrateTextHistory()
                                         {":status", "status"}},
                                         {{":account_id", accountId}, {":author_id", direction ? accountId : contactId},
                                         {":conversation_id", newConversationsId},
-                                        {":timestamp", messageObject["timestamp"].toString().toStdString()},
+                                        {":timestamp", std::to_string(messageObject["timestamp"].toInt())},
                                         {":body", body.toStdString()}, {":type", "TEXT"},
                                         {":status", direction ? "SUCCEED" : "READ"}});
                         }
