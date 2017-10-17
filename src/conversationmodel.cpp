@@ -649,7 +649,6 @@ ConversationModelPimpl::initConversations()
         qDebug() << "ConversationModelPimpl::initConversations(), account not in db";
         return;
     }
-    auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     for (auto const& c : linked.owner.contactModel->getAllContacts())
     {
         if(linked.owner.profileInfo.uri == c.second.profileInfo.uri)
@@ -661,13 +660,7 @@ ConversationModelPimpl::initConversations()
             qDebug() << "ConversationModelPimpl::initConversations(), contact not in db";
             continue;
         }
-
-        // Get linked conversation with contact
-        auto conversationsForContact = database::getConversationsForProfile(db, contactProfileId);
-        std::vector<std::string> common;
-        std::set_intersection(conversationsForAccount.begin(), conversationsForAccount.end(),
-                              conversationsForContact.begin(), conversationsForContact.end(),
-                              std::back_inserter(common));
+        auto common = database::getConversationsBetween(db, accountProfileId, contactProfileId);
         if (common.empty()) {
             // Can't find a conversation with this contact. Start it.
             auto newConversationsId = database::beginConversationsBetween(db, accountProfileId, contactProfileId);
