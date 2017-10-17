@@ -335,10 +335,12 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::newBuddySubscription,
-        [this] (const std::string& contactUri) {
+        [this] (const std::string& contactUri, bool status) {
             auto iter = contacts.find(contactUri);
-            if (iter != contacts.end())
-                iter->second.isPresent = true;
+            if (iter != contacts.end()) {
+                iter->second.isPresent = status;
+                emit this->linked.modelUpdated();
+            }
         });
     connect(&callbacksHandler, &CallbacksHandler::contactAdded,
             this, &ContactModelPimpl::slotContactAdded);
@@ -423,8 +425,11 @@ ContactModelPimpl::fillsWithRINGContacts() {
 void
 ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
 {
-    if (contacts.find(contactUri) != contacts.end())
-        contacts[contactUri].isPresent = status;
+    auto it = contacts.find(contactUri);
+    if (it != contacts.end()) {
+        it->second.isPresent = status;
+        emit linked.modelUpdated();
+    }
 }
 
 void
