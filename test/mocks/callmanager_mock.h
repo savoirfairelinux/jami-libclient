@@ -54,8 +54,8 @@ public:
 public Q_SLOTS: // METHODS
     bool accept(const QString &callID)
     {
-        Q_UNUSED(callID)
-        return false;
+        emit callStateChanged(callID, "CURRENT", -1);
+        return true;
     }
 
     bool addMainParticipant(const QString &confID)
@@ -143,8 +143,8 @@ public Q_SLOTS: // METHODS
 
     bool hangUp(const QString &callID)
     {
-        Q_UNUSED(callID)
-        return false;
+        emit callStateChanged(callID, "OVER", -1);
+        return true;
     }
 
     bool hangUpConference(const QString &confID)
@@ -155,8 +155,8 @@ public Q_SLOTS: // METHODS
 
     bool hold(const QString &callID)
     {
-        Q_UNUSED(callID)
-        return false;
+        emit callStateChanged(callID, "HOLD", -1);
+        return true;
     }
 
     bool holdConference(const QString &confID)
@@ -245,8 +245,8 @@ public Q_SLOTS: // METHODS
 
     bool unhold(const QString &callID)
     {
-        Q_UNUSED(callID)
-        return false;
+        emit callStateChanged(callID, "CURRENT", -1);
+        return true;
     }
 
     bool unholdConference(const QString &confID)
@@ -270,6 +270,11 @@ public Q_SLOTS: // METHODS
 
     void stopSmartInfo()
     {
+    }
+
+    void emitIncomingCall(const QString &accountID, const QString &callID, const QString &from)
+    {
+        emit incomingCall(accountID, callID, from);
     }
 
 Q_SIGNALS: // SIGNALS
