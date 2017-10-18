@@ -638,7 +638,13 @@ public Q_SLOTS: // METHODS
     {
         Q_UNUSED(accountId)
         Q_UNUSED(uri)
-       return MapStringString();
+        return MapStringString();
+    }
+
+    void
+    emitIncomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timestamp)
+    {
+        emit incomingTrustRequest(accountId, from, payload, timestamp);
     }
 
 Q_SIGNALS: // SIGNALS
