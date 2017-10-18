@@ -142,8 +142,9 @@ public Q_SLOTS: // METHODS
     QStringList getAccountList()
     {
         auto accountList = QStringList();
-        accountList << QString("ring0");
-        accountList << QString("ring1");
+        accountList << QString("ring0"); // Used in conversationmodeltester
+        accountList << QString("ring1"); // Used in contactmodeltester
+        accountList << QString("ring2"); // Used in newcallmodeltester
         accountList << QString("sip0");
         accountList << QString("sip1");
         return accountList;
