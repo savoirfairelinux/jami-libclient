@@ -60,11 +60,11 @@ ConversationModelTester::testAddValidConversation()
     // Search contact
     accInfo_.conversationModel->setFilter("dummy");
     WaitForSignalHelper(*accInfo_.contactModel,
-                        SIGNAL(modelUpdated())).wait(1000);
+        SIGNAL(modelUpdated())).wait(1000);
     // So, add dummy to contacts
     accInfo_.conversationModel->makePermanent("");
     auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
-    SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(contactAdded, true);
     // Dummy should be in contacts
     contactId = accInfo_.contactModel->getContactProfileId("dummy");
@@ -89,12 +89,12 @@ ConversationModelTester::testAddInvalidConversation()
     // Search contact
     accInfo_.conversationModel->setFilter("notAContact");
     WaitForSignalHelper(*accInfo_.contactModel,
-                        SIGNAL(modelUpdated())).wait(1000);
+        SIGNAL(modelUpdated())).wait(1000);
     // Temporary item should contains "Searching...notAContact"
     // makePermanent should not do anything
     accInfo_.conversationModel->makePermanent("");
     WaitForSignalHelper(ConfigurationManager::instance(),
-    SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
     contacts = accInfo_.contactModel->getAllContacts();
     CPPUNIT_ASSERT(contacts.find("notAContact") == contacts.end());
 }
@@ -113,7 +113,7 @@ ConversationModelTester::testRmConversation()
     CPPUNIT_ASSERT(i != conversations.end());
     accInfo_.conversationModel->removeConversation((*i).uid);
     auto conversationRemoved = WaitForSignalHelper(*accInfo_.conversationModel,
-    SIGNAL(conversationRemoved(const std::string& uid))).wait(1000);
+        SIGNAL(conversationRemoved(const std::string& uid))).wait(1000);
     CPPUNIT_ASSERT(conversationRemoved);
     conversations = accInfo_.conversationModel->allFilteredConversations();
     i = std::find_if(conversations.begin(), conversations.end(),
@@ -131,7 +131,7 @@ ConversationModelTester::testFilterAndGetConversations()
     // If filter gives nothing, the allFilteredConversations should return a list with size == 1 (temporary item)
     accInfo_.conversationModel->setFilter("YouShouldNotPass");
     WaitForSignalHelper(*accInfo_.contactModel,
-                        SIGNAL(modelUpdated())).wait(1000);
+        SIGNAL(modelUpdated())).wait(1000);
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT_EQUAL((int)conversations.size(), 1);
     // Count when filter exact name
@@ -140,7 +140,7 @@ ConversationModelTester::testFilterAndGetConversations()
     auto contactUri = (*contacts.rbegin()).first;
     accInfo_.conversationModel->setFilter(contactUri);
     WaitForSignalHelper(*accInfo_.contactModel,
-                        SIGNAL(modelUpdated())).wait(1000);
+        SIGNAL(modelUpdated())).wait(1000);
     conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT_EQUAL((int)conversations.size(), 1); // We should see the contact
     auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
@@ -152,7 +152,7 @@ ConversationModelTester::testFilterAndGetConversations()
             ++ nbContact;
     accInfo_.conversationModel->setFilter("contact");
     WaitForSignalHelper(*accInfo_.contactModel,
-                        SIGNAL(modelUpdated())).wait(1000);
+        SIGNAL(modelUpdated())).wait(1000);
     conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT_EQUAL((int)conversations.size() - 1, nbContact);
 }
@@ -178,7 +178,7 @@ ConversationModelTester::testSendMessageAndClearHistory()
     }
     CPPUNIT_ASSERT(conversationExists);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
-    SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
     // Then test clearHistory
     accInfo_.conversationModel->clearHistory(firstConversation);
@@ -207,7 +207,7 @@ ConversationModelTester::testReceiveMessageAndSetRead()
     ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
     firstConversation.participants.front().c_str(), payloads);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
-    SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
     // This message should be unread
     conversations = accInfo_.conversationModel->allFilteredConversations();
@@ -262,7 +262,7 @@ ConversationModelTester::testCreateConference()
     // Create conference
     accInfo_.conversationModel->joinConversations(firstConversation.uid, secondConversation.uid);
     auto callAddedToConf = WaitForSignalHelper(*accInfo_.callModel,
-    SIGNAL(callAddedToConference(const std::string&, const std::string&))).wait(1000);
+        SIGNAL(callAddedToConference(const std::string&, const std::string&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(callAddedToConf, true);
     conversations = accInfo_.conversationModel->allFilteredConversations();
     firstConversation = accInfo_.conversationModel->filteredConversation(0);
