@@ -879,6 +879,8 @@ IF((${ENABLE_TEST} MATCHES true))
       test/utils/waitforsignalhelper.cpp
       test/conversationmodeltester.h
       test/conversationmodeltester.cpp
+      test/contactmodeltester.h
+      test/contactmodeltester.cpp
       ${libringclient_LIB_SRCS}
       ${libringclient_PRIVATE_HDRS}
     )
