@@ -38,7 +38,7 @@ enum class Type {
     TEMPORARY
 };
 
-static const std::string
+static inline const std::string
 to_string(const Type& type)
 {
     switch(type) {
@@ -56,7 +56,7 @@ to_string(const Type& type)
     }
 }
 
-static Type
+static inline Type
 to_type(const std::string& type)
 {
     if (type == "PENDING")
