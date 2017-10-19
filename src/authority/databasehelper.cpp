@@ -96,6 +96,20 @@ getPeerParticipantsForConversation(Database& db, const std::string& profileId, c
                      {{":id", conversationId}, {":participant_id", profileId}}).payloads;
 }
 
+std::string
+getAvatarForProfileId(Database& db, const std::string& profileId)
+{
+    auto returnFromDb = db.select("photo",
+                                  "profiles",
+                                  "id=:id",
+                                  {{":id", profileId}});
+    if (returnFromDb.nbrOfCols == 1 && returnFromDb.payloads.size() >= 1) {
+      auto payloads = returnFromDb.payloads;
+      return payloads[0];
+    }
+    return "";
+}
+
 api::contact::Info
 buildContactFromProfileId(Database& db, const std::string& profileId)
 {
