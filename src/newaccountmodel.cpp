@@ -167,7 +167,6 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     auto& owner = item.second;
     owner.id = accountId;
     owner.enabled = details["Account.enable"] == QString("true");
-    // TODO get avatar;
     owner.profileInfo.type = details["Account.type"] == "RING" ? profile::Type::RING : profile::Type::SIP;
     owner.profileInfo.alias = details["Account.alias"].toStdString();
     owner.registeredName = owner.profileInfo.type == profile::Type::RING ?
@@ -176,9 +175,12 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
                         details["Account.username"].toStdString().substr(std::string("ring:").size())
                         : details["Account.username"].toStdString();
     // Add profile into database
-    authority::database::getOrInsertProfile(database, owner.profileInfo.uri,
-                                            owner.profileInfo.alias, "",
-                                            details["Account.type"].toStdString());
+    auto accountProfileId = authority::database::getOrInsertProfile(database, owner.profileInfo.uri,
+                                                                    owner.profileInfo.alias, "",
+                                                                    details["Account.type"].toStdString());
+    // Retrieve avatar from database
+    auto avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
+    owner.profileInfo.avatar = avatar;
     // Init models for this account
     owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
