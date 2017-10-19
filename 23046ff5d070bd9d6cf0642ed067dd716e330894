@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_04905a94",
+        "filename": "test/databasetester.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-10-19T15:15:30Z",
+      "side": 1,
+      "message": "doc",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 20
+      },
+      "revId": "23046ff5d070bd9d6cf0642ed067dd716e330894",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_44e9c219",
+        "filename": "test/utils/waitforsignalhelper.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-10-19T15:15:30Z",
+      "side": 1,
+      "message": "doc\ncopyright",
+      "revId": "23046ff5d070bd9d6cf0642ed067dd716e330894",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_e48c4e82",
+        "filename": "test/utils/waitforsignalhelper.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-10-19T15:15:30Z",
+      "side": 1,
+      "message": "doc\ncopyright",
+      "revId": "23046ff5d070bd9d6cf0642ed067dd716e330894",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
