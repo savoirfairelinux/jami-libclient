@@ -52,7 +52,7 @@ enum class Status {
     AUTO_ANSWERING
 };
 
-static const std::string
+static inline const std::string
 to_string(const call::Status& status)
 {
     switch(status)
@@ -94,7 +94,7 @@ to_string(const call::Status& status)
  * @param  status
  * @return
  */
-static const Status
+static inline const Status
 to_status(const std::string& status)
 {
     if (status == "INCOMING")

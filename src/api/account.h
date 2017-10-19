@@ -53,7 +53,7 @@ enum class Status {
     REGISTERED
 };
 
-static account::Status
+static inline account::Status
 to_status(const std::string& type)
 {
     if (type == "INITIALIZING")

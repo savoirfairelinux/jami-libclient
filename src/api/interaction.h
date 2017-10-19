@@ -38,7 +38,7 @@ enum class Type {
     CONTACT
 };
 
-static const std::string
+static inline const std::string
 to_string(const Type& type)
 {
     switch(type) {
@@ -54,7 +54,7 @@ to_string(const Type& type)
     }
 }
 
-static Type
+static inline Type
 to_type(const std::string& type)
 {
     if (type == "TEXT")
@@ -78,7 +78,7 @@ enum class Status {
     UNREAD
 };
 
-static const std::string
+static inline const std::string
 to_string(const Status& status)
 {
     switch(status) {
@@ -100,7 +100,7 @@ to_string(const Status& status)
     }
 }
 
-static Status
+static inline Status
 to_status(const std::string& status)
 {
     if (status == "UNKNOWN")
@@ -129,7 +129,7 @@ struct Info
     Status status = Status::INVALID;
 };
 
-static bool isOutgoing(const Info& interaction) {
+static inline bool isOutgoing(const Info& interaction) {
     return interaction.status != lrc::api::interaction::Status::READ
     && interaction.status != lrc::api::interaction::Status::UNREAD;
 }
