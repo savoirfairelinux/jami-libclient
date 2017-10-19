@@ -52,7 +52,7 @@ enum class Status {
     AUTO_ANSWERING
 };
 
-static inline const std::string
+static inline std::string
 to_string(const call::Status& status)
 {
     switch(status)
@@ -85,6 +85,8 @@ to_string(const call::Status& status)
         return QObject::tr("Communication established").toStdString();
     case call::Status::AUTO_ANSWERING:
         return QObject::tr("Auto answering").toStdString();
+    default:
+        return ""; // to remove a build warning, should not happen
     }
 }
 
@@ -94,7 +96,7 @@ to_string(const call::Status& status)
  * @param  status
  * @return
  */
-static inline const Status
+static inline Status
 to_status(const std::string& status)
 {
     if (status == "INCOMING")
