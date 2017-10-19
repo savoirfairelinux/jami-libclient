@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_64467e25",
+        "filename": "test/conversationmodeltester.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-10-19T16:42:52Z",
+      "side": 1,
+      "message": "doc",
+      "revId": "06ebdc0487824e9ed8517361b4d579072a618b02",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
