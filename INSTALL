@@ -23,7 +23,7 @@ To install the appplication, type the following commands in a console, while in 
                 -DCMAKE_INSTALL_PREFIX=<install location>
                 -DCMAKE_BUILD_TYPE=<Debug to compile with debug symbols>
                 -DENABLE_VIDEO=<False to disable video support>
-	make -j3
+	make -jx # where x is the number of core you have
 	make install
 
 Explanation
@@ -64,6 +64,28 @@ cmake .. -DCMAKE_INSTALL_PREFIX=<install_dir_of_daemon> [-DCMAKE_BUILD_TYPE=Debu
 make install
 
 You can now link and build the OSX client with Ring daemon and LRC library
+
+Testing
+=======
+
+Tests are written in the `test` directory.
+To run tests, you need to rebuild the application with these commands (from the root directory of the project):
+
+	mkdir -p build-test
+	cd build-test
+	cmake .. -DENABLE_TEST=true
+        	The following options are often usefull to append to the cmake line:
+                -DRING_BUILD_DIR=<daemon install location>
+                -DRING_XML_INTERFACES_DIR=<daemon dbus interface definitions directory>
+                -DCMAKE_INSTALL_PREFIX=<install location>
+                -DCMAKE_BUILD_TYPE=<Debug to compile with debug symbols>
+                -DENABLE_VIDEO=<False to disable video support>
+	make -jx # where x is the number of core you have
+	make test # or ./LRCTester for more verbosity.
+
+In the `test` directory you can also find a `mocks` folder used to simulate the ring daemon.
+`CppUnit` is the testing library used for this project.
+
 
 Internationalization
 ====================
