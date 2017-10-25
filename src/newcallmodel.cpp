@@ -378,9 +378,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         } else if (state == "HUNGUP") {
             calls[callId]->status = call::Status::TERMINATING;
         } else if (state == "FAILURE" || state == "OVER") {
-            if (calls[callId]->startTime.time_since_epoch().count() != 0) {
-                emit linked.callEnded(callId);
-            }
+            emit linked.callEnded(callId);
             calls[callId]->status = call::Status::ENDED;
         } else if (state == "INACTIVE") {
             calls[callId]->status = call::Status::INACTIVE;

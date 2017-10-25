@@ -143,7 +143,7 @@ getConversationsBetween(Database& db, const std::string& accountProfile, const s
 }
 
 std::string
-beginConversationsBetween(Database& db, const std::string& accountProfile, const std::string& contactProfile)
+beginConversationsBetween(Database& db, const std::string& accountProfile, const std::string& contactProfile, const std::string& firstMessage)
 {
     // Add conversation between account and profile
     auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1",
@@ -156,17 +156,18 @@ beginConversationsBetween(Database& db, const std::string& accountProfile, const
     db.insertInto("conversations",
                   {{":id", "id"}, {":participant_id", "participant_id"}},
                   {{":id", newConversationsId}, {":participant_id", contactProfile}});
-    // Add "Conversation started" interaction
-    db.insertInto("interactions",
-                  {{":account_id", "account_id"}, {":author_id", "author_id"},
-                  {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                  {":body", "body"}, {":type", "type"},
-                  {":status", "status"}},
-                  {{":account_id", accountProfile}, {":author_id", accountProfile},
-                  {":conversation_id", newConversationsId},
-                  {":timestamp", std::to_string(std::time(nullptr))},
-                  {":body", "Conversation started"}, {":type", "CONTACT"},
-                  {":status", "SUCCEED"}});
+    // Add first interaction
+    if (!firstMessage.empty())
+        db.insertInto("interactions",
+                      {{":account_id", "account_id"}, {":author_id", "author_id"},
+                      {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                      {":body", "body"}, {":type", "type"},
+                      {":status", "status"}},
+                      {{":account_id", accountProfile}, {":author_id", accountProfile},
+                      {":conversation_id", newConversationsId},
+                      {":timestamp", std::to_string(std::time(nullptr))},
+                      {":body", firstMessage}, {":type", "CONTACT"},
+                      {":status", "SUCCEED"}});
     return newConversationsId;
 }
 
