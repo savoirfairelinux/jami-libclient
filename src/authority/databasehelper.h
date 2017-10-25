@@ -103,11 +103,13 @@ std::vector<std::string> getConversationsBetween(Database& db,
  * @param db
  * @param accountProfile the id of the account in the database
  * @param contactProfile the id of the contact in the database
+ * @param firstMessage the body of the first message
  * @return conversation_id of the new conversation.
  */
 std::string beginConversationsBetween(Database& db,
                                       const std::string& accountProfile,
-                                      const std::string& contactProfile);
+                                      const std::string& contactProfile,
+                                      const std::string& firstMessage = "");
 
 /**
  * Return interactions from a conversation
