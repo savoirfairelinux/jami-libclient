@@ -20,6 +20,7 @@
 #include "database.h"
 
 // Qt
+#include <QObject>
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
@@ -533,25 +534,10 @@ Database::migrateTextHistory()
 
                     // Load interactions
                     auto groupsArray = loadDoc["groups"].toArray();
-                    auto beginConversation = true;
                     for (const auto& groupObject: groupsArray) {
                         auto messagesArray = groupObject.toObject()["messages"].toArray();
                         for (const auto& messageRef: messagesArray) {
                             auto messageObject = messageRef.toObject();
-                            if (beginConversation) {
-                                // Add "Conversation started" message
-                                insertInto("interactions",
-                                            {{":account_id", "account_id"}, {":author_id", "author_id"},
-                                            {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                                            {":body", "body"}, {":type", "type"},
-                                            {":status", "status"}},
-                                            {{":account_id", accountId}, {":author_id", accountId},
-                                            {":conversation_id", newConversationsId},
-                                            {":timestamp", std::to_string(messageObject["timestamp"].toInt())},
-                                            {":body", "Conversation started"}, {":type", "CONTACT"},
-                                            {":status", "SUCCEED"}});
-                                beginConversation = false;
-                            }
                             auto direction = messageObject["direction"].toInt();
                             auto body = messageObject["payloads"].toArray()[0].toObject()["payload"].toString();
                             insertInto("interactions",

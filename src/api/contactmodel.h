@@ -114,6 +114,11 @@ Q_SIGNALS:
      */
     void contactAdded(const std::string& contactUri) const;
     /**
+     * Connect this signal to know when a pending contact was accepted.
+     * @param contactUri
+     */
+    void pendingContactAccepted(const std::string& contactUri) const;
+    /**
      * Connect this signal to know when an account was removed.
      * @param contactUri
      */
