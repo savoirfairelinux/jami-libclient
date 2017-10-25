@@ -200,6 +200,7 @@ ContactModel::addContact(contact::Info contactInfo)
         break;
     case profile::Type::PENDING:
         daemon::addContactFromPending(owner, profile.uri);
+        emit pendingContactAccepted(profile.uri);
         daemon::addContact(owner, profile.uri); // BUGS?: daemon::addContactFromPending not always add the contact
         break;
     case profile::Type::RING:
