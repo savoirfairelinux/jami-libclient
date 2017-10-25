@@ -103,11 +103,13 @@ std::vector<std::string> getConversationsBetween(Database& db,
  * @param db
  * @param accountProfile the id of the account in the database
  * @param contactProfile the id of the contact in the database
+ * @param firstMessage the body of the first message
  * @return conversation_id of the new conversation.
  */
 std::string beginConversationsBetween(Database& db,
                                       const std::string& accountProfile,
-                                      const std::string& contactProfile);
+                                      const std::string& contactProfile,
+                                      const std::string& firstMessage = "");
 
 /**
  * Return interactions from a conversation
@@ -128,6 +130,21 @@ int addMessageToConversation(Database& db,
                               const std::string& accountProfile,
                               const std::string& conversationId,
                               const api::interaction::Info& msg);
+
+/**
+* Add or update an entry into interactions linked to a conversation.
+* @param  db
+* @param  accountProfile
+* @param  conversationId
+* @param  msg
+* @param  daemonId
+* @return the id of the inserted interaction
+*/
+int addOrUpdateMessage(Database& db,
+                       const std::string& accountProfile,
+                       const std::string& conversationId,
+                       const api::interaction::Info& msg,
+                       const std::string& daemonId);
 
 /**
  * Change the daemon_id column for an interaction
