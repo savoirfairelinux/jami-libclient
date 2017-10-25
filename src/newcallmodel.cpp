@@ -138,6 +138,7 @@ NewCallModel::createCall(const std::string& url)
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId.toStdString();
     callInfo->peer = url;
+    callInfo->isOutoging = true;
     callInfo->status =  call::Status::SEARCHING;
     callInfo->type =  call::Type::DIALOG;
     pimpl_->calls.emplace(callId.toStdString(), std::move(callInfo));
@@ -231,18 +232,23 @@ NewCallModel::togglePause(const std::string& callId) const
 void
 NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const
 {
+    auto it = pimpl_->calls.find(callId);
+    if (it == pimpl_->calls.end()) return;
+    auto& call = it->second;
     switch(media)
     {
     case NewCallModel::Media::AUDIO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_AUDIO,
                                                flag);
+        call->audioMuted = flag;
         break;
 
     case NewCallModel::Media::VIDEO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_VIDEO,
                                                flag);
+        call->videoMuted = flag;
         break;
 
     case NewCallModel::Media::NONE:
@@ -359,6 +365,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
     callInfo->peer = fromId;
+    callInfo->isOutoging = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
     calls.emplace(callId, std::move(callInfo));
@@ -378,9 +385,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         } else if (state == "HUNGUP") {
             calls[callId]->status = call::Status::TERMINATING;
         } else if (state == "FAILURE" || state == "OVER") {
-            if (calls[callId]->startTime.time_since_epoch().count() != 0) {
-                emit linked.callEnded(callId);
-            }
+            emit linked.callEnded(callId);
             calls[callId]->status = call::Status::ENDED;
         } else if (state == "INACTIVE") {
             calls[callId]->status = call::Status::INACTIVE;
