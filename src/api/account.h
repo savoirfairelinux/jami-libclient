@@ -45,6 +45,9 @@ enum class Type {
     SIP
 };
 
+#pragma pop_macro("REGISTERED")
+#undef REGISTERED
+
 enum class Status {
     INVALID,
     INITIALIZING,
@@ -67,6 +70,8 @@ to_status(const std::string& type)
     else
         return account::Status::INVALID;
 }
+
+#pragma push_macro("REGISTERED")
 
 struct Info
 {
