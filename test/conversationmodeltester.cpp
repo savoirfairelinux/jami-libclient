@@ -170,8 +170,8 @@ ConversationModelTester::testSendMessageAndClearHistory()
         for (const auto& conversation: conversations) {
         if (conversation.uid == firstConversation) {
             conversationExists = true;
-            // Should contains "Conversation started" + "Hello World!"
-            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 2);
+            // Should contains "Hello World!"
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 1);
             CPPUNIT_ASSERT_EQUAL((*conversation.interactions.rbegin()).second.body, std::string("Hello World!"));
             break;
         }
@@ -187,8 +187,7 @@ ConversationModelTester::testSendMessageAndClearHistory()
     for (const auto& conversation: conversations) {
         if (conversation.uid == firstConversation) {
             conversationExists = true;
-            // contains the "Conversation started" message.
-            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 1);
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 0);
             break;
         }
     }
@@ -205,7 +204,7 @@ ConversationModelTester::testReceiveMessageAndSetRead()
     QMap<QString, QString> payloads;
     payloads["text/plain"] = "This is not a message";
     ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
-    firstConversation.participants.front().c_str(), payloads);
+        firstConversation.participants.front().c_str(), payloads);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
         SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
