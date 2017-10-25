@@ -45,7 +45,7 @@ namespace conversation
   *  @brief Class that helps to control behaviors from the client side.
   *  @note This class must only refer to the common behaviors.
   */
-class BehaviorController : public QObject {
+class LIB_EXPORT BehaviorController : public QObject {
     Q_OBJECT
 
 public:
