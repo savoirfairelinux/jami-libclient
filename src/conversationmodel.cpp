@@ -98,7 +98,7 @@ public:
      * @param callId
      * @param body
      */
-    void addCallMessage(const std::string& callId, const std::string& body);
+    void addOrUpdateCallMessage(const std::string& callId, const std::string& body);
     /**
      * Add a new message from a peer in the database
      * @param from the peer uri
@@ -136,10 +136,15 @@ public Q_SLOTS:
      */
     void slotContactModelUpdated();
     /**
-     * Listen from contactModel when aa new contact is added
+     * Listen from contactModel when a new contact is added
      * @param uri
      */
     void slotContactAdded(const std::string& uri);
+    /**
+     * Listen from contactModel when a pending contact is accepted
+     * @param uri
+     */
+    void slotPendingContactAccepted(const std::string& uri);
     /**
      * Listen from contactModel when aa new contact is removed
      * @param uri
@@ -458,8 +463,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
             conversation.callId.clear();
 
         if (not conversation.callId.empty()
-            or owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
-            or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED) {
+            and (owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
+            or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED)) {
 
             owner.callModel->sendSipMessage(conversation.callId, body);
 
@@ -605,6 +610,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this, &ConversationModelPimpl::slotContactModelUpdated);
     connect(&*linked.owner.contactModel, &ContactModel::contactAdded,
             this, &ConversationModelPimpl::slotContactAdded);
+    connect(&*linked.owner.contactModel, &ContactModel::pendingContactAccepted,
+            this, &ConversationModelPimpl::slotPendingContactAccepted);
     connect(&*linked.owner.contactModel, &ContactModel::contactRemoved,
             this, &ConversationModelPimpl::slotContactRemoved);
 
@@ -695,11 +702,15 @@ ConversationModelPimpl::sortConversations()
         conversations.begin(), conversations.end(),
         [](const auto& conversationA, const auto& conversationB)
         {
+            // A or B is a temporary contact
+            if (conversationA.participants.empty()) return true;
+            if (conversationB.participants.empty()) return false;
             auto historyA = conversationA.interactions;
             auto historyB = conversationB.interactions;
             // A or B is a new conversation (without CONTACT interaction)
-            if (historyA.empty()) return true;
-            if (historyB.empty()) return false;
+            if (conversationA.uid.empty() || conversationB.uid.empty()) return conversationA.uid.empty();
+            if (historyA.empty()) return false;
+            if (historyB.empty()) return true;
             // Sort by last Interaction
             try
             {
@@ -710,7 +721,7 @@ ConversationModelPimpl::sortConversations()
             catch (const std::exception& e)
             {
                 qDebug() << "ConversationModel::sortConversations(), can't get lastMessage";
-                return true;
+                return false;
             }
         });
     dirtyConversations = true;
@@ -731,7 +742,18 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     auto contactProfileId = database::getOrInsertProfile(db, uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
-        conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, contactProfileId));
+        std::string interaction = "";
+        try {
+            auto contact = linked.owner.contactModel->getContact(uri);
+            interaction = contact.profileInfo.type == profile::Type::PENDING ?
+                QObject::tr("Invitation received").toStdString() :
+                QObject::tr("Contact added").toStdString();
+        } catch (...) {}
+        conv.emplace_back(
+            database::beginConversationsBetween(db, accountProfileId,
+                contactProfileId, interaction
+            )
+        );
     }
     // Add the conversation if not already here
     if (indexOf(conv[0]) == -1)
@@ -745,6 +767,36 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     }
     emit linked.modelSorted();
 }
+
+void
+ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
+{
+    auto contactProfileId = database::getOrInsertProfile(db, uri);
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    if (conv.empty()) {
+        conv.emplace_back(
+            database::beginConversationsBetween(db, accountProfileId,
+                contactProfileId, QObject::tr("Invitation accepted").toStdString()
+            )
+        );
+    } else {
+        try {
+            auto contact = linked.owner.contactModel->getContact(uri);
+            auto msg = interaction::Info {accountProfileId,
+                                          QObject::tr("Invitation accepted").toStdString(),
+                                          std::time(nullptr), interaction::Type::CONTACT,
+                                          interaction::Status::SUCCEED};
+            auto msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+            auto conversationIdx = indexOf(conv[0]);
+            conversations[conversationIdx].interactions.emplace(msgId, msg);
+            dirtyConversations = true;
+            emit linked.newUnreadMessage(conv[0], msgId, msg);
+        } catch (std::out_of_range& e) {
+            qDebug() << "ConversationModelPimpl::slotContactAdded can't find contact";
+        }
+    }
+}
+
 
 void
 ConversationModelPimpl::slotContactRemoved(const std::string& uri)
@@ -886,24 +938,49 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
 void
 ConversationModelPimpl::slotCallStarted(const std::string& callId)
 {
-    addCallMessage(callId, "📞 Call started");
+    try {
+        auto call = linked.owner.callModel->getCall(callId);
+        if (call.isOutoging)
+            addOrUpdateCallMessage(callId, QObject::tr("📞 Outgoing call").toStdString());
+        else
+            addOrUpdateCallMessage(callId, QObject::tr("📞 Incoming call").toStdString());
+    } catch (std::out_of_range& e) {
+        qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
+    }
 }
 
 void
 ConversationModelPimpl::slotCallEnded(const std::string& callId)
 {
-    addCallMessage(callId, "🕽 Call ended");
-
-    // reset the callId stored in the conversation
-    for (auto& conversation: conversations)
-        if (conversation.callId == callId) {
-            conversation.callId = "";
-            dirtyConversations = true;
+    try {
+        auto call = linked.owner.callModel->getCall(callId);
+        if (call.startTime.time_since_epoch().count() != 0) {
+            if (call.isOutoging)
+                addOrUpdateCallMessage(callId, QObject::tr("📞 Outgoing call - ").toStdString()
+                    + linked.owner.callModel->getFormattedCallDuration(callId));
+            else
+                addOrUpdateCallMessage(callId, QObject::tr("📞 Incoming call - ").toStdString()
+                    + linked.owner.callModel->getFormattedCallDuration(callId));
+        } else {
+            if (call.isOutoging)
+                addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed outgoing call").toStdString());
+            else
+                addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed incoming call").toStdString());
         }
+
+        // reset the callId stored in the conversation
+        for (auto& conversation: conversations)
+            if (conversation.callId == callId) {
+                conversation.callId = "";
+                dirtyConversations = true;
+            }
+    } catch (std::out_of_range& e) {
+        qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
+    }
 }
 
 void
-ConversationModelPimpl::addCallMessage(const std::string& callId, const std::string& body)
+ConversationModelPimpl::addOrUpdateCallMessage(const std::string& callId, const std::string& body)
 {
     // Get conversation
     for (auto& conversation: conversations) {
@@ -911,11 +988,19 @@ ConversationModelPimpl::addCallMessage(const std::string& callId, const std::str
             auto uid = conversation.uid;
             auto msg = interaction::Info {accountProfileId, body, std::time(nullptr),
                                          interaction::Type::CALL, interaction::Status::SUCCEED};
-            int msgId = database::addMessageToConversation(db, accountProfileId, conversation.uid, msg);
-            conversation.interactions.emplace(msgId, msg);
-            conversation.lastMessageUid = msgId;
+            int msgId = database::addOrUpdateMessage(db, accountProfileId, conversation.uid, msg, callId);
+            auto newInteraction = conversation.interactions.find(msgId) == conversation.interactions.end();
+            if (newInteraction) {
+                conversation.lastMessageUid = msgId;
+                conversation.interactions.emplace(msgId, msg);
+            } else {
+                conversation.interactions[msgId] = msg;
+            }
             dirtyConversations = true;
-            emit linked.newUnreadMessage(conversation.uid, msgId, msg);
+            if (newInteraction)
+                emit linked.newUnreadMessage(conversation.uid, msgId, msg);
+            else
+                emit linked.interactionStatusUpdated(conversation.uid, msgId, msg);
             sortConversations();
             emit linked.modelSorted();
         }
@@ -964,7 +1049,10 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
-        conv.emplace_back(database::beginConversationsBetween(db, accountProfileId, contactProfileId));
+        conv.emplace_back(database::beginConversationsBetween(
+            db, accountProfileId, contactProfileId,
+            QObject::tr("Invitation received").toStdString()
+        ));
     }
     auto authorId = authorProfileId.empty()? contactProfileId: authorProfileId;
     auto msg = interaction::Info {authorId, body, std::time(nullptr),

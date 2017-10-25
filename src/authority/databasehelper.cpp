@@ -143,7 +143,7 @@ getConversationsBetween(Database& db, const std::string& accountProfile, const s
 }
 
 std::string
-beginConversationsBetween(Database& db, const std::string& accountProfile, const std::string& contactProfile)
+beginConversationsBetween(Database& db, const std::string& accountProfile, const std::string& contactProfile, const std::string& firstMessage)
 {
     // Add conversation between account and profile
     auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1",
@@ -156,17 +156,18 @@ beginConversationsBetween(Database& db, const std::string& accountProfile, const
     db.insertInto("conversations",
                   {{":id", "id"}, {":participant_id", "participant_id"}},
                   {{":id", newConversationsId}, {":participant_id", contactProfile}});
-    // Add "Conversation started" interaction
-    db.insertInto("interactions",
-                  {{":account_id", "account_id"}, {":author_id", "author_id"},
-                  {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                  {":body", "body"}, {":type", "type"},
-                  {":status", "status"}},
-                  {{":account_id", accountProfile}, {":author_id", accountProfile},
-                  {":conversation_id", newConversationsId},
-                  {":timestamp", std::to_string(std::time(nullptr))},
-                  {":body", "Conversation started"}, {":type", "CONTACT"},
-                  {":status", "SUCCEED"}});
+    // Add first interaction
+    if (!firstMessage.empty())
+        db.insertInto("interactions",
+                      {{":account_id", "account_id"}, {":author_id", "author_id"},
+                      {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                      {":body", "body"}, {":type", "type"},
+                      {":status", "status"}},
+                      {{":account_id", accountProfile}, {":author_id", accountProfile},
+                      {":conversation_id", newConversationsId},
+                      {":timestamp", std::to_string(std::time(nullptr))},
+                      {":body", firstMessage}, {":type", "CONTACT"},
+                      {":status", "SUCCEED"}});
     return newConversationsId;
 }
 
@@ -208,6 +209,41 @@ addMessageToConversation(Database& db,
                           {":status", to_string(msg.status)}});
 }
 
+int
+addOrUpdateMessage(Database& db,
+                         const std::string& accountProfile,
+                         const std::string& conversationId,
+                         const api::interaction::Info& msg,
+                         const std::string& daemonId)
+{
+    // Check if profile is already present.
+    auto msgAlreadyExists = db.select("id",
+                                      "interactions",
+                                      "daemon_id=:daemon_id",
+                                       {{":daemon_id", daemonId}});
+    if (msgAlreadyExists.payloads.empty()) {
+        return db.insertInto("interactions",
+                              {{":account_id", "account_id"}, {":author_id", "author_id"},
+                              {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                              {":body", "body"}, {":type", "type"}, {":daemon_id", "daemon_id"},
+                              {":status", "status"}},
+                              {{":account_id", accountProfile}, {":author_id", msg.authorUri},
+                              {":conversation_id", conversationId},
+                              {":timestamp", std::to_string(msg.timestamp)},
+                              {":body", msg.body}, {":type", to_string(msg.type)}, {":daemon_id", daemonId},
+                              {":status", to_string(msg.status)}});
+    } else {
+        // already exists
+        db.update("interactions",
+                  "body=:body",
+                  {{":body", msg.body}},
+                  "daemon_id=:daemon_id",
+                   {{":daemon_id", daemonId}});
+        return std::stoi(msgAlreadyExists.payloads[0]);
+    }
+
+}
+
 void addDaemonMsgId(Database& db,
                     const std::string& interactionId,
                     const std::string& daemonId)
@@ -241,7 +277,7 @@ void updateInteractionStatus(Database& db, unsigned int id,
 void clearHistory(Database& db,
                   const std::string& conversationId)
 {
-    db.deleteFrom("interactions", "conversation_id=:id AND type!='CONTACT'", {{":id", conversationId}});
+    db.deleteFrom("interactions", "conversation_id=:id", {{":id", conversationId}});
 }
 
 void
