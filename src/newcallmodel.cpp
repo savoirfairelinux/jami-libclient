@@ -231,18 +231,23 @@ NewCallModel::togglePause(const std::string& callId) const
 void
 NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const
 {
+    auto it = pimpl_->calls.find(callId);
+    if (it == pimpl_->calls.end()) return;
+    auto& call = it->second;
     switch(media)
     {
     case NewCallModel::Media::AUDIO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_AUDIO,
                                                flag);
+        call->audioMuted = flag;
         break;
 
     case NewCallModel::Media::VIDEO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_VIDEO,
                                                flag);
+        call->videoMuted = flag;
         break;
 
     case NewCallModel::Media::NONE:
@@ -378,9 +383,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         } else if (state == "HUNGUP") {
             calls[callId]->status = call::Status::TERMINATING;
         } else if (state == "FAILURE" || state == "OVER") {
-            if (calls[callId]->startTime.time_since_epoch().count() != 0) {
-                emit linked.callEnded(callId);
-            }
+            emit linked.callEnded(callId);
             calls[callId]->status = call::Status::ENDED;
         } else if (state == "INACTIVE") {
             calls[callId]->status = call::Status::INACTIVE;
