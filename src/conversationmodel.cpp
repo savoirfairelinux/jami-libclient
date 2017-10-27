@@ -43,6 +43,7 @@
 
 // Dbus
 #include "dbus/configurationmanager.h"
+#include "dbus/callmanager.h"
 
 namespace lrc
 {
@@ -449,10 +450,22 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
-        if (not conversation.callId.empty())
+
+        QStringList callLists = CallManager::instance().getCallList(); // no auto
+        // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
+        //             still valid every time the user want to send a message.
+        if (not conversation.callId.empty() and not callLists.contains(conversation.callId.c_str()))
+            conversation.callId.clear();
+
+        if (not conversation.callId.empty()
+            or owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
+            or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED) {
+
             owner.callModel->sendSipMessage(conversation.callId, body);
-        else
+
+        } else
             daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
+
         if (convId.empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
