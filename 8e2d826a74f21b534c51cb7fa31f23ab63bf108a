@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_d86775e9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-10-27T18:24:54Z",
+      "side": 1,
+      "message": "could be written in more easier way if you check for \"not conversation.callId.empty()\" first (even before the getCallList()), then process remaining checks.",
+      "range": {
+        "startLine": 454,
+        "startChar": 13,
+        "endLine": 467,
+        "endChar": 31
+      },
+      "revId": "8e2d826a74f21b534c51cb7fa31f23ab63bf108a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
