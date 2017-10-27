@@ -22,6 +22,30 @@
       "revId": "8e2d826a74f21b534c51cb7fa31f23ab63bf108a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_987ccd74",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 83
+      },
+      "writtenOn": "2017-10-27T19:11:37Z",
+      "side": 1,
+      "message": "The workaround edit the callId, so we have to check it after. And the workaround edit the callId only if is not empty.\n\nmoreover the both blocks show clearly what is the workaround.",
+      "parentUuid": "7a42497e_d86775e9",
+      "range": {
+        "startLine": 454,
+        "startChar": 13,
+        "endLine": 467,
+        "endChar": 31
+      },
+      "revId": "8e2d826a74f21b534c51cb7fa31f23ab63bf108a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
