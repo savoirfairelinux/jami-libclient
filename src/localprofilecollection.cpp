@@ -32,6 +32,7 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "person.h"
+#include "profilemodel.h"
 
 class LocalProfileEditor final : public CollectionEditor<Profile>
 {
@@ -86,6 +87,10 @@ bool LocalProfileEditor::save(const Profile* pro)
 
     file.write(result);
     file.close();
+
+    // we need to bind the legacy lrc to the new one. We doing that by using profileUpdated
+    emit ProfileModel::instance().profileUpdated(pro);
+
     return true;
 }
 
