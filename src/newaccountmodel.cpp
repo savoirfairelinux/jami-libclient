@@ -30,6 +30,8 @@
 #include "database.h"
 
 #include "accountmodel.h"
+#include "profilemodel.h"
+#include "profile.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
@@ -74,6 +76,8 @@ public Q_SLOTS:
      * @param account
      */
     void slotAccountRemoved(Account* account);
+
+    void slotProfileUpdated(const Profile* profile);
 };
 
 NewAccountModel::NewAccountModel(Database& database,
@@ -127,6 +131,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
+    connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -195,6 +200,13 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
     authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
     accounts.erase(accountId);
     emit linked.accountRemoved(accountId);
+}
+
+
+void
+NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
+{
+    emit linked.profileUpdated(profile->accounts().first()->id().toStdString());
 }
 
 } // namespace lrc
