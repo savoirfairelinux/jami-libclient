@@ -85,6 +85,8 @@ Q_SIGNALS:
      */
     void accountRemoved(const std::string& accountID);
 
+    void profileUpdated(const std::string& accountID);
+
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
 };
