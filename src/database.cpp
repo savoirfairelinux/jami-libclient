@@ -41,6 +41,7 @@
 #include "api/interaction.h"
 
 // Lrc for migrations
+#include "dbus/configurationmanager.h"
 #include "person.h"
 #include "account.h"
 #include "accountmodel.h"
@@ -490,7 +491,8 @@ Database::migrateTextHistory()
                 auto account = AccountModel::instance().getById(peersObject["accountId"].toString().toUtf8());
                 if (!account) continue;
                 auto accountUri = account->username();
-                if (accountUri.startsWith("ring:")) {
+                auto isARingContact = accountUri.startsWith("ring:");
+                if (isARingContact) {
                     accountUri = accountUri.mid(QString("ring:").length());
                 }
                 auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri.toStdString()}}).payloads;
@@ -501,9 +503,15 @@ Database::migrateTextHistory()
                                {":status", "status"}},
                                {{":uri", peersObject["uri"].toString().toStdString()}, {":alias", ""},
                                {":photo", ""}, {":type", "RING"},
-                               {":status", "NONTRUSTED"}});
-                    // NOTE: this profile is in a case where it's not a contact for the daemon. So we choose to remove this contact from
-                    // conversations.
+                               {":status", "TRUSTED"}});
+                    // NOTE: this profile is in a case where it's not a contact for the daemon but a conversation with an account.
+                    // So we choose to add the profile to daemon's contacts
+                    if(isARingContact) {
+                        ConfigurationManager::instance().addContact(
+                            peersObject["accountId"].toString(),
+                            peersObject["uri"].toString()
+                        );
+                    }
                     contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
                 }
                 if (accountIds.empty()) {
