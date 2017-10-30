@@ -41,6 +41,7 @@
 #include "api/interaction.h"
 
 // Lrc for migrations
+#include "dbus/configurationmanager.h"
 #include "person.h"
 #include "account.h"
 #include "accountmodel.h"
@@ -501,9 +502,11 @@ Database::migrateTextHistory()
                                {":status", "status"}},
                                {{":uri", peersObject["uri"].toString().toStdString()}, {":alias", ""},
                                {":photo", ""}, {":type", "RING"},
-                               {":status", "NONTRUSTED"}});
+                               {":status", "TRUSTED"}});
                     // NOTE: this profile is in a case where it's not a contact for the daemon. So we choose to remove this contact from
                     // conversations.
+                    ConfigurationManager::instance().addContact(peersObject["accountId"].toString(),
+                                                                peersObject["uri"].toString());
                     contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
                 }
                 if (accountIds.empty()) {
