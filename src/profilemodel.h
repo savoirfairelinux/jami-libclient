@@ -80,6 +80,9 @@ private:
    virtual bool addItemCallback(const Profile* item) override;
    virtual bool removeItemCallback(const Profile* item) override;
 
+Q_SIGNALS:
+    bool profileUpdated(const Profile* item);
+
 public Q_SLOTS:
    bool remove(const QModelIndex& idx);
    bool add(Person* person = nullptr);
