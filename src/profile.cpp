@@ -25,6 +25,9 @@
 #include <account.h>
 #include <person.h>
 
+#include "profilemodel.h"
+#include "accountmodel.h"
+
 class ProfilePrivate
 {
 public:
