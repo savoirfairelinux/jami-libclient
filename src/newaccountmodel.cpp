@@ -32,14 +32,21 @@
 #include "accountmodel.h"
 #include "profilemodel.h"
 #include "profile.h"
+#include "person.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
+
+// Daemon
+#include <account_const.h>
 
 namespace lrc
 {
 
 using namespace api;
+using namespace authority;
 
 class NewAccountModelPimpl: public QObject
 {
@@ -206,7 +213,37 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
 void
 NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
 {
-    emit linked.profileUpdated(profile->accounts().first()->id().toStdString());
+    // first we add the modification to the profile in the db:
+    auto contactUri = profile->accounts().first()->id().toStdString();
+    auto alias = profile->accounts().first()->alias().toStdString();
+    auto avatar = GlobalInstances::pixmapManipulator().toByteArray(profile->person()->photo()).toBase64().trimmed().toStdString();
+    auto type = (profile->accounts().first()->protocol() == Account::Protocol::RING) ? "RING" : "SIP";
+
+    database::getOrInsertProfile(database, contactUri, alias, avatar, type);
+
+}
+
+// this method updates only data related to the accountInfo.
+// everything else need to be done in another place.
+void
+NewAccountModel::updateAccountInfo(const std::string& accountId, const account::Info& accountInfo)
+{
+    QMap<QString, QString> accountDetails = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+
+    if (to_string(accountInfo.profileInfo.type) !=  accountDetails[DRing::Account::ConfProperties::TYPE].toStdString())
+        throw std::invalid_argument( "accountInfo is invalid: you can't edit the type of an account" );
+
+    accountDetails[DRing::Account::ConfProperties::ALIAS] =  accountInfo.profileInfo.alias.c_str();
+
+    ConfigurationManager::instance().setAccountDetails(accountId.c_str(), accountDetails);
+
+    database::getOrInsertProfile(pimpl_->database,
+                                 accountInfo.profileInfo.uri,
+                                 accountInfo.profileInfo.alias,
+                                 accountInfo.profileInfo.avatar,
+                                 to_string(accountInfo.profileInfo.type));
+
+    emit profileUpdated(accountId);
 }
 
 } // namespace lrc
