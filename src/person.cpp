@@ -41,6 +41,8 @@
 #include "media/textrecording.h"
 #include "mime.h"
 
+#include "profilemodel.h"
+
 // Std
 #include <random>
 
@@ -149,6 +151,7 @@ QString PersonPrivate::filterString()
 
 void PersonPrivate::changed()
 {
+    qDebug() << "###@!1";
    m_CachedFilterString.clear();
    foreach (Person* c,m_lParents) {
       emit c->changed();
@@ -430,7 +433,14 @@ void Person::setFamilyName(const QString& name)
 void Person::setPhoto(const QVariant& photo)
 {
    d_ptr->m_vPhoto = photo;
+   
+   qDebug() << " C C C C C C : PHOTO";
+   qDebug() << photo;
+
    d_ptr->changed();
+    
+
+
 }
 
 ///Set the formatted name (display name)
@@ -760,6 +770,10 @@ const QByteArray Person::toVCard(QList<Account*> accounts) const
    }
 
    maker.addPhoto(GlobalInstances::pixmapManipulator().toByteArray(photo()));
+
+    // we need to bind the legacy lrc to the new one. We doing that by using profileUpdated
+    emit ProfileModel::instance().profileUpdated(pro);
+
    return maker.endVCard();
 }
 

@@ -662,6 +662,11 @@ bool ProfileModel::addItemCallback(const Profile* pro)
             emit dataChanged(idx, idx);
         }
     });
+    
+    
+    // we need to bind the legacy lrc to the new one. We doing that by using profileUpdated
+    emit ProfileModel::instance().profileUpdated(pro);
+    
     return true;
 }
 

@@ -88,9 +88,6 @@ bool LocalProfileEditor::save(const Profile* pro)
     file.write(result);
     file.close();
 
-    // we need to bind the legacy lrc to the new one. We doing that by using profileUpdated
-    emit ProfileModel::instance().profileUpdated(pro);
-
     return true;
 }
 

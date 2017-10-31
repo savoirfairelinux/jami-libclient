@@ -206,7 +206,21 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
 void
 NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
 {
-    emit linked.profileUpdated(profile->accounts().first()->id().toStdString());
+    // first we add the modification to the profile in the db:
+    auto contactUri = profile->accounts().first()->id().toStdString();
+    auto alias = profile->accounts().first()->alias().toStdString();
+    auto avatar = profile->person()->photo().toStdString();
+    auto type = (profile->accounts().first()->protocol() == Account::Protocol::RING) : "RING" : "SIP";
+    
+    
+    
+    //~ getOrInsertProfile(database);
+    
+    
+    qDebug() << " O O O O O O O O O O O O O";
+    
+    
+    emit linked.profileUpdated(contacUri);
 }
 
 } // namespace lrc
