@@ -42,6 +42,7 @@ namespace api
 class BehaviorController;
 
 namespace account { struct Info; }
+namespace profile { struct Info; }
 
 /**
   *  @brief Class that manages account information.
@@ -67,6 +68,12 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+    /**
+     * update profile information associated to an accountId.
+     * @param accountId.
+     * @param profileInfo,
+     */
+    void updateProfileInfo(const std::string& accountId, const profile::Info& profileInfo);
 
 Q_SIGNALS:
     /**

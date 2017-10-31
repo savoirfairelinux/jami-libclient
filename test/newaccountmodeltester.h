@@ -54,6 +54,8 @@ public:
      * Method automatically called after each test CppUnit
      */
     void tearDown();
+    /// DOC
+    void testUpdatedProfileSignal();
 
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;

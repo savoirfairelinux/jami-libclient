@@ -32,14 +32,21 @@
 #include "accountmodel.h"
 #include "profilemodel.h"
 #include "profile.h"
+#include "person.h"
+#include "globalinstances.h"
+#include "interfaces/pixmapmanipulatori.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
+
+// Daemon
+#include <account_const.h>
 
 namespace lrc
 {
 
 using namespace api;
+using namespace authority;
 
 class NewAccountModelPimpl: public QObject
 {
@@ -206,7 +213,41 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
 void
 NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
 {
-    emit linked.profileUpdated(profile->accounts().first()->id().toStdString());
+    // signal catch from the legacy lrc. It is required to use this slot as long as we are using the legacy lrc.
+    qDebug() << "@11 <<< 2    accountUri is missing";
+    auto accountId = profile->accounts().first()->id().toStdString();
+    auto accountUri = "";
+    auto alias = profile->accounts().first()->alias().toStdString();
+    auto avatar = GlobalInstances::pixmapManipulator().toByteArray(profile->person()->photo()).toBase64().trimmed().toStdString();
+    auto type = (profile->accounts().first()->protocol() == Account::Protocol::RING) ? profile::Type::RING : profile::Type::SIP;
+
+    linked.updateProfileInfo(accountId, {accountUri, avatar, alias, type});
+
+}
+
+void // [jn] tester pour sip et ring
+NewAccountModel::updateProfileInfo(const std::string& accountId, const profile::Info& profileInfo)
+{
+    qDebug() << "@11 <<< 1";
+    QMap<QString, QString> accountDetails = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+
+    if (to_string(profileInfo.type) !=  accountDetails[DRing::Account::ConfProperties::TYPE].toStdString())
+        throw std::invalid_argument( "profileInfo invalid" );
+
+    accountDetails[DRing::Account::ConfProperties::ALIAS] =  profileInfo.alias.c_str();
+
+    // update information stored daemon side
+    ConfigurationManager::instance().setAccountDetails(accountId.c_str(), accountDetails);
+
+    // update information stored database side
+    database::getOrInsertProfile(pimpl_->database,
+                                 profileInfo.uri,
+                                 profileInfo.alias,
+                                 profileInfo.avatar,
+                                 to_string(profileInfo.type));
+
+    // inform the client
+    emit profileUpdated(accountId);
 }
 
 } // namespace lrc

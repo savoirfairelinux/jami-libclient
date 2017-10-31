@@ -50,5 +50,15 @@ NewAccountModelTester::tearDown()
 
 }
 
+void
+NewAccountModelTester::testUpdatedProfileSignal()
+{
+    //~ CallManager::instance().emitIncomingCall("ring2", callId.c_str(), "ring:contact1");
+
+
+    
+    //~ WaitForSignalHelper(*accInfo_.callModel,
+        //~ SIGNAL(newIncomingCall(const std::string& callId, const std::string& fromId))).wait(1000);
+}
 } // namespace test
 } // namespace ring
