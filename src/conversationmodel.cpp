@@ -458,8 +458,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
             conversation.callId.clear();
 
         if (not conversation.callId.empty()
-            or owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
-            or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED) {
+            and (owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
+                 or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED)) {
 
             owner.callModel->sendSipMessage(conversation.callId, body);
 
