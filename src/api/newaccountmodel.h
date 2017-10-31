@@ -67,6 +67,13 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+    
+    // updateAccountInfo()
+    void updateAccountInfo(const std::string& accountId, const account::Info& accountInfo);
+    
+    // createAccount
+    
+    // removeAccount
 
 Q_SIGNALS:
     /**
@@ -85,7 +92,7 @@ Q_SIGNALS:
      */
     void accountRemoved(const std::string& accountID);
 
-    void profileUpdated(const std::string& accountID);
+    void profileUpdated(const std::string& accountID); // infoUpdated
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
