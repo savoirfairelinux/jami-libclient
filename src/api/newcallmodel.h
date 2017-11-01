@@ -30,6 +30,9 @@
 #include "api/call.h"
 #include "api/account.h"
 
+// LRC
+#include "typedefs.h"
+
 namespace Video {
 class Renderer;
 }
@@ -50,7 +53,7 @@ class NewAccountModel;
 /**
   *  @brief Class that manages call informations.
   */
-class NewCallModel : public QObject {
+class LIB_EXPORT NewCallModel : public QObject {
     Q_OBJECT
 
 public:
