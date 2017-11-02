@@ -973,6 +973,7 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
             if (conversation.callId == callId) {
                 conversation.callId = "";
                 dirtyConversations = true;
+                linked.selectConversation(conversation.uid);
             }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
