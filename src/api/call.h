@@ -136,6 +136,30 @@ struct Info
     bool videoMuted = false;
 };
 
+static inline bool
+canSendSIPMessage(const Info& call) {
+    switch(call.status)
+    {
+    case call::Status::PAUSED:
+    case call::Status::PEER_PAUSED:
+    case call::Status::IN_PROGRESS:
+    case call::Status::INCOMING_RINGING:
+    case call::Status::OUTGOING_RINGING:
+    case call::Status::CONNECTED:
+        return true;
+    case call::Status::INVALID:
+    case call::Status::OUTGOING_REQUESTED:
+    case call::Status::CONNECTING:
+    case call::Status::SEARCHING:
+    case call::Status::INACTIVE:
+    case call::Status::ENDED:
+    case call::Status::TERMINATING:
+    case call::Status::AUTO_ANSWERING:
+    default:
+        return false;
+    }
+}
+
 } // namespace call
 } // namespace api
 } // namespace lrc

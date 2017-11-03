@@ -452,6 +452,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     // Send interaction to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
     uint64_t daemonMsgId = 0;
+    auto status = interaction::Status::SENDING;
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
@@ -463,9 +464,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
             conversation.callId.clear();
 
         if (not conversation.callId.empty()
-            and (owner.callModel->getCall(conversation.callId).status != call::Status::IN_PROGRESS
-            or owner.callModel->getCall(conversation.callId).status != call::Status::PAUSED)) {
-
+            and call::canSendSIPMessage(owner.callModel->getCall(conversation.callId))) {
+            status = interaction::Status::UNKNOWN;
             owner.callModel->sendSipMessage(conversation.callId, body);
 
         } else
@@ -486,12 +486,11 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     }
 
     // Add interaction to database
-    auto status = (conversation.callId.empty()) ? interaction::Status::SENDING : interaction::Status::UNKNOWN;
     auto msg = interaction::Info {accountId, body, std::time(nullptr),
                                   interaction::Type::TEXT, status};
     int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
     // Update conversation
-    if (conversation.callId.empty()) {
+    if (status == interaction::Status::SENDING) {
         // Because the daemon already give an id for the message, we need to store it.
         database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
     }
