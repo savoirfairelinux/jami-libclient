@@ -230,7 +230,7 @@ NewCallModel::togglePause(const std::string& callId) const
 }
 
 void
-NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const
+NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media media) const
 {
     auto it = pimpl_->calls.find(callId);
     if (it == pimpl_->calls.end()) return;
@@ -240,15 +240,15 @@ NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media m
     case NewCallModel::Media::AUDIO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_AUDIO,
-                                               flag);
-        call->audioMuted = flag;
+                                               !call->audioMuted);
+        call->audioMuted = !call->audioMuted;
         break;
 
     case NewCallModel::Media::VIDEO:
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_VIDEO,
-                                               flag);
-        call->videoMuted = flag;
+                                               !call->videoMuted);
+        call->videoMuted = !call->videoMuted;
         break;
 
     case NewCallModel::Media::NONE:
