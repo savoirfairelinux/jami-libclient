@@ -132,9 +132,8 @@ public:
      * Toggle a media on a call
      * @param callId
      * @param media {AUDIO, VIDEO}
-     * @param flag is muted
      */
-    void toggleMedia(const std::string& callId, const NewCallModel::Media media, bool flag) const;
+    void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
     /**
      * Not implemented yet
      */
