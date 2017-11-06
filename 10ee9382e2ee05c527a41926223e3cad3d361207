@@ -22,6 +22,30 @@
       "revId": "10ee9382e2ee05c527a41926223e3cad3d361207",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_05bb310f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-11-06T19:59:14Z",
+      "side": 1,
+      "message": "Oops, mistake",
+      "parentUuid": "7a42497e_e5c3a588",
+      "range": {
+        "startLine": 468,
+        "startChar": 12,
+        "endLine": 469,
+        "endChar": 71
+      },
+      "revId": "10ee9382e2ee05c527a41926223e3cad3d361207",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
