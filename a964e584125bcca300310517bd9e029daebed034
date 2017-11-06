@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_855d81ec",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2017-11-06T20:30:11Z",
+      "side": 0,
+      "message": "Please update the Doxygen comment",
+      "range": {
+        "startLine": 137,
+        "startChar": 81,
+        "endLine": 137,
+        "endChar": 85
+      },
+      "revId": "a964e584125bcca300310517bd9e029daebed034",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
