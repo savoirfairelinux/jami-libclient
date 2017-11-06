@@ -1411,6 +1411,53 @@
         <source>Peers Profiles Collection</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="749"/>
+        <location filename="../src/conversationmodel.cpp" line="1055"/>
+        <source>Invitation received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="750"/>
+        <source>Contact added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="779"/>
+        <location filename="../src/conversationmodel.cpp" line="786"/>
+        <source>Invitation accepted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="944"/>
+        <source>ð Outgoing call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="946"/>
+        <source>ð Incoming call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="959"/>
+        <source>ð Outgoing call - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="962"/>
+        <source>ð Incoming call - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="966"/>
+        <source>ð½ Missed outgoing call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/conversationmodel.cpp" line="968"/>
+        <source>ð½ Missed incoming call</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecentModel</name>
