@@ -287,9 +287,10 @@ ContactModel::searchContact(const std::string& query)
     // query is a valid RingID?
     auto uri = URI(QString(query.c_str()));
     if (uri.full().startsWith("ring:")) {
+        auto shortUri = uri.full().mid(5).toStdString();
         profile::Info profileInfo;
-        profileInfo.uri = query;
-        profileInfo.alias = query;
+        profileInfo.uri = shortUri;
+        profileInfo.alias = shortUri;
         profileInfo.type = profile::Type::TEMPORARY;
         temporaryContact.profileInfo = profileInfo;
         emit modelUpdated();
