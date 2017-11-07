@@ -72,8 +72,8 @@ ContactModelTester::testReceivesPendingRequest()
     ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
     auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
-    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), true);
+    CPPUNIT_ASSERT(contactAdded);
+    CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
     auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
     auto contacts = accInfo_.contactModel->getAllContacts();
     int lrcContactsNumber = contacts.size();
@@ -84,14 +84,8 @@ ContactModelTester::testReceivesPendingRequest()
 void
 ContactModelTester::testAddNewRingContact()
 {
-    auto contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("dummy");
-        contactFound = true;
-    } catch(...) { }
     // "dummy" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("dummy"), std::out_of_range);
     // Search and add the temporaryContact
     accInfo_.contactModel->searchContact("dummy");
     WaitForSignalHelper(*accInfo_.contactModel,
@@ -101,29 +95,37 @@ ContactModelTester::testAddNewRingContact()
     accInfo_.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
-    contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("dummy");
-        contactFound = true;
-    } catch(...) { }
-    // "dummy" should not be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactAdded);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("dummy"));
+}
+
+void
+ContactModelTester::testAddRingURI()
+{
+    CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b"), std::out_of_range);
+    auto nbContacts = accInfo_.contactModel->getAllContacts().size();
+    // Search and add the temporaryContact
+    accInfo_.contactModel->searchContact("ring:f5a46751671918fe7210a3c31b9a9e4ce081429b");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    auto temporaryContact = accInfo_.contactModel->getContact("");
+    CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
+    accInfo_.contactModel->addContact(temporaryContact);
+    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
+    CPPUNIT_ASSERT(contactAdded);
+    // "f5a46751671918fe7210a3c31b9a9e4ce081429b" should be in "ring1" contacts.
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
+    // We should only have added one contact.
+    CPPUNIT_ASSERT_EQUAL((nbContacts + 1), accInfo_.contactModel->getAllContacts().size());
 }
 
 void
 ContactModelTester::testAddNewSIPContact()
 {
-    auto contactFound = false;
     auto& accInfoSip = lrc_->getAccountModel().getAccountInfo("sip0");
-    try
-    {
-        accInfoSip.contactModel->getContact("sipcontact0");
-        contactFound = true;
-    } catch(...) { }
     // "sipcontact0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_THROW(accInfoSip.contactModel->getContact("sipcontact0"), std::out_of_range);
     // Search and add the temporaryContact
     accInfoSip.contactModel->searchContact("sipcontact0");
     WaitForSignalHelper(*accInfoSip.contactModel,
@@ -133,39 +135,21 @@ ContactModelTester::testAddNewSIPContact()
     accInfoSip.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
-    contactFound = false;
-    try
-    {
-        accInfoSip.contactModel->getContact("sipcontact0");
-        contactFound = true;
-    } catch(...) { }
+    CPPUNIT_ASSERT(contactAdded);
     // "sipcontact0" should be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact0"));
 }
 
 void
 ContactModelTester::testAddAlreadyAddedContact()
 {
     auto nbContactsAtBegin = accInfo_.contactModel->getAllContacts().size();
-    auto contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("contact1");
-        contactFound = true;
-    } catch(...) { }
     // "contact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     auto contact1 = accInfo_.contactModel->getContact("contact1");
     accInfo_.contactModel->addContact(contact1);
-    contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("contact1");
-        contactFound = true;
-    } catch(...) { }
     // "contact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     auto nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtBegin, nbContactsAtEnd);
 
@@ -175,56 +159,29 @@ void
 ContactModelTester::testRmRingContact()
 {
     int nbContactsAtBegin = accInfo_.contactModel->getAllContacts().size();
-    auto contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("contact2");
-        contactFound = true;
-    } catch(...) { }
     // "contact2" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact2"));
     accInfo_.contactModel->removeContact("contact2");
     auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
-    contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("contact2");
-        contactFound = true;
-    } catch(...) { }
-    // "contact2" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("contact2"), std::out_of_range);
 }
 
 void
 ContactModelTester::testRmPendingContact()
 {
     int nbContactsAtBegin = accInfo_.contactModel->getAllContacts().size();
-    auto contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("pending0");
-        contactFound = true;
-    } catch(...) { }
-    // "pending0" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("pending0"));
     accInfo_.contactModel->removeContact("pending0");
     auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
-    contactFound = false;
-    try
-    {
-        accInfo_.contactModel->getContact("pending0");
-        contactFound = true;
-    } catch(...) { }
-    // "pending0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("pending0"), std::out_of_range);
 }
 
 void
@@ -240,38 +197,20 @@ ContactModelTester::testRmSIPContact()
     accInfoSip.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
-    auto contactFound = false;
-    try
-    {
-        accInfoSip.contactModel->getContact("sipcontact1");
-        contactFound = true;
-    } catch(...) { }
-    // "sipcontact1" should be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
-    int nbContactsAtBegin = accInfoSip.contactModel->getAllContacts().size();
-    contactFound = false;
-    try
-    {
-        accInfoSip.contactModel->getContact("sipcontact1");
-        contactFound = true;
-    } catch(...) { }
+    CPPUNIT_ASSERT(contactAdded);
     // "sipcontact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact1"));
+    int nbContactsAtBegin = accInfoSip.contactModel->getAllContacts().size();
+    // "sipcontact1" should be in "ring1" contacts.
+    CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact1"));
     accInfoSip.contactModel->removeContact("sipcontact1");
     auto contactRemoved = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfoSip.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
-    contactFound = false;
-    try
-    {
-        accInfoSip.contactModel->getContact("sipcontact1");
-        contactFound = true;
-    } catch(...) { }
-    // "sipcontact0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    // "sipcontact1" should not be in "ring1" contacts.
+    CPPUNIT_ASSERT_THROW(accInfoSip.contactModel->getContact("sipcontact1"), std::out_of_range);
 }
 
 void
