@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_6531550b",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-11-07T21:10:10Z",
+      "side": 1,
+      "message": "Why not using another type¹ of assert macro directly on contactFound instead of this “hacky” way of failing assert ?\n\nIt is even possible to assert a specific thrown exception\n___\n[1] http://cppunit.sourceforge.net/doc/cvs/group___assertions.html",
+      "range": {
+        "startLine": 125,
+        "startChar": 22,
+        "endLine": 125,
+        "endChar": 48
+      },
+      "revId": "65475cb214ed7f9787ef27e467b69e59b9bdf916",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_a53b5dea",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-11-07T21:10:10Z",
+      "side": 1,
+      "message": "CPPUNIT_ASSERT(contactAdded)",
+      "range": {
+        "startLine": 136,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 45
+      },
+      "revId": "65475cb214ed7f9787ef27e467b69e59b9bdf916",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a42497e_8540e157",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 123
+      },
+      "writtenOn": "2017-11-07T21:10:10Z",
+      "side": 1,
+      "message": "CPPUNIT_ASSERT(contactFound)",
+      "range": {
+        "startLine": 144,
+        "startChar": 4,
+        "endLine": 144,
+        "endChar": 49
+      },
+      "revId": "65475cb214ed7f9787ef27e467b69e59b9bdf916",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
