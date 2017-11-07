@@ -113,6 +113,40 @@ ContactModelTester::testAddNewRingContact()
 }
 
 void
+ContactModelTester::testAddRingURI()
+{
+    auto contactFound = false;
+    try
+    {
+        accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b");
+        contactFound = true;
+    } catch(...) { }
+    // "ring:f5a46751671918fe7210a3c31b9a9e4ce081429b" should not be in "ring1" contacts.
+    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    auto nbContacts = accInfo_.contactModel->getAllContacts().size();
+    // Search and add the temporaryContact
+    accInfo_.contactModel->searchContact("ring:f5a46751671918fe7210a3c31b9a9e4ce081429b");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    auto temporaryContact = accInfo_.contactModel->getContact("");
+    CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
+    accInfo_.contactModel->addContact(temporaryContact);
+    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+    contactFound = false;
+    try
+    {
+        accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b");
+        contactFound = true;
+    } catch(...) { }
+    // "f5a46751671918fe7210a3c31b9a9e4ce081429b" should be in "ring1" contacts.
+    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    // We should only have added one contact.
+    CPPUNIT_ASSERT_EQUAL((nbContacts + 1), accInfo_.contactModel->getAllContacts().size());
+}
+
+void
 ContactModelTester::testAddNewSIPContact()
 {
     auto contactFound = false;
