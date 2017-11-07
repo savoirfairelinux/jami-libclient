@@ -72,8 +72,8 @@ ContactModelTester::testReceivesPendingRequest()
     ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
     auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
-    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), true);
+    CPPUNIT_ASSERT(contactAdded);
+    CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
     auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
     auto contacts = accInfo_.contactModel->getAllContacts();
     int lrcContactsNumber = contacts.size();
@@ -91,7 +91,7 @@ ContactModelTester::testAddNewRingContact()
         contactFound = true;
     } catch(...) { }
     // "dummy" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(!contactFound);
     // Search and add the temporaryContact
     accInfo_.contactModel->searchContact("dummy");
     WaitForSignalHelper(*accInfo_.contactModel,
@@ -101,7 +101,7 @@ ContactModelTester::testAddNewRingContact()
     accInfo_.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+    CPPUNIT_ASSERT(contactAdded);
     contactFound = false;
     try
     {
@@ -109,7 +109,41 @@ ContactModelTester::testAddNewRingContact()
         contactFound = true;
     } catch(...) { }
     // "dummy" should not be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
+}
+
+void
+ContactModelTester::testAddRingURI()
+{
+    auto contactFound = false;
+    try
+    {
+        accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b");
+        contactFound = true;
+    } catch(...) { }
+    // "ring:f5a46751671918fe7210a3c31b9a9e4ce081429b" should not be in "ring1" contacts.
+    CPPUNIT_ASSERT(!contactFound);
+    auto nbContacts = accInfo_.contactModel->getAllContacts().size();
+    // Search and add the temporaryContact
+    accInfo_.contactModel->searchContact("ring:f5a46751671918fe7210a3c31b9a9e4ce081429b");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    auto temporaryContact = accInfo_.contactModel->getContact("");
+    CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
+    accInfo_.contactModel->addContact(temporaryContact);
+    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
+    CPPUNIT_ASSERT(contactAdded);
+    contactFound = false;
+    try
+    {
+        accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b");
+        contactFound = true;
+    } catch(...) { }
+    // "f5a46751671918fe7210a3c31b9a9e4ce081429b" should be in "ring1" contacts.
+    CPPUNIT_ASSERT(contactFound);
+    // We should only have added one contact.
+    CPPUNIT_ASSERT_EQUAL((nbContacts + 1), accInfo_.contactModel->getAllContacts().size());
 }
 
 void
@@ -123,7 +157,7 @@ ContactModelTester::testAddNewSIPContact()
         contactFound = true;
     } catch(...) { }
     // "sipcontact0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(!contactFound);
     // Search and add the temporaryContact
     accInfoSip.contactModel->searchContact("sipcontact0");
     WaitForSignalHelper(*accInfoSip.contactModel,
@@ -133,7 +167,7 @@ ContactModelTester::testAddNewSIPContact()
     accInfoSip.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+    CPPUNIT_ASSERT(contactAdded);
     contactFound = false;
     try
     {
@@ -141,7 +175,7 @@ ContactModelTester::testAddNewSIPContact()
         contactFound = true;
     } catch(...) { }
     // "sipcontact0" should be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
 }
 
 void
@@ -155,7 +189,7 @@ ContactModelTester::testAddAlreadyAddedContact()
         contactFound = true;
     } catch(...) { }
     // "contact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     auto contact1 = accInfo_.contactModel->getContact("contact1");
     accInfo_.contactModel->addContact(contact1);
     contactFound = false;
@@ -165,7 +199,7 @@ ContactModelTester::testAddAlreadyAddedContact()
         contactFound = true;
     } catch(...) { }
     // "contact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     auto nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtBegin, nbContactsAtEnd);
 
@@ -182,11 +216,11 @@ ContactModelTester::testRmRingContact()
         contactFound = true;
     } catch(...) { }
     // "contact2" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     accInfo_.contactModel->removeContact("contact2");
     auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     contactFound = false;
@@ -196,7 +230,7 @@ ContactModelTester::testRmRingContact()
         contactFound = true;
     } catch(...) { }
     // "contact2" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(!contactFound);
 }
 
 void
@@ -210,11 +244,11 @@ ContactModelTester::testRmPendingContact()
         contactFound = true;
     } catch(...) { }
     // "pending0" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     accInfo_.contactModel->removeContact("pending0");
     auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     contactFound = false;
@@ -224,7 +258,7 @@ ContactModelTester::testRmPendingContact()
         contactFound = true;
     } catch(...) { }
     // "pending0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(!contactFound);
 }
 
 void
@@ -240,7 +274,7 @@ ContactModelTester::testRmSIPContact()
     accInfoSip.contactModel->addContact(temporaryContact);
     auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+    CPPUNIT_ASSERT(contactAdded);
     auto contactFound = false;
     try
     {
@@ -248,7 +282,7 @@ ContactModelTester::testRmSIPContact()
         contactFound = true;
     } catch(...) { }
     // "sipcontact1" should be "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     int nbContactsAtBegin = accInfoSip.contactModel->getAllContacts().size();
     contactFound = false;
     try
@@ -257,11 +291,11 @@ ContactModelTester::testRmSIPContact()
         contactFound = true;
     } catch(...) { }
     // "sipcontact1" should be in "ring1" contacts.
-    if (!contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(contactFound);
     accInfoSip.contactModel->removeContact("sipcontact1");
     auto contactRemoved = WaitForSignalHelper(*accInfoSip.contactModel,
         SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactRemoved, true);
+    CPPUNIT_ASSERT(contactRemoved);
     int nbContactsAtEnd = accInfoSip.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     contactFound = false;
@@ -271,7 +305,7 @@ ContactModelTester::testRmSIPContact()
         contactFound = true;
     } catch(...) { }
     // "sipcontact0" should not be in "ring1" contacts.
-    if (contactFound) CPPUNIT_ASSERT_EQUAL(0,1);
+    CPPUNIT_ASSERT(!contactFound);
 }
 
 void

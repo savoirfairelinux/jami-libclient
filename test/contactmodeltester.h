@@ -44,6 +44,7 @@ class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testGetAllContactsForRINGAccount);
     CPPUNIT_TEST(testReceivesPendingRequest);
     CPPUNIT_TEST(testAddNewRingContact);
+    CPPUNIT_TEST(testAddRingURI);
     CPPUNIT_TEST(testAddNewSIPContact);
     CPPUNIT_TEST(testAddAlreadyAddedContact);
     CPPUNIT_TEST(testRmRingContact);
@@ -73,6 +74,10 @@ public:
      * A new ring contact should be added.
      */
     void testAddNewRingContact();
+    /**
+     * Test if someone try to add ring:xxxxxxxx works correctly and don't create 2 contacts
+     */
+    void testAddRingURI();
     /**
      * Add "sipcontact0" to "sip0" contacts.
      * A new sip contact should be added.
