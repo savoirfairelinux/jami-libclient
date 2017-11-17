@@ -662,12 +662,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>mis en signet</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>suivi</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -682,12 +682,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>Uid</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>a un certificat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -726,7 +726,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>coutume</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -788,12 +788,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation type="unfinished"/>
+        <translation>a une forte signatuere</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
-        <translation type="unfinished"/>
+        <translation>pas auto signé</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
@@ -873,17 +873,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
-        <translation>Le certificat a le maître attendu</translation>
+        <translation>Le certificat a le propriétaire attendu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation>le certificat est dans la période de validité.</translation>
+        <translation>Le certificat est dans la période de validité.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation>Date d&apos;expiration</translation>
+        <translation>Date d’expiration</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
@@ -948,17 +948,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>Empreinte Digital Sha1</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>Clé publique</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>émetteur de nom de domaine</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
@@ -973,7 +973,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Magasin de certificats local</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
@@ -1009,12 +1009,12 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Chèques</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>Informations variées liées à la sécurité</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
@@ -1024,19 +1024,19 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Magasin de certificats de Daemon</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 liste interdite</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 liste autorisée</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Suivi de la présence</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
@@ -1063,13 +1063,13 @@
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Favoris locaux</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Favoris</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
@@ -1084,12 +1084,12 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>macros locaux</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>macro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
@@ -1110,17 +1110,17 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Sonnerie</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>enregistrement de texte local</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>Types de numéros de téléphone</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
@@ -1145,22 +1145,22 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS est désactivé, la négociation ne sera pas cryptée. Votre communication sera vulnérable à l&apos;espionnage</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Votre certificat et votre autorité ne correspondent pas, si votre certificat nécessite une autorité, cela ne fonctionnera pas</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur sortant spécifié ne correspond pas au nom d&apos;hôte ou à celui inclus dans le certificat</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;option &quot;Vérifier le certificat entrant&quot; est désactivée, ce qui vous laisse vulnérable à l&apos;attaque de l&apos;homme du milieu</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
@@ -1281,7 +1281,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Couper le son</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
@@ -1410,49 +1410,49 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="749"/>
-        <location filename="../src/conversationmodel.cpp" line="1055"/>
+        <location filename="../src/conversationmodel.cpp" line="748"/>
+        <location filename="../src/conversationmodel.cpp" line="1054"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="750"/>
+        <location filename="../src/conversationmodel.cpp" line="749"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="779"/>
-        <location filename="../src/conversationmodel.cpp" line="786"/>
+        <location filename="../src/conversationmodel.cpp" line="778"/>
+        <location filename="../src/conversationmodel.cpp" line="785"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="944"/>
+        <location filename="../src/conversationmodel.cpp" line="943"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="946"/>
+        <location filename="../src/conversationmodel.cpp" line="945"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="959"/>
+        <location filename="../src/conversationmodel.cpp" line="958"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="962"/>
+        <location filename="../src/conversationmodel.cpp" line="961"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="966"/>
+        <location filename="../src/conversationmodel.cpp" line="965"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="968"/>
+        <location filename="../src/conversationmodel.cpp" line="967"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>

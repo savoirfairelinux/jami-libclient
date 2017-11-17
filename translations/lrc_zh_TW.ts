@@ -1410,51 +1410,51 @@
         <translation>對方的基本資料收集</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="749"/>
-        <location filename="../src/conversationmodel.cpp" line="1055"/>
+        <location filename="../src/conversationmodel.cpp" line="748"/>
+        <location filename="../src/conversationmodel.cpp" line="1054"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>已收到邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="750"/>
+        <location filename="../src/conversationmodel.cpp" line="749"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>已新增聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="779"/>
-        <location filename="../src/conversationmodel.cpp" line="786"/>
+        <location filename="../src/conversationmodel.cpp" line="778"/>
+        <location filename="../src/conversationmodel.cpp" line="785"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>已接受邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="944"/>
+        <location filename="../src/conversationmodel.cpp" line="943"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð 撥出電話</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="946"/>
+        <location filename="../src/conversationmodel.cpp" line="945"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð 來電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="959"/>
+        <location filename="../src/conversationmodel.cpp" line="958"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð 撥出電話 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="962"/>
+        <location filename="../src/conversationmodel.cpp" line="961"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð 來電 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="966"/>
+        <location filename="../src/conversationmodel.cpp" line="965"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ 未接去電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="968"/>
+        <location filename="../src/conversationmodel.cpp" line="967"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ 未接來電</translation>
     </message>
 </context>
 <context>

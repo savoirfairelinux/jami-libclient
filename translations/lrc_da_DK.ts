@@ -1235,7 +1235,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Outgoing requested</source>
-        <translation type="unfinished"/>
+        <translation>Udgående anmodet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -1260,13 +1260,13 @@
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inaktiv</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
         <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Afsluttet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
@@ -1276,7 +1276,7 @@
     <message>
         <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
-        <translation type="unfinished"/>
+        <translation>Auto-svarer</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1410,51 +1410,51 @@
         <translation>Partners Profil-samling</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="749"/>
-        <location filename="../src/conversationmodel.cpp" line="1055"/>
+        <location filename="../src/conversationmodel.cpp" line="748"/>
+        <location filename="../src/conversationmodel.cpp" line="1054"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Invitation modtaget</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="750"/>
+        <location filename="../src/conversationmodel.cpp" line="749"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt tilføjet</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="779"/>
-        <location filename="../src/conversationmodel.cpp" line="786"/>
+        <location filename="../src/conversationmodel.cpp" line="778"/>
+        <location filename="../src/conversationmodel.cpp" line="785"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Invitation accepteret</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="944"/>
+        <location filename="../src/conversationmodel.cpp" line="943"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Udgående opkald</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="946"/>
+        <location filename="../src/conversationmodel.cpp" line="945"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Indgående opkald</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="959"/>
+        <location filename="../src/conversationmodel.cpp" line="958"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Udgående opkald - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="962"/>
+        <location filename="../src/conversationmodel.cpp" line="961"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Indgående opkald - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="966"/>
+        <location filename="../src/conversationmodel.cpp" line="965"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Mistede udgående opkald</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="968"/>
+        <location filename="../src/conversationmodel.cpp" line="967"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Misteede indgående opkald</translation>
     </message>
 </context>
 <context>
