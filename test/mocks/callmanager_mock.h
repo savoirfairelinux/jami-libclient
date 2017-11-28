@@ -190,6 +190,21 @@ public Q_SLOTS: // METHODS
         return to;
     }
 
+#ifdef ENABLE_LIBWRAP
+    QString placeCall(const QString &accountID, const QString &to, const std::map<std::string, std::string>& VolatileCallDetails)
+    {
+        emit newCallCreated(accountID, to, to);
+        return to;
+    }
+#else // dbus
+    QString  placeCallWithDetails(const QString &accountID, const QString &to, const std::map<std::string, std::string>& VolatileCallDetails)
+    {
+       emit newCallCreated(accountID, to, to);
+       return to;
+    }
+#endif // ENABLE_LIBWRAP
+
+
     void playDTMF(const QString &key)
     {
         Q_UNUSED(key)

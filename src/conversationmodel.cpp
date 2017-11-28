@@ -118,6 +118,13 @@ public:
                                      const uint64_t id,
                                      const std::string& to, int status);
 
+    /**
+     * place a call
+     * @param uid, conversation id
+     * @param isAudioOnly, allow to specify if the call is only audio. Set to false by default.
+     */
+    void placeCall(const std::string& uid, bool isAudioOnly = false);
+
     const ConversationModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
@@ -363,14 +370,14 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
 }
 
 void
-ConversationModel::placeCall(const std::string& uid)
+ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
-    auto conversationIdx = pimpl_->indexOf(uid);
+    auto conversationIdx = indexOf(uid);
 
     if (conversationIdx == -1)
         return;
 
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    auto& conversation = conversations.at(conversationIdx);
     if (conversation.participants.empty()) {
         // Should not
         qDebug() << "ConversationModel::placeCall can't call a conversation without participant";
@@ -380,7 +387,7 @@ ConversationModel::placeCall(const std::string& uid)
     // Disallow multiple call
     if (!conversation.callId.empty()) {
         try  {
-            auto call = owner.callModel->getCall(conversation.callId);
+            auto call = linked.owner.callModel->getCall(conversation.callId);
             switch (call.status) {
                 case call::Status::INCOMING_RINGING:
                 case call::Status::OUTGOING_RINGING:
@@ -405,31 +412,43 @@ ConversationModel::placeCall(const std::string& uid)
     }
 
     auto convId = uid;
-    auto accountId = pimpl_->accountProfileId;
+    auto accountId = accountProfileId;
 
     auto participant = conversation.participants.front();
-    auto contactInfo = owner.contactModel->getContact(participant);
+    auto contactInfo = linked.owner.contactModel->getContact(participant);
     auto url = contactInfo.profileInfo.uri;
     if (url.empty()) return; // Incorrect item
-    pimpl_->sendContactRequest(participant);
-    if (owner.profileInfo.type != profile::Type::SIP) {
+    sendContactRequest(participant);
+    if (linked.owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
-    conversation.callId = owner.callModel->createCall(url);
+    conversation.callId = linked.owner.callModel->createCall(url, isAudioOnly);
     if (convId.empty()) {
         // The conversation has changed because it was with the temporary item
-        auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
-        auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
+        auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
+        auto common = database::getConversationsBetween(db, accountId, contactProfileId);
         if (common.empty()) return;
         convId = common.front();
         // Get new conversation
-        conversationIdx = pimpl_->indexOf(convId);
+        conversationIdx = indexOf(convId);
         if (conversationIdx == -1)
             return;
-        conversation = pimpl_->conversations.at(conversationIdx);
+        conversation = conversations.at(conversationIdx);
     }
-    pimpl_->dirtyConversations = true;
-    emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
+    dirtyConversations = true;
+    emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
+}
+
+void
+ConversationModel::placeAudioOnlyCall(const std::string& uid)
+{
+    pimpl_->placeCall(uid, true);
+}
+
+void
+ConversationModel::placeCall(const std::string& uid)
+{
+    pimpl_->placeCall(uid);
 }
 
 void

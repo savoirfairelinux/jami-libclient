@@ -284,6 +284,16 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    QString placeCall(const QString &accountID,
+                      const QString &to,
+                      const std::map<std::string, std::string>& volatileCallDetails)
+    {
+        QString temp(DRing::placeCall(accountID.toStdString(),
+                                       to.toStdString(),
+                                       volatileCallDetails).c_str());
+        return temp;
+    }
+
     void playDTMF(const QString &key)
     {
         DRing::playDTMF(key.toStdString());

@@ -238,6 +238,21 @@ ConversationModelTester::testPlaceCall()
 }
 
 void
+ConversationModelTester::testPlaceAudioOnlyCall()
+{
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    CPPUNIT_ASSERT(firstConversation.callId.empty());
+    accInfo_.conversationModel->placeAudioOnlyCall(firstConversation.uid);
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto newConv = accInfo_.conversationModel->filteredConversation(0);
+    CPPUNIT_ASSERT_EQUAL(newConv.uid, firstConversation.uid);
+    CPPUNIT_ASSERT(!newConv.callId.empty());
+}
+
+void
 ConversationModelTester::testCreateConference()
 {
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
