@@ -100,6 +100,11 @@ public:
      */
     void placeCall(const std::string& uid);
     /**
+     * Perform an audio call with contacts linked to this conversation
+     * @param uid of the conversation
+     */
+    void placeAudioCall(const std::string& uid);
+    /**
      * Send a message to the conversation
      * @param uid of the conversation
      * @param body of the message

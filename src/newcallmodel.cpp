@@ -127,10 +127,20 @@ NewCallModel::getCall(const std::string& uid) const
 }
 
 std::string
-NewCallModel::createCall(const std::string& url)
+NewCallModel::createCall(const std::string& url, bool isAudioOnly)
 {
+#ifdef ENABLE_LIBWRAP
+    auto callId = isAudioOnly ? CallManager::instance().placeCall(owner.id.c_str(),
+                                                                  url.c_str(),
+                                                                  {{"AUDIO_ONLY", "true"}})
+                                  : CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
-    QString callId = CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
+    QString callId = isAudioOnly ? CallManager::instance().placeCallWithDetails(owner.id.c_str(),
+                                                                                url.c_str(),
+                                                                                {{"AUDIO_ONLY", "true"}})
+                                 : CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
+#endif // ENABLE_LIBWRAP
 
     if (callId.isEmpty())
         qDebug() << "no call placed between (account :" << owner.id.c_str() << ", contact :" << url.c_str() << ")";
