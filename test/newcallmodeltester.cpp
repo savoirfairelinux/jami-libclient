@@ -61,6 +61,17 @@ NewCallModelTester::testCreateAndGetCall()
 }
 
 void
+NewCallModelTester::testCreateAndGetAudioOnlyCall()
+{
+    auto callId = accInfo_.callModel->createCall("ring:contact0", true);
+    CPPUNIT_ASSERT(!callId.empty());
+    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
+    auto& call = accInfo_.callModel->getCallFromURI("ring:contact0");
+    auto& callFromId = accInfo_.callModel->getCall(call.id);
+    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string("ring:contact0"));
+}
+
+void
 NewCallModelTester::testAcceptHoldUnholdHangupCall()
 {
     std::string callId = "ring:contact1";

@@ -49,6 +49,7 @@ class ConversationModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testReceiveMessageAndSetRead);
     CPPUNIT_TEST(testPlaceCall);
     CPPUNIT_TEST(testCreateConference);
+    CPPUNIT_TEST(testPlaceAudioOnlyCall);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -89,6 +90,10 @@ public:
      * Call the first conversation
      */
     void testPlaceCall();
+    /**
+     * Start and audio-only call with the first conversation
+     */
+    void testPlaceAudioOnlyCall();
     /**
      * Create a conference with the two first conversations
      */

@@ -43,6 +43,7 @@ class NewCallModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(NewCallModelTester);
     CPPUNIT_TEST(testCreateAndGetCall);
     CPPUNIT_TEST(testAcceptHoldUnholdHangupCall);
+    CPPUNIT_TEST(testCreateAndGetAudioOnlyCall);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -55,6 +56,10 @@ public:
      * Create a call between "ring2" and "contact0" and retrieve it.
      */
     void testCreateAndGetCall();
+    /**
+     * Create a audio-only call between "ring2" and "contact0" and retrieve it.
+     */
+    void testCreateAndGetAudioOnlyCall();
     /**
      * Simulate an incoming call from "contact1" for "ring2"
      * Accept the call, call status should be IN_PROGRESS
