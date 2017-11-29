@@ -883,6 +883,8 @@ IF((${ENABLE_TEST} MATCHES true))
       test/contactmodeltester.cpp
       test/newcallmodeltester.h
       test/newcallmodeltester.cpp
+      test/newaccountmodeltester.h
+      test/newaccountmodeltester.cpp
       ${libringclient_LIB_SRCS}
       ${libringclient_PRIVATE_HDRS}
     )
