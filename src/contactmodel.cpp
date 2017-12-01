@@ -415,7 +415,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
 
         contact::Info contactInfo;
         contactInfo.profileInfo = profileInfo;
-        contactInfo.registeredName = cm->bestName().toStdString();
+        contactInfo.registeredName = cm->registeredName().toStdString();
 
         contacts.emplace(contactUri.toStdString(), contactInfo);
         database::getOrInsertProfile(db, contactUri.toStdString(),
@@ -474,7 +474,8 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type)
                                                  to_string(linked.owner.profileInfo.type));
     }
     auto contactInfo = database::buildContactFromProfileId(db, contactId);
-    contactInfo.registeredName = cm->bestName().toStdString();
+    contactInfo.registeredName = cm->registeredName().toStdString();
+
     contactInfo.isPresent = cm->isPresent();
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
     auto iter = contacts.find(contactInfo.profileInfo.uri);
