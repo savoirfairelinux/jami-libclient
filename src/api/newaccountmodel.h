@@ -67,7 +67,14 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
-
+    /**
+     *
+     */
+    std::string createRingAccount(const std::string& alias, const std::string& archivePassword);
+    /**
+     *
+     */
+    bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 Q_SIGNALS:
     /**
      * Connect this signal to know when the status of an account has changed.

@@ -36,6 +36,10 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 
+// Daemon
+#include <account_const.h>
+#include <configurationmanager_interface.h>
+
 namespace lrc
 {
 
@@ -111,6 +115,34 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
         throw std::out_of_range("NewAccountModel::getAccountInfo, can't find " + accountId);
 
     return accountInfo->second;
+}
+
+std::string
+NewAccountModel::createRingAccount(const std::string& alias,
+                                   const std::string& archivePassword)
+{
+    QMap<QString, QString> accountDetails = {
+        {DRing::Account::ConfProperties::ALIAS, alias.c_str()},
+        {DRing::Account::ConfProperties::ARCHIVE_PASSWORD, archivePassword.c_str()},
+        {DRing::Account::ConfProperties::TYPE, "RING"},
+        {DRing::Account::ConfProperties::UPNP_ENABLED, "true"}
+    };
+
+    // do not use auto keyword here.
+    QString accountId = ConfigurationManager::instance().addAccount(accountDetails);
+    return accountId.toStdString();
+}
+
+bool
+NewAccountModel::registerName(const std::string& accountId, const std::string& password, const std::string& username)
+{
+    qDebug() << "[REGISTRATION]";
+    if(not ConfigurationManager::instance().registerName(accountId.c_str(), password.c_str(), username.c_str())) {
+        qDebug() << "registration failed for accountId " << accountId.c_str();
+        return false;
+    }
+
+    return true;
 }
 
 NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
