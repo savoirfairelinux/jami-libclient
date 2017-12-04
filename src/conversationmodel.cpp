@@ -314,7 +314,6 @@ ConversationModel::selectConversation(const std::string& uid) const
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
         if (not conversation.confId.empty()) {
-            emit pimpl_->behaviorController.showCallView(owner.id, conversation);
         } else {
             auto call = owner.callModel->getCall(conversation.callId);
             switch (call.status) {
@@ -323,14 +322,22 @@ ConversationModel::selectConversation(const std::string& uid) const
             case call::Status::CONNECTING:
             case call::Status::SEARCHING:
                 // We are currently in a call
-                emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
+                if (call.isAudioOnly)
+                    emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+                else
+                    emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+
                 break;
             case call::Status::PAUSED:
             case call::Status::PEER_PAUSED:
             case call::Status::CONNECTED:
             case call::Status::IN_PROGRESS:
                 // We are currently receiving a call
-                emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+                if (call.isAudioOnly)
+                    emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+                else
+                    emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+
                 break;
             case call::Status::INVALID:
             case call::Status::OUTGOING_REQUESTED:
