@@ -977,7 +977,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="215"/>
+        <location filename="../src/localprofilecollection.cpp" line="220"/>
         <source>Default</source>
         <translation>Wartość domyślna</translation>
     </message>
@@ -1390,12 +1390,12 @@
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="142"/>
+        <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
         <translation>Profile lokalne</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
         <translation>Kolekcja profil</translation>
     </message>

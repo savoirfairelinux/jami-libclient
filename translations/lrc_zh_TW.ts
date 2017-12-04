@@ -977,7 +977,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="215"/>
+        <location filename="../src/localprofilecollection.cpp" line="220"/>
         <source>Default</source>
         <translation>預設</translation>
     </message>
@@ -1390,12 +1390,12 @@
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="142"/>
+        <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
         <translation>本機基本資料</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
         <translation>基本資料收集</translation>
     </message>

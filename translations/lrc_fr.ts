@@ -977,7 +977,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="215"/>
+        <location filename="../src/localprofilecollection.cpp" line="220"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -1235,7 +1235,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Outgoing requested</source>
-        <translation type="unfinished"/>
+        <translation>Vos demandes </translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -1390,12 +1390,12 @@
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="142"/>
+        <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
         <translation>Profils locaux</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
         <translation>Liste des profils</translation>
     </message>
@@ -1454,7 +1454,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="967"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Appels entrants ratés</translation>
     </message>
 </context>
 <context>
