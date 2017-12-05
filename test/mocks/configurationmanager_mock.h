@@ -648,6 +648,15 @@ public Q_SLOTS: // METHODS
         emit incomingTrustRequest(accountId, from, payload, timestamp);
     }
 
+    void startProxyClient(const std::string& accountID, const std::string& address,
+        const std::string& deviceKey)
+    {
+    }
+
+    void stopProxyClient(const std::string& accountID)
+    {
+    }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();

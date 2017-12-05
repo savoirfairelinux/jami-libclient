@@ -1056,6 +1056,16 @@ bool Account::useDefaultPort() const
    return d_ptr->m_UseDefaultPort;
 }
 
+bool Account::isProxyEnabled() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::PROXY_ENABLED) IS_TRUE;
+}
+
+QString Account::proxyServer() const
+{
+   return d_ptr->accountDetail(DRing::Account::ConfProperties::PROXY_SERVER);
+}
+
 bool Account::isTurnEnabled() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::TURN::ENABLED) IS_TRUE;
@@ -1288,6 +1298,10 @@ QVariant Account::roleData(int role) const
          return lastTransportErrorCode();
       case CAST(Account::Role::LastTransportErrorMessage):
          return lastTransportErrorMessage();
+      case CAST(Account::Role::ProxyServer               ):
+        return proxyServer();
+      case CAST(Account::Role::ProxyServerEnabled        ):
+       return isProxyEnabled();
       case CAST(Account::Role::TurnServer               ):
          return turnServer();
       case CAST(Account::Role::TurnServerEnabled        ):
@@ -1990,6 +2004,16 @@ void Account::setUseDefaultPort(bool value)
    d_ptr->m_UseDefaultPort = value;
 }
 
+void Account::setProxyEnabled(bool value)
+{
+   d_ptr->setAccountProperty(DRing::Account::ConfProperties::PROXY_ENABLED, (value)TO_BOOL);
+}
+
+void Account::setProxyServer(const QString& value)
+{
+    d_ptr->setAccountProperty(DRing::Account::ConfProperties::PROXY_SERVER, (value));
+}
+
 void Account::setTurnEnabled(bool value)
 {
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::TURN::ENABLED, (value)TO_BOOL);
@@ -2337,6 +2361,12 @@ void Account::setRoleData(int role, const QVariant& value)
        break;
       case CAST(Account::Role::TurnServerEnabled):
        setTurnEnabled(value.toBool());
+       break;
+      case CAST(Account::Role::ProxyServerEnabled):
+       setProxyEnabled(value.toBool());
+       break;
+      case CAST(Account::Role::ProxyServer):
+       setProxy(value.toString());
        break;
    }
 }

@@ -170,6 +170,7 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
    Q_PROPERTY(QAbstractItemModel*      allowedCertificatesModel    READ allowedCertificatesModel                                  )
 
+   Q_PROPERTY(QString proxyServer                       READ proxyServer                    WRITE setProxyServer                  )
    Q_PROPERTY(QString turnServer                        READ turnServer                     WRITE setTurnServer                   )
    Q_PROPERTY(QString turnServerUsername                READ turnServerUsername             WRITE setTurnServerUsername           )
    Q_PROPERTY(QString turnServerPassword                READ turnServerPassword             WRITE setTurnServerPassword           )
@@ -273,6 +274,8 @@ class LIB_EXPORT Account : public ItemBase {
          HasCustomUserAgent          ,
          LastTransportErrorCode      ,
          LastTransportErrorMessage   ,
+         ProxyServer                 ,
+         ProxyServerEnabled          ,
          TurnServer                  ,
          TurnServerEnabled           ,
          TurnServerUsername          ,
@@ -441,6 +444,8 @@ class LIB_EXPORT Account : public ItemBase {
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
       bool    useDefaultPort               () const;
+      bool    isProxyEnabled               () const;
+      QString proxyServer                  () const;
       bool    isTurnEnabled                () const;
       QString turnServer                   () const;
       QString turnServerUsername           () const;
@@ -515,6 +520,8 @@ class LIB_EXPORT Account : public ItemBase {
       void setSipStunServer                 (const QString& detail  );
       void setPublishedAddress              (const QString& detail  );
       void setRingtonePath                  (const QString& detail  );
+      void setProxyEnabled                  (bool value );
+      void setProxyServer                   (const QString& value   );
       void setTurnEnabled                   (bool value );
       void setTurnServer                    (const QString& value   );
       void setTurnServerUsername            (const QString& value   );
