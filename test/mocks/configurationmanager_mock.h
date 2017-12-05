@@ -690,6 +690,11 @@ public Q_SLOTS: // METHODS
         return 0;
     }
 
+    void startProxyClient(const std::string& /*accountID*/, const std::string& /*address*/,
+        const std::string& /*deviceKey*/) { }
+
+    void stopProxyClient(const std::string& /*accountID*/) { }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();

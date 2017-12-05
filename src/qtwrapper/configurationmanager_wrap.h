@@ -635,6 +635,17 @@ public Q_SLOTS: // METHODS
         return uint32_t(DRing::cancelDataTransfer(transfer_id));
     }
 
+   void startProxyClient(const QString& accountID, const QString& address,
+       const QString& deviceKey = "")
+   {
+       DRing::startProxyClient(accountID, address, deviceKey);
+   }
+
+   void stopProxyClient(const QString& accountID)
+   {
+       DRing::stopProxyClient(accountID);
+   }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
