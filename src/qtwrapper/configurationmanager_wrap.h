@@ -635,6 +635,21 @@ public Q_SLOTS: // METHODS
         return uint32_t(DRing::cancelDataTransfer(transfer_id));
     }
 
+    void enableProxyClient(const QString& accountID, bool enable)
+    {
+        DRing::enableProxyClient(accountID.toStdString(), enable);
+    }
+
+    void setPushNotificationToken(const std::string& token)
+    {
+        DRing::setPushNotificationToken(token.toStdString());
+    }
+
+    void pushNotificationReceived(const std::string& from, const std::map<std::string, std::string>& data)
+    {
+        DRing::pushNotificationReceived(from.toStdString(), convertMap(data));
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
