@@ -134,6 +134,7 @@ struct Info
     bool isOutoging;
     bool audioMuted = false;
     bool videoMuted = false;
+    bool isAudioOnly = false;
 };
 
 static inline bool

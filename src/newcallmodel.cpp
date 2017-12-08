@@ -370,7 +370,8 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
 {
     if (linked.owner.id != accountId) return;
 
-    qDebug() << "NewCallModelPimpl::slotIncomingCall";
+    // do not use auto here (QDBusPendingReply<MapStringString>)
+    MapStringString callDetails = CallManager::instance().getCallDetails(callId.c_str());
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
@@ -378,6 +379,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isOutoging = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
+    callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
     emit linked.newIncomingCall(fromId, callId);
