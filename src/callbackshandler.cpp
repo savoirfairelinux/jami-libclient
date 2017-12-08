@@ -187,6 +187,7 @@ CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &call
     if (fromUri.contains("ring.dht")) {
         auto fromQString = fromUri.right(50);
         fromQString = fromQString.left(40);
+        
         emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
     } else {
         auto left = fromUri.indexOf("<")+1;
