@@ -370,7 +370,8 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
 {
     if (linked.owner.id != accountId) return;
 
-    qDebug() << "NewCallModelPimpl::slotIncomingCall";
+    // do not use auto here (QDBusPendingReply<MapStringString>)
+    MapStringString callDetails = CallManager::instance().getCallDetails(callId.c_str());
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
@@ -378,6 +379,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isOutoging = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
+    callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
     emit linked.newIncomingCall(fromId, callId);
@@ -486,6 +488,22 @@ NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
     }
 }
 
+/*
+bool
+NewCallModelPimpl::isAudioOnly(const std::string& callId) const
+{
+    // do not use auto here (QDBusPendingReply<MapStringString>)
+    MapStringString toto = CallManager::instance().getCallDetails(callId.c_str());
+    MapStringString::iterator it;
+
+    for (it = toto.begin(); it != toto.end(); ++it) {
+    // Format output here.
+    //~ output += QString("%1 : %2").arg(it.key()).arg(it.value());
+    qDebug() << it.key() << " X " <<  it.value();
+    }
+
+}
+*/
 } // namespace lrc
 
 #include "api/moc_newcallmodel.cpp"

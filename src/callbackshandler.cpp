@@ -187,6 +187,17 @@ CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &call
     if (fromUri.contains("ring.dht")) {
         auto fromQString = fromUri.right(50);
         fromQString = fromQString.left(40);
+
+    MapStringString toto = CallManager::instance().getCallDetails(callId);
+
+    MapStringString::iterator it;
+    for (it = toto.begin(); it != toto.end(); ++it) {
+    // Format output here.
+    //~ output += QString("%1 : %2").arg(it.key()).arg(it.value());
+    qDebug() << it.key() << " X " <<  it.value();
+    }
+
+        
         emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
     } else {
         auto left = fromUri.indexOf("<")+1;
