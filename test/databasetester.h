@@ -39,6 +39,7 @@ class DatabaseTester : public CppUnit::TestFixture {
 
     CPPUNIT_TEST_SUITE(DatabaseTester);
     CPPUNIT_TEST(testInsertAndSelectCorrectValue);
+    CPPUNIT_TEST(testCountUnreadMessages);
     CPPUNIT_TEST(testInsertIncorrectFail);
     CPPUNIT_TEST(testSelectInexistantValue);
     CPPUNIT_TEST(testUpdateCorrectValue);
@@ -84,6 +85,10 @@ public:
      * Delete inexistant value in the database
      */
     void testDeleteInexistantValue();
+    /**
+     * Count the number of unread messages.
+     */
+    void testCountUnreadMessages();
 
 protected:
     std::unique_ptr<lrc::Database> database_;

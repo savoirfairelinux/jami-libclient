@@ -220,5 +220,13 @@ DatabaseTester::testDeleteInexistantValue()
     // Should not throw anything if fails
 }
 
+void
+DatabaseTester::testCountUnreadMessages()
+{
+    auto table = "profiles";
+    auto count = database_->count("uri", table, "status='0'");
+    CPPUNIT_ASSERT(count == 1);
+}
+
 } // namespace test
 } // namespace ring
