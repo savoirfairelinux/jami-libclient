@@ -250,6 +250,23 @@ Database::select(const std::string& select,                            // "id", 
     return std::move(result);
 }
 
+int
+Database::count(const std::string& count, // "id", "body", ...
+                const std::string& table, // "tests"
+                const std::string& where) // "contact=:name AND id=:id"
+{
+    QSqlQuery query;
+    std::string columnsSelect;
+    auto prepareStr = std::string("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
+    query.prepare(prepareStr.c_str());
+
+    if (not query.exec())
+        throw QueryError(query);
+
+    query.next();
+    return query.value(0).toInt();
+}
+
 void
 Database::deleteFrom(const std::string& table,                             // "tests"
                      const std::string& where,                             // "contact=:name AND id=:id

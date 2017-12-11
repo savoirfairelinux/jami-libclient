@@ -210,6 +210,10 @@ void removeAccount(Database& db, const std::string& accountUri);
  */
 void addContact(Database& db, const std::string& accountUri, const std::string& contactUri);
 
+/**
+ * count number of 'UNREAD' from 'interactions' table.
+ */
+int countUnreadFromInteractions(Database& db, const std::string& conversationId);
 
 } // namespace database
 
