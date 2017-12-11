@@ -125,6 +125,11 @@ public:
      */
     void placeCall(const std::string& uid, bool isAudioOnly = false);
 
+    /**
+     * get number of unread messages
+     */
+    int getNumberOfUnreadMessagesFor(const std::string& uid);
+
     const ConversationModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
@@ -276,7 +281,11 @@ ConversationModel::filteredConversation(const unsigned int row) const
     const auto& conversations = allFilteredConversations();
     if (row >= conversations.size())
         return conversation::Info();
-    return conversations.at(row);
+
+    auto conversationInfo = conversations.at(row);
+    conversationInfo.unreadMessages = pimpl_->getNumberOfUnreadMessagesFor(conversationInfo.uid);
+
+    return conversationInfo;
 }
 
 void
@@ -896,6 +905,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
         }
     }
 
+    conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
     conversations.emplace_front(conversation);
     dirtyConversations = true;
 }
@@ -1161,6 +1171,12 @@ ConversationModelPimpl::slotConferenceRemoved(const std::string& confId)
         if (i.confId == confId)
             i.confId = "";
     }
+}
+
+int
+ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
+{
+    database::countUnreadFromInteractions(db, uid);
 }
 
 } // namespace lrc

@@ -208,6 +208,14 @@ public:
                             const std::string& where,
                             const std::map<std::string, std::string>& bindsWhere);
 
+    /**
+     * Returns the count of an expression.
+     * @param count is the column to count.
+     * @param table where to perfom the action on.
+     * @param where defines the conditional to select.
+     */
+    int count(const std::string& count, const std::string& table, const std::string& where);
+
 private:
     void createTables();
     void storeVersion(const std::string& version);
