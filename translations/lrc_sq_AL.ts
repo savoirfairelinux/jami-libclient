@@ -11,7 +11,7 @@
         <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>I regjistruar</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="335"/>
@@ -23,7 +23,7 @@
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po gatitet</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
@@ -119,31 +119,31 @@
         <location filename="../src/call.cpp" line="713"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>E re</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po i bihet ziles</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po thirret</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po bisedohet</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po i bihet numrit</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="728"/>
@@ -167,7 +167,7 @@
         <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Shpërngule</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
@@ -179,7 +179,7 @@
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mbaroi</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>E re</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
@@ -617,27 +617,27 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Gjendje</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>Numër thirrjesh</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>Numër jave</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Numër tremujori</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation type="unfinished"/>
+        <translation>Ka Thirrur</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -657,17 +657,17 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Tregues popullariteti</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Faqerojtur</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>Ndjekur</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -682,7 +682,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>Uid</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Emër i regjistruar</translation>
     </message>
 </context>
 <context>
@@ -803,42 +803,42 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ka lejet e duhura mbi kartelë kyçi privat</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ka lejet e duhura mbi kartelë kyçi publik</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ka lejet e duhura mbi drejtori kyçesh privatë</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ka lejet e duhura mbi drejtori kyçesh publikë</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Ka vendndodhjen e duhur mbi drejtori kyçesh privatë</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Ka vendndodhjen e duhur mbi drejtori kyçesh publikë</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Ka atributet e duhur SELinux mbi kyç privat</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Ka atributet e duhur SELinux mbi kyç publik</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
@@ -918,7 +918,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritëm kyçi subjekti</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
@@ -973,7 +973,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Depo vendore dëshmish</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
@@ -1009,7 +1009,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolle</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
@@ -1030,13 +1030,13 @@
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>Listë e të ndaluarave për %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>Listë e të lejuarave për %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
@@ -1115,7 +1115,7 @@
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Regjistrime vendore teksti </translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
@@ -1138,7 +1138,7 @@
         <translation>Llogari SIP</translation>
     </message>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="305"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
         <source>Me</source>
         <translation>Unë</translation>
     </message>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Rrjedhat tuaja media s’janë të fshehtëzuara, ju lutemi, aktivizoni SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1225,7 +1225,7 @@
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Po bisedohet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
@@ -1240,33 +1240,33 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Ardhëse</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>Po thirret</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Po kërkohet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Jo aktiv</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
         <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Përfundoi</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
@@ -1276,7 +1276,7 @@
     <message>
         <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
-        <translation type="unfinished"/>
+        <translation>Vetëpërgjigje</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1296,13 +1296,13 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation type="unfinished"/>
+        <translation>Regjistroje</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation type="unfinished"/>
+        <translation>Mbylle</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
@@ -1312,7 +1312,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Shtoni të ri</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
@@ -1337,7 +1337,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt email-i</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
@@ -1377,12 +1377,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Hap fjalosje</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Mos e mbaj</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
@@ -1410,51 +1410,51 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="748"/>
-        <location filename="../src/conversationmodel.cpp" line="1054"/>
+        <location filename="../src/conversationmodel.cpp" line="767"/>
+        <location filename="../src/conversationmodel.cpp" line="1073"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Ftesa u mor</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="749"/>
+        <location filename="../src/conversationmodel.cpp" line="768"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakti u shtua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="778"/>
-        <location filename="../src/conversationmodel.cpp" line="785"/>
+        <location filename="../src/conversationmodel.cpp" line="797"/>
+        <location filename="../src/conversationmodel.cpp" line="804"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Ftesa u pranua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="943"/>
+        <location filename="../src/conversationmodel.cpp" line="962"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Thirrje ikëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="945"/>
+        <location filename="../src/conversationmodel.cpp" line="964"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Tirrje ardhëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="958"/>
+        <location filename="../src/conversationmodel.cpp" line="977"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>Thirrje ikëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="961"/>
+        <location filename="../src/conversationmodel.cpp" line="980"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>Tirrje ardhëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="965"/>
+        <location filename="../src/conversationmodel.cpp" line="984"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Thirrje ikëse të humbura ð½</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="967"/>
+        <location filename="../src/conversationmodel.cpp" line="986"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Thirrje ardhëse të humbura ð½</translation>
     </message>
 </context>
 <context>
@@ -1462,7 +1462,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="614"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>Persona së fundi</translation>
     </message>
 </context>
 <context>
@@ -1470,7 +1470,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
