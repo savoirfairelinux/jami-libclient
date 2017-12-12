@@ -24,14 +24,14 @@ namespace Interfaces {
 ///Default implementation of the PixmapManipulator interface which simply returns empty QVariants/QByteArrays
 class LIB_EXPORT PixmapManipulatorDefault : public PixmapManipulatorI {
 public:
-    QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true) override;
-    QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true) override;
+    QVariant   contactPhoto(Person* c, const QSize& size, bool displayInformation = true) override;
+    QVariant   callPhoto(Call* c, const QSize& size, bool displayInformation = true) override;
     QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                  const lrc::api::account::Info& accountInfo,
                                  const QSize& size,
-                                 bool displayPresence = true) override;
-    QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) override;
-    QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) override;
+                                 bool displayInformation = true) override;
+    QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayInformation = true) override;
+    QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayInformation = false, bool isPresent = false) override;
     QVariant   securityIssueIcon(const QModelIndex& index) override;
     QByteArray toByteArray(const QVariant& pxm) override;
     QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") override;

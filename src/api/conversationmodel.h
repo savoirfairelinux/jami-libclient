@@ -138,6 +138,13 @@ public:
      * @param msgId, id of the interaction
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+     /**
+     * Get the conversation info from its conversation id
+     * @param  uid
+     * @return the conversation::Info
+     * @throw out_of_range exception if not found
+     */
+    const conversation::Info& getConversationInfo(const std::string& uid) const;
 
 Q_SIGNALS:
     /**

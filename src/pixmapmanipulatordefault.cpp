@@ -31,36 +31,36 @@
 
 namespace Interfaces {
 
-QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bool displayInformation)
 {
     Q_UNUSED(c)
     Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
+    Q_UNUSED(displayInformation)
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
+QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayInformation, bool isPresent)
 {
     Q_UNUSED(p)
     Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
+    Q_UNUSED(displayInformation)
     Q_UNUSED(isPresent)
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::callPhoto(Call* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulatorDefault::callPhoto(Call* c, const QSize& size, bool displayInformation)
 {
     Q_UNUSED(c)
     Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
+    Q_UNUSED(displayInformation)
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize& size, bool displayPresence)
+QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize& size, bool displayInformation)
 {
     Q_UNUSED(c)
     Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
+    Q_UNUSED(displayInformation)
     return QVariant();
 }
 
@@ -68,12 +68,12 @@ QVariant
 PixmapManipulatorDefault::conversationPhoto(const lrc::api::conversation::Info& conversation,
                                             const lrc::api::account::Info& accountInfo,
                                             const QSize& size,
-                                            bool displayPresence)
+                                            bool displayInformation)
 {
     Q_UNUSED(conversation)
     Q_UNUSED(accountInfo)
     Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
+    Q_UNUSED(displayInformation)
     return QVariant();
 }
 

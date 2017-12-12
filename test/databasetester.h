@@ -86,9 +86,9 @@ public:
      */
     void testDeleteInexistantValue();
     /**
-     * Count the number of unread messages.
+     * Count the number of occurrences in the database matching a value.
      */
-    void testCountUnreadMessages();
+    void testCount();
 
 protected:
     std::unique_ptr<lrc::Database> database_;
