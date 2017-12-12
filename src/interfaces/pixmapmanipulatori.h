@@ -71,17 +71,17 @@ public:
 
     virtual ~PixmapManipulatorI() = default;
 
-    virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true) = 0;
-    virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true) = 0;
-    virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) = 0;
+    virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayInformation = true) = 0;
+    virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayInformation = true) = 0;
+    virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayInformation = true) = 0;
     virtual QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                          const lrc::api::account::Info& accountInfo,
                                          const QSize& size,
-                                         bool displayPresence = true) {
-        Q_UNUSED(conversation); Q_UNUSED(accountInfo); Q_UNUSED(size); Q_UNUSED(displayPresence);
+                                         bool displayInformation = true) {
+        Q_UNUSED(conversation); Q_UNUSED(accountInfo); Q_UNUSED(size); Q_UNUSED(displayInformation);
         return {};
     }
-    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
+    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayInformation = false, bool isPresent = false) = 0;
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
     virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;

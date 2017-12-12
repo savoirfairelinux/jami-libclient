@@ -619,6 +619,17 @@ ConversationModel::setInteractionRead(const std::string& convId, const uint64_t&
     }
 }
 
+const conversation::Info&
+ConversationModel::getConversationInfo(const std::string& uid) const
+{
+    for (const auto& item : pimpl_->conversations) {
+        if (item.uid == uid) {
+            return item;
+        }
+    }
+    throw std::out_of_range("No conversation info with uid " + uid);
+}
+
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
                                                Database& db,
                                                const CallbacksHandler& callbacksHandler,

@@ -221,10 +221,9 @@ DatabaseTester::testDeleteInexistantValue()
 }
 
 void
-DatabaseTester::testCountUnreadMessages()
+DatabaseTester::testCount()
 {
-    auto table = "profiles";
-    auto count = database_->count("uri", table, "status='0'");
+    auto count = database_->count("uri", "profiles", "status='0'");
     CPPUNIT_ASSERT(count == 1);
 }
 
