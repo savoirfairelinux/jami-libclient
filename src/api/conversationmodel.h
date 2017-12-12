@@ -149,7 +149,8 @@ public:
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction
-     * @param uid of msg
+     * @param convUid conversation which owns the interaction
+     * @param msgId
      * @param msg
      */
     void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const;
