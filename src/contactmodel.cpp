@@ -251,7 +251,11 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 const contact::Info
 ContactModel::getContact(const std::string& contactUri) const
 {
-    return pimpl_->contacts.at(contactUri);
+    try {
+        return pimpl_->contacts.at(contactUri);
+    } catch (...) {
+        return {};
+    }
 }
 
 const std::string
