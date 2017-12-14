@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a42497e_161d1b10",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 3
+      },
+      "writtenOn": "2017-12-14T20:52:01Z",
+      "side": 1,
+      "message": "I think it\u0027s not related to the patch and requires it\u0027s own patch",
+      "range": {
+        "startLine": 622,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 1
+      },
+      "revId": "318cb1b913f07a9842f74a9ba7c1d302dd5066d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
