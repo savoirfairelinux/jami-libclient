@@ -254,10 +254,10 @@ void ProfileModelPrivate::slotAccountRemoved(Account* a)
             const int accIdx = n->m_Index;
             q_ptr->beginRemoveRows(profIdx, accIdx, accIdx);
             n->parent->children.removeAt(accIdx);
-            n->parent->m_uContent.m_pProfile->removeAccount(n->m_uContent.m_pAccount);
             for (int i = accIdx; i < n->parent->children.size(); i++)
                 n->parent->children[i]->m_Index--;
             n->parent->m_uContent.m_pProfile->save();
+            n->parent->m_uContent.m_pProfile->removeAccount(n->m_uContent.m_pAccount);
             delete n;
             q_ptr->endRemoveRows();
         }
