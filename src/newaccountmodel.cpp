@@ -206,7 +206,9 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
 void
 NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
 {
-    emit linked.profileUpdated(profile->accounts().first()->id().toStdString());
+    auto& accounts = profile->accounts();
+    if (!accounts.empty())
+        emit linked.profileUpdated(accounts.first()->id().toStdString());
 }
 
 } // namespace lrc
