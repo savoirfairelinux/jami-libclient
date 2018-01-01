@@ -1413,18 +1413,18 @@
         <location filename="../src/conversationmodel.cpp" line="776"/>
         <location filename="../src/conversationmodel.cpp" line="1083"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Einladung erhalten</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="777"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt hinzugefügt</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="806"/>
         <location filename="../src/conversationmodel.cpp" line="813"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Einladung angenommen</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="972"/>
