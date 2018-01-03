@@ -125,6 +125,9 @@ Video::Frame Video::DirectRenderer::currentFrame() const
     frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
     frame.ptr = frame.storage.data();
     frame.size = frame.storage.size();
+    frame.height = d_ptr->daemonFramePtr_->height;
+    frame.width = d_ptr->daemonFramePtr_->width;
+
     return std::move(frame);
 }
 
