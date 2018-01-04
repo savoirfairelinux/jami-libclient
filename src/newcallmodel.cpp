@@ -148,7 +148,7 @@ NewCallModel::createCall(const std::string& url, bool isAudioOnly)
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId.toStdString();
     callInfo->peer = url;
-    callInfo->isOutoging = true;
+    callInfo->isOutgoing = true;
     callInfo->status =  call::Status::SEARCHING;
     callInfo->type =  call::Type::DIALOG;
     pimpl_->calls.emplace(callId.toStdString(), std::move(callInfo));
@@ -376,7 +376,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
     callInfo->peer = fromId;
-    callInfo->isOutoging = false;
+    callInfo->isOutgoing = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;

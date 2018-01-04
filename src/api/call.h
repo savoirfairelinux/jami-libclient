@@ -131,7 +131,7 @@ struct Info
     Status status = Status::INVALID;
     Type type = Type::INVALID;
     std::string peer;
-    bool isOutoging;
+    bool isOutgoing;
     bool audioMuted = false;
     bool videoMuted = false;
     bool isAudioOnly = false;
