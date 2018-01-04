@@ -968,7 +968,7 @@ ConversationModelPimpl::slotCallStarted(const std::string& callId)
 {
     try {
         auto call = linked.owner.callModel->getCall(callId);
-        if (call.isOutoging)
+        if (call.isOutgoing)
             addOrUpdateCallMessage(callId, QObject::tr("📞 Outgoing call").toStdString());
         else
             addOrUpdateCallMessage(callId, QObject::tr("📞 Incoming call").toStdString());
@@ -983,14 +983,14 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
     try {
         auto call = linked.owner.callModel->getCall(callId);
         if (call.startTime.time_since_epoch().count() != 0) {
-            if (call.isOutoging)
+            if (call.isOutgoing)
                 addOrUpdateCallMessage(callId, QObject::tr("📞 Outgoing call - ").toStdString()
                     + linked.owner.callModel->getFormattedCallDuration(callId));
             else
                 addOrUpdateCallMessage(callId, QObject::tr("📞 Incoming call - ").toStdString()
                     + linked.owner.callModel->getFormattedCallDuration(callId));
         } else {
-            if (call.isOutoging)
+            if (call.isOutgoing)
                 addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed outgoing call").toStdString());
             else
                 addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed incoming call").toStdString());
