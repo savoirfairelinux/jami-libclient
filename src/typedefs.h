@@ -25,6 +25,10 @@
 #include <QtCore/QString>
 #include <QtCore/QDebug>
 
+#ifndef ENABLE_LIBWRAP
+#include <QtDBus/QtDBus>
+#endif
+
 //Typedefs (required to avoid '<' and '>' in the DBus XML)
 typedef QMap<QString, QString>                              MapStringString               ;
 typedef QMap<QString, int>                                  MapStringInt                  ;
@@ -37,6 +41,47 @@ typedef QMap< QString, QVector<QString> >                   MapStringVectorStrin
 typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
 typedef QMap< QString, QStringList >                        MapStringStringList           ;
 typedef QVector< QByteArray >                               VectorVectorByte              ;
+
+// Adapted from libring DRing::DataTransferInfo
+struct DataTransferInfo
+{
+    bool isOutgoing;
+    uint lastEvent;
+    qulonglong totalSize;
+    qulonglong bytesProgress;
+    QString displayName;
+    QString path;
+};
+
+#ifndef ENABLE_LIBWRAP
+static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTransferInfo& info)
+{
+    argument.beginStructure();
+    argument << info.isOutgoing;
+    argument << info.lastEvent;
+    argument << info.totalSize;
+    argument << info.bytesProgress;
+    argument << info.displayName;
+    argument << info.path;
+    argument.endStructure();
+
+    return argument;
+}
+
+static inline const QDBusArgument &operator>>(const QDBusArgument& argument, DataTransferInfo& info)
+{
+    argument.beginStructure();
+    argument >> info.isOutgoing;
+    argument >> info.lastEvent;
+    argument >> info.totalSize;
+    argument >> info.bytesProgress;
+    argument >> info.displayName;
+    argument >> info.path;
+    argument.endStructure();
+
+    return argument;
+}
+#endif
 
 /**
  * This function add a safe way to get an enum class size
