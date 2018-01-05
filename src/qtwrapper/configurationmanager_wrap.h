@@ -30,6 +30,7 @@
 #include <future>
 
 #include <configurationmanager_interface.h>
+#include <datatransfer_interface.h>
 #include <account_const.h>
 
 #include "typedefs.h"
@@ -44,12 +45,14 @@ class ConfigurationManagerInterface: public QObject
 
 public:
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> dataXferHandlers;
 
     ConfigurationManagerInterface() {
         setObjectName("ConfigurationManagerInterface");
         using DRing::exportable_callback;
         using DRing::ConfigurationSignal;
         using DRing::AudioSignal;
+        using DRing::DataTransferSignal;
 
         setObjectName("ConfigurationManagerInterface");
         confHandlers = {
@@ -149,6 +152,13 @@ public:
             exportable_callback<ConfigurationSignal::ContactRemoved>(
                 [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
                     Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
+                }),
+        };
+
+        dataXferHandlers = {
+            exportable_callback<DataTransferSignal::DataTransferEvent>(
+                [this] (const uint64_t& transfer_id, const uint32_t& code) {
+                    Q_EMIT this->dataTransferEvent(transfer_id, code);
                 }),
         };
     }
@@ -576,6 +586,22 @@ public Q_SLOTS: // METHODS
         return convertMap(DRing::getContactDetails(accountID.toStdString(), uri.toStdString()));
     }
 
+    uint64_t sendFile(const QString& account_id, const QString& peer_uri, const QString& file_path, const QString& display_name) {
+        return DRing::sendFile(account_id.toStdString(), peer_uri.toStdString(), file_path.toStdString(), display_name.toStdString());
+    }
+
+    DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
+        auto dring_info = DRing::dataTransferInfo(transfer_id);
+        DataTransferInfo lrc_info;
+        lrc_info.isOutgoing = dring_info.isOutgoing;
+        lrc_info.lastEvent = dring_info.lastEvent;
+        lrc_info.totalSize = dring_info.totalSize;
+        lrc_info.bytesProgress = dring_info.bytesProgress;
+        lrc_info.displayName = QString::fromStdString(dring_info.displayName);
+        lrc_info.path = QString::fromStdString(dring_info.path);
+        return lrc_info
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
@@ -601,8 +627,7 @@ Q_SIGNALS: // SIGNALS
     void migrationEnded(const QString &accountID, const QString &result);
     void contactAdded(const QString &accountID, const QString &uri, bool banned);
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
-
-
+    void dataTransferEvent(uint64_t transfer_id, uint32_t code);
 };
 
 namespace org { namespace ring { namespace Ring {
