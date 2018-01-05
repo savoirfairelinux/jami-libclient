@@ -44,6 +44,7 @@ class ConfigurationManagerInterface: public QObject
 
 public:
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> dataXferHandlers;
 
     ConfigurationManagerInterface() {
         setObjectName("ConfigurationManagerInterface");
@@ -149,6 +150,13 @@ public:
             exportable_callback<ConfigurationSignal::ContactRemoved>(
                 [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
                     Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
+                }),
+        };
+
+        dataXferHandlers = {
+            exportable_callback<ConfigurationSignal::DataTransferEvent>(
+                [this] (const uint64_t& transfer_id, const uint32_t& code) {
+                    Q_EMIT this->dataTransferEvent(transfert_id, code);
                 }),
         };
     }
@@ -576,6 +584,14 @@ public Q_SLOTS: // METHODS
         return convertMap(DRing::getContactDetails(accountID.toStdString(), uri.toStdString()));
     }
 
+    uint64_t sendFile(const QString &account_id, const QString &peer_uri, const QString &file_path, const QString &display_name) {
+        return DRing::sendFile(account_id, peer_uri, file_path, display_name);
+    }
+
+    DRing::DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
+        return DRing::sendFile(transfer_id);
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
@@ -601,8 +617,7 @@ Q_SIGNALS: // SIGNALS
     void migrationEnded(const QString &accountID, const QString &result);
     void contactAdded(const QString &accountID, const QString &uri, bool banned);
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
-
-
+    void dataTransferEvent(uint64_t transfer_id, uint32_t code);
 };
 
 namespace org { namespace ring { namespace Ring {
