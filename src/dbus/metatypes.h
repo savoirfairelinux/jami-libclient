@@ -40,6 +40,7 @@ Q_DECLARE_METATYPE(VectorUInt)
 Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 Q_DECLARE_METATYPE(VectorVectorByte)
+Q_DECLARE_METATYPE(DataTransferInfo)
 
 #ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
@@ -55,6 +56,7 @@ inline void registerCommTypes() {
    qDBusRegisterMetaType<VectorString>                  ();
    qDBusRegisterMetaType<MapStringVectorString>         ();
    qDBusRegisterMetaType<VectorVectorByte>              ();
+   qDBusRegisterMetaType<DataTransferInfo>              ();
    dbus_metaTypeInit = true;
 #endif
 }
