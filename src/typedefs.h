@@ -38,6 +38,17 @@ typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringSt
 typedef QMap< QString, QStringList >                        MapStringStringList           ;
 typedef QVector< QByteArray >                               VectorVectorByte              ;
 
+// Adapted from libring DRing::DataTransferInfo
+struct DataTransferInfo
+{
+    bool isOutgoing;
+    uint lastEvent;
+    qulonglong totalSize;
+    qulonglong bytesProgress;
+    QString displayName;
+    QString path;
+};
+
 /**
  * This function add a safe way to get an enum class size
  * @note it cannot be "const" due to some compiler issues
