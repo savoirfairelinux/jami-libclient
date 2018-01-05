@@ -79,6 +79,14 @@ inline VectorString convertVectorString(const std::vector<std::string>& v) {
    return temp;
 }
 
+inline VectorULongLong convertVectorULongLong(const std::vector<uint64_t>& v) {
+   VectorULongLong temp;
+   for (const auto& x : v) {
+      temp.push_back(x);
+   }
+   return temp;
+}
+
 inline std::vector<std::string> convertStringList(const QStringList& v) {
    std::vector<std::string> temp;
    for (const auto& x : v) {
