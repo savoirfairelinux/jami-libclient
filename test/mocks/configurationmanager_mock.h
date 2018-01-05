@@ -648,6 +648,28 @@ public Q_SLOTS: // METHODS
         emit incomingTrustRequest(accountId, from, payload, timestamp);
     }
 
+    VectorULongLong dataTransferList() {
+        return {};
+    }
+
+    uint64_t sendFile(const QString& account_id, const QString& peer_uri, const QString& file_path, const QString& display_name) {
+        (void)account_id;
+        (void)peer_uri;
+        (void)file_path;
+        (void)display_name;
+        return 0;
+    }
+
+    DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
+        (void)transfer_id;
+        return {};
+    }
+
+    uint64_t dataTransferBytesSent(uint64_t transfer_id) {
+        (void)transfer_id;
+        return 0;
+    }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();
@@ -673,8 +695,7 @@ Q_SIGNALS: // SIGNALS
    void migrationEnded(const QString &accountId, const QString &result);
    void contactAdded(const QString &accountId, const QString &uri, bool banned);
    void contactRemoved(const QString &accountId, const QString &uri, bool banned);
-
-
+   void dataTransferEvent(uint64_t transfer_id, uint32_t code);
 };
 
 namespace org {
