@@ -38,6 +38,7 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
    using DRing::CallSignal;
    using DRing::ConfigurationSignal;
    using DRing::PresenceSignal;
+   using DRing::DataTransferSignal;
 
 #ifdef ENABLE_VIDEO
    using DRing::VideoSignal;
@@ -62,6 +63,7 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
    registerCallHandlers(CallManager::instance().callHandlers);
    registerConfHandlers(ConfigurationManager::instance().confHandlers);
    registerPresHandlers(PresenceManager::instance().presHandlers);
+   registerDataXferHandlers(ConfigurationManager::instance().dataXferHandlers);
 #ifdef ENABLE_VIDEO
    registerVideoHandlers(VideoManager::instance().videoHandlers);
 #endif
