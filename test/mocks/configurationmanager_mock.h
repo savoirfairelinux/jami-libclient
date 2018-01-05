@@ -648,6 +648,19 @@ public Q_SLOTS: // METHODS
         emit incomingTrustRequest(accountId, from, payload, timestamp);
     }
 
+    uint64_t sendFile(const QString& account_id, const QString& peer_uri, const QString& file_path, const QString& display_name) {
+        (void)account_id;
+        (void)peer_uri;
+        (void)file_path;
+        (void)display_name;
+        return 0;
+    }
+
+    DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
+        (void)transfer_id;
+        return {};
+    }
+
 Q_SIGNALS: // SIGNALS
    void volumeChanged(const QString& device, double value);
    void accountsChanged();
