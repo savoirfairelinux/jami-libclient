@@ -37,6 +37,7 @@ Q_DECLARE_METATYPE(VectorMapStringString)
 Q_DECLARE_METATYPE(MapStringMapStringStringList)
 Q_DECLARE_METATYPE(VectorInt)
 Q_DECLARE_METATYPE(VectorUInt)
+Q_DECLARE_METATYPE(VectorULongLong)
 Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 Q_DECLARE_METATYPE(VectorVectorByte)
@@ -53,6 +54,7 @@ inline void registerCommTypes() {
    qDBusRegisterMetaType<MapStringMapStringVectorString>();
    qDBusRegisterMetaType<VectorInt>                     ();
    qDBusRegisterMetaType<VectorUInt>                    ();
+   qDBusRegisterMetaType<VectorULongLong>               ();
    qDBusRegisterMetaType<VectorString>                  ();
    qDBusRegisterMetaType<MapStringVectorString>         ();
    qDBusRegisterMetaType<VectorVectorByte>              ();
