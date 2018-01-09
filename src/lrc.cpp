@@ -24,6 +24,7 @@
 #include "database.h"
 #include "callbackshandler.h"
 #include "dbus/instancemanager.h"
+#include "api/datatransfermodel.h"
 
 namespace lrc
 {
@@ -41,6 +42,7 @@ public:
     std::unique_ptr<CallbacksHandler> callbackHandler;
     std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
+    std::unique_ptr<DataTransferModel> dataTransferModel;
 };
 
 Lrc::Lrc()
@@ -67,12 +69,19 @@ Lrc::getBehaviorController() const
     return *lrcPimpl_->behaviorController;
 }
 
+DataTransferModel&
+Lrc::getDataTransferModel() const
+{
+    return *lrcPimpl_->dataTransferModel;
+}
+
 LrcPimpl::LrcPimpl(const Lrc& linked)
 : linked(linked)
 , behaviorController(std::make_unique<BehaviorController>())
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
 , database(std::make_unique<Database>())
 , accountModel(std::make_unique<NewAccountModel>(*database, *callbackHandler, *behaviorController))
+, dataTransferModel(std::make_unique<DataTransferModel>(*database, *callbackHandler, *behaviorController))
 {
 }
 
