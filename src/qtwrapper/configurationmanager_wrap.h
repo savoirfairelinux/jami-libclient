@@ -606,8 +606,8 @@ public Q_SLOTS: // METHODS
         return lrc_info;
     }
 
-    uint64_t dataTransferBytesSent(uint64_t transfer_id) {
-        return DRing::dataTransferBytesSent(transfer_id);
+    uint64_t dataTransferBytesProgress(uint64_t transfer_id) {
+        return DRing::dataTransferBytesProgress(transfer_id);
     }
 
     void acceptFileTransfer(uint64_t transfer_id, const QString& file_path, uint64_t offset) {

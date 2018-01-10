@@ -665,7 +665,7 @@ public Q_SLOTS: // METHODS
         return {};
     }
 
-    uint64_t dataTransferBytesSent(uint64_t transfer_id) {
+    uint64_t dataTransferBytesProgress(uint64_t transfer_id) {
         (void)transfer_id;
         return 0;
     }
