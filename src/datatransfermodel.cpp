@@ -180,7 +180,7 @@ DataTransferModel::transferInfo(const std::string& lrc_id)
 std::streamsize
 DataTransferModel::bytesProgress(const std::string& lrc_id)
 {
-    return ConfigurationManager::instance().dataTransferBytesSent(pimpl_->lrc2dringIdMap.at(lrc_id));
+    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(lrc_id));
 }
 
 void
