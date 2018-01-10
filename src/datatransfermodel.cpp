@@ -168,7 +168,8 @@ DataTransferModel::transferInfo(const std::string& lrc_id)
     auto dring_info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
     datatransfer::Info lrc_info;
     lrc_info.uid = lrc_id;
-    lrc_info.isOutgoing = dring_info.lastEvent;
+    lrc_info.isOutgoing = dring_info.isOutgoing;
+    lrc_info.totalSize = dring_info.totalSize;
     lrc_info.progress = dring_info.lastEvent;
     lrc_info.path = dring_info.displayName.toStdString();
     lrc_info.displayName = dring_info.displayName.toStdString();
