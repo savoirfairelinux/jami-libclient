@@ -188,6 +188,14 @@ void clearHistory(Database& db,
                   const std::string& conversationId);
 
 /**
+ * Clear all history associated to the account id
+ * @param  db
+ * @param  accountId
+ */
+void clearAllHistoryFor(Database& db,
+                        const std::string& accountId);
+
+/**
  * Remove a conversation between an account and a contact. Remove corresponding entries in
  * the conversations table and profiles if the profile is not present in conversations.
  * @param db

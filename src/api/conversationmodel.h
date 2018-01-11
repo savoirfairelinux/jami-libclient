@@ -138,6 +138,10 @@ public:
      * @param msgId, id of the interaction
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+    /**
+     * clear all history
+     */
+     void clearAllHistory();
 
 Q_SIGNALS:
     /**

@@ -280,6 +280,35 @@ void clearHistory(Database& db,
     db.deleteFrom("interactions", "conversation_id=:id", {{":id", conversationId}});
 }
 
+void clearAllHistoryFor(Database& db,
+                        const std::string& accountUri)
+{
+    auto accountProfileId = getProfileId(db, accountUri);
+    qDebug() << "accountId : " << accountProfileId.c_str();
+
+    auto returnFromDb = db.select("id",
+                                  "conversations",
+                                  "participant_id=:participant_id",
+                                  {{":participant_id", accountProfileId}});
+    if (returnFromDb.nbrOfCols == 1 && returnFromDb.payloads.size() >= 1) {
+      auto payloads = returnFromDb.payloads;
+
+        for(auto& account_id : returnFromDb.payloads) {
+            qDebug() << "XX : " << account_id.c_str();
+
+            db.deleteFrom("interactions", "account_id=:id", {{":id", account_id}});
+        }
+
+      //~ api::profile::Info profileInfo = {payloads[0], payloads[1], payloads[2], api::profile::to_type(payloads[3])};
+
+      //~ return {profileInfo, "", true, false};
+    }
+
+    qDebug() << ": XXX";
+
+    
+}
+
 void
 removeContact(Database& db, const std::string& accountUri, const std::string& contactUri)
 {

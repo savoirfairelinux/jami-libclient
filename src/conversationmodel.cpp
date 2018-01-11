@@ -130,6 +130,11 @@ public:
      */
     int getNumberOfUnreadMessagesFor(const std::string& uid);
 
+    /**
+     * clear history (database and model)
+     */
+    void clearHistory();
+
     const ConversationModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
@@ -599,6 +604,15 @@ ConversationModel::clearHistory(const std::string& uid)
     pimpl_->sortConversations();
     emit modelSorted();
     emit conversationCleared(uid);
+}
+
+void
+ConversationModel::clearAllHistory()
+{
+    qDebug() << "YO";
+    //~ for (auto& item : pimpl_->conversations) {
+        database::clearAllHistoryFor(pimpl_->db, owner.profileInfo.uri);
+    //~ }
 }
 
 void
