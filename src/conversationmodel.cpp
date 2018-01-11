@@ -602,6 +602,17 @@ ConversationModel::clearHistory(const std::string& uid)
 }
 
 void
+ConversationModel::clearAllHistory()
+{
+    database::clearAllHistoryFor(pimpl_->db, owner.profileInfo.uri);
+
+    for (auto& conversation : pimpl_->conversations) {
+        conversation.interactions.clear();
+        database::getHistory(pimpl_->db, conversation);
+    }
+}
+
+void
 ConversationModel::setInteractionRead(const std::string& convId, const uint64_t& msgId)
 {
     auto conversationIdx = pimpl_->indexOf(convId);
