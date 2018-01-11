@@ -277,11 +277,15 @@ Database::deleteFrom(const std::string& table,                             // "t
     auto prepareStr = std::string("DELETE FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
 
+    qDebug() << "DB: " << prepareStr.c_str();
+
     for (const auto& entry : bindsWhere)
         query.bindValue(entry.first.c_str(), entry.second.c_str());
 
-    if(not query.exec())
+    if(not query.exec()) {
         throw QueryDeleteError(query, table, where, bindsWhere);
+        qDebug() << "doh!";
+    }
 }
 
 Database::QueryError::QueryError(const QSqlQuery& query)
