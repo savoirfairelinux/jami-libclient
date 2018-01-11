@@ -280,6 +280,16 @@ void clearHistory(Database& db,
     db.deleteFrom("interactions", "conversation_id=:id", {{":id", conversationId}});
 }
 
+void clearAllHistoryFor(Database& db, const std::string& accountUri)
+{
+    auto accountId = db.select("id", "profiles","uri=:uri", {{":uri", accountUri}}).payloads;
+
+    if (accountId.empty())
+        return;
+
+    db.deleteFrom("interactions", "id!=:id", {{":id", accountId[0]}});
+}
+
 void
 removeContact(Database& db, const std::string& accountUri, const std::string& contactUri)
 {
