@@ -138,6 +138,10 @@ public:
      * @param msgId, id of the interaction
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+    /**
+     * clear all history
+     */
+     void clearAllHistory();
 
 Q_SIGNALS:
     /**
@@ -178,6 +182,11 @@ Q_SIGNALS:
      * @param uid
      */
     void conversationRemoved(const std::string& uid) const;
+    /**
+     * Emitted after all history were cleared
+     * @note the client must connect this signal to know when update the view of the list
+     */
+    void allHistoryCleared() const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
