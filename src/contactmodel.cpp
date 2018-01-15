@@ -219,8 +219,13 @@ ContactModel::addContact(contact::Info contactInfo)
     auto iter = pimpl_->contacts.find(contactInfo.profileInfo.uri);
     if (iter == pimpl_->contacts.end())
         pimpl_->contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
-    else
+    else {
+        // On non-DBus platform, contactInfo.profileInfo.type may be wrong as the contact
+        // may be trusted already. We must use Profile::Type from pimpl_->contacts
+        // and not from contactInfo so we cannot revert a contact back to PENDING.
+        contactInfo.profileInfo.type = iter->second.profileInfo.type;
         iter->second.profileInfo = contactInfo.profileInfo;
+    }
 
     emit contactAdded(profile.uri);
 }
