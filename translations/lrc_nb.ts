@@ -1266,7 +1266,7 @@
         <location filename="../src/api/call.h" line="81"/>
         <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Fullført</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
@@ -1413,18 +1413,18 @@
         <location filename="../src/conversationmodel.cpp" line="776"/>
         <location filename="../src/conversationmodel.cpp" line="1083"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Invitasjon mottatt</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="777"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt lagt til</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="806"/>
         <location filename="../src/conversationmodel.cpp" line="813"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Invitasjon godtatt</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="972"/>
