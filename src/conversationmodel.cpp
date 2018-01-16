@@ -25,6 +25,7 @@
 // std
 #include <regex>
 #include <algorithm>
+#include <mutex>
 
 // LRC
 #include "api/behaviorcontroller.h"
@@ -67,13 +68,13 @@ public:
      * @param uid of the contact to search.
      * @return an int.
      */
-    int indexOf(const std::string& uid) const;
+    int indexOf(const std::string& uid);
     /**
      * return a conversation index from conversations or -1 if no index is found.
      * @param uri of the contact to search.
      * @return an int.
      */
-    int indexOfContact(const std::string& uri) const;
+    int indexOfContact(const std::string& uri);
     /**
      * Initialize conversations_ and filteredConversations_
      */
@@ -138,6 +139,8 @@ public:
 
     ConversationModel::ConversationQueue conversations; ///< non-filtered conversations
     ConversationModel::ConversationQueue filteredConversations;
+    std::mutex ConversationModelMtx {};
+    
     std::string filter;
     profile::Type typeFilter;
     bool dirtyConversations {true}; ///< true if filteredConversations must be regenerated
@@ -311,15 +314,12 @@ ConversationModel::selectConversation(const std::string& uid) const
 {
     // Get conversation
     auto conversationIdx = pimpl_->indexOf(uid);
-
     if (conversationIdx == -1)
         return;
-
     if (uid.empty() && owner.contactModel->getContact("").profileInfo.uri.empty()) {
         // if we select the temporary contact, check if its a valid contact.
         return;
     }
-
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
         if (not conversation.confId.empty()) {
@@ -448,6 +448,7 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         // The conversation has changed because it was with the temporary item
         auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
         auto common = database::getConversationsBetween(db, accountId, contactProfileId);
+        
         if (common.empty()) return;
         convId = common.front();
         // Get new conversation
@@ -880,9 +881,15 @@ ConversationModelPimpl::slotContactModelUpdated()
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
                 if (!firstContactUri.empty()) {
+                    qDebug() << "L5";
+                    std::lock_guard<std::mutex> lock(ConversationModelMtx);
+                    qDebug() << "L5x";
                     conversations.emplace_front(conversationInfo);
                 }
             } else {
+                qDebug() << "L4";
+                std::lock_guard<std::mutex> lock(ConversationModelMtx);
+                qDebug() << "L4x";
                 conversations.emplace_front(conversationInfo);
             }
         }
@@ -929,13 +936,19 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
+    qDebug() << "L3";
+    std::lock_guard<std::mutex> lock(ConversationModelMtx);
+    qDebug() << "L3x";
     conversations.emplace_front(conversation);
     dirtyConversations = true;
 }
 
 int
-ConversationModelPimpl::indexOf(const std::string& uid) const
+ConversationModelPimpl::indexOf(const std::string& uid)
 {
+    qDebug() << "L2";
+    std::lock_guard<std::mutex> lock(ConversationModelMtx);
+    qDebug() << "L2x";
     for (unsigned int i = 0; i < conversations.size(); ++i) {
         if (conversations.at(i).uid == uid) return i;
     }
@@ -943,8 +956,11 @@ ConversationModelPimpl::indexOf(const std::string& uid) const
 }
 
 int
-ConversationModelPimpl::indexOfContact(const std::string& uri) const
+ConversationModelPimpl::indexOfContact(const std::string& uri)
 {
+    qDebug() << "L1";
+    std::lock_guard<std::mutex> lock(ConversationModelMtx);
+    qDebug() << "L1x";
     for (unsigned int i = 0; i < conversations.size(); ++i) {
         if (conversations.at(i).participants.front() == uri) return i;
     }
