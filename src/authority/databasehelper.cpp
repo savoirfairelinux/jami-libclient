@@ -358,6 +358,12 @@ countUnreadFromInteractions(Database& db, const std::string& conversationId)
     return db.count("status", "interactions", "status='UNREAD' AND conversation_id='" + conversationId + "'");
 }
 
+void
+deleteObsoleteHistory(Database& db, long int date)
+{
+    db.deleteFrom("interactions", "timestamp<=:date", {{":date", std::to_string(date)}});
+}
+
 } // namespace database
 
 } // namespace authority

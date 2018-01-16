@@ -379,6 +379,18 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
 }
 
 void
+ConversationModel::deletObsoleteHistory(int days)
+{
+    if(days < 1)
+        return; // unlimited history
+
+    auto currentTime = static_cast<long int>(std::time(nullptr)); // since epoch, in seconds...
+    auto date = currentTime - (days * 86400);
+
+    database::deleteObsoleteHistory(pimpl_->db, date);
+}
+
+void
 ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
     auto conversationIdx = indexOf(uid);
