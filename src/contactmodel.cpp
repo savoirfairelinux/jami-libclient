@@ -21,6 +21,7 @@
 
 // Std
 #include <algorithm>
+#include <mutex>
 
 // Daemon
 #include <account_const.h>
@@ -89,6 +90,7 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
+    std::mutex contactModelMtx {};
 
 public Q_SLOTS:
     /**
@@ -161,6 +163,7 @@ ContactModel::getAllContacts() const
 bool
 ContactModel::hasPendingRequests() const
 {
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     auto i = std::find_if(pimpl_->contacts.begin(), pimpl_->contacts.end(),
         [](const auto& c) {
           return c.second.profileInfo.type == profile::Type::PENDING;
@@ -199,10 +202,13 @@ ContactModel::addContact(contact::Info contactInfo)
         #endif
         break;
     case profile::Type::PENDING:
+        {
+        std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
         daemon::addContactFromPending(owner, profile.uri);
         emit pendingContactAccepted(profile.uri);
         daemon::addContact(owner, profile.uri); // BUGS?: daemon::addContactFromPending not always add the contact
         break;
+        }
     case profile::Type::RING:
     case profile::Type::SIP:
         break;
@@ -234,6 +240,7 @@ void
 ContactModel::removeContact(const std::string& contactUri, bool banned)
 {
     auto contact = pimpl_->contacts.find(contactUri);
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     if (!banned && contact != pimpl_->contacts.end()
         && contact->second.profileInfo.type == profile::Type::PENDING) {
         // Discard the pending request and remove profile from db if necessary
@@ -336,6 +343,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , db(db)
 , callbacksHandler(callbacksHandler)
 {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
     // Init contacts map
     if (linked.owner.profileInfo.type == profile::Type::SIP)
         fillsWithSIPContacts();
