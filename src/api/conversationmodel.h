@@ -142,6 +142,11 @@ public:
      * clear all history
      */
      void clearAllHistory();
+    /**
+     * delete obsolete history from the database
+     * @param days, number of days from today. Below this date, interactions will be deleted
+     */
+    void deletObsoleteHistory(int date);
 
 Q_SIGNALS:
     /**
