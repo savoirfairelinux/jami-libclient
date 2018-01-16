@@ -291,9 +291,12 @@ ConversationModel::filteredConversation(const unsigned int row) const
 void
 ConversationModel::makePermanent(const std::string& uid)
 {
+    qDebug() << "g1 : " << uid.c_str();
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
         return;
+
+    qDebug() << "g2 : " << conversationIdx;
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     if (conversation.participants.empty()) {
@@ -310,18 +313,20 @@ void
 ConversationModel::selectConversation(const std::string& uid) const
 {
     // Get conversation
+    qDebug() << "X0 :" << uid.c_str();
     auto conversationIdx = pimpl_->indexOf(uid);
-
+qDebug() << "X1 :" << conversationIdx ;
     if (conversationIdx == -1)
         return;
-
+qDebug() << "X2 :" ;
     if (uid.empty() && owner.contactModel->getContact("").profileInfo.uri.empty()) {
         // if we select the temporary contact, check if its a valid contact.
         return;
     }
-
+qDebug() << "X3 :" ;
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     try  {
+        qDebug() << "X4 :" ;
         if (not conversation.confId.empty()) {
             emit pimpl_->behaviorController.showCallView(owner.id, conversation);
         } else {
@@ -353,6 +358,7 @@ ConversationModel::selectConversation(const std::string& uid) const
             }
         }
     } catch (const std::out_of_range&) {
+        qDebug() << "X5 :" ;
         emit pimpl_->behaviorController.showChatView(owner.id, conversation);
     }
 }
@@ -880,9 +886,11 @@ ConversationModelPimpl::slotContactModelUpdated()
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
                 if (!firstContactUri.empty()) {
+                    qDebug() << "w1";
                     conversations.emplace_front(conversationInfo);
                 }
             } else {
+                qDebug() << "w2";
                 conversations.emplace_front(conversationInfo);
             }
         }
@@ -929,6 +937,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
+    qDebug() << "w3";
     conversations.emplace_front(conversation);
     dirtyConversations = true;
 }

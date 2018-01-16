@@ -289,11 +289,22 @@ ContactModel::searchContact(const std::string& query)
         return;
     }
 
-    // query is a valid RingID?
+    //~ if (query.length() == 40){
+        //~ profile::Info profileInfo;
+        //~ profileInfo.uri = shortUri;
+        //~ profileInfo.alias = shortUri;
+        //~ profileInfo.type = profile::Type::TEMPORARY;
+        //~ temporaryContact.profileInfo = profileInfo;
+        //~ emit modelUpdated();
+        //~ return;
+    //~ }
+
     auto uri = URI(QString(query.c_str()));
     if (uri.full().startsWith("ring:")) {
+        qDebug() << "GGGGG";
         auto shortUri = uri.full().mid(5).toStdString();
         profile::Info profileInfo;
+        //~ qDebug() << "X0 :" << uid;
         profileInfo.uri = shortUri;
         profileInfo.alias = shortUri;
         profileInfo.type = profile::Type::TEMPORARY;
@@ -301,6 +312,7 @@ ContactModel::searchContact(const std::string& query)
         emit modelUpdated();
         return;
     }
+    
 
     // Default searching
     profile::Info profileInfo;
