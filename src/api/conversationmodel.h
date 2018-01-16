@@ -139,6 +139,8 @@ public:
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
 
+    void deletObsoleteHistory(int days);
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction

@@ -379,6 +379,12 @@ ConversationModel::removeConversation(const std::string& uid, bool banned)
 }
 
 void
+ConversationModel::deletObsoleteHistory(int days)
+{
+    qDebug() << "days : " << days;
+}
+
+void
 ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
     auto conversationIdx = indexOf(uid);
