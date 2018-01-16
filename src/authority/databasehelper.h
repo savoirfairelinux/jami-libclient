@@ -188,6 +188,13 @@ void clearHistory(Database& db,
                   const std::string& conversationId);
 
 /**
+ * delete obsolete histori from the database
+ * @param db
+ * @param date in second since epoch. Below this date, interactions will be deleted
+ */
+void deletObsoleteHistory(Database& db, long int date);
+
+/**
  * Remove a conversation between an account and a contact. Remove corresponding entries in
  * the conversations table and profiles if the profile is not present in conversations.
  * @param db

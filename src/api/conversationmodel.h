@@ -138,6 +138,11 @@ public:
      * @param msgId, id of the interaction
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+    /**
+     * delete obsolete histori from the database
+     * @param days, number of days from today. Below this date, interactions will be deleted
+     */
+    void deletObsoleteHistory(int date);
 
 Q_SIGNALS:
     /**
