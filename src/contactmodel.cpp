@@ -21,6 +21,7 @@
 
 // Std
 #include <algorithm>
+#include <mutex>
 
 // Daemon
 #include <account_const.h>
@@ -89,6 +90,7 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
+    std::mutex contactModelMtx {};
 
 public Q_SLOTS:
     /**
@@ -161,6 +163,7 @@ ContactModel::getAllContacts() const
 bool
 ContactModel::hasPendingRequests() const
 {
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     auto i = std::find_if(pimpl_->contacts.begin(), pimpl_->contacts.end(),
         [](const auto& c) {
           return c.second.profileInfo.type == profile::Type::PENDING;
@@ -216,6 +219,8 @@ ContactModel::addContact(contact::Info contactInfo)
                                  profile.uri, profile.alias, profile.avatar,
                                  to_string(owner.profileInfo.type));
 
+    {
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     auto iter = pimpl_->contacts.find(contactInfo.profileInfo.uri);
     if (iter == pimpl_->contacts.end())
         pimpl_->contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
@@ -226,6 +231,7 @@ ContactModel::addContact(contact::Info contactInfo)
         contactInfo.profileInfo.type = iter->second.profileInfo.type;
         iter->second.profileInfo = contactInfo.profileInfo;
     }
+    }
 
     emit contactAdded(profile.uri);
 }
@@ -233,17 +239,28 @@ ContactModel::addContact(contact::Info contactInfo)
 void
 ContactModel::removeContact(const std::string& contactUri, bool banned)
 {
+    bool contactIsValidAndPending;
+    {
+	std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     auto contact = pimpl_->contacts.find(contactUri);
-    if (!banned && contact != pimpl_->contacts.end()
-        && contact->second.profileInfo.type == profile::Type::PENDING) {
+    contactIsValidAndPending = !banned && contact != pimpl_->contacts.end()
+      && contact->second.profileInfo.type == profile::Type::PENDING;
+    }
+    if ( contactIsValidAndPending ) {
         // Discard the pending request and remove profile from db if necessary
         daemon::discardFromPending(owner, contactUri);
+		{
+		std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
         pimpl_->contacts.erase(contactUri);
+		}
         database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
         emit contactRemoved(contactUri);
     } else if (owner.profileInfo.type == profile::Type::SIP) {
         // Remove contact from db
+	    {
+		std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
         pimpl_->contacts.erase(contactUri);
+		}
         database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
         emit contactRemoved(contactUri);
     } else {
@@ -256,6 +273,7 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 const contact::Info
 ContactModel::getContact(const std::string& contactUri) const
 {
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     return pimpl_->contacts.at(contactUri);
 }
 
@@ -276,39 +294,47 @@ ContactModel::searchContact(const std::string& query)
         // NOTE: there is no registeredName for SIP contacts
 
         // Reset temporary if contact exists, else save the query inside it
-        auto iter = pimpl_->contacts.find(query);
-        if (iter == pimpl_->contacts.end()) {
+	    {
+        std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
+        if (pimpl_->contacts.find(query) == pimpl_->contacts.end()) {
             profile::Info profileInfo;
             profileInfo.uri = query;
             profileInfo.alias = query;
             profileInfo.type = profile::Type::TEMPORARY;
             temporaryContact.profileInfo = profileInfo;
         }
+		}
 
         emit modelUpdated();
         return;
-    }
+	}
 
     // query is a valid RingID?
     auto uri = URI(QString(query.c_str()));
     if (uri.full().startsWith("ring:")) {
+	    {
+        std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
         auto shortUri = uri.full().mid(5).toStdString();
         profile::Info profileInfo;
         profileInfo.uri = shortUri;
         profileInfo.alias = shortUri;
         profileInfo.type = profile::Type::TEMPORARY;
         temporaryContact.profileInfo = profileInfo;
+		}
         emit modelUpdated();
         return;
     }
 
     // Default searching
+    {
+    std::lock_guard<std::mutex> lock(pimpl_->contactModelMtx);
     profile::Info profileInfo;
     profileInfo.alias = "Searching… " + query;
     profileInfo.type = profile::Type::TEMPORARY;
     temporaryContact.profileInfo = profileInfo;
     temporaryContact.registeredName = query;
-    emit modelUpdated();
+	}
+	emit modelUpdated();
 
     // Query Name Server
     if (auto* account = AccountModel::instance().getById(owner.id.c_str()))
@@ -345,9 +371,16 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     // connect the signals
     connect(&callbacksHandler, &CallbacksHandler::newBuddySubscription,
         [this] (const std::string& contactUri, bool status) {
-            auto iter = contacts.find(contactUri);
-            if (iter != contacts.end()) {
-                iter->second.isPresent = status;
+			auto iter = contacts.end();
+			bool uriIsContact;
+			{
+            std::lock_guard<std::mutex> lock(contactModelMtx);
+            iter = contacts.find(contactUri);
+			uriIsContact = iter != contacts.end();
+			if (uriIsContact) iter->second.isPresent = status;
+			}
+			// do not factor this if or deadlock will occur
+            if (uriIsContact) {
                 emit this->linked.modelUpdated();
             }
         });
@@ -377,6 +410,7 @@ ContactModelPimpl::fillsWithSIPContacts()
     auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     for (const auto& c : conversationsForAccount) {
         auto otherParticipants = database::getPeerParticipantsForConversation(db, accountProfileId, c);
+        std::lock_guard<std::mutex> lock(contactModelMtx);
         for (const auto& participant: otherParticipants) {
             // for each conversations get the other profile id
             auto contactInfo = database::buildContactFromProfileId(db, participant);
@@ -421,8 +455,10 @@ ContactModelPimpl::fillsWithRINGContacts() {
         contact::Info contactInfo;
         contactInfo.profileInfo = profileInfo;
         contactInfo.registeredName = cm->registeredName().toStdString();
-
+        {
+        std::lock_guard<std::mutex> lock(contactModelMtx);
         contacts.emplace(contactUri.toStdString(), contactInfo);
+        }
         database::getOrInsertProfile(db, contactUri.toStdString(),
                                     alias.toStdString(), photo.toStdString(),
                                     profile::to_string(profile::Type::RING));
@@ -434,9 +470,16 @@ ContactModelPimpl::fillsWithRINGContacts() {
 void
 ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
 {
-    auto it = contacts.find(contactUri);
-    if (it != contacts.end()) {
-        it->second.isPresent = status;
+    auto it = contacts.end();
+	bool uriIsContact;
+    {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
+    it = contacts.find(contactUri);
+	uriIsContact = it != contacts.end();
+	if (uriIsContact) it->second.isPresent = status;
+	}
+	// do not factor, or else deadlock
+    if (uriIsContact) {
         emit linked.modelUpdated();
     }
 }
@@ -461,11 +504,17 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 {
     Q_UNUSED(banned)
     if (accountId != linked.owner.id) return;
-    if (contacts.find(contactUri) != contacts.end()) {
+
+	bool uriIsContact;
+	{
+    std::lock_guard<std::mutex> lock(contactModelMtx);
+	uriIsContact = contacts.find(contactUri) != contacts.end();
+    if (uriIsContact) {
         database::removeContact(db, linked.owner.profileInfo.uri, contactUri);
         contacts.erase(contactUri);
-        emit linked.contactRemoved(contactUri);
     }
+	}
+	if (uriIsContact) emit linked.contactRemoved(contactUri);
 }
 
 void
@@ -483,11 +532,15 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type)
 
     contactInfo.isPresent = cm->isPresent();
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
+
+    {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
     auto iter = contacts.find(contactInfo.profileInfo.uri);
     if (iter != contacts.end())
         iter->second = contactInfo;
     else
         contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
+    }
 }
 
 void
@@ -496,6 +549,9 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
                                            const std::string& registeredName)
 {
     if (accountId != linked.owner.id) return;
+
+    {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
 
     auto& temporaryContact = contacts[""];
     if (contacts.find(uri) == contacts.end()) {
@@ -510,6 +566,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
             lrc::api::profile::Info profileInfo = {"", "", "", profile::Type::TEMPORARY};
             temporaryContact = {profileInfo, "", false, false};
         }
+    }
     }
     emit linked.modelUpdated();
 
@@ -529,7 +586,11 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         return;
     }
 
-    if (contacts.find(contactUri) == contacts.end()) {
+	bool uriIsContact;
+	{
+	std::lock_guard<std::mutex> lock(contactModelMtx);
+	uriIsContact = contacts.find(contactUri) == contacts.end();
+    if (uriIsContact) {
         auto* cm = PhoneDirectoryModel::instance().getNumber(URI(contactUri.c_str()), account);
         const auto vCard = VCardUtils::toHashMap(payload.c_str());
         const auto alias = vCard["FN"];
@@ -541,8 +602,9 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         database::getOrInsertProfile(db, contactUri, alias.toStdString(),
                                      photo.toStdString(),
                                      profile::to_string(profile::Type::RING));
-        emit linked.contactAdded(contactUri);
     }
+	}
+	if (uriIsContact) emit linked.contactAdded(contactUri);
 }
 
 void
@@ -554,7 +616,13 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         return;
     }
 
-    if (contacts.find(fromId) == contacts.end()) {
+    bool uriIsContact;
+    {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
+    uriIsContact = contacts.find(fromId) == contacts.end();
+    }
+
+    if (not uriIsContact) {
         // Contact not found, load profile from database.
         // The conversation model will create an entry and link the incomingCall.
         auto* cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
@@ -580,12 +648,19 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         return;
     }
 
-    if (contacts.find(from) == contacts.end()) {
+    bool fromIsContact;
+    {
+    std::lock_guard<std::mutex> lock(contactModelMtx);
+    fromIsContact = contacts.find(from) == contacts.end();
+    }
+
+    if (not fromIsContact) {
         // Contact not found, load profile from database.
         // The conversation model will create an entry and link the incomingCall.
         auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
         addToContacts(cm, profile::Type::PENDING);
     }
+
     emit linked.newAccountMessage(accountId, from, payloads);
 }
 
