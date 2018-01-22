@@ -49,6 +49,20 @@ namespace interaction { struct Info; }
 class BehaviorController;
 class NewAccountModel;
 
+class conversationUid {
+public:
+    explicit conversationUid(const std::string& uid) : impl_(uid) {}
+
+    operator const std::string&() const { return impl_; }
+
+    const std::string& operator -> () const {
+        return impl_;
+    }
+
+private:
+    const std::string impl_;
+};
+
 /**
   *  @brief Class that manages conversation informations.
   */
@@ -82,7 +96,7 @@ public:
      * @param uid of the conversation to change.
      * @exception std::out_of_range if uid doesn't correspond to an existing conversation
      */
-    void makePermanent(const std::string& uid);
+    void makePermanent(const conversationUid& uid);
     /**
      * Remove a conversation and the contact if it's a dialog
      * @param uid of the conversation

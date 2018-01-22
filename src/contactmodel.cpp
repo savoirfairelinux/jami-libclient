@@ -271,6 +271,10 @@ ContactModel::searchContact(const std::string& query)
     auto& temporaryContact = pimpl_->contacts[""];
     temporaryContact = {}; // reset in any case
 
+    int num_items = std::count_if(pimpl_->contacts.begin(), pimpl_->contacts.end(), [](std::pair<std::string, contact::Info> item){return item.second.profileInfo.type == profile::Type::TEMPORARY;});
+
+    qDebug() << "count : " << num_items;
+
     if (owner.profileInfo.type == profile::Type::SIP) {
         // We don't need to search anything for SIP contacts.
         // NOTE: there is no registeredName for SIP contacts

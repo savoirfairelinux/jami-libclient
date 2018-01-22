@@ -289,7 +289,7 @@ ConversationModel::filteredConversation(const unsigned int row) const
 }
 
 void
-ConversationModel::makePermanent(const std::string& uid)
+ConversationModel::makePermanent(const conversationUid& uid)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
@@ -393,6 +393,10 @@ ConversationModel::deleteObsoleteHistory(int days)
 void
 ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
+    // [jn] l'uid est correcte étant donné qu'on est dans le conversation model. Cependant, dans certains cas, on
+    // observe que l'uid est remplacé par un uri.
+    qDebug() << "placeCall";
+    qDebug() << " --> uid" << uid.c_str();
     auto conversationIdx = indexOf(uid);
 
     if (conversationIdx == -1)
@@ -457,6 +461,8 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         conversation = conversations.at(conversationIdx);
     }
     dirtyConversations = true;
+    qDebug() << " --> linked.owner.id" << linked.owner.id.c_str();
+    qDebug() << " --> conversation.uid" << conversation.uid.c_str();
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
 }
 
