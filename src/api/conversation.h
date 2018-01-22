@@ -34,9 +34,32 @@ namespace api
 namespace conversation
 {
 
+/** DOC
+ */
+class Uid {
+public: /* [jn] inlines */
+    explicit Uid(const std::string& uid) : impl_(uid) {}
+    explicit Uid() : impl_("<INVALID>") {}
+    Uid(const Uid& uid) : impl_(uid.impl_) { }
+
+    operator const std::string&() const { return impl_; }
+    bool operator ==(const Uid& uid) const { return uid.impl_ == impl_; };
+
+    const std::string* operator ->() const {
+        return &impl_;
+    }
+
+private:
+    const std::string impl_ ; // = "<INVALID>";
+};
+
 struct Info
 {
-    std::string uid = "";
+    Info() : uid() {}
+    Info(const Info& info) : uid(info.uid), accountId(info.accountId), callId(info.callId), confId(info.confId), participants(info.participants), interactions(info.interactions), lastMessageUid(info.lastMessageUid), unreadMessages(info.unreadMessages) {}
+    Info(const Uid& u) : uid(u) {};
+    
+    const Uid uid;
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
