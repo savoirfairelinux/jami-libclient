@@ -67,7 +67,7 @@ public:
      * @param uid of the contact to search.
      * @return an int.
      */
-    int indexOf(const std::string& uid) const;
+    int indexOf(const conversation::Uid& uid) const;
     /**
      * return a conversation index from conversations or -1 if no index is found.
      * @param uri of the contact to search.
@@ -123,12 +123,12 @@ public:
      * @param uid, conversation id
      * @param isAudioOnly, allow to specify if the call is only audio. Set to false by default.
      */
-    void placeCall(const std::string& uid, bool isAudioOnly = false);
+    void placeCall(const conversation::Uid& uid, bool isAudioOnly = false);
 
     /**
      * get number of unread messages
      */
-    int getNumberOfUnreadMessagesFor(const std::string& uid);
+    int getNumberOfUnreadMessagesFor(const conversation::Uid& uid);
 
     const ConversationModel& linked;
     Database& db;
@@ -289,7 +289,7 @@ ConversationModel::filteredConversation(const unsigned int row) const
 }
 
 void
-ConversationModel::makePermanent(const std::string& uid)
+ConversationModel::makePermanent(const conversation::Uid& uid)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
@@ -307,7 +307,7 @@ ConversationModel::makePermanent(const std::string& uid)
 }
 
 void
-ConversationModel::selectConversation(const std::string& uid) const
+ConversationModel::selectConversation(const conversation::Uid& uid) const
 {
     // Get conversation
     auto conversationIdx = pimpl_->indexOf(uid);
@@ -315,7 +315,7 @@ ConversationModel::selectConversation(const std::string& uid) const
     if (conversationIdx == -1)
         return;
 
-    if (uid.empty() && owner.contactModel->getContact("").profileInfo.uri.empty()) {
+    if (uid->empty() && owner.contactModel->getContact("").profileInfo.uri.empty()) {
         // if we select the temporary contact, check if its a valid contact.
         return;
     }
@@ -358,7 +358,7 @@ ConversationModel::selectConversation(const std::string& uid) const
 }
 
 void
-ConversationModel::removeConversation(const std::string& uid, bool banned)
+ConversationModel::removeConversation(const conversation::Uid& uid, bool banned)
 {
     // Get conversation
     auto conversationIdx = pimpl_->indexOf(uid);
@@ -391,7 +391,7 @@ ConversationModel::deleteObsoleteHistory(int days)
 }
 
 void
-ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
+ConversationModelPimpl::placeCall(const conversation::Uid& uid, bool isAudioOnly)
 {
     auto conversationIdx = indexOf(uid);
 
@@ -444,7 +444,7 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
     conversation.callId = linked.owner.callModel->createCall(url, isAudioOnly);
-    if (convId.empty()) {
+    if (convId->empty()) {
         // The conversation has changed because it was with the temporary item
         auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
         auto common = database::getConversationsBetween(db, accountId, contactProfileId);
@@ -461,19 +461,19 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 }
 
 void
-ConversationModel::placeAudioOnlyCall(const std::string& uid)
+ConversationModel::placeAudioOnlyCall(const conversation::Uid& uid)
 {
     pimpl_->placeCall(uid, true);
 }
 
 void
-ConversationModel::placeCall(const std::string& uid)
+ConversationModel::placeCall(const conversation::Uid& uid)
 {
     pimpl_->placeCall(uid);
 }
 
 void
-ConversationModel::sendMessage(const std::string& uid, const std::string& body)
+ConversationModel::sendMessage(const conversation::Uid& uid, const std::string& body)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
@@ -511,7 +511,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         } else
             daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
 
-        if (convId.empty()) {
+        if (convId->empty()) {
             // The conversation has changed because it was with the temporary item
             auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
             auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
@@ -565,7 +565,7 @@ ConversationModel::setFilter(const profile::Type& filter)
 }
 
 void
-ConversationModel::joinConversations(const std::string& uidA, const std::string& uidB)
+ConversationModel::joinConversations(const conversation::Uid& uidA, const conversation::Uid& uidB)
 {
     auto conversationAIdx = pimpl_->indexOf(uidA);
     auto conversationBIdx = pimpl_->indexOf(uidB);
@@ -596,7 +596,7 @@ ConversationModel::joinConversations(const std::string& uidA, const std::string&
 }
 
 void
-ConversationModel::clearHistory(const std::string& uid)
+ConversationModel::clearHistory(const conversation::Uid& uid)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
@@ -758,7 +758,7 @@ ConversationModelPimpl::sortConversations()
             auto historyA = conversationA.interactions;
             auto historyB = conversationB.interactions;
             // A or B is a new conversation (without CONTACT interaction)
-            if (conversationA.uid.empty() || conversationB.uid.empty()) return conversationA.uid.empty();
+            if (conversationA.uid->empty() || conversationB.uid->empty()) return conversationA.uid->empty();
             if (historyA.empty()) return false;
             if (historyB.empty()) return true;
             // Sort by last Interaction
@@ -856,10 +856,10 @@ ConversationModelPimpl::slotContactRemoved(const std::string& uri)
         qDebug() << "ConversationModelPimpl::slotContactRemoved, but conversation not found";
         return; // Not a contact
     }
-    auto& conversationUid = conversations[conversationIdx].uid;
+    auto& Uid = conversations[conversationIdx].uid;
     conversations.erase(conversations.begin() + conversationIdx);
     dirtyConversations = true;
-    emit linked.conversationRemoved(conversationUid);
+    emit linked.conversationRemoved(Uid);
     emit linked.modelSorted();
 }
 
@@ -934,7 +934,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
 }
 
 int
-ConversationModelPimpl::indexOf(const std::string& uid) const
+ConversationModelPimpl::indexOf(const conversation::Uid& uid) const
 {
     for (unsigned int i = 0; i < conversations.size(); ++i) {
         if (conversations.at(i).uid == uid) return i;
@@ -1197,7 +1197,7 @@ ConversationModelPimpl::slotConferenceRemoved(const std::string& confId)
 }
 
 int
-ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
+ConversationModelPimpl::getNumberOfUnreadMessagesFor(const conversation::Uid& uid)
 {
     database::countUnreadFromInteractions(db, uid);
 }

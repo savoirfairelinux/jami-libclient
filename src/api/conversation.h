@@ -34,9 +34,26 @@ namespace api
 namespace conversation
 {
 
+/** DOC
+ */
+class Uid {
+public:
+    Uid() : impl_("<INVALID>") {};
+    explicit Uid(const std::string& uid) : impl_(uid) {}
+
+    operator const std::string&() const { return impl_; }
+
+    const std::string* operator -> () const {
+        return &impl_;
+    }
+
+private:
+    const std::string impl_;
+};
+
 struct Info
 {
-    std::string uid = "";
+    Uid uid;
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;

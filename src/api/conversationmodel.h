@@ -46,6 +46,7 @@ namespace api
 
 namespace account { struct Info; }
 namespace interaction { struct Info; }
+namespace conversation { class Uid; }
 class BehaviorController;
 class NewAccountModel;
 
@@ -82,34 +83,34 @@ public:
      * @param uid of the conversation to change.
      * @exception std::out_of_range if uid doesn't correspond to an existing conversation
      */
-    void makePermanent(const std::string& uid);
+    void makePermanent(const conversation::Uid& uid);
     /**
      * Remove a conversation and the contact if it's a dialog
      * @param uid of the conversation
      * @param banned if we want to ban the contact.
      */
-    void removeConversation(const std::string& uid, bool banned=false);
+    void removeConversation(const conversation::Uid& uid, bool banned=false);
     /**
      * Get the action wanted by the user when they click on the conversation
      * @param uid of the conversation
      */
-    void selectConversation(const std::string& uid) const;
+    void selectConversation(const conversation::Uid& uid) const;
     /**
      * Call contacts linked to this conversation
      * @param uid of the conversation
      */
-    void placeCall(const std::string& uid);
+    void placeCall(const conversation::Uid& uid);
     /**
      * Perform an audio call with contacts linked to this conversation
      * @param uid of the conversation
      */
-    void placeAudioOnlyCall(const std::string& uid);
+    void placeAudioOnlyCall(const conversation::Uid& uid);
     /**
      * Send a message to the conversation
      * @param uid of the conversation
      * @param body of the message
      */
-    void sendMessage(const std::string& uid, const std::string& body);
+    void sendMessage(const conversation::Uid& uid, const std::string& body);
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
      * @param filter the new filter
@@ -126,12 +127,12 @@ public:
      * @param uidA uid of the conversation A
      * @param uidB uid of the conversation B
      */
-    void joinConversations(const std::string& uidA, const std::string& uidB);
+    void joinConversations(const conversation::Uid& uidA, const conversation::Uid& uidB);
     /**
      * Clear the history of a conversation
      * @param uid of the conversation
      */
-    void clearHistory(const std::string& uid);
+    void clearHistory(const conversation::Uid& uid);
     /**
      * change the status of the interaction from UNREAD to READ
      * @param convId, id of the conversation
@@ -154,7 +155,7 @@ Q_SIGNALS:
      * @param uid of msg
      * @param msg
      */
-    void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const;
+    void newUnreadMessage(const conversation::Uid& uid, uint64_t msgId, const interaction::Info& msg) const;
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction
@@ -168,7 +169,7 @@ Q_SIGNALS:
      * Emitted when user clear the history of a conversation
      * @param uid
      */
-    void conversationCleared(const std::string& uid) const;
+    void conversationCleared(const conversation::Uid& uid) const;
     /**
      * Emitted when conversations are sorted by last interaction
      */
@@ -181,12 +182,12 @@ Q_SIGNALS:
      * Emitted when a conversation has been added
      * @param uid
      */
-    void newConversation(const std::string& uid) const;
+    void newConversation(const conversation::Uid& uid) const;
     /**
      * Emitted when a conversation has been removed
      * @param uid
      */
-    void conversationRemoved(const std::string& uid) const;
+    void conversationRemoved(const conversation::Uid& uid) const;
     /**
      * Emitted after all history were cleared
      * @note the client must connect this signal to know when update the view of the list
