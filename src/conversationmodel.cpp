@@ -235,8 +235,13 @@ ConversationModel::~ConversationModel()
 const ConversationModel::ConversationQueue&
 ConversationModel::allFilteredConversations() const
 {
-    if (!pimpl_->dirtyConversations)
+    if (!pimpl_->dirtyConversations) {
+        //~ qDebug() << "LISTE 1 :" ;
+        //~ for (auto item : pimpl_->filteredConversations)
+            //~ qDebug() << item.participants[0].c_str();
+        
         return pimpl_->filteredConversations;
+    }
 
     pimpl_->filteredConversations = pimpl_->conversations;
 
@@ -275,6 +280,10 @@ ConversationModel::allFilteredConversations() const
         });
     pimpl_->filteredConversations.resize(std::distance(pimpl_->filteredConversations.begin(), it));
     pimpl_->dirtyConversations = false;
+
+    //~ qDebug() << "LISTE 2 :" ;
+    //~ for (auto item : pimpl_->filteredConversations)
+            //~ qDebug() << item.participants[0].c_str();
     return pimpl_->filteredConversations;
 }
 
@@ -306,7 +315,7 @@ ConversationModel::makePermanent(const std::string& uid)
     }
 
     // Send contact request if non used
-    pimpl_->sendContactRequest(conversation.participants.front());
+    //~ pimpl_->sendContactRequest(conversation.participants.front());
 }
 
 void
@@ -332,6 +341,7 @@ ConversationModel::selectConversation(const std::string& uid) const
             case call::Status::CONNECTING:
             case call::Status::SEARCHING:
                 // We are currently in a call
+                qDebug() << "mx1 : " << conversation.uid.c_str();
                 emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
                 break;
             case call::Status::PAUSED:
@@ -393,6 +403,7 @@ ConversationModel::deleteObsoleteHistory(int days)
 void
 ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
+    qDebug() << "mx0 :" << uid.c_str();
     auto conversationIdx = indexOf(uid);
 
     if (conversationIdx == -1)
@@ -404,6 +415,8 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         qDebug() << "ConversationModel::placeCall can't call a conversation without participant";
         return;
     }
+
+    qDebug() << "mx2 : " << conversation.uid.c_str();
 
     // Disallow multiple call
     if (!conversation.callId.empty()) {
@@ -434,30 +447,39 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 
     auto convId = uid;
     auto accountId = accountProfileId;
-
+qDebug() << "mx2d : " << conversation.uid.c_str();
     auto participant = conversation.participants.front();
     auto contactInfo = linked.owner.contactModel->getContact(participant);
     auto url = contactInfo.profileInfo.uri;
     if (url.empty()) return; // Incorrect item
-    sendContactRequest(participant);
+    //~ sendContactRequest(participant); // [jn] le coupable
+qDebug() << "mx2c : " << conversation.uid.c_str();
     if (linked.owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
+
     conversation.callId = linked.owner.callModel->createCall(url, isAudioOnly);
-    if (convId.empty()) {
-        // The conversation has changed because it was with the temporary item
-        auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
-        auto common = database::getConversationsBetween(db, accountId, contactProfileId);
+qDebug() << "mx2b : " << conversation.uid.c_str();
+    //~ if (convId.empty()) {
+        //~ qDebug() << "C C C C C C C C C C C C C C C C C C C C";
+        //~ // The conversation has changed because it was with the temporary item
+        //~ auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
+        //~ auto common = database::getConversationsBetween(db, accountId, contactProfileId);
+
+        //~ qDebug() << "common : " << common.front().c_str();
         
-        if (common.empty()) return;
-        convId = common.front();
-        // Get new conversation
-        conversationIdx = indexOf(convId);
-        if (conversationIdx == -1)
-            return;
-        conversation = conversations.at(conversationIdx);
-    }
+        //~ if (common.empty()) return;
+        //~ convId = common.front();
+        //~ // Get new conversation
+        //~ conversationIdx = indexOf(convId);
+        //~ if (conversationIdx == -1)
+            //~ return;
+        //~ conversation = conversations.at(conversationIdx);
+    //~ }
+
     dirtyConversations = true;
+    qDebug() << "mx2.1 : " << conversation.uid.c_str();
+
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
 }
 
@@ -496,7 +518,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     auto status = interaction::Status::SENDING;
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
-        pimpl_->sendContactRequest(participant);
+        //~ pimpl_->sendContactRequest(participant);
 
         QStringList callLists = CallManager::instance().getCallList(); // no auto
         // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
@@ -816,6 +838,7 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
         conversations.pop_front();
         dirtyConversations = true;
     }
+    qDebug() << "w w w w w w  w w w w w w w w w w w w w w";
     emit linked.modelSorted();
 }
 
@@ -873,7 +896,7 @@ ConversationModelPimpl::slotContactModelUpdated()
         // Create a conversation with the temporary item
         conversation::Info conversationInfo;
         auto temporaryContact = linked.owner.contactModel->getContact("");
-        conversationInfo.uid = temporaryContact.profileInfo.uri;
+        conversationInfo.uid = std::to_string(database::countConversations(db) + 1); // compter les conversations
         conversationInfo.participants.emplace_back("");
         conversationInfo.accountId = linked.owner.id;
         // if temporary contact is already present, its alias is empty.
@@ -883,13 +906,13 @@ ConversationModelPimpl::slotContactModelUpdated()
                 if (!firstContactUri.empty()) {
                     qDebug() << "L5";
                     std::lock_guard<std::mutex> lock(ConversationModelMtx);
-                    qDebug() << "L5x";
+                    qDebug() << "L5x" << conversationInfo.uid.c_str();
                     conversations.emplace_front(conversationInfo);
                 }
             } else {
                 qDebug() << "L4";
                 std::lock_guard<std::mutex> lock(ConversationModelMtx);
-                qDebug() << "L4x";
+                qDebug() << "L4x" << conversationInfo.uid.c_str();
                 conversations.emplace_front(conversationInfo);
             }
         }
@@ -911,6 +934,7 @@ void
 ConversationModelPimpl::addConversationWith(const std::string& convId,
                                             const std::string& contactUri)
 {
+    qDebug() << "G G G G G G G G G G G G G G";
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
@@ -938,7 +962,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
     qDebug() << "L3";
     std::lock_guard<std::mutex> lock(ConversationModelMtx);
-    qDebug() << "L3x";
+    qDebug() << "L3x" << conversation.uid.c_str();
     conversations.emplace_front(conversation);
     dirtyConversations = true;
 }
@@ -982,6 +1006,7 @@ ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::s
     qDebug() << "Add call to conversation with " << fromId.c_str();
     conversation.callId = callId;
     dirtyConversations = true;
+qDebug() << "mx3 : " << conversation.uid.c_str();
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
 }
 

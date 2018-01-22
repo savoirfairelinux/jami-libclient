@@ -229,6 +229,11 @@ void addContact(Database& db, const std::string& accountUri, const std::string& 
  */
 int countUnreadFromInteractions(Database& db, const std::string& conversationId);
 
+/**
+ * count number of conversations in 'conversations' table.
+ */
+int countConversations(Database& db);
+
 } // namespace database
 
 } // namespace authority

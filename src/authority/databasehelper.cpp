@@ -146,10 +146,8 @@ std::string
 beginConversationsBetween(Database& db, const std::string& accountProfile, const std::string& contactProfile, const std::string& firstMessage)
 {
     // Add conversation between account and profile
-    auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1",
-                                        "conversations",
-                                        "1=1",
-                                        {}).payloads[0];
+    auto newConversationsId = std::to_string(db.count("id", "conversations", "id>'-1'"));
+
     db.insertInto("conversations",
                   {{":id", "id"}, {":participant_id", "participant_id"}},
                   {{":id", newConversationsId}, {":participant_id", accountProfile}});
@@ -168,6 +166,7 @@ beginConversationsBetween(Database& db, const std::string& accountProfile, const
                       {":timestamp", std::to_string(std::time(nullptr))},
                       {":body", firstMessage}, {":type", "CONTACT"},
                       {":status", "SUCCEED"}});
+
     return newConversationsId;
 }
 
@@ -362,6 +361,12 @@ void
 deleteObsoleteHistory(Database& db, long int date)
 {
     db.deleteFrom("interactions", "timestamp<=:date", {{":date", std::to_string(date)}});
+}
+
+int
+countConversations(Database& db)
+{
+    return db.count("id", "conversations", "id>'-1'");
 }
 
 } // namespace database
