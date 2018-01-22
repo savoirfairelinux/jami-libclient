@@ -289,7 +289,7 @@ ConversationModel::filteredConversation(const unsigned int row) const
 }
 
 void
-ConversationModel::makePermanent(const std::string& uid)
+ConversationModel::makePermanent(const conversationUid& uid)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx == -1)
