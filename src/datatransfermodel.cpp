@@ -76,8 +76,8 @@ public:
 
     std::string registerTransferId(DRing::DataTransferId id);
 
-public Q_SLOTS:
-    void slotDataTransferEvent(qulonglong id, uint code);
+//~ public Q_SLOTS:
+    //~ void slotDataTransferEvent(qulonglong id, uint code);
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link,
@@ -90,8 +90,8 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link,
     , database {database}
     , upLink {up_link}
 {
-    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::dataTransferEvent,
-            this, &DataTransferModel::Impl::slotDataTransferEvent);
+    //~ connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::dataTransferEvent,
+            //~ this, &DataTransferModel::Impl::slotDataTransferEvent);
 }
 
 std::string
@@ -109,21 +109,21 @@ DataTransferModel::Impl::registerTransferId(DRing::DataTransferId dring_id)
     }
 }
 
-void
-DataTransferModel::Impl::slotDataTransferEvent(qulonglong dring_id, uint code)
-{
-    auto lrc_id = registerTransferId(dring_id);
-    auto event = DRing::DataTransferEventCode(code);
-    if (event == DRing::DataTransferEventCode::created) {
-        auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-        if (!info.isOutgoing) {
-            emit upLink.incomingTransfer(lrc_id, info.displayName.toStdString(), info.totalSize, info.bytesProgress);
-            return;
-        }
-    }
+//~ void
+//~ DataTransferModel::Impl::slotDataTransferEvent(qulonglong dring_id, uint code)
+//~ {
+    //~ auto lrc_id = registerTransferId(dring_id);
+    //~ auto event = DRing::DataTransferEventCode(code);
+    //~ if (event == DRing::DataTransferEventCode::created) {
+        //~ auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
+        //~ if (!info.isOutgoing) {
+            //~ emit upLink.incomingTransfer(lrc_id, info.displayName.toStdString(), info.totalSize, info.bytesProgress);
+            //~ return;
+        //~ }
+    //~ }
 
-    emit upLink.transferStatusChanged(lrc_id, convertDataTransferEvent(event));
-}
+    //~ emit upLink.transferStatusChanged(lrc_id, convertDataTransferEvent(event));
+//~ }
 
 DataTransferModel::DataTransferModel(Database& database,
                                      const CallbacksHandler& callbacksHandler,
