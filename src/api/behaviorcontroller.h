@@ -41,6 +41,11 @@ namespace conversation
     class Info;
 }
 
+namespace datatransfer
+{
+    class Info;
+}
+
 /**
   *  @brief Class that helps to control behaviors from the client side.
   *  @note This class must only refer to the common behaviors.

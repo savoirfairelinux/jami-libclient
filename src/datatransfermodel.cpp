@@ -18,7 +18,6 @@
 
 // LRC
 #include "api/datatransfermodel.h"
-#include "api/behaviorcontroller.h"
 #include "callbackshandler.h"
 #include "database.h"
 
@@ -64,33 +63,29 @@ class DataTransferModel::Impl : public QObject
 public:
     Impl(DataTransferModel& up_link,
          Database& database,
-         const CallbacksHandler& callbacksHandler,
-         const api::BehaviorController& behaviorController);
+         const CallbacksHandler& callbacksHandler);
 
     DataTransferModel& upLink;
     std::map<DRing::DataTransferId, std::string> dring2lrcIdMap;
     std::map<std::string, DRing::DataTransferId> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
     Database& database;
     const CallbacksHandler& callbacksHandler;
-    const BehaviorController& behaviorController;
 
     std::string registerTransferId(DRing::DataTransferId id);
 
 public Q_SLOTS:
-    void slotDataTransferEvent(qulonglong id, uint code);
+    void slotDataTransferEvent(long long dring_id, uint code);
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link,
                               Database& database,
-                              const CallbacksHandler& callbacksHandler,
-                              const api::BehaviorController& behaviorController)
+                              const CallbacksHandler& callbacksHandler)
     : QObject {}
-    , behaviorController {behaviorController}
     , callbacksHandler {callbacksHandler}
     , database {database}
     , upLink {up_link}
 {
-    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::dataTransferEvent,
+    connect(&callbacksHandler, &CallbacksHandler::incomingTransfer,
             this, &DataTransferModel::Impl::slotDataTransferEvent);
 }
 
@@ -110,26 +105,24 @@ DataTransferModel::Impl::registerTransferId(DRing::DataTransferId dring_id)
 }
 
 void
-DataTransferModel::Impl::slotDataTransferEvent(qulonglong dring_id, uint code)
+DataTransferModel::Impl::slotDataTransferEvent(long long dring_id, uint code)
 {
-    auto lrc_id = registerTransferId(dring_id);
     auto event = DRing::DataTransferEventCode(code);
     if (event == DRing::DataTransferEventCode::created) {
         auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
         if (!info.isOutgoing) {
-            emit upLink.incomingTransfer(lrc_id, info.displayName.toStdString(), info.totalSize, info.bytesProgress);
+            emit upLink.incomingTransfer("", "", 0, 0);
             return;
         }
     }
 
-    emit upLink.transferStatusChanged(lrc_id, convertDataTransferEvent(event));
+    emit upLink.transferStatusChanged("", convertDataTransferEvent(event));
 }
 
 DataTransferModel::DataTransferModel(Database& database,
-                                     const CallbacksHandler& callbacksHandler,
-                                     const api::BehaviorController& behaviorController)
+                                     const CallbacksHandler& callbacksHandler)
     : QObject()
-    , pimpl_ { std::make_unique<Impl>(*this, database, callbacksHandler, behaviorController) }
+    , pimpl_ { std::make_unique<Impl>(*this, database, callbacksHandler) }
 {}
 
 DataTransferModel::~DataTransferModel() = default;
