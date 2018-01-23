@@ -33,6 +33,7 @@
 #include "api/newaccountmodel.h"
 #include "api/account.h"
 #include "api/call.h"
+#include "api/datatransfer.h"
 #include "callbackshandler.h"
 #include "authority/databasehelper.h"
 
@@ -210,6 +211,11 @@ public Q_SLOTS:
      * @param confId
      */
     void slotConferenceRemoved(const std::string& confId);
+
+    void slotIncomingTransfer(const std::string& uid,
+                              const std::string& display_name,
+                              const std::size_t size,
+                              const std::size_t offset);
 
 };
 
@@ -699,6 +705,12 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::conferenceRemoved,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
+
+    // Data Transfer related
+    connect(&callbacksHandler,
+            &CallbacksHandler::incomingTransfer,
+            this,
+            &ConversationModelPimpl::slotIncomingTransfer);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1200,6 +1212,19 @@ int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
     database::countUnreadFromInteractions(db, uid);
+}
+
+void
+ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
+                                             const std::string& display_name,
+                                             const std::size_t size,
+                                             const std::size_t offset)
+{
+    // [jn] on a besoin de pouvoir vérifier que c'est bien ce conversation model qui doit traîter les données et les
+    // envoyer au client
+
+    emit behaviorController.incomingTransfer(linked.owner.id, "", {});
+
 }
 
 } // namespace lrc
