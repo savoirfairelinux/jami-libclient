@@ -49,8 +49,7 @@ class LIB_EXPORT DataTransferModel : public QObject {
 
 public:
     DataTransferModel(Database& database,
-                      const CallbacksHandler& callbacksHandler,
-                      const api::BehaviorController& behaviorController);
+                      const CallbacksHandler& callbacksHandler);
     ~DataTransferModel();
 
     std::vector<std::string> transferIdList() const;
@@ -85,7 +84,7 @@ Q_SIGNALS:
      * @param transfer_id unique identification of incoming data transfer.
      * @param status reported status.
      */
-    void transferStatusChanged(const std::string& uid, datatransfer::Status status);
+    //~ void transferStatusChanged(const std::string& uid, datatransfer::Status status);
 
 private:
     class Impl;
