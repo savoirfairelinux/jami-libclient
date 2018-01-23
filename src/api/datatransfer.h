@@ -44,6 +44,8 @@ struct Info
     std::size_t progress; ///< if status >= on_progress, gives number of bytes tx/rx until now
     std::string path;
     std::string displayName;
+    std::string accountId;
+    std::string peerUri;
 };
 
 } // namespace lrc::api::datatransfer

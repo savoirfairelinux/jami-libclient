@@ -73,6 +73,8 @@ static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTrans
     argument << info.bytesProgress;
     argument << info.displayName;
     argument << info.path;
+    argument << info.accountId;
+    argument << info.peer;
     argument.endStructure();
 
     return argument;
@@ -87,6 +89,8 @@ static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Dat
     argument >> info.bytesProgress;
     argument >> info.displayName;
     argument >> info.path;
+    argument >> info.accountId;
+    argument >> info.peer;
     argument.endStructure();
 
     return argument;
