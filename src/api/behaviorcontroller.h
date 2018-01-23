@@ -41,6 +41,11 @@ namespace conversation
     class Info;
 }
 
+namespace datatransfer
+{
+    class Info;
+}
+
 /**
   *  @brief Class that helps to control behaviors from the client side.
   *  @note This class must only refer to the common behaviors.
@@ -65,6 +70,12 @@ Q_SIGNALS:
      * Emitted when the client should open the incoming call view.
      */
     void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    /**
+     * Emitted when a transfer is incoming.
+     */
+    void incomingTransfer(const std::string& accountId,
+                          const std::string& contactUri,
+                          const api::datatransfer::Info&) const;
 };
 
 } // namespace api

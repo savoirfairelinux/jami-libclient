@@ -22,6 +22,7 @@
 #include "api/account.h"
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
+#include "api/datatransfer.h"
 
 // Lrc
 #include "account.h"
@@ -29,6 +30,9 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "namedirectory.h"
+
+// DRing
+#include <datatransfer_interface.h>
 
 namespace lrc
 {
@@ -109,6 +113,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallManagerInterface::incomingMessage,
             this,
             &CallbacksHandler::slotIncomingMessage);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::dataTransferEvent,
+            this,
+            &CallbacksHandler::slotDataTransferEvent);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -270,6 +279,32 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 {
     emit accountMessageStatusChanged(accountId.toStdString(), id,
                                      to.toStdString(), status);
+}
+
+void
+CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
+{
+    // [jn] ce slot doit uniquement convertir les param de qt à std
+    //~ auto lrc_id = registerTransferId(dring_id);
+    //~ auto event = DRing::DataTransferEventCode(code);
+    //~ if (event == DRing::DataTransferEventCode::created) {
+        //~ auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id)); // [jn] ancienne lrc
+        //~ if (!info.isOutgoing) {
+            //~ datatransfer::Info dataTransferInfo;
+            //~ dataTransferInfo.uid = lrc_id;
+            //~ dataTransferInfo.isOutgoing = dring_info.isOutgoing;
+            //~ dataTransferInfo.totalSize = dring_info.totalSize;
+            //~ dataTransferInfo.progress = dring_info.lastEvent;
+            //~ dataTransferInfo.path = dring_info.displayName.toStdString();
+            //~ dataTransferInfo.displayName = dring_info.displayName.toStdString();
+            //~ dataTransferInfo.status = convertDataTransferEvent(DRing::DataTransferEventCode(dring_info.lastEvent));
+            
+            //~ emit incomingTransfer(lrc_id, info.displayName.toStdString(), info.totalSize, info.bytesProgress);
+            //~ return;
+        //~ }
+    //~ }
+
+    //~ emit transferStatusChanged(lrc_id, convertDataTransferEvent(event));
 }
 
 } // namespace lrc

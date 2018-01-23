@@ -33,6 +33,8 @@
 #include "api/newaccountmodel.h"
 #include "api/account.h"
 #include "api/call.h"
+#include "api/datatransfer.h"
+#include "api/datatransfermodel.h"
 #include "callbackshandler.h"
 #include "authority/databasehelper.h"
 
@@ -135,6 +137,7 @@ public:
     const CallbacksHandler& callbacksHandler;
     const std::string accountProfileId;
     const BehaviorController& behaviorController;
+    const DataTransferModel dataTransferModel;
 
     ConversationModel::ConversationQueue conversations; ///< non-filtered conversations
     ConversationModel::ConversationQueue filteredConversations;
@@ -210,6 +213,11 @@ public Q_SLOTS:
      * @param confId
      */
     void slotConferenceRemoved(const std::string& confId);
+
+    void slotIncomingTransfer(const std::string& uid,
+                              const std::string& display_name,
+                              const std::size_t size,
+                              const std::size_t offset);
 
 };
 
@@ -652,6 +660,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , typeFilter(profile::Type::INVALID)
 , accountProfileId(database::getProfileId(db, linked.owner.profileInfo.uri))
 , behaviorController(behaviorController)
+, dataTransferModel(db, callbacksHandler)
 {
     initConversations();
 
@@ -699,6 +708,12 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::conferenceRemoved,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
+
+    // Data Transfer related // [jn] ce n'est pas dans ce sens là
+    //~ connect(&dataTransferModel,
+            //~ &DataTransferModel::incomingTransfer,
+            //~ this,
+            //~ &ConversationModelPimpl::slotIncomingTransfer);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1200,6 +1215,20 @@ int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
     database::countUnreadFromInteractions(db, uid);
+}
+
+void
+ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
+                                             const std::string& display_name,
+                                             const std::size_t size,
+                                             const std::size_t offset)
+{
+    // [jn] on a besoin de pouvoir vérifier que c'est bien ce conversation model qui doit traîter les données et les
+    // envoyer au client
+
+    //~ emit dataTransferModel.incomingTransfer(linked.owner.id, "", {});
+    emit linked.newUnreadMessage("", -1, {});
+
 }
 
 } // namespace lrc
