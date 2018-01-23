@@ -48,6 +48,8 @@ struct DataTransferInfo
     qulonglong bytesProgress;
     QString displayName;
     QString path;
+    QString accountId;
+    QString peer;
 };
 
 /**

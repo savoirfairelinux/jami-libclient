@@ -174,6 +174,8 @@ DataTransferModel::transferInfo(const std::string& lrc_id)
     lrc_info.path = dring_info.displayName.toStdString();
     lrc_info.displayName = dring_info.displayName.toStdString();
     lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(dring_info.lastEvent));
+    lrc_info.accountId = dring_info.accountId.toStdString();
+    lrc_info.peerUri = dring_info.peer.toStdString();
     return lrc_info;
 }
 

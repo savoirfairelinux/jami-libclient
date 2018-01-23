@@ -603,6 +603,8 @@ public Q_SLOTS: // METHODS
         lrc_info.bytesProgress = dring_info.bytesProgress;
         lrc_info.displayName = QString::fromStdString(dring_info.displayName);
         lrc_info.path = QString::fromStdString(dring_info.path);
+        lrc_info.accountId = QString::fromStdString(dring_info.accountId);
+        lrc_info.peer = QString::fromStdString(dring_info.peer);
         return lrc_info;
     }
 
