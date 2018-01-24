@@ -229,6 +229,10 @@ void addContact(Database& db, const std::string& accountUri, const std::string& 
  */
 int countUnreadFromInteractions(Database& db, const std::string& conversationId);
 
+int addDataTransferToConversation(Database& db,
+                                  const std::string& accountProfileId,
+                                  const std::string& conversationId,
+                                  const DataTransferInfo& infoFromDaemon);
 } // namespace database
 
 } // namespace authority

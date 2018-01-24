@@ -282,9 +282,15 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
+CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 {
-    emit incomingTransfer(-1, -1);
+    qDebug() << "$$$ CallbacksHandler::slotDataTransferEvent";
+    auto event = DRing::DataTransferEventCode(codeStatus);
+    
+    if (event == DRing::DataTransferEventCode::created)
+        emit incomingTransfer(static_cast<long long>(dringId));
+
+    emit transferStatusChanged(static_cast<long long>(dringId), codeStatus);
 }
 
 } // namespace lrc

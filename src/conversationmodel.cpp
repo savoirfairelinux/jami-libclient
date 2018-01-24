@@ -214,13 +214,9 @@ public Q_SLOTS:
      */
     void slotConferenceRemoved(const std::string& confId);
 
-    void slotIncomingTransfer(const std::string& uid,
-                              const std::string& display_name,
-                              const std::size_t size,
-                              const std::size_t offset);
+    void slotIncomingTransfer(long long dringId);
 
-    void slotTransferStatusChanged(const std::string& uid,
-                               datatransfer::Status status);
+    void slotTransferStatusChanged(long long dringId, uint codeStatus);
 
 };
 
@@ -712,13 +708,13 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
 
-    connect(&dataTransferModel,
-            &DataTransferModel::incomingTransfer,
+    connect(&callbacksHandler,
+            &CallbacksHandler::incomingTransfer,
             this,
             &ConversationModelPimpl::slotIncomingTransfer);
 
-    connect(&dataTransferModel,
-            &DataTransferModel::transferStatusChanged,
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusChanged,
             this,
             &ConversationModelPimpl::slotTransferStatusChanged);
 
@@ -1226,17 +1222,51 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 }
 
 void
-ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
-                                             const std::string& display_name,
-                                             const std::size_t size,
-                                             const std::size_t offset)
+ConversationModelPimpl::slotIncomingTransfer(long long dringId)
 {
-    emit linked.newInteraction("", -1, {});
+    qDebug() << "$$$ ConversationModelPimpl::slotIncomingTransfer";
+    // no auto
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // add interaction to the db
+    auto interactionId = database::addDataTransferToConversation(db, accountProfileId, conv[0], infoFromDaemon);
+
+    datatransfer::Info dataTransferInfo = {std::to_string(interactionId),
+                                           datatransfer::Status::on_connection,
+                                           infoFromDaemon.isOutgoing,
+                                           infoFromDaemon.totalSize,
+                                           infoFromDaemon.bytesProgress,
+                                           infoFromDaemon.path.toStdString(),
+                                           infoFromDaemon.displayName.toStdString(),
+                                           infoFromDaemon.accountId.toStdString(),
+                                           infoFromDaemon.peer.toStdString()};
+
+    // add transfert to the transfer model
+
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            emit linked.newInteraction(conv[0], interactionId, it->second);
+        }
+    }
 }
 
 void
-ConversationModelPimpl::slotTransferStatusChanged(const std::string& uid, datatransfer::Status status)
+ConversationModelPimpl::slotTransferStatusChanged(long long dringId, uint codeStatus)
 {
+    // get transfer from the model
+    
     emit linked.interactionStatusUpdated("", -1, {});
 }
 

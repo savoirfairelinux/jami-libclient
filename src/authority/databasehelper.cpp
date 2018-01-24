@@ -18,6 +18,7 @@
  ***************************************************************************/
 #include "databasehelper.h"
 #include "api/profile.h"
+#include "api/datatransfer.h"
 
 namespace lrc
 {
@@ -207,6 +208,27 @@ addMessageToConversation(Database& db,
                           {":timestamp", std::to_string(msg.timestamp)},
                           {":body", msg.body}, {":type", to_string(msg.type)},
                           {":status", to_string(msg.status)}});
+}
+
+int
+addDataTransferToConversation(Database& db,
+                              const std::string& accountProfileId,
+                              const std::string& conversationId,
+                              const DataTransferInfo& infoFromDaemon)
+{
+    auto peerProfileId = getProfileId(db, infoFromDaemon.peer.toStdString());
+    auto authorId = (infoFromDaemon.isOutgoing) ? peerProfileId : peerProfileId;
+
+    //~ return db.insertInto("interactions",
+                          //~ {{":account_id", "account_id"}, {":author_id", "author_id"},
+                          //~ {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                          //~ {":body", "body"}, {":type", "type"},
+                          //~ {":status", "status"}},
+                          //~ {{":account_id", accountProfileId}, {":author_id", authorId},
+                          //~ {":conversation_id", conversationId},
+                          //~ {":timestamp", std::to_string(std::time(nullptr))},
+                          //~ {":body", infoFromDaemon.displayName}, {":type", "DATA_TRANSFER"},
+                          //~ {":status", "UNKNOWN"}});
 }
 
 int
