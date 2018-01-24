@@ -65,16 +65,13 @@ public:
          Database& database,
          const CallbacksHandler& callbacksHandler);
 
+    std::vector<std::string> transferIdList() const;
+
     DataTransferModel& upLink;
-    std::map<DRing::DataTransferId, std::string> dring2lrcIdMap;
-    std::map<std::string, DRing::DataTransferId> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
+    std::map<long long, int> dring2lrcIdMap;
+    std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
     Database& database;
     const CallbacksHandler& callbacksHandler;
-
-    std::string registerTransferId(DRing::DataTransferId id);
-
-public Q_SLOTS:
-    void slotDataTransferEvent(long long dring_id, uint code);
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link,
@@ -84,40 +81,17 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link,
     , callbacksHandler {callbacksHandler}
     , database {database}
     , upLink {up_link}
-{
-    connect(&callbacksHandler, &CallbacksHandler::incomingTransfer,
-            this, &DataTransferModel::Impl::slotDataTransferEvent);
-}
+{}
 
-std::string
-DataTransferModel::Impl::registerTransferId(DRing::DataTransferId dring_id)
-{
-    const auto& iter = dring2lrcIdMap.find(dring_id);
-    if (iter != std::cend(dring2lrcIdMap))
-        return iter->second;
-    while (true) {
-        auto res = dring2lrcIdMap.emplace(dring_id, QUuid::createUuid().toString().toStdString());
-        if (res.second) {
-            lrc2dringIdMap.emplace(res.first->second, dring_id);
-            return res.first->second;
-        }
-    }
-}
 
 void
-DataTransferModel::Impl::slotDataTransferEvent(long long dring_id, uint code)
+DataTransferModel::registerTransferId(long long dringId, int interactionId)
 {
-    auto event = DRing::DataTransferEventCode(code);
-    if (event == DRing::DataTransferEventCode::created) {
-        auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-        if (!info.isOutgoing) {
-            emit upLink.incomingTransfer("", "", 0, 0);
-            return;
-        }
-    }
 
-    emit upLink.transferStatusChanged("", convertDataTransferEvent(event));
+    pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
+    pimpl_->lrc2dringIdMap.emplace(interactionId, dringId);
 }
+
 
 DataTransferModel::DataTransferModel(Database& database,
                                      const CallbacksHandler& callbacksHandler)
@@ -128,21 +102,21 @@ DataTransferModel::DataTransferModel(Database& database,
 DataTransferModel::~DataTransferModel() = default;
 
 std::vector<std::string>
-DataTransferModel::transferIdList() const
+DataTransferModel::Impl::transferIdList() const
 {
     VectorULongLong dring_list = ConfigurationManager::instance().dataTransferList();
-    for (auto dring_id : dring_list) {
-         pimpl_->registerTransferId(dring_id);
-    }
+    //~ for (auto dring_id : dring_list) {
+         //~ pimpl_->registerTransferId(dring_id);
+    //~ }
     std::vector<std::string> result;
-    result.reserve(dring_list.size());
-    for (auto& item : pimpl_->lrc2dringIdMap) {
-        result.push_back(item.first);
-    }
+    //~ result.reserve(dring_list.size());
+    //~ for (auto& item : pimpl_->lrc2dringIdMap) {
+        //~ result.push_back(item.first);
+    //~ }
     return result;
 }
 
-std::string
+void
 DataTransferModel::sendFile(const std::string& account_id, const std::string& peer_uri,
                             const std::string& file_path, const std::string& display_name)
 {
@@ -151,47 +125,34 @@ DataTransferModel::sendFile(const std::string& account_id, const std::string& pe
                                                            QString::fromStdString(peer_uri),
                                                            QString::fromStdString(file_path),
                                                            QString::fromStdString(display_name)));
-    return pimpl_->registerTransferId(dring_id);
-}
-
-datatransfer::Info
-DataTransferModel::transferInfo(const std::string& lrc_id)
-{
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
-    auto dring_info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-    datatransfer::Info lrc_info;
-    lrc_info.uid = lrc_id;
-    lrc_info.isOutgoing = dring_info.isOutgoing;
-    lrc_info.totalSize = dring_info.totalSize;
-    lrc_info.progress = dring_info.lastEvent;
-    lrc_info.path = dring_info.displayName.toStdString();
-    lrc_info.displayName = dring_info.displayName.toStdString();
-    lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(dring_info.lastEvent));
-    lrc_info.accountId = dring_info.accountId.toStdString();
-    lrc_info.peerUri = dring_info.peer.toStdString();
-    return lrc_info;
 }
 
 std::streamsize
-DataTransferModel::bytesProgress(const std::string& lrc_id)
+DataTransferModel::bytesProgress(int interactionId)
 {
-    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(lrc_id));
+    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId));
 }
 
 void
-DataTransferModel::acceptFile(const std::string& lrc_id,
+DataTransferModel::accept(int interactionId,
                                       const std::string& file_path,
                                       std::size_t offset)
 {
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
+    auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().acceptFileTransfer(dring_id, QString::fromStdString(file_path), offset);
 }
 
 void
-DataTransferModel::cancel(const std::string& lrc_id)
+DataTransferModel::cancel(int interactionId)
 {
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
+    auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().cancelDataTransfer(dring_id);
+}
+
+int
+DataTransferModel::getInteractionIdFromDringId(long long dringId)
+{
+    return pimpl_->dring2lrcIdMap.at(dringId);
 }
 
 }} // namespace lrc::api

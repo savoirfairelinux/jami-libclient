@@ -148,9 +148,11 @@ public:
      */
     void deleteObsoleteHistory(int date);
 
-    void sendFile(const std::string& uid, const std::string& path, const std::string& filename);
+    void sendFile(const std::string& convUid, const std::string& path, const std::string& filename);
 
-    void acceptFile(const std::string& uid, uint64_t interactionId);
+    void acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path);
+
+    void cancelTransfer(const std::string& convUid, uint64_t interactionId);
 
 Q_SIGNALS:
     /**
