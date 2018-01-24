@@ -214,13 +214,16 @@ public Q_SLOTS:
      */
     void slotConferenceRemoved(const std::string& confId);
 
-    void slotIncomingTransfer(const std::string& uid,
-                              const std::string& display_name,
-                              const std::size_t size,
-                              const std::size_t offset);
+    void slotIncomingTransfer(long long dringId);
 
-    void slotTransferStatusChanged(const std::string& uid,
-                               datatransfer::Status status);
+    //~ void slotTransferStatusChanged(long long dringId, uint codeStatus);
+
+    void slotCancelTransfer(long long dringId);
+
+    void slotTransferStatusAwaiting(long long dringId);
+    void slotTransferStatusOngoing(long long dringId);
+    void slotTransferStatusFinished(long long dringId);
+    void slotTransferStatusError(long long dringId);
 
 };
 
@@ -712,16 +715,31 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
 
-    connect(&dataTransferModel,
-            &DataTransferModel::incomingTransfer,
+    // data transfer
+    connect(&callbacksHandler,
+            &CallbacksHandler::incomingTransfer,
             this,
             &ConversationModelPimpl::slotIncomingTransfer);
-
-    connect(&dataTransferModel,
-            &DataTransferModel::transferStatusChanged,
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusCanceled,
             this,
-            &ConversationModelPimpl::slotTransferStatusChanged);
-
+            &ConversationModelPimpl::slotCancelTransfer);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusAwaiting,
+            this,
+            &ConversationModelPimpl::slotTransferStatusAwaiting);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusOngoing,
+            this,
+            &ConversationModelPimpl::slotTransferStatusOngoing);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusFinished,
+            this,
+            &ConversationModelPimpl::slotTransferStatusFinished);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusError,
+            this,
+            &ConversationModelPimpl::slotTransferStatusError);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -948,6 +966,14 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
             }
             slotUpdateInteractionStatus(linked.owner.id, std::stoull(id),
                                         contactUri, status);
+        } else if (interaction.second.status == interaction::Status::TRANSFER_CREATED
+                   || interaction.second.status == interaction::Status::TRANSFER_AWAITING
+                   || interaction.second.status == interaction::Status::TRANSFER_ONGOING
+                   || interaction.second.status == interaction::Status::TRANSFER_ACCEPTED) {
+            // If a datatransfer was left in a non-terminal status in DB, we switch this status to ERROR
+            // TODO : Improve for DBus clients as daemon and transfer may still be ongoing
+            database::updateInteractionStatus(db, interaction.first, interaction::Status::TRANSFER_ERROR);
+            interaction.second.status = interaction::Status::TRANSFER_ERROR;
         }
     }
 
@@ -1226,18 +1252,95 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 }
 
 void
-ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
-                                             const std::string& display_name,
-                                             const std::size_t size,
-                                             const std::size_t offset)
+ConversationModelPimpl::slotIncomingTransfer(long long dringId)
 {
-    emit linked.newInteraction("", -1, {});
+    qDebug() << "$$$ ConversationModelPimpl::slotIncomingTransfer";
+    // no auto
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    qDebug() << "$$$ accountProfileId: " << QString::fromStdString(accountProfileId);
+    qDebug() << "$$$ contactProfileId: " << QString::fromStdString(contactProfileId);
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    qDebug() << "$$$ conv.size: " << conv.size();
+
+    if (conv.empty())
+        return;
+
+    qDebug() << "$$$ conv[0]: " << QString::fromStdString(conv[0]);
+
+    // add interaction to the db
+    auto interactionId = database::addDataTransferToConversation(db, accountProfileId, conv[0], infoFromDaemon);
+
+    qDebug() << "$$$ interactionId: " << interactionId;
+
+    // add transfert to the transfer model
+    dataTransferModel.registerTransferId(dringId, interactionId);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+
+        if (it != interactions.end()) {
+            qDebug() << "$$$ ERROR: dataXfer interaction already present";
+            return;
+        }
+
+        auto interaction = interaction::Info {contactProfileId, infoFromDaemon.displayName.toStdString(),
+                                              std::time(nullptr),
+                                              (infoFromDaemon.isOutgoing)?interaction::Type::OUTGOING_DATA_TRANSFER:interaction::Type::INCOMING_DATA_TRANSFER,
+                                              interaction::Status::TRANSFER_CREATED};
+
+        auto it2 = conversations[conversationIdx].interactions.emplace(interactionId, interaction);
+        qDebug() << "$$$ Add interaction: CREATED";
+        qDebug() << "interaction addr:" << &it2.first->second;
+        conversations[conversationIdx].lastMessageUid = interactionId;
+        dirtyConversations = true;
+        emit linked.newInteraction(conv[0], interactionId, interaction);
+        sortConversations();
+        emit linked.modelSorted();
+    }
 }
 
 void
-ConversationModelPimpl::slotTransferStatusChanged(const std::string& uid, datatransfer::Status status)
+ConversationModelPimpl::slotCancelTransfer(long long dringId)
 {
-    emit linked.interactionStatusUpdated("", -1, {});
+    qDebug() << "$$$ ConversationModelPimpl::slotCancelTransfer";
+    // no auto [jn] facto le code
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // get interaction id from data transfer model
+    auto interactionId = dataTransferModel.getInteractionIdFromDringId(dringId);
+
+    // update information in the db
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_CANCELED);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (acceptTransfer), to client " << "conv[0] :" << conv[0].c_str() << "interactionId :" << interactionId;
+            emit linked.interactionStatusUpdated(conv[0], interactionId, it->second);
+        }
+    }
 }
 
 void
@@ -1246,19 +1349,207 @@ ConversationModel::sendFile(const std::string& uid, const std::string& path, con
     auto conversationIdx = pimpl_->indexOf(uid);
     if (conversationIdx != -1) {
         auto& peerUri = pimpl_->conversations[conversationIdx].participants.front();
-        if (not peerUri.empty())
+        if (not peerUri.empty()) {
+            qDebug() << "$$$ owner.id: " << QString::fromStdString(owner.id);
+            qDebug() << "$$$ peerUri: " << QString::fromStdString(peerUri);
+            qDebug() << "$$$ path: " << QString::fromStdString(path);
+            qDebug() << "$$$ filename: " << QString::fromStdString(filename);
             pimpl_->dataTransferModel.sendFile(owner.id.c_str(), peerUri.c_str(), path.c_str(), filename.c_str());
+        }
     }
 }
 
 void
-ConversationModel::acceptFile(const std::string& uid, uint64_t interactionId)
+ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path)
 {
-    auto conversationIdx = pimpl_->indexOf(uid);
+    pimpl_->dataTransferModel.accept(interactionId, path, 0);
+    database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = pimpl_->indexOf(convUid);
     if (conversationIdx != -1) {
-        auto& dataTransferUid = pimpl_->dataTransferModel.transferIdList()[interactionId];
-        if (not dataTransferUid.empty())
-            pimpl_->dataTransferModel.acceptFile(dataTransferUid, "~", 0);
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (TRANSFER_ACCEPTED), to client " << "convUid :" << convUid.c_str() << "interactionId :" << interactionId;
+            qDebug() << "interaction addr:" << &it->second;
+            it->second.status = interaction::Status::TRANSFER_ACCEPTED;
+            pimpl_->dirtyConversations = true;
+            emit interactionStatusUpdated(convUid, interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interactionId)
+{
+    // For this action, we change interaction status before effective canceling as daemon will
+    // emit Finished event code immediatly (before leaving this method) in non-DBus mode.
+    auto conversationIdx = pimpl_->indexOf(convUid);
+    if (conversationIdx != -1) {
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (TRANSFER_CANCELED), to client " << "convUid :" << convUid.c_str() << "interactionId :" << interactionId;
+            it->second.status = interaction::Status::TRANSFER_CANCELED;
+
+            // update information in the db
+            database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_CANCELED);
+
+            // Forward cancel action to daemon
+            pimpl_->dataTransferModel.cancel(interactionId);
+            pimpl_->dirtyConversations = true;
+            emit interactionStatusUpdated(convUid, interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusAwaiting(long long dringId)
+{
+    qDebug() << "$$$ ConversationModelPimpl::slotTransferStatusAwaiting";
+    // no auto [jn] facto le code
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // get interaction id from data transfer model
+    auto interactionId = dataTransferModel.getInteractionIdFromDringId(dringId);
+
+    // update information in the db
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (TRANSFER_AWAITING), to client " << "conv[0] :" << conv[0].c_str() << "interactionId :" << interactionId;
+            qDebug() << "interaction addr:" << &it->second;
+            it->second.status = interaction::Status::TRANSFER_AWAITING;
+            qDebug() << "$$$ Set interaction: AWAITING";
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(conv[0], interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusOngoing(long long dringId)
+{
+    qDebug() << "$$$ ConversationModelPimpl::slotTransferStatusOngoing";
+    // no auto [jn] facto le code
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // get interaction id from data transfer model
+    auto interactionId = dataTransferModel.getInteractionIdFromDringId(dringId);
+
+    // update information in the db
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ONGOING);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (TRANSFER_ONGOING), to client " << "conv[0] :" << conv[0].c_str() << "interactionId :" << interactionId;
+            qDebug() << "interaction addr:" << &it->second;
+            it->second.status = interaction::Status::TRANSFER_ONGOING;
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(conv[0], interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusFinished(long long dringId)
+{
+    qDebug() << "$$$ ConversationModelPimpl::slotTransferStatusFinished";
+    // no auto [jn] facto le code
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // get interaction id from data transfer model
+    auto interactionId = dataTransferModel.getInteractionIdFromDringId(dringId);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            // We need to check if current status is ONGOING as CANCELED must not be transformed into FINISHED
+            if (it->second.status == interaction::Status::TRANSFER_ONGOING) {
+                // update information in the db
+                database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_FINISHED);
+                qDebug() << "$$$ (TRANSFER_FINISHED), to client " << "conv[0] :" << conv[0].c_str() << "interactionId :" << interactionId;
+                qDebug() << "interaction addr:" << &it->second;
+                it->second.status = interaction::Status::TRANSFER_FINISHED;
+                dirtyConversations = true;
+                emit linked.interactionStatusUpdated(conv[0], interactionId, it->second);
+            }
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusError(long long dringId)
+{
+    qDebug() << "$$$ ConversationModelPimpl::slotTransferStatusError";
+    // no auto [jn] facto le code
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+
+    // get the conversation if any
+    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+    if (conv.empty())
+        return;
+
+    // get interaction id from data transfer model
+    auto interactionId = dataTransferModel.getInteractionIdFromDringId(dringId);
+
+    // update information in the db
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ERROR);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(conv[0]);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            qDebug() << "$$$ (TRANSFER_ERROR), to client " << "conv[0] :" << conv[0].c_str() << "interactionId :" << interactionId;
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(conv[0], interactionId, it->second);
+        }
     }
 }
 
