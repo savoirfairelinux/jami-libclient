@@ -284,7 +284,7 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 void
 CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
 {
-    emit incomingTransfer(-1, -1);
+    emit incomingTransfer(static_cast<long long>(dring_id), code);
 }
 
 } // namespace lrc

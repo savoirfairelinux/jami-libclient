@@ -71,10 +71,10 @@ public:
     Database& database;
     const CallbacksHandler& callbacksHandler;
 
-    std::string registerTransferId(DRing::DataTransferId id);
+    std::string registerTransferId(long long dringId);
 
 public Q_SLOTS:
-    void slotDataTransferEvent(long long dring_id, uint code);
+    void slotDataTransferEvent(long long dringId, uint code);
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link,
@@ -90,34 +90,62 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link,
 }
 
 std::string
-DataTransferModel::Impl::registerTransferId(DRing::DataTransferId dring_id)
+DataTransferModel::Impl::registerTransferId(long long dringId)
 {
-    const auto& iter = dring2lrcIdMap.find(dring_id);
-    if (iter != std::cend(dring2lrcIdMap))
-        return iter->second;
-    while (true) {
-        auto res = dring2lrcIdMap.emplace(dring_id, QUuid::createUuid().toString().toStdString());
-        if (res.second) {
-            lrc2dringIdMap.emplace(res.first->second, dring_id);
-            return res.first->second;
-        }
-    }
+    return "-1";
 }
 
+
+
 void
-DataTransferModel::Impl::slotDataTransferEvent(long long dring_id, uint code)
+DataTransferModel::Impl::slotDataTransferEvent(long long dringId, uint code)
 {
     auto event = DRing::DataTransferEventCode(code);
     if (event == DRing::DataTransferEventCode::created) {
-        auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-        if (!info.isOutgoing) {
-            emit upLink.incomingTransfer("", "", 0, 0);
-            return;
-        }
+        // no auto
+        DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+        datatransfer::Info dataTransferInfo = {registerTransferId(dringId),
+                                             datatransfer::Status::on_connection,
+                                             infoFromDaemon.isOutgoing,
+                                             infoFromDaemon.totalSize,
+                                             infoFromDaemon.bytesProgress,
+                                             infoFromDaemon.path.toStdString(),
+                                             infoFromDaemon.displayName.toStdString(),
+                                             infoFromDaemon.accountId.toStdString(),
+                                             infoFromDaemon.peer.toStdString()};
+
+        if (not dataTransferInfo.isOutgoing)
+            emit upLink.incomingTransfer(dataTransferInfo);
     }
 
     emit upLink.transferStatusChanged("", convertDataTransferEvent(event));
 }
+
+//~ XXXXXXXXXXXXXXXXXXXXX
+//~ struct Info
+//~ {
+    //~ std::string uid; ///< long-term and unique identifier (used for historic)
+    //~ Status status;
+    //~ bool isOutgoing;
+    //~ std::size_t totalSize;
+    //~ std::size_t progress; ///< if status >= on_progress, gives number of bytes tx/rx until now
+    //~ std::string path;
+    //~ std::string displayName;
+    //~ std::string accountId;
+    //~ std::string peerUri;
+//~ };
+//~ XXXXXXXXXXXXXx
+    //~ bool isOutgoing; ///< Outgoing or Incoming?
+    //~ DataTransferEventCode lastEvent { DataTransferEventCode::created }; ///< Latest event code sent to the user
+    //~ std::size_t totalSize {0} ; ///< Total number of bytes to sent/receive, 0 if not known
+    //~ std::streamsize bytesProgress {0}; ///< Number of bytes sent/received
+    //~ std::string displayName; ///< Human oriented transfer name
+    //~ std::string path; ///< associated local file path if supported (empty, if not)
+    //~ std::string accountId; ///< Identifier of the emiter/receiver account
+    //~ std::string peer; ///< Identifier of the remote peer (in the semantic of the associated account)
+//~ XXXXXXXXXXXXXXXXXxx
+
+
 
 DataTransferModel::DataTransferModel(Database& database,
                                      const CallbacksHandler& callbacksHandler)
