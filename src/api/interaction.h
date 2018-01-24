@@ -75,7 +75,10 @@ enum class Status {
     FAILED,
     SUCCEED,
     READ,
-    UNREAD
+    UNREAD,
+    TRANSFER_CREATED, /*[jn] mettre à jour les fonctions de conversion */
+    TRANSFER_ACCEPTED,
+    TRANSFER_CANCELED
 };
 
 static inline const std::string

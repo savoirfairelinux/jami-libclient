@@ -160,7 +160,9 @@ Q_SIGNALS:
                                      const uint64_t id,
                                      const std::string& to, int status);
 
-    void incomingTransfer(long long dring_id, uint code);
+    void incomingTransfer(long long dringId);
+    void transferStatusChanged(const long long dringId, uint codeStatus);
+    void transferStatusCanceled(long long dringId);
 
 private Q_SLOTS:
     /**
