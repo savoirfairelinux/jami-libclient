@@ -22,6 +22,7 @@
 #include "api/account.h"
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
+#include "api/datatransfer.h"
 
 // Lrc
 #include "account.h"
@@ -29,6 +30,9 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "namedirectory.h"
+
+// DRing
+#include <datatransfer_interface.h>
 
 namespace lrc
 {
@@ -109,6 +113,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallManagerInterface::incomingMessage,
             this,
             &CallbacksHandler::slotIncomingMessage);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::dataTransferEvent,
+            this,
+            &CallbacksHandler::slotDataTransferEvent);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -270,6 +279,12 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 {
     emit accountMessageStatusChanged(accountId.toStdString(), id,
                                      to.toStdString(), status);
+}
+
+void
+CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
+{
+    emit incomingTransfer(-1, -1);
 }
 
 } // namespace lrc

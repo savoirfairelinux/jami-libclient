@@ -148,13 +148,17 @@ public:
      */
     void deleteObsoleteHistory(int date);
 
+    void sendFile(const std::string& uid, const std::string& path, const std::string& filename);
+
+    void acceptFile(const std::string& uid, uint64_t interactionId);
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction
      * @param uid of msg
      * @param msg
      */
-    void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const;
+    void newUnreadMessage(const std::string& uid, uint64_t msgId, const interaction::Info& msg) const; // [jn] rendre cette fonction plus générique en remplaçant message par interaction
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction

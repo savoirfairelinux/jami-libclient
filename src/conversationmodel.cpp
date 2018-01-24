@@ -33,6 +33,8 @@
 #include "api/newaccountmodel.h"
 #include "api/account.h"
 #include "api/call.h"
+#include "api/datatransfer.h"
+#include "api/datatransfermodel.h"
 #include "callbackshandler.h"
 #include "authority/databasehelper.h"
 
@@ -135,6 +137,7 @@ public:
     const CallbacksHandler& callbacksHandler;
     const std::string accountProfileId;
     const BehaviorController& behaviorController;
+    DataTransferModel dataTransferModel;
 
     ConversationModel::ConversationQueue conversations; ///< non-filtered conversations
     ConversationModel::ConversationQueue filteredConversations;
@@ -210,6 +213,14 @@ public Q_SLOTS:
      * @param confId
      */
     void slotConferenceRemoved(const std::string& confId);
+
+    void slotIncomingTransfer(const std::string& uid,
+                              const std::string& display_name,
+                              const std::size_t size,
+                              const std::size_t offset);
+
+    void slotTransferStatusChanged(const std::string& uid,
+                               datatransfer::Status status);
 
 };
 
@@ -652,6 +663,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , typeFilter(profile::Type::INVALID)
 , accountProfileId(database::getProfileId(db, linked.owner.profileInfo.uri))
 , behaviorController(behaviorController)
+, dataTransferModel(db, callbacksHandler)
 {
     initConversations();
 
@@ -699,6 +711,17 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::conferenceRemoved,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
+
+    connect(&dataTransferModel,
+            &DataTransferModel::incomingTransfer,
+            this,
+            &ConversationModelPimpl::slotIncomingTransfer);
+
+    connect(&dataTransferModel,
+            &DataTransferModel::transferStatusChanged,
+            this,
+            &ConversationModelPimpl::slotTransferStatusChanged);
+
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1200,6 +1223,43 @@ int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
     database::countUnreadFromInteractions(db, uid);
+}
+
+void
+ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
+                                             const std::string& display_name,
+                                             const std::size_t size,
+                                             const std::size_t offset)
+{
+    emit linked.newUnreadMessage("", -1, {});
+}
+
+void
+ConversationModelPimpl::slotTransferStatusChanged(const std::string& uid, datatransfer::Status status)
+{
+    emit linked.interactionStatusUpdated("", -1, {});
+}
+
+void
+ConversationModel::sendFile(const std::string& uid, const std::string& path, const std::string& filename)
+{
+    auto conversationIdx = pimpl_->indexOf(uid);
+    if (conversationIdx != -1) {
+        auto& peerUri = pimpl_->conversations[conversationIdx].participants.front();
+        if (not peerUri.empty())
+            pimpl_->dataTransferModel.sendFile(owner.id.c_str(), peerUri.c_str(), path.c_str(), filename.c_str());
+    }
+}
+
+void
+ConversationModel::acceptFile(const std::string& uid, uint64_t interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(uid);
+    if (conversationIdx != -1) {
+        auto& dataTransferUid = pimpl_->dataTransferModel.transferIdList()[interactionId];
+        if (not dataTransferUid.empty())
+            pimpl_->dataTransferModel.acceptFile(dataTransferUid, "~", 0);
+    }
 }
 
 } // namespace lrc

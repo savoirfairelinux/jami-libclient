@@ -160,6 +160,8 @@ Q_SIGNALS:
                                      const uint64_t id,
                                      const std::string& to, int status);
 
+    void incomingTransfer(long long dring_id, uint code);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -277,6 +279,8 @@ private Q_SLOTS:
     void slotAccountMessageStatusChanged(const QString& accountId,
                                          const uint64_t id,
                                          const QString& to, int status);
+
+    void slotDataTransferEvent(qulonglong id, uint code);
 
 private:
     const api::Lrc& parent;
