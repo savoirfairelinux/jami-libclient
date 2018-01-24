@@ -282,9 +282,35 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
+CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 {
-    emit incomingTransfer(-1, -1);
+    qDebug() << "$$$ CallbacksHandler::slotDataTransferEvent";
+    auto event = DRing::DataTransferEventCode(codeStatus);
+
+    switch (event) {
+    case DRing::DataTransferEventCode::created:
+        emit incomingTransfer(static_cast<long long>(dringId));
+        break;
+    case DRing::DataTransferEventCode::closed_by_host:
+    case DRing::DataTransferEventCode::closed_by_peer:
+        emit transferStatusCanceled(static_cast<long long>(dringId));
+        break;
+    case DRing::DataTransferEventCode::wait_peer_acceptance:
+    case DRing::DataTransferEventCode::wait_host_acceptance:
+        emit transferStatusAwaiting(static_cast<long long>(dringId));
+        break;
+    case DRing::DataTransferEventCode::ongoing:
+        emit transferStatusOngoing(static_cast<long long>(dringId));
+        break;
+    case DRing::DataTransferEventCode::finished:
+        emit transferStatusFinished(static_cast<long long>(dringId));
+        break;
+    case DRing::DataTransferEventCode::invalid_pathname:
+    case DRing::DataTransferEventCode::unjoinable_peer:
+    case DRing::DataTransferEventCode::unsupported:
+        emit transferStatusError(static_cast<long long>(dringId));
+        break;
+    }
 }
 
 } // namespace lrc
