@@ -33,11 +33,62 @@ enum class Status {
     unjoinable_peer, // error: (outgoing only) peer connection failed
     invalid_pathname, // error: (file transfer only) given file is not a valid
     unsupported, // error: unable to do the transfer (generic error)
+    INVALID
 };
+
+static inline const std::string
+to_string(const Status& status)
+{
+    switch(status) {
+    case Status::on_connection:
+        return "on_connection";
+    case Status::on_progress:
+        return "on_progress";
+    case Status::success:
+        return "success";
+    case Status::stop_by_peer:
+        return "stop_by_peer";
+    case Status::stop_by_host:
+        return "stop_by_host";
+    case Status::unjoinable_peer:
+        return "unjoinable_peer";
+    case Status::invalid_pathname:
+        return "invalid_pathname";
+    case Status::unsupported:
+        return "unsupported";
+    case Status::INVALID:
+    default:
+        return "INVALID";
+    }
+}
+
+static inline Status
+to_status(const std::string& status)
+{
+    if (status == "on_connection")
+        return datatransfer::Status::on_connection;
+    else if (status == "on_progress")
+        return datatransfer::Status::on_progress;
+    else if (status == "success")
+        return datatransfer::Status::success;
+    else if (status == "stop_by_peer")
+        return datatransfer::Status::stop_by_peer;
+    else if (status == "stop_by_host")
+        return datatransfer::Status::stop_by_host;
+    else if (status == "unjoinable_peer")
+        return datatransfer::Status::unjoinable_peer;
+    else if (status == "invalid_pathname")
+        return datatransfer::Status::invalid_pathname;
+    else if (status == "unsupported")
+        return datatransfer::Status::unsupported;
+    else
+        return datatransfer::Status::INVALID;
+
+}
 
 struct Info
 {
-    std::string uid; ///< long-term and unique identifier (used for historic)
+    const std::string uid; ///< long-term and unique identifier (used for historic)
     Status status;
     bool isOutgoing;
     std::size_t totalSize;
@@ -46,6 +97,7 @@ struct Info
     std::string displayName;
     std::string accountId;
     std::string peerUri;
+    std::time_t timestamp = 0;
 };
 
 } // namespace lrc::api::datatransfer
