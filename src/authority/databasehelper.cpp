@@ -18,6 +18,7 @@
  ***************************************************************************/
 #include "databasehelper.h"
 #include "api/profile.h"
+#include "api/datatransfer.h"
 
 namespace lrc
 {
@@ -210,6 +211,27 @@ addMessageToConversation(Database& db,
 }
 
 int
+addDataTransferToConversation(Database& db,
+                              const std::string& accountProfileId,
+                              const std::string& conversationId,
+                              const DataTransferInfo& infoFromDaemon)
+{
+    auto peerProfileId = getProfileId(db, infoFromDaemon.peer.toStdString());
+    auto authorId = (infoFromDaemon.isOutgoing) ? peerProfileId : peerProfileId;
+
+    return db.insertInto("interactions",
+                         {{":account_id", "account_id"}, {":author_id", "author_id"},
+                         {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
+                         {":body", "body"}, {":type", "type"},
+                         {":status", "status"}},
+                         {{":account_id", accountProfileId}, {":author_id", authorId},
+                         {":conversation_id", conversationId},
+                         {":timestamp", std::to_string(std::time(nullptr))},
+                         {":body", infoFromDaemon.displayName.toStdString()}, {":type", "DATA_TRANSFER"},
+                         {":status", "TRANSFER_CREATED"}});
+}
+
+int
 addOrUpdateMessage(Database& db,
                          const std::string& accountProfile,
                          const std::string& conversationId,
@@ -267,7 +289,7 @@ std::string getInteractionIdByDaemonId(Database& db, const std::string& id)
 
 
 void updateInteractionStatus(Database& db, unsigned int id,
-                             api::interaction::Status& newStatus)
+                             api::interaction::Status newStatus)
 {
     db.update("interactions", "status=:status",
               {{":status", api::interaction::to_string(newStatus)}},
