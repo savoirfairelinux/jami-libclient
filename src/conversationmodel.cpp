@@ -549,7 +549,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     conversation.lastMessageUid = msgId;
     pimpl_->dirtyConversations = true;
     // Emit this signal for chatview in the client
-    emit newUnreadMessage(convId, msgId, msg);
+    emit newInteraction(convId, msgId, msg);
     // This conversation is now at the top of the list
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
@@ -863,7 +863,7 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
             auto conversationIdx = indexOf(conv[0]);
             conversations[conversationIdx].interactions.emplace(msgId, msg);
             dirtyConversations = true;
-            emit linked.newUnreadMessage(conv[0], msgId, msg);
+            emit linked.newInteraction(conv[0], msgId, msg);
         } catch (std::out_of_range& e) {
             qDebug() << "ConversationModelPimpl::slotContactAdded can't find contact";
         }
@@ -1073,7 +1073,7 @@ ConversationModelPimpl::addOrUpdateCallMessage(const std::string& callId, const 
             }
             dirtyConversations = true;
             if (newInteraction)
-                emit linked.newUnreadMessage(conversation.uid, msgId, msg);
+                emit linked.newInteraction(conversation.uid, msgId, msg);
             else
                 emit linked.interactionStatusUpdated(conversation.uid, msgId, msg);
             sortConversations();
@@ -1143,7 +1143,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
         conversations[conversationIdx].lastMessageUid = msgId;
     }
     dirtyConversations = true;
-    emit linked.newUnreadMessage(conv[0], msgId, msg);
+    emit linked.newInteraction(conv[0], msgId, msg);
     sortConversations();
     emit linked.modelSorted();
 }
@@ -1231,7 +1231,7 @@ ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
                                              const std::size_t size,
                                              const std::size_t offset)
 {
-    emit linked.newUnreadMessage("", -1, {});
+    emit linked.newInteraction("", -1, {});
 }
 
 void
