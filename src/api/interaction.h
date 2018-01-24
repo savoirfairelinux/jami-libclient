@@ -75,7 +75,14 @@ enum class Status {
     FAILED,
     SUCCEED,
     READ,
-    UNREAD
+    UNREAD,
+    TRANSFER_CREATED, /*[jn] mettre à jour les fonctions de conversion */
+    TRANSFER_ACCEPTED,
+    TRANSFER_CANCELED,
+    TRANSFER_ERROR,
+    TRANSFER_ONGOING,
+    TRANSFER_AWAITING,
+    TRANSFER_FINISHED
 };
 
 static inline const std::string
@@ -94,7 +101,20 @@ to_string(const Status& status)
         return "READ";
     case Status::UNREAD:
         return "UNREAD";
-    case Status::INVALID:
+    case Status::TRANSFER_CREATED:
+        return "TRANSFER_CREATED";
+    case Status::TRANSFER_ACCEPTED:
+        return "TRANSFER_ACCEPTED";
+    case Status::TRANSFER_CANCELED:
+        return "TRANSFER_CANCELED";
+    case Status::TRANSFER_ERROR:
+        return "TRANSFER_ERROR";
+    case Status::TRANSFER_ONGOING:
+        return "TRANSFER_ONGOING";
+    case Status::TRANSFER_AWAITING:
+        return "TRANSFER_AWAITING";
+    case Status::TRANSFER_FINISHED:
+        return "TRANSFER_FINISHED";
     default:
         return "INVALID";
     }
@@ -115,6 +135,20 @@ to_status(const std::string& status)
         return interaction::Status::READ;
     else if (status == "UNREAD")
         return interaction::Status::UNREAD;
+    else if (status == "TRANSFER_CREATED")
+        return interaction::Status::TRANSFER_CREATED;
+    else if (status == "TRANSFER_ACCEPTED")
+        return interaction::Status::TRANSFER_ACCEPTED;
+    else if (status == "TRANSFER_CANCELED")
+        return interaction::Status::TRANSFER_CANCELED;
+    else if (status == "TRANSFER_ERROR")
+        return interaction::Status::TRANSFER_ERROR;
+    else if (status == "TRANSFER_ONGOING")
+        return interaction::Status::TRANSFER_ONGOING;
+    else if (status == "TRANSFER_AWAITING")
+        return interaction::Status::TRANSFER_AWAITING;
+    else if (status == "TRANSFER_FINISHED")
+        return interaction::Status::TRANSFER_FINISHED;
     else
         return interaction::Status::INVALID;
 
