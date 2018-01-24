@@ -284,8 +284,7 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 void
 CallbacksHandler::slotDataTransferEvent(qulonglong dring_id, uint code)
 {
-    // [jn] ce slot doit uniquement convertir les param de qt à std
-    emit incomingTransfer(-1, -1);
+    emit incomingTransfer(static_cast<long long>(dring_id), code);
 }
 
 } // namespace lrc

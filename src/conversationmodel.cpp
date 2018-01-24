@@ -214,10 +214,7 @@ public Q_SLOTS:
      */
     void slotConferenceRemoved(const std::string& confId);
 
-    void slotIncomingTransfer(const std::string& uid,
-                              const std::string& display_name,
-                              const std::size_t size,
-                              const std::size_t offset);
+    void slotIncomingTransfer(api::datatransfer::Info dataTransferInfo);
 
     void slotTransferStatusChanged(const std::string& uid,
                                datatransfer::Status status);
@@ -1226,10 +1223,7 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 }
 
 void
-ConversationModelPimpl::slotIncomingTransfer(const std::string& uid,
-                                             const std::string& display_name,
-                                             const std::size_t size,
-                                             const std::size_t offset)
+ConversationModelPimpl::slotIncomingTransfer(api::datatransfer::Info dataTransferInfo)
 {
     // [jn] on a besoin de pouvoir vérifier que c'est bien ce conversation model qui doit traîter les données et les
     // envoyer au client
