@@ -177,7 +177,7 @@ std::string getInteractionIdByDaemonId(Database& db, const std::string& id);
  * @param newStatus
  */
 void updateInteractionStatus(Database& db, unsigned int id,
-                             api::interaction::Status& newStatus);
+                             api::interaction::Status newStatus);
 
 /**
  * Clear history but not the conversation started interaction
@@ -229,6 +229,10 @@ void addContact(Database& db, const std::string& accountUri, const std::string& 
  */
 int countUnreadFromInteractions(Database& db, const std::string& conversationId);
 
+int addDataTransferToConversation(Database& db,
+                                  const std::string& accountProfileId,
+                                  const std::string& conversationId,
+                                  const DataTransferInfo& infoFromDaemon);
 } // namespace database
 
 } // namespace authority
