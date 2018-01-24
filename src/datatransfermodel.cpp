@@ -65,16 +65,16 @@ public:
          Database& database,
          const CallbacksHandler& callbacksHandler);
 
+    std::vector<std::string> transferIdList() const;
+
     DataTransferModel& upLink;
-    std::map<DRing::DataTransferId, std::string> dring2lrcIdMap;
-    std::map<std::string, DRing::DataTransferId> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
+    std::map<long long, int> dring2lrcIdMap;
+    std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
     Database& database;
     const CallbacksHandler& callbacksHandler;
 
-    std::string registerTransferId(DRing::DataTransferId id);
-
-public Q_SLOTS:
-    void slotDataTransferEvent(long long dring_id, uint code);
+//~ public Q_SLOTS:
+    //~ void slotDataTransferEvent(long long dringId, uint code);
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link,
@@ -85,39 +85,87 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link,
     , database {database}
     , upLink {up_link}
 {
-    connect(&callbacksHandler, &CallbacksHandler::incomingTransfer,
-            this, &DataTransferModel::Impl::slotDataTransferEvent);
+    //~ connect(&callbacksHandler, &CallbacksHandler::incomingTransfer,
+            //~ this, &DataTransferModel::Impl::slotDataTransferEvent);
+
+    //~ VectorULongLong dringList = ConfigurationManager::instance().dataTransferList();
+    //~ for(auto dringId : dringList) {
+        
+    //~ }
+
 }
 
-std::string
-DataTransferModel::Impl::registerTransferId(DRing::DataTransferId dring_id)
-{
-    const auto& iter = dring2lrcIdMap.find(dring_id);
-    if (iter != std::cend(dring2lrcIdMap))
-        return iter->second;
-    while (true) {
-        auto res = dring2lrcIdMap.emplace(dring_id, QUuid::createUuid().toString().toStdString());
-        if (res.second) {
-            lrc2dringIdMap.emplace(res.first->second, dring_id);
-            return res.first->second;
-        }
-    }
-}
 
 void
-DataTransferModel::Impl::slotDataTransferEvent(long long dring_id, uint code)
+DataTransferModel::registerTransferId(long long dringId, int interactionId)
 {
-    auto event = DRing::DataTransferEventCode(code);
-    if (event == DRing::DataTransferEventCode::created) {
-        auto info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-        if (!info.isOutgoing) {
-            emit upLink.incomingTransfer("", "", 0, 0);
-            return;
-        }
-    }
-
-    emit upLink.transferStatusChanged("", convertDataTransferEvent(event));
+    
+    pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
+    pimpl_->lrc2dringIdMap.emplace(interactionId, dringId);
 }
+
+//~ std::string
+//~ DataTransferModel::Impl::registerTransferId(const DataTransferInfo& infoFromDaemon)
+//~ {
+    //~ return database::addInteractionToConversation(db, infoFromDaemon);
+//~ }
+
+
+
+//~ void
+//~ DataTransferModel::Impl::slotDataTransferEvent(long long dringId, uint code)
+//~ {
+    //~ auto event = DRing::DataTransferEventCode(code);
+    //~ if (event == DRing::DataTransferEventCode::created) {
+        //~ // no auto
+        //~ DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+        //~ datatransfer::Info dataTransferInfo = {registerTransferId(infoFromDaemon),
+                                             //~ datatransfer::Status::on_connection,
+                                             //~ infoFromDaemon.isOutgoing,
+                                             //~ infoFromDaemon.totalSize,
+                                             //~ infoFromDaemon.bytesProgress,
+                                             //~ infoFromDaemon.path.toStdString(),
+                                             //~ infoFromDaemon.displayName.toStdString(),
+                                             //~ infoFromDaemon.accountId.toStdString(),
+                                             //~ infoFromDaemon.peer.toStdString(),
+                                             //~ std::time(nullptr)};
+
+        //~ auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+
+        //~ dataTransferInfo.uid = database::addDataTransferToConversation(db, "", "", dataTransferInfo);
+
+        //~ if (not dataTransferInfo.isOutgoing)
+            //~ emit upLink.incomingTransfer(dataTransferInfo);
+    //~ }
+
+    //~ emit upLink.transferStatusChanged("", convertDataTransferEvent(event));
+//~ }
+
+//~ XXXXXXXXXXXXXXXXXXXXX
+//~ struct Info
+//~ {
+    //~ std::string uid; ///< long-term and unique identifier (used for historic)
+    //~ Status status;
+    //~ bool isOutgoing;
+    //~ std::size_t totalSize;
+    //~ std::size_t progress; ///< if status >= on_progress, gives number of bytes tx/rx until now
+    //~ std::string path;
+    //~ std::string displayName;
+    //~ std::string accountId;
+    //~ std::string peerUri;
+//~ };
+//~ XXXXXXXXXXXXXx
+    //~ bool isOutgoing; ///< Outgoing or Incoming?
+    //~ DataTransferEventCode lastEvent { DataTransferEventCode::created }; ///< Latest event code sent to the user
+    //~ std::size_t totalSize {0} ; ///< Total number of bytes to sent/receive, 0 if not known
+    //~ std::streamsize bytesProgress {0}; ///< Number of bytes sent/received
+    //~ std::string displayName; ///< Human oriented transfer name
+    //~ std::string path; ///< associated local file path if supported (empty, if not)
+    //~ std::string accountId; ///< Identifier of the emiter/receiver account
+    //~ std::string peer; ///< Identifier of the remote peer (in the semantic of the associated account)
+//~ XXXXXXXXXXXXXXXXXxx
+
+
 
 DataTransferModel::DataTransferModel(Database& database,
                                      const CallbacksHandler& callbacksHandler)
@@ -128,17 +176,17 @@ DataTransferModel::DataTransferModel(Database& database,
 DataTransferModel::~DataTransferModel() = default;
 
 std::vector<std::string>
-DataTransferModel::transferIdList() const
+DataTransferModel::Impl::transferIdList() const
 {
     VectorULongLong dring_list = ConfigurationManager::instance().dataTransferList();
-    for (auto dring_id : dring_list) {
-         pimpl_->registerTransferId(dring_id);
-    }
+    //~ for (auto dring_id : dring_list) {
+         //~ pimpl_->registerTransferId(dring_id);
+    //~ }
     std::vector<std::string> result;
-    result.reserve(dring_list.size());
-    for (auto& item : pimpl_->lrc2dringIdMap) {
-        result.push_back(item.first);
-    }
+    //~ result.reserve(dring_list.size());
+    //~ for (auto& item : pimpl_->lrc2dringIdMap) {
+        //~ result.push_back(item.first);
+    //~ }
     return result;
 }
 
@@ -146,52 +194,65 @@ std::string
 DataTransferModel::sendFile(const std::string& account_id, const std::string& peer_uri,
                             const std::string& file_path, const std::string& display_name)
 {
+
+    qDebug() << " XX " << account_id.c_str();
+    qDebug() << " XX " << peer_uri.c_str();
+    qDebug() << " XX " << file_path.c_str();
+    qDebug() << " XX " << display_name.c_str();
+
+    
     auto dring_id = static_cast<DRing::DataTransferId>(ConfigurationManager::instance().sendFile(
                                                            QString::fromStdString(account_id),
                                                            QString::fromStdString(peer_uri),
                                                            QString::fromStdString(file_path),
                                                            QString::fromStdString(display_name)));
-    return pimpl_->registerTransferId(dring_id);
+    //~ return pimpl_->registerTransferId(dring_id);
 }
 
-datatransfer::Info
-DataTransferModel::transferInfo(const std::string& lrc_id)
-{
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
-    auto dring_info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
-    datatransfer::Info lrc_info;
-    lrc_info.uid = lrc_id;
-    lrc_info.isOutgoing = dring_info.isOutgoing;
-    lrc_info.totalSize = dring_info.totalSize;
-    lrc_info.progress = dring_info.lastEvent;
-    lrc_info.path = dring_info.displayName.toStdString();
-    lrc_info.displayName = dring_info.displayName.toStdString();
-    lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(dring_info.lastEvent));
-    lrc_info.accountId = dring_info.accountId.toStdString();
-    lrc_info.peerUri = dring_info.peer.toStdString();
-    return lrc_info;
-}
+//~ datatransfer::Info
+//~ DataTransferModel::transferInfo(const std::string& lrc_id)
+//~ {
+    //~ auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
+    //~ auto dring_info = static_cast<DataTransferInfo>(ConfigurationManager::instance().dataTransferInfo(dring_id));
+    //~ datatransfer::Info lrc_info;
+    //~ lrc_info.uid = lrc_id;
+    //~ lrc_info.isOutgoing = dring_info.isOutgoing;
+    //~ lrc_info.totalSize = dring_info.totalSize;
+    //~ lrc_info.progress = dring_info.lastEvent;
+    //~ lrc_info.path = dring_info.displayName.toStdString();
+    //~ lrc_info.displayName = dring_info.displayName.toStdString();
+    //~ lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(dring_info.lastEvent));
+    //~ lrc_info.accountId = dring_info.accountId.toStdString();
+    //~ lrc_info.peerUri = dring_info.peer.toStdString();
+    //~ return lrc_info;
+//~ }
 
 std::streamsize
-DataTransferModel::bytesProgress(const std::string& lrc_id)
+DataTransferModel::bytesProgress(int interactionId)
 {
-    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(lrc_id));
+    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId));
 }
 
 void
-DataTransferModel::acceptFile(const std::string& lrc_id,
+DataTransferModel::accept(int interactionId,
                                       const std::string& file_path,
                                       std::size_t offset)
 {
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
+    auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().acceptFileTransfer(dring_id, QString::fromStdString(file_path), offset);
 }
 
 void
-DataTransferModel::cancel(const std::string& lrc_id)
+DataTransferModel::cancel(int interactionId)
 {
-    auto dring_id = pimpl_->lrc2dringIdMap.at(lrc_id);
+    auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().cancelDataTransfer(dring_id);
+}
+
+int
+DataTransferModel::getInteractionIdFromDringId(long long dringId)
+{
+    return pimpl_->dring2lrcIdMap.at(dringId);
 }
 
 }} // namespace lrc::api
