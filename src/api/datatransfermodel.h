@@ -49,8 +49,7 @@ class LIB_EXPORT DataTransferModel : public QObject {
 
 public:
     DataTransferModel(Database& database,
-                      const CallbacksHandler& callbacksHandler,
-                      const api::BehaviorController& behaviorController);
+                      const CallbacksHandler& callbacksHandler);
     ~DataTransferModel();
 
     std::vector<std::string> transferIdList() const;
