@@ -143,7 +143,7 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
    Q_UNUSED(from)
 
    auto call = CallModel::instance().getCall(callId);
-   if (!call and !call->peerContactMethod()) {
+   if (!call or !call->peerContactMethod()) {
       return;
    }
 
