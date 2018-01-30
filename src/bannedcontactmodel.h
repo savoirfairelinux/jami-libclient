@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017 by Savoir-faire Linux                               *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                               *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
