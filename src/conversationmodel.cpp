@@ -1248,7 +1248,7 @@ ConversationModelPimpl::slotConferenceRemoved(const std::string& confId)
 int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
-    database::countUnreadFromInteractions(db, uid);
+    return database::countUnreadFromInteractions(db, uid);
 }
 
 void
