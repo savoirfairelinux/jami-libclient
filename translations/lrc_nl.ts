@@ -29,7 +29,7 @@
         <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>Poging...</translation>
+        <translation>Poging…</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="341"/>
@@ -1160,12 +1160,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie &quot;inkomende certificaten verifiëren&quot; is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
+        <translation>De optie ‘inkomende certificaten verifiëren’ is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie &quot;antwoordcertificaten verifiëren&quot; is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
+        <translation>De optie ‘antwoordcertificaten verifiëren’ is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
@@ -1410,49 +1410,49 @@
         <translation>Peerprofielverzameling</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="822"/>
-        <location filename="../src/conversationmodel.cpp" line="1129"/>
+        <location filename="../src/conversationmodel.cpp" line="840"/>
+        <location filename="../src/conversationmodel.cpp" line="1155"/>
         <source>Invitation received</source>
         <translation>Uitnodiging ontvangen</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="823"/>
+        <location filename="../src/conversationmodel.cpp" line="841"/>
         <source>Contact added</source>
         <translation>Contact toegevoegd</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="852"/>
-        <location filename="../src/conversationmodel.cpp" line="859"/>
+        <location filename="../src/conversationmodel.cpp" line="870"/>
+        <location filename="../src/conversationmodel.cpp" line="877"/>
         <source>Invitation accepted</source>
         <translation>Uitnodiging aanvaard</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1018"/>
+        <location filename="../src/conversationmodel.cpp" line="1044"/>
         <source>ð Outgoing call</source>
         <translation>ð Uitgaande oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1020"/>
+        <location filename="../src/conversationmodel.cpp" line="1046"/>
         <source>ð Incoming call</source>
         <translation>ð Inkomende oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1033"/>
+        <location filename="../src/conversationmodel.cpp" line="1059"/>
         <source>ð Outgoing call - </source>
         <translation>ð Uitgaande oproep -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1036"/>
+        <location filename="../src/conversationmodel.cpp" line="1062"/>
         <source>ð Incoming call - </source>
         <translation>ð Inkomende oproep -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1040"/>
+        <location filename="../src/conversationmodel.cpp" line="1066"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Gemiste uitgaande oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1042"/>
+        <location filename="../src/conversationmodel.cpp" line="1068"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Gemiste inkomende oproep</translation>
     </message>
