@@ -1410,49 +1410,49 @@
         <translation>Liste des profils paires</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="822"/>
-        <location filename="../src/conversationmodel.cpp" line="1129"/>
+        <location filename="../src/conversationmodel.cpp" line="840"/>
+        <location filename="../src/conversationmodel.cpp" line="1155"/>
         <source>Invitation received</source>
         <translation>Invitation reçue</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="823"/>
+        <location filename="../src/conversationmodel.cpp" line="841"/>
         <source>Contact added</source>
         <translation>Contact ajouté</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="852"/>
-        <location filename="../src/conversationmodel.cpp" line="859"/>
+        <location filename="../src/conversationmodel.cpp" line="870"/>
+        <location filename="../src/conversationmodel.cpp" line="877"/>
         <source>Invitation accepted</source>
         <translation>Invitation acceptée</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1018"/>
+        <location filename="../src/conversationmodel.cpp" line="1044"/>
         <source>ð Outgoing call</source>
         <translation>ð Appel sortant</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1020"/>
+        <location filename="../src/conversationmodel.cpp" line="1046"/>
         <source>ð Incoming call</source>
         <translation>ð Appel entrant</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1033"/>
+        <location filename="../src/conversationmodel.cpp" line="1059"/>
         <source>ð Outgoing call - </source>
         <translation>ð Appel sortant -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1036"/>
+        <location filename="../src/conversationmodel.cpp" line="1062"/>
         <source>ð Incoming call - </source>
         <translation>ð Appel entrant -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1040"/>
+        <location filename="../src/conversationmodel.cpp" line="1066"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Appel sortant raté</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1042"/>
+        <location filename="../src/conversationmodel.cpp" line="1068"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Appels entrants ratés</translation>
     </message>
