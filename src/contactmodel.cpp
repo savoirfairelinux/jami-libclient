@@ -576,7 +576,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
     if (accountId != linked.owner.id) return;
     auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
     if (not account) {
-        qDebug() << "ContactModel::slotIncomingCall(), nullptr";
+        qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
         return;
     }
 
@@ -587,6 +587,30 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         addToContacts(cm, profile::Type::PENDING);
     }
     emit linked.newAccountMessage(accountId, from, payloads);
+}
+
+void
+ContactModelPimpl::slotNewAccountTransfer(long long dringId)
+{
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountId = infoFromDaemon.accountId.toStdString();
+    auto peerId = infoFromDaemon.peer.toStdString(); // TODO valeur à checker
+
+    if (accountId != linked.owner.id) return;
+    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
+        return;
+    }
+
+    if (contacts.find(peerId) == contacts.end()) {
+        // Contact not found, load profile from database.
+        // The conversation model will create an entry and link the incomingCall.
+        auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
+        addToContacts(cm, profile::Type::PENDING);
+    }
+    emit linked.newAccountTransfer(infoFromDaemon);
 }
 
 } // namespace lrc

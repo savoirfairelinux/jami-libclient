@@ -214,7 +214,7 @@ public Q_SLOTS:
      */
     void slotConferenceRemoved(const std::string& confId);
 
-    void slotIncomingTransfer(long long dringId);
+    void slotIncomingTransfer(const DataTransferInfo& transferInfo);
 
     //~ void slotTransferStatusChanged(long long dringId, uint codeStatus);
 
@@ -716,8 +716,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &ConversationModelPimpl::slotConferenceRemoved);
 
     // data transfer
-    connect(&callbacksHandler,
-            &CallbacksHandler::incomingTransfer,
+    connect(&*linked.owner.contactModel,
+            &ContactModel::newAccountTransfer,
             this,
             &ConversationModelPimpl::slotIncomingTransfer);
     connect(&callbacksHandler,
@@ -1252,19 +1252,24 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 }
 
 void
-ConversationModelPimpl::slotIncomingTransfer(long long dringId)
+ConversationModelPimpl::slotIncomingTransfer(const DataTransferInfo& transferInfo)
 {
-    // no auto
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    // check if transfer is for the current account
+    if (transferInfo.accountId.toStdString() != linked.owner.id)
+        return;
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
-    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+    auto contactProfileId = database::getProfileId(db, transferInfo.peer.toStdString());
 
     // get the conversation if any
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
 
-    if (conv.empty())
-        return;
+    if (conv.empty()) {
+        conv.emplace_back(database::beginConversationsBetween(
+            db, accountProfileId, contactProfileId,
+            QObject::tr("Invitation received").toStdString()
+        ));
+    }
 
     // add interaction to the db
     auto interactionId = database::addDataTransferToConversation(db, accountProfileId, conv[0], infoFromDaemon);

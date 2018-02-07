@@ -136,6 +136,11 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(std::string& accountId, std::string& from, std::map<std::string,std::string> payloads) const;
+    /**
+     * Connect this signal to know when a file transfer interaction is incoming
+     * @param transferInfo DataTransferInfo structure from daemon
+     */
+    void newAccountTransfer(const DataTransferInfo& transferInfo) const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
