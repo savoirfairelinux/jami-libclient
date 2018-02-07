@@ -1,3 +1,4 @@
+
 /****************************************************************************
  *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
@@ -136,6 +137,11 @@ public Q_SLOTS:
     void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
+    /**
+     * Listen from callbacksHandler for new account file transfer and add pending contact if not present
+     * @param dringId Id of transfer from daemon. Used to retrieve transfer informations.
+     */
+    void slotNewAccountTransfer(long long dringId);
 };
 
 using namespace authority;
@@ -363,6 +369,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
             this, &ContactModelPimpl::slotNewAccountMessage);
+    connect(&callbacksHandler, &lrc::CallbacksHandler::incomingTransfer,
+            this, &ContactModelPimpl::slotNewAccountTransfer);
 
 }
 
@@ -576,7 +584,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
     if (accountId != linked.owner.id) return;
     auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
     if (not account) {
-        qDebug() << "ContactModel::slotIncomingCall(), nullptr";
+        qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
         return;
     }
 
@@ -587,6 +595,30 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         addToContacts(cm, profile::Type::PENDING);
     }
     emit linked.newAccountMessage(accountId, from, payloads);
+}
+
+void
+ContactModelPimpl::slotNewAccountTransfer(long long dringId)
+{
+    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+
+    auto accountId = infoFromDaemon.accountId.toStdString();
+    auto peerId = infoFromDaemon.peer.toStdString(); // TODO valeur à checker
+
+    if (accountId != linked.owner.id) return;
+    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
+        return;
+    }
+
+    if (contacts.find(peerId) == contacts.end()) {
+        // Contact not found, load profile from database.
+        // The conversation model will create an entry and link the incomingCall.
+        auto* cm = PhoneDirectoryModel::instance().getNumber(infoFromDaemon.peer, account);
+        addToContacts(cm, profile::Type::PENDING);
+    }
+    emit linked.newAccountTransfer(dringId, infoFromDaemon);
 }
 
 } // namespace lrc
