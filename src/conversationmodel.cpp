@@ -214,7 +214,7 @@ public Q_SLOTS:
      */
     void slotConferenceRemoved(const std::string& confId);
 
-    void slotIncomingTransfer(long long dringId);
+    void slotIncomingTransfer(long long dringId, const DataTransferInfo& transferInfo);
 
     //~ void slotTransferStatusChanged(long long dringId, uint codeStatus);
 
@@ -716,8 +716,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &ConversationModelPimpl::slotConferenceRemoved);
 
     // data transfer
-    connect(&callbacksHandler,
-            &CallbacksHandler::incomingTransfer,
+    connect(&*linked.owner.contactModel,
+            &ContactModel::newAccountTransfer,
             this,
             &ConversationModelPimpl::slotIncomingTransfer);
     connect(&callbacksHandler,
@@ -779,6 +779,21 @@ ConversationModelPimpl::initConversations()
         }
 
         addConversationWith(common[0], c.first);
+
+        auto convIdx = indexOf(common[0]);
+
+        // Check if file transfer interactions were left in an incorrect state
+        for(auto& interaction : conversations[convIdx].interactions) {
+            if (interaction.second.status == interaction::Status::TRANSFER_CREATED
+                || interaction.second.status == interaction::Status::TRANSFER_AWAITING
+                || interaction.second.status == interaction::Status::TRANSFER_ONGOING
+                || interaction.second.status == interaction::Status::TRANSFER_ACCEPTED) {
+                // If a datatransfer was left in a non-terminal status in DB, we switch this status to ERROR
+                // TODO : Improve for DBus clients as daemon and transfer may still be ongoing
+                database::updateInteractionStatus(db, interaction.first, interaction::Status::TRANSFER_ERROR);
+                interaction.second.status = interaction::Status::TRANSFER_ERROR;
+            }
+        }
     }
 
     sortConversations();
@@ -966,14 +981,6 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
             }
             slotUpdateInteractionStatus(linked.owner.id, std::stoull(id),
                                         contactUri, status);
-        } else if (interaction.second.status == interaction::Status::TRANSFER_CREATED
-                   || interaction.second.status == interaction::Status::TRANSFER_AWAITING
-                   || interaction.second.status == interaction::Status::TRANSFER_ONGOING
-                   || interaction.second.status == interaction::Status::TRANSFER_ACCEPTED) {
-            // If a datatransfer was left in a non-terminal status in DB, we switch this status to ERROR
-            // TODO : Improve for DBus clients as daemon and transfer may still be ongoing
-            database::updateInteractionStatus(db, interaction.first, interaction::Status::TRANSFER_ERROR);
-            interaction.second.status = interaction::Status::TRANSFER_ERROR;
         }
     }
 
@@ -1252,29 +1259,37 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 }
 
 void
-ConversationModelPimpl::slotIncomingTransfer(long long dringId)
+ConversationModelPimpl::slotIncomingTransfer(long long dringId, const DataTransferInfo& transferInfo)
 {
-    // no auto
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    // check if transfer is for the current account
+    if (transferInfo.accountId.toStdString() != linked.owner.id)
+        return;
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
-    auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
+    auto contactProfileId = database::getProfileId(db, transferInfo.peer.toStdString());
 
     // get the conversation if any
     auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
 
-    if (conv.empty())
-        return;
+    if (conv.empty()) {
+        conv.emplace_back(database::beginConversationsBetween(
+            db, accountProfileId, contactProfileId,
+            QObject::tr("Invitation received").toStdString()
+        ));
+    }
 
     // add interaction to the db
-    auto interactionId = database::addDataTransferToConversation(db, accountProfileId, conv[0], infoFromDaemon);
+    auto interactionId = database::addDataTransferToConversation(db, accountProfileId, conv[0], transferInfo);
 
     // add transfert to the transfer model
     dataTransferModel.registerTransferId(dringId, interactionId);
 
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(conv[0]);
-    if (conversationIdx != -1) {
+    if (conversationIdx == -1) {
+        addConversationWith(conv[0], transferInfo.peer.toStdString());
+        emit linked.newConversation(conv[0]);
+    } else {
         auto& interactions = conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
 
@@ -1282,18 +1297,18 @@ ConversationModelPimpl::slotIncomingTransfer(long long dringId)
             return;
         }
 
-        auto interaction = interaction::Info {contactProfileId, infoFromDaemon.displayName.toStdString(),
+        auto interaction = interaction::Info {contactProfileId, transferInfo.displayName.toStdString(),
                                               std::time(nullptr),
-                                              (infoFromDaemon.isOutgoing)?interaction::Type::OUTGOING_DATA_TRANSFER:interaction::Type::INCOMING_DATA_TRANSFER,
+                                              (transferInfo.isOutgoing)?interaction::Type::OUTGOING_DATA_TRANSFER:interaction::Type::INCOMING_DATA_TRANSFER,
                                               interaction::Status::TRANSFER_CREATED};
 
         auto it2 = conversations[conversationIdx].interactions.emplace(interactionId, interaction);
         conversations[conversationIdx].lastMessageUid = interactionId;
         dirtyConversations = true;
         emit linked.newInteraction(conv[0], interactionId, interaction);
-        sortConversations();
-        emit linked.modelSorted();
     }
+    sortConversations();
+    emit linked.modelSorted();
 }
 
 void
@@ -1335,6 +1350,7 @@ ConversationModel::sendFile(const std::string& uid, const std::string& path, con
     if (conversationIdx != -1) {
         auto& peerUri = pimpl_->conversations[conversationIdx].participants.front();
         if (not peerUri.empty()) {
+            pimpl_->sendContactRequest(peerUri);
             pimpl_->dataTransferModel.sendFile(owner.id.c_str(), peerUri.c_str(), path.c_str(), filename.c_str());
         }
     }
@@ -1353,6 +1369,7 @@ ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interacti
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
             it->second.status = interaction::Status::TRANSFER_ACCEPTED;
+            pimpl_->sendContactRequest(pimpl_->conversations[conversationIdx].participants.front());
             pimpl_->dirtyConversations = true;
             emit interactionStatusUpdated(convUid, interactionId, it->second);
         }
