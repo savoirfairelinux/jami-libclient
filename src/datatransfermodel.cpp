@@ -120,17 +120,25 @@ void
 DataTransferModel::sendFile(const std::string& account_id, const std::string& peer_uri,
                             const std::string& file_path, const std::string& display_name)
 {
-    auto dring_id = static_cast<DRing::DataTransferId>(ConfigurationManager::instance().sendFile(
-                                                           QString::fromStdString(account_id),
-                                                           QString::fromStdString(peer_uri),
-                                                           QString::fromStdString(file_path),
-                                                           QString::fromStdString(display_name)));
+    DataTransferInfo info;
+    uint64_t id;
+    info.accountId = QString::fromStdString(account_id);
+    info.peer = QString::fromStdString(peer_uri);
+    info.path = QString::fromStdString(file_path);
+    info.displayName = QString::fromStdString(display_name);
+    if (ConfigurationManager::instance().sendFile(info, id) != 0) {
+        qDebug() << "DataTransferModel::sendFile(), error";
+        return;
+    }
 }
 
-std::streamsize
-DataTransferModel::bytesProgress(int interactionId)
+void
+DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& progress)
 {
-    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId));
+
+    ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
+                                                               total,
+                                                               progress);
 }
 
 void

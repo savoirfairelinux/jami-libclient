@@ -590,34 +590,45 @@ public Q_SLOTS: // METHODS
         return convertVectorULongLong(DRing::dataTransferList());
     }
 
-    uint64_t sendFile(const QString& account_id, const QString& peer_uri, const QString& file_path, const QString& display_name) {
-        return DRing::sendFile(account_id.toStdString(), peer_uri.toStdString(), file_path.toStdString(), display_name.toStdString());
+    uint32_t sendFile(const DataTransferInfo& lrc_info, uint64_t& id) {
+        DRing::DataTransferInfo dring_info;
+        dring_info.accountId = lrc_info.accountId.toStdString();
+        dring_info.lastEvent = decltype(dring_info.lastEvent)(lrc_info.lastEvent);
+        dring_info.flags = decltype(dring_info.flags){lrc_info.flags};
+        dring_info.totalSize = lrc_info.totalSize;
+        dring_info.bytesProgress = lrc_info.bytesProgress;
+        dring_info.peer = lrc_info.peer.toStdString();
+        dring_info.displayName = lrc_info.displayName.toStdString();
+        dring_info.path = lrc_info.path.toStdString();
+        dring_info.mimetype = lrc_info.mimetype.toStdString();
+        return uint32_t(DRing::sendFile(dring_info, id));
     }
 
-    DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
-        auto dring_info = DRing::dataTransferInfo(transfer_id);
-        DataTransferInfo lrc_info;
-        lrc_info.isOutgoing = dring_info.isOutgoing;
-        lrc_info.lastEvent = uint(dring_info.lastEvent);
+    uint32_t dataTransferInfo(uint64_t transfer_id, DataTransferInfo& lrc_info) {
+        DRing::DataTransferInfo dring_info;
+        auto error = uint32_t(DRing::dataTransferInfo(transfer_id, dring_info));
+        lrc_info.accountId = QString::fromStdString(dring_info.accountId);
+        lrc_info.lastEvent = quint32(dring_info.lastEvent);
+        lrc_info.flags = dring_info.flags.to_ulong();
         lrc_info.totalSize = dring_info.totalSize;
         lrc_info.bytesProgress = dring_info.bytesProgress;
+        lrc_info.peer = QString::fromStdString(dring_info.peer);
         lrc_info.displayName = QString::fromStdString(dring_info.displayName);
         lrc_info.path = QString::fromStdString(dring_info.path);
-        lrc_info.accountId = QString::fromStdString(dring_info.accountId);
-        lrc_info.peer = QString::fromStdString(dring_info.peer);
-        return lrc_info;
+        lrc_info.mimetype = QString::fromStdString(dring_info.mimetype);
+        return error;
     }
 
-    uint64_t dataTransferBytesProgress(uint64_t transfer_id) {
-        return DRing::dataTransferBytesProgress(transfer_id);
+    uint64_t dataTransferBytesProgress(uint64_t transfer_id, int64_t& total, int64_t& progress) {
+        return uint32_t(DRing::dataTransferBytesProgress(transfer_id, total, progress));
     }
 
-    void acceptFileTransfer(uint64_t transfer_id, const QString& file_path, uint64_t offset) {
-        DRing::acceptFileTransfer(transfer_id, file_path.toStdString(), offset);
+    uint32_t acceptFileTransfer(uint64_t transfer_id, const QString& file_path, int64_t offset) {
+        return uint32_t(DRing::acceptFileTransfer(transfer_id, file_path.toStdString(), offset));
     }
 
-    void cancelDataTransfer(uint64_t transfer_id) {
-        DRing::cancelDataTransfer(transfer_id);
+    uint32_t cancelDataTransfer(int64_t transfer_id) {
+        return uint32_t(DRing::cancelDataTransfer(transfer_id));
     }
 
 Q_SIGNALS: // SIGNALS

@@ -61,7 +61,7 @@ public:
 
     datatransfer::Info transferInfo(const std::string& uid);
 
-    std::streamsize bytesProgress(int interactionId);
+    void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
 
     void accept(int interactionId, const std::string& file_path, std::size_t offset);
 

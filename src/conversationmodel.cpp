@@ -1299,7 +1299,7 @@ ConversationModelPimpl::slotIncomingTransfer(long long dringId, const DataTransf
 
         auto interaction = interaction::Info {contactProfileId, transferInfo.displayName.toStdString(),
                                               std::time(nullptr),
-                                              (transferInfo.isOutgoing)?interaction::Type::OUTGOING_DATA_TRANSFER:interaction::Type::INCOMING_DATA_TRANSFER,
+                                              (transferInfo.flags & (1 << quint32(DRing::DataTransferFlags::direction)))?interaction::Type::INCOMING_DATA_TRANSFER:interaction::Type::OUTGOING_DATA_TRANSFER,
                                               interaction::Status::TRANSFER_CREATED};
 
         auto it2 = conversations[conversationIdx].interactions.emplace(interactionId, interaction);
@@ -1314,8 +1314,12 @@ ConversationModelPimpl::slotIncomingTransfer(long long dringId, const DataTransf
 void
 ConversationModelPimpl::slotCancelTransfer(long long dringId)
 {
-    // no auto [jn] facto le code
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ConversationModelPimpl::slotCancelTransfer(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
@@ -1402,8 +1406,12 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
 void
 ConversationModelPimpl::slotTransferStatusAwaiting(long long dringId)
 {
-    // no auto [jn] facto le code
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ConversationModelPimpl::slotTransferStatusAwaiting(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
@@ -1436,8 +1444,12 @@ ConversationModelPimpl::slotTransferStatusAwaiting(long long dringId)
 void
 ConversationModelPimpl::slotTransferStatusOngoing(long long dringId)
 {
-    // no auto [jn] facto le code
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ConversationModelPimpl::slotTransferStatusOngoing(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
@@ -1470,8 +1482,12 @@ ConversationModelPimpl::slotTransferStatusOngoing(long long dringId)
 void
 ConversationModelPimpl::slotTransferStatusFinished(long long dringId)
 {
-    // no auto [jn] facto le code
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ConversationModelPimpl::slotTransferStatusFinished(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
@@ -1506,8 +1522,12 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId)
 void
 ConversationModelPimpl::slotTransferStatusError(long long dringId)
 {
-    // no auto [jn] facto le code
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ConversationModelPimpl::slotTransferStatusError(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
     auto contactProfileId = database::getProfileId(db, infoFromDaemon.peer.toStdString());
