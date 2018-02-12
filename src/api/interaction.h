@@ -125,6 +125,7 @@ to_string(const Status& status)
         return "TRANSFER_AWAITING";
     case Status::TRANSFER_FINISHED:
         return "TRANSFER_FINISHED";
+    case Status::INVALID:
     default:
         return "INVALID";
     }

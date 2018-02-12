@@ -91,7 +91,7 @@ to_status(const std::string& status)
 
 struct Info
 {
-    const std::string uid; ///< long-term and unique identifier (used for historic)
+    std::string uid; ///< long-term and unique identifier (used for historic)
     Status status;
     bool isOutgoing;
     std::size_t totalSize;

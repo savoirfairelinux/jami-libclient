@@ -52,16 +52,15 @@ class LIB_EXPORT DataTransferModel : public QObject {
     Q_OBJECT
 
 public:
-    DataTransferModel(Database& database,
-                      const CallbacksHandler& callbacksHandler);
+    DataTransferModel();
     ~DataTransferModel();
 
     void sendFile(const std::string& account_id, const std::string& peer_uri,
-                         const std::string& file_path, const std::string& display_name);
+                  const std::string& file_path, const std::string& display_name);
 
-    datatransfer::Info transferInfo(const std::string& uid);
+    void transferInfo(long long ringId, datatransfer::Info& lrc_info);
 
-    std::streamsize bytesProgress(int interactionId);
+    void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
 
     void accept(int interactionId, const std::string& file_path, std::size_t offset);
 
@@ -70,6 +69,8 @@ public:
     void registerTransferId(long long dringId, int interactionId);
 
     int getInteractionIdFromDringId(long long dringId);
+
+    long long getDringIdFromInteractionId(int interactionId);
 
 Q_SIGNALS:
     /**

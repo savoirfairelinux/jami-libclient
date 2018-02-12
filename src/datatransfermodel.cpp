@@ -18,8 +18,6 @@
 
 // LRC
 #include "api/datatransfermodel.h"
-#include "callbackshandler.h"
-#include "database.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
@@ -30,18 +28,20 @@
 // Std
 #include <map>
 #include <stdexcept>
+#include <type_traits>
 
 // Qt
 #include <QUuid>
 
 namespace lrc { namespace api {
 
-/// DRING to LRC event code conversion
+// DRING to LRC event code conversion
 static inline
 datatransfer::Status
 convertDataTransferEvent(DRing::DataTransferEventCode event)
 {
     switch (event) {
+        case DRing::DataTransferEventCode::invalid: return datatransfer::Status::INVALID;
         case DRing::DataTransferEventCode::created: return datatransfer::Status::on_connection;
         case DRing::DataTransferEventCode::unsupported: return datatransfer::Status::unsupported;
         case DRing::DataTransferEventCode::wait_peer_acceptance: return datatransfer::Status::on_connection;
@@ -61,25 +61,17 @@ class DataTransferModel::Impl : public QObject
     Q_OBJECT
 
 public:
-    Impl(DataTransferModel& up_link,
-         Database& database,
-         const CallbacksHandler& callbacksHandler);
+    Impl(DataTransferModel& up_link);
 
     std::vector<std::string> transferIdList() const;
 
     DataTransferModel& upLink;
     std::map<long long, int> dring2lrcIdMap;
     std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
-    Database& database;
-    const CallbacksHandler& callbacksHandler;
 };
 
-DataTransferModel::Impl::Impl(DataTransferModel& up_link,
-                              Database& database,
-                              const CallbacksHandler& callbacksHandler)
+DataTransferModel::Impl::Impl(DataTransferModel& up_link)
     : QObject {}
-    , callbacksHandler {callbacksHandler}
-    , database {database}
     , upLink {up_link}
 {}
 
@@ -93,10 +85,9 @@ DataTransferModel::registerTransferId(long long dringId, int interactionId)
 }
 
 
-DataTransferModel::DataTransferModel(Database& database,
-                                     const CallbacksHandler& callbacksHandler)
+DataTransferModel::DataTransferModel()
     : QObject()
-    , pimpl_ { std::make_unique<Impl>(*this, database, callbacksHandler) }
+    , pimpl_ { std::make_unique<Impl>(*this) }
 {}
 
 DataTransferModel::~DataTransferModel() = default;
@@ -117,26 +108,63 @@ DataTransferModel::Impl::transferIdList() const
 }
 
 void
+DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
+{
+    DataTransferInfo infoFromDaemon;
+    if (ConfigurationManager::instance().dataTransferInfo(ringId, infoFromDaemon) == 0) {
+#if 0
+        int interactionId;
+        try {
+            interactionId = pimpl_->dring2lrcIdMap.at(ringId);
+        } catch (...) {
+            interactionId = -1;
+        }
+#endif
+        //lrc_info.uid = ?
+        lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
+        lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));
+        lrc_info.totalSize = infoFromDaemon.totalSize;
+        lrc_info.progress = infoFromDaemon.bytesProgress;
+        lrc_info.path = infoFromDaemon.displayName.toStdString();
+        lrc_info.displayName = infoFromDaemon.displayName.toStdString();
+        lrc_info.accountId = infoFromDaemon.accountId.toStdString();
+        lrc_info.peerUri = infoFromDaemon.peer.toStdString();
+        //lrc_info.timestamp = ?
+        return;
+    }
+
+    lrc_info.status = datatransfer::Status::INVALID;
+}
+
+void
 DataTransferModel::sendFile(const std::string& account_id, const std::string& peer_uri,
                             const std::string& file_path, const std::string& display_name)
 {
-    auto dring_id = static_cast<DRing::DataTransferId>(ConfigurationManager::instance().sendFile(
-                                                           QString::fromStdString(account_id),
-                                                           QString::fromStdString(peer_uri),
-                                                           QString::fromStdString(file_path),
-                                                           QString::fromStdString(display_name)));
+    DataTransferInfo info;
+    qulonglong id;
+    info.accountId = QString::fromStdString(account_id);
+    info.peer = QString::fromStdString(peer_uri);
+    info.path = QString::fromStdString(file_path);
+    info.displayName = QString::fromStdString(display_name);
+    info.bytesProgress = 0;
+    if (ConfigurationManager::instance().sendFile(info, id) != 0) {
+        qDebug() << "DataTransferModel::sendFile(), error";
+        return;
+    }
 }
 
-std::streamsize
-DataTransferModel::bytesProgress(int interactionId)
+void
+DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& progress)
 {
-    return ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId));
+    ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
+                                                               reinterpret_cast<qlonglong&>(total),
+                                                               reinterpret_cast<qlonglong&>(progress));
 }
 
 void
 DataTransferModel::accept(int interactionId,
-                                      const std::string& file_path,
-                                      std::size_t offset)
+                          const std::string& file_path,
+                          std::size_t offset)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().acceptFileTransfer(dring_id, QString::fromStdString(file_path), offset);
@@ -153,6 +181,12 @@ int
 DataTransferModel::getInteractionIdFromDringId(long long dringId)
 {
     return pimpl_->dring2lrcIdMap.at(dringId);
+}
+
+long long
+DataTransferModel::getDringIdFromInteractionId(int interactionId)
+{
+    return pimpl_->lrc2dringIdMap.at(interactionId);
 }
 
 }} // namespace lrc::api

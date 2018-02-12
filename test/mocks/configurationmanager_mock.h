@@ -652,32 +652,35 @@ public Q_SLOTS: // METHODS
         return {};
     }
 
-    uint64_t sendFile(const QString& account_id, const QString& peer_uri, const QString& file_path, const QString& display_name) {
-        (void)account_id;
-        (void)peer_uri;
-        (void)file_path;
-        (void)display_name;
+    uint32_t sendFile(const DataTransferInfo& lrc_info, qulonglong& id) {
+        (void)lrc_info;
+        (void)id;
         return 0;
     }
 
-    DataTransferInfo dataTransferInfo(uint64_t transfer_id) {
+    uint32_t dataTransferInfo(uint64_t transfer_id, DataTransferInfo& lrc_info) {
         (void)transfer_id;
-        return {};
-    }
-
-    uint64_t dataTransferBytesProgress(uint64_t transfer_id) {
-        (void)transfer_id;
+        (void)lrc_info;
         return 0;
     }
 
-    void acceptFileTransfer(uint64_t transfer_id, const QString& file_path, uint64_t offset) {
+    uint64_t dataTransferBytesProgress(uint64_t transfer_id, qlonglong& total, qlonglong& progress) {
+        (void)transfer_id;
+        (void)total;
+        (void)progress;
+        return 0;
+    }
+
+    uint32_t acceptFileTransfer(uint64_t transfer_id, const QString& file_path, uint64_t offset) {
         (void)transfer_id;
         (void)file_path;
         (void)offset;
+        return 0;
     }
 
-    void cancelDataTransfer(uint64_t transfer_id) {
+    uint32_t cancelDataTransfer(uint64_t transfer_id) {
         (void)transfer_id;
+        return 0;
     }
 
 Q_SIGNALS: // SIGNALS
