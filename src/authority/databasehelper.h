@@ -29,6 +29,10 @@
 namespace lrc
 {
 
+namespace api { namespace datatransfer {
+struct Info;
+}}
+
 namespace authority
 {
 
@@ -232,7 +236,10 @@ int countUnreadFromInteractions(Database& db, const std::string& conversationId)
 int addDataTransferToConversation(Database& db,
                                   const std::string& accountProfileId,
                                   const std::string& conversationId,
-                                  const DataTransferInfo& infoFromDaemon);
+                                  const api::datatransfer::Info& infoFromDaemon);
+
+std::string conversationIdFromInteractionId(Database& db, unsigned int interactionId);
+
 } // namespace database
 
 } // namespace authority
