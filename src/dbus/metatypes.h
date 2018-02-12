@@ -44,6 +44,42 @@ Q_DECLARE_METATYPE(VectorVectorByte)
 Q_DECLARE_METATYPE(DataTransferInfo)
 
 #ifndef ENABLE_LIBWRAP
+static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTransferInfo& info)
+{
+    argument.beginStructure();
+    argument << info.accountId;
+    argument << info.lastEvent;
+    argument << info.flags;
+    argument << info.totalSize;
+    argument << info.bytesProgress;
+    argument << info.peer;
+    argument << info.displayName;
+    argument << info.path;
+    argument << info.mimetype;
+    argument.endStructure();
+
+    return argument;
+}
+
+static inline const QDBusArgument &operator>>(const QDBusArgument& argument, DataTransferInfo& info)
+{
+    argument.beginStructure();
+    argument >> info.accountId;
+    argument >> info.lastEvent;
+    argument >> info.flags;
+    argument >> info.totalSize;
+    argument >> info.bytesProgress;
+    argument >> info.peer;
+    argument >> info.displayName;
+    argument >> info.path;
+    argument >> info.mimetype;
+    argument.endStructure();
+
+    return argument;
+}
+#endif
+
+#ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
 #endif
 inline void registerCommTypes() {
@@ -62,40 +98,6 @@ inline void registerCommTypes() {
    dbus_metaTypeInit = true;
 #endif
 }
-
-#ifndef ENABLE_LIBWRAP
-static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTransferInfo& info)
-{
-    argument.beginStructure();
-    argument << info.isOutgoing;
-    argument << info.lastEvent;
-    argument << info.totalSize;
-    argument << info.bytesProgress;
-    argument << info.displayName;
-    argument << info.path;
-    argument << info.accountId;
-    argument << info.peer;
-    argument.endStructure();
-
-    return argument;
-}
-
-static inline const QDBusArgument &operator>>(const QDBusArgument& argument, DataTransferInfo& info)
-{
-    argument.beginStructure();
-    argument >> info.isOutgoing;
-    argument >> info.lastEvent;
-    argument >> info.totalSize;
-    argument >> info.bytesProgress;
-    argument >> info.displayName;
-    argument >> info.path;
-    argument >> info.accountId;
-    argument >> info.peer;
-    argument.endStructure();
-
-    return argument;
-}
-#endif
 
 #pragma GCC diagnostic pop
 

@@ -599,7 +599,12 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
 void
 ContactModelPimpl::slotNewAccountTransfer(long long dringId)
 {
-    DataTransferInfo infoFromDaemon = ConfigurationManager::instance().dataTransferInfo(dringId);
+    DataTransferInfo infoFromDaemon;
+
+    if (ConfigurationManager::instance().dataTransferInfo(dringId, infoFromDaemon) != 0) {
+        qDebug() << "ContactModel::slotNewAccountTransfer(), error in dataTransferInfo()";
+        return;
+    };
 
     auto accountId = infoFromDaemon.accountId.toStdString();
     auto peerId = infoFromDaemon.peer.toStdString(); // TODO valeur à checker

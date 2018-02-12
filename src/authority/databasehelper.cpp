@@ -20,6 +20,8 @@
 #include "api/profile.h"
 #include "api/datatransfer.h"
 
+#include <datatransfer_interface.h>
+
 namespace lrc
 {
 
@@ -217,7 +219,12 @@ addDataTransferToConversation(Database& db,
                               const DataTransferInfo& infoFromDaemon)
 {
     auto peerProfileId = getProfileId(db, infoFromDaemon.peer.toStdString());
-    auto authorId = (infoFromDaemon.isOutgoing) ? peerProfileId : peerProfileId;
+    auto authorId = (infoFromDaemon.flags & (1 << quint32(DRing::DataTransferFlags::direction))) ? peerProfileId : peerProfileId;
+
+    if (infoFromDaemon.flags & (1 << quint32(DRing::DataTransferFlags::direction)))
+        qDebug() << "$$$$$ TransferFlag is set";
+    else
+        qDebug() << "$$$$$ TransferFlag is not set";
 
     return db.insertInto("interactions",
                          {{":account_id", "account_id"}, {":author_id", "author_id"},
@@ -227,7 +234,7 @@ addDataTransferToConversation(Database& db,
                          {{":account_id", accountProfileId}, {":author_id", authorId},
                          {":conversation_id", conversationId},
                          {":timestamp", std::to_string(std::time(nullptr))},
-                         {":body", infoFromDaemon.displayName.toStdString()}, {":type", (infoFromDaemon.isOutgoing)?"OUTGOING_DATA_TRANSFER":"INCOMING_DATA_TRANSFER"},
+                         {":body", infoFromDaemon.displayName.toStdString()}, {":type", (infoFromDaemon.flags & (1 << quint32(DRing::DataTransferFlags::direction)))?"INCOMING_DATA_TRANSFER":"OUTGOING_DATA_TRANSFER"},
                          {":status", "TRANSFER_CREATED"}});
 }
 
