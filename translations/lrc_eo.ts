@@ -1410,49 +1410,50 @@
         <translation>Kolekto de Samtavolanaj Profiloj</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="840"/>
-        <location filename="../src/conversationmodel.cpp" line="1155"/>
+        <location filename="../src/conversationmodel.cpp" line="855"/>
+        <location filename="../src/conversationmodel.cpp" line="1162"/>
+        <location filename="../src/conversationmodel.cpp" line="1277"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="841"/>
+        <location filename="../src/conversationmodel.cpp" line="856"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="870"/>
-        <location filename="../src/conversationmodel.cpp" line="877"/>
+        <location filename="../src/conversationmodel.cpp" line="885"/>
+        <location filename="../src/conversationmodel.cpp" line="892"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1044"/>
+        <location filename="../src/conversationmodel.cpp" line="1051"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1046"/>
+        <location filename="../src/conversationmodel.cpp" line="1053"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1059"/>
+        <location filename="../src/conversationmodel.cpp" line="1066"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1062"/>
+        <location filename="../src/conversationmodel.cpp" line="1069"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1066"/>
+        <location filename="../src/conversationmodel.cpp" line="1073"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1068"/>
+        <location filename="../src/conversationmodel.cpp" line="1075"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>
