@@ -20,6 +20,8 @@
 #include "api/profile.h"
 #include "api/datatransfer.h"
 
+#include <datatransfer_interface.h>
+
 namespace lrc
 {
 
@@ -181,7 +183,7 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                     {{":conversation_id", conversation.uid}});
     if (interactionsResult.nbrOfCols == 6) {
         auto payloads = interactionsResult.payloads;
-        for (auto i = 0; i < payloads.size(); i += 6) {
+        for (decltype(payloads.size()) i = 0; i < payloads.size(); i += 6) {
             auto msg = api::interaction::Info({payloads[i + 1], payloads[i + 2],
                                          std::stoi(payloads[i + 3]),
                                          api::interaction::to_type(payloads[i + 4]),
@@ -214,21 +216,30 @@ int
 addDataTransferToConversation(Database& db,
                               const std::string& accountProfileId,
                               const std::string& conversationId,
-                              const DataTransferInfo& infoFromDaemon)
+                              const api::datatransfer::Info& infoFromDaemon)
 {
-    auto peerProfileId = getProfileId(db, infoFromDaemon.peer.toStdString());
-    auto authorId = (infoFromDaemon.isOutgoing) ? peerProfileId : peerProfileId;
+    auto peerProfileId = getProfileId(db, infoFromDaemon.peerUri);
+    auto authorId = peerProfileId;
 
-    return db.insertInto("interactions",
-                         {{":account_id", "account_id"}, {":author_id", "author_id"},
-                         {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                         {":body", "body"}, {":type", "type"},
-                         {":status", "status"}},
-                         {{":account_id", accountProfileId}, {":author_id", authorId},
-                         {":conversation_id", conversationId},
-                         {":timestamp", std::to_string(std::time(nullptr))},
-                         {":body", infoFromDaemon.displayName.toStdString()}, {":type", (infoFromDaemon.isOutgoing)?"OUTGOING_DATA_TRANSFER":"INCOMING_DATA_TRANSFER"},
-                         {":status", "TRANSFER_CREATED"}});
+    return db.insertInto("interactions", {
+            {":account_id", "account_id"},
+            {":author_id", "author_id"},
+            {":conversation_id", "conversation_id"},
+            {":timestamp", "timestamp"},
+            {":body", "body"},
+            {":type", "type"},
+            {":status", "status"}
+        }, {
+            {":account_id", accountProfileId},
+            {":author_id", authorId},
+            {":conversation_id", conversationId},
+            {":timestamp", std::to_string(std::time(nullptr))},
+            {":body", infoFromDaemon.displayName},
+            {":type", infoFromDaemon.isOutgoing ?
+                    "OUTGOING_DATA_TRANSFER" :
+                    "INCOMING_DATA_TRANSFER"},
+            {":status", "TRANSFER_CREATED"}
+        });
 }
 
 int
@@ -294,6 +305,21 @@ void updateInteractionStatus(Database& db, unsigned int id,
     db.update("interactions", "status=:status",
               {{":status", api::interaction::to_string(newStatus)}},
               "id=:id", {{":id", std::to_string(id)}});
+}
+
+std::string
+conversationIdFromInteractionId(Database& db, unsigned int interactionId)
+{
+    auto result = db.select("conversation_id",
+                            "interactions",
+                            "id=:interaction_id",
+                            {{":interaction_id", std::to_string(interactionId)}});
+    if (result.nbrOfCols == 1) {
+        auto payloads = result.payloads;
+        return payloads[0];
+    }
+
+    return {};
 }
 
 void clearHistory(Database& db,

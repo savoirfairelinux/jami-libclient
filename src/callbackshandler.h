@@ -27,6 +27,7 @@
 // Lrc
 #include "typedefs.h"
 #include "namedirectory.h"
+#include "api/datatransfer.h"
 
 namespace lrc
 {
@@ -160,13 +161,12 @@ Q_SIGNALS:
                                      const uint64_t id,
                                      const std::string& to, int status);
 
-    void incomingTransfer(long long dringId);
-    //~ void transferStatusChanged(const long long dringId, uint codeStatus);
-    void transferStatusCanceled(long long dringId);
-    void transferStatusAwaiting(long long dringId);
-    void transferStatusOngoing(long long dringId);
-    void transferStatusFinished(long long dringId);
-    void transferStatusError(long long dringId);
+    void transferStatusCreated(long long dringId, api::datatransfer::Info info);
+    void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
+    void transferStatusAwaiting(long long dringId, api::datatransfer::Info info);
+    void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
+    void transferStatusFinished(long long dringId, api::datatransfer::Info info);
+    void transferStatusError(long long dringId, api::datatransfer::Info info);
 
 private Q_SLOTS:
     /**
