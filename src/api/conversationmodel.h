@@ -33,6 +33,7 @@
 // Data
 #include "api/conversation.h"
 #include "api/profile.h"
+#include "api/datatransfer.h"
 
 namespace lrc
 {
@@ -46,6 +47,8 @@ namespace api
 
 namespace account { struct Info; }
 namespace interaction { struct Info; }
+
+class Lrc;
 class BehaviorController;
 class NewAccountModel;
 
@@ -60,6 +63,7 @@ public:
     const account::Info& owner;
 
     ConversationModel(const account::Info& owner,
+                      Lrc& lrc,
                       Database& db,
                       const CallbacksHandler& callbacksHandler,
                       const api::BehaviorController& behaviorController);
@@ -153,6 +157,8 @@ public:
     void acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path);
 
     void cancelTransfer(const std::string& convUid, uint64_t interactionId);
+
+    void getTransferInfo(uint64_t interactionId, api::datatransfer::Info& info);
 
 Q_SIGNALS:
     /**
