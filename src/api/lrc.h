@@ -34,6 +34,7 @@ namespace api
 
 class BehaviorController;
 class NewAccountModel;
+class DataTransferModel;
 
 class LIB_EXPORT Lrc {
 public:
@@ -49,6 +50,11 @@ public:
      * @return a BehaviorController&.
      */
     const BehaviorController& getBehaviorController() const;
+    /**
+     * get a reference on the DataTransfer controller.
+     * @return a DataTransferModel&.
+     */
+    DataTransferModel& getDataTransferModel() const;
 
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;

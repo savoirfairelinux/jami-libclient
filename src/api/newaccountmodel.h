@@ -39,6 +39,8 @@ class NewAccountModelPimpl;
 
 namespace api
 {
+
+class Lrc;
 class BehaviorController;
 
 namespace account { struct Info; }
@@ -51,7 +53,8 @@ class LIB_EXPORT NewAccountModel : public QObject {
 public:
     using AccountInfoMap = std::map<std::string, account::Info>;
 
-    NewAccountModel(Database& database,
+    NewAccountModel(Lrc& lrc,
+                    Database& database,
                     const CallbacksHandler& callbackHandler,
                     const api::BehaviorController& behaviorController);
 

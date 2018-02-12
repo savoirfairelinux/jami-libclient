@@ -20,6 +20,7 @@
 
 
 // LRC
+#include "api/lrc.h"
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
@@ -46,12 +47,14 @@ class NewAccountModelPimpl: public QObject
     Q_OBJECT
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
+                         Lrc& lrc,
                          Database& database,
                          const CallbacksHandler& callbackHandler,
                          const BehaviorController& behaviorController);
     ~NewAccountModelPimpl();
 
     NewAccountModel& linked;
+    Lrc& lrc;
     const CallbacksHandler& callbacksHandler;
     Database& database;
     NewAccountModel::AccountInfoMap accounts;
@@ -80,11 +83,12 @@ public Q_SLOTS:
     void slotProfileUpdated(const Profile* profile);
 };
 
-NewAccountModel::NewAccountModel(Database& database,
+NewAccountModel::NewAccountModel(Lrc& lrc,
+                                 Database& database,
                                  const CallbacksHandler& callbacksHandler,
                                  const BehaviorController& behaviorController)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, database, callbacksHandler, behaviorController))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, database, callbacksHandler, behaviorController))
 {
 }
 
@@ -114,10 +118,12 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
 }
 
 NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
+                                           Lrc& lrc,
                                            Database& database,
                                            const CallbacksHandler& callbacksHandler,
                                            const BehaviorController& behaviorController)
 : linked(linked)
+, lrc {lrc}
 , behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 , database(database)
@@ -151,13 +157,15 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
         addToAccounts(accountID);
         emit linked.accountAdded(accountID);
     } else if (accountInfo != accounts.end()) {
-        if (status == api::account::Status::REGISTERED) {
-            accounts[accountID].enabled = true;
-        } else if (status == api::account::Status::UNREGISTERED) {
-            accounts[accountID].enabled = false;
-        }
         accountInfo->second.status = status;
-        emit linked.accountStatusChanged(accountID);
+        if (status == api::account::Status::REGISTERED and not accounts[accountID].enabled) {
+            accounts[accountID].enabled = true;
+            emit linked.accountStatusChanged(accountID);
+        } else if (status == api::account::Status::UNREGISTERED and accounts[accountID].enabled) {
+            accounts[accountID].enabled = false;
+            emit linked.accountStatusChanged(accountID);
+        } else
+            emit linked.accountStatusChanged(accountID);
     }
 }
 
@@ -189,7 +197,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     // Init models for this account
     owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
-    owner.conversationModel = std::make_unique<ConversationModel>(owner, database, callbacksHandler, behaviorController);
+    owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
     owner.accountModel = &linked;
 }
 
