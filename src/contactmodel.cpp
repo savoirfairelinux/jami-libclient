@@ -275,6 +275,7 @@ ContactModel::searchContact(const std::string& query)
 {
     auto& temporaryContact = pimpl_->contacts[""];
     temporaryContact = {}; // reset in any case
+    auto uri = URI(QString(query.c_str()));
 
     if (owner.profileInfo.type == profile::Type::SIP) {
         // We don't need to search anything for SIP contacts.
@@ -289,14 +290,9 @@ ContactModel::searchContact(const std::string& query)
             profileInfo.type = profile::Type::TEMPORARY;
             temporaryContact.profileInfo = profileInfo;
         }
-
         emit modelUpdated();
-        return;
-    }
-
-    // query is a valid RingID?
-    auto uri = URI(QString(query.c_str()));
-    if (uri.full().startsWith("ring:")) {
+    } else if (uri.full().startsWith("ring:")) {
+        // query is a valid RingID?
         auto shortUri = uri.full().mid(5).toStdString();
         profile::Info profileInfo;
         profileInfo.uri = shortUri;
@@ -304,20 +300,26 @@ ContactModel::searchContact(const std::string& query)
         profileInfo.type = profile::Type::TEMPORARY;
         temporaryContact.profileInfo = profileInfo;
         emit modelUpdated();
-        return;
+    } else {
+        // Default searching
+        profile::Info profileInfo;
+        profileInfo.alias = "Searching… " + query;
+        profileInfo.type = profile::Type::TEMPORARY;
+        temporaryContact.profileInfo = profileInfo;
+        temporaryContact.registeredName = query;
+        emit modelUpdated();
+
+        if (not query.empty()){
+            // Query Name Server
+            if (auto* account = AccountModel::instance().getById(owner.id.c_str())) {
+                if (not account->lookupName(QString(query.c_str()))) {
+                    profileInfo.alias = "No reference of " + query + " found";
+                }
+                emit modelUpdated();
+            }
+        }
     }
 
-    // Default searching
-    profile::Info profileInfo;
-    profileInfo.alias = "Searching… " + query;
-    profileInfo.type = profile::Type::TEMPORARY;
-    temporaryContact.profileInfo = profileInfo;
-    temporaryContact.registeredName = query;
-    emit modelUpdated();
-
-    // Query Name Server
-    if (auto* account = AccountModel::instance().getById(owner.id.c_str()))
-        account->lookupName(QString(query.c_str()));
 }
 
 uint64_t
@@ -507,7 +509,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
     auto& temporaryContact = contacts[""];
     if (contacts.find(uri) == contacts.end()) {
         // contact not present, update the temporaryContact
-        lrc::api::profile::Info profileInfo = {uri, "", registeredName, profile::Type::TEMPORARY};
+        lrc::api::profile::Info profileInfo = {uri, "", "", profile::Type::TEMPORARY};
         temporaryContact = {profileInfo, registeredName, false, false};
     } else {
         // Update contact
