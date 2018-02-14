@@ -262,7 +262,7 @@ ConversationModel::allFilteredConversations() const
                 if (contactInfo.profileInfo.type == profile::Type::PENDING)
                     return false;
                 if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
-                    return !contactInfo.profileInfo.alias.empty();
+                    return not contactInfo.profileInfo.alias.empty() || not contactInfo.registeredName.empty();
             } else {
                 // We only want pending requests matching with the filter
                 if (contactInfo.profileInfo.type != profile::Type::PENDING)
@@ -927,22 +927,34 @@ ConversationModelPimpl::slotContactModelUpdated()
     if (!filter.empty()) {
         // Create a conversation with the temporary item
         conversation::Info conversationInfo;
-        auto temporaryContact = linked.owner.contactModel->getContact("");
+        auto& temporaryContact = linked.owner.contactModel->getContact("");
+
         conversationInfo.uid = temporaryContact.profileInfo.uri;
         conversationInfo.participants.emplace_back("");
         conversationInfo.accountId = linked.owner.id;
+
         // if temporary contact is already present, its alias is empty.
-        if (!temporaryContact.profileInfo.alias.empty()) {
+        if (not temporaryContact.profileInfo.alias.empty() || not temporaryContact.registeredName.empty()) {
+
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
-                if (!firstContactUri.empty()) {
+                //if first conversation has uri it is already a contact
+                // then we must add temporary item
+                if (not firstContactUri.empty()) {
                     conversations.emplace_front(conversationInfo);
+                    dirtyConversations = true;
+                } else if (not conversationInfo.uid.empty()) {
+                    // If firstContactUri is empty it means that we have to update
+                    // this element as it is the temporary.
+                    // Only when we have found an uri.
+                    conversations.front() = conversationInfo;
+                    dirtyConversations = true;
                 }
             } else {
                 conversations.emplace_front(conversationInfo);
+                dirtyConversations = true;
             }
         }
-        dirtyConversations = true;
     } else {
         // No filter, so we can remove the newConversationItem
         if (!conversations.empty()) {
