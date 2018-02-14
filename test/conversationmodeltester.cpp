@@ -62,7 +62,8 @@ ConversationModelTester::testAddValidConversation()
     WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(modelUpdated())).wait(1000);
     // So, add dummy to contacts
-    accInfo_.conversationModel->makePermanent("");
+    auto newContactUri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
+    accInfo_.conversationModel->makePermanent(newContactUri);
     auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
         SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(contactAdded, true);
