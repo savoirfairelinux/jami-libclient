@@ -274,7 +274,7 @@ ConversationModel::allFilteredConversations() const
                 if (contactInfo.profileInfo.type == profile::Type::PENDING)
                     return false;
                 if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
-                    return !contactInfo.profileInfo.alias.empty();
+                    return not contactInfo.profileInfo.alias.empty() || not contactInfo.profileInfo.uri.empty();
             } else {
                 // We only want pending requests matching with the filter
                 if (contactInfo.profileInfo.type != profile::Type::PENDING)
@@ -462,28 +462,28 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     auto accountId = accountProfileId;
 
     auto participant = conversation.participants.front();
+    bool isTemporary = participant.empty();
     auto contactInfo = linked.owner.contactModel->getContact(participant);
     auto url = contactInfo.profileInfo.uri;
-    if (url.empty()) return; // Incorrect item
+
+    if (url.empty())
+        return; // Incorrect item
+
     sendContactRequest(participant);
+
     if (linked.owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
-    conversation.callId = linked.owner.callModel->createCall(url, isAudioOnly);
-    if (convId.empty()) {
-        // The conversation has changed because it was with the temporary item
-        auto contactProfileId = database::getProfileId(db, contactInfo.profileInfo.uri);
-        auto common = database::getConversationsBetween(db, accountId, contactProfileId);
-        if (common.empty()) return;
-        convId = common.front();
-        // Get new conversation
-        conversationIdx = indexOf(convId);
-        if (conversationIdx == -1)
-            return;
-        conversation = conversations.at(conversationIdx);
-    }
+
+    // If call is with temporary contact, conversation has been removed and must be updated
+
+    auto& newConv = isTemporary ? conversations.at(indexOfContact(convId)) : conversation;
+    convId = newConv.uid;
+
+    newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
+
     dirtyConversations = true;
-    emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
+    emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
 }
 
 void
@@ -514,6 +514,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     auto convId = uid;
     auto accountId = pimpl_->accountProfileId;
+    bool isTemporary = conversation.participants.front() == "";
 
     // Send interaction to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
@@ -537,19 +538,13 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         } else
             daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
 
-        if (convId.empty()) {
-            // The conversation has changed because it was with the temporary item
-            auto contactProfileId = database::getProfileId(pimpl_->db, contactInfo.profileInfo.uri);
-            auto common = database::getConversationsBetween(pimpl_->db, accountId, contactProfileId);
-            if (common.empty()) return;
-            convId = common.front();
-            // Get new conversation
-            conversationIdx = pimpl_->indexOf(convId);
-            if (conversationIdx == -1)
-                return;
-            conversation = pimpl_->conversations.at(conversationIdx);
-        }
     }
+
+    // If first interaction with temporary contact, we have to update the conversations info
+    // at this stage
+
+    auto& newConv = isTemporary ? pimpl_->conversations.at(pimpl_->indexOfContact(convId)) : conversation;
+    convId = newConv.uid;
 
     // Add interaction to database
     auto msg = interaction::Info {accountId, body, std::time(nullptr),
@@ -560,8 +555,8 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         // Because the daemon already give an id for the message, we need to store it.
         database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
     }
-    conversation.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
-    conversation.lastMessageUid = msgId;
+    newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
+    newConv.lastMessageUid = msgId;
     pimpl_->dirtyConversations = true;
     // Emit this signal for chatview in the client
     emit newInteraction(convId, msgId, msg);
@@ -872,22 +867,27 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
                 QObject::tr("Invitation received").toStdString() :
                 QObject::tr("Contact added").toStdString();
         } catch (...) {}
+
+        // pass conversation UID through only element
         conv.emplace_back(
             database::beginConversationsBetween(db, accountProfileId,
                 contactProfileId, interaction
             )
         );
+
     }
     // Add the conversation if not already here
-    if (indexOf(conv[0]) == -1)
+    if (indexOf(conv[0]) == -1) {
         addConversationWith(conv[0], uri);
-    emit linked.newConversation(conv[0]);
-    sortConversations();
-    auto firstContactUri = conversations.front().participants.front();
-    if (firstContactUri.empty()) {
-        conversations.pop_front();
-        dirtyConversations = true;
+        emit linked.newConversation(conv[0]);
     }
+
+    // delete temporary conversation if it exists and it has the uri of the added contact as uid
+    if (indexOf(uri) >= 0) {
+        conversations.erase(conversations.begin() + indexOf(uri));
+    }
+
+    sortConversations();
     emit linked.modelSorted();
 }
 
@@ -944,26 +944,40 @@ ConversationModelPimpl::slotContactModelUpdated()
     if (!filter.empty()) {
         // Create a conversation with the temporary item
         conversation::Info conversationInfo;
-        auto temporaryContact = linked.owner.contactModel->getContact("");
+        auto& temporaryContact = linked.owner.contactModel->getContact("");
         conversationInfo.uid = temporaryContact.profileInfo.uri;
         conversationInfo.participants.emplace_back("");
         conversationInfo.accountId = linked.owner.id;
-        // if temporary contact is already present, its alias is empty.
-        if (!temporaryContact.profileInfo.alias.empty()) {
+
+        // if temporary contact is already present, its alias is not empty (namely "Searching ..."),
+        // or its registeredName is set because it was found on the nameservice.
+        if (not temporaryContact.profileInfo.alias.empty() || not temporaryContact.registeredName.empty()) {
+
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
-                if (!firstContactUri.empty()) {
+                //if first conversation has uri it is already a contact
+                // then we must add temporary item
+                if (not firstContactUri.empty()) {
                     conversations.emplace_front(conversationInfo);
+                } else if (not conversationInfo.uid.empty()) {
+                    // If firstContactUri is empty it means that we have to update
+                    // this element as it is the temporary.
+                    // Only when we have found an uri.
+                    conversations.front() = conversationInfo;
                 }
             } else {
+                // no conversation, add temporaryItem
                 conversations.emplace_front(conversationInfo);
             }
         }
+        // trigger dirtyConversation in all cases to flush emptied temporary element due to filtered contact present in list
+        // TL:DR : avoid duplicates and empty elements
         dirtyConversations = true;
     } else {
         // No filter, so we can remove the newConversationItem
         if (!conversations.empty()) {
             auto firstContactUri = conversations.front().participants.front();
+
             if (firstContactUri.empty()) {
                 conversations.pop_front();
                 dirtyConversations = true;
@@ -1002,7 +1016,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
-    conversations.emplace_front(conversation);
+    conversations.emplace_back(conversation);
     dirtyConversations = true;
 }
 
