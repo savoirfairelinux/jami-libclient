@@ -179,7 +179,7 @@ ConversationModelTester::testSendMessageAndClearHistory()
     }
     CPPUNIT_ASSERT(conversationExists);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+        SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
     // Then test clearHistory
     accInfo_.conversationModel->clearHistory(firstConversation);
@@ -207,7 +207,7 @@ ConversationModelTester::testReceiveMessageAndSetRead()
     ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
         firstConversation.participants.front().c_str(), payloads);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+        SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
     // This message should be unread
     conversations = accInfo_.conversationModel->allFilteredConversations();
