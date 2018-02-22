@@ -1403,7 +1403,8 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
         auto interactioType = info.isOutgoing ?
             interaction::Type::OUTGOING_DATA_TRANSFER :
             interaction::Type::INCOMING_DATA_TRANSFER;
-        auto interaction = interaction::Info {contactProfileId,
+        auto authorId = info.isOutgoing? accountProfileId : contactProfileId;
+        auto interaction = interaction::Info {authorId,
                                               info.displayName,
                                               std::time(nullptr),
                                               interactioType,
