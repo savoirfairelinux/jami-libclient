@@ -298,6 +298,13 @@ std::string getInteractionIdByDaemonId(Database& db, const std::string& id)
     return ids.empty() ? "" : ids[0];
 }
 
+void updateInteractionBody(Database& db, unsigned int id,
+                           const std::string& newBody)
+{
+    db.update("interactions", "body=:body",
+              {{":body", newBody}},
+              "id=:id", {{":id", std::to_string(id)}});
+}
 
 void updateInteractionStatus(Database& db, unsigned int id,
                              api::interaction::Status newStatus)
