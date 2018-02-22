@@ -219,7 +219,6 @@ addDataTransferToConversation(Database& db,
                               const api::datatransfer::Info& infoFromDaemon)
 {
     auto peerProfileId = getProfileId(db, infoFromDaemon.peerUri);
-    auto authorId = peerProfileId;
 
     return db.insertInto("interactions", {
             {":account_id", "account_id"},
@@ -231,7 +230,7 @@ addDataTransferToConversation(Database& db,
             {":status", "status"}
         }, {
             {":account_id", accountProfileId},
-            {":author_id", authorId},
+            {":author_id", infoFromDaemon.isOutgoing? accountProfileId : peerProfileId},
             {":conversation_id", conversationId},
             {":timestamp", std::to_string(std::time(nullptr))},
             {":body", infoFromDaemon.displayName},
