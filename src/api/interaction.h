@@ -176,7 +176,8 @@ struct Info
 
 static inline bool isOutgoing(const Info& interaction) {
     return (interaction.status != lrc::api::interaction::Status::READ
-    && interaction.status != lrc::api::interaction::Status::UNREAD)
+    && interaction.status != lrc::api::interaction::Status::UNREAD
+    && interaction.type != lrc::api::interaction::Type::INCOMING_DATA_TRANSFER)
     || interaction.type == lrc::api::interaction::Type::OUTGOING_DATA_TRANSFER;
 }
 
