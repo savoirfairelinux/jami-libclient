@@ -1295,6 +1295,7 @@ void
 ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path)
 {
     pimpl_->lrc.getDataTransferModel().accept(interactionId, path, 0);
+    database::updateInteractionBody(pimpl_->db, interactionId, path);
     database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
 
     // prepare interaction Info and emit signal for the client
@@ -1303,6 +1304,7 @@ ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interacti
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
+            it->second.body = path;
             it->second.status = interaction::Status::TRANSFER_ACCEPTED;
             pimpl_->sendContactRequest(pimpl_->conversations[conversationIdx].participants.front());
             pimpl_->dirtyConversations = true;

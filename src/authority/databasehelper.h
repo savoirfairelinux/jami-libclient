@@ -175,6 +175,15 @@ std::string getDaemonIdByInteractionId(Database& db, const std::string& id);
 std::string getInteractionIdByDaemonId(Database& db, const std::string& id);
 
 /**
+ * Change the body of an interaction
+ * @param db
+ * @param id
+ * @param newBody
+ */
+void updateInteractionBody(Database& db, unsigned int id,
+                           const std::string& newBody);
+
+/**
  * Change the status of an interaction
  * @param db
  * @param id
