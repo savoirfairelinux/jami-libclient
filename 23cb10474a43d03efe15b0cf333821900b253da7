@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_bf5a4181",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1565,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-23T20:10:21Z",
+      "side": 1,
+      "message": "need mutex on access to the map, it-\u003esecond can be modified between set and use",
+      "range": {
+        "startLine": 1563,
+        "startChar": 12,
+        "endLine": 1565,
+        "endChar": 84
+      },
+      "revId": "23cb10474a43d03efe15b0cf333821900b253da7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
