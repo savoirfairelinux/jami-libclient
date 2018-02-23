@@ -90,6 +90,7 @@ enum class Status {
     TRANSFER_ACCEPTED,
     TRANSFER_CANCELED,
     TRANSFER_ERROR,
+    TRANSFER_UNJOINABLE_PEER,
     TRANSFER_ONGOING,
     TRANSFER_AWAITING,
     TRANSFER_FINISHED
@@ -119,6 +120,8 @@ to_string(const Status& status)
         return "TRANSFER_CANCELED";
     case Status::TRANSFER_ERROR:
         return "TRANSFER_ERROR";
+    case Status::TRANSFER_UNJOINABLE_PEER:
+        return "TRANSFER_UNJOINABLE_PEER";
     case Status::TRANSFER_ONGOING:
         return "TRANSFER_ONGOING";
     case Status::TRANSFER_AWAITING:
@@ -154,6 +157,8 @@ to_status(const std::string& status)
         return interaction::Status::TRANSFER_CANCELED;
     else if (status == "TRANSFER_ERROR")
         return interaction::Status::TRANSFER_ERROR;
+    else if (status == "TRANSFER_UNJOINABLE_PEER")
+        return interaction::Status::TRANSFER_UNJOINABLE_PEER;
     else if (status == "TRANSFER_ONGOING")
         return interaction::Status::TRANSFER_ONGOING;
     else if (status == "TRANSFER_AWAITING")
