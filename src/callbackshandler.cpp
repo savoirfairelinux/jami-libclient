@@ -313,9 +313,11 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
         emit transferStatusFinished(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid_pathname:
-    case DRing::DataTransferEventCode::unjoinable_peer:
     case DRing::DataTransferEventCode::unsupported:
         emit transferStatusError(static_cast<long long>(dringId), info);
+        break;
+    case DRing::DataTransferEventCode::unjoinable_peer:
+        emit transferStatusUnjoinable(static_cast<long long>(dringId), info);
         break;
     }
 }

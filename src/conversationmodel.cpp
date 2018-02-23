@@ -235,6 +235,7 @@ public Q_SLOTS:
     void slotTransferStatusOngoing(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusFinished(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusError(long long dringId, api::datatransfer::Info info);
+    void slotTransferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -752,6 +753,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::transferStatusError,
             this,
             &ConversationModelPimpl::slotTransferStatusError);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusUnjoinable,
+            this,
+            &ConversationModelPimpl::slotTransferStatusUnjoinable);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1532,6 +1537,30 @@ ConversationModelPimpl::slotTransferStatusError(long long dringId, datatransfer:
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
             it->second.status = interaction::Status::TRANSFER_ERROR;
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusUnjoinable(long long dringId, datatransfer::Info info)
+{
+    int interactionId;
+    std::string convId;
+    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+        return;
+
+    // update information in the db
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_UNJOINABLE_PEER);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(convId);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            it->second.status = interaction::Status::TRANSFER_UNJOINABLE_PEER;
             dirtyConversations = true;
             emit linked.interactionStatusUpdated(convId, interactionId, it->second);
         }

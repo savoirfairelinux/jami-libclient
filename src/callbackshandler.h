@@ -167,6 +167,7 @@ Q_SIGNALS:
     void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
     void transferStatusFinished(long long dringId, api::datatransfer::Info info);
     void transferStatusError(long long dringId, api::datatransfer::Info info);
+    void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
 
 private Q_SLOTS:
     /**
