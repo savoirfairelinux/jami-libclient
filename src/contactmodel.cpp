@@ -333,10 +333,13 @@ ContactModel::searchContact(const std::string& query)
 
         // Query Name Server
         if (auto* account = AccountModel::instance().getById(owner.id.c_str())) {
-            if (not account->lookupName(QString(query.c_str()))) {
-                profileInfo.alias = "No reference of " + query + " found";
+            if (account->lookupName(QString(query.c_str()))) {
+                // if query different from temporary contact we have fired too many queries
+                // and the nameserver returned another result than the one we need
+                if (query == temporaryContact.registeredName) {
+                    emit modelUpdated();
+                }
             }
-            emit modelUpdated();
         }
     }
 }
