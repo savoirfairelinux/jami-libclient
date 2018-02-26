@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_da647be7",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "don\u0027t emit under the lock as the signal emission is in itself blocking the execution until all listeners are finished. great danger of deadlock",
+      "range": {
+        "startLine": 678,
+        "startChar": 11,
+        "endLine": 678,
+        "endChar": 69
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_baa52f06",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1474,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1474,
+        "startChar": 12,
+        "endLine": 1474,
+        "endChar": 18
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_faae97e6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1528,
+        "startChar": 16,
+        "endLine": 1528,
+        "endChar": 88
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_3ab91f2f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1552,
+        "startChar": 12,
+        "endLine": 1553,
+        "endChar": 9
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_1ab6e33d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1577,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1577,
+        "startChar": 12,
+        "endLine": 1577,
+        "endChar": 84
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_7a828753",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1602,
+        "startChar": 12,
+        "endLine": 1603,
+        "endChar": 9
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_5a87cb61",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1617,
+      "author": {
+        "id": 124
+      },
+      "writtenOn": "2018-02-26T15:55:44Z",
+      "side": 1,
+      "message": "idem",
+      "range": {
+        "startLine": 1617,
+        "startChar": 12,
+        "endLine": 1617,
+        "endChar": 90
+      },
+      "revId": "47eb8c9e708359ca616220ce31da176cd0c2a56e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
