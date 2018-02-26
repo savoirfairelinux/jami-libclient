@@ -27,8 +27,9 @@
 #include <datatransfer_interface.h>
 
 // std
-#include <regex>
 #include <algorithm>
+#include <mutex>
+#include <regex>
 
 // LRC
 #include "api/lrc.h"
@@ -161,6 +162,7 @@ public:
     profile::Type typeFilter;
     profile::Type customTypeFilter;
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
+    std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
 public Q_SLOTS:
     /**
@@ -579,7 +581,10 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         // Because the daemon already give an id for the message, we need to store it.
         database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
     }
-    newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
+    {
+    	std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+    	newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
+    }
     newConv.lastMessageUid = msgId;
     pimpl_->dirtyConversations = {true, true};
     // Emit this signal for chatview in the client
@@ -651,7 +656,10 @@ ConversationModel::clearHistory(const std::string& uid)
     // Remove all TEXT interactions from database
     database::clearHistory(pimpl_->db, uid);
     // Update conversation
-    conversation.interactions.clear();
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[uid]);
+        conversation.interactions.clear();
+    }
     database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
     pimpl_->sortConversations();
     emit modelSorted();
@@ -664,25 +672,38 @@ ConversationModel::clearAllHistory()
     database::clearAllHistoryFor(pimpl_->db, owner.profileInfo.uri);
 
     for (auto& conversation : pimpl_->conversations) {
-        conversation.interactions.clear();
+        {
+            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[conversation.uid]);
+            conversation.interactions.clear();
+        }
         database::getHistory(pimpl_->db, conversation);
     }
 }
 
 void
-ConversationModel::setInteractionRead(const std::string& convId, const uint64_t& msgId)
+ConversationModel::setInteractionRead(const std::string& convId,
+                                      const uint64_t& interactionId)
 {
     auto conversationIdx = pimpl_->indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
-        auto it = interactions.find(msgId);
-        if (it != interactions.end()) {
-            if (it->second.status != interaction::Status::UNREAD) return;
-            auto newStatus = interaction::Status::READ;
-            it->second.status = newStatus;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        auto newStatus = interaction::Status::READ;
+        {
+            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+            auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                if (it->second.status != interaction::Status::UNREAD) return;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             pimpl_->dirtyConversations = {true, true};
-            database::updateInteractionStatus(pimpl_->db, msgId, newStatus);
-            emit interactionStatusUpdated(convId, msgId, it->second);
+            database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
+            emit interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -875,6 +896,7 @@ ConversationModelPimpl::initConversations()
         auto convIdx = indexOf(common[0]);
 
         // Check if file transfer interactions were left in an incorrect state
+        std::lock_guard<std::mutex> lk(interactionsLocks[conversations[convIdx].uid]);
         for(auto& interaction : conversations[convIdx].interactions) {
             if (interaction.second.status == interaction::Status::TRANSFER_CREATED
                 || interaction.second.status == interaction::Status::TRANSFER_AWAITING_HOST
@@ -899,11 +921,16 @@ ConversationModelPimpl::sortConversations()
 {
     std::sort(
         conversations.begin(), conversations.end(),
-        [](const auto& conversationA, const auto& conversationB)
+        [this](const auto& conversationA, const auto& conversationB)
         {
             // A or B is a temporary contact
             if (conversationA.participants.empty()) return true;
             if (conversationB.participants.empty()) return false;
+
+            std::unique_lock<std::mutex> lockConvA(interactionsLocks[conversationA.uid], std::defer_lock);
+            std::unique_lock<std::mutex> lockConvB(interactionsLocks[conversationB.uid], std::defer_lock);
+            std::lock(lockConvA, lockConvB);
+
             auto historyA = conversationA.interactions;
             auto historyB = conversationB.interactions;
             // A or B is a new conversation (without CONTACT interaction)
@@ -991,8 +1018,11 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
                                           std::time(nullptr), interaction::Type::CONTACT,
                                           interaction::Status::SUCCEED};
             auto msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
-            auto conversationIdx = indexOf(conv[0]);
-            conversations[conversationIdx].interactions.emplace(msgId, msg);
+            auto convIdx = indexOf(conv[0]);
+            {
+                std::lock_guard<std::mutex> lk(interactionsLocks[conversations[convIdx].uid]);
+                conversations[convIdx].interactions.emplace(msgId, msg);
+            }
             dirtyConversations = {true, true};
             emit linked.newInteraction(conv[0], msgId, msg);
         } catch (std::out_of_range& e) {
@@ -1095,19 +1125,25 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
         conversation.callId = "";
     }
     database::getHistory(db, conversation);
-    for (auto& interaction: conversation.interactions) {
-        if (interaction.second.status == interaction::Status::SENDING) {
-            // Get the message status from daemon, else unknown
-            auto id = database::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
-            int status = 0;
-            if (!id.empty()) {
-                auto msgId = std::stoull(id);
-                status = ConfigurationManager::instance().getMessageStatus(msgId);
+    std::vector<std::function<void(void)>> slotLambdas;
+    {
+        std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+        for (auto& interaction: conversation.interactions) {
+            if (interaction.second.status == interaction::Status::SENDING) {
+                // Get the message status from daemon, else unknown
+                auto id = database::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
+                int status = 0;
+                if (!id.empty()) {
+                    auto msgId = std::stoull(id);
+                    status = ConfigurationManager::instance().getMessageStatus(msgId);
+                }
+                slotLambdas.emplace_back([=]() -> void {
+                    slotUpdateInteractionStatus(linked.owner.id, std::stoull(id), contactUri, status);
+                });
             }
-            slotUpdateInteractionStatus(linked.owner.id, std::stoull(id),
-                                        contactUri, status);
         }
     }
+    for (const auto& l: slotLambdas) { l(); }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
     conversations.emplace_back(conversation);
@@ -1229,8 +1265,10 @@ ConversationModelPimpl::addOrUpdateCallMessage(const std::string& callId, const 
             auto newInteraction = conversation.interactions.find(msgId) == conversation.interactions.end();
             if (newInteraction) {
                 conversation.lastMessageUid = msgId;
+                std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
                 conversation.interactions.emplace(msgId, msg);
             } else {
+                std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
                 conversation.interactions[msgId] = msg;
             }
             dirtyConversations = {true, true};
@@ -1301,7 +1339,10 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
         addConversationWith(conv[0], from);
         emit linked.newConversation(conv[0]);
     } else {
-        conversations[conversationIdx].interactions.emplace(msgId, msg);
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
+            conversations[conversationIdx].interactions.emplace(msgId, msg);
+        }
         conversations[conversationIdx].lastMessageUid = msgId;
     }
     dirtyConversations = {true, true};
@@ -1361,6 +1402,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
     if (!conv.empty()) {
         auto conversationIdx = indexOf(conv[0]);
         if (conversationIdx != -1) {
+            std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(msgId);
             if (it != interactions.end()) {
@@ -1418,6 +1460,7 @@ ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interacti
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = pimpl_->indexOf(convUid);
     if (conversationIdx != -1) {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convUid]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
@@ -1437,6 +1480,7 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
     // emit Finished event code immediatly (before leaving this method) in non-DBus mode.
     auto conversationIdx = pimpl_->indexOf(convUid);
     if (conversationIdx != -1) {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convUid]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
@@ -1531,7 +1575,10 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
                                               std::time(nullptr),
                                               interactioType,
                                               interaction::Status::TRANSFER_CREATED};
-        interactions.emplace(interactionId, interaction);
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            interactions.emplace(interactionId, interaction);
+        }
         conversations[conversationIdx].lastMessageUid = interactionId;
         dirtyConversations = {true, true};
         emit linked.newInteraction(convId, interactionId, interaction);
@@ -1548,16 +1595,26 @@ ConversationModelPimpl::slotTransferStatusAwaitingPeer(long long dringId, datatr
     if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
         return;
 
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING_PEER);
+    auto newStatus = interaction::Status::TRANSFER_AWAITING_PEER;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_AWAITING_PEER;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1570,16 +1627,26 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
     if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
         return;
 
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING_HOST);
+    auto newStatus = interaction::Status::TRANSFER_AWAITING_HOST;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_AWAITING_HOST;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1592,21 +1659,30 @@ ConversationModelPimpl::slotTransferStatusOngoing(long long dringId, datatransfe
     if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
         return;
 
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ONGOING);
+    auto newStatus = interaction::Status::TRANSFER_ONGOING;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_ONGOING;
-            dirtyConversations = {true, true};
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             auto* timer = new QTimer();
             connect(timer, &QTimer::timeout,
                     [=] { updateTransfer(timer, convId, conversationIdx, interactionId); });
             timer->start(1000);
-
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            dirtyConversations = {true, true};
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1622,17 +1698,26 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransf
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            // We need to check if current status is ONGOING as CANCELED must not be transformed into FINISHED
-            if (it->second.status == interaction::Status::TRANSFER_ONGOING) {
-                // update information in the db
-                database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_FINISHED);
-                it->second.status = interaction::Status::TRANSFER_FINISHED;
-                dirtyConversations = {true, true};
-                emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+        bool emitUpdated = false;
+        auto newStatus = interaction::Status::TRANSFER_FINISHED;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                // We need to check if current status is ONGOING as CANCELED must not be transformed into FINISHED
+                if (it->second.status == interaction::Status::TRANSFER_ONGOING) {
+                    emitUpdated = true;
+                    it->second.status = newStatus;
+                    itCopy = it->second;
+                }
             }
+        }
+        if (emitUpdated) {
+            dirtyConversations = {true, true};
+            database::updateInteractionStatus(db, interactionId, newStatus);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1645,16 +1730,26 @@ ConversationModelPimpl::slotTransferStatusCanceled(long long dringId, datatransf
     if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
         return;
 
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_CANCELED);
+    auto newStatus = interaction::Status::TRANSFER_CANCELED;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_CANCELED;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1668,17 +1763,27 @@ ConversationModelPimpl::slotTransferStatusError(long long dringId, datatransfer:
         return;
 
     // update information in the db
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ERROR);
+    auto newStatus = interaction::Status::TRANSFER_ERROR;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_ERROR;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1692,17 +1797,27 @@ ConversationModelPimpl::slotTransferStatusUnjoinable(long long dringId, datatran
         return;
 
     // update information in the db
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_UNJOINABLE_PEER);
+    auto newStatus = interaction::Status::TRANSFER_UNJOINABLE_PEER;
+    database::updateInteractionStatus(db, interactionId, newStatus);
 
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_UNJOINABLE_PEER;
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                emitUpdated = true;
+                it->second.status = newStatus;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
 }
@@ -1712,11 +1827,20 @@ ConversationModelPimpl::updateTransfer(QTimer* timer, const std::string& convers
                                        int conversationIdx, int interactionId)
 {
     try {
-        const auto& interactions = conversations[conversationIdx].interactions;
-        const auto& it = interactions.find(interactionId);
-        if (it != std::cend(interactions)
-            and it->second.status == interaction::Status::TRANSFER_ONGOING) {
-            emit linked.interactionStatusUpdated(conversation, interactionId, it->second);
+        bool emitUpdated = false;
+        interaction::Info itCopy;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
+            const auto& interactions = conversations[conversationIdx].interactions;
+            const auto& it = interactions.find(interactionId);
+            if (it != std::cend(interactions)
+                and it->second.status == interaction::Status::TRANSFER_ONGOING) {
+                emitUpdated = true;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
+            emit linked.interactionStatusUpdated(conversation, interactionId, itCopy);
             return;
         }
     } catch (...) {}
