@@ -1206,7 +1206,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Vendmbajtëse kontaktesh</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1307,7 +1307,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Merrni pjesë</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>Thirre</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
@@ -1402,58 +1402,58 @@
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>Profile personash</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>Koleksion Profilesh Personash</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="855"/>
-        <location filename="../src/conversationmodel.cpp" line="1162"/>
-        <location filename="../src/conversationmodel.cpp" line="1277"/>
+        <location filename="../src/conversationmodel.cpp" line="867"/>
+        <location filename="../src/conversationmodel.cpp" line="1174"/>
+        <location filename="../src/conversationmodel.cpp" line="1382"/>
         <source>Invitation received</source>
         <translation>Ftesa u mor</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="856"/>
+        <location filename="../src/conversationmodel.cpp" line="868"/>
         <source>Contact added</source>
         <translation>Kontakti u shtua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="885"/>
-        <location filename="../src/conversationmodel.cpp" line="892"/>
+        <location filename="../src/conversationmodel.cpp" line="897"/>
+        <location filename="../src/conversationmodel.cpp" line="904"/>
         <source>Invitation accepted</source>
         <translation>Ftesa u pranua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1051"/>
+        <location filename="../src/conversationmodel.cpp" line="1063"/>
         <source>ð Outgoing call</source>
         <translation>Thirrje ikëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1053"/>
+        <location filename="../src/conversationmodel.cpp" line="1065"/>
         <source>ð Incoming call</source>
         <translation>Tirrje ardhëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1066"/>
+        <location filename="../src/conversationmodel.cpp" line="1078"/>
         <source>ð Outgoing call - </source>
         <translation>Thirrje ikëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1069"/>
+        <location filename="../src/conversationmodel.cpp" line="1081"/>
         <source>ð Incoming call - </source>
         <translation>Tirrje ardhëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1073"/>
+        <location filename="../src/conversationmodel.cpp" line="1085"/>
         <source>ð½ Missed outgoing call</source>
         <translation>Thirrje ikëse të humbura ð½</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1075"/>
+        <location filename="../src/conversationmodel.cpp" line="1087"/>
         <source>ð½ Missed incoming call</source>
         <translation>Thirrje ardhëse të humbura ð½</translation>
     </message>
