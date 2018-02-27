@@ -1153,6 +1153,10 @@ bool Account::exportOnRing(const QString& password) const
     return ConfigurationManager::instance().exportOnRing(id(), password);
 }
 
+bool Account::exportToFile(const QString& destinationPath) const
+{
+    return ConfigurationManager::instance().exportToFile(id(), destinationPath);
+}
 
 #define CAST(item) static_cast<int>(item)
 QVariant Account::roleData(int role) const

@@ -175,6 +175,10 @@ public Q_SLOTS: // METHODS
         return DRing::exportOnRing(accountID.toStdString(), password.toStdString());
     }
 
+    bool exportToFile(const QString& accountID, const QString& destinationPath) {
+        return DRing::exportToFile(accountID.toStdString(), destinationPath.toStdString());
+    }
+
     MapStringString getKnownRingDevices(const QString& accountID) {
         MapStringString temp = convertMap(DRing::getKnownRingDevices(accountID.toStdString()));
         return temp;
