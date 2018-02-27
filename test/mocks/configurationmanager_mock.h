@@ -97,6 +97,13 @@ public Q_SLOTS: // METHODS
         return false;
     }
 
+    bool exportOnFile(const QString& accountId, const QString& destinationPath)
+    {
+        Q_UNUSED(accountId)
+        Q_UNUSED(password)
+        return false;
+    }
+
     MapStringString getKnownRingDevices(const QString& accountId)
     {
         Q_UNUSED(accountId)
