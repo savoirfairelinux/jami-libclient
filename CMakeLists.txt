@@ -667,9 +667,9 @@ IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
    )
 ENDIF()
 
-QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
-
-
+IF(NOT ${ENABLE_TEST} MATCHES true)
+  QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
+ENDIF()
 ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
@@ -684,7 +684,7 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    SET_TARGET_PROPERTIES( ringclient_static
       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
    )
-ENDIF()
+ ENDIF()
 
 QT5_USE_MODULES(ringclient Core)
 
@@ -889,6 +889,7 @@ IF((${ENABLE_TEST} MATCHES true))
       test/newaccountmodeltester.h
       test/newaccountmodeltester.cpp
       ${libringclient_LIB_SRCS}
+      ${LIB_HEADER_MOC}
       ${libringclient_PRIVATE_HDRS}
     )
     TARGET_LINK_LIBRARIES(LRCTester
