@@ -889,6 +889,7 @@ IF((${ENABLE_TEST} MATCHES true))
       test/newaccountmodeltester.h
       test/newaccountmodeltester.cpp
       ${libringclient_LIB_SRCS}
+      ${LIB_HEADER_MOC}
       ${libringclient_PRIVATE_HDRS}
     )
     TARGET_LINK_LIBRARIES(LRCTester
