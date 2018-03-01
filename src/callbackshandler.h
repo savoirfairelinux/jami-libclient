@@ -163,7 +163,8 @@ Q_SIGNALS:
 
     void transferStatusCreated(long long dringId, api::datatransfer::Info info);
     void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaiting(long long dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
     void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
     void transferStatusFinished(long long dringId, api::datatransfer::Info info);
     void transferStatusError(long long dringId, api::datatransfer::Info info);

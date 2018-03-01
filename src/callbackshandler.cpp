@@ -303,8 +303,10 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
         emit transferStatusCanceled(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_peer_acceptance:
+        emit transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
+        break;
     case DRing::DataTransferEventCode::wait_host_acceptance:
-        emit transferStatusAwaiting(static_cast<long long>(dringId), info);
+        emit transferStatusAwaitingHost(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::ongoing:
         emit transferStatusOngoing(static_cast<long long>(dringId), info);

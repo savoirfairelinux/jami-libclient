@@ -231,7 +231,8 @@ public Q_SLOTS:
 
     void slotTransferStatusCreated(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusAwaiting(long long dringId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusOngoing(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusFinished(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusError(long long dringId, api::datatransfer::Info info);
@@ -738,9 +739,13 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotTransferStatusCanceled);
     connect(&callbacksHandler,
-            &CallbacksHandler::transferStatusAwaiting,
+            &CallbacksHandler::transferStatusAwaitingPeer,
             this,
-            &ConversationModelPimpl::slotTransferStatusAwaiting);
+            &ConversationModelPimpl::slotTransferStatusAwaitingPeer);
+    connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusAwaitingHost,
+            this,
+            &ConversationModelPimpl::slotTransferStatusAwaitingHost);
     connect(&callbacksHandler,
             &CallbacksHandler::transferStatusOngoing,
             this,
@@ -802,7 +807,8 @@ ConversationModelPimpl::initConversations()
         // Check if file transfer interactions were left in an incorrect state
         for(auto& interaction : conversations[convIdx].interactions) {
             if (interaction.second.status == interaction::Status::TRANSFER_CREATED
-                || interaction.second.status == interaction::Status::TRANSFER_AWAITING
+                || interaction.second.status == interaction::Status::TRANSFER_AWAITING_HOST
+                || interaction.second.status == interaction::Status::TRANSFER_AWAITING_PEER
                 || interaction.second.status == interaction::Status::TRANSFER_ONGOING
                 || interaction.second.status == interaction::Status::TRANSFER_ACCEPTED) {
                 // If a datatransfer was left in a non-terminal status in DB, we switch this status to ERROR
@@ -1423,21 +1429,43 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
 }
 
 void
-ConversationModelPimpl::slotTransferStatusAwaiting(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusAwaitingPeer(long long dringId, datatransfer::Info info)
 {
     int interactionId;
     std::string convId;
     if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
         return;
 
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING);
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING_PEER);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
         auto& interactions = conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
-            it->second.status = interaction::Status::TRANSFER_AWAITING;
+            it->second.status = interaction::Status::TRANSFER_AWAITING_PEER;
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+        }
+    }
+}
+
+void
+ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatransfer::Info info)
+{
+    int interactionId;
+    std::string convId;
+    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+        return;
+
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_AWAITING_HOST);
+
+    auto conversationIdx = indexOf(convId);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            it->second.status = interaction::Status::TRANSFER_AWAITING_HOST;
             dirtyConversations = true;
             emit linked.interactionStatusUpdated(convId, interactionId, it->second);
         }
