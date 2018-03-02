@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_c50c9c97",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-03-02T14:34:27Z",
+      "side": 1,
+      "message": "would this be better outside the sort comparison function or just inside to protect conversationA.participants too?",
+      "range": {
+        "startLine": 853,
+        "startChar": 12,
+        "endLine": 853,
+        "endChar": 62
+      },
+      "revId": "a254e1ee2fbe341e3fc9cc5ea19581ed3c1ad09a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
