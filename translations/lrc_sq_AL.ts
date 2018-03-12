@@ -1291,7 +1291,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Shpërngulje shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
