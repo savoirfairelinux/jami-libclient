@@ -122,7 +122,7 @@ public Q_SLOTS:
                                     const std::string& contactUri,
                                     const std::string& payload);
     /**
-     * Listen from call Model when an incoming call arrives.
+     * Listen from callModel when an incoming call arrives.
      * @param fromId
      * @param callId
      */
@@ -394,8 +394,10 @@ ContactModelPimpl::fillsWithRINGContacts() {
     }
 
     // Add contacts from daemon
-    for (auto* c : account->getContacts()) {
-        addToContacts(c, linked.owner.profileInfo.type);
+    const VectorMapStringString& contacts_vector = ConfigurationManager::instance().getContacts(linked.owner.id.c_str());
+    for (auto contact_info : contacts_vector) {
+        auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], account);
+        addToContacts(cm, linked.owner.profileInfo.type);
     }
 
     // Add pending contacts
