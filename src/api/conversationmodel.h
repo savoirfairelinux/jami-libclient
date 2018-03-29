@@ -183,6 +183,11 @@ Q_SIGNALS:
      */
     void conversationCleared(const std::string& uid) const;
     /**
+     * Emitted when conversation's participant has been updated
+     * @param uid
+     */
+    void conversationUpdated(const std::string& uid) const;
+    /**
      * Emitted when conversations are sorted by last interaction
      */
     void modelSorted() const;
