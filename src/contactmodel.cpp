@@ -286,7 +286,7 @@ ContactModel::searchContact(const std::string& query)
             profileInfo.type = profile::Type::TEMPORARY;
             temporaryContact.profileInfo = profileInfo;
         }
-        emit modelUpdated();
+        emit modelUpdated(query);
     } else if (uri.full().startsWith("ring:")) {
         // query is a valid RingID?
         auto shortUri = uri.full().mid(5).toStdString();
@@ -295,7 +295,7 @@ ContactModel::searchContact(const std::string& query)
         profileInfo.alias = shortUri;
         profileInfo.type = profile::Type::TEMPORARY;
         temporaryContact.profileInfo = profileInfo;
-        emit modelUpdated();
+        emit modelUpdated(query);
     } else {
         // Default searching
         profile::Info profileInfo;
@@ -303,7 +303,7 @@ ContactModel::searchContact(const std::string& query)
         profileInfo.type = profile::Type::TEMPORARY;
         temporaryContact.profileInfo = profileInfo;
         temporaryContact.registeredName = query;
-        emit modelUpdated();
+        emit modelUpdated(query);
 
 
         // Query Name Server
@@ -311,7 +311,7 @@ ContactModel::searchContact(const std::string& query)
             if (not account->lookupName(QString(query.c_str()))) {
                 profileInfo.alias = "No reference of " + query + " found";
             }
-            emit modelUpdated();
+            emit modelUpdated(query);
         }
     }
 
@@ -350,7 +350,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             auto iter = contacts.find(contactUri);
             if (iter != contacts.end()) {
                 iter->second.isPresent = status;
-                emit this->linked.modelUpdated();
+                emit this->linked.modelUpdated(contactUri);
             }
         });
     connect(&callbacksHandler, &CallbacksHandler::contactAdded,
@@ -440,7 +440,7 @@ ContactModelPimpl::setContactPresent(const std::string& contactUri, bool status)
     auto it = contacts.find(contactUri);
     if (it != contacts.end()) {
         it->second.isPresent = status;
-        emit linked.modelUpdated();
+        emit linked.modelUpdated(contactUri);
     }
 }
 
@@ -514,7 +514,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
             temporaryContact = {profileInfo, "", false, false};
         }
     }
-    emit linked.modelUpdated();
+    emit linked.modelUpdated(uri);
 
 }
 

@@ -164,7 +164,7 @@ public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
      */
-    void slotContactModelUpdated();
+    void slotContactModelUpdated(const std::string& uri);
     /**
      * Listen from contactModel when a new contact is added
      * @param uri
@@ -943,7 +943,7 @@ ConversationModelPimpl::slotContactRemoved(const std::string& uri)
 }
 
 void
-ConversationModelPimpl::slotContactModelUpdated()
+ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
 {
     // We don't create newConversationItem if we already filter on pending
     conversation::Info newConversationItem;
@@ -975,10 +975,10 @@ ConversationModelPimpl::slotContactModelUpdated()
                 // no conversation, add temporaryItem
                 conversations.emplace_front(conversationInfo);
             }
+            dirtyConversations = true;
+            emit linked.modelSorted();
+            return;
         }
-        // trigger dirtyConversation in all cases to flush emptied temporary element due to filtered contact present in list
-        // TL:DR : avoid duplicates and empty elements
-        dirtyConversations = true;
     } else {
         // No filter, so we can remove the newConversationItem
         if (!conversations.empty()) {
@@ -987,10 +987,18 @@ ConversationModelPimpl::slotContactModelUpdated()
             if (firstContactUri.empty()) {
                 conversations.pop_front();
                 dirtyConversations = true;
+                emit linked.modelSorted();
+                return;
             }
         }
     }
-    emit linked.modelSorted();
+    // trigger dirtyConversation in all cases to flush emptied temporary element due to filtered contact present in list
+    // TL:DR : avoid duplicates and empty elements
+    dirtyConversations = true;
+    int index = indexOfContact(uri);
+    if (index != -1) {
+        emit linked.conversationUpdated(conversations.at(index).uid);
+    }
 }
 
 void
