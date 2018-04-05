@@ -64,8 +64,17 @@ d_ptr(new VideoDevicePrivate(this))
 
          foreach(const QString& rate, resolutions.value()) {
             Video::Rate* r = new Video::Rate(res,rate);
-            res->d_ptr->m_lValidRates << r;
+            if (!res->d_ptr->m_lValidRates.contains(r)) {
+                res->d_ptr->m_lValidRates << r;
+            }
          }
+
+         // Sort rates in increasing order.
+         qSort(res->d_ptr->m_lValidRates.begin(),
+         res->d_ptr->m_lValidRates.end(),
+         [](Video::Rate* rateA, Video::Rate* rateB) {
+             return rateA->name().toInt() > rateB->name().toInt();
+         });
       }
 
       // Sort resolutions by size area.
