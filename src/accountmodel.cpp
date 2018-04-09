@@ -48,6 +48,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
+#include "dbus/presencemanager.h"
 #include "codecmodel.h"
 #include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
@@ -834,6 +835,21 @@ AccountModel::EditState AccountModel::editState() const
 
 
    return s_CurrentState;
+}
+
+///Client can call this to force subscribe/resubscribe to all buddies
+void
+AccountModel::subscribeToBuddies(const QString &accountId)
+{
+    Account* account = getById(accountId.toLatin1());
+    if (account && account->protocol() == Account::Protocol::RING) {
+        const auto account_contacts = static_cast<QVector<QMap<QString, QString>>>(ConfigurationManager::instance().getContacts(accountId.toUtf8().constData()));
+        for (auto contact_info : account_contacts) {
+            PresenceManager::instance().subscribeBuddy(accountId,
+                                                       contact_info["id"],
+                                                       true);
+        }
+    }
 }
 
 ///Called when codec bitrate changes
