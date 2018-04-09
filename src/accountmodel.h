@@ -79,6 +79,7 @@ public:
    bool                 isIP2IPSupported            (                                      ) const;
    bool                 isRingSupported             (                                      ) const;
    EditState            editState                   (                                      ) const;
+   void                 subscribeToBuddies          (const QString &accountID              )      ;
    Account*             selectedAccount             (                                      ) const;
    QList<Account*>      accountsToMigrate           (                                      ) const;
    QVector<QMap<QString, QString>> getContacts      (const Account* account                ) const;
