@@ -110,11 +110,17 @@ NewCallModel::~NewCallModel()
 }
 
 const call::Info&
-NewCallModel::getCallFromURI(const std::string& uri) const
+NewCallModel::getCallFromURI(const std::string& uri, bool notOver) const
 {
+    // peer url = ring:uri or sip number
+    auto url = (owner.profileInfo.type != profile::Type::SIP && uri.find("ring:") == std::string::npos) ? "ring:" + uri : uri;
     for (const auto& call: pimpl_->calls) {
-        if (call.second->peer == uri) {
-            return *call.second;
+        if (call.second->peer == url) {
+            if (!notOver)
+                return *call.second;
+            else
+                if (call.second->status != call::Status::ENDED)
+                    return *call.second;
         }
     }
     throw std::out_of_range("No call at URI " + uri);
@@ -375,7 +381,9 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
-    callInfo->peer = fromId;
+    // peer url = ring:uri or sip number
+    auto url = (linked.owner.profileInfo.type != profile::Type::SIP && fromId.find("ring:") == std::string::npos) ? "ring:" + fromId : fromId;
+    callInfo->peer = url;
     callInfo->isOutgoing = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
@@ -397,8 +405,8 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         } else if (state == "HUNGUP") {
             calls[callId]->status = call::Status::TERMINATING;
         } else if (state == "FAILURE" || state == "OVER") {
-            emit linked.callEnded(callId);
             calls[callId]->status = call::Status::ENDED;
+            emit linked.callEnded(callId);
         } else if (state == "INACTIVE") {
             calls[callId]->status = call::Status::INACTIVE;
         } else if (state == "CURRENT") {
