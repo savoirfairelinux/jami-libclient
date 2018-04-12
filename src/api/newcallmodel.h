@@ -87,10 +87,11 @@ public:
     /**
      * Get the call from the peer uri
      * @param  uri
+     * @param  notOver search for a non finished call
      * @return the callInfo
      * @throw out_of_range exception if not found
      */
-    const call::Info& getCallFromURI(const std::string& uri) const;
+    const call::Info& getCallFromURI(const std::string& uri, bool notOver = false) const;
     /**
      * @param  callId to test
      * @return true if callId is presend else false.

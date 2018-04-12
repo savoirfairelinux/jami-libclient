@@ -1097,7 +1097,7 @@ ConversationModelPimpl::slotCallStarted(const std::string& callId)
         else
             addOrUpdateCallMessage(callId, QObject::tr("📞 Incoming call").toStdString());
     } catch (std::out_of_range& e) {
-        qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
+        qDebug() << "ConversationModelPimpl::slotCallStarted can't start inexistant call";
     }
 }
 
@@ -1123,7 +1123,11 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
         // reset the callId stored in the conversation
         for (auto& conversation: conversations)
             if (conversation.callId == callId) {
-                conversation.callId = "";
+                try {
+                    conversation.callId = linked.owner.callModel->getCallFromURI(conversation.participants[0], true).id;
+                } catch (std::out_of_range& e) {
+                    conversation.callId = "";
+                }
                 dirtyConversations = true;
                 linked.selectConversation(conversation.uid);
             }
