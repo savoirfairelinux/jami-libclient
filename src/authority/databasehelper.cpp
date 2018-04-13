@@ -233,7 +233,7 @@ addDataTransferToConversation(Database& db,
             {":author_id", infoFromDaemon.isOutgoing? accountProfileId : peerProfileId},
             {":conversation_id", conversationId},
             {":timestamp", std::to_string(std::time(nullptr))},
-            {":body", infoFromDaemon.displayName},
+            {":body", infoFromDaemon.path},
             {":type", infoFromDaemon.isOutgoing ?
                     "OUTGOING_DATA_TRANSFER" :
                     "INCOMING_DATA_TRANSFER"},

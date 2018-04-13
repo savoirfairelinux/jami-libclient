@@ -125,7 +125,7 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
         lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));
         lrc_info.totalSize = infoFromDaemon.totalSize;
         lrc_info.progress = infoFromDaemon.bytesProgress;
-        lrc_info.path = infoFromDaemon.displayName.toStdString();
+        lrc_info.path = infoFromDaemon.path.toStdString();
         lrc_info.displayName = infoFromDaemon.displayName.toStdString();
         lrc_info.accountId = infoFromDaemon.accountId.toStdString();
         lrc_info.peerUri = infoFromDaemon.peer.toStdString();
