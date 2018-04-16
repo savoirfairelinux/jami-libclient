@@ -903,6 +903,8 @@ IF((${ENABLE_TEST} MATCHES true))
       test/conversationmodeltester.cpp
       test/contactmodeltester.h
       test/contactmodeltester.cpp
+      test/datatransfertester.h
+      test/datatransfertester.cpp
       test/newcallmodeltester.h
       test/newcallmodeltester.cpp
       test/newaccountmodeltester.h
