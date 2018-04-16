@@ -23,6 +23,8 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <mutex>
+#include <condition_variable>
 
 // Qt
 #include <qobject.h>
@@ -70,6 +72,10 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+    /**
+     * flag account corresponding to passed id as freeable.
+     */
+    void flagFreeable(const std::string& accountID) const;
 
 Q_SIGNALS:
     /**

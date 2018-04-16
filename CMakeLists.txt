@@ -26,6 +26,19 @@ ADD_DEFINITIONS(
    -O2
 )
 
+# Options
+set(CHK_FREEABLE_BEFORE_ERASE_ACCOUNT_DESCRIPTION
+"Check that an account has been marked freeable by the client
+before freeing the structures. This avoids various race
+conditions while removing accounts but may not be supported by
+all clients. ON by default on Linux systems, otherwise OFF.")
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  option (CHK_FREEABLE_BEFORE_ERASE_ACCOUNT CHK_FREEABLE_BEFORE_ERASE_ACCOUNT_DESCRIPTION ON)
+ELSE()
+  option (CHK_FREEABLE_BEFORE_ERASE_ACCOUNT CHK_FREEABLE_BEFORE_ERASE_ACCOUNT_DESCRIPTION OFF)
+ENDIF()
+
 PROJECT(ringclient)
 
 # First, check is the compiler is new enough, most version of Clang are fine
@@ -208,6 +221,12 @@ IF(NOT (${ENABLE_VIDEO} MATCHES false))
 ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
+
+if (CHK_FREEABLE_BEFORE_ERASE_ACCOUNT)
+   ADD_DEFINITIONS(
+      -DCHK_FREEABLE_BEFORE_ERASE_ACCOUNT
+   )
+endif ()
 
 SET(GENERIC_LIB_VERSION "1.0.0")
 

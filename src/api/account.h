@@ -78,6 +78,8 @@ struct Info
     std::string id;
     std::string registeredName;
     bool enabled;
+    bool freeable = false;
+    bool valid = true;
     Status status = account::Status::INVALID;
     profile::Info profileInfo;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
