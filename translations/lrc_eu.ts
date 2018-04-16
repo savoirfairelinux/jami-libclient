@@ -125,7 +125,7 @@
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Deitzen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
@@ -137,7 +137,7 @@
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Hizketan</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
@@ -155,13 +155,13 @@
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Huts eginda</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Lanpetuta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
@@ -179,7 +179,7 @@
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Amaituta</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Grabaketak</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
@@ -1225,7 +1225,7 @@
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Hizketan</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
@@ -1250,12 +1250,12 @@
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Konektatzen</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Bilatzen</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
@@ -1411,8 +1411,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="873"/>
-        <location filename="../src/conversationmodel.cpp" line="1199"/>
-        <location filename="../src/conversationmodel.cpp" line="1407"/>
+        <location filename="../src/conversationmodel.cpp" line="1211"/>
+        <location filename="../src/conversationmodel.cpp" line="1419"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
@@ -1428,32 +1428,32 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1088"/>
+        <location filename="../src/conversationmodel.cpp" line="1096"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1090"/>
+        <location filename="../src/conversationmodel.cpp" line="1098"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1103"/>
+        <location filename="../src/conversationmodel.cpp" line="1111"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1106"/>
+        <location filename="../src/conversationmodel.cpp" line="1114"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1110"/>
+        <location filename="../src/conversationmodel.cpp" line="1118"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1112"/>
+        <location filename="../src/conversationmodel.cpp" line="1120"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>

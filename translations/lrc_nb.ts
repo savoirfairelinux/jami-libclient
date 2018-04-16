@@ -1411,8 +1411,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="873"/>
-        <location filename="../src/conversationmodel.cpp" line="1199"/>
-        <location filename="../src/conversationmodel.cpp" line="1407"/>
+        <location filename="../src/conversationmodel.cpp" line="1211"/>
+        <location filename="../src/conversationmodel.cpp" line="1419"/>
         <source>Invitation received</source>
         <translation>Invitasjon mottatt</translation>
     </message>
@@ -1428,32 +1428,32 @@
         <translation>Invitasjon godtatt</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1088"/>
+        <location filename="../src/conversationmodel.cpp" line="1096"/>
         <source>ð Outgoing call</source>
         <translation>ð Utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1090"/>
+        <location filename="../src/conversationmodel.cpp" line="1098"/>
         <source>ð Incoming call</source>
         <translation>ð Innkommende anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1103"/>
+        <location filename="../src/conversationmodel.cpp" line="1111"/>
         <source>ð Outgoing call - </source>
         <translation>ð Utgående anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1106"/>
+        <location filename="../src/conversationmodel.cpp" line="1114"/>
         <source>ð Incoming call - </source>
         <translation>ð Innkommende anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1110"/>
+        <location filename="../src/conversationmodel.cpp" line="1118"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Ubesvart utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1112"/>
+        <location filename="../src/conversationmodel.cpp" line="1120"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Tapt innkommende anrop</translation>
     </message>
