@@ -147,6 +147,14 @@ public:
     bool usefulDataFromDataTransfer(long long dringId, const datatransfer::Info& info,
                                     int& interactionId, std::string& convId);
 
+    /**
+     * accept a file transfer
+     * @param convUid
+     * @param interactionId
+     * @param final name of the file
+     */
+    void acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path);
+
     const ConversationModel& linked;
     Lrc& lrc;
     Database& db;
@@ -1336,23 +1344,7 @@ ConversationModel::sendFile(const std::string& convUid,
 void
 ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path)
 {
-    pimpl_->lrc.getDataTransferModel().accept(interactionId, path, 0);
-    database::updateInteractionBody(pimpl_->db, interactionId, path);
-    database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
-
-    // prepare interaction Info and emit signal for the client
-    auto conversationIdx = pimpl_->indexOf(convUid);
-    if (conversationIdx != -1) {
-        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.body = path;
-            it->second.status = interaction::Status::TRANSFER_ACCEPTED;
-            pimpl_->sendContactRequest(pimpl_->conversations[conversationIdx].participants.front());
-            pimpl_->dirtyConversations = true;
-            emit interactionStatusUpdated(convUid, interactionId, it->second);
-        }
-    }
+    pimpl_->acceptTransfer(convUid, interactionId, path);
 }
 
 void
@@ -1499,6 +1491,39 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
             it->second.status = interaction::Status::TRANSFER_AWAITING_HOST;
             dirtyConversations = true;
             emit linked.interactionStatusUpdated(convId, interactionId, it->second);
+            // If it's  an image < 20 Mb, accept transfer.
+            auto extensionIdx = info.displayName.find_last_of(".");
+            if (extensionIdx == std::string::npos) return;
+            auto extension = info.displayName.substr(extensionIdx);
+            std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+            auto imageExtensions = {".gif", ".jpg", ".jpeg", ".png"};
+            auto isImage = std::find(imageExtensions.begin(), imageExtensions.end(), extension) != imageExtensions.end();
+            auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
+            if (info.totalSize < 20 * 1024 * 1024 && isImage && !destinationDir.empty()) {
+                acceptTransfer(convId, interactionId, destinationDir + info.displayName);
+            }
+        }
+    }
+}
+
+void
+ConversationModelPimpl::acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path)
+{
+    lrc.getDataTransferModel().accept(interactionId, path, 0);
+    database::updateInteractionBody(db, interactionId, path);
+    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
+
+    // prepare interaction Info and emit signal for the client
+    auto conversationIdx = indexOf(convUid);
+    if (conversationIdx != -1) {
+        auto& interactions = conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            it->second.body = path;
+            it->second.status = interaction::Status::TRANSFER_ACCEPTED;
+            sendContactRequest(conversations[conversationIdx].participants.front());
+            dirtyConversations = true;
+            emit linked.interactionStatusUpdated(convUid, interactionId, it->second);
         }
     }
 }
