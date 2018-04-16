@@ -35,6 +35,9 @@
 #include "typedefs.h"
 #include "qtwrapper/conversions_wrap.hpp"
 
+#include <api/datatransfer.h>
+#include <datatransfer_interface.h>
+
 /*
  * Proxy class for interface org.ring.Ring.ConfigurationManager
  */
@@ -80,6 +83,23 @@ public:
    void emitIncomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
    {
        emit incomingAccountMessage(accountId, from, payloads);
+   }
+
+
+   std::map<long long, lrc::api::datatransfer::Info> transferInfos_;
+   std::map<long long, uint32_t> transferInfosEvent_;
+   void setDataTransferInfo(long long ringId, lrc::api::datatransfer::Info lrc_info) {
+       transferInfos_.emplace(std::make_pair(ringId, lrc_info));
+   }
+
+   void emitDataTransferEvent(uint64_t transfer_id, DRing::DataTransferEventCode eventCode) {
+       auto code = static_cast<uint32_t>(eventCode);
+       auto it = transferInfosEvent_.find('c');
+       if (it != transferInfosEvent_.end())
+           it->second = code;
+       else
+           transferInfosEvent_.emplace(std::make_pair(transfer_id, code));
+       emit dataTransferEvent(transfer_id, code);
    }
 
 public Q_SLOTS: // METHODS
@@ -666,8 +686,16 @@ public Q_SLOTS: // METHODS
     }
 
     uint32_t dataTransferInfo(uint64_t transfer_id, DataTransferInfo& lrc_info) {
-        (void)transfer_id;
-        (void)lrc_info;
+        auto dring_info = transferInfos_.find(transfer_id)->second;
+        lrc_info.accountId = QString::fromStdString(dring_info.accountId);
+        lrc_info.lastEvent = quint32(transferInfosEvent_.find(transfer_id)->second);
+        lrc_info.flags = {};
+        lrc_info.totalSize = dring_info.totalSize;
+        lrc_info.bytesProgress = dring_info.progress;
+        lrc_info.peer = QString::fromStdString(dring_info.peerUri);
+        lrc_info.displayName = QString::fromStdString(dring_info.displayName);
+        lrc_info.path = QString::fromStdString(dring_info.path);
+        lrc_info.mimetype = QString::fromStdString(std::string(""));
         return 0;
     }
 

@@ -72,6 +72,12 @@ public:
 
     long long getDringIdFromInteractionId(int interactionId);
 
+    /**
+     * Used when images < 20 Mb are automatically accepted and downloaded
+     * Should contains the full directory with the end marker (/ on linux for example)
+     */
+    std::string downloadDirectory;
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when a data transfer is incoming.
