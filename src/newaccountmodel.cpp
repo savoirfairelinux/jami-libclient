@@ -101,10 +101,27 @@ NewAccountModel::getAccountList() const
 {
     std::vector<std::string> accountsId;
 
-    for(auto const& accountInfo: pimpl_->accounts)
-        accountsId.emplace_back(accountInfo.first);
+    for(auto const& accountInfo: pimpl_->accounts) {
+        // Do not include accounts flagged for removal
+        if (accountInfo.second.valid)
+            accountsId.emplace_back(accountInfo.first);
+    }
 
     return accountsId;
+}
+
+void
+NewAccountModel::flagFreeable(const std::string& accountId)
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end())
+        throw std::out_of_range("NewAccountModel::flagFreeable, can't find " + accountId);
+
+    {
+        std::lock_guard<std::mutex> lock(m_mutex_account_removal);
+        accountInfo->second.freeable = true;
+    }
+    m_condVar_account_removal.notify_all();
 }
 
 const account::Info&
@@ -205,9 +222,26 @@ void
 NewAccountModelPimpl::slotAccountRemoved(Account* account)
 {
     auto accountId = account->id().toStdString();
+
+    /* Update db before waiting for the client to stop using the structs is fine
+       as long as we don't free anything */
     authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
-    accounts.erase(accountId);
+
+    /* Inform client about account removal. Do *not* free account structures
+       before we are sure that the client stopped using it, otherwise we might
+       get into use-after-free troubles. */
+    accounts[accountId].valid = false;
     emit linked.accountRemoved(accountId);
+
+#ifdef CHK_FREEABLE_BEFORE_ERASE_ACCOUNT
+    std::unique_lock<std::mutex> lock(m_mutex_account_removal);
+    // Wait for client to stop using old account structs
+    m_condVar_account_removal.wait(lock, []{return accounts[accountId].freeable});
+    lock.unlock();
+#endif
+
+    // Now we can free them
+    accounts.erase(accountId);
 }
 
 
