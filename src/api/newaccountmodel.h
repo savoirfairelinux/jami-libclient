@@ -70,6 +70,10 @@ public:
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+    /**
+     * flag account corresponding to passed id as freeable.
+     */
+    void flagFreeable(const std::string& accountID) const;
 
 Q_SIGNALS:
     /**
