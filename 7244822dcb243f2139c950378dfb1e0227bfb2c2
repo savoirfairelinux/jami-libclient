@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_b55534c8",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-04-17T14:09:54Z",
+      "side": 1,
+      "message": "I think (to investigate) but std::condition_variable will be cleaner",
+      "range": {
+        "startLine": 234,
+        "startChar": 4,
+        "endLine": 234,
+        "endChar": 44
+      },
+      "revId": "7244822dcb243f2139c950378dfb1e0227bfb2c2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
