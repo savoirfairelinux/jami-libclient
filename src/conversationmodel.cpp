@@ -997,7 +997,8 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
     dirtyConversations = true;
     int index = indexOfContact(uri);
     if (index != -1) {
-        emit linked.conversationUpdated(conversations.at(index).uid);
+        // temporaryItem doesn't exists anymore so emit sorted signal
+        emit linked.modelSorted();
     }
 }
 
