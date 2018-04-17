@@ -958,7 +958,6 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
         // if temporary contact is already present, its alias is not empty (namely "Searching ..."),
         // or its registeredName is set because it was found on the nameservice.
         if (not temporaryContact.profileInfo.alias.empty() || not temporaryContact.registeredName.empty()) {
-
             if (!conversations.empty()) {
                 auto firstContactUri = conversations.front().participants.front();
                 //if first conversation has uri it is already a contact
@@ -997,7 +996,13 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
     dirtyConversations = true;
     int index = indexOfContact(uri);
     if (index != -1) {
-        emit linked.conversationUpdated(conversations.at(index).uid);
+        if (!conversations.empty() && conversations.front().participants.front().empty()) {
+            // In this case, contact is present in list, so temporary item does not longer exists
+            emit linked.modelSorted();
+        } else {
+            // In this case, a presence is updated
+            emit linked.conversationUpdated(conversations.at(index).uid);
+        }
     }
 }
 
