@@ -145,7 +145,13 @@ public:
     /**
      * clear all history
      */
-     void clearAllHistory();
+    void clearAllHistory();
+    /**
+     * Clear one interaction from the history
+     * @param convId
+     * @param interactionId
+     */
+    void clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId);
     /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
@@ -171,12 +177,19 @@ Q_SIGNALS:
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction
-     * @param msgId
+     * @param interactionId
      * @param msg
      */
     void interactionStatusUpdated(const std::string& convUid,
-                                  uint64_t msgId,
+                                  uint64_t interactionId,
                                   const api::interaction::Info& msg) const;
+    /**
+     * Emitted when an interaction got removed from the conversation
+     * @param convUid conversation which owns the interaction
+     * @param interactionId
+     */
+    void interactionRemoved(const std::string& convUid,
+                            uint64_t interactionId) const;
     /**
      * Emitted when user clear the history of a conversation
      * @param uid

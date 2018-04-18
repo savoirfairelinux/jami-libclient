@@ -196,6 +196,49 @@ ConversationModelTester::testSendMessageAndClearHistory()
 }
 
 void
+ConversationModelTester::testSendMessagesAndClearInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    accInfo_.conversationModel->sendMessage(firstConversation, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversation, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversation, "How have you been?");
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    auto conversationExists = false;
+    uint64_t secondInterId = {};
+    for (const auto& conversation: conversations) {
+        if (conversation.uid == firstConversation) {
+            conversationExists = true;
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 3);
+            auto it = conversation.interactions.begin();
+            it++;
+            secondInterId = it->first;
+            break;
+        }
+    }
+    CPPUNIT_ASSERT(conversationExists);
+
+    accInfo_.conversationModel->clearInteractionFromConversation(firstConversation, secondInterId);
+    auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+        SIGNAL(interactionRemoved(const std::string& convUid, uint64_t interactionId))).wait(1000);
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    conversationExists = false;
+    for (const auto& conversation: conversations) {
+        if (conversation.uid == firstConversation) {
+            conversationExists = true;
+            // Second interaction should be removed
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 2);
+            for (const auto& interaction: conversation.interactions)
+                CPPUNIT_ASSERT(interaction.first != secondInterId);
+            break;
+        }
+    }
+    CPPUNIT_ASSERT(conversationExists);
+}
+
+void
 ConversationModelTester::testReceiveMessageAndSetRead()
 {
     // Add a new message for the first conversation

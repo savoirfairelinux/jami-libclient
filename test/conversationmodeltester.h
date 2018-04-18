@@ -46,6 +46,7 @@ class ConversationModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testRmConversation);
     CPPUNIT_TEST(testFilterAndGetConversations);
     CPPUNIT_TEST(testSendMessageAndClearHistory);
+    CPPUNIT_TEST(testSendMessagesAndClearInteraction);
     CPPUNIT_TEST(testReceiveMessageAndSetRead);
     CPPUNIT_TEST(testPlaceCall);
     CPPUNIT_TEST(testCreateConference);
@@ -82,6 +83,10 @@ public:
      * Send "Hello World!" to the first conversation and clear the history
      */
     void testSendMessageAndClearHistory();
+    /**
+     * Send multiple messages to the first conversation and clear one interaction
+     */
+    void testSendMessagesAndClearInteraction();
     /**
      * Receives a message from a conversation and set this message READ
      */
