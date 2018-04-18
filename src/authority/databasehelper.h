@@ -201,6 +201,16 @@ void clearHistory(Database& db,
                   const std::string& conversationId);
 
 /**
+ * Clear interaction from history
+ * @param  db
+ * @param  conversationId
+ * @param  interactionId
+ */
+void clearInteractionFromConversation(Database& db,
+                                      const std::string& conversationId,
+                                      const uint64_t& interactionId);
+
+/**
  * Clear all history stored in the database for the account uri
  * @param  db
  * @param accountUri

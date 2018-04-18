@@ -636,6 +636,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
     emit modelSorted();
+
 }
 
 void
@@ -714,6 +715,30 @@ ConversationModel::clearHistory(const std::string& uid)
     pimpl_->sortConversations();
     emit modelSorted();
     emit conversationCleared(uid);
+}
+
+void
+ConversationModel::clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return;
+
+    auto erased_keys = 0;
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+        try
+        {
+            auto& conversation = pimpl_->conversations.at(conversationIdx);
+            database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
+
+            erased_keys = conversation.interactions.erase(interactionId);
+        } catch (const std::out_of_range& e) {
+            qDebug() << "can't clear interaction from conversation: " << e.what();
+        }
+    }
+    if (erased_keys > 0)
+        emit interactionRemoved(convId, interactionId);
 }
 
 void
