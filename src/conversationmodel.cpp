@@ -715,6 +715,25 @@ ConversationModel::clearHistory(const std::string& uid)
 }
 
 void
+ConversationModel::clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return;
+
+    auto erased_keys = 0;
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[conversationIdx]);
+        auto& conversation = pimpl_->conversations.at(conversationIdx);
+        database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
+
+        erased_keys = conversation.interactions.erase(interactionId);
+    }
+    if (erased_keys > 0)
+        emit interactionRemoved(convId, interactionId);
+}
+
+void
 ConversationModel::clearAllHistory()
 {
     database::clearAllHistoryFor(pimpl_->db, owner.profileInfo.uri);
