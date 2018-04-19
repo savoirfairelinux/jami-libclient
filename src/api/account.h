@@ -25,6 +25,9 @@
 // Data
 #include "profile.h"
 
+// old LRC
+#include "typedefs.h"
+
 namespace lrc
 {
 
@@ -74,20 +77,120 @@ to_status(const std::string& type)
 
 #pragma pop_macro("REGISTERED")
 
+struct ConfProperties_t {
+    std::string             displayName;
+    std::string             mailbox;
+    std::string             dtmfType;
+    bool                    autoAnswer;
+    int                     activeCallLimit;
+    std::string             hostname;
+    std::string             username;
+    std::string             routeset;
+    std::string             password;
+    std::string             realm;
+    std::string             localInterface;
+    bool                    publishedSameAsLocal;
+    int                     localPort;
+    int                     publishedPort;
+    std::string             publishedAddress;
+    std::string             userAgent;
+    bool                    upnpEnabled;
+    bool                    hasCustomUserAgent;
+    bool                    allowIncomingFromHistory;
+    bool                    allowIncomingFromContact;
+    bool                    allowIncomingFromTrusted;
+    std::string             archivePassword;
+    bool                    archiveHasPassword;
+    std::string             archivePath;
+    std::string             archivePin;
+    // in NewDeviceModel:   deviceID;
+    // in NewDeviceModel:   deviceName;
+    bool                    proxyEnabled;
+    std::string             proxyServer;
+    std::string             proxyPushToken;
+    struct Audio_t {
+        int                 audioPortMax;
+        int                 audioPortMin;
+    } Audio;
+    struct Video_t {
+        bool                videoEnabled;
+        int                 videoPortMax;
+        int                 videoPortMin;
+    } Video;
+    struct STUN_t {
+        std::string         server;
+        bool                enable;
+    } STUN;
+    struct TURN_t {
+        std::string         server;
+        bool                enable;
+        std::string         username;
+        std::string         password;
+        std::string         realm;
+    } TURN;
+    struct Presence_t {
+        bool                presencePublishSupported;
+        bool                presenceSubscribeSupported;
+        bool                presenceEnabled;
+    } Presence;
+    struct Ringtone_t {
+        std::string         ringtonePath;
+        bool                ringtoneEnabled;
+    } Ringtone;
+    struct SRTP_t {
+        std::string         keyExchange;
+        bool                enable;
+        bool                rtpFallback;
+    } SRTP;
+    struct TLS_t {
+        int                 listenerPort;
+        bool                enable;
+        int                 port;
+        std::string         certificateListFile;
+        std::string         certificateFile;
+        std::string         privateKeyFile;
+        std::string         password;
+        std::string         method;
+        std::string         ciphers;
+        std::string         serverName;
+        bool                verifyServer;
+        bool                verifyClient;
+        bool                requireClientCertificate;
+        int                 negotiationTimeoutSec;
+    } TLS;
+    struct DHT_t {
+        int                 port;
+        bool                PublicInCalls;
+        bool                AllowFromTrusted;
+    } DHT;
+    struct RingNS_t {
+        std::string         uri;
+        std::string         account;
+    } RingNS;
+
+    MapStringString         toDetails() const;
+};
+
 struct Info
 {
-    std::string id;
-    std::string registeredName;
-    bool enabled;
     bool freeable = false;
     bool valid = true;
+    std::string registeredName;
     Status status = account::Status::INVALID;
-    profile::Info profileInfo;
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     NewAccountModel* accountModel {nullptr};
+
+    // daemon config
+    std::string             id;
+    profile::Info           profileInfo; // contains: type, alias
+    bool                    enabled;
+    ConfProperties_t        confProperties;
+
+    // load/save
+    void                    fromDetails(const MapStringString& details);
 };
 
 } // namespace account
