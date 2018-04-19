@@ -18,19 +18,22 @@
  ***************************************************************************/
 #include "api/newaccountmodel.h"
 
+// daemon
+#include <account_const.h>
 
-// LRC
-#include "api/account.h"
-#include "api/behaviorcontroller.h"
-#include "api/contactmodel.h"
-#include "api/conversationmodel.h"
+// new LRC
 #include "api/lrc.h"
 #include "api/newcallmodel.h"
+#include "api/contactmodel.h"
+#include "api/conversationmodel.h"
 #include "api/newdevicemodel.h"
+#include "api/account.h"
+#include "api/behaviorcontroller.h"
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
 
+// old LRC
 #include "accountmodel.h"
 #include "profilemodel.h"
 #include "profile.h"
@@ -116,6 +119,18 @@ NewAccountModel::getAccountList() const
 }
 
 void
+NewAccountModel::save(const std::string& accountId) const
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::save, can't find " + accountId);
+    }
+
+    auto& configurationManager = ConfigurationManager::instance();
+    configurationManager.setAccountDetails(QString::fromStdString(accountId), accountInfo->second.toDetails());
+}
+
+void
 NewAccountModel::flagFreeable(const std::string& accountId) const
 {
     auto accountInfo = pimpl_->accounts.find(accountId);
@@ -194,25 +209,18 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
 void
 NewAccountModelPimpl::addToAccounts(const std::string& accountId)
 {
-    QMap<QString, QString> details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
-    const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-
     // Init profile
     auto& item = *(accounts.emplace(accountId, account::Info()).first);
     auto& owner = item.second;
-    owner.id = accountId;
-    owner.enabled = details["Account.enable"] == QString("true");
-    owner.profileInfo.type = details["Account.type"] == "RING" ? profile::Type::RING : profile::Type::SIP;
-    owner.profileInfo.alias = details["Account.alias"].toStdString();
-    owner.registeredName = owner.profileInfo.type == profile::Type::RING ?
-                                   volatileDetails["Account.registredName"].toStdString() : owner.profileInfo.alias;
-    owner.profileInfo.uri = (owner.profileInfo.type == profile::Type::RING and details["Account.username"].contains("ring:")) ?
-                        details["Account.username"].toStdString().substr(std::string("ring:").size())
-                        : details["Account.username"].toStdString();
+
+    // Fill account::Info struct with details from daemon
+    owner.fromDetails(accountId);
+
     // Add profile into database
+    auto accountType = owner.profileInfo.type == profile::Type::RING ? std::string("RING") : std::string("SIP");
     auto accountProfileId = authority::database::getOrInsertProfile(database, owner.profileInfo.uri,
                                                                     owner.profileInfo.alias, "",
-                                                                    details["Account.type"].toStdString());
+                                                                    accountType);
     // Retrieve avatar from database
     auto avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
     owner.profileInfo.avatar = avatar;
@@ -250,13 +258,199 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
     accounts.erase(accountId);
 }
 
-
 void
 NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
 {
     auto& accounts = profile->accounts();
     if (!accounts.empty())
         emit linked.profileUpdated(accounts.first()->id().toStdString());
+}
+
+void
+account::Info::fromDetails(const std::string& accountId)
+{
+    using namespace DRing::Account;
+    MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+    const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+
+    // General
+    id                                                  = accountId;
+    profileInfo.type                                    = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
+    registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME].toStdString() : profileInfo.alias;
+    profileInfo.alias                                   = toStdString(details[ConfProperties::ALIAS]);
+    ConfProperties.displayName                          = toStdString(details[ConfProperties::DISPLAYNAME]);
+    enabled                                             = toBool(details[ConfProperties::ENABLED]);
+    ConfProperties.mailbox                              = toStdString(details[ConfProperties::MAILBOX]);
+    ConfProperties.dtmfType                             = toStdString(details[ConfProperties::DTMF_TYPE]);
+    ConfProperties.autoAnswer                           = toBool(details[ConfProperties::AUTOANSWER]);
+    ConfProperties.activeCallLimit                      = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
+    ConfProperties.hostname                             = toStdString(details[ConfProperties::HOSTNAME]);
+    profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:")) ? details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) : details[ConfProperties::USERNAME].toStdString();
+    ConfProperties.routeset                             = toStdString(details[ConfProperties::ROUTE]);
+    ConfProperties.password                             = toStdString(details[ConfProperties::PASSWORD]);
+    ConfProperties.realm                                = toStdString(details[ConfProperties::REALM]);
+    ConfProperties.localInterface                       = toStdString(details[ConfProperties::LOCAL_INTERFACE]);
+    ConfProperties.publishedSameAsLocal                 = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
+    ConfProperties.localPort                            = toInt(details[ConfProperties::LOCAL_PORT]);
+    ConfProperties.publishedPort                        = toInt(details[ConfProperties::PUBLISHED_PORT]);
+    ConfProperties.publishedAddress                     = toStdString(details[ConfProperties::PUBLISHED_ADDRESS]);
+    ConfProperties.userAgent                            = toStdString(details[ConfProperties::USER_AGENT]);
+    ConfProperties.upnpEnabled                          = toBool(details[ConfProperties::UPNP_ENABLED]);
+    ConfProperties.hasCustomUserAgent                   = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
+    ConfProperties.allowIncomingFromHistory             = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY]);
+    ConfProperties.allowIncomingFromContact             = toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT]);
+    ConfProperties.allowIncomingFromTrusted             = toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
+    ConfProperties.archivePassword                      = toStdString(details[ConfProperties::ARCHIVE_PASSWORD]);
+    ConfProperties.archiveHasPassword                   = toBool(details[ConfProperties::ARCHIVE_HAS_PASSWORD]);
+    ConfProperties.archivePath                          = toStdString(details[ConfProperties::ARCHIVE_PATH]);
+    ConfProperties.archivePin                           = toStdString(details[ConfProperties::ARCHIVE_PIN]);
+    ConfProperties.deviceID                             = toStdString(details[ConfProperties::RING_DEVICE_ID]);
+    ConfProperties.deviceName                           = toStdString(details[ConfProperties::RING_DEVICE_NAME]);
+    ConfProperties.proxyEnabled                         = toBool(details[ConfProperties::PROXY_ENABLED]);
+    ConfProperties.proxyServer                          = toStdString(details[ConfProperties::PROXY_SERVER]);
+    ConfProperties.proxyPushToken                       = toStdString(details[ConfProperties::PROXY_PUSH_TOKEN]);
+    // Audio
+    ConfProperties.Audio.audioPortMax                   = toInt(details[ConfProperties::Audio::PORT_MAX]);
+    ConfProperties.Audio.audioPortMin                   = toInt(details[ConfProperties::Audio::PORT_MIN]);
+    // Video
+    ConfProperties.Video.videoEnabled                   = toBool(details[ConfProperties::Video::ENABLED]);
+    ConfProperties.Video.videoPortMax                   = toInt(details[ConfProperties::Video::PORT_MAX]);
+    ConfProperties.Video.videoPortMin                   = toInt(details[ConfProperties::Video::PORT_MIN]);
+    // STUN
+    ConfProperties.STUN.server                          = toStdString(details[ConfProperties::STUN::SERVER]);
+    ConfProperties.STUN.enable                          = toBool(details[ConfProperties::STUN::ENABLED]);
+    // TURN
+    ConfProperties.TURN.server                          = toStdString(details[ConfProperties::TURN::SERVER]);
+    ConfProperties.TURN.enable                          = toBool(details[ConfProperties::TURN::ENABLED]);
+    ConfProperties.TURN.username                        = toStdString(details[ConfProperties::TURN::SERVER_UNAME]);
+    ConfProperties.TURN.password                        = toStdString(details[ConfProperties::TURN::SERVER_PWD]);
+    ConfProperties.TURN.realm                           = toStdString(details[ConfProperties::TURN::SERVER_REALM]);
+    // Presence
+    ConfProperties.Presence.presencePublishSupported    = toBool(details[ConfProperties::Presence::SUPPORT_PUBLISH]);
+    ConfProperties.Presence.presenceSubscribeSupported  = toBool(details[ConfProperties::Presence::SUPPORT_SUBSCRIBE]);
+    ConfProperties.Presence.presenceEnabled             = toBool(details[ConfProperties::Presence::ENABLED]);
+    // Ringtone
+    ConfProperties.Ringtone.ringtonePath                = toStdString(details[ConfProperties::Ringtone::PATH]);
+    ConfProperties.Ringtone.ringtoneEnabled             = toBool(details[ConfProperties::Ringtone::ENABLED]);
+    // SRTP
+    ConfProperties.SRTP.keyExchange                     = toStdString(details[ConfProperties::SRTP::KEY_EXCHANGE]);
+    ConfProperties.SRTP.enable                          = toBool(details[ConfProperties::SRTP::ENABLED]);
+    ConfProperties.SRTP.rtpFallback                     = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
+    // TLS
+    ConfProperties.TLS.listenerPort                     = toInt(details[ConfProperties::TLS::LISTENER_PORT]);
+    ConfProperties.TLS.enable                           = toBool(details[ConfProperties::TLS::ENABLED]);
+    ConfProperties.TLS.port                             = toInt(details[ConfProperties::TLS::PORT]);
+    ConfProperties.TLS.certificateListFile              = toStdString(details[ConfProperties::TLS::CA_LIST_FILE]);
+    ConfProperties.TLS.certificateFile                  = toStdString(details[ConfProperties::TLS::CERTIFICATE_FILE]);
+    ConfProperties.TLS.privateKeyFile                   = toStdString(details[ConfProperties::TLS::PRIVATE_KEY_FILE]);
+    ConfProperties.TLS.password                         = toStdString(details[ConfProperties::TLS::PASSWORD]);
+    ConfProperties.TLS.method                           = toStdString(details[ConfProperties::TLS::METHOD]);
+    ConfProperties.TLS.ciphers                          = toStdString(details[ConfProperties::TLS::CIPHERS]);
+    ConfProperties.TLS.serverName                       = toStdString(details[ConfProperties::TLS::SERVER_NAME]);
+    ConfProperties.TLS.verifyServer                     = toBool(details[ConfProperties::TLS::VERIFY_SERVER]);
+    ConfProperties.TLS.verifyClient                     = toBool(details[ConfProperties::TLS::VERIFY_CLIENT]);
+    ConfProperties.TLS.requireClientCertificate         = toBool(details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE]);
+    ConfProperties.TLS.negotiationTimeoutSec            = toInt(details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC]);
+    // DHT
+    ConfProperties.DHT.port                             = toInt(details[ConfProperties::DHT::PORT]);
+    ConfProperties.DHT.PublicInCalls                    = toBool(details[ConfProperties::DHT::PUBLIC_IN_CALLS]);
+    ConfProperties.DHT.AllowFromTrusted                 = toBool(details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]);
+    // RingNS
+    ConfProperties.RingNS.uri                           = toStdString(details[ConfProperties::RingNS::URI]);
+    ConfProperties.RingNS.account                       = toStdString(details[ConfProperties::RingNS::ACCOUNT]);
+}
+
+MapStringString
+account::Info::toDetails()
+{
+    using namespace DRing::Account;
+    MapStringString details;
+    // General
+    details[ConfProperties::ID]                         = toQString(id);
+    details[ConfProperties::TYPE]                       = profileInfo.type == profile::Type::RING ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
+    details[ConfProperties::ALIAS]                      = toQString(profileInfo.alias);
+    details[ConfProperties::DISPLAYNAME]                = toQString(ConfProperties.displayName);
+    details[ConfProperties::ENABLED]                    = toQString(enabled);
+    details[ConfProperties::MAILBOX]                    = toQString(ConfProperties.mailbox);
+    details[ConfProperties::DTMF_TYPE]                  = toQString(ConfProperties.dtmfType);
+    details[ConfProperties::AUTOANSWER]                 = toQString(ConfProperties.autoAnswer);
+    details[ConfProperties::ACTIVE_CALL_LIMIT]          = toQString(ConfProperties.activeCallLimit);
+    details[ConfProperties::HOSTNAME]                   = toQString(ConfProperties.hostname);
+    details[ConfProperties::USERNAME]                   = toQString(profileInfo.uri).prepend((profileInfo.type == profile::Type::RING) ? "ring:" : "");
+    details[ConfProperties::ROUTE]                      = toQString(ConfProperties.routeset);
+    details[ConfProperties::PASSWORD]                   = toQString(ConfProperties.password);
+    details[ConfProperties::REALM]                      = toQString(ConfProperties.realm);
+    details[ConfProperties::LOCAL_INTERFACE]            = toQString(ConfProperties.localInterface);
+    details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = toQString(ConfProperties.publishedSameAsLocal);
+    details[ConfProperties::LOCAL_PORT]                 = toQString(ConfProperties.localPort);
+    details[ConfProperties::PUBLISHED_PORT]             = toQString(ConfProperties.publishedPort);
+    details[ConfProperties::PUBLISHED_ADDRESS]          = toQString(ConfProperties.publishedAddress);
+    details[ConfProperties::USER_AGENT]                 = toQString(ConfProperties.userAgent);
+    details[ConfProperties::UPNP_ENABLED]               = toQString(ConfProperties.upnpEnabled);
+    details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = toQString(ConfProperties.hasCustomUserAgent);
+    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(ConfProperties.allowIncomingFromHistory);
+    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(ConfProperties.allowIncomingFromContact);
+    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = toQString(ConfProperties.allowIncomingFromTrusted);
+    details[ConfProperties::ARCHIVE_PASSWORD]           = toQString(ConfProperties.archivePassword);
+    details[ConfProperties::ARCHIVE_HAS_PASSWORD]       = toQString(ConfProperties.archiveHasPassword);
+    details[ConfProperties::ARCHIVE_PATH]               = toQString(ConfProperties.archivePath);
+    details[ConfProperties::ARCHIVE_PIN]                = toQString(ConfProperties.archivePin);
+    details[ConfProperties::RING_DEVICE_ID]             = toQString(ConfProperties.deviceID);
+    details[ConfProperties::RING_DEVICE_NAME]           = toQString(ConfProperties.deviceName);
+    details[ConfProperties::PROXY_ENABLED]              = toQString(ConfProperties.proxyEnabled);
+    details[ConfProperties::PROXY_SERVER]               = toQString(ConfProperties.proxyServer);
+    details[ConfProperties::PROXY_PUSH_TOKEN]           = toQString(ConfProperties.proxyPushToken);
+    // Audio
+    details[ConfProperties::Audio::PORT_MAX]            = toQString(ConfProperties.Audio.audioPortMax);
+    details[ConfProperties::Audio::PORT_MIN]            = toQString(ConfProperties.Audio.audioPortMin);
+    // Video
+    details[ConfProperties::Video::ENABLED]             = toQString(ConfProperties.Video.videoEnabled);
+    details[ConfProperties::Video::PORT_MAX]            = toQString(ConfProperties.Video.videoPortMax);
+    details[ConfProperties::Video::PORT_MIN]            = toQString(ConfProperties.Video.videoPortMin);
+    // STUN
+    details[ConfProperties::STUN::SERVER]               = toQString(ConfProperties.STUN.server);
+    details[ConfProperties::STUN::ENABLED]              = toQString(ConfProperties.STUN.enable);
+    // TURN
+    details[ConfProperties::TURN::SERVER]               = toQString(ConfProperties.TURN.server);
+    details[ConfProperties::TURN::ENABLED]              = toQString(ConfProperties.TURN.enable);
+    details[ConfProperties::TURN::SERVER_UNAME]         = toQString(ConfProperties.TURN.username);
+    details[ConfProperties::TURN::SERVER_PWD]           = toQString(ConfProperties.TURN.password);
+    details[ConfProperties::TURN::SERVER_REALM]         = toQString(ConfProperties.TURN.realm);
+    // Presence
+    details[ConfProperties::Presence::SUPPORT_PUBLISH]  = toQString(ConfProperties.Presence.presencePublishSupported);
+    details[ConfProperties::Presence::SUPPORT_SUBSCRIBE] = toQString(ConfProperties.Presence.presenceSubscribeSupported);
+    details[ConfProperties::Presence::ENABLED]          = toQString(ConfProperties.Presence.presenceEnabled);
+    // Ringtone
+    details[ConfProperties::Ringtone::PATH]             = toQString(ConfProperties.Ringtone.ringtonePath);
+    details[ConfProperties::Ringtone::ENABLED]          = toQString(ConfProperties.Ringtone.ringtoneEnabled);
+    // SRTP
+    details[ConfProperties::SRTP::KEY_EXCHANGE]         = toQString(ConfProperties.SRTP.keyExchange);
+    details[ConfProperties::SRTP::ENABLED]              = toQString(ConfProperties.SRTP.enable);
+    details[ConfProperties::SRTP::RTP_FALLBACK]         = toQString(ConfProperties.SRTP.rtpFallback);
+    // TLS
+    details[ConfProperties::TLS::LISTENER_PORT]         = toQString(ConfProperties.TLS.listenerPort);
+    details[ConfProperties::TLS::ENABLED]               = toQString(ConfProperties.TLS.enable);
+    details[ConfProperties::TLS::PORT]                  = toQString(ConfProperties.TLS.port);
+    details[ConfProperties::TLS::CA_LIST_FILE]          = toQString(ConfProperties.TLS.certificateListFile);
+    details[ConfProperties::TLS::CERTIFICATE_FILE]      = toQString(ConfProperties.TLS.certificateFile);
+    details[ConfProperties::TLS::PRIVATE_KEY_FILE]      = toQString(ConfProperties.TLS.privateKeyFile);
+    details[ConfProperties::TLS::PASSWORD]              = toQString(ConfProperties.TLS.password);
+    details[ConfProperties::TLS::METHOD]                = toQString(ConfProperties.TLS.method);
+    details[ConfProperties::TLS::CIPHERS]               = toQString(ConfProperties.TLS.ciphers);
+    details[ConfProperties::TLS::SERVER_NAME]           = toQString(ConfProperties.TLS.serverName);
+    details[ConfProperties::TLS::VERIFY_SERVER]         = toQString(ConfProperties.TLS.verifyServer);
+    details[ConfProperties::TLS::VERIFY_CLIENT]         = toQString(ConfProperties.TLS.verifyClient);
+    details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE] = toQString(ConfProperties.TLS.requireClientCertificate);
+    details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC] = toQString(ConfProperties.TLS.negotiationTimeoutSec);
+    // DHT
+    details[ConfProperties::DHT::PORT]                  = toQString(ConfProperties.DHT.port);
+    details[ConfProperties::DHT::PUBLIC_IN_CALLS]       = toQString(ConfProperties.DHT.PublicInCalls);
+    details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]    = toQString(ConfProperties.DHT.AllowFromTrusted);
+    // RingNS
+    details[ConfProperties::RingNS::URI]                = toQString(ConfProperties.RingNS.uri);
+    details[ConfProperties::RingNS::ACCOUNT]            = toQString(ConfProperties.RingNS.account);
+
+    return details;
 }
 
 } // namespace lrc
