@@ -64,6 +64,12 @@ public:
                 [this] () {
                     Q_EMIT this->accountsChanged();
                 }),
+            exportable_callback<ConfigurationSignal::AccountDetailsChanged>(
+                [this] (const std::string& account_id,
+                        const std::map<std::string, std::string>& details) {
+                    Q_EMIT this->accountDetailsChanged(QString(account_id.c_str()),
+                                                       convertMap(details));
+                }),
             exportable_callback<ConfigurationSignal::StunStatusFailed>(
                 [this] (const std::string &reason) {
                     Q_EMIT this->stunStatusFailure(QString(reason.c_str()));
@@ -657,6 +663,7 @@ public Q_SLOTS: // METHODS
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
+    void accountDetailsChanged(const QString& accountId, const MapStringString& details);
     void historyChanged();
     void stunStatusFailure(const QString& reason);
     void registrationStateChanged(const QString& accountID, const QString& registration_state, unsigned detail_code, const QString& detail_str);
