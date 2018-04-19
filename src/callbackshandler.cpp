@@ -80,6 +80,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotRegisteredNameFound);
 
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::accountDetailsChanged,
+            this,
+            &CallbacksHandler::slotAccountDetailsChanged);
+
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::registrationStateChanged,
             this,
             &CallbacksHandler::slotRegistrationStateChanged);
@@ -220,6 +225,13 @@ void
 CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
 {
     emit callStateChanged(callId.toStdString(), state.toStdString(), code);
+}
+
+void
+CallbacksHandler::slotAccountDetailsChanged(const QString& accountId,
+                                            const MapStringString& details)
+{
+    emit accountDetailsChanged(accountId.toStdString(), convertMap(details));
 }
 
 void

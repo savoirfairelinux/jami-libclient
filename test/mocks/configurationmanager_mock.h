@@ -808,32 +808,33 @@ public Q_SLOTS: // METHODS
     void stopProxyClient(const std::string& /*accountID*/) { }
 
 Q_SIGNALS: // SIGNALS
-   void volumeChanged(const QString& device, double value);
-   void accountsChanged();
-   void historyChanged();
-   void stunStatusFailure(const QString& reason);
-   void registrationStateChanged(const QString& accountId, const QString& registration_state, unsigned detail_code, const QString& detail_str);
-   void stunStatusSuccess(const QString& message);
-   void errorAlert(int code);
-   void volatileAccountDetailsChanged(const QString& accountId, MapStringString details);
-   void certificatePinned(const QString& certId);
-   void certificatePathPinned(const QString& path, const QStringList& certIds);
-   void certificateExpired(const QString& certId);
-   void certificateStateChanged(const QString& accountId, const QString& certId, const QString& status);
-   void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
-   void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
-   void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
-   void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
-   void mediaParametersChanged(const QString& accountId);
-   void audioDeviceEvent();
-   void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
-   void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
-   void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name); // used by conversationModel
-   void migrationEnded(const QString &accountId, const QString &result);
-   void contactAdded(const QString &accountId, const QString &uri, bool banned);
-   void contactRemoved(const QString &accountId, const QString &uri, bool banned);
-   void dataTransferEvent(uint64_t transfer_id, uint32_t code);
-   void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
+    void volumeChanged(const QString& device, double value);
+    void accountsChanged();
+    void accountDetailsChanged(const QString& accountId, const MapStringString& details);
+    void historyChanged();
+    void stunStatusFailure(const QString& reason);
+    void registrationStateChanged(const QString& accountId, const QString& registration_state, unsigned detail_code, const QString& detail_str);
+    void stunStatusSuccess(const QString& message);
+    void errorAlert(int code);
+    void volatileAccountDetailsChanged(const QString& accountId, MapStringString details);
+    void certificatePinned(const QString& certId);
+    void certificatePathPinned(const QString& path, const QStringList& certIds);
+    void certificateExpired(const QString& certId);
+    void certificateStateChanged(const QString& accountId, const QString& certId, const QString& status);
+    void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
+    void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
+    void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
+    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
+    void mediaParametersChanged(const QString& accountId);
+    void audioDeviceEvent();
+    void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
+    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
+    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name); // used by conversationModel
+    void migrationEnded(const QString &accountId, const QString &result);
+    void contactAdded(const QString &accountId, const QString &uri, bool banned);
+    void contactRemoved(const QString &accountId, const QString &uri, bool banned);
+    void dataTransferEvent(uint64_t transfer_id, uint32_t code);
+    void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
 };
 
 namespace org {
