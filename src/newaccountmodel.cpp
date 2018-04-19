@@ -115,6 +115,34 @@ NewAccountModel::getAccountList() const
 }
 
 void
+NewAccountModel::save(const std::string& accountId) const
+{
+    MapStringString details;
+    MapStringString volatileDetails;
+
+    const auto& configurationManager = ConfigurationManager::instance();
+    auto accountInfo = pimpl_->accounts.find(accountId);
+//    accountInfo.id = accountId;
+//    accountInfo.enabled = details["Account.enable"] == QString("true");
+//    accountInfo.profileInfo.type = details["Account.type"] == "RING" ? profile::Type::RING : profile::Type::SIP;
+//    accountInfo.profileInfo.alias = details["Account.alias"].toStdString();
+//    accountInfo.registeredName = accountInfo.profileInfo.type == profile::Type::RING ?
+//    volatileDetails["Account.registredName"].toStdString() : accountInfo.profileInfo.alias;
+//
+//    if (accountInfo.profileInfo.type == profile::Type::RING) {
+//        accountInfo.registeredName = volatileDetails["Account.registredName"].toStdString();
+//    }
+//
+//    if (accountInfo.profileInfo.type == profile::Type::RING and details["Account.username"].contains("ring:")) {
+//        accountInfo.profileInfo.uri = details["Account.username"].toStdString().substr(std::string("ring:").size());
+//    } else {
+//        accountInfo.profileInfo.uri = details["Account.username"].toStdString();
+//    }
+//    configurationManager.setAccountDetails(accountDetails);
+    //configurationManager.setCredentials
+}
+
+void
 NewAccountModel::flagFreeable(const std::string& accountId) const
 {
     auto accountInfo = pimpl_->accounts.find(accountId);
