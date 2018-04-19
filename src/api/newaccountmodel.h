@@ -45,7 +45,10 @@ namespace api
 class Lrc;
 class BehaviorController;
 
-namespace account { struct Info; }
+namespace account {
+    struct ConfProperties_t;
+    struct Info;
+}
 
 /**
   *  @brief Class that manages account information.
@@ -75,7 +78,43 @@ public:
     /**
      * flag account corresponding to passed id as freeable.
      */
-    void flagFreeable(const std::string& accountID) const;
+    void flagFreeable(const std::string& accountId) const;
+    /**
+     * saves account config to .yml
+     * @param accountId.
+     * @param reference to the confProperties
+     */
+    void setAccountConfig(const std::string& accountID,
+                          const account::ConfProperties_t& confProperties) const;
+    /**
+     * gets a copy of the accounts config
+     * @param accountId.
+     * @return an account::Info::ConfProperties_t structure.
+     */
+    account::ConfProperties_t getAccountConfig(const std::string& accountId) const;
+    /**
+     * Call exportToFile from the daemon
+     * @param accountId
+     * @param path destination
+     * @return if the file is exported with success
+     */
+    bool exportToFile(const std::string& accountId, const std::string& path) const;
+    /**
+     * Call removeAccount from the daemon
+     * @param accountId to remove
+     * @note will emit accountRemoved
+     */
+    void removeAccount(const std::string& accountId) const;
+    /**
+     * Call changeAccountPassword from the daemon
+     * @param accountId
+     * @param currentPassword
+     * @param newPassword
+     * @return if the password has been changed
+     */
+    bool changeAccountPassword(const std::string& accountId,
+                               const std::string& currentPassword,
+                               const std::string& newPassword) const;
 
 Q_SIGNALS:
     /**
