@@ -45,7 +45,10 @@ namespace api
 class Lrc;
 class BehaviorController;
 
-namespace account { struct Info; }
+namespace account {
+    struct ConfProperties_t;
+    struct Info;
+}
 
 /**
   *  @brief Class that manages account information.
@@ -75,7 +78,20 @@ public:
     /**
      * flag account corresponding to passed id as freeable.
      */
-    void flagFreeable(const std::string& accountID) const;
+    void flagFreeable(const std::string& accountId) const;
+    /**
+     * saves account config to .yml
+     * @param accountId.
+     * @param reference to the confProperties
+     */
+    void setAccountConfig(const std::string& accountID,
+                          const account::ConfProperties_t& confProperties) const;
+    /**
+     * gets a copy of the accounts config
+     * @param accountId.
+     * @return an account::Info::ConfProperties_t structure.
+     */
+    account::ConfProperties_t getAccountConfig(const std::string& accountId) const;
     /**
      * Call exportToFile from the daemon
      * @param accountId
