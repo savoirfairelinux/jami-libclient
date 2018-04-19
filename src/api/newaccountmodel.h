@@ -76,6 +76,10 @@ public:
      * flag account corresponding to passed id as freeable.
      */
     void flagFreeable(const std::string& accountID) const;
+    /**
+     * save account to config
+     */
+    void save(const std::string& accountID) const;
 
 Q_SIGNALS:
     /**
