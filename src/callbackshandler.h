@@ -105,6 +105,13 @@ Q_SIGNALS:
      */
     void callStateChanged(const std::string& callId, const std::string &state, int code);
     /**
+     * Connect this signal to know when the account details have changed
+     * @param accountId the one who changes
+     * @param details the new details
+     */
+    void accountDetailsChanged(const std::string& accountId,
+                               const std::map<std::string,std::string>& details);
+    /**
      * Connect this signal to know when the account status changed
      * @param accountId the one who changes
      * @param status the new status
@@ -237,6 +244,13 @@ private Q_SLOTS:
     void slotIncomingContactRequest(const QString& accountId,
                                     const QString& ringId,
                                     const QByteArray& payload, time_t time);
+    /**
+     * Emit accountDetailsChanged
+     * @param accountId
+     * @param details
+     */
+    void slotAccountDetailsChanged(const QString& accountId,
+                                   const MapStringString& details);
     /**
      * Emit accountStatusChanged
      * @param accountId
