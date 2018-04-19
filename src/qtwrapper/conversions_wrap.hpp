@@ -103,4 +103,43 @@ inline MapStringInt  convertStringInt(const std::map<std::string, int>& m) {
    return temp;
 }
 
+constexpr static const char* TRUE_STR = "true";
+constexpr static const char* FALSE_STR = "false";
+
+static inline QString
+toQString(bool b) noexcept
+{
+    return b ? TRUE_STR : FALSE_STR;
+}
+
+static inline QString
+toQString(const std::string& str) noexcept
+{
+    return QString::fromStdString(str);
+}
+
+static inline QString
+toQString(int i) noexcept
+{
+    return QString::number(i);
+}
+
+static inline bool
+toBool(QString qs) noexcept
+{
+    return qs == TRUE_STR ? true : false;
+}
+
+static inline int
+toInt(QString qs) noexcept
+{
+    return qs.toInt();
+}
+
+static inline std::string
+toStdString(QString qs) noexcept
+{
+    return qs.toStdString();
+}
+
 #endif //CONVERSIONS_WRAP_H
