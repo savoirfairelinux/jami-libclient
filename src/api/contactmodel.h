@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -22,6 +22,7 @@
 #include <string>
 #include <memory>
 #include <map>
+#include <mutex>
 
 // Qt
 #include <qobject.h>
@@ -53,6 +54,8 @@ public:
     using ContactInfoMap = std::map<std::string, contact::Info>;
 
     const account::Info& owner;
+
+    mutable std::mutex contactsMtx_;
 
     ContactModel(const account::Info& owner,
                  Database& database,
