@@ -1411,8 +1411,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="873"/>
-        <location filename="../src/conversationmodel.cpp" line="1211"/>
-        <location filename="../src/conversationmodel.cpp" line="1419"/>
+        <location filename="../src/conversationmodel.cpp" line="1216"/>
+        <location filename="../src/conversationmodel.cpp" line="1424"/>
         <source>Invitation received</source>
         <translation>Inbjudan mottagen</translation>
     </message>
@@ -1428,32 +1428,32 @@
         <translation>Inbjudan accepterad</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1096"/>
+        <location filename="../src/conversationmodel.cpp" line="1101"/>
         <source>ð Outgoing call</source>
         <translation>ð Utgående samtal</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1098"/>
+        <location filename="../src/conversationmodel.cpp" line="1103"/>
         <source>ð Incoming call</source>
         <translation>ð Inkommande samtal</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1111"/>
+        <location filename="../src/conversationmodel.cpp" line="1116"/>
         <source>ð Outgoing call - </source>
         <translation>ð Utgående samtal - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1114"/>
+        <location filename="../src/conversationmodel.cpp" line="1119"/>
         <source>ð Incoming call - </source>
         <translation>ð Inkommande samtal - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1118"/>
+        <location filename="../src/conversationmodel.cpp" line="1123"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Missat utgående samtal</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1120"/>
+        <location filename="../src/conversationmodel.cpp" line="1125"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Missat inkommande samtal</translation>
     </message>
