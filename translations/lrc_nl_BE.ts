@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ko_KR" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl_BE" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
@@ -35,7 +35,7 @@
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
-        <translation>호스트명</translation>
+        <translation>Hostnaam</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
-        <translation>포트</translation>
+        <translation>Poort</translation>
     </message>
 </context>
 <context>
@@ -125,19 +125,19 @@
         <location filename="../src/call.cpp" line="716"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Gaat over</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="719"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>통화 중</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Praten</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
@@ -149,25 +149,25 @@
         <location filename="../src/call.cpp" line="728"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>In wacht zetten</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="731"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mislukt</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bezig</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>보내기</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
@@ -179,13 +179,13 @@
         <location filename="../src/call.cpp" line="743"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Opgehangen</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="749"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/call.cpp" line="858"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Onbekend</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2209"/>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="920"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Oproepen</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contacten</translation>
     </message>
 </context>
 <context>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contacten</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -295,7 +295,7 @@
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Onbekend</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Geschiedenis</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
 </context>
 <context>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="41"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Gisteren</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="48"/>
@@ -540,7 +540,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>오디오/비디오</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -561,12 +561,12 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
-        <translation>계정</translation>
+        <translation>Account</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
@@ -602,7 +602,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation>유형</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation>계정</translation>
+        <translation>Account</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -700,7 +700,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -903,7 +903,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versie</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
@@ -1079,7 +1079,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Geschiedenis</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
@@ -1130,7 +1130,7 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation type="unfinished"/>
+        <translation>Ring-account</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
@@ -1212,7 +1212,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>수락</translation>
+        <translation>Aanvaarden</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
@@ -1220,12 +1220,12 @@
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>In wacht zetten</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Praten</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
@@ -1240,22 +1240,22 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Inkomend</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <source>Calling</source>
-        <translation>통화 중</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
@@ -1281,12 +1281,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Geluid dempen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>Video uitschakelen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
@@ -1296,13 +1296,13 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation type="unfinished"/>
+        <translation>Opnemen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation>통화종료</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
@@ -1372,7 +1372,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation>통화</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
@@ -1382,12 +1382,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Uit wacht halen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation>취소</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
@@ -1476,7 +1476,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>이름</translation>
+        <translation>Naam</translation>
     </message>
 </context>
 <context>
