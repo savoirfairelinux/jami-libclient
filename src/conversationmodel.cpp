@@ -785,7 +785,58 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 
 ConversationModelPimpl::~ConversationModelPimpl()
 {
+    // Contact related
+    disconnect(&*linked.owner.contactModel, &ContactModel::modelUpdated,
+               this, &ConversationModelPimpl::slotContactModelUpdated);
+    disconnect(&*linked.owner.contactModel, &ContactModel::contactAdded,
+               this, &ConversationModelPimpl::slotContactAdded);
+    disconnect(&*linked.owner.contactModel, &ContactModel::pendingContactAccepted,
+               this, &ConversationModelPimpl::slotPendingContactAccepted);
+    disconnect(&*linked.owner.contactModel, &ContactModel::contactRemoved,
+               this, &ConversationModelPimpl::slotContactRemoved);
 
+    // Messages related
+    disconnect(&*linked.owner.contactModel, &lrc::ContactModel::newAccountMessage,
+               this, &ConversationModelPimpl::slotNewAccountMessage);
+    disconnect(&callbacksHandler, &CallbacksHandler::incomingCallMessage,
+               this, &ConversationModelPimpl::slotIncomingCallMessage);
+    disconnect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
+               this, &ConversationModelPimpl::slotUpdateInteractionStatus);
+
+
+    // Call related
+    disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
+               this, &ConversationModelPimpl::slotIncomingCall);
+    disconnect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
+               this, &ConversationModelPimpl::slotIncomingCall);
+    disconnect(&*linked.owner.callModel, &lrc::api::NewCallModel::callStatusChanged,
+               this, &ConversationModelPimpl::slotCallStatusChanged);
+    disconnect(&*linked.owner.callModel, &lrc::api::NewCallModel::callStarted,
+               this, &ConversationModelPimpl::slotCallStarted);
+    disconnect(&*linked.owner.callModel, &lrc::api::NewCallModel::callEnded,
+               this, &ConversationModelPimpl::slotCallEnded);
+    disconnect(&*linked.owner.callModel, &lrc::api::NewCallModel::callAddedToConference,
+               this, &ConversationModelPimpl::slotCallAddedToConference);
+    disconnect(&callbacksHandler, &CallbacksHandler::conferenceRemoved,
+               this, &ConversationModelPimpl::slotConferenceRemoved);
+
+    // data transfer
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
+               this, &ConversationModelPimpl::slotTransferStatusCreated);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCanceled,
+               this, &ConversationModelPimpl::slotTransferStatusCanceled);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusAwaitingPeer,
+               this, &ConversationModelPimpl::slotTransferStatusAwaitingPeer);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusAwaitingHost,
+               this, &ConversationModelPimpl::slotTransferStatusAwaitingHost);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusOngoing,
+               this, &ConversationModelPimpl::slotTransferStatusOngoing);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusFinished,
+               this, &ConversationModelPimpl::slotTransferStatusFinished);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusError,
+               this, &ConversationModelPimpl::slotTransferStatusError);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusUnjoinable,
+               this, &ConversationModelPimpl::slotTransferStatusUnjoinable);
 }
 
 void
