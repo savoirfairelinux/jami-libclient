@@ -75,6 +75,11 @@ public:
      */
     const ConversationQueue& allFilteredConversations() const;
     /**
+     * Get a custom filtered set of conversations
+     * @return conversations filtered
+     */
+    const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID) const;
+    /**
      * Get the conversation at row in the filtered conversations
      * @param  row
      * @return a copy of the conversation
