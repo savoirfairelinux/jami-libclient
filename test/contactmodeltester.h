@@ -41,16 +41,17 @@ namespace test
 
 class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ContactModelTester);
-    CPPUNIT_TEST(testGetAllContactsForRINGAccount);
-    CPPUNIT_TEST(testReceivesPendingRequest);
-    CPPUNIT_TEST(testAddNewRingContact);
-    CPPUNIT_TEST(testAddRingURI);
-    CPPUNIT_TEST(testAddNewSIPContact);
-    CPPUNIT_TEST(testAddAlreadyAddedContact);
-    CPPUNIT_TEST(testRmRingContact);
-    CPPUNIT_TEST(testRmPendingContact);
-    CPPUNIT_TEST(testRmSIPContact);
-    CPPUNIT_TEST(testRmTemporaryContact);
+//    CPPUNIT_TEST(testGetAllContactsForRINGAccount);
+//    CPPUNIT_TEST(testReceivesPendingRequest);
+//    CPPUNIT_TEST(testAddNewRingContact);
+//    CPPUNIT_TEST(testAddRingURI);
+//    CPPUNIT_TEST(testAddNewSIPContact);
+//    CPPUNIT_TEST(testAddAlreadyAddedContact);
+//    CPPUNIT_TEST(testRmRingContact);
+//    CPPUNIT_TEST(testRmPendingContact);
+//    CPPUNIT_TEST(testRmSIPContact);
+//    CPPUNIT_TEST(testRmTemporaryContact);
+    CPPUNIT_TEST(testCountPendingRequests);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -107,6 +108,10 @@ public:
      * Search "dummy" and try to remove it. Should not change anything
      */
     void testRmTemporaryContact();
+    /**
+     * Count contact requests
+     */
+    void testCountPendingRequests();
     /**
      * Method automatically called after each test by CppUnit
      */
