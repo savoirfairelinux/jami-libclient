@@ -1389,6 +1389,12 @@ ConversationModel::getTransferInfo(uint64_t interactionId, datatransfer::Info& i
     }
 }
 
+int
+ConversationModel::getNumberOfUnreadMessagesFor(const std::string& convUid)
+{
+    return pimpl_->getNumberOfUnreadMessagesFor(convUid);
+}
+
 bool
 ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info& info,
                                                    int& interactionId, std::string& convId)
