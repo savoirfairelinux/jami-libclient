@@ -51,6 +51,7 @@ class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testRmPendingContact);
     CPPUNIT_TEST(testRmSIPContact);
     CPPUNIT_TEST(testRmTemporaryContact);
+    CPPUNIT_TEST(testCountPendingRequests);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -107,6 +108,10 @@ public:
      * Search "dummy" and try to remove it. Should not change anything
      */
     void testRmTemporaryContact();
+    /**
+     * Count contact requests
+     */
+    void testCountPendingRequests();
     /**
      * Method automatically called after each test by CppUnit
      */
