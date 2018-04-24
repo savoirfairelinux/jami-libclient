@@ -159,6 +159,11 @@ public:
     void cancelTransfer(const std::string& convUid, uint64_t interactionId);
 
     void getTransferInfo(uint64_t interactionId, api::datatransfer::Info& info);
+    /**
+     * @param convUid, uid of the conversation
+     * @return the number of unread messages for the conversation
+     */
+    int getNumberOfUnreadMessagesFor(const std::string& convUid);
 
 Q_SIGNALS:
     /**
