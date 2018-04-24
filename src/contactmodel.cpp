@@ -163,12 +163,19 @@ ContactModel::getAllContacts() const
 bool
 ContactModel::hasPendingRequests() const
 {
+    return pendingRequestCount() > 0;
+}
+
+int
+ContactModel::pendingRequestCount() const
+{
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
-    auto i = std::find_if(pimpl_->contacts.begin(), pimpl_->contacts.end(),
-        [](const auto& c) {
-            return c.second.profileInfo.type == profile::Type::PENDING;
+    int pendingRequestCount = 0;
+    auto i = std::for_each(pimpl_->contacts.begin(), pimpl_->contacts.end(),
+        [&pendingRequestCount] (const auto& c) {
+            pendingRequestCount += static_cast<int>(c.second.profileInfo.type == profile::Type::PENDING);
         });
-    return (i != pimpl_->contacts.end());
+    return pendingRequestCount;
 }
 
 void
