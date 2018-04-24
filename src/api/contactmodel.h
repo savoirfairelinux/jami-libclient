@@ -91,6 +91,10 @@ public:
      */
     bool hasPendingRequests() const;
     /**
+     * @return number of pending requests
+     */
+    int pendingRequestCount() const;
+    /**
      * Search a SIP or a Ring contact from a query.
      * @param query
      */
