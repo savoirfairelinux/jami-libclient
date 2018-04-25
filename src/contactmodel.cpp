@@ -37,6 +37,7 @@
 #include "contactmethod.h"
 #include "namedirectory.h"
 #include "phonedirectorymodel.h"
+#include "bannedcontactmodel.h"
 #include "private/vcardutils.h"
 
 #include "authority/daemon.h"
@@ -470,6 +471,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
         contact::Info contactInfo;
         contactInfo.profileInfo = profileInfo;
         contactInfo.registeredName = cm->registeredName().toStdString();
+        contactInfo.isBanned = account->bannedContactModel()->isBanned(cm);
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
@@ -546,6 +548,13 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type)
     auto contactInfo = database::buildContactFromProfileId(db, contactId);
     contactInfo.registeredName = cm->registeredName().toStdString();
 
+    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::addToContacts(), nullptr";
+        return;
+    }
+
+    contactInfo.isBanned = account->bannedContactModel()->isBanned(cm);
     contactInfo.isPresent = cm->isPresent();
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
     auto iter = contacts.find(contactInfo.profileInfo.uri);

@@ -503,6 +503,12 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     if (url.empty())
         return; // Incorrect item
 
+    // Don't call banned contact
+    if (contactInfo.isBanned) {
+        qDebug() << "ContactModel::placeCall: denied, contact is banned";
+        return;
+    }
+
     sendContactRequest(participant);
 
     if (linked.owner.profileInfo.type != profile::Type::SIP) {
@@ -510,8 +516,13 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     }
 
     // If call is with temporary contact, conversation has been removed and must be updated
+    int contactIndex;
+    if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
+        qDebug() << "Can't place call: Other participant is not a contact";
+        return;
+    }
 
-    auto& newConv = isTemporary ? conversations.at(indexOfContact(convId)) : conversation;
+    auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
@@ -556,6 +567,12 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     auto status = interaction::Status::SENDING;
     for (const auto& participant: conversation.participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
+
+        if (contactInfo.isBanned) {
+            qDebug() << "ContactModel::sendMessage: denied, contact is banned";
+            return;
+        }
+
         pimpl_->sendContactRequest(participant);
 
         QStringList callLists = CallManager::instance().getCallList(); // no auto
@@ -576,8 +593,13 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     // If first interaction with temporary contact, we have to update the conversations info
     // at this stage
+    int contactIndex;
+    if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+        qDebug() << "Can't send message: Other participant is not a contact";
+        return;
+    }
 
-    auto& newConv = isTemporary ? pimpl_->conversations.at(pimpl_->indexOfContact(convId)) : conversation;
+    auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     // Add interaction to database

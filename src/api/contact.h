@@ -39,6 +39,7 @@ struct Info
     std::string registeredName;
     bool isTrusted = false;
     bool isPresent = false;
+    bool isBanned = false;
 };
 
 } // namespace contact
