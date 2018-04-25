@@ -45,6 +45,7 @@ public:
     // Helper
     void add(ContactMethod* cm);
     void remove(ContactMethod* cm);
+    bool isBanned(ContactMethod* cm);
 
 private:
     virtual ~BannedContactModel();
