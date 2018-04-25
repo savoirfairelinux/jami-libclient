@@ -35,6 +35,7 @@
 
 #include "accountmodel.h"
 #include "contactmethod.h"
+#include "bannedcontactmodel.h"
 #include "namedirectory.h"
 #include "phonedirectorymodel.h"
 #include "private/vcardutils.h"
@@ -187,6 +188,20 @@ ContactModel::addContact(contact::Info contactInfo)
         (profile.type == profile::Type::RING or profile.type == profile::Type::SIP)) {
             qDebug() << "ContactModel::addContact, types invalids.";
             return;
+    }
+
+    // Do not add a banned account
+    auto account = AccountModel::instance().getById(pimpl_->linked.owner.id.c_str());
+
+    if (not account) {
+        qDebug() << "ContactModel::addContact, account is nullptr";
+        return;
+    }
+
+    auto* cm = PhoneDirectoryModel::instance().getNumber(QString(profile.uri.c_str()), account);
+    if (account->bannedContactModel()->isBanned(cm)) {
+        qDebug() << "ContactModel::addContact: denied, contact is banned";
+        return;
     }
 
     MapStringString details = ConfigurationManager::instance().getContactDetails(
