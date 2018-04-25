@@ -137,8 +137,9 @@ BannedContactModel::columnCount( const QModelIndex& parent ) const
 void
 BannedContactModel::add(ContactMethod* cm)
 {
-    if (d_ptr->m_lBanned.contains(cm))
+    if (isBanned(cm))
         return;
+
     beginInsertRows(QModelIndex(),d_ptr->m_lBanned.size(),d_ptr->m_lBanned.size());
     d_ptr->m_lBanned << cm;
     endInsertRows();
@@ -151,6 +152,7 @@ BannedContactModel::add(ContactMethod* cm)
 void
 BannedContactModel::remove(ContactMethod* cm)
 {
+    // Do not remove contact if contact isn't banned
     auto rowIndex = d_ptr->m_lBanned.indexOf(cm);
     if (rowIndex < 0)
         return;
@@ -165,4 +167,14 @@ BannedContactModel::remove(ContactMethod* cm)
     }
 
     ConfigurationManager::instance().addContact(cm->account()->id(), cm->uri());
+}
+
+/**
+ * this function returns whether passed ContactMethod is in the banned list or not.
+ * @param cm, the ContactMethod whose presence in the banned list should be checked.
+ */
+bool
+BannedContactModel::isBanned(ContactMethod* cm)
+{
+    return d_ptr->m_lBanned.contains(cm);
 }
