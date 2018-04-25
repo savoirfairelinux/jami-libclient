@@ -499,9 +499,14 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
 
-    // If call is with temporary contact, conversation has been removed and must be updated
+    auto contactIndex = indexOfContact(convId);
+    if (contactIndex < 0) {
+        qDebug() << "Can't place call: Other participant is not a contact (most likely banned)";
+        return;
+    }
 
-    auto& newConv = isTemporary ? conversations.at(indexOfContact(convId)) : conversation;
+    // If call is with temporary contact, conversation has been removed and must be updated
+    auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
@@ -564,10 +569,16 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     }
 
+    auto contactIndex = pimpl_->indexOfContact(convId);
+    if (contactIndex < 0) {
+        qDebug() << "Can't send message: Other participant is not a contact (most likely banned)";
+        return;
+    }
+
     // If first interaction with temporary contact, we have to update the conversations info
     // at this stage
 
-    auto& newConv = isTemporary ? pimpl_->conversations.at(pimpl_->indexOfContact(convId)) : conversation;
+    auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     // Add interaction to database
