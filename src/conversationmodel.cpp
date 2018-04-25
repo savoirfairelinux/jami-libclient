@@ -495,6 +495,19 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     if (url.empty())
         return; // Incorrect item
 
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::placeCall, account is nullptr";
+        return;
+    }
+
+    // Don't call banned contact
+    auto* cm = PhoneDirectoryModel::instance().getNumber(QString(profile.uri.c_str()), account);
+    if (account->bannedContactModel()->isBanned(cm)) {
+        qDebug() << "ContactModel::placeCall: denied, contact is banned";
+        return;
+    }
+
     sendContactRequest(participant);
 
     if (linked.owner.profileInfo.type != profile::Type::SIP) {
@@ -502,8 +515,13 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     }
 
     // If call is with temporary contact, conversation has been removed and must be updated
+    int contactIndex;
+    if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
+        qDebug() << "Can't place call: Other participant is not a contact";
+        return;
+    }
 
-    auto& newConv = isTemporary ? conversations.at(indexOfContact(convId)) : conversation;
+    auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
@@ -542,11 +560,24 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     auto accountId = pimpl_->accountProfileId;
     bool isTemporary = conversation.participants.front() == "";
 
+    auto account = AccountModel::instance().getById(owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::sendMessage, account is nullptr";
+        return;
+    }
+
     // Send interaction to all participants
     // NOTE: conferences are not implemented yet, so we have only one participant
     uint64_t daemonMsgId = 0;
     auto status = interaction::Status::SENDING;
     for (const auto& participant: conversation.participants) {
+        // Don't send messages to banned contact
+        auto* cm = PhoneDirectoryModel::instance().getNumber(QString(profile.uri.c_str()), account);
+        if (account->bannedContactModel()->isBanned(cm)) {
+            qDebug() << "ContactModel::sendMessage: denied, contact is banned";
+            return;
+        }
+
         auto contactInfo = owner.contactModel->getContact(participant);
         pimpl_->sendContactRequest(participant);
 
@@ -568,8 +599,13 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 
     // If first interaction with temporary contact, we have to update the conversations info
     // at this stage
+    int contactIndex;
+    if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+        qDebug() << "Can't send message: Other participant is not a contact";
+        return;
+    }
 
-    auto& newConv = isTemporary ? pimpl_->conversations.at(pimpl_->indexOfContact(convId)) : conversation;
+    auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
 
     // Add interaction to database
