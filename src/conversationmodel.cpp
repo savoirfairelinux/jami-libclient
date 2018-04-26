@@ -1527,7 +1527,7 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
             interaction::Type::OUTGOING_DATA_TRANSFER :
             interaction::Type::INCOMING_DATA_TRANSFER;
         auto interaction = interaction::Info {info.isOutgoing? accountProfileId : contactProfileId,
-                                              info.displayName,
+                                              info.isOutgoing? info.path : info.displayName,
                                               std::time(nullptr),
                                               interactioType,
                                               interaction::Status::TRANSFER_CREATED};
