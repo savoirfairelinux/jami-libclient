@@ -50,6 +50,7 @@ class ConversationModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testPlaceCall);
     CPPUNIT_TEST(testCreateConference);
     CPPUNIT_TEST(testPlaceAudioOnlyCall);
+    CPPUNIT_TEST(testClearUnreadInteractions);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -98,6 +99,10 @@ public:
      * Create a conference with the two first conversations
      */
     void testCreateConference();
+    /**
+     * Clear any unread text messages from a conversation
+     */
+    void testClearUnreadInteractions();
     /**
      * Method automatically called after each test by CppUnit
      */
