@@ -685,26 +685,53 @@ ConversationModel::setInteractionRead(const std::string& convId,
                                       const uint64_t& interactionId)
 {
     auto conversationIdx = pimpl_->indexOf(convId);
-    if (conversationIdx != -1) {
-        bool emitUpdated = false;
-        interaction::Info itCopy;
-        auto newStatus = interaction::Status::READ;
-        {
-            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-            auto& interactions = pimpl_->conversations[conversationIdx].interactions;
-            auto it = interactions.find(interactionId);
-            if (it != interactions.end()) {
-                emitUpdated = true;
-                if (it->second.status != interaction::Status::UNREAD) return;
-                it->second.status = newStatus;
-                itCopy = it->second;
-            }
+    if (conversationIdx == -1) {
+        return;
+    }
+    bool emitUpdated = false;
+    interaction::Info itCopy;
+    auto newStatus = interaction::Status::READ;
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            emitUpdated = true;
+            if (it->second.status != interaction::Status::UNREAD) return;
+            it->second.status = newStatus;
+            itCopy = it->second;
         }
-        if (emitUpdated) {
-            pimpl_->dirtyConversations = {true, true};
-            database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
-            emit interactionStatusUpdated(convId, interactionId, itCopy);
-        }
+    }
+    if (emitUpdated) {
+        pimpl_->dirtyConversations = {true, true};
+        database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
+        emit interactionStatusUpdated(convId, interactionId, itCopy);
+    }
+}
+
+void
+ConversationModel::clearUnreadInteractions(const std::string& convId) {
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1) {
+        return;
+    }
+    bool emitUpdated = false;
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        std::for_each(interactions.begin(), interactions.end(),
+                      [&] (decltype(*interactions.begin())& it) {
+                          if (it.second.type == lrc::api::interaction::Type::TEXT &&
+                              it.second.status == lrc::api::interaction::Status::UNREAD) {
+                              emitUpdated = true;
+                              it.second.status = interaction::Status::READ;
+                              database::updateInteractionStatus(pimpl_->db, it.first, interaction::Status::READ);
+                          }
+                      });
+    }
+    if (emitUpdated) {
+        pimpl_->dirtyConversations = {true, true};
+        emit conversationUpdated(convId);
     }
 }
 

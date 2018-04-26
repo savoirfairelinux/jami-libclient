@@ -148,6 +148,11 @@ public:
      */
     void setInteractionRead(const std::string& convId, const uint64_t& msgId);
     /**
+     * Clears the unread text messages of a conversation
+     * @param convId, uid of the conversation
+     */
+    void clearUnreadInteractions(const std::string& convId);
+    /**
      * clear all history
      */
      void clearAllHistory();
