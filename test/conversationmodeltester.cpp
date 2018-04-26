@@ -291,6 +291,46 @@ ConversationModelTester::testCreateConference()
 }
 
 void
+ConversationModelTester::testClearUnreadInteractions()
+{
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    QMap<QString, QString> payloads;
+    // First message
+    payloads["text/plain"] = "This is not a message";
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
+                                                                firstConversation.participants.front().c_str(), payloads);
+    auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+                                             SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
+    // Second message
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
+                                                                firstConversation.participants.front().c_str(), payloads);
+    unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+                                             SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    CPPUNIT_ASSERT(firstConversation.interactions.size() != 0);
+    for(auto&& interaction : firstConversation.interactions) {
+        CPPUNIT_ASSERT(interaction.second.status == lrc::api::interaction::Status::UNREAD);
+    }
+    // Clear conversation of unread interactions
+    accInfo_.conversationModel->clearUnreadInteractions(firstConversation.uid);
+    auto conversationUpdated = WaitForSignalHelper(*accInfo_.conversationModel,
+                                            SIGNAL(conversationUpdated(const std::string&))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(conversationUpdated, true);
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    for(auto&& interaction : firstConversation.interactions) {
+        CPPUNIT_ASSERT(interaction.second.status == lrc::api::interaction::Status::READ);
+    }
+}
+
+void
 ConversationModelTester::tearDown()
 {
 
