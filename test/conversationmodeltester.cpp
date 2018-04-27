@@ -82,6 +82,43 @@ ConversationModelTester::testAddValidConversation()
 }
 
 void
+ConversationModelTester::testSendMessageToBannedContact()
+{
+    // bannedContact should not be in contacts
+    auto contactId = accInfo_.contactModel->getContactProfileId("bannedContact");
+    CPPUNIT_ASSERT(contactId.empty());
+    // Search contact
+    accInfo_.conversationModel->setFilter("bannedContact");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    // Add bannedContact to contacts
+    auto newContactUri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
+    accInfo_.conversationModel->makePermanent(newContactUri);
+    auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+    // bannedContact now should be in contacts
+    contactId = accInfo_.contactModel->getContactProfileId("bannedContact");
+    CPPUNIT_ASSERT(!contactId.empty());
+    // Ban bannedContact
+    auto contactInfo = accInfo_.contactModel->getContact(newContactUri);
+    contactInfo.isBanned = true;
+    // So, sending a message should be forbidden
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    bool conversationExists = false;
+    for (const auto& conversation: conversations) {
+        if (std::find(conversation.participants.begin(), conversation.participants.end(), contactInfo.profileInfo.uri) != conversation.participants.end()) {
+            conversationExists = true;
+            accInfo_.conversationModel->sendMessage(conversation.uid, "Hello banned !");
+            // Make sure message didn't arrive
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 0);
+            break;
+        }
+    }
+    CPPUNIT_ASSERT(conversationExists);
+}
+
+void
 ConversationModelTester::testAddInvalidConversation()
 {
     // notAContact should not be in contacts

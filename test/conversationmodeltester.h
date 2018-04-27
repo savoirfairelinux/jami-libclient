@@ -84,6 +84,10 @@ public:
      */
     void testSendMessageAndClearHistory();
     /**
+     * Make sure it is not possible to send a message to a banned contact
+     */
+    void testSendMessageToBannedContact();
+    /**
      * Receives a message from a conversation and set this message READ
      */
     void testReceiveMessageAndSetRead();
@@ -91,6 +95,10 @@ public:
      * Call the first conversation
      */
     void testPlaceCall();
+    /**
+     * Make sure it is not possible to call a banned contact
+     */
+    void testPlaceCallWithBannedContact();
     /**
      * Start and audio-only call with the first conversation
      */
