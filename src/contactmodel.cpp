@@ -204,10 +204,12 @@ ContactModel::addContact(contact::Info contactInfo)
     switch (profile.type) {
     case profile::Type::TEMPORARY:
         // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
-        #ifndef ENABLE_TEST // The old LRC doesn't like mocks
+#ifndef ENABLE_TEST // The old LRC doesn't like mocks
         if (auto* account = AccountModel::instance().getById(owner.id.c_str()))
             account->sendContactRequest(URI(profile.uri.c_str()));
-        #endif
+#else
+            ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
+#endif
         break;
     case profile::Type::PENDING:
         daemon::addContactFromPending(owner, profile.uri);

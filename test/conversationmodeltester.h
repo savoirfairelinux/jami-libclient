@@ -51,6 +51,9 @@ class ConversationModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testCreateConference);
     CPPUNIT_TEST(testPlaceAudioOnlyCall);
     CPPUNIT_TEST(testClearUnreadInteractions);
+    CPPUNIT_TEST(testSendMessageToBannedContact);
+    CPPUNIT_TEST(testFilterBannedContact);
+    CPPUNIT_TEST(testPlaceCallWithBannedContact);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -84,6 +87,14 @@ public:
      */
     void testSendMessageAndClearHistory();
     /**
+     * Make sure it is not possible to send a message to a banned contact
+     */
+    void testSendMessageToBannedContact();
+    /**
+     * Make sure banned contacts only appear in perfect-match filter searches.
+     */
+    void testFilterBannedContact();
+    /**
      * Receives a message from a conversation and set this message READ
      */
     void testReceiveMessageAndSetRead();
@@ -91,6 +102,10 @@ public:
      * Call the first conversation
      */
     void testPlaceCall();
+    /**
+     * Make sure it is not possible to call a banned contact
+     */
+    void testPlaceCallWithBannedContact();
     /**
      * Start and audio-only call with the first conversation
      */
@@ -111,6 +126,11 @@ public:
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;
     const lrc::api::account::Info& accInfo_;
+
+    /**
+     * Return whether passed uri already maps to a contact or not
+     */
+    bool isAContact(std::string uri);
 };
 
 } // namespace test
