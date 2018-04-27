@@ -56,12 +56,18 @@ public:
       availableContacts_ << "contact0";
       availableContacts_ << "contact1";
       availableContacts_ << "contact2";
+      availableContacts_ << "badguy0";
+      availableContacts_ << "badguy1";
+      availableContacts_ << "bannedContact";
       availableContacts_ << "dummy";
       for (auto& account: getAccountList()) {
           auto contacts = VectorMapStringString();
           if (account.indexOf("ring") != -1) {
               for (auto& contactUri: availableContacts_) {
                   if (contactUri == "dummy") break;
+                  if (contactUri == "bannedContact") break;
+                  if (contactUri == "badguy0") break;
+                  if (contactUri == "badguy1") break;
                   auto contact = QMap<QString, QString>();
                   contact.insert("id", contactUri);
                   contact.insert("added", "true");
@@ -595,7 +601,12 @@ public Q_SLOTS: // METHODS
         auto contacts = accountToContactsMap[accountId];
         for (auto c = 0 ; c < contacts.size() ; ++c) {
             if (contacts.at(c)["id"] == uri) {
-                contacts.remove(c);
+                if (ban) {
+                    contacts[c].insert("removed", "true");
+                    contacts[c].insert("banned", "true");
+                } else {
+                    contacts.remove(c);
+                }
                 emit contactRemoved(accountId, uri, ban);
                 return;
             }
