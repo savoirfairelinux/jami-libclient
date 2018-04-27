@@ -78,13 +78,18 @@ public:
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID, bool forceUpdate = false) const;
+    const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID, bool forceUpdate = false, const bool includeBanned = false) const;
     /**
      * Get the conversation at row in the filtered conversations
      * @param  row
      * @return a copy of the conversation
      */
     conversation::Info filteredConversation(unsigned int row) const;
+    /**
+     * Emit a filterChanged signal to force the client to refresh the filter. For instance
+     * this is required when a contact was banned or un-banned.
+     */
+    void refreshFilter();
     /**
      * Make permanent a temporary contact or a pending request.
      * Ensure that given conversation is stored permanently into the system.
