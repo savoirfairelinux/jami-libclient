@@ -797,8 +797,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &ConversationModelPimpl::slotConferenceRemoved);
 
     // data transfer
-    connect(&callbacksHandler,
-            &CallbacksHandler::transferStatusCreated,
+    connect(&*linked.owner.contactModel, &ContactModel::newAccountTransfer,
             this,
             &ConversationModelPimpl::slotTransferStatusCreated);
     connect(&callbacksHandler,
@@ -869,7 +868,7 @@ ConversationModelPimpl::~ConversationModelPimpl()
                this, &ConversationModelPimpl::slotConferenceRemoved);
 
     // data transfer
-    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
+    disconnect(&*linked.owner.contactModel, &ContactModel::newAccountTransfer,
                this, &ConversationModelPimpl::slotTransferStatusCreated);
     disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCanceled,
                this, &ConversationModelPimpl::slotTransferStatusCanceled);
@@ -1504,14 +1503,15 @@ ConversationModel::acceptTransfer(const std::string& convUid, uint64_t interacti
         if (it != interactions.end()) {
             it->second.body = path;
             it->second.status = interaction::Status::TRANSFER_ACCEPTED;
-            pimpl_->sendContactRequest(pimpl_->conversations[conversationIdx].participants.front());
-            pimpl_->dirtyConversations = {true, true};
             emitUpdated = true;
             itCopy = it->second;
         }
     }
-    if (emitUpdated)
+    if (emitUpdated) {
+        pimpl_->sendContactRequest(pimpl_->conversations[conversationIdx].participants.front());
+        pimpl_->dirtyConversations = {true, true};
         emit interactionStatusUpdated(convUid, interactionId, itCopy);
+    }
 }
 
 void
@@ -1520,6 +1520,8 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
     // For this action, we change interaction status before effective canceling as daemon will
     // emit Finished event code immediatly (before leaving this method) in non-DBus mode.
     auto conversationIdx = pimpl_->indexOf(convUid);
+    interaction::Info itCopy;
+    bool emitUpdated = false;
     if (conversationIdx != -1) {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convUid]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
@@ -1531,10 +1533,14 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
             database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_CANCELED);
 
             // Forward cancel action to daemon
-            pimpl_->lrc.getDataTransferModel().cancel(interactionId);
-            pimpl_->dirtyConversations = {true, true};
-            emit interactionStatusUpdated(convUid, interactionId, it->second);
+            emitUpdated = true;
+            itCopy = it->second;
         }
+    }
+    if (emitUpdated) {
+        pimpl_->lrc.getDataTransferModel().cancel(interactionId);
+        pimpl_->dirtyConversations = {true, true};
+        emit interactionStatusUpdated(convUid, interactionId, itCopy);
     }
 }
 
@@ -1579,8 +1585,8 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
     if (not account)
         return;
 
+    auto contactProfileId = database::getOrInsertProfile(db, info.peerUri);
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
-    auto contactProfileId = database::getProfileId(db, info.peerUri);
 
     // create a new conversation if needed
     auto conversation_list = database::getConversationsBetween(db, accountProfileId, contactProfileId);
@@ -1597,33 +1603,29 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
     // map dringId and interactionId for latter retrivial from client (that only known the interactionId)
     lrc.getDataTransferModel().registerTransferId(dringId, interactionId);
 
+    auto interactioType = info.isOutgoing ?
+        interaction::Type::OUTGOING_DATA_TRANSFER :
+        interaction::Type::INCOMING_DATA_TRANSFER;
+    auto interaction = interaction::Info {info.isOutgoing? accountProfileId : contactProfileId,
+                                          info.isOutgoing? info.path : info.displayName,
+                                          std::time(nullptr),
+                                          interactioType,
+                                          interaction::Status::TRANSFER_CREATED};
+
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
     if (conversationIdx == -1) {
-        addConversationWith(conversation_list[0], info.peerUri);
+        addConversationWith(convId, info.peerUri);
         emit linked.newConversation(convId);
     } else {
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end())
-            return;
-
-        auto interactioType = info.isOutgoing ?
-            interaction::Type::OUTGOING_DATA_TRANSFER :
-            interaction::Type::INCOMING_DATA_TRANSFER;
-        auto interaction = interaction::Info {info.isOutgoing? accountProfileId : contactProfileId,
-                                              info.isOutgoing? info.path : info.displayName,
-                                              std::time(nullptr),
-                                              interactioType,
-                                              interaction::Status::TRANSFER_CREATED};
         {
-            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
-            interactions.emplace(interactionId, interaction);
+            std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
+            conversations[conversationIdx].interactions.emplace(interactionId, interaction);
         }
         conversations[conversationIdx].lastMessageUid = interactionId;
-        dirtyConversations = {true, true};
-        emit linked.newInteraction(convId, interactionId, interaction);
     }
+    dirtyConversations = {true, true};
+    emit linked.newInteraction(convId, interactionId, interaction);
     sortConversations();
     emit linked.modelSorted();
 }

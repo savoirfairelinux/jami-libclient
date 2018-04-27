@@ -41,6 +41,7 @@ namespace api
 
 namespace contact { struct Info; }
 namespace account { struct Info; }
+namespace datatransfer { struct Info; }
 class NewAccountModel;
 class ConversationModel;
 
@@ -145,7 +146,7 @@ Q_SIGNALS:
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void newAccountTransfer(long long dringId, const DataTransferInfo& transferInfo) const;
+    void newAccountTransfer(long long dringId, datatransfer::Info info) const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
