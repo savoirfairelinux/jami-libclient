@@ -31,6 +31,7 @@
 #include "api/contact.h"
 #include "api/interaction.h"
 #include "api/newcallmodel.h"
+#include "api/conversationmodel.h"
 #include "callbackshandler.h"
 
 #include "accountmodel.h"
@@ -509,18 +510,29 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
 void
 ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned)
 {
-    Q_UNUSED(banned)
     if (accountId != linked.owner.id)
         return;
+
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(contactUri) != contacts.end()) {
+
+        auto contact = contacts.find(contactUri);
+        if (contact == contacts.end()) return;
+
+        if (banned) {
+            contact->second.isBanned = true;
+        } else {
             database::removeContact(db, linked.owner.profileInfo.uri, contactUri);
             contacts.erase(contactUri);
-        } else
-            return;
+        }
     }
-    emit linked.contactRemoved(contactUri);
+
+    if (banned) {
+        // Update the smartlist
+        linked.owner.conversationModel->refreshFilter();
+    } else {
+        emit linked.contactRemoved(contactUri);
+    }
 }
 
 void
