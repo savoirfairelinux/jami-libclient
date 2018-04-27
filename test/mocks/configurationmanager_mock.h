@@ -591,15 +591,22 @@ public Q_SLOTS: // METHODS
 
     void removeContact(const QString &accountId, const QString &uri, bool ban)
     {
+        qDebug() << "mock::removeContact";
         if (getAccountList().indexOf(accountId) == -1) return;
         auto contacts = accountToContactsMap[accountId];
         for (auto c = 0 ; c < contacts.size() ; ++c) {
             if (contacts.at(c)["id"] == uri) {
-                contacts.remove(c);
+                if (ban) {
+                    contacts[c].insert("removed", "true");
+                    contacts[c].insert("banned", "true");
+                } else {
+                    contacts.remove(c);
+                }
                 emit contactRemoved(accountId, uri, ban);
                 return;
             }
         }
+        qDebug() << "mock::removeContact: no account found";
     }
 
     void addContact(const QString &accountId, const QString &uri)
