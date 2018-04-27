@@ -138,6 +138,12 @@ public Q_SLOTS:
     void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
+    /**
+     * Listen from callbacksHandler to know when a file transfer interaction is incoming
+     * @param dringId Daemon's ID for incoming transfer
+     * @param transferInfo DataTransferInfo structure from daemon
+     */
+    void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
 };
 
 using namespace authority;
@@ -383,6 +389,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
             this, &ContactModelPimpl::slotNewAccountMessage);
+    connect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
+            this, &ContactModelPimpl::slotNewAccountTransfer);
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -401,6 +409,8 @@ ContactModelPimpl::~ContactModelPimpl()
                this, &ContactModelPimpl::slotIncomingCall);
     disconnect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
                this, &ContactModelPimpl::slotNewAccountMessage);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
+               this, &ContactModelPimpl::slotNewAccountTransfer);
 }
 
 bool
@@ -661,6 +671,29 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
     }
     emit linked.newAccountMessage(accountId, from, payloads);
 }
+
+void
+ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
+{
+    if (info.accountId != linked.owner.id) return;
+    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
+    if (not account) {
+        qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lk(contactsMtx_);
+        if (contacts.find(info.peerUri) == contacts.end()) {
+            // Contact not found, load profile from database.
+            // The conversation model will create an entry and link the incomingCall.
+            auto* cm = PhoneDirectoryModel::instance().getNumber(QString(info.peerUri.c_str()), account);
+            addToContacts(cm, profile::Type::PENDING);
+        }
+    }
+    emit linked.newAccountTransfer(dringId, info);
+}
+
 
 } // namespace lrc
 
