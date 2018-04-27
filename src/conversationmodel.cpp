@@ -954,9 +954,13 @@ ConversationModelPimpl::sortConversations()
             if (conversationA.participants.empty()) return true;
             if (conversationB.participants.empty()) return false;
 
-            std::unique_lock<std::mutex> lockConvA(interactionsLocks[conversationA.uid], std::defer_lock);
-            std::unique_lock<std::mutex> lockConvB(interactionsLocks[conversationB.uid], std::defer_lock);
-            std::lock(lockConvA, lockConvB);
+            if (conversationA.uid == conversationB.uid) return false;
+
+            auto& mtxA = interactionsLocks[conversationA.uid];
+            auto& mtxB = interactionsLocks[conversationB.uid];
+            std::lock(mtxA, mtxB);
+            std::lock_guard<std::mutex> lockConvA(mtxA, std::adopt_lock);
+            std::lock_guard<std::mutex> lockConvB(mtxB, std::adopt_lock);
 
             auto historyA = conversationA.interactions;
             auto historyB = conversationB.interactions;
