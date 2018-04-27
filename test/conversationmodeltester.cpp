@@ -1,6 +1,7 @@
 /*
  *  Copyright (C) 2017-2018 Savoir-faire Linux Inc.
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *  Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -55,21 +56,23 @@ void
 ConversationModelTester::testAddValidConversation()
 {
     // Dummy should not be in contacts
-    auto contactId = accInfo_.contactModel->getContactProfileId("dummy");
-    CPPUNIT_ASSERT(contactId.empty());
+    CPPUNIT_ASSERT(!isAContact("dummy"));
+
     // Search contact
     accInfo_.conversationModel->setFilter("dummy");
     WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(modelUpdated())).wait(1000);
+
     // So, add dummy to contacts
     auto newContactUri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
     accInfo_.conversationModel->makePermanent(newContactUri);
     auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
         SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+
     // Dummy should be in contacts
-    contactId = accInfo_.contactModel->getContactProfileId("dummy");
-    CPPUNIT_ASSERT(!contactId.empty());
+    CPPUNIT_ASSERT(isAContact("dummy"));
+
     // So, a conversation should exists.
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     auto i = std::find_if(conversations.begin(), conversations.end(),
@@ -82,22 +85,164 @@ ConversationModelTester::testAddValidConversation()
 }
 
 void
+ConversationModelTester::testPlaceCallWithBannedContact()
+{
+    // bannedContact should not be in contacts
+    CPPUNIT_ASSERT(!isAContact("badguy0"));
+
+    // Search contact
+    accInfo_.conversationModel->setFilter("badguy0");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+
+    // Add bannedContact to contacts
+    auto uri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
+    accInfo_.conversationModel->makePermanent(uri);
+    auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+
+    // badguy0 should now be in contacts
+    CPPUNIT_ASSERT(isAContact("badguy0"));
+
+    // Ban badguy0
+    accInfo_.contactModel->removeContact(uri, true);
+    auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(5000);
+    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+    auto contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
+
+    // So, now that badguy0 is banned, calling him should be forbidden
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    bool conversationExists = false;
+    for (const auto& conversation: conversations) {
+        if (std::find(conversation.participants.begin(), conversation.participants.end(), contactInfo.profileInfo.uri) != conversation.participants.end()) {
+            conversationExists = true;
+            // Try to call banned contact
+            auto baseInteractionsSize = conversation.interactions.size();
+            accInfo_.conversationModel->placeCall(conversation.uid);
+            // Make sure call didn't succeed
+            CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize, (int)conversation.interactions.size());
+            break;
+        }
+    }
+
+    CPPUNIT_ASSERT(conversationExists);
+}
+
+void
+ConversationModelTester::testFilterBannedContact()
+{
+    // bannedContact should not be in contacts
+    CPPUNIT_ASSERT(!isAContact("bannedContact"));
+    CPPUNIT_ASSERT(!isAContact("bannedContacte"));
+    CPPUNIT_ASSERT(!isAContact("bannedContac"));
+
+    // Search contact
+    accInfo_.conversationModel->setFilter("bannedContact");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+
+    // Add bannedContact to contacts
+    auto newContactUri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
+    accInfo_.conversationModel->makePermanent(newContactUri);
+    auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+
+    // bannedContact now should be in contacts
+    CPPUNIT_ASSERT(isAContact("bannedContact"));
+
+    // Ban bannedContact
+    accInfo_.contactModel->removeContact(newContactUri, true);
+    auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(5000);
+    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+    auto contactInfo = accInfo_.contactModel->getContact(newContactUri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
+
+    // Make sure bannedContact doesn't appear is non-perfect-match filter searches
+    accInfo_.conversationModel->setFilter("bannedContac");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL((std::deque<lrc::api::conversation::Info>::size_type) 1, accInfo_.conversationModel->allFilteredConversations().size());
+    accInfo_.conversationModel->setFilter("bannedContacte");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL((std::deque<lrc::api::conversation::Info>::size_type) 1, accInfo_.conversationModel->allFilteredConversations().size());
+
+    // Make sure bannedContact appears in perfect-match filter searches
+    accInfo_.conversationModel->setFilter("bannedContact");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL((std::deque<lrc::api::conversation::Info>::size_type) 1, accInfo_.conversationModel->allFilteredConversations().size());
+}
+
+void
+ConversationModelTester::testSendMessageToBannedContact()
+{
+    // bannedContact should not be in contacts
+    CPPUNIT_ASSERT(!isAContact("badguy1"));
+
+    // Search contact
+    accInfo_.conversationModel->setFilter("badguy1");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+
+    // Add bannedContact to contacts
+    auto uri = accInfo_.conversationModel->owner.contactModel->getContact("").profileInfo.uri;
+    accInfo_.conversationModel->makePermanent(uri);
+    auto contactAdded = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactAdded, true);
+
+    // badguy1 should now be in contacts
+    CPPUNIT_ASSERT(isAContact("badguy1"));
+
+    // Ban badguy1
+    accInfo_.contactModel->removeContact(uri, true);
+    auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(5000);
+    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+    auto contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
+
+    // So, now that badguy is banned, sending a message should be forbidden
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    bool conversationExists = false;
+    for (const auto& conversation: conversations) {
+        if (std::find(conversation.participants.begin(), conversation.participants.end(), contactInfo.profileInfo.uri) != conversation.participants.end()) {
+            conversationExists = true;
+            // Try to send message to banned contact
+            auto baseInteractionsSize = conversation.interactions.size();
+            accInfo_.conversationModel->sendMessage(conversation.uid, "Hello banned !");
+            // Make sure message didn't arrive (but contact added is already here)
+            CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize, (int)conversation.interactions.size());
+            break;
+        }
+    }
+
+    CPPUNIT_ASSERT(conversationExists);
+}
+
+void
 ConversationModelTester::testAddInvalidConversation()
 {
     // notAContact should not be in contacts
-    auto contacts = accInfo_.contactModel->getAllContacts();
-    CPPUNIT_ASSERT(contacts.find("notAContact") == contacts.end());
+    CPPUNIT_ASSERT(!isAContact("notAContact"));
+
     // Search contact
     accInfo_.conversationModel->setFilter("notAContact");
     WaitForSignalHelper(*accInfo_.contactModel,
         SIGNAL(modelUpdated())).wait(1000);
-    // Temporary item should contains "Searching...notAContact"
+
+    // Temporary item should contain "Searching...notAContact"
     // makePermanent should not do anything
     accInfo_.conversationModel->makePermanent("");
     WaitForSignalHelper(ConfigurationManager::instance(),
         SIGNAL(contactAdded(const QString&, const QString&, bool))).wait(1000);
-    contacts = accInfo_.contactModel->getAllContacts();
-    CPPUNIT_ASSERT(contacts.find("notAContact") == contacts.end());
+    CPPUNIT_ASSERT(!isAContact("notAContact"));
 }
 
 void
@@ -171,8 +316,8 @@ ConversationModelTester::testSendMessageAndClearHistory()
         for (const auto& conversation: conversations) {
         if (conversation.uid == firstConversation) {
             conversationExists = true;
-            // Should contains "Hello World!"
-            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 1);
+            // Should contains "Contact Added" + "Hello World!"
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), 2);
             CPPUNIT_ASSERT_EQUAL((*conversation.interactions.rbegin()).second.body, std::string("Hello World!"));
             break;
         }
@@ -296,44 +441,51 @@ ConversationModelTester::testClearUnreadInteractions()
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT(conversations.size() != 0);
     auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto sender = firstConversation.participants.front().c_str();
+
     QMap<QString, QString> payloads;
-    // First message
+
+    // Send a first message
     payloads["text/plain"] = "This is not a message";
-    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
-                                                                firstConversation.participants.front().c_str(), payloads);
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
     auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
                                              SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
-    // Second message
-    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
-                                                                firstConversation.participants.front().c_str(), payloads);
+
+    // Send a second message
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
     unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
                                              SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
-    conversations = accInfo_.conversationModel->allFilteredConversations();
-    CPPUNIT_ASSERT(conversations.size() != 0);
+
+    // Make sure both messages are unread
     firstConversation = accInfo_.conversationModel->filteredConversation(0);
-    CPPUNIT_ASSERT(firstConversation.interactions.size() != 0);
-    for(auto&& interaction : firstConversation.interactions) {
-        CPPUNIT_ASSERT(interaction.second.status == lrc::api::interaction::Status::UNREAD);
-    }
+    auto interactions = firstConversation.interactions.rbegin();
+    CPPUNIT_ASSERT(interactions->second.status == lrc::api::interaction::Status::UNREAD);
+    CPPUNIT_ASSERT((++interactions)->second.status == lrc::api::interaction::Status::UNREAD);
+
     // Clear conversation of unread interactions
     accInfo_.conversationModel->clearUnreadInteractions(firstConversation.uid);
     auto conversationUpdated = WaitForSignalHelper(*accInfo_.conversationModel,
                                             SIGNAL(conversationUpdated(const std::string&))).wait(1000);
     CPPUNIT_ASSERT_EQUAL(conversationUpdated, true);
-    conversations = accInfo_.conversationModel->allFilteredConversations();
-    CPPUNIT_ASSERT(conversations.size() != 0);
+
+    // Now make sure both messages are read
     firstConversation = accInfo_.conversationModel->filteredConversation(0);
-    for(auto&& interaction : firstConversation.interactions) {
-        CPPUNIT_ASSERT(interaction.second.status == lrc::api::interaction::Status::READ);
-    }
+    interactions = firstConversation.interactions.rbegin();
+    CPPUNIT_ASSERT(interactions->second.status == lrc::api::interaction::Status::READ);
+    CPPUNIT_ASSERT((++interactions)->second.status == lrc::api::interaction::Status::READ);
 }
 
 void
 ConversationModelTester::tearDown()
 {
+}
 
+bool
+ConversationModelTester::isAContact(std::string uri)
+{
+    return !accInfo_.contactModel->getContactProfileId(uri).empty();
 }
 
 } // namespace test
