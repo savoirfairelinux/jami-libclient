@@ -273,7 +273,17 @@ ConversationModel::allFilteredConversations() const
         pimpl_->filteredConversations.begin(),
         [this] (const conversation::Info& entry) {
             auto contactInfo = owner.contactModel->getContact(entry.participants.front());
-            // Check type
+
+            /* Check contact */
+            // If contact is banned, only match if filter is a perfect match
+            if (contactInfo.isBanned) {
+                if (pimpl_->filter == "") return false;
+                return contactInfo.profileInfo.uri == pimpl_->filter
+                       || contactInfo.profileInfo.alias == pimpl_->filter
+                       || contactInfo.registeredName == pimpl_->filter;
+            }
+
+            /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
                 if (contactInfo.profileInfo.type == profile::Type::PENDING)
@@ -286,7 +296,7 @@ ConversationModel::allFilteredConversations() const
                     return false;
             }
 
-            // Check contact
+            // Otherwise perform usual regex search
             try {
                 auto regexFilter = std::regex(pimpl_->filter, std::regex_constants::icase);
                 bool result = std::regex_search(contactInfo.profileInfo.uri, regexFilter)
@@ -307,7 +317,7 @@ ConversationModel::allFilteredConversations() const
 }
 
 const ConversationModel::ConversationQueue&
-ConversationModel::getFilteredConversations(const profile::Type& filter) const
+ConversationModel::getFilteredConversations(const profile::Type& filter, const bool includeBanned) const
 {
     if (pimpl_->customTypeFilter == filter && !pimpl_->dirtyConversations.second)
         return pimpl_->customFilteredConversations;
@@ -318,8 +328,9 @@ ConversationModel::getFilteredConversations(const profile::Type& filter) const
     auto it = std::copy_if(
         pimpl_->conversations.begin(), pimpl_->conversations.end(),
         pimpl_->customFilteredConversations.begin(),
-        [this] (const conversation::Info& entry) {
+        [this, &includeBanned] (const conversation::Info& entry) {
             auto contactInfo = owner.contactModel->getContact(entry.participants.front());
+            if (!includeBanned && contactInfo.isBanned) return false;
             return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
         });
     pimpl_->customFilteredConversations.resize(std::distance(pimpl_->customFilteredConversations.begin(), it));
@@ -615,6 +626,13 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     pimpl_->sortConversations();
     // The order has changed, informs the client to redraw the list
     emit modelSorted();
+}
+
+void
+ConversationModel::refreshFilter()
+{
+    pimpl_->dirtyConversations = {true, true};
+    emit filterChanged();
 }
 
 void
