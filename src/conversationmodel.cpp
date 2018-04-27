@@ -1560,21 +1560,23 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
     // For this action, we change interaction status before effective canceling as daemon will
     // emit Finished event code immediatly (before leaving this method) in non-DBus mode.
     auto conversationIdx = pimpl_->indexOf(convUid);
+    bool emitUpdated = false;
     if (conversationIdx != -1) {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convUid]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
             it->second.status = interaction::Status::TRANSFER_CANCELED;
-
             // update information in the db
             database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_CANCELED);
-
-            // Forward cancel action to daemon
-            pimpl_->lrc.getDataTransferModel().cancel(interactionId);
-            pimpl_->dirtyConversations = {true, true};
-            emit interactionStatusUpdated(convUid, interactionId, it->second);
+            emitUpdated = true;
         }
+    }
+    if (emitUpdated) {
+        // Forward cancel action to daemon (will invoke slotTransferStatusCanceled)
+        pimpl_->lrc.getDataTransferModel().cancel(interactionId);
+        pimpl_->dirtyConversations = {true, true};
+        emit interactionStatusUpdated(convUid, interactionId, it->second);
     }
 }
 
