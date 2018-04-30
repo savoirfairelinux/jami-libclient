@@ -1410,50 +1410,50 @@
         <translation>Samling av likemannsprofiler</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="873"/>
-        <location filename="../src/conversationmodel.cpp" line="1216"/>
-        <location filename="../src/conversationmodel.cpp" line="1424"/>
+        <location filename="../src/conversationmodel.cpp" line="1005"/>
+        <location filename="../src/conversationmodel.cpp" line="1359"/>
+        <location filename="../src/conversationmodel.cpp" line="1595"/>
         <source>Invitation received</source>
         <translation>Invitasjon mottatt</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="874"/>
+        <location filename="../src/conversationmodel.cpp" line="1006"/>
         <source>Contact added</source>
         <translation>Kontakt lagt til</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="908"/>
-        <location filename="../src/conversationmodel.cpp" line="915"/>
+        <location filename="../src/conversationmodel.cpp" line="1040"/>
+        <location filename="../src/conversationmodel.cpp" line="1047"/>
         <source>Invitation accepted</source>
         <translation>Invitasjon godtatt</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1101"/>
+        <location filename="../src/conversationmodel.cpp" line="1242"/>
         <source>ð Outgoing call</source>
         <translation>ð Utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1103"/>
+        <location filename="../src/conversationmodel.cpp" line="1244"/>
         <source>ð Incoming call</source>
         <translation>ð Innkommende anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1116"/>
+        <location filename="../src/conversationmodel.cpp" line="1257"/>
         <source>ð Outgoing call - </source>
         <translation>ð Utgående anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1119"/>
+        <location filename="../src/conversationmodel.cpp" line="1260"/>
         <source>ð Incoming call - </source>
         <translation>ð Innkommende anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1123"/>
+        <location filename="../src/conversationmodel.cpp" line="1264"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Ubesvart utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1125"/>
+        <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Tapt innkommende anrop</translation>
     </message>
