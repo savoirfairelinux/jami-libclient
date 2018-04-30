@@ -307,9 +307,9 @@ ConversationModel::allFilteredConversations() const
 }
 
 const ConversationModel::ConversationQueue&
-ConversationModel::getFilteredConversations(const profile::Type& filter) const
+ConversationModel::getFilteredConversations(const profile::Type& filter, bool forceUpdate) const
 {
-    if (pimpl_->customTypeFilter == filter && !pimpl_->dirtyConversations.second)
+    if (pimpl_->customTypeFilter == filter && !pimpl_->dirtyConversations.second && !forceUpdate)
         return pimpl_->customFilteredConversations;
 
     pimpl_->customTypeFilter = filter;
