@@ -52,6 +52,7 @@ convertDataTransferEvent(DRing::DataTransferEventCode event)
         case DRing::DataTransferEventCode::closed_by_peer: return datatransfer::Status::stop_by_peer;
         case DRing::DataTransferEventCode::invalid_pathname: return datatransfer::Status::invalid_pathname;
         case DRing::DataTransferEventCode::unjoinable_peer: return datatransfer::Status::unjoinable_peer;
+        case DRing::DataTransferEventCode::timeout_expired: return datatransfer::Status::timeout_expired;
     }
     throw std::runtime_error("BUG: broken convertDataTransferEvent() switch");
 }

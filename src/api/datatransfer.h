@@ -34,6 +34,7 @@ enum class Status {
     stop_by_peer, // error: transfer terminated by peer
     stop_by_host, // eror: transfer terminated by local host
     unjoinable_peer, // error: (outgoing only) peer connection failed
+    timeout_expired, // error: (outgoing only) peer awaiting too long, close turn socket
     invalid_pathname, // error: (file transfer only) given file is not a valid
     unsupported, // error: unable to do the transfer (generic error)
     INVALID
@@ -55,6 +56,8 @@ to_string(const Status& status)
         return "stop_by_host";
     case Status::unjoinable_peer:
         return "unjoinable_peer";
+    case Status::timeout_expired:
+        return "timeout_expired";
     case Status::invalid_pathname:
         return "invalid_pathname";
     case Status::unsupported:
@@ -80,6 +83,8 @@ to_status(const std::string& status)
         return datatransfer::Status::stop_by_host;
     else if (status == "unjoinable_peer")
         return datatransfer::Status::unjoinable_peer;
+    else if (status == "timeout_expired")
+        return datatransfer::Status::timeout_expired;
     else if (status == "invalid_pathname")
         return datatransfer::Status::invalid_pathname;
     else if (status == "unsupported")

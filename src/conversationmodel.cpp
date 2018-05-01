@@ -248,7 +248,9 @@ public Q_SLOTS:
     void slotTransferStatusOngoing(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusFinished(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusError(long long dringId, api::datatransfer::Info info);
+    void slotTransferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
+    void updateTransferStatus(long long dringId, api::datatransfer::Info info, interaction::Status newStatus);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -833,6 +835,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotTransferStatusError);
     connect(&callbacksHandler,
+            &CallbacksHandler::transferStatusTimeoutExpired,
+            this,
+            &ConversationModelPimpl::slotTransferStatusTimeoutExpired);
+    connect(&callbacksHandler,
             &CallbacksHandler::transferStatusUnjoinable,
             this,
             &ConversationModelPimpl::slotTransferStatusUnjoinable);
@@ -890,6 +896,8 @@ ConversationModelPimpl::~ConversationModelPimpl()
                this, &ConversationModelPimpl::slotTransferStatusFinished);
     disconnect(&callbacksHandler, &CallbacksHandler::transferStatusError,
                this, &ConversationModelPimpl::slotTransferStatusError);
+    disconnect(&callbacksHandler, &CallbacksHandler::transferStatusTimeoutExpired,
+               this, &ConversationModelPimpl::slotTransferStatusTimeoutExpired);
     disconnect(&callbacksHandler, &CallbacksHandler::transferStatusUnjoinable,
                this, &ConversationModelPimpl::slotTransferStatusUnjoinable);
 }
@@ -1617,33 +1625,7 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
 void
 ConversationModelPimpl::slotTransferStatusAwaitingPeer(long long dringId, datatransfer::Info info)
 {
-    int interactionId;
-    std::string convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
-        return;
-
-    auto newStatus = interaction::Status::TRANSFER_AWAITING_PEER;
-    database::updateInteractionStatus(db, interactionId, newStatus);
-
-    auto conversationIdx = indexOf(convId);
-    if (conversationIdx != -1) {
-        bool emitUpdated = false;
-        interaction::Info itCopy;
-        {
-            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
-            auto& interactions = conversations[conversationIdx].interactions;
-            auto it = interactions.find(interactionId);
-            if (it != interactions.end()) {
-                emitUpdated = true;
-                it->second.status = newStatus;
-                itCopy = it->second;
-            }
-        }
-        if (emitUpdated) {
-            dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
-        }
-    }
+    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_AWAITING_PEER);
 }
 
 void
@@ -1792,71 +1774,29 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransf
 void
 ConversationModelPimpl::slotTransferStatusCanceled(long long dringId, datatransfer::Info info)
 {
-    int interactionId;
-    std::string convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
-        return;
-
-    auto newStatus = interaction::Status::TRANSFER_CANCELED;
-    database::updateInteractionStatus(db, interactionId, newStatus);
-
-    auto conversationIdx = indexOf(convId);
-    if (conversationIdx != -1) {
-        bool emitUpdated = false;
-        interaction::Info itCopy;
-        {
-            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
-            auto& interactions = conversations[conversationIdx].interactions;
-            auto it = interactions.find(interactionId);
-            if (it != interactions.end()) {
-                emitUpdated = true;
-                it->second.status = newStatus;
-                itCopy = it->second;
-            }
-        }
-        if (emitUpdated) {
-            dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
-        }
-    }
+    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_CANCELED);
 }
 
 void
 ConversationModelPimpl::slotTransferStatusError(long long dringId, datatransfer::Info info)
 {
-    int interactionId;
-    std::string convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
-        return;
-
-    // update information in the db
-    auto newStatus = interaction::Status::TRANSFER_ERROR;
-    database::updateInteractionStatus(db, interactionId, newStatus);
-
-    // prepare interaction Info and emit signal for the client
-    auto conversationIdx = indexOf(convId);
-    if (conversationIdx != -1) {
-        bool emitUpdated = false;
-        interaction::Info itCopy;
-        {
-            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
-            auto& interactions = conversations[conversationIdx].interactions;
-            auto it = interactions.find(interactionId);
-            if (it != interactions.end()) {
-                emitUpdated = true;
-                it->second.status = newStatus;
-                itCopy = it->second;
-            }
-        }
-        if (emitUpdated) {
-            dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
-        }
-    }
+    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_ERROR);
 }
 
 void
 ConversationModelPimpl::slotTransferStatusUnjoinable(long long dringId, datatransfer::Info info)
+{
+    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_UNJOINABLE_PEER);
+}
+
+void
+ConversationModelPimpl::slotTransferStatusTimeoutExpired(long long dringId, datatransfer::Info info)
+{
+    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_TIMEOUT_EXPIRED);
+}
+
+void
+ConversationModelPimpl::updateTransferStatus(long long dringId, datatransfer::Info info, interaction::Status newStatus)
 {
     int interactionId;
     std::string convId;
@@ -1864,7 +1804,6 @@ ConversationModelPimpl::slotTransferStatusUnjoinable(long long dringId, datatran
         return;
 
     // update information in the db
-    auto newStatus = interaction::Status::TRANSFER_UNJOINABLE_PEER;
     database::updateInteractionStatus(db, interactionId, newStatus);
 
     // prepare interaction Info and emit signal for the client
