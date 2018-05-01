@@ -346,6 +346,19 @@ ConversationModel::getFilteredConversations(const profile::Type& filter, bool fo
     return pimpl_->customFilteredConversations;
 }
 
+const conversation::Info
+ConversationModel::getConversation(const std::string& uid) const
+{
+    auto row = pimpl_->indexOf(uid);
+    if (row >= pimpl_->conversations.size())
+        return conversation::Info();
+
+    auto conversationInfo = pimpl_->conversations.at(row);
+    conversationInfo.unreadMessages = pimpl_->getNumberOfUnreadMessagesFor(conversationInfo.uid);
+
+    return conversationInfo;
+}
+
 conversation::Info
 ConversationModel::filteredConversation(const unsigned int row) const
 {
