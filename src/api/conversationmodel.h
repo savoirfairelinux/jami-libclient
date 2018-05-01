@@ -80,6 +80,12 @@ public:
      */
     const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID, bool forceUpdate = false, const bool includeBanned = false) const;
     /**
+     * Get a conversation copy
+     * @param uid of the conversation
+     * @return a copy of the conversation
+     */
+    const conversation::Info getConversation(const std::string& uid) const;
+    /**
      * Get the conversation at row in the filtered conversations
      * @param  row
      * @return a copy of the conversation
