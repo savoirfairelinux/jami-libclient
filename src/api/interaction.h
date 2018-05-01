@@ -94,6 +94,7 @@ enum class Status {
     TRANSFER_ONGOING,
     TRANSFER_AWAITING_PEER,
     TRANSFER_AWAITING_HOST,
+    TRANSFER_TIMEOUT_EXPIRED,
     TRANSFER_FINISHED
 };
 
@@ -129,6 +130,8 @@ to_string(const Status& status)
         return "TRANSFER_AWAITING_HOST";
     case Status::TRANSFER_AWAITING_PEER:
         return "TRANSFER_AWAITING_PEER";
+    case Status::TRANSFER_TIMEOUT_EXPIRED:
+        return "TRANSFER_TIMEOUT_EXPIRED";
     case Status::TRANSFER_FINISHED:
         return "TRANSFER_FINISHED";
     case Status::INVALID:
@@ -168,6 +171,8 @@ to_status(const std::string& status)
         return interaction::Status::TRANSFER_AWAITING_HOST;
     else if (status == "TRANSFER_AWAITING_PEER")
         return interaction::Status::TRANSFER_AWAITING_PEER;
+    else if (status == "TRANSFER_TIMEOUT_EXPIRED")
+        return interaction::Status::TRANSFER_TIMEOUT_EXPIRED;
     else if (status == "TRANSFER_FINISHED")
         return interaction::Status::TRANSFER_FINISHED;
     else
