@@ -238,6 +238,17 @@ ContactModelTester::testCountPendingRequests()
 }
 
 void
+ContactModelTester::testCountPendingRequestsWithBlockedContact()
+{
+    CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->pendingRequestCount(), 1);
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("pending0"));
+    accInfo_.contactModel->removeContact("pending0", true);
+    CPPUNIT_ASSERT(!accInfo_.contactModel->hasPendingRequests());
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->pendingRequestCount(), 0);
+}
+
+void
 ContactModelTester::tearDown()
 {
 
