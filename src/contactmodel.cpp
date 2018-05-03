@@ -181,7 +181,8 @@ ContactModel::pendingRequestCount() const
     int pendingRequestCount = 0;
     auto i = std::for_each(pimpl_->contacts.begin(), pimpl_->contacts.end(),
         [&pendingRequestCount] (const auto& c) {
-            pendingRequestCount += static_cast<int>(c.second.profileInfo.type == profile::Type::PENDING);
+            if (!c.second.isBanned)
+                pendingRequestCount += static_cast<int>(c.second.profileInfo.type == profile::Type::PENDING);
         });
     return pendingRequestCount;
 }

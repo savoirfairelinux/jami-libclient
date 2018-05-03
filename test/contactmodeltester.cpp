@@ -238,6 +238,21 @@ ContactModelTester::testCountPendingRequests()
 }
 
 void
+ContactModelTester::testCountPendingRequestsWithBlockedContact()
+{
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("pending0"));
+    accInfo_.contactModel->removeContact("pending0", true);
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), false);
+    QByteArray payload = "FN:pending0\nPHOTO;ENCODING=BASE64;TYPE=PNG:";
+    ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
+    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
+                                            SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
+    CPPUNIT_ASSERT(contactAdded);
+    CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->pendingRequestCount(), 1);
+}
+
+void
 ContactModelTester::tearDown()
 {
 
