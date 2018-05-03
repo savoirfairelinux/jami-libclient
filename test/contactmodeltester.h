@@ -113,6 +113,10 @@ public:
      */
     void testCountPendingRequests();
     /**
+     * Count contact requests when banned contacts exists
+     */
+    void testCountPendingRequestsWithBlockedContact();
+    /**
      * Method automatically called after each test by CppUnit
      */
     void tearDown();
