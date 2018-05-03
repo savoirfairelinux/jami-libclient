@@ -734,6 +734,49 @@ ConversationModel::clearInteractionFromConversation(const std::string& convId, c
 }
 
 void
+ConversationModel::retryInteraction(const std::string& convId, const uint64_t& interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return;
+
+    auto interactionType = interaction::Type::INVALID;
+    auto body = std::string();
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+        auto& conversation = pimpl_->conversations.at(conversationIdx);
+
+        auto& interactions = conversation.interactions;
+        auto it = interactions.find(interactionId);
+        if (it == interactions.end())
+            return;
+
+        if (!interaction::isOutgoing(it->second))
+            return;  // Do not retry non outgoing info
+
+        if (it->second.type == interaction::Type::TEXT
+            || it->second.type == interaction::Type::OUTGOING_DATA_TRANSFER) {
+            body = it->second.body;
+            interactionType = it->second.type;
+        }
+
+
+        database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
+        conversation.interactions.erase(interactionId);
+    }
+    emit interactionRemoved(convId, interactionId);
+
+    // Send a new interaction like the previous one
+    if (interactionType == interaction::Type::TEXT) {
+        sendMessage(convId, body);
+    } else {
+        // send file
+        QFile f(body.c_str());
+        sendFile(convId, body, f.fileName().toStdString());
+    }
+}
+
+void
 ConversationModel::clearAllHistory()
 {
     database::clearAllHistoryFor(pimpl_->db, owner.profileInfo.uri);
