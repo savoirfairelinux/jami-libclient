@@ -168,6 +168,12 @@ public:
      */
     void clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId);
     /**
+     * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
+     * @param convId
+     * @param interactionId
+     */
+    void retryInteraction(const std::string& convId, const uint64_t& interactionId);
+    /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
      */
