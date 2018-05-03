@@ -21,6 +21,7 @@
 
 //Qt
 #include <QtCore/QTimer>
+#include <QFile>
 
 // daemon
 #include <account_const.h>
@@ -758,8 +759,9 @@ ConversationModel::retryInteraction(const std::string& convId, const uint64_t& i
             || it->second.type == interaction::Type::OUTGOING_DATA_TRANSFER) {
             body = it->second.body;
             interactionType = it->second.type;
+        } else {
+            return;
         }
-
 
         database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
         conversation.interactions.erase(interactionId);

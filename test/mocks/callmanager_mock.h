@@ -51,6 +51,10 @@ public:
 
     bool isValid() { return true; }
 
+    void emitCallStateChanged(const QString &callID, const QString &state, int code) {
+        emit callStateChanged(callID, state, code);
+    }
+
 public Q_SLOTS: // METHODS
     bool accept(const QString &callID)
     {
