@@ -32,6 +32,7 @@
 #include <dbus/configurationmanager.h>
 #include <namedirectory.h>
 
+
 namespace ring
 {
 namespace test
@@ -331,6 +332,109 @@ ConversationModelTester::testSendMessagesAndClearInteraction()
     }
     CPPUNIT_ASSERT(conversationExists);
 }
+
+void
+ConversationModelTester::testRetryToSendTextInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    accInfo_.conversationModel->sendMessage(firstConversation, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversation, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversation, "How have you been?");
+    auto conversation = accInfo_.conversationModel->filteredConversation(0);
+    const auto& interactions = conversation.interactions;
+    auto it = interactions.begin();
+    it++;
+    auto secondId = it->first;
+
+    // set failure on one interaction
+    ConfigurationManager::instance().emitAccountMessageStatusChanged(
+                                        "ring0", secondId,
+                                        conversation.participants.front().c_str(),
+                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    // retry sending
+    accInfo_.conversationModel->retryInteraction(conversation.uid, secondId);
+    // no more failure, no more secondId, and second message should be the last
+    conversation = accInfo_.conversationModel->filteredConversation(0);
+    bool hasFailedInteraction = false;
+    bool hasOldSecondInteraction = false;
+    bool secondBodyPresent = false; conversation.interactions.begin()->second.body == "It's been a long time";
+    for (const auto& interaction : conversation.interactions) {
+        if (interaction.second.status == lrc::api::interaction::Status::FAILED)
+            hasFailedInteraction = true;
+        if (interaction.second.body == "It's been a long time")
+            secondBodyPresent = true;
+        if (interaction.first == secondId)
+            hasOldSecondInteraction = true;
+    }
+    CPPUNIT_ASSERT(!hasFailedInteraction);
+    CPPUNIT_ASSERT(!hasOldSecondInteraction);
+    CPPUNIT_ASSERT(secondBodyPresent);
+}
+
+void
+ConversationModelTester::testRetryToSendFileInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    // send file
+
+}
+
+void
+ConversationModelTester::testRetryInvalidInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    accInfo_.conversationModel->sendMessage(firstConversation, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversation, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversation, "How have you been?");
+    auto conversation = accInfo_.conversationModel->filteredConversation(0);
+    const auto& interactions = conversation.interactions;
+    auto it = interactions.begin();
+    it++;
+    auto secondId = it->first;
+
+    // set failure on one interaction
+    ConfigurationManager::instance().emitAccountMessageStatusChanged(
+                                        "ring0", secondId,
+                                        conversation.participants.front().c_str(),
+                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    auto firstConv = accInfo_.conversationModel->filteredConversation(0);
+    // retry sending
+    accInfo_.conversationModel->retryInteraction(conversation.uid, 1412);
+    // Should not retry anything
+
+    conversation = accInfo_.conversationModel->filteredConversation(0);
+    auto bIt = firstConv.interactions.begin();
+    auto nIt = conversation.interactions.begin();
+    for (auto i = 0 ; i < firstConv.interactions.size(); ++i) {
+        CPPUNIT_ASSERT_EQUAL(bIt->second.body, nIt->second.body);
+        CPPUNIT_ASSERT_EQUAL(bIt->second.status, nIt->second.status);
+        CPPUNIT_ASSERT_EQUAL(bIt->second.type, nIt->second.type);
+        bIt++;
+        nIt++;
+    }
+}
+
+void
+ConversationModelTester::testRetryIncomingInteraction()
+{
+
+}
+
+void
+ConversationModelTester::testRetryCallInteraction()
+{
+
+}
+
 
 void
 ConversationModelTester::testReceiveMessageAndSetRead()
