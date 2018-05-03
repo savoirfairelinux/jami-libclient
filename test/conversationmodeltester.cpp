@@ -30,6 +30,7 @@
 #include <api/contactmodel.h>
 #include <api/newcallmodel.h>
 #include <dbus/configurationmanager.h>
+#include <dbus/callmanager.h>
 #include <namedirectory.h>
 
 namespace ring
@@ -393,7 +394,7 @@ ConversationModelTester::testSendMessagesAndClearInteraction()
     CPPUNIT_ASSERT(conversationExists);
 
     accInfo_.conversationModel->clearInteractionFromConversation(firstConversationUid, secondInterId);
-    auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+    WaitForSignalHelper(*accInfo_.conversationModel,
         SIGNAL(interactionRemoved(const std::string& convUid, uint64_t interactionId))).wait(1000);
     conversations = accInfo_.conversationModel->allFilteredConversations();
     conversationExists = false;
@@ -462,6 +463,180 @@ ConversationModelTester::testSendMessagesAndClearLastInteraction()
     }
     CPPUNIT_ASSERT(conversationExists);
 }
+
+void
+ConversationModelTester::testRetryToSendTextInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    accInfo_.conversationModel->sendMessage(firstConversation, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversation, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversation, "How have you been?");
+    auto conversation = accInfo_.conversationModel->filteredConversation(0);
+    const auto& interactions = conversation.interactions;
+    auto it = interactions.begin();
+    it++;
+    auto secondId = it->first;
+
+    // set failure on one interaction
+    ConfigurationManager::instance().emitAccountMessageStatusChanged(
+                                        "ring0", secondId,
+                                        conversation.participants.front().c_str(),
+                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    // retry sending
+    accInfo_.conversationModel->retryInteraction(conversation.uid, secondId);
+    // no more failure, no more secondId, and second message should be the last
+    conversation = accInfo_.conversationModel->filteredConversation(0);
+    bool hasFailedInteraction = false;
+    bool hasOldSecondInteraction = false;
+    bool secondBodyPresent = false; conversation.interactions.begin()->second.body == "It's been a long time";
+    for (const auto& interaction : conversation.interactions) {
+        if (interaction.second.status == lrc::api::interaction::Status::FAILED)
+            hasFailedInteraction = true;
+        if (interaction.second.body == "It's been a long time")
+            secondBodyPresent = true;
+        if (interaction.first == secondId)
+            hasOldSecondInteraction = true;
+    }
+    CPPUNIT_ASSERT(!hasFailedInteraction);
+    CPPUNIT_ASSERT(!hasOldSecondInteraction);
+    CPPUNIT_ASSERT(secondBodyPresent);
+}
+
+void
+ConversationModelTester::testRetryToSendFileInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    // send file
+
+}
+
+void
+ConversationModelTester::testRetryInvalidInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0).uid;
+    accInfo_.conversationModel->sendMessage(firstConversation, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversation, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversation, "How have you been?");
+    auto conversation = accInfo_.conversationModel->filteredConversation(0);
+    const auto& interactions = conversation.interactions;
+    auto it = interactions.begin();
+    it++;
+    auto secondId = it->first;
+
+    // set failure on one interaction
+    ConfigurationManager::instance().emitAccountMessageStatusChanged(
+                                        "ring0", secondId,
+                                        conversation.participants.front().c_str(),
+                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    auto firstConv = accInfo_.conversationModel->filteredConversation(0);
+    // retry sending (should do nothing)
+    accInfo_.conversationModel->retryInteraction(conversation.uid, 1412);
+
+    conversation = accInfo_.conversationModel->filteredConversation(0);
+    auto bIt = firstConv.interactions.begin();
+    auto nIt = conversation.interactions.begin();
+    for (size_t i = 0 ; i < firstConv.interactions.size(); ++i) {
+        CPPUNIT_ASSERT(bIt->second.body == nIt->second.body);
+        CPPUNIT_ASSERT(bIt->second.status == nIt->second.status);
+        CPPUNIT_ASSERT(bIt->second.type == nIt->second.type);
+        bIt++;
+        nIt++;
+    }
+}
+
+void
+ConversationModelTester::testRetryIncomingInteraction()
+{
+    // Add a new message for the first conversation
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = "You're a monster";
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
+        firstConversation.participants.front().c_str(), payloads);
+    auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
+
+    // Retry incoming message
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto lastInteraction = *firstConversation.interactions.rbegin();
+    accInfo_.conversationModel->retryInteraction(firstConversation.uid, lastInteraction.first);
+    // Should do nothing
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto newLastInteraction = *firstConversation.interactions.rbegin();
+    CPPUNIT_ASSERT(newLastInteraction.second.status == lrc::api::interaction::Status::UNREAD);
+}
+
+void
+ConversationModelTester::testRetryContactInteraction()
+{
+    // Add a new message for the first conversation. The first message will be "contact added"
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    QMap<QString, QString> payloads;
+    payloads["text/plain"] = "You're a monster";
+    ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(),
+        firstConversation.participants.front().c_str(), payloads);
+    auto unreadMessage = WaitForSignalHelper(*accInfo_.conversationModel,
+        SIGNAL(newUnreadMessage(const std::string&, uint64_t, const interaction::Info&))).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(unreadMessage, true);
+
+    // The first message is "Contact added"
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto firstInteraction = *firstConversation.interactions.begin();
+    CPPUNIT_ASSERT(firstInteraction.second.type == lrc::api::interaction::Type::CONTACT);
+
+    // Retry contact
+    accInfo_.conversationModel->retryInteraction(firstConversation.uid, firstInteraction.first);
+    // Should do nothings
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto newLastInteraction = *firstConversation.interactions.begin();
+    CPPUNIT_ASSERT(newLastInteraction.second.type == lrc::api::interaction::Type::CONTACT);
+}
+
+void
+ConversationModelTester::testRetryCallInteraction()
+{
+    // Place call
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    accInfo_.conversationModel->placeCall(firstConversation.uid);
+    CallManager::instance().emitCallStateChanged(
+        accInfo_.conversationModel->filteredConversation(0).callId.c_str(), "CURRENT", 0);
+    WaitForSignalHelper(*accInfo_.conversationModel, SIGNAL(modelSorted())).wait(1000);
+
+    // Last interaction is a CALL
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto lastInteraction = *firstConversation.interactions.rbegin();
+    CPPUNIT_ASSERT(lastInteraction.second.type == lrc::api::interaction::Type::CALL);
+    // Retry, should do nothing
+    accInfo_.conversationModel->retryInteraction(firstConversation.uid, lastInteraction.first);
+
+    // Should do nothing
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto newLastInteraction = *firstConversation.interactions.rbegin();
+    CPPUNIT_ASSERT(newLastInteraction.second.type == lrc::api::interaction::Type::CALL);
+}
+
 
 void
 ConversationModelTester::testReceiveMessageAndSetRead()
