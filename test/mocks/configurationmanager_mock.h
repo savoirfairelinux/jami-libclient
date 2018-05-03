@@ -96,6 +96,10 @@ public:
        emit incomingAccountMessage(accountId, from, payloads);
    }
 
+   void emitAccountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status)
+   {
+       emit accountMessageStatusChanged(accountId, id, to, status);
+   }
 
    std::map<long long, lrc::api::datatransfer::Info> transferInfos_;
    std::map<long long, uint32_t> transferInfosEvent_;
