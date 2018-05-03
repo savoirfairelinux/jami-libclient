@@ -47,6 +47,12 @@ class ConversationModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testFilterAndGetConversations);
     CPPUNIT_TEST(testSendMessageAndClearHistory);
     CPPUNIT_TEST(testSendMessagesAndClearInteraction);
+    CPPUNIT_TEST(testRetryToSendTextInteraction);
+    CPPUNIT_TEST(testRetryToSendFileInteraction);
+    CPPUNIT_TEST(testRetryInvalidInteraction);
+    CPPUNIT_TEST(testRetryIncomingInteraction);
+    CPPUNIT_TEST(testRetryContactInteraction);
+    CPPUNIT_TEST(testRetryCallInteraction);
     CPPUNIT_TEST(testReceiveMessageAndSetRead);
     CPPUNIT_TEST(testPlaceCall);
     CPPUNIT_TEST(testCreateConference);
@@ -99,6 +105,30 @@ public:
      * Send multiple messages to the first conversation and clear one interaction
      */
     void testSendMessagesAndClearInteraction();
+    /**
+     * Send an old failed outgoing text interaction
+     */
+    void testRetryToSendTextInteraction();
+    /**
+     * Send an old failed outgoing file interaction
+     */
+    void testRetryToSendFileInteraction();
+    /**
+     * Retry an unexistant interaction
+     */
+    void testRetryInvalidInteraction();
+    /**
+     * Retry an incoming interaction
+     */
+    void testRetryIncomingInteraction();
+    /**
+     * Retry a contact interaction
+     */
+    void testRetryContactInteraction();
+    /**
+     * Retry a call interaction
+     */
+    void testRetryCallInteraction();
     /**
      * Receives a message from a conversation and set this message READ
      */
