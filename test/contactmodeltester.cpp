@@ -48,7 +48,12 @@ ContactModelTester::ContactModelTester()
 void
 ContactModelTester::setUp()
 {
+}
 
+void
+ContactModelTester::testBanUnbanContact()
+{
+    // TODO
 }
 
 void
