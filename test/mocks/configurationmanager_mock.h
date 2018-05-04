@@ -619,30 +619,51 @@ public Q_SLOTS: // METHODS
     {
         if (getAccountList().indexOf(accountId) == -1) return;
         auto contacts = accountToContactsMap[accountId];
-        for (auto c = 0 ; c < contacts.size() ; ++c) {
-            if (contacts.at(c)["id"] == uri) {
-                if (ban) {
-                    contacts[c].insert("removed", "true");
-                    contacts[c].insert("banned", "true");
-                } else {
-                    contacts.remove(c);
-                }
-                emit contactRemoved(accountId, uri, ban);
-                return;
-            }
+
+        auto i = std::find_if(
+            contacts.begin(), contacts.end(),
+            [&uri](auto contact) {
+                return contact["id"] == uri;
+            });
+
+        if (i == contacts.end()) {
+            return;
         }
+
+        if (ban) {
+            i->insert("removed", "true");
+            i->insert("banned", "true");
+        } else {
+            contacts.erase(i);
+        }
+
+        emit contactRemoved(accountId, uri, ban);
     }
 
     void addContact(const QString &accountId, const QString &uri)
     {
         if (getAccountList().indexOf(accountId) == -1) return;
+        auto& cm = accountToContactsMap[accountId];
+
+        auto i = std::find_if(
+            cm.begin(), cm.end(),
+            [&uri](auto contact) {
+                return contact["id"] == uri;
+            });
+
+        if (i != cm.end()) {
+            // Contact is already there, erase it before adding it back.
+            // This is important to reset the banned/removed flags.
+            cm.erase(i);
+        }
+
         auto contact = QMap<QString, QString>();
         contact.insert("id", uri);
         contact.insert("added", "true");
         contact.insert("removed", "false");
         contact.insert("confirmed", "true");
         contact.insert("banned", "false");
-        accountToContactsMap[accountId].push_back(contact);
+        cm.push_back(contact);
         emit contactAdded(accountId, uri, true);
     }
 
