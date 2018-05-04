@@ -134,6 +134,10 @@ protected:
      */
     void banContact(std::string uri);
     /**
+     * Unan contact with passed uri
+     */
+    void unbanContact(std::string uri);
+    /**
      * Return whether passed uri already maps to a contact or not
      */
     bool isAContact(std::string uri);
