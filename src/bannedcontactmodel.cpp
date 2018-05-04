@@ -150,7 +150,7 @@ BannedContactModel::add(ContactMethod* cm)
  * @param cm, the ContactMethod to remove from the list.
  */
 void
-BannedContactModel::remove(ContactMethod* cm)
+BannedContactModel::remove(ContactMethod* cm, bool updatedaemon)
 {
     // Do not remove contact if contact isn't banned
     auto rowIndex = d_ptr->m_lBanned.indexOf(cm);
@@ -166,7 +166,10 @@ BannedContactModel::remove(ContactMethod* cm)
         return;
     }
 
-    ConfigurationManager::instance().addContact(cm->account()->id(), cm->uri());
+    if (updatedaemon) {
+        qWarning() << "deprecated method: use of remove @bannedcontactmodel to update daemon is deprecated, please use addContact @contactmodel.";
+        ConfigurationManager::instance().addContact(cm->account()->id(), cm->uri());
+    }
 }
 
 /**
