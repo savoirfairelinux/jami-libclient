@@ -617,6 +617,7 @@ public Q_SLOTS: // METHODS
 
     void removeContact(const QString &accountId, const QString &uri, bool ban)
     {
+        printf("Called removeContact\n");
         if (getAccountList().indexOf(accountId) == -1) return;
         auto contacts = accountToContactsMap[accountId];
         for (auto c = 0 ; c < contacts.size() ; ++c) {
@@ -635,14 +636,28 @@ public Q_SLOTS: // METHODS
 
     void addContact(const QString &accountId, const QString &uri)
     {
+        printf("Called addContact\n");
         if (getAccountList().indexOf(accountId) == -1) return;
+        auto cm = accountToContactsMap[accountId];
+
+        // TODO don't add if already there, simply remove removed / banned flag
+        auto i = std::find_if(
+            cm.begin(), cm.end(),
+            [&uri](auto contact) {
+                return contact["id"] == uri;
+            });
+
+        if (i != cm.end()) {
+            cm.erase(i);
+        }
+
         auto contact = QMap<QString, QString>();
         contact.insert("id", uri);
         contact.insert("added", "true");
         contact.insert("removed", "false");
         contact.insert("confirmed", "true");
         contact.insert("banned", "false");
-        accountToContactsMap[accountId].push_back(contact);
+        cm.push_back(contact);
         emit contactAdded(accountId, uri, true);
     }
 
