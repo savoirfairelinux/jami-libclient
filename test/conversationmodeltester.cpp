@@ -70,35 +70,55 @@ ConversationModelTester::testAddValidConversation()
 void
 ConversationModelTester::testPlaceCallWithBannedContact()
 {
-    // bannedContact should not be in contacts
+    // badguy0 should not be in contacts
     CPPUNIT_ASSERT(!isAContact("badguy0"));
 
+    // so, add him to contacts
     auto uri = addToContacts("badguy0");
-
-    // badguy0 should now be in contacts
     CPPUNIT_ASSERT(isAContact("badguy0"));
 
-    // Ban badguy0
+    // and ban him
     banContact(uri);
     auto contactInfo = accInfo_.contactModel->getContact(uri);
     CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
 
-    // So, now that badguy0 is banned, calling him should be forbidden
+    // find conversation
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
-    bool conversationExists = false;
-    for (const auto& conversation: conversations) {
-        if (std::find(conversation.participants.begin(), conversation.participants.end(), contactInfo.profileInfo.uri) != conversation.participants.end()) {
-            conversationExists = true;
-            // Try to call banned contact
-            auto baseInteractionsSize = conversation.interactions.size();
-            accInfo_.conversationModel->placeCall(conversation.uid);
-            // Make sure call didn't succeed
-            CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize, (int)conversation.interactions.size());
-            break;
-        }
-    }
+    auto conversation = std::find_if(conversations.begin(), conversations.end(),
+    [&contactInfo](const lrc::api::conversation::Info& conversation) {
+        return std::find(conversation.participants.begin(),
+                         conversation.participants.end(),
+                         contactInfo.profileInfo.uri) != conversation.participants.end();
+    });
 
-    CPPUNIT_ASSERT(conversationExists);
+    CPPUNIT_ASSERT(conversation != conversations.end());
+
+    // now that badguy0 is banned, calling him should be forbidden
+    auto baseInteractionsSize = conversation->interactions.size();
+    accInfo_.conversationModel->placeCall(conversation->uid);
+
+    // make sure call didn't succeed
+    CPPUNIT_ASSERT(conversation->callId.empty());
+
+    // unban badguy0
+    unbanContact(uri);
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, false);
+
+    // call again, should succeed
+    accInfo_.conversationModel->placeCall(conversation->uid);
+
+    // make sure call succeeded
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    conversation = std::find_if(conversations.begin(), conversations.end(),
+    [&contactInfo](const lrc::api::conversation::Info& conversation) {
+        return std::find(conversation.participants.begin(),
+                         conversation.participants.end(),
+                         contactInfo.profileInfo.uri) != conversation.participants.end();
+    });
+
+    CPPUNIT_ASSERT(conversation != conversations.end());
+    CPPUNIT_ASSERT(!conversation->callId.empty());
 }
 
 void
@@ -109,14 +129,14 @@ ConversationModelTester::testFilterBannedContact()
     CPPUNIT_ASSERT(!isAContact("bannedContacte"));
     CPPUNIT_ASSERT(!isAContact("bannedContac"));
 
-    auto newContactUri = addToContacts("bannedContact");
+    auto uri = addToContacts("bannedContact");
 
     // bannedContact now should be in contacts
     CPPUNIT_ASSERT(isAContact("bannedContact"));
 
-    // Ban bannedContact
-    banContact(newContactUri);
-    auto contactInfo = accInfo_.contactModel->getContact(newContactUri);
+    // ban bannedContact
+    banContact(uri);
+    auto contactInfo = accInfo_.contactModel->getContact(uri);
     CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
 
     // Make sure bannedContact doesn't appear is non-perfect-match filter searches
@@ -142,12 +162,39 @@ ConversationModelTester::testFilterBannedContact()
     CPPUNIT_ASSERT_EQUAL(1, (int)accInfo_.conversationModel->allFilteredConversations().size());
     isTemporary = accInfo_.conversationModel->filteredConversation(0).participants.front() == "";
     CPPUNIT_ASSERT(!isTemporary);
+
+    // Unban bannedContact
+    unbanContact(uri);
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, false);
+
+    // Make sure bannedContact appears is non-perfect-match filter searches
+    // We expect 2 (temporary item + bannedContact)
+    accInfo_.conversationModel->setFilter("bannedContac");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(2, (int)accInfo_.conversationModel->allFilteredConversations().size());
+
+    // Here we expect 1 (temporary item)
+    accInfo_.conversationModel->setFilter("bannedContacte");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(1, (int)accInfo_.conversationModel->allFilteredConversations().size());
+
+    // Make sure bannedContact appears in perfect-match filter searches
+    // We expect 1 (bannedContact)
+    accInfo_.conversationModel->setFilter("bannedContact");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(1, (int)accInfo_.conversationModel->allFilteredConversations().size());
+    isTemporary = accInfo_.conversationModel->filteredConversation(0).participants.front() == "";
+    CPPUNIT_ASSERT(!isTemporary);
 }
 
 void
 ConversationModelTester::testSendMessageToBannedContact()
 {
-    // bannedContact should not be in contacts
+    // badguy1 should not be in contacts
     CPPUNIT_ASSERT(!isAContact("badguy1"));
 
     auto uri = addToContacts("badguy1");
@@ -162,20 +209,41 @@ ConversationModelTester::testSendMessageToBannedContact()
 
     // So, now that badguy is banned, sending a message should be forbidden
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
-    bool conversationExists = false;
-    for (const auto& conversation: conversations) {
-        if (std::find(conversation.participants.begin(), conversation.participants.end(), contactInfo.profileInfo.uri) != conversation.participants.end()) {
-            conversationExists = true;
-            // Try to send message to banned contact
-            auto baseInteractionsSize = conversation.interactions.size();
-            accInfo_.conversationModel->sendMessage(conversation.uid, "Hello banned !");
-            // Make sure message didn't arrive (but contact added is already here)
-            CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize, (int)conversation.interactions.size());
-            break;
-        }
-    }
+    auto conversation = std::find_if(conversations.begin(), conversations.end(),
+    [&contactInfo](const lrc::api::conversation::Info& conversation) {
+        return std::find(conversation.participants.begin(),
+                         conversation.participants.end(),
+                         contactInfo.profileInfo.uri) != conversation.participants.end();
+    });
 
-    CPPUNIT_ASSERT(conversationExists);
+    CPPUNIT_ASSERT(conversation != conversations.end());
+
+    // Try to send message to banned contact
+    auto baseInteractionsSize = conversation->interactions.size();
+    accInfo_.conversationModel->sendMessage(conversation->uid, "Hello banned !");
+    // Make sure message didn't arrive (but contact added is already here)
+    CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize, (int)conversation->interactions.size());
+
+    // Unban badguy1
+    unbanContact(uri);
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, false);
+
+    // Now send message again, should succeed
+    accInfo_.conversationModel->sendMessage(conversation->uid, "Hello unbanned !");
+
+    // Make sure message arrived
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    conversation = std::find_if(conversations.begin(), conversations.end(),
+    [&contactInfo](const lrc::api::conversation::Info& conversation) {
+        return std::find(conversation.participants.begin(),
+                         conversation.participants.end(),
+                         contactInfo.profileInfo.uri) != conversation.participants.end();
+    });
+
+    CPPUNIT_ASSERT(conversation != conversations.end());
+
+    CPPUNIT_ASSERT_EQUAL((int)baseInteractionsSize + 1, (int)conversation->interactions.size());
 }
 
 void
@@ -375,11 +443,16 @@ ConversationModelTester::testReceiveMessageAndSetRead()
 void
 ConversationModelTester::testPlaceCall()
 {
+    // Get first conversation and make sure it is empty
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT(conversations.size() != 0);
     auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
     CPPUNIT_ASSERT(firstConversation.callId.empty());
+
+    // Place a call
     accInfo_.conversationModel->placeCall(firstConversation.uid);
+
+    // Get first conversation again and make sure it isn't empty anymore (call suceeded)
     conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT(conversations.size() != 0);
     auto newConv = accInfo_.conversationModel->filteredConversation(0);
@@ -487,7 +560,7 @@ ConversationModelTester::tearDown()
 }
 
 bool
-ConversationModelTester::hasConversationWithContact(std::string uri)
+ConversationModelTester::hasConversationWithContact(const std::string& uri)
 {
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     auto i = std::find_if(conversations.begin(), conversations.end(),
@@ -500,7 +573,7 @@ ConversationModelTester::hasConversationWithContact(std::string uri)
 }
 
 void
-ConversationModelTester::banContact(std::string uri)
+ConversationModelTester::banContact(const std::string& uri)
 {
     accInfo_.contactModel->removeContact(uri, true);
     auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
@@ -508,14 +581,24 @@ ConversationModelTester::banContact(std::string uri)
     CPPUNIT_ASSERT_EQUAL(contactBanned, true);
 }
 
+void
+ConversationModelTester::unbanContact(const std::string& uri)
+{
+    auto contactInfo = accInfo_.contactModel->getContact(uri);
+    accInfo_.contactModel->addContact(contactInfo);
+    auto contactUnbanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(2000);
+    CPPUNIT_ASSERT_EQUAL(contactUnbanned, true);
+}
+
 bool
-ConversationModelTester::isAContact(std::string uri)
+ConversationModelTester::isAContact(const std::string& uri)
 {
     return !accInfo_.contactModel->getContactProfileId(uri).empty();
 }
 
 std::string
-ConversationModelTester::addToContacts(std::string username)
+ConversationModelTester::addToContacts(const std::string& username)
 {
     // Search contact
     accInfo_.conversationModel->setFilter(username);

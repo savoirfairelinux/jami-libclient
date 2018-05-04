@@ -48,7 +48,54 @@ ContactModelTester::ContactModelTester()
 void
 ContactModelTester::setUp()
 {
+}
 
+void
+ContactModelTester::testBanUnbanContact()
+{
+    // "bigbadjohn" should not be in "ring1" contacts.
+    CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("bigbadjohn"), std::out_of_range);
+
+    // Search and add the temporaryContact
+    accInfo_.contactModel->searchContact("bigbadjohn");
+    WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(modelUpdated())).wait(1000);
+    auto temporaryContact = accInfo_.contactModel->getContact("");
+    std::string uri = std::string("bigbadjohn");
+    CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, uri);
+
+    accInfo_.contactModel->addContact(temporaryContact);
+    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
+        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
+    CPPUNIT_ASSERT(contactAdded);
+
+    // Ban contact
+    accInfo_.contactModel->removeContact(uri, true);
+    auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+
+    auto contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
+
+    // Re-ban contact, make sure it isn't a problem
+    accInfo_.contactModel->removeContact(uri, true);
+    contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
+
+    // Unban contact, make sure it worked
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    accInfo_.contactModel->addContact(contactInfo);
+    bool contactUnbanned = WaitForSignalHelper(ConfigurationManager::instance(),
+        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
+    CPPUNIT_ASSERT_EQUAL(contactUnbanned, true);
+
+    contactInfo = accInfo_.contactModel->getContact(uri);
+    CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, false);
 }
 
 void
