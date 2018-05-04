@@ -76,8 +76,9 @@ public:
      * @note: the cm must corresponds to a profile in the database.
      * @param cm ContactMethod.
      * @param type
+     * @param banned whether contact is banned or not
      */
-    void addToContacts(ContactMethod* cm, const profile::Type& type);
+    void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
 
     // Helpers
     const ContactModel& linked;
@@ -86,7 +87,9 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
+    std::list<std::string> bannedContacts;
     std::mutex contactsMtx_;
+    std::mutex bannedContactsMtx_;
 
 public Q_SLOTS:
     /**
@@ -192,6 +195,15 @@ ContactModel::addContact(contact::Info contactInfo)
 {
     auto& profile = contactInfo.profileInfo;
 
+    // If passed contact is a banned contact, call the daemon to unban it
+    auto it = std::find(pimpl_->bannedContacts.begin(), pimpl_->bannedContacts.end(), profile.uri);
+    if (it != pimpl_->bannedContacts.end()) {
+        qDebug("Unban-ing contact %s", profile.uri.c_str());
+        ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
+        // bannedContacts will be updated in slotContactAdded
+        return;
+    }
+
     if ((owner.profileInfo.type != profile.type) and
         (profile.type == profile::Type::RING or profile.type == profile::Type::SIP)) {
             qDebug() << "ContactModel::addContact, types invalids.";
@@ -289,6 +301,12 @@ ContactModel::getContact(const std::string& contactUri) const
 {
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
     return pimpl_->contacts.at(contactUri);
+}
+
+const std::list<std::string>&
+ContactModel::getBannedContacts() const
+{
+    return pimpl_->bannedContacts;
 }
 
 const std::string
@@ -450,7 +468,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
     for (auto contact_info : contacts_vector) {
         auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], account);
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        addToContacts(cm, linked.owner.profileInfo.type);
+        addToContacts(cm, linked.owner.profileInfo.type, contact_info["banned"] == "true" ? true : false);
     }
 
     // Add pending contacts
@@ -515,10 +533,31 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
         return;
     }
     auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
+
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        addToContacts(cm, linked.owner.profileInfo.type);
+        addToContacts(cm, linked.owner.profileInfo.type, false);
     }
+
+    // slotContactAdded is also called when a contact is unbanned
+    // addToContacts was called so we can safely retrieve the contactInfo entry
+    auto contact = contacts.find(contactUri);
+    if (contact == contacts.end()) {
+        qDebug() << "ContactModelPimpl::slotContactAdded: Contact was added but couldn't be found in the contacts list";
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lk(bannedContactsMtx_);
+        auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->second.profileInfo.uri);
+        if (it != bannedContacts.end()) {
+            bannedContacts.erase(it);
+
+            // Update old LRC
+            account->bannedContactModel()->remove(cm);
+        }
+    }
+
     emit linked.contactAdded(contactUri);
 }
 
@@ -539,12 +578,28 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 
             auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
             if (not account) {
-                qDebug() << "ContactModel::slotContactsAdded(), nullptr";
+                qDebug() << "ContactModel::slotContactsRemoved(), nullptr";
                 return;
             }
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
+
+            // Update bannedContactModel from old LRC
             account->bannedContactModel()->add(cm);
+
+            // Update bannedContacts index
+            bannedContacts.push_back(contact->second.profileInfo.uri);
         } else {
+            if (contact->second.isBanned) {
+                // Contact was banned, update bannedContacts
+                std::lock_guard<std::mutex> lk(bannedContactsMtx_);
+                auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->second.profileInfo.uri);
+                if (it == bannedContacts.end()) {
+                    // should not happen
+                    qDebug("ContactModel::slotContactsRemoved(): Contact is banned but not present in bannedContacts. This is most likely the result of an earlier bug.");
+                } else {
+                    bannedContacts.erase(it);
+                }
+            }
             database::removeContact(db, linked.owner.profileInfo.uri, contactUri);
             contacts.erase(contactUri);
         }
@@ -559,25 +614,22 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type)
+ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type, bool banned)
 {
-    if (!cm) return;
+    if (!cm) {
+        qDebug() << "addToContacts: Called with NULL contact method.";
+    }
+
     auto contactUri = cm->uri().toStdString();
     auto contactId = database::getProfileId(db, contactUri);
     if (contactId.empty()) {
         contactId = database::getOrInsertProfile(db, contactUri, "", "",
                                                  to_string(linked.owner.profileInfo.type));
     }
+
     auto contactInfo = database::buildContactFromProfileId(db, contactId);
     contactInfo.registeredName = cm->registeredName().toStdString();
-
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::addToContacts(), nullptr";
-        return;
-    }
-
-    contactInfo.isBanned = account->bannedContactModel()->isBanned(cm);
+    contactInfo.isBanned = banned;
     contactInfo.isPresent = cm->isPresent();
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
     auto iter = contacts.find(contactInfo.profileInfo.uri);
@@ -668,7 +720,7 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
                 // The conversation model will create an entry and link the incomingCall.
                 auto* cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
                 auto type = (linked.owner.profileInfo.type == profile::Type::RING) ? profile::Type::PENDING : profile::Type::SIP;
-                addToContacts(cm, type);
+                addToContacts(cm, type, false);
                 emitContactAdded = true;
             }
         }
@@ -698,7 +750,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
-            addToContacts(cm, profile::Type::PENDING);
+            addToContacts(cm, profile::Type::PENDING, false);
         }
     }
     emit linked.newAccountMessage(accountId, from, payloads);
@@ -710,7 +762,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
     if (info.accountId != linked.owner.id) return;
     auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
     if (not account) {
-        qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
+        qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
         return;
     }
 
@@ -720,7 +772,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(info.peerUri.c_str()), account);
-            addToContacts(cm, profile::Type::PENDING);
+            addToContacts(cm, profile::Type::PENDING, false);
         }
     }
     emit linked.newAccountTransfer(dringId, info);
