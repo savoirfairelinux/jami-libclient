@@ -79,6 +79,11 @@ public:
      */
     const contact::Info getContact(const std::string& contactUri) const;
     /**
+     * get list of banned contacts.
+     * @return list of banned contacts as contact::Info
+     */
+    const std::list<std::string>& getBannedContacts() const;
+    /**
      * @param  contactUri
      * @return empty string if no contact, else the uri in db
      */
