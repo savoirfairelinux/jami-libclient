@@ -165,8 +165,6 @@ BannedContactModel::remove(ContactMethod* cm)
         qWarning() << "BannedContactModel, cannot remove. cm->account is nullptr";
         return;
     }
-
-    ConfigurationManager::instance().addContact(cm->account()->id(), cm->uri());
 }
 
 /**
