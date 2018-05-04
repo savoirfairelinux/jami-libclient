@@ -44,7 +44,7 @@ public:
 
     // Helper
     void add(ContactMethod* cm);
-    void remove(ContactMethod* cm);
+    void remove(ContactMethod* cm, bool updatedaemon = true);
     bool isBanned(ContactMethod* cm);
 
 private:

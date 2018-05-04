@@ -137,19 +137,23 @@ protected:
     /**
      * Ban contact with passed uri
      */
-    void banContact(std::string uri);
+    void banContact(const std::string& uri);
+    /**
+     * Unban contact with passed uri
+     */
+    void unbanContact(const std::string& uri);
     /**
      * Return whether passed uri already maps to a contact or not
      */
-    bool isAContact(std::string uri);
+    bool isAContact(const std::string& uri);
     /**
      * Add passed usename to contacts and return its uri
      */
-    std::string addToContacts(std::string username);
+    std::string addToContacts(const std::string& username);
     /**
      * Return whether a converation with passed contact uri exists or not
      */
-    bool hasConversationWithContact(std::string uri);
+    bool hasConversationWithContact(const std::string& uri);
 };
 
 } // namespace test

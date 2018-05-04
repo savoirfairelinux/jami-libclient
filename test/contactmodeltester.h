@@ -52,6 +52,7 @@ class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testRmSIPContact);
     CPPUNIT_TEST(testRmTemporaryContact);
     CPPUNIT_TEST(testCountPendingRequests);
+    CPPUNIT_TEST(testBanUnbanContact);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -116,6 +117,10 @@ public:
      * Count contact requests when banned contacts exists
      */
     void testCountPendingRequestsWithBlockedContact();
+    /**
+     * Try to ban and unban contacts
+     */
+    void testBanUnbanContact();
     /**
      * Method automatically called after each test by CppUnit
      */
