@@ -1410,50 +1410,50 @@
         <translation>Collezione profili dei peer</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1005"/>
-        <location filename="../src/conversationmodel.cpp" line="1359"/>
-        <location filename="../src/conversationmodel.cpp" line="1595"/>
+        <location filename="../src/conversationmodel.cpp" line="1061"/>
+        <location filename="../src/conversationmodel.cpp" line="1415"/>
+        <location filename="../src/conversationmodel.cpp" line="1628"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1006"/>
+        <location filename="../src/conversationmodel.cpp" line="1062"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1040"/>
-        <location filename="../src/conversationmodel.cpp" line="1047"/>
+        <location filename="../src/conversationmodel.cpp" line="1096"/>
+        <location filename="../src/conversationmodel.cpp" line="1103"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1242"/>
+        <location filename="../src/conversationmodel.cpp" line="1298"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1244"/>
+        <location filename="../src/conversationmodel.cpp" line="1300"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1257"/>
+        <location filename="../src/conversationmodel.cpp" line="1313"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1260"/>
+        <location filename="../src/conversationmodel.cpp" line="1316"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1264"/>
+        <location filename="../src/conversationmodel.cpp" line="1320"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1266"/>
+        <location filename="../src/conversationmodel.cpp" line="1322"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>

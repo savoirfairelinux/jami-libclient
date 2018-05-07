@@ -853,12 +853,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
-        <translation>Сертификат имеет действительную авторизацию</translation>
+        <translation>Сертификат подтверждён удостоверяющим центром</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
-        <translation>Сертификат авторизован</translation>
+        <translation>Сертификат подтверждён известным удостоверяющим центром</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
@@ -868,7 +868,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation>Авторизованные сертификаты совпадают</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
@@ -893,7 +893,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation>Требуется пароль для закрытого ключа</translation>
+        <translation>Требуется пароль закрытого ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
@@ -968,7 +968,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Сервер исходящих</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Наличие отслеживания</translation>
+        <translation>Отслеживание присутствия</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
@@ -1150,7 +1150,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Ваш сертификат и авторизация не совпадают, если ваш сертификат требует авторизации, он не будет работать</translation>
+        <translation>Ваш сертификат не соответствует удостоверяющему центру. Если ваш сертификат должен быть подтверждён, он не будет работать.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
@@ -1160,12 +1160,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Опция проверки входящего сертификата отключена, это делает вас уязвимым для атаки через посредника</translation>
+        <translation>Опция &quot;проверять получаемый сертификат&quot; отключена, это делает вас уязвимым для атаки через посредника</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>Опция &quot;проверка ответного сертификата&quot; отключена, это делает вас уязвимым для атаки через посредника</translation>
+        <translation>Опция &quot;проверять ответный сертификат&quot; отключена, это делает вас уязвимым для атаки через посредника</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
@@ -1180,12 +1180,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Сертификат не был предоставлен. Пока что это не поддерживается Ring.</translation>
+        <translation>Сертификат не был предоставлен. В данный момент это не поддерживается Ring.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation>Ваши медиапотоки не зашифрованы, включите SDES</translation>
+        <translation>Ваши медиапотоки не зашифрованы, пожалуйста, включите SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1410,52 +1410,52 @@
         <translation>Коллекция Профилей Участников</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1005"/>
-        <location filename="../src/conversationmodel.cpp" line="1359"/>
-        <location filename="../src/conversationmodel.cpp" line="1595"/>
+        <location filename="../src/conversationmodel.cpp" line="1061"/>
+        <location filename="../src/conversationmodel.cpp" line="1415"/>
+        <location filename="../src/conversationmodel.cpp" line="1628"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Получено приглашение</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1006"/>
+        <location filename="../src/conversationmodel.cpp" line="1062"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Контакт добавлен</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1040"/>
-        <location filename="../src/conversationmodel.cpp" line="1047"/>
+        <location filename="../src/conversationmodel.cpp" line="1096"/>
+        <location filename="../src/conversationmodel.cpp" line="1103"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Приглашение принято</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1242"/>
+        <location filename="../src/conversationmodel.cpp" line="1298"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1244"/>
+        <location filename="../src/conversationmodel.cpp" line="1300"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Входящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1257"/>
+        <location filename="../src/conversationmodel.cpp" line="1313"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Исходящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1260"/>
+        <location filename="../src/conversationmodel.cpp" line="1316"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Входящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1264"/>
+        <location filename="../src/conversationmodel.cpp" line="1320"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Непринятый исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1266"/>
+        <location filename="../src/conversationmodel.cpp" line="1322"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Пропущенный входящий вызов</translation>
     </message>
 </context>
 <context>
