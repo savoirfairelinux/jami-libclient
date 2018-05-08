@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_196ffac6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-05-08T17:43:17Z",
+      "side": 1,
+      "message": "at may throw std::out_of_range. While this situation may not be possible at the moment, a try catch block would probably be a good idea",
+      "revId": "4b9b1a74944118117acfbd6914cc8b9f83464c46",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
