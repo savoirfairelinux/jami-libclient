@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a3f45e8_1927fa65",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "you\u0027re returning a vector filled with strings not contact::Info here",
+      "range": {
+        "startLine": 83,
+        "startChar": 14,
+        "endLine": 83,
+        "endChar": 55
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_f92b2e2e",
+        "filename": "src/bannedcontactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 170,
+        "startChar": 42,
+        "endLine": 170,
+        "endChar": 55
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_59206249",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 471,
+        "startChar": 90,
+        "endLine": 471,
+        "endChar": 105
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_391d9610",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "auto*",
+      "range": {
+        "startLine": 536,
+        "startChar": 4,
+        "endLine": 536,
+        "endChar": 8
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_991aea15",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "emplace_back()",
+      "range": {
+        "startLine": 652,
+        "startChar": 23,
+        "endLine": 652,
+        "endChar": 32
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_79171eee",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "why 2secs? It\u0027s a big timeout",
+      "range": {
+        "startLine": 75,
+        "startChar": 67,
+        "endLine": 75,
+        "endChar": 71
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_d9d3d236",
+        "filename": "test/conversationmodeltester.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 137,
+        "startChar": 7,
+        "endLine": 137,
+        "endChar": 10
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a3f45e8_b9d88654",
+        "filename": "test/conversationmodeltester.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-08T19:41:08Z",
+      "side": 1,
+      "message": "const std::string\u0026",
+      "range": {
+        "startLine": 139,
+        "startChar": 22,
+        "endLine": 139,
+        "endChar": 33
+      },
+      "revId": "962b660793a9c6e89dddc5a55d06fd121e3ec1f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
