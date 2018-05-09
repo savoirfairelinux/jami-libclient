@@ -20,6 +20,8 @@
 
 // Std
 #include <memory>
+#include <string>
+#include <map>
 
 // Qt
 #include <qobject.h>
@@ -171,6 +173,25 @@ Q_SIGNALS:
     void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
     void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
 
+
+    /**
+     * Connect this signal to get when a device name changed or a device is added
+     * @param accountId interaction receiver.
+     * @param devices A map of device IDs with corresponding labels.
+     */
+    void knownDevicesChanged(std::string& accountId,
+                             std::map<std::string,std::string> devices);
+
+    /**
+     * Emit deviceRevocationEnded
+     * @param accountId
+     * @param deviceId
+     * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
+     */
+    void deviceRevocationEnded(const std::string& accountId,
+                               const std::string& deviceId,
+                               const int status);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -290,6 +311,24 @@ private Q_SLOTS:
                                          const QString& to, int status);
 
     void slotDataTransferEvent(qulonglong id, uint code);
+
+    /**
+     * Emit knownDevicesChanged
+     * @param accountId
+     * @param devices A map of device IDs and corresponding labels
+     */
+    void slotKnownDevicesChanged(const QString& accountId,
+                                 const QMap<QString, QString>& devices);
+
+     /**
+      * Emit deviceRevocationEnded
+      * @param accountId
+      * @param deviceId
+      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
+      */
+     void slotDeviceRevokationEnded(const QString& accountId,
+                                    const QString& deviceId,
+                                    const int status);
 
 private:
     const api::Lrc& parent;

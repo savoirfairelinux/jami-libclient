@@ -20,12 +20,13 @@
 
 
 // LRC
-#include "api/lrc.h"
-#include "api/newcallmodel.h"
-#include "api/contactmodel.h"
-#include "api/conversationmodel.h"
 #include "api/account.h"
 #include "api/behaviorcontroller.h"
+#include "api/contactmodel.h"
+#include "api/conversationmodel.h"
+#include "api/lrc.h"
+#include "api/newcallmodel.h"
+#include "api/newdevicemodel.h"
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
@@ -219,6 +220,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
     owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
+    owner.deviceModel = std::make_unique<NewDeviceModel>(owner, callbacksHandler);
     owner.accountModel = &linked;
 }
 
