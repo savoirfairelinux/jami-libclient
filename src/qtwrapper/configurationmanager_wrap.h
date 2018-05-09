@@ -566,6 +566,10 @@ public Q_SLOTS: // METHODS
         DRing::removeContact(accountId.toStdString(), uri.toStdString(), ban);
     }
 
+    void revokeDevice(const QString &accountId, const QString &password, const QString &deviceId) {
+        DRing::revokeDevice(accoundId.toStdString(), password.toStdString(), deviceId.toStdString());
+    }
+
     void addContact(const QString &accountId, const QString &uri) {
         DRing::addContact(accountId.toStdString(), uri.toStdString());
     }

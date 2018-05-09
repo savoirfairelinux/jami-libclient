@@ -118,6 +118,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::dataTransferEvent,
             this,
             &CallbacksHandler::slotDataTransferEvent);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::knownDevicesChanged,
+            this,
+            &CallbacksHandler::slotKnownDevicesChanged);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::deviceRevocationEnded,
+            this,
+            &CallbacksHandler::slotDeviceRevokationEnded);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -325,6 +335,25 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
         emit transferStatusUnjoinable(static_cast<long long>(dringId), info);
         break;
     }
+}
+
+void
+CallbacksHandler::slotKnownDevicesChanged(const QString& accountId,
+                                          const QMap<QString, QString>& devices)
+{
+    std::map<std::string, std::string> stdDevices;
+    for (auto item : devices.keys())
+        stdDevices[item.toStdString()] = devices.value(item).toStdString();
+    auto accountId2 = accountId.toStdString();
+    emit knownDevicesChanged(accountId2, stdDevices);
+}
+
+void
+CallbacksHandler::slotDeviceRevokationEnded(const QString& accountId,
+                                            const QString& deviceId,
+                                            const int status)
+{
+    emit deviceRevocationEnded(accountId.toStdString(), deviceId.toStdString(), status);
 }
 
 } // namespace lrc
