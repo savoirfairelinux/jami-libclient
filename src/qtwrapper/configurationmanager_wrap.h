@@ -566,6 +566,10 @@ public Q_SLOTS: // METHODS
         DRing::removeContact(accountId.toStdString(), uri.toStdString(), ban);
     }
 
+    void revokeDevice(const QString &accountId, const QString &password, const QString &deviceId) {
+        DRing::revokeDevice(accountId.toStdString(), password.toStdString(), deviceId.toStdString());
+    }
+
     void addContact(const QString &accountId, const QString &uri) {
         DRing::addContact(accountId.toStdString(), uri.toStdString());
     }
@@ -676,6 +680,7 @@ Q_SIGNALS: // SIGNALS
     void contactAdded(const QString &accountID, const QString &uri, bool banned);
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
     void dataTransferEvent(qulonglong transfer_id, uint code);
+    void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
 };
 
 namespace org { namespace ring { namespace Ring {
