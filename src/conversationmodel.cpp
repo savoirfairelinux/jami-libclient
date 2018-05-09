@@ -712,7 +712,7 @@ ConversationModel::clearHistory(const std::string& uid)
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[uid]);
         conversation.interactions.clear();
     }
-    database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
+    database::getHistory(pimpl_->db, conversation);
     pimpl_->sortConversations();
     emit modelSorted();
     emit conversationCleared(uid);

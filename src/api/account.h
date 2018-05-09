@@ -35,6 +35,7 @@ class NewCallModel;
 class ContactModel;
 class ConversationModel;
 class NewAccountModel;
+class NewDeviceModel;
 
 namespace account
 {
@@ -85,6 +86,7 @@ struct Info
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
+    std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     NewAccountModel* accountModel {nullptr};
 };
 

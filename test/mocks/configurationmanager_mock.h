@@ -53,6 +53,7 @@ private:
     QMap<QString, VectorMapStringString> accountToContactsMap;
     QStringList availableContacts_;
     std::mutex contactsMtx_;
+    QMap<QString, QMap<QString, QString>> devices;
 
 public:
 
@@ -86,10 +87,21 @@ public:
               }
           }
           accountToContactsMap.insert(account, contacts);
+          // Init devices
+          MapStringString devicesForAccount;
+          devicesForAccount["device0"] = "pc";
+          if (account.toStdString() == "ring3")
+            devicesForAccount["device1"] = "tel";
+          devices[account] = devicesForAccount;
       }
    }
 
    ~ConfigurationManagerInterface() {}
+
+   void addNewDevice(const QString& accountId, const QString& deviceId, const QString& name) {
+       devices[accountId][deviceId] = name;
+       emit knownDevicesChanged(accountId, devices[accountId]);
+   }
 
    void emitIncomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
    {
@@ -141,9 +153,7 @@ public Q_SLOTS: // METHODS
 
     MapStringString getKnownRingDevices(const QString& accountId)
     {
-        Q_UNUSED(accountId)
-        MapStringString temp;
-        return temp;
+        return devices[accountId];
     }
 
     bool lookupName(const QString& accountId, const QString& nameServiceURL, const QString& name)
@@ -178,6 +188,7 @@ public Q_SLOTS: // METHODS
         } else {
             result.insert("Account.type", "SIP");
         }
+        result.insert("Account.deviceID", "device0");
         return result;
     }
 
@@ -187,6 +198,7 @@ public Q_SLOTS: // METHODS
         accountList << QString("ring0"); // Used in conversationmodeltester
         accountList << QString("ring1"); // Used in contactmodeltester
         accountList << QString("ring2"); // Used in newcallmodeltester
+        accountList << QString("ring3"); // Used in newdevicemodeltester
         accountList << QString("sip0");
         accountList << QString("sip1");
         return accountList;
@@ -452,8 +464,13 @@ public Q_SLOTS: // METHODS
 
     void setAccountDetails(const QString& accountId, MapStringString details)
     {
-        Q_UNUSED(accountId)
-        Q_UNUSED(details)
+        if (accountId.toStdString() == "ring3") {
+            // testSetCurrentDeviceName
+            if (details.contains(DRing::Account::ConfProperties::RING_DEVICE_NAME)) {
+                devices["ring3"]["device0"] = details[DRing::Account::ConfProperties::RING_DEVICE_NAME];
+                emit knownDevicesChanged(accountId, devices[accountId]);
+            }
+        }
     }
 
     void setAccountsOrder(const QString& order)
@@ -652,6 +669,19 @@ public Q_SLOTS: // METHODS
         emit contactRemoved(accountId, uri, ban);
     }
 
+    void revokeDevice(const QString &accountId, const QString &password, const QString &deviceId) {
+        if (password == "") {
+            if (devices[accountId].contains(deviceId)) {
+                devices[accountId].remove(deviceId);
+                emit deviceRevocationEnded(accountId, deviceId, 0);
+            } else {
+                emit deviceRevocationEnded(accountId, deviceId, 2);
+            }
+        } else {
+            emit deviceRevocationEnded(accountId, deviceId, 1);
+        }
+    }
+
     void addContact(const QString &accountId, const QString &uri)
     {
         if (getAccountList().indexOf(accountId) == -1) return;
@@ -807,6 +837,7 @@ Q_SIGNALS: // SIGNALS
    void contactAdded(const QString &accountId, const QString &uri, bool banned);
    void contactRemoved(const QString &accountId, const QString &uri, bool banned);
    void dataTransferEvent(uint64_t transfer_id, uint32_t code);
+   void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
 };
 
 namespace org {
