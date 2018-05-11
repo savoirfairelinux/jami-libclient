@@ -519,7 +519,7 @@ ContactModelPimpl::slotNewBuddySubscription(const std::string& contactUri, bool 
         } else
             return;
     }
-    emit linked.modelUpdated(contactUri);
+    emit linked.modelUpdated(contactUri, false);
 }
 
 void
