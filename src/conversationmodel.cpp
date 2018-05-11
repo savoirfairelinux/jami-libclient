@@ -1185,6 +1185,10 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
                     // this element as it is the temporary.
                     // Only when we have found an uri.
                     conversations.front() = conversationInfo;
+                } else if (not conversations.front().uid.empty()) {
+                    //update conversation when uri not found
+                    //but conversation have uri from previous search
+                    conversations.front() = conversationInfo;
                 }
             } else {
                 // no conversation, add temporaryItem
