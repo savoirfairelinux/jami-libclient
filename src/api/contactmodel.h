@@ -117,7 +117,7 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when this model was updated.
      */
-    void modelUpdated(const std::string& uri) const;
+    void modelUpdated(const std::string& uri, bool needsSorted=true) const;
     /**
      * Connect this signal to know when a contact was added.
      * @param contactUri
