@@ -725,20 +725,35 @@ ConversationModel::clearInteractionFromConversation(const std::string& convId, c
         return;
 
     auto erased_keys = 0;
+    bool lastInteractionUpdated = false;
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         try
         {
             auto& conversation = pimpl_->conversations.at(conversationIdx);
             database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
-
             erased_keys = conversation.interactions.erase(interactionId);
+
+            if (conversation.lastMessageUid == interactionId) {
+                // Update lastMessageUid
+                auto newLastId = 0;
+                if (!conversation.interactions.empty())
+                    newLastId = conversation.interactions.rbegin()->first;
+                conversation.lastMessageUid = newLastId;
+                lastInteractionUpdated = true;
+            }
+
         } catch (const std::out_of_range& e) {
             qDebug() << "can't clear interaction from conversation: " << e.what();
         }
     }
     if (erased_keys > 0)
         emit interactionRemoved(convId, interactionId);
+    if (lastInteractionUpdated) {
+        // last interaction as changed, so the order can changes.
+        pimpl_->sortConversations();
+        emit modelSorted();
+    }
 }
 
 void
