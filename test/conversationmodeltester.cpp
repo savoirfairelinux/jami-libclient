@@ -411,6 +411,59 @@ ConversationModelTester::testSendMessagesAndClearInteraction()
 }
 
 void
+ConversationModelTester::testSendMessagesAndClearLastInteraction()
+{
+    accInfo_.conversationModel->setFilter("");
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    CPPUNIT_ASSERT(conversations.size() != 0);
+    auto firstConversation = accInfo_.conversationModel->filteredConversation(0);
+    auto firstConversationUid = firstConversation.uid;
+
+    // HACK reinit the conversation here (without these line, Hello World! will not be in interactions)
+    // FIXME
+    accInfo_.conversationModel->clearHistory(firstConversationUid);
+    firstConversation = accInfo_.conversationModel->filteredConversation(0);
+
+    // Send 3 messages (will be added to conversation.interactions)
+    int baseInteractionsSize = firstConversation.interactions.size();
+    accInfo_.conversationModel->sendMessage(firstConversationUid, "Hello World!");
+    accInfo_.conversationModel->sendMessage(firstConversationUid, "It's been a long time");
+    accInfo_.conversationModel->sendMessage(firstConversationUid, "How have you been?");
+
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    auto conversationExists = false;
+    uint64_t lastInteractionId = {};
+    uint64_t secondInterId = {};
+    for (const auto& conversation : conversations) {
+        if (conversation.uid == firstConversationUid) {
+            conversationExists = true;
+            CPPUNIT_ASSERT_EQUAL((int)conversation.interactions.size(), baseInteractionsSize + 3);
+            auto it = conversation.interactions.rbegin();
+            lastInteractionId = it->first;
+            it++;
+            secondInterId = it->first;
+            break;
+        }
+    }
+    CPPUNIT_ASSERT(conversationExists);
+
+    accInfo_.conversationModel->clearInteractionFromConversation(firstConversationUid, lastInteractionId);
+    WaitForSignalHelper(*accInfo_.conversationModel,
+        SIGNAL(interactionRemoved(const std::string& convUid, uint64_t interactionId))).wait(1000);
+    conversations = accInfo_.conversationModel->allFilteredConversations();
+    conversationExists = false;
+    for (const auto& conversation : conversations) {
+        if (conversation.uid == firstConversationUid) {
+            conversationExists = true;
+            // lastMessageUid should be equals to the new last interaction's id.
+            CPPUNIT_ASSERT_EQUAL(conversation.lastMessageUid, secondInterId);
+            break;
+        }
+    }
+    CPPUNIT_ASSERT(conversationExists);
+}
+
+void
 ConversationModelTester::testReceiveMessageAndSetRead()
 {
     // Add a new message for the first conversation
