@@ -28,6 +28,7 @@
 
 // std
 #include <algorithm>
+#include <iostream>
 #include <mutex>
 #include <regex>
 
@@ -176,7 +177,7 @@ public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
      */
-    void slotContactModelUpdated(const std::string& uri);
+    void slotContactModelUpdated(const std::string& uri, bool needsSorted);
     /**
      * Listen from contactModel when a new contact is added
      * @param uri
@@ -1159,7 +1160,7 @@ ConversationModelPimpl::slotContactRemoved(const std::string& uri)
 }
 
 void
-ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
+ConversationModelPimpl::slotContactModelUpdated(const std::string& uri, bool needsSorted)
 {
     // We don't create newConversationItem if we already filter on pending
     conversation::Info newConversationItem;
@@ -1195,7 +1196,11 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
                 conversations.emplace_front(conversationInfo);
             }
             dirtyConversations = {true, true};
-            emit linked.modelSorted();
+            if (needsSorted) {
+                emit linked.modelSorted();
+            } else {
+                emit linked.conversationUpdated(conversations.front().uid);
+            }
             return;
         }
     } else {
@@ -1203,7 +1208,7 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
         if (!conversations.empty()) {
             auto firstContactUri = conversations.front().participants.front();
 
-            if (firstContactUri.empty()) {
+            if (firstContactUri.empty() && needsSorted) {
                 conversations.pop_front();
                 dirtyConversations = {true, true};
                 emit linked.modelSorted();
@@ -1216,7 +1221,8 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri)
     dirtyConversations = {true, true};
     int index = indexOfContact(uri);
     if (index != -1) {
-        if (!conversations.empty() && conversations.front().participants.front().empty()) {
+        if (!conversations.empty() && conversations.front().participants.front().empty() &&
+            needsSorted) {
             // In this case, contact is present in list, so temporary item does not longer exists
             emit linked.modelSorted();
         } else {
