@@ -29,7 +29,9 @@
 #include <api/newaccountmodel.h>
 #include <api/contact.h>
 #include <api/contactmodel.h>
+#include <api/conversationmodel.h>
 #include <dbus/configurationmanager.h>
+#include <dbus/presencemanager.h>
 
 namespace ring
 {
@@ -199,7 +201,32 @@ ContactModelTester::testAddAlreadyAddedContact()
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     auto nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtBegin, nbContactsAtEnd);
+}
 
+void
+ContactModelTester::testReceivesContactPresenceUpdate()
+{
+    CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, false);
+
+    PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
+    auto contactModelUpdated = WaitForSignalHelper (*accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool))).wait(1000);
+    CPPUNIT_ASSERT(contactModelUpdated);
+
+    // TODO: CPPUNIT_ASSERT(!modelSorted)
+
+    auto conversations = accInfo_.conversationModel->allFilteredConversations();
+    auto contactInfo = accInfo_.contactModel->getContact("contact1");
+    auto conversation = std::find_if(conversations.begin(), conversations.end(),
+                                [&contactInfo](const lrc::api::conversation::Info& conversation) {
+                                    return std::find(conversation.participants.begin(),
+                                                     conversation.participants.end(),
+                                                     contactInfo.profileInfo.uri) != conversation.participants.end();
+                                });
+    auto contactConversationUpdated = WaitForSignalHelper(*accInfo_.conversationModel,
+        SIGNAL(conversationUpdated(conversation.uid))).wait(1000);
+    CPPUNIT_ASSERT(contactConversationUpdated);
+    CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, true);
 }
 
 void
