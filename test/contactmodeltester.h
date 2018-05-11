@@ -47,6 +47,7 @@ class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testAddRingURI);
     CPPUNIT_TEST(testAddNewSIPContact);
     CPPUNIT_TEST(testAddAlreadyAddedContact);
+    CPPUNIT_TEST(testReceivesContactPresenceUpdate);
     CPPUNIT_TEST(testRmRingContact);
     CPPUNIT_TEST(testRmPendingContact);
     CPPUNIT_TEST(testRmSIPContact);
@@ -90,6 +91,11 @@ public:
      * No new contact should appears.
      */
     void testAddAlreadyAddedContact();
+    /**
+     * receive a presence update.
+     * modelSorted should not be emitted, but conversationUpdated should.
+     */
+    void testReceivesContactPresenceUpdate();
     /**
      * Remove "dummy" from "ring1" contacts.
      * The contact should be removed.
