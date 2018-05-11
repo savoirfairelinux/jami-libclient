@@ -48,6 +48,11 @@ public:
 
     ~PresenceManagerInterface() {}
 
+    void emitNewBuddyNotification(const QString &accountID, const QString &buddyUri, bool status, const QString &lineStatus)
+    {
+        emit newBuddyNotification(accountID, buddyUri, status, lineStatus);
+    }
+
 public Q_SLOTS: // METHODS
     void answerServerRequest(const QString &uri, bool flag)
     {
