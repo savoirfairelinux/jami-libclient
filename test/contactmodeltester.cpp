@@ -209,11 +209,14 @@ ContactModelTester::testReceivesContactPresenceUpdate()
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, false);
 
-    PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
-    auto contactModelUpdated = WaitForSignalHelper (*accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool))).wait(1000);
-    CPPUNIT_ASSERT(contactModelUpdated);
-
-    // TODO: CPPUNIT_ASSERT(!modelSorted)
+    auto newBuddyNotificationSigsCaught = WaitForSignalHelper([&]() {
+            PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .addSignal("modelSorted", *accInfo_.conversationModel, SIGNAL(modelSorted()))
+        .wait2(500);
+    CPPUNIT_ASSERT(newBuddyNotificationSigsCaught["modelUpdated"]);
+    CPPUNIT_ASSERT(!newBuddyNotificationSigsCaught["modelSorted"]);
 
     auto conversations = accInfo_.conversationModel->allFilteredConversations();
     auto contactInfo = accInfo_.contactModel->getContact("contact1");
@@ -223,8 +226,17 @@ ContactModelTester::testReceivesContactPresenceUpdate()
                                                      conversation.participants.end(),
                                                      contactInfo.profileInfo.uri) != conversation.participants.end();
                                 });
+
+    auto newBuddyNotificationSigsCaught = WaitForSignalHelper([&]() {
+        PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
+    })
+    .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+    .addSignal("modelSorted", *accInfo_.conversationModel, SIGNAL(modelSorted()))
+    .wait2(500);
+    CPPUNIT_ASSERT(newBuddyNotificationSigsCaught["modelUpdated"]);
+    CPPUNIT_ASSERT(!newBuddyNotificationSigsCaught["modelSorted"]);
     auto contactConversationUpdated = WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(conversationUpdated(conversation.uid))).wait(1000);
+        SIGNAL(conversationUpdated(const std::string&))).wait(1000);
     CPPUNIT_ASSERT(contactConversationUpdated);
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, true);
 }

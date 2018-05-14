@@ -2,6 +2,7 @@
  *  Copyright (C) 2017-2018 Savoir-faire Linux Inc.
  *
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *  Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,6 +20,13 @@
  */
 
 #pragma once
+
+// std
+#include <mutex>
+#include <string>
+#include <future>
+#include <map>
+#include <functional>
 
 // Qt
 #include <QEventLoop>
@@ -40,13 +48,35 @@ public:
      */
     bool wait(unsigned int timeoutMs);
 
+    ////////////////////////////////////////////////
+    WaitForSignalHelper(std::function<void()> f);
+    WaitForSignalHelper& addSignal(const std::string& id, QObject& object, const char* signal);
+    std::map<std::string, bool> wait2(int timeoutMs);
+    ////////////////////////////////////////////////
+
 public Q_SLOTS:
     /**
      * Is activated if wait is finished
      */
     void timeout();
 
+    ////////////////////////////////////////////////
+    void signalSlot(const QString & id);
+    void timeout2();
+    ////////////////////////////////////////////////
+
 private:
     bool timeout_;
     QEventLoop eventLoop_;
+
+    ////////////////////////////////////////////////
+    std::function<void()> f_;
+    std::map<std::string, bool> results_;
+
+    // represents execLoop_.isRunning()
+    std::atomic<bool> isRunning_;
+
+    std::mutex mutex_;
+    std::condition_variable cv_;
+    ////////////////////////////////////////////////
 };
