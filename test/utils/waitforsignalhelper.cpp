@@ -2,6 +2,7 @@
  *  Copyright (C) 2017-2018 Savoir-faire Linux Inc.
  *
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *  Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,32 +20,102 @@
  */
 
 #include "waitforsignalhelper.h"
+#include "api/interaction.h"
+#include "../mocks/configurationmanager_mock.h"
 
 #include <QTimer>
+#include <QSignalMapper>
+#include <QMetaType>
+#include <QString>
+#include <QMap>
 
-WaitForSignalHelper::WaitForSignalHelper(QObject& object, const char* signal)
-: QObject(), timeout_(false)
+#include <iostream>
+
+WaitForSignalHelper::WaitForSignalHelper(std::function<void()> f)
+: f_(f)
 {
-    connect(&object, signal, &eventLoop_, SLOT(quit()));
+    qRegisterMetaType<std::string>("std::string");
+    qRegisterMetaType<uint32_t>("uint32_t");
+    qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<lrc::api::interaction::Info>("interaction::Info");
+    qRegisterMetaType<lrc::api::interaction::Info>("api::interaction::Info");
+    qRegisterMetaType<MapStringString>("MapStringString");
 }
 
-bool
-WaitForSignalHelper::wait(unsigned int timeoutMs)
+WaitForSignalHelper&
+WaitForSignalHelper::addSignal(const std::string& id, QObject& object, const char* signal)
 {
-    QTimer timeoutHelper;
-    if (timeoutMs != 0) {
-        timeoutHelper.setInterval(timeoutMs);
-        timeoutHelper.start();
-        connect(&timeoutHelper, SIGNAL(timeout()), this, SLOT(timeout()));
+    results_.insert({id , 0});
+    QSignalMapper* signalMapper = new QSignalMapper(this);
+    auto connection = connect(&object, signal, signalMapper, SLOT(map()), Qt::QueuedConnection);
+    connections_.emplace_back(connection);
+    signalMapper->setMapping(&object, QString::fromStdString(id));
+    connection = connect(signalMapper,
+            SIGNAL(mapped(const QString&)),
+            this,
+            SLOT(signalSlot(const QString&)), Qt::QueuedConnection);
+    connections_.emplace_back(connection);
+    return *this;
+}
+
+void
+WaitForSignalHelper::signalSlot(const QString & id)
+{
+    std::string signalId = id.toStdString();
+    std::cout << "Signal caught: " << signalId.c_str() << "\n";
+    auto resultsSize = results_.size();
+    unsigned signalsCaught = 0;
+    // loop through results map till we find the id and increment the value,
+    // meanwhile testing the total caught signals and exiting the wait loop
+    // if all the signals have come through at least once
+    for (auto it = results_.begin(); it != results_.end(); it++) {
+        if ((*it).first.compare(signalId) == 0) {
+            (*it).second = 1;
+        }
+        signalsCaught = signalsCaught + static_cast<unsigned>((*it).second > 0);
+        if (signalsCaught == resultsSize) {
+            std::cout << "All signals caught\n";
+            eventLoop_.quit();
+            break;
+        }
     }
-    timeout_ = false;
-    eventLoop_.exec();
-    return timeout_;
 }
 
 void
 WaitForSignalHelper::timeout()
 {
-    timeout_ = true;
+    std::cout << "Timed out! signal(s) missed\n";
     eventLoop_.quit();
+}
+
+std::map<std::string, int>
+WaitForSignalHelper::wait(int timeoutMs)
+{
+    if (timeoutMs <= 0) {
+        throw std::invalid_argument("Invalid time out value");
+    }
+    // wait till ready or timeout
+    std::thread readyThread([this, timeoutMs] () {
+        std::unique_lock<std::mutex> lk(mutex_);
+        cv_.wait_for(lk, std::chrono::milliseconds(timeoutMs), [this, timeoutMs] {
+            auto start = std::chrono::high_resolution_clock::now();
+            while (!eventLoop_.isRunning() && std::chrono::high_resolution_clock::now() - start < std::chrono::milliseconds(timeoutMs)) {}
+            return true;
+        });
+        // execute function expected to produce awaited signal(s)
+        f_();
+    });
+    // connect timer to A::timeout() here… or use chrono and busy loop, cv, etc.
+    QTimer timeoutHelper;
+    timeoutHelper.setInterval(timeoutMs);
+    timeoutHelper.start();
+    connect(&timeoutHelper, SIGNAL(timeout()), this, SLOT(timeout()), Qt::QueuedConnection);
+    cv_.notify_all();
+    // wait for results… if they come, else time out
+    eventLoop_.exec();
+    for (auto& connection: connections_) {
+        QObject::disconnect(connection);
+    }
+    readyThread.join();
+    return results_;
 }
