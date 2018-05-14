@@ -59,42 +59,53 @@ ContactModelTester::testBanUnbanContact()
     CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("bigbadjohn"), std::out_of_range);
 
     // Search and add the temporaryContact
-    accInfo_.contactModel->searchContact("bigbadjohn");
-    WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(modelUpdated())).wait(1000);
+    auto searchContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->searchContact("bigbadjohn");
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(searchContactSigsCaught["modelUpdated"] > 0, true);
     auto temporaryContact = accInfo_.contactModel->getContact("");
     std::string uri = std::string("bigbadjohn");
     CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, uri);
 
-    accInfo_.contactModel->addContact(temporaryContact);
-    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto addContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->addContact(temporaryContact);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] > 0, true);
 
     // Ban contact
-    accInfo_.contactModel->removeContact(uri, true);
-    auto contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
-        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+    auto banContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->removeContact(uri, true);
+        })
+        .addSignal("filterChanged", ConfigurationManager::instance(), SIGNAL(lrc::api::ConversationModel::filterChanged()))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(banContactSigsCaught["filterChanged"] > 0, true);
 
     auto contactInfo = accInfo_.contactModel->getContact(uri);
     CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
 
     // Re-ban contact, make sure it isn't a problem
-    accInfo_.contactModel->removeContact(uri, true);
-    contactBanned = WaitForSignalHelper(ConfigurationManager::instance(),
-        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactBanned, true);
+    auto reBanContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->removeContact(uri, true);
+        })
+        .addSignal("filterChanged", ConfigurationManager::instance(), SIGNAL(lrc::api::ConversationModel::filterChanged()))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(reBanContactSigsCaught["filterChanged"] > 0, true);
 
     contactInfo = accInfo_.contactModel->getContact(uri);
     CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, true);
 
     // Unban contact, make sure it worked
-    contactInfo = accInfo_.contactModel->getContact(uri);
-    accInfo_.contactModel->addContact(contactInfo);
-    bool contactUnbanned = WaitForSignalHelper(ConfigurationManager::instance(),
-        SIGNAL(lrc::api::ConversationModel::filterChanged())).wait(1000);
-    CPPUNIT_ASSERT_EQUAL(contactUnbanned, true);
+    auto unbanContactSigsCaught = WaitForSignalHelper([&]() {
+            contactInfo = accInfo_.contactModel->getContact(uri);
+            accInfo_.contactModel->addContact(contactInfo);
+        })
+        .addSignal("filterChanged", ConfigurationManager::instance(), SIGNAL(lrc::api::ConversationModel::filterChanged()))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(unbanContactSigsCaught["filterChanged"] > 0, true);
 
     contactInfo = accInfo_.contactModel->getContact(uri);
     CPPUNIT_ASSERT_EQUAL(contactInfo.isBanned, false);
@@ -118,10 +129,12 @@ ContactModelTester::testReceivesPendingRequest()
 {
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), false);
     QByteArray payload = "FN:pending0\nPHOTO;ENCODING=BASE64;TYPE=PNG:";
-    ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
-    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto incomingTrustRequestSigsCaught = WaitForSignalHelper([&]() {
+            ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(incomingTrustRequestSigsCaught["contactAdded"] > 0, true);
     CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
     auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
     auto contacts = accInfo_.contactModel->getAllContacts();
@@ -136,15 +149,20 @@ ContactModelTester::testAddNewRingContact()
     // "dummy" should not be in "ring1" contacts.
     CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("dummy"), std::out_of_range);
     // Search and add the temporaryContact
-    accInfo_.contactModel->searchContact("dummy");
-    WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(modelUpdated())).wait(1000);
+    auto searchContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->searchContact("dummy");
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(searchContactSigsCaught["modelUpdated"] > 0, true);
     auto temporaryContact = accInfo_.contactModel->getContact("");
-    CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("dummy"));
-    accInfo_.contactModel->addContact(temporaryContact);
-    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    CPPUNIT_ASSERT_EQUAL(std::string("dummy"), temporaryContact.profileInfo.uri);
+    auto addContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->addContact(temporaryContact);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] > 0, true);
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("dummy"));
 }
 
@@ -154,15 +172,20 @@ ContactModelTester::testAddRingURI()
     CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b"), std::out_of_range);
     auto nbContacts = accInfo_.contactModel->getAllContacts().size();
     // Search and add the temporaryContact
-    accInfo_.contactModel->searchContact("ring:f5a46751671918fe7210a3c31b9a9e4ce081429b");
-    WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(modelUpdated())).wait(1000);
+    auto searchContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->searchContact("ring:f5a46751671918fe7210a3c31b9a9e4ce081429b");
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(searchContactSigsCaught["modelUpdated"] > 0, true);
     auto temporaryContact = accInfo_.contactModel->getContact("");
     CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
-    accInfo_.contactModel->addContact(temporaryContact);
-    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto addContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->addContact(temporaryContact);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] == 1, true);
     // "f5a46751671918fe7210a3c31b9a9e4ce081429b" should be in "ring1" contacts.
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("f5a46751671918fe7210a3c31b9a9e4ce081429b"));
     // We should only have added one contact.
@@ -176,15 +199,20 @@ ContactModelTester::testAddNewSIPContact()
     // "sipcontact0" should not be in "ring1" contacts.
     CPPUNIT_ASSERT_THROW(accInfoSip.contactModel->getContact("sipcontact0"), std::out_of_range);
     // Search and add the temporaryContact
-    accInfoSip.contactModel->searchContact("sipcontact0");
-    WaitForSignalHelper(*accInfoSip.contactModel,
-        SIGNAL(modelUpdated())).wait(1000);
+    auto searchContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfoSip.contactModel->searchContact("sipcontact0");
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(searchContactSigsCaught["modelUpdated"] > 0, true);
     auto temporaryContact = accInfoSip.contactModel->getContact("");
     CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("sipcontact0"));
-    accInfoSip.contactModel->addContact(temporaryContact);
-    auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto addContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfoSip.contactModel->addContact(temporaryContact);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] > 0, true);
     // "sipcontact0" should be "ring1" contacts.
     CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact0"));
 }
@@ -208,24 +236,16 @@ ContactModelTester::testReceivesContactPresenceUpdate()
 {
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, false);
-
-    PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
-    auto contactModelUpdated = WaitForSignalHelper (*accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool))).wait(1000);
-    CPPUNIT_ASSERT(contactModelUpdated);
-
-    // TODO: CPPUNIT_ASSERT(!modelSorted)
-
-    auto conversations = accInfo_.conversationModel->allFilteredConversations();
-    auto contactInfo = accInfo_.contactModel->getContact("contact1");
-    auto conversation = std::find_if(conversations.begin(), conversations.end(),
-                                [&contactInfo](const lrc::api::conversation::Info& conversation) {
-                                    return std::find(conversation.participants.begin(),
-                                                     conversation.participants.end(),
-                                                     contactInfo.profileInfo.uri) != conversation.participants.end();
-                                });
-    auto contactConversationUpdated = WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(conversationUpdated(conversation.uid))).wait(1000);
-    CPPUNIT_ASSERT(contactConversationUpdated);
+    auto newBuddyNotificationSigsCaught = WaitForSignalHelper([&]() {
+            PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .addSignal("modelSorted", *accInfo_.conversationModel, SIGNAL(modelSorted()))
+        .addSignal("conversationUpdated", *accInfo_.conversationModel, SIGNAL(conversationUpdated(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(newBuddyNotificationSigsCaught["modelUpdated"] > 0, true);
+    CPPUNIT_ASSERT_EQUAL(newBuddyNotificationSigsCaught["modelSorted"] == 0, true);
+    CPPUNIT_ASSERT_EQUAL(newBuddyNotificationSigsCaught["conversationUpdated"] > 0, true);
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, true);
 }
 
@@ -235,10 +255,12 @@ ContactModelTester::testRmRingContact()
     int nbContactsAtBegin = accInfo_.contactModel->getAllContacts().size();
     // "contact2" should be in "ring1" contacts.
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact2"));
-    accInfo_.contactModel->removeContact("contact2");
-    auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactRemoved);
+    auto removeContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->removeContact("contact2");
+        })
+        .addSignal("contactRemoved", *accInfo_.contactModel, SIGNAL(contactRemoved(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(removeContactSigsCaught["contactRemoved"] > 0, true);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("contact2"), std::out_of_range);
@@ -249,10 +271,12 @@ ContactModelTester::testRmPendingContact()
 {
     int nbContactsAtBegin = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("pending0"));
-    accInfo_.contactModel->removeContact("pending0");
-    auto contactRemoved = WaitForSignalHelper(*accInfo_.contactModel,
-        SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactRemoved);
+    auto removeContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfo_.contactModel->removeContact("pending0");
+        })
+        .addSignal("contactRemoved", *accInfo_.contactModel, SIGNAL(contactRemoved(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(removeContactSigsCaught["contactRemoved"] > 0, true);
     int nbContactsAtEnd = accInfo_.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     CPPUNIT_ASSERT_THROW(accInfo_.contactModel->getContact("pending0"), std::out_of_range);
@@ -263,24 +287,31 @@ ContactModelTester::testRmSIPContact()
 {
     auto& accInfoSip = lrc_->getAccountModel().getAccountInfo("sip0");
     // Search and add the temporaryContact
-    accInfoSip.contactModel->searchContact("sipcontact1");
-    WaitForSignalHelper(*accInfoSip.contactModel,
-        SIGNAL(modelUpdated())).wait(1000);
+    auto searchContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfoSip.contactModel->searchContact("sipcontact1");
+        })
+        .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(searchContactSigsCaught["modelUpdated"] > 0, true);
     auto temporaryContact = accInfoSip.contactModel->getContact("");
     CPPUNIT_ASSERT_EQUAL(temporaryContact.profileInfo.uri, std::string("sipcontact1"));
-    accInfoSip.contactModel->addContact(temporaryContact);
-    auto contactAdded = WaitForSignalHelper(*accInfoSip.contactModel,
-        SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto addContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfoSip.contactModel->addContact(temporaryContact);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] > 0, true);
     // "sipcontact1" should be in "ring1" contacts.
     CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact1"));
     int nbContactsAtBegin = accInfoSip.contactModel->getAllContacts().size();
     // "sipcontact1" should be in "ring1" contacts.
     CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact1"));
-    accInfoSip.contactModel->removeContact("sipcontact1");
-    auto contactRemoved = WaitForSignalHelper(*accInfoSip.contactModel,
-        SIGNAL(contactRemoved(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactRemoved);
+    auto removeContactSigsCaught = WaitForSignalHelper([&]() {
+            accInfoSip.contactModel->removeContact("sipcontact1");
+        })
+        .addSignal("contactRemoved", *accInfo_.contactModel, SIGNAL(contactRemoved(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(removeContactSigsCaught["contactRemoved"] > 0, true);
     int nbContactsAtEnd = accInfoSip.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     // "sipcontact1" should not be in "ring1" contacts.
@@ -303,10 +334,12 @@ ContactModelTester::testCountPendingRequests()
     accInfo_.contactModel->removeContact("pending0");
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), false);
     QByteArray payload = "FN:pending0\nPHOTO;ENCODING=BASE64;TYPE=PNG:";
-    ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
-    auto contactAdded = WaitForSignalHelper(*accInfo_.contactModel,
-                                            SIGNAL(contactAdded(const std::string& contactUri))).wait(1000);
-    CPPUNIT_ASSERT(contactAdded);
+    auto incomingTrustRequestSigsCaught = WaitForSignalHelper([&]() {
+            ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
+        })
+        .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
+        .wait(500);
+    CPPUNIT_ASSERT_EQUAL(incomingTrustRequestSigsCaught["contactAdded"] > 0, true);
     CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->pendingRequestCount(), 1);
 }
