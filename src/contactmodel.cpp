@@ -565,6 +565,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     if (isBanned) {
         // Update the smartlist
         linked.owner.conversationModel->refreshFilter();
+        emit linked.bannedStatusChanged(contactUri, false);
     } else {
         emit linked.contactAdded(contactUri);
     }
@@ -618,6 +619,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
     if (banned) {
         // Update the smartlist
         linked.owner.conversationModel->refreshFilter();
+        emit linked.bannedStatusChanged(contactUri, true);
     } else {
         emit linked.contactRemoved(contactUri);
     }
