@@ -23,7 +23,7 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 
-#include "../typedefs.h"
+#include "typedefs.h"
 
 #ifndef ENABLE_LIBWRAP
 #include <QtDBus/QtDBus>
