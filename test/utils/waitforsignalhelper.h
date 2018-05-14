@@ -2,6 +2,7 @@
  *  Copyright (C) 2017-2018 Savoir-faire Linux Inc.
  *
  *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *  Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,33 +21,45 @@
 
 #pragma once
 
+// std
+#include <mutex>
+#include <string>
+#include <thread>
+#include <map>
+#include <functional>
+#include <condition_variable>
+
 // Qt
 #include <QEventLoop>
 
 /**
  * Class used to wait a Qt signal
- * @param object to listen from
- * @param signal to detect
+ * @param function object to execute that is expected to trigger signal emission
  */
 class WaitForSignalHelper: public QObject
 {
     Q_OBJECT
 public:
-    WaitForSignalHelper(QObject& object, const char* signal);
-    /**
-     * Connect the signal to quit() slot
-     * @param  timeoutMs the time to wait
-     * @return if the signal was emitted
-     */
-    bool wait(unsigned int timeoutMs);
+    WaitForSignalHelper(std::function<void()> f);
+
+    WaitForSignalHelper& addSignal(const std::string& id, QObject& object, const char* signal);
+    std::map<std::string, int> wait(int timeoutMs);
 
 public Q_SLOTS:
     /**
      * Is activated if wait is finished
      */
     void timeout();
+    /**
+     * called when a signal is received
+     */
+    void signalSlot(const QString & id);
 
 private:
-    bool timeout_;
+    std::function<void()> f_;
+    std::map<std::string, int> results_;
+
+    std::mutex mutex_;
+    std::condition_variable cv_;
     QEventLoop eventLoop_;
 };

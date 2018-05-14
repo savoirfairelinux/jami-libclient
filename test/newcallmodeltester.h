@@ -41,9 +41,9 @@ namespace test
 
 class NewCallModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(NewCallModelTester);
-    CPPUNIT_TEST(testCreateAndGetCall);
-    CPPUNIT_TEST(testAcceptHoldUnholdHangupCall);
-    CPPUNIT_TEST(testCreateAndGetAudioOnlyCall);
+//    CPPUNIT_TEST(testCreateAndGetCall);
+//    CPPUNIT_TEST(testAcceptHoldUnholdHangupCall);
+//    CPPUNIT_TEST(testCreateAndGetAudioOnlyCall);
     CPPUNIT_TEST_SUITE_END();
 
 public:
