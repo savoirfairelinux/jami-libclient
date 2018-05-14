@@ -1410,50 +1410,50 @@
         <translation>Коллекция Профилей Участников</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1061"/>
-        <location filename="../src/conversationmodel.cpp" line="1415"/>
-        <location filename="../src/conversationmodel.cpp" line="1628"/>
+        <location filename="../src/conversationmodel.cpp" line="1086"/>
+        <location filename="../src/conversationmodel.cpp" line="1444"/>
+        <location filename="../src/conversationmodel.cpp" line="1657"/>
         <source>Invitation received</source>
         <translation>Получено приглашение</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1062"/>
+        <location filename="../src/conversationmodel.cpp" line="1087"/>
         <source>Contact added</source>
         <translation>Контакт добавлен</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1096"/>
-        <location filename="../src/conversationmodel.cpp" line="1103"/>
+        <location filename="../src/conversationmodel.cpp" line="1121"/>
+        <location filename="../src/conversationmodel.cpp" line="1128"/>
         <source>Invitation accepted</source>
         <translation>Приглашение принято</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1298"/>
+        <location filename="../src/conversationmodel.cpp" line="1327"/>
         <source>ð Outgoing call</source>
         <translation>ð Исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1300"/>
+        <location filename="../src/conversationmodel.cpp" line="1329"/>
         <source>ð Incoming call</source>
         <translation>ð Входящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1313"/>
+        <location filename="../src/conversationmodel.cpp" line="1342"/>
         <source>ð Outgoing call - </source>
         <translation>ð Исходящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1316"/>
+        <location filename="../src/conversationmodel.cpp" line="1345"/>
         <source>ð Incoming call - </source>
         <translation>ð Входящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1320"/>
+        <location filename="../src/conversationmodel.cpp" line="1349"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Непринятый исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1322"/>
+        <location filename="../src/conversationmodel.cpp" line="1351"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Пропущенный входящий вызов</translation>
     </message>
