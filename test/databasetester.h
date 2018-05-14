@@ -38,14 +38,14 @@ namespace test
 class DatabaseTester : public CppUnit::TestFixture {
 
     CPPUNIT_TEST_SUITE(DatabaseTester);
-    CPPUNIT_TEST(testInsertAndSelectCorrectValue);
-    CPPUNIT_TEST(testCountUnreadMessages);
-    CPPUNIT_TEST(testInsertIncorrectFail);
-    CPPUNIT_TEST(testSelectInexistantValue);
-    CPPUNIT_TEST(testUpdateCorrectValue);
-    CPPUNIT_TEST(testUpdateInexistantValue);
-    CPPUNIT_TEST(testDeleteCorrectValue);
-    CPPUNIT_TEST(testDeleteInexistantValue);
+//    CPPUNIT_TEST(testInsertAndSelectCorrectValue);
+//    CPPUNIT_TEST(testCountUnreadMessages);
+//    CPPUNIT_TEST(testInsertIncorrectFail);
+//    CPPUNIT_TEST(testSelectInexistantValue);
+//    CPPUNIT_TEST(testUpdateCorrectValue);
+//    CPPUNIT_TEST(testUpdateInexistantValue);
+//    CPPUNIT_TEST(testDeleteCorrectValue);
+//    CPPUNIT_TEST(testDeleteInexistantValue);
     CPPUNIT_TEST_SUITE_END();
 
 public:
