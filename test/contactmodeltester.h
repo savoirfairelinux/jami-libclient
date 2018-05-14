@@ -44,16 +44,16 @@ class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST(testGetAllContactsForRINGAccount);
     CPPUNIT_TEST(testReceivesPendingRequest);
     CPPUNIT_TEST(testAddNewRingContact);
-    CPPUNIT_TEST(testAddRingURI);
+    //CPPUNIT_TEST(testAddRingURI);
     CPPUNIT_TEST(testAddNewSIPContact);
     CPPUNIT_TEST(testAddAlreadyAddedContact);
     CPPUNIT_TEST(testReceivesContactPresenceUpdate);
     CPPUNIT_TEST(testRmRingContact);
-    CPPUNIT_TEST(testRmPendingContact);
+    //CPPUNIT_TEST(testRmPendingContact);
     CPPUNIT_TEST(testRmSIPContact);
     CPPUNIT_TEST(testRmTemporaryContact);
     CPPUNIT_TEST(testCountPendingRequests);
-    CPPUNIT_TEST(testBanUnbanContact);
+    //CPPUNIT_TEST(testBanUnbanContact);
     CPPUNIT_TEST_SUITE_END();
 
 public:
