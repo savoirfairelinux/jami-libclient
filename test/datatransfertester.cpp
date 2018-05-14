@@ -84,11 +84,15 @@ DataTransferTester::testReceivesImage5MbNoPref()
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
     ConfigurationManager::instance().setDataTransferInfo(2, info);
-    ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::created);
-    ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::wait_host_acceptance);
-    WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(interactionStatusUpdated(const std::string&, uint64_t,
-                                      const api::interaction::Info&))).wait(1000);
+
+    auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
+            ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::created);
+            ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::wait_host_acceptance);
+        })
+        .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
+        .wait(1000);
+    CPPUNIT_ASSERT_EQUAL(dataTransferEventSigsCaught["interactionStatusUpdated"], 1);
+
     auto lastIt = accInfo_.conversationModel->filteredConversation(0).interactions.rbegin()->second;
     CPPUNIT_ASSERT(lastIt.status == lrc::api::interaction::Status::TRANSFER_AWAITING_HOST);
 }
@@ -105,11 +109,15 @@ DataTransferTester::testReceivesImage5Mb()
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
     ConfigurationManager::instance().setDataTransferInfo(3, info);
-    ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
-    ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
-    WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(interactionStatusUpdated(const std::string&, uint64_t,
-                                      const api::interaction::Info&))).wait(1000);
+
+    auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
+            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
+            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
+        })
+        .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
+        .wait(1000);
+    CPPUNIT_ASSERT_EQUAL(dataTransferEventSigsCaught["interactionStatusUpdated"], 1);
+
     auto lastIt = accInfo_.conversationModel->filteredConversation(0).interactions.rbegin()->second;
     CPPUNIT_ASSERT(lastIt.status == lrc::api::interaction::Status::TRANSFER_ACCEPTED);
 }
@@ -126,11 +134,15 @@ DataTransferTester::testReceivesImage50Mb()
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
     ConfigurationManager::instance().setDataTransferInfo(3, info);
-    ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
-    ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
-    WaitForSignalHelper(*accInfo_.conversationModel,
-        SIGNAL(interactionStatusUpdated(const std::string&, uint64_t,
-                                      const api::interaction::Info&))).wait(1000);
+
+    auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
+            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
+            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
+        })
+        .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
+        .wait(1000);
+    CPPUNIT_ASSERT_EQUAL(dataTransferEventSigsCaught["interactionStatusUpdated"], 1);
+
     auto lastIt = accInfo_.conversationModel->filteredConversation(0).interactions.rbegin()->second;
     CPPUNIT_ASSERT(lastIt.status == lrc::api::interaction::Status::TRANSFER_AWAITING_HOST);
 }
