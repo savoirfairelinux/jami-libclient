@@ -42,8 +42,8 @@ namespace test
 class DataTransferTester : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(DataTransferTester);
     CPPUNIT_TEST(testReceivesMusic);
-    CPPUNIT_TEST(testReceivesImage5MbNoPref);
-    CPPUNIT_TEST(testReceivesImage5Mb);
+    //CPPUNIT_TEST(testReceivesImage5MbNoPref);
+    //CPPUNIT_TEST(testReceivesImage5Mb);
     CPPUNIT_TEST_SUITE_END();
 
 public:
