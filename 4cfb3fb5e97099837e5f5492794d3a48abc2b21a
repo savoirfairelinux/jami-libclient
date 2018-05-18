@@ -16,6 +16,24 @@
       "revId": "4cfb3fb5e97099837e5f5492794d3a48abc2b21a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_7d09f32b",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-18T17:23:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa57193c_ba0b912a",
+      "revId": "4cfb3fb5e97099837e5f5492794d3a48abc2b21a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
