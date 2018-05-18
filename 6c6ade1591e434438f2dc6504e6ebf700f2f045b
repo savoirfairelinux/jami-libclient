@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_dd68ff89",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-05-18T20:38:34Z",
+      "side": 1,
+      "message": "Warning: sometimes, Account.type is not given (when you update for example). This lead to false informations. If a key is not given, the value should not be updated!",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 187
+      },
+      "revId": "6c6ade1591e434438f2dc6504e6ebf700f2f045b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
