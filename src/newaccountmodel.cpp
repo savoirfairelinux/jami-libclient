@@ -129,6 +129,27 @@ NewAccountModel::flagFreeable(const std::string& accountId) const
     pimpl_->m_condVar_account_removal.notify_all();
 }
 
+bool
+NewAccountModel::exportToFile(const std::string& accountId, const std::string& path) const
+{
+    return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str());
+}
+
+void
+NewAccountModel::removeAccount(const std::string& accountId) const
+{
+    ConfigurationManager::instance().removeAccount(accountId.c_str());
+}
+
+bool
+NewAccountModel::changeAccountPassword(const std::string& accountId,
+                                       const std::string& currentPassword,
+                                       const std::string& newPassword) const
+{
+    return ConfigurationManager::instance()
+           .changeAccountPassword(accountId.c_str(), currentPassword.c_str(), newPassword.c_str());
+}
+
 const account::Info&
 NewAccountModel::getAccountInfo(const std::string& accountId) const
 {
