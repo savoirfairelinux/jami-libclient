@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_3d5e5bea",
+        "filename": "src/newdevicemodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-18T20:31:29Z",
+      "side": 1,
+      "message": "std::lock_guard\u003cstd::mutex\u003e lock(devicesMtx_); ?",
+      "revId": "69aaccd478ba9fdc212956a817f1110d3d64684c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
