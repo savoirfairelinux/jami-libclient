@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_ba0b912a",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-18T17:13:09Z",
+      "side": 1,
+      "message": "should not be emitted when an exception is thrown?",
+      "revId": "4cfb3fb5e97099837e5f5492794d3a48abc2b21a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
