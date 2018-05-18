@@ -76,6 +76,19 @@ public:
      * flag account corresponding to passed id as freeable.
      */
     void flagFreeable(const std::string& accountID) const;
+    /**
+     * Call exportToFile from the daemon
+     * @param accountId
+     * @param path destination
+     * @return if the file is exported with success
+     */
+    bool exportToFile(const std::string& accountId, const std::string& path) const;
+    /**
+     * Call removeAccount from the daemon
+     * @param accountId to remove
+     * @note will emit accountRemoved
+     */
+    void removeAccount(const std::string& accountId) const;
 
 Q_SIGNALS:
     /**
