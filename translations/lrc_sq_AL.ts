@@ -1410,50 +1410,50 @@
         <translation>Koleksion Profilesh Personash</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1086"/>
-        <location filename="../src/conversationmodel.cpp" line="1444"/>
-        <location filename="../src/conversationmodel.cpp" line="1657"/>
+        <location filename="../src/conversationmodel.cpp" line="1101"/>
+        <location filename="../src/conversationmodel.cpp" line="1459"/>
+        <location filename="../src/conversationmodel.cpp" line="1672"/>
         <source>Invitation received</source>
         <translation>Ftesa u mor</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1087"/>
+        <location filename="../src/conversationmodel.cpp" line="1102"/>
         <source>Contact added</source>
         <translation>Kontakti u shtua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1121"/>
-        <location filename="../src/conversationmodel.cpp" line="1128"/>
+        <location filename="../src/conversationmodel.cpp" line="1136"/>
+        <location filename="../src/conversationmodel.cpp" line="1143"/>
         <source>Invitation accepted</source>
         <translation>Ftesa u pranua</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1327"/>
+        <location filename="../src/conversationmodel.cpp" line="1342"/>
         <source>ð Outgoing call</source>
         <translation>Thirrje ikëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1329"/>
+        <location filename="../src/conversationmodel.cpp" line="1344"/>
         <source>ð Incoming call</source>
         <translation>Tirrje ardhëse ð</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1342"/>
+        <location filename="../src/conversationmodel.cpp" line="1357"/>
         <source>ð Outgoing call - </source>
         <translation>Thirrje ikëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1345"/>
+        <location filename="../src/conversationmodel.cpp" line="1360"/>
         <source>ð Incoming call - </source>
         <translation>Tirrje ardhëse ð - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1349"/>
+        <location filename="../src/conversationmodel.cpp" line="1364"/>
         <source>ð½ Missed outgoing call</source>
         <translation>Thirrje ikëse të humbura ð½</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1351"/>
+        <location filename="../src/conversationmodel.cpp" line="1366"/>
         <source>ð½ Missed incoming call</source>
         <translation>Thirrje ardhëse të humbura ð½</translation>
     </message>
