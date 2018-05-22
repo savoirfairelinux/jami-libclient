@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fa57193c_605ca626",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-22T19:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa57193c_6025c6aa",
+      "range": {
+        "startLine": 218,
+        "startChar": 82,
+        "endLine": 218,
+        "endChar": 86
+      },
+      "revId": "b36c9bce0b9d8631f841beb11476e1fb4e21f94e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa57193c_c03932da",
         "filename": "test/contactmodeltester.cpp",
         "patchSetId": 18
@@ -36,6 +60,30 @@
       "writtenOn": "2018-05-22T18:45:05Z",
       "side": 1,
       "message": "add the previous comment here too.",
+      "range": {
+        "startLine": 289,
+        "startChar": 6,
+        "endLine": 289,
+        "endChar": 19
+      },
+      "revId": "b36c9bce0b9d8631f841beb11476e1fb4e21f94e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_c0401238",
+        "filename": "test/contactmodeltester.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-22T19:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa57193c_c03932da",
       "range": {
         "startLine": 289,
         "startChar": 6,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fa57193c_607306b2",
+        "filename": "test/datatransfertester.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-22T19:19:12Z",
+      "side": 1,
+      "message": "¯\\_(?)_/¯",
+      "parentUuid": "fa57193c_0034cadc",
+      "range": {
+        "startLine": 92,
+        "startChar": 76,
+        "endLine": 92,
+        "endChar": 170
+      },
+      "revId": "b36c9bce0b9d8631f841beb11476e1fb4e21f94e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa57193c_a036bee5",
         "filename": "test/datatransfertester.h",
         "patchSetId": 18
@@ -82,6 +154,30 @@
       "writtenOn": "2018-05-22T18:45:05Z",
       "side": 1,
       "message": "uncomment this",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 41
+      },
+      "revId": "b36c9bce0b9d8631f841beb11476e1fb4e21f94e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_4074029c",
+        "filename": "test/datatransfertester.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-22T19:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa57193c_a036bee5",
       "range": {
         "startLine": 45,
         "startChar": 0,
@@ -128,6 +224,30 @@
       "writtenOn": "2018-05-22T18:45:05Z",
       "side": 1,
       "message": "printf? :)",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 10
+      },
+      "revId": "b36c9bce0b9d8631f841beb11476e1fb4e21f94e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_806e1ac8",
+        "filename": "test/utils/waitforsignalhelper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-05-22T19:19:12Z",
+      "side": 1,
+      "message": "XD",
+      "parentUuid": "fa57193c_404d2272",
       "range": {
         "startLine": 84,
         "startChar": 4,
