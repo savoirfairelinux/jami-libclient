@@ -173,6 +173,10 @@ public:
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
+    // Synchronization tools for account creation synchronization
+    std::mutex m_mutex_conversations;
+    std::condition_variable m_condVar_conversation_creation;
+
 public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
@@ -575,11 +579,15 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     auto accountId = pimpl_->accountProfileId;
     bool isTemporary = conversation.participants.front() == "";
 
-    // Send interaction to all participants
-    // NOTE: conferences are not implemented yet, so we have only one participant
     uint64_t daemonMsgId = 0;
     auto status = interaction::Status::SENDING;
-    for (const auto& participant: conversation.participants) {
+
+    // make a copy of participants list: if current conversation is temporary, it might me destroyed while we are reading it
+    const auto participants = conversation.participants;
+
+    /* Send interaction to all participants
+       NOTE: conferences are not implemented yet, so we have only one participant */
+    for (const auto& participant: participants) {
         auto contactInfo = owner.contactModel->getContact(participant);
 
         if (contactInfo.isBanned) {
@@ -588,33 +596,51 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         }
 
         pimpl_->sendContactRequest(participant);
-
-        QStringList callLists = CallManager::instance().getCallList(); // no auto
-        // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
-        //             still valid every time the user want to send a message.
-        if (not conversation.callId.empty() and not callLists.contains(conversation.callId.c_str()))
-            conversation.callId.clear();
-
-        if (not conversation.callId.empty()
-            and call::canSendSIPMessage(owner.callModel->getCall(conversation.callId))) {
-            status = interaction::Status::UNKNOWN;
-            owner.callModel->sendSipMessage(conversation.callId, body);
-
-        } else
-            daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
-
     }
 
-    // If first interaction with temporary contact, we have to update the conversations info
-    // at this stage
+    if (isTemporary) {
+        /* Block until we are sure that the final conversation was created by
+           slotContactAdded(). If adding contact failed we should not process any further. */
+        std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
+        auto res = pimpl_->m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2), [&](){
+            return pimpl_->indexOfContact(convId) >= 0;});
+        lock.unlock();
+
+        if (!res) {
+            qDebug() << "ConversationModel::sendMessage reached timeout while waiting for contact to be added. Couldn't send message.";
+            return;
+        }
+    }
+
+    // retrieve newly created final conversation
     int contactIndex;
     if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
         qDebug() << "Can't send message: Other participant is not a contact";
         return;
     }
 
-    auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
+    auto& newConv = pimpl_->conversations.at(contactIndex);
     convId = newConv.uid;
+
+    for (const auto& participant: participants) {
+        auto contactInfo = owner.contactModel->getContact(participant);
+
+        QStringList callLists = CallManager::instance().getCallList(); // no auto
+        // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
+        //             still valid every time the user want to send a message.
+        if (not newConv.callId.empty() and not callLists.contains(newConv.callId.c_str()))
+            newConv.callId.clear();
+
+        if (not newConv.callId.empty()
+            and call::canSendSIPMessage(owner.callModel->getCall(newConv.callId))) {
+            status = interaction::Status::UNKNOWN;
+            owner.callModel->sendSipMessage(newConv.callId, body);
+
+        } else {
+            daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
+        }
+
+    }
 
     // Add interaction to database
     auto msg = interaction::Info {accountId, body, std::time(nullptr),
@@ -625,10 +651,19 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         // Because the daemon already give an id for the message, we need to store it.
         database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
     }
+
+    bool ret = false;
+
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-        newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg));
+        ret = newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg)).second;
     }
+
+    if (!ret) {
+        qDebug("ConversationModel::sendMessage failed to send message because an existing key was already present in the database (key = %d)", msgId);
+        return;
+    }
+
     newConv.lastMessageUid = msgId;
     pimpl_->dirtyConversations = {true, true};
     // Emit this signal for chatview in the client
@@ -1173,6 +1208,7 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     }
 
     sortConversations();
+    m_condVar_conversation_creation.notify_all();
     emit linked.modelSorted();
 }
 
