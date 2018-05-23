@@ -173,6 +173,10 @@ public:
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
+    // Synchronization tools for account creation synchronization
+    std::mutex m_mutex_conversations;
+    std::condition_variable m_condVar_conversation_creation;
+
 public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
@@ -564,7 +568,12 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     if (conversationIdx == -1)
         return;
 
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    /* Do not use a reference: In the case where passed contact is temporary,
+       sendContactRequest() will trigger addContact() which will eventually
+       free the temporary conversation we refer to. In the case where
+       slotContactAdded() gets executed before we call conversations.at() a second
+       time, this will result in use after free and crash. */
+    auto conversation = pimpl_->conversations.at(conversationIdx);
     if (conversation.participants.empty()) {
         // Should not
         qDebug() << "ConversationModel::sendMessage can't send a interaction to a conversation with no participant";
@@ -594,6 +603,20 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         //             still valid every time the user want to send a message.
         if (not conversation.callId.empty() and not callLists.contains(conversation.callId.c_str()))
             conversation.callId.clear();
+
+        if (participant == "") {
+            /* Block until we are sure that the final conversation was created by
+               slotContactAdded(). If adding contact failed we should not process any further. */
+            std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
+            auto res = pimpl_->m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2), [&](){
+                return pimpl_->indexOfContact(convId) >= 0;});
+            lock.unlock();
+
+            if (!res) {
+                qDebug() << "ConversationModel::sendMessage reached timeout while waiting for contact to be added. Couldn't send message.";
+                return;
+            }
+        }
 
         if (not conversation.callId.empty()
             and call::canSendSIPMessage(owner.callModel->getCall(conversation.callId))) {
@@ -1171,6 +1194,7 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     }
 
     sortConversations();
+    m_condVar_conversation_creation.notify_all();
     emit linked.modelSorted();
 }
 
