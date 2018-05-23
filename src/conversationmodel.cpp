@@ -173,6 +173,10 @@ public:
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
+    // Synchronization tools for account creation synchronization
+    std::mutex m_mutex_conversations;
+    std::condition_variable m_condVar_conversation_creation;
+
 public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
@@ -564,7 +568,12 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     if (conversationIdx == -1)
         return;
 
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    /* Do not use a reference: In the case where passed contact is temporary,
+       sendContactRequest() will trigger addContact() which will eventually
+       free the temporary conversation we refer to. In the case where
+       slotContactAdded() gets executed before we call conversations.at() a second
+       time, this will result in use after free and crash. */
+    auto conversation = pimpl_->conversations.at(conversationIdx);
     if (conversation.participants.empty()) {
         // Should not
         qDebug() << "ConversationModel::sendMessage can't send a interaction to a conversation with no participant";
@@ -612,6 +621,16 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         qDebug() << "Can't send message: Other participant is not a contact";
         return;
     }
+
+    /* Block until we are sure that the final conversation was created by
+       slotContactAdded(). Otherwise in the case where contact was temporary we
+       might retrieve the temporary conversation a second time, which will later
+       be erased by slotContactAdded() resulting in use after free and crash. */
+    std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
+    pimpl_->m_condVar_conversation_creation.wait(lock, [&](){
+        auto& newConv = pimpl_->conversations.at(contactIndex);
+        return newConv.participants.front() != "";});
+    lock.unlock();
 
     auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
     convId = newConv.uid;
@@ -1171,6 +1190,7 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     }
 
     sortConversations();
+    m_condVar_conversation_creation.notify_all();
     emit linked.modelSorted();
 }
 
