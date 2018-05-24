@@ -748,8 +748,10 @@ ConversationModel::clearInteractionFromConversation(const std::string& convId, c
             qDebug() << "can't clear interaction from conversation: " << e.what();
         }
     }
-    if (erased_keys > 0)
+    if (erased_keys > 0) {
+        pimpl_->dirtyConversations.first = true;
         emit interactionRemoved(convId, interactionId);
+    }
     if (lastInteractionUpdated) {
         // last interaction as changed, so the order can changes.
         pimpl_->sortConversations();
