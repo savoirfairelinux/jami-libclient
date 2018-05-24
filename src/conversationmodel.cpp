@@ -533,10 +533,25 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
 
-    // If call is with temporary contact, conversation has been removed and must be updated
+    if (isTemporary) {
+        /* Block until we are sure that the final conversation was created by
+           slotContactAdded(). If adding contact failed we should not process
+           any further */
+        std::unique_lock<std::mutex> lock(m_mutex_conversations);
+        auto res = m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2), [&]() {
+            return indexOfContact(convId) >= 0;
+        });
+        lock.unlock();
+
+        if (!res) {
+            qDebug() << "ConversationModelPimpl::placeCall reached timeout while waiting for contact to be added. Couldn't place call.";
+            return;
+        }
+    }
+
     int contactIndex;
     if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
-        qDebug() << "Can't place call: Other participant is not a contact";
+        qDebug() << "Can't place call: Other participant is not a contact (removed while placing call ?)";
         return;
     }
 
