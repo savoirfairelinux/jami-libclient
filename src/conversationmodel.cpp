@@ -1690,13 +1690,43 @@ ConversationModel::sendFile(const std::string& convUid,
     if (conversationIdx == -1)
         return;
 
-    const auto& peerUri = pimpl_->conversations[conversationIdx].participants.front();
-    if (peerUri.empty())
-        return;
+    const auto peerUri = pimpl_->conversations[conversationIdx].participants.front();
+    bool isTemporary = peerUri.empty();
+
+    /* It is necessary to make a copy of convUid since it may very well point to
+       a field in the temporary conversation, which is going to be destroyed by
+       slotContactAdded() (indirectly triggered by sendContactrequest(). Not doing
+       so may result in use after free/crash. */
+    auto convId = convUid;
 
     pimpl_->sendContactRequest(peerUri);
+
+    if (isTemporary) {
+        /* Block until we are sure that the final conversation was created by
+           slotContactAdded(). If adding contact failed we should not process
+           any further */
+        std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
+        auto res = pimpl_->m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2),
+                   [&]() { return pimpl_->indexOfContact(convId) >= 0; });
+        lock.unlock();
+
+        if (!res) {
+            qDebug() << "ConversationModel::sendFile reached timeout while waiting for contact to be added. Couldn't send file.";
+            return;
+        }
+    }
+
+    int contactIndex;
+    if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+        qDebug() << "Can't send file: Other participant is not a contact (removed while sending file ?)";
+        return;
+    }
+
+    // Retrieve final peer uri after creation of the conversation
+    const auto& newPeerUri = isTemporary ? pimpl_->conversations.at(contactIndex).participants.front() : peerUri;
+
     pimpl_->lrc.getDataTransferModel().sendFile(owner.id.c_str(),
-                                                peerUri.c_str(),
+                                                newPeerUri.c_str(),
                                                 path.c_str(),
                                                 filename.c_str());
 }
