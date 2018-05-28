@@ -1725,6 +1725,12 @@ ConversationModel::sendFile(const std::string& convUid,
     // Retrieve final peer uri after creation of the conversation
     const auto& newPeerUri = isTemporary ? pimpl_->conversations.at(contactIndex).participants.front() : peerUri;
 
+    auto contactInfo = owner.contactModel->getContact(newPeerUri);
+    if (contactInfo.isBanned) {
+        qDebug() << "ContactModel::sendFile: denied, contact is banned";
+        return;
+    }
+
     pimpl_->lrc.getDataTransferModel().sendFile(owner.id.c_str(),
                                                 newPeerUri.c_str(),
                                                 path.c_str(),
