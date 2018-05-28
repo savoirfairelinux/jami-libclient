@@ -31,6 +31,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
+#include <deque>
 #include <future>
 
 #include <configurationmanager_interface.h>
@@ -639,6 +640,13 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(accountId)
         Q_UNUSED(from)
         Q_UNUSED(payload)
+    }
+
+    QVector<Message> getLastMessages(const std::string& accountID, const uint64_t& base_timestamp)
+    {
+        Q_UNUSED(accountID)
+        Q_UNUSED(base_timestamp)
+        return {};
     }
 
     void removeContact(const QString &accountId, const QString &uri, bool ban)

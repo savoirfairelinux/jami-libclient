@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -424,6 +424,13 @@ void
 deleteObsoleteHistory(Database& db, long int date)
 {
     db.deleteFrom("interactions", "timestamp<=:date", {{":date", std::to_string(date)}});
+}
+
+uint64_t
+getLastTimestamp(Database& db)
+{
+    auto timestamps = db.select("MAX(timestamp)", "interactions", "1=1", {}).payloads;
+    return timestamps.empty() ? std::time(nullptr) : std::stoull(timestamps[0]);
 }
 
 } // namespace database
