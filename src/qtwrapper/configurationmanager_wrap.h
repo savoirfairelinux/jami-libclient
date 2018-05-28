@@ -584,6 +584,10 @@ public Q_SLOTS: // METHODS
         return DRing::sendAccountTextMessage(accountId.toStdString(), to.toStdString(), convertMap(payloads));
     }
 
+    QVector<Message> getLastMessages(const QString& accountID, const uint64_t& base_timestamp) {
+        return QVector<Message>::fromStdVector(DRing::getLastMessages(accountID.toStdString(), base_timestamp));
+    }
+
     bool setCodecDetails(const QString& accountId, unsigned int codecId, const MapStringString& details) {
         return DRing::setCodecDetails(accountId.toStdString(), codecId, convertMap(details));
     }

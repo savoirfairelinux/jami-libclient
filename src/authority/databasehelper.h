@@ -259,6 +259,13 @@ int addDataTransferToConversation(Database& db,
 
 std::string conversationIdFromInteractionId(Database& db, unsigned int interactionId);
 
+/**
+ * Retrieve the last timestamp from the interactions table
+ * is used for ConfigurationManager::getLastMessages
+ * @param db
+ */
+uint64_t getLastTimestamp(Database& db);
+
 } // namespace database
 
 } // namespace authority
