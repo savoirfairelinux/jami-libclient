@@ -113,10 +113,13 @@ public:
      * Add a new message from a peer in the database
      * @param from the peer uri
      * @param body the content of the message
-     * @param authorProfileId override the author of the message (if empty it's from)*/
+     * @param authorProfileId override the author of the message (if empty it's from)
+     * @param timestamp the timestamp of the message
+     */
     void addIncomingMessage(const std::string& from,
                             const std::string& body,
-                            const std::string& authorProfileId="");
+                            const std::string& authorProfileId="",
+                            const uint64_t& timestamp = 0);
     /**
      * Change the status of an interaction. Listen from callbacksHandler
      * @param accountId, account linked
@@ -1146,6 +1149,18 @@ ConversationModelPimpl::initConversations()
     sortConversations();
     filteredConversations = conversations;
     dirtyConversations.first = false;
+
+    // Load all non treated messages for this account
+    QVector<DRing::Message> messages = ConfigurationManager::instance().getLastMessages(
+        linked.owner.id.c_str(),
+        database::getLastTimestamp(db));
+    for (auto& message : messages) {
+        uint64_t timestamp = 0;
+        try {
+            timestamp = static_cast<uint64_t>(message.received);
+        } catch (...) {}
+        addIncomingMessage(message.from, message.payloads["text/plain"], "", timestamp);
+    }
 }
 
 void
@@ -1564,7 +1579,8 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
 void
 ConversationModelPimpl::addIncomingMessage(const std::string& from,
                                            const std::string& body,
-                                           const std::string& authorProfileId)
+                                           const std::string& authorProfileId,
+                                           const uint64_t& timestamp)
 {
     auto contactProfileId = database::getOrInsertProfile(db, from);
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
@@ -1576,7 +1592,8 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
         ));
     }
     auto authorId = authorProfileId.empty()? contactProfileId: authorProfileId;
-    auto msg = interaction::Info {authorId, body, std::time(nullptr),
+    auto msg = interaction::Info {authorId, body,
+                                  timestamp == 0 ? std::time(nullptr) : static_cast<time_t>(timestamp),
                                   interaction::Type::TEXT, interaction::Status::UNREAD};
     int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);

@@ -641,6 +641,13 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(payload)
     }
 
+    QVector<DRing::Message> getLastMessages(const std::string& accountID, const uint64_t& base_timestamp)
+    {
+        Q_UNUSED(accountID)
+        Q_UNUSED(base_timestamp)
+        return {};
+    }
+
     void removeContact(const QString &accountId, const QString &uri, bool ban)
     {
         if (getAccountList().indexOf(accountId) == -1) return;
