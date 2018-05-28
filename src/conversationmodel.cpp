@@ -1146,6 +1146,11 @@ ConversationModelPimpl::initConversations()
     sortConversations();
     filteredConversations = conversations;
     dirtyConversations.first = false;
+
+    // Load all non treated messages for this account
+    QVector<Message> messages = ConfigurationManager::instance().getLastMessages(linked.owner.id.c_str());
+    for (const auto& message: messages)
+        addIncomingMessage(message.from.toStdString(), message.payloads["text/plain"].toStdString());
 }
 
 void
