@@ -42,6 +42,8 @@ Q_DECLARE_METATYPE(VectorString)
 Q_DECLARE_METATYPE(MapStringVectorString)
 Q_DECLARE_METATYPE(VectorVectorByte)
 Q_DECLARE_METATYPE(DataTransferInfo)
+Q_DECLARE_METATYPE(uint64_t)
+Q_DECLARE_METATYPE(Message)
 
 #ifndef ENABLE_LIBWRAP
 static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTransferInfo& info)
@@ -77,6 +79,28 @@ static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Dat
 
     return argument;
 }
+
+static inline QDBusArgument &operator<<(QDBusArgument& argument, const Message& m)
+{
+    argument.beginStructure();
+    argument << m.from;
+    argument << m.payloads;
+    argument << m.received;
+    argument.endStructure();
+
+    return argument;
+}
+
+static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Message& m)
+{
+    argument.beginStructure();
+    argument >> m.from;
+    argument >> m.payloads;
+    argument >> m.received;
+    argument.endStructure();
+
+    return argument;
+}
 #endif
 
 #ifndef ENABLE_LIBWRAP
@@ -95,9 +119,10 @@ inline void registerCommTypes() {
    qDBusRegisterMetaType<MapStringVectorString>         ();
    qDBusRegisterMetaType<VectorVectorByte>              ();
    qDBusRegisterMetaType<DataTransferInfo>              ();
+   qDBusRegisterMetaType<Message>                       ();
+   qDBusRegisterMetaType<QVector<Message>>              ();
    dbus_metaTypeInit = true;
 #endif
 }
 
 #pragma GCC diagnostic pop
-
