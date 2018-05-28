@@ -53,6 +53,14 @@ struct DataTransferInfo
     QString mimetype;
 };
 
+struct Message {
+    QString from;
+    MapStringString payloads;
+    quint64 received;
+};
+
+typedef QVector<Message> messages;
+
 /**
  * This function add a safe way to get an enum class size
  * @note it cannot be "const" due to some compiler issues
