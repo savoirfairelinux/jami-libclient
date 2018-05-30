@@ -141,9 +141,17 @@ public:
      */
     void setQuality(const std::string& callId, const double quality) const;
     /**
-     * Not implemented yet
+     * Blind transfer. Directly transfer a call to a sip number
+     * @param callId: the call to transfer
+     * @param to: the sip number (for example: "sip:1412")
      */
     void transfer(const std::string& callId, const std::string& to) const;
+    /**
+     * Save transfer. Transfer a call to another call
+     * @param callIdSrc: the call to transfer
+     * @param callIdDest: the destination's call
+     */
+    void transferToCall(const std::string& callIdSrc, const std::string& callIdDest) const;
     /**
      * Create a conference from 2 calls.
      * @param callIdA uid of the call A
