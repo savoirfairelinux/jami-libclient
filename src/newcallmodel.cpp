@@ -282,7 +282,13 @@ NewCallModel::setQuality(const std::string& callId, const double quality) const
 void
 NewCallModel::transfer(const std::string& callId, const std::string& to) const
 {
-    qDebug() << "transfer, isn't yet implemented";
+    CallManager::instance().transfer(callId.c_str(), to.c_str());
+}
+
+void
+NewCallModel::transferToCall(const std::string& callId, const std::string& callIdDest) const
+{
+    CallManager::instance().attendedTransfer(callId.c_str(), callIdDest.c_str());
 }
 
 void
