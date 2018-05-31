@@ -202,6 +202,8 @@ CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory:
     if (!account) return;
     if (status == NameDirectory::LookupStatus::SUCCESS) {
         emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
+    } else if((!address.trimmed().isEmpty() || !name.trimmed().isEmpty())) {
+        emit registeredNameNotFound(account->id().toStdString(), address.toStdString(), name.toStdString());
     }
 }
 
