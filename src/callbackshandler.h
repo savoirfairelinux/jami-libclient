@@ -119,6 +119,16 @@ Q_SIGNALS:
     void registeredNameFound(const std::string& accountId,
                              const std::string& uri,
                              const std::string& registeredName);
+
+    /**
+     * Connect this signal to know when a name is not found
+     * @param accountId the account who receives this signal
+     * @param uri the search uri
+     * @param name the search name
+     */
+    void registeredNameNotFound(const std::string& accountId,
+                                const std::string& uri,
+                                const std::string& name);
     /**
      * Connect this signal to know where a VCard is incoming
      * @param callId the call linked to this VCard

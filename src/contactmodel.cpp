@@ -120,6 +120,13 @@ public Q_SLOTS:
      */
     void slotRegisteredNameFound(const std::string& accountId, const std::string& uri, const std::string& registeredName);
     /**
+     * Listen CallbacksHandler when a name is not found
+     * @param accountId account linked
+     * @param uri the uri to search
+     * @param name the name to search
+     */
+    void slotRegisteredNameNotFound(const std::string& accountId, const std::string& uri, const std::string& name);
+    /**
      * Listen CallbacksHandler when an incoming request arrives
      * @param accountId account linked
      * @param contactUri
@@ -408,6 +415,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
             this, &ContactModelPimpl::slotRegisteredNameFound);
+    connect(&callbacksHandler, &CallbacksHandler::registeredNameNotFound,
+            this, &ContactModelPimpl::slotRegisteredNameNotFound);
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
@@ -428,6 +437,8 @@ ContactModelPimpl::~ContactModelPimpl()
                this, &ContactModelPimpl::slotIncomingContactRequest);
     disconnect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
                this, &ContactModelPimpl::slotRegisteredNameFound);
+    disconnect(&callbacksHandler, &CallbacksHandler::registeredNameNotFound,
+            this, &ContactModelPimpl::slotRegisteredNameNotFound);
     disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
                this, &ContactModelPimpl::slotIncomingCall);
     disconnect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
@@ -681,6 +692,26 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
     }
     emit linked.modelUpdated(uri);
 
+}
+
+void
+ContactModelPimpl::slotRegisteredNameNotFound(const std::string& accountId,
+                                              const std::string& uri,
+                                              const std::string& name)
+{
+    if (accountId != linked.owner.id) return;
+
+    auto& temporaryContact = contacts[""];
+    if (temporaryContact.registeredName != uri && temporaryContact.registeredName != name) {
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lk(contactsMtx_);
+
+        lrc::api::profile::Info profileInfo = {name, "", "Not found", profile::Type::TEMPORARY};
+        temporaryContact = {profileInfo, "", false, false};
+    }
+    emit linked.modelUpdated(uri);
 }
 
 void
