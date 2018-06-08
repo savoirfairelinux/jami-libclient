@@ -173,6 +173,13 @@ public:
      */
     std::string getFormattedCallDuration(const std::string& callId) const;
 
+    /**
+     * Get if a call is recording
+     * @param callId
+     * @return true if the call is recording else false
+     */
+    bool isRecording(const std::string& callId) const;
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
