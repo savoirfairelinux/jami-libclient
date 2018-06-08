@@ -350,6 +350,13 @@ NewCallModel::getFormattedCallDuration(const std::string& callId) const
     return formattedString;
 }
 
+bool
+NewCallModel::isRecording(const std::string& callId) const
+{
+    if (pimpl_->calls.find(callId) == pimpl_->calls.end()) return false;
+    return CallManager::instance().getIsRecording(callId.c_str());
+}
+
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler)
 : linked(linked)
