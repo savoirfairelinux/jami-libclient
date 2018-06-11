@@ -430,7 +430,14 @@ uint64_t
 getLastTimestamp(Database& db)
 {
     auto timestamps = db.select("MAX(timestamp)", "interactions", "1=1", {}).payloads;
-    return timestamps.empty() ? std::time(nullptr) : std::stoull(timestamps[0]);
+    auto result = std::time(nullptr);
+    try {
+        if (!timestamps.empty() && !timestamps[0].empty())
+            result = std::stoull(timestamps[0]);
+    } catch (...) {
+        qDebug() << "database::getLastTimestamp, stoull throws an exception";
+    }
+    return result;
 }
 
 } // namespace database
