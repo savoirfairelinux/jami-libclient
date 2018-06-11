@@ -695,7 +695,7 @@ ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
    ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-   QT5_USE_MODULES(ringclient_static Core)
+   target_link_libraries(ringclient_static Qt5::Core)
    TARGET_LINK_LIBRARIES( ringclient_static
       -lpthread
       ${QT_QTDBUS_LIBRARY}
@@ -707,18 +707,18 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
    )
 ENDIF()
 
-QT5_USE_MODULES(ringclient Core)
+target_link_libraries(ringclient Qt5::Core)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  QT5_USE_MODULES(ringclient DBus)
+  target_link_libraries(ringclient Qt5::DBus)
   IF(NOT ${ENABLE_STATIC} MATCHES false)
-      QT5_USE_MODULES(ringclient_static DBus)
+      target_link_libraries(ringclient_static Qt5::DBus)
   ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
    FIND_PACKAGE(Qt5Concurrent)
 
    #For some reason, QSemaphore wont compile on Windows without QtConcurrent
-   QT5_USE_MODULES(ringclient Concurrent)
+   target_link_libraries(ringclient Qt5::Concurrent)
 ENDIF()
 
 
