@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_7c573503",
+        "filename": "src/authority/databasehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-06-11T14:29:55Z",
+      "side": 1,
+      "message": "Hi!\n\nThank you for your patch.\n\nLittle things:\n1. We use 4 spaces indents\n2. timestamps[0] is a string so you can use empty too.\n3. stoull can throw an exception and this should be in a try/catch block to avoid crashing\n\n```\nauto result \u003d std::time(nullptr);\ntry {\n    if (!timestamps.empty() \u0026\u0026 !timestamps[0].empty())\n        result \u003d std::stoull(timestamps[0]);\n} catch (...) {\n    // Log a warning\n}\n```",
+      "range": {
+        "startLine": 439,
+        "startChar": 15,
+        "endLine": 439,
+        "endChar": 42
+      },
+      "revId": "9928d1428e17f5c36e9fdb1cc5e66520a5d4c343",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
