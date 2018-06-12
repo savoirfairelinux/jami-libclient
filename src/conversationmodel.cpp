@@ -1341,8 +1341,8 @@ ConversationModelPimpl::slotContactModelUpdated(const std::string& uri, bool nee
             } else {
                 emit linked.conversationUpdated(conversations.front().uid);
             }
-            return;
         }
+        return;
     } else {
         // No filter, so we can remove the newConversationItem
         if (!conversations.empty()) {
