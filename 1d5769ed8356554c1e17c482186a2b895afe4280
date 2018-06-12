@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_5c1191ab",
+        "filename": "src/authority/databasehelper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-06-12T14:07:33Z",
+      "side": 1,
+      "message": "I think we should bracket 1 line blocks as well, but it\u0027s not crucial.",
+      "revId": "1d5769ed8356554c1e17c482186a2b895afe4280",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_7c0c5595",
+        "filename": "src/authority/databasehelper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-06-12T14:07:33Z",
+      "side": 1,
+      "message": "I think it\u0027s a good idea to log the exception type here as it could be invalid_argument or out_of_range.",
+      "revId": "1d5769ed8356554c1e17c482186a2b895afe4280",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
