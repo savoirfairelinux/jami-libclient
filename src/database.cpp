@@ -30,7 +30,6 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
-#include <QtCore/QStandardPaths>
 #include <QtCore/QVariant>
 #include <QDir>
 
@@ -52,9 +51,6 @@ namespace lrc
 
 using namespace api;
 
-static constexpr auto VERSION = "1";
-static constexpr auto NAME = "ring.db";
-
 Database::Database()
 : QObject()
 {
@@ -70,11 +66,7 @@ Database::Database()
 
     // initalize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
-#ifdef ENABLE_TEST
-    db_.setDatabaseName(QString("/tmp/") + QString(NAME));
-#else
-    db_.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + NAME);
-#endif
+    db_.setDatabaseName(DATABASE_PATH);
 
     // open the database.
     if (not db_.open()) {
