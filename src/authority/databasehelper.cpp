@@ -113,6 +113,16 @@ getAvatarForProfileId(Database& db, const std::string& profileId)
     return "";
 }
 
+void
+setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar)
+{
+    db.update("profiles",
+              "photo=:photo",
+              {{":photo", avatar}},
+              "id=:id",
+              {{":id", profileId}});
+}
+
 api::contact::Info
 buildContactFromProfileId(Database& db, const std::string& profileId)
 {
