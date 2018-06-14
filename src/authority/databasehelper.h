@@ -88,6 +88,13 @@ std::vector<std::string> getPeerParticipantsForConversation(Database& db,
  */
 std::string getAvatarForProfileId(Database& db, const std::string& profileId);
 
+/**
+ * @param  db
+ * @param  profileId
+ * @param  avatar
+ */
+void setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar);
+
 api::contact::Info buildContactFromProfileId(Database& db, const std::string& profileId);
 
 /**
