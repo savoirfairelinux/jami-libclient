@@ -121,6 +121,13 @@ public:
      * @param enable
      */
     void enableAccount(const std::string& accountId, bool enabled);
+    /**
+     * Change the avatar of an account
+     * @param accountId
+     * @param avatar
+     * @throws out_of_range exception if account is not found
+     */
+    void setAvatar(const std::string& accountId, const std::string& avatar);
 
 Q_SIGNALS:
     /**

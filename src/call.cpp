@@ -21,13 +21,16 @@
 #include "call.h"
 
 //Std include
-#include <time.h>
+#include <fstream>
 #include <memory>
+#include <string>
+#include <time.h>
 
 //Qt
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 #include <QtCore/QDateTime>
+#include <QtCore/QStandardPaths>
 
 //DRing
 #include <account_const.h>
@@ -36,6 +39,7 @@
 
 //Ring library
 #include "dbus/callmanager.h"
+#include "dbus/configurationmanager.h"
 
 #include "collectioninterface.h"
 #include "person.h"
@@ -60,6 +64,9 @@
 #include "audio/settings.h"
 #include "personmodel.h"
 #include "private/contactmethod_p.h"
+
+#include "database.h"
+#include "authority/databasehelper.h"
 
 #include "media/audio.h"
 #include "media/video.h"
@@ -1684,7 +1691,28 @@ void CallPrivate::sendProfile()
      * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
      */
     auto t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
-    auto vCard = profile->person()->toVCard();
+
+    MapStringString details = ConfigurationManager::instance().getAccountDetails(m_Account->id());
+    using namespace DRing::Account;
+    std::string uri = "";
+    if (m_Account->protocol() == Account::Protocol::RING
+        && details[ConfProperties::USERNAME].contains("ring:")) {
+        uri = details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size());
+    } else {
+        uri = details[ConfProperties::USERNAME].toStdString();
+    }
+
+    // NOTE: Some clients still use the old LRC. So, we should be able to use the database or old VCard files for now.
+    // TODO: migrate sendProfile to newcallmodel.cpp as soon as possible.
+    std::ifstream dbfile(lrc::DATABASE_PATH.toStdString());
+    std::string photo = "";
+    if (dbfile.good()) {
+        lrc::Database db;
+        auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri);
+        // Retrieve avatar from database
+        photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
+    }
+    auto vCard = profile->person()->toVCard({}, photo);
 
     qsrand(time(nullptr));
     const auto& key = QString::number(qrand());
