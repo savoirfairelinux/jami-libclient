@@ -279,13 +279,14 @@ void VCardUtils::addContactMethod(const QString& type, const QString& num)
    addProperty(prop, num);
 }
 
-void VCardUtils::addPhoto(const QByteArray img)
+void VCardUtils::addPhoto(const QByteArray img, bool convertToBase64)
 {
-   m_vCard << (QString::fromUtf8(Property::PHOTO) +
-               QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-               "ENCODING=BASE64" +
-               QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-               "TYPE=PNG:" + img.toBase64().trimmed());
+    auto b64Img = convertToBase64 ? img.toBase64().trimmed() : img.trimmed();
+    m_vCard << (QString::fromUtf8(Property::PHOTO) +
+                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+                "ENCODING=BASE64" +
+                QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
+                "TYPE=PNG:" + b64Img);
 }
 
 const QByteArray VCardUtils::endVCard()
