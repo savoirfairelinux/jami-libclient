@@ -318,6 +318,8 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
     owner.deviceModel = std::make_unique<NewDeviceModel>(owner, callbacksHandler);
     owner.accountModel = &linked;
+    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+    owner.status = lrc::api::account::to_status(toStdString(volatileDetails[ConfProperties::Registration::STATUS]));
 }
 
 void
