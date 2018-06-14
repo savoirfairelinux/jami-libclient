@@ -170,6 +170,20 @@ NewAccountModel::enableAccount(const std::string& accountId, bool enabled)
     accountInfo->second.enabled = enabled;
 }
 
+void
+NewAccountModel::setAvatar(const std::string& accountId, const std::string& avatar)
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::setAvatar, can't find " + accountId);
+    }
+    accountInfo->second.profileInfo.avatar = avatar;
+    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri);
+    if (!accountProfileId.empty()) {
+        authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
+    }
+}
+
 bool
 NewAccountModel::exportToFile(const std::string& accountId, const std::string& path) const
 {
