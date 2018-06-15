@@ -39,6 +39,7 @@ class ContactModel;
 class ConversationModel;
 class NewAccountModel;
 class NewDeviceModel;
+class NewCodecModel;
 
 namespace account
 {
@@ -181,6 +182,7 @@ struct Info
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
+    std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     NewAccountModel* accountModel {nullptr};
 
     // daemon config
