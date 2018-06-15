@@ -64,3 +64,19 @@ void Video::PreviewManager::startPreview()
 {
    return VideoRendererManager::instance().startPreview();
 }
+
+void Video::PreviewManager::stopLocalRecorder()
+{
+   if (localRecorderPath.empty()) {
+      qDebug("stopLocalRecorder: can't stop non existing recording");
+      return;
+   }
+
+   VideoRendererManager::instance().stopLocalRecorder(localRecorderPath);
+}
+
+std::string Video::PreviewManager::startLocalRecorder(const bool& audioOnly, const std::string& path)
+{
+   localRecorderPath = VideoRendererManager::instance().startLocalRecorder(audioOnly, path);
+   return localRecorderPath;
+}
