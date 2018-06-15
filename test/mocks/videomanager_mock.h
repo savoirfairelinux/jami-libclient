@@ -175,8 +175,19 @@ public Q_SLOTS: // METHODS
 
     void setDecodingAccelerated(bool state)
     {
-
         Q_UNUSED(state)
+    }
+
+    void stopLocalRecorder(const QString& path)
+    {
+        Q_UNUSED(path)
+    }
+
+    QString startLocalRecorder(bool audioOnly, const QString& path)
+    {
+        Q_UNUSED(audioOnly)
+        Q_UNUSED(path)
+        return "/tmp/foobar";
     }
 
 Q_SIGNALS: // SIGNALS
