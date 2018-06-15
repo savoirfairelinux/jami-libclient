@@ -392,6 +392,7 @@ SET( libringclient_LIB_SRCS
   src/dbuserrorhandlerdefault.cpp
 
   #Other
+  src/avmodel.cpp
   src/hookmanager.cpp
   src/namedirectory.cpp
   src/itembase.cpp
@@ -519,6 +520,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/call.h
   src/api/account.h
   src/api/lrc.h
+  src/api/avmodel.h
   src/api/newaccountmodel.h
   src/api/newcallmodel.h
   src/api/newcodecmodel.h

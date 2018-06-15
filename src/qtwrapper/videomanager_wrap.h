@@ -220,6 +220,16 @@ public Q_SLOTS: // METHODS
         DRing::setDecodingAccelerated(state);
     }
 
+    void stopLocalRecorder(const QString& path)
+    {
+        DRing::stopLocalRecorder(path.toStdString());
+    }
+
+    QString startLocalRecorder(bool audioOnly, const QString& path)
+    {
+        return DRing::startLocalRecorder(audioOnly, path.toStdString());
+    }
+
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
