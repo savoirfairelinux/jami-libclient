@@ -1,6 +1,7 @@
 /******************************************************************************
- *   Copyright (C) 2012-2018 Savoir-faire Linux                            *
+ *   Copyright (C) 2012-2018 Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>   *
+ *   Author : Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>              *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -43,11 +44,16 @@ public:
    //Getters
    bool             isPreviewing   ();
    Video::Renderer* previewRenderer();
+   std::string      startLocalRecorder(const bool& audioOnly, const std::string& path);
+   void             stopLocalRecorder();
 
 private:
    //Constructor
    explicit PreviewManager();
    virtual ~PreviewManager();
+
+   // Local recorder ID. 0 means invalid, no recorder.
+   std::string localRecorderPath;
 
 public Q_SLOTS:
    void stopPreview ();
