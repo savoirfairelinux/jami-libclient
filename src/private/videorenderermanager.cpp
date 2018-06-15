@@ -161,24 +161,20 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
-
    VideoManager::instance().stopCamera();
 
    d_ptr->m_PreviewState = false;
-
 }
 
 ///Start video preview
 void VideoRendererManager::startPreview()
 {
-
    if (d_ptr->m_PreviewState)
       return;
 
    VideoManager::instance().startCamera();
 
    d_ptr->m_PreviewState = true;
-
 }
 
 ///Is the video model fetching preview from a camera
@@ -453,6 +449,24 @@ void VideoRendererManager::switchDevice(const Video::Device* device) const
 {
    VideoManagerInterface& interface = VideoManager::instance();
    interface.switchInput(device->id());
+}
+
+void VideoRendererManager::stopLocalRecorder(const size_t id) const
+{
+   VideoManagerInterface& interface = VideoManager::instance();
+   instance.stopLocalRecorder(id);
+}
+
+size_t VideoRendererManager::startLocalRecorder() const
+{
+   VideoManagerInterface& interface = VideoManager::instance();
+   return instance.startLocalRecorder();
+}
+
+std::string VideoRendererManager::getLocalRecorderFilename(size_t id) const
+{
+   VideoManagerInterface& interface = VideoManager::instance();
+   return instance.getLocalRecorderFilename(id);
 }
 
 #include <videorenderermanager.moc>

@@ -64,3 +64,30 @@ void Video::PreviewManager::startPreview()
 {
    return VideoRendererManager::instance().startPreview();
 }
+
+void Video::PreviewManager::stopLocalRecorder()
+{
+   if (!localRecorderID) {
+      qDebug("stopLocalRecorder: Attempt to stop non existing recording");
+      return;
+   }
+
+   VideoRendererManager::instance().stopLocalRecorder(localRecorderID);
+}
+
+bool Video::PreviewManager::startLocalRecorder()
+{
+   // 0 is error code.
+   localRecorderID = VideoRendererManager::instance().startLocalRecorder();
+   return localRecorderID != 0;
+}
+
+std::string Video::PreviewManager::getLocalRecorderFilename()
+{
+   if (!localRecorderID) {
+      qDebug("getLocalRecorderFilename: Attempt to get filename for non existing recording");
+      return "";
+   }
+
+   return VideoRendererManager::instance().getLocalRecorderFilename(localRecorderID);
+}

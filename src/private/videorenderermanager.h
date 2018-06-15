@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (C) 2012-2018 Savoir-faire Linux                            *
+ *   Copyright (C) 2012-2018 Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>   *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
@@ -57,6 +57,9 @@ public:
    Video::Renderer* getRenderer(const std::string& callId) const;
    void setBufferSize(uint size);
    void switchDevice(const Video::Device* device) const;
+   size_t startLocalRecorder();
+   void stopLocalRecorder(size_t id);
+   std::string getLocalRecorderFilename(size_t id);
 
 private:
    //Constructor
