@@ -26,6 +26,7 @@
 #include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
+#include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 #include "api/account.h"
 #include "api/behaviorcontroller.h"
@@ -363,6 +364,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
     owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
     owner.deviceModel = std::make_unique<NewDeviceModel>(owner, callbacksHandler);
+    owner.codecModel = std::make_unique<NewCodecModel>(owner, callbacksHandler);
     owner.accountModel = &linked;
     MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
     owner.status = lrc::api::account::to_status(toStdString(volatileDetails[ConfProperties::Registration::STATUS]));
