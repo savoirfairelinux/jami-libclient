@@ -21,6 +21,8 @@
 // Std
 #include <string>
 #include <memory>
+#include <sstream>
+#include <vector>
 
 // Data
 #include "profile.h"
@@ -193,6 +195,11 @@ struct Info
     void                    fromDetails(const MapStringString& details);
 };
 
+struct Bootstrap
+{
+    std::string hostname;
+    uint16_t port;
+};
 } // namespace account
 } // namespace api
 } // namespace lrc

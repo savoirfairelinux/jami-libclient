@@ -31,6 +31,7 @@
 
 // Lrc
 #include "typedefs.h"
+#include "api/account.h"
 
 namespace lrc
 {
@@ -127,6 +128,18 @@ public:
      * @param avatar
      */
     void setAvatar(const std::string& accountId, const std::string& avatar);
+    /**
+     * Retrieve bootstraps for an account
+     * @param accountId
+     * @return a list of api::account::Bootstrap
+     */
+    std::vector<account::Bootstrap> accountBootstrapList(const std::string& accountId) const;
+    /**
+     * Convert a bootstrap list to a string list
+     * @param bootstraps a list of api::account::Bootstrap
+     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     */
+    static std::string bootstrapListToString(const std::vector<account::Bootstrap>& bootstraps);
 
 Q_SIGNALS:
     /**

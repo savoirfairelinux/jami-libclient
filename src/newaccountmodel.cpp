@@ -42,8 +42,6 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 
-#include <iostream>
-
 namespace lrc
 {
 
@@ -181,6 +179,54 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
     auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri);
     authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
 }
+
+std::vector<account::Bootstrap>
+NewAccountModel::accountBootstrapList(const std::string& accountId) const
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::setAvatar, can't find " + accountId);
+    }
+    std::string hostname = accountInfo->second.confProperties.hostname;
+    std::vector<account::Bootstrap> result;
+    std::istringstream stream(hostname);
+    std::string bootstrap;
+    while (getline(stream, bootstrap, ';')) {
+        std::string url;
+        uint16_t port = 4222;
+        if (bootstrap.find(":") != std::string::npos) {
+            url = bootstrap.substr(0, bootstrap.find(":"));
+            try {
+                port = std::stoi(bootstrap.substr(bootstrap.find(":")));
+            } catch (...) { }
+        } else {
+            url = bootstrap;
+        }
+        account::Bootstrap b;
+        b.hostname = url;
+        b.port = port;
+        result.emplace_back(b);
+    }
+    return result;
+}
+
+std::string
+NewAccountModel::bootstrapListToString(const std::vector<account::Bootstrap>& bootstraps)
+{
+    std::string new_hostname = "";
+    std::size_t index = 0;
+    for (const auto& bootstrap : bootstraps) {
+        new_hostname += bootstrap.hostname;
+        if (bootstrap.port != 4222) {
+            new_hostname += ":" + std::to_string(bootstrap.port);
+        }
+        if (index != bootstraps.size() - 1) {
+            new_hostname += ";";
+        }
+    }
+    return new_hostname;
+}
+
 
 bool
 NewAccountModel::exportToFile(const std::string& accountId, const std::string& path) const
