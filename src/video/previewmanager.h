@@ -1,6 +1,7 @@
 /******************************************************************************
- *   Copyright (C) 2012-2018 Savoir-faire Linux                            *
+ *   Copyright (C) 2012-2018 Savoir-faire Linux                               *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>   *
+ *   Author : Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>              *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
  *   modify it under the terms of the GNU Lesser General Public               *
@@ -48,6 +49,8 @@ private:
    //Constructor
    explicit PreviewManager();
    virtual ~PreviewManager();
+
+   std::string localRecorderPath;
 
 public Q_SLOTS:
    void stopPreview ();
