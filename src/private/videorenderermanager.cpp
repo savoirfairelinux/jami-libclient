@@ -161,24 +161,20 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
-
    VideoManager::instance().stopCamera();
 
    d_ptr->m_PreviewState = false;
-
 }
 
 ///Start video preview
 void VideoRendererManager::startPreview()
 {
-
    if (d_ptr->m_PreviewState)
       return;
 
    VideoManager::instance().startCamera();
 
    d_ptr->m_PreviewState = true;
-
 }
 
 ///Is the video model fetching preview from a camera
