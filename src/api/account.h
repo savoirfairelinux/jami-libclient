@@ -193,6 +193,11 @@ struct Info
     void                    fromDetails(const MapStringString& details);
 };
 
+struct Bootstrap
+{
+    std::string hostname;
+    uint16_t port;
+};
 } // namespace account
 } // namespace api
 } // namespace lrc
