@@ -20,6 +20,7 @@
 
 // Models and database
 #include "api/newaccountmodel.h"
+#include "api/avmodel.h"
 #include "api/datatransfermodel.h"
 #include "api/behaviorcontroller.h"
 #include "database.h"
@@ -44,6 +45,7 @@ public:
     std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<DataTransferModel> dataTransferModel;
+    std::unique_ptr<AVModel> AVModel_;
 };
 
 Lrc::Lrc()
@@ -74,6 +76,12 @@ DataTransferModel&
 Lrc::getDataTransferModel() const
 {
     return *lrcPimpl_->dataTransferModel;
+}
+
+AVModel&
+Lrc::getAVModel() const
+{
+    return *lrcPimpl_->AVModel_;
 }
 
 void
@@ -109,6 +117,7 @@ LrcPimpl::LrcPimpl(Lrc& linked)
 , database(std::make_unique<Database>())
 , accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
+, AVModel_ {std::make_unique<AVModel>()}
 {
 }
 

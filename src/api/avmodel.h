@@ -1,7 +1,6 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
- *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
- *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
+ *   Copyright (C) 2018 Savoir-faire Linux                                  *
+ *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,66 +17,42 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+// std
 #include <memory>
+#include <string>
 
-// Lrc
+// Qt
+#include <qobject.h>
+
+// LRC
 #include "typedefs.h"
 
 namespace lrc
 {
 
-class LrcPimpl;
+class AVModelPimpl;
 
 namespace api
 {
 
-class BehaviorController;
-class NewAccountModel;
-class DataTransferModel;
-class AVModel;
-
-class LIB_EXPORT Lrc {
+class LIB_EXPORT AVModel : public QObject {
+    Q_OBJECT
 public:
-    Lrc();
-    ~Lrc();
+    AVModel();
+    ~AVModel();
     /**
-     * get a reference on account model.
-     * @return a NewAccountModel&.
+     * Stop local record at given path
+     * @param path
      */
-    const NewAccountModel& getAccountModel() const;
+    void stopLocalRecorder(const std::string& path) const;
     /**
-     * get a reference on the behavior controller.
-     * @return a BehaviorController&.
+     * Start a local recorder and return it path.
+     * @param audioOnly
      */
-    BehaviorController& getBehaviorController() const;
-    /**
-     * get a reference on the DataTransfer controller.
-     * @return a DataTransferModel&.
-     */
-    DataTransferModel& getDataTransferModel() const;
-    /**
-     * get a reference on the audio-video controller.
-     * @return a AVModel&.
-     */
-    AVModel& getAVModel() const;
-
-    /**
-     * Inform the daemon that the connectivity changed
-     */
-    void connectivityChanged() const;
-
-    /**
-     * Test connection with daemon
-     */
-    static bool isConnected();
-    /**
-     * Can communicate with the daemon via dbus
-     */
-    static bool dbusIsValid();
+    std::string startLocalRecorder(const bool& audioOnly) const;
 
 private:
-    std::unique_ptr<LrcPimpl> lrcPimpl_;
+    std::unique_ptr<AVModelPimpl> pimpl_;
 };
 
 } // namespace api
