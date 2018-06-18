@@ -133,6 +133,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::deviceRevocationEnded,
             this,
             &CallbacksHandler::slotDeviceRevokationEnded);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::exportOnRingEnded,
+            this,
+            &CallbacksHandler::slotExportOnRingEnded);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -368,6 +373,12 @@ CallbacksHandler::slotDeviceRevokationEnded(const QString& accountId,
                                             const int status)
 {
     emit deviceRevocationEnded(accountId.toStdString(), deviceId.toStdString(), status);
+}
+
+void
+CallbacksHandler::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin)
+{
+    emit exportOnRingEnded(accountId.toStdString(), status, pin.toStdString());
 }
 
 } // namespace lrc
