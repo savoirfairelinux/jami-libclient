@@ -210,6 +210,14 @@ Q_SIGNALS:
                                const std::string& deviceId,
                                const int status);
 
+    /**
+     * Emit exportOnRingEnded
+     * @param accountId
+     * @param status SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2
+     * @param pin
+     */
+    void exportOnRingEnded(const std::string& accountId, int status, const std::string& pin);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -354,6 +362,14 @@ private Q_SLOTS:
      void slotDeviceRevokationEnded(const QString& accountId,
                                     const QString& deviceId,
                                     const int status);
+
+    /**
+     * Emit exportOnRingEnded
+     * @param accountId
+     * @param status SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2
+     * @param pin
+     */
+    void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
 
 private:
     const api::Lrc& parent;
