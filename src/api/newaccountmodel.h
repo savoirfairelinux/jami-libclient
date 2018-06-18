@@ -31,6 +31,7 @@
 
 // Lrc
 #include "typedefs.h"
+#include "api/account.h"
 
 namespace lrc
 {
@@ -44,11 +45,6 @@ namespace api
 
 class Lrc;
 class BehaviorController;
-
-namespace account {
-    struct ConfProperties_t;
-    struct Info;
-}
 
 /**
   *  @brief Class that manages account information.
@@ -100,6 +96,13 @@ public:
      */
     bool exportToFile(const std::string& accountId, const std::string& path) const;
     /**
+     * Call exportOnRing from the daemon
+     * @param accountId
+     * @param password
+     * @return if the export is initialized
+     */
+    bool exportOnRing(const std::string& accountId, const std::string& password) const;
+    /**
      * Call removeAccount from the daemon
      * @param accountId to remove
      * @note will emit accountRemoved
@@ -128,6 +131,14 @@ public:
      * @throws out_of_range exception if account is not found
      */
     void setAvatar(const std::string& accountId, const std::string& avatar);
+    /**
+     * Try to register a name
+     * @param accountId
+     * @param password
+     * @param username
+     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     */
+    bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
 Q_SIGNALS:
     /**
@@ -150,6 +161,30 @@ Q_SIGNALS:
      * @param accountID
      */
     void profileUpdated(const std::string& accountID);
+
+    /**
+     * Connect this signal to know when an account is exported on the DHT
+     * @param accountID
+     * @param status
+     * @param pin
+     */
+    void exportOnRingEnded(const std::string& accountID, account::ExportOnRingStatus status, const std::string& pin);
+
+    /**
+     * Name registration has ended
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void nameRegistrationEnded(const std::string& accountId, account::RegisterNameStatus status, const std::string& name);
+
+    /**
+     * Name registration has been found
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void registeredNameFound(const std::string& accountId, account::LookupStatus status, const std::string& address, const std::string& name);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
