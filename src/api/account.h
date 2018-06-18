@@ -174,6 +174,14 @@ struct ConfProperties_t {
     MapStringString         toDetails() const;
 };
 
+// Possible account export status
+enum class ExportOnRingStatus {
+    SUCCESS = 0,
+    WRONG_PASSWORD = 1 ,
+    NETWORK_ERROR = 2,
+    INVALID
+};
+
 struct Info
 {
     bool freeable = false;

@@ -101,6 +101,13 @@ public:
      */
     bool exportToFile(const std::string& accountId, const std::string& path) const;
     /**
+     * Call exportOnRing from the daemon
+     * @param accountId
+     * @param password
+     * @return if the export is initialized
+     */
+    bool exportOnRing(const std::string& accountId, const std::string& password) const;
+    /**
      * Call removeAccount from the daemon
      * @param accountId to remove
      * @note will emit accountRemoved
@@ -162,6 +169,14 @@ Q_SIGNALS:
      * @param accountID
      */
     void profileUpdated(const std::string& accountID);
+
+    /**
+     * Connect this signal to know when an account is exported on the DHT
+     * @param accountID
+     * @param status
+     * @param pin
+     */
+    void exportOnRingEnded(const std::string& accountID, account::ExportOnRingStatus status, const std::string& pin);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
