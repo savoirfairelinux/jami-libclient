@@ -28,7 +28,6 @@
 #include "api/conversationmodel.h"
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
-#include "api/account.h"
 #include "api/behaviorcontroller.h"
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
@@ -86,6 +85,13 @@ public Q_SLOTS:
      * @param status
      */
     void slotAccountStatusChanged(const std::string& accountID, const api::account::Status status);
+    /**
+     * Emit exportOnRingEnded.
+     * @param accountId
+     * @param status
+     * @param pin
+     */
+    void slotExportOnRingEnded(const std::string& accountID, int status, const std::string& pin);
     /**
      * @param accountId
      * @param details
@@ -191,6 +197,12 @@ NewAccountModel::exportToFile(const std::string& accountId, const std::string& p
     return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str());
 }
 
+bool
+NewAccountModel::exportOnRing(const std::string& accountId, const std::string& password) const
+{
+    return ConfigurationManager::instance().exportOnRing(accountId.c_str(), password.c_str());
+}
+
 void
 NewAccountModel::removeAccount(const std::string& accountId) const
 {
@@ -248,6 +260,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
+    connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
@@ -293,6 +306,26 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
 
     accountInfo->second.fromDetails(convertMap(details));
     emit linked.accountStatusChanged(accountId);
+}
+
+void
+NewAccountModelPimpl::slotExportOnRingEnded(const std::string& accountID, int status, const std::string& pin)
+{
+    account::ExportOnRingStatus convertedStatus = account::ExportOnRingStatus::INVALID;
+    switch (status) {
+    case 0:
+        convertedStatus = account::ExportOnRingStatus::SUCCESS;
+        break;
+    case 1:
+        convertedStatus = account::ExportOnRingStatus::WRONG_PASSWORD;
+        break;
+    case 2:
+        convertedStatus = account::ExportOnRingStatus::NETWORK_ERROR;
+        break;
+    default:
+        break;
+    }
+    emit linked.exportOnRingEnded(accountID, convertedStatus, pin);
 }
 
 void
