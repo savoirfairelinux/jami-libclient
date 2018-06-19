@@ -74,11 +74,6 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotAccountMessageStatusChanged);
 
-    connect(&NameDirectory::instance(),
-            &NameDirectory::registeredNameFound,
-            this,
-            &CallbacksHandler::slotRegisteredNameFound);
-
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::accountDetailsChanged,
             this,
@@ -138,6 +133,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::exportOnRingEnded,
             this,
             &CallbacksHandler::slotExportOnRingEnded);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::nameRegistrationEnded,
+            this,
+            &CallbacksHandler::slotNameRegistrationEnded);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::registeredNameFound,
+            this,
+            &CallbacksHandler::slotRegisteredNameFound);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -198,18 +203,6 @@ CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
 {
     Q_UNUSED(time)
     emit incomingContactRequest(accountId.toStdString(), ringId.toStdString(), payload.toStdString());
-}
-
-void
-CallbacksHandler::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status,
-                                          const QString& address, const QString& name)
-{
-    if (!account) return;
-    if (status == NameDirectory::LookupStatus::SUCCESS) {
-        emit registeredNameFound(account->id().toStdString(), address.toStdString(), name.toStdString());
-    } else if((!address.trimmed().isEmpty() || !name.trimmed().isEmpty())) {
-        emit registeredNameNotFound(account->id().toStdString(), address.toStdString(), name.toStdString());
-    }
 }
 
 void
@@ -380,5 +373,18 @@ CallbacksHandler::slotExportOnRingEnded(const QString& accountId, int status, co
 {
     emit exportOnRingEnded(accountId.toStdString(), status, pin.toStdString());
 }
+
+void
+CallbacksHandler::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+{
+    emit nameRegistrationEnded(accountId.toStdString(), status, name.toStdString());
+}
+
+void
+CallbacksHandler::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+{
+    emit registeredNameFound(accountId.toStdString(), status, address.toStdString(), name.toStdString());
+}
+
 
 } // namespace lrc

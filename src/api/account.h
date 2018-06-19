@@ -182,6 +182,23 @@ enum class ExportOnRingStatus {
     INVALID
 };
 
+enum class RegisterNameStatus {
+    SUCCESS = 0,
+    WRONG_PASSWORD = 1,
+    INVALID_NAME = 2,
+    ALREADY_TAKEN = 3,
+    NETWORK_ERROR = 4,
+    INVALID
+};
+
+enum class LookupStatus {
+    SUCCESS = 0,
+    INVALID_NAME = 1,
+    NOT_FOUND = 2,
+    ERROR = 3,
+    INVALID
+};
+
 struct Info
 {
     bool freeable = false;
