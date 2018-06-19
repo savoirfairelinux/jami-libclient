@@ -115,17 +115,11 @@ public Q_SLOTS:
     /**
      * Listen CallbacksHandler when a registeredName is found
      * @param accountId account linked
+     * @param status (0 = SUCCESS, 1 = Not found, 2 = Network error)
      * @param uri of the contact found
      * @param registeredName of the contact found
      */
-    void slotRegisteredNameFound(const std::string& accountId, const std::string& uri, const std::string& registeredName);
-    /**
-     * Listen CallbacksHandler when a name is not found
-     * @param accountId account linked
-     * @param uri the uri to search
-     * @param name the name to search
-     */
-    void slotRegisteredNameNotFound(const std::string& accountId, const std::string& uri, const std::string& name);
+    void slotRegisteredNameFound(const std::string& accountId, int status, const std::string& uri, const std::string& registeredName);
     /**
      * Listen CallbacksHandler when an incoming request arrives
      * @param accountId account linked
@@ -189,7 +183,7 @@ ContactModel::pendingRequestCount() const
 {
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
     int pendingRequestCount = 0;
-    auto i = std::for_each(pimpl_->contacts.begin(), pimpl_->contacts.end(),
+    std::for_each(pimpl_->contacts.begin(), pimpl_->contacts.end(),
         [&pendingRequestCount] (const auto& c) {
             if (!c.second.isBanned)
                 pendingRequestCount += static_cast<int>(c.second.profileInfo.type == profile::Type::PENDING);
@@ -415,8 +409,6 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotIncomingContactRequest);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
             this, &ContactModelPimpl::slotRegisteredNameFound);
-    connect(&callbacksHandler, &CallbacksHandler::registeredNameNotFound,
-            this, &ContactModelPimpl::slotRegisteredNameNotFound);
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ContactModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
@@ -437,8 +429,6 @@ ContactModelPimpl::~ContactModelPimpl()
                this, &ContactModelPimpl::slotIncomingContactRequest);
     disconnect(&callbacksHandler, &CallbacksHandler::registeredNameFound,
                this, &ContactModelPimpl::slotRegisteredNameFound);
-    disconnect(&callbacksHandler, &CallbacksHandler::registeredNameNotFound,
-            this, &ContactModelPimpl::slotRegisteredNameNotFound);
     disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
                this, &ContactModelPimpl::slotIncomingCall);
     disconnect(&callbacksHandler, &lrc::CallbacksHandler::newAccountMessage,
@@ -668,48 +658,43 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type, b
 
 void
 ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
+                                           int status,
                                            const std::string& uri,
                                            const std::string& registeredName)
 {
     if (accountId != linked.owner.id) return;
 
     auto& temporaryContact = contacts[""];
-    {
-        std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(uri) == contacts.end()) {
-            // contact not present, update the temporaryContact
-            lrc::api::profile::Info profileInfo = {uri, "", "", profile::Type::TEMPORARY};
-            temporaryContact = {profileInfo, registeredName, false, false};
-        } else {
-            // Update contact
-            contacts[uri].registeredName = registeredName;
-            if (temporaryContact.registeredName == uri || temporaryContact.registeredName == registeredName) {
-                // contact already present, remove the temporaryContact
-                lrc::api::profile::Info profileInfo = {"", "", "", profile::Type::TEMPORARY};
-                temporaryContact = {profileInfo, "", false, false};
+    if (status == 0 /* SUCCESS */) {
+        {
+            std::lock_guard<std::mutex> lk(contactsMtx_);
+            if (contacts.find(uri) == contacts.end()) {
+                // contact not present, update the temporaryContact
+                lrc::api::profile::Info profileInfo = {uri, "", "", profile::Type::TEMPORARY};
+                temporaryContact = {profileInfo, registeredName, false, false};
+            } else {
+                // Update contact
+                contacts[uri].registeredName = registeredName;
+                if (temporaryContact.registeredName == uri || temporaryContact.registeredName == registeredName) {
+                    // contact already present, remove the temporaryContact
+                    lrc::api::profile::Info profileInfo = {"", "", "", profile::Type::TEMPORARY};
+                    temporaryContact = {profileInfo, "", false, false};
+                }
             }
         }
+        emit linked.modelUpdated(uri);
+    } else if (!uri.empty() || !registeredName.empty()) {
+        if (temporaryContact.registeredName != uri && temporaryContact.registeredName != registeredName) {
+            return;
+        }
+        {
+            std::lock_guard<std::mutex> lk(contactsMtx_);
+            temporaryContact.profileInfo.alias = "Not found";
+        }
+        emit linked.modelUpdated(uri);
+    } else {
+        qDebug() << "ContactModelPimpl::slotRegisteredNameFound, status = " << status << " with empty uri and registeredName";
     }
-    emit linked.modelUpdated(uri);
-
-}
-
-void
-ContactModelPimpl::slotRegisteredNameNotFound(const std::string& accountId,
-                                              const std::string& uri,
-                                              const std::string& name)
-{
-    if (accountId != linked.owner.id) return;
-
-    auto& temporaryContact = contacts[""];
-    if (temporaryContact.registeredName != uri && temporaryContact.registeredName != name) {
-        return;
-    }
-    {
-        std::lock_guard<std::mutex> lk(contactsMtx_);
-        temporaryContact.profileInfo.alias = "Not found";
-    }
-    emit linked.modelUpdated(uri);
 }
 
 void
