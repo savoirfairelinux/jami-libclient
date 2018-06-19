@@ -147,6 +147,14 @@ public:
      * @return string like bootstrap1:port1;bootstrap2:port2;...
      */
     static std::string bootstrapListToString(const std::vector<account::Bootstrap>& bootstraps);
+    /**
+     * Try to register a name
+     * @param accountId
+     * @param username
+     * @param password
+     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     */
+    bool registerName(const std::string& accountId, const std::string& username, const std::string& password);
 
 Q_SIGNALS:
     /**
@@ -177,6 +185,22 @@ Q_SIGNALS:
      * @param pin
      */
     void exportOnRingEnded(const std::string& accountID, account::ExportOnRingStatus status, const std::string& pin);
+
+    /**
+     * Name registration has ended
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void nameRegistrationEnded(const std::string& accountId, account::RegisterNameStatus status, const std::string& name);
+
+    /**
+     * Name registration has been found
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void registeredNameFound(const std::string& accountId, account::LookupStatus status, const std::string& address, const std::string& name);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;

@@ -102,6 +102,22 @@ public Q_SLOTS:
     void slotAccountRemoved(Account* account);
 
     void slotProfileUpdated(const Profile* profile);
+
+    /**
+     * Emit nameRegistrationEnded
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void slotNameRegistrationEnded(const std::string& accountId, int status, const std::string& name);
+
+    /**
+     * Emit registeredNameFound
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void slotRegisteredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -235,6 +251,12 @@ NewAccountModel::bootstrapListToString(const std::vector<account::Bootstrap>& bo
 }
 
 bool
+NewAccountModel::registerName(const std::string& accountId, const std::string& username, const std::string& password)
+{
+    return ConfigurationManager::instance().registerName(accountId.c_str(), password.c_str(), username.c_str());
+}
+
+bool
 NewAccountModel::exportToFile(const std::string& accountId, const std::string& path) const
 {
     return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str());
@@ -304,6 +326,8 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
+    connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
+    connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
@@ -369,6 +393,57 @@ NewAccountModelPimpl::slotExportOnRingEnded(const std::string& accountID, int st
         break;
     }
     emit linked.exportOnRingEnded(accountID, convertedStatus, pin);
+}
+
+void
+NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, int status, const std::string& name)
+{
+    account::RegisterNameStatus convertedStatus = account::RegisterNameStatus::INVALID;
+    switch (status)
+    {
+    case 0:
+        convertedStatus = account::RegisterNameStatus::SUCCESS;
+        break;
+    case 1:
+        convertedStatus = account::RegisterNameStatus::WRONG_PASSWORD;
+        break;
+    case 2:
+        convertedStatus = account::RegisterNameStatus::INVALID_NAME;
+        break;
+    case 3:
+        convertedStatus = account::RegisterNameStatus::ALREADY_TAKEN;
+        break;
+    case 4:
+        convertedStatus = account::RegisterNameStatus::NETWORK_ERROR;
+        break;
+    default:
+        break;
+    }
+    emit linked.nameRegistrationEnded(accountId, convertedStatus, name);
+}
+
+void
+NewAccountModelPimpl::slotRegisteredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name)
+{
+    account::LookupStatus convertedStatus = account::LookupStatus::INVALID;
+    switch (status)
+    {
+    case 0:
+        convertedStatus = account::LookupStatus::SUCCESS;
+        break;
+    case 1:
+        convertedStatus = account::LookupStatus::INVALID_NAME;
+        break;
+    case 2:
+        convertedStatus = account::LookupStatus::NOT_FOUND;
+        break;
+    case 3:
+        convertedStatus = account::LookupStatus::ERROR;
+        break;
+    default:
+        break;
+    }
+    emit linked.registeredNameFound(accountId, convertedStatus, address, name);
 }
 
 void
