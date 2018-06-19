@@ -119,25 +119,6 @@ Q_SIGNALS:
      */
     void accountStatusChanged(const std::string& accountId, const api::account::Status status);
     /**
-     * Connect this signal to know when a registeredName is found
-     * @param accountId the account who receives this signal
-     * @param uri the URI of the profile found
-     * @param registeredName the registeredName linked to this URI
-     */
-    void registeredNameFound(const std::string& accountId,
-                             const std::string& uri,
-                             const std::string& registeredName);
-
-    /**
-     * Connect this signal to know when a name is not found
-     * @param accountId the account who receives this signal
-     * @param uri the search uri
-     * @param name the search name
-     */
-    void registeredNameNotFound(const std::string& accountId,
-                                const std::string& uri,
-                                const std::string& name);
-    /**
      * Connect this signal to know where a VCard is incoming
      * @param callId the call linked to this VCard
      * @param from the sender URI
@@ -218,6 +199,22 @@ Q_SIGNALS:
      */
     void exportOnRingEnded(const std::string& accountId, int status, const std::string& pin);
 
+    /**
+     * Name registration has ended
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void nameRegistrationEnded(const std::string& accountId, int status, const std::string& name);
+
+    /**
+     * Name registration has been found
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void registeredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -281,17 +278,6 @@ private Q_SLOTS:
                                       const QString& registration_state,
                                       unsigned detail_code,
                                       const QString& detail_str);
-    /**
-     * Listen from the daemon when a profile is found.
-     * @param account account linked.
-     * @param status  if the method succeeds
-     * @param address the URI of the profile
-     * @param name registeredName
-     */
-    void slotRegisteredNameFound(const Account* account,
-                                 NameDirectory::LookupStatus status,
-                                 const QString& address,
-                                 const QString& name);
     /**
      * Get the URI of the peer and emit incomingCall
      * @param accountId account linked
@@ -370,6 +356,22 @@ private Q_SLOTS:
      * @param pin
      */
     void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
+
+    /**
+     * Emit nameRegistrationEnded
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void slotNameRegistrationEnded(const QString& accountId, int status, const QString& name);
+
+    /**
+     * Emit registeredNameFound
+     * @param accountId
+     * @param status
+     * @param name
+     */
+    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
 
 private:
     const api::Lrc& parent;
